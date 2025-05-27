@@ -2,249 +2,205 @@ Return-Path: <stefan-koch@siemens.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2529BC54F30
-	for <webhook@archiver.kernel.org>; Tue, 27 May 2025 09:35:08 +0000 (UTC)
-Received: from MRWPR03CU001.outbound.protection.outlook.com (MRWPR03CU001.outbound.protection.outlook.com [40.107.130.65])
- by mx.groups.io with SMTP id smtpd.web11.47559.1748338503421963117
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8B8BDC54ED1
+	for <webhook@archiver.kernel.org>; Tue, 27 May 2025 09:59:18 +0000 (UTC)
+Received: from AS8PR03CU001.outbound.protection.outlook.com (AS8PR03CU001.outbound.protection.outlook.com [52.101.71.31])
+ by mx.groups.io with SMTP id smtpd.web11.48346.1748339954448454056
  for <docs@lists.yoctoproject.org>;
- Tue, 27 May 2025 02:35:04 -0700
+ Tue, 27 May 2025 02:59:14 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@siemens.com header.s=selector2 header.b=DoDD/gxt;
- spf=pass (domain: siemens.com, ip: 40.107.130.65, mailfrom: stefan-koch@siemens.com)
+ dkim=fail reason="dkim: body hash did not verify" header.i=@siemens.com header.s=selector2 header.b=XEQDwRe5;
+ spf=pass (domain: siemens.com, ip: 52.101.71.31, mailfrom: stefan-koch@siemens.com)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=eaHmumiVs9bVu/VnRyztQkM/8TtPixvJcrlfWhRrMMi9SoVquMsNhFtvYkl6upaVKyV+q0DLPrXdhuCXdgbMLCfo57Dr2vNtzBEpzXtnY/7SIEeOVPG5t8+2Cx6KP7uBhyVeZnODu2QUgvnUSNddLI2GgSvt6WusWluVD0By9CwhQ9FADkEUJ1acFqM+N8g8S9HDPHqzuShIG1pFJZ2Rzg1N9GoTUzf4GgY1iL3LMNssqEbpGG+U/1WYaMsPkq/hf8QJWRAL6RIyrPoz9Edok1JtDkII+X030TcgZAcIuqugseHp1fsvDx1afDyx3+9uehdZJW5n9x8ej1zb8LTzLA==
+ b=YNVN98joj80LCDj1f0xFdJpExwYKksZ5FNZ9XRbuvqyCRYvO/vfzXKIH8eb5yKylXzuHzm5vUIvpWUSRicuZVEMczY9j2kVCBHFI+gw0ZpZlN6D8Gi9oorypjfeMKAO5C7L00POUvbbRkAj3Bz+xRfve9R+vTwoRbDXtxxQLJbfE8By/8eMITVUllbB3zfYdkfCJDT4DjltyEqf0ESD0fuut9MNa+VLtNQBoLS6FUIsi8F3EbTwYY73SdMjaQLfzA1pvOWYqLzOAjLYAVdrYQh2kb0IGcsdZuVLf57XnaTciNHo/2mJWDevtTAtuTKT/gR0xRaqvNZrjUhq5pi5bMA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=u/i4erJIyPRu3j3s0v31PVdJrH/6F4VbjgREygqEHXE=;
- b=YiSOnH5xPYDeQP0k8ZkqR3DpaQMXAx57pmgvEL4X+Cz2dI3UcUmvvE64p6QhFuuQgZcTKRn5IBsHvroMj7Nh81Ku7hCMCNcSO5VDFGDhEI4xIEM5atBkvGwNTU9kt6jMEepKK2FcgNGTNFaqbAtFJzFyeGyxiCQlJddb4fJ9tOoaMADV6xEhCif8eYiC2ESIObcOhkRoyms6LkqCOOoqUGq/vIoXf0k+ixefZp5QpUvXOU3TTqUEmdSZlhPc8PIWwYoWgEarTp40kzE1JD6OlGqH7dRWOrVQjqnQE5j1V/eRtQSmMbtGayafMOfQYt79ILTmDLxZcN7wwCGJ1GWEAA==
+ bh=MSp96LgtxxVk8ZjHjXWIFcqAEsZWhrsZ3Ozav0Nkdug=;
+ b=VGAA68ltaekS/fxSj0jXq4CYL0ZZ73iqQyN37L72S5pMo3SE3rWKxImDQmLX+KKkNZ37Bq5g8egFsHZANcGmYg4DPhiuSEpGvsQhucNq8iExce5StA9qWNxenbPgma0po8V5XK4ycLBkwVafSxRbs57tQdjKB1SSBXK7LaHN459v4zIap3dVseTXHYE7OM6n7vA83exjNtasPHivOR6+n0VKmHcBZLiHyabdgqT7yqhqylfh1UTiu8wNQRevkYYC3RHXD48nmsd9WJumGCoqK7DQYKlod6ZoA0nTy9ZKNDOdlLSG7ly+Gs2F7zgJQswOgH+k0ZopKH1rhqYYhm3k/Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=siemens.com; dmarc=pass action=none header.from=siemens.com;
  dkim=pass header.d=siemens.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=siemens.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=u/i4erJIyPRu3j3s0v31PVdJrH/6F4VbjgREygqEHXE=;
- b=DoDD/gxtfwsht4/W/Eu/G9iRR8H6RCZJlkQ7AOAG31xg6dZR6iKjE6sqQ/T67FyiBLUANzTkcj7O7ZUD9985gvzFMCilboXgT6dpgU+lHgyswXFEploXBsiLZLfk+YFylj+FkYi0J5eOGAE1DMqYChX/LgsQMizOe53wrXMeYxDTE++hpHGdbxnsU9uw0LUFG1pZvNIwgPrkF+9oewah8wRnnenxP1UaBzH88L9kF6qcJzWwijoRXORE3Afsa5HXPHEsji5Ty/KStfYbjTdP9FzCWGA1uW9/Wfh2QlJxJejbPFCPUyBNSNh3DPAEcuXLL6h4dB9fezve8Nkyl+vR2g==
+ bh=MSp96LgtxxVk8ZjHjXWIFcqAEsZWhrsZ3Ozav0Nkdug=;
+ b=XEQDwRe55hdQFQoa0Sq0TCszWxivkTiUqq2hYHExi+fR1fIpppT2Kzq0EPNRa2MepbHAt1ACif+nC44Vk0tWeiRtKUtix01gFszmunGvmB7nTK7Hk3YQyLaj7yKmeSBVa/oFulv1taTDmcy3T+j4JDfnIhMVXpfLpD6x0LeBtMWxTObjKmpNyBjJH6zBvpRjsSgWEH3USluHMaecPoebmkHWzh0z6q1y8cerVhXuoh6rD/xeETrikVeDUrAUqYXpjHOGaXVhEpj3G/9SuMZ3/EPnPjO6GfrrgyUM82VvauA9piuNzI6fqAUpKo7HH4Jo+cgSHrfkxENcaCdChegtqQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=siemens.com;
 Received: from AM9PR10MB4959.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:41e::11)
- by PA1PR10MB9149.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:102:451::6) with
+ by AS4PR10MB5442.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:4bd::13) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.21; Tue, 27 May
- 2025 09:35:00 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.27; Tue, 27 May
+ 2025 09:59:10 +0000
 Received: from AM9PR10MB4959.EURPRD10.PROD.OUTLOOK.COM
  ([fe80::71d7:e998:3abf:a1ec]) by AM9PR10MB4959.EURPRD10.PROD.OUTLOOK.COM
  ([fe80::71d7:e998:3abf:a1ec%4]) with mapi id 15.20.8769.022; Tue, 27 May 2025
- 09:35:00 +0000
-From: "Koch, Stefan" <stefan-koch@siemens.com>
-To: "richard.purdie@linuxfoundation.org" <richard.purdie@linuxfoundation.org>,
-	"bitbake-devel@lists.openembedded.org" <bitbake-devel@lists.openembedded.org>
-CC: "quentin.schulz@cherry.de" <quentin.schulz@cherry.de>,
-	"alex.kanavin@gmail.com" <alex.kanavin@gmail.com>, "Kiszka, Jan"
-	<jan.kiszka@siemens.com>, "docs@lists.yoctoproject.org"
-	<docs@lists.yoctoproject.org>, "liezhi.yang@windriver.com"
-	<liezhi.yang@windriver.com>, "niqingliang2003@gmail.com"
-	<niqingliang2003@gmail.com>
-Subject: Re: [PATCH v2] fetch2: Ensure a valid symlink in `PREMIRRORS` case
- when using shallow cloning
-Thread-Topic: [PATCH v2] fetch2: Ensure a valid symlink in `PREMIRRORS` case
- when using shallow cloning
-Thread-Index: AQHbym4MNXQj5I4yFkqN2OOw428z9LPef9UAgAADigCAAAI6AIAHusSA
-Date: Tue, 27 May 2025 09:35:00 +0000
-Message-ID: <fa330d16540aefb4bc011849a5cdfb75ef1b20cc.camel@siemens.com>
-References: <20250521163311.2745308-1-stefan-koch@siemens.com>
-	 <d11158333f8ac0f2d6525e593ba7dd0ce6a57369.camel@linuxfoundation.org>
-	 <52082b629ebcc83f94f2768620a2867a1f027059.camel@siemens.com>
-	 <b1e217227e179aa3789e0fd3263da04e14966c0d.camel@linuxfoundation.org>
-In-Reply-To: 
- <b1e217227e179aa3789e0fd3263da04e14966c0d.camel@linuxfoundation.org>
-Accept-Language: de-DE, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=siemens.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AM9PR10MB4959:EE_|PA1PR10MB9149:EE_
-x-ms-office365-filtering-correlation-id: 1426b136-8660-465c-8b8e-08dd9d01c02c
-x-ms-exchange-atpmessageproperties: SA
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: 
- BCL:0;ARA:13230040|366016|1800799024|376014|38070700018|13003099007;
-x-microsoft-antispam-message-info: 
- =?utf-8?B?cWlTczBZeXZQRUhCQVRnb3ZXRERXSHNCT0FPVmRrczhORkVhUEFtWkpSOUpQ?=
- =?utf-8?B?TTUwQ2RGR1FBWGxscGVvYTBYd2JlWmxBVEU4SHd0YWJjamdKL2hEdDZwMGN1?=
- =?utf-8?B?TUM4VUF4NGEvN2lnQysxVVFVK0kyTFh1Ry9xVzhxTkk4aERRQzVUMFNzM3Ey?=
- =?utf-8?B?NjM2TWw0ZGlxdC93dW40Vnd0OGczNG5PUm45Rkd2VzlvWnJrZDZ5WFVkbUJP?=
- =?utf-8?B?SUM4MXJza2Q1V0VLOFYyQzArVFFSU054SlVjVGh4WGJhYUlYSEhBYTNWcXpr?=
- =?utf-8?B?RGw2ZnhHdVlCdHpPV2xWcnFaQ1RHSnNjUFgxQU5WZ256Q2NtOWd4VFpreDBq?=
- =?utf-8?B?ekNrTlptenVSL3JySGIwWjdqSURpRk83VCtGeDdtSHBFdmp6Q1pWTmdla1Ur?=
- =?utf-8?B?M1d4MmJhcDIvY0gxd3UxaVFHVGdLeVZHTzMvK1VLbERKYVgwVmJTMFE1aTFr?=
- =?utf-8?B?ZllIRERRWmpudC8rYkVtUVdQSzh0Y0FGWi9rWWdIbmIrd1FtY01teFUreXF0?=
- =?utf-8?B?MUtnNXV4ek9OWWliSDZ0dFk3RFNqNHBhN09YR0FLdUEzKytDdXhiU2Flc0ow?=
- =?utf-8?B?NG02N0lMekErbG02QmdUZ08ydW9XSlppMjRvdTNCV0liMkFscXYwNjUwZk5W?=
- =?utf-8?B?d1YvNUxrSGNpWWQ1ZjBHL1UvdGtFcDNVVHZ0a3V0Rk9SdlIyV1lVTFZrazRH?=
- =?utf-8?B?RWtQMm5WUE1IRzk5TkJJZ3BHbDlGNTBUM2Y5d1dCQm04bjRDZEcwMmViZGxF?=
- =?utf-8?B?WmZ5cjQxTzNYY2RaVk41Ky80b3QwVVlsVU41RnZlNVl1MVptZFBia1FydzVu?=
- =?utf-8?B?SlVIS0Exd2orZFZKbExYeG9hc2RYOWkyd0FtcnNLV21RNGxPOGR0YVpqdTdI?=
- =?utf-8?B?YktUem9wMHdBTjdWdGcyRTJ1ajhJUDRZQmNLU0p2SzhiUVh2WWx5WWtibVc3?=
- =?utf-8?B?M2NjRUZzR3NUcHJXQjVCNGgwdmE3d0MzVFNKTjlZd3Mza2ZrQ3JJbmk1TlI2?=
- =?utf-8?B?bmFnUHd6K3N1blR0TUZJV0FXVVliNnVFT1lQcVpyWmE2alBYY1h3cU9iaDhM?=
- =?utf-8?B?azRBcDRNVThjbzNDWU44SGpNY09ZZGg2Y0c4azdvbmVYWVpZbXZHdGdna1Q2?=
- =?utf-8?B?bVorbWc5L01SVHBUOGE4eXlwYUlIaHlxSHZyemVjekxGdEhhajlXeC9hMFVs?=
- =?utf-8?B?SGZNMW5JVGd6SlJRTXBnVFdBR1ZySHZLV0VSZ3FPKy9BZUhBamdhcjZIOXlC?=
- =?utf-8?B?ZnUyd3NxalZ5azgrSGkzbDVtNFpwenUzMVoxSjBDVDBzRlNFam5FS001MmtV?=
- =?utf-8?B?eFF4cnIybHEvL1RYV21laHZyMmJ1ZStHRGhiTDA3Sm5iVUEzOHc3TXdrWjhS?=
- =?utf-8?B?SnNLSWVhaWlFck1qTHl6NW15Mm0zSWZGV1JVMG1UUnFYQXhSWjUzQTB4TFZ6?=
- =?utf-8?B?TnB6V0NhYjRlMjdRR29IRXh0QmtZV3VBZUp3dGYwbUttNGdBUDdoV2l0cWh2?=
- =?utf-8?B?akVZM3JTOUpPSGtwOERjTHJlYnN4ZEhqVGluaCsydjlnK2tsL0NIV1prdHMz?=
- =?utf-8?B?QU5qbHg5dTQ5dVJVR2JiM20zZGxWWHFLbklnZnZ2Ry9pY0I5WDVOR1RtWWd5?=
- =?utf-8?B?OGpQQ3k4T0dFam85U0IzcnZTbnNBb0orQmR2UHBWSWg1YURPL3RvSEc2TWE3?=
- =?utf-8?B?L3JyYXlHcm9zTWk0aGlIZFQwRGdueGwyQjQzdHdLdHhlNkdVVHR6Znk5bzhS?=
- =?utf-8?B?Y3g2SU81N0V4ZXNiaW9rRnFPRXFGUFZ1NE1PbWZLdDVTUDBybmU4SmpIdUFq?=
- =?utf-8?B?V0VHemxOQWVmY2FuWXYvWno2NGpvRVd5SWpkbi9FaXJMc0xWZ3ZGT3MvYkpQ?=
- =?utf-8?B?ZjNsUlFqcWh4bUx1aXd1UE9kcUVVWjJBMUF2Z2NINU14bnRFQ3gwcW5OWXMz?=
- =?utf-8?Q?riJwh6AES/Y=3D?=
-x-forefront-antispam-report: 
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR10MB4959.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(38070700018)(13003099007);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: 
- =?utf-8?B?UlJCOTFGUWt1WDBMNmltTC9iUkpKdm1TSkZwVkIxWE13ZjBhblZSREF2ZWls?=
- =?utf-8?B?R1FVMFBKdjRaSzdHczlKNW1YaE8wUnBOS3RyK1FGZVBoanRYaTU3bWlqdXdU?=
- =?utf-8?B?bFFsOWwvZ0NqMDhwdkFQakt4UzRJR3BDNFZHLzBlS05zT2Z6UHBMMjVsK1JO?=
- =?utf-8?B?cG9pYlZlOVRIc2h3MXRUUnh1RmlJWFVDakNJS2huM2VlWGxJMFg0dUlqcnZ5?=
- =?utf-8?B?N2I2bWMvQnpwQ3BPZS9oSmY0NWhyMXlibDBmVkNzS2psVW8rdXRsZHBhMDNV?=
- =?utf-8?B?QjNVR0t4WXRtTFpySXNQeGlrVjEvV0ZIZ1hGRTczdWpha2IzWjhxc29KQ1FM?=
- =?utf-8?B?cTdOOU1zRE5FUHVPT0dnYlJ0T0QrblU4Qy9IcERxMkRXSHppUWR3QWFKYTBs?=
- =?utf-8?B?RncxU2J3NkVSamxnNGFTS2E1TFM2cGgwODZIQ0lRcWcvTkdHbUltUmdrWXJJ?=
- =?utf-8?B?b25od3RtVE83S3QxZURkT0ZpRkM2WnJLcWhxaVErdExXV3hsWXA5V1Z4aXZM?=
- =?utf-8?B?dXlkZkpzc0QzY21qTFp5RDhSTkYrMVpodVJHazVWOTRDOFptaCs0SFhpZFZN?=
- =?utf-8?B?N3FwbGx6MTBqVjk1L3pvR3BQNHlldVpDOUVNd0E3RWhEUDJjem00SytLOG9E?=
- =?utf-8?B?NnJsaHN1VVRWa2VlNVdRUWtTRnk0N0J0alRuaWNicXhyZ3NyZ3ZjOXBuRzZn?=
- =?utf-8?B?TlA1WmdDdG95UE9vK2dMVVdGb1RNMUpjSTJaUS9ybjNwbW1CdUc0NkQ0ZEVG?=
- =?utf-8?B?VXcrMitZYnhWOE83Qit6Z1Bqdlc5SEhwY0VzUjlEdXJTdTVacHJ0UnlTaXJm?=
- =?utf-8?B?bnVYQ0ljV202REJkaGVQQjh5M3pubi9WeFFRbVM1aWUzbWZTcmxhU3ZpV0FH?=
- =?utf-8?B?UXh2V080YlZXTHJONVNtdlp1UmFIZ1p3Y1lyd2pWQVI0TGtoRFBjUXA1Q0px?=
- =?utf-8?B?dnBqNEV6aUs0cFd2cG51am5XS3JUVVJCRWRweDVpUUVIbE0waE9aOGR2Q1NV?=
- =?utf-8?B?QUZHbnp6WVhrMWpmaEt2cWR0SmszNzRPc21ENjdVK3FnM05oMWg4bFVkbFZj?=
- =?utf-8?B?Q0ZOcVVkRkVvaHVFRzBiL2JTR0c0RlhsMjJYY2p5a041RVV6Q1FQZ0hlYkZL?=
- =?utf-8?B?OTRmNmM2ckZxV3JXSGlNZzBkTytya1hLSHJpTW5veDJGSmJXUVBDTUl0OWFV?=
- =?utf-8?B?SnYzRHVFSlNlNW1kRFJxVXVwTllBcVpkTDJUdHphV09XNGErMEJZa0JGWExw?=
- =?utf-8?B?M3lOWXRTcEtNZ1R4cmlLS2g3VXFJVnJGTHRPRVFiUVNKMklzVFBiUXN0bThu?=
- =?utf-8?B?dFRVa0htR3lacE93ek5pQUVrYlRvTVllVTZrQ1M2OCsvbU5GMUdlWEhoeFFD?=
- =?utf-8?B?K2puMUd1c0tCOCtFR3RJNUxDYzNWc0xnK1lyMVE1NUhsRENMYjR0Zk50ZEVu?=
- =?utf-8?B?L0NzdVA5cVdkV2dTNTl5SXVrSEJYQjhVQm00Y284dFhBeUx5cmFyNnpGWjdn?=
- =?utf-8?B?RWVaLzVBbkZHZ205RnFtem5kQTF4WkE5S1lETytSL2ROMEpIM0ZyRXVNbkV3?=
- =?utf-8?B?UmRmZ1crYkMyOXlKT1VvMFB6NzJYcTBPM0l3LzRBMGY2VmhhK3luK3ByTUZl?=
- =?utf-8?B?VTEwNU91ZkZlMUR2ODRxcVdQejhZNFczYnBEOHBRVHgxQThxYW9Bbi9zeEtU?=
- =?utf-8?B?WnpSUE9JRU5kNm9sTDJuWXJPaW5ZQzFwRFhRQ3dqUEVjU0lsVFk2WVlUbHdI?=
- =?utf-8?B?NXJoTUxqYVNRL3FmaFVYSVMvT3hma3hnSE5idWtuTzJpMXBDQkcwakNxaVBQ?=
- =?utf-8?B?YWJoSE42U2MyWGl3ZzdvNzdqbnZ4TG91cVRDY3czOWdGeU4rOUMvNjZhZVpI?=
- =?utf-8?B?SXpkUUFYUHpicHRCZmJRWml3ZEFBclBENjBBSHNOMG1SSVVpOVREa0RtWnJx?=
- =?utf-8?B?U1ZJNkJWUFBGdG54amNuQTFPVHloUW1OU1ZaUDJobGh4WGNRTmtvR2lsSU52?=
- =?utf-8?B?NGZHWmRoR0RRNllIOG5MMEFTdm1NYlBvRC9mN2JvYk0rS2FlR1dOc1AySWxS?=
- =?utf-8?B?eU9jWS9hNHpocTFCU1paM1NjNWJuazkyL0dsQTB0eTd2S2ROOW5MMFg3MkR4?=
- =?utf-8?B?YUZwdzc1K1JiQ2c1UnpsTXZ4bFdRRnY3NThWS2Q1MnMvQlNOVEs2ZlgwK1Ra?=
- =?utf-8?B?aVE9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <57371B76500CC349A454E49392E6C28A@EURPRD10.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+ 09:59:10 +0000
+From: Stefan Koch <stefan-koch@siemens.com>
+To: bitbake-devel@lists.openembedded.org
+CC: docs@lists.yoctoproject.org,
+	stefan-koch@siemens.com,
+	richard.purdie@linuxfoundation.org,
+	liezhi.yang@windriver.com,
+	niqingliang2003@gmail.com,
+	alex.kanavin@gmail.com,
+	quentin.schulz@cherry.de,
+	jan.kiszka@siemens.com
+Subject: [PATCH v3 2/3] fetch2: Ensure a valid symlink in `PREMIRRORS` case when using shallow cloning
+Date: Tue, 27 May 2025 11:59:02 +0200
+Message-ID: <20250527095903.2300556-2-stefan-koch@siemens.com>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250527095903.2300556-1-stefan-koch@siemens.com>
+References: <20250527095903.2300556-1-stefan-koch@siemens.com>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-ClientProxiedBy: FR4P281CA0412.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:d0::20) To AM9PR10MB4959.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:20b:41e::11)
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM9PR10MB4959:EE_|AS4PR10MB5442:EE_
+X-MS-Office365-Filtering-Correlation-Id: 279a2508-5b0d-433f-eccb-08dd9d052086
+X-MS-Exchange-AtpMessageProperties: SA
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info: 
+	=?us-ascii?Q?/XHXBwWPfVBZKIvM3KJA6XozlHf9+aQPEJMooK5zfnhk3yO6l9p6r+YCHZzx?=
+ =?us-ascii?Q?LB/PnmfH5U9Rll1rIM4oOegZi9OvlwytzwoGz8MbpKEibTyDaxrx4PQoqs8d?=
+ =?us-ascii?Q?Avdc/1t1GnvOzUQjwJPm7nqgNn69slVCY+srvQ6lSYuHhdDucDj2LjpPIXQW?=
+ =?us-ascii?Q?zxAL1fg6YD+OPnZvlo5eQRQhBXcY2t6y3fX9jDVAsGnvwf/jtLXVwnPMVr7t?=
+ =?us-ascii?Q?iHejr30eqq+NAqj12m9MLknZpobUfGvW4kmF605QAH0RXGH86i/+OXXy67Ko?=
+ =?us-ascii?Q?HfxSRcqfXQ3vuC5GIu3xXXPJwUy5X8kLtKxkcjBruFJhDxzn+mZpunctc8RP?=
+ =?us-ascii?Q?YhpAdDOkIdoGj9jJ7j41HmQwnhn5ZjOTxFhZ6qwCwg3M3JaewRhkfRhjvpJD?=
+ =?us-ascii?Q?WKauOevlHlX3bPcC3tfeHJKbvMzPN8CaAPYITbMaOQ4s71Dj1z9ppdNir9pR?=
+ =?us-ascii?Q?T9XqoCiVP1aSx3iAnB/bP//SbqBMxzHVyJg/PlDnZQDrl6E9dYgq5y3wCxqv?=
+ =?us-ascii?Q?/2PAMgry17gZOEFXtexPVs4O5D8vUkINxnD9k8dvhd0JdiJMu6SFC8AWfB5w?=
+ =?us-ascii?Q?cYgFNPXqjxzl/LwlE6t+A3X1wj+w9PNWhh5WedJWBgLUJ1++MOT5wnshqdJb?=
+ =?us-ascii?Q?Rd6OQYVwptwpE+eFPi2l/oR/+kofuusOQ+O5IWvtBMOBpvsldDboGsephBlt?=
+ =?us-ascii?Q?WpOnA7sEqrcqNKCK9p01maGhDKMM3h9yZog19X1Vfn0OXX250KeAh2YfyxHE?=
+ =?us-ascii?Q?/AsLxeJKSB5hOQXbnQQTyhvb9pa9hzf08TY6azoOjAq+HsVz7H+b5EdK5mXj?=
+ =?us-ascii?Q?QKk6W0YttJUxdsX+mlobRNJHkk0BkOFLXwjs1YVK/sZH10/RessWALkxbUZk?=
+ =?us-ascii?Q?rxZkRi496Z8bNsWWZ1gJU01ZrazL0HHPzGaSut9jwNOx841FFCjojzxu7Hxk?=
+ =?us-ascii?Q?T7BCo5YaJcrZltUge7psfSyKQ/qlGENc/ZMHPO5XBXR87F7Goq3Ie4Ln+Mc9?=
+ =?us-ascii?Q?1kINjx/Q28gtOrVqx9X5b41XSqwLEQm6S/cj/MNMXyv4qRUb1mUdbLY+E1XM?=
+ =?us-ascii?Q?7Sws/H9tgjETBdY10hMiYKh9F5YuTi5LeWEhFip++4mhhn3xQhFFnkscBsKy?=
+ =?us-ascii?Q?h/0kuSFMFPWJgAd+Z1UeudSl02MVFyBT9geDrHCNLWzWnVIoeGMOiZwS8sXR?=
+ =?us-ascii?Q?WVqWaC/AITmk78rOOqOEchBinLoq+z6gtq5AkvcLfY39SqzYEJzSutg/6geq?=
+ =?us-ascii?Q?UpJMrJZwg/IMPKoZR7wphl7HUqO6r07M63/HGxFuj1RYg1eu6Ht6RwFKWZDI?=
+ =?us-ascii?Q?bCfC10cozEX2WM/G6priuqEwTMkvgnjQ2EXG7AxJ8ougy0C7hD0ufGCr6Ltj?=
+ =?us-ascii?Q?Nke/ERuTLtdHu46ogHe0EZcnhGc7cJ8L851P7nxRcara6h3TRUi+IrqwwKZn?=
+ =?us-ascii?Q?N6oK6EBEkaY=3D?=
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR10MB4959.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?us-ascii?Q?N/6vGQbXtmS1duPAlEVMdN+DEhm2oIdTDmm97diFpTVIZGtsBuSI2KKaBZ4F?=
+ =?us-ascii?Q?NMD0BmEY8VjDAdt9PgRdWMqC1VkCuwEB2xbn8KB5gczlZTobYg39Xo9xuHik?=
+ =?us-ascii?Q?vcU+VPpxvDZfp2Hx6RYFHM78EFvOfeyIH54rg1Xun+op4OyaahPUH3Se3fso?=
+ =?us-ascii?Q?djLvtPLZI3iT0gKM6XlITOkg13rFtg/Sb8tAMZiLEOMHJMNRnCfJA1RCTGXp?=
+ =?us-ascii?Q?3wtGbg+E9yPpTLrXGvymCBtkL8p/PIjKiKs/8SB/9tsxR+rY/dVhQJ11uknF?=
+ =?us-ascii?Q?ETikBeta03QcwaMIfs0n8voXFDkKcWOscMP4kezNE/S5Fv8iV9YJ9nGcS2QS?=
+ =?us-ascii?Q?xTX4Lgsaxq+YzCTQu56t/6jyDX3UVjKiC+UFt7HdmhObRzRHT634o65UjO4Q?=
+ =?us-ascii?Q?Qq/SHbc34Imz1ukk8Mdb6OoaIq6HJ/0aPo0m1HcEOR28NkThN7SwuY4en3jP?=
+ =?us-ascii?Q?PhCOt+b+mn5i5kjDxJ1SS2je9SRPx+VIyA3WKrCVl6u2NQp6M4IZyXYk/vJp?=
+ =?us-ascii?Q?PamtL+tIYAeoRMj9R9VA3WWon8WQA0SCdPmYolVtmPbsZ36GKwU5xxMeOc+h?=
+ =?us-ascii?Q?FAWiqEOGibnAbCLBet9/Ln9boYi+cECcLw1Fu2eMBznuXOsHZZzECZkdXVNe?=
+ =?us-ascii?Q?dKpKncWevd8ujL8nmbOGP77uvoW50r6LGWZqARfDBjfJNfTLQy/zrGLBFSKD?=
+ =?us-ascii?Q?Omtdt6YUvdNz4ZLnD7VV3lVxPfE28eq7OKA0S/PIz8O6gTp4qmi8c7ExNH/c?=
+ =?us-ascii?Q?f5xG9VEflSgONERwy//Mc3NK2oAy3U9iDA/SzZyiJ0Ig+0FGI6jiUSlOJ9ZJ?=
+ =?us-ascii?Q?6QJzCp3RmUoBNY6d1IbHdPdbNwZS16y6bPR7sAPIHZqxmFKG6timQSea/LTg?=
+ =?us-ascii?Q?3MGjMwngwzHG95bF2o/qzsnzUD64PTh1OToAQlOsDdsk39Q1lat966DoKLSO?=
+ =?us-ascii?Q?Nlsd1M+B/Kxhb9hKHXrXJAw8l5BUzHeenSzvZmpmly49sGvDktHZX4d7tAVK?=
+ =?us-ascii?Q?qyNUydF+DeV52oLRKI++lRSJGeAGVO2jfdbh4QTljLt2cPBFLSMW0rBdH2EP?=
+ =?us-ascii?Q?CIYPJq7DWhXP1+SeamEQB5x/M0unIG6Q766crDnNRLqtYffS6wAGiIEzIdRQ?=
+ =?us-ascii?Q?JzFHhc4MUNCShMiTYGnMycqy3cATfkmgGjhNaE5sQZjyaeNVpbiO7KWwtyUz?=
+ =?us-ascii?Q?yAC+LY4DUz9R3dSOoR2DUx2snwq3sODNEiLQ2xA7ldVRA0nJ2zrXvg/wGrkF?=
+ =?us-ascii?Q?FangQqXpQUXf/mu78bzkaO+KrWlO/dWb71hnkrvzbo801GEC6wQMbRLtzZbV?=
+ =?us-ascii?Q?wwHyUx++phpHCE/o0zjCL9hc6JdfrhTczpGjvcNRnf5dO/mw8nBwxKgVsYtA?=
+ =?us-ascii?Q?ipfbMZAL1Tf3zV9yt/yGsZqy78w7pZeNrZcMM8lqzt7ox0r8bYtMhI873jMH?=
+ =?us-ascii?Q?dkaa2MZ7Gjt26XBtB+rxORBSurTWwB94YkdIIKV2zE3GqT3zwBAM7vrxiyXq?=
+ =?us-ascii?Q?lmiGnzeU8nOr0tmMUX/CifwBPuv/6DxjKoxHDk32mJGj8qZfVYmRkMNOYB5b?=
+ =?us-ascii?Q?5R4JUUnuD1tRVpGRxF2j/NbEK6wZwf2vxveFpR54mCPuZYo2TAX/+KhDBMg3?=
+ =?us-ascii?Q?Sg=3D=3D?=
 X-OriginatorOrg: siemens.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-Network-Message-Id: 279a2508-5b0d-433f-eccb-08dd9d052086
 X-MS-Exchange-CrossTenant-AuthSource: AM9PR10MB4959.EURPRD10.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1426b136-8660-465c-8b8e-08dd9d01c02c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 27 May 2025 09:35:00.0755
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 May 2025 09:59:10.4250
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 38ae3bcd-9579-4fd4-adda-b42e1495d55a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: h/xVhI0fbcabQ3/66yrKimnQ5/2D5EZAuU4f1dY1iUwLukXcugepvPWT9sRpcPgu8Ut1wKTmYXDdkduc3vT+iA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR10MB9149
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 38ae3bcd-9579-4fd4-adda-b42e1495d55a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: aBHJXZxzIyg+sDz6rmqXtbBkMNFRZDxiREB4JhQ909dYIBIrOEXsSykmIiLqEOEu5W0+/DeX1dV+zqcwe9fk6w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR10MB5442
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 27 May 2025 09:35:08 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6938
+ <docs@lists.yoctoproject.org>; Tue, 27 May 2025 09:59:18 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6939
 
-T24gVGh1LCAyMDI1LTA1LTIyIGF0IDEyOjMyICswMTAwLCBSaWNoYXJkIFB1cmRpZSB3cm90ZToN
-Cj4gPiBPbiBUaHUsIDIwMjUtMDUtMjIgYXQgMTE6MjQgKzAwMDAsIEtvY2gsIFN0ZWZhbiB3cm90
-ZToNCj4gPiA+ID4gT24gVGh1LCAyMDI1LTA1LTIyIGF0IDEyOjEyICswMTAwLCBSaWNoYXJkIFB1
-cmRpZSB3cm90ZToNCj4gPiA+ID4gPiA+IE9uIFdlZCwgMjAyNS0wNS0yMSBhdCAxODozMyArMDIw
-MCwgU3RlZmFuIEtvY2ggd3JvdGU6DQo+ID4gPiA+ID4gPiA+ID4gLSBTaW5jZSBgdWQucGF0aGAg
-Y29udGFpbnMgaW4gdGhhdCBjYXNlIHRoZQ0KPiA+ID4gPiA+ID4gPiA+IGBQUkVNSVJST1JTYCBw
-cmVmaXgNCj4gPiA+ID4gPiA+ID4gPiBwYXRoLA0KPiA+ID4gPiA+ID4gPiA+IMKgIHRoaXMgY2hh
-bmdlIGVuc3VyZXMgdGhhdCBhIGNvcnJlY3Qgc3ltbGluayBpcyBzZXQgdXAuDQo+ID4gPiA+ID4g
-PiA+ID4gDQo+ID4gPiA+ID4gPiA+ID4gU2lnbmVkLW9mZi1ieTogU3RlZmFuIEtvY2ggPHN0ZWZh
-bi1rb2NoQHNpZW1lbnMuY29tPg0KPiA+ID4gPiA+ID4gPiA+IC0tLQ0KPiA+ID4gPiA+ID4gPiA+
-IMKgbGliL2JiL2ZldGNoMi9fX2luaXRfXy5weSB8IDUgKysrKysNCj4gPiA+ID4gPiA+ID4gPiDC
-oDEgZmlsZSBjaGFuZ2VkLCA1IGluc2VydGlvbnMoKykNCj4gPiA+ID4gPiA+ID4gPiANCj4gPiA+
-ID4gPiA+ID4gPiBkaWZmIC0tZ2l0IGEvbGliL2JiL2ZldGNoMi9fX2luaXRfXy5weQ0KPiA+ID4g
-PiA+ID4gPiA+IGIvbGliL2JiL2ZldGNoMi9fX2luaXRfXy5weQ0KPiA+ID4gPiA+ID4gPiA+IGlu
-ZGV4IDJkZTRmNGY4Yy4uMDUyNTA1NDU2IDEwMDY0NA0KPiA+ID4gPiA+ID4gPiA+IC0tLSBhL2xp
-Yi9iYi9mZXRjaDIvX19pbml0X18ucHkNCj4gPiA+ID4gPiA+ID4gPiArKysgYi9saWIvYmIvZmV0
-Y2gyL19faW5pdF9fLnB5DQo+ID4gPiA+ID4gPiA+ID4gQEAgLTExMTcsNyArMTExNywxMiBAQCBk
-ZWYgdHJ5X21pcnJvcl91cmwoZmV0Y2gsDQo+ID4gPiA+ID4gPiA+ID4gb3JpZ3VkLCB1ZCwNCj4g
-PiA+ID4gPiA+ID4gPiBsZCwNCj4gPiA+ID4gPiA+ID4gPiBjaGVjayA9IEZhbHNlKToNCj4gPiA+
-ID4gPiA+ID4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgDQo+ID4g
-PiA+ID4gPiA+ID4gb3JpZ3VkLm1ldGhvZC5idWlsZF9taXJyb3JfZGF0YShvcmlndWQsDQo+ID4g
-PiA+ID4gPiA+ID4gbGQpDQo+ID4gPiA+ID4gPiA+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-IHJldHVybiBvcmlndWQubG9jYWxwYXRoDQo+ID4gPiA+ID4gPiA+ID4gwqDCoMKgwqDCoMKgwqDC
-oCAjIE90aGVyd2lzZSB0aGUgcmVzdWx0IGlzIGEgbG9jYWwgZmlsZTovLyBhbmQNCj4gPiA+ID4g
-PiA+ID4gPiB3ZQ0KPiA+ID4gPiA+ID4gPiA+IHN5bWxpbmsNCj4gPiA+ID4gPiA+ID4gPiB0byBp
-dA0KPiA+ID4gPiA+ID4gPiA+ICvCoMKgwqDCoMKgwqDCoCAjIFRoaXMgY291bGQgYWxzbyBiZSBh
-IGxpbmsgdG8gYSBzaGFsbG93DQo+ID4gPiA+ID4gPiA+ID4gYXJjaGl2ZQ0KPiA+ID4gPiA+ID4g
-PiA+IMKgwqDCoMKgwqDCoMKgwqAgZW5zdXJlX3N5bWxpbmsodWQubG9jYWxwYXRoLCBvcmlndWQu
-bG9jYWxwYXRoKQ0KPiA+ID4gPiA+ID4gPiA+ICvCoMKgwqDCoMKgwqDCoCAjIFdoZW4gdXNpbmcg
-c2hhbGxvdyBtb2RlLCBhZGQgYSBzeW1saW5rIHRvDQo+ID4gPiA+ID4gPiA+ID4gdGhlDQo+ID4g
-PiA+ID4gPiA+ID4gb3JpZ2luYWwNCj4gPiA+ID4gPiA+ID4gPiBmdWxsc2hhbGxvdw0KPiA+ID4g
-PiA+ID4gPiA+ICvCoMKgwqDCoMKgwqDCoCAjIHBhdGggdG8gZW5zdXJlIGEgdmFsaWQgc3ltbGlu
-ayBldmVuIGluIHRoZQ0KPiA+ID4gPiA+ID4gPiA+IGBQUkVNSVJST1JTYA0KPiA+ID4gPiA+ID4g
-PiA+IGNhc2UNCj4gPiA+ID4gPiA+ID4gPiArwqDCoMKgwqDCoMKgwqAgaWYgZ2V0YXR0cih1ZCwg
-J3NoYWxsb3cnLCBGYWxzZSkgYW5kIG5vdA0KPiA+ID4gPiA+ID4gPiA+IG9zLnBhdGguZXhpc3Rz
-KG9yaWd1ZC5mdWxsc2hhbGxvdyk6DQo+ID4gPiA+ID4gPiA+ID4gK8KgwqDCoMKgwqDCoMKgwqDC
-oMKgwqAgZW5zdXJlX3N5bWxpbmsodWQubG9jYWxwYXRoLA0KPiA+ID4gPiA+ID4gPiA+IG9yaWd1
-ZC5mdWxsc2hhbGxvdykNCj4gPiA+ID4gPiA+ID4gPiDCoMKgwqDCoMKgwqDCoMKgIHVwZGF0ZV9z
-dGFtcChvcmlndWQsIGxkKQ0KPiA+ID4gPiA+ID4gPiA+IMKgwqDCoMKgwqDCoMKgwqAgcmV0dXJu
-IHVkLmxvY2FscGF0aA0KPiA+ID4gPiA+ID4gDQo+ID4gPiA+ID4gPiBJIGd1ZXNzIHRoZSBvbmUg
-cHJvYmxlbSBoZXJlIGlzIHRoYXQgd2UncmUgdGVhY2hpbmcgYQ0KPiA+ID4gPiA+ID4gZ2VuZXJh
-bA0KPiA+ID4gPiA+ID4gZnVuY3Rpb24NCj4gPiA+ID4gPiA+IGluIF9faW5pdF9fIGEgZmV0Y2hl
-ciBzcGVjaWZpYyBpc3N1ZSA6Ly4NCj4gPiA+ID4gPiA+IA0KPiA+ID4gPiBJIHRob3VnaHQgc28s
-IHRvby4NCj4gPiA+ID4gDQo+ID4gPiA+IEFueXdheSwgSSBoYXZlIGRlY2lkZWQgZm9yIHRoZSBz
-eW1saW5rIHNvbHV0aW9uIGZvciB0d28NCj4gPiA+ID4gcmVhc29uczoNCj4gPiA+ID4gLSB0aGUg
-UFJFTUlSUk9SUyBsb2dpYyBpcyBoYW5kbGVkIG92ZXJhbGwgd2l0aGluIF9faW5pdF9fDQo+ID4g
-PiA+IC0gdGhlcmUgaXMgYWxyZWFkeSBvbmUgc3ltbGluayBjcmVhdGVkDQo+ID4gPiA+IA0KPiA+
-ID4gPiA+ID4gSWRlYWxseSB3ZSBwcm9iYWJseSBzaG91bGQgaGF2ZSBzb21lIGZldGNoZXIgc3Bl
-Y2lmaWMNCj4gPiA+ID4gPiA+IGZ1bmN0aW9uDQo+ID4gPiA+ID4gPiBjYWxscw0KPiA+ID4gPiA+
-ID4gZm9yIHRoaXMgdG8gcHJlc2VydmUgdGhlIGluZGVwZW5kZW5jZSBvZiB0aGUgcGFyZW50DQo+
-ID4gPiA+ID4gPiBtZXRob2RzLi4uDQo+ID4gPiA+IEFub3RoZXIgb3B0aW9uIEkgaGFkIHRob3Vn
-aHQgYWJvdXQgaXMgdG8gc3RvcmUgdGhlIG9yaWd1ZC5wYXRoDQo+ID4gPiA+IHNvbWV3aGVyZSBh
-bmQgcmV1c2UgaXQgaW4gdGhlIGdpdCBmZXRjaGVyLiBUaGVuIHRoZSBhcmNoaXZlDQo+ID4gPiA+
-IGNvdWxkDQo+ID4gPiA+IGJlDQo+ID4gPiA+IHNhdmVkIHdpdGggdGhlIGNvcnJlY3QgbmFtZSBp
-bnN0ZWFkIG9mIGFkZGluZyBhbiBhZGRpdGlvbmFsDQo+ID4gPiA+IHN5bWxpbmsuDQo+ID4gPiA+
-IA0KPiA+ID4gPiBRdWVzdGlvbiBoZXJlOiBJcyB0aGlzIGZyZWUgb2YgYW5vdGhlciBzaWRlLWVm
-ZmVjdHM/DQo+ID4gPiA+IA0KPiA+IA0KPiA+IFRoZSB0cm91YmxlIGlzIHRoYXQgZG9lc24ndCBu
-ZXN0LCB5b3UgY2FuIGhhdmUgbWlycm9ycyBvZiBtaXJyb3JzDQo+ID4gb3INCj4gPiBtaXJyb3Jz
-LiBUaGF0IGNhbiBiZSBoYW5kbGVkIHdpdGggYSBjaGFpbiBvZiBzeW1saW5rcy4NCj4gPiANCj4g
-PiBJIHRoaW5rIHRoZSByaWdodCBzb2x1dGlvbiBoZXJlIGlzIGEgc3BlY2lmaWMgbmV3IG1ldGhv
-ZCBmb3INCj4gPiBmZXRjaGVycw0KPiA+IHdoaWNoIGlzIGNhbGxlZCBhZnRlciBwcmVtaXJyb3Jz
-IHRvIHB1dCBsaW5rcyBpbiBwbGFjZS4NCj4gPiANCj4gPiBUaGUgZGVmYXVsdCB3b3VsZCBiZToN
-Cj4gPiANCj4gPiBlbnN1cmVfc3ltbGluayh1ZC5sb2NhbHBhdGgsIG9yaWd1ZC5sb2NhbHBhdGgp
-DQo+ID4gDQo+ID4gaG93ZXZlciB0aGUgZ2l0IGZldGNoZXIgd291bGQgYXBwZW5kIHRoZSBzaGFs
-bG93IGxvZ2ljLg0KPiA+IA0KPiA+IFNvbWV0aGluZyBsaWtlOg0KPiA+IA0KPiA+IEZldGNoTWV0
-aG9kKCkNCj4gPiDCoMKgwqAgZGVmIHVwZGF0ZV9taXJyb3JfbGlua3ModWQsIG9yaWd1ZCk6DQo+
-ID4gwqDCoMKgwqDCoMKgwqAgZW5zdXJlX3N5bWxpbmsodWQubG9jYWxwYXRoLCBvcmlndWQubG9j
-YWxwYXRoKQ0KPiA+IA0KPiA+IEdpdChGZXRjaE1ldGhvZCk6DQo+ID4gwqDCoMKgIGRlZiB1cGRh
-dGVfbWlycm9yX2xpbmtzKHVkLCBvcmlndWQpOg0KPiA+IMKgwqDCoMKgwqDCoMKgIHN1cGVyKCku
-dXBkYXRlX21pcnJvcl9saW5rcyh1ZCwgb3JpZ3VkKQ0KPiA+IMKgwqDCoMKgwqDCoMKgIGlmIHVk
-LHNoYWxsb3cgYW5kIG5vdCBvcy5wYXRoLmV4aXN0cyhvcmlndWQuZnVsbHNoYWxsb3cpOg0KPiA+
-IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgZW5zdXJlX3N5bWxpbmsodWQubG9jYWxwYXRoLCBvcmln
-dWQuZnVsbHNoYWxsb3cpDQo+ID4gDQo+ID4gDQpJJ2xsIHNlbmQgdGhlIHBhdGNoc2V0IGluIHZl
-cnNpb24gMy4gVGhhdCB3aWxsIGNvbnRhaW4gYSBzaW1pbGFyIGxvZ2ljDQphbmQgYSBzZWxmdGVz
-dCBjYXNlLg0KDQpBcyBleHBlY3RlZDogV2hlbiBhcHBseWluZyB0aGF0IHBhdGNoIHRvIHRoZSBj
-dXJyZW50IGBtYXN0ZXJgIHdpdGhvdXQNCmFwcGx5aW5nIHRoZSBvdGhlciBwYXRjaGVzIG9mIHRo
-ZSBwYXRjaHNldCBpdCB3aWxsIGZhaWwuIFdoZW4gYXBwbHlpbmcNCmFsbCBwYXRjaGVzIGl0IHdp
-bGwgc3VjY2VlZC4NCj4gPiBDaGVlcnMsDQo+ID4gDQo+ID4gUmljaGFyZA0KUmVnYXJkcw0KLS0g
-DQpTdGVmYW4gS29jaA0KU2llbWVucyBBRw0Kd3d3LnNpZW1lbnMuY29tDQoNCi0tIA0KU3RlZmFu
-IEtvY2gNClNpZW1lbnMgQUcNCnd3dy5zaWVtZW5zLmNvbQ0K
+- Since `ud.path` contains in that case the `PREMIRRORS` prefix path,
+  this change ensures that a correct symlink is set up.
+
+Signed-off-by: Stefan Koch <stefan-koch@siemens.com>
+---
+ lib/bb/fetch2/__init__.py | 10 +++++++++-
+ lib/bb/fetch2/git.py      |  7 +++++++
+ 2 files changed, 16 insertions(+), 1 deletion(-)
+
+diff --git a/lib/bb/fetch2/__init__.py b/lib/bb/fetch2/__init__.py
+index fe6c1cee2..dd2dbaabd 100644
+--- a/lib/bb/fetch2/__init__.py
++++ b/lib/bb/fetch2/__init__.py
+@@ -1117,7 +1117,10 @@ def try_mirror_url(fetch, origud, ud, ld, check =3D =
+False):
+                     origud.method.build_mirror_data(origud, ld)
+             return origud.localpath
+         # Otherwise the result is a local file:// and we symlink to it
+-        ensure_symlink(ud.localpath, origud.localpath)
++        # This may also be a link to a shallow archive
++        # When using shallow mode, add a symlink to the original fullshall=
+ow
++        # path to ensure a valid symlink even in the `PREMIRRORS` case
++        origud.method.update_mirror_links(ud, origud)
+         update_stamp(origud, ld)
+         return ud.localpath
+=20
+@@ -1653,6 +1656,11 @@ class FetchMethod(object):
+             except FileExistsError:
+                 pass
+=20
++    def update_mirror_links(self, ud, origud):
++        # For local file:// results, create a symlink to them
++        # This may also be a link to a shallow archive
++        self.ensure_symlink(ud.localpath, origud.localpath)
++
+     def try_premirror(self, urldata, d):
+         """
+         Should premirrors be used?
+diff --git a/lib/bb/fetch2/git.py b/lib/bb/fetch2/git.py
+index 784a45bda..55dd084ab 100644
+--- a/lib/bb/fetch2/git.py
++++ b/lib/bb/fetch2/git.py
+@@ -348,6 +348,13 @@ class Git(FetchMethod):
+     def tarball_need_update(self, ud):
+         return ud.write_tarballs and not os.path.exists(ud.fullmirror)
+=20
++    def update_mirror_links(self, ud, origud):
++        super().update_mirror_links(ud, origud)
++        # When using shallow mode, add a symlink to the original fullshall=
+ow
++        # path to ensure a valid symlink even in the `PREMIRRORS` case
++        if ud.shallow and not os.path.exists(origud.fullshallow):
++            self.ensure_symlink(ud.localpath, origud.fullshallow)
++
+     def try_premirror(self, ud, d):
+         # If we don't do this, updating an existing checkout with only pre=
+mirrors
+         # is not possible
+--=20
+2.39.5
+
 
