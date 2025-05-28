@@ -1,120 +1,105 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <csanchezdll@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 982FFC5B553
-	for <webhook@archiver.kernel.org>; Wed, 28 May 2025 17:45:30 +0000 (UTC)
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
- by mx.groups.io with SMTP id smtpd.web11.1901.1748454327851022623
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 81DC9C3ABB2
+	for <webhook@archiver.kernel.org>; Wed, 28 May 2025 18:15:40 +0000 (UTC)
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+ by mx.groups.io with SMTP id smtpd.web10.2492.1748456130913327719
  for <docs@lists.yoctoproject.org>;
- Wed, 28 May 2025 10:45:28 -0700
+ Wed, 28 May 2025 11:15:31 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=iYqkl9BJ;
- spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 77C9643192;
-	Wed, 28 May 2025 17:45:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1748454325;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=X+80+qOkrouwzHd5Lhl6Gicpq4a/yZHPBbSDB7pmxnU=;
-	b=iYqkl9BJgpxhy4oOrkCOsKK0jq6Mve74D3N5qPJh6e3APRGgNB0o25wHF8P7ZMZYeQqawT
-	2dcGTQhNCcaJT7SANAk5dF0SsM3RNpuTb6FdkZzDuEw+3pvnjx42La31WC5RRRSNFYxLlb
-	R6CGwvFxfGYqj+58A9dJCXarhKKckSS9iaul6fBxDwwVK/GQ4sEMvwvGbhHFrBhNS93qRa
-	1HAhnCr670zksJh2TcOagoCjUrMrARzglpdKcHHQRGrSPmxj3jPIxDqUNPnprC7pGEvYzM
-	U477euXXEuVSbO1nUKy2ZS5QBc2CbsvKnZM7iXdId2dJKUJe68QK5ogqJCENMQ==
-From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Wed, 28 May 2025 19:45:05 +0200
-Subject: [PATCH] doc: update releases.rst
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=mIkvWrcZ;
+ spf=pass (domain: gmail.com, ip: 209.85.221.50, mailfrom: csanchezdll@gmail.com)
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-3a36748920cso83813f8f.2
+        for <docs@lists.yoctoproject.org>; Wed, 28 May 2025 11:15:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1748456129; x=1749060929; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=zihHULEvYuUnJQNsM6G65I9OLYV+I6r8vqfHnBql/SQ=;
+        b=mIkvWrcZFjl4teqISw91UKp7jaMjQSQ9kewMH0BZa+WY1TfRj00es8AWvWiCqf1FBy
+         m+CmtgVkvfHj/nr0q7ni7i66GqAl8CNN9h/YNDYabdlGqc523MDmrTkWc6TOvYoPM2a8
+         EAgy69gdXWhjrCfG5M9zQ8tI/ireWxXt24Mzpepkq9aOt4b3v5mmsJu04kyQYvjTzRmP
+         8zi/Yrjwf25KNoysv8R0dMPdkuVYUMmN3W1V0jvrohTs/nwOCokZEbLbzEZJKZknKAxA
+         voAPRNLaqwlqNzs2dYHMyBgDI5Mv0S5a6+3Exl56+d93y8HNse8rTiLtFtVEIbaL+FQK
+         ZWvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748456129; x=1749060929;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=zihHULEvYuUnJQNsM6G65I9OLYV+I6r8vqfHnBql/SQ=;
+        b=hqmOU5YLIwHLu3gPWPKoxa6yX1L8ghNjFs9cceZrA2kKgJi8xhanjm+gBPWSkHbcf7
+         gQnX4YORtGYrtCS+s0GNh1XLXBDTBEQoZPhWYJ7dTTqIhJKWmVPfM1t4Z2zocQnpgJXB
+         3RUgNKq5BcEeygMBWbs9GBL4GeZL4Y19QxxwX/1+zUnX1lCJ1wLixwv4aLoTn02XTrOt
+         CWFLiaJ2F/QeoME0bCcgghJbWkfsRbLXHfA28yEiggworYzCYN/GVHnVymVtEkFtK9tm
+         UFEATO33IAlt6FJJEyIKTTIfQ83+vheaeuqliuJ9cgayCxHNyAgy5c3/luWIZFxauKZX
+         0p+g==
+X-Gm-Message-State: AOJu0YwNoqUCvOn/7nblF7c34wHsQadAJW2JrXyk5RmcAcDpgRZXf0Fk
+	B60LsI7nawwOXa1zTkCpb519DldvUh8omCrzyk8giemdo8WthSkeRuwiuyhY+g==
+X-Gm-Gg: ASbGncu8lT9trKOnkKWZ8dxrSmaV1Xnb2JwIQ8OFvxiwRt6FxDfOuHLgc1PIohG5YXd
+	J1UcSB+ZYg3GQyGMoatQw8Jp5wpNwNR8sgaBVZT8rM/C7PpwCXW6ANeE2SAAZxpkZnpsWspopwn
+	KDr117aCkep3iOZi3JvCTDQZgtdVpcBYm30A74k7wsupGb3WS2V409YirzIgAwHT0Ze1eFfP0KC
+	1IyX+70Dqs06ZcdsOxJHP8cslmtFxHsjx2R74SgrCnf7nhWCVBfff+ihQAX8Sc7t3L4TfnxbIlm
+	iY8c1KsrP2jsR0iGlMf2AlrGC/F/caIkzs23XDujFz7peNgWe/i1mB24MsmOj+FFnBzyFMfyqSe
+	7Sy75asmUip77SkDyWA8+JQMwI9+iOQ==
+X-Google-Smtp-Source: AGHT+IFSUrmRK9pt95bM3MH08cPqN1ArEVxb8i7ZblerAgs/5y8fbG6h8jeXYGd2vQ0OBAsIr0sTuA==
+X-Received: by 2002:a05:6000:2c11:b0:3a4:e706:5326 with SMTP id ffacd0b85a97d-3a4e70656efmr4324815f8f.3.1748456128768;
+        Wed, 28 May 2025 11:15:28 -0700 (PDT)
+Received: from localhost.localdomain (11.red-83-33-67.dynamicip.rima-tde.net. [83.33.67.11])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a4eac7eb27sm2114438f8f.40.2025.05.28.11.15.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 May 2025 11:15:28 -0700 (PDT)
+From: =?UTF-8?q?Carlos=20S=C3=A1nchez=20de=20La=20Lama?= <csanchezdll@gmail.com>
+To: docs@lists.yoctoproject.org
+Cc: =?UTF-8?q?Carlos=20S=C3=A1nchez=20de=20La=20Lama?= <csanchezdll@gmail.com>
+Subject: [PATCH] ref-manual: clarify KCONFIG_MODE default behaviour
+Date: Wed, 28 May 2025 20:15:24 +0200
+Message-ID: <20250528181524.2797025-1-csanchezdll@gmail.com>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250528-walnascar-update-v1-1-9c6750e87e65@bootlin.com>
-X-B4-Tracking: v=1; b=H4sIAKBLN2gC/x3MTQqAIBBA4avErBNKFKqrRItJpxoIi7E/CO+et
- PwW770QSZgidMULQhdH3kJGXRbgFgwzKfbZoCttK6sbdeMaMDoUde4eD1Kmdjj61mDTTpCzXWj
- i51/2Q0ofg96BKGIAAAA=
-X-Change-ID: 20250528-walnascar-update-41cabd94a89f
-To: bitbake-devel@lists.openembedded.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- docs@lists.yoctoproject.org, Antonin Godard <antonin.godard@bootlin.com>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1431;
- i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=6maFlQjOdUVwD08iXUdGNuJZu/MilDTbgfz/SWm/Saw=;
- b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBoN0u1usAQJAY/Nwpz0MYzDqJKgGPnUh7VyZn4a
- EUrZvHTlYmJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaDdLtQAKCRDRgEFAKaOo
- Nrk9D/0ayP8G1yzP7MyaA7heznY7psGPCJRtGKkOy4beNw9i2Kdsque1BmZ1SifjvQSbtPeVffO
- tLUh7/br7evmM3wr3tEEr9oAN7eR25zCaxHoCDTJf5FyQkFHLrjfpH8iLFD6Dx01Xl9F8o1R5Mu
- eUspXdm3zJnxieV31XhyFZ7hfFP/kcPdXmleVc0+eWbDfLjdmbvH5VX1F4bH7Mgsti9Sp54Yl5n
- h1aXiXYNN97KH/0aeoYtDXr89jv2iVJnmbzyn4em6wKiBJpIfbkyRYCuMW2gixQG9muMX/tDed3
- NIb8Elhds/uWvUC+OHUVtWNgOkpFRaYLVhFdeo4WdOUPXLbUHzXGt7YbRvf+Uw6owmf42QanWWL
- slZvfNMe8zlZtm8nxp6u5LOBdiQBVKgchmoeP3AstpxhixNUKRkSDXida9mJyM4vqp0o3ah82Qn
- BrugLQN9loY6HGCwwNQk87TMpWoV3DE76c8UXSSp/B0HaSWQM7xvmCYOL95OWy70qOa0WuJ7mJt
- OGiiZvBRGyw2h6KEdMNnByFgWaMppHM+TwQ7j/EDsrkA7EEayujJGnGVPSxvhGxGuFmbFawFaaC
- VLGGSoW1j9vjS5N3i/rworA2OhUOFjN5UrOv3MhDT7VULAHon/SYihY6jbdGs384uCzt7qDvK8u
- OnDs93cGHX4kzMw==
-X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
- fpr=8648725188DD401BB9A0D3FFD180414029A3A836
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddtgddvfeekleculddtuddrgeefvddrtddtmdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephfffufggtgfgkffvvefosehtjeertdertdejnecuhfhrohhmpeetnhhtohhnihhnucfiohgurghrugcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepudeijeeltdeiueetffevteelueffiedvffejgfethefgheelieetheeiueeikeeunecukfhppedvrgdtvdemkeegvdelmeekudejrgemgedttddumegttdgsvgemugehkegrmeegvdeltdemlegvrgejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddvmeekgedvleemkedujegrmeegtddtudemtgdtsggvmeguheekrgemgedvledtmeelvggrjedphhgvlhhopegluddvjedrtddruddrudgnpdhmrghilhhfrhhomheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeegpdhrtghpthhtohepsghithgsrghkvgdquggvvhgvlheslhhishhtshdrohhpvghnvghmsggvugguvggurdhorhhgpdhrtghpthhtohepthhhohhmrghsrdhpvghtrgiiiihonhhisegsohhothhlihhnrdgtohhmpdhrtghpt
- hhtohepughotghssehlihhsthhsrdihohgtthhophhrohhjvggtthdrohhrghdprhgtphhtthhopegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomh
-X-GND-Sasl: antonin.godard@bootlin.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 28 May 2025 17:45:30 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6945
+ <docs@lists.yoctoproject.org>; Wed, 28 May 2025 18:15:40 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6946
 
-Add Walnascar as a supported release manual, and move Styhead to the
-outdated release manuals.
+KCONFIG_MODE defaults to 'allnoconfig' when not set, regardless of whether
+KBUILD_DEFCONFIG points to an in-tree or a meta-layer defconfig.
 
-Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
----
- doc/releases.rst | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
-
-diff --git a/doc/releases.rst b/doc/releases.rst
-index 3e8014074..676db66ec 100644
---- a/doc/releases.rst
-+++ b/doc/releases.rst
-@@ -4,11 +4,11 @@
- BitBake Supported Release Manuals
- =================================
- 
--****************************
--Release Series 5.1 (styhead)
--****************************
-+******************************
-+Release Series 5.2 (walnascar)
-+******************************
- 
--- :yocto_docs:`BitBake 2.10 User Manual </bitbake/2.10/>`
-+- :yocto_docs:`BitBake 2.12 User Manual </bitbake/2.12/>`
- 
- *******************************
- Release Series 5.0 (scarthgap)
-@@ -26,6 +26,12 @@ Release Series 4.0 (kirkstone)
- BitBake Outdated Release Manuals
- ================================
- 
-+****************************
-+Release Series 5.1 (styhead)
-+****************************
-+
-+- :yocto_docs:`BitBake 2.10 User Manual </bitbake/2.10/>`
-+
- *******************************
- Release Series 4.3 (nanbield)
- *******************************
+Signed-off-by: Carlos Sánchez de La Lama <csanchezdll@gmail.com>
 
 ---
-base-commit: 6e1434d93d489aa4bab07777a7a9dc58ba0ca5a7
-change-id: 20250528-walnascar-update-41cabd94a89f
 
-Best regards,
--- 
-Antonin Godard <antonin.godard@bootlin.com>
+Previous discussion:
+https://lore.kernel.org/yocto/CA+KcR8ARBUj8PTcvA=rx-yob=WHYcS2gUnGX2aROOjy6bZGqWw@mail.gmail.com/
 
+ documentation/ref-manual/variables.rst | 11 ++---------
+ 1 file changed, 2 insertions(+), 9 deletions(-)
+
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index c697bdbbb..da274f3fe 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -5036,15 +5036,8 @@ system and gives an overview of their function and contents.
+       options not explicitly specified will be disabled in the kernel
+       config.
+ 
+-      In case :term:`KCONFIG_MODE` is not set the behaviour will depend on where
+-      the ``defconfig`` file is coming from. An "in-tree" ``defconfig`` file
+-      will be handled in ``alldefconfig`` mode, a ``defconfig`` file placed
+-      in ``${WORKDIR}`` through a meta-layer will be handled in
+-      ``allnoconfig`` mode.
+-
+-      An "in-tree" ``defconfig`` file can be selected via the
+-      :term:`KBUILD_DEFCONFIG` variable. :term:`KCONFIG_MODE` does not need to
+-      be explicitly set.
++      In case :term:`KCONFIG_MODE` is not set the ``defconfig`` file
++      will be handled in ``allnoconfig`` mode.
+ 
+       A ``defconfig`` file compatible with ``allnoconfig`` mode can be
+       generated by copying the ``.config`` file from a working Linux kernel
 
