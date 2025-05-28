@@ -1,113 +1,88 @@
-Return-Path: <rpjday@crashcourse.ca>
+Return-Path: <richard.purdie@linuxfoundation.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 030CAC54F30
-	for <webhook@archiver.kernel.org>; Tue, 27 May 2025 10:22:19 +0000 (UTC)
-Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.web11.48783.1748341333368475621
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F06A6C5AD49
+	for <webhook@archiver.kernel.org>; Wed, 28 May 2025 13:22:37 +0000 (UTC)
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+ by mx.groups.io with SMTP id smtpd.web10.15523.1748438549754367576
  for <docs@lists.yoctoproject.org>;
- Tue, 27 May 2025 03:22:13 -0700
+ Wed, 28 May 2025 06:22:30 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=m7Y9lCqX;
- spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:References:
-	Message-ID:In-Reply-To:Subject:cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=dzUmB+o+vKyW4tyg8yaoBHSbODUvK1LrLT8+77xyY+o=; b=m7Y9lCqXGyuIY78MAy5YSlIv4G
-	srCor1ryJ9GiJP9dN1B/0Z+bFKkbTMaTQgcp6Kf1qCrjpF3WRlFFl9QxGnVxVGwWHKcE0yybz0lMc
-	fY7V+nPMLukNx+8r4nGCbjpnhilns0MsOBNT++9kejrK4nyI//XbYBcKp1O786+es9nfXfXLz8SiT
-	Xt6jsdTN67AC1d3qbOZzjVqbGBf+LdeSBNJ2DJabWdS7MrBV8NImee7EA/dRrACGx7Ag8jBir5wxM
-	vyLDaNyTq+vsF5CrpL8DJAxIKorD71Yh5YDhZYgytKVh14491CB8osegESIrzFoWj14GtHzb2urx7
-	LrMiN23Q==;
-Received: from pool-174-114-102-5.cpe.net.cable.rogers.com ([174.114.102.5]:37208 helo=asus)
-	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.98.1)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1uJrRh-0000000D70F-2Z2D;
-	Tue, 27 May 2025 06:22:12 -0400
-Date: Tue, 27 May 2025 06:22:06 -0400 (EDT)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: Alexander Kanavin <alex.kanavin@gmail.com>
-cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: Re: [docs][PATCH] Add an introductory section on how to use site.conf
- file
-In-Reply-To: <CANNYZj8yR9PxuNhixiUE1rDgLP62wDUnj56+F8s_31BQGsCwRA@mail.gmail.com>
-Message-ID: <b87b7b66-49d6-08b5-b11a-686648af8868@crashcourse.ca>
-References: <27c9b177-1e6f-4be3-9ecc-312d0f133fb0@crashcourse.ca> <CANNYZj8yR9PxuNhixiUE1rDgLP62wDUnj56+F8s_31BQGsCwRA@mail.gmail.com>
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=KxzQVILy;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.128.44, mailfrom: richard.purdie@linuxfoundation.org)
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-43cfba466b2so56790765e9.3
+        for <docs@lists.yoctoproject.org>; Wed, 28 May 2025 06:22:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1748438548; x=1749043348; darn=lists.yoctoproject.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=dW7buL2g4ZNiE1k7B9EKcvYyjJgx8/D5hI1vSixDwkw=;
+        b=KxzQVILyLu1TGN2KmSkaYnEUR5EbR3KQq86eDtT+kV902kX9mUUqUiqqgFPSI4zJGg
+         rLfOBUy1l7go0TAarl0ZRsfeu/6S19yS3v0GONNzOBKObcGbKJ7bF8k3V1tgBxDj8djL
+         txi4qlfAdh7rJpIApk/FBPPCrJ+NIX1Naj900=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748438548; x=1749043348;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=dW7buL2g4ZNiE1k7B9EKcvYyjJgx8/D5hI1vSixDwkw=;
+        b=nuOEbVEhNdcD12IaEmiOHTrGfIT05Mb4Q3DomuptKtfLyHAXgc2bEdp3iUMhuOuRyN
+         2q4lP1Ndbgyay0CJ0+T0pE7hPL3YbxQt0U2JHHYJ3gso/NQIgQfDa8qwzrDdZbOYivyh
+         XuwpLgAbH/40MgTYNP0vfek6odTDtIveemOqx4HhYaktn0q+qAqu8ePevwJKVj9wf0EI
+         5DADO3PLnTMQYyKMNFjBJaS7dmk1xws6Qq9rExMP0mlpiMtM5p0T02pKytD1U7PepSXs
+         ofNIrQLtVzv4njowe4sRzYVjL9wIVpd4K1h7/r7JCfNy7q9wMMghdaxEc3gYDmhR2rdI
+         IYmg==
+X-Gm-Message-State: AOJu0YxtA3f3Ubh4YQL33VwB2PEOwirDw6nF56UKrzBTuFGGQB47Ujro
+	2BwqlX5dHvPI2iOzkyvPccLr6lEKZZXnZd5IjBQr0ipWjR1YH7qQo8gmfAYiTZ+epTg=
+X-Gm-Gg: ASbGncuXLm/DdHjPr2Mrv1WQJxj+trF8QCQ4UAxFP9MjyUr4tH1vJQFVAA0//41RM2G
+	ejRRk+LgzzmX4OJjooZp8RKCbNyvRqZNzw4/HUrbvDoyC7FYJdcpbeYUaFwUD6xvVoHM26uyPE1
+	4OZJyk4maTyKGTbHNUJu3yTWbPJ/hYb3uVexYJd/zGby/bFmptO8v29nqPbaMjk7rXNX8zjcsSf
+	qVGop9+M0qNx3V2WwUMlrg0OCagF633il8c7YQubVkqqQVRqpZsHDnpWrDWTMw1v4+0leY12WPj
+	oNJzdtE7EIz4GQKIf1G2loAQEy51Hb/DpPqZ9jpGkdpztcQNP157S01ENqy1Y4dBHn1iAI8DIfj
+	Eq3zIAb1WYx4qQzuD9FMLClQmns3riCfI+aAPhrlm
+X-Google-Smtp-Source: AGHT+IFVlpLbuQOO6awmDbjnEcMW5kmtWdG5AV1jE5ibsxm+vQkWcEay1RYLeYPJIQFFMLMmYdp+Jw==
+X-Received: by 2002:a05:600c:4fc5:b0:43c:fffc:7855 with SMTP id 5b1f17b1804b1-44c9465bfe3mr187880025e9.15.1748438548147;
+        Wed, 28 May 2025 06:22:28 -0700 (PDT)
+Received: from ?IPv6:2001:8b0:aba:5f3c:ebb4:3a70:7323:f416? ([2001:8b0:aba:5f3c:ebb4:3a70:7323:f416])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-450064ae786sm21527505e9.23.2025.05.28.06.22.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 May 2025 06:22:27 -0700 (PDT)
+Message-ID: <3cdc7c12efbedfda3a705d34d87ce78462010268.camel@linuxfoundation.org>
+Subject: Re: [docs] [PATCH v3 3/3] tests/fetch: Add test case to check
+ shallow cloning using `PREMIRRORS`
+From: Richard Purdie <richard.purdie@linuxfoundation.org>
+To: stefan-koch@siemens.com, bitbake-devel@lists.openembedded.org
+Cc: docs@lists.yoctoproject.org, liezhi.yang@windriver.com, 
+	niqingliang2003@gmail.com, alex.kanavin@gmail.com,
+ quentin.schulz@cherry.de, 	jan.kiszka@siemens.com
+Date: Wed, 28 May 2025 14:22:26 +0100
+In-Reply-To: <20250527095903.2300556-3-stefan-koch@siemens.com>
+References: <20250527095903.2300556-1-stefan-koch@siemens.com>
+	 <20250527095903.2300556-3-stefan-koch@siemens.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.0-1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 27 May 2025 10:22:19 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6943
+ <docs@lists.yoctoproject.org>; Wed, 28 May 2025 13:22:37 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6944
 
-On Tue, 27 May 2025, Alexander Kanavin wrote:
+On Tue, 2025-05-27 at 11:59 +0200, Koch, Stefan via lists.yoctoproject.org =
+wrote:
+> Signed-off-by: Stefan Koch <stefan-koch@siemens.com>
+> ---
+> =C2=A0lib/bb/tests/fetch.py | 27 +++++++++++++++++++++++++++
+> =C2=A01 file changed, 27 insertions(+)
 
-> On Mon, 26 May 2025 at 12:49, Robert P. J. Day via
-> lists.yoctoproject.org <rpjday=crashcourse.ca@lists.yoctoproject.org>
-> wrote:
-> > +Reducing duplication by using a global "site.conf" file
-> > +=======================================================
-> > +
-> > +As you start building multiple images, you will probably notice that you are frequently
-> > +adding a lot of common content to the new ``local.conf`` in each build directory;
-> > +this can get tedious and repetitive, but there is a way to centralize all of that
-> > +common content and pull it into each of your new builds.
-> > +
-> > +If your build's ``conf/`` directory contains a file named ``site.conf``, that file
-> > +will be included in the build's processing before the ``local.conf`` file; this
-> > +means you can create a single ``site.conf`` file somewhere outside of your build
-> > +directories and, after creating a new build directory, you can either copy or
-> > +symlink that file into the ``conf/`` directory, where its contents will be processed
-> > +before that build's ``local.conf`` (so that you can always set build-specific configuration
-> > +in ``local.conf`` which will override the more general settings).
-> > +
-> > +As a simple example, here's a ``site.conf`` file that will configure, for each
-> > +build that includes it, settings for a local mirror, that all your builds will
-> > +be based on ``systemd``, and that you want to build ``.deb`` packages for each build::
-> > +
-> > +  SCONF_VERSION = "1"
-> > +  SOURCE_MIRROR_URL ?= "file:///(where downloaded tarballs are)"
-> > +  INHERIT += "own-mirrors"
-> > +  BB_GENERATE_MIRROR_TARBALLS = "1"
-> > +
-> > +  INIT_MANAGER = "systemd"
-> > +
-> > +  PACKAGE_CLASSES = "package_deb"
-> > +
-> > +Again, if a ``site.conf`` file exists, it will be processed before that build's
-> > +``local.conf`` file, so that any build is free to override ``site.conf`` settings
-> > +with any build-specific settings in ``local.conf``.
->
-> This is too verbose, repeats itself, and is not really correct. I have
-> to say I'm firmly against this as it's currently written.
->
-> site.conf is intended for settings that are specific to the build host
-> machine (resource constraints, locations for downloads and sstate) or
-> the network its on (proxies, mirrors).
->
-> Anything that is about yocto build itself should go somewhere else,
-> e.g. openembedded template, or a config fragment, or distro settings.
-> If you want systemd and deb packaging for all of your builds, then it
-> definitely a mydistro.conf item.
+I've merged this series, I just wanted to say thanks for getting to the
+bottom of it, getting to a good fix and ensuring the issue doesn't come
+back (hopefully!).
 
-  OK, fair enough, maybe the quick build doc doesn't need something
-this specific. So let's drop it.
+Cheers,
 
-rday
+Richard
 
