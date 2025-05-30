@@ -1,82 +1,92 @@
-Return-Path: <richard.purdie@linuxfoundation.org>
+Return-Path: <steve@sakoman.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8B193C54FB3
-	for <webhook@archiver.kernel.org>; Thu, 29 May 2025 16:34:47 +0000 (UTC)
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
- by mx.groups.io with SMTP id smtpd.web11.25638.1748536483847667258
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C6769C5B543
+	for <webhook@archiver.kernel.org>; Fri, 30 May 2025 17:46:29 +0000 (UTC)
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+ by mx.groups.io with SMTP id smtpd.web10.1402.1748627186630086865
  for <docs@lists.yoctoproject.org>;
- Thu, 29 May 2025 09:34:44 -0700
+ Fri, 30 May 2025 10:46:26 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=K+mExYuy;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.128.45, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-450cd6b511cso6989405e9.2
-        for <docs@lists.yoctoproject.org>; Thu, 29 May 2025 09:34:43 -0700 (PDT)
+ dkim=pass header.i=@sakoman-com.20230601.gappssmtp.com header.s=20230601 header.b=ejq3G5sc;
+ spf=softfail (domain: sakoman.com, ip: 209.85.214.181, mailfrom: steve@sakoman.com)
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-234d2d914bcso16972545ad.0
+        for <docs@lists.yoctoproject.org>; Fri, 30 May 2025 10:46:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1748536482; x=1749141282; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=5r+QglQ3dteNGxZTmlhzj6nbPZTuKkMkZiYPygMUZcU=;
-        b=K+mExYuyeiHr+Cm2GGyTDTxPJYxSm4terx83ju38QayBA5uAtsH3wViFhuNyGR++QB
-         fH+GPPKNC19Cn/PYX6x0GZF94b2dTj0DVSIi41t01DHWsJFrDPAkJaUgrBtvl/byZOkH
-         pdFNrMetJV1wCTlYUzzhv/rgHun3m/B1jPYBk=
+        d=sakoman-com.20230601.gappssmtp.com; s=20230601; t=1748627186; x=1749231986; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=sgGYCNySipd4ppI63ftVduUi0ygavT87vCUGC6Bt89o=;
+        b=ejq3G5scJY2clarPjsxu4XDX+vwA468z69+DUjxv0m/BZ2yexL71o+rBLHx+pFT7Le
+         yTr0cOVRaNHvKSHqfrVmt07f3ZDPYn6sEUgJdJoD+FhEIHsqQ0M+rtkTZsJ0MnggrzQI
+         lW1rrZwtQl+aaujzz8G05sCgcyt84PenboK1BqDH0b6ZC2roU1IgO9Auw19MKFTvjfPZ
+         KTK9o4Jf+cF1XOoqK3sPoH4DNu571JBVC0knQec8cx2Qzo85FnX39OmeZrxxWhAjYpUW
+         TRcmJ9S0KKgS2RMGXWE6EGsIKniiSQadPXET3Tn4s1xqB7cQCyDHwb5ti4kiBWi+XFJg
+         smJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748536482; x=1749141282;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5r+QglQ3dteNGxZTmlhzj6nbPZTuKkMkZiYPygMUZcU=;
-        b=k8DBbY/YPEh7tumU/7dhB9d+fax4T5Yl/G1txAOlhxT74xw7xdejPnLqCjlO+maxEb
-         ZNPQu7b0/xJIVkFqdnDpVDaP7cwj8Z8PI65IlW4r4B/DEzzU+my7rmNLXEeXCu3BKpvk
-         sHP/6lJALMsyzsAFR/OeVqATYoTRRnzOV5Gv1xprY9p2SqKk10WW37kECggFzJcwDK2h
-         GiGIP9KcC35EIU7Nf0UBJ90CICj4aHQROomZEI4/KOvzxdSbxvbMpOvWlglZ2hGJ6nsO
-         NJN4hnXmiEU78jlG2QJsAbwH0J/tPK85EmYo2/tN7nflyCoPY8U5+iEt/iVZww5D3x2Y
-         dzDg==
-X-Gm-Message-State: AOJu0YzGRqWi0DTQg/V9v8nQIFQS9nuBYYfJT8TqD9zwgfRarSoPc5mf
-	0yuwkRsfjJN/Mf2KRAyabDvGhJ5fGVg+QREKqgzJubQ/tWGIJyKcZy9OitYytkuix/ded3kpVvY
-	RdgHPZN0=
-X-Gm-Gg: ASbGnctpOXSf7Wmrm8GFwcnncyjLA0JNj26opDJxeuPebW88C7YTR9awzUhOG+v0OR4
-	JYOKWY3SW+IynqLUAJKhu7gr9MgFua232kHDs7biQi/iK8lUktuqh8Y84e8kbKhWdCJabWtnf6M
-	ZcDjZHwIvDeOhxDHaX2pdZei5DGJ6LNI1N5Is7/i8HJ3IU7L6j9jnbXhZ/lY2VoCVVpWXx2luD9
-	dL9iHtkbRXJ4lF9lNgCHLdoCGLYExUn6twRnNKvvgKaRU0lFFpTqm/FLo1nvDYSJIO14QCz3Hfu
-	J4eApgZZfVusmhIhjK2BF4PXqVK7vurChe6qorgqfvEIP1Q8+SlfevN3MKkzkPv82mMZxCeDY4/
-	r4w==
-X-Google-Smtp-Source: AGHT+IGZSES5awAp51nPToxoMxeTWClyjWETCb6e0DjlYAE9PNSALtBqVdjGoygv36v8ld0zxa15sA==
-X-Received: by 2002:a05:600c:c16b:b0:450:d00d:cc with SMTP id 5b1f17b1804b1-450d64bdff5mr4811305e9.2.1748536481811;
-        Thu, 29 May 2025 09:34:41 -0700 (PDT)
-Received: from max.int.rpsys.net ([2001:8b0:aba:5f3c:1a5e:81:40ad:9da7])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a4efe73f67sm2423129f8f.47.2025.05.29.09.34.40
+        d=1e100.net; s=20230601; t=1748627186; x=1749231986;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=sgGYCNySipd4ppI63ftVduUi0ygavT87vCUGC6Bt89o=;
+        b=fYRLFuxgytJDszraYCkkdzyPkC835lSlzds25IGtrkEn6shLGDuF982jN9F+WkhrC+
+         8UzkR+0Ty072Qyzk6j5f1mQj32myrVsm/zKSxhTG7n6NSuHDtuNHKsHYKWYgX8Skqz5g
+         PxHLGxlS/1cf+j8huqM/mm/G/2ToZap66PWUTulWW5DbrKRelWzpx5t2IsTrLPZq2VwA
+         Ro6mVDUVFdPIrgqpOQFk3XGgPENYxw62thL8uvghB2v16VfA4y1+6CCou8/hi5zD/6qS
+         uJHc9jQQtT6kccQJtbUXH8Gw3aC1It/Pk/spm9/y5ayJccp+azUgM4QzQ9sKRiNWI732
+         Da/A==
+X-Gm-Message-State: AOJu0YxhSxC3Y6qU6YN/8KEjj6Q3GmGGODhBF2qExoVXTPT/FqpQHAlT
+	gx+wRWn9zCi70boNKRp7yt4hWlCnqFwAA6ZMyeBECoJzU9pgVjjkM3eqrfHqs0v6JFzlj+qvzHm
+	KNOlU
+X-Gm-Gg: ASbGncstMAjlkTzoPY7jmO4EwS3DygAOu7sycQ/2eiw4LkiYqOsqf51PNW5cQR6PovQ
+	H1CyhjiCKyDxIb1lphldldu8/UhV53yzwriCDTJp23BX8IST5Ipyie0MMd9FwLT9wgQht8hn1Ib
+	HAZgoVvEkftfb43cfM3uwYM6RQjxAPDRCpVT6vzoDnvMpIskPhXlR4O+UCN+ghtqF+rqQDqV6GY
+	zcknK0/AZAS/TkyjIdPAu+IlPWDg2Z+AABCdpJsd+vednAbIBJC3yntvdNpGuQg93lQ7o174993
+	VsY6sbxqot8M4cafp6rZR7gUBB7xJ/aGkfPtjro2zM4=
+X-Google-Smtp-Source: AGHT+IFXujkoH1rmzbgM44ozxRYkv7MjjQo82N/bdbk2AaL4NzasANevgy4+Ww8j3PkqQkHtFsVYzQ==
+X-Received: by 2002:a17:902:ea0d:b0:234:914b:3841 with SMTP id d9443c01a7336-23529a17ffamr63381845ad.39.1748627185817;
+        Fri, 30 May 2025 10:46:25 -0700 (PDT)
+Received: from hexa.. ([2602:feb4:3b:2100:c9d8:e2d0:bfbc:3a26])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23506bcd56fsm31205955ad.48.2025.05.30.10.46.25
         for <docs@lists.yoctoproject.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 May 2025 09:34:41 -0700 (PDT)
-From: Richard Purdie <richard.purdie@linuxfoundation.org>
+        Fri, 30 May 2025 10:46:25 -0700 (PDT)
+From: Steve Sakoman <steve@sakoman.com>
 To: docs@lists.yoctoproject.org
-Subject: [PATCH] brief-yoctoprojectqs/ref-manual: Switch to new CDN
-Date: Thu, 29 May 2025 17:34:40 +0100
-Message-ID: <20250529163440.3116537-1-richard.purdie@linuxfoundation.org>
-X-Mailer: git-send-email 2.48.1
+Subject: [yocto-docs][walnascar] brief-yoctoprojectqs/ref-manual: Switch to new CDN
+Date: Fri, 30 May 2025 10:46:21 -0700
+Message-ID: <152466764d89ba25a1e259d917a16c69438c6f9a.1748627115.git.steve@sakoman.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <cover.1748627115.git.steve@sakoman.com>
+References: <cover.1748627115.git.steve@sakoman.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 29 May 2025 16:34:47 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6948
+ <docs@lists.yoctoproject.org>; Fri, 30 May 2025 17:46:29 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6949
+
+From: Richard Purdie <richard.purdie@linuxfoundation.org>
 
 The project is switching the way handle our CDN provision of sstate objects,
 update the URL accordingly.
 
 Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
+(cherry picked from commit 406e8a8e30404c0538f5aa46f211540bae2b206b)
+Signed-off-by: Steve Sakoman <steve@sakoman.com>
 ---
  documentation/brief-yoctoprojectqs/index.rst | 2 +-
  documentation/ref-manual/variables.rst       | 2 +-
  2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/documentation/brief-yoctoprojectqs/index.rst b/documentation/brief-yoctoprojectqs/index.rst
-index 48f81b16a..fed511c2b 100644
+index 2f6e4cf02..6de3b84c5 100644
 --- a/documentation/brief-yoctoprojectqs/index.rst
 +++ b/documentation/brief-yoctoprojectqs/index.rst
-@@ -253,7 +253,7 @@ an entire Linux distribution, including the toolchain, from source.
+@@ -252,7 +252,7 @@ an entire Linux distribution, including the toolchain, from source.
        file in the :term:`Build Directory`::
  
           BB_HASHSERVE_UPSTREAM = "wss://hashserv.yoctoproject.org/ws"
@@ -86,10 +96,10 @@ index 48f81b16a..fed511c2b 100644
           BB_SIGNATURE_HANDLER = "OEEquivHash"
  
 diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index c697bdbbb..9768d8f5b 100644
+index 643a3e7ae..b4a70519c 100644
 --- a/documentation/ref-manual/variables.rst
 +++ b/documentation/ref-manual/variables.rst
-@@ -9117,7 +9117,7 @@ system and gives an overview of their function and contents.
+@@ -9025,7 +9025,7 @@ system and gives an overview of their function and contents.
        The Yocto Project actually shares the cache data objects built by its
        autobuilder::
  
@@ -98,4 +108,7 @@ index c697bdbbb..9768d8f5b 100644
  
        As such binary artifacts are built for the generic QEMU machines
        supported by the various Poky releases, they are less likely to be
+-- 
+2.43.0
+
 
