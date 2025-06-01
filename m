@@ -2,14 +2,14 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9A6A1C5B549
-	for <webhook@archiver.kernel.org>; Sun,  1 Jun 2025 11:22:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EC5C8C54FB3
+	for <webhook@archiver.kernel.org>; Sun,  1 Jun 2025 15:47:48 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.web11.25198.1748776918556783253
+ by mx.groups.io with SMTP id smtpd.web11.29876.1748792865920273046
  for <docs@lists.yoctoproject.org>;
- Sun, 01 Jun 2025 04:21:59 -0700
+ Sun, 01 Jun 2025 08:47:46 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=ZKKBzxtJ;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=Rv1Re5Rh;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
@@ -17,24 +17,25 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=TCknXP06ZAOkONWcyEeW+5XV8kEFE5lG2x7MUbgDZyM=; b=ZKKBzxtJRtU8HzKsbqfmCnvArl
-	uJC4XjhmKaPaDKDfFdRjTn4uCn9BYakDAQHDASumI+FK3qzTSbs1ui01NLLiHMgtthLVUyapGCS5o
-	UYEOIZIKhbsCgph5zUC5aH+PxawbIYETN3aS+ylJgK6c2W0hnYLuFC/fXdsdxcSSjAt8vPRgxplHK
-	4e3MATNCGBCW+MjZjuzLxhqEKA8WPlWXKqVJkdkZqcDWnYwsWuS/MfcNsqYKj1YaXY9v1iEyQmLI4
-	t0zYmXPkf+mmhSLABns2EizIGz0CXSsDCRf5/goRs4+pSMdhbbyassysL8Qf7wltcWuG4qTnI+B4O
-	Kliyi5Pw==;
-Received: from pool-174-114-102-5.cpe.net.cable.rogers.com ([174.114.102.5]:36438 helo=asus)
+	bh=oT0q8ccDhbOgsCv4sCJ7rzM/gaeLDK5QZ3Q/1Oiwg/g=; b=Rv1Re5RhLZherAeFja5TkikDt7
+	tI5Usk7q8zJcjz+YLy4Y+Z8AXeIvo3XonTMOStgCWo/unPeiH5tM4sCdAMJ0wfrvzABeyAZVQMrFw
+	FdfcCswhX70/NIbn7FRH5+iG0rKwkMAldMhcDQ+2nYao/ZlgMWAgVE4RvNEtN2XXzpocdXBz/Kut8
+	GQmbOMiFVHgex3mWSYiqXYMb6EFx33p1kwWHMbgugKJ28XaoNEhNzZCCOVKX8aP3xGq661q0H6V+p
+	C4RMRJAo+yiiFx1aZACm1SHSVA3o8H6lFEuHqAlETNHO1kqedh4wKESF1+dnr+R0pT5lgexYIuZzM
+	n5+oq+hg==;
+Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:35196 helo=asus)
 	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1uLglH-0000000DKnK-2Kbw
+	id 1uLkuO-0000000DyyF-2iJ8
 	for docs@lists.yoctoproject.org;
-	Sun, 01 Jun 2025 07:21:56 -0400
-Date: Sun, 1 Jun 2025 07:21:47 -0400 (EDT)
+	Sun, 01 Jun 2025 11:47:41 -0400
+Date: Sun, 1 Jun 2025 11:47:32 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: Explanation of bitbake variable flags seems confusing
-Message-ID: <4bcc9347-d780-1deb-f034-52bb80d4204f@crashcourse.ca>
+Subject: Should bitbake manual mention use of unversioned recipes with bbappend
+ files?
+Message-ID: <e44eda6b-722f-4d56-fcbb-9e08e56669b8@crashcourse.ca>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -50,44 +51,33 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Sun, 01 Jun 2025 11:22:02 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6953
+ <docs@lists.yoctoproject.org>; Sun, 01 Jun 2025 15:47:48 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6954
 
 
-  This section in the BitBake manual:
+(Is this list for BitBake documentation questions as well?)
 
-https://docs.yoctoproject.org/bitbake/dev/bitbake-user-manual/bitbake-user-manual-metadata.html#variable-flags
+This section in the BB manual:
 
-introduces variable flags, and as examples shows usage:
+https://docs.yoctoproject.org/bitbake/dev/bitbake-user-manual/bitbake-user-manual-intro.html#append-files
 
-  variable = d.getVarFlags("variable")
-  self.d.setVarFlags("FOO", {"func": True})
+describes the proper use of wildcards with bbappend files, but it says
+nothing about the occasional BB recipe that is unversioned. One
+example in the poky layer is the linux-yocto-dev recipe and its
+bbappend file:
 
-then refers the reader for more explanation to:
+$ find . -name linux-yocto-dev*
+./meta/recipes-kernel/linux/linux-yocto-dev.bb
+./meta-yocto-bsp/recipes-kernel/linux/linux-yocto-dev.bbappend
+$
 
-https://docs.yoctoproject.org/bitbake/dev/bitbake-user-manual/bitbake-user-manual-metadata.html#variable-flag-syntax
+Is it accurate to say that, in cases like this, both files must be
+unversioned to be considered associated with each other? That is, the
+bbappend file "linux-yocto-dev.bbappend" will only ever be used for
+the unversioned recipe file "linux-yocto-dev.bb" and for no other?
 
-But that latter section of the manual doesn't expand on what was at
-the first link, it uses the subscripting form for setting flags, so a
-beginner might get confused about the sudden change in syntax.
-
-Instead, the additional detail that would follow from that first
-section is found here further down that page:
-
-https://docs.yoctoproject.org/bitbake/dev/bitbake-user-manual/bitbake-user-manual-metadata.html#functions-for-accessing-datastore-variables
-
-but that table is still a bit confusing, as it mixes together both
-variable access and flag access; I would think that it would be
-clearer if that table were broken in two, part 1 being variable access
-and part 2 being flag access explained separately.
-
-[Note: in that table, the description for "d.getVarFlag()" is
-incorrect, it was clearly just copied from the earlier description of
-d.getVar()]
-
-In any event, that explanation does seem to be potentially confusing.
-
-Thoughts?
+I think it's worth adding a final short paragraph to that section to
+mention this (as long as my understanding is correct).
 
 rday
 
