@@ -2,212 +2,191 @@ Return-Path: <quentin.schulz@cherry.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 25EB8C5B549
-	for <webhook@archiver.kernel.org>; Mon,  2 Jun 2025 09:22:35 +0000 (UTC)
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (EUR05-VI1-obe.outbound.protection.outlook.com [40.107.21.88])
- by mx.groups.io with SMTP id smtpd.web10.45533.1748856151932363950
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EC6AEC54FB3
+	for <webhook@archiver.kernel.org>; Mon,  2 Jun 2025 09:27:54 +0000 (UTC)
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (DB3PR0202CU003.outbound.protection.outlook.com [52.101.84.1])
+ by mx.groups.io with SMTP id smtpd.web10.45604.1748856471910415419
  for <docs@lists.yoctoproject.org>;
- Mon, 02 Jun 2025 02:22:32 -0700
+ Mon, 02 Jun 2025 02:27:52 -0700
 Authentication-Results: mx.groups.io;
- dkim=fail reason="dkim: body hash did not verify" header.i=@cherry.de header.s=selector1 header.b=mUGtq4CM;
- spf=pass (domain: cherry.de, ip: 40.107.21.88, mailfrom: quentin.schulz@cherry.de)
+ dkim=pass header.i=@cherry.de header.s=selector1 header.b=UyIzHl92;
+ spf=pass (domain: cherry.de, ip: 52.101.84.1, mailfrom: quentin.schulz@cherry.de)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YNs8zgVJq7MPAjx2TAnKLRoeb7uEBFR58B5pk8/OOFV8LgYzgUwXKg2BEXyNgbeHzoDDAMDbh6Iy0/zsAUCJjPE7NoA7zq7KzpZFkO7oa//hBOX7+pv/ybXMbWuUhGfW5aGg9rLz31wm6vkiWkDbw9CPkAIrZwJ1Al1z/omO39jb/2VhyX7SVhgSY4RyubI4OLQV+OFFQ2eJ4Q20RcKhjiBySQgip/yYcFaiLXf971l6QOfkArBv34Bgzhdu/OIJlVmkD2+oZtlrwrI4fFF/Uxh5oHiqFbh2FdUAnnHFW0Tph6YYmCnm90ENxlskErkUfPwZLYbFHj3Vx6DvaCe06A==
+ b=lmAgiM7bDrICPcxpREOL+7LrXLaG+r6/pNmzh56RtkPqbvR344S2E4n89v3S7Lm0WSDXIybqiS/znNTKz5ce8s18wOW9mwHPSQiT/yPvAhMHC5uECNHOzRzEwupFfxzn7Hen9mlk61JPtiXdwXZdGn6Ldk5tDsjD+jJwQob0sQ8FcKBJKKl6goZSNaNQOBOxNl+CM/ubvwCKHJzaH0hf/Ilc5YHdiwKjQz4HMtNphnakdmezwH2NMDnga9S0iCLHkY01zyHUC6qhUfXKxfdC+Di/WcLFSFIMNwzKyyHulD3Wj2sRf8HBSSe2hOPLwjCnmQ9FNri2R60I3+ZhAA9SOg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CUXtelFxo8K40agJJlcB9gkuyFXG3Zy93Vc36gihEWY=;
- b=wp0pgzglyKyoyVBF3l/PT4BMYU+onM+vhlnmQPKXfWV00myc1GgDJ8GBYfjZMaRxqpy6d7VoMM9+OkgVPmVEio743/eLdIbyuigVySDPPE2as6gOwTJrP5THrbARbEbmL6GkEegS9L6tfquVtWQEXBJDb1agshGA9zgJy0IaSVn4f9Id0I7Tyc0wTYLmKATUmWWCioNWY9MgFrxMOl6MuKuskZhPKzJUcaniLygMLFvCpmc3fuWEl+QtlNjCd5k4GADYkHWEOslSxu90vwTP0sAI4ygJtzNm+oB1pq6m0zDKMWJi4M1TwXNN3lup6R9dq4h2Zg6jQR2Dn9jIARpCaw==
+ bh=SIK+gPi5mc6ZCz6iFGMsljIBYn6Z/EQvK/uEtNxUzvA=;
+ b=BxnOET0siv17YDSEunll2oi5vitmyIqv40L2uZChqjIvp2sNn3vXukAS/8hyajetC+4OT1AFNUr1Z4kfhAWgZJXi7+PzkXoEcUF/tSBTM7bKC9zhC30YA6rEl8AUSeUbWncmX3wthC/QhR5tYVp846GRzAh4+otOnmvrcJzxLcEJu06r6PvYNiQN7Nbq5h2/2WHnbTYBzwFz7DgvbAGOijVjrc8tXhXGS1zpfi1NlHfBbYQkFCWza4F5d1Gf0qmqtizWNkmS5S+13o78gwOP+jtn/9cZ1QXXCpyGtreL3jYOVvnfBpG0RJI0UQ779DEobFomI+FOo34guUJz/YX24w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
  dkim=pass header.d=cherry.de; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CUXtelFxo8K40agJJlcB9gkuyFXG3Zy93Vc36gihEWY=;
- b=mUGtq4CMlk52EBpdV2utLgohKzK2iGV/pjxAyY2MkZBlJhd6eciMQeKAOuLH+eDOInA/MebccIABHvmEghQFc4B5Xy/QuR8JMqf/RHUhyPN9TseY9vclNydzQ8WFOqq6SEluNzQ6Kqs1yZ4L4Af3xryVW8NjFS4dmVrRLK1m200=
+ bh=SIK+gPi5mc6ZCz6iFGMsljIBYn6Z/EQvK/uEtNxUzvA=;
+ b=UyIzHl92kPVCEanB07Gsyp4Y/58MC6Dnx8NN/cU2cr94doFm0k0tQ380i1s80Znx/Xn9o8hA7AjXKnOcL8+73WQzlXysq8w5d75mMrDjC6z8SEJJ4M+hEWXT0xPa2jr3aeY/NmfJm/Cku8S+J4wSZ7tHQ6bnjj7kPEv+UB0gN5Q=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=cherry.de;
 Received: from AS8PR04MB8897.eurprd04.prod.outlook.com (2603:10a6:20b:42c::20)
- by DUZPR04MB9900.eurprd04.prod.outlook.com (2603:10a6:10:4da::18) with
+ by AM9PR04MB8308.eurprd04.prod.outlook.com (2603:10a6:20b:3e3::10) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.34; Mon, 2 Jun
- 2025 09:22:27 +0000
+ 2025 09:27:48 +0000
 Received: from AS8PR04MB8897.eurprd04.prod.outlook.com
  ([fe80::35f6:bc7d:633:369a]) by AS8PR04MB8897.eurprd04.prod.outlook.com
  ([fe80::35f6:bc7d:633:369a%4]) with mapi id 15.20.8769.037; Mon, 2 Jun 2025
- 09:22:27 +0000
-Message-ID: <c644bc35-ac08-4d8c-8dbb-0fac74b9cce1@cherry.de>
-Date: Mon, 2 Jun 2025 11:22:26 +0200
+ 09:27:48 +0000
+Message-ID: <3503ec1a-f1e6-46bf-a135-709d54f5ba64@cherry.de>
+Date: Mon, 2 Jun 2025 11:27:47 +0200
 User-Agent: Mozilla Thunderbird
-Subject: Re: [docs] [PATCH] ref-manual: clarify KCONFIG_MODE default behaviour
-To: csanchezdll@gmail.com, docs@lists.yoctoproject.org,
- Bruce Ashfield <bruce.ashfield@gmail.com>
-References: <20250528181524.2797025-1-csanchezdll@gmail.com>
+Subject: Re: [docs] [PATCH 1/1] documentation: add doc for
+ KERNEL_SPLIT_MODULES
+To: dixitparmar19@gmail.com, docs@lists.yoctoproject.org
+References: <20250529032252.340015-1-dixitparmar19@gmail.com>
 Content-Language: en-US
 From: Quentin Schulz <quentin.schulz@cherry.de>
-In-Reply-To: <20250528181524.2797025-1-csanchezdll@gmail.com>
+In-Reply-To: <20250529032252.340015-1-dixitparmar19@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: LO6P123CA0021.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:313::12) To AS8PR04MB8897.eurprd04.prod.outlook.com
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: DBBPR09CA0002.eurprd09.prod.outlook.com
+ (2603:10a6:10:c0::14) To AS8PR04MB8897.eurprd04.prod.outlook.com
  (2603:10a6:20b:42c::20)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8PR04MB8897:EE_|DUZPR04MB9900:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3c4f0dd3-5ef2-46c1-3bda-08dda1b6fdd9
+X-MS-TrafficTypeDiagnostic: AS8PR04MB8897:EE_|AM9PR04MB8308:EE_
+X-MS-Office365-Filtering-Correlation-Id: a6e62c5c-e4b3-4a65-3079-08dda1b7bd7c
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: 
-	BCL:0;ARA:13230040|376014|366016|4022899009|1800799024|7053199007;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7053199007;
 X-Microsoft-Antispam-Message-Info: 
-	=?us-ascii?Q?hiUkBhMabFgFwn3zECgYn1Xi6LK6w8gD79Ln5P2a2scoCeIH9RIjKB+ps1jh?=
- =?us-ascii?Q?VWJFPQHd/7GYPFqywd30NS+H0IDtnaY7YgevfzX9FV25dtlTloEBV42hbki2?=
- =?us-ascii?Q?KRMrUNZ6zAL2QmI9n3RsXf92+NsxAJ7Y8Ty/eJHoZj+V/vs9kH74ihsiTmJ9?=
- =?us-ascii?Q?b/7EpNcsr4OWMuUWCNy+dl2QLQNsvtfOS89ncDKRmiFN/5b/eSwQKBFM7+84?=
- =?us-ascii?Q?ECM0fZmD3CEg+wHRMg9VKOxfxYrAexc90TgLPbSr+ykOKk336/C8hLAkMZe7?=
- =?us-ascii?Q?090Q8uIrDsP2n/fPFVAmV1JiibXSB52EeOMcxmpvkuhK1GVBajKbLdYc+aw/?=
- =?us-ascii?Q?wwJYmSk82o12UArrCgkTrwyPaun2wGmwgM9hilvz/Yk9h1LXktQqJ8yylLUX?=
- =?us-ascii?Q?XEGDz8qF4hyW6pEFtMZv7JdO/BGruxfELVx3Xr25EuYzGKRkNKEqrOWtrkex?=
- =?us-ascii?Q?chxDWaERi4XBAm7ME6MF1k8gt59NznkbYBH0Ry6hKWMTtlBfJppKBXQyTcXM?=
- =?us-ascii?Q?v4820pzuWDA+By4ZnbfdmNdRBmv7XO88N+ClSQnSWGoT0b+go4AflwshGDuk?=
- =?us-ascii?Q?TTadmfTQ6sX/LS/frWQpaIwM4wrG8jLSpjoYcSS7e130HOUDhI8orB+8Ylzf?=
- =?us-ascii?Q?G0DF4RuWoA3EMPndFX0yaXooQ9kTqWnZ37WUEflktrzpSaIvK+w3o8uBfxv/?=
- =?us-ascii?Q?gPFBadUUfY/rSDUNJpO2m5ErN6yPTSeIfaqqD39mbjEzy1IghOdOXqSPSdHv?=
- =?us-ascii?Q?YXDx4siJS1ufbi1A4GptVBir4PbWWMCJ3Z5gz7HV7d1zGFpxF1JtV1pVo29G?=
- =?us-ascii?Q?3E/S1jfOaogMqw+QZw8ZvmHj0CRoUBmAr116N/rCsQSYhuSgPRVE2vFNmepR?=
- =?us-ascii?Q?8VR0iBMhRuFM5mPWguWTlp6XTzq5B9LFxkF7nPwDVBP1w3ePtkrpMb31c3xF?=
- =?us-ascii?Q?13LJPVTjl6VH1qHM0NkuRQ69IhNLno60VlcF4to4szFWeolvA5X2tXWLuOOA?=
- =?us-ascii?Q?1pLGqPZdVGnwl8hKytAEQivX2WS0Tdey3QLY9yoT+K8d87FQwatiiacOP9Lb?=
- =?us-ascii?Q?44Vf/l4dxBWS6Wn3oDJkj6Do59sE/3UtusM6L9HsEo/BB2KWy/hgRN6CQYxq?=
- =?us-ascii?Q?aXQCL4vO9zDQvH+nyWTJ+i9xshYdAz51rHjgn2TVwUCuT19D3Orcy7AF8KLj?=
- =?us-ascii?Q?gN30zi5G8NaxBOW+v06LJRVyLGVOOV4ezBX31+A9LgGsmUUBix8mWtcQj08b?=
- =?us-ascii?Q?GirivVpnDoIprv1E6XBgK+SEyrTAVzry3NK6NPw5ArAkaoVVE/Mg03w3RhWw?=
- =?us-ascii?Q?mtt8FnS4GFjQMyRm0PAZR/aOFu173yuSOnaVwKdGLhCuBtJGyhHoTMHaFMVw?=
- =?us-ascii?Q?W1ky6Zk=3D?=
+	=?utf-8?B?VmZVMmpicVk3aXhSNEZBQ0p6d2VPQk95K3d0bmFRTUtINmtYbUNIcllYSDRa?=
+ =?utf-8?B?SEVrYzNLNmtML3MxZzg5ZUhsVlNReEEwQnBSWWRncEp3aFMwNFlMUUNHdU5I?=
+ =?utf-8?B?T2o5WGMzQm10bk1xZVF1QTJSM09uRWIxRlVQT3NRY1RReTUrWEFoOW9ZZTMv?=
+ =?utf-8?B?SlN5QVdpaTdQcDhINEFMQXlFR0oxcFVYRHpuQUo0R1U3bm11azlSeHF5WTVN?=
+ =?utf-8?B?dXIyNHpPNEh5TEJIWjdLMUlQYVdXcFlpNk9CalNBOWFYNUR2R285cTVBNVpm?=
+ =?utf-8?B?VGxKRXFYZDBJbGlXcFcxQTFWZHFob2ZkZjlESjRjR0VDUFNUN1N2TVZQSlNo?=
+ =?utf-8?B?YXR0SnBSWHRXbVd0aUJ1d3JWWFhYR0NzQi9VYzZwNHovWGRONXkrQVlua0tl?=
+ =?utf-8?B?UG12djFzc25KcEZtVksyclFoQ2tyZmIrNVloME04TnlheUthaStRY3oxMXZK?=
+ =?utf-8?B?UlNyaHlMUnptM1NKS1V2M0l0Q1A5RXEyM0dCaUJaRHA0dFd2K29oL2VZV1o1?=
+ =?utf-8?B?S1JUYmdHbWQ1bUU3MkxTNE9qR2J1ZExtV3dIcXZNK2lncVA4UGVsR2VEMWRk?=
+ =?utf-8?B?TjlTWmZ1dWoxOHpKd2dPSHlCYXBzRUNRWC8xVHExSldJNGZvY0g4QlBRNytS?=
+ =?utf-8?B?d201bkpucWJoSFh4ZFZ6ODRsY2t2VkpFcnBUK2pPYUtLMnVIMU9QUmV0alNi?=
+ =?utf-8?B?ZjYwc2U4bGhrajVRVUxzSUVlQThyTlRobjNNTkh6SnhPekg5M0c5VzFidjlu?=
+ =?utf-8?B?RWthRGg5aC9HdmpNUUNzaGZ0ajBXUzVpdUlEZTlldlZ3Smh6VDhYSVNkdlEx?=
+ =?utf-8?B?L3VUdlBCVXpWUlhwMmNaOGdtTmVneHdleGJsL0ErOEtWZXhza25SaXZ5VXVO?=
+ =?utf-8?B?K2g4TldtQUpiUFBtajRmVXBvM0VTdzNqSXlwVGlYWE5hK0NUZXdFWDk4U2JC?=
+ =?utf-8?B?dUlzOG05L2RSSzFmWXpNVGkza3U5T1dBR3JHZlZzVERrUitjZVFxalFBSUsy?=
+ =?utf-8?B?cXhpTXZodXB3cDlzME9BZjc1QkZ6cnRGcE16NUJVb05EUjhZVVk4ZVVYYlo4?=
+ =?utf-8?B?RjJzNVZpSWRNTDdUUGdLcTFCb0VIVEJ5Z2hNbTNUeUJTY3R5YTBGNWhydnBk?=
+ =?utf-8?B?NGh6VkVab3NGK3ZoZnc2aUhaOVlXeVVpUVFMNDZwSm9zYm5iRHFreXhkRkhC?=
+ =?utf-8?B?M0FGWVdFc0VRc3RNd1RabkQvTG5DM1VpS3hpTXplVmRvVnp5bUhGSDl3M1Bu?=
+ =?utf-8?B?MU9RdVBFNUxzK1V1bFpxLzJDYWFZSksxR2Q2Y3g2eVhKZjZWdkZEUTBKak5y?=
+ =?utf-8?B?ZURZd1ZVTVlhQUQ2cGZaQkhLVFpEeERwbDJJSTRyTWJTNXpyVGZ4UlB4bVdz?=
+ =?utf-8?B?cVM5WkFqTitqN1JpczVmTDViTU1vOS85aDFCUjRMWUg5MktGSVFHN1VVVjY1?=
+ =?utf-8?B?OGUrNDQwY25LbEJpaTQ2VmVKc255aktoV2psQnZqdlBhcGQ3YW9FNjRuaEZ6?=
+ =?utf-8?B?SlBUQmUyZmZwbzhQK3lSWlpJcEJwcDBwK1ZWQW83bURCclpqZGRrZytvQ3U1?=
+ =?utf-8?B?eEVyZzg5ditPV0s1bmtTMXdiT3hFYUtZckxmU3pNaHRFZ1o3Y0FTNEhMT2ZS?=
+ =?utf-8?B?bGlBSUl2djRWanljNXdqSGFBdXRvN3hmVjBrcDJxT3V5TDQ2LzAyNWFPa1NF?=
+ =?utf-8?B?OWlQNkFIV2tRR0d5ZjBSNUxGWU5Lc3Jad1BBSnNVbW1Tc08rWjlhSEppMXB0?=
+ =?utf-8?B?ekRtdHlRcEFDZWxodUkrWkpmS2dzM0p2SU1ULzkzT0JKT3pjS1FxK1MwZjBB?=
+ =?utf-8?Q?af11WPc0onFqu5PPhhozcv2b0zFMWtn9E0Ysw=3D?=
 X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8897.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(4022899009)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8897.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7053199007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?us-ascii?Q?VNivSRChPfk1RTABZzqSz6z66jhtI+wQFqoWhEWJsoXkiClAVVmwx/GnfJRE?=
- =?us-ascii?Q?2VMX/pc/GmZLVrGXmu1FZw2jEqD9l3/oAuUAFO/wmTN8y3IqaPC7JGCSpyFN?=
- =?us-ascii?Q?C9FRVxDQqdKbIhEouuMqV1YNhL2LZ52PRNmH8Ikf6xr3FXIv2kMCO0NEju96?=
- =?us-ascii?Q?hfTZ+hWTXuKdYNMwHLkX0S8yi1B1dUsSHx9yL+Y17TvfJJb8Ymcj1Orn4PjG?=
- =?us-ascii?Q?bGY6s0iiFl/VB5WBK2Untf79ITUC+GQrEr6A/dYp/QRCLrjXdZUc4bwwWqrT?=
- =?us-ascii?Q?ZyMbQpHwug5iU6aohFy+IRGxRidxI1tolEx5A/nqufeuJzav/kxjoYSa79XT?=
- =?us-ascii?Q?gIrKHwEkyYLm4H3uvyyhypZGe774AmYQXfKAe0/pUkITWk+GdOir4j/oSqQj?=
- =?us-ascii?Q?2uQ0coS/YJCuawOqrI0hFqdA1TtnRXeU21Jgy/7BpbkfVw6E6+kgNyJXWOrb?=
- =?us-ascii?Q?alyjhTkvM9YQoqllbHD2oZExqUqzts0dI7AZ0L7kBZ6m6WLNok7IuSPurfO6?=
- =?us-ascii?Q?mdT4QCQkMp7wSH7rIwNYETvDLg3AxepJ2ETh4/DyFK1land7QM96VWd6X8Gv?=
- =?us-ascii?Q?UNIbKwc7iaJ1N/76ZHyDQvOdxM+/uDPdmw+pJDySOnebHT5Juf3tnfUpM6c+?=
- =?us-ascii?Q?Xx4ky/X099JLqH5j5+1uOmkBIfme3aBu62D/fOzd2zk5wPgZKjfdN6Ojn1sv?=
- =?us-ascii?Q?rXowJl2OizVt7lwGTQcIGN20jI+WDelrPgKvFsluRNuRO6uHEknyBdGc4dHB?=
- =?us-ascii?Q?YldZkJXo0ebrUcMhiMHKrZHTJT5PXcddKZF/ERGGzHN4Fwg9o5SFLRSv/G47?=
- =?us-ascii?Q?dwkuqy4UwUrEU1wmm5PgGgn1uSBY22Lp9l8EB0GEszhPzC+77X5bVxAl1QRj?=
- =?us-ascii?Q?yq2NgkPWwGJO3pUtBx4OKWf0v3uq9LqoXG36krQ7vdfv+2lRBt0XpmspZuo3?=
- =?us-ascii?Q?GbvYgnxV7GgTzbH2hJ/Uc5UQVVfKyX8AC4Rn5X9dCVvHssJOJYtUN2+G2PBu?=
- =?us-ascii?Q?PNAEyx+0knWKm+UO4CuA7oHNxVfg9O1+R5hUbKPfcL4TlpjkTD7wkzyeV8OB?=
- =?us-ascii?Q?G7X2dHPo41pUObY1tJg7eKmcfM49GEsoyn17vOiVog8/e+kXDzAT9sRFvr61?=
- =?us-ascii?Q?qnlhxAZJi6eBOt3FhD8tUTEfHdhudidIydzZbYqk6V+XFngcd+mcJVZ76d1O?=
- =?us-ascii?Q?w1N+Q5cU2UolwV2BXHZaNbTMX9iQ7+qHXb7Az+v/XXFZzrELaxoyJgJHQQ7j?=
- =?us-ascii?Q?+iLqK2g4Pj+BZtMHAgSK90SgBsafzIdVJOMPycBXL6wIdhkGMLXRTx55oTCT?=
- =?us-ascii?Q?TIPWAWeVEypml6ihK5bUaAqwK2tXEV7i0oH/4I0wrV4xBtIPHqCkWFi7keOC?=
- =?us-ascii?Q?v+iJqr37Yqu3nT4iTHBUUFQ+lFaxuQPxJXNY9b/kH8saRKKZdi3jjucVMN9/?=
- =?us-ascii?Q?YK3WG0kOBA2BS2+dkXGMcmtJFTAPvzbdJLi7dZDIDHii5h718OIy+jC+3eZv?=
- =?us-ascii?Q?m2pwAOkEs4OdMezkkS6yRs2YEg5RtOQbgdOxYl/JLSBQFZsunP+YgTMIcEfc?=
- =?us-ascii?Q?ll4mHd75CmkkdB7NT/vrw4bIP5m0wyMHdXxfK7rPXfoDeLKFpRXoAS1HeUhV?=
- =?us-ascii?Q?lQ=3D=3D?=
+	=?utf-8?B?REJIMUw0RURhSFplSDRXS3lZNExWK1NMY0Z5aDVzOWw4MkNvdWhUWHBVK0R4?=
+ =?utf-8?B?WEJxQ1A4cEV3SWhHcjAyYlAyM0tuMWZPL1c2VVdMOFlmenRxZ3FBRGRPcVVk?=
+ =?utf-8?B?RlA5d0VhN0RhbStrL0FGdTg2QVE1MUpDR3h6TGZzK1ozZXRPb3FxVFBnU21S?=
+ =?utf-8?B?TzlHeG0vbXF3a3hTWGZEQ1laOGszU0dWdjI0K2UrNmt6bEptWFB0UTBLbjk3?=
+ =?utf-8?B?NG5HeE8xVGdwa1pOWEFNcjhvaHRpVXJQRUdPZ0xiOURtV2Z3Y2NJVEl4clI5?=
+ =?utf-8?B?Z0VXYVFXTUFYcWhVeG1xZ21rUXBCYkl5NnZQUS9zdEZXOHpGci9KZ2dTQnhx?=
+ =?utf-8?B?WnlCK01lWTB3Z051Z1VpU004cVNTcTRHdW1zbTFYYUIvYmhoSTNITFFhVG1Y?=
+ =?utf-8?B?RmsraDRFQzhPZmpnZUFBUTkvN2xucENLbnFRbDBEVUttNU1POVhsQVFGcDB2?=
+ =?utf-8?B?NE42Vk04Nnc3UEMyK1J6RzVjdE1jVkJZNGlvMEhrS2ZXMDRoNDF1dS9EZWJw?=
+ =?utf-8?B?VDhUOFZielU1TW02b01CdTR0UHBieXMvN0tUcEtkaDFGbXI5ZUhJNUEvYXNn?=
+ =?utf-8?B?QVY5T0lycTh0QU5BS1hQOUpUck1vL0RJdVlHOWJ6RTcvOWFMYjNDZEg1TlBV?=
+ =?utf-8?B?Q2FoQmMvZFBmc0JlZzIyQ3ZTT2I5UXJDajJ4cng2clBLcWN2bXJ1L3d1aXBy?=
+ =?utf-8?B?ZDAySTU4R2E4ZG1xSGF0L2RMWjNiekV5WjBMVkFrOWJPYTlMaUptUy84Vk5N?=
+ =?utf-8?B?NGdlVzRHSkl4MisweGJZTlNGbmpwZ3N2ckE3bEk0bllHWUtjdEhzUytpOGFK?=
+ =?utf-8?B?NUd6cktrN1dLMjVRZStYQjlyQkpENDFFd2ZBcGU5eFl2cVVYZEtjM2JxR3JT?=
+ =?utf-8?B?TkV5dnpBY3gxeWtUSWd3akNNMHd6K28zME5jWHVPb29zby8vU3VoS1h4WjIy?=
+ =?utf-8?B?bklVNWJVSG9CL25BajcvcUo4aENZMDVBVUp3NDcxcWExR0JyTGxJMXp5TlVr?=
+ =?utf-8?B?YXd6Y1ROMW5uMkNxSUN4a29NWWV5L29WWEpVWXR4VitWdkNBRmpwQVBhbjRX?=
+ =?utf-8?B?WC8vNXJWNms5QlBJVXhOMXNQVm1HQ1FLQ01Xb1pQTE5wMmxyUnZvU3hsbFY4?=
+ =?utf-8?B?SjhHWFpIS21ObmdpSndTcjBWRG83cnFHTmt5dzY2QXNuMThHWkF3ZklXYkVn?=
+ =?utf-8?B?ZFJrZy9UcVZFcU0vVGEzWExRaGg3WEIwQUYzdE5YNzZkWXJzV3hmWVhyTkNm?=
+ =?utf-8?B?TWxub1VRZ24rU0FwQUUrNW9HOWFjMXk1bksvTk5jcWUyNTkzZVg2V0ZmeGxh?=
+ =?utf-8?B?RW14eS9adHRXTG5YekdaWlRzTzdub2dXRWZkMWN3SkFmTHhjZElWSHRHWC9w?=
+ =?utf-8?B?dVlaZkswUzQ1d2pyaTBWUzZ3S0F1SGIwQVhVOEpndHY0SldwSklkRi85ZHp3?=
+ =?utf-8?B?QkkzNm9mcEJ1WHo2MTFPc28vdzJLTmg3aDlwQzd2YTBINEMxdDlJUTIxcjZq?=
+ =?utf-8?B?NGtmL2VFNWJ2b2ZMNTQ3QlYvckhqNGYvck9IMVI1TWhmSjgvNWRmV1lLVkYy?=
+ =?utf-8?B?Y3J6eW0waHZGNU9MVUpGaCsyL2hrSy9nUHdjYkdmMnNlK29DSDUvalM0eXp4?=
+ =?utf-8?B?ZGdSbk5NRXYyUXNEVHMzUWNRbHhrc3Fqamp5UFBidFZZSVVmQnAzNFNTOTVa?=
+ =?utf-8?B?R2liYTlUNzFBT3VSa3RXMXJkOFRLTXNjNW16dzhzWStDMjF2TlBRQzc0OG8v?=
+ =?utf-8?B?ZUpqdlZzTEpTRU1Fd3hTM050OUdybTVzUzdadlJuQlhKVVk4Q1J1NjFSTjZU?=
+ =?utf-8?B?VjNnRGxKWEdWL2ZLTTZxQjNzK2NNbjVhaTVNM3lBM2UwZG1FZG1GOTFMaHhX?=
+ =?utf-8?B?UGZlcTN3VmtoMHVyWHc2ZzVBejE0YUdvazJuR3BkeWM1ZWRjZW93cG9kQ2No?=
+ =?utf-8?B?VjFocDd0MWE1WjcveTRpNW4yUFBpVGl2Z3AzbWVsbHczZksyT2M1c3lheGY5?=
+ =?utf-8?B?Wjd3TmtFcDlTbTl0WGpVZTZjdEEwSVVqRkZHVytHTlNVUTM2YVh4c1NuV3JZ?=
+ =?utf-8?B?RTA4TW5hUGhxNDRvT05vTGJJeXYzaXJKNG9USlhlckJRSXZqR1F4SEhpOEU5?=
+ =?utf-8?B?b2dKOG9XeWlKYkNaRWg5Qi9odUZFakt2MXhuRm1vMEJEeTVmREtaMUF3SXVk?=
+ =?utf-8?B?T3c9PQ==?=
 X-OriginatorOrg: cherry.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3c4f0dd3-5ef2-46c1-3bda-08dda1b6fdd9
+X-MS-Exchange-CrossTenant-Network-Message-Id: a6e62c5c-e4b3-4a65-3079-08dda1b7bd7c
 X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8897.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jun 2025 09:22:27.2860
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jun 2025 09:27:48.8299
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Hij32/iHYPf1itShU05tA5hnqG/D4dg4UMPxicLfRJDZEqj/OJRVXGzsW/YsaVtRi+jl0WZbZ2p9fewkRKlXUDbBMmfgA7px2H0EpUyOo1M=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DUZPR04MB9900
+X-MS-Exchange-CrossTenant-UserPrincipalName: gOxL5qjF6TiKEUxDB+7g//INwvezI9EEwPrOhNmnbviP/ESIj50t+b8gCwCsm/NdhmsXhs5r2sJplkEbMJqd/5WBfuQ2l8NgowNT4LAcBW8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8308
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 02 Jun 2025 09:22:35 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6959
+ <docs@lists.yoctoproject.org>; Mon, 02 Jun 2025 09:27:54 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6960
 
-Hi,
+Hi Dixit,
 
-@Bruce (now in To) I see this was agreed on on the ML, can you provide=20
-feedback on this patch maybe? Thanks!
+On 5/29/25 5:22 AM, Dixit Parmar via lists.yoctoproject.org wrote:
+> Add the missing documentation for the KERNEL_SPLIT_MODULES variable.
+> 
+> [ YOCTO #15771 ]
+> 
+> Signed-off-by: Dixit Parmar <dixitparmar19@gmail.com>
+> ---
+>   meta/conf/documentation.conf | 1 +
 
-This patch seems reasonable to me but would rather have a second opinion=20
-from the maintainer of the recipe/class :)
+This file is not handled by the yocto-docs community as far as I know, 
+so you won't really have review from us.
+
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/meta/conf/documentation.conf b/meta/conf/documentation.conf
+> index 3dd7bce515..4c8becbdc2 100644
+> --- a/meta/conf/documentation.conf
+> +++ b/meta/conf/documentation.conf
+> @@ -252,6 +252,7 @@ KERNEL_MODULE_AUTOLOAD[doc] = "Lists kernel modules that need to be auto-loaded
+>   KERNEL_MODULE_PROBECONF[doc] = "Lists kernel modules for which the build system expects to find module_conf_* values that specify configuration for each of the modules"
+>   KERNEL_PACKAGE_NAME[doc] = "Name prefix for kernel packages. Defaults to 'kernel'."
+>   KERNEL_PATH[doc] = "The location of the kernel sources. This variable is set to the value of the STAGING_KERNEL_DIR within the module class (module.bbclass)."
+> +KERNEL_SPLIT_MODULES[doc] = "Allow opt-out of split kernel modules. Default set to 1, one subpackage per module. Setting it 0 will generate a monolithic kernel-modules package containing all modules built from the source."
+
+I'm not sure where this [doc] varflag is used actually... I would 
+recommend to add an entry in the yocto-docs variable glossary instead, 
+so it eventually appears on docs.yoctoproject.org.
+
+https://git.yoctoproject.org/yocto-docs would be the git repo to do your 
+modifications on. The variable glossary is stored in 
+documentation/ref-manual/variables.rst.
+
+Let us know if you need help with something.
+
+Looking forward to seeing your patch on the ML :)
 
 Cheers,
 Quentin
-
-On 5/28/25 8:15 PM, Carlos S=C3=A1nchez de La Lama via lists.yoctoproject.o=
-rg=20
-wrote:
-> [You don't often get email from csanchezdll=3Dgmail.com@lists.yoctoprojec=
-t.org. Learn why this is important at https://aka.ms/LearnAboutSenderIdenti=
-fication ]
->=20
-> KCONFIG_MODE defaults to 'allnoconfig' when not set, regardless of whethe=
-r
-> KBUILD_DEFCONFIG points to an in-tree or a meta-layer defconfig.
->=20
-> Signed-off-by: Carlos S=C3=A1nchez de La Lama <csanchezdll@gmail.com>
->=20
-> ---
->=20
-> Previous discussion:
-> https://lore.kernel.org/yocto/CA+KcR8ARBUj8PTcvA=3Drx-yob=3DWHYcS2gUnGX2a=
-ROOjy6bZGqWw@mail.gmail.com/
->=20
->   documentation/ref-manual/variables.rst | 11 ++---------
->   1 file changed, 2 insertions(+), 9 deletions(-)
->=20
-> diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-m=
-anual/variables.rst
-> index c697bdbbb..da274f3fe 100644
-> --- a/documentation/ref-manual/variables.rst
-> +++ b/documentation/ref-manual/variables.rst
-> @@ -5036,15 +5036,8 @@ system and gives an overview of their function and=
- contents.
->         options not explicitly specified will be disabled in the kernel
->         config.
->=20
-> -      In case :term:`KCONFIG_MODE` is not set the behaviour will depend =
-on where
-> -      the ``defconfig`` file is coming from. An "in-tree" ``defconfig`` =
-file
-> -      will be handled in ``alldefconfig`` mode, a ``defconfig`` file pla=
-ced
-> -      in ``${WORKDIR}`` through a meta-layer will be handled in
-> -      ``allnoconfig`` mode.
-> -
-> -      An "in-tree" ``defconfig`` file can be selected via the
-> -      :term:`KBUILD_DEFCONFIG` variable. :term:`KCONFIG_MODE` does not n=
-eed to
-> -      be explicitly set.
-> +      In case :term:`KCONFIG_MODE` is not set the ``defconfig`` file
-> +      will be handled in ``allnoconfig`` mode.
->=20
->         A ``defconfig`` file compatible with ``allnoconfig`` mode can be
->         generated by copying the ``.config`` file from a working Linux ke=
-rnel
->=20
->=20
->=20
-> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
-> Links: You receive all messages sent to this group.
-> View/Reply Online (#6946): https://lists.yoctoproject.org/g/docs/message/=
-6946
-> Mute This Topic: https://lists.yoctoproject.org/mt/113349230/6293953
-> Group Owner: docs+owner@lists.yoctoproject.org
-> Unsubscribe: https://lists.yoctoproject.org/g/docs/unsub [quentin.schulz@=
-cherry.de]
-> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
->=20
-
 
