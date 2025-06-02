@@ -1,98 +1,90 @@
-Return-Path: <rpjday@crashcourse.ca>
+Return-Path: <richard.purdie@linuxfoundation.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7E3C3C54FB3
-	for <webhook@archiver.kernel.org>; Mon,  2 Jun 2025 10:06:05 +0000 (UTC)
-Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.web10.46196.1748858744393722903
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 53BFEC5AD49
+	for <webhook@archiver.kernel.org>; Mon,  2 Jun 2025 10:27:45 +0000 (UTC)
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+ by mx.groups.io with SMTP id smtpd.web11.46546.1748860063015797233
  for <docs@lists.yoctoproject.org>;
- Mon, 02 Jun 2025 03:05:44 -0700
+ Mon, 02 Jun 2025 03:27:43 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=ER1hnKrF;
- spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
-	To:From:Date:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=ek+m8wLqUeCsi7VyFPwcvevILC1Nx/aX5dqAC4+0h1g=; b=ER1hnKrFFw8qLazF0Q2S0a/e8G
-	vb3+wCitRrhpEUYYr2qcfbAexPcaAji2K68P8pzYuhuMV5Tq1GJ1NtluuaOJgFVIOlvhojO1wT+g0
-	6eBcptCjBe7wrS4OIj7jEUAxkQOWz2nwScDHCZw+la5Hls/K1suV7P8PZNMSZeA2C8ofKkKYRKvm2
-	RxYhVeGat62MNCHXWFVr3FTr0OZ44H58Z9/RcEeVr+PXxwEWLFF1uNiDGsaqy31GlFWfljcAJgUhQ
-	cbezZ93emZji/46X5wcgmGRC1qj30tfffBkwYruuupotIic6ItJYWI32ATpbi59F4yj29xv3Toki9
-	Bk78L9jg==;
-Received: from pool-174-114-102-5.cpe.net.cable.rogers.com ([174.114.102.5]:47722 helo=asus)
-	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1uM233-0000000GloI-1IsG
-	for docs@lists.yoctoproject.org;
-	Mon, 02 Jun 2025 06:05:42 -0400
-Date: Mon, 2 Jun 2025 06:05:38 -0400 (EDT)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: Any objection to discouraging the use of "PROVIDES +=" in reference
- manual?
-Message-ID: <0ed60e64-5e7b-1d7e-4d9b-eb5e8ede5341@crashcourse.ca>
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=ZFWh//Vw;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.221.41, mailfrom: richard.purdie@linuxfoundation.org)
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-3a4f78ebec8so1684318f8f.0
+        for <docs@lists.yoctoproject.org>; Mon, 02 Jun 2025 03:27:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1748860061; x=1749464861; darn=lists.yoctoproject.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:to:from:subject:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kZyYQ9lXWf0/tofLNmMFt8ZwuqNZuZzpv1b5BUWjKow=;
+        b=ZFWh//Vw8qYp7C7RwiVlQ6J7BbNaYmH2mlAyIXoVnCoz2S8jPZRA55Wc5QgjH2DgJy
+         dKl0maZNr0Ooe+5YNsFtA7ern36cH43L1yPD1YlDu2OF40qqpb+NE/kyTrsOhrEFdZqx
+         uvVDHwOQObKKgYBqj5H5ktPp5+aOkAB8nFg+4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748860061; x=1749464861;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:to:from:subject:message-id:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=kZyYQ9lXWf0/tofLNmMFt8ZwuqNZuZzpv1b5BUWjKow=;
+        b=gTzRqa/JyM2e6ru28/39EoPtzX2FHQGoJDeGFXUnbIMXavVGNbYcAMrcRZr5gFlX2f
+         FlHHobwGg1pVplbqwgChylxTW+csAPYTyjYaHE+R/iSOEbkb85pn1Kcp8mwROeJ+JTOf
+         +bfDMZVGU8qMjywRQtbaa/KWrfT8TvleLXni3QwNyEycieRNNNA9xbDSj1WMUeCKv23Y
+         tPeIX0yH1qf5wKs8ZZvCHHsuhlWNsABQnOb90FWcMase23ogxWXxWKqltfBKOmR0I0Lc
+         DXTIbEvS9ZVQyvDOs2Ln5GiCF2q+ri8GG+WplANJJYLV0TsrMa9qFcULIpOuIhtEPHqI
+         xFTw==
+X-Forwarded-Encrypted: i=1; AJvYcCXRVBqyAAooqLAFRIgO62BiRq1N7FM5moM6vBEnaEXlDxsDUC4RtgN79lztt/RrG2FgFjvk@lists.yoctoproject.org
+X-Gm-Message-State: AOJu0YxxWVZ6VMK/A0KiSLNtGZTnYSLlBjAPxhow++3X5KU+sUTEiz/g
+	IfKlhDy4aeSY2p3zZ3lJkEjTSEs1q9MStzAkxmyPRy/nyJIS529XYJiAR5YNvkr6qYs=
+X-Gm-Gg: ASbGncsRt2oJ4kr+jpI0BLsJhekN6OdJwEV6sf4sAPnXPIKPyYCzNlwpnL6agyZKk1e
+	Qx6G6k9t++ORxzMZhQdePv3T6Q6eUaKTtzQFvrQ661DrJkD3OWf3bMtOJU65302Y8WBST8FtRsU
+	1nVabBIM0PdtKzQkh4C65AeUbrNgQ5YK63cqqt0rRZudzq4/F4Qr0Fx8Mf8Rq9s8bWtubQxDzJx
+	CuuPbASyqgI/r4fEHP6fr6pBNr8EpSzN2XA9uGIdbESnb1jAkudl8T+w8ZsqJJOxmMmgLr+vgpG
+	rcHttcQ13bOewz+0+8feZuUUrO5t2vzHSnMoL/XpBdLVJUhsj0XnXdk1ZhaeI3JXOkdFnoQx/vb
+	5DGcLKojWBQAPI2pQGq7742bHJxrHCdFWS7LIQXuonWHivFT0A28=
+X-Google-Smtp-Source: AGHT+IHIvAiOu99SYQHovrj25c72pLHJ7x0TeorNZqtkowE/wBKmYop8jNRBeugKjShvSo0BMdiuQQ==
+X-Received: by 2002:a05:6000:4313:b0:3a3:6b07:20a1 with SMTP id ffacd0b85a97d-3a4f89dcaa6mr8541475f8f.40.1748860061306;
+        Mon, 02 Jun 2025 03:27:41 -0700 (PDT)
+Received: from ?IPv6:2001:8b0:aba:5f3c:907c:f576:5b06:73b7? ([2001:8b0:aba:5f3c:907c:f576:5b06:73b7])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a4efe6c82csm14453317f8f.30.2025.06.02.03.27.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Jun 2025 03:27:40 -0700 (PDT)
+Message-ID: <24b874c1e05cd7e4582f803957a807f45a9284e7.camel@linuxfoundation.org>
+Subject: Re: [docs] [PATCH] brief-yoctoprojectqs/ref-manual: Switch to new
+ CDN
+From: Richard Purdie <richard.purdie@linuxfoundation.org>
+To: Quentin Schulz <quentin.schulz@cherry.de>, docs@lists.yoctoproject.org
+Date: Mon, 02 Jun 2025 11:27:39 +0100
+In-Reply-To: <22f9f4fa-3ad5-400b-90e2-475238d30e6a@cherry.de>
+References: <20250529163440.3116537-1-richard.purdie@linuxfoundation.org>
+	 <22f9f4fa-3ad5-400b-90e2-475238d30e6a@cherry.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.0-1 
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323329-984382962-1748858742=:233613"
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 02 Jun 2025 10:06:05 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6962
+ <docs@lists.yoctoproject.org>; Mon, 02 Jun 2025 10:27:45 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6963
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On Mon, 2025-06-02 at 11:35 +0200, Quentin Schulz wrote:
+> Hi Richard,
+>=20
+> On 5/29/25 6:34 PM, Richard Purdie via lists.yoctoproject.org wrote:
+> > The project is switching the way handle our CDN provision of sstate
+> > objects,
+> > update the URL accordingly.
+> >=20
+>=20
+> Will the old URL still work for existing sstate? The answer to that=20
+> question will tell us whether we should backport this to all/most
+> older releases I believe?
 
---8323329-984382962-1748858742=:233613
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+It won't and we should definitely backport.
 
+Cheers,
 
-Given the explanation of "PROVIDES" here:
-
-https://docs.yoctoproject.org/ref-manual/variables.html#term-PROVIDES
-
-I'd like to rewrite that to really discourage the use of the "+="
-operator with that variable.
-
-First, the example given:
-
-  PROVIDES += "udev"
-
-is not even correct as the current eudev recipe correctly uses only
-"=".
-
-In addition, I dislike this Note:
-
-"A recipe’s own recipe name (PN) is always implicitly prepended to
-PROVIDES, so while using “+=” in the above example may not be strictly
-necessary it is recommended to avoid confusion."
-
-That makes no sense -- to use an unnecessary language construct "to
-avoid confusion." If that's true, then *all* uses of PROVIDES should
-use that. One cannot encourage readers to use a particular syntax
-if the recipes themselves don't use it.
-
-P.S. There are about a couple dozen recipes in OE-Core that still use
-"PROVIDES +="; I see no special cases that need that so another patch
-could be to clean all that up.
-
-Thoughts?
-
-rday
---8323329-984382962-1748858742=:233613--
+Richard
 
