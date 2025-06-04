@@ -1,113 +1,103 @@
-Return-Path: <rpjday@crashcourse.ca>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 087EDC5AE59
-	for <webhook@archiver.kernel.org>; Tue,  3 Jun 2025 15:58:40 +0000 (UTC)
-Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.web11.15474.1748966313617844043
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E4A23C5B543
+	for <webhook@archiver.kernel.org>; Wed,  4 Jun 2025 06:34:07 +0000 (UTC)
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+ by mx.groups.io with SMTP id smtpd.web11.10006.1749018839297359300
  for <docs@lists.yoctoproject.org>;
- Tue, 03 Jun 2025 08:58:34 -0700
+ Tue, 03 Jun 2025 23:33:59 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=aa24rPvE;
- spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:References:
-	Message-ID:In-Reply-To:Subject:cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=lQXtvw7JmuwhkiEZeRR1ArC0IoTHqx/MqErXfnRxFIE=; b=aa24rPvEB49Sw4jjKGzSG0x4dm
-	1m6SImJxc4oy/v2AzM771AoZuw5B7xfzrxNVXgMHna3SpklKZXrv/2QYe1cnLgFvkmN/bb6S6FDQB
-	Hb6GdSs5luuNyxp6uvc06HWwCaAKLnixiEACR0gQcE7qnU53QgKHlmxB57RPVN5TQUacrXhxy9hls
-	kBX5N7FWGjGwLzv8E3v12dnnOLaVfQH9dyN55vNebuOC6tzpXkhoNza3aR9wK3qyz1syHMUmkoUlP
-	RiTVCFGns3241hBn9UEk5/6GZLF9Qr/s2+U/q8k/gi+/6CyRPX06So8hNw806Eryuz8KjWtoNW+fY
-	vOEbt+mw==;
-Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:56372 helo=asus)
-	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1uMU20-00000004907-1epz;
-	Tue, 03 Jun 2025 11:58:32 -0400
-Date: Tue, 3 Jun 2025 11:58:25 -0400 (EDT)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: Quentin Schulz <quentin.schulz@cherry.de>
-cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: Re: [docs] BB manual: DEFAULT_PREFERENCE example does not exist
- anymore
-In-Reply-To: <be39614a-235a-4494-86a0-18381f5d4bd9@cherry.de>
-Message-ID: <3894aac5-f33d-388d-e15e-28d55177d11d@crashcourse.ca>
-References: <9040c30a-c091-f2be-fd62-087fb758ed47@crashcourse.ca> <be39614a-235a-4494-86a0-18381f5d4bd9@cherry.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Ut2OJbym;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 3E85B4392B;
+	Wed,  4 Jun 2025 06:33:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1749018837;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wOIbf27r0AkDzQsCAPJoHGvmDjl05TdYG0EJy9ST1Gk=;
+	b=Ut2OJbymh45Za4GG3WdOHMNtv/QiMvlq0YQx19QhjvZXjvoA1td/VPex2LyYSlzPB1HnqG
+	UZUcI3cfuo3fIUUDem96cWIyBOJG7XPKnEN2ISN57aed7Px/bIxEwzTXGTMREp6pBabZfk
+	Tvt6H2bsqTGYsof+FDvLpPvMD0bYrqecbGDWTGOMRZHhS6QYvIY1x0C1zRKnMAUSeK4vwD
+	YlwncqJPMQTurkRtRRDYt+S7a20YaqZel/XYuY9SGDFpNXbrroK5EwIlpdDMIc7zlAgMrf
+	vcHnOjzBUr4U6tIfoAdabMgCvLccVWLDYoItLqk32hPpoJOJniaqqAekXm50GQ==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 04 Jun 2025 08:33:54 +0200
+Message-Id: <DADJFKGJ4XZ5.19V8LUYOXBG4S@bootlin.com>
+Subject: Re: [docs] [PATCH 1/1] documentation: add doc for
+ KERNEL_SPLIT_MODULES
+From: "Antonin Godard" <antonin.godard@bootlin.com>
+To: <dixitparmar19@gmail.com>, <docs@lists.yoctoproject.org>
+References: <20250529032252.340015-1-dixitparmar19@gmail.com>
+In-Reply-To: <20250529032252.340015-1-dixitparmar19@gmail.com>
+X-GND-State: clean
+X-GND-Score: 0
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugddujeduucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecunecujfgurhepggfgtgffkffuhffvfhgjsehtqhertddttdejnecuhfhrohhmpedftehnthhonhhinhcuifhouggrrhgufdcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnheptddtudfggfelvdejiefhgeevvddutdeggeegjeffhfdtkedtvdeiuefgvedtuedunecuffhomhgrihhnpeihohgtthhophhrohhjvggtthdrohhrghdpsghoohhtlhhinhdrtghomhenucfkphepvdduvddruddthedrudehtddrvdehvdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvuddvrddutdehrdduhedtrddvhedvpdhhvghloheplhhotggrlhhhohhsthdpmhgrihhlfhhrohhmpegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvddprhgtphhtthhopeguihigihhtphgrrhhmrghrudelsehgmhgrihhlrdgtohhmpdhrtghpthhtohepughotghssehlihhsthhsrdihohgtthhophhrohhjvggtthdrohhrgh
+X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 03 Jun 2025 15:58:40 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6992
+ <docs@lists.yoctoproject.org>; Wed, 04 Jun 2025 06:34:07 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6993
 
-On Tue, 3 Jun 2025, Quentin Schulz wrote:
-
-> Hi Robert,
+On Thu May 29, 2025 at 5:22 AM CEST, Dixit Parmar via lists.yoctoproject.or=
+g wrote:
+> Add the missing documentation for the KERNEL_SPLIT_MODULES variable.
 >
-> On 6/3/25 4:31 PM, Robert P. J. Day via lists.yoctoproject.org wrote:
-> >
-> > Here:
-> >
-> > https://docs.yoctoproject.org/bitbake/bitbake-user-manual/bitbake-user-manual-execution.html#preferences
-> >
-> > the Note proclaims:
-> >
-> >    "For example, in the OpenEmbedded codebase, there is a standard,
-> >    versioned recipe file for BusyBox, busybox_1.22.1.bb, but there is
-> >    also a Git-based version, busybox_git.bb, which explicitly contains
-> >    the line
-> >
-> >      DEFAULT_PREFERENCE = "-1"
-> >
-> > That version of busybox is long gone and, in fact, in the current
-> > OE-Core codebase, there is not a single usage of DEFAULT_PREFERENCE
-> > to be seen.
-> >
-> > The best example of that would seem to be here:
-> >
-> > https://git.openembedded.org/meta-openembedded/tree/meta-webserver/recipes-httpd/nginx
-> >
-> > which is actually nicely explained in the .bb file. So should one
-> > update that example to use nginx? Or just remove that Note
-> > altogether given how infrequently that variable is used?
-> >
+> [ YOCTO #15771 ]
 >
-> I would remove the note and provide the context in the first sentence of the
-> note somewhere else in the section, e.g. reword "When there are multiple
-> "versions"".
+> Signed-off-by: Dixit Parmar <dixitparmar19@gmail.com>
+> ---
+>  meta/conf/documentation.conf | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/meta/conf/documentation.conf b/meta/conf/documentation.conf
+> index 3dd7bce515..4c8becbdc2 100644
+> --- a/meta/conf/documentation.conf
+> +++ b/meta/conf/documentation.conf
+> @@ -252,6 +252,7 @@ KERNEL_MODULE_AUTOLOAD[doc] =3D "Lists kernel modules=
+ that need to be auto-loaded
+>  KERNEL_MODULE_PROBECONF[doc] =3D "Lists kernel modules for which the bui=
+ld system expects to find module_conf_* values that specify configuration f=
+or each of the modules"
+>  KERNEL_PACKAGE_NAME[doc] =3D "Name prefix for kernel packages. Defaults =
+to 'kernel'."
+>  KERNEL_PATH[doc] =3D "The location of the kernel sources. This variable =
+is set to the value of the STAGING_KERNEL_DIR within the module class (modu=
+le.bbclass)."
+> +KERNEL_SPLIT_MODULES[doc] =3D "Allow opt-out of split kernel modules. De=
+fault set to 1, one subpackage per module. Setting it 0 will generate a mon=
+olithic kernel-modules package containing all modules built from the source=
+."
+>  KERNEL_SRC[doc] =3D "The location of the kernel sources. This variable i=
+s set to the value of the STAGING_KERNEL_DIR within the module class (modul=
+e.bbclass)."
+>  KERNEL_LOCALVERSION[doc] =3D "Appends a string to the name of the local =
+version of the kernel image."
+>  KFEATURE_DESCRIPTION[doc] =3D "Provides a short description of a configu=
+ration fragment. You use this variable in the .scc file that describes a co=
+nfiguration fragment file."
 
-  After cogitation, I think I'm going to rewrite both of those
-sections:
+Hi,
 
-https://docs.yoctoproject.org/bitbake/bitbake-user-manual/bitbake-user-manual-execution.html#providers
+This should be sent to the openembedded-core mailing list, as it modifies t=
+he
+openembedded-core layer, not the yocto-docs repository. As Quentin suggeste=
+d, a
+patch modifying yocto-docs/documentation/ref-manual/variables.rst would be
+appreciated!
 
-with the structure:
+Thanks,
+Antonin
 
-  2.3 Providers and preferences
-    2.3.1 Providers
-    2.3.2 Preferences
-
-simply because those two features can be treated as specific
-constructs related to how BitBake selects the appropriate recipe and
-version. Even the current structure of those sections has the PROVIDER
-stuff bleeding over into the Preferences part, so I think it makes
-sense to treat them as two related mechanisms.
-
-rday
+--=20
+Antonin Godard, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
