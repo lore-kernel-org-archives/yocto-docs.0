@@ -1,98 +1,88 @@
-Return-Path: <dixitparmar19@gmail.com>
+Return-Path: <foss@0leil.net>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AF7F5C5AE59
-	for <webhook@archiver.kernel.org>; Thu,  5 Jun 2025 14:03:30 +0000 (UTC)
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
- by mx.groups.io with SMTP id smtpd.web11.8594.1749132201403797376
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B2A74C5AE59
+	for <webhook@archiver.kernel.org>; Thu,  5 Jun 2025 14:10:50 +0000 (UTC)
+Received: from smtp-bc0a.mail.infomaniak.ch (smtp-bc0a.mail.infomaniak.ch [45.157.188.10])
+ by mx.groups.io with SMTP id smtpd.web10.8542.1749132645192738925
  for <docs@lists.yoctoproject.org>;
- Thu, 05 Jun 2025 07:03:21 -0700
+ Thu, 05 Jun 2025 07:10:45 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=jhKeeh6G;
- spf=pass (domain: gmail.com, ip: 209.85.214.169, mailfrom: dixitparmar19@gmail.com)
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-235f9ea8d08so4228165ad.1
-        for <docs@lists.yoctoproject.org>; Thu, 05 Jun 2025 07:03:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749132201; x=1749737001; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=P2I6jVptUU475Hvka7dVodWoUeZXgfhWtjBCa9282qY=;
-        b=jhKeeh6GQtKLzaYOu3DkaELR9gr3yny3K4yEkeA5wQXksfKSEk7H6SQv4HFq0BKGdx
-         4zxfMOYVeyegR7VyPpQaen6fmkCrvztgj7feXcBhVzIXXfwB90UYqxIF684sWp2U3U+a
-         Ibj5luEIZ9q7TX3MOsv7vQ96Y6so2Q9w/ZB1QlWoNsmQ26bQ5od4EiXSUHy9zmIQewcd
-         uy6Tbs8jpjGf+kdy9FM+50ap4Y61yWSFqvdFCCdvO9kW6tT+oVDlUeimLeRzY0m7+5b6
-         WSn8HGrjCMWiujqnlN7V/MwwJj+lOz7KsIkpBwKSnzvdzVeUc/hvuhFk/E3lU7Tq8zzE
-         A7VQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749132201; x=1749737001;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=P2I6jVptUU475Hvka7dVodWoUeZXgfhWtjBCa9282qY=;
-        b=WR/x42siKxMMURO7EJGGov5n4VGhrWWTnuaLoqwsEe4fgnweFlZuVDHFcPZq9WTcKO
-         13Jw90I/yjR4lD9LCIZ7bid7j3CUEzslDZVp/EzHQGChvTelGkLGYR5jPFDiNP/DeLUL
-         kzGRwrki5C9Vax3OKFzAPdxUqV3PrOuz1q3SzgonfT7D9V9vH8St2nfJJgArH+/w9vAd
-         uStFNyiP3ZL0lzlNJi1KlGaVi4NZlhnTv70IC/kRyKTICfHJ5QHZIAtziJ3Bdtso6Vrf
-         cPZWn4axzo4L8kNSuk0H+5hxJ3H098ZnQo0O95wPio5DpEfehqKL6k53oYYppTCkUdw4
-         B8tA==
-X-Gm-Message-State: AOJu0YyE8JLXQAjjCfP3scn9LJkV8IuaLbYqHt1bg37fPtSmp5vEWEiT
-	TpbNqRU9njDn4fv/N5yDT9aB/Hsohc7xiXk+R2sxnxgDmj+TZx6bMN9XPREVDw==
-X-Gm-Gg: ASbGncuxY8S0apBBDKgD0ziq+2YMdLttVjwsEwbLynm1op5sizItzjjvFZUQ/QMKpsS
-	GDMBw4G4U+uZihesrHvAvnolXJYeQ1YvjM6LgqUInRtxQb4LIjOufwPEaPz9omBTlalAZpMcCGx
-	GWjKWQKQuvauPugwmkBa7h//LZwYjX7KVfiQXgp7/FgVnU4PDFKTfNhcEX/ZbK8B0cbChbhngpZ
-	tZnn7Nacp3sNyKnr98Q3E/qkf+xGqfNA4Y5XYrE1icFS/QdX0/8mv2um4vSjrD3iSWLnvmUobFE
-	7HY9ypkbOXwjmjZmzF8Mc4MIh72t9S/QTUe5Wzsn1D8EFJUAV735hac=
-X-Google-Smtp-Source: AGHT+IGr806zbg40tFzxdlFE1XSSN9EHyEFEsa7sUKaVHi5z61oMkPmdba7CTGRbddH6CsF9EjtQdw==
-X-Received: by 2002:a17:902:d4d2:b0:223:4d7e:e52c with SMTP id d9443c01a7336-235e111ed15mr105767455ad.5.1749132200586;
-        Thu, 05 Jun 2025 07:03:20 -0700 (PDT)
-Received: from dixit.. ([2401:4900:1c44:a779:7fef:8c20:c62d:6de3])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23506d14abdsm120185455ad.239.2025.06.05.07.03.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Jun 2025 07:03:20 -0700 (PDT)
-From: Dixit Parmar <dixitparmar19@gmail.com>
-To: docs@lists.yoctoproject.org
-Cc: Dixit Parmar <dixitparmar19@gmail.com>
-Subject: [PATCH 1/1] ref-manual: document KERNEL_SPLIT_MODULES variable
-Date: Thu,  5 Jun 2025 19:33:14 +0530
-Message-ID: <20250605140314.369551-1-dixitparmar19@gmail.com>
-X-Mailer: git-send-email 2.43.0
+ dkim=none (message not signed); spf=pass (domain: 0leil.net, ip: 45.157.188.10, mailfrom: foss+yocto@0leil.net)
+Received: from smtp-3-0001.mail.infomaniak.ch (unknown [IPv6:2001:1600:4:17::246c])
+	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4bCmZC2vzdz88j;
+	Thu,  5 Jun 2025 16:10:43 +0200 (CEST)
+Received: from unknown by smtp-3-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4bCmZC0JBDzjLf;
+	Thu,  5 Jun 2025 16:10:43 +0200 (CEST)
+From: Quentin Schulz <foss+yocto@0leil.net>
+Date: Thu, 05 Jun 2025 16:10:23 +0200
+Subject: [PATCH 1/2] docs: README: specify how to contribute instead of
+ pointing at another file
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250605-readme-contrib-v1-1-c51b8cc57b7a@cherry.de>
+References: <20250605-readme-contrib-v1-0-c51b8cc57b7a@cherry.de>
+In-Reply-To: <20250605-readme-contrib-v1-0-c51b8cc57b7a@cherry.de>
+To: docs@lists.yoctoproject.org
+Cc: Dixit Parmar <dixitparmar19@gmail.com>, 
+ Quentin Schulz <quentin.schulz@cherry.de>
+X-Mailer: b4 0.14.2
+X-Infomaniak-Routing: alpha
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 05 Jun 2025 14:03:30 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7006
+ <docs@lists.yoctoproject.org>; Thu, 05 Jun 2025 14:10:50 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7008
 
-This variable controls the kernel module spliting.
+From: Quentin Schulz <quentin.schulz@cherry.de>
 
-Signed-off-by: Dixit Parmar <dixitparmar19@gmail.com>
+This repository is partially included in another repository: poky.
+
+However its README isn't making it, so documentation/README pointing at
+the README at the root of the git repository would lead the contributor
+nowhere.
+
+Instead, let's include the appropriate information directly in
+documentation/README which does make it to the poky git repo.
+
+Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
 ---
- documentation/ref-manual/variables.rst | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ documentation/README | 21 +++++++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
 
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index 9768d8f5b..2c23b6864 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -5359,6 +5359,15 @@ system and gives an overview of their function and contents.
-       the :term:`KERNEL_PATH` variable. Both variables are common variables
-       used by external Makefiles to point to the kernel source directory.
+diff --git a/documentation/README b/documentation/README
+index 8a47fd4a3fd07d41d61a7d681d82bd13ac74527d..02037e0f7ecf5c7ea18688e8ffbcfbd60c859f1c 100644
+--- a/documentation/README
++++ b/documentation/README
+@@ -406,5 +406,22 @@ both the Yocto Project and BitBake manuals:
+ Submitting documentation changes
+ ================================
  
-+   :term:`KERNEL_SPLIT_MODULES`
-+      Allow opt-out of split kernel modules. For some use cases, a monolithic
-+      kernel-modules package containing all modules built from the kernel
-+      sources may be preferred. For one, download time is shorter and
-+      installation time is faster.
-+      Default set to 1, one subpackage per module. Setting it to 0 will
-+      generate a monolithic kernel-modules package containing all modules
-+      built from the source.
+-Please see the top level README file in this repository for details of where
+-to send patches.
++Please refer to our contributor guide here: https://docs.yoctoproject.org/contributor-guide/
++for full details on how to submit changes.
 +
-    :term:`KERNEL_SRC`
-       The location of the kernel sources. This variable is set to the value
-       of the :term:`STAGING_KERNEL_DIR` within the :ref:`ref-classes-module`
++As a quick guide, patches should be sent to docs@lists.yoctoproject.org
++The git command to do that would be:
++
++     git send-email -M -1 --to docs@lists.yoctoproject.org
++
++The 'To' header can be set as default for this repository:
++
++     git config sendemail.to docs@lists.yoctoproject.org
++
++Now you can just do 'git send-email origin/master..' to send all local patches.
++
++Read the other sections in this document and documentation/standards.md for
++rules to follow when contributing to the documentation.
++
++Git repository: https://git.yoctoproject.org/yocto-docs
++Mailing list: docs@lists.yoctoproject.org
+
 -- 
-2.43.0
+2.49.0
 
 
