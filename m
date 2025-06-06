@@ -2,74 +2,73 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EC4F4C5B549
-	for <webhook@archiver.kernel.org>; Fri,  6 Jun 2025 08:07:58 +0000 (UTC)
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
- by mx.groups.io with SMTP id smtpd.web10.28823.1749197272566771709
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 037E6C5B549
+	for <webhook@archiver.kernel.org>; Fri,  6 Jun 2025 08:15:29 +0000 (UTC)
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
+ by mx.groups.io with SMTP id smtpd.web11.28904.1749197720364028163
  for <docs@lists.yoctoproject.org>;
- Fri, 06 Jun 2025 01:07:52 -0700
+ Fri, 06 Jun 2025 01:15:20 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=YRgQzmce;
- spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 772A944414;
-	Fri,  6 Jun 2025 08:07:50 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=jiuhToX9;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 2ED2843148;
+	Fri,  6 Jun 2025 08:15:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1749197270;
+	t=1749197718;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=jEncTTz6i0xALCY87h/VTQpR/CC7YaEf1jaXzTwO3WU=;
-	b=YRgQzmce9lFH/zGoqzzIjRilCI98tP6PDCZPzqzPJCSnVKFR4nwbIV14YspuFy2cCP+j1E
-	scn5juDbsCZvsxNR2rVwdTbEBBOnYf2XaNGjvo4oqUIlxu7GRSS+ydpcHub4NfBE3k9/JV
-	S2vSTGP8EWO9eMluzgEwGZTALHqa++fFqywQ92wtdjgDqoqwkNsxYxoJtj+CrLKK5NmD5t
-	lTvO7zklqbNYrO0oGiygJHYcLxg+eAN9CnEne3WptbS54s7UjGzCtsDs+9xHR/tJJJBQ2M
-	EKWSrgv88OpB1ogby5RDHPT0FSvkZKx4Zc45TceXUCfL9B/t4g2wfSkIApFsuA==
+	bh=74J0SXawRPLcSjS5EUGTld+5ftI1B8VQizg5f9/UYKA=;
+	b=jiuhToX9roj3eUOVLoFAirLFNkL/XViCFQ72QDBD3fBfVMG3w9qwmF9tndIhtdqAZdoZjo
+	zlpE23d3Z5dOmF125Wxo43ZvDNsIP6Aw0Rm+rdRlPlhlwu1LD1yvfumCLyNkitC8h+A+7S
+	MgVeT9W62ijs4CiZ17/0sP7YZ6ibOP1DjF8wA5wAJpxu4MFI9sdNxBW/3ooBGhLQd/Kr9n
+	pjZzLQkjc/EV7olllZ069Ah9eJGP7ke3n9tH2chDA3MplZgXU8rZG7kokI7suufyglmIGJ
+	jmUNYfcXZNnZoxCUKw1r3mt2T3/AhFGXIhja6uCMWrD7UXRrhz3dG2ubXzxpTw==
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 06 Jun 2025 10:07:49 +0200
-Message-Id: <DAFAOKE2FWFD.DPMX3RYZP4XR@bootlin.com>
-Subject: Re: [docs] [PATCH 1/1] documentation: add doc for
- KERNEL_SPLIT_MODULES
+Date: Fri, 06 Jun 2025 10:15:17 +0200
+Message-Id: <DAFAUA12ZP8C.1MM959Z1Y0232@bootlin.com>
+Subject: Re: [docs] [PATCH 1/1] ref-manual: document KERNEL_SPLIT_MODULES
+ variable
 From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: <dixitparmar19@gmail.com>, <docs@lists.yoctoproject.org>
-References: <DADJFKGJ4XZ5.19V8LUYOXBG4S@bootlin.com>
- <12982.1749125890901991398@lists.yoctoproject.org>
-In-Reply-To: <12982.1749125890901991398@lists.yoctoproject.org>
+To: <quentin.schulz@cherry.de>, <dixitparmar19@gmail.com>,
+ <docs@lists.yoctoproject.org>
+References: <20250605140314.369551-1-dixitparmar19@gmail.com>
+ <f546a7c2-5033-40f1-b47d-c519646c7026@cherry.de>
+In-Reply-To: <f546a7c2-5033-40f1-b47d-c519646c7026@cherry.de>
 X-GND-State: clean
 X-GND-Score: 0
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugdegkeduucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecunecujfgurhepggfgtgffkffuhffvfhgjsehtqhertddttdejnecuhfhrohhmpedftehnthhonhhinhcuifhouggrrhgufdcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnheptddtudfggfelvdejiefhgeevvddutdeggeegjeffhfdtkedtvdeiuefgvedtuedunecuffhomhgrihhnpeihohgtthhophhrohhjvggtthdrohhrghdpsghoohhtlhhinhdrtghomhenucfkphepvdduvddruddthedrudehtddrvdehvdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvuddvrddutdehrdduhedtrddvhedvpdhhvghloheplhhotggrlhhhohhsthdpmhgrihhlfhhrohhmpegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvddprhgtphhtthhopeguihigihhtphgrrhhmrghrudelsehgmhgrihhlrdgtohhmpdhrtghpthhtohepughotghssehlihhsthhsrdihohgtthhophhrohhjvggtthdrohhrgh
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugdegkedvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecunecujfgurhepggfgtgffkffuhffvfhgjsehtqhertddttdejnecuhfhrohhmpedftehnthhonhhinhcuifhouggrrhgufdcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnheptddtudfggfelvdejiefhgeevvddutdeggeegjeffhfdtkedtvdeiuefgvedtuedunecuffhomhgrihhnpeihohgtthhophhrohhjvggtthdrohhrghdpsghoohhtlhhinhdrtghomhenucfkphepvdduvddruddthedrudehtddrvdehvdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvuddvrddutdehrdduhedtrddvhedvpdhhvghloheplhhotggrlhhhohhsthdpmhgrihhlfhhrohhmpegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepfedprhgtphhtthhopehquhgvnhhtihhnrdhstghhuhhliiestghhvghrrhihrdguvgdprhgtphhtthhopeguihigihhtphgrrhhmrghrudelsehgmhgrihhlrdgtohhmpdhrtghpthhtohepughotghssehlihhsthhsrdihohgtthhophhrohhjvggtthdrohhrgh
 X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 06 Jun 2025 08:07:58 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7012
+ <docs@lists.yoctoproject.org>; Fri, 06 Jun 2025 08:15:29 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7013
 
-On Thu Jun 5, 2025 at 2:18 PM CEST, Dixit Parmar via lists.yoctoproject.org=
- wrote:
-> Thank you for guidance.
-> My idea was to have documentation for KERNEL_SPLIT_MODULES in the
-> meta/conf/documentation.conf similar to KERNEL_MODULE_AUTOLOAD,
-> KERNEL_MODULE_PROBECONF etc is there in this file. Not sure if that is co=
-rrect
-> understanding. Can you please suggest if we need KERNEL_SPLIT_MODULES in =
-the
-> meta/conf/documentation.conf or not apart from having it in the
-> variable-glossary.
+On Thu Jun 5, 2025 at 4:26 PM CEST, Quentin Schulz via lists.yoctoproject.o=
+rg wrote:
+> Hi Dixit,
 >
-> I'd really appreciate if you could point me to correct mailing list &
-> prefix(if needed) for variable glossary.
+> Thanks for the patch!
+>
+> Please wait a bit (a day at least) between versions to let other people=
+=20
+> the time to review, otherwise it'll be difficult to keep up with what=20
+> the latest version is and what we should review :)
+>
+> On that topic, this is missing the version number (you typically add it=
+=20
+> with -v2 when using git-format-patch or git-send-email if I remember=20
+> correctly).
 
-If you modify meta/conf/documentation.conf, the patch needs to be sent to
-openembedded-core@lists.openembedded.org, because that file is part of
-openembedded-core.
+Also, you can read https://docs.yoctoproject.org/contributor-guide/submit-c=
+hanges.html
+which goes over the process of contributing patches.
 
-If you modify the yocto-docs repository, the patch needs to be sent to
-docs@lists.yoctoproject.org.
-
-Thanks for contributing!
+Thanks,
 Antonin
 
 --=20
