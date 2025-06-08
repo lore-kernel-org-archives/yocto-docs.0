@@ -1,103 +1,101 @@
-Return-Path: <dixitparmar19@gmail.com>
+Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DCDA4C5AD49
-	for <webhook@archiver.kernel.org>; Sun,  8 Jun 2025 10:45:17 +0000 (UTC)
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
- by mx.groups.io with SMTP id smtpd.web11.35177.1749379516151139619
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B5C5AC5B552
+	for <webhook@archiver.kernel.org>; Sun,  8 Jun 2025 12:36:18 +0000 (UTC)
+Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
+ by mx.groups.io with SMTP id smtpd.web11.36320.1749386171010095623
  for <docs@lists.yoctoproject.org>;
- Sun, 08 Jun 2025 03:45:16 -0700
+ Sun, 08 Jun 2025 05:36:11 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=ZAfRyaa4;
- spf=pass (domain: gmail.com, ip: 209.85.215.180, mailfrom: dixitparmar19@gmail.com)
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-af908bb32fdso2288094a12.1
-        for <docs@lists.yoctoproject.org>; Sun, 08 Jun 2025 03:45:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749379515; x=1749984315; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=I7w593dyI3WwGOrYMzyl77dkBJbY/gG7A7xo75oLtkU=;
-        b=ZAfRyaa4+2heiyFDhA/Aa+BsB73fgaHTjDiF05/rgQSkA4gE8yPURZgBSXZNzP6z63
-         rMMnDxW9vsf3jzItPIRnK+0rxrMDK35il24o/NbTj5Zpp7ML61xED385HQnMb2OFapSc
-         M/8hHD3PitjaM0Pp8CTjMEFxvUYs0tsOQ8SC4Wm5x5RN9WFqmfpK/x0e1mqcihfJkWec
-         k7DC7pgOdX7JtYb6SUuc6ken134tajP45DxaN3l+wOBSHFfZ99pUmUVNNWoPcWrrrehG
-         B6LzSvmmepvcxgGake6YQ7VK7m+vxaFCZ17pAZUGhm9gYcfcGLfC+9+gTIdyQZ8KkhYN
-         YYfw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749379515; x=1749984315;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=I7w593dyI3WwGOrYMzyl77dkBJbY/gG7A7xo75oLtkU=;
-        b=jFiRBA0qfGrUvkpTM4C7lp0hWu/7F8aQ0KN66kPtCI2Cpjqhx9qvGwq0w06jcfQ2Gi
-         LF3K8VzvwTwzXFVPRTh5PWyo9ca+X55yMb2C6e15dCjLA5nHFN21AKRBxWLGrWvEsQsF
-         /kRswiNScxmVltoXKwP3OVAygMjSiKRgNY3SKcjjqZWU28FtoIU7TBUrpitRg6g3FIvt
-         sA6Ah0hxm9iPd1C2XVtrYV212uY1FX0rCFtRvkby75L09kA/Stw3oUWrKsn9CPXS2oUr
-         vknKc+Yby3WVd81rakallIRjN+et9ivg6ND6dWIgpoGDJrJf8hpH/g1Zshi4WDTEBsCt
-         BgdA==
-X-Gm-Message-State: AOJu0Yw2h64Q8Lb4CcN2JLMeE7K+9eKZElN5KePVCdNsC8gt/bYUFRf/
-	DJgON7lyM8x87SbSOva5QQEpRQ7zR0ThpKSH94LM2znWv0ftoxY2HmTqciUIyw==
-X-Gm-Gg: ASbGncsc5G1YiPSgcpjG+9njxZ1WMiULcJgkAIRzzUM/Y1oYQ+WdqmbeAB9meSPFPoG
-	d31qo/B7FV4LeQjg1zaRgNq25JiNc8MyCUqISPpu717VPy+96VuPZ3NG7JAdnyaIzd7r5t1ucXm
-	TaFSkf2JqFhYP6MOy3dQwnLEpWjm5DFMRSdcIUuXhyxHAKPl52duFSkzsAW2/+18HYW37O5dMok
-	mS4yTVLT2h7aXGBYEv9RwdOwUvlrAx8E/gyOvPGlTz7GFs6WVVDSd9KY/QZp2K5Gf3cSoZiV2bu
-	Ds4uT8XiLy8h60a2gey14WA2KE2l0C288G2yIIJ0heSIxyOnquR9RCo=
-X-Google-Smtp-Source: AGHT+IHOi+cQX7i0tQcDm7JSmc8a9k37ZTghWtQxheeIM+ok/9nkMegVSisbtZpiWACSTYQvm7qzQg==
-X-Received: by 2002:a17:90b:2547:b0:311:9cdf:a8a4 with SMTP id 98e67ed59e1d1-31349f43777mr13877693a91.8.1749379514912;
-        Sun, 08 Jun 2025 03:45:14 -0700 (PDT)
-Received: from dixit.. ([2401:4900:1c45:df5e:ad6b:542b:f407:a12b])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3134968358bsm3955521a91.0.2025.06.08.03.45.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 08 Jun 2025 03:45:14 -0700 (PDT)
-From: Dixit Parmar <dixitparmar19@gmail.com>
-To: docs@lists.yoctoproject.org
-Cc: Dixit Parmar <dixitparmar19@gmail.com>
-Subject: [PATCH v2] ref-manual: document KERNEL_SPLIT_MODULES variable
-Date: Sun,  8 Jun 2025 16:14:54 +0530
-Message-ID: <20250608104459.1888510-1-dixitparmar19@gmail.com>
-X-Mailer: git-send-email 2.43.0
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=QLsSkZRp;
+ spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:References:
+	Message-ID:In-Reply-To:Subject:cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=ZXACssTE+lx4drpd7YHF6KOgSIIyrMAhLgMRArrDY1o=; b=QLsSkZRpiFv31xuEgV3nFSRCxu
+	hroOLJE+ggyMLfMlC+2mHPSLwoyA/kCRK3Y57hF2oCCmpHeIz9D19nliFTPBxbQWSEyV+32PXZpWh
+	lG3Dz8Igt7eBPz1quQ9l90tf3cnjCj1+gcgZdoH/ndCsOQ1ln1UNS6ewyrtliRlvorQtSHsMZWp3Q
+	BpIFsHxVGAgPoBT0+YYfoJcp8nqtpagLsarfn62YbPrOtREf97xI3OIo/vOSdmvMYDLmSn1Nr2aUt
+	HERKl/3Kfg4yNaq9lbR4OH5sOXGr70/UZUsOis36FPBDyrbnxom4OooYP39aq/WBgivKVLwkz0ukZ
+	u7lg0z2A==;
+Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:49368 helo=asus)
+	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <rpjday@crashcourse.ca>)
+	id 1uOFFw-0000000441P-00Oi;
+	Sun, 08 Jun 2025 08:36:09 -0400
+Date: Sun, 8 Jun 2025 08:35:51 -0400 (EDT)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+To: Quentin Schulz <quentin.schulz@cherry.de>
+cc: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: Re: [docs] BB manual needs to refer to additional "classes-recipe"
+ and "classes-global" dirs?
+In-Reply-To: <1b626abd-3ce1-48cc-b9e5-7ba03aec0762@cherry.de>
+Message-ID: <e8c5fbbf-2f02-e166-8d1f-6ad659b0cc20@crashcourse.ca>
+References: <c822a737-732c-1b74-5c2d-5ce8b80b8512@crashcourse.ca> <1b626abd-3ce1-48cc-b9e5-7ba03aec0762@cherry.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
+X-AntiAbuse: Original Domain - lists.yoctoproject.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - crashcourse.ca
+X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Sun, 08 Jun 2025 10:45:17 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7032
+ <docs@lists.yoctoproject.org>; Sun, 08 Jun 2025 12:36:18 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7033
 
-This variable controls the kernel module spliting.
+On Tue, 3 Jun 2025, Quentin Schulz wrote:
 
-Signed-off-by: Dixit Parmar <dixitparmar19@gmail.com>
----
- documentation/ref-manual/variables.rst | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+> Hi Robert,
+>
+> On 6/3/25 1:08 PM, Robert P. J. Day via lists.yoctoproject.org wrote:
+> >
+> > I note at least a couple places in the BB manual that refer to
+> > searching for class files only in the "classes" subdirectory, but no
+> > mention about the "classes-global" and "classes-recipe" directories --
+> > should those also be mentioned in the BB manual?
+> >
+>
+> I'm not too surprised, the BitBake documentation is typically not
+> receiving the same level of interest compared to YP :) (also I'm not
+> entirely sure people are aware it exists as I would imagine most
+> people are familiar with docs.yoctoproject.org but not
+> docs.yoctoproject.org/bitbake for example?
+>
+> That seems like a reasonable change to make in any case, so patches
+> welcome :)
 
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index 9768d8f5b..b7dde2604 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -5359,6 +5359,20 @@ system and gives an overview of their function and contents.
-       the :term:`KERNEL_PATH` variable. Both variables are common variables
-       used by external Makefiles to point to the kernel source directory.
- 
-+   :term:`KERNEL_SPLIT_MODULES`
-+      When inheriting the :ref:`ref-classes-kernel-module-split` class, this
-+      variable controls whether kernel modules are split into separate packages
-+      or bundled into a single package.
-+
-+      For some use cases, a monolithic kernel module package
-+      :ref:`KERNEL_PACKAGE_NAME` (by default named ``kernel``) that contains
-+      all modules built from the kernel sources may be preferred. Because a
-+      monolithic package can reduce download time and speed up installation.
-+
-+      By default, this variable is set to ``1``, resulting in one package per
-+      module. Setting it to any other value will generate a single monolithic
-+      package containing all kernel modules.
-+
-    :term:`KERNEL_SRC`
-       The location of the kernel sources. This variable is set to the value
-       of the :term:`STAGING_KERNEL_DIR` within the :ref:`ref-classes-module`
--- 
-2.43.0
+  going through all my outstanding docs questions, and this issue is
+problematic in that, technically, the BB manual should stand alone and
+not refer "upwards" to build systems like OE-Core, however, bitbake
+itself, here, in BB function list_recipes():
 
+https://github.com/openembedded/bitbake/blob/master/lib/bblayers/query.py#L124
+
+clearly hard-codes references to extra class directories
+classes-global and classes-recipe, which don't exist in bitbake
+itself, so this is obviously(?) a case where bitbake *does* refer
+upwards to oe-core.
+
+  is this worth even clarifying in the BB manual? i suspect that the
+simplest way to explain it is that, while BB defines only
+classes/base.bbclass, its own layers code simply *supports* the
+existence of those two additional class subdirectories, and leave it
+at that.
+
+  thoughts?
+
+rday
 
