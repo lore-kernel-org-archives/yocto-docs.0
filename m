@@ -1,91 +1,103 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <dixitparmar19@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CF46BC61CE7
-	for <webhook@archiver.kernel.org>; Fri,  6 Jun 2025 17:15:34 +0000 (UTC)
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
- by mx.groups.io with SMTP id smtpd.web10.653.1749230124992483381
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DCDA4C5AD49
+	for <webhook@archiver.kernel.org>; Sun,  8 Jun 2025 10:45:17 +0000 (UTC)
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
+ by mx.groups.io with SMTP id smtpd.web11.35177.1749379516151139619
  for <docs@lists.yoctoproject.org>;
- Fri, 06 Jun 2025 10:15:25 -0700
+ Sun, 08 Jun 2025 03:45:16 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=CuKB3NPo;
- spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 8F66E43218;
-	Fri,  6 Jun 2025 17:15:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1749230123;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=BvYZU6B/3xWhLEloPZOUA9q5CMoLams2kAlp+I/stmw=;
-	b=CuKB3NPoo8l9J2nUkcrJRcAhqdqC4Cn6d1xqsrWmKCIJADmu0boz8Xk4yulETPYxNqyrEq
-	i3r7g1T8yaaa4iPaCKwEj6s5657Gc1/RieIBRskKxAoXc9OFEvoMuoQ1dN8ovc/1vz9jRp
-	LY6V0CtToMQlbkhJHx2X8tofaR3UWIdo40+7UmvLzIdur8sybE9+8NM3LJ/J5ag5JXe18T
-	geHKAEXsgFcEtq04QiMiSLseK71Hc6H+w2xpjROnyA2VFxXp3r1VvBEGMG5BL52OryUUGn
-	d4dnt7XgmSrP+N0QGcx4PruwdNz3MSiJke+BDQ9b6qgpHCWKF0wXJcruG/W+7A==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 06 Jun 2025 19:15:23 +0200
-Message-Id: <DAFMBT128H1H.7552T07T40K4@bootlin.com>
-Subject: [kirkstone] Pull request
-Cc: <docs@lists.yoctoproject.org>
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: "Richard Purdie" <richard.purdie@linuxfoundation.org>
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugdehfeekucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpegggfgtfffkufevhffvsehtqhertddttdejnecuhfhrohhmpedftehnthhonhhinhcuifhouggrrhgufdcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepkeejleeutdfhffdtkeevfeevffdtvefffeeuudeuveevhfeuudfhudelgfetveeunecukfhppedvrgdtvdemkeegvdelmeekudejrgemgedttddumegttdgsvgemugehkegrmeegvdeltdemlegvrgejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddvmeekgedvleemkedujegrmeegtddtudemtgdtsggvmeguheekrgemgedvledtmeelvggrjedphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedvpdhrtghpthhtoheprhhitghhrghrugdrphhurhguihgvsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepughotghssehlihhsthhsrdihohgtthhophhrohhjvggtthdrohhrgh
-X-GND-Sasl: antonin.godard@bootlin.com
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=ZAfRyaa4;
+ spf=pass (domain: gmail.com, ip: 209.85.215.180, mailfrom: dixitparmar19@gmail.com)
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-af908bb32fdso2288094a12.1
+        for <docs@lists.yoctoproject.org>; Sun, 08 Jun 2025 03:45:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1749379515; x=1749984315; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=I7w593dyI3WwGOrYMzyl77dkBJbY/gG7A7xo75oLtkU=;
+        b=ZAfRyaa4+2heiyFDhA/Aa+BsB73fgaHTjDiF05/rgQSkA4gE8yPURZgBSXZNzP6z63
+         rMMnDxW9vsf3jzItPIRnK+0rxrMDK35il24o/NbTj5Zpp7ML61xED385HQnMb2OFapSc
+         M/8hHD3PitjaM0Pp8CTjMEFxvUYs0tsOQ8SC4Wm5x5RN9WFqmfpK/x0e1mqcihfJkWec
+         k7DC7pgOdX7JtYb6SUuc6ken134tajP45DxaN3l+wOBSHFfZ99pUmUVNNWoPcWrrrehG
+         B6LzSvmmepvcxgGake6YQ7VK7m+vxaFCZ17pAZUGhm9gYcfcGLfC+9+gTIdyQZ8KkhYN
+         YYfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749379515; x=1749984315;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=I7w593dyI3WwGOrYMzyl77dkBJbY/gG7A7xo75oLtkU=;
+        b=jFiRBA0qfGrUvkpTM4C7lp0hWu/7F8aQ0KN66kPtCI2Cpjqhx9qvGwq0w06jcfQ2Gi
+         LF3K8VzvwTwzXFVPRTh5PWyo9ca+X55yMb2C6e15dCjLA5nHFN21AKRBxWLGrWvEsQsF
+         /kRswiNScxmVltoXKwP3OVAygMjSiKRgNY3SKcjjqZWU28FtoIU7TBUrpitRg6g3FIvt
+         sA6Ah0hxm9iPd1C2XVtrYV212uY1FX0rCFtRvkby75L09kA/Stw3oUWrKsn9CPXS2oUr
+         vknKc+Yby3WVd81rakallIRjN+et9ivg6ND6dWIgpoGDJrJf8hpH/g1Zshi4WDTEBsCt
+         BgdA==
+X-Gm-Message-State: AOJu0Yw2h64Q8Lb4CcN2JLMeE7K+9eKZElN5KePVCdNsC8gt/bYUFRf/
+	DJgON7lyM8x87SbSOva5QQEpRQ7zR0ThpKSH94LM2znWv0ftoxY2HmTqciUIyw==
+X-Gm-Gg: ASbGncsc5G1YiPSgcpjG+9njxZ1WMiULcJgkAIRzzUM/Y1oYQ+WdqmbeAB9meSPFPoG
+	d31qo/B7FV4LeQjg1zaRgNq25JiNc8MyCUqISPpu717VPy+96VuPZ3NG7JAdnyaIzd7r5t1ucXm
+	TaFSkf2JqFhYP6MOy3dQwnLEpWjm5DFMRSdcIUuXhyxHAKPl52duFSkzsAW2/+18HYW37O5dMok
+	mS4yTVLT2h7aXGBYEv9RwdOwUvlrAx8E/gyOvPGlTz7GFs6WVVDSd9KY/QZp2K5Gf3cSoZiV2bu
+	Ds4uT8XiLy8h60a2gey14WA2KE2l0C288G2yIIJ0heSIxyOnquR9RCo=
+X-Google-Smtp-Source: AGHT+IHOi+cQX7i0tQcDm7JSmc8a9k37ZTghWtQxheeIM+ok/9nkMegVSisbtZpiWACSTYQvm7qzQg==
+X-Received: by 2002:a17:90b:2547:b0:311:9cdf:a8a4 with SMTP id 98e67ed59e1d1-31349f43777mr13877693a91.8.1749379514912;
+        Sun, 08 Jun 2025 03:45:14 -0700 (PDT)
+Received: from dixit.. ([2401:4900:1c45:df5e:ad6b:542b:f407:a12b])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3134968358bsm3955521a91.0.2025.06.08.03.45.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 08 Jun 2025 03:45:14 -0700 (PDT)
+From: Dixit Parmar <dixitparmar19@gmail.com>
+To: docs@lists.yoctoproject.org
+Cc: Dixit Parmar <dixitparmar19@gmail.com>
+Subject: [PATCH v2] ref-manual: document KERNEL_SPLIT_MODULES variable
+Date: Sun,  8 Jun 2025 16:14:54 +0530
+Message-ID: <20250608104459.1888510-1-dixitparmar19@gmail.com>
+X-Mailer: git-send-email 2.43.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 06 Jun 2025 17:15:34 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7031
+ <docs@lists.yoctoproject.org>; Sun, 08 Jun 2025 10:45:17 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7032
 
-The following changes since commit 76a4dd5ce041b38f4cab714017a38b035d9530a3=
-:
+This variable controls the kernel module spliting.
 
-  ref-manual/variables.rst: document INHIBIT_UPDATERCD_BBCLASS (2025-05-26 =
-09:48:14 +0200)
+Signed-off-by: Dixit Parmar <dixitparmar19@gmail.com>
+---
+ documentation/ref-manual/variables.rst | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-are available in the Git repository at:
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index 9768d8f5b..b7dde2604 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -5359,6 +5359,20 @@ system and gives an overview of their function and contents.
+       the :term:`KERNEL_PATH` variable. Both variables are common variables
+       used by external Makefiles to point to the kernel source directory.
+ 
++   :term:`KERNEL_SPLIT_MODULES`
++      When inheriting the :ref:`ref-classes-kernel-module-split` class, this
++      variable controls whether kernel modules are split into separate packages
++      or bundled into a single package.
++
++      For some use cases, a monolithic kernel module package
++      :ref:`KERNEL_PACKAGE_NAME` (by default named ``kernel``) that contains
++      all modules built from the kernel sources may be preferred. Because a
++      monolithic package can reduce download time and speed up installation.
++
++      By default, this variable is set to ``1``, resulting in one package per
++      module. Setting it to any other value will generate a single monolithic
++      package containing all kernel modules.
++
+    :term:`KERNEL_SRC`
+       The location of the kernel sources. This variable is set to the value
+       of the :term:`STAGING_KERNEL_DIR` within the :ref:`ref-classes-module`
+-- 
+2.43.0
 
-  git@push.yoctoproject.org:yocto-docs kirkstone-next
-
-for you to fetch changes up to 92bc958301d0aeab0a19e75b8604f01770358195:
-
-  docs: conf.py: silence SyntaxWarning on js_splitter_code (2025-06-06 19:0=
-9:30 +0200)
-
-----------------------------------------------------------------
-Carlos S=C3=A1nchez de La Lama (1):
-      ref-manual: clarify KCONFIG_MODE default behaviour
-
-Lee Chee Yang (1):
-      migration-guides: add release notes for 4.0.27
-
-Quentin Schulz (3):
-      docs: README: specify how to contribute instead of pointing at anothe=
-r file
-      deduplicate README
-      docs: conf.py: silence SyntaxWarning on js_splitter_code
-
-Richard Purdie (1):
-      brief-yoctoprojectqs/ref-manual: Switch to new CDN
-
-Robert P. J. Day (1):
-      Clean up explanation of minimum required version numbers
-
- README                                             |  32 +----
- documentation/README                               |  21 ++-
- documentation/brief-yoctoprojectqs/index.rst       |   6 +-
- documentation/conf.py                              |   2 +-
- documentation/migration-guides/release-4.0.rst     |   1 +
- .../migration-guides/release-notes-4.0.27.rst      | 153 +++++++++++++++++=
-++++
- documentation/ref-manual/variables.rst             |  13 +-
- 7 files changed, 181 insertions(+), 47 deletions(-)
- mode change 100644 =3D> 120000 README
- create mode 100644 documentation/migration-guides/release-notes-4.0.27.rst
 
