@@ -1,101 +1,125 @@
-Return-Path: <rpjday@crashcourse.ca>
+Return-Path: <anibal@limonsoftware.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B5C5AC5B552
-	for <webhook@archiver.kernel.org>; Sun,  8 Jun 2025 12:36:18 +0000 (UTC)
-Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.web11.36320.1749386171010095623
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 716DFC5B552
+	for <webhook@archiver.kernel.org>; Mon,  9 Jun 2025 22:21:49 +0000 (UTC)
+Received: from mail-oa1-f47.google.com (mail-oa1-f47.google.com [209.85.160.47])
+ by mx.groups.io with SMTP id smtpd.web11.72380.1749507707071949470
  for <docs@lists.yoctoproject.org>;
- Sun, 08 Jun 2025 05:36:11 -0700
+ Mon, 09 Jun 2025 15:21:47 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=QLsSkZRp;
- spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:References:
-	Message-ID:In-Reply-To:Subject:cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=ZXACssTE+lx4drpd7YHF6KOgSIIyrMAhLgMRArrDY1o=; b=QLsSkZRpiFv31xuEgV3nFSRCxu
-	hroOLJE+ggyMLfMlC+2mHPSLwoyA/kCRK3Y57hF2oCCmpHeIz9D19nliFTPBxbQWSEyV+32PXZpWh
-	lG3Dz8Igt7eBPz1quQ9l90tf3cnjCj1+gcgZdoH/ndCsOQ1ln1UNS6ewyrtliRlvorQtSHsMZWp3Q
-	BpIFsHxVGAgPoBT0+YYfoJcp8nqtpagLsarfn62YbPrOtREf97xI3OIo/vOSdmvMYDLmSn1Nr2aUt
-	HERKl/3Kfg4yNaq9lbR4OH5sOXGr70/UZUsOis36FPBDyrbnxom4OooYP39aq/WBgivKVLwkz0ukZ
-	u7lg0z2A==;
-Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:49368 helo=asus)
-	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1uOFFw-0000000441P-00Oi;
-	Sun, 08 Jun 2025 08:36:09 -0400
-Date: Sun, 8 Jun 2025 08:35:51 -0400 (EDT)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: Quentin Schulz <quentin.schulz@cherry.de>
-cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: Re: [docs] BB manual needs to refer to additional "classes-recipe"
- and "classes-global" dirs?
-In-Reply-To: <1b626abd-3ce1-48cc-b9e5-7ba03aec0762@cherry.de>
-Message-ID: <e8c5fbbf-2f02-e166-8d1f-6ad659b0cc20@crashcourse.ca>
-References: <c822a737-732c-1b74-5c2d-5ce8b80b8512@crashcourse.ca> <1b626abd-3ce1-48cc-b9e5-7ba03aec0762@cherry.de>
+ dkim=pass header.i=@limonsoftware-com.20230601.gappssmtp.com header.s=20230601 header.b=IlDCq2wb;
+ spf=pass (domain: limonsoftware.com, ip: 209.85.160.47, mailfrom: anibal@limonsoftware.com)
+Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-2db9e29d3bcso1910330fac.1
+        for <docs@lists.yoctoproject.org>; Mon, 09 Jun 2025 15:21:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=limonsoftware-com.20230601.gappssmtp.com; s=20230601; t=1749507706; x=1750112506; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=J3GnHlW8OR3yKZlpcBChKbWMXbjZEozkoitwJHBTukc=;
+        b=IlDCq2wbrFl3dUVW7T0BKQ/76tUdsqpXQCmBOOTe1QHSK67Eh62fWx3mm1KL8T+wms
+         wJWo6TSEtsyD8sSN3W6u5kghqioRDpkZnefnd3nV6ztZ9+BtHgU4xvUxXej+38yA2snh
+         fenRaKBrY58/FE6DWb5cLK3uMuqb+h2DQ9zdlzvdMiRajUsKo3IP3dMAjCpn6rp6EXol
+         9cw8o7Nx7ncWSdWUVLJF0WJyY2OZDh8owN+xFOWyVs55a4Zv/+hhgu86kh+vJNvOHCMy
+         qiG41KGItEM43if99vR6e+HJmjFLtkMxqrpk/5MblIvsDSDqg7GLBYKkK9JadMVG8t6A
+         kLBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749507706; x=1750112506;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=J3GnHlW8OR3yKZlpcBChKbWMXbjZEozkoitwJHBTukc=;
+        b=t2O9+eVl25IEy45i8nVgiSoo9jp/OOIswCQiJYPmvc51kqmCP76+Ktg9hvFTGpeohE
+         1MdVWVLrttEr8prxWqkDNkDgnt2tr2cs1qXrjawLFmKBDS+jFrvgN+7sdNvAgofV4Wm1
+         MKgGkmICVfFD9lpqgaQcvnlWjPRKM8ktbFZsWw0wH1MRJhLlZNhelsTBsutrIaQXva5z
+         mBBS6NHUEOMepLmhLw7ExxMLOEIWmzTMEmG5BzXrekaaiLlchoTTgicEjVz8c/YM+e4h
+         mvIwZABJYWzvPyeJTUsgheAN9XuP48X4jiHgUQOGgvWOa2wJpZ0wvLfXDAbl7bUCK9vT
+         RX9Q==
+X-Gm-Message-State: AOJu0Yzi0ObhFMDVfwv+n5rlNik83N0GOOz+4DSDE9cdZkyNsirjScjB
+	Xf+kEQRHZmSgbOOUpnq0BDBwKZTwYIyZKesTbcb1R5s/BzphqfKQkLXtuM/hrsojcbmWMg2JQu1
+	TjfapuPc=
+X-Gm-Gg: ASbGncvdY2CjbgyLzBTTWEgztE5sdHovWEONbX8JEdeVV++1WYwv4onhtv+k9pALcWV
+	qSrhWJATWP0X9Gra2JltkSeZLCpv09wiDlTdARCOEvTYVSaus1MpUJzCFGj3IIx55h0AzhqPh1I
+	TvGaT5N6rHlh4JzC9wbF3xieFxbDQhtWi24VewoNdKFc+P1mgX2ABGW8+dVR22LSJZZSCZHsdrQ
+	8tkHOmaGMi03DLFCF+x4755MnZ/sWCpScHwx2nW8QNVuFAJ4ciDVTuqXdOmVOme6aDgsTqQB9Bl
+	1ty6PgMvqUtqL3EhlVsOMtjeSnA7GkqewLTklgjoHvVRXIxnR+j5BFOZMyBPdYTjaHbMZu120fo
+	d7Z4217ZSakFhAqI3VcSCeWFoiK4=
+X-Google-Smtp-Source: AGHT+IGDkqvX50gZmKwECs6ah4V2FkoOHoG3KHrk0OlWAmeTt+75cDiv+AflIcSgpAO4qpyPia+S8Q==
+X-Received: by 2002:a05:6870:8a23:b0:2d6:b7b:a83 with SMTP id 586e51a60fabf-2ea7cff3296mr186617fac.13.1749507706091;
+        Mon, 09 Jun 2025 15:21:46 -0700 (PDT)
+Received: from ls.ts.net (fixed-189-203-87-169.totalplay.net. [189.203.87.169])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2ea072e5d0fsm2086118fac.24.2025.06.09.15.21.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Jun 2025 15:21:45 -0700 (PDT)
+From: Anibal Limon <anibal@limonsoftware.com>
+To: docs@lists.yoctoproject.org
+Cc: antonin.godard@bootlin.com,
+	erik.schumacher@iris-sensing.com,
+	yoann.congal@smile.fr,
+	Anibal Limon <anibal@limonsoftware.com>
+Subject: [PATCH] test-manual/ptest: Add info about fail state of ptest-runner/ptests
+Date: Mon,  9 Jun 2025 22:21:43 +0000
+Message-Id: <20250609222143.3275-1-anibal@limonsoftware.com>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Sun, 08 Jun 2025 12:36:18 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7033
+ <docs@lists.yoctoproject.org>; Mon, 09 Jun 2025 22:21:49 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7034
 
-On Tue, 3 Jun 2025, Quentin Schulz wrote:
+On the ML was pointed about no specific information about
+ptest-runner/ptests so improve docs around.
 
-> Hi Robert,
->
-> On 6/3/25 1:08 PM, Robert P. J. Day via lists.yoctoproject.org wrote:
-> >
-> > I note at least a couple places in the BB manual that refer to
-> > searching for class files only in the "classes" subdirectory, but no
-> > mention about the "classes-global" and "classes-recipe" directories --
-> > should those also be mentioned in the BB manual?
-> >
->
-> I'm not too surprised, the BitBake documentation is typically not
-> receiving the same level of interest compared to YP :) (also I'm not
-> entirely sure people are aware it exists as I would imagine most
-> people are familiar with docs.yoctoproject.org but not
-> docs.yoctoproject.org/bitbake for example?
->
-> That seems like a reasonable change to make in any case, so patches
-> welcome :)
+https://lists.yoctoproject.org/g/yocto-patches/message/1622
 
-  going through all my outstanding docs questions, and this issue is
-problematic in that, technically, the BB manual should stand alone and
-not refer "upwards" to build systems like OE-Core, however, bitbake
-itself, here, in BB function list_recipes():
+Signed-off-by: Anibal Limon <anibal@limonsoftware.com>
+---
+ documentation/test-manual/ptest.rst | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-https://github.com/openembedded/bitbake/blob/master/lib/bblayers/query.py#L124
+diff --git a/documentation/test-manual/ptest.rst b/documentation/test-manual/ptest.rst
+index 2c021af51..3b50e354a 100644
+--- a/documentation/test-manual/ptest.rst
++++ b/documentation/test-manual/ptest.rst
+@@ -46,13 +46,19 @@ Running ptest
+ =============
+ 
+ The ``ptest-runner`` package installs a shell script that loops through
+-all installed ptest test suites and runs them in sequence. Consequently,
+-you might want to add this package to your image.
++all installed ptest test suites and runs them in sequence.
++
++During the execution ``ptest-runner`` keeps counter of failed ``ptests``
++and use it as exit value, failing the execution if any of the ``run-ptest``
++scripts fails.
++
++Consequently, you might want to add this package to your image.
++
+ 
+ Getting Your Package Ready
+ ==========================
+ 
+-In order to enable a recipe to run installed ptests on target hardware,
++In order to enable a recipe to run installed ``ptests`` on target hardware,
+ you need to prepare the recipes that build the packages you want to
+ test. Here is what you have to do for each recipe:
+ 
+@@ -77,8 +83,9 @@ test. Here is what you have to do for each recipe:
+ 
+ -  *Create run-ptest:* This script starts your test. Locate the
+    script where you will refer to it using
+-   :term:`SRC_URI`. Here is an
+-   example that starts a test for ``dbus``::
++   :term:`SRC_URI`. Be sure your *run-ptest* exit with 0 to mark it
++   as succesfully executed.
++   Here is an example that starts a test for ``dbus``::
+ 
+       #!/bin/sh
+       cd test
+-- 
+2.39.5
 
-clearly hard-codes references to extra class directories
-classes-global and classes-recipe, which don't exist in bitbake
-itself, so this is obviously(?) a case where bitbake *does* refer
-upwards to oe-core.
-
-  is this worth even clarifying in the BB manual? i suspect that the
-simplest way to explain it is that, while BB defines only
-classes/base.bbclass, its own layers code simply *supports* the
-existence of those two additional class subdirectories, and leave it
-at that.
-
-  thoughts?
-
-rday
 
