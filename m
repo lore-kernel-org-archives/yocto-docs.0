@@ -1,417 +1,212 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <quentin.schulz@cherry.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 79CE1C5B552
-	for <webhook@archiver.kernel.org>; Tue, 10 Jun 2025 11:38:26 +0000 (UTC)
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
- by mx.groups.io with SMTP id smtpd.web11.84222.1749555500940483252
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DB003C5B552
+	for <webhook@archiver.kernel.org>; Tue, 10 Jun 2025 13:21:56 +0000 (UTC)
+Received: from DU2PR03CU002.outbound.protection.outlook.com (DU2PR03CU002.outbound.protection.outlook.com [52.101.65.35])
+ by mx.groups.io with SMTP id smtpd.web10.86712.1749561711327902210
  for <docs@lists.yoctoproject.org>;
- Tue, 10 Jun 2025 04:38:21 -0700
+ Tue, 10 Jun 2025 06:21:51 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=HI4fYqAj;
- spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id C95F742FF4;
-	Tue, 10 Jun 2025 11:38:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1749555499;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DBgp2Y8PEzIPzbtXlDx/DqzgOJMtUeWCugR2qmj6nOI=;
-	b=HI4fYqAjsMePVdVo+eUWbgMU1ttgCcDT3X2wr04HdQ0IOK5TGwfv+CpNH4q2UT0r50QUTl
-	EzOzIOeg037Gwr/yrhpZY0Or7VETyVOacP0iipoSSqM+RPNNsRh4bWaF2+vXbOe3wdolu2
-	ztMLwlrs/F9KIZ5uD/NpGaOFzoIPBATcjxBz3bbURa0yB5PH6mngfxArs1F6hFZzAnvD7n
-	Ux/1ZD6Ftd0YDnuyRM8rfawo9VwBcYtzr+U0aF/kItMhFvWdzcQdq1FFJGq/CD3dULCFaB
-	0r0chnQpFCnVSe64Ayy1wr7rAYnzEGSIfxreDFQ/7YIGdsH81GF+9y9R6wl0cQ==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 10 Jun 2025 13:38:18 +0200
-Message-Id: <DAITNWBR6NXN.2LBDVZFSIHX02@bootlin.com>
+ dkim=pass header.i=@cherry.de header.s=selector1 header.b=D23eYyY9;
+ spf=pass (domain: cherry.de, ip: 52.101.65.35, mailfrom: quentin.schulz@cherry.de)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=RDIJnnyJFbdrjO34cC1j52AUjt8mx/mJnS7GVWiTaFEGQmmqHsHeN2klX+gnRmBRf8Z5NdRZALgdvPUqKJabeTsdLwiwg8x8PwmHyxAEjKUUaNqNgEtfeLsa2E7fJGOtSEGRSXTyvcsGzEt6QAd/GjIu5Q14S3GhGTAaWpoE4wFq5V5hklkAbAISZN5P/Jq1MpNRZW7lG49pjl8wzpkArcgXJmJefpTWzmoin+dm0K4vOmhuIaOjsy8Tb1H21B64x/xWWzrwdqQL6VpWg2Uwvuzhom5Ct5wlJJjB8lEJbcyhLFdKhb8Sl2JUgRPQLYfdPGcm1tajk04+jMlJauynig==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+PgluliKeYl6pR+dV2+702fahcQUReiAI9RmvbG0ij4=;
+ b=PMqIHLVwWlf5TRf/CkBoYlh+rhl33oFBYZ3cqsKBtwU/zoXDu0Pyqay0KifDwaUX2BFoaQVlwHw8v7srmmkrtallLcf99kVHZt4JNV5U0EVoym+yp1KpXY0Eom330j/2OpXdxIixSd51I5YtUnRwbOwjq5mxnqbVOVNNTnnSwZEzHcrR17NgzTVcFmZzMT7jtSfSLS8czZd0Ty/IK4iwkU14NGSVd+fqyEJ5h2UC/UoJqmfrMBMw5jnzOwGjOZwnBlLIj33uHKXiVby7lpRGHnANGrYb0Xj/LzK5quGRsvfufj4d2K3WkP7BstXWrXGkkBbfB4S7QexhkpNVlp9g7A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
+ dkim=pass header.d=cherry.de; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+PgluliKeYl6pR+dV2+702fahcQUReiAI9RmvbG0ij4=;
+ b=D23eYyY9dhBkM99c1P5Vq6xmJn8Vf1P99nBVO/hwljGnFV+GiN2pFfm2n9D929vC2zD6DR+Mq1I1QDUuzjXrnqQ0KcVNmZlKkWaS5RTpss7SlQ3qNBekEszvO62BrpGPigwqu82YGghf7yN2Ixc7Metc9ePv0wmyA1fr9dv59E8=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=cherry.de;
+Received: from AS8PR04MB8897.eurprd04.prod.outlook.com (2603:10a6:20b:42c::20)
+ by VE1PR04MB7358.eurprd04.prod.outlook.com (2603:10a6:800:1a5::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8813.29; Tue, 10 Jun
+ 2025 13:21:44 +0000
+Received: from AS8PR04MB8897.eurprd04.prod.outlook.com
+ ([fe80::35f6:bc7d:633:369a]) by AS8PR04MB8897.eurprd04.prod.outlook.com
+ ([fe80::35f6:bc7d:633:369a%5]) with mapi id 15.20.8835.018; Tue, 10 Jun 2025
+ 13:21:44 +0000
+Message-ID: <50df3e5f-7f15-4bf4-8ea5-d639ecf2fc72@cherry.de>
+Date: Tue, 10 Jun 2025 15:21:43 +0200
+User-Agent: Mozilla Thunderbird
 Subject: Re: [docs] [PATCH] Add a document to list supported Yocto features
-Cc: "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>, "Richard Purdie"
- <richard.purdie@linuxfoundation.org>, "Yocto TSC"
- <tsc@lists.yoctoproject.org>
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: "Quentin Schulz" <quentin.schulz@cherry.de>,
- <docs@lists.yoctoproject.org>
+To: Antonin Godard <antonin.godard@bootlin.com>, docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ Richard Purdie <richard.purdie@linuxfoundation.org>,
+ Yocto TSC <tsc@lists.yoctoproject.org>
 References: <20250606-supported-architectures-v1-1-5eae2c4a2257@bootlin.com>
  <0cd19563-a1dc-48ed-9924-63a75c5e72f2@cherry.de>
-In-Reply-To: <0cd19563-a1dc-48ed-9924-63a75c5e72f2@cherry.de>
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugddutdeilecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepggfgtgffkffuvefhvfhfjgesthhqredttddtjeenucfhrhhomhepfdetnhhtohhnihhnucfiohgurghrugdfuceorghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeetgfeuieetjeegffdttdeikefgiefgudekteejjeevteeftdfgvdeuveegvdehkeenucffohhmrghinhephihotghtohhprhhojhgvtghtrdhorhhgpdgruhhtohhmohhtihhvvghlihhnuhigrdhorhhgpdhgihhthhhusgdrtghomhdpsghoohhtlhhinhdrtghomhenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmeeftgekudemvggsrgejmedusgeksgemrgehtgelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdugeemheehieemjegrtddtmeeftgekudemvggsrgejmedusgeksgemrgehtgelpdhhvghloheplhhotggrlhhhohhsthdpmhgrihhlfhhrohhmpegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohephedprhgtphhtthhopehquhgvnhhtihhnrdhstghhuhhliiestghhvghrrhihr
- dguvgdprhgtphhtthhopeguohgtsheslhhishhtshdrhihotghtohhprhhojhgvtghtrdhorhhgpdhrtghpthhtohepthhhohhmrghsrdhpvghtrgiiiihonhhisegsohhothhlihhnrdgtohhmpdhrtghpthhtoheprhhitghhrghrugdrphhurhguihgvsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepthhstgeslhhishhtshdrhihotghtohhprhhojhgvtghtrdhorhhg
-X-GND-Sasl: antonin.godard@bootlin.com
+ <DAITNWBR6NXN.2LBDVZFSIHX02@bootlin.com>
+Content-Language: en-US
+From: Quentin Schulz <quentin.schulz@cherry.de>
+In-Reply-To: <DAITNWBR6NXN.2LBDVZFSIHX02@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: AS4P195CA0045.EURP195.PROD.OUTLOOK.COM
+ (2603:10a6:20b:65a::18) To AS8PR04MB8897.eurprd04.prod.outlook.com
+ (2603:10a6:20b:42c::20)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8PR04MB8897:EE_|VE1PR04MB7358:EE_
+X-MS-Office365-Filtering-Correlation-Id: cfdc6b4c-425b-418c-6089-08dda821bed7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info: 
+	=?utf-8?B?Vi85byt3ZFZiUUFMYXRIdnhCKzMyM2xUcnpnb2tkVFpaSERiblJYMy9qUXJI?=
+ =?utf-8?B?YnhOdzVnQ1NkSFVDaDNINjFhdGZrRjdJRTlxay9mT0pkbEQxdUQ1aGErS0M3?=
+ =?utf-8?B?ZGlkNTJyUExodnJtZ0NsN2c2Q0VTeVdScnVVZUxaRVcxOUcxM3FiRUJrQU1v?=
+ =?utf-8?B?Y0ZXVzJsT095Wjhra1Y2NnRlMHUzR1Z6V3R6dzBMOC9RZnp1QS9ta2ZuRnEx?=
+ =?utf-8?B?UkxleWNWWWhJYTBoTmRPYWZrSWk0QUN3QjY0amlWcktYcE1kYnhZQVVSQzlB?=
+ =?utf-8?B?WFFDdk42N3ZqMnU4Tm1qMGhyRlZTK0QrVFNsejVGWXpmTFZHWVR2Z2tFVjVL?=
+ =?utf-8?B?T01nVXFRS1BsYTJYczVlVVJVdzBnYWhLbFExVnhUVm5XeWdPOUNzZHRoNmhq?=
+ =?utf-8?B?UFkrcTROL3VZWSs5SU4yUW1ScHY1bHZsM1ZMTFR3V1dPVDc4Y0ZLQVR2Y0JS?=
+ =?utf-8?B?QXdkbTUxWjhXVDFUcWdmYnh1R09mUW42ekRCaElMeE9kS3p4aGRKUDlJTnl4?=
+ =?utf-8?B?Nk9FeVBZRk1ENkJESUNDbjRlQnNhL0htczV1elU1OVF3KzRYRWtkSDg4eHBo?=
+ =?utf-8?B?UVhUTWVsUjQ1bG1uM3NTUlBLUEZBd3V0WDRvc053N0QrRHZ1WmVyY2pRejZR?=
+ =?utf-8?B?OGU4ZENkTyttUlkvYU5xdmVab0ZCVXcvVEFyNWh4elhUNFlKb1BzSEU0NDNH?=
+ =?utf-8?B?SXVtU2daNk8ydzJyejJnQXpCY0F2VGhrR1Q4bFZhWHBZYzRJQ3czcVZhMVc2?=
+ =?utf-8?B?NExaV2hhQWU2M3FIVWZHVzNjVU5ubm9qK29rZXJOMVgreUtYM3NGMkdaZ3gy?=
+ =?utf-8?B?K0J3aXE3RHVMVWJxWE9Mc3Z3UGVwb2hJRUhNcGw5OGFkK1pUeTZ5RFBMUFh1?=
+ =?utf-8?B?eGZPSHNBaHNxRE90eisvWFVtbWwrOUYvRlgxLzJsSURreGwzYitwVHZXb04z?=
+ =?utf-8?B?cVI2WWxQVDVOMzdBbC9yR2VjWU9CbVJqYlA3WDRMOXlQano4Yk9ET09IeUh0?=
+ =?utf-8?B?bjRvdlFiY1pKK3BSTytWcXZjb2dEaDJ6dUxCaW1YUGxldWFwRFd3SjZSeXVP?=
+ =?utf-8?B?cnlFbE9wcjdPUGc0dVN6aUlqNElFTGZTeS93VXZJcGVLUGVvNHAzRGxvN1Rs?=
+ =?utf-8?B?cERPSm5NZGc5VlFyVmYvVFBtanl4aWRPdVlLbkUzejRLUWU0azU4cGQwblRX?=
+ =?utf-8?B?NW04WnR6MjR4UEd1MTN1c09jZStFbUNZVkdCTnRXaGhHTUFWVjFaK2lTSHVj?=
+ =?utf-8?B?K1FrMWVhV2R2Unpwd0pGZEdSR3dMNVNqZUdjbHdPekNJM3ZFQVBpM1U0TUp5?=
+ =?utf-8?B?dU9xWnlaSXorYStwajlNalFzQTd0eUVLMFZPNjd4TjJUSUg4dTlWMXdsZ0V5?=
+ =?utf-8?B?RUNQOHlxN0hrY1RlOVp5QmwvWnovZVJQeXRjOGxsUVZEdnArOU1OamM2TCtK?=
+ =?utf-8?B?RC9mVFl2NDNWKzg4c2xXSzlkU0w2bGZoYzBsRlBWaWYyL0tSQ3hqVmRSQ0Zn?=
+ =?utf-8?B?QTNwcXd3ekJIcjZSSWlHZVlrblViZ2s3dHI3dCtTeElWQkhaRGRKM1NiRTJr?=
+ =?utf-8?B?Y0JONVRMeHNKeElsWEh0NEcrdlFjTHV4Wmx6bmc5MFYreGFNd05Fb3ZZY09Z?=
+ =?utf-8?B?cnlWcm43eEpFZXo0LzRPS28rTEt0N21MdjFoYlhNVlE1UUhtQXIxRTh5RmxV?=
+ =?utf-8?B?VHVHN3o1TTZ1WWhaWUFGakhLS2F3c1gza3N6N0xESGlHSEoxZWl6NXVEbkpU?=
+ =?utf-8?B?aVVTeVYwVXA1TWwzcjNsUEdyVFREUTFMdW1mUEoxVVY2em1PVTJ0SVJPNUZ6?=
+ =?utf-8?B?TFozLzlTUHZvMm53MUdYdkVCek13RGgwNC9DMU9SVkxDMTczRTR4ZE5SU3Nu?=
+ =?utf-8?B?cjF2a3FGUzFLN2RlaVMvUEVnZ1hsTkJWS1JEMmZhZFZLZmViaGhOYXVKdkhz?=
+ =?utf-8?Q?sbpWgknnx/E=3D?=
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8897.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?utf-8?B?UUMwelVrRFNYNDluaFQ2NEVKVUFVQzY1V1cwb3I1Mmg1clJmVjN4UHhzN1dl?=
+ =?utf-8?B?QkMrN2lLWU1RZE55MFVjbkVhZG9ibm1CSWx3S3JSUWJqRkxWb3ZwS0lzSHll?=
+ =?utf-8?B?WmVIQm4wQmE3OHJpTWZBSHUvZFdrNzAvMm9FdzBEbUduZGN1NUcxT2I0WVRW?=
+ =?utf-8?B?U0xhNUtPb2dFSklZdkxsOVV2eUZBQ2tLZXczUHJZV0YzdC9PSHVpNStsOXV6?=
+ =?utf-8?B?cEJWZEVGbzFGclhOTmMxZHdsUHFyZzY2N1N3VFE0WkJENWx3MkZNdXRvcmVO?=
+ =?utf-8?B?UmwyalJnZFM4aW80N2dKd0VuaEExMzRhOXI4Z0Mxb0FLeXA1Q0s4d01IWmpK?=
+ =?utf-8?B?RXRIa0YwS3diTk95c2MzMG02K2pHUExEUHdITkFISzJCeEJUcXYvYm9iSnpO?=
+ =?utf-8?B?SUJ2VU1ia2s2RzJFSS80Qk5WdVZJSlhweTI3ZlVkK2h1dktlc3JtSTVwNGlS?=
+ =?utf-8?B?SEdFM3diNnRXOG9RNUlKdkJXaWtqRFVRbTZBTHRhSHkwZFBtMmRDVmV1OE04?=
+ =?utf-8?B?Y0t6K2VSV3ZtUmp3UFkyZ3JQOEJoQW16Qkd4MVZTZXlIeWRIS01pVGJDeXA3?=
+ =?utf-8?B?cWdHdWpJblg5U3VGcmU5TWFqWnZQSjlzb21SSHlab3o2NUhIOEV3TXVxVkk5?=
+ =?utf-8?B?V2tiRmhDZ3Q5RmFaVk9LalpLR3BWVmRyQnczdHo5akFGRXNRaU5EYnk3OG53?=
+ =?utf-8?B?TEczWTlJeUR0cnRPYU96NWp1VExnOVF1bDVZNVdQUEU0dFdieWQ2QlRxSEVh?=
+ =?utf-8?B?a2JhRTFENURhZGRScEowd2c3c3g1S1VnV082Ujl5VytOMCtWcTVWdkZMczlm?=
+ =?utf-8?B?MW1aeEZHUDhEbkJmUHFXQXRKSURZVFRpZkJyNjNNYkpBSGxlTDY3dmZjNjMz?=
+ =?utf-8?B?Y1BVdk9PdmtKT3BsU0FxbHhGVDVGV3RmYjYwK24wVWRsTW1NM1JvWXlVSFRX?=
+ =?utf-8?B?YWZ5MTNuRm1Hb3h1ZzBoekNwdXJoVDA0UWdOTFNqcUVFQ2gwSE1WbVh6UDFs?=
+ =?utf-8?B?UDRkMFhLaE90cHBwZU1RdWxwUW9SRlRaTUpBdktUQllLaFZmZkMveU9BWklK?=
+ =?utf-8?B?NnBlSW1hWFR3UnhXdDgrNkh2UGJRVUhzVXRNOWVoeGRacHhYUEFSWE1CdEpn?=
+ =?utf-8?B?Rzc5VktjOGJ3bEw4Y3IwUHVJQW5Vbk5NWU01c2xaRXNlTERkMGZwR3M0WGQ0?=
+ =?utf-8?B?RFJJOVdtL0w3OEtURm43Z250VHZZT0g1eGNOcyt0Sy93UFlpK3RiNWswWXhy?=
+ =?utf-8?B?Wk96R3lQVHFadXhlbDhEY1J2Z3UyYldpbnAzR2pid1JibHQyLy9HdldYcmxI?=
+ =?utf-8?B?V3N1UEtycEZrRms3cjhCdHhiN1NUYXVQRmlvSGxEUVFrZXEzYXlBTXhod280?=
+ =?utf-8?B?WXVoSkZYNGdHMlZ1UHUrcWJtUnNYQkV0dWRReXNTRzB3TExVcU1nVFpmWVRv?=
+ =?utf-8?B?bWthNUVteFZmNng1SWdFZVF0L0I0QW1mTW5LQzRmdnVqVFV2Y2dydkFnMVVV?=
+ =?utf-8?B?WGpXME9iZFZHQXM2cW9VODI4d3pyK21JQVNWUVY1TFF3TFRCMFMyTjVhelQ2?=
+ =?utf-8?B?OFZXWEVaWElSejduUS8ycEUzcVpubi9oWWdlS202ZDBMUTNUY0JUNWVBdnBi?=
+ =?utf-8?B?UUFNbERGd1pHVlcvYlB0aXQyaFMrVFQ5UWhRcEFwUlFwSTcvRElGL1ZCZER0?=
+ =?utf-8?B?enRiaS8raWZzQ0JOSlJnUVFQNDVnL0UzVzdMalVBc1R1cE90K3ZBZWg0ZGFB?=
+ =?utf-8?B?TFBNek9LTVpKdCtTZDMvR2U1L2tOTHBQQTRHQ3oveXNXaDVua1FEQUhzY1U3?=
+ =?utf-8?B?RE5DdXRIeEg4TmdtaE9CeTEzbjFMSDMyTEtxZ05zTmswcWFaTVVHelNhTWpL?=
+ =?utf-8?B?bFNOVEZqaWpZT0l5S2FYUjU3UFZuVnBrWURlODhhcDIxaG9qUjAwdk1OV3pC?=
+ =?utf-8?B?QkFidXRCU0ZzWEdQTUJqWDhzWTk0enlLZCtMSTFTZkdRQnM3Ukdib0N6dXI4?=
+ =?utf-8?B?czhjRkJqcHhTOTJMdUtId0ZPVmJ5ajcxeFhzSERnQ3AvRmMvZlJlbXRvZk9p?=
+ =?utf-8?B?Tmpyb1Mzc3A4SWFlc2FPZUhBR2VjMXV2RFBpcE5wemdlMGY2V2VYdVFvNEIy?=
+ =?utf-8?B?UnVOQnB4WWROWFJ0cVZjWHlsOVRxMTBwd0xSYTMyVmZqbXZjUmE0bUZhYWdY?=
+ =?utf-8?B?Y1E9PQ==?=
+X-OriginatorOrg: cherry.de
+X-MS-Exchange-CrossTenant-Network-Message-Id: cfdc6b4c-425b-418c-6089-08dda821bed7
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8897.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jun 2025 13:21:44.6897
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: uemyl6AWywbBcwpT95KVoZsztZkhEMxC32/q7e1ZVDMYh+uxYt/B3/N/keIveW9iIi1yBQJfXLXj7zxPJy5EywL8+QAqWtQb7/E1Qo7L0RE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB7358
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 10 Jun 2025 11:38:26 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7050
+ <docs@lists.yoctoproject.org>; Tue, 10 Jun 2025 13:21:56 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7051
 
-Hi Quentin,
+Hi Antonin,
 
-Thanks for the suggestions, I'll prepare a v2.
+On 6/10/25 1:38 PM, Antonin Godard wrote:
+> Hi Quentin,
+> 
+> Thanks for the suggestions, I'll prepare a v2.
+> 
+> Otherwise I'll answer to what I know the answer to.
+> 
+> On Fri Jun 6, 2025 at 11:25 AM CEST, Quentin Schulz wrote:
+>> Hi Antonin,
+>>
+>> On 6/6/25 9:37 AM, Antonin Godard via lists.yoctoproject.org wrote:
+[...]
+>>> +Below is a list of primary tested features, their maintainer(s) and builder(s):
+>>> +
+>>> +.. list-table::
+>>> +   :widths: 20 20 20 40
+>>> +   :header-rows: 1
+>>> +
+>>> +   * - Feature
+>>> +     - Description
+>>> +     - Maintainer(s)
+>>
+>> What are we trying to achieve with this column?
+>>
+>> What am I supposed to derive as information as a user of YP/OE/BB based
+>> on that?
+>>
+>> Is this some kind of public recognition from the project of efforts from
+>> some people?
+>>
+>> Are we supposed to be able to contact those people maybe? Should there
+>> be some mail address there or some pointers to some document on what to
+>> do if we want to contact them?
+> 
+> I did not want to display the email adresses of the people there without their
+> consent, although it would be nice to include, for sure. I guess I can mention
+> that layer READMEs should contain more information, including the email address.
+> 
 
-Otherwise I'll answer to what I know the answer to.
+Fair enough, especially considering that the mail addresses may change 
+over time.
 
-On Fri Jun 6, 2025 at 11:25 AM CEST, Quentin Schulz wrote:
-> Hi Antonin,
->
-> On 6/6/25 9:37 AM, Antonin Godard via lists.yoctoproject.org wrote:
->> Add a "Yocto Project Supported Architectures And Features" document that
->> aims at:
->>=20
->> - Defining the different levels of support for features
->> - Listing the maintainers for a feature
->> - Listing the existing builders on the Autobuilder for the feature
->>=20
->> Co-developed-by: Richard Purdie <richard.purdie@linuxfoundation.org>
->> Cc: Yocto TSC <tsc@lists.yoctoproject.org>
->> Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
->> ---
->>   documentation/ref-manual/index.rst                 |   1 +
->>   .../yocto-project-supported-features.rst           | 264 +++++++++++++=
-++++++++
->>   2 files changed, 265 insertions(+)
->>=20
->> diff --git a/documentation/ref-manual/index.rst b/documentation/ref-manu=
-al/index.rst
->> index a746dde492..53fa98cc99 100644
->> --- a/documentation/ref-manual/index.rst
->> +++ b/documentation/ref-manual/index.rst
->> @@ -11,6 +11,7 @@ Yocto Project Reference Manual
->>      :numbered:
->>  =20
->>      system-requirements
->> +   yocto-project-supported-features
->>      terms
->>      release-process
->>      structure
->> diff --git a/documentation/ref-manual/yocto-project-supported-features.r=
-st b/documentation/ref-manual/yocto-project-supported-features.rst
->> new file mode 100644
->> index 0000000000..8776a1a7eb
->> --- /dev/null
->> +++ b/documentation/ref-manual/yocto-project-supported-features.rst
->> @@ -0,0 +1,264 @@
->> +.. SPDX-License-Identifier: CC-BY-SA-2.0-UK
->> +
->> +**************************************************
->> +Yocto Project Supported Architectures And Features
->> +**************************************************
->> +
->> +The Yocto Project is putting continuous efforts into testing the change=
-s made to
->> +the :term:`OpenEmbedded-Core (OE-Core)` metadata and core tools. The de=
-tails on
->> +how this test environment functions is described in the
->> +:doc:`/test-manual/index`.
->> +
->> +These tests are also run for stable and Long Term Support versions of t=
-he Yocto
->
-> Could point Long Term Support to the :term:`LTS` as well since we=20
-> already have it :)
->
->> +Project. See the :doc:`/ref-manual/release-process` section of the Yoct=
-o Project
->> +Reference Manual for more information on these types of releases.
->> +
->> +The infrastructure behind the test environment is the Yocto Project Aut=
-obuilder.
->> +For more information on the Yocto Project Autobuilder, see the
->> +:ref:`test-manual/intro:Yocto Project Autobuilder Overview` section of =
-the Yocto
->> +Project Test Manual. The Autobuilder contains a set of Builders that ar=
-e
->
-> I would squash the first and second sentence with a simple link
->
-> :ref:`Yocto Project Autobuilder<test-manual/intro:Yocto Project=20
-> Autobuilder Overview>`
->
-> for example.
->
->> +associated to an architecture or a feature to test. For example, the
->> +``qemuarm64`` builder corresponds to testing the ARM 64-bit architectur=
-e.
->> +
->
-> Wondering if this information should be part of=20
-> documentation/test-manual/understand-autobuilder.rst as well/only?
+Not sure the layer's README will contain information about machines' or 
+some autobuilder builders' maintainers though?
 
-I took a note of that, thanks
+I'm mostly perplexed about what is the purpose for such a column in the 
+table.
 
->> +Below is a comprehensive list of target architectures and features that=
- are
->> +supported, as well as their level of support. For each architecture or =
-feature,
->> +their corresponding builders are also listed.
->> +
->> +Primary Supported
->> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->> +
->> +The term "primary" means that dedicated builds for these architecture o=
-r
->
-> s/architecture/architectures/
->
->> +features are being run on a daily basis on the Yocto Project Autobuilde=
-r and
->> +also tested with incoming changes before they merge.
->> +
->
-> Should we mention this is typically the -next branches? E.g.=20
-> master-next, walnascar-next, etc...?
+@Richard - or anyone else :) - what is/was intended here?
 
-Sure, I can briefly mention that, it can help people locating their "under-=
-test"
-patches.
-
->> +Below is a list of primary tested features, their maintainer(s) and bui=
-lder(s):
->> +
->> +.. list-table::
->> +   :widths: 20 20 20 40
->> +   :header-rows: 1
->> +
->> +   * - Feature
->> +     - Description
->> +     - Maintainer(s)
->
-> What are we trying to achieve with this column?
->
-> What am I supposed to derive as information as a user of YP/OE/BB based=
-=20
-> on that?
->
-> Is this some kind of public recognition from the project of efforts from=
-=20
-> some people?
->
-> Are we supposed to be able to contact those people maybe? Should there=20
-> be some mail address there or some pointers to some document on what to=
-=20
-> do if we want to contact them?
-
-I did not want to display the email adresses of the people there without th=
-eir
-consent, although it would be nice to include, for sure. I guess I can ment=
-ion
-that layer READMEs should contain more information, including the email add=
-ress.
-
->> +     - Builder(s)
->> +   * - :wikipedia:`ARM <ARM_architecture_family>`
->> +     - ARM architecture testing
->> +     - Collective effort
->> +     - genericarm64,
->> +       genericarm64-alt,
->> +       meta-arm,
->
-> This stood out compared to other entries in this column as I recognized=
-=20
-> most others as machines, but this is a layer.
->
-> So this then prompted me to look it up on the autobuilder and I see that=
-=20
-> we have tags for builders.
->
-> Some are "layers" like meta-arm, "qemu", "toolchain", "qemu-alt", "ltp",=
-=20
-> "ptest", etc.
->
-> I'm guessing they have a purpose and things are tested differently in=20
-> the autobuilder based on this tag? Is this something we want to document?
->
->> +       musl-qemuarm64,
->> +       qemuarm,
->> +       qemuarm-alt,
->> +       qemuarm-oecore,
->> +       qemuarm-tc,
->> +       qemuarm64,
->> +       qemuarm64-alt,
->> +       qemuarm64-armhost,
->> +       qemuarm64-ltp,
->> +       qemuarm64-ptest,
->> +       qemuarm64-tc,
->> +       qemuarmv5
->> +   * - :yocto_git:`Beaglebone </poky/tree/meta-yocto-bsp/conf/machine/b=
-eaglebone-yocto.conf>`
->> +     - Beaglebone image and SDK build testing
->> +     - Collective effort
->> +     - beaglebone,
->> +       beaglebone-alt
->> +   * - :doc:`Reproducible </test-manual/reproducible-builds>`
->> +     - reproducibility testing
->> +     - Collective effort
->> +     - reproducible
->> +   * - :term:`Buildtools`
->> +     - Buildtools generation
->> +     - Collective effort
->> +     - buildtools
->> +   * - `meta-agl-core <https://gerrit.automotivelinux.org/gerrit/AGL/me=
-ta-agl>`__
->> +     - meta-agl-core layer testing
->> +     - Jan-Simon M=C3=B6ller
->> +     - meta-agl-core
->> +   * - `meta-arm <https://git.yoctoproject.org/meta-arm>`__
->> +     - meta-arm layer testing
->> +     - Jon Mason,
->> +       Ross Burton
->> +     - meta-arm
->
-> Ahah, should meta-arm be removed from the first row?
-
-Indeed this was a mistake, thanks!
-
->> +   * - `meta-aws <https://github.com/aws4embeddedlinux/meta-aws>`__
->> +     - meta-aws layer testing
->> +     - Thomas Roos
->> +     - meta-aws
->> +   * - `meta-intel <https://git.yoctoproject.org/meta-intel>`__
->> +     - meta-intel layer testing
->> +     - Anuj Mittal
->> +     - meta-intel
->> +   * - `meta-virtualization <https://git.yoctoproject.org/meta-virtuali=
-zation/>`__
->> +     - meta-virtualization layer testing
->> +     - Bruce Ashfield
->> +     - meta-virt
->> +   * - :ref:`Multilib <dev-manual/libraries:Combining Multiple Versions=
- of Library Files into One Image>`
->> +     - Multilib feature testing
->> +     - Collective effort
->> +     - multilib
->> +   * - :term:`OpenEmbedded-Core selftest<OpenEmbedded-Core (OE-Core)>`
->> +     - OpenEmbedded-Core layers selftests
->> +     - Collective effort
->> +     - oe-selftest-fedora,
->> +       oe-selftest-debian,
->> +       oe-selftest-armhost
->> +   * - Package managers> +     - Package managers (RPM, DEB and IPK for=
-mats) testing in the
->> +       :term:`OpenEmbedded Build System` (different from the
->> +       ``package-management`` :term:`image feature <IMAGE_FEATURES>`)
->
-> Would that then be :term:`PACKAGE_CLASSES`?
-
-Yes, this builder is testing package types from PACKAGE_CLASSES.
-
-> We can keep the disambiguation though.
->
->> +     - Collective effort
->> +     - pkgman-non-rpm (other builders use RPM by default)
->> +   * - :ref:`Patchtest <contributor-guide/submit-changes:Validating Pat=
-ches with Patchtest>`
->> +     - Patchtest tool selftests
->> +     - Trevor Gamblin
->> +     - patchtest-selftest
->> +   * - :wikipedia:`RISC-V (64-bit) <RISC-V>`
->> +     - RISC-V architecture testing (64-bit)
->> +     - Collective effort
->> +     - qemuriscv64,
->> +       qemuriscv64-ptest,
->> +       qemuriscv64-tc
->> +   * - :wikipedia:`systemd <Systemd>`
->> +     - Systemd init manager testing
->> +     - Collective effort
->> +     - no-x11, qa-extras2
->> +   * - :term:`Toaster`
->> +     - Toaster web interface testing
->> +     - Collective effort
->> +     - toaster
->> +   * - :ref:`Wic <dev-manual/wic:creating partitioned images using wic>=
-`
->> +     - WIC image creation testing
->> +     - Collective effort
->> +     - wic
->> +   * - :wikipedia:`X86 <X86>`
->> +     - X86 architecture testing
->> +     - Collective effort
->> +     - genericx86,
->> +       genericx86-64,
->> +       genericx86-64-alt,
->> +       genericx86-alt,
->> +       musl-qemux86,
->> +       musl-qemux86-64,
->> +       qemux86,
->> +       qemux86-64,
->> +       qemux86-64-alt,
->> +       qemux86-64-ltp,
->> +       qemux86-64-ptest,
->> +       qemux86-64-tc,
->> +       qemux86-64-x32,
->> +       qemux86-alt,
->> +       qemux86-tc,
->> +       qemux86-world,
->> +       qemux86-world-alt
->> +
->> +Secondary Supported
->> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->> +
->> +The term "secondary" means that in some cases there is code/feature/sup=
-port
->> +which is desired by people using the project and is in the project's in=
-terests
->> +to support, however there isn't wide enough interest and support to jus=
-tify
->> +testing all incoming changes on it. There are however project member
->> +organisations and maintainers willing to run tests and review fixes.
->> +
->> +This category may be applicable=C2=A0as support/usage in an area develo=
-ps and grows,
->> +or as support/usage fades but we continue to have tests. It can also ap=
-ply where
->> +resourcing isn't available for full primary support but there is
->> +member/maintainer support for running tests.
->> +
->> +We therefore have the following criteria and policies for such items:
->> +
->> +-  It can be clearly isolated and defined by specific configuration.
->> +
->> +-  There is a clear documented group of maintainers agreeing to maintai=
-n=C2=A0it.
->> +
->> +-  Those maintainers are active and responsive.
->> +
->> +-  It is being actively and publicly tested (potentially using
->> +   the=C2=A0:ref:`Autobuilder <test-manual/intro:Yocto Project Autobuil=
-der Overview>`
->> +   by agreement, or otherwise).
->> +
->> +-  Testing would not be part of standard incoming change testing and=C2=
-=A0regressions
->> +   would not block incoming patches.
->> +
->> +-  The :yocto_wiki:`SWAT </Yocto_Build_Failure_Swat_Team>` team would n=
-ot handle
->> +   any test builds on the autobuilder.
->> +
->
-> Autobuilder has always been capitalized in this patch until here, so...
->
-> s/autobuilder/Autobuilder/
->
-> ?
->
->> +-  Test results can be submitted as part of the release process if=C2=
-=A0desired.
->> +
->
-> Submitted where? Can we see the test results somewhere?
->
-> Cheers,
-> Quentin
-
-Antonin
-
---=20
-Antonin Godard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
+Cheers,
+Quentin
 
