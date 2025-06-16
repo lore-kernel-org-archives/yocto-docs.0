@@ -1,100 +1,86 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7E3F6C71136
-	for <webhook@archiver.kernel.org>; Mon, 16 Jun 2025 10:19:14 +0000 (UTC)
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
- by mx.groups.io with SMTP id smtpd.web11.27147.1750069151315864698
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A637AC71136
+	for <webhook@archiver.kernel.org>; Mon, 16 Jun 2025 12:49:55 +0000 (UTC)
+Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
+ by mx.groups.io with SMTP id smtpd.web10.29608.1750078186028115547
  for <docs@lists.yoctoproject.org>;
- Mon, 16 Jun 2025 03:19:11 -0700
+ Mon, 16 Jun 2025 05:49:46 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Vneu0uZn;
- spf=pass (domain: bootlin.com, ip: 217.70.183.193, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 400EB42EF5;
-	Mon, 16 Jun 2025 10:19:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1750069149;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6hM31VTo4FQ/3q37LC6Honj+FtgmRTeMX5wWJHiUzSs=;
-	b=Vneu0uZnHa+rnmIyukf/XuT4h1tRTgaJ4CgtYXKOnV3cVe4CI2i/DE+qNkNz1T6d3Xtk8U
-	agUBwkK+HdNZfQwvdA9c8+8Tll50W41c7vfEZ90tVvb9TDHIBMxPITWLioNUWZZhy4bVHA
-	9xvBu3LEYjXWq/d1wZ7V9wRa3ax8gPMQMXYPVWBNH36keKhijqvlgn4XTYSpBX/YdeIB0q
-	t4oPa9XDMtbJ37HGL5uzI9Wzniqo5+th7enAfcIaZdrDB3Br/o9ernkkZf8Be1V51A5jMO
-	Q+3CH0ORIUEEAkG91yIvgv0uKKf/XgdcjPubO/TuHSrZ1dU4GdhYh+pmBJk6hA==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 16 Jun 2025 12:19:08 +0200
-Message-Id: <DANVQK04YFFW.1UXQZIWYWTKE4@bootlin.com>
-Subject: Re: [docs] [PATCH] Add a document to list supported Yocto features
-Cc: "Yocto TSC" <tsc@lists.yoctoproject.org>, "docs@lists.yoctoproject.org"
- <docs@lists.yoctoproject.org>
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: "Freihofer, Adrian" <adrian.freihofer@siemens.com>, "Richard Purdie"
- <richard.purdie@linuxfoundation.org>
-References: <20250606-supported-architectures-v1-1-5eae2c4a2257@bootlin.com>
- <e7da5ff41c321096deb76f9fa6544475c19dd37c.camel@siemens.com>
-In-Reply-To: <e7da5ff41c321096deb76f9fa6544475c19dd37c.camel@siemens.com>
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugddvieefvdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepggfgtgffkffuvefhvfhfjgesthhqredttddtjeenucfhrhhomhepfdetnhhtohhnihhnucfiohgurghrugdfuceorghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeffheekueetteekueefjeejveevuddutdfgueetieevkeejgeejgeetueevkeefudenucffohhmrghinhepsghoohhtlhhinhdrtghomhenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmeeftgekudemvggsrgejmedusgeksgemrgehtgelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdugeemheehieemjegrtddtmeeftgekudemvggsrgejmedusgeksgemrgehtgelpdhhvghloheplhhotggrlhhhohhsthdpmhgrihhlfhhrohhmpegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepgedprhgtphhtthhopegrughrihgrnhdrfhhrvghihhhofhgvrhesshhivghmvghnshdrtghomhdprhgtphhtthhopehrihgthhgrrhgurdhpuhhrughivgeslhhinhhugihfohhunhgurghtihhonhdrohhrg
- hdprhgtphhtthhopehtshgtsehlihhsthhsrdihohgtthhophhrohhjvggtthdrohhrghdprhgtphhtthhopeguohgtsheslhhishhtshdrhihotghtohhprhhojhgvtghtrdhorhhg
-X-GND-Sasl: antonin.godard@bootlin.com
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=qIrN4oB+;
+ spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
+	To:From:Date:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=2Ni57T0iEQ5GBg9ejZ8IWcbLikuejyWX2k4J5ckyM6k=; b=qIrN4oB+v1ePDYjUNsB+u7wQfc
+	Pcm7NlzVrCpIwfh0wIXe9hgpEto+PSO19Pin5WdPH+cgPfQgZXr6/NP0RxgtHafboTJBbmtZeaJOp
+	OinZAUTmS9DSxC2XZYOX7196d5qXHJdb3dI6YopMHx2z+iTwlnzx9/ekQGPE8COCLJjXrDn1Edw4T
+	MhOj4COon8KISWGRBc2DN0A5WWju6EW8AteC5Zt36U6QM1IiDQBHpVAIbxchCkcYLEZr7oNskEw44
+	EcaYZxt4imbLS/C41zg08iizf0bPPAxzd3eRW+rHmRru3QTgVS3yIb85Jjge8xH/DeMB5aXYY4j4u
+	uYQSdmqQ==;
+Received: from pool-174-114-102-5.cpe.net.cable.rogers.com ([174.114.102.5]:51798 helo=asus)
+	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <rpjday@crashcourse.ca>)
+	id 1uR9HS-0000000E7hP-0nWY
+	for docs@lists.yoctoproject.org;
+	Mon, 16 Jun 2025 08:49:44 -0400
+Date: Mon, 16 Jun 2025 08:49:34 -0400 (EDT)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+To: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: are there any actual "container layers" left?
+Message-ID: <fdb50d7e-bd02-e3eb-e320-19814e9aa929@crashcourse.ca>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
+X-AntiAbuse: Original Domain - lists.yoctoproject.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - crashcourse.ca
+X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 16 Jun 2025 10:19:14 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7069
+ <docs@lists.yoctoproject.org>; Mon, 16 Jun 2025 12:49:55 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7070
 
-On Wed Jun 11, 2025 at 6:31 PM CEST, Adrian Freihofer wrote:
-[...]
->> +Below is a list of secondary tested features, their maintainer(s)
->> and
->> +builder(s):
->> +
->> +.. list-table::
->> +=C2=A0=C2=A0 :widths: 20 20 20 40
->> +=C2=A0=C2=A0 :header-rows: 1
->> +
->> +=C2=A0=C2=A0 * - Feature
->> +=C2=A0=C2=A0=C2=A0=C2=A0 - Description
->> +=C2=A0=C2=A0=C2=A0=C2=A0 - Maintainer(s)
->> +=C2=A0=C2=A0=C2=A0=C2=A0 - Builder(s)
->> +=C2=A0=C2=A0 * - :wikipedia:`PowerPC (32-bit) <PowerPC>`
->> +=C2=A0=C2=A0=C2=A0=C2=A0 - PowerPC architecture testing (32-bit)
->> +=C2=A0=C2=A0=C2=A0=C2=A0 - Adrian Freihofer
->
-> Would it be possible to add Peter Marko in addition to me?
 
-Hi Adrian,
+  perusing the BSP developer's guide:
 
-We decided it would be better if each maintainer modifies this document to =
-add
-themselves once it is merged on the master branch. The v2 of this patch con=
-tains
-"TBD" values instead, which are to replace. I think you could modify that a=
-nd
-add Peter Marko as well.
+https://docs.yoctoproject.org/bsp-guide/bsp.html
 
->> +=C2=A0=C2=A0=C2=A0=C2=A0 - qemuppc,
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 qemuppc-alt,
->
-> Not sure how much effort we'll be able to dedicate to PPC-32 with
-> systemd. To be transparent, we might need to consider moving qemuppc-
-> alt to unsupported status until somebody would step up as a maintainer
-> for qemuppc-alt.
+and early on, there is a reference to "container layers," which i
+remember because i recall bringing up the issue of how to refer to OE
+layers that were themselves layers while containing even *more* layers
+as subdirectories.
 
-Thanks for letting me know, I will move that to the unsupported section.
+  first, since this is the BSP guide, it's a bit weird to use
+meta-openembedded as an alleged example of a container layer. but
+that's not the issue.
 
-Antonin
+  as i recall, the phrase "container layer" was meant to describe
+something which was itself a valid layer, while containing further
+valid layers; if memory serves, "meta-intel" used to look like that.
+but that's not what it looks like anymore, it's just a regular layer:
 
---=20
-Antonin Godard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+  https://git.yoctoproject.org/meta-intel/tree/
+
+as another example, the "meta-xilinx" checkout clearly fetches
+numerous layers, but it itself is not a layer, so it doesn't fit the
+definition of a "container layer".
+
+  is this terminology still useful? and under what circumstances?
+
+rday
+
 
 
