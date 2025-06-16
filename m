@@ -1,58 +1,71 @@
-Return-Path: <ross.burton@arm.com>
+Return-Path: <adrian.freihofer@siemens.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DFB5AC71155
-	for <webhook@archiver.kernel.org>; Mon, 16 Jun 2025 16:04:21 +0000 (UTC)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by mx.groups.io with SMTP id smtpd.web11.903.1750089858406368844
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3368BC71136
+	for <webhook@archiver.kernel.org>; Mon, 16 Jun 2025 20:41:56 +0000 (UTC)
+Received: from mta-65-227.siemens.flowmailer.net (mta-65-227.siemens.flowmailer.net [185.136.65.227])
+ by mx.groups.io with SMTP id smtpd.web11.2382.1750106509113979742
  for <docs@lists.yoctoproject.org>;
- Mon, 16 Jun 2025 09:04:18 -0700
+ Mon, 16 Jun 2025 13:41:50 -0700
 Authentication-Results: mx.groups.io;
- dkim=none (message not signed); spf=pass (domain: arm.com, ip: 217.140.110.172, mailfrom: ross.burton@arm.com)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8009A150C
-	for <docs@lists.yoctoproject.org>; Mon, 16 Jun 2025 09:03:56 -0700 (PDT)
-Received: from cesw-amp-gbt-1s-m12830-04.lab.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 915CB3F673
-	for <docs@lists.yoctoproject.org>; Mon, 16 Jun 2025 09:04:17 -0700 (PDT)
-From: Ross Burton <ross.burton@arm.com>
+ dkim=pass header.i=adrian.freihofer@siemens.com header.s=fm2 header.b=sV9ak7ti;
+ spf=pass (domain: rts-flowmailer.siemens.com, ip: 185.136.65.227, mailfrom: fm-1329275-202506162041448342290d3f95b778d2-c5t7kf@rts-flowmailer.siemens.com)
+Received: by mta-65-227.siemens.flowmailer.net with ESMTPSA id 202506162041448342290d3f95b778d2
+        for <docs@lists.yoctoproject.org>;
+        Mon, 16 Jun 2025 22:41:45 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm2;
+ d=siemens.com; i=adrian.freihofer@siemens.com;
+ h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc;
+ bh=z1mnhMf//zlkUQBuoeqQllkDSGhHfjmC8BVwWCgaTHk=;
+ b=sV9ak7tiFx92ZWFof68s878PSo4BYRve3iY70ivttKhQSriVUJu4MiI0BApW7L0JLoECCU
+ J3QnA0RLILGymVX3KAQ/65buGd1sOwflEzH58GzVBuPfBEprTJfND7/cpr83ZBFpnXHv4V+e
+ sr1s7ViSsV+qAedJfLjfZccCJFLZr5k8E74OSG8oVpjwxcfeBdiWQNoHFC1fjWmyfUkpujI5
+ V3/7lRA+HoMVAOksiKWkAxRI6HdfekeSVvfoTN5NYHMMGdCvarhCCnGcKdew/0HhZM3WkpK9
+ WI96jBnhOrydxDV6cVI+l6UuriMdNJbWtHpKiy3396hKbkJu3k9MNnnQ==;
+From: AdrianF <adrian.freihofer@siemens.com>
 To: docs@lists.yoctoproject.org
-Subject: [PATCH] ref-manual/yocto-project-supported-features: add a contact for meta-arm
-Date: Mon, 16 Jun 2025 17:04:11 +0100
-Message-ID: <20250616160411.990767-1-ross.burton@arm.com>
-X-Mailer: git-send-email 2.43.0
+Cc: Adrian Freihofer <adrian.freihofer@siemens.com>
+Subject: [PATCH v2 0/3] FIT image improvements documentation
+Date: Mon, 16 Jun 2025 22:36:46 +0200
+Message-ID: <20250616204135.1388643-1-adrian.freihofer@siemens.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Flowmailer-Platform: Siemens
+Feedback-ID: 519:519-1329275:519-21489:flowmailer
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 16 Jun 2025 16:04:21 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7072
+ <docs@lists.yoctoproject.org>; Mon, 16 Jun 2025 20:41:56 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7076
 
-Set the contact address for meta-arm.
+From: Adrian Freihofer <adrian.freihofer@siemens.com>
 
-Signed-off-by: Ross Burton <ross.burton@arm.com>
----
- documentation/ref-manual/yocto-project-supported-features.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Changes from v1 to v2:
 
-diff --git a/documentation/ref-manual/yocto-project-supported-features.rs=
-t b/documentation/ref-manual/yocto-project-supported-features.rst
-index bc1a8139381..57bd789ba4e 100644
---- a/documentation/ref-manual/yocto-project-supported-features.rst
-+++ b/documentation/ref-manual/yocto-project-supported-features.rst
-@@ -78,7 +78,7 @@ Below is a list of primary tested features, their maint=
-ainer(s) and builder(s):
-      - meta-agl-core
-    * - `meta-arm <https://git.yoctoproject.org/meta-arm>`__
-      - meta-arm layer testing
--     - TBD
-+     - meta-arm mailing list <meta-arm@lists.yoctoproject.org>
-      - meta-arm
-    * - `meta-aws <https://github.com/aws4embeddedlinux/meta-aws>`__
-      - meta-aws layer testing
---=20
-2.43.0
+* Findings from Antonin
+  * Add examples
+  * all suggested wording improvements
+  * link to bugzilla
+  * Enumeration with #.
+* Taking into account discussions related to meta-ti and meta-rockchip
+
+Update the documentation to cover the changes introduced with
+https://lists.openembedded.org/g/openembedded-core/message/217767
+
+Adrian Freihofer (3):
+  ref-manual: replace kernel-fitimage by kernel-fit-image
+  release-notes: drop references to kernel-fitimage
+  migration-5.3: replace kernel-fitimage by kernel-fit-image
+
+ .../migration-guides/migration-5.3.rst        |  42 ++++
+ .../migration-guides/release-notes-5.1.rst    |   2 +-
+ .../migration-guides/release-notes-5.2.rst    |   4 +-
+ documentation/ref-manual/classes.rst          | 201 ++++++++++++------
+ documentation/ref-manual/variables.rst        |  60 +++---
+ 5 files changed, 215 insertions(+), 94 deletions(-)
+
+-- 
+2.49.0
 
 
