@@ -2,156 +2,100 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6DFDEC71157
-	for <webhook@archiver.kernel.org>; Tue, 17 Jun 2025 07:38:09 +0000 (UTC)
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
- by mx.groups.io with SMTP id smtpd.web10.12838.1750145879493594858
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 74E43C71157
+	for <webhook@archiver.kernel.org>; Tue, 17 Jun 2025 07:56:19 +0000 (UTC)
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+ by mx.groups.io with SMTP id smtpd.web11.13190.1750146977642134028
  for <docs@lists.yoctoproject.org>;
- Tue, 17 Jun 2025 00:37:59 -0700
+ Tue, 17 Jun 2025 00:56:17 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=H9nmX098;
- spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 60CD84436A;
-	Tue, 17 Jun 2025 07:37:57 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=lyA+woxm;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id C7BFF442CC;
+	Tue, 17 Jun 2025 07:56:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1750145877;
+	t=1750146975;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=6jH36pUxTSLNSWKJdU6EYsiN/jkgv5brO0khIT/iqIM=;
-	b=H9nmX0987otMWDb/2AVjEXhyv7jnvpNuk3xqmO49Yg2EcNiT6wKKrVxvTSYiZGJHqSzLwz
-	WB+xZMD9o8418T2NjYvdEflS273gtAxSpJ1tXEWMyPDYq4jAM3CiUYH1gczDHLtV5qAKSe
-	xt0fLf+nbNhOJjTwNIDmwun1H9+pbeqQfLBacUwKaeafqNNTDf1BsjkYZqQcsWsDNelsC4
-	Y8dpFFTxqoUjPn48qXFXo7M2SHRGSmPSdJXVh0hnGm7inBjsxtQ2qIbrBQYPZdaoe+KyjE
-	H9XFra2tS/toXc4/gGYHvIo2OYRlZzWdDeJaC8dszDzOcIwhPqrkuhwTar8FsQ==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 17 Jun 2025 09:37:56 +0200
-Message-Id: <DAOMXOFJB9GO.3O0QNWL3SW2R5@bootlin.com>
-To: <adrian.freihofer@siemens.com>, <docs@lists.yoctoproject.org>
-Subject: Re: [docs] [PATCH v2 1/3] ref-manual: replace kernel-fitimage by
- kernel-fit-image
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-References: <20250616204135.1388643-1-adrian.freihofer@siemens.com>
- <20250616204135.1388643-2-adrian.freihofer@siemens.com>
-In-Reply-To: <20250616204135.1388643-2-adrian.freihofer@siemens.com>
+	bh=0ZLOqrg9GenVEAbeQq+sjNv8Kske2KoupKHE9Iuw8A0=;
+	b=lyA+woxmVSNS8RLzx56irUsBnlqacJmhGrY+8jAHMKhkA/6Xt0sxaey1bsUMf4LgCiaTWM
+	3KdjGhkxjf3+KkPniXK2SxrfaOoZiCP7vnCaRHRKFxJeR/HVwXbmmeh+k//FLFtas0dYiD
+	EeuyInPlD96I9Dm/4TPXTWvs8A6ZArXgVNsl5VUJgN/phiHijA9pQW79zd1Qi792HY/fOd
+	0vczmgTJ9Ln+DF7gAwsgi9WR0tkD/3XySq29rfnIi0vqH1/oKa4/ALQz76h3+9uzm98Wxv
+	9696glcOw/uwTjGq0E2EaA0mE/hNqTRBtB9AuVGY9cilSwkF/CLBhzN7NClmIA==
+From: Antonin Godard <antonin.godard@bootlin.com>
+Date: Tue, 17 Jun 2025 09:55:59 +0200
+Subject: [PATCH 1/2] overview-manual/yp-intro.rst: add RISC-V to supported
+ archs
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250617-supported-architectures-fixups-v1-1-e6c4d2c1cc3f@bootlin.com>
+References: <20250617-supported-architectures-fixups-v1-0-e6c4d2c1cc3f@bootlin.com>
+In-Reply-To: <20250617-supported-architectures-fixups-v1-0-e6c4d2c1cc3f@bootlin.com>
+To: docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1575;
+ i=antonin.godard@bootlin.com; h=from:subject:message-id;
+ bh=9lfi69hxEcSVXIduDFXcl4driJq3qaJNPaiSOKap/yc=;
+ b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBoUR+ef/SolfvbO3p9tasJ1T6/5dWuEdIaOep5v
+ +K5cM+T5oWJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaFEfngAKCRDRgEFAKaOo
+ NtiYEAC5CNdDAdcls9vfq8YYTGsnfPvcMxWQysI6DzYYk9XqRkiTrXcgsW4HAF7knSjsP3XhzPZ
+ 3lsDq8vW2p/NBRs7CkSsMEhPCn4Uxe2sGwmhGCtDzkwZ0Vp1/OlctLHmOo5cUlDF+7GsJDpP4uQ
+ QAX/oaqWyxJkwBm+H13o9Vrb7PL0N9DdRTtWMHx1MZ+Sn3MZGPZD7xZQ/WbySDb5/X3zRAhKqI9
+ LILsbbQeLc1yCuRb4zD2nQ0cn22E02cPUfQpLpTKsIcaEu4dQGFFROF2yQWD6Fvs7y0XEtGUFu7
+ Zx6fHcro4qozJurCVTIFWySTc+lXSFFDOv4x0FpQoSLVdkw+vB3YozQ1PK5QEi1DuYnFWRyAWOd
+ 4QInbmWGBJR2YfHNlBPkYd4qcRKYCLlfR/AmQRAOSssGEYgkfd0FUS4L6480v3E3IO0lBlu1Ev0
+ rJvHSYRkk26ZgwyssShjJay0R0VCUCPwsNAzyjL+GsMyUI4cdvb4PZGNHuf0x4eD8GuoiyNCDTq
+ eHRYMSPGicbQgxwdbHl+S8lss7r3J426g/z8qZxtQ6pZ+Ea7CYVZeyTrsLbhBUv2n5Z1rZ+M1bK
+ b+msD3BzJZUEI8sU4TV/qfICIZ8g1ZkNkcD5q6wBwSfI7cOvPoWQaAaTSqi8i8OSRC3vKZpTg+u
+ ycGbYVLSxRJ/9bA==
+X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
+ fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-GND-State: clean
-X-GND-Score: 0
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugddvkeekvdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucenucfjughrpegggfgtfffkvffuhfhfjgesthhqredttddtjeenucfhrhhomhepfdetnhhtohhnihhnucfiohgurghrugdfuceorghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeeggeeuveefvdeutdefueeltedvkeeiheejkeejfeeftdffiedtffduudehhedtkeenucffohhmrghinhephihotghtohhprhhojhgvtghtrdhorhhgpdgsohhothhlihhnrdgtohhmnecukfhppedvrgdtudemtggsudegmeehheeimeejrgdttdemfegtkedumegvsggrjeemudgskegsmegrhegtleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemfegtkedumegvsggrjeemudgskegsmegrhegtledphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedvpdhrtghpthhtoheprggurhhirghnrdhfrhgvihhhohhfvghrsehsihgvmhgvnhhsrdgtohhmpdhrtghpthhtohepughotghssehlihhsthhsrdihohgtthhophhrohhjvggtthdrohhrgh
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugddvkeekfecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephfffufggtgfgkfhfjgfvvefosehtjeertdertdejnecuhfhrohhmpeetnhhtohhnihhnucfiohgurghrugcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepheeigeeuhfefgeehfffgueeiteehieelfeehjeektefgkeeuheeuleduvdelgffhnecukfhppedvrgdtudemtggsudegmeehheeimeejrgdttdemfegtkedumegvsggrjeemudgskegsmegrhegtleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemfegtkedumegvsggrjeemudgskegsmegrhegtledphhgvlhhopegluddvjedrtddruddrudgnpdhmrghilhhfrhhomheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedvpdhrtghpthhtohepthhhohhmrghsrdhpvghtrgiiiihonhhisegsohhothhlihhnrdgtohhmpdhrtghpthhtohepughotghssehlihhsthhsrdihohgtthhophhrohhjvggtthdrohhrgh
 X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 17 Jun 2025 07:38:09 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7077
+ <docs@lists.yoctoproject.org>; Tue, 17 Jun 2025 07:56:19 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7080
 
-Hi Adrian,
+And mention the new supported features document.
 
-Patch series looks good. Only one thing I noticed below, but I'll amend tha=
-t
-before merging your series on master-next.
+Suggested-by: Robert P. J. Day <rpjday@crashcourse.ca>
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+---
+ documentation/overview-manual/yp-intro.rst | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-Thanks!
+diff --git a/documentation/overview-manual/yp-intro.rst b/documentation/overview-manual/yp-intro.rst
+index 11e6d99e3..15dfb3a6b 100644
+--- a/documentation/overview-manual/yp-intro.rst
++++ b/documentation/overview-manual/yp-intro.rst
+@@ -47,10 +47,12 @@ Here are features and advantages of the Yocto Project:
+    see the "COMMUNITY" and "ECOSYSTEM" tabs on the
+    :yocto_home:`Yocto Project <>` home page.
+ 
+--  *Architecture Agnostic:* Yocto Project supports Intel, ARM, MIPS,
+-   AMD, PPC and other architectures. Most ODMs, OSVs, and chip vendors
+-   create and supply BSPs that support their hardware. If you have
+-   custom silicon, you can create a BSP that supports that architecture.
++-  *Architecture Agnostic:* Yocto Project supports Intel, ARM, MIPS, AMD, PPC,
++   RISC-V and other architectures. Most ODMs, OSVs, and chip vendors create and
++   supply BSPs that support their hardware. If you have custom silicon, you can
++   create a BSP that supports that architecture. See
++   :doc:`ref-manual/yocto-project-supported-features` for details on the level
++   of support for some of these architectures.
+ 
+    Aside from broad architecture support, the Yocto Project fully
+    supports a wide range of devices emulated by the Quick EMUlator
 
-On Mon Jun 16, 2025 at 10:36 PM CEST, Adrian Freihofer via lists.yoctoproje=
-ct.org wrote:
-> From: Adrian Freihofer <adrian.freihofer@siemens.com>
->
-> Signed-off-by: Adrian Freihofer <adrian.freihofer@siemens.com>
-> ---
->  documentation/ref-manual/classes.rst   | 201 +++++++++++++++++--------
->  documentation/ref-manual/variables.rst |  60 ++++----
->  2 files changed, 170 insertions(+), 91 deletions(-)
->
-> diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-man=
-ual/classes.rst
-> index 54a98bf24f3..a6e74819dd7 100644
-> --- a/documentation/ref-manual/classes.rst
-> +++ b/documentation/ref-manual/classes.rst
-> @@ -1732,77 +1732,158 @@ Its behavior is mainly controlled by the followi=
-ng variables:
->  -  :term:`KERNEL_DTC_FLAGS`: flags for ``dtc``, the Device Tree Compiler
->  -  :term:`KERNEL_PACKAGE_NAME`: base name of the kernel packages
-> =20
-> -.. _ref-classes-kernel-fitimage:
-> +.. _ref-classes-kernel-fit-image:
-> =20
-> -``kernel-fitimage``
-> -=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> +``kernel-fit-image``
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> =20
-> -The :ref:`ref-classes-kernel-fitimage` class provides support to pack a =
-kernel image,
-> -device trees, a U-boot script, an :term:`Initramfs` bundle and a RAM dis=
-k
-> -into a single FIT image. In theory, a FIT image can support any number
-> -of kernels, U-boot scripts, :term:`Initramfs` bundles, RAM disks and dev=
-ice-trees.
-> -However, :ref:`ref-classes-kernel-fitimage` currently only supports
-> +The :ref:`ref-classes-kernel-fit-image` class provides support to pack a=
- kernel image,
-> +device trees, a U-boot script, and an :term:`Initramfs` into a single FI=
-T image.
-> +In theory, a FIT image can support any number of kernels, U-boot scripts=
-,
-> +:term:`Initramfs`, and device trees.
-> +However, :ref:`ref-classes-kernel-fit-image` currently only supports
->  limited usecases: just one kernel image, an optional U-boot script,
-> -an optional :term:`Initramfs` bundle, an optional RAM disk, and any numb=
-er of
-> -device trees.
-> +an optional :term:`Initramfs`, and any number of device trees.
-> =20
-> -To create a FIT image, it is required that :term:`KERNEL_CLASSES`
-> -is set to include ":ref:`ref-classes-kernel-fitimage`" and one of :term:=
-`KERNEL_IMAGETYPE`,
-> -:term:`KERNEL_ALT_IMAGETYPE` or :term:`KERNEL_IMAGETYPES` to include "fi=
-tImage".
-> +The FIT image is created by a recipe which inherits the
-> +:ref:`ref-classes-kernel-fit-image` class.
-> +One such example is the ``linux-yocto-fitimage`` recipe which creates a =
-FIT
-> +image for the Linux Yocto kernel.
-> +Additionally, it is required that :term:`KERNEL_CLASSES` is set to inclu=
-de
-> +:ref:`ref-classes-kernel-fit-extra-artifacts`.
-> +The :ref:`ref-classes-kernel-fit-extra-artifacts` class exposes the requ=
-ired kernel
-> +artifacts to the :term:`DEPLOY_DIR_IMAGE` which are used by the
-> +:ref:`ref-classes-kernel-fit-image` class to create the FIT image.
-> =20
-> -The options for the device tree compiler passed to ``mkimage -D``
-> -when creating the FIT image are specified using the
-> -:term:`UBOOT_MKIMAGE_DTCOPTS` variable.
-> +The simplest example for building a FIT image is to add::
-> =20
-> -Only a single kernel can be added to the FIT image created by
-> -:ref:`ref-classes-kernel-fitimage` and the kernel image in FIT is mandat=
-ory. The
-> -address where the kernel image is to be loaded by U-Boot is
-> -specified by :term:`UBOOT_LOADADDRESS` and the entrypoint by
-> -:term:`UBOOT_ENTRYPOINT`. Setting :term:`FIT_ADDRESS_CELLS` to "2"
-> -is necessary if such addresses are 64 bit ones.
-> +   KERNEL_CLASSES +=3D "kernel-fit-extra-artifacts"
-> =20
-> -Multiple device trees can be added to the FIT image created by
-> -:ref:`ref-classes-kernel-fitimage` and the device tree is optional.
-> -The address where the device tree is to be loaded by U-Boot is
-> -specified by :term:`UBOOT_DTBO_LOADADDRESS` for device tree overlays
-> -and by :term:`UBOOT_DTB_LOADADDRESS` for device tree binaries.
-> +to the machine conf file and to execute::
-
-s/conf file/:term:`configuration file`/
-
-
-Antonin
-
---=20
-Antonin Godard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+-- 
+2.49.0
 
 
