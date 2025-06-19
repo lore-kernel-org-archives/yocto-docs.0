@@ -1,150 +1,190 @@
-Return-Path: <rpjday@crashcourse.ca>
+Return-Path: <daniel.turull@ericsson.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5C296C71157
-	for <webhook@archiver.kernel.org>; Wed, 18 Jun 2025 20:51:48 +0000 (UTC)
-Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.web11.6579.1750279905389174115
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5FE77C7115B
+	for <webhook@archiver.kernel.org>; Thu, 19 Jun 2025 08:52:33 +0000 (UTC)
+Received: from PA4PR04CU001.outbound.protection.outlook.com (PA4PR04CU001.outbound.protection.outlook.com [40.107.162.33])
+ by mx.groups.io with SMTP id smtpd.web10.10381.1750323149595375291
  for <docs@lists.yoctoproject.org>;
- Wed, 18 Jun 2025 13:51:45 -0700
+ Thu, 19 Jun 2025 01:52:29 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=Z4LkbF7k;
- spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
-	To:From:Date:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=NPDpWPU1MuF+rvNzU0wQLDbuFvN4owhVBb2MCYOjLdA=; b=Z4LkbF7k+45Oc6qMzvuqINb4GE
-	klzVkRQOPoBqLr9ig4RbF08aEUbNwM0hdh8D2eiq2cJ9ktMDCpWY2wGPRY++NiiN9iBpyOZSc6WE5
-	vzyBcmt9z7SXs5nvsDLOwiVdYt3Ms/Nxjh3/RiKtLEOzK9HJqQ7cueQjfmndhZ36jb/w4V85gelIF
-	dy8jecBwYkUnX/bEpyk0NjnQJGOyUt6r26NNmJcPzcNRyylBT5dqyU/JZDajwwd0OfCe4mXRITKrO
-	9tAN+pBB16+aoacn49RyR/mBcGoCEoAQmCGe+ckCat0zkrJQJb5EQp0wBJfNWMUBpp0stl1IpscE8
-	1YJWsYyA==;
-Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:34370 helo=asus)
-	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1uRzkx-00000006FAR-3OJ7
-	for docs@lists.yoctoproject.org;
-	Wed, 18 Jun 2025 16:51:43 -0400
-Date: Wed, 18 Jun 2025 16:51:32 -0400 (EDT)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: [PATCH] bsp-guide: update all of section 1.8.2 to reflect current
- beaglebone conf file
-Message-ID: <de29a1ee-8b61-87cc-ddb5-950d143c2942@crashcourse.ca>
+ dkim=fail reason="dkim: body hash did not verify" header.i=@ericsson.com header.s=selector1 header.b=ltcE7cxt;
+ spf=pass (domain: ericsson.com, ip: 40.107.162.33, mailfrom: edaturu@ericsson.com)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=DNUEpg8kpwrR4mf65ZQc9wXXFODaUQnhb8xgpgFgFmB6up56L8ZUN+LWbWPncWOx/A/P6P/GvTPOj5l1PHsX6csjLZls7IdnATShvlLDvhdk71BK+loOkRnHnpuDehT/nyGmfqUkaZELlPKHCNJOhLxwEqynJ+gfoUGyB9E+PzFIyTRf0hUhDobxmCA3ZWag4ylPPjgrNBock+SbCbWnBtO/LqdrNr8cGzMceCDe5ZkfwER4cZwkf6y3iymj2+JDw/Ve1WgBDfSrprPaVQZdlV3jEA8UoaWxZt/vKueXMVhDtY2x38NJdZYjYHGRVbABFgmmDRpskzbxNisxUDHhuQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jaHCxeaSgEZ/Z1LTIHSy6y6FzlLI6OqVTKbVm1IyPw8=;
+ b=AgwI8FhNxFYagw1l4NV5Mh6g7sPGtYUmIeGLXagEVPbNRzQv70X4uIv7v1r1rPXSm7cwZwhKpmQvzx4z5OBtcbs6tXc377h9zSa1nTbcGabcqIMqU52pQ+s3TO1lp3PEvneYRmjmGOrN45dRJSreKDALN1Tld6BoMgIGNgDlEc9EB18JTJGiTk0oLpZXvuM/zd0rgqY1FTKwttWoABmFjDXVr1U/PK6IEpzbeV2pbgcl9xFTJsBad+2ymuDJ9dmTsKgiZ2uXZyyYVReOWif2A38Us5S0KHK8CAYIDQviW/ouGpXK/xfT212e8FgyWuv9nnuHnoWTj3+BDbEcgZ+6Zg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 192.176.1.74) smtp.rcpttodomain=lists.yoctoproject.org
+ smtp.mailfrom=ericsson.com; dmarc=pass (p=reject sp=reject pct=100)
+ action=none header.from=ericsson.com; dkim=none (message not signed);
+ arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ericsson.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jaHCxeaSgEZ/Z1LTIHSy6y6FzlLI6OqVTKbVm1IyPw8=;
+ b=ltcE7cxt7bqYCycVNgCGRnrzmG4XH52yKSR8JGXpDaOfpzRtv4PzGzC7EfBMzNa9/F0bnQ0IXoh6KDZ5pN+NM6SxdY5NYBJP5OiNKPNp9r2p+E6AHzfNMzTPFg+me5F3rsxg8oWbPK/My1nclSTYmJ8iE3ZbxXFfAjmWcLczdWOKamwPtLGO9sqpdrwFLWJqDYsgPj25rxLQHTSf1wp2pu9WhGvsPKWhFEAMdBTIhgmncRlxLn+9/NwxOIJy+V3+JlG9LB9dyd1OOOiTuweJAHoNMifp781+ALoGaxe/S0GD4xVjjuHWd71nIFnN3vKM/tLsOcyd60ljr1qJL3zmmQ==
+Received: from AM0PR04CA0086.eurprd04.prod.outlook.com (2603:10a6:208:be::27)
+ by AS4PR07MB8825.eurprd07.prod.outlook.com (2603:10a6:20b:4f3::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.19; Thu, 19 Jun
+ 2025 08:52:26 +0000
+Received: from AM3PEPF0000A79B.eurprd04.prod.outlook.com
+ (2603:10a6:208:be:cafe::61) by AM0PR04CA0086.outlook.office365.com
+ (2603:10a6:208:be::27) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8835.34 via Frontend Transport; Thu,
+ 19 Jun 2025 08:52:26 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 192.176.1.74)
+ smtp.mailfrom=ericsson.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=ericsson.com;
+Received-SPF: Pass (protection.outlook.com: domain of ericsson.com designates
+ 192.176.1.74 as permitted sender) receiver=protection.outlook.com;
+ client-ip=192.176.1.74; helo=oa.msg.ericsson.com; pr=C
+Received: from oa.msg.ericsson.com (192.176.1.74) by
+ AM3PEPF0000A79B.mail.protection.outlook.com (10.167.16.106) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8857.21 via Frontend Transport; Thu, 19 Jun 2025 08:52:26 +0000
+Received: from seroius18813.sero.gic.ericsson.se (153.88.142.248) by
+ smtp-central.internal.ericsson.com (100.87.178.60) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14; Thu, 19 Jun 2025 10:52:25 +0200
+Received: from seroius08462.sero.gic.ericsson.se (seroius08462.sero.gic.ericsson.se [10.63.237.245])
+	by seroius18813.sero.gic.ericsson.se (Postfix) with ESMTP id 9E62E9582F;
+	Thu, 19 Jun 2025 10:52:25 +0200 (CEST)
+Received: by seroius08462.sero.gic.ericsson.se (Postfix, from userid 160155)
+	id 86BD87083F54; Thu, 19 Jun 2025 10:52:25 +0200 (CEST)
+From: <daniel.turull@ericsson.com>
+To: <docs@lists.yoctoproject.org>
+CC: Daniel Turull <daniel.turull@ericsson.com>
+Subject: [PATCH] Add SPDX_INCLUDE_COMPILED_SOURCES documentation
+Date: Thu, 19 Jun 2025 10:52:15 +0200
+Message-ID: <20250619085215.1942667-1-daniel.turull@ericsson.com>
+X-Mailer: git-send-email 2.44.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM3PEPF0000A79B:EE_|AS4PR07MB8825:EE_
+X-MS-Office365-Filtering-Correlation-Id: ce023526-d996-4c93-8765-08ddaf0e9d73
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: 
+	BCL:0;ARA:13230040|82310400026|1800799024|36860700013|376014;
+X-Microsoft-Antispam-Message-Info: 
+	=?us-ascii?Q?ShnaEWrY9tHkboMl3G39c5coDc+cwoWVlKFBVkebIGp1OazJFwHPhF1Iqo4n?=
+ =?us-ascii?Q?3iVJbYDZKtuBnMMkZBx/Xr4/tXR9X/M9Ou9p6SZ6eoSAKLv5WoLW7nySugfW?=
+ =?us-ascii?Q?ADDd6xg4IEBmqsi38Ad7kp8t1LEnBQ6FnBIRhzW730UARAiZGB/cBYGOSDOR?=
+ =?us-ascii?Q?0gjmLa9VzTn0hNCxchMf6Cka9IOWggU4dYB3evMaAlsL0y1Ie49i6U1fbFJp?=
+ =?us-ascii?Q?m8qBIciE62rCABqq1+IgZEnSxie+3z9pndlLAZxVpPktCdKNjbCd/fhiK0Er?=
+ =?us-ascii?Q?5WAs6UhXPKbvErO3Lztlkg5ucE7PqnYh1z9S7vdBKVtDfDf61JTQ/YvwbTcy?=
+ =?us-ascii?Q?tuTzoKc0HmaR/j1paRXXMq+5o3aczCKqcH0HjvBKBYBOWbnP7CwS8aF139Op?=
+ =?us-ascii?Q?a8LnWtzECX/JCcp23Kaae6HmRY5G1RYIDNFsyJ2TEWf4X+An9I7ca4gYMzwP?=
+ =?us-ascii?Q?EHILAgnHIG7NYIsDLzTA99FBPEIe0KMqa62sssR9kX/yFmVJAUKQdrRsM+0S?=
+ =?us-ascii?Q?91aL8SmsSsbx9bXkTLsIULt9/tKOT0o53R4sqduGDQCIcOFMTX8q5A10fnJE?=
+ =?us-ascii?Q?W+enuO1bsQYtVRs2Lmu40PdZP46vYvmPVV2qi/H60eAJAW9VIT4WE90Vyjnl?=
+ =?us-ascii?Q?w3v9fc4ZrZQh7kba41noTfLo2jxpkUqgNiJyrr5nc1SGpHbDlq7V00r1avwO?=
+ =?us-ascii?Q?KsmiJ3IoHh4hoqTa+kA8smTu1PBMS8FhqwCtdTf2ksqWz7M4XFF1WJCuUYsk?=
+ =?us-ascii?Q?xYdEF/xN4R04diujb6gOXd/k8URbQHTvJJe7uQiVZ1ey67hD/KIjli+Kjwrn?=
+ =?us-ascii?Q?gl3/+06b3t6BVYoD1pT4xs2ows5oPIWQk4AA2mKNSh+d+WfVegOxmqgkehfl?=
+ =?us-ascii?Q?l6RWXmMt47KVPfwLLwUw1LiVyMPAphM2QgQLtk312M9nBwBjVtF6NWD/ROYR?=
+ =?us-ascii?Q?/BBIR+ZExilKweCyl8/wvXd9rqt7vPu9oh3YwLE0bo4PqnutHkEXDbqtrAoG?=
+ =?us-ascii?Q?5kV/KtT0rZSHfRZKJQjPP3TTidY7wbk2tGn7g5iksvs24GlhTXoEQ12sT0CQ?=
+ =?us-ascii?Q?eTrpqZtR/ONAXGSYKp9xnDav8dNGjuGXtgUOJbgCj4Z6IWZGMLEE+MK4ohr5?=
+ =?us-ascii?Q?UNwfk8b5/RyWecbF/Yn/q5oegYrYZ5ybcV4xYb6+NuDIIu4klLh9meP19nVG?=
+ =?us-ascii?Q?og9yX1WKfeme8D9vZbIfvl8JyzoAg5F2sJ7a9C9qaH1azEa/iYamHVxnYLt7?=
+ =?us-ascii?Q?ZtiFqRa2PylAt7AMl3EcFDoBHgj1VpizfTa7lzv9CcJ77eBKySecknO9r9K4?=
+ =?us-ascii?Q?eQsiH8wCEXs2gJqN4prcNN7mFQReqYrtnmfq83X2nNzIJycV1kG+J5AHGTgK?=
+ =?us-ascii?Q?vcAHadHNvoG0asuiX1YnewB4G2QfUVFR+xY0mZ2CUWVOSsob35pJZaGkmkEA?=
+ =?us-ascii?Q?rhnBZuXB7jIkrtiKh1pcNMCDC2oMEdiGAzb9HZDvZKd4BqN/3BCshtZBgZ5s?=
+ =?us-ascii?Q?0SlW1HdF2GYOMe66BWh3s0/O986rmzkjqovi?=
+X-Forefront-Antispam-Report: 
+	CIP:192.176.1.74;CTRY:SE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:oa.msg.ericsson.com;PTR:office365.se.ericsson.net;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(36860700013)(376014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: ericsson.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jun 2025 08:52:26.1902
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: ce023526-d996-4c93-8765-08ddaf0e9d73
+X-MS-Exchange-CrossTenant-Id: 92e84ceb-fbfd-47ab-be52-080c6b87953f
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=92e84ceb-fbfd-47ab-be52-080c6b87953f;Ip=[192.176.1.74];Helo=[oa.msg.ericsson.com]
+X-MS-Exchange-CrossTenant-AuthSource: 
+	AM3PEPF0000A79B.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR07MB8825
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 18 Jun 2025 20:51:48 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7106
+ <docs@lists.yoctoproject.org>; Thu, 19 Jun 2025 08:52:33 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7107
 
+From: Daniel Turull <daniel.turull@ericsson.com>
 
-Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+Adding documentation for the new feature to store in SPDX
+only the compiled sources.
 
+Merged in Oe-core: c6a2f1fca76fae4c3ea471a0c63d0b453beea968
+ - spdx: add option to include only compiled sources
+
+Signed-off-by: Daniel Turull <daniel.turull@ericsson.com>
 ---
+ documentation/dev-manual/sbom.rst      |  3 +++
+ documentation/ref-manual/variables.rst | 13 +++++++++++++
+ 2 files changed, 16 insertions(+)
 
-diff --git a/documentation/bsp-guide/bsp.rst b/documentation/bsp-guide/bsp.rst
-index 35972f172..d31ae0e88 100644
---- a/documentation/bsp-guide/bsp.rst
-+++ b/documentation/bsp-guide/bsp.rst
-@@ -1242,7 +1242,7 @@ located in :yocto_git:`poky/meta-yocto-bsp/conf/machine/beaglebone-yocto.conf
+diff --git a/documentation/dev-manual/sbom.rst b/documentation/dev-manual/s=
+bom.rst
+index e6806ce92..ca0fc8b9d 100644
+--- a/documentation/dev-manual/sbom.rst
++++ b/documentation/dev-manual/sbom.rst
+@@ -60,6 +60,9 @@ more information in the output :term:`SPDX` data:
+ -  Add a description of the source files used to generate host tools and t=
+arget
+    packages (:term:`SPDX_INCLUDE_SOURCES`)
+=20
++-  Add a description of the **compiled** source files used to generate hos=
+t tools
++   and target packages (:term:`SPDX_INCLUDE_COMPILED_SOURCES`)
++
+ -  Add archives of these source files themselves (:term:`SPDX_ARCHIVE_SOUR=
+CES`).
+=20
+ Though the toplevel :term:`SPDX` output is available in
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-man=
+ual/variables.rst
+index 5c18b852d..39a134a09 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -8764,6 +8764,19 @@ system and gives an overview of their function and c=
+ontents.
+       image), compared to just using the :ref:`ref-classes-create-spdx` cl=
+ass
+       with no option.
+=20
++   :term:`SPDX_INCLUDE_COMPILED_SOURCES`
++      This option allows the same as :term:`SPDX_INCLUDE_SOURCES` but incl=
+uding
++      only the sources used to compiled the host tools and the target pack=
+ages.
++
++      Enable this option as follows::
++
++         SPDX_INCLUDE_COMPILED_SOURCES =3D "1"
++
++      According to our tests on release master, building
++      ``core-image-minimal`` for the ``qemux86-64`` machine, enabling
++      this option compated with the :term:`SPDX_INCLUDE_SOURCES` reduces t=
+he size
++      of the  ``tmp/deploy/spdx`` directory from 2GB to 1.6GB.
++
+    :term:`SPDX_NAMESPACE_PREFIX`
+       This option could be used in order to change the prefix of ``spdxDoc=
+ument``
+       and the prefix of ``documentNamespace``. It is set by default to
+--=20
+2.34.1
 
-    PREFERRED_PROVIDER_virtual/xserver ?= "xserver-xorg"
-
--   MACHINE_EXTRA_RRECOMMENDS = "kernel-modules kernel-devicetree"
-+   MACHINE_EXTRA_RRECOMMENDS = "kernel-modules"
-
-    EXTRA_IMAGEDEPENDS += "virtual/bootloader"
-
-@@ -1258,23 +1258,21 @@ located in :yocto_git:`poky/meta-yocto-bsp/conf/machine/beaglebone-yocto.conf
-    SERIAL_CONSOLES ?= "115200;ttyS0 115200;ttyO0 115200;ttyAMA0"
-
-    PREFERRED_PROVIDER_virtual/kernel ?= "linux-yocto"
--   PREFERRED_VERSION_linux-yocto ?= "6.1%"
-+   PREFERRED_VERSION_linux-yocto ?= "6.12%"
-
-    KERNEL_IMAGETYPE = "zImage"
--   KERNEL_DEVICETREE = "am335x-bone.dtb am335x-boneblack.dtb am335x-bonegreen.dtb"
--   KERNEL_EXTRA_ARGS += "LOADADDR=${UBOOT_ENTRYPOINT}"
-+   DTB_FILES = "am335x-bone.dtb am335x-boneblack.dtb am335x-bonegreen.dtb"
-+   KERNEL_DEVICETREE = '${@' '.join('ti/omap/%s' % d for d in '${DTB_FILES}'.split())}'
-
-    PREFERRED_PROVIDER_virtual/bootloader ?= "u-boot"
-
-    SPL_BINARY = "MLO"
-    UBOOT_SUFFIX = "img"
-    UBOOT_MACHINE = "am335x_evm_defconfig"
--   UBOOT_ENTRYPOINT = "0x80008000"
--   UBOOT_LOADADDRESS = "0x80008000"
-
-    MACHINE_FEATURES = "usbgadget usbhost vfat alsa"
-
--   IMAGE_BOOT_FILES ?= "u-boot.${UBOOT_SUFFIX} ${SPL_BINARY} ${KERNEL_IMAGETYPE} ${KERNEL_DEVICETREE}"
-+   IMAGE_BOOT_FILES ?= "u-boot.${UBOOT_SUFFIX} ${SPL_BINARY} ${KERNEL_IMAGETYPE} ${DTB_FILES}"
-
-    # support runqemu
-    EXTRA_IMAGEDEPENDS += "qemu-native qemu-helper-native"
-@@ -1328,12 +1326,12 @@ Project Reference Manual.
-    needed in the root filesystem. In this case, the U-Boot recipe must
-    be built for the image.
-
--   At the end of the file, we also use this setings to implement
-+   At the end of the file, we also use this setting to implement
-    ``runqemu`` support on the host machine.
-
- -  :term:`DEFAULTTUNE`: Machines
-    use tunings to optimize machine, CPU, and application performance.
--   These features, which are collectively known as "tuning features",
-+   These features --- collectively known as "tuning features" ---
-    are set in the :term:`OpenEmbedded-Core (OE-Core)` layer. In this
-    example, the default tuning file is :oe_git:`tune-cortexa8
-    </openembedded-core/tree/meta/conf/machine/include/arm/armv7a/tune-cortexa8.inc>`.
-@@ -1363,8 +1361,7 @@ Project Reference Manual.
-    to create the sysroot when building a Wic image.
-
- -  :term:`SERIAL_CONSOLES`:
--   Defines a serial console (TTY) to enable using getty. In this case,
--   the baud rate is "115200" and the device name is "ttyO0".
-+   Defines one or more serial consoles (TTYs) to enable using getty.
-
- -  :term:`PREFERRED_PROVIDER_virtual/kernel <PREFERRED_PROVIDER>`:
-    Specifies the recipe that provides "virtual/kernel" when more than
-@@ -1374,7 +1371,7 @@ Project Reference Manual.
-
- -  :term:`PREFERRED_VERSION_linux-yocto <PREFERRED_VERSION>`:
-    Defines the version of the recipe used to build the kernel, which is
--   "6.1" in this case.
-+   "6.12" in this case.
-
- -  :term:`KERNEL_IMAGETYPE`:
-    The type of kernel to build for the device. In this case, the
-@@ -1416,12 +1413,6 @@ Project Reference Manual.
-       Specifies the value passed on the make command line when building
-       a U-Boot image.
-
--   -  :term:`UBOOT_ENTRYPOINT`:
--      Specifies the entry point for the U-Boot image.
--
--   -  :term:`UBOOT_LOADADDRESS`:
--      Specifies the load address for the U-Boot image.
--
- -  :term:`MACHINE_FEATURES`:
-    Specifies the list of hardware features the BeagleBone device is
-    capable of supporting. In this case, the device supports "usbgadget
 
