@@ -1,116 +1,72 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6D037C7115D
-	for <webhook@archiver.kernel.org>; Fri, 20 Jun 2025 07:43:35 +0000 (UTC)
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
- by mx.groups.io with SMTP id smtpd.web10.2512.1750405409096909986
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 52020C71155
+	for <webhook@archiver.kernel.org>; Fri, 20 Jun 2025 09:05:26 +0000 (UTC)
+Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
+ by mx.groups.io with SMTP id smtpd.web11.3649.1750410318110782971
  for <docs@lists.yoctoproject.org>;
- Fri, 20 Jun 2025 00:43:29 -0700
+ Fri, 20 Jun 2025 02:05:18 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=B4y4trIf;
- spf=pass (domain: bootlin.com, ip: 217.70.183.195, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id EFB0C1F433;
-	Fri, 20 Jun 2025 07:43:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1750405407;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=LvMKrTikelS22BS72Ff1aSkME0+dNi8RScqcZ+7hNZw=;
-	b=B4y4trIfTMfHNDllTzzqAvkeplh0lvBYi3Sjh+VJlkNLyoIH2yj8My/hGk7T+3Q8E52dPn
-	rcFGCEhMjOQcmj8VTrkV81hen1WH3XqFqatiQa7Db93IMpsRsIf0eNxf7XfzlkFDWiMoOr
-	AlaVQObsy1ArGxdDHIfurVuSYvG4h9Lb2wUFrzSqW0oMJdI758DSoEiuq8qXvOxVw2/XLQ
-	7ddcw4NOg09Y6OoeAc1aV1p28+cF4kEZDtTUJOBkI5sORvKDuKaMI5TlIunWxPcfi+Sk7T
-	DkMn+hpAObQhRw7bxpqG/8hr1TtA0zueJrurVR1gFL+Cq6dmSm+xo/DhkvDq6g==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 20 Jun 2025 09:43:26 +0200
-Message-Id: <DAR6XIPYGMAK.LBD84XAAGWN7@bootlin.com>
-Subject: [master] Pull request
-Cc: <docs@lists.yoctoproject.org>
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: "Richard Purdie" <richard.purdie@linuxfoundation.org>
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddvgdejkeefucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpegggfgtfffkufevhffvsehtqhertddttdejnecuhfhrohhmpedftehnthhonhhinhcuifhouggrrhgufdcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepkeejleeutdfhffdtkeevfeevffdtvefffeeuudeuveevhfeuudfhudelgfetveeunecukfhppedvrgdtudemtggsudegmeehheeimeejrgdttdemfegtkedumegvsggrjeemudgskegsmegrhegtleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemfegtkedumegvsggrjeemudgskegsmegrhegtledphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedvpdhrtghpthhtoheprhhitghhrghrugdrphhurhguihgvsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepughotghssehlihhsthhsrdihohgtthhophhrohhjvggtthdrohhrgh
-X-GND-Sasl: antonin.godard@bootlin.com
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=dvTCTfL/;
+ spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
+	To:From:Date:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=XoVcujmNdVyfSacLek3zxbmXY8Fg5N2wT7PwkkhODXw=; b=dvTCTfL/5+scuVO4pNia2j9sa/
+	zt9nZzncxTOTVX6IRqhSD9CqSTh2AICNOv/2weAMeS+bPVdI1l72mLjpsMglGUp1iLXmTjEw1zOKJ
+	b9GvVnoET+6TrP9E28PWwSoGVLSoti8cjEjfktc3C+mMg6+9xzIFGvUM1RwxNQofr/qLc7Wf0Broa
+	lY0n73PhkVW0vO9ncqccAoZn+MNWkeDz5rWDREFSpZQSCCGzY6tW8YqYgwOTVoV3fte+6KJ4MLPYn
+	MQR8ndSNxQKd9NPRptAXO6V2sZSosVEQ3sr6WgtnwQkF4MF+0wV8k8lOSSuu/jj0QGK9JkcWGwMOf
+	ELMQ9xzg==;
+Received: from pool-174-114-102-5.cpe.net.cable.rogers.com ([174.114.102.5]:44864 helo=asus)
+	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <rpjday@crashcourse.ca>)
+	id 1uSXgQ-0000000GBma-2INt
+	for docs@lists.yoctoproject.org;
+	Fri, 20 Jun 2025 05:05:16 -0400
+Date: Fri, 20 Jun 2025 05:05:11 -0400 (EDT)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+To: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: dev manual inconsistently encourages changing "poky" checkout
+ locally
+Message-ID: <7da04e7f-11c4-819e-cd9b-7aaea55bd91d@crashcourse.ca>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
+X-AntiAbuse: Original Domain - lists.yoctoproject.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - crashcourse.ca
+X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 20 Jun 2025 07:43:35 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7117
+ <docs@lists.yoctoproject.org>; Fri, 20 Jun 2025 09:05:26 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7118
 
-The following changes since commit b13bccbf3fb1890ac428a396f8c5081057edf555=
-:
 
-  ref-manual/yocto-project-supported-features: move meta-exein to primary (=
-2025-06-17 10:25:32 +0100)
+  while at least one of the other YP docs stresses to never, ever,
+ever mess with your checkout of poky, the dev manual here:
 
-are available in the Git repository at:
+https://docs.yoctoproject.org/dev-manual/start.html#cloning-the-poky-repository
 
-  git@push.yoctoproject.org:yocto-docs master-next
+  reads: "Your local repository of poky is identical to the upstream
+  poky repository at the time from which it was cloned. As you work
+  with the local branch, you can periodically use the git pull --rebase
+  command to be sure you are up-to-date with the upstream branch."
 
-for you to fetch changes up to 4dbc63ed1381fe47723d6ba5b7baf2a3b7fd19aa:
+that seems inconsistent. does that merit rewording?
 
-  Add SPDX_INCLUDE_COMPILED_SOURCES documentation (2025-06-20 09:31:47 +020=
-0)
+rday
 
-----------------------------------------------------------------
-Adrian Freihofer (3):
-      ref-manual: replace kernel-fitimage by kernel-fit-image
-      release-notes: drop references to kernel-fitimage
-      migration-5.3: replace kernel-fitimage by kernel-fit-image
-
-Daniel Turull (1):
-      Add SPDX_INCLUDE_COMPILED_SOURCES documentation
-
-Lee Chee Yang (1):
-      migration-guide: add release notes for 5.0.10
-
-Quentin Schulz (4):
-      ref-manual: classes: reword to clarify that native/nativesdk options =
-are exclusive
-      ref-manual: classes: nativesdk: move note to appropriate section
-      tree-wide: make the :doc: directive use absolute paths
-      document how to use :doc: directive
-
-Robert P. J. Day (5):
-      overview-manual: small number of pedantic cleanups
-      yp-intro: new doc reference is missing leading slash
-      bsp guide: update kernel version example to 6.12
-      bsp-guide: update lonely "4.12" kernel reference to "6.12"
-      bsp-guide: update all of section 1.8.2 to reflect current beaglebone =
-conf file
-
- documentation/README                               |  10 +
- documentation/bsp-guide/bsp.rst                    |  54 +++--
- documentation/contributor-guide/submit-changes.rst |   4 +-
- documentation/dev-manual/building.rst              |   4 +-
- documentation/dev-manual/debugging.rst             |   4 +-
- documentation/dev-manual/new-recipe.rst            |   2 +-
- documentation/dev-manual/sbom.rst                  |   3 +
- documentation/dev-manual/start.rst                 |   2 +-
- documentation/dev-manual/vulnerabilities.rst       |   2 +-
- documentation/migration-guides/migration-5.3.rst   |  42 ++++
- documentation/migration-guides/release-5.0.rst     |   1 +
- .../migration-guides/release-notes-4.3.rst         |   4 +-
- .../migration-guides/release-notes-5.0.10.rst      | 208 +++++++++++++++++
- .../migration-guides/release-notes-5.1.rst         |   2 +-
- .../migration-guides/release-notes-5.2.rst         |   4 +-
- documentation/overview-manual/concepts.rst         |  25 +--
- .../overview-manual/development-environment.rst    |   6 +-
- documentation/overview-manual/yp-intro.rst         |   2 +-
- documentation/ref-manual/classes.rst               | 245 ++++++++++++++---=
-----
- documentation/ref-manual/resources.rst             |   4 +-
- documentation/ref-manual/system-requirements.rst   |   2 +-
- documentation/ref-manual/variables.rst             |  84 ++++---
- documentation/standards.md                         |  11 +-
- .../transitioning-to-a-custom-environment.rst      |   4 +-
- documentation/what-i-wish-id-known.rst             |   4 +-
- 25 files changed, 552 insertions(+), 181 deletions(-)
- create mode 100644 documentation/migration-guides/release-notes-5.0.10.rst
 
