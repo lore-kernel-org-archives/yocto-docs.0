@@ -1,101 +1,84 @@
-Return-Path: <rpjday@crashcourse.ca>
+Return-Path: <alex.kanavin@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 89A02C7115D
-	for <webhook@archiver.kernel.org>; Fri, 20 Jun 2025 09:44:56 +0000 (UTC)
-Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.web10.4113.1750412693224386331
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8377EC71155
+	for <webhook@archiver.kernel.org>; Fri, 20 Jun 2025 09:48:16 +0000 (UTC)
+Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
+ by mx.groups.io with SMTP id smtpd.web11.4208.1750412887649608743
  for <docs@lists.yoctoproject.org>;
- Fri, 20 Jun 2025 02:44:53 -0700
+ Fri, 20 Jun 2025 02:48:07 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=Ni9MHMS1;
- spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:References:
-	Message-ID:In-Reply-To:Subject:cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=WNBG+s7iguU7oUxmEFjqpfksUXqcj5/xhGzK61KeaUw=; b=Ni9MHMS1mCGJTSqbtresW8lgQs
-	NEimADEZ+MRhffWCTwkYcZTF2MBdzYW4/5yKRqvcjBRgfAtyZb1wccSCZxNJ43YnghYB46ExUMmSo
-	gdvqemIoZ8kge8ObnqjgPm4dRHYzb4lCYYaVOv+nMKyLnDNm2i+9teHRyyE3wYiG8s1g7DZJrfsIj
-	oh/x/Lv9wOVHIfVNqJ5vgBIxzXMRnNCUWmQucj6Atymv7qCcl4r9pP/xz4BkAY9A1fx8bgy9EcGVe
-	JVL6YwrMApoZ7konErEZPeY67auOEqp0eRc3UNHiDEZgAOvlulc0jEXbX/1uiYzGwwDXWZlzzdjjU
-	HfemNMig==;
-Received: from pool-174-114-102-5.cpe.net.cable.rogers.com ([174.114.102.5]:44078 helo=asus)
-	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1uSYIj-0000000GH2P-0nGi;
-	Fri, 20 Jun 2025 05:44:51 -0400
-Date: Fri, 20 Jun 2025 05:44:45 -0400 (EDT)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: Alexander Kanavin <alex.kanavin@gmail.com>
-cc: YP docs mailing list <docs@lists.yoctoproject.org>
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=blRIzPvG;
+ spf=pass (domain: gmail.com, ip: 209.85.219.45, mailfrom: alex.kanavin@gmail.com)
+Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-6face367320so15400216d6.3
+        for <docs@lists.yoctoproject.org>; Fri, 20 Jun 2025 02:48:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750412887; x=1751017687; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Iycd5GP4dDSTnmWkEE1dj5XScMcsXeZx6TsVMEVxF8o=;
+        b=blRIzPvGiMI9UiSepsYCd0nknN/fyM10G5DEEXZicpO1vll0eAZnRY2VQoteJa4oe/
+         uIVG0UioObUav0pkl2xwbsyNpZVVI+s6GMD3vXhrEaxEk/6K6zarrIsajjTHi772IhwP
+         b6LNtNSUN5K6hnSRN4fB4zzAi+pHUFasTdiGDmoqzQN7O6DXl6a3V5YCratLb/II+UGo
+         UaWN/4Q3en5AnyNDerxDf/+m0zQQxlW9NGuZg8wWPCGmGnEKFC7YvsVF5PC3jgoRqCoD
+         gR01QWR0R15kazefmXkWW5WJzD8zVpb/0SoudCpWr4guKKzWWptc5Sz8fJ0pmSa8aOUX
+         CUEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750412887; x=1751017687;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Iycd5GP4dDSTnmWkEE1dj5XScMcsXeZx6TsVMEVxF8o=;
+        b=OdrffixbL4fmiPXcU8Qpp9I+Vr2+IYCHA7JPTIqSiRbplRHbpEDJm94MQiuHRw5mQB
+         vV812TBPORfFhd8nwhqoSGX12F8916nSgwll8lbSiTpAOUP+zF8CkRRw68iDn/zcfEwR
+         59AAn1LYItA1krWvYMhGEdma3YSkOopijIycvhpP6LS25TdEXOHkTZAiQtztozfDVBCs
+         QrohwC+rxDHPjigncwmrrz1sHh3JPOt5P6AZuABWm1zwicTlqA1AK5xnbohxNyCDDIEc
+         XS3hRxI533pZc80B3VUGGV2nIoMHdDRoe/aurL5Ig2izmjyzDA3TfNTS7VI7k94y/Ney
+         sz7Q==
+X-Gm-Message-State: AOJu0YxQIwNlplvYCfzsTaVzDZJjUNsRJ3vdENkqOO+0d6iSJefPuKHs
+	WKL2jtYd16q9vQjF4Y+pcgoQmWGUaW19xUe0ok8/6EnF0Ur1TgWWb3lMoeLqWOHqluTW8BxPpcf
+	VxxP/f6bEsSR4FUK2PBNmxZUjg04hsAo=
+X-Gm-Gg: ASbGncszh9fHpCJvc9tLhp2h0GWYlCOfTbsBoVRmIfZKumoRNr0kYcVIJL+Sl8D72Z9
+	EzqeMMqNVcWmxGQlkRxNuiwVFo+Ep+9IM9kq7IV2cul8w4zb+LDJI9Nh9wn3JURfXUA6LxhioK1
+	Y/HYAJnclOhqEKC7Yns7iied4jeGcIki9AGehXPCtKk0ggi3idEATgzP89ucgps9OAhomFhsmlY
+	X3VsA==
+X-Google-Smtp-Source: AGHT+IGZbnbXaPv29RDRG8rURKXqIOYJjHTewx1VBuYzemRGnBYsiXfLCT1Wy2nhdCarDaVimGA8YHuQu3cfXumqVhE=
+X-Received: by 2002:a05:6214:23c9:b0:6fa:cc39:84 with SMTP id
+ 6a1803df08f44-6fd0a49633cmr34488746d6.13.1750412886674; Fri, 20 Jun 2025
+ 02:48:06 -0700 (PDT)
+MIME-Version: 1.0
+References: <7da04e7f-11c4-819e-cd9b-7aaea55bd91d@crashcourse.ca>
+ <CANNYZj-vcNipixa-0e+v43ww7CCfLqtFVG4WBF7U+Tq9Fg2PEg@mail.gmail.com> <3f1b7be8-fed6-efdd-ce87-79441aa58a8a@crashcourse.ca>
+In-Reply-To: <3f1b7be8-fed6-efdd-ce87-79441aa58a8a@crashcourse.ca>
+From: Alexander Kanavin <alex.kanavin@gmail.com>
+Date: Fri, 20 Jun 2025 11:47:55 +0200
+X-Gm-Features: Ac12FXyj70DimpYPQuAyVN_X9y-_e5UZnYbhHtMPgmnuw6waIfwZZZLbRB6Cc4A
+Message-ID: <CANNYZj-oUWVgEaw=2NfYhhEA3bNPPtwvHb4j4a0EtB1iSVBZmw@mail.gmail.com>
 Subject: Re: [docs] dev manual inconsistently encourages changing "poky"
  checkout locally
-In-Reply-To: <CANNYZj-vcNipixa-0e+v43ww7CCfLqtFVG4WBF7U+Tq9Fg2PEg@mail.gmail.com>
-Message-ID: <3f1b7be8-fed6-efdd-ce87-79441aa58a8a@crashcourse.ca>
-References: <7da04e7f-11c4-819e-cd9b-7aaea55bd91d@crashcourse.ca> <CANNYZj-vcNipixa-0e+v43ww7CCfLqtFVG4WBF7U+Tq9Fg2PEg@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+To: "Robert P. J. Day" <rpjday@crashcourse.ca>
+Cc: YP docs mailing list <docs@lists.yoctoproject.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 20 Jun 2025 09:44:56 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7120
+ <docs@lists.yoctoproject.org>; Fri, 20 Jun 2025 09:48:16 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7121
 
-On Fri, 20 Jun 2025, Alexander Kanavin wrote:
-
-> Can you point to the 'other doc' please? I think the idea is that one
-> never makes local modifications to poky, but pulling in upstream
-> changes is fine.
+On Fri, 20 Jun 2025 at 11:44, Robert P. J. Day <rpjday@crashcourse.ca> wrot=
+e:
+>   it's point 5 here:
 >
-> Alex
+> https://docs.yoctoproject.org/what-i-wish-id-known.html
 
-  it's point 5 here:
+"Never modify the POKY layer. Never. Ever. When you update to the next
+release, you=E2=80=99ll lose all of your work. ALL OF IT."
 
-https://docs.yoctoproject.org/what-i-wish-id-known.html
+I'm not sure what this point wants to say to be honest. Can't make sense of=
+ it.
 
->
-> On Fri, 20 Jun 2025 at 11:05, Robert P. J. Day via
-> lists.yoctoproject.org <rpjday=crashcourse.ca@lists.yoctoproject.org>
-> wrote:
-> >
-> >
-> >   while at least one of the other YP docs stresses to never, ever,
-> > ever mess with your checkout of poky, the dev manual here:
-> >
-> > https://docs.yoctoproject.org/dev-manual/start.html#cloning-the-poky-repository
-> >
-> >   reads: "Your local repository of poky is identical to the upstream
-> >   poky repository at the time from which it was cloned. As you work
-> >   with the local branch, you can periodically use the git pull --rebase
-> >   command to be sure you are up-to-date with the upstream branch."
-> >
-> > that seems inconsistent. does that merit rewording?
-> >
-> > rday
-> >
-> >
-> > -=-=-=-=-=-=-=-=-=-=-=-
-> > Links: You receive all messages sent to this group.
-> > View/Reply Online (#7118): https://lists.yoctoproject.org/g/docs/message/7118
-> > Mute This Topic: https://lists.yoctoproject.org/mt/113739433/1686489
-> > Group Owner: docs+owner@lists.yoctoproject.org
-> > Unsubscribe: https://lists.yoctoproject.org/g/docs/unsub [alex.kanavin@gmail.com]
-> > -=-=-=-=-=-=-=-=-=-=-=-
-> >
->
+Alex
 
