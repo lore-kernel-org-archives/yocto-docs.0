@@ -2,40 +2,42 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F3DF2C7115A
-	for <webhook@archiver.kernel.org>; Sun, 22 Jun 2025 14:35:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0C203C7115A
+	for <webhook@archiver.kernel.org>; Sun, 22 Jun 2025 14:45:52 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.web10.27137.1750602893741750267
+ by mx.groups.io with SMTP id smtpd.web10.27330.1750603548335580191
  for <docs@lists.yoctoproject.org>;
- Sun, 22 Jun 2025 07:34:54 -0700
+ Sun, 22 Jun 2025 07:45:48 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=SzTJZ+Oe;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=Ydc8u0ak;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
-	To:From:Date:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=c5yKdv+fwG5YLSPHa+Szeo2kK7L8ueDDwCiu2hl9rYQ=; b=SzTJZ+OeOzdISWfoWUGrbDalp/
-	yO+kU8Pw0aQnDyjL7d3G/47pqg9UviKz5K8MPOQ/0VBfRHoOopeKaHFZ9v2TnspUcULClyoebM/7l
-	Ha9tigdpc5yasRG6qJNSwMqUSlQd4SJn7wpVYTPLxnYn1X9NEYBm5aUff894ZTLsowGI4WE6VTHj9
-	ldi1RFcw1BjSrJm6lmXYGoV7l9laypjnCOMR4tzIRrhqQfR5XKc/HzZ7geR7noMwLFCA8KT0uoKUB
-	zbErng/De1aKMRr0LGi4N1qirEJaX8T7ceAzpMH969rp4kGQAvH5nIYQozc74E1fecVS/JvRzSccH
-	nBN9UbLA==;
-Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:49300 helo=asus)
+	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:References:
+	Message-ID:In-Reply-To:Subject:To:From:Date:Sender:Reply-To:Cc:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=59sVulDCMOqWjrDAOlTnep+VOkr6KUXqUk/4mf+Tnlo=; b=Ydc8u0ak4SH9mNus2OuK74kwyW
+	t2snmasHA4E559qkRYlm6+NKY6P3spG/sBaINT+WIbjbhQoG9Wxr65YO4VBKuIRQ3F6gbuqw8vo1v
+	vxGGp8Er4A/W7sjT9MPkAuECTWlPGlmkwzNuxGlZCoRP6PclE8oGg8oOqjhIhI6VvfXQoWMqpxRHb
+	K2YoMXgRNxRn60XCFj60yVxheJXxqOab8px48zJZEuxVR1x7nXk8OqO1MCmWqSwIQg1YdZEy4kybX
+	lLCdSrQni0xWPxMeCOYNTyeSXCQlcjDwFVIzyOUpBE1wqbQLH1YLUts/7AC2V3PkrE9qvRkUWbZPH
+	TgzIj80Q==;
+Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:48898 helo=asus)
 	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1uTLmS-00000007pWj-0BCC
+	id 1uTLx3-00000007rKj-3DWb
 	for docs@lists.yoctoproject.org;
-	Sun, 22 Jun 2025 10:34:51 -0400
-Date: Sun, 22 Jun 2025 10:34:41 -0400 (EDT)
+	Sun, 22 Jun 2025 10:45:46 -0400
+Date: Sun, 22 Jun 2025 10:45:39 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: [PATCH] dev-manual: correct misspelled reference to
- sstate-cache-management.py
-Message-ID: <bca142bb-16d5-d893-5d4b-a0538b38720c@crashcourse.ca>
+Subject: Re: [docs] should replicating offline build use "--runonly" or
+ "--runall"?
+In-Reply-To: <184B5224024A6359.12316@lists.yoctoproject.org>
+Message-ID: <92dee52f-385b-9134-1364-c1f6e673b37a@crashcourse.ca>
+References: <184B5224024A6359.12316@lists.yoctoproject.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -51,25 +53,36 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Sun, 22 Jun 2025 14:35:01 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7139
+ <docs@lists.yoctoproject.org>; Sun, 22 Jun 2025 14:45:52 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7140
 
+On Sun, 22 Jun 2025, Robert P. J. Day wrote:
 
-Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+>
+>   this section:
+>
+> https://docs.yoctoproject.org/dev-manual/building.html#replicating-a-build-offline
+>
+> advises to fetch the sources with:
+>
+>   $ bitbake target --runonly=fetch
+>
+> for the longest time now, i've used:
+>
+>   $ bitbake target --runall=fetch
+>
+> although i do recall that those behaviours changed once upon a time.
+> so is that still the appropriate command to use? is it worth adding an
+> explanation at that point as to the difference for people who might be
+> curious?
 
----
+  as a followup, this section:
 
-diff --git a/documentation/dev-manual/disk-space.rst b/documentation/dev-manual/disk-space.rst
-index efca82601..ba3afa5a2 100644
---- a/documentation/dev-manual/disk-space.rst
-+++ b/documentation/dev-manual/disk-space.rst
-@@ -52,7 +52,7 @@ such as BSD based NAS::
-    sstate-cache-management.py --remove-duplicated --cache-dir=sstate-cache
+https://docs.yoctoproject.org/dev-manual/efficiently-fetching-sources.html
 
- This command will ask you to confirm the deletions it identifies.
--Run ``sstate-cache-management.sh`` for more details about this script.
-+Run ``sstate-cache-management.py`` for more details about this script.
+refers only to "--runall=fetch". so it seems inconsistent with the
+earlier section. or, at the very least, it has the potential for
+confusion.
 
- .. note::
-
+rday
 
