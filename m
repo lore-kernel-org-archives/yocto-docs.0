@@ -2,14 +2,14 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 38FF5C7115D
-	for <webhook@archiver.kernel.org>; Sun, 22 Jun 2025 15:09:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3E3A4C7115A
+	for <webhook@archiver.kernel.org>; Sun, 22 Jun 2025 18:34:53 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.web11.27937.1750604973769759878
+ by mx.groups.io with SMTP id smtpd.web11.2572.1750617287302497847
  for <docs@lists.yoctoproject.org>;
- Sun, 22 Jun 2025 08:09:34 -0700
+ Sun, 22 Jun 2025 11:34:47 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=hNXuMOD9;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=jwfMvIj9;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
@@ -17,24 +17,24 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=o9fkN954j6tCvBhCDGrofxxzDzhx9qq08BFyv6Tb+2c=; b=hNXuMOD9S+dK/805ycGfVxKWl3
-	JnbYUI0QhRkWwfi51ewCVQNGJBkk09wHZ6IKBIY3N6MzlUiJvjQ7Wgp3ICeucaQugXo/XXUgMWi50
-	7oObsp/MYNU2eFTDH6teLmAW0iZJfxy2ScKh+WOZy91y0VfhY4e0mrywXqZjNYlnXnKv8iCp0nzj8
-	znTgOkd4maOi3DBf8vfQN1ArMikw5qtTbcNGrbbmRetLD+ywDTkPEQpRthrA712SbXkvzntqkmaih
-	65K4QiLvKmtCOu2E+yezrVNJk1J7T8hFAy4gUAVezFcpHYswNQuTi6/PTpn2kbIzXA44PF8z04O7b
-	YLKzOG/g==;
-Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:42032 helo=asus)
+	bh=tz1yeARM6Fe+2fD0LkcwggjoqQ7VmyoTNKCoWNorWFg=; b=jwfMvIj99FEvpPL3x3AC/8gZyM
+	Siy1yPxnPLg0cPFIZKmBzaP2xTe5tUwX+IhcSADuRLmhE8VYEgPaoEKpDY+cYN/9h7HvKPgeJ2M7/
+	eqiVnSfmYzf/uOVcsR7FsEmvKApIbyajClhQFuSGlUPFXTwlad26yUWfWnsh//V00nzVgAz+WHs6r
+	2KidL0ixn33zrHzIs5PzeFtSClNkB5vWmzHM7z7R3NegRnEDMZK/Cl1BADsWdJsdyqA/yRnBPhzeZ
+	trNszPX7EzJONoW1DakqFPPZk3CVnZx1Y4f4F3BSqTQIdra7+QsVuaqnIS502zMr0JvK6nB8IGO2h
+	KeYkDi7A==;
+Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:37170 helo=asus)
 	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1uTMK0-00000007vDR-1zHI
+	id 1uTPWd-00000008PEJ-2Gwd
 	for docs@lists.yoctoproject.org;
-	Sun, 22 Jun 2025 11:09:29 -0400
-Date: Sun, 22 Jun 2025 11:09:21 -0400 (EDT)
+	Sun, 22 Jun 2025 14:34:45 -0400
+Date: Sun, 22 Jun 2025 14:34:37 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: [PATCH] dev-manual: Replace "On the contrary" lead-in to sentence
-Message-ID: <b651b956-eb9f-6d46-f878-f09bc6bdc460@crashcourse.ca>
+Subject: should page on "Selecting a Device Manager" mention uedev?
+Message-ID: <3ee37427-2257-90a8-4ef7-03e344f0e671@crashcourse.ca>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -50,29 +50,18 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Sun, 22 Jun 2025 15:09:42 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7142
+ <docs@lists.yoctoproject.org>; Sun, 22 Jun 2025 18:34:53 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7143
 
 
-"On the contrary" is entirely the wrong qualifier to us here, as it
-typically introduces a *contradiction* to what has just been
-expressed. That is not what is happening here.
+  this page on selecting a device manager:
 
-Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+https://docs.yoctoproject.org/dev-manual/device-manager.html
 
----
+says nothing about eudev. should it? given that both systemd and eudev
+PROVIDES = udev, what happens if one selects systemd as the init
+manager, but selects eudev to provide udev? would that even work?
+should this be explained?
 
-diff --git a/documentation/dev-manual/init-manager.rst b/documentation/dev-manual/init-manager.rst
-index ddce82b81..da1cdacd1 100644
---- a/documentation/dev-manual/init-manager.rst
-+++ b/documentation/dev-manual/init-manager.rst
-@@ -44,7 +44,7 @@ therefore increasing the total system boot time. systemd also substantially
- increases system size because of its multiple components and the extra
- dependencies it pulls.
-
--On the contrary, BusyBox init is the simplest and the lightest solution and
-+On the other hand, BusyBox init is the simplest and the lightest solution and
- also comes with BusyBox mdev as device manager, a lighter replacement to
- :wikipedia:`udev <Udev>`, which SysVinit and systemd both use.
-
+rday
 
