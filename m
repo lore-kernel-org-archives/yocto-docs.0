@@ -2,41 +2,39 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 636F3C77B7C
-	for <webhook@archiver.kernel.org>; Mon, 23 Jun 2025 16:19:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4B863C7115B
+	for <webhook@archiver.kernel.org>; Mon, 23 Jun 2025 16:27:54 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.web11.374.1750695541045466233
+ by mx.groups.io with SMTP id smtpd.web11.127.1750696065913050863
  for <docs@lists.yoctoproject.org>;
- Mon, 23 Jun 2025 09:19:01 -0700
+ Mon, 23 Jun 2025 09:27:46 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=Ulo8Fd4J;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=tY7moR8P;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:References:
-	Message-ID:In-Reply-To:Subject:cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=XwDLcwMRYfHMZPfB2oG7E6zgU8XF7tVFsXhX/jbySSw=; b=Ulo8Fd4JZbx7tEcnqxQvA6gsib
-	ZSU5KpSK8tAMNXL9+zjQwn67Ymw0xHr+h03M8OGTYuyWMkr3w+ZKgrAlQy1f44yp3mrxLN8BKiTrF
-	GYuhLUbK2fGm5Yyr1jRATZpZfFC4RlhFVK+pxxmTfTgdpzD6MgoGyL+V9M4GO4ZhvhsW7efUzAPHf
-	wGA4+w+hfiZ3wPY7C7lQYErtTlCg/ani71piJQ0JZeNYHX0XSN/XHdgZVmgW0srbeoTIBD14LqQJB
-	VGE7Q1K0toWX8hEtQ8T5GhvdPvzox2ZMhk4evTaew0Psjw2lDlP7ulhu2EJyIOH8yiktOGi6iX/fZ
-	OZlPFKeQ==;
-Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:49332 helo=asus)
+	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
+	To:From:Date:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=x+I9xOHCt+7Bd7mBB1pR2laoIMvl2bdCxXkgSXdh8W4=; b=tY7moR8PYnhiZ0O1Az/cFSjA9j
+	q+02Oxb+rTUc+ksTFAiTfsvEjSe6D7xx8ko5JbCOxnNi6+5w28z+DfRvy/J5m5JoYn5AJqEMX30pW
+	gVfUw+Xz8WH0D02GDgJnERLtR07iCAFGZuZz4rX2bOi68UWJNqb2u/hGXXcTsjQEDdgctMbo3/+hA
+	6SIzU9tKvD/DP63ou77PVstSx/MXusvCV07+0X274kjzVe+fq/eSX2hOB0IpCqIx8d9uOFIh7mbVq
+	7BNsF9eZTNWr/EL/Ky8UiULgbfRlAUKYgtuzdvFqy5ZPFGuz7A0sBpaR76EzOHuUp+zn5sgUjYsnE
+	MciBU8rA==;
+Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:41264 helo=asus)
 	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1uTjsn-0000000BZWA-1xDI;
-	Mon, 23 Jun 2025 12:18:59 -0400
-Date: Mon, 23 Jun 2025 12:18:51 -0400 (EDT)
+	id 1uTk1G-0000000Bamf-48Ar
+	for docs@lists.yoctoproject.org;
+	Mon, 23 Jun 2025 12:27:44 -0400
+Date: Mon, 23 Jun 2025 12:27:40 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: quentin.schulz@cherry.de
-cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: Re: [docs] improper rendering of ":term:" in bold
-In-Reply-To: <72507079-aaa2-40c4-b1cd-9f374e839bfd@cherry.de>
-Message-ID: <1ddf83fb-7230-597d-b772-03a2be9b5aa5@crashcourse.ca>
-References: <8a705bb7-e1d2-a784-0018-a3106d02bbf8@crashcourse.ca> <72507079-aaa2-40c4-b1cd-9f374e839bfd@cherry.de>
+To: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: [PATCH] dev-manual: fix broken rendering of bullet point
+Message-ID: <5bd4e038-fd6c-5ec4-cc6d-c1b1726f6e6e@crashcourse.ca>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -52,38 +50,28 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 23 Jun 2025 16:19:06 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7170
+ <docs@lists.yoctoproject.org>; Mon, 23 Jun 2025 16:27:54 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7171
 
-On Mon, 23 Jun 2025, Quentin Schulz via lists.yoctoproject.org wrote:
 
-> Hi Robert,
->
-> On 6/22/25 10:42 AM, Robert P. J. Day via lists.yoctoproject.org wrote:
-> >
-> > if you check here:
-> >
-> > https://docs.yoctoproject.org/dev-manual/building.html#building-images-for-more-than-one-machine
-> >
-> > note the improper processing of :term: in that first bullet point,
-> > which is rendered verbatim as:
-> >
-> >    Share the :term:`Build Directory`:
-> >
->
->
-> Good catch!
->
-> Indeed, seems like it should be
->
-> *Share the* :term:`Build Directory` *:*
->
-> ? Can you test and send a patch?
+Tweak the formatting of the bullet point title so that it renders both
+the term and the bolding properly.
 
-  Yup, that is a solution. My only gripe is that my standard is that
-even if the title of a bullet point is bolded, the following colon
-should not be, but since that standard has already been adopted
-throughout the docs, I'll stick with it. Patch coming shortly.
+Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
 
-rday
+---
+
+diff --git a/documentation/dev-manual/building.rst b/documentation/dev-manual/building.rst
+index 865d2e1b6..75a17ecd4 100644
+--- a/documentation/dev-manual/building.rst
++++ b/documentation/dev-manual/building.rst
+@@ -591,7 +591,7 @@ If build speed and package feed maintenance are considerations, you
+ should consider the points in this section that can help you optimize
+ your tunings to best consider build times and package feed maintenance.
+
+--  *Share the :term:`Build Directory`:* If at all possible, share the
++-  *Share the* :term:`Build Directory` *:* If at all possible, share the
+    :term:`TMPDIR` across builds. The Yocto Project supports switching between
+    different :term:`MACHINE` values in the same :term:`TMPDIR`. This practice
+    is well supported and regularly used by developers when building for
 
