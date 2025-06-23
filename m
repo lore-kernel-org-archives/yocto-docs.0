@@ -2,14 +2,14 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C2352C7115B
-	for <webhook@archiver.kernel.org>; Mon, 23 Jun 2025 15:19:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C7310C77B7C
+	for <webhook@archiver.kernel.org>; Mon, 23 Jun 2025 15:23:02 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.web10.1471.1750691968988132933
+ by mx.groups.io with SMTP id smtpd.web11.1564.1750692181146286827
  for <docs@lists.yoctoproject.org>;
- Mon, 23 Jun 2025 08:19:29 -0700
+ Mon, 23 Jun 2025 08:23:01 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=icV3Lk72;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=WlpcRtgc;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:References:
@@ -17,27 +17,27 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
 	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=LuvmHFPTabTB3xn+2u0miCMEis3/zNm8PHy9A/0hmvk=; b=icV3Lk72frFoGa5uDBVM0oVP98
-	3VP666aGnuZHtmvMMGGTvQYNOasasBzeS4VDzJUWZs5XMDoVY/2GQfjgY9coe4FXU0mRzUGetWm6F
-	4pGPxeo0uPXwJgeN7NecQ0hotqKxchtfDoGQ5wnzTF0725jjHaF+MnLQFN3ZCKIZjgEUf2sGtrfbd
-	DTJmHcZENSPKoZD6DQ1arBLWbGQW1ZT63KWyCmxWV7Y7bqadT1ndNrARhoismxMW/f09UjSy7lF3R
-	mBYyuzQnNI1kLRwwD9qrrjgPdZzwzxLwT3uTzAd2Sr21vW9ObddOaLdFC9Ees0mNzK1/qPYPYNJOq
-	NEudQjWw==;
-Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:56658 helo=asus)
+	bh=I8kLSUq++5qnbDBbDD6lE5EjZruMJ+3x/Rw5EqnMV7g=; b=WlpcRtgcEkaMrNlCawJQLO7lD3
+	cdq+ST15fAasiJhzRWWMTuyOeL5uaZPSUSXJHqn1u6Md6IuDiZATkO+P37z+9QKNARS9FaRS3fQsl
+	VXf9rx7BqbkbnS8Y6+UB00CsTk+RJFzkIoyy6JDoPB1/te5HSNd+8CTbtWuBY/z9H+q5YLNzt4ZFX
+	IRH7VwvabThbBPDngEriGdPCNRcFLkIh4CPqgTtGahZeaN4/ENfTAVm9vf9rFuU62jvdcifq0GxAW
+	M5ebi/YDAz3RAOkMwvG3NiBo/mOibf4HeizLVMGfm7+UuG1/Fz5YsTuM+78OvK+0lPRGjHwfxIAiy
+	GWTzARTA==;
+Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:47418 helo=asus)
 	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1uTixB-0000000BQA4-0SPl;
-	Mon, 23 Jun 2025 11:19:27 -0400
-Date: Mon, 23 Jun 2025 11:19:20 -0400 (EDT)
+	id 1uTj0b-0000000BQig-1AHa;
+	Mon, 23 Jun 2025 11:22:59 -0400
+Date: Mon, 23 Jun 2025 11:22:57 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: Quentin Schulz <quentin.schulz@cherry.de>
 cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: Re: [docs] [PATCH] dev-manual: some minor cleanups to "Pre-Built
- Libraries"
-In-Reply-To: <790f4b6e-7176-4b2e-abdc-d26243aa0db1@cherry.de>
-Message-ID: <3dfd9bca-ebea-9b71-6f9c-8b85ef699550@crashcourse.ca>
-References: <b88499e3-e0d1-5aff-490c-ae13c2dbfb31@crashcourse.ca> <790f4b6e-7176-4b2e-abdc-d26243aa0db1@cherry.de>
+Subject: Re: [docs] [PATCH] dev-manual: Replace "On the contrary" lead-in to
+ sentence
+In-Reply-To: <2ee944e5-392c-4023-baff-57684d6a2cbc@cherry.de>
+Message-ID: <831cb5d3-e93c-5f00-fa7d-a3b3333e4145@crashcourse.ca>
+References: <b651b956-eb9f-6d46-f878-f09bc6bdc460@crashcourse.ca> <2ee944e5-392c-4023-baff-57684d6a2cbc@cherry.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -53,51 +53,29 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 23 Jun 2025 15:19:32 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7163
+ <docs@lists.yoctoproject.org>; Mon, 23 Jun 2025 15:23:02 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7164
 
 On Mon, 23 Jun 2025, Quentin Schulz wrote:
 
 > Hi Robert,
 >
-> On 6/22/25 12:59 PM, Robert P. J. Day via lists.yoctoproject.org wrote:
+> On 6/22/25 5:09 PM, Robert P. J. Day via lists.yoctoproject.org wrote:
 > >
-> >    * Add note about new URL for FHS 3.0.
-> >    * Add wildcard for "INHIBIT_" variable.
-> >    * Fix font for ${PN}.
+> > "On the contrary" is entirely the wrong qualifier to us here, as it
+> > typically introduces a *contradiction* to what has just been
+> > expressed. That is not what is happening here.
 > >
-> > Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
-> >
-> > ---
-> >
-> > diff --git a/documentation/dev-manual/prebuilt-libraries.rst
-> > b/documentation/dev-manual/prebuilt-libraries.rst
-> > index a05f39ca1..077184657 100644
-> > --- a/documentation/dev-manual/prebuilt-libraries.rst
-> > +++ b/documentation/dev-manual/prebuilt-libraries.rst
-> > @@ -22,6 +22,13 @@ To summarize, a versioned library must meet two
-> > conditions:
-> >   This section shows how to deal with both versioned and unversioned
-> >   pre-built libraries.
-> >
-> > +.. note::
-> > +
-> > +   In the shared library article referenced above, the link to the current
-> > +   version of the Filesystem Hierarchy Standard (FHS) is out of date;
-> > +   the current FHS 3.0 release can be found
-> > +   `here <https://refspecs.linuxfoundation.org/FHS_3.0/index.html>`__.
-> > +
 >
-> Considering FHS 2.3 was released Jan 2004 and FHS 3.0 on Jun 2015, will we
-> have another FHS version end of 2026?
+> Not a native speaker but my brain isn't too happy with the suggestion either
+> (but that could be solely due the fact I'm not a native speaker :) ).
 >
-> We can simply link to https://refspecs.linuxfoundation.org/fhs.shtml so we
-> hopefully aren't outdated ourselves later on as well?
+> Would "Alternatively" work here?
 >
-> Looks good to me otherwise!
+> But I agree "On the contrary" sounds wrong :)
 
-  there is no discernible timeline for anything beyond FHS 3.0 that i
-know of.
+  I was actually toying with "Alternatively". I think that, given the
+contrast, I think I will say, "By contrast, ...".
 
 rday
 
