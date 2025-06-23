@@ -2,14 +2,14 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4B863C7115B
-	for <webhook@archiver.kernel.org>; Mon, 23 Jun 2025 16:27:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2DB45C7115B
+	for <webhook@archiver.kernel.org>; Mon, 23 Jun 2025 17:41:20 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.web11.127.1750696065913050863
+ by mx.groups.io with SMTP id smtpd.web10.1224.1750700470373419167
  for <docs@lists.yoctoproject.org>;
- Mon, 23 Jun 2025 09:27:46 -0700
+ Mon, 23 Jun 2025 10:41:10 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=tY7moR8P;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=nbfCWH+4;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
@@ -17,24 +17,24 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=x+I9xOHCt+7Bd7mBB1pR2laoIMvl2bdCxXkgSXdh8W4=; b=tY7moR8PYnhiZ0O1Az/cFSjA9j
-	q+02Oxb+rTUc+ksTFAiTfsvEjSe6D7xx8ko5JbCOxnNi6+5w28z+DfRvy/J5m5JoYn5AJqEMX30pW
-	gVfUw+Xz8WH0D02GDgJnERLtR07iCAFGZuZz4rX2bOi68UWJNqb2u/hGXXcTsjQEDdgctMbo3/+hA
-	6SIzU9tKvD/DP63ou77PVstSx/MXusvCV07+0X274kjzVe+fq/eSX2hOB0IpCqIx8d9uOFIh7mbVq
-	7BNsF9eZTNWr/EL/Ky8UiULgbfRlAUKYgtuzdvFqy5ZPFGuz7A0sBpaR76EzOHuUp+zn5sgUjYsnE
-	MciBU8rA==;
-Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:41264 helo=asus)
+	bh=d/lMZ07MtJ4j5FSFxcXth1/Dkq73HnosZp7iDyiiPOg=; b=nbfCWH+4suWxql+SCkhE9LjvYt
+	LZO8vgAgPKa5x93Gn7Y5qXEKRcpW/r4VbXoS+8m9IftYqTqxTAQAxMlBA/56mXQjJyMfIj2xb7coG
+	R5ch1sKdHFLn4wXay1pa/RlijA9xtUolhUucPihg94d68hHa8qpTzQSwt2KBNcTZ/8jBqcNPuC+cd
+	aAnXEI6udJvRSgcP0APD17j0J0uYAWfjOTxZVicBAGZkgMs4R28fDFkzfPGcSEu4kFLIPkAF2CEZz
+	kr0JlNl0WZJv0N7n5gTOfpVfn5OLrp2WymW+cyFFyY22Yh1kH0N0Py9NMAsR0cGZIENQhQojRbBD9
+	dxYYLymw==;
+Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:44506 helo=asus)
 	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1uTk1G-0000000Bamf-48Ar
+	id 1uTlAH-0000000BlAX-1HDl
 	for docs@lists.yoctoproject.org;
-	Mon, 23 Jun 2025 12:27:44 -0400
-Date: Mon, 23 Jun 2025 12:27:40 -0400 (EDT)
+	Mon, 23 Jun 2025 13:41:09 -0400
+Date: Mon, 23 Jun 2025 13:40:54 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: [PATCH] dev-manual: fix broken rendering of bullet point
-Message-ID: <5bd4e038-fd6c-5ec4-cc6d-c1b1726f6e6e@crashcourse.ca>
+Subject: [PATCH] dev-manual: show bin_package example wireless-regdb recipe
+Message-ID: <0639bb4b-2e1c-2dde-098d-ac99d62bb646@crashcourse.ca>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -50,28 +50,46 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 23 Jun 2025 16:27:54 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7171
+ <docs@lists.yoctoproject.org>; Mon, 23 Jun 2025 17:41:20 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7172
 
 
-Tweak the formatting of the bullet point title so that it renders both
-the term and the bolding properly.
+Add a snippet from the wireless-regdb recipe to demonstrate a simple
+example of a bin_package recipe.
 
 Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
 
 ---
 
-diff --git a/documentation/dev-manual/building.rst b/documentation/dev-manual/building.rst
-index 865d2e1b6..75a17ecd4 100644
---- a/documentation/dev-manual/building.rst
-+++ b/documentation/dev-manual/building.rst
-@@ -591,7 +591,7 @@ If build speed and package feed maintenance are considerations, you
- should consider the points in this section that can help you optimize
- your tunings to best consider build times and package feed maintenance.
+diff --git a/documentation/dev-manual/new-recipe.rst b/documentation/dev-manual/new-recipe.rst
+index c49881efe..2d7a7efdf 100644
+--- a/documentation/dev-manual/new-recipe.rst
++++ b/documentation/dev-manual/new-recipe.rst
+@@ -1397,6 +1397,26 @@ doing the following:
+    where you have installed them and whether those files are in
+    different locations than the defaults.
 
---  *Share the :term:`Build Directory`:* If at all possible, share the
-+-  *Share the* :term:`Build Directory` *:* If at all possible, share the
-    :term:`TMPDIR` across builds. The Yocto Project supports switching between
-    different :term:`MACHINE` values in the same :term:`TMPDIR`. This practice
-    is well supported and regularly used by developers when building for
++As a basic example of a :ref:`ref-classes-bin-package`-style recipe, consider
++this snippet from the
++:oe_git:`wireless-regdb </openembedded-core/tree/meta/recipes-kernel/wireless-regdb>`
++recipe file, which fetches a single tarball of binary content and manually
++installs with no need for any configuration or compilation::
++
++   SRC_URI = "https://www.kernel.org/pub/software/network/${BPN}/${BP}.tar.xz"
++   SRC_URI[sha256sum] = "57f8e7721cf5a880c13ae0c202edbb21092a060d45f9e9c59bcd2a8272bfa456"
++
++   inherit bin_package allarch
++
++   do_install() {
++       install -d -m0755 ${D}${nonarch_libdir}/crda
++       install -d -m0755 ${D}${sysconfdir}/wireless-regdb/pubkeys
++       install -m 0644 regulatory.bin ${D}${nonarch_libdir}/crda/regulatory.bin
++       install -m 0644 wens.key.pub.pem ${D}${sysconfdir}/wireless-regdb/pubkeys/wens.key.pub.pem
++       install -m 0644 -D regulatory.db ${D}${nonarch_base_libdir}/firmware/regulatory.db
++       install -m 0644 regulatory.db.p7s ${D}${nonarch_base_libdir}/firmware/regulatory.db.p7s
++   }
++
+ Following Recipe Style Guidelines
+ =================================
+
 
