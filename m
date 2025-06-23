@@ -2,145 +2,231 @@ Return-Path: <alex.kanavin@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C9D61C7115B
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D25E1C77B7F
 	for <webhook@archiver.kernel.org>; Mon, 23 Jun 2025 12:43:09 +0000 (UTC)
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
- by mx.groups.io with SMTP id smtpd.web11.18669.1750682589401702980
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+ by mx.groups.io with SMTP id smtpd.web10.18640.1750682585453224587
  for <docs@lists.yoctoproject.org>;
- Mon, 23 Jun 2025 05:43:09 -0700
+ Mon, 23 Jun 2025 05:43:05 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=D/k9j7Xa;
- spf=pass (domain: gmail.com, ip: 209.85.221.54, mailfrom: alex.kanavin@gmail.com)
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3a54700a463so2250738f8f.1
-        for <docs@lists.yoctoproject.org>; Mon, 23 Jun 2025 05:43:09 -0700 (PDT)
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=iFqfk0Lq;
+ spf=pass (domain: gmail.com, ip: 209.85.221.53, mailfrom: alex.kanavin@gmail.com)
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3a536ecbf6fso2298558f8f.2
+        for <docs@lists.yoctoproject.org>; Mon, 23 Jun 2025 05:43:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750682588; x=1751287388; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=B+qC1EEaay8hFTPEhETGaA43T7yNcyVQN5sRN1ccVz0=;
-        b=D/k9j7Xa6f6yV5hd7GSdXINCKTYBg/aGTJJaWBSP86F+t1XDgHPncCGUtg+TJ9Wl4X
-         /Ecfoi2j5BgNI2eePNfAYAUG6roLGxGBJ1oDfiJczRb3h/awaSmuQhKmz7ZFXVTUfwMu
-         L4HR1rdWel362CmzhK5UUR6ylXC/mgxycD0hBePTjNPrJQLWWqj27MQNatU4bQ5NJG3r
-         srabI3jDulek28B24t7pFwX1JqCMVzwLQu5jdns4DO9nzuKGVNJUBtxJleEvCeGFz67L
-         K0KsnpDAwyBd4Z/dOYjgVGeMSPkmAgH/XYKEmseVvQuZhzjIPzo93574JpoYGAL1Ah+k
-         SYGQ==
+        d=gmail.com; s=20230601; t=1750682584; x=1751287384; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=aA7L5yEbVSgty1kHaBbBXw0qhz/IqAibYZZEHMkMlDM=;
+        b=iFqfk0LqxV2p1zP8VjVJII9yOIXv6fIiuEwRR5gV5lYgtLLg9GElbrl2OE1sZ2b7Dw
+         bdmv4u8FTEs07oSxq56DisHfdUs8k630b03WQpiPU+qAS9+c9oYRcsnkZ8RYCMDaUBP7
+         /0iXeuMfCpEaRCHJpkwJ90imKGu6EVb+tJjwW2TkzPM7swFSNriMukeUfueht8AEMbCw
+         /rbyylbTRrXu8xJ8coNPPUovYnYHD6c5rXwqNDnbDPSAveQdqs/4g+2/OylZY7zAIZLe
+         kekkhxwdXWRmay78u4JxQK6wnbgDCF/pDBfAy6Jh/gF6hsWdQFIsyZwv4RHkct6A3CdY
+         lbGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750682588; x=1751287388;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=B+qC1EEaay8hFTPEhETGaA43T7yNcyVQN5sRN1ccVz0=;
-        b=UGV4mlXe533QlA73+zA7XW8xyI9QrGL/epKJYWePZ2BK7OIIGfRmsS9wEL43HGVfk+
-         on+ALB7v7twa00zbupK6MrcIvdXu9QbEhPVesfKSh1pZSKEq8xXepSA37zX8XcG0Rlrj
-         2TfH0rv8HU7f25vGS6GO3IUDUsxmCDaRV//2tMn4YY+ekaxdtEajfp3soJ3SF6iCzgPj
-         OFeHLo9NpATCD1Uvbeq9efTh6LEKzcYfB7QljHQc3m5y1aL1oWVSNa5xNTo4ZeEt/YkH
-         VUMO22w4Lg8Kkvne9rZ27DB983SIBibqxJ37FqpXcwNaSQ2sYJFbvMlGpzGM6c7XablZ
-         dKJA==
-X-Gm-Message-State: AOJu0YyLHifk4R3zxZhv2HA70tN7zZ3ZO8OowQi4asUvlryiBkZOV+pS
-	vkRv6YJ9dCsyRyCFT5tqo49sHcEoZOnAh/hpWdfSTKDpWU0/olEzwskT0CN/mA==
-X-Gm-Gg: ASbGncttKBPjs02Ml5f6Qye70mxDAkZaOvVCF69Rphu+GLAqGmcHepjn8/W5rcjX7vi
-	pydmtSgt3jTOfQ4X1Kr07zZDlTJzCVNcQBJiZvuXQ0TZW1XhGGcTz9ueqes1qimjk6HewSLrSYS
-	XmN+UuyEr9sTuUBF92tKswPyWQ+M/3/pXo3/Jrcf843WpD1Torjv+PFXLZ63agEvjV9W5uOMHdn
-	ZDRpO5U1kT1sXjNIX2eMi2vjhmz/wMtHlpbE8gRaBMAkOGMhWtXYoFR5wWD0BfttQ5cjTO6wl0h
-	ksDAx1R8jwCXE3kPeXZLvn4AuCWlpLMKDE3IXZMN3erDNkjXxBXYs01C8A6dZ7ef99/nhGfddEz
-	MQNw5odko0AmY1NIdd9KDnH19klMwkCEiZw==
-X-Google-Smtp-Source: AGHT+IF0jfTh8WxI2mkHPdGzDCguBEW8V4XIUVv3XihiBlVApzQdCnMlwALwvp/eUBtWxASUnsQ++Q==
-X-Received: by 2002:a05:6000:2002:b0:3a3:70ab:b274 with SMTP id ffacd0b85a97d-3a6d27a6dbbmr9718768f8f.12.1750682587638;
-        Mon, 23 Jun 2025 05:43:07 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1750682584; x=1751287384;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=aA7L5yEbVSgty1kHaBbBXw0qhz/IqAibYZZEHMkMlDM=;
+        b=h9jmODBAQbBOg3LCkcRPOfdIbfFQU4PL8TEf4csVJFNHfdv9hWNUg28K3Ycfg6GK4q
+         ld+GrJBzs6b0X3MLQ0LdhzmJR3CjgUYD+1HPqdhulpguQTpiTt5Hf50gx1Z2Q0DxRnuf
+         OAyd02tIyi7G2QW++rdHwAQbN2DUkux/w2SawzxB/YqtzCIsmzFaKBTv1aHC2pyicaeh
+         uh+2lHb4dpHb8STvjJdNSoSW7q+Nbfq8qtVBKTsRRn/Un/7iz7mRsZy//2QxSrvHKRg1
+         p7Okcy5aJ23K3AyO+fW1+EwU74s8UhYe0M4ZINb0e+G0IG7hiTqj9zVk/omxX7u3pfTd
+         DPhA==
+X-Gm-Message-State: AOJu0Yx0cO2CWZK8mQVLb+G6XN/ababDAjAV0THrJw91Sy1F1w1g/0hh
+	nM/CoTZIYl/O2Od5n6X/5nIsXJgmcUvAcm/iOwHFEVREKmFzgX9q9qSG+93Tag==
+X-Gm-Gg: ASbGncvPINN6kZEsKfRCekn+M8BwDqGz1FFOGmY07/Ko1ORZBuo9VoTydZymUFB37gB
+	Ur9jwEIisk3jf4LhoSODu6Gh14uDres8nqA1vde5RuUGkFkZvxzEIOs2BqpBP2FOaF6+BWQnFIZ
+	SeiYBUgW7+FN3PQTyhCSmtLF0zr/SdtkgNketZ/hAOGoCtRS/0+QJduzPDFtebqmvussTIRoo5N
+	QDm0Gr3sbtc+QhbovpVLWTu6P9DQL+8t/SaFN/xpMhSD+3j+guQCAJyaVO3yFKC0N0uhUlc8pNt
+	K5neUAacO6u09WbduKGq5HGgEyDZJneFEyuUr1c1k/xkHFfEzj8OF3tz1suhMOoa4isVCuT8qFx
+	xyzAOeTgfUXAXePaBdHCSPxI84Rttg6MBYw==
+X-Google-Smtp-Source: AGHT+IHau8bX5wKGwQRPjQZIvZ5JxzSN8do7wIThtQUxP0t7wbh1dkNO8s1EXpkjlopK/FCMNTV16Q==
+X-Received: by 2002:a05:6000:1888:b0:3a5:8600:7cff with SMTP id ffacd0b85a97d-3a6d12fb1f9mr9815099f8f.1.1750682583488;
+        Mon, 23 Jun 2025 05:43:03 -0700 (PDT)
 Received: from Zen2.lab.linutronix.de. (drugstore.linutronix.de. [80.153.143.164])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a6d1190b00sm9157170f8f.87.2025.06.23.05.43.07
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a6d1190b00sm9157170f8f.87.2025.06.23.05.43.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Jun 2025 05:43:07 -0700 (PDT)
+        Mon, 23 Jun 2025 05:43:02 -0700 (PDT)
 From: Alexander Kanavin <alex.kanavin@gmail.com>
 To: docs@lists.yoctoproject.org
 Cc: Alexander Kanavin <alex@linutronix.de>
-Subject: [PATCH 5/6] ref-manual: correct references to WORKDIR to account for recent do_unpack changes
-Date: Mon, 23 Jun 2025 14:42:56 +0200
-Message-Id: <20250623124257.1544615-5-alex.kanavin@gmail.com>
+Subject: [PATCH 1/6] overview-manual: correct value of UNPACKDIR and put S under it
+Date: Mon, 23 Jun 2025 14:42:52 +0200
+Message-Id: <20250623124257.1544615-1-alex.kanavin@gmail.com>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250623124257.1544615-1-alex.kanavin@gmail.com>
-References: <20250623124257.1544615-1-alex.kanavin@gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Mon, 23 Jun 2025 12:43:09 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7148
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7145
 
 From: Alexander Kanavin <alex@linutronix.de>
 
 Signed-off-by: Alexander Kanavin <alex@linutronix.de>
 ---
- documentation/ref-manual/structure.rst |  2 +-
- documentation/ref-manual/variables.rst | 16 +++-------------
- 2 files changed, 4 insertions(+), 14 deletions(-)
+ documentation/overview-manual/concepts.rst                | 2 +-
+ .../svg/analysis-for-package-splitting.svg                | 8 ++++----
+ .../svg/configuration-compile-autoreconf.svg              | 8 ++++----
+ documentation/overview-manual/svg/patching.svg            | 8 ++++----
+ documentation/overview-manual/svg/source-fetching.svg     | 8 ++++----
+ 5 files changed, 17 insertions(+), 17 deletions(-)
 
-diff --git a/documentation/ref-manual/structure.rst b/documentation/ref-manual/structure.rst
-index 2190f5b90e5..d6dbb294018 100644
---- a/documentation/ref-manual/structure.rst
-+++ b/documentation/ref-manual/structure.rst
-@@ -611,7 +611,7 @@ example, consider ``linux-yocto-kernel-3.0`` on the machine ``qemux86``
- built within the Yocto Project. For this package, a work directory of
- ``tmp/work/qemux86-poky-linux/linux-yocto/3.0+git1+<.....>``, referred
- to as the :term:`WORKDIR`, is created. Within this directory, the source is
--unpacked to ``linux-qemux86-standard-build`` and then patched by Quilt.
-+unpacked to ``sources/linux-qemux86-standard-build`` and then patched by Quilt.
- (See the ":ref:`dev-manual/quilt:using quilt in your workflow`" section in
- the Yocto Project Development Tasks Manual for more information.) Within
- the ``linux-qemux86-standard-build`` directory, standard Quilt
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index c6ae3fb8bcc..7fe152c57e3 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -265,7 +265,7 @@ system and gives an overview of their function and contents.
-       build process. By default, this directory is the same as the
-       :term:`S` directory, which is defined as::
+diff --git a/documentation/overview-manual/concepts.rst b/documentation/overview-manual/concepts.rst
+index c9405cdd338..590055501f9 100644
+--- a/documentation/overview-manual/concepts.rst
++++ b/documentation/overview-manual/concepts.rst
+@@ -704,7 +704,7 @@ the Yocto Project Reference Manual.
  
--         S = "${WORKDIR}/${BP}"
-+         S = "${UNPACKDIR}/${BP}"
+ Each recipe has an area in the :term:`Build Directory` where the unpacked
+ source code resides. The :term:`UNPACKDIR` variable points to this area for a
+-recipe's unpacked source code, and has the default ``sources-unpack`` name. The
++recipe's unpacked source code, and has the default ``sources`` name. The
+ preceding figure and the following list describe the :term:`Build Directory`'s
+ hierarchy:
  
-       You can separate the (:term:`S`) directory and the directory pointed to
-       by the :term:`B` variable. Most Autotools-based recipes support
-@@ -8039,7 +8039,7 @@ system and gives an overview of their function and contents.
-    :term:`S`
-       The location in the :term:`Build Directory` where
-       unpacked recipe source code resides. By default, this directory is
--      ``${``\ :term:`WORKDIR`\ ``}/${``\ :term:`BPN`\ ``}-${``\ :term:`PV`\ ``}``,
-+      ``${``\ :term:`UNPACKDIR`\ ``}/${``\ :term:`BPN`\ ``}-${``\ :term:`PV`\ ``}``,
-       where ``${BPN}`` is the base recipe name and ``${PV}`` is the recipe
-       version. If the source tarball extracts the code to a directory named
-       anything other than ``${BPN}-${PV}``, or if the source code is
-@@ -8052,19 +8052,10 @@ system and gives an overview of their function and contents.
-       ``poky/build``. In this case, the work directory the build system
-       uses to keep the unpacked recipe for ``db`` is the following::
- 
--         poky/build/tmp/work/qemux86-poky-linux/db/5.1.19-r3/db-5.1.19
-+         poky/build/tmp/work/qemux86-poky-linux/db/5.1.19-r3/sources/db-5.1.19
- 
-       The unpacked source code resides in the ``db-5.1.19`` folder.
- 
--      This next example assumes a Git repository. By default, Git
--      repositories are cloned to ``${WORKDIR}/git`` during
--      :ref:`ref-tasks-fetch`. Since this path is different
--      from the default value of :term:`S`, you must set it specifically so the
--      source can be located::
--
--         SRC_URI = "git://path/to/repo.git;branch=main"
--         S = "${WORKDIR}/git"
--
-    :term:`SANITY_REQUIRED_UTILITIES`
-       Specifies a list of command-line utilities that should be checked for
-       during the initial sanity checking process when running BitBake. If
-@@ -8439,7 +8430,6 @@ system and gives an overview of their function and contents.
-       sources are fetched from a Git repository and ``setup.py`` is in a
-       ``python/pythonmodule`` subdirectory, you would have this::
- 
--         S = "${WORKDIR}/git"
-          SETUPTOOLS_SETUP_PATH = "${S}/python/pythonmodule"
- 
-    :term:`SIGGEN_EXCLUDE_SAFE_RECIPE_DEPS`
+diff --git a/documentation/overview-manual/svg/analysis-for-package-splitting.svg b/documentation/overview-manual/svg/analysis-for-package-splitting.svg
+index 3ea42808823..16e831d65d5 100644
+--- a/documentation/overview-manual/svg/analysis-for-package-splitting.svg
++++ b/documentation/overview-manual/svg/analysis-for-package-splitting.svg
+@@ -1483,12 +1483,12 @@
+          x="291.66635"
+          y="381.29614"
+          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.6667px;font-family:'Nimbus Mono PS';-inkscape-font-specification:'Nimbus Mono PS, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;text-anchor:start;stroke:none;stroke-width:1.42682px"
+-         id="tspan15">          sources-unpack &lt;─────────────────────── UNPACKDIR</tspan><tspan
++         id="tspan15">          sources &lt;────────────────────────────── UNPACKDIR</tspan><tspan
+          sodipodi:role="line"
+          x="291.66635"
+          y="394.62952"
+          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.6667px;font-family:'Nimbus Mono PS';-inkscape-font-specification:'Nimbus Mono PS, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;text-anchor:start;stroke:none;stroke-width:1.42682px"
+-         id="tspan29">          ${BP} &lt;──────────────────────────────── S / B</tspan><tspan
++         id="tspan29">            ${BP} &lt;────────────────────────────── S / B</tspan><tspan
+          sodipodi:role="line"
+          x="291.66635"
+          y="407.96289"
+@@ -1543,12 +1543,12 @@
+          x="291.66635"
+          y="541.29663"
+          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.6667px;font-family:'Nimbus Mono PS';-inkscape-font-specification:'Nimbus Mono PS, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;text-anchor:start;stroke:none;stroke-width:1.42682px"
+-         id="tspan32">          sources-unpack &lt;─────────────────────── UNPACKDIR</tspan><tspan
++         id="tspan32">          sources &lt;────────────────────────────── UNPACKDIR</tspan><tspan
+          sodipodi:role="line"
+          x="291.66635"
+          y="554.63"
+          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.6667px;font-family:'Nimbus Mono PS';-inkscape-font-specification:'Nimbus Mono PS, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;text-anchor:start;stroke:none;stroke-width:1.42682px"
+-         id="tspan33">          ${BP} &lt;──────────────────────────────── S / B</tspan><tspan
++         id="tspan33">            ${BP} &lt;────────────────────────────── S / B</tspan><tspan
+          sodipodi:role="line"
+          x="291.66635"
+          y="567.96338"
+diff --git a/documentation/overview-manual/svg/configuration-compile-autoreconf.svg b/documentation/overview-manual/svg/configuration-compile-autoreconf.svg
+index c0de45681a5..3be08018cb3 100644
+--- a/documentation/overview-manual/svg/configuration-compile-autoreconf.svg
++++ b/documentation/overview-manual/svg/configuration-compile-autoreconf.svg
+@@ -1277,12 +1277,12 @@
+          x="287.2186"
+          y="300.76147"
+          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.6667px;font-family:'Nimbus Mono PS';-inkscape-font-specification:'Nimbus Mono PS, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;text-anchor:start;stroke:none;stroke-width:1.42682px"
+-         id="tspan21">          sources-unpack &lt;───────────────────── UNPACKDIR</tspan><tspan
++         id="tspan21">          sources &lt;──────────────────────────── UNPACKDIR</tspan><tspan
+          sodipodi:role="line"
+          x="287.2186"
+          y="314.09485"
+          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.6667px;font-family:'Nimbus Mono PS';-inkscape-font-specification:'Nimbus Mono PS, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;text-anchor:start;stroke:none;stroke-width:1.42682px"
+-         id="tspan22">          ${BP} &lt;────────────────────────────── S / B</tspan><tspan
++         id="tspan22">            ${BP} &lt;──────────────────────────── S / B</tspan><tspan
+          sodipodi:role="line"
+          x="287.2186"
+          y="327.42822"
+@@ -1322,12 +1322,12 @@
+          x="287.2186"
+          y="420.76184"
+          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.6667px;font-family:'Nimbus Mono PS';-inkscape-font-specification:'Nimbus Mono PS, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;text-anchor:start;stroke:none;stroke-width:1.42682px"
+-         id="tspan35">          sources-unpack &lt;───────────────────── UNPACKDIR</tspan><tspan
++         id="tspan35">          sources &lt;──────────────────────────── UNPACKDIR</tspan><tspan
+          sodipodi:role="line"
+          x="287.2186"
+          y="434.09521"
+          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.6667px;font-family:'Nimbus Mono PS';-inkscape-font-specification:'Nimbus Mono PS, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;text-anchor:start;stroke:none;stroke-width:1.42682px"
+-         id="tspan36">          ${BP} &lt;────────────────────────────── S / B</tspan><tspan
++         id="tspan36">            ${BP} &lt;──────────────────────────── S / B</tspan><tspan
+          sodipodi:role="line"
+          x="287.2186"
+          y="447.42859"
+diff --git a/documentation/overview-manual/svg/patching.svg b/documentation/overview-manual/svg/patching.svg
+index b0de175a205..5c56b5ac23d 100644
+--- a/documentation/overview-manual/svg/patching.svg
++++ b/documentation/overview-manual/svg/patching.svg
+@@ -1074,12 +1074,12 @@
+          x="283.34647"
+          y="318.12881"
+          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.6667px;font-family:'Nimbus Mono PS';-inkscape-font-specification:'Nimbus Mono PS, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;text-anchor:start;stroke:none;stroke-width:1.42682px"
+-         id="tspan21">          sources-unpack &lt;──────────────────── UNPACKDIR</tspan><tspan
++         id="tspan21">          sources &lt;─────────────────────────── UNPACKDIR</tspan><tspan
+          sodipodi:role="line"
+          x="283.34647"
+          y="331.46219"
+          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.6667px;font-family:'Nimbus Mono PS';-inkscape-font-specification:'Nimbus Mono PS, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;text-anchor:start;stroke:none;stroke-width:1.42682px"
+-         id="tspan31">          ${BP} &lt;───────────────────────────── S</tspan><tspan
++         id="tspan31">            ${BP} &lt;─────────────────────────── S</tspan><tspan
+          sodipodi:role="line"
+          x="283.34647"
+          y="344.79556"
+@@ -1099,12 +1099,12 @@
+          x="283.34647"
+          y="384.79568"
+          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.6667px;font-family:'Nimbus Mono PS';-inkscape-font-specification:'Nimbus Mono PS, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;text-anchor:start;stroke:none;stroke-width:1.42682px"
+-         id="tspan35">          sources-unpack &lt;──────────────────── UNPACKDIR</tspan><tspan
++         id="tspan35">          sources &lt;─────────────────────────── UNPACKDIR</tspan><tspan
+          sodipodi:role="line"
+          x="283.34647"
+          y="398.12906"
+          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.6667px;font-family:'Nimbus Mono PS';-inkscape-font-specification:'Nimbus Mono PS, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;text-anchor:start;stroke:none;stroke-width:1.42682px"
+-         id="tspan47">          ${BP} &lt;───────────────────────────── S</tspan></text>
++         id="tspan47">            ${BP} &lt;─────────────────────────── S</tspan></text>
+     <text
+        xml:space="preserve"
+        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8.8889px;line-height:125%;font-family:'Nimbus Mono PS';-inkscape-font-specification:'Nimbus Mono PS, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.42682px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+diff --git a/documentation/overview-manual/svg/source-fetching.svg b/documentation/overview-manual/svg/source-fetching.svg
+index b7bab327734..39d7e0c2a78 100644
+--- a/documentation/overview-manual/svg/source-fetching.svg
++++ b/documentation/overview-manual/svg/source-fetching.svg
+@@ -1017,12 +1017,12 @@
+          x="281.13275"
+          y="317.37775"
+          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.6667px;font-family:'Nimbus Mono PS';-inkscape-font-specification:'Nimbus Mono PS, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;text-anchor:start;stroke:none;stroke-width:1.42682px"
+-         id="tspan22">          sources-unpack &lt;─────────────────────── UNPACKDIR</tspan><tspan
++         id="tspan22">          sources &lt;────────────────────────────── UNPACKDIR</tspan><tspan
+          sodipodi:role="line"
+          x="281.13275"
+          y="330.71112"
+          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.6667px;font-family:'Nimbus Mono PS';-inkscape-font-specification:'Nimbus Mono PS, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;text-anchor:start;stroke:none;stroke-width:1.42682px"
+-         id="tspan32">          ${BP} &lt;──────────────────────────────── S</tspan><tspan
++         id="tspan32">            ${BP} &lt;────────────────────────────── S</tspan><tspan
+          sodipodi:role="line"
+          x="281.13275"
+          y="344.04449"
+@@ -1042,12 +1042,12 @@
+          x="281.13275"
+          y="384.04462"
+          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.6667px;font-family:'Nimbus Mono PS';-inkscape-font-specification:'Nimbus Mono PS, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;text-anchor:start;stroke:none;stroke-width:1.42682px"
+-         id="tspan36">          sources-unpack &lt;─────────────────────── UNPACKDIR</tspan><tspan
++         id="tspan36">          sources &lt;────────────────────────────── UNPACKDIR</tspan><tspan
+          sodipodi:role="line"
+          x="281.13275"
+          y="397.37799"
+          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.6667px;font-family:'Nimbus Mono PS';-inkscape-font-specification:'Nimbus Mono PS, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;text-anchor:start;stroke:none;stroke-width:1.42682px"
+-         id="tspan44">          ${BP} &lt;──────────────────────────────── S</tspan></text>
++         id="tspan44">            ${BP} &lt;────────────────────────────── S</tspan></text>
+     <text
+        xml:space="preserve"
+        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:11.5555px;line-height:125%;font-family:'Nimbus Sans L';-inkscape-font-specification:'Nimbus Sans L, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.42682px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
 -- 
 2.39.5
 
