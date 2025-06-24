@@ -2,108 +2,77 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C4C92C7EE2A
-	for <webhook@archiver.kernel.org>; Tue, 24 Jun 2025 07:43:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C3F47C7EE31
+	for <webhook@archiver.kernel.org>; Tue, 24 Jun 2025 07:47:26 +0000 (UTC)
 Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
- by mx.groups.io with SMTP id smtpd.web10.3138.1750751030048631241
+ by mx.groups.io with SMTP id smtpd.web11.3317.1750751243264378593
  for <docs@lists.yoctoproject.org>;
- Tue, 24 Jun 2025 00:43:50 -0700
+ Tue, 24 Jun 2025 00:47:23 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=GakTKfEu;
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=aeJ2DptH;
  spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id C87C444464;
-	Tue, 24 Jun 2025 07:43:47 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id E117A4441E;
+	Tue, 24 Jun 2025 07:47:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1750751028;
+	t=1750751242;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=wIhZM4oNXOxdELkJwWzNYX/OHevYbHU3Z6qq8DVr+30=;
-	b=GakTKfEuxt8T2EA5Zki8vOdI15bdjnxN//CIl6FmJlufZrOfgmhDfpBKl6m8OaBx4jUpE7
-	+RiWwIh0PWlav2UnMK7mOh/xan168SSmDYDRUr4XBr6RLOaMUCJRHuDdkT1+V7PBQoTRPg
-	XXkBrqQbzTN+C9abc2eQ0b+VKKLzPUnaMvbqilzHlRzYYC5Y+OUPFzhZ7ytga6HwguVLsT
-	v5YTFsjUzd0jNRp7QGVUopaiOBVdXOZYWIK/xNPpf3Xo4OwVBwLkfIPgTZcs25rGVB7BjN
-	llDWJ2HBtB2c0fFTAn4oTYzD0C2YmD3COM64wYcMReU/Jnw50Tzj3EU/tLcHPw==
+	bh=SgBhGY0+VQBe2wJ2vdl5waX36jGEaqIZh+QJTWQhDIU=;
+	b=aeJ2DptHms8nw9xrQKNsM2CZqihiQniZiPkNW7kKbZGofKqPQ/jCXV2AV/a9SX6oI4bsPo
+	MmojJHNRCtkMx/9hCWwP4Du+ZPK+t8kwZ6CXkuTu+j9k2Y7XsxxzhdjoPa3lqiU310jPGF
+	gQ/9hYVvaKdsSY24L7HGI1cYDnZ/Mor5IzJsx5xVxTVXo1q5UKpmfZNkhSmE+v0Y4KOrow
+	PPqjONXYPPRlsW9LEMnJTvqSyNGfL/ToYUp+HWkPsEE8a6UDiqempeeRIwcAQEkVW/nJuI
+	BntRBAQ19evR5TucIbJpfqFwYY0sD7zgjQYBmxCSep60L/O3/oPA8jy9NtRw2w==
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 24 Jun 2025 09:43:47 +0200
-Message-Id: <DAULFYRC7Q5D.40A7W0LFM2UV@bootlin.com>
-Cc: "Alexander Kanavin" <alex@linutronix.de>
+Date: Tue, 24 Jun 2025 09:47:21 +0200
+Message-Id: <DAULIP34CY9R.QQ612GXE94MA@bootlin.com>
+Subject: Re: [docs] [PATCH] dev-manual: correct statement that source is
+ always tarballs
 From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: <alex.kanavin@gmail.com>, <docs@lists.yoctoproject.org>
-Subject: Re: [docs] [PATCH 6/6] migration-guides/migration-5.1.rst: correct
- S/UNPACKDIR patterns for file-only recipes
-References: <20250623124257.1544615-1-alex.kanavin@gmail.com>
- <20250623124257.1544615-6-alex.kanavin@gmail.com>
-In-Reply-To: <20250623124257.1544615-6-alex.kanavin@gmail.com>
+To: "Robert P. J. Day" <rpjday@crashcourse.ca>, "YP docs mailing list"
+ <docs@lists.yoctoproject.org>
+References: <9c2b4c83-b40a-4f21-1680-e95a9e238a82@crashcourse.ca>
+In-Reply-To: <9c2b4c83-b40a-4f21-1680-e95a9e238a82@crashcourse.ca>
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddvgdduleefvdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepggfgtgffkfevhffvufhfjgesthhqredttddtjeenucfhrhhomhepfdetnhhtohhnihhnucfiohgurghrugdfuceorghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeeiveeuveeuuedvueevgeegueefgfehueeugedutdeuudfgjeehhfeijedujeejfeenucffohhmrghinhephihotghtohhprhhojhgvtghtrdhorhhgpdgsohhothhlihhnrdgtohhmnecukfhppedvrgdtudemtggsudegmeehheeimeejrgdttdemfegtkedumegvsggrjeemudgskegsmegrhegtleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemfegtkedumegvsggrjeemudgskegsmegrhegtledphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeefpdhrtghpthhtoheprghlvgigrdhkrghnrghvihhnsehgmhgrihhlrdgtohhmpdhrtghpthhtohepughotghssehlihhsthhsrdihohgtthhophhrohhjvggtt
- hdrohhrghdprhgtphhtthhopegrlhgvgieslhhinhhuthhrohhnihigrdguvg
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddvgdduleefvdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepggfgtgffkffuhffvfhgjsehtqhertddttdejnecuhfhrohhmpedftehnthhonhhinhcuifhouggrrhgufdcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepjefgteekueeihfffueegjeeuuddttdevuefgjefhtdeivdeuvdehgeffkeevteefnecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppedvrgdtudemtggsudegmeehheeimeejrgdttdemfegtkedumegvsggrjeemudgskegsmegrhegtleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemfegtkedumegvsggrjeemudgskegsmegrhegtledphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedvpdhrtghpthhtoheprhhpjhgurgihsegtrhgrshhhtghouhhrshgvrdgtrgdprhgtphhtthhopeguohgtsheslhhishhtshdrhihotghtohhprhhojhgvtghtrdhorhhg
 X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 24 Jun 2025 07:43:56 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7184
+ <docs@lists.yoctoproject.org>; Tue, 24 Jun 2025 07:47:26 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7185
 
-Hi Alex,
-
-On Mon Jun 23, 2025 at 2:42 PM CEST, Alexander Kanavin via lists.yoctoproje=
-ct.org wrote:
-> From: Alexander Kanavin <alex@linutronix.de>
+On Sun Jun 22, 2025 at 4:50 PM CEST, Robert P. J. Day wrote:
 >
-> It is not necessary to set both; just setting S to UNPACKDIR is enough.
+> It's misleading to suggest that source is always fetched as tarballs.
 >
-> This has already been done across oe-core master, and correct advice
-> should be given for those who need to adjust recipes during migration.
+> Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
 >
-> Signed-off-by: Alexander Kanavin <alex@linutronix.de>
 > ---
->  documentation/migration-guides/migration-5.1.rst | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
 >
-> diff --git a/documentation/migration-guides/migration-5.1.rst b/documenta=
-tion/migration-guides/migration-5.1.rst
-> index c9bb38699b4..94b527bdcb3 100644
-> --- a/documentation/migration-guides/migration-5.1.rst
-> +++ b/documentation/migration-guides/migration-5.1.rst
-> @@ -20,8 +20,7 @@ S =3D ${WORKDIR} no longer supported
->  If a recipe has :term:`S` set to be :term:`WORKDIR`, this is no longer
->  supported, and an error will be issued. The recipe should be changed to:=
-:
-> =20
-> -    S =3D "${WORKDIR}/sources"
-> -    UNPACKDIR =3D "${S}"
-> +    S =3D "${UNPACKDIR}"
-> =20
->  Any :term:`WORKDIR` references where files from :term:`SRC_URI` are refe=
-renced
->  should be changed to :term:`S`. These are commonly in :ref:`ref-tasks-co=
-mpile`,
-> @@ -62,8 +61,7 @@ require to add an :term:`S` definition to a recipe that=
- only uses
->  ``file://`` :term:`SRC_URI` entries. To be consistent, the following pat=
-tern is
->  recommended::
-> =20
-> -    S =3D "${WORKDIR}/sources"
-> -    UNPACKDIR =3D "${S}"
-> +    S =3D "${UNPACKDIR}"
-> =20
->  Building C files from :term:`UNPACKDIR` without setting :term:`S` to poi=
-nt at
->  it does not work as the debug prefix mapping doesn't handle that.
+> diff --git a/documentation/dev-manual/efficiently-fetching-sources.rst b/=
+documentation/dev-manual/efficiently-fetching-sources.rst
+> index a15f0a92c..2f8a68e20 100644
+> --- a/documentation/dev-manual/efficiently-fetching-sources.rst
+> +++ b/documentation/dev-manual/efficiently-fetching-sources.rst
+> @@ -6,7 +6,7 @@ Efficiently Fetching Source Files During a Build
+>  The OpenEmbedded build system works with source files located through
+>  the :term:`SRC_URI` variable. When
+>  you build something using BitBake, a big part of the operation is
+> -locating and downloading all the source tarballs. For images,
+> +locating and downloading all of the source. For images,
 
-The series looks great, thanks.
+This is also present slightly below, in the same document. Can you replace =
+that
+occurence too?
 
-I think we could also mention it in migration-5.3.rst, and also mention tha=
-t S =3D
-"${WORKDIR}/git" should now be removed?
-
-Could you send a follow-up patch?
+Also I would suggest "all of the source code" instead of "all of the source=
+".
 
 Antonin
 
