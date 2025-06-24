@@ -2,14 +2,14 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 79998C77B7C
-	for <webhook@archiver.kernel.org>; Tue, 24 Jun 2025 09:56:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A1DFFC77B7C
+	for <webhook@archiver.kernel.org>; Tue, 24 Jun 2025 10:02:17 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.web10.4682.1750758977733196082
+ by mx.groups.io with SMTP id smtpd.web10.4776.1750759334317925543
  for <docs@lists.yoctoproject.org>;
- Tue, 24 Jun 2025 02:56:18 -0700
+ Tue, 24 Jun 2025 03:02:14 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=DmzTbIkc;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=OGba8rws;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:References:
@@ -17,27 +17,27 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
 	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=06QU+eWmEW2GTviBkrheWtteVYLYxoFtf0v0qBaLTPM=; b=DmzTbIkcOtVo7DchHdaJDakdcR
-	oztSvrYVGb3eJQ+rSlhCSR8j2Reybp93LwOUIMV46XeomrbZVK2uPENjZ21V27JK+z4pvGQYU6qIB
-	YEvNBHGg4OyBQntDraTKKbE9wtCxbABC9yxXL6PsUkwX59VRzyUuB7kefwGLgbEvqwf+Jl+gW6VNg
-	NM3hN3ZbsQIYeab5Kto8en6MTvf2Zq7raN1fvMBqnDclfznBxqebdgApQczxM4km5vC9lOYAsT3X4
-	pV+w+KeG9MOAla/6V/OJQ9xhCIP+GwUKwKd7W+3o3qne3wgi/Rz/zsRW7WA3RY2gmMw3ksNN2O9m3
-	Xp5Sjqdw==;
-Received: from pool-174-114-102-5.cpe.net.cable.rogers.com ([174.114.102.5]:42024 helo=asus)
+	bh=Umsxap1ek0OwmsqCY9Olk+P9nppdu2e7AyOiD2NIG7M=; b=OGba8rws0t00cCA0/TRJFw/EOu
+	y3cxOsKYf/DNUGnlIUwXONqHE6kpl43tyLvtf7fmjiL/eAbndHFmye64clb0RerSnyZ90Fr36z5Zx
+	yMc3Fi7Z80xUzJMNoJVfZdrN26Yib9TBGNS5f7rZLvNEFQvur+XUK328WQO6HHEENe8SCFNp9SmFZ
+	dXX9YUOTbV4SuIsEfJ6BtbeVIw2ZsYFHoUxhIsJKpVVtYD+l9hmKDI3yiLh3Z4DhUeo21s3O/KIaA
+	Va+T4z0IKelQVX0/bEdetGjUkwZ9J1C1cACbr6bGx1+B7jKz1eP89T1dyLcnVaE6ait38z2vkWULE
+	grMSWFsw==;
+Received: from pool-174-114-102-5.cpe.net.cable.rogers.com ([174.114.102.5]:53658 helo=asus)
 	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1uU0Nx-0000000EAU1-3gbD;
-	Tue, 24 Jun 2025 05:56:15 -0400
-Date: Tue, 24 Jun 2025 05:56:11 -0400 (EDT)
+	id 1uU0Ti-0000000EBWp-1paQ;
+	Tue, 24 Jun 2025 06:02:12 -0400
+Date: Tue, 24 Jun 2025 06:02:04 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: Quentin Schulz <quentin.schulz@cherry.de>
+To: Antonin Godard <antonin.godard@bootlin.com>
 cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: Re: [docs] should page on "Selecting a Device Manager" mention
- uedev?
-In-Reply-To: <fcefedca-075c-4213-bcf1-7770ea16a9dc@cherry.de>
-Message-ID: <e20bbbe3-67a7-d08a-2e6d-f25ec31e15b6@crashcourse.ca>
-References: <3ee37427-2257-90a8-4ef7-03e344f0e671@crashcourse.ca> <fcefedca-075c-4213-bcf1-7770ea16a9dc@cherry.de>
+Subject: Re: [docs] should replicating offline build use "--runonly" or
+ "--runall"?
+In-Reply-To: <DAULQE8WNN68.2YBA6IQ3BBCO1@bootlin.com>
+Message-ID: <e1795e43-5f17-6d44-8f52-aa9c15df3c24@crashcourse.ca>
+References: <184B5224024A6359.12316@lists.yoctoproject.org> <92dee52f-385b-9134-1364-c1f6e673b37a@crashcourse.ca> <DAULQE8WNN68.2YBA6IQ3BBCO1@bootlin.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -53,50 +53,45 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 24 Jun 2025 09:56:27 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7207
+ <docs@lists.yoctoproject.org>; Tue, 24 Jun 2025 10:02:17 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7208
 
-On Mon, 23 Jun 2025, Quentin Schulz wrote:
+On Tue, 24 Jun 2025, Antonin Godard wrote:
 
-> Hi Robert,
+> On Sun Jun 22, 2025 at 4:45 PM CEST, Robert P. J. Day wrote:
+> > On Sun, 22 Jun 2025, Robert P. J. Day wrote:
+> >
+> >>
+> >>   this section:
+> >>
+> >> https://docs.yoctoproject.org/dev-manual/building.html#replicating-a-build-offline
+> >>
+> >> advises to fetch the sources with:
+> >>
+> >>   $ bitbake target --runonly=fetch
+> >>
+> >> for the longest time now, i've used:
+> >>
+> >>   $ bitbake target --runall=fetch
+> >>
+> >> although i do recall that those behaviours changed once upon a time.
+> >> so is that still the appropriate command to use? is it worth adding an
+> >> explanation at that point as to the difference for people who might be
+> >> curious?
+> >
+> >   as a followup, this section:
+> >
+> > https://docs.yoctoproject.org/dev-manual/efficiently-fetching-sources.html
+> >
+> > refers only to "--runall=fetch". so it seems inconsistent with the
+> > earlier section. or, at the very least, it has the potential for
+> > confusion.
 >
-> On 6/22/25 8:34 PM, Robert P. J. Day via lists.yoctoproject.org wrote:
-> >
-> >    this page on selecting a device manager:
-> >
-> > https://docs.yoctoproject.org/dev-manual/device-manager.html
-> >
-> > says nothing about eudev. should it? given that both systemd and eudev
-> > PROVIDES = udev, what happens if one selects systemd as the init
-> > manager, but selects eudev to provide udev? would that even work?
-> > should this be explained?
-> >
->
-> I'm pretty sure this would result in a build failure because you would have
-> two recipes providing the same "feature" and BitBake won't allow that. How
-> would BitBake know which one to put in your recipe's sysroot? Both? And what
-> if they have files named identically in the same paths (it'll fail, I've
-> already had experience with two different packages installing the "same" file
-> and BitBake refusing to generate the rootfs).
->
-> I'm not sure we need to specify all device managers, but indeed eudev would be
-> missing and I would assume that there won't be many popular-enough new device
-> managers in the near future? SO it could be fine to add it?
+> Yes, I also --runall should be used. I'd take a patch.
 
-  i just configured a new qemu x86 build from poky, so that would have
-selected:
-
-  INIT_MANAGER = "systemd"
-
-and i also added in local.conf:
-
-  PREFERRED_PROVIDER_udev = "eudev"
-
-and "bitbake --parse-only" seemed perfectly happy, i also verified the
-settings with "bitbake -e", and that's what it shows. so i'm not sure
-how the docs should be changed (if at all) to reflect this.
-
-  what should this do? is it even meaningful?
+  and i would gleefully offer a patch if i actually understood the
+distinction, and whether the developer needs to understand that
+distinction and when those two choices should be used.
 
 rday
 
