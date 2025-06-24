@@ -2,14 +2,14 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2DB45C7115B
-	for <webhook@archiver.kernel.org>; Mon, 23 Jun 2025 17:41:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2E6A2C77B7C
+	for <webhook@archiver.kernel.org>; Tue, 24 Jun 2025 07:00:26 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.web10.1224.1750700470373419167
+ by mx.groups.io with SMTP id smtpd.web10.2612.1750748416518286751
  for <docs@lists.yoctoproject.org>;
- Mon, 23 Jun 2025 10:41:10 -0700
+ Tue, 24 Jun 2025 00:00:17 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=nbfCWH+4;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=jsd+NLdu;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
@@ -17,24 +17,25 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=d/lMZ07MtJ4j5FSFxcXth1/Dkq73HnosZp7iDyiiPOg=; b=nbfCWH+4suWxql+SCkhE9LjvYt
-	LZO8vgAgPKa5x93Gn7Y5qXEKRcpW/r4VbXoS+8m9IftYqTqxTAQAxMlBA/56mXQjJyMfIj2xb7coG
-	R5ch1sKdHFLn4wXay1pa/RlijA9xtUolhUucPihg94d68hHa8qpTzQSwt2KBNcTZ/8jBqcNPuC+cd
-	aAnXEI6udJvRSgcP0APD17j0J0uYAWfjOTxZVicBAGZkgMs4R28fDFkzfPGcSEu4kFLIPkAF2CEZz
-	kr0JlNl0WZJv0N7n5gTOfpVfn5OLrp2WymW+cyFFyY22Yh1kH0N0Py9NMAsR0cGZIENQhQojRbBD9
-	dxYYLymw==;
-Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:44506 helo=asus)
+	bh=z+TK9IlL3ZLq8aYlp5Pluxb5ScjRvUpGoEVpliH9sk4=; b=jsd+NLduZX9ukbbJQi2h8cDIT0
+	GOHDdSIWCzOIh/CkaDX8ZQwtYYTHB5Q3a2WkDAAzU6geCIW7QUnSUBsruvm0VWYiBikWorFO2hv4U
+	BKyOUOBuUGkQLCgEJR8B+UiPocKAeDU8a6kVibrR22evqQGJPFQQFMBtUQ6+Xx4t+Nn3kjJCOSmVu
+	A2fgECOQiJzDoSdOgxw9HzMzgywRHEzZssUOPYNYKPOkoB9aQvLbIC7zPpcgRbJSUxc7dimD8i3QK
+	I23cOgDcOzLTY9Mwrk5/jRLism/HRd39fGsvbhnooodQp6LwO8bdRQIDp5GrbrzW7XIy8OcSUudCd
+	yo+mEY6A==;
+Received: from pool-174-114-102-5.cpe.net.cable.rogers.com ([174.114.102.5]:38750 helo=asus)
 	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1uTlAH-0000000BlAX-1HDl
+	id 1uTxdY-0000000Dgk8-2AMS
 	for docs@lists.yoctoproject.org;
-	Mon, 23 Jun 2025 13:41:09 -0400
-Date: Mon, 23 Jun 2025 13:40:54 -0400 (EDT)
+	Tue, 24 Jun 2025 03:00:14 -0400
+Date: Tue, 24 Jun 2025 03:00:04 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: [PATCH] dev-manual: show bin_package example wireless-regdb recipe
-Message-ID: <0639bb4b-2e1c-2dde-098d-ac99d62bb646@crashcourse.ca>
+Subject: i think "Fetching Code" should have a separate section for
+ checksums
+Message-ID: <99b9b9ac-9700-9f4a-1167-7a8fa2dcfb42@crashcourse.ca>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -50,46 +51,54 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 23 Jun 2025 17:41:20 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7172
+ <docs@lists.yoctoproject.org>; Tue, 24 Jun 2025 07:00:26 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7173
 
 
-Add a snippet from the wireless-regdb recipe to demonstrate a simple
-example of a bin_package recipe.
+  recently, i submitted a short patch for this section:
 
-Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+https://docs.yoctoproject.org/dev-manual/new-recipe.html#fetching-code
 
----
+that replaced the reference to the git example as the current git
+recipe didn't match what was there, and i replaced it with a pointer
+to gnuplot, but quentin rightly pointed that that lives in meta-oe and
+it would be better to find something in oe-core.
 
-diff --git a/documentation/dev-manual/new-recipe.rst b/documentation/dev-manual/new-recipe.rst
-index c49881efe..2d7a7efdf 100644
---- a/documentation/dev-manual/new-recipe.rst
-+++ b/documentation/dev-manual/new-recipe.rst
-@@ -1397,6 +1397,26 @@ doing the following:
-    where you have installed them and whether those files are in
-    different locations than the defaults.
+  after further pondering, it seems that checksums really deserve
+their own subsection as there is enough to warrant that. i would do
+the following.
 
-+As a basic example of a :ref:`ref-classes-bin-package`-style recipe, consider
-+this snippet from the
-+:oe_git:`wireless-regdb </openembedded-core/tree/meta/recipes-kernel/wireless-regdb>`
-+recipe file, which fetches a single tarball of binary content and manually
-+installs with no need for any configuration or compilation::
-+
-+   SRC_URI = "https://www.kernel.org/pub/software/network/${BPN}/${BP}.tar.xz"
-+   SRC_URI[sha256sum] = "57f8e7721cf5a880c13ae0c202edbb21092a060d45f9e9c59bcd2a8272bfa456"
-+
-+   inherit bin_package allarch
-+
-+   do_install() {
-+       install -d -m0755 ${D}${nonarch_libdir}/crda
-+       install -d -m0755 ${D}${sysconfdir}/wireless-regdb/pubkeys
-+       install -m 0644 regulatory.bin ${D}${nonarch_libdir}/crda/regulatory.bin
-+       install -m 0644 wens.key.pub.pem ${D}${sysconfdir}/wireless-regdb/pubkeys/wens.key.pub.pem
-+       install -m 0644 -D regulatory.db ${D}${nonarch_base_libdir}/firmware/regulatory.db
-+       install -m 0644 regulatory.db.p7s ${D}${nonarch_base_libdir}/firmware/regulatory.db.p7s
-+   }
-+
- Following Recipe Style Guidelines
- =================================
+  i would start with strace:
 
+https://git.openembedded.org/openembedded-core/tree/meta/recipes-devtools/strace/strace_6.15.bb
+
+as a basic example that needs only one checksum, allowing the
+simplified form that does not require a "name=" assignment.
+
+SRC_URI[sha256sum] =
+"8552dfab08abc22a0f2048c98fd9541fd4d71b6882507952780dab7c7c512f51"
+
+  immediately after that, i would jump to jquery:
+
+https://git.openembedded.org/openembedded-core/tree/meta/recipes-devtools/jquery/jquery_3.7.1.bb
+
+where naming is clearly required for the three fetched objects, unless
+someone thinks docbook-xml would be a better example:
+
+https://git.openembedded.org/openembedded-core/tree/meta/recipes-devtools/docbook-xml/docbook-xml-dtd4_4.5.bb
+
+  finally, i would definitely add a note that there is a single
+bbclass file:
+
+https://git.openembedded.org/openembedded-core/tree/meta/classes-recipe/gnomebase.bbclass
+
+that adds a named SRC_URI which would explain the number of recipes
+that have a line related to that which seems to come out of nowhere.
+
+  the above seems like it's enough to justify a separate section on
+checksums.
+
+  thoughts?
+
+rday
 
