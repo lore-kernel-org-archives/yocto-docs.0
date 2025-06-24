@@ -1,97 +1,77 @@
-Return-Path: <rpjday@crashcourse.ca>
+Return-Path: <alex.kanavin@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A1DFFC77B7C
-	for <webhook@archiver.kernel.org>; Tue, 24 Jun 2025 10:02:17 +0000 (UTC)
-Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.web10.4776.1750759334317925543
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AA63AC77B7F
+	for <webhook@archiver.kernel.org>; Tue, 24 Jun 2025 10:10:47 +0000 (UTC)
+Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
+ by mx.groups.io with SMTP id smtpd.web10.4915.1750759837696054268
  for <docs@lists.yoctoproject.org>;
- Tue, 24 Jun 2025 03:02:14 -0700
+ Tue, 24 Jun 2025 03:10:37 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=OGba8rws;
- spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:References:
-	Message-ID:In-Reply-To:Subject:cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Umsxap1ek0OwmsqCY9Olk+P9nppdu2e7AyOiD2NIG7M=; b=OGba8rws0t00cCA0/TRJFw/EOu
-	y3cxOsKYf/DNUGnlIUwXONqHE6kpl43tyLvtf7fmjiL/eAbndHFmye64clb0RerSnyZ90Fr36z5Zx
-	yMc3Fi7Z80xUzJMNoJVfZdrN26Yib9TBGNS5f7rZLvNEFQvur+XUK328WQO6HHEENe8SCFNp9SmFZ
-	dXX9YUOTbV4SuIsEfJ6BtbeVIw2ZsYFHoUxhIsJKpVVtYD+l9hmKDI3yiLh3Z4DhUeo21s3O/KIaA
-	Va+T4z0IKelQVX0/bEdetGjUkwZ9J1C1cACbr6bGx1+B7jKz1eP89T1dyLcnVaE6ait38z2vkWULE
-	grMSWFsw==;
-Received: from pool-174-114-102-5.cpe.net.cable.rogers.com ([174.114.102.5]:53658 helo=asus)
-	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1uU0Ti-0000000EBWp-1paQ;
-	Tue, 24 Jun 2025 06:02:12 -0400
-Date: Tue, 24 Jun 2025 06:02:04 -0400 (EDT)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: Antonin Godard <antonin.godard@bootlin.com>
-cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: Re: [docs] should replicating offline build use "--runonly" or
- "--runall"?
-In-Reply-To: <DAULQE8WNN68.2YBA6IQ3BBCO1@bootlin.com>
-Message-ID: <e1795e43-5f17-6d44-8f52-aa9c15df3c24@crashcourse.ca>
-References: <184B5224024A6359.12316@lists.yoctoproject.org> <92dee52f-385b-9134-1364-c1f6e673b37a@crashcourse.ca> <DAULQE8WNN68.2YBA6IQ3BBCO1@bootlin.com>
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=a3x1uIl3;
+ spf=pass (domain: gmail.com, ip: 209.85.219.54, mailfrom: alex.kanavin@gmail.com)
+Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-6fabb948e5aso64867516d6.1
+        for <docs@lists.yoctoproject.org>; Tue, 24 Jun 2025 03:10:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750759837; x=1751364637; darn=lists.yoctoproject.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=kXtWA1WiXLcM71eobHjJ3Ql4dLOjIH59zOg0tpIaTD0=;
+        b=a3x1uIl3ZU2nZxORsVSNq+5y9afePQvoxY2MvQYqP/K1nEIdxeWAxM1HRjd/59DKC6
+         /UgDBgZqTK7gwHtoSuWL5qSUMXrlaHJng8aUi/AnEwU0qN/X+pQR08JADwA+cLZzCSxc
+         120dYIPSuoArecQwYsy9GACZI3IZt8ulVFDEgLH3pxvvq58juWzNeJ+uq2beE3hbaHuL
+         3EtlLt5Sp10p6t+9socnoA87vlaP4i+ku5pivuWsdvTp0bNjhlIDQDfgxwu9tKDTBQYK
+         k36ncOElRXW/0bFQq7vXeGkoqHLVm2u9Tu1/6I298ocjLAXtysMIt9nBcl+CKGuPzFgK
+         RmJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750759837; x=1751364637;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kXtWA1WiXLcM71eobHjJ3Ql4dLOjIH59zOg0tpIaTD0=;
+        b=HKRrVPuBZ1r40DhQJPosgPLiMVeHx37m/JkAnVO2kMuMPLN/dXgIoF5N6Js0bD/VvV
+         nyRu4Qk0Z29KFLzAngsyamRuX5l+8tCBQCSJfqeS63SR5eNurF+voo8ifXU8hD8zxWqp
+         7CUpHR415EINqs+jsTv0Hj++c+XXW108Y91MMmmhYmQeujF7d6Mlna9XZKDC938GXvcn
+         6anEKT9KzqMLsFghQOb+ifciLimijdkuwI0PGReI/uKzlfzmXcSAUrg9w/EPXvhVKxlZ
+         Z1OrlhiYiaOmF38ou/qDFJyW258qlEwnsQV1NAy51651fFkHRRzHjQkjVk1VxtiCzrqN
+         L9aw==
+X-Gm-Message-State: AOJu0YyPja3RAfQM7Re9frfbt1kuVj13w/0yID1fRb6yfjyCNuB9idHt
+	EzhjTngGg+6r1y427UJd40AN2vFamIVdiREhSIEOX4BEhpCOsi6iHj+NPXzSZZVPdHAOIHgpMJI
+	OaVIbmWGGNBLSVCkax2ZxH1GDtHqFVjA=
+X-Gm-Gg: ASbGncvCbSIBxE571bSBxFk/WzegYvlgCQbtLEQ66dFXoj8xiL6NJ68d4Ue97ABqiIT
+	n1bkleEN+ZbofVM0mELwTmLkXteU/GjbKaPYqJDh71ZoqhIIacSciBDmj6m6dNjzrfZCLmybJJV
+	lnD0cwnoVyTE0l4n3mS0fNJCjgDwo8LwziVDsbnLkyMxz0mLDA/Klf3+45EHufgL0oj4g98LhwW
+	iWERQ==
+X-Google-Smtp-Source: AGHT+IGPHgGyECp6Vx1MWJq8G1kk/hmvy/JkcVQQlr2Bm/cqbRWMzyJh3Z8O7KNI2rMp4LHe1xrqHSU8JWqqWsbnHFQ=
+X-Received: by 2002:a0c:f084:0:20b0:6fd:1687:2e0d with SMTP id
+ 6a1803df08f44-6fd16872e72mr143721406d6.13.1750759836695; Tue, 24 Jun 2025
+ 03:10:36 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+References: <20250624-migration-5-3-unpackdir-v1-0-ef6ef00d5cbc@bootlin.com> <20250624-migration-5-3-unpackdir-v1-1-ef6ef00d5cbc@bootlin.com>
+In-Reply-To: <20250624-migration-5-3-unpackdir-v1-1-ef6ef00d5cbc@bootlin.com>
+From: Alexander Kanavin <alex.kanavin@gmail.com>
+Date: Tue, 24 Jun 2025 12:10:25 +0200
+X-Gm-Features: Ac12FXzA-O3GxmhRx6N6J9BZr_V4DjQOHOuS7jp6oAMr-HJsp6SdrUzJU5CPJ9E
+Message-ID: <CANNYZj_qqSfRq=CSMCY+rgKxA8vRA_M=sN-YzHzm3CHS_K_Bfw@mail.gmail.com>
+Subject: Re: [docs] [PATCH 1/2] ref-manual/variables.rst: document BB_GIT_DEFAULT_DESTSUFFIX
+To: antonin.godard@bootlin.com
+Cc: docs@lists.yoctoproject.org, 
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 24 Jun 2025 10:02:17 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7208
+ <docs@lists.yoctoproject.org>; Tue, 24 Jun 2025 10:10:47 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7209
 
-On Tue, 24 Jun 2025, Antonin Godard wrote:
+On Tue, 24 Jun 2025 at 11:55, Antonin Godard via
+lists.yoctoproject.org
+<antonin.godard=bootlin.com@lists.yoctoproject.org> wrote:
+> +   :term:`BB_GIT_DEFAULT_DESTSUFFIX`
+> +      See :term:`bitbake:BB_GENERATE_SHALLOW_TARBALLS` in the BitBake manual.
 
-> On Sun Jun 22, 2025 at 4:45 PM CEST, Robert P. J. Day wrote:
-> > On Sun, 22 Jun 2025, Robert P. J. Day wrote:
-> >
-> >>
-> >>   this section:
-> >>
-> >> https://docs.yoctoproject.org/dev-manual/building.html#replicating-a-build-offline
-> >>
-> >> advises to fetch the sources with:
-> >>
-> >>   $ bitbake target --runonly=fetch
-> >>
-> >> for the longest time now, i've used:
-> >>
-> >>   $ bitbake target --runall=fetch
-> >>
-> >> although i do recall that those behaviours changed once upon a time.
-> >> so is that still the appropriate command to use? is it worth adding an
-> >> explanation at that point as to the difference for people who might be
-> >> curious?
-> >
-> >   as a followup, this section:
-> >
-> > https://docs.yoctoproject.org/dev-manual/efficiently-fetching-sources.html
-> >
-> > refers only to "--runall=fetch". so it seems inconsistent with the
-> > earlier section. or, at the very least, it has the potential for
-> > confusion.
->
-> Yes, I also --runall should be used. I'd take a patch.
+Incorrect copy-paste.
 
-  and i would gleefully offer a patch if i actually understood the
-distinction, and whether the developer needs to understand that
-distinction and when those two choices should be used.
-
-rday
+Alex
 
