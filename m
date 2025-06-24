@@ -2,77 +2,114 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C3F47C7EE31
-	for <webhook@archiver.kernel.org>; Tue, 24 Jun 2025 07:47:26 +0000 (UTC)
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
- by mx.groups.io with SMTP id smtpd.web11.3317.1750751243264378593
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C989BC7EE31
+	for <webhook@archiver.kernel.org>; Tue, 24 Jun 2025 07:50:26 +0000 (UTC)
+Received: from relay16.mail.gandi.net (relay16.mail.gandi.net [217.70.178.236])
+ by mx.groups.io with SMTP id smtpd.web10.3215.1750751420673678468
  for <docs@lists.yoctoproject.org>;
- Tue, 24 Jun 2025 00:47:23 -0700
+ Tue, 24 Jun 2025 00:50:20 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=aeJ2DptH;
- spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id E117A4441E;
-	Tue, 24 Jun 2025 07:47:21 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=eN9Ung1C;
+ spf=pass (domain: bootlin.com, ip: 217.70.178.236, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id A645844A43;
+	Tue, 24 Jun 2025 07:50:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1750751242;
+	t=1750751418;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=SgBhGY0+VQBe2wJ2vdl5waX36jGEaqIZh+QJTWQhDIU=;
-	b=aeJ2DptHms8nw9xrQKNsM2CZqihiQniZiPkNW7kKbZGofKqPQ/jCXV2AV/a9SX6oI4bsPo
-	MmojJHNRCtkMx/9hCWwP4Du+ZPK+t8kwZ6CXkuTu+j9k2Y7XsxxzhdjoPa3lqiU310jPGF
-	gQ/9hYVvaKdsSY24L7HGI1cYDnZ/Mor5IzJsx5xVxTVXo1q5UKpmfZNkhSmE+v0Y4KOrow
-	PPqjONXYPPRlsW9LEMnJTvqSyNGfL/ToYUp+HWkPsEE8a6UDiqempeeRIwcAQEkVW/nJuI
-	BntRBAQ19evR5TucIbJpfqFwYY0sD7zgjQYBmxCSep60L/O3/oPA8jy9NtRw2w==
+	bh=xhXTS/OCfbGU8VCsEHYLzOqz0b489uf9AKCZj8fQhrs=;
+	b=eN9Ung1CgNuGuC9N1vWrWwhJUVgQGX9br7k3bTDiM6oYPVKcKkGdLnOQmzfKSosc4fm6y6
+	UZodJrhH5gABlgD5b9rUKdwt29AeTqvIzqsa43rM7fzY1CNhWjYg5YLP0KR/c8qx1/+cuQ
+	DBj5ZR2of+2Txc42PtZjx8/fJnNcLgW1q11nCO9b6dqB/+yqUvozd2tQ1Di+7OE57wJkrn
+	uPiEExRCnzveh3FKLn5vwazyPIB/XfF1ho9F+Vba01Hi9uCCI5HEs1aRFiNl34RNHtI2M7
+	FT1cvPtniK1UGon7Q23+qdjAdcZ19Yhdpj/Dx6szjBx5T63dvVHSPpYnBuxQ0A==
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 24 Jun 2025 09:47:21 +0200
-Message-Id: <DAULIP34CY9R.QQ612GXE94MA@bootlin.com>
-Subject: Re: [docs] [PATCH] dev-manual: correct statement that source is
- always tarballs
+Date: Tue, 24 Jun 2025 09:50:18 +0200
+Message-Id: <DAULKYBT3POY.38V8CSIV0F8K0@bootlin.com>
+Subject: Re: [docs] [PATCH] dev-manual: some minor cleanups to "Pre-Built
+ Libraries"
 From: "Antonin Godard" <antonin.godard@bootlin.com>
 To: "Robert P. J. Day" <rpjday@crashcourse.ca>, "YP docs mailing list"
  <docs@lists.yoctoproject.org>
-References: <9c2b4c83-b40a-4f21-1680-e95a9e238a82@crashcourse.ca>
-In-Reply-To: <9c2b4c83-b40a-4f21-1680-e95a9e238a82@crashcourse.ca>
+References: <b88499e3-e0d1-5aff-490c-ae13c2dbfb31@crashcourse.ca>
+In-Reply-To: <b88499e3-e0d1-5aff-490c-ae13c2dbfb31@crashcourse.ca>
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddvgdduleefvdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepggfgtgffkffuhffvfhgjsehtqhertddttdejnecuhfhrohhmpedftehnthhonhhinhcuifhouggrrhgufdcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepjefgteekueeihfffueegjeeuuddttdevuefgjefhtdeivdeuvdehgeffkeevteefnecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppedvrgdtudemtggsudegmeehheeimeejrgdttdemfegtkedumegvsggrjeemudgskegsmegrhegtleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemfegtkedumegvsggrjeemudgskegsmegrhegtledphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedvpdhrtghpthhtoheprhhpjhgurgihsegtrhgrshhhtghouhhrshgvrdgtrgdprhgtphhtthhopeguohgtsheslhhishhtshdrhihotghtohhprhhojhgvtghtrdhorhhg
-X-GND-Sasl: antonin.godard@bootlin.com
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddvgdduleeffecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepggfgtgffkffuhffvfhgjsehtqhertddttdejnecuhfhrohhmpedftehnthhonhhinhcuifhouggrrhgufdcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepgfdvfffffeetleegudeihfejhefggeetteehfeefudelfeffgedtheeuteefhfeunecuffhomhgrihhnpehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdgsohhothhlihhnrdgtohhmnecukfhppedvrgdtudemtggsudegmeehheeimeejrgdttdemfegtkedumegvsggrjeemudgskegsmegrhegtleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemfegtkedumegvsggrjeemudgskegsmegrhegtledphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedvpdhrtghpthhtoheprhhpjhgurgihsegtrhgrshhhtghouhhrshgvrdgtrgdprhgtphhtthhopeguohgtsheslhhishhtshdrhihotghtohhprhhojhgvt
+ ghtrdhorhhg
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 24 Jun 2025 07:47:26 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7185
+ <docs@lists.yoctoproject.org>; Tue, 24 Jun 2025 07:50:26 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7186
 
-On Sun Jun 22, 2025 at 4:50 PM CEST, Robert P. J. Day wrote:
+On Sun Jun 22, 2025 at 12:59 PM CEST, Robert P. J. Day wrote:
 >
-> It's misleading to suggest that source is always fetched as tarballs.
+>   * Add note about new URL for FHS 3.0.
+>   * Add wildcard for "INHIBIT_" variable.
+>   * Fix font for ${PN}.
 >
 > Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
 >
 > ---
 >
-> diff --git a/documentation/dev-manual/efficiently-fetching-sources.rst b/=
-documentation/dev-manual/efficiently-fetching-sources.rst
-> index a15f0a92c..2f8a68e20 100644
-> --- a/documentation/dev-manual/efficiently-fetching-sources.rst
-> +++ b/documentation/dev-manual/efficiently-fetching-sources.rst
-> @@ -6,7 +6,7 @@ Efficiently Fetching Source Files During a Build
->  The OpenEmbedded build system works with source files located through
->  the :term:`SRC_URI` variable. When
->  you build something using BitBake, a big part of the operation is
-> -locating and downloading all the source tarballs. For images,
-> +locating and downloading all of the source. For images,
+> diff --git a/documentation/dev-manual/prebuilt-libraries.rst b/documentat=
+ion/dev-manual/prebuilt-libraries.rst
+> index a05f39ca1..077184657 100644
+> --- a/documentation/dev-manual/prebuilt-libraries.rst
+> +++ b/documentation/dev-manual/prebuilt-libraries.rst
+> @@ -22,6 +22,13 @@ To summarize, a versioned library must meet two condit=
+ions:
+>  This section shows how to deal with both versioned and unversioned
+>  pre-built libraries.
+>
+> +.. note::
+> +
+> +   In the shared library article referenced above, the link to the curre=
+nt
+> +   version of the Filesystem Hierarchy Standard (FHS) is out of date;
+> +   the current FHS 3.0 release can be found
+> +   `here <https://refspecs.linuxfoundation.org/FHS_3.0/index.html>`__.
 
-This is also present slightly below, in the same document. Can you replace =
-that
-occurence too?
+Not sure adding a note to say a link is outdated is the good approach.
+Instead update the link above?
 
-Also I would suggest "all of the source code" instead of "all of the source=
-".
+>  Versioned Libraries
+>  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>
+> @@ -79,7 +86,7 @@ To write a recipe to use such a library in your system:
+>  -  The vendor will typically ship release builds without debugging symbo=
+ls.
+>     Avoid errors by preventing the packaging task from stripping out the =
+symbols
+>     and adding them to a separate debug package. This is done by setting =
+the
+> -   ``INHIBIT_`` flags shown below.
+> +   ``INHIBIT_*`` flags shown below.
+>
+>  The complete recipe would look like this::
+>
+> @@ -170,7 +177,7 @@ as follows::
+>  The modifications cause the ``.so`` file to be the real library
+>  and unset :term:`FILES_SOLIBSDEV` so that no libraries get packaged into
+>  ``${PN}-dev``. The changes are required because unless :term:`PACKAGES` =
+is changed,
+> -``${PN}-dev`` collects files before `${PN}`. ``${PN}-dev`` must not coll=
+ect any of
+> +``${PN}-dev`` collects files before ``${PN}``. ``${PN}-dev`` must not co=
+llect any of
+
+Can you send this in a separate patch?
+
+>  the files you want in ``${PN}``.
+>
+>  Finally, loadable modules, essentially unversioned libraries that are li=
+nked
+
 
 Antonin
 
