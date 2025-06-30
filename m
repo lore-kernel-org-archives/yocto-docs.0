@@ -1,187 +1,161 @@
-Return-Path: <quentin.schulz@cherry.de>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7C1FDC7EE2A
-	for <webhook@archiver.kernel.org>; Fri, 27 Jun 2025 15:13:58 +0000 (UTC)
-Received: from AS8PR04CU009.outbound.protection.outlook.com (AS8PR04CU009.outbound.protection.outlook.com [52.101.70.19])
- by mx.groups.io with SMTP id smtpd.web11.16350.1751037237293466350
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 12E8DC8302D
+	for <webhook@archiver.kernel.org>; Mon, 30 Jun 2025 12:45:10 +0000 (UTC)
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
+ by mx.groups.io with SMTP id smtpd.web11.39190.1751287509253460431
  for <docs@lists.yoctoproject.org>;
- Fri, 27 Jun 2025 08:13:57 -0700
+ Mon, 30 Jun 2025 05:45:09 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@cherry.de header.s=selector1 header.b=SBaynkFu;
- spf=pass (domain: cherry.de, ip: 52.101.70.19, mailfrom: quentin.schulz@cherry.de)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SB0LnbX4c4YgYTyIoiT9R3MdS2kUFxS1bq5oSkfLIAZZsoGDVPqtWMBFJKznunRaDafMS/qWaRmPHZmSiqK79653dSP+U02E0p0atp6LnNu4hQAzfB5K1+PN6n1JKKIl8Xf08zYzI9Usce9gORANY46nbORnV9FCqGqbChjPeEXwJuVmP2jlK5an9yFjXz53nHW6ikvJLh2qGxY4oKByzv+9or9DX59RIH+Judmtz9ny0TClPdu1Tvu+NY+p71Gk8CBY3iiNYAri0Bjy1heTbNsM0jQfz4ARpngLlt1ARaMg+xky5TvsUzEzRw3+awGFHlWjgMKysrwq6YG1EDWaMw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BWoXAqG/UnlWMgM8UUd0I+AtjTCfSiUOU5dKGit/ORY=;
- b=FFjMjVITTbgyjlkjMT1sjsv/+SfJbM/1aWlkVRlZ5b8wb603X5b3bwSvFR59hH3wsOK38KRNk88IoRcLNBVFqdRcccwbZlsNkFaK42AYIyvYypD6dJMoK2LRYA4QMs3rOPWD9hqtWYFKcsH8MwtAdMK0CwnKYrGrooQSH+frwQeIVOYUeVl/VgRglmqC07n0+0EVwFweB7TESg+4tkX7DqWQlIbeXUL6yTP3zTLJOOuhuBf235khfzOc3UFe0u+ou7dJx6al1Cr8KkomVSGXTVR3+6Dd3fbjuzs2vnMCXGwvUEAQ+CXOaRtJfA4x1s73UpAUng4SFEMnWJ8G3UcBpA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
- dkim=pass header.d=cherry.de; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BWoXAqG/UnlWMgM8UUd0I+AtjTCfSiUOU5dKGit/ORY=;
- b=SBaynkFuA4thG/yb0UV23orKAi0t+EAUQXXP/Ulk8XqLBBlurXPoO/NwHS4iJZ+T+3Ylt/pkRIMezcy2xISD/+D4839B9ZRlkUXpDl8KTGt413NGa+V0zWYL/pTOEPXUhwpQOG/9OMc3pRRUKEmUT6rylkkw0Kw/UA4UdovDgZM=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=cherry.de;
-Received: from AS8PR04MB8897.eurprd04.prod.outlook.com (2603:10a6:20b:42c::20)
- by PA4PR04MB9341.eurprd04.prod.outlook.com (2603:10a6:102:2a5::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8857.28; Fri, 27 Jun
- 2025 15:13:53 +0000
-Received: from AS8PR04MB8897.eurprd04.prod.outlook.com
- ([fe80::5ee:7297:93b4:a8d1]) by AS8PR04MB8897.eurprd04.prod.outlook.com
- ([fe80::5ee:7297:93b4:a8d1%4]) with mapi id 15.20.8880.021; Fri, 27 Jun 2025
- 15:13:53 +0000
-Message-ID: <cee995db-4c3d-4bf0-813d-ce3f5f8f92e3@cherry.de>
-Date: Fri, 27 Jun 2025 17:13:52 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [bitbake-devel] [PATCH] doc: bitbake-user-manual-ref-variables:
- document BB_GIT_DEFAULT_DESTSUFFIX
-To: antonin.godard@bootlin.com, bitbake-devel@lists.openembedded.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- docs@lists.yoctoproject.org, Alexander Kanavin <alex@linutronix.de>
-References: <20250624-git-default-destsuffix-v1-1-a0cc44734f94@bootlin.com>
-Content-Language: en-US
-From: Quentin Schulz <quentin.schulz@cherry.de>
-In-Reply-To: <20250624-git-default-destsuffix-v1-1-a0cc44734f94@bootlin.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: VI1PR0102CA0098.eurprd01.prod.exchangelabs.com
- (2603:10a6:803:15::39) To AS8PR04MB8897.eurprd04.prod.outlook.com
- (2603:10a6:20b:42c::20)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=PXnmmiWq;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id B70D34384C;
+	Mon, 30 Jun 2025 12:45:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1751287507;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=zalhPfJUJQVPJmFzg2p+YWqZtX2o7kY4g3f71uoEZzU=;
+	b=PXnmmiWqTXJIeN+D95jcYG6EUwZNmUxGHRw61o0J11iBxnxUB1rNEVeacnxDK9foEFo1ee
+	afID7QPSstEm1OsPca5Vo9Bsx5SbyMgr1z/GkKOyEnFEfJo+595InQ4Vrorbc5dWDwxf5u
+	42c9CW2IFaXjFxLQMIRf6+A726sOZtjPHH0WuAlYo2shCjkPytr1OWAyv02gEneqMFLBHH
+	2Jox9NAMPjDQcheI6P2nvxepB3CUcTBWoYs0lTN3MZBaVCTnZg8MSInyqpn9vmOuxKA2ZT
+	IqqLB9nC9KuLtKwANTLY3l7a6B/PZxG7gwFGqz9mXYWV4OJYIsOWD3BaFgszpw==
+From: Antonin Godard <antonin.godard@bootlin.com>
+Date: Mon, 30 Jun 2025 14:44:59 +0200
+Subject: [PATCH] doc: bitbake-user-manual-ref-variables: fixups
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8PR04MB8897:EE_|PA4PR04MB9341:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9c5e18ec-43ad-4d8c-beda-08ddb58d3aae
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016|7053199007;
-X-Microsoft-Antispam-Message-Info: 
-	=?utf-8?B?RVlWNUdaTkJOMXVWZXozOGNtSUVSRFFyVXo0ZGdzdU9wdmNRNlVveVVleGRS?=
- =?utf-8?B?aGxOKzE0VUs4K01iN2ZzYi90eWJwcWh5RWM3Mk9oUkdQMldscmx1MTZ5N3A2?=
- =?utf-8?B?K3AxZWdQbzlWa3RIbzdPN1RLc1BITnZOUHlpeVVKM0ZwZzlZL1NYdVd1N2dz?=
- =?utf-8?B?UU1Rb0NCbDV3b2loODNRNEgrcURKWTBoQU44b3E0UUdVVi9UZjNiby9uYjgx?=
- =?utf-8?B?MmJxejE0d0hVYndMbzJBNWgxRC8wam85WjVBMFhxbU9jVVdrSkNLd1BLb1k0?=
- =?utf-8?B?N3U5TlVVaS9WRDMzV3JINkpXRlJxbUgrSmpqR1g1WjhuUVU1aUdaS1FDSXB2?=
- =?utf-8?B?RmpXNW1GUTJDV0tWeVlWZzlVL0xPckhocDlydDVSZElRMVVhTk9LVyttU2hy?=
- =?utf-8?B?YUlZTTJqZVZ4SExYZ2orQll5clF3WVF3OHp1Zk40L045ZjBXQlVWeWpJeFpQ?=
- =?utf-8?B?M2hzeTg1STBiY2ZtOUZxSmlCOVRRb28rcFBsTUpQZjNxNklCZm1Hemo5S1NE?=
- =?utf-8?B?a09hUm1NR0FBYzIyYlJzTUtHendQMnZQc2V2VEw0NTdiMGZ1SmxGUUJ4NHU5?=
- =?utf-8?B?Q201azE1Mk0zcGJmT2V3anlIaytSdTlIYUhXdysyUTRSRXYvdjZlVE9wcTNE?=
- =?utf-8?B?bnh1bC9peWFPWk1kOXhvd2MvaHpNN2tHTmc3ZWVsNUIvODk1N1JWdW4xYzFj?=
- =?utf-8?B?aXVrdVhzeC9YRk5WWjZKV1hkaW4rVmJJVVhZanVlcG5XTWxDUDNZUnV2K3Qx?=
- =?utf-8?B?b0NPOVFkWXZNNGExU29DUlRDdGpRS2VENTFmaDB2UXdTQ0QvMzNGM2t1MkJ2?=
- =?utf-8?B?RW5HM04ya3AwL2tjTDhvQVczdUdSZ3l6REVQdHBFVVg1Rkhvdkx5amRZakJY?=
- =?utf-8?B?ZnJhMHJPV0NWTk9keW53WnlSNDdnY3hFL2RQUFMwWElYWWhiTTdpK3dCV2Y0?=
- =?utf-8?B?Mzd1WkFGSjF0ZUFuTi9aWFV2V1ArV3J5dDNxS3dteFFpdEtsMjZ0c29uNStj?=
- =?utf-8?B?dTgrT1lIaC92TmpWb2NIbTZUNGRwTFhPOUpyaVJkaytQMTJZd0pNejZlWHlr?=
- =?utf-8?B?U3g5c2ZGMnhWbHJxZjFnMW5vK3pjY3ZEOHJDblljK042cCtJditnMXEyWmR1?=
- =?utf-8?B?KzJTVzg3cllxU2VCb3puK1lyY2txZUtXTExadjhoSExZWVZxV1JaL2JEUG9M?=
- =?utf-8?B?MkJTNFF6aHhCVFluNEd3bXVOZ2NlQkVVanVaYW0za25UMjUrd0ZLRzk1MXdZ?=
- =?utf-8?B?NTM3OHRBV0lWTVNEdGp1UkhEaEJGOWloUWpsUmZRVWpRZFZVb0xHdXVxY2gx?=
- =?utf-8?B?aW13RjQ1bVA3MFFaYjdNOUhWMVRqcEIzaWphVkFQWVhHQlRDQ3NONnptRnlI?=
- =?utf-8?B?VDRuY0IveHVUNHpQa3N4dHAxWFY2cm5QY2svS0xzY3FnS3AxOHNQeGNkVk1v?=
- =?utf-8?B?WG5GcnU3UHAySm9vTkY2c04rem03Z0FmV0ljVGY0aWVOdWhRYUhacnYvcE81?=
- =?utf-8?B?ZHBEZzArSkhEc3dVbXJZWXpKY2N1aUZnZFMyQk11L2NiRjR0b0VidmVKS2tk?=
- =?utf-8?B?TTY3SzBJRWFXSnI5VnlMU05lWFRTTWJVUnorbUVlclJiNUU2WGNFSlBjNHND?=
- =?utf-8?B?N3N6SUo3UHpYNWQ4Vzdkcjd5MUg1SGNuNkZVN3hwbW43UVFZNEVscTU1dStW?=
- =?utf-8?B?NjFsV1oyMmxIRTd1cVM0UkZFcVJpMUc2eEZaU2hrQmxHMnZNQ1pvWlVtTTky?=
- =?utf-8?B?L0I3bWZ2aDlzRWNmUnZEMHZYU3VhMENWRVVtVTlPTFFlSklHVi9lWmx5RzZF?=
- =?utf-8?Q?kA219VJo5bSNkj4t/EI2wu7I62b5bmF+r8XDs=3D?=
-X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8897.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?utf-8?B?Q2QxS2RTZlhjV3hUOXdjUnlrZ3lJandtMEdLc1B4QVhJZzVHSDNYTG1QOVBO?=
- =?utf-8?B?RWt6S2ZNUG9LcUplRzRNblYyc3Q1MXZUeG0xdDhNY0pmcXN5c2V3bkxBS3BN?=
- =?utf-8?B?RVE5dVI3R3Y2czRBS3B4SXFOOGZwZml5b0xtUDR6ZndOS3F0blBXby9TUEtX?=
- =?utf-8?B?VTQzTlpYV1p1R2hERFArK21EbUJCTkNQNEZhS0FVYzZzZWtPY3NLUWVpMTVj?=
- =?utf-8?B?K1VJbENEd3J4b1ZCWFpkSzJDYW13S3FSdWFlTEN1dzgyR3ZpU25KZEx3OE9M?=
- =?utf-8?B?SDVuTWUrRUEzbXBER2ZUeXdXeVR4UFBGR0tIOGphVFlFam0rSXFZd1dERi9t?=
- =?utf-8?B?U0VHYmg4cFhCM2s1bHFma3F6L3pSekRoUE1QSWJXaVZWS0V1QXdCTzJwcWdZ?=
- =?utf-8?B?SUt0aStNcEZvdnNQMWJIUms2V1VsQWt3aEZHZjUvUkNqa25pb1BlaVV2eU00?=
- =?utf-8?B?ZFJINzcwL3ZmVzQ0b0FDRHJmMmRTejBuMGZrdUlweWRKNXFBQ3ZsS3QvTk93?=
- =?utf-8?B?d1V1UnUwTkJxcW12QWljT0ZOQ0s4TWdsc2J3emYzdytQTFpSM2lVKzZlbWVs?=
- =?utf-8?B?MkVKL3R1Zllaa1ZKS1Y3dGVOMWpPMDdzSlA3em0vTjRKSFhvOGIwWFJSNFF6?=
- =?utf-8?B?WHJBZEdnZXI0cEVmWkhJZ0tZNVk4dmIyRXNqSlJBdFc1SFJsUzdwNXE1aU9F?=
- =?utf-8?B?ZXVWWVhEczRMdHNvampnV2VKd2tteUk1LzJ0MloyY3VIL2M5NXE0S0ZIbVhr?=
- =?utf-8?B?NlVDajdVVnE3NXlwQkFsblUwR0ZyZngrQjgrbERBSExVcWhkVmkwbUdRNnJq?=
- =?utf-8?B?SXRkR2JvTGdIM1grN3M5cnBMWEFLcThiYzlmVmUwOVlYWGJtQWUybFRHZTBB?=
- =?utf-8?B?b1RTWEVaemxLWEluWWIydUx6cHczWWptU1gweVRlRkk5YlppczZPZk9GTllI?=
- =?utf-8?B?VDg3aEJDcitFdlFKSGxaYnQrVWhwSUNQNFRtcHRWay9URnpkS2R5bjFEUnBH?=
- =?utf-8?B?WlFCT1dqRUdEVjg5dXN0cWo2ekhVTk1RQUFmdDBOaUpLYUNaNEh4cXZPTXVE?=
- =?utf-8?B?d1U4QUp5TkFMaUdzWVZ1dUZKVENBaElLSmNjblBUdFJQOGwvbm5HQjF3a25a?=
- =?utf-8?B?QUxLcE9oa2Z4MzAvd2lZZWhtcWZ6eVJQMkRsTVRnclVyS2p1STBEZzE4UjhY?=
- =?utf-8?B?VHZySXRXV3BOWHIrVjE3Z0p0VzFMeFpxUWtQcTBjdENkaExMUjk3QjRZdlQw?=
- =?utf-8?B?U25USGFTRUs3aTU1OFdVVmJqZ29VcERhR2c5WHFXVVA0N2ErRUE3dnhoUVZz?=
- =?utf-8?B?YWt0VU5DM09icW1DSlBhb2lWa0sxUEg2aGxaYUNLbXZIN0xxamwzcWkrUDdV?=
- =?utf-8?B?RVRpc1dvNDVubVhhVGZONThvdTlDMVExbkVTRWpmVExPU1poUEJ1RGRjblVL?=
- =?utf-8?B?bVo4elhQVG05ajM4SUUrVVc5VTFDOWlnZHdkQks3RGV0UWwzYlM1OWdObCtD?=
- =?utf-8?B?M0JXbG5nbVRjTlhCNGQwWFlBam8zTC9iWWZKOFdGcEJMaGh0bngzaFJXYmFz?=
- =?utf-8?B?eVZIUWNuVkZMa09ybTNsRlhZVU1xUCtQZjgreno4cEJsZndaRDR5N2hWeDli?=
- =?utf-8?B?ZnVBZ0p3V0NvUkNRL2V2WnJYQzFWTS8ydnU0bkFDUmVxNUdBdDBjWU0wMk50?=
- =?utf-8?B?dzBLUUgxWVNRZU9EMmc0NlIyaGk5T2JxeHJGSUJUVjFwOWtIUTk5QThiWnhR?=
- =?utf-8?B?bk5jR3Q1Mk9EYmtHRUE3OW9jSEluaURTalBoNmxoTmkvTWpNUVZNY2dvcWFt?=
- =?utf-8?B?d0EzMDNXZWpPbFRjYjdaNUdzRkdxTndOenlCOFIySFlKenNKSGlxeWkweVZT?=
- =?utf-8?B?Yk4xenlNbE5rZ2ROOWZlTXVRdTlqU0ljOU9lYm05SDFxUWk1clhqQ1g3bmJ2?=
- =?utf-8?B?MlZYckFpQUtxV0V2Sk96bzQ2VEZpYkhmc25PYW8rT1JScUQ1alRFSWJYMk9K?=
- =?utf-8?B?RXh2OXhldmhKMExTRm1qeDluSGJUWERuNEtFV3NtVjFIY3BwYUdTbDhRT3V2?=
- =?utf-8?B?Nm5qSXRhWStPNHN6OEU1ZUhidTY2bDgzcklVK1EvK3h5bDc5aUF5RVo0Z0ZK?=
- =?utf-8?B?WHkvcFdrWlowbmp1L0doUlN5OEdYNTVzS1lzSHM1Sjl5aTNCS2dwbUJYc214?=
- =?utf-8?B?SEE9PQ==?=
-X-OriginatorOrg: cherry.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9c5e18ec-43ad-4d8c-beda-08ddb58d3aae
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8897.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jun 2025 15:13:53.8298
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: oxU++sqqVwnuyVSvbcccRzkaww1EAL11xOxGYhbaJrT8C0/18UWanTj9LOWrTkUvXSH9rU4AUz6jgCK6e+td/jxD5e7PPb+16gb4wIoLXAs=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB9341
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250630-bb-pressure-doc-fixups-v1-1-d5463a3cff2f@bootlin.com>
+X-B4-Tracking: v=1; b=H4sIAMuGYmgC/yWMQQqDQAxFryJZNzCdoqJXKV3MxKhxoTLpSEG8u
+ 7EuH/+/t4NyElZoix0Sb6KyzAbPRwE0hnlglM4YvPOlq14OY8Q1sWpOjN1C2Msvr4q+Dj4SNaF
+ uAphsH1v+4ffnZs1xYvpeNTiOE2vn9aR6AAAA
+X-Change-ID: 20250630-bb-pressure-doc-fixups-27a2bcc9a79a
+To: bitbake-devel@lists.openembedded.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ docs@lists.yoctoproject.org, Quentin Schulz <quentin.schulz@cherry.de>, 
+ Antonin Godard <antonin.godard@bootlin.com>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4337;
+ i=antonin.godard@bootlin.com; h=from:subject:message-id;
+ bh=lZh/hYV8KXjxD9gDxUFlHbiO9oEZUDoOcL2SZLyH+sY=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBoYobSQnVtP8FqM2A4jRJYM8AztQzZx6tmSTyN/
+ UgArgtEYhGJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaGKG0gAKCRDRgEFAKaOo
+ Nnv6EACx8Ks0xqUijB/uKoyXjod+lkoNoUM/YhenDnQ0W2aDfHwINVl71uR/Vx8bWoQKRZUU2Tg
+ ch/MFdFVsBCzvo5S/e9vrHzKAzQdQuZ3ths05+/3/gs9ERqKdN3CpQMDqDrs8yNd5dB45u/RXXz
+ ugUb/EykOP3X3HbPeQ100s/rHeYw465hBKNnMfLFuBmZwV/HYRbgAmMyOYa5zzS/m/a3ow6Rbq9
+ h+kPLN9t2ipFgfVJlEoYCt4ck5BLae5DM1ksTuDASzwKgdrpyL424j9HxokCjX1xB0t13PgPXIw
+ kAncQeczm2g4lfl9iU/+sQYCucdNNMBNJkrlcCh/4G2Vi4Uk1TaJ7eLK55DcdKJMSl7tJZKhJan
+ EU7kgv+G7trHOtIWP7RkfuYMYEDYCuxqDgi23pAld7hVHI5cZbJPldM34xM5wbFtFnmmakCRoNQ
+ IGlkLHIFliQxqWwr7fF9k0yD5W4k5ME8y9DnkG+nn4rLBu9voogJwWafTyBj7247JdgC5JnZCC5
+ EmpQT2OA90n9kx4QhfiUIYrIDHd58GcancTCHVDFXOUQ2CM8sBTruCTBOTxbiN6XW8qXZ+BUV/c
+ GMpLYV7IC/ZUBNzLGhkqTxnTOOQbYeY56Y1OD+ahx5wGNgXm6pRl0DTz9vGCKhDxUmlSzRU1pgk
+ jQ9YZg1ko0KuW4g==
+X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
+ fpr=8648725188DD401BB9A0D3FFD180414029A3A836
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduudejfecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephfffufggtgfgkffvvefosehtjeertdertdejnecuhfhrohhmpeetnhhtohhnihhnucfiohgurghrugcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnheptdegteehlefgheegvddufeevheehveeijedvfeduvdefvdekueduuedvjeelteehnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmeeftgekudemvggsrgejmedusgeksgemrgehtgelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdugeemheehieemjegrtddtmeeftgekudemvggsrgejmedusgeksgemrgehtgelpdhhvghloheplgduvdejrddtrddurddungdpmhgrihhlfhhrohhmpegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohephedprhgtphhtthhopehthhhomhgrshdrphgvthgriiiiohhnihessghoohhtlhhinhdrtghomhdprhgtphhtthhopegsihhtsggrkhgvqdguvghvvghlsehlihhsthhsrdhophgvnhgvmhgsvgguuggvugdrohhrg
+ hdprhgtphhtthhopeguohgtsheslhhishhtshdrhihotghtohhprhhojhgvtghtrdhorhhgpdhrtghpthhtoheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhrtghpthhtohepqhhuvghnthhinhdrshgthhhulhiisegthhgvrhhrhidruggv
+X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 27 Jun 2025 15:13:58 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7234
+ <docs@lists.yoctoproject.org>; Mon, 30 Jun 2025 12:45:10 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7235
 
-Hi Antonin,
+Fix typos reported by Quentin here:
+https://lore.kernel.org/r/cee995db-4c3d-4bf0-813d-ce3f5f8f92e3@cherry.de
+https://lore.kernel.org/r/73497b5e-721e-4e5f-beb4-c56ab9178c9f@cherry.de
 
-On 6/24/25 11:38 AM, Antonin Godard via lists.openembedded.org wrote:
-> This variable was recently added with 378db0fdd95f ("fetch2/git: allow
-> overriding default unpack directory with a variable").
-> 
-> Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+Cc: Quentin Schulz <quentin.schulz@cherry.de>
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+---
+ .../bitbake-user-manual-ref-variables.rst          | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
-Minor comment below.
+diff --git a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
+index 6be8dbbf63..4ff95ea7ac 100644
+--- a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
++++ b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
+@@ -311,9 +311,9 @@ overview of their function and contents.
+       For example usage, see :term:`BB_GIT_SHALLOW`.
+ 
+    :term:`BB_GIT_DEFAULT_DESTSUFFIX`
+-      The default destination directory where the Git fetcher unpacks the
+-      source code. If this variable is not set, the source code is unpacked in a
+-      directory named "git".
++      The default destination directory where the :ref:`Git fetcher
++      <git-fetcher>` unpacks the source code. If this variable is not set, the
++      source code is unpacked in a directory named "git".
+ 
+    :term:`BB_GIT_SHALLOW`
+       Setting this variable to "1" enables the support for fetching, using and
+@@ -547,19 +547,19 @@ overview of their function and contents.
+          BB_PRESSURE_MAX_CPU = "15000"
+ 
+       Multiple values should be tested on the build host to determine what suits
+-      best, depending on the need for performances versus load average during
++      best, depending on the need for performance versus load average during
+       the build.
+ 
+       .. note::
+ 
+-         You may see numerous messages printed by BitBake in the case the
+-         :term:`BB_PRESSURE_MAX_CPU` is too low:
++         You may see numerous messages printed by BitBake in case the
++         :term:`BB_PRESSURE_MAX_CPU` is too low::
+ 
+             Pressure status changed to CPU: True, IO: False, Mem: False (CPU: 1105.9/2.0, IO: 0.0/2.0, Mem: 0.0/2.0) - using 1/64 bitbake threads
+ 
+          This means that the :term:`BB_PRESSURE_MAX_CPU` should be increased to
+          a reasonable value for limiting the CPU pressure on the system.
+-         Monitor the varying value after ``IO:`` above to set a sensible value.
++         Monitor the varying value after ``CPU:`` above to set a sensible value.
+ 
+    :term:`BB_PRESSURE_MAX_IO`
+       Specifies a maximum I/O pressure threshold, above which BitBake's
+@@ -584,12 +584,12 @@ overview of their function and contents.
+          BB_PRESSURE_MAX_IO = "15000"
+ 
+       Multiple values should be tested on the build host to determine what suits
+-      best, depending on the need for performances versus I/O usage during the
++      best, depending on the need for performance versus I/O usage during the
+       build.
+ 
+       .. note::
+ 
+-         You may see numerous messages printed by BitBake in the case the
++         You may see numerous messages printed by BitBake in case the
+          :term:`BB_PRESSURE_MAX_IO` is too low::
+ 
+             Pressure status changed to CPU: None, IO: True, Mem: False (CPU: 2236.0/None, IO: 153.6/2.0, Mem: 0.0/2.0) - using 19/64 bitbake threads
+@@ -623,12 +623,12 @@ overview of their function and contents.
+          BB_PRESSURE_MAX_MEMORY = "15000"
+ 
+       Multiple values should be tested on the build host to determine what suits
+-      best, depending on the need for performances versus memory consumption
++      best, depending on the need for performance versus memory consumption
+       during the build.
+ 
+       .. note::
+ 
+-         You may see numerous messages printed by BitBake in the case the
++         You may see numerous messages printed by BitBake in case the
+          :term:`BB_PRESSURE_MAX_MEMORY` is too low::
+ 
+             Pressure status changed to CPU: None, IO: False, Mem: True (CPU: 29.5/None, IO: 0.0/2.0, Mem: 2553.3/2.0) - using 17/64 bitbake threads
 
-Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
+---
+base-commit: 09baa527dafca4bdf56a9189f6b3f7512886cbfb
+change-id: 20250630-bb-pressure-doc-fixups-27a2bcc9a79a
 
-> ---
->   doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst | 5 +++++
->   1 file changed, 5 insertions(+)
-> 
-> diff --git a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
-> index 477443e228..1069604438 100644
-> --- a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
-> +++ b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
-> @@ -310,6 +310,11 @@ overview of their function and contents.
->   
->         For example usage, see :term:`BB_GIT_SHALLOW`.
->   
-> +   :term:`BB_GIT_DEFAULT_DESTSUFFIX`
-> +      The default destination directory where the Git fetcher unpacks the
+Best regards,
+--  
+Antonin Godard <antonin.godard@bootlin.com>
 
-We could put a reference there since we have the git fetcher documented 
-in BB docs. See 
-https://docs.yoctoproject.org/bitbake/bitbake-user-manual/bitbake-user-manual-fetching.html#git-fetcher-git.
-
-Cheers,
-Quentin
 
