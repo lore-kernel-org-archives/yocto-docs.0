@@ -2,160 +2,74 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 12E8DC8302D
-	for <webhook@archiver.kernel.org>; Mon, 30 Jun 2025 12:45:10 +0000 (UTC)
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
- by mx.groups.io with SMTP id smtpd.web11.39190.1751287509253460431
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9F072C83039
+	for <webhook@archiver.kernel.org>; Tue,  1 Jul 2025 08:45:21 +0000 (UTC)
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+ by mx.groups.io with SMTP id smtpd.web11.5730.1751359517219419758
  for <docs@lists.yoctoproject.org>;
- Mon, 30 Jun 2025 05:45:09 -0700
+ Tue, 01 Jul 2025 01:45:17 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=PXnmmiWq;
- spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id B70D34384C;
-	Mon, 30 Jun 2025 12:45:06 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=pxHQNpGc;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 7963C43217;
+	Tue,  1 Jul 2025 08:45:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1751287507;
+	t=1751359515;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=zalhPfJUJQVPJmFzg2p+YWqZtX2o7kY4g3f71uoEZzU=;
-	b=PXnmmiWqTXJIeN+D95jcYG6EUwZNmUxGHRw61o0J11iBxnxUB1rNEVeacnxDK9foEFo1ee
-	afID7QPSstEm1OsPca5Vo9Bsx5SbyMgr1z/GkKOyEnFEfJo+595InQ4Vrorbc5dWDwxf5u
-	42c9CW2IFaXjFxLQMIRf6+A726sOZtjPHH0WuAlYo2shCjkPytr1OWAyv02gEneqMFLBHH
-	2Jox9NAMPjDQcheI6P2nvxepB3CUcTBWoYs0lTN3MZBaVCTnZg8MSInyqpn9vmOuxKA2ZT
-	IqqLB9nC9KuLtKwANTLY3l7a6B/PZxG7gwFGqz9mXYWV4OJYIsOWD3BaFgszpw==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tIfwiEMOjv7bxep9R+2/sUmHVK7FiEfRhDKkDoKDOo4=;
+	b=pxHQNpGcqJj9zKAwqWQkbg7wD3gTqhxg+TySDuCeibTn74UgQqd/KHCL33+dI1lnAyTYNC
+	ZBlGpCWXL5weK9QJIm0evT/TsFtLAsFRrOSScyxzSUjrnXgcXGb8SDLwFFh7Nz9sKFoxci
+	OFTcjqVtWQSAhYel5zI01qWTVyBbnbh1XUVp5D2JHvdJ09P9wbDq/IjiAlv/sAsS9xzNGe
+	VkRNu1QZbo3QUc9IsBXh7/b60U3JnUgA+2dE5A0+uAp7uWiJjInh618mE6t1BstRXZo0aF
+	pB30bixKTveNmqW/PYePVFQL72KAOPfFMltKLs5hkEx3X7jfws+DjWVFzx6lzA==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Mon, 30 Jun 2025 14:44:59 +0200
-Subject: [PATCH] doc: bitbake-user-manual-ref-variables: fixups
+To: docs@lists.yoctoproject.org,
+	Alexander Kanavin <alex.kanavin@gmail.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	Antonin Godard <antonin.godard@bootlin.com>,
+	Alexander Kanavin <alex@linutronix.de>
+Subject: Re: [PATCH 1/6] overview-manual: correct value of UNPACKDIR and put S under it
+Date: Tue,  1 Jul 2025 10:37:19 +0200
+Message-ID: <175135901845.368044.2696336633313152097.b4-ty@bootlin.com>
+X-Mailer: git-send-email 2.50.0
+In-Reply-To: <20250623124257.1544615-1-alex.kanavin@gmail.com>
+References: <20250623124257.1544615-1-alex.kanavin@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250630-bb-pressure-doc-fixups-v1-1-d5463a3cff2f@bootlin.com>
-X-B4-Tracking: v=1; b=H4sIAMuGYmgC/yWMQQqDQAxFryJZNzCdoqJXKV3MxKhxoTLpSEG8u
- 7EuH/+/t4NyElZoix0Sb6KyzAbPRwE0hnlglM4YvPOlq14OY8Q1sWpOjN1C2Msvr4q+Dj4SNaF
- uAphsH1v+4ffnZs1xYvpeNTiOE2vn9aR6AAAA
-X-Change-ID: 20250630-bb-pressure-doc-fixups-27a2bcc9a79a
-To: bitbake-devel@lists.openembedded.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- docs@lists.yoctoproject.org, Quentin Schulz <quentin.schulz@cherry.de>, 
- Antonin Godard <antonin.godard@bootlin.com>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4337;
- i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=lZh/hYV8KXjxD9gDxUFlHbiO9oEZUDoOcL2SZLyH+sY=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBoYobSQnVtP8FqM2A4jRJYM8AztQzZx6tmSTyN/
- UgArgtEYhGJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaGKG0gAKCRDRgEFAKaOo
- Nnv6EACx8Ks0xqUijB/uKoyXjod+lkoNoUM/YhenDnQ0W2aDfHwINVl71uR/Vx8bWoQKRZUU2Tg
- ch/MFdFVsBCzvo5S/e9vrHzKAzQdQuZ3ths05+/3/gs9ERqKdN3CpQMDqDrs8yNd5dB45u/RXXz
- ugUb/EykOP3X3HbPeQ100s/rHeYw465hBKNnMfLFuBmZwV/HYRbgAmMyOYa5zzS/m/a3ow6Rbq9
- h+kPLN9t2ipFgfVJlEoYCt4ck5BLae5DM1ksTuDASzwKgdrpyL424j9HxokCjX1xB0t13PgPXIw
- kAncQeczm2g4lfl9iU/+sQYCucdNNMBNJkrlcCh/4G2Vi4Uk1TaJ7eLK55DcdKJMSl7tJZKhJan
- EU7kgv+G7trHOtIWP7RkfuYMYEDYCuxqDgi23pAld7hVHI5cZbJPldM34xM5wbFtFnmmakCRoNQ
- IGlkLHIFliQxqWwr7fF9k0yD5W4k5ME8y9DnkG+nn4rLBu9voogJwWafTyBj7247JdgC5JnZCC5
- EmpQT2OA90n9kx4QhfiUIYrIDHd58GcancTCHVDFXOUQ2CM8sBTruCTBOTxbiN6XW8qXZ+BUV/c
- GMpLYV7IC/ZUBNzLGhkqTxnTOOQbYeY56Y1OD+ahx5wGNgXm6pRl0DTz9vGCKhDxUmlSzRU1pgk
- jQ9YZg1ko0KuW4g==
-X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
- fpr=8648725188DD401BB9A0D3FFD180414029A3A836
+Content-Transfer-Encoding: 8bit
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduudejfecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephfffufggtgfgkffvvefosehtjeertdertdejnecuhfhrohhmpeetnhhtohhnihhnucfiohgurghrugcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnheptdegteehlefgheegvddufeevheehveeijedvfeduvdefvdekueduuedvjeelteehnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmeeftgekudemvggsrgejmedusgeksgemrgehtgelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdugeemheehieemjegrtddtmeeftgekudemvggsrgejmedusgeksgemrgehtgelpdhhvghloheplgduvdejrddtrddurddungdpmhgrihhlfhhrohhmpegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohephedprhgtphhtthhopehthhhomhgrshdrphgvthgriiiiohhnihessghoohhtlhhinhdrtghomhdprhgtphhtthhopegsihhtsggrkhgvqdguvghvvghlsehlihhsthhsrdhophgvnhgvmhgsvgguuggvugdrohhrg
- hdprhgtphhtthhopeguohgtsheslhhishhtshdrhihotghtohhprhhojhgvtghtrdhorhhgpdhrtghpthhtoheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhrtghpthhtohepqhhuvghnthhinhdrshgthhhulhiisegthhgvrhhrhidruggv
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddugeduvdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkofgjfhggtgfgsehtkeertdertdejnecuhfhrohhmpeetnhhtohhnihhnucfiohgurghrugcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepudekffeuhfdtjeetheettedthfeijedtgfejhfelueevhedtvdelhfetieehteelnecukfhppedvrgdtudemtggsudegmeehheeimeejrgdttdemfegtkedumegvsggrjeemudgskegsmegrhegtleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemfegtkedumegvsggrjeemudgskegsmegrhegtledphhgvlhhopehtrghhohhmrgdrhhhomhgvpdhmrghilhhfrhhomheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeehpdhrtghpthhtohepughotghssehlihhsthhsrdihohgtthhophhrohhjvggtthdrohhrghdprhgtphhtthhopegrlhgvgidrkhgrnhgrvhhinhesghhmrghilhdrtghomhdprhgtphhtthhopehthhhomhgrshdrphgvthgriiiiohhnihessghoohhtlhhin
+ hdrtghomhdprhgtphhtthhopegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdprhgtphhtthhopegrlhgvgieslhhinhhuthhrohhnihigrdguvg
 X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 30 Jun 2025 12:45:10 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7235
+ <docs@lists.yoctoproject.org>; Tue, 01 Jul 2025 08:45:21 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7237
 
-Fix typos reported by Quentin here:
-https://lore.kernel.org/r/cee995db-4c3d-4bf0-813d-ce3f5f8f92e3@cherry.de
-https://lore.kernel.org/r/73497b5e-721e-4e5f-beb4-c56ab9178c9f@cherry.de
 
-Cc: Quentin Schulz <quentin.schulz@cherry.de>
-Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
----
- .../bitbake-user-manual-ref-variables.rst          | 22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+On Mon, 23 Jun 2025 14:42:52 +0200, Alexander Kanavin wrote:
+> 
 
-diff --git a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
-index 6be8dbbf63..4ff95ea7ac 100644
---- a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
-+++ b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
-@@ -311,9 +311,9 @@ overview of their function and contents.
-       For example usage, see :term:`BB_GIT_SHALLOW`.
- 
-    :term:`BB_GIT_DEFAULT_DESTSUFFIX`
--      The default destination directory where the Git fetcher unpacks the
--      source code. If this variable is not set, the source code is unpacked in a
--      directory named "git".
-+      The default destination directory where the :ref:`Git fetcher
-+      <git-fetcher>` unpacks the source code. If this variable is not set, the
-+      source code is unpacked in a directory named "git".
- 
-    :term:`BB_GIT_SHALLOW`
-       Setting this variable to "1" enables the support for fetching, using and
-@@ -547,19 +547,19 @@ overview of their function and contents.
-          BB_PRESSURE_MAX_CPU = "15000"
- 
-       Multiple values should be tested on the build host to determine what suits
--      best, depending on the need for performances versus load average during
-+      best, depending on the need for performance versus load average during
-       the build.
- 
-       .. note::
- 
--         You may see numerous messages printed by BitBake in the case the
--         :term:`BB_PRESSURE_MAX_CPU` is too low:
-+         You may see numerous messages printed by BitBake in case the
-+         :term:`BB_PRESSURE_MAX_CPU` is too low::
- 
-             Pressure status changed to CPU: True, IO: False, Mem: False (CPU: 1105.9/2.0, IO: 0.0/2.0, Mem: 0.0/2.0) - using 1/64 bitbake threads
- 
-          This means that the :term:`BB_PRESSURE_MAX_CPU` should be increased to
-          a reasonable value for limiting the CPU pressure on the system.
--         Monitor the varying value after ``IO:`` above to set a sensible value.
-+         Monitor the varying value after ``CPU:`` above to set a sensible value.
- 
-    :term:`BB_PRESSURE_MAX_IO`
-       Specifies a maximum I/O pressure threshold, above which BitBake's
-@@ -584,12 +584,12 @@ overview of their function and contents.
-          BB_PRESSURE_MAX_IO = "15000"
- 
-       Multiple values should be tested on the build host to determine what suits
--      best, depending on the need for performances versus I/O usage during the
-+      best, depending on the need for performance versus I/O usage during the
-       build.
- 
-       .. note::
- 
--         You may see numerous messages printed by BitBake in the case the
-+         You may see numerous messages printed by BitBake in case the
-          :term:`BB_PRESSURE_MAX_IO` is too low::
- 
-             Pressure status changed to CPU: None, IO: True, Mem: False (CPU: 2236.0/None, IO: 153.6/2.0, Mem: 0.0/2.0) - using 19/64 bitbake threads
-@@ -623,12 +623,12 @@ overview of their function and contents.
-          BB_PRESSURE_MAX_MEMORY = "15000"
- 
-       Multiple values should be tested on the build host to determine what suits
--      best, depending on the need for performances versus memory consumption
-+      best, depending on the need for performance versus memory consumption
-       during the build.
- 
-       .. note::
- 
--         You may see numerous messages printed by BitBake in the case the
-+         You may see numerous messages printed by BitBake in case the
-          :term:`BB_PRESSURE_MAX_MEMORY` is too low::
- 
-             Pressure status changed to CPU: None, IO: False, Mem: True (CPU: 29.5/None, IO: 0.0/2.0, Mem: 2553.3/2.0) - using 17/64 bitbake threads
 
----
-base-commit: 09baa527dafca4bdf56a9189f6b3f7512886cbfb
-change-id: 20250630-bb-pressure-doc-fixups-27a2bcc9a79a
+Applied, thanks!
+
+[1/6] overview-manual: correct value of UNPACKDIR and put S under it
+      commit: ec38f3c5a51887175a2cf3397c07c13c17ca2e9d
+[2/6] ref-manual: drop a sentence about a 'legacy way' to specify UNPACKDIR
+      commit: a880d94d70c7ed1da8e40a02dae43ff1699941a6
+[3/6] dev-manual: replace WORKDIR with UNPACKDIR where appropriate
+      commit: 25ea8e2a0428b6cb66402283e64144d5ce61daf6
+[5/6] ref-manual: correct references to WORKDIR to account for recent do_unpack changes
+      commit: 2e83260484c102fe7b788585cbdd7ca91ba91d85
+[6/6] migration-guides/migration-5.1.rst: correct S/UNPACKDIR patterns for file-only recipes
+      commit: e69144a2420cf412ff62a394583acc3f82413c69
 
 Best regards,
---  
+-- 
 Antonin Godard <antonin.godard@bootlin.com>
-
 
