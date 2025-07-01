@@ -2,72 +2,65 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9F072C83039
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 993A0C7EE30
 	for <webhook@archiver.kernel.org>; Tue,  1 Jul 2025 08:45:21 +0000 (UTC)
 Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
- by mx.groups.io with SMTP id smtpd.web11.5730.1751359517219419758
+ by mx.groups.io with SMTP id smtpd.web10.5587.1751359520974415530
  for <docs@lists.yoctoproject.org>;
- Tue, 01 Jul 2025 01:45:17 -0700
+ Tue, 01 Jul 2025 01:45:21 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=pxHQNpGc;
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=kf0xKd3Z;
  spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 7963C43217;
-	Tue,  1 Jul 2025 08:45:15 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 4F15043220;
+	Tue,  1 Jul 2025 08:45:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1751359515;
+	t=1751359519;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=tIfwiEMOjv7bxep9R+2/sUmHVK7FiEfRhDKkDoKDOo4=;
-	b=pxHQNpGcqJj9zKAwqWQkbg7wD3gTqhxg+TySDuCeibTn74UgQqd/KHCL33+dI1lnAyTYNC
-	ZBlGpCWXL5weK9QJIm0evT/TsFtLAsFRrOSScyxzSUjrnXgcXGb8SDLwFFh7Nz9sKFoxci
-	OFTcjqVtWQSAhYel5zI01qWTVyBbnbh1XUVp5D2JHvdJ09P9wbDq/IjiAlv/sAsS9xzNGe
-	VkRNu1QZbo3QUc9IsBXh7/b60U3JnUgA+2dE5A0+uAp7uWiJjInh618mE6t1BstRXZo0aF
-	pB30bixKTveNmqW/PYePVFQL72KAOPfFMltKLs5hkEx3X7jfws+DjWVFzx6lzA==
+	bh=nO7Wo/WMc/806XvsNuRoAJdlXbuxMU9/spJ/SoPX4Fg=;
+	b=kf0xKd3Zs0zjSnjm2JwiTxjodD1HL76VBGJgxWcRWfd7XqRIlOF+EmVKoTV8+ofY+K95ji
+	4CPAPew8IQURSrJI7UJkS8Bq0K2iKbp25Dx7ekDSOz01J1yLTFlFd3w7Q8ztpqjvpoOBpW
+	C0EeMgtZqW+rNrAnFGbxID7a9r27r9DlikVG6nFOyqJ6MH1Zdc0M4mFs3Jz1OhXzh8HNIP
+	jttarKiCMd1Pcqyjepa8R6U8vYo+Ct77gr29vYIAS7YTV/aC+GezmDXCv8o80h3dMr2zQg
+	Ey+91l5Y5Z45XWRwIqldDb9n6CGNRES9HarmerkrMc/gz2BqWoy64wvgcj5/YA==
 From: Antonin Godard <antonin.godard@bootlin.com>
 To: docs@lists.yoctoproject.org,
-	Alexander Kanavin <alex.kanavin@gmail.com>
+	"Robert P. J. Day" <rpjday@crashcourse.ca>
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Antonin Godard <antonin.godard@bootlin.com>,
-	Alexander Kanavin <alex@linutronix.de>
-Subject: Re: [PATCH 1/6] overview-manual: correct value of UNPACKDIR and put S under it
-Date: Tue,  1 Jul 2025 10:37:19 +0200
-Message-ID: <175135901845.368044.2696336633313152097.b4-ty@bootlin.com>
+	Antonin Godard <antonin.godard@bootlin.com>
+Subject: Re: [PATCH] dev-manual: shorten bitbake.conf snippet related to static libs
+Date: Tue,  1 Jul 2025 10:37:30 +0200
+Message-ID: <175135901846.368044.1172248333164515842.b4-ty@bootlin.com>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623124257.1544615-1-alex.kanavin@gmail.com>
-References: <20250623124257.1544615-1-alex.kanavin@gmail.com>
+In-Reply-To: <477dfe1c-8042-4038-f154-6b7459435283@crashcourse.ca>
+References: <477dfe1c-8042-4038-f154-6b7459435283@crashcourse.ca>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddugeduvdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkofgjfhggtgfgsehtkeertdertdejnecuhfhrohhmpeetnhhtohhnihhnucfiohgurghrugcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepudekffeuhfdtjeetheettedthfeijedtgfejhfelueevhedtvdelhfetieehteelnecukfhppedvrgdtudemtggsudegmeehheeimeejrgdttdemfegtkedumegvsggrjeemudgskegsmegrhegtleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemfegtkedumegvsggrjeemudgskegsmegrhegtledphhgvlhhopehtrghhohhmrgdrhhhomhgvpdhmrghilhhfrhhomheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeehpdhrtghpthhtohepughotghssehlihhsthhsrdihohgtthhophhrohhjvggtthdrohhrghdprhgtphhtthhopegrlhgvgidrkhgrnhgrvhhinhesghhmrghilhdrtghomhdprhgtphhtthhopehthhhomhgrshdrphgvthgriiiiohhnihessghoohhtlhhin
- hdrtghomhdprhgtphhtthhopegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdprhgtphhtthhopegrlhgvgieslhhinhhuthhrohhnihigrdguvg
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddugeduvdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkofgjfhggtgfgsehtkeertdertdejnecuhfhrohhmpeetnhhtohhnihhnucfiohgurghrugcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepudekffeuhfdtjeetheettedthfeijedtgfejhfelueevhedtvdelhfetieehteelnecukfhppedvrgdtudemtggsudegmeehheeimeejrgdttdemfegtkedumegvsggrjeemudgskegsmegrhegtleenucevlhhushhtvghrufhiiigvpeegnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemfegtkedumegvsggrjeemudgskegsmegrhegtledphhgvlhhopehtrghhohhmrgdrhhhomhgvpdhmrghilhhfrhhomheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeegpdhrtghpthhtohepughotghssehlihhsthhsrdihohgtthhophhrohhjvggtthdrohhrghdprhgtphhtthhopehrphhjuggrhiestghrrghshhgtohhurhhsvgdrtggrpdhrtghpthhtohepthhhohhmrghsrdhpvghtrgiiiihonhhisegsohhothhlihhnr
+ dgtohhmpdhrtghpthhtoheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhm
 X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Tue, 01 Jul 2025 08:45:21 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7237
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7248
 
 
-On Mon, 23 Jun 2025 14:42:52 +0200, Alexander Kanavin wrote:
+On Sun, 22 Jun 2025 05:38:40 -0400, Robert P. J. Day wrote:
+> Much of the reproduced bitbake.conf has nothing to do with showing how
+> the ${PN}-staticdev is defined, so delete most of it.
 > 
-
+> 
 
 Applied, thanks!
 
-[1/6] overview-manual: correct value of UNPACKDIR and put S under it
-      commit: ec38f3c5a51887175a2cf3397c07c13c17ca2e9d
-[2/6] ref-manual: drop a sentence about a 'legacy way' to specify UNPACKDIR
-      commit: a880d94d70c7ed1da8e40a02dae43ff1699941a6
-[3/6] dev-manual: replace WORKDIR with UNPACKDIR where appropriate
-      commit: 25ea8e2a0428b6cb66402283e64144d5ce61daf6
-[5/6] ref-manual: correct references to WORKDIR to account for recent do_unpack changes
-      commit: 2e83260484c102fe7b788585cbdd7ca91ba91d85
-[6/6] migration-guides/migration-5.1.rst: correct S/UNPACKDIR patterns for file-only recipes
-      commit: e69144a2420cf412ff62a394583acc3f82413c69
+[1/1] dev-manual: shorten bitbake.conf snippet related to static libs
+      commit: e235ae40db8f4e7088b2e99e678cdf31b5e216c8
 
 Best regards,
 -- 
