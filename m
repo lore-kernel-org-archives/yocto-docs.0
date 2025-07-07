@@ -1,65 +1,77 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BFB83C83F07
-	for <webhook@archiver.kernel.org>; Mon,  7 Jul 2025 08:14:06 +0000 (UTC)
-Received: from relay16.mail.gandi.net (relay16.mail.gandi.net [217.70.178.236])
- by mx.groups.io with SMTP id smtpd.web10.54806.1751876044720197009
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 71208C83F0C
+	for <webhook@archiver.kernel.org>; Mon,  7 Jul 2025 12:01:49 +0000 (UTC)
+Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
+ by mx.groups.io with SMTP id smtpd.web10.58287.1751889704637538836
  for <docs@lists.yoctoproject.org>;
- Mon, 07 Jul 2025 01:14:05 -0700
+ Mon, 07 Jul 2025 05:01:45 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=H4NyajrC;
- spf=pass (domain: bootlin.com, ip: 217.70.178.236, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id E443F438D0;
-	Mon,  7 Jul 2025 08:14:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1751876043;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1kyADJ5/o4w3gfseUpXVFC3pbJsdXLt5hitnaz1sAyk=;
-	b=H4NyajrCs1TyAbd6T2hwb8vwD2rbTO/nBH2kcViXD6H7QQViHQFFckbYgSGWQnxvFc4dyq
-	JFnQeKOFNwa8b2y79VSbYNx7WGtZSJLBdYQ90jFBdj8PIJy0fyUCGdmnAI4OvtoRsgKah8
-	I+CFJ0Ky4TLAqm95Uh5NKzCJx1o2RjY9srnLRFgfeKERC5lTuCOELy56fRsqvMmsDPmlll
-	mGu/osb6FcFOu2Dm/wTKSBcc3/NLEOZZPYbEO2ssBU9qGZjvBp6RxANRPJo/TIMqd9VkUq
-	Y33mcGOaZ0VgwcIvT9i73ehf7aWlAopesKU7QKtIeKn7/cZiNlEPO74YQYWs2w==
-From: Antonin Godard <antonin.godard@bootlin.com>
-To: docs@lists.yoctoproject.org,
-	chee.yang.lee@intel.com
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Antonin Godard <antonin.godard@bootlin.com>
-Subject: Re: [PATCH] ref-manual/yocto-project-supported-features: update contact for meta-intel
-Date: Mon,  7 Jul 2025 10:13:36 +0200
-Message-ID: <175187600748.33933.5913983014005931324.b4-ty@bootlin.com>
-X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250702140450.3251232-1-chee.yang.lee@intel.com>
-References: <20250702140450.3251232-1-chee.yang.lee@intel.com>
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=guTDBwUs;
+ spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
+	cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=dWnQpRIje4oGlYaj+gv4OpRxl2o1t4KL7hgtGLk/SRI=; b=guTDBwUsTl3q86S1xqD0epIviO
+	z1n5rKmSA7E6WhMTEyMN/6Mlm0mQI41ez8s/ybxxHyJ/xdcHNTKBMX8ODus7TqKmgp0Kpjkk+sAU7
+	+fFNAzsos3jhwj+Q7MhEzdpyEMOA4h7i2SLeJ3+KyzRH6cuHMhyDLppaWFSZ/5QxwoVMezB0neYDq
+	KxHVwceWKoBxxtmLruORVSj3jUA/TPEASbtKMNEor6U7ezPDRvGiAWNmsdX+461BEVksKvp48RYcI
+	JWQwYhN7bnohEjEzayEx+UzYKldGNkQqhUPwnrraseppFDnRU0sHchar4CX2Cr79LVXtHIVUlVLXT
+	3HXF31dQ==;
+Received: from pool-174-114-102-5.cpe.net.cable.rogers.com ([174.114.102.5]:53596 helo=asus)
+	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <rpjday@crashcourse.ca>)
+	id 1uYkXR-00000003EML-3wA4;
+	Mon, 07 Jul 2025 08:01:43 -0400
+Date: Mon, 7 Jul 2025 08:01:29 -0400 (EDT)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+To: YP docs mailing list <docs@lists.yoctoproject.org>
+cc: BitBake developer list <bitbake-devel@lists.openembedded.org>
+Subject: [PATCH] bitbake: add examples to show general wildcarding
+Message-ID: <aba74ec2-cda4-9e59-f0ad-e512ab2d60ed@crashcourse.ca>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdefuddvlecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkofgjfhggtgfgsehtkeertdertdejnecuhfhrohhmpeetnhhtohhnihhnucfiohgurghrugcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepudekffeuhfdtjeetheettedthfeijedtgfejhfelueevhedtvdelhfetieehteelnecukfhppedvrgdtudemtggsudegmeehheeimeejrgdttdemfegtkedumegvsggrjeemudgskegsmegrhegtleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemfegtkedumegvsggrjeemudgskegsmegrhegtledphhgvlhhopehtrghhohhmrgdrhhhomhgvpdhmrghilhhfrhhomheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeegpdhrtghpthhtohepughotghssehlihhsthhsrdihohgtthhophhrohhjvggtthdrohhrghdprhgtphhtthhopegthhgvvgdrhigrnhhgrdhlvggvsehinhhtvghlrdgtohhmpdhrtghpthhtohepthhhohhmrghsrdhpvghtrgiiiihonhhisegsohhothhli
- hhnrdgtohhmpdhrtghpthhtoheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhm
+Content-Type: text/plain; charset=US-ASCII
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
+X-AntiAbuse: Original Domain - lists.yoctoproject.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - crashcourse.ca
+X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 07 Jul 2025 08:14:06 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7266
+ <docs@lists.yoctoproject.org>; Mon, 07 Jul 2025 12:01:49 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7268
 
 
-On Wed, 02 Jul 2025 22:04:50 +0800, chee.yang.lee@intel.com wrote:
-> 
+Add a couple more examples to the wildcarding section to make sure
+readers understand it's not just a single character wildcard.
 
+Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
 
-Applied, thanks!
+---
 
-[1/1] ref-manual/yocto-project-supported-features: update contact for meta-intel
-      commit: 083f4c60128d16756c78f61c4cade49e11764034
+diff --git a/doc/bitbake-user-manual/bitbake-user-manual-intro.rst b/doc/bitbake-user-manual/bitbake-user-manual-intro.rst
+index 539bb62d8..98f152df8 100644
+--- a/doc/bitbake-user-manual/bitbake-user-manual-intro.rst
++++ b/doc/bitbake-user-manual/bitbake-user-manual-intro.rst
+@@ -258,6 +258,8 @@ the append file would match the following recipe names::
+   busybox_1.21.1.bb
+   busybox_1.21.2.bb
+   busybox_1.21.3.bb
++  busybox_1.21.10.bb
++  busybox_1.21.11.bb
 
-Best regards,
--- 
-Antonin Godard <antonin.godard@bootlin.com>
+ .. note::
+
 
