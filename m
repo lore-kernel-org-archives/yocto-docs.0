@@ -1,115 +1,89 @@
-Return-Path: <rpjday@crashcourse.ca>
+Return-Path: <richard.purdie@linuxfoundation.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A20B7C8303C
-	for <webhook@archiver.kernel.org>; Tue,  8 Jul 2025 11:42:33 +0000 (UTC)
-Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.web11.16452.1751974952391847217
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A0B17C83F0F
+	for <webhook@archiver.kernel.org>; Tue,  8 Jul 2025 11:45:43 +0000 (UTC)
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+ by mx.groups.io with SMTP id smtpd.web11.16509.1751975139975484074
  for <docs@lists.yoctoproject.org>;
- Tue, 08 Jul 2025 04:42:32 -0700
+ Tue, 08 Jul 2025 04:45:40 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=lQjfxCIM;
- spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:References:
-	Message-ID:In-Reply-To:Subject:cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=UU83OrXLPumWTLRUzh8cG1LaT96TOuiKPjqgtcA2050=; b=lQjfxCIM5mhxG2YR2g52aZv8+2
-	4zKQDgy4tAg32vwmdRNTOVa4IPEL7qbFqDGrxAgp9KWrtzEy7AfU2qQbQBqEA+c+KNn3txD59zAG0
-	lLyxmSQ5TAASQAhxuzKLjIJNTpf7XuDamBxnifRggbNC2wiyN/VUSanIWcDZV4jYlmIHqqtEKr6BU
-	pJQ/E6dU8f9ViCA1l0noKWwR6L0cVYGUjM7OxveSVQIuW+O/GCEv0wV2WXlL5HcPCXbJl/WLiIjfj
-	j28A8ryJKlDvysyOcj2n76mU+bPITCBzsINICa8rbf3WA3WX6JaiGRgpD9+shZx4fdZvbQa4nXQdE
-	sobOKyIA==;
-Received: from pool-174-114-102-5.cpe.net.cable.rogers.com ([174.114.102.5]:45438 helo=asus)
-	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1uZ6iS-0000000700V-3GJd;
-	Tue, 08 Jul 2025 07:42:30 -0400
-Date: Tue, 8 Jul 2025 07:42:25 -0400 (EDT)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: antonin.godard@bootlin.com
-cc: YP docs mailing list <docs@lists.yoctoproject.org>, 
-    BitBake developer list <bitbake-devel@lists.openembedded.org>
-Subject: Re: [docs] [PATCH] Mention existence of three supported "classes"
- directories
-In-Reply-To: <DB6N6S3RH1TM.1HFNXT9E75TR8@bootlin.com>
-Message-ID: <f2ab85c5-e703-ebf2-7c97-9ebe1353f817@crashcourse.ca>
-References: <7f7b0bf4-2fdf-d216-6488-7576a79b19ed@crashcourse.ca> <DB6N6S3RH1TM.1HFNXT9E75TR8@bootlin.com>
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=T7HawZVe;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.128.43, mailfrom: richard.purdie@linuxfoundation.org)
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-453398e90e9so29170245e9.1
+        for <docs@lists.yoctoproject.org>; Tue, 08 Jul 2025 04:45:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1751975138; x=1752579938; darn=lists.yoctoproject.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:to:from:subject:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=d5kVaiFze6l21/D7XIb95cGasiPxxGqJSWQqxEl8L74=;
+        b=T7HawZVeOFV/zQkQQFafb/Ek9g1oi3gObaCqa3bSAXFdxIjFfN3mdFcCgfttvuhNtQ
+         +vdNs/SGpY5qtA2hx5g4bgVk7sPnnCV+vPCY8eHS8MqaTQnz7qhvhgSEWxkpcGmNfHk1
+         IzRi2GrWGTj/PROjYJnkNuX3sUxbYJmoBYmNs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751975138; x=1752579938;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:to:from:subject:message-id:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=d5kVaiFze6l21/D7XIb95cGasiPxxGqJSWQqxEl8L74=;
+        b=saW0e89VIn8VA+160CjOoo2rR6IdzYUcRZT4TR5doPFPvUoRytGiDKk/xruuE/alw4
+         xgSSx+HAaX3VjoAFCzykfEx2+oP6mBvHnu4dATUbyre741mCr4WBpeZQ/nMItwp0Zqos
+         qGf9XeEgQ0MqiuHvyY5px8cJFCCca0sD3Z9BMZcObj4fiCqiPFFFZHDVpxVQxmn/yi2U
+         0MmN0nUNdTz3wo3oq+/yyOPMFp3vzquLtuEEvXJSyNvxzV9CzgBo/pzMvzcfLZhAOK1F
+         zW6gMQoF3zyT2ft2GJYk4sFIntSl03+zMT9U8WDFDVrYci8Mg7vCnOiIwwUyCkmR/J8M
+         6vJw==
+X-Forwarded-Encrypted: i=1; AJvYcCWU64riKXfRe23IVN4tW9R3Z8WjWmhGE3+En7hHSUCVWy0DXyrRsGy3VWAwlBIb3M1OtIgF@lists.yoctoproject.org
+X-Gm-Message-State: AOJu0YzGYT8iH2Mwl0mrUzSR4YuoTlBZ0+pU1CcUM0ly/iT3PtqfCRDH
+	osxdmghBnwvERFtXaPI8kiasYHyYKQNKsPwLq3QSJj8i2oEx8276tR6akshqiOcqY28=
+X-Gm-Gg: ASbGncuQPJCaLTX3UeleQuWAkRkPf9bVwVn8j0uVS8F82iVwbwaqbntVb6/Qfsu8TDN
+	YfIZCbJLbBpJsVFAIX7uCmsbqJnSXKoY5tVjSB4iVS7hlu6tHvvNdGOr/k+jfAWF753H8jKNJDw
+	UpgCSia+MGHtaEyn+ghjv3OzP/LVU6hW/LIIAaLgaZAQc106/w7STNR8rEgQjBwCaMVuJoRPQ6l
+	5BzZZ5HxViZlgooEUWexV2W+dNhtt39CXOWcx/4DukW060xBnGkRXPwX5YNDtATQpnrzfIadNbe
+	MGiHxxTnDzwM/cBmTd1NRlY0m0rwt5KjFLJYuxyWMlZuINTwLuAeh4ZQqdEMizIswAvk9CE0DUo
+	4Gx6JnIujaSAgwwbhIM9jFV51llWk06wOAEpsJX6QCIbiuqlzl2Tuf+PGBrsWzw==
+X-Google-Smtp-Source: AGHT+IGrhfMly/DYL32Z6NCDfRM/3X4CZCvETjiuDTrJ1TikTPaDQ4cwXq5y9LWMy8wB5evPjOW0jA==
+X-Received: by 2002:a05:600c:45d4:b0:450:d01e:78ee with SMTP id 5b1f17b1804b1-454b3168ae8mr143298755e9.24.1751975138249;
+        Tue, 08 Jul 2025 04:45:38 -0700 (PDT)
+Received: from ?IPv6:2001:8b0:aba:5f3c:8fe5:d709:6d45:bcaf? ([2001:8b0:aba:5f3c:8fe5:d709:6d45:bcaf])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b47285e22bsm13069558f8f.97.2025.07.08.04.45.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Jul 2025 04:45:37 -0700 (PDT)
+Message-ID: <3d8e904e18caea11e3e2be542a8ecac45533ddbe.camel@linuxfoundation.org>
+Subject: Re: [docs] is there anything magic about a "virtual/*" PROVIDES
+ setting?
+From: Richard Purdie <richard.purdie@linuxfoundation.org>
+To: rpjday@crashcourse.ca, YP docs mailing list <docs@lists.yoctoproject.org>
+Date: Tue, 08 Jul 2025 12:45:36 +0100
+In-Reply-To: <cfef6b70-4f85-a25c-974f-d32122b79a63@crashcourse.ca>
+References: <cfef6b70-4f85-a25c-974f-d32122b79a63@crashcourse.ca>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.0-1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 08 Jul 2025 11:42:33 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7281
+ <docs@lists.yoctoproject.org>; Tue, 08 Jul 2025 11:45:43 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7282
 
-On Tue, 8 Jul 2025, Antonin Godard via lists.yoctoproject.org wrote:
+On Tue, 2025-07-08 at 07:14 -0400, Robert P. J. Day via lists.yoctoproject.=
+org wrote:
+>=20
+> =C2=A0 from memory, i recall that there is nothing special about any reci=
+pe
+> providing a "virtual/" value, other than that providing something like
+> "virtual/kernel" was nothing more than a catchy visual aid to
+> emphasize that this was meant to be a *general* indication of a
+> general functionality being defined.
+>=20
+> =C2=A0 is that correct? or am i misremembering?
 
-> On Tue Jul 8, 2025 at 1:29 PM CEST, Robert P. J. Day wrote:
-> >
-> > Early in Section 1, mention that BitBake supports three related
-> > classes directories.
-> >
-> > Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
-> >
-> > ---
-> >
-> >   I'm not thrilled with this explanation in terms of where it is, but
-> > it's better than not explaining this at all.
-> >
-> > diff --git a/doc/bitbake-user-manual/bitbake-user-manual-intro.rst b/doc/bitbake-user-manual/bitbake-user-manual-intro.rst
-> > index 539bb62d8..feab1df9d 100644
-> > --- a/doc/bitbake-user-manual/bitbake-user-manual-intro.rst
-> > +++ b/doc/bitbake-user-manual/bitbake-user-manual-intro.rst
-> > @@ -206,6 +206,18 @@ installing (empty by default) and packaging (empty by default). These
-> >  tasks are often overridden or extended by other classes added during the
-> >  project development process.
-> >
-> > +.. note::
-> > +
-> > +   While BitBake comes with just the one ``base.bbclass`` file in the
-> > +   ``classes`` directory, it supports class files also being installed
-> > +   in related directories ``classes-global`` and ``classes-recipe`` and
-> > +   will automatically search all three directories for a selectd class
->
-> s/selectd/selected/
+It is just to mark them as different from other normal provides so it
+is a convention.
 
-  already submitted that fix.
+Cheers,
 
-> > +   file.
-> > +
-> > +   This means that, in this documentation, when you see a reference to
-> > +   class files being in the ``classes`` directory, you can interpret that
-> > +   as meaning in any one of the above three directories.
->
-> I don't think this is enough explanation on these directories, and as-is it
-> would create confusion I think.
->
-> There are some details about these directories here:
-> https://bootlin.com/doc/training/yocto/yocto-slides.pdf#19
->
-> Maybe that can help you add the explanation?
->
-> I would also explain the difference between these directories (classes,
-> classes-recipe and classes-global) in a paragraph of its own, not in a note.
-
-  Except that, once again, we would be going outside the bounds of
-BitBake. I totally agree that there should be a comprehensive
-explanation of these directories, but where does that belong?
-
-rday
+Richard
 
