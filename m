@@ -2,74 +2,88 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F0F83C8303C
-	for <webhook@archiver.kernel.org>; Tue,  8 Jul 2025 09:22:32 +0000 (UTC)
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
- by mx.groups.io with SMTP id smtpd.web10.14454.1751966547299752924
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 00338C8303C
+	for <webhook@archiver.kernel.org>; Tue,  8 Jul 2025 09:24:32 +0000 (UTC)
+Received: from relay15.mail.gandi.net (relay15.mail.gandi.net [217.70.178.235])
+ by mx.groups.io with SMTP id smtpd.web10.14475.1751966663613414958
  for <docs@lists.yoctoproject.org>;
- Tue, 08 Jul 2025 02:22:27 -0700
+ Tue, 08 Jul 2025 02:24:24 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=JsTl8INm;
- spf=pass (domain: bootlin.com, ip: 217.70.183.195, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 0FDE41FCF0;
-	Tue,  8 Jul 2025 09:22:24 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=cl0pRwf6;
+ spf=pass (domain: bootlin.com, ip: 217.70.178.235, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 794C243191;
+	Tue,  8 Jul 2025 09:24:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1751966545;
+	t=1751966660;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=15xobMLoTbldU20FE7dCAqzI4jgFkSryLWDh988q1PQ=;
-	b=JsTl8INmEUFCuOxOKuJ0e7ucW94Ha8pHiQcfXHG7cJC0G0iEJzsf4N670tvUzIycEmecjN
-	xGoPvxUmiiAiAYstQbNXI1abUapx8tsHcnuXaYV0xOt2wriQOKZDd0479iwu46ey5bs061
-	A+TG3aZNzcsahrWK4vRVv6rubdLVsYIPnthvPo3LAgswQicGxt31dF+zLQSFuRKB3zANMP
-	1nqQlfCvWBorvh9Gy12UwyduueysQ4K9PsjSgpZuUl5dMzjTlOF6esq3RXTVW/gkqUSOtS
-	dtcMI9LGtf5hVfZYy4gIF71DqkByfEqtrVZ7m5kQKWdJYQNgxBtTwDAmCeB5hg==
+	bh=lMVceMqcam+UMG3FtkaBxShGA+jRm/OklTQw91CfjzI=;
+	b=cl0pRwf6Y4ZByMcgpgMYqx8MrbepahVPjqdJdC87peUtxG3/QfAo17saMUlXnWUU5WFVU4
+	/hlfNbsLcKoTuHAOQWmSwPT92ROnoygjEEZwkk9NMU/9TPi9T9naS8hcnZ/6MNcfLNfYyr
+	g3FIUPkJbwexNAmqF4enffXmxM6GmW+cyKWnrLonWkCjFTn0POFnoiMoHZLmfz8i2pxr5r
+	NLFJAvvLK+uGzGXWwtT8ieA6Px82fYp9luHPODHNoPscgR+tvPCzKNSXhKkXWT1rPX6gCw
+	/jTBnlHBzHeqrSMzMCs2yfG4tit/2Md4ugSeS35sz9yEd3hTlFXrryZJ7/6AHA==
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 08 Jul 2025 11:22:24 +0200
-Message-Id: <DB6KB3M9YP3T.2ZQ8PXKODAO7M@bootlin.com>
-Subject: Re: [docs] where in BB manual to mention "classes-global" and
- "classes-recipe" dirs?
+Date: Tue, 08 Jul 2025 11:24:20 +0200
+Message-Id: <DB6KCKNX3JJJ.3VF9X2K4S5HWR@bootlin.com>
+Subject: Re: [docs] a couple random thoughts about YP docs and examples
 From: "Antonin Godard" <antonin.godard@bootlin.com>
 To: "Robert P. J. Day" <rpjday@crashcourse.ca>, "YP docs mailing list"
  <docs@lists.yoctoproject.org>
-References: <d0fbdce5-8bcc-5f78-ec23-ea218659302c@crashcourse.ca>
-In-Reply-To: <d0fbdce5-8bcc-5f78-ec23-ea218659302c@crashcourse.ca>
+References: <d2261e4d-bfe5-3c97-a580-ed25d69e228c@crashcourse.ca>
+In-Reply-To: <d2261e4d-bfe5-3c97-a580-ed25d69e228c@crashcourse.ca>
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdefgeeftdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepggfgtgffkffuhffvfhgjsehtqhertddttdejnecuhfhrohhmpedftehnthhonhhinhcuifhouggrrhgufdcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnheptddtudfggfelvdejiefhgeevvddutdeggeegjeffhfdtkedtvdeiuefgvedtuedunecuffhomhgrihhnpeihohgtthhophhrohhjvggtthdrohhrghdpsghoohhtlhhinhdrtghomhenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmeeftgekudemvggsrgejmedusgeksgemrgehtgelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdugeemheehieemjegrtddtmeeftgekudemvggsrgejmedusgeksgemrgehtgelpdhhvghloheplhhotggrlhhhohhsthdpmhgrihhlfhhrohhmpegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvddprhgtphhtthhopehrphhjuggrhiestghrrghshhgtohhurhhsvgdrtggrpdhrtghpthhtohepughotghssehlihhsthhsrdihohgtthhophhrohhjvggtthdro
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdefgeefudcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepggfgtgffkffuhffvfhgjsehtqhertddttdejnecuhfhrohhmpedftehnthhonhhinhcuifhouggrrhgufdcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnheptddtudfggfelvdejiefhgeevvddutdeggeegjeffhfdtkedtvdeiuefgvedtuedunecuffhomhgrihhnpeihohgtthhophhrohhjvggtthdrohhrghdpsghoohhtlhhinhdrtghomhenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmeeftgekudemvggsrgejmedusgeksgemrgehtgelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdugeemheehieemjegrtddtmeeftgekudemvggsrgejmedusgeksgemrgehtgelpdhhvghloheplhhotggrlhhhohhsthdpmhgrihhlfhhrohhmpegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvddprhgtphhtthhopehrphhjuggrhiestghrrghshhgtohhurhhsvgdrtggrpdhrtghpthhtohepughotghssehlihhsthhsrdihohgtthhophhrohhjvggtthdro
  hhrgh
-X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 08 Jul 2025 09:22:32 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7273
+ <docs@lists.yoctoproject.org>; Tue, 08 Jul 2025 09:24:32 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7274
 
-On Mon Jul 7, 2025 at 10:53 PM CEST, Robert P. J. Day wrote:
+On Mon Jul 7, 2025 at 9:16 PM CEST, Robert P. J. Day wrote:
 >
-> at the end of this section:
+>   reading the bitbake manual (although this could just as well apply
+> to YP docs in general), my first general nitpick is the number of
+> awkwardly contrived examples that involve contrived variable names.
+> consider this section on the ":remove" directive:
 >
 > https://docs.yoctoproject.org/bitbake/2.12/bitbake-user-manual/bitbake-us=
-er-manual-metadata.html#locating-include-and-class-files
+er-manual-metadata.html#removal-override-style-syntax
 >
-> one reads:
+> why use variables FOO and FOO2 and arbitrary numeric strings when
+> there are so many meaningful examples in the OE code base that would
+> make actual sense, such as:
 >
-> "In order for include and class files to be found by BitBake, they
-> need to be located in a =E2=80=9Cclasses=E2=80=9D subdirectory that can b=
-e found in
-> BBPATH."
+>   meta/recipes-bsp/grub/grub2.inc:CFLAGS:remove =3D "-O2"
+>   meta/recipes-bsp/grub/grub2.inc:TUNE_CCARGS:remove =3D "-mfpmath=3Dsse"
 >
-> not technically true since searching also checks the classes-global
-> and classes-recipe directories (see lib/bblayers/query.py.
+> Examples like that actually suggest to the reader *why* one might want
+> to remove strings from various variables related to various recipes.
 >
->   is this the right place to mention those additional directories?
+>   Also, I don't see any mention in that section about override-related
+> removal that would be useful to explain, stuff like:
+>
+> meta/recipes-devtools/rust/libstd-rs_1.87.0.bb:DEPENDS:remove:riscv32 =3D=
+ "libunwind"
+> meta/recipes-devtools/rust/libstd-rs_1.87.0.bb:DEPENDS:remove:riscv64 =3D=
+ "libunwind"
+> meta-poky/conf/distro/poky-tiny.conf:PACKAGECONFIG:remove:pn-opkg-utils =
+=3D "python"
+>
+> In short, we should be using actual examples from the OE code base as
+> examples, and we should try to be complete.
 
-Good catch, the classes-recipe and classes-global should be mentioned here =
-too.
-Can you send a patch?
+Bitbake is not only used with OE-Core, and so the Bitbake documentation sho=
+uld
+not make any references to it. Maybe more meaningful examples could be take=
+n but
+we need to keep that in mind.
 
 Antonin
 
