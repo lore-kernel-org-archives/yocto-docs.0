@@ -2,105 +2,123 @@ Return-Path: <raj.khem@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9F670C83F0A
-	for <webhook@archiver.kernel.org>; Wed,  9 Jul 2025 16:29:35 +0000 (UTC)
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
- by mx.groups.io with SMTP id smtpd.web10.1430.1752078571943877416
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A3523C83F03
+	for <webhook@archiver.kernel.org>; Wed,  9 Jul 2025 16:34:55 +0000 (UTC)
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+ by mx.groups.io with SMTP id smtpd.web10.1589.1752078894231941334
  for <docs@lists.yoctoproject.org>;
- Wed, 09 Jul 2025 09:29:32 -0700
+ Wed, 09 Jul 2025 09:34:54 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=lYqMRKDp;
- spf=pass (domain: gmail.com, ip: 209.85.214.181, mailfrom: raj.khem@gmail.com)
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-23694cec0feso866945ad.2
-        for <docs@lists.yoctoproject.org>; Wed, 09 Jul 2025 09:29:31 -0700 (PDT)
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=BvcOzkON;
+ spf=pass (domain: gmail.com, ip: 209.85.215.169, mailfrom: raj.khem@gmail.com)
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-b26f7d2c1f1so203860a12.0
+        for <docs@lists.yoctoproject.org>; Wed, 09 Jul 2025 09:34:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752078571; x=1752683371; darn=lists.yoctoproject.org;
+        d=gmail.com; s=20230601; t=1752078893; x=1752683693; darn=lists.yoctoproject.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:to:subject:user-agent:mime-version:date:message-id:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=pgBEi4IxFuBVqVZXuwGXaWWTXGqZ/VpRRhhSLWPfaq8=;
-        b=lYqMRKDpv9pOg3INUOYzjcrQwjFUv6uDAl+dJjFRtlrq/pQbMCGmM28WnAjTaTjIfu
-         ARltcuzeM3gRU0MSC6K7/a7W/ZpPXFfZ3cBCFmLQkEakclTpENR/mqEPijgaO7VY/7p2
-         EMSkWOio4PcqLbuVL1cUO30cBiOB4OYYAMQQjRY2deLBVG0cog61QCOfz9wdQXdmsPDb
-         9LMESvdTi7SBXCKSH6qPhPiBo+rOXRrv+1rsWqH/L2s51LMKZX4WMoCVNVH4CSUmSizh
-         VMMQvHC/PN2zrPAvwQza3MMf80A57NoG32KB843KqIAHfnDQxU6L+vQ0s+v5NxW/rwaj
-         BHTg==
+        bh=XqSKdNFXTnvOeofWzYMjRhocyuaqwBMCSQLGWBuWG7s=;
+        b=BvcOzkONjG2GtMjHshNWpiJYbOvC/V87O85CdKJhWZopVWI8ifr6BYupFbydcSbOtW
+         XXp7GSzaHXRfus3zPg4KNi8BJ0EXkwpHxh3Jj/iU/5aLjaPl2X+Z0qK48iPHL4m1+X8D
+         dNQCGsMrdmdmdvtrqLLTeOzPyR+zz/N2nCzrEPPM+cvjlWSYWV68hzx42ax+SujdwDhn
+         eKX3ABHBnsIyYaf4gJz1cQrFo9uqFfpiUsWZRyoUNO93Y5H8oG5dcktIdIZPHB/vUBaF
+         jAEFG5EQnRdQJuFmK/pysGhLi3zPFcSCkfGMZjv7T5YrqGyIUSd76dRL27plHhsmfe/Q
+         nqMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752078571; x=1752683371;
+        d=1e100.net; s=20230601; t=1752078893; x=1752683693;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=pgBEi4IxFuBVqVZXuwGXaWWTXGqZ/VpRRhhSLWPfaq8=;
-        b=MLoGc2ldDoR4ogTwywH6mxxvqK7wTktsvjW5u0vj6nF9itrhnBxG8dKdHRVJRopBPu
-         54/50uH0Mhg18NT4INOovdQJlHFG2ll+CYo814tW26qf2XwjODFnM/DIi931z98IQzzh
-         pJZc8Xi+B/FeIR6UE3tAcqQB6YNEJ/X0jhxO+uhuofylXx85hAB8kZbpdlvDKLsByv4K
-         6tVBDTikRUTySEPwIxAXn/SvGvVbRntpbPqCmUrsVIuocmxOLRyc4m8AXtlCX/Uyh1Sn
-         v6p9lAl1SWCLYBXoeJyHRR5giy85N2qG8jpDnj8EWGMLQXN2hx8htqYFzVc7C0ZPb+T5
-         SCUA==
-X-Forwarded-Encrypted: i=1; AJvYcCVKN33hnfp2hJ+hSrIYvi75SzGXxqDnsGlaHyFYRklEM/pfDMj+bh4ynrBqLJrO6QelSr0B@lists.yoctoproject.org
-X-Gm-Message-State: AOJu0Ywa+ujy6Yuqqk0U6KdLnH4EXpNBRIf2jpERW5OY/J0qiex0hWpj
-	TvAH4ga7anh/uGnDWD6anp/SWUXu1H2wHYBaq9cZa8eaPCgRIFm91JyD
-X-Gm-Gg: ASbGncsfa5IpAwcXZnJkdfyjYalThISvUi2SYT3+O4H0cEdqmH82ajofjKcDCizs0xf
-	jbpjbrRd3c6lFgIntyy5Be5+VAEeOl2UXUJnEcbfJD2GhDlWnPCECWus5UoWdWErcN6WaEaSLDl
-	AIxkcQGCsAyMBbmz5pPci9ttg2xmVVEV+snut4ojG0M2Z8id/qTzV7IP42eD3vSMC0ahaGGxNkj
-	afRl6a6m+9Ms1hX/3CEQoLmzpbs+INRsqJwKRe2MTs3uyjTFW1j8RqskuyCI7UXZh01m2o8/u1o
-	+6O+C3IIw5ToQBI/3rzXKs/Gu97kPBKPmGCpr8T/OkakvexJWASKZCYDo1+PYBHw9TofZQmwbBc
-	7htUKaTwrOAhhWJW9yv6E8B+IHhBPFlGq4JB51lli+DVFe4QGgg==
-X-Google-Smtp-Source: AGHT+IHP0//OG36aEKXmD7SExyA4ZfDDXbFhJRfRNo3jr6eI+c76rT632EpqregQ789i80hx7MXOIA==
-X-Received: by 2002:a17:903:6c8:b0:226:38ff:1d6a with SMTP id d9443c01a7336-23ddb1a0471mr30762635ad.7.1752078570850;
-        Wed, 09 Jul 2025 09:29:30 -0700 (PDT)
+        bh=XqSKdNFXTnvOeofWzYMjRhocyuaqwBMCSQLGWBuWG7s=;
+        b=CPwU8XaOAgxusD9ITiNPKkh6OPQtfujJbnqim63BcdsqnwcYjyRGGW5Hzn7JzuhOK9
+         aynDsGFmt9ed6C2hYT83yNBR2+3gzobNUO5qtVqwW3cEtR8vLBnKvn5bHpRZyVUpXnfI
+         O8o6NMw8ZcyPfbiIQGWaMPlKlxznbGl9LgbZmPlWme3mASDYaCmP6mYoIFfUNmLlciyy
+         KmKSC33tUIykNQW49KBu3zDJ6WCPbcFRLJ/ZhnAtfEn778o9MtZGxbKXTe+MH1U+RYgV
+         qsPaK/6BrftHaeSmFcbNDI7dDQibcKJVvClrTxITpwDUUFVUco7i6nylqUtGFSNjA9LK
+         7OXA==
+X-Forwarded-Encrypted: i=1; AJvYcCWIR+IeiJwe3G+iJO6CRx4RMe9Et1XxrMlL9G2JmogX5JGBl6/yx74HtvRfLoxLNAPF8Sdc@lists.yoctoproject.org
+X-Gm-Message-State: AOJu0YyAT6aImWCBrnVSsW36cOihYO/27D+QEnTijHc9lKL38YQssWOg
+	SXbcH0zT6NkXvgUu5EyXcnC/gVX1dKMgVSy5svc/JLEt4yCBJXlp90ptHIYW7UuP
+X-Gm-Gg: ASbGnctLrJ24rFDL52rQdJYPmo4F5MD7tHOAxZz8Et47rF88PkefoGODQ+Szbsvpe9P
+	5oT/GsemSu2VS9lY1muLd45Q/aidqwMonMVoT1BGEGqT9F3Kbdb2avooni7F6oWFIWicvu3+8K0
+	Rgqre+1pztXS1uaANq4A1LWOm58nx72OSs1igMmO+EZd+IT4aj+walvwkyiPLBnagoBqVsS0osF
+	5xnQyODGIHAEyJ7Z1GlVC7mch9tW11OucHqiGT8vNwXITzZpzYKtvHHNDkKNgauA+SXLdZCaP6S
+	LVCTBxuHWQXsF0RQyhv7JZXJG7twj8lNLIlKABbxq313pDCIPLlcUeai9vXlIryuLuWpE8RGtsB
+	aozIuPUnzz7pSf/JUeMbpC+KQwGvWiSABdrj1FDqU5nlnWDEiUg==
+X-Google-Smtp-Source: AGHT+IE/5ZJ0elXKVQyE+Gr2w4/5MF7JJdMIld6oZxhWfPp3kHCsaKpqzTm7KRIyp4cBbsRthJZJ1g==
+X-Received: by 2002:a17:90b:1b10:b0:311:ab20:159a with SMTP id 98e67ed59e1d1-31c3c3084f4mr751194a91.29.1752078893432;
+        Wed, 09 Jul 2025 09:34:53 -0700 (PDT)
 Received: from ?IPV6:2601:646:8201:fd20:d1b7:aad6:2c95:a1d8? ([2601:646:8201:fd20:d1b7:aad6:2c95:a1d8])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23c8455d27asm153669695ad.129.2025.07.09.09.29.30
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-31c30037b4csm2542465a91.5.2025.07.09.09.34.52
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 09 Jul 2025 09:29:30 -0700 (PDT)
-Message-ID: <8674860c-6276-4e48-b486-0eed9f46d802@gmail.com>
-Date: Wed, 9 Jul 2025 09:29:29 -0700
+        Wed, 09 Jul 2025 09:34:53 -0700 (PDT)
+Message-ID: <85161775-f95d-4de8-8241-414c4281e48f@gmail.com>
+Date: Wed, 9 Jul 2025 09:34:52 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [docs] more nitpickery: "include_all" should be described as
- really specialized
+Subject: Re: [docs] now i'm confused about OVERRIDES
 To: rpjday@crashcourse.ca, YP docs mailing list <docs@lists.yoctoproject.org>
-References: <d0caadc1-6923-4114-8798-89ecf3e8e494@crashcourse.ca>
+References: <164f071c-7019-7d77-c49a-f0ba3e87c502@crashcourse.ca>
 Content-Language: en-US
 From: Khem Raj <raj.khem@gmail.com>
-In-Reply-To: <d0caadc1-6923-4114-8798-89ecf3e8e494@crashcourse.ca>
+In-Reply-To: <164f071c-7019-7d77-c49a-f0ba3e87c502@crashcourse.ca>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 09 Jul 2025 16:29:35 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7300
+ <docs@lists.yoctoproject.org>; Wed, 09 Jul 2025 16:34:55 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7301
 
 
 
-On 7/9/25 8:35 AM, Robert P. J. Day via lists.yoctoproject.org wrote:
+On 7/9/25 5:42 AM, Robert P. J. Day via lists.yoctoproject.org wrote:
 > 
->    (yes, i'm still being pedantic and i'm keeping track of all the
-> previous feedback, i'll get to it at some point.)
+>    i'm reading the BB manual here:
 > 
->    here:
+> https://docs.yoctoproject.org/bitbake/2.12/bitbake-user-manual/bitbake-user-manual-metadata.html#examples
 > 
-> https://docs.yoctoproject.org/bitbake/2.12/bitbake-user-manual/bitbake-user-manual-metadata.html#include-all-directive
+> and, first, i think OVERRIDES are complex enough to need an entire
+> section all to themselves, to be explained in detail with actual
+> examples ripped from the OE code base. but here's the confusion.
 > 
-> the explanation for "include_all" correctly describes it, sure, and it
-> also uses maintainers.inc as the perfect example. but it's not clear
-> from the explanation that (at least for now) that is the *only* usage
-> of it in all of the layers i have checked out.
+>    i distinctly recall a while back that i asked about the (possibly
+> misleading) differences between these two statements:
 > 
->    a reader might get the idea that, hey, this is a useful feature, i
-> wonder where i should use it, without truly appreciating that it
-> should be considered a *rarity*, to be used only in well-defined
-> situations. *then* the example of maintainers.inc can be introduced,
-> again emphasizing how this is really infrequent and needs to be used
-> only in clearly appropriate circumstances. or something to that
-> effect.
+>    A:foo:append
+>    A:append:foo
 > 
->    thoughts?
+> and i was sure that the consensus was that the "proper" syntax was:
+> 
+>    A:append:foo
+> 
+> that is, it was extremely unlikely that the developer really meant to
+> use:
+> 
+>    A:foo:append
+> 
+> even though, in most cases, those statements would have the same
+> ultimate effect, they could potentially behave differently.
+> 
+>    so the "proper" form seems to be the preferred form, except for this
+> pile of assignments to RDEPENDS in the meta-raspberrypi layer:
+> 
+> https://git.yoctoproject.org/meta-raspberrypi/tree/recipes-kernel/linux/linux-raspberrypi_6.12.bb
+> 
+> is that syntax deliberate in the sense that it *had* to be done that
+> way?
 
-some guidelines around its usage will certainly help users. Care to cook 
-a patch ?
+this is seemingly a bug there.
 
+> 
+>    and don't get me started on the complexity one finds in the
+> meta-xilinx layer:
+> 
+> EXTRA_OECONF:append:xilinx-standalone:arm:class-target:baremetal-multilib-tc = " \
+> 
+>    like i said, i think OVERRIDES needs a more thorough explanation in
+> the docs to cover some of this stuff.
 > 
 > rday
 > 
@@ -108,8 +126,8 @@ a patch ?
 > 
 > -=-=-=-=-=-=-=-=-=-=-=-
 > Links: You receive all messages sent to this group.
-> View/Reply Online (#7299): https://lists.yoctoproject.org/g/docs/message/7299
-> Mute This Topic: https://lists.yoctoproject.org/mt/114066590/1997914
+> View/Reply Online (#7294): https://lists.yoctoproject.org/g/docs/message/7294
+> Mute This Topic: https://lists.yoctoproject.org/mt/114063523/1997914
 > Group Owner: docs+owner@lists.yoctoproject.org
 > Unsubscribe: https://lists.yoctoproject.org/g/docs/unsub [raj.khem@gmail.com]
 > -=-=-=-=-=-=-=-=-=-=-=-
