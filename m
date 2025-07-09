@@ -2,16 +2,16 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8C33EC83F0A
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 98421C83F09
 	for <webhook@archiver.kernel.org>; Wed,  9 Jul 2025 09:33:43 +0000 (UTC)
 Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
- by mx.groups.io with SMTP id smtpd.web10.11462.1752053622929427158
+ by mx.groups.io with SMTP id smtpd.web10.11463.1752053622938479852
  for <docs@lists.yoctoproject.org>;
  Wed, 09 Jul 2025 02:33:43 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=FYeEPJ2k;
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=OqdT8kKy;
  spf=pass (domain: bootlin.com, ip: 217.70.183.196, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 2DD6A43ACE;
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 6A84243AE0;
 	Wed,  9 Jul 2025 09:33:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
 	t=1752053621;
@@ -19,19 +19,20 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Lg5DDbC3O2AGo3NDU1MHyb3UR4VOztORWxRzfUquHWA=;
-	b=FYeEPJ2ka6n6irGd7w0NWUJPBimYscX9DoTAo2KcV5cDAW+uUdOdyxBD4dDyTY7io/5qGd
-	SC3WRvvfV1YObj6/C1U10PEXj7rNVQHhGp0EeaKIW4kPId7TS+tixFVE/7m7fkfjUCY4xb
-	MVUIQ9OB0R9zXfuWT2mj0G9XcSpWgp5J+PEhyXUh0Y2aQT0qWpoL7ZgpeIMOfRsCcC0CH0
-	jq6IvfrpEQyV7BJhEE2YfpAWdSHHhxaEzNF5taeq+hQPYTNDd6jDN9DqGpAqnDfw/LOepI
-	g8nEoyhMaeeEAYlvqSqm6UhSnpRIstyIxnZS09w7ANBqR61MragjvMYgrND+ig==
+	bh=vX2+HMVclGXPHWJYB2KySENIdGEjyhKm6adH7nKyCuo=;
+	b=OqdT8kKy4T11evQCimbHoIS8c85HbLLEygEgzsA4MUMtaIrN/EG8TWeVbymDL9lPvKwaLd
+	juDWYYFFgv0vPNAEvhPHsMVZL3pYw+NDZLJhuVpvzIrsTNzb7PqW/G9NMn6pYQO3b0jKPv
+	uDISqYPuaDpgNY4zpMFAYmVT+XpVA25HY7tp3ZBWk3Vi85GQ3uyyvdKRlXve67+sOB6yH5
+	TpWEDZ1xAWVmVkFi/V5WzvM8KjntV9m6Hr0bEXK8AqMwofBwXrwVFsDcaE5cWZ+7MiBMDc
+	LQYrOFzi1LbWZwDlCp6tO33fAHVHFzWV7/AEMwc18CC+xThcWve6X/pJliR3nA==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Wed, 09 Jul 2025 11:33:31 +0200
-Subject: [PATCH v4 1/2] Add a document on limiting host resources
+Date: Wed, 09 Jul 2025 11:33:32 +0200
+Subject: [PATCH v4 2/2] ref-manual/variables.rst: make reference to new
+ limiting-resources doc
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250709-resource-limiting-v4-1-c35cbc4c7d14@bootlin.com>
+Message-Id: <20250709-resource-limiting-v4-2-c35cbc4c7d14@bootlin.com>
 References: <20250709-resource-limiting-v4-0-c35cbc4c7d14@bootlin.com>
 In-Reply-To: <20250709-resource-limiting-v4-0-c35cbc4c7d14@bootlin.com>
 To: docs@lists.yoctoproject.org
@@ -39,203 +40,112 @@ Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
  Quentin Schulz <quentin.schulz@cherry.de>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7498;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3798;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=ZMe+5CwDJWBjeTdVKhF2e0ku+3O9mjwAxKJ0Yql90Nc=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBobjd01rJ+q0ByMUxWouHck1rMdgb3oUAoTGMwD
- Zv3R+eT7vGJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaG43dAAKCRDRgEFAKaOo
- NsKIEACwALrl5hDEPRqGnaZP3OKiaGeNzIIPV7soHm/ocaWvTnDBEvMKH9u2rUj2TE88lrMFuDa
- nGwcUo8qQO/WqTWiIAW3n6+5y3x+aBJReUzvT/nEze2CtigsEceSf1+ksIgcESHm9cfJAfFb6a8
- AZi2F5KRIUVhnyYLXQhsz4J8O/Qq4mVzT3a6WrHQT5sNYdUpI3xpKqAwYJCdBO7fVFwXg9klhg0
- utZDnIFk/0AVLbxmb/SDqj4nGntcwNMdkz17gvqvsQpNFTOrk3cTMcXSqWU2ormdz0bWhAF50y3
- 2P8ocC9yyoelEW+acBfFryqtXZjbsUFu5CS8VAdH2gk0Z29HxJ2G962BYjFfus6/JUrcOHsTy6h
- sjzgbNGKFKDkHLdkW6J37jZwk3duzue4Tu2lre3sof3oBlLGs4V/c1SXF3nqD8jL7mJvSL6LPev
- kEx0rSnt8oVryEvn1CnBWhI2B54rZyEW4T1Z2vavXbybLvUbeAP3FU+hzeYT1LAW1YQCaSytX/M
- vi9hqvwYaMK7OfqXHUrNa08Xpc4YUPFOooctqTAMWQ7ATfAHcYHHbFa/KSHPfHGSxPrnq5R4NY1
- Z8xABRi+juu8ZBuzfyNFgbhk39G2ExSRZhhqdsCOeNpgiQPia/NX98u4l3vEL9epReRq07TBnTz
- m+rpWVuBZDjWCVA==
+ bh=o9myckC7uEHwFC8SKVjTc6bb50REcbkiCSNNqdY1YqU=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBobjd0a75b/HxsH1y0LA+aKNbn8/+DiAHVjQqpn
+ m9PAnVZ+k+JAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaG43dAAKCRDRgEFAKaOo
+ Nm57EADG0pxsDGVUjlwssbUZYog4ZzI5MtNhg+frf4xTwNuk7gVL9R/CmdilRHMAV1VIUaHnnwz
+ MdM0YVveNfvDji+kXT5nMMHoFr2/XspWU6zBWPZXZUeaAzb4u5NdYOSvlDp7igD/9REr3MOsjnK
+ t8RbSvyE7tksUQ6mKOc9khgqSlXh5KsrHtyJyJWZlPqWIxDzlJ7EqaI0SGtyzWEhZKUNJxa1k3D
+ 8MtidZ7CFR1+JKi/FvMMe3cRd5tcET7ROQo66DXYn+z3t9XtGvnC+TxgFHN05QAykgOebDtVBgo
+ yyyL4DC6HCOnXIUseXGw5IzVIXQMBfliWYKxJgUp6xjMPlPhbEXYW4JnZbRiLafSLYXJiyO6qVN
+ EMP4snnPC7Fg0BPwsWLRy9x5tSQL4AMVQdv5Ksri3XDUy1ehe/FG9kE5+xh50FJR2uGQvCh/Z+9
+ R88jfyQG9Han/AnCF3bUvGnU3doIbtpO/sanmQ+P1SQns8XtP5OqdQ/WjRC+LrYp+q3pL4Z1TF5
+ lMyB6EzPhihZyEgBIL24+uKOkBp42DSWsQb2DZ9kULaRZj6iKNG+tTAubpA7ch0ykWWOvJ9KbaD
+ 9420p492tEZQbuG8rSAfMB1Z7YQsHI2T4gUyRAJFABXkgLj591zOZQmINK69x/4cjnyHuaLnNXl
+ jgWvKIsZaQdS/Hw==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdefjedvudcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephfffufggtgfgkfhfjgfvvefosehtjeertdertdejnecuhfhrohhmpeetnhhtohhnihhnucfiohgurghrugcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepieegteelheekgeeghfeivdevteefteejvdelvdffleegheegleelhfeiuddtfedvnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmeeftgekudemvggsrgejmedusgeksgemrgehtgelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdugeemheehieemjegrtddtmeeftgekudemvggsrgejmedusgeksgemrgehtgelpdhhvghloheplgduvdejrddtrddurddungdpmhgrihhlfhhrohhmpegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepgedprhgtphhtthhopehquhgvnhhtihhnrdhstghhuhhliiestghhvghrrhihrdguvgdprhgtphhtthhopehthhhomhgrshdrphgvthgriiiiohhnihessghoohhtlhhinhdrtghomhdprhgtphhtthhopeguo
- hgtsheslhhishhtshdrhihotghtohhprhhojhgvtghtrdhorhhgpdhrtghpthhtoheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhm
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdefjedvudcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephfffufggtgfgkfhfjgfvvefosehtjeertdertdejnecuhfhrohhmpeetnhhtohhnihhnucfiohgurghrugcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepheeigeeuhfefgeehfffgueeiteehieelfeehjeektefgkeeuheeuleduvdelgffhnecukfhppedvrgdtudemtggsudegmeehheeimeejrgdttdemfegtkedumegvsggrjeemudgskegsmegrhegtleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemfegtkedumegvsggrjeemudgskegsmegrhegtledphhgvlhhopegluddvjedrtddruddrudgnpdhmrghilhhfrhhomheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeegpdhrtghpthhtohepqhhuvghnthhinhdrshgthhhulhiisegthhgvrhhrhidruggvpdhrtghpthhtohepthhhohhmrghsrdhpvghtrgiiiihonhhisegsohhothhlihhnrdgtohhmpdhrtghpthhtohepughotghssehlihhsthhsrdihohgtthhophhrohhjv
+ ggtthdrohhrghdprhgtphhtthhopegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomh
 X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Wed, 09 Jul 2025 09:33:43 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7289
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7291
 
-Add a "Limiting the Host Resources Usage" document to share the
-different techniques that can be used to limit the host resources usage.
-We do have a document to document how to speed up a build, so this
-document comes right after.
-
-[YOCTO #15111]
+For host resource limiting variables, make a reference to the new
+"Limiting the Host Resources Usage" document.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/dev-manual/index.rst              |   1 +
- documentation/dev-manual/limiting-resources.rst | 138 ++++++++++++++++++++++++
- 2 files changed, 139 insertions(+)
+ documentation/ref-manual/variables.rst | 32 +++++++++++++++++++++++++-------
+ 1 file changed, 25 insertions(+), 7 deletions(-)
 
-diff --git a/documentation/dev-manual/index.rst b/documentation/dev-manual/index.rst
-index 63736e0ab..4abfa59e9 100644
---- a/documentation/dev-manual/index.rst
-+++ b/documentation/dev-manual/index.rst
-@@ -22,6 +22,7 @@ Yocto Project Development Tasks Manual
-    building
-    multiconfig
-    speeding-up-build
-+   limiting-resources
-    libraries
-    prebuilt-libraries
-    devtool
-diff --git a/documentation/dev-manual/limiting-resources.rst b/documentation/dev-manual/limiting-resources.rst
-new file mode 100644
-index 000000000..0a792689c
---- /dev/null
-+++ b/documentation/dev-manual/limiting-resources.rst
-@@ -0,0 +1,138 @@
-+.. SPDX-License-Identifier: CC-BY-SA-2.0-UK
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index c56418e2a..d079e4b59 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -589,8 +589,12 @@ system and gives an overview of their function and contents.
+       See :term:`bitbake:BB_INVALIDCONF` in the BitBake manual.
+ 
+    :term:`BB_LOADFACTOR_MAX`
+-      The system load threshold above which BitBake will stop runnig extra
+-      tasks.
++      The system load threshold above which :term:`BitBake` will stop running
++      extra tasks.
 +
-+Limiting the Host Resources Usage
-+*********************************
++      For more information on how to limit the resources used during builds, see
++      the :doc:`/dev-manual/limiting-resources` section of the Yocto Project
++      Development Tasks Manual.
+ 
+    :term:`BB_LOGCONFIG`
+       See :term:`bitbake:BB_LOGCONFIG` in the BitBake manual.
+@@ -649,11 +653,9 @@ system and gives an overview of their function and contents.
+       An alternative to using :term:`BB_NUMBER_THREADS` to keep the usage
+       of build system resources under control is to use the smarter
+       :term:`BB_PRESSURE_MAX_CPU`, :term:`BB_PRESSURE_MAX_IO` or
+-      :term:`BB_PRESSURE_MAX_MEMORY` controls. They will prevent BitBake
+-      from starting new tasks as long as thresholds are exceeded. Anyway,
+-      as with :term:`BB_NUMBER_THREADS`, such controls won't prevent the
+-      tasks already being run from using all CPU threads on the system
+-      if :term:`PARALLEL_MAKE` is not set to a low value.
++      :term:`BB_PRESSURE_MAX_MEMORY` controls. See the
++      :doc:`/dev-manual/limiting-resources` section of the Yocto Project
++      Development Tasks Manual.
+ 
+    :term:`BB_ORIGENV`
+       See :term:`bitbake:BB_ORIGENV` in the BitBake manual.
+@@ -664,12 +666,24 @@ system and gives an overview of their function and contents.
+    :term:`BB_PRESSURE_MAX_CPU`
+       See :term:`bitbake:BB_PRESSURE_MAX_CPU` in the BitBake manual.
+ 
++      For more information on how to limit the resources used during builds, see
++      the :doc:`/dev-manual/limiting-resources` section of the Yocto Project
++      Development Tasks Manual.
 +
-+While you sometimes need to :doc:`speed up a build
-+</dev-manual/speeding-up-build>`, you may also need to limit the resources used
-+by the :term:`OpenEmbedded Build System`, especially on shared infrastructures
-+where multiple users start heavy-load builds, or when building on low-power
-+machines.
+    :term:`BB_PRESSURE_MAX_IO`
+       See :term:`bitbake:BB_PRESSURE_MAX_IO` in the BitBake manual.
+ 
++      For more information on how to limit the resources used during builds, see
++      the :doc:`/dev-manual/limiting-resources` section of the Yocto Project
++      Development Tasks Manual.
 +
-+This document aims at giving the different configuration variables available to
-+limit the resources used by the build system. These variables should be set from
-+a :term:`configuration file` and thus take effect over the entire build environment.
-+For each variable, also see the variable description in the glossary for more
-+details.
+    :term:`BB_PRESSURE_MAX_MEMORY`
+       See :term:`bitbake:BB_PRESSURE_MAX_MEMORY` in the BitBake manual.
+ 
++      For more information on how to limit the resources used during builds, see
++      the :doc:`/dev-manual/limiting-resources` section of the Yocto Project
++      Development Tasks Manual.
 +
-+-  :term:`BB_NUMBER_THREADS`:
+    :term:`BB_RUNFMT`
+       See :term:`bitbake:BB_RUNFMT` in the BitBake manual.
+ 
+@@ -7006,6 +7020,10 @@ system and gives an overview of their function and contents.
+       ":ref:`dev-manual/speeding-up-build:speeding up a build`"
+       section in the Yocto Project Development Tasks Manual.
+ 
++      For more information on how to limit the resources used during builds, see
++      the :doc:`/dev-manual/limiting-resources` section of the Yocto Project
++      Development Tasks Manual.
 +
-+   This sets a hard limit on the number of threads :term:`BitBake` can run at the
-+   same time. Lowering this value will set a limit to the number of
-+   :term:`BitBake` threads, but will not prevent a single task from starting more
-+   compilation threads (see :term:`PARALLEL_MAKE`).
-+
-+-  :term:`BB_NUMBER_PARSE_THREADS`:
-+
-+   Like :term:`BB_NUMBER_THREADS`, but this variable sets a limit on the number
-+   of threads during the parsing of the environment (before executing tasks).
-+
-+-  :term:`PARALLEL_MAKE`:
-+
-+   This variable should be set in the form of ``-jN``, where ``N`` is a positive
-+   integer. This integer controls the number of threads used when starting
-+   ``make``. Note that this variable is not limited to the usage of ``make``,
-+   but extends to the compilation (:ref:`ref-tasks-compile` task) commands
-+   defined by the :ref:`ref-classes-meson`, :ref:`ref-classes-cmake` and such
-+   classes.
-+
-+   If you want to have a different limit from the rest of the build for a
-+   recipe, it is also possible to achieve with the following line added to your
-+   ``local.conf`` :term:`configuration file`::
-+
-+      PARALLEL_MAKE:pn-linux-yocto = "-j4"
-+
-+   The above example will limit the number of threads used by ``make`` for the
-+   ``linux-yocto`` recipe to 4.
-+
-+-  :term:`PARALLEL_MAKEINST`:
-+
-+   Like :term:`PARALLEL_MAKE`, but this variable controls the number of threads
-+   used during the :ref:`ref-tasks-install` task.
-+
-+   The default value of :term:`PARALLEL_MAKEINST` is the value of
-+   :term:`PARALLEL_MAKE`.
-+
-+.. note::
-+
-+   While most of the variables in this document help to limit the CPU load, it
-+   is also possible that the host system runs out of physical RAM when running
-+   builds. This can trigger the out-of-memory killer and stop the related
-+   processes abruptly. This can create strange looking failures in the output
-+   log of the tasks in question. The out-of-memory killer only logs in the
-+   kernel dmesg logs, so it is advised to monitor it closely with the ``dmesg``
-+   command when encountering unexpected failures during builds.
-+
-+   In these situations, lowering the value of :term:`PARALLEL_MAKE` and
-+   :term:`BB_NUMBER_THREADS` is recommended.
-+
-+-  :term:`BB_PRESSURE_MAX_CPU`, :term:`BB_PRESSURE_MAX_IO` and
-+   :term:`BB_PRESSURE_MAX_MEMORY`:
-+
-+   These variables control the limit of pressure (PSI as defined by
-+   https://docs.kernel.org/accounting/psi.html) on the system, and will
-+   limit the number of :term:`BitBake` threads dynamically depending on the
-+   current pressure of the system. This also means that your host must support
-+   the PSI kernel feature (otherwise see :term:`BB_LOADFACTOR_MAX` below).
-+
-+   These variables take a positive integer between 1 (extremely low limit) and
-+   1000000 (value unlikely ever reached). Setting an extremely low value, such
-+   as 2, is not desirable as it will result in :term:`BitBake` limiting the
-+   number of threads to 1 most of the time.
-+
-+   To determine a reasonable value to set for your host, follow the steps below:
-+
-+   #. In a Bash shell, start the following script, which will provide an
-+      estimate of the current pressure on your host:
-+
-+      .. code-block:: bash
-+
-+         pressure="0"
-+         while true; do
-+            prev_pressure="$pressure"
-+            pressure=$(head -1 /proc/pressure/cpu  | cut -d' ' -f5 | cut -d'=' -f2)
-+            echo $(( $pressure - $prev_pressure ))
-+            sleep 1
-+         done
-+
-+      .. note::
-+
-+         Change ``/proc/pressure/cpu`` to ``/proc/pressure/io`` or
-+         ``/proc/pressure/memory`` to change the pressure type to monitor.
-+
-+      This script can be stopped by pressing Control + C.
-+
-+   #.  Then, start a heavy-load build, for example::
-+
-+          bitbake virtual/kernel -c compile -f
-+
-+       You can stop the build at anytime with Control + C.
-+
-+   #.  Monitor the values printed on the console. These should indicate how the
-+       pressure evolves during the build. You can take a value below the maximum
-+       printed value as a starting point.
-+
-+   After setting initial values, :term:`BitBake` will print messages on the
-+   console in the following format each time the current pressure exceeds of the
-+   limit set by the above variables::
-+
-+      Pressure status changed to CPU: True, IO: False, Mem: False (CPU: 1105.9/2.0, IO: 0.0/2.0, Mem: 0.0/2.0) - using 1/64 bitbake threads
-+
-+   Take a look at the value between parenthesis: ``CPU: 1105.9/2.0, IO: 0.0/2.0,
-+   Mem: 0.0/2.0``. They correspond to the current pressure value for the CPU, IO
-+   and memory respectively. If :term:`BitBake` prints these messages a lot, it
-+   is likely that your pressure limit is too low, and thus can be raised to a
-+   higher value.
-+
-+-  :term:`BB_LOADFACTOR_MAX`:
-+
-+   This variable will limit the number of threads :term:`BitBake` will start
-+   by monitoring the current CPU load of the host system. :term:`BitBake` will
-+   print the following when the limit set by :term:`BB_LOADFACTOR_MAX` is
-+   reached::
-+
-+      Load average limiting set to True as load average: 0.7188262939453125 - using 37/64 bitbake threads
-+
-+   This variable has no effect when any of :term:`BB_PRESSURE_MAX_CPU`,
-+   :term:`BB_PRESSURE_MAX_IO` or :term:`BB_PRESSURE_MAX_MEMORY` is set, as it
-+   was designed for systems that do not have pressure information available.
+    :term:`PARALLEL_MAKEINST`
+       Extra options passed to the build tool install command
+       (``make install``, ``ninja install`` or more specific ones)
 
 -- 
 2.50.0
