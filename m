@@ -2,14 +2,14 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8AB87C83F09
-	for <webhook@archiver.kernel.org>; Wed,  9 Jul 2025 12:42:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C0FA4C83F03
+	for <webhook@archiver.kernel.org>; Wed,  9 Jul 2025 13:31:24 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.web10.14816.1752064954934243137
+ by mx.groups.io with SMTP id smtpd.web11.15995.1752067883116701511
  for <docs@lists.yoctoproject.org>;
- Wed, 09 Jul 2025 05:42:35 -0700
+ Wed, 09 Jul 2025 06:31:23 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=Et+LHQbi;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=k2Tq/6GC;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
@@ -17,24 +17,24 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Sn7pr0ZAeQtKGhtyqxFWujx2uo6koW1Z+XOFSjinxjU=; b=Et+LHQbiYT8KpoVJiVscbRqMGB
-	KVFcGB4AJJ6cTSeBuZUX9Jf3YlnAb8N8D1gI9mVV9blWHhlFtJtcnjSuiG88mHFJ5OF/S9I3RZGd9
-	2PZCMmcf68PSGJII9lVSVCBWVHZyKymNFsAhS4lxtIXPtTOFnktAF+6cCCIgvX74XRfhdnTzeIG4t
-	JNtLpDk9Qx9+2W0LV/vNSIKAJtLvuLU/lxwe9XsKsWH9F43D57bwd0uFZ8iXOf5Pv1KEaLcFq40EP
-	x34ZFOXRI/wiVTQy0ETcSszifHxRVHatQtwNgNDYBU94Dya8TbZaMCSeFq5L51GJJGO1+eo41kgdx
-	YBh19urw==;
-Received: from pool-174-114-102-5.cpe.net.cable.rogers.com ([174.114.102.5]:56972 helo=asus)
+	bh=96Xg+TdcNsdZsOkQ4H3GB78UsWjOyvPCt2NUQ1dopJI=; b=k2Tq/6GCVVrBJGjGx6ne1JH9Y7
+	zbetw/EOHBoBbkD6E/tcPdN3B493U1zbdU5J9FUk7yF4ELyzFPnZwQaMPb3yC0aO3JyFsn5pD0doe
+	dYtwvwAjzO+IDnDiIzwfaZHKbIG2sB/97ojeBHKV3KMyhOeYE91JiGKCRnI0eAUG/C5Lppwlmnih9
+	LqpV+ccQpxlX/XItE0LNwQWqy2g7jMvr0WXBxchOtvgy+seEAHWRvjH1RFBRsXVUfFp5Fty+hf5G8
+	ylJQbMNi0buTbvU3ZD4OK3j9lNSHK8kbzB+ucE/6P9n5POt9Xm6a72ZgvhAoEV3X6o1DtRa4mfzmi
+	HL2vANwQ==;
+Received: from pool-174-114-102-5.cpe.net.cable.rogers.com ([174.114.102.5]:58930 helo=asus)
 	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1uZU86-0000000AgiN-09k2
+	id 1uZUtL-0000000ApBp-0Vsu
 	for docs@lists.yoctoproject.org;
-	Wed, 09 Jul 2025 08:42:33 -0400
-Date: Wed, 9 Jul 2025 08:42:23 -0400 (EDT)
+	Wed, 09 Jul 2025 09:31:22 -0400
+Date: Wed, 9 Jul 2025 09:31:16 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: now i'm confused about OVERRIDES
-Message-ID: <164f071c-7019-7d77-c49a-f0ba3e87c502@crashcourse.ca>
+Subject: more docs curiosity: "inherit_defer" in the BB manual
+Message-ID: <764e27fc-0e53-777a-3427-4989e8d79403@crashcourse.ca>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -50,51 +50,27 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 09 Jul 2025 12:42:44 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7294
+ <docs@lists.yoctoproject.org>; Wed, 09 Jul 2025 13:31:24 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7295
 
 
-  i'm reading the BB manual here:
+here:
 
-https://docs.yoctoproject.org/bitbake/2.12/bitbake-user-manual/bitbake-user-manual-metadata.html#examples
+https://docs.yoctoproject.org/bitbake/2.12/bitbake-user-manual/bitbake-user-manual-metadata.html#inherit-defer-directive
 
-and, first, i think OVERRIDES are complex enough to need an entire
-section all to themselves, to be explained in detail with actual
-examples ripped from the OE code base. but here's the confusion.
+that section strongly suggests that the sole reason to use
+"inherit_defer" is that you want to inherit some class, but you're not
+sure which class *yet*, so you use a variable that will, at some
+point, be set before parsing is complete. or possibly it will involve
+a programmatic condition.
 
-  i distinctly recall a while back that i asked about the (possibly
-misleading) differences between these two statements:
+  so what is the purpose of using "inherit_defer" on a fixed bbclass
+name such as this?
 
-  A:foo:append
-  A:append:foo
+https://git.openembedded.org/openembedded-core/tree/meta/recipes-devtools/qemu/qemu-native.inc#n3
 
-and i was sure that the consensus was that the "proper" syntax was:
-
-  A:append:foo
-
-that is, it was extremely unlikely that the developer really meant to
-use:
-
-  A:foo:append
-
-even though, in most cases, those statements would have the same
-ultimate effect, they could potentially behave differently.
-
-  so the "proper" form seems to be the preferred form, except for this
-pile of assignments to RDEPENDS in the meta-raspberrypi layer:
-
-https://git.yoctoproject.org/meta-raspberrypi/tree/recipes-kernel/linux/linux-raspberrypi_6.12.bb
-
-is that syntax deliberate in the sense that it *had* to be done that
-way?
-
-  and don't get me started on the complexity one finds in the
-meta-xilinx layer:
-
-EXTRA_OECONF:append:xilinx-standalone:arm:class-target:baremetal-multilib-tc = " \
-
-  like i said, i think OVERRIDES needs a more thorough explanation in
-the docs to cover some of this stuff.
+what is the rationale of inherit_defer'ing a fixed class name? or is
+there more to this that i'm missing?
 
 rday
 
