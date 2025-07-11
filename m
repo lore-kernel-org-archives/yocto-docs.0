@@ -1,92 +1,95 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <mathieu.dubois-briand@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5E768C83F1D
-	for <webhook@archiver.kernel.org>; Fri, 11 Jul 2025 08:34:16 +0000 (UTC)
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
- by mx.groups.io with SMTP id smtpd.web11.9156.1752222855369326376
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C6AB1C83F1A
+	for <webhook@archiver.kernel.org>; Fri, 11 Jul 2025 09:47:56 +0000 (UTC)
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+ by mx.groups.io with SMTP id smtpd.web11.9996.1752227271441748648
  for <docs@lists.yoctoproject.org>;
- Fri, 11 Jul 2025 01:34:15 -0700
+ Fri, 11 Jul 2025 02:47:51 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=cUQEnCda;
- spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 1F6944320A;
-	Fri, 11 Jul 2025 08:34:12 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Ztl+IzDG;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: mathieu.dubois-briand@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 5DF8441C7D;
+	Fri, 11 Jul 2025 09:47:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1752222852;
+	t=1752227269;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=1bTDSxAFH7Dt/a2OPKDA1Ev69vVXoMeiTSl+uUErAbc=;
-	b=cUQEnCdaHYhbAfsiMyMP2Ox+hWF1GF9f/n/fMEbvskqgD8qmbldAY/ba+qerd+aGeUzqam
-	CrKwb12Cxkki3B4G0BqhiCYtRSWmxRQpUIWqlF31zNa6nWSeK4pWMwozJXupegQ4H78tj8
-	BVdTxrF2mJMFd+Ds2FeMP/nMjyRCUjDxx9bNaHdqYhLwLtW7qlyTUjco+9jLt8jO5G+pxn
-	tmrbLp+7/4uRGYcIquyOaPuN6T+C5/I2pXOtXTFLg8FvXeAvEyOawxqReXXn7oCA8qzKsS
-	k7omLMg4Ua0ECL/6rPisyR9jw6HeLH++eStCP7mUgcj3Ilq/zvG33UDJwpPjfA==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 11 Jul 2025 10:34:11 +0200
-Message-Id: <DB935TI11LAB.Q7HL5BI8FXOS@bootlin.com>
-Subject: [master] Pull request
-Cc: <docs@lists.yoctoproject.org>
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: "Richard Purdie" <richard.purdie@linuxfoundation.org>
+	bh=KT4UqpRinOfFR2L48xYx/wx9pVZEm90bbakYL7ayjFw=;
+	b=Ztl+IzDGuBu/vRLDCq19xh6les9tDf3e1GTAYxvez1X/plfcMdeif9y3ZZi1iLnaeUSJqN
+	yYTzqwpeGv04WC5Cyn0TrZa1E1IH2fSJOSfi6UbCvZJ77/DhIVEgRGlMgUBwOfuVd1Ii6C
+	5R0vx9jLri5K7XBgLxI3EDOw0V86P0poQDia60CHeq7B3NwheJRTLSFeMZJ08qfcsuf8bn
+	Sjht5/aCt4aQlS/0ZsW7KphTv638s5oOO0jXrtgpvvf+LKk+afiXXiwjcfXUJXFvjzI4dZ
+	5nJVHmUqGMTE9THOo1UxiHYnLkdAHK2aYVqYU0ZfRpAnQ0FlRBoSn5XzG9Malw==
+From: Mathieu Dubois-Briand <mathieu.dubois-briand@bootlin.com>
+Date: Fri, 11 Jul 2025 11:47:30 +0200
+Subject: [PATCH] contributor-guide/submit-changes: Add real name in git
+ sendmail.from
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250711-mathieu-sendmail_from-v1-1-c7b99352954f@bootlin.com>
+X-B4-Tracking: v=1; b=H4sIALHdcGgC/x3MTQqAIBBA4avErBNU+rOrRITlWANpoRVBdPek5
+ bd474GIgTBCmz0Q8KJIm08QeQbTov2MjEwySC5LXgvBnD4WwpNF9MZpWgcbNseEGmWldKNMISG
+ 1e0BL9//t+vf9ABfIHWdnAAAA
+To: docs@lists.yoctoproject.org
+Cc: Mathieu Dubois-Briand <mathieu.dubois-briand@bootlin.com>, 
+ yocto-patches@lists.yoctoproject.org, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1752227269; l=1408;
+ i=mathieu.dubois-briand@bootlin.com; s=20241219; h=from:subject:message-id;
+ bh=7sNsNsz4xkGK2lMXSveWAu/rfDunkyiNT0Gj26OYkUk=;
+ b=YwkzAJKXwpmylK6TaNiKa9umGYVGmOWNJildVy1KHTpLShhOdwLQNK6/aCQr9Wj/v4zDFeLfM
+ R2d1eYHi/xpB60JpdnCYf+lmvN1joa2sIvB6FNFUzH2d2L3wploOki2
+X-Developer-Key: i=mathieu.dubois-briand@bootlin.com; a=ed25519;
+ pk=1PVTmzPXfKvDwcPUzG0aqdGoKZJA3b9s+3DqRlm0Lww=
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdegvdekhecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepggfgtgffkffuvefhvfesthhqredttddtjeenucfhrhhomhepfdetnhhtohhnihhnucfiohgurghrugdfuceorghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeehfeehkeefkeevgfehtdehffdtiefgteeiffelheefgffgieekffetgeevuefhgeenucffohhmrghinhephigrmhhlrdhinhenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmeeftgekudemvggsrgejmedusgeksgemrgehtgelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdugeemheehieemjegrtddtmeeftgekudemvggsrgejmedusgeksgemrgehtgelpdhhvghloheplhhotggrlhhhohhsthdpmhgrihhlfhhrohhmpegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvddprhgtphhtthhopehrihgthhgrrhgurdhpuhhrughivgeslhhinhhugihfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopeguohgtsheslhhishhtshdrhihotghtohhprhhojhgvtghtrdhorhhg
-X-GND-Sasl: antonin.godard@bootlin.com
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdegvdellecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephfffufggtgfgkffvvefosehtjeertdertdejnecuhfhrohhmpeforghthhhivghuucffuhgsohhishdquehrihgrnhguuceomhgrthhhihgvuhdrughusghoihhsqdgsrhhirghnugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepleeltdeiffehleevfeeuffekgfehvedvueeguddtkeefgefhhfffffdtgeduhfetnecukfhppedvrgdtudemtggsudegmeehheeimeejrgdttdemfehftghfmehfsgdtugemuddviedvmedvvgejieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemfehftghfmehfsgdtugemuddviedvmedvvgejiedphhgvlhhopegluddvjedrtddruddrudgnpdhmrghilhhfrhhomhepmhgrthhhihgvuhdrughusghoihhsqdgsrhhirghnugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepgedprhgtphhtthhopehmrghthhhivghurdguuhgsohhishdqsghrihgrnhgusegsohhothhlihhnrdgtohhmpdhrtghpthhtohepughotghssehlihhsthhsrdihohgtthhophhrohhjvggtthdrohhrghdpr
+ hgtphhtthhopehthhhomhgrshdrphgvthgriiiiohhnihessghoohhtlhhinhdrtghomhdprhgtphhtthhopeihohgtthhoqdhprghttghhvghssehlihhsthhsrdihohgtthhophhrohhjvggtthdrohhrgh
+X-GND-Sasl: mathieu.dubois-briand@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 11 Jul 2025 08:34:16 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7313
+ <docs@lists.yoctoproject.org>; Fri, 11 Jul 2025 09:47:56 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7314
 
-The following changes since commit 80084a4cabdf7f61c7e93eda8ddbd5bc7d54e041=
-:
+Fix the git configuration sendmail.from example to include the user real
+name in the mail "From:" field, as it would be the case when
+sendmail.from is not set.
 
-  conf.py: improve SearchEnglish to handle terms with dots (2025-07-04 09:4=
-5:54 +0200)
+Signed-off-by: Mathieu Dubois-Briand <mathieu.dubois-briand@bootlin.com>
+---
+To: yocto-patches@lists.yoctoproject.org
+CC: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+---
+ documentation/contributor-guide/submit-changes.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-are available in the Git repository at:
+diff --git a/documentation/contributor-guide/submit-changes.rst b/documentation/contributor-guide/submit-changes.rst
+index adb78fa08d8e..336b240f93ac 100644
+--- a/documentation/contributor-guide/submit-changes.rst
++++ b/documentation/contributor-guide/submit-changes.rst
+@@ -541,7 +541,7 @@ author name. The following will ensure that your e-mails have an additional
+ maintainers accepting your patches don't have to fix commit author information
+ manually::
+ 
+-   git config --global sendemail.from "linus.torvalds@kernel.org"
++   git config --global sendemail.from "Linus Torvalds <linus.torvalds@kernel.org>"
+ 
+ The ``sendemail.from`` should match your ``user.email`` setting,
+ which appears in the ``Signed-off-by`` line of your commits.
 
-  git@push.yoctoproject.org:yocto-docs master-next
+---
+base-commit: 80084a4cabdf7f61c7e93eda8ddbd5bc7d54e041
+change-id: 20250711-mathieu-sendmail_from-19b269a89d42
 
-for you to fetch changes up to 576677eae6960dbc2d2ececeba0fde5bba7bb69f:
+Best regards,
+-- 
+Mathieu Dubois-Briand <mathieu.dubois-briand@bootlin.com>
 
-  overview-manual/concepts.rst: fix sayhello hardcoded bindir (2025-07-11 1=
-0:14:42 +0200)
-
-----------------------------------------------------------------
-Antonin Godard (8):
-      Add a document on limiting host resources
-      ref-manual/variables.rst: make reference to new limiting-resources do=
-c
-      poky.yaml.in: increase minimum RAM from 8 to 32
-      test-manual/understand-autobuilder.rst: mention hashequiv server
-      ref-manual/structure.rst: update with info on PERSISTENT_DIR
-      dev-manual/start.rst: mention that PERSISTENT_DIR should be shared to=
-o
-      overview-manual/concepts.rst: mention PERSISTENT_DIR for user configu=
-ration
-      overview-manual/concepts.rst: fix sayhello hardcoded bindir
-
-Lee Chee Yang (1):
-      migration-guides: add release notes for 4.0.28
-
- documentation/dev-manual/index.rst                 |   1 +
- documentation/dev-manual/limiting-resources.rst    | 138 +++++++++++++
- documentation/dev-manual/start.rst                 |   5 +
- documentation/migration-guides/release-4.0.rst     |   1 +
- .../migration-guides/release-notes-4.0.28.rst      | 224 +++++++++++++++++=
-++++
- documentation/overview-manual/concepts.rst         |   7 +-
- documentation/poky.yaml.in                         |   2 +-
- documentation/ref-manual/structure.rst             |  14 +-
- documentation/ref-manual/variables.rst             |  32 ++-
- .../test-manual/understand-autobuilder.rst         |   6 +
- 10 files changed, 419 insertions(+), 11 deletions(-)
- create mode 100644 documentation/dev-manual/limiting-resources.rst
- create mode 100644 documentation/migration-guides/release-notes-4.0.28.rst
 
