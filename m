@@ -1,113 +1,93 @@
-Return-Path: <rpjday@crashcourse.ca>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B5D02C83F17
-	for <webhook@archiver.kernel.org>; Tue, 15 Jul 2025 09:27:26 +0000 (UTC)
-Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.web10.4363.1752571645211092966
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D0E4DC83F22
+	for <webhook@archiver.kernel.org>; Tue, 15 Jul 2025 09:56:56 +0000 (UTC)
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
+ by mx.groups.io with SMTP id smtpd.web11.4651.1752573406925891326
  for <docs@lists.yoctoproject.org>;
- Tue, 15 Jul 2025 02:27:25 -0700
+ Tue, 15 Jul 2025 02:56:47 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=HUwNzv+p;
- spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crashcourse.ca; s=default; h=Content-ID:Content-Type:MIME-Version:
-	References:Message-ID:In-Reply-To:Subject:cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=b9itSPrKSy8IiEnws4jb1Eil2GeHAb+PQV+KNmHltc8=; b=HUwNzv+pC0zXKoFEsCMps02uSS
-	49Vq/MzDrJb3GaI35xJFADBdEdb+ndlZF8N39VFUkVLmYBWEdKckjNo3wPYqJyHYl1tY83YPHHZ6k
-	nwV0sbDbXOnw2qJ97T8AdMtfCqa0iULvwCO5ginzjTgCByIFkj4FB1i07A4iMBPSGMk4AuDPrPiTS
-	6t/eepEEsfc1nvaMUR3Po637HMRBfvy49XcIrpBo8rIAznEhhwnLs0N+9Mw9V8QX2eVa0m14qNbU+
-	/nDKbSfAjrrcnYFGfYQxjHpwoWUbgh68Mp4EzwJuJCaxH9ZIrf95BOnFlkgdLyLDOTRlCVjpC0Gij
-	JR/NZzJw==;
-Received: from pool-174-114-102-5.cpe.net.cable.rogers.com ([174.114.102.5]:59694 helo=asus)
-	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1ubbwU-0000000FXyd-0loR;
-	Tue, 15 Jul 2025 05:27:23 -0400
-Date: Tue, 15 Jul 2025 05:27:15 -0400 (EDT)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: Khem Raj <raj.khem@gmail.com>
-cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: Re: [docs] pedantry: what is the proper descriptor for :append,
- :prepend and :remove
-In-Reply-To: <CAMKF1sr=FxYFe93CS33SDGuq2JPreEjA1spXhaPe8ekTc2XUiA@mail.gmail.com>
-Message-ID: <fc752a82-1909-3cc4-0745-812ea30a8b76@crashcourse.ca>
-References: <3115a61f-25c2-5be5-d221-3b28314f07c1@crashcourse.ca> <CAMKF1sr=FxYFe93CS33SDGuq2JPreEjA1spXhaPe8ekTc2XUiA@mail.gmail.com>
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=IaKwyG89;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.196, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id BB1CC43AED;
+	Tue, 15 Jul 2025 09:56:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1752573405;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=jUgdBx5lhyM+iX+RJEwjJ/Ducv/AXqDLpxivnIwL/hQ=;
+	b=IaKwyG89u4eWDp1bUR0lz9gWeTAgXEOUbxKCI5bPjShpLN4P8H5q5UU/HLo15uczlUt9cw
+	wWX4ypX/ZwsYNfJJQ1vVzxNskflpAX4jUVFRHyntbpcjMMC8cQMzajoDa7gqvd608YTNyX
+	+fyuHBMZ6Qzl6aTecfYIJNQU2+D0HK6rQr8cMdH6sTwyubNAMjtJ85hu/z1E+nbizrKPfa
+	jNn+QPFIUrDfm1IOud/QAdvg05SnDU8RVFtyKD00VF2vmakd4TtM1TmG7qQ8/8Izp8t+Ds
+	H2+DvnCJRxgwSNKIZDPuXGlMHCec04gM4ynVP4Y7cnUETrshKZVbgI7E0dn0eA==
+From: Antonin Godard <antonin.godard@bootlin.com>
+Subject: [PATCH 0/2] Remove shared PERSISTENT_DIR mentions
+Date: Tue, 15 Jul 2025 11:56:38 +0200
+Message-Id: <20250715-fix-persistent-dir-v1-0-e3f31214b677@bootlin.com>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; BOUNDARY="8323329-721551449-1752571289=:1863765"
-Content-ID: <07ba0b1f-841e-e532-61ae-0bc961efa760@crashcourse.ca>
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIANYldmgC/x2MQQqAMAwEvyI5G7DFUvAr4qHUVXOpkogI4t8tH
+ gdm5iGDCoyG5iHFJSZ7qeDahvKWygqWuTL5zocuusCL3HxATexEOXkWZUTkPi+9Ty5RDQ9Ftf7
+ pOL3vB6c1P5pkAAAA
+X-Change-ID: 20250715-fix-persistent-dir-e7ec4cf42a1a
+To: docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Matthias Schiffer <matthias.schiffer@ew.tq-group.com>, 
+ Antonin Godard <antonin.godard@bootlin.com>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=833;
+ i=antonin.godard@bootlin.com; h=from:subject:message-id;
+ bh=xQgMzJkOczBGwu2zMB/askiG9mtNhFi9Y6rQH0TkzHc=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBodiXbNyC45fgsH65fpPpfyrbUsj7dTTkoljfYL
+ /YkK/yxE66JAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaHYl2wAKCRDRgEFAKaOo
+ NlDrD/9aMcENHyyHZk2F7bTk6XJ0N5ZOHBi0vzwApDm6PXu/1iUBuZsqe9BpPnofdxacAUOFkhx
+ dkRBGvujoJaJbWRLAnhgWCWHmzpP0Cv8kLzk/t4h3MlRvjkXc9dWLFXnJsKfXHs4JCErK+01Zo+
+ 2qB9FgXHwBwZs4Ef93sKsy3adlOiKf7lkkKLK6azZt0Wkdc8IvZw+6CzKJXG5XQ8FWG/ZwW1ARV
+ 6x7M6wQn7F4h9YOBF71MYQnlkNUkjrWi1Q8kkQIDAiMsVXFLFRH7TRFeyACDxua6UXSVw58Aq/1
+ kcRtRYJmDW7khj024C6tNzBuHWJ884d/bGaNOfJd9XFllxq0Iz011vGMEtvoxo3gXjhjq8DgT21
+ gG9pXvj6d6F5nAZZQoMunJQziTW2Vw6a5Jjwt35//xcq4DZ63h1zypix7sFFhgptK46tt9GU8HP
+ 09c/UmceeJfxYlmv6vrmYx3mzpcAHAQaj+uCAqNQpJ5/r+9chqHnMYveb9d4vFVprnCUpuuBva6
+ Yr0kXpMuGsUGE/4SmMlza9uWVJV0d2ay21gitKFUG3Se+CP1F9hXCDwfhcTy6zJPTM71O/jnx8B
+ C0ihkFCJo/hwTBWCBdzdLdhfVk1OhVdcFYkiG/3hnSBVTnL0zmhQtPUj9TPMrZxm9wjRUKfk9J0
+ em5cxuzcQwcCxGA==
+X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
+ fpr=8648725188DD401BB9A0D3FFD180414029A3A836
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdehgeehfecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffufffkgggtgffvvefosehtjeertdertdejnecuhfhrohhmpeetnhhtohhnihhnucfiohgurghrugcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnheptedtkeegveffteetfffftdfgleeghfffgffggefhkeffudfhveefgfeggfegffdvnecuffhomhgrihhnpeihohgtthhophhrohhjvggtthdrohhrghenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmeeftgekudemvggsrgejmedusgeksgemrgehtgelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdugeemheehieemjegrtddtmeeftgekudemvggsrgejmedusgeksgemrgehtgelpdhhvghloheplgduvdejrddtrddurddungdpmhgrihhlfhhrohhmpegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepgedprhgtphhtthhopehmrghtthhhihgrshdrshgthhhifhhfvghrsegvfidrthhqqdhgrhhouhhprdgtohhmpdhrtghpthhtoheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgto
+ hhmpdhrtghpthhtohepughotghssehlihhsthhsrdihohgtthhophhrohhjvggtthdrohhrghdprhgtphhtthhopehthhhomhgrshdrphgvthgriiiiohhnihessghoohhtlhhinhdrtghomh
+X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 15 Jul 2025 09:27:26 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7333
+ <docs@lists.yoctoproject.org>; Tue, 15 Jul 2025 09:56:56 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7334
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+I wrongfully thought that PERSISTENT_DIR could be shared after reading
+https://bugzilla.yoctoproject.org/show_bug.cgi?id=15921. Remove the
+mentions of this I previously added. In dev-manual/start, mention the
+hash equivalence server setup instead.
 
---8323329-721551449-1752571289=:1863765
-Content-Type: text/plain; CHARSET=UTF-8
-Content-Transfer-Encoding: 8BIT
-Content-ID: <73fdf8bc-263f-db5a-de34-081e4e112a55@crashcourse.ca>
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+---
+Antonin Godard (2):
+      ref-manual/structure.rst: remove shared PERSISTENT_DIR mentions
+      dev-manual/start.rst: remove shared PERSISTENT_DIR mentions
 
-On Mon, 14 Jul 2025, Khem Raj wrote:
+ documentation/dev-manual/start.rst     | 14 ++++++++++----
+ documentation/ref-manual/structure.rst | 11 -----------
+ 2 files changed, 10 insertions(+), 15 deletions(-)
+---
+base-commit: 576677eae6960dbc2d2ececeba0fde5bba7bb69f
+change-id: 20250715-fix-persistent-dir-e7ec4cf42a1a
 
-> On Mon, Jul 14, 2025 at 9:59 AM Robert P. J. Day via
-> lists.yoctoproject.org <rpjday=crashcourse.ca@lists.yoctoproject.org>
-> wrote:
-> >
-> >
-> >   I ask as I have seen documentation that describes those three things
-> > as "overrides", apparently because they appear in the same place as
-> > variable overrides, but that seems wildly misleading. It seems that
-> > they should more properly be classified as "operators", and if that
-> > was the case, I think some documentation could be made clearer by
-> > distinguishing between "operators" and "overrides" when you see stuff
-> > like:
-> >
-> >   VAR:append:arm
-> >
-> > that sort of thing. So what's the proper descriptor for those three
-> > things?
->
-> variable:operator:override
+Best regards,
+--  
+Antonin Godard <antonin.godard@bootlin.com>
 
-  actually, i was asking about the proper descriptor for the three
-things "append", "prepend" and "remove", but this is making my point
--- those three things are properly described as "operators", as
-opposed to "overrides", so one might say that the correct syntax
-would be:
-
-  VAR:operator:override(s) = ...
-
-in that order since, as quentin suggests:
-
-  VAR:override:append
-
-is almost always wrong. i remember asking about this distinction a
-long time ago, and that distinction is covered in the BB manual:
-
-https://docs.yoctoproject.org/bitbake/bitbake-user-manual/bitbake-user-manual-metadata.html#examples
-
-but maybe that needs to be extended with this caveat -- that an
-"operator" should precede any overrides in almost all cases, as i see
-no actual valid use cases for that second, weird form.
-
-rday
---8323329-721551449-1752571289=:1863765--
 
