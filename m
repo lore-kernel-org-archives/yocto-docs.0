@@ -2,92 +2,112 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D0E4DC83F22
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CFDE5C83F17
 	for <webhook@archiver.kernel.org>; Tue, 15 Jul 2025 09:56:56 +0000 (UTC)
 Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
- by mx.groups.io with SMTP id smtpd.web11.4651.1752573406925891326
+ by mx.groups.io with SMTP id smtpd.web11.4652.1752573407026756711
  for <docs@lists.yoctoproject.org>;
  Tue, 15 Jul 2025 02:56:47 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=IaKwyG89;
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=cDodh78A;
  spf=pass (domain: bootlin.com, ip: 217.70.183.196, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id BB1CC43AED;
-	Tue, 15 Jul 2025 09:56:44 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 440A7433D6;
+	Tue, 15 Jul 2025 09:56:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
 	t=1752573405;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=jUgdBx5lhyM+iX+RJEwjJ/Ducv/AXqDLpxivnIwL/hQ=;
-	b=IaKwyG89u4eWDp1bUR0lz9gWeTAgXEOUbxKCI5bPjShpLN4P8H5q5UU/HLo15uczlUt9cw
-	wWX4ypX/ZwsYNfJJQ1vVzxNskflpAX4jUVFRHyntbpcjMMC8cQMzajoDa7gqvd608YTNyX
-	+fyuHBMZ6Qzl6aTecfYIJNQU2+D0HK6rQr8cMdH6sTwyubNAMjtJ85hu/z1E+nbizrKPfa
-	jNn+QPFIUrDfm1IOud/QAdvg05SnDU8RVFtyKD00VF2vmakd4TtM1TmG7qQ8/8Izp8t+Ds
-	H2+DvnCJRxgwSNKIZDPuXGlMHCec04gM4ynVP4Y7cnUETrshKZVbgI7E0dn0eA==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7oi2soAto+PlQSCIuuPofn36G3FLmmXM1tznh5Cet7o=;
+	b=cDodh78AnC9DSTWNw014f94+Ov28X1vCWSEcJBn1s8Dk6HDPEtXn5cbNRnO5HxnuRa9bb+
+	K5aZ5a+vT7jTKDkPDiwYQyCEXlhVKmNwI8zaN42w2RkuWR0anSB3DK6Gp1Dajl91Ni0XA0
+	PS9OFEiXLf2F9wwFBddrgsajtdocI/GVtK5gvFUWlqDd9f5QbPG4f60x8vckd1J+MiC0aF
+	5yrbkQwy/4PUoqdR7PZX0BPPO1KA0NxQm4PdOG8DwiXFRswiI+/Dyp3fPe+ChQymzE31zm
+	iiLeKSIjooicDb7VELYHPaOM1kbHff6PpZfXEmuKalXiqVOcWQGTkilxVzA6bg==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Subject: [PATCH 0/2] Remove shared PERSISTENT_DIR mentions
-Date: Tue, 15 Jul 2025 11:56:38 +0200
-Message-Id: <20250715-fix-persistent-dir-v1-0-e3f31214b677@bootlin.com>
+Date: Tue, 15 Jul 2025 11:56:39 +0200
+Subject: [PATCH 1/2] ref-manual/structure.rst: remove shared PERSISTENT_DIR
+ mentions
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIANYldmgC/x2MQQqAMAwEvyI5G7DFUvAr4qHUVXOpkogI4t8tH
- gdm5iGDCoyG5iHFJSZ7qeDahvKWygqWuTL5zocuusCL3HxATexEOXkWZUTkPi+9Ty5RDQ9Ftf7
- pOL3vB6c1P5pkAAAA
-X-Change-ID: 20250715-fix-persistent-dir-e7ec4cf42a1a
+Message-Id: <20250715-fix-persistent-dir-v1-1-e3f31214b677@bootlin.com>
+References: <20250715-fix-persistent-dir-v1-0-e3f31214b677@bootlin.com>
+In-Reply-To: <20250715-fix-persistent-dir-v1-0-e3f31214b677@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Matthias Schiffer <matthias.schiffer@ew.tq-group.com>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=833;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1609;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=xQgMzJkOczBGwu2zMB/askiG9mtNhFi9Y6rQH0TkzHc=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBodiXbNyC45fgsH65fpPpfyrbUsj7dTTkoljfYL
- /YkK/yxE66JAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaHYl2wAKCRDRgEFAKaOo
- NlDrD/9aMcENHyyHZk2F7bTk6XJ0N5ZOHBi0vzwApDm6PXu/1iUBuZsqe9BpPnofdxacAUOFkhx
- dkRBGvujoJaJbWRLAnhgWCWHmzpP0Cv8kLzk/t4h3MlRvjkXc9dWLFXnJsKfXHs4JCErK+01Zo+
- 2qB9FgXHwBwZs4Ef93sKsy3adlOiKf7lkkKLK6azZt0Wkdc8IvZw+6CzKJXG5XQ8FWG/ZwW1ARV
- 6x7M6wQn7F4h9YOBF71MYQnlkNUkjrWi1Q8kkQIDAiMsVXFLFRH7TRFeyACDxua6UXSVw58Aq/1
- kcRtRYJmDW7khj024C6tNzBuHWJ884d/bGaNOfJd9XFllxq0Iz011vGMEtvoxo3gXjhjq8DgT21
- gG9pXvj6d6F5nAZZQoMunJQziTW2Vw6a5Jjwt35//xcq4DZ63h1zypix7sFFhgptK46tt9GU8HP
- 09c/UmceeJfxYlmv6vrmYx3mzpcAHAQaj+uCAqNQpJ5/r+9chqHnMYveb9d4vFVprnCUpuuBva6
- Yr0kXpMuGsUGE/4SmMlza9uWVJV0d2ay21gitKFUG3Se+CP1F9hXCDwfhcTy6zJPTM71O/jnx8B
- C0ihkFCJo/hwTBWCBdzdLdhfVk1OhVdcFYkiG/3hnSBVTnL0zmhQtPUj9TPMrZxm9wjRUKfk9J0
- em5cxuzcQwcCxGA==
+ bh=/gsEL0XGmX8T4Q1aTo6ZwcxwBrftqfNuRzs5XYn6gDk=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBodiXcjqb6FseusryJjo5mBwILgnY/k5SzTbEvT
+ qRKpE4Y/dyJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaHYl3AAKCRDRgEFAKaOo
+ NgNQD/9/bI8F18busrCsXwpstYc+bf4UiZ2WNz7OlJyvDStqycmy671Ospk98hMYq223rgF1WMw
+ +O+iQTE0me+sLm7T8SNrimNICo1a/1UlvEt1Xqz+fTGzvAvDCvPH/IF9YpL9E2Ksaa8JkmLt/vE
+ tyYTGFgimL8tDsOyCft8vdIbRtPjUo36eB0q+1YNQUyMjODqx41psDzoXMV49WmBed25VHrW+21
+ UkYWbzkWQt2ulyxKPaM/I/mRgOlNSpomMemmyXSQRcCqaBVxHvi1hCrQvRAKtJEQlU/dCudOibO
+ MwbvE+EVcd6/ZEKx3SCt9y4NaJhGfN1K8NB6qM9dqfCOLd9mcIhm5kkL8bQ+pJvPuMKwfeyWPTp
+ 3k0JaP7OYrrXLFE1xy/dpqo4bipdEtDBmcpmd1PTaaPMH3p+/hhKZyitP3xOhmhJH9zL2QmE6+Z
+ 9c+2eidXaQ/JLeHheOgpjCbIJoAJD7hAd5aZlQBLz0LOPK0wygfVrw1YD9ADfEAlzb1Vf81Ne1V
+ Ytvu5oG0dsimQ9BIqSg3kIbHvAvO21maQd+Jv3ByyKuOeNKL98239dTeuhMwICpyd2D3w8tQcJS
+ G57LyHrizLjbXfVT7WBzqiHWtiX26sT0iEnmPmoX9M1HaW+eIeA4t3nN6Ki31KiLuuOo19m/R4d
+ Et09o3d56j+xoHQ==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdehgeehfecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffufffkgggtgffvvefosehtjeertdertdejnecuhfhrohhmpeetnhhtohhnihhnucfiohgurghrugcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnheptedtkeegveffteetfffftdfgleeghfffgffggefhkeffudfhveefgfeggfegffdvnecuffhomhgrihhnpeihohgtthhophhrohhjvggtthdrohhrghenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmeeftgekudemvggsrgejmedusgeksgemrgehtgelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdugeemheehieemjegrtddtmeeftgekudemvggsrgejmedusgeksgemrgehtgelpdhhvghloheplgduvdejrddtrddurddungdpmhgrihhlfhhrohhmpegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepgedprhgtphhtthhopehmrghtthhhihgrshdrshgthhhifhhfvghrsegvfidrthhqqdhgrhhouhhprdgtohhmpdhrtghpthhtoheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgto
- hhmpdhrtghpthhtohepughotghssehlihhsthhsrdihohgtthhophhrohhjvggtthdrohhrghdprhgtphhtthhopehthhhomhgrshdrphgvthgriiiiohhnihessghoohhtlhhinhdrtghomh
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdehgeehfecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephfffufggtgfgkfhfjgfvvefosehtjeertdertdejnecuhfhrohhmpeetnhhtohhnihhnucfiohgurghrugcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepheeigeeuhfefgeehfffgueeiteehieelfeehjeektefgkeeuheeuleduvdelgffhnecukfhppedvrgdtudemtggsudegmeehheeimeejrgdttdemfegtkedumegvsggrjeemudgskegsmegrhegtleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemfegtkedumegvsggrjeemudgskegsmegrhegtledphhgvlhhopegluddvjedrtddruddrudgnpdhmrghilhhfrhhomheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeegpdhrtghpthhtohepmhgrthhthhhirghsrdhstghhihhffhgvrhesvgifrdhtqhdqghhrohhuphdrtghomhdprhgtphhtthhopegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdprhgtphhtthhopeguohgtsheslhhishhtshdrhihot
+ ghtohhprhhojhgvtghtrdhorhhgpdhrtghpthhtohepthhhohhmrghsrdhpvghtrgiiiihonhhisegsohhothhlihhnrdgtohhm
 X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Tue, 15 Jul 2025 09:56:56 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7334
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7335
 
-I wrongfully thought that PERSISTENT_DIR could be shared after reading
-https://bugzilla.yoctoproject.org/show_bug.cgi?id=15921. Remove the
-mentions of this I previously added. In dev-manual/start, mention the
-hash equivalence server setup instead.
+PERSISTENT_DIR should _not_ be shared, I got that wrong in my previous
+commit 741aa29898dc ("ref-manual/structure.rst: update with info on
+PERSISTENT_DIR"). Remove these mentions.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
-Antonin Godard (2):
-      ref-manual/structure.rst: remove shared PERSISTENT_DIR mentions
-      dev-manual/start.rst: remove shared PERSISTENT_DIR mentions
-
- documentation/dev-manual/start.rst     | 14 ++++++++++----
  documentation/ref-manual/structure.rst | 11 -----------
- 2 files changed, 10 insertions(+), 15 deletions(-)
----
-base-commit: 576677eae6960dbc2d2ececeba0fde5bba7bb69f
-change-id: 20250715-fix-persistent-dir-e7ec4cf42a1a
+ 1 file changed, 11 deletions(-)
 
-Best regards,
---  
-Antonin Godard <antonin.godard@bootlin.com>
+diff --git a/documentation/ref-manual/structure.rst b/documentation/ref-manual/structure.rst
+index bf23e2cfe..c9c44bc63 100644
+--- a/documentation/ref-manual/structure.rst
++++ b/documentation/ref-manual/structure.rst
+@@ -365,13 +365,6 @@ directory for multiple builds or move the directory to another location.
+ You can control the location of this directory through the
+ :term:`SSTATE_DIR` variable.
+ 
+-.. note::
+-
+-   If you are sharing the :term:`SSTATE_DIR` directory for multiple builds and
+-   you are using a :ref:`overview-manual/concepts:Hash Equivalence` server with
+-   :term:`BB_HASHSERVE` you should also share the :term:`PERSISTENT_DIR`
+-   directory. See :ref:`structure-build-cache` below.
+-
+ .. _structure-build-tmp:
+ 
+ ``build/tmp/``
+@@ -411,10 +404,6 @@ modification time (mtime) changes and hashing of file contents. If no
+ changes to the file are detected, then the parsed result stored in the
+ cache is reused. If the file has changed, it is reparsed.
+ 
+-This directory and the :term:`SSTATE_DIR` directory can be shared for multiple
+-builds when using a :ref:`overview-manual/concepts:Hash Equivalence` server
+-with :term:`BB_HASHSERVE`.
+-
+ .. _structure-build-tmp-deploy:
+ 
+ ``build/tmp/deploy/``
+
+-- 
+2.50.0
 
 
