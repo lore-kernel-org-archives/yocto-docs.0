@@ -1,103 +1,107 @@
-Return-Path: <raj.khem@gmail.com>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 608ABC83F1A
-	for <webhook@archiver.kernel.org>; Mon, 14 Jul 2025 18:25:44 +0000 (UTC)
-Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com [209.85.219.176])
- by mx.groups.io with SMTP id smtpd.web11.85341.1752517542995245780
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5D375C83F17
+	for <webhook@archiver.kernel.org>; Tue, 15 Jul 2025 07:06:05 +0000 (UTC)
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+ by mx.groups.io with SMTP id smtpd.web11.1974.1752563156540980946
  for <docs@lists.yoctoproject.org>;
- Mon, 14 Jul 2025 11:25:43 -0700
+ Tue, 15 Jul 2025 00:05:56 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=CO+q9LOc;
- spf=pass (domain: gmail.com, ip: 209.85.219.176, mailfrom: raj.khem@gmail.com)
-Received: by mail-yb1-f176.google.com with SMTP id 3f1490d57ef6-e740a09eae0so4617768276.1
-        for <docs@lists.yoctoproject.org>; Mon, 14 Jul 2025 11:25:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752517542; x=1753122342; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5XUMgdE1lWXyL6wfcHwv9YssgIliL3ejYovrPnAHX/k=;
-        b=CO+q9LOcPpXFdLMe8tF4Xk9Dx5145lFTjFNP+NEtEZkGelgvMoaU5mwBHwd7In1GaU
-         IfhcCCKrnxy89E0JFCkULTOzCtwqgDV6eI/1lkKPQJQ3u1tUirJUXpulCTKNLxmKpciK
-         K8AiFqdyrun+aYrkej8//+bHFSfj3sGZsPfH8yMT4DKF1hRKVuo5CRy3mnplOFbsqfso
-         GkQA8wFKBaxOxi12t5+PulMV8eIbDl8+2EX3AvVMqGl6zyBODm54+UlOQPAjr0u/gKpJ
-         IEHSoev352bCKFsdMVcYytuKCUHqZ9hHUpNEk6GrjPoGUmbQqtQ9ZDd8MFhQom2PLA0V
-         4/bA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752517542; x=1753122342;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5XUMgdE1lWXyL6wfcHwv9YssgIliL3ejYovrPnAHX/k=;
-        b=GRQhmKWMDM4zyzbpDUfascDraRCI8IzHMQQcbMFfT1VVhNxjZVW4UU9/V9HjtclS17
-         jvBp5ihdjUGvjjVL2wDa9o4D0dhN1H8qK68Ig64tiaHhiB9BPaDShsp0k4b207lJXt+V
-         lhutc2h5MpjcH+Y6Re10xBYyEMNwvTdEb3pyXVQ3svTJtgNcvXjG11V/iRzri1XBxsWu
-         BOn/kQKF0LuS9WEpRIm5d1vzR3DEB3BejGKHGTUexy2Az3evJgIM9PG2M73NVviNcLSZ
-         8hzNGYmeiQsUtqA5EjwWA3yVyh7Wyxg+ZLsYiP/xQv6GwmEky1wNB85pgKI31XIXQ5Oj
-         8+Lg==
-X-Gm-Message-State: AOJu0Yx/p96eQHHrsG0Kn5GMv8WzDcccACvZp+8L/ETz2oHywVSFMIqa
-	ys+n9llj1jnFQJcZlubZxfcniJTmWDA+36AjVWQdy1XcV+DXgFq+rVNaeXKdEZW3/WuoJCkNMIC
-	0gM0kNNNRNFZcQOCbPoCRBcVruDGTopfYDynl
-X-Gm-Gg: ASbGncvwU1l1rwujKc48FLOusKUx+grV8syB2D0CZ6EuNNKzHzaQ3peURCWMAWHBbS+
-	CEr6J3qxfYi00rWOSyvO6y04wZeb4MZ/rZCbq0Cnzt85ph7XON/7SoXg5MOe4SyzrFgTSGCqZtS
-	T2flq+p1ZoqjBP93ZHSEPa7kE+v+hNYAbAHPoZwTZATrnUXEZfH2kWaWVJJ7XP8gNXUI+uFKDIU
-	sAftaUPtGgX/WGvYmL40iFPEWhSTrJc2jc=
-X-Google-Smtp-Source: AGHT+IH5Uk+ppj0ffW8smqc36lInUvhy+kXHZu8kjs2iLIBoqG2vm0/1XDSsP77/zEMSPlMRsq0uQnzA/S0HBa8MhWQ=
-X-Received: by 2002:a05:690c:6806:b0:6fb:b37f:2072 with SMTP id
- 00721157ae682-717d5e8f10cmr211573227b3.22.1752517541941; Mon, 14 Jul 2025
- 11:25:41 -0700 (PDT)
-MIME-Version: 1.0
-References: <3115a61f-25c2-5be5-d221-3b28314f07c1@crashcourse.ca>
-In-Reply-To: <3115a61f-25c2-5be5-d221-3b28314f07c1@crashcourse.ca>
-From: Khem Raj <raj.khem@gmail.com>
-Date: Mon, 14 Jul 2025 11:25:15 -0700
-X-Gm-Features: Ac12FXwSLBcgPqSpEyNqLh0bcSxAqECLVwpbrfe_8YV2Cyr-UWpWamrLbj8aYfw
-Message-ID: <CAMKF1sr=FxYFe93CS33SDGuq2JPreEjA1spXhaPe8ekTc2XUiA@mail.gmail.com>
-Subject: Re: [docs] pedantry: what is the proper descriptor for :append,
- :prepend and :remove
-To: rpjday@crashcourse.ca
-Cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Content-Type: text/plain; charset="UTF-8"
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=YKrfFWLx;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 4F914443C7;
+	Tue, 15 Jul 2025 07:05:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1752563154;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=za2yqU1UGYPDaLwQU6Kzwz5rrSDvcm3gtPk3Gd+2xi8=;
+	b=YKrfFWLxkA1fIuyZP3dIFP5l+tJHa/vvqyQoG0ZARQDAWEfH7QcMSM21ijBO8kUZNk7Ddc
+	6CZx0TLTGPJKiTrWaZxRws+2glqlczj3YenF8fYtJ9LZIkXniYctTZnskJM6zfkWNYpxW3
+	K/QrHH+szawrJRz+IHRmL4iBayB5x9K9P0xoOesQ249OjZT7TZBcpitFzSVKSdTrQq6ieA
+	bgven6WQ6TZ+ipxhNh+/7Ap4mrGf2G4VdL7ZxaZ0EM92i51gb9dthpN7EFcw/35tUOLMOK
+	qCj71FiLlkF0TVJdmYwi5IXjS7lYcKMXS0nihOoLmuQTma6wZk5WMR6Hu4xD8A==
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 15 Jul 2025 09:05:53 +0200
+Message-Id: <DBCFSE5GDADI.263HWWQM1LUHQ@bootlin.com>
+From: "Antonin Godard" <antonin.godard@bootlin.com>
+To: "Richard Purdie" <richard.purdie@linuxfoundation.org>,
+ <alex.kanavin@gmail.com>
+Subject: Re: [docs] [PATCH 2/4] ref-manual/structure.rst: update with info
+ on PERSISTENT_DIR
+Cc: <docs@lists.yoctoproject.org>, "Matthias Schiffer"
+ <matthias.schiffer@ew.tq-group.com>, "Thomas Petazzoni"
+ <thomas.petazzoni@bootlin.com>
+References: <20250709-update-sstate-dir-docs-v1-0-9114688f33d1@bootlin.com>
+ <20250709-update-sstate-dir-docs-v1-2-9114688f33d1@bootlin.com>
+ <CANNYZj-4mUU9Beoz95ekGRwvGTUV9zbXqd3w2z7pU_na6qYLtA@mail.gmail.com>
+ <ca38bde3e186f7ff5ba3e290e49bc80cbf2df4d7.camel@linuxfoundation.org>
+In-Reply-To: <ca38bde3e186f7ff5ba3e290e49bc80cbf2df4d7.camel@linuxfoundation.org>
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdehgedukecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepggfgtgffkffhvffuvehfjgesthhqredttddtjeenucfhrhhomhepfdetnhhtohhnihhnucfiohgurghrugdfuceorghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeejveeuvedvieeuhfefleduvdfgvefhudekleehkeevhfegtedujedtvedukeetjeenucffohhmrghinhephihotghtohhprhhojhgvtghtrdhorhhgpdgsohhothhlihhnrdgtohhmnecukfhppedvrgdtudemtggsudegmeehheeimeejrgdttdemfegtkedumegvsggrjeemudgskegsmegrhegtleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemfegtkedumegvsggrjeemudgskegsmegrhegtledphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeehpdhrtghpthhtoheprhhitghhrghrugdrphhurhguihgvsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheprghlvgigrdhkrghnrghvi
+ hhnsehgmhgrihhlrdgtohhmpdhrtghpthhtohepughotghssehlihhsthhsrdihohgtthhophhrohhjvggtthdrohhrghdprhgtphhtthhopehmrghtthhhihgrshdrshgthhhifhhfvghrsegvfidrthhqqdhgrhhouhhprdgtohhmpdhrtghpthhtohepthhhohhmrghsrdhpvghtrgiiiihonhhisegsohhothhlihhnrdgtohhm
+X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 14 Jul 2025 18:25:44 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7328
+ <docs@lists.yoctoproject.org>; Tue, 15 Jul 2025 07:06:05 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7329
 
-On Mon, Jul 14, 2025 at 9:59=E2=80=AFAM Robert P. J. Day via
-lists.yoctoproject.org <rpjday=3Dcrashcourse.ca@lists.yoctoproject.org>
-wrote:
+On Fri Jul 11, 2025 at 11:45 PM CEST, Richard Purdie wrote:
+> On Fri, 2025-07-11 at 19:09 +0200, Alexander Kanavin via lists.yoctoproje=
+ct.org wrote:
+>> On Wed, 9 Jul 2025 at 09:57, Antonin Godard via lists.yoctoproject.org
+>> <antonin.godard=3Dbootlin.com@lists.yoctoproject.org> wrote:
+>> >=20
+>> > Since we mention that SSTATE_DIR can be shared for multiple builds, al=
+so
+>> > mention that PERSISTENT_DIR should be shared alongside SSTATE_DIR.
+>>=20
+>> NO. These changes are incorrect, please do not merge or revert if
+>> already merged.
+>>=20
+>> PERSISTENT_DIR can be copied from one build directory to another when
+>> bitbake is not running, but it cannot be shared between two active
+>> builds.
+>>=20
+>> If one wants to share sstate, they either have to setup a hash
+>> equivalence server (and then sharing PERSISTENT_DIR is not needed), or
+>> disable hash equivalency (in which case it is also not needed).
 >
+> The changes did merge and definitely are unclear.
 >
->   I ask as I have seen documentation that describes those three things
-> as "overrides", apparently because they appear in the same place as
-> variable overrides, but that seems wildly misleading. It seems that
-> they should more properly be classified as "operators", and if that
-> was the case, I think some documentation could be made clearer by
-> distinguishing between "operators" and "overrides" when you see stuff
-> like:
+> The point is that if you share sstate, you also need to have common
+> hash equivalence data.
 >
->   VAR:append:arm
+> That may be via having common hashequiv server, or, of you have a local
+> sstate directory and delete the build directory, you need to preserve
+> the hashequiv database file to make the sstate useful.
 >
-> that sort of thing. So what's the proper descriptor for those three
-> things?
+> You cannot have a common PERSISTENT_DIR shared by two builds, that is
+> not supported.
+>
+> Hopefully Antonin can tweak things to make this all clearer. I should
+> have caught this, sorry :/
 
-variable:operator:override
+Hi all,
 
->
-> rday
->
-> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
-> Links: You receive all messages sent to this group.
-> View/Reply Online (#7327): https://lists.yoctoproject.org/g/docs/message/=
-7327
-> Mute This Topic: https://lists.yoctoproject.org/mt/114151467/1997914
-> Group Owner: docs+owner@lists.yoctoproject.org
-> Unsubscribe: https://lists.yoctoproject.org/g/docs/unsub [raj.khem@gmail.=
-com]
-> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
->
+Sorry! I drew a wrong conclusion from bug #15921, I will correct this soon
+this week.
+
+Alex, thanks for catching this.
+
+Antonin
+
+--=20
+Antonin Godard, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
 
