@@ -2,71 +2,60 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6A7E1C83F17
-	for <webhook@archiver.kernel.org>; Tue, 15 Jul 2025 07:16:05 +0000 (UTC)
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
- by mx.groups.io with SMTP id smtpd.web10.2127.1752563755098434975
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 71290C83F1D
+	for <webhook@archiver.kernel.org>; Tue, 15 Jul 2025 08:38:26 +0000 (UTC)
+Received: from relay15.mail.gandi.net (relay15.mail.gandi.net [217.70.178.235])
+ by mx.groups.io with SMTP id smtpd.web10.3504.1752568704591074326
  for <docs@lists.yoctoproject.org>;
- Tue, 15 Jul 2025 00:15:55 -0700
+ Tue, 15 Jul 2025 01:38:24 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=K2Bwm27e;
- spf=pass (domain: bootlin.com, ip: 217.70.183.193, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id BC69444322;
-	Tue, 15 Jul 2025 07:15:52 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=L53mKon2;
+ spf=pass (domain: bootlin.com, ip: 217.70.178.235, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 74E604315B;
+	Tue, 15 Jul 2025 08:38:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1752563753;
+	t=1752568702;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Oeynf15Bz58Fnah2vRNyHvWZDMWWtoJN3YgaUsrCY5w=;
-	b=K2Bwm27e3ZswZ+1jO1XM6oa/lmXvbjDxo2PxszkD+SyttNDGbBP45AlrtqrcvZCO5ylGoy
-	YtI3lKMEXeuYxauFhfz8VJbxIyaavNo39E2HoPG2QXHfMGlSC+8or14giqu5WGAK52R5I+
-	7eTWryp5QiOxakkCOAWV4UnFNKAzVlLUL8ilbnnGZ21IQPe5ZAtcxoqg9dT1uslxDtYshU
-	XV75ox8J8fM3BP7FMkVoG+5YOFH9xaIAmylxrlkeq47z/ee2MZh+wt/TH7lHXK9u+8nZsj
-	5lMvK09FRMWN6518Sc6cRQKRJmedv1ui8xlaVEj9kkToEAvKSYbxj9nODx+xOw==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 15 Jul 2025 09:15:52 +0200
-Message-Id: <DBCG015N45KK.2VT9UL6HEKN12@bootlin.com>
-Cc: "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: "Khem Raj" <raj.khem@gmail.com>, <docs@lists.yoctoproject.org>
-Subject: Re: [docs] [PATCH] poky.yaml.in: increase minimum RAM from 8 to 32
-References: <20250711-increase-minimum-ram-v1-1-2287f499498a@bootlin.com>
- <5b095559-94b5-4f1b-b8ae-54d7acbca16a@gmail.com>
-In-Reply-To: <5b095559-94b5-4f1b-b8ae-54d7acbca16a@gmail.com>
+	bh=zoXkpSKq2h7F8OLEbL0RhDOX6meLW6Nk2txIhHb3nF0=;
+	b=L53mKon23RcIwxqVTTxrTtTHe20en2YCZhT2cZwE3MAAGTdknQ5vFwFBJ8J0ANErxc8Ot3
+	EK+oPtDGLcRrV0Kvd2Er9ww4iJaD5kKrxmTcX8wJIzileIlUqVMAKijXMbcMdEqV4xnUtT
+	tpUB53ZBe56HJCELdF4JI3GoHIUh9Ule5mFiU3GZpXEcO2TkzKM3rnzVjH7i1CJJyKwOzs
+	RyeFVZaHCWk65+11S5eDT4T3iEfpG4Qgh+dfY7bPwmOLN/liG5ICi4i0At24o00I730p76
+	7YK9o8DUp+sibDJjAiROpMcSzQQF0Szi9AOkw5s/5x23hVJIsC/li18bUo5a7A==
+From: Antonin Godard <antonin.godard@bootlin.com>
+To: docs@lists.yoctoproject.org,
+	chee.yang.lee@intel.com
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	Antonin Godard <antonin.godard@bootlin.com>
+Subject: Re: [PATCH] migration-guides: add release notes for 4.0.28
+Date: Tue, 15 Jul 2025 10:38:06 +0200
+Message-ID: <175256866290.43278.1076256060208083764.b4-ty@bootlin.com>
+X-Mailer: git-send-email 2.50.0
+In-Reply-To: <20250711034159.883958-1-chee.yang.lee@intel.com>
+References: <20250711034159.883958-1-chee.yang.lee@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdehgedvtdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepggfgtgffkfevhffvufhfjgesthhqredttddtjeenucfhrhhomhepfdetnhhtohhnihhnucfiohgurghrugdfuceorghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeehgeeifeejtdettedtgeeuffefudefhedugeevtefhteeuieefffekleetiefhvdenucffohhmrghinhephihotghtohhprhhojhgvtghtrdhorhhgpdgsohhothhlihhnrdgtohhmpdihrghmlhdrihhnnecukfhppedvrgdtudemtggsudegmeehheeimeejrgdttdemfegtkedumegvsggrjeemudgskegsmegrhegtleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemfegtkedumegvsggrjeemudgskegsmegrhegtledphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeefpdhrtghpthhtoheprhgrjhdrkhhhvghmsehgmhgrihhlrdgtohhmpdhrtghpthhtohepughotghssehlihhsthhsrdihohgtthhophhro
- hhjvggtthdrohhrghdprhgtphhtthhopehthhhomhgrshdrphgvthgriiiiohhnihessghoohhtlhhinhdrtghomh
-X-GND-Sasl: antonin.godard@bootlin.com
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdehgeefjecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkofgjfhggtgfgsehtkeertdertdejnecuhfhrohhmpeetnhhtohhnihhnucfiohgurghrugcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepudekffeuhfdtjeetheettedthfeijedtgfejhfelueevhedtvdelhfetieehteelnecukfhppedvrgdtudemtggsudegmeehheeimeejrgdttdemfegtkedumegvsggrjeemudgskegsmegrhegtleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemfegtkedumegvsggrjeemudgskegsmegrhegtledphhgvlhhopehtrghhohhmrgdpmhgrihhlfhhrohhmpegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepgedprhgtphhtthhopeguohgtsheslhhishhtshdrhihotghtohhprhhojhgvtghtrdhorhhgpdhrtghpthhtoheptghhvggvrdihrghnghdrlhgvvgesihhnthgvlhdrtghomhdprhgtphhtthhopehthhhomhgrshdrphgvthgriiiiohhnihessghoohhtlhhinhdrtghom
+ hdprhgtphhtthhopegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomh
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 15 Jul 2025 07:16:05 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7330
+ <docs@lists.yoctoproject.org>; Tue, 15 Jul 2025 08:38:26 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7331
 
-On Fri Jul 11, 2025 at 5:58 PM CEST, Khem Raj wrote:
->
->
-> On 7/11/25 1:08 AM, Antonin Godard via lists.yoctoproject.org wrote:
->> In the light of the recent LLVM addition, and other such heavier
->> recipes, increase the minimum RAM requirement from 8Gb to 32Gb.
->>=20
->
-> I wonder if disk space requirements will need revising too.
 
-Yes, I didn't mention here, but I'm running the builds locally to see how t=
-hat
-changed too.
+Applied, thanks!
 
-Antonin
+[1/1] migration-guides: add release notes for 4.0.28
+      commit: 6959193fddb039c34384fcc391195fdd7fd3dbb8
 
---=20
-Antonin Godard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
+Best regards,
+-- 
+Antonin Godard <antonin.godard@bootlin.com>
 
