@@ -1,91 +1,123 @@
-Return-Path: <alex.kanavin@gmail.com>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C0579C83F1B
-	for <webhook@archiver.kernel.org>; Wed, 16 Jul 2025 08:45:14 +0000 (UTC)
-Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
- by mx.groups.io with SMTP id smtpd.web10.17618.1752655510598298523
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D9DB4C83F1B
+	for <webhook@archiver.kernel.org>; Wed, 16 Jul 2025 09:10:24 +0000 (UTC)
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
+ by mx.groups.io with SMTP id smtpd.web11.17731.1752657021969064233
  for <docs@lists.yoctoproject.org>;
- Wed, 16 Jul 2025 01:45:10 -0700
+ Wed, 16 Jul 2025 02:10:22 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=LTozAUtA;
- spf=pass (domain: gmail.com, ip: 209.85.219.54, mailfrom: alex.kanavin@gmail.com)
-Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-6fafdd322d3so53532476d6.3
-        for <docs@lists.yoctoproject.org>; Wed, 16 Jul 2025 01:45:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752655509; x=1753260309; darn=lists.yoctoproject.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=lb86JSWbcFlwldJumeCuo1Ekbmz/+bB/ju2W0bjDjDc=;
-        b=LTozAUtANjGT86Re0p/L6vnqJeh2Jsr+O6qvs+Gcx+ixzGIif80ixnHFxvcObc07Ts
-         37TKVe1DjamqpyWbzyE6qDCMNEBB1e3P3HtZVNm5R0M1yz+ZYcojfZrgPAf+gSBfwr8V
-         OgnNzKWdqSW2/SDi3naQ/62GVz4OjEnPguswj3N621r2LW9MQyhbkJT4dMLs1Dy35UgS
-         0fGNCmMsn/ocH2o77jCGpJf3BVuuWfa7d1U9uSfIe30Uib21Yw9iMXaKoRvfKscIqWCW
-         uYRQfAKORx/53VQXreyhZISM8h4DarfsvVmVNhMkArnGFck8waRFFz6+dZ2BMhelbXuf
-         F5pQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752655509; x=1753260309;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=lb86JSWbcFlwldJumeCuo1Ekbmz/+bB/ju2W0bjDjDc=;
-        b=OnDO66z1GCj7Sv16njpTmF+0aKWjPjm0CN7taincukF6ytmMWLZTTIGFY6GhB5jVeV
-         5+P8wyKceGUDto3SJbXu/Yu26tnKalmvyQ1dMbSGGNNZ7thcCCDLdXRhqia7r+JYz1o+
-         NKTBkM1FTho8uoPB0JQgKvUGF2FyLrzJZdzoqFKydzvqcYKfKtc0+Ocv1D2Wy/3/DSvn
-         D7rjUsUgqcDGqfQ6cti6ssPTZCjNSoLsuHk9pIhMZS1zQv82DutzvzvD3E8DtPb+8VZt
-         z0ljcq4V0jHFam/A4Vwsh9Dy9yck0kWLEhZgfQRfrsCHwSRek8vjK7iBUO0rULbJIviK
-         1xBg==
-X-Gm-Message-State: AOJu0YyAQTktiPIoIdu3OKLWov6pUL+xf9I0MHxbAUlY6dSHzkNIydlN
-	f3ukRoernnv6h7nv0QCKhCi7RSvjY74QcbSCA4IgqAvRvOJ8XgkTZ8YZfeAGsGDwgETJYbjfaGt
-	q8bxhivY8aP7/sQRTk+7zf2FygXRvSZs=
-X-Gm-Gg: ASbGncstsknQsBqi6keWLCdhBd5bqDbKkD9Rt+tcIxkxhwWQk8zjzJeCX1pyrGrAltQ
-	cRcmDg5AM6qEOoVNNRYMrFsUuIAepUldpRuiofvdfAV9pqesIHVA5ETcrL/QLWDP4VBR4xl6eWA
-	lT972f2vucWKMnlECQJLxdMC862x15ZBXJURkiCA4l6rF9CSRtgYkJzQh6TBKKnUCm29oiJSeyg
-	IjsOK/U2RY38mOUi1+c8BVfLnceqfj0Z2v0G3My
-X-Google-Smtp-Source: AGHT+IHFvjHImqEWTRI+rCiy96EpXGxVxQLR+t6VE9nZ/ep1B5uxVh79AZqkSn7Z9EHUsudxB0iiDAxKSc9swEMQ7MY=
-X-Received: by 2002:a05:6214:5681:b0:704:949e:9514 with SMTP id
- 6a1803df08f44-704f6a907d8mr26854406d6.19.1752655509458; Wed, 16 Jul 2025
- 01:45:09 -0700 (PDT)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=BtCHeDZw;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.196, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 906BE41DF1;
+	Wed, 16 Jul 2025 09:10:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1752657020;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=82QvgLERac0jyQOE64Pnr8XmOeGHx2DCp9bD5dggkSU=;
+	b=BtCHeDZwGYWUOR8xPBwNwya1EGiL5Qy6VM76jz8X1ioca2IZ1MdsNlFtaOJKRacvpL6jnG
+	bSukFPuNDZTBj7dC847WO7kQcQsuwFglatwdWVgF3crufNjIeoL52AmRzLCAXOv/NZFeqU
+	PdU4Wmfy7swkwJ5DW/yVGb8oOkN8aaLmDl9bUgXc6BkjktzLEXsYZYlwQ747dJfXMxF6I5
+	jlSxQ0EaJUCGs8ZlJ9fj1Tzrh6LAFksttW+P3kgAgAh59lc5MOimDPELfPjwy3Zb+exv6k
+	tHdvs5rXJmqs8RqoMFOscjMbsVrvgTQ3TKRi79yyz8eJKMLMwDzVfZfk5lcJRA==
+From: Antonin Godard <antonin.godard@bootlin.com>
+Date: Wed, 16 Jul 2025 11:10:07 +0200
+Subject: [PATCH] dev-manual/start.rst: remove basic setup for hash
+ equivalence
 MIME-Version: 1.0
-References: <20250715-fix-persistent-dir-v1-0-e3f31214b677@bootlin.com>
- <20250715-fix-persistent-dir-v1-2-e3f31214b677@bootlin.com>
- <CANNYZj_kvLsZG3sgH+nPu9B=pqWBU785w0SGHGdQqB4UW-DtmA@mail.gmail.com> <DBDAVYFTZ6JV.2TSQDQCH9NU87@bootlin.com>
-In-Reply-To: <DBDAVYFTZ6JV.2TSQDQCH9NU87@bootlin.com>
-From: Alexander Kanavin <alex.kanavin@gmail.com>
-Date: Wed, 16 Jul 2025 10:44:59 +0200
-X-Gm-Features: Ac12FXwrIFlR7cElLcnh78rLdQiyyc4CU3-aqK1YEyACTudLSnyZbDiF2el1UFE
-Message-ID: <CANNYZj9O4NoJgPbt07Wq82KChONjj8Jp_+-x+EbmvAYOr9_eyw@mail.gmail.com>
-Subject: Re: [docs] [PATCH 2/2] dev-manual/start.rst: remove shared
- PERSISTENT_DIR mentions
-To: Antonin Godard <antonin.godard@bootlin.com>
-Cc: docs@lists.yoctoproject.org, 
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
-	Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250716-remove-local-hashequiv-setup-v1-1-e2c80b0bfb24@bootlin.com>
+X-B4-Tracking: v=1; b=H4sIAG5sd2gC/x3MQQqDMBAF0KvIrB2IKVrpVYqLEL/NgDU2o0EQ7
+ 97g8m3eSYokUHpVJyVkUYlLQVNX5INbPmAZi8ka25pn03HCN2bwHL2bOTgN+O2SWbHtK3fe9r0
+ ZvX1MjkqxJkxy3P17uK4/iMXdA24AAAA=
+X-Change-ID: 20250716-remove-local-hashequiv-setup-6c2880dc23fa
+To: docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Alexander Kanavin <alex.kanavin@gmail.com>, 
+ Antonin Godard <antonin.godard@bootlin.com>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2182;
+ i=antonin.godard@bootlin.com; h=from:subject:message-id;
+ bh=TzO+r9A0N6/UUDQSpH1GDOXqV5NhEMEypPDdOZaotaQ=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBod2x73+RHxXH7a80ieoVDvKYsbYyZgPW/W+MnV
+ bUCBfUK/6qJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaHdsewAKCRDRgEFAKaOo
+ Nst9D/41gCuBMZ/cn6Zue/dzpnOHqzKUFBxVGYSo6/hgKDjA1i3brUm5TmEwI4EaBdUtXKDsHLY
+ C+7/n8Cg3ozb7CnuWImBN8y6YLxzQPM7xniNmK/H3S/yl+W3rGYisWOjT+rwEXzLbqwMCadKPhn
+ n+L1rxWzZgnq3xXsdwsAs+fdNV8oyrWH/TvuxtjxMY3ne0VcDosAhtrnEtowG2tuo5jzmKn8cej
+ 69gPQmrSVzC4/irhvWNmTTFp4nCKqWhs2pH8UGCSzaPrblL8OhYdwJez/QPwyg0+ubUR3r2Cw/G
+ 3EbbgztlPhreF3pg11i7hE9XO4PFadX7VR3+7t6lA6KC6WpyvFp4GBUkkiM7+KYFoV7ADBriFpR
+ BmvnTKBYBvmecMrDwURtep5h/L4lEotI560lpLwHDesBOzUdAErSlCKnNV9IFI20cRmXUCbzcH6
+ kCqUekBSGIAf5RbJ8GqdjGPp4ktc01v+6H6RxMfqUSa9LHrLsX/TXjsfXB6SRyk/ezQv3tNS1kF
+ FuvZNgsCgLtUZ5QK/6tl6Gw0KmqZYwXX6jfAqlKSofJCa3APoVNaZlcpNQJPnaqVCuEDPNW1kBs
+ 5HW4A7+cYnAdmpqPEWwgTGPF9umlqQo4TEK932ZIIm9N0yGGihIkYho/a2KoJPM5JR7LxlRmprW
+ MLhLX7Q6AdRuYFQ==
+X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
+ fpr=8648725188DD401BB9A0D3FFD180414029A3A836
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdehjeefudcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephfffufggtgfgkffvvefosehtjeertdertdejnecuhfhrohhmpeetnhhtohhnihhnucfiohgurghrugcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnheptdegteehlefgheegvddufeevheehveeijedvfeduvdefvdekueduuedvjeelteehnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmeeftgekudemvggsrgejmedusgeksgemrgehtgelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdugeemheehieemjegrtddtmeeftgekudemvggsrgejmedusgeksgemrgehtgelpdhhvghloheplgduvdejrddtrddurddungdpmhgrihhlfhhrohhmpegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepgedprhgtphhtthhopegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdprhgtphhtthhopeguohgtsheslhhishhtshdrhihotghtohhprhhojhgvtghtrdhorhhgpdhrtghpthhtohepthhho
+ hhmrghsrdhpvghtrgiiiihonhhisegsohhothhlihhnrdgtohhmpdhrtghpthhtoheprghlvgigrdhkrghnrghvihhnsehgmhgrihhlrdgtohhm
+X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 16 Jul 2025 08:45:14 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7341
+ <docs@lists.yoctoproject.org>; Wed, 16 Jul 2025 09:10:24 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7342
 
-On Wed, 16 Jul 2025 at 09:28, Antonin Godard <antonin.godard@bootlin.com> wrote:
+Quoting Alexander Kanavin [1]:
 
-> Yes, I also feel that hash equivalence could deserve its own document, and
-> should go further than a server/client local to the build directory only. Thanks
-> for the clarification.
+> 1. BB_HASHSERVE and BB_SIGNATURE_HANDLER do not set up or start a
+> server, they set up the hash equivalence client built into bitbake.
 >
-> I will try to work on this soon, at least for now the shared PERSISTENT_DIR
-> mention is reverted, which is good.
+> 2. The above client configuration (used by poky) also starts a private
+> server that is specific to a particular build directory. So hash equiv
+> information would not be shared between multiple build directories,
+> and this will cause sstate mismatches (as reported in the bug), if
+> sstate is shared.
 
-That would be good, I also feel that the whole hash equivalency
-feature is very under-documented, and poorly understood as a result.
-We could probably also issue a bitbake warning when sstate is shared
-(e.g. placed outside of ${TOPDIR}) but hash equivalency information is
-not.
+This setup does not shed light on the potential of the hash equivalence
+feature. So for now, remove this basic setup, and later rework the
+concepts (or create a new) document that explains how to set up a hash
+equivalence server shared between builds.
 
-But please remove the suggestions first, they're just repeating poky
-defaults and will cause sstate mismatches with shared sstate.
+[1]: https://lore.kernel.org/r/CANNYZj_kvLsZG3sgH+nPu9B=pqWBU785w0SGHGdQqB4UW-DtmA@mail.gmail.com
 
-Alex
+Suggested-by: Alexander Kanavin <alex.kanavin@gmail.com>
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+---
+ documentation/dev-manual/start.rst | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
+
+diff --git a/documentation/dev-manual/start.rst b/documentation/dev-manual/start.rst
+index e10367752..f34f0a9a9 100644
+--- a/documentation/dev-manual/start.rst
++++ b/documentation/dev-manual/start.rst
+@@ -228,12 +228,7 @@ particular working environment and set of practices.
+        used by developers in the same organization and share the same
+        source directories on their machines.
+ 
+-    -  Set up a local :ref:`overview-manual/concepts:Hash Equivalence` server
+-       with :term:`BB_HASHSERVE` and :term:`BB_SIGNATURE_HANDLER`. A basic setup
+-       would be::
+-
+-          BB_HASHSERVE = "auto"
+-          BB_SIGNATURE_HANDLER = "OEEquivHash"
++    -  Set up a local :ref:`overview-manual/concepts :Hash Equivalence` server.
+ 
+        See the :ref:`overview-manual/concepts:Hash Equivalence` section of the
+        Yocto Project Overview and Concepts Manual for more details on the hash
+
+---
+base-commit: f9f1c87424d307d2df60024bc448bd6778605cf8
+change-id: 20250716-remove-local-hashequiv-setup-6c2880dc23fa
+
+Best regards,
+--  
+Antonin Godard <antonin.godard@bootlin.com>
+
 
