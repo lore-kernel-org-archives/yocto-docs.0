@@ -1,87 +1,95 @@
-Return-Path: <rpjday@crashcourse.ca>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4E30FC87FCE
-	for <webhook@archiver.kernel.org>; Fri, 25 Jul 2025 16:09:16 +0000 (UTC)
-Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.web10.23204.1753459751152758615
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E3676C83F26
+	for <webhook@archiver.kernel.org>; Mon, 28 Jul 2025 08:52:35 +0000 (UTC)
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
+ by mx.groups.io with SMTP id smtpd.web10.76954.1753692752243281239
  for <docs@lists.yoctoproject.org>;
- Fri, 25 Jul 2025 09:09:11 -0700
+ Mon, 28 Jul 2025 01:52:32 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=ZO/xYPMe;
- spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:References:
-	Message-ID:In-Reply-To:Subject:cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=sFN6fbHRsYTyAc4f56xcxAX/YN3f1GMXiNXfkhYSbz0=; b=ZO/xYPMe5czWl+IieU7jpPCb28
-	bqGzWQzd4Vh1psIMo4/2FMwyV/0be5ID45tfgFN1PJ/a0cqmU7ZKKNBKeDfPcnqWNWkBWiQ6i3k2X
-	EFx5nP4aWI+wpiO41Z6MQ8y8eflW5lyRd6Zzvg3l1JNBC3nqO8Z0B/GlvECURnqLdArj17GWKrizQ
-	BsAUaXZlRQlK08q2frP0siGMYiueZzMJEuO17I243sqxqCymBGk6WU4UuDeP3hHGV+Pp88GEeuDsP
-	6Y/pQtk9hjw73ynJPwaRIOvsK2ayGiQ5Ude3N5nfvyJIQgZ/hzWFkGyHFY1vJi9312W3YjqwwJmaf
-	cTwjtvhA==;
-Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:50868 helo=asus)
-	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1ufKyn-00000001kJt-3V8a;
-	Fri, 25 Jul 2025 12:09:08 -0400
-Date: Fri, 25 Jul 2025 12:09:00 -0400 (EDT)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: Quentin Schulz <quentin.schulz@cherry.de>
-cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: Re: [docs] what means PACKAGECONFIG[...] = ",,,"?
-In-Reply-To: <8c608b36-f81d-4dfa-b5b3-b75a33f86f19@cherry.de>
-Message-ID: <339219b9-4409-e1c2-72ef-30a3aebda49d@crashcourse.ca>
-References: <f29a37a8-e752-d173-283b-f0730b8f84b1@crashcourse.ca> <8c608b36-f81d-4dfa-b5b3-b75a33f86f19@cherry.de>
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=N1fGcOQ1;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.196, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id B86E041DF1;
+	Mon, 28 Jul 2025 08:52:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1753692750;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Zp6q0H6LVy6ZyqKGrOv4yeKrxA+gWzUzfHv2baKuXJA=;
+	b=N1fGcOQ1zQZ0eL8qzDhKpZ2GfU/5MNwA4Prhgp+LsH7MBbZIBf+RjZau7rjHN0yi3LDlhd
+	ywJjQaJEvJtxCpj2LZeuqpnBPY1G9NeVEtI3SUU+8Ciyv/7BqDpREdAE+9Gfqf8iFtf1Iw
+	zTnJUZ65hx8YJiZQv+rLK28RErvv057fMA/JTndJigquvd9OFZ3InqT2VENGptiFT+2Ic/
+	iR2RsPgcc0vqpp4MC1t6xK4Cy0xTdCdGkdRzmKK9E0P7MgRPersuMkleVKJe28fDwFYHfc
+	2HK+01WN+HF0kSZedWxZlsxgG5YZtom5ropDzn34Kb/uPBY3AnF2XtgTf9jhNQ==
+From: Antonin Godard <antonin.godard@bootlin.com>
+Subject: [PATCH v2 0/3] ref-manual: gather all QA checks in qa-checks.rst
+Date: Mon, 28 Jul 2025 10:52:22 +0200
+Message-Id: <20250728-refactor-qa-checks-v2-0-9e0737979f05@bootlin.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAEY6h2gC/32NQQ6CMBBFr0Jm7Rg6DYKuvIdh0dZBJirFljQa0
+ rtbOYDL9/Pf/ytEDsIRTtUKgZNE8VMB2lXgRjPdGOVaGKimpm5JY+DBuMUHfBl0I7t7xIGGI2u
+ rqDMHKOJcOvLeRi994VFiET7bR1K/9O9cUlijNi25tlHWdPpsvV8eMu2df0Kfc/4Cf07L2bYAA
+ AA=
+X-Change-ID: 20250723-refactor-qa-checks-f2f9e3b128a6
+To: docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Antonin Godard <antonin.godard@bootlin.com>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=872;
+ i=antonin.godard@bootlin.com; h=from:subject:message-id;
+ bh=MSCLZupqbiM33DPAP/XAa5+/qLWhVEgJce3tY4ZngVA=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBohzpNP5u94RLvSLuwEa4MtN1Un1Th1LE2NfVjk
+ p7nw5E83M+JAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaIc6TQAKCRDRgEFAKaOo
+ NuNOEACMc0lNQZ6SbCEaPOaEU/a6dPXbIiox846S1kb0ihevO7CgPn3kVBLqv7f7e5k+qXoiqu5
+ qapIXiE6hkYxmUhWaTdOea+U+b6uefJk5pFP0PhjUkeXAcu5tmg7qAY9UNoLoPx3sY2c+Pm8MMt
+ 7fDHaOosmgcT79kGaSBwbggsLiN0IYuxz+7a55MCl7TQcwAuLwmS7+4NYQwypz/a27prh6bFH6a
+ sLjY4sfHBwRYk+B51TRASO1daPv/Yy1Tylj6YXvAvLbQMJGCt6Aon+NG+DsWXBMWtSnQPT/uhW8
+ 4M60+8y8ef4D1gWguXMG8NS4EKTzyD/YRdFDKCwRkroRHv90i70tw5tsuqYC1/EPbcApxDOdcZw
+ aJDEkkJ2ry5KWC91vSB5clx90dW4IKXNpRhCAcZjeoxD3tkDEszYuJyhsH+ptg2m4GYQO4F/W15
+ 2BCshaYqw8reCEnsJDu4gPCoi9qTP6+c+d5SZBd48fHh/VTGvbtc0Ayr1LWrB4+EJk86ad2Qwuj
+ xuVNPnzQtJdv0XGndZ6Hkb9Wh0aiXGd8UtII+15pMoGPojJ2LFbz07mUvu17nT3J+wnK4XZdUxr
+ 9IS2KYkvzGOdoHpJJD8x13911rL0KuXWcjo7peWApQ0kPf6bMgmOF3O097EmtM+Gfa9e/8N8yax
+ 3nDurdXOOGMsfaQ==
+X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
+ fpr=8648725188DD401BB9A0D3FFD180414029A3A836
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdeludejgecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffufffkgggtgffvvefosehtjeertdertdejnecuhfhrohhmpeetnhhtohhnihhnucfiohgurghrugcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnheptdduuefhleevheeuvedufeegvddtffefveelfeeutdejueetleegleevffdtjeetnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmeeftgekudemvggsrgejmedusgeksgemrgehtgelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdugeemheehieemjegrtddtmeeftgekudemvggsrgejmedusgeksgemrgehtgelpdhhvghloheplgduvdejrddtrddurddungdpmhgrihhlfhhrohhmpegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepfedprhgtphhtthhopegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdprhgtphhtthhopeguohgtsheslhhishhtshdrhihotghtohhprhhojhgvtghtrdhorhhgpdhrtghpthhtohepthhho
+ hhmrghsrdhpvghtrgiiiihonhhisegsohhothhlihhnrdgtohhm
+X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 25 Jul 2025 16:09:16 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7388
+ <docs@lists.yoctoproject.org>; Mon, 28 Jul 2025 08:52:35 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7389
 
-On Fri, 25 Jul 2025, Quentin Schulz wrote:
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+---
+Changes in v2:
+- Fix broken ref in migration-guide-3.2.
+- Link to v1: https://lore.kernel.org/r/20250723-refactor-qa-checks-v1-0-3a72c751ba83@bootlin.com
 
-> Hi Robert,
->
-> On 7/25/25 2:59 PM, Robert P. J. Day via lists.yoctoproject.org wrote:
-> >
-> >    i was thinking of improving the documentation for PACKAGECONFIG with
-> > a couple better examples, and i noticed this in the OE layer:
-> >
-> >    recipes-support/icu/icu_77-1.bb:PACKAGECONFIG[make-icudata] = ",,,"
-> >
-> > i'm not sure what to make of a value assignment of ",,,". so there are
-> > null values for the enable option, disable option, build *and* runtime
-> > dependencies? what does that mean?
-> >
->
-> It's a way to impact other parts of the recipe which aren't build
-> flags, or build/runtime dependencies. This is typically the case for
-> files that should only be installed whenever a config is selected.
->
-> For icu, it's entirely bypassing the do_make_icudata (for the target
-> recipe) task whenever the option is set. Easier to ask users to set
-> PACKAGECONFIG:remove = "make-icudata" than doing
-> do_make_icudata:class-target() {:} in a bbappend for example.
+---
+Antonin Godard (3):
+      ref-manual/classes.rst: insane: drop cve_status_not_in_db
+      ref-manual/classes.rst: drop obsolete QA errors
+      ref-manual: gather all QA checks in qa-checks.rst
 
-  i'm going to have to read that another time or two to really
-understand it.
+ documentation/migration-guides/migration-3.2.rst |   2 +-
+ documentation/ref-manual/classes.rst             | 335 +-------
+ documentation/ref-manual/qa-checks.rst           | 933 ++++++++++++-----------
+ 3 files changed, 488 insertions(+), 782 deletions(-)
+---
+base-commit: f9f1c87424d307d2df60024bc448bd6778605cf8
+change-id: 20250723-refactor-qa-checks-f2f9e3b128a6
 
-rday
+Best regards,
+--  
+Antonin Godard <antonin.godard@bootlin.com>
+
 
