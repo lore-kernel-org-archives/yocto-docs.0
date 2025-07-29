@@ -2,125 +2,108 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 33F78C83F26
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 34BE8C87FCA
 	for <webhook@archiver.kernel.org>; Tue, 29 Jul 2025 09:57:00 +0000 (UTC)
 Received: from relay15.mail.gandi.net (relay15.mail.gandi.net [217.70.178.235])
- by mx.groups.io with SMTP id smtpd.web11.3502.1753783011211601918
+ by mx.groups.io with SMTP id smtpd.web10.3373.1753783014986235350
  for <docs@lists.yoctoproject.org>;
- Tue, 29 Jul 2025 02:56:51 -0700
+ Tue, 29 Jul 2025 02:56:55 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=IkJr8fQp;
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=GsrEyZ6L;
  spf=pass (domain: bootlin.com, ip: 217.70.178.235, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 5EFEA4313C;
-	Tue, 29 Jul 2025 09:56:48 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 450C243185;
+	Tue, 29 Jul 2025 09:56:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1753783009;
+	t=1753783012;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=w7yEGnHLw+42H36E11hcijKPXT2Jp9ADVuWJf4KeSAQ=;
-	b=IkJr8fQpPBEzsSk0agGsJDX7IcemeILH7ky/aDc3CSDPds7cugKVengMMOhVuFPolJVZGQ
-	uznMpqJugHy6+6ATopASq7nTC5PUnEDxgCcDs8tOlgGEVq7itJ7Pw26g9fb1xJM9AHxnPE
-	pqkaMIHkq0CTEOeZ7jBD5AczQKpdZdwyMdS5HEP9V4mpqHcVdc88TG/gn+rhyuyZHA8cKD
-	Agcwd6xI8tHSbinuwy+YuNLE+1O1JEcHF/LBM5C09BbNOz2zsu6+sDJqSn+tyZDYgk4PSS
-	mFIbxuYC5005FEsxMXm5EUQ58BqWkmtIZSkzaPCm5oMm3PR62m2m6KWOadwIuQ==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=B8RUsgCsIEi6kAeFZHsoEYPY1ZxFOKeXS3YczNb1Tq8=;
+	b=GsrEyZ6L7YerlNP8/iJ7gNPh5Cw3/PyGYV4R5ViVxfdODfKZZL1g1KJmy8mc/5z1Y0YGJl
+	XnA+Q8qaYCkcVLgAPzhb3dbFgxLKhVzs3CqsCbIHzX5KKVTQwpsVxlUB9TErjFvclAg6Uq
+	3D08OxbHpebtGgTZ+640oZaWbqA+NySTbNgnCeD4RTl/GjsLL2tmixoqdt8T04peUe0CjX
+	BALvmKb7gl5IdGdWcACelNF3PRGyedaNyY4uKLo1bYDxt40kMJRuRT86dt5Ls9qya493ln
+	QULYcj30HUudZjk8Ygz138hTG/PpU2ALR7bbAvib8/9b0OfygcrxMpUFAjo3Vw==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Subject: [PATCH 00/19] Updates from Poky master
-Date: Tue, 29 Jul 2025 11:56:34 +0200
-Message-Id: <20250729-release-note-5-3-first-bunch-v1-0-058971e37c93@bootlin.com>
+Date: Tue, 29 Jul 2025 11:56:48 +0200
+Subject: [PATCH 14/19] ref-manual/classes.rst: document the testexport
+ class
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIANOaiGgC/x3MQQqDQAwF0KtI1g0YRxF7Feliql8NlFESWwri3
- R1cvs07yGEKp2dxkOGnrmvKkEdBwxLTDNYxm6qyaspWWjZ8EB2c1h3ccOBJzXd+f9OwsAR0dRe
- DSBgpF5th0v/d96/zvAARLu6ObgAAAA==
-X-Change-ID: 20250717-release-note-5-3-first-bunch-13e949a3113d
+Message-Id: <20250729-release-note-5-3-first-bunch-v1-14-058971e37c93@bootlin.com>
+References: <20250729-release-note-5-3-first-bunch-v1-0-058971e37c93@bootlin.com>
+In-Reply-To: <20250729-release-note-5-3-first-bunch-v1-0-058971e37c93@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2820;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1444;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=sDEdecIAwkvY6/F7aDu8flyKotozSBsdsY+pPQlMKsg=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBoiJrd1gW8agJMKSumyeJpyqsXAOmvXW8EsOUs8
- ZDEGxehjXyJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaIia3QAKCRDRgEFAKaOo
- NqsYD/46gmstZWfU7OgQg6vK8zE355smmi2JobOhj4orRaMVLIpW5zcHSHLXYq7S6hgxLf+sZnh
- 63iOcd2zrzwpUX6f4zo8SDS3ITB+x4Xku1CtkVKBya3/E443MgvM0E6wkWCMOg7zJvTkWhR7QAk
- vPNGPF/m3RM4k1r+3FCBO3m9uQhJEl1jcp4xyk3qvjY7uMqm5S0cHKCl2Inyd70HbDWWxPU+pws
- 1zZ+Y2lnEYI2GtUZkhqEmjQ3yG2xy/EU0G6BsK7FD0xUbOdbbjCWcDbtowA32ztaQAldmYHN0NG
- YkzUofJC8xJmub6NVgNwsu8C/V+97wo/ZMwt2QgCwsUb0HYPooh4hwyzvtRK6osi4Z2WXkXkr8n
- lbCTLe0UCVAqQCDGdyc61CYxNlY2BIK0fjFu/g6ZhBPLgK1ySFLabHN5tOjG9NRGSPQlavn9kCi
- IcNSPfsBl80TaPlza4mznX8CUYlEutRdLPx/yfVF0bO78wks3WHMbWWX8ZZS+b6xO5toQcvzTqS
- 9CLfnWFyse4r3mVkn7ph31EEMqdYxFZwDvCJbUWVim78f3xk8ViWk5v9bugx1DNr5tUG+aZtszO
- YZip0omdJ72diFE3lOfvjEFrbiMKskKrmE4ujyvdDm3r1YdLDWsyTna0xaTzs5bDzvJvlVa06TX
- 9k0dprJHj2BaRag==
+ bh=sDRpPomjT/YxZGoGL19nLNdGCIU3eNOUOvhHqR/xSJ0=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBoiJrfAPeDhzi1zn2xWY4dbskPoiefGCLOzcldJ
+ pdhOFyPHvyJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaIia3wAKCRDRgEFAKaOo
+ Nk2xD/wIZl/tMsjra9ra92yhPZaUEZbuR1OsgwX/hxRK+u844UsCZeZDydGBJ+qwFY8Bn8XCH2z
+ 259eAATOiKzU+TFWbHfqNZpH4WKQmaXbFb5uPuSFARe0zX3o1hv87Bl6K4+Yv5FSwNr+H5ErGnu
+ KxIEpRfsAnRWQxSifULyu7FLDSzXHGmnoe7VarvqBUAtac2aqxKhfaC0EwVBbAYi7uxLXNLSzA3
+ /MwNQdtsaJI8Yt9nTlk137iDYhnleALhXhFS6V/GNm5nVuEXu8wY2DgZ2SM+K2Gz19o/RKu8G5P
+ pdzg9YTOhwKjaguqgHrCf6JuekLGyFz35QjbcIbHAvYb/NTHgAJ5Ic1iq6sEAjJnJJim58nqQ2Q
+ D/GLxjgCTsOZtjiVGK7zOgCExN6HBGHIgyWB/jH+lOw6PLfTw/A0JVDphe/8rp1XakWVjKWbEeH
+ po4/QRXIDw7fIoRhMHqFySE9n+FsQKFb6a93j58ZWDxMFZdNsmaNKbi/1w4TzHVxvb0q0JvFQsu
+ EMmkZ2/stqtkDcBDbGak6HrM+7Ff1ftPExhY//usVKhebEwJP7Q1zOGsbwfvNSARUJz9pv3c6Gb
+ 6+sAvzNBqlloU6RBFzhOCLqvxrTACX/KTe7lVST6qufIq/C8hI+A/QZrtjEIRnG7+Ih0kkE9KWu
+ bKh7Zp9LWItQHpQ==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdelgeejhecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffufffkgggtgffvvefosehtjeertdertdejnecuhfhrohhmpeetnhhtohhnihhnucfiohgurghrugcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnheptdduuefhleevheeuvedufeegvddtffefveelfeeutdejueetleegleevffdtjeetnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmeeftgekudemvggsrgejmedusgeksgemrgehtgelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdugeemheehieemjegrtddtmeeftgekudemvggsrgejmedusgeksgemrgehtgelpdhhvghloheplgduvdejrddtrddurddungdpmhgrihhlfhhrohhmpegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepfedprhgtphhtthhopeguohgtsheslhhishhtshdrhihotghtohhprhhojhgvtghtrdhorhhgpdhrtghpthhtoheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhrtghpthhtohepthhho
- hhmrghsrdhpvghtrgiiiihonhhisegsohhothhlihhnrdgtohhm
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdelgeejhecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephfffufggtgfgkfhfjgfvvefosehtjeertdertdejnecuhfhrohhmpeetnhhtohhnihhnucfiohgurghrugcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepheetgfehkeehfeelgeeguddvgeegteduledtveelteefvdevtdefleetleffleetnecuffhomhgrihhnpehruhhnvgigphhorhhtvggurdhphienucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmeeftgekudemvggsrgejmedusgeksgemrgehtgelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdugeemheehieemjegrtddtmeeftgekudemvggsrgejmedusgeksgemrgehtgelpdhhvghloheplgduvdejrddtrddurddungdpmhgrihhlfhhrohhmpegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepfedprhgtphhtthhopeguohgtsheslhhishhtshdrhihotghtohhprhhojhgvtghtrdhorhhgpdhrtghpthhtoheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhrtghpt
+ hhtohepthhhohhmrghsrdhpvghtrgiiiihonhhisegsohhothhlihhnrdgtohhm
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Tue, 29 Jul 2025 09:57:00 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7393
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7412
 
-Update the documentation with regards to the latest changes on Poky's
-master branch.
-
-This covers commits from c4a5e590b53b ("rust-llvm: Compile llvm to use
-dynamic libraries") to 2a832e6af1b6 ("orc: set CVE_PRODUCT") in Poky.
-
-This series depends on:
-https://lore.kernel.org/r/20250724-bb-defer-bbclasses-v1-1-70f1826d4b83@bootlin.com
-and
-https://lore.kernel.org/r/20250728-refactor-qa-checks-v2-0-9e0737979f05@bootlin.com
+This class has been in OE-Core for a while but never documented in the
+reference manual. Add some description for it and link to the existing
+documentation on it.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
-Antonin Godard (19):
-      ref-manual/tasks.rst: add documentation for do_recipe_qa
-      ref-manual/variables.rst: document SPDX_PACKAGE_URL
-      ref-manual/variables.rst: document KMETA_CONFIG_FEATURES
-      ref-manual/variables.rst: document TESTSDK_SUITES
-      ref-manual/variables.rst: document PSEUDO_INCLUDE_PATHS
-      Drop the icecc class and related variables
-      ref-manual/variables.rst: document the FIT_CONF_PREFIX variable
-      ref-manual/variables.rst: add link for BB_DEFER_BBCLASSES
-      ref-manual/variables.rst: document SPL_DTB_BINARY
-      ref-manual/variables.rst: document UBOOT_VERSION
-      ref-manual/classes.rst: document the go-mod-update-modules class
-      ref-manual/variables.rst: document OE_SHARED_UMASK
-      ref-manual/variables.rst: document CVE_CHECK_VEX_JUSTIFICATION
-      ref-manual/classes.rst: document the testexport class
-      docs-wide: update wic source plugin names
-      ref-manual/tasks.rst: do_package_qa: update link to qa checks
-      ref-manual/qa-checks.rst: add space around equal warning
-      docs-wide: fix space around equal assignments
-      migration-guides/release-notes-5.3: updates
+ documentation/ref-manual/classes.rst | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
- documentation/bsp-guide/bsp.rst                    |   4 +-
- documentation/dev-manual/building.rst              |   8 +-
- documentation/dev-manual/layers.rst                |   2 +-
- documentation/dev-manual/new-recipe.rst            |   2 +-
- documentation/dev-manual/qemu.rst                  |   4 +-
- documentation/dev-manual/wic.rst                   |  16 +-
- documentation/migration-guides/migration-4.0.rst   |  10 +-
- documentation/migration-guides/migration-5.3.rst   |  89 ++++
- .../migration-guides/release-notes-5.3.rst         | 564 ++++++++++++++++++++-
- documentation/ref-manual/classes.rst               | 113 ++---
- documentation/ref-manual/qa-checks.rst             |  16 +
- documentation/ref-manual/tasks.rst                 |  13 +-
- documentation/ref-manual/variables.rst             | 161 +++---
- documentation/sdk-manual/appendix-customizing.rst  |   4 +-
- 14 files changed, 808 insertions(+), 198 deletions(-)
----
-base-commit: dc984e5f54c38748603243053fde8b4d078ba586
-change-id: 20250717-release-note-5-3-first-bunch-13e949a3113d
+diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
+index 586930f66..d12b1c56b 100644
+--- a/documentation/ref-manual/classes.rst
++++ b/documentation/ref-manual/classes.rst
+@@ -2968,6 +2968,22 @@ class assuming :term:`PATCHRESOLVE` is set to "user", the
+ :ref:`ref-classes-cml1` class, and the :ref:`ref-classes-devshell` class all
+ use the :ref:`ref-classes-terminal` class.
+ 
++.. _ref-classes-testexport:
++
++``testexport``
++==============
++
++Based on the :ref:`ref-classes-testimage` class, the
++:ref:`ref-classes-testexport` class can be used to export the test environment
++outside of the :term:`OpenEmbedded Build System`. This will generate the
++directory structure to execute the runtime tests using the
++:oe_git:`runexported.py </openembedded-core/tree/meta/lib/oeqa/runexported.py>`
++Python script.
++
++For more details on how to use :ref:`ref-classes-testexport`, see
++the :ref:`test-manual/runtime-testing:Exporting Tests` section in the Yocto
++Project Test Environment Manual.
++
+ .. _ref-classes-testimage:
+ 
+ ``testimage``
 
-Best regards,
---  
-Antonin Godard <antonin.godard@bootlin.com>
+-- 
+2.50.1
 
 
