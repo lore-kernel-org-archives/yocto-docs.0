@@ -2,57 +2,58 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 500BFC87FD4
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 761F5C87FD9
 	for <webhook@archiver.kernel.org>; Tue, 29 Jul 2025 09:57:00 +0000 (UTC)
 Received: from relay15.mail.gandi.net (relay15.mail.gandi.net [217.70.178.235])
- by mx.groups.io with SMTP id smtpd.web10.3369.1753783013934556864
+ by mx.groups.io with SMTP id smtpd.web11.3507.1753783014132399788
  for <docs@lists.yoctoproject.org>;
  Tue, 29 Jul 2025 02:56:54 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Pfj0ncM/;
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=kO0pRIkI;
  spf=pass (domain: bootlin.com, ip: 217.70.178.235, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 3D64744202;
-	Tue, 29 Jul 2025 09:56:51 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id ADB134420E;
+	Tue, 29 Jul 2025 09:56:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1753783011;
+	t=1753783012;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=rqenvUvy6wtqLKuF0deH1AMNUtzYsVThx5IxS5YEDTE=;
-	b=Pfj0ncM/Gx+CXuP40CwdmB+CWsb9t9FlRCehF+yAE4736Wo/bmjlibpXMdKUXSja2o5T/8
-	KsoFjpmpIckzMapsga46VczPKXPavZ8qFaAhyq1Xcf8lDunBOAwm0HUnJcaSpWGhBzwMwJ
-	aw7IeDb8IHVM8dk6K3MxNqebpRlJY6+ZpRPwk/aD7EXUTgdBdWfLQQkv3JVWa2augW9B8x
-	reSO0yz9HJin/1CjaM+1s/9/F0nU3BKVSxyZ2rpQhEAM0aGziQWMBJ26jxPEEXzUDackSt
-	ZHG/HAgrCqWTeKJe/cp+KUZ33tRns/S2wuf4VE2fumDohZ2dL+kCQdn/xxfhyA==
+	bh=ENzv2g8DOHPYyP03BQI2tRBrG/cRFt6AB/w7RiNZmEY=;
+	b=kO0pRIkIL7ngDrSPW9tVj18Z0hXPaTm8CPogYEhrOwd4wwKZS6QU9XDhqZlpltBhzv20HU
+	tOh/0+rvXXZIous0+LO4ZFGxwR/klCVhX+pUeHHf2UxTqlMBjs3adzVRQqkTghz+Rg/n+q
+	lolIxwuElWwz6WWuzAVDPtG8tW4pfqPytDxh4Euwx3fKprdo4x4ivHuqaD6o+MZI8UOZzI
+	9zCKsj0kG5RDxMw4g9EVX8q66TeNnOIS5YoqeYjJeIcPaCRZEHOifagcff/kLHXmg7y7kI
+	NWQ7X79SZh0lRqHes5/aVdt3qp4ZLnl6XWc+/TsMSSrUjmMgkG/8TKVkVDTmpA==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Tue, 29 Jul 2025 11:56:43 +0200
-Subject: [PATCH 09/19] ref-manual/variables.rst: document SPL_DTB_BINARY
+Date: Tue, 29 Jul 2025 11:56:50 +0200
+Subject: [PATCH 16/19] ref-manual/tasks.rst: do_package_qa: update link to
+ qa checks
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250729-release-note-5-3-first-bunch-v1-9-058971e37c93@bootlin.com>
+Message-Id: <20250729-release-note-5-3-first-bunch-v1-16-058971e37c93@bootlin.com>
 References: <20250729-release-note-5-3-first-bunch-v1-0-058971e37c93@bootlin.com>
 In-Reply-To: <20250729-release-note-5-3-first-bunch-v1-0-058971e37c93@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1966;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=881;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=tkAPOacpKTzyaxxZU/Yv4Wk9Wo5z3uLiRTmCig3QWGI=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBoiJrffVkO+IFOhBxnvYTh/NpLWWba839oyR6rW
- BP2Ouh924CJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaIia3wAKCRDRgEFAKaOo
- NkMaD/0Su8YpRIziS6OuN53jqqG0TOVM9kkfoRwrf1eSO3ljFJkvKgP0e1QCUSErv7lm9VlFAbp
- zcP4RkPFlN2ljz+G5Zy3kvEntldKqHGtxg3f7gcs1++3Nve8egHy8fVIVJho1xS7plBqb9NJSEm
- 1K+4NjudEwc5SsAUu0fzvFGHoL7zeo3/oBEmO5TAuXmduRuSZFDfM9eWw7JpmjaHmekQm6dgEUH
- lIblvwLNTzGfXKb6oCvfIfBxE+sgibXo9s8tI9m62jFDxlZ6MoWnwhAVOB1+Ix3SjtlCGIb7368
- qI6SBKyPtoMxJ17r6vfJ5bnuGyMkz+EAJPRbi5iSftVQbyP90MiVgLf0M0kgB8ssnsx+kuxdLa6
- QmRvSggJx8cMgYNRbAtR/ErmF3Q6W+FW/7Ez5sdj9rUxD/sv+dOBpYZB32u5CtwQgFWDGMQMlx8
- 5rbXBD6kUxQMkRoDWHCapX8zpxHRqRuUJS/zsPgAVWVXWrG+ipOL6CPwfmuQY7tyo0DCrycU/IX
- aGv8kjXZTq/jFA9JdCOK4Fs0XAWLvrF9PBYIdZe8zZeINPT50ABQxh8SC3gzgLgSUOeQQLLp+/Q
- 1rJWGSKp9AIF+b67UB587ZLthEFap0iFAqGZzGo96DQHJD9ktlMuJtTRAlKfGyJwgG/s4KrlwVJ
- ZLKzj97yE6p++fA==
+ bh=BpakCkNND2TPRt6jfg0CzM1cPqEqs0eSvjn4g03DAsw=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBoiJrgaDeYrAGII1qbWeNpQV4b5dmMZ7bPgDddv
+ AAUvlKZup2JAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaIia4AAKCRDRgEFAKaOo
+ Nh6qEADCP/gaorSe9dRB1k5T3Xi79zhL6gCLUucfuNV386ucNRl/PPpnB9Ef8ro8L7Ecoy6pIJD
+ tMtQLTWcoH9+hhBAtptAj03AI/F7Al4gv3B4J05LqKJfFLO2GacVXW+SniaEvA91KhBVEKnvTzx
+ J+Jlk3pnxiNm0rR52+aKw4pN3ltxzispQ6NDYY7QDZEfrNa43IYEBLL0u6zYdcCwdEvwjfj6xoA
+ N6Ez33sdv2mVpssykchAE1svC3Gu+wMBlgZ1F8IYVn/UFYc/2yx5OaDcjJE/lPojVGhocHU/lZs
+ y1Tf7QTY7SfbnzXOB2Se2LJH0OASoDc4IJTNTNz2SEO0r7oqm64YiMbHOsOinbUzK5w39rsyH3R
+ xtv7NMgoo2I8u6p+uN0OULJIM7ZfzVGRkCyCk2X5vJr/lWQVfpXGG+xPsWuEkjjIGtdowjep2uz
+ kl7H158v/R1dGqLSUmQYVrwQwcP3BcUNZMZfewZ4MmH4SfjWejZu+Y1el00QDYuKGn4vZDCe2zV
+ R9SmTBGGaCBSK3nbx2NHjXZuTnPAVkGfY8Z3bfX7gqjALpoedqHXb6+NsRj2bgB2+ewNySEDHHj
+ clKar1DRogjpZF98YLUPlXVNKomG3+0PIG4gEPp3SXF4jFmnBJXzB9CRV8mVJnV8ElEv4pgk1Ox
+ 35Nx41UHbrER4Zw==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-GND-State: clean
@@ -63,46 +64,30 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Tue, 29 Jul 2025 09:57:00 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7408
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7407
 
-This variable is part of uboot-sign but not documented.
+Link to the updated qa-checks document that contains the entire list of
+checks. The insane class was recently updated to remove all its checks
+description and move them to qa-checks.rst.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/ref-manual/classes.rst   | 3 +++
- documentation/ref-manual/variables.rst | 5 +++++
- 2 files changed, 8 insertions(+)
+ documentation/ref-manual/tasks.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
-index 748f0395c..0f4405b98 100644
---- a/documentation/ref-manual/classes.rst
-+++ b/documentation/ref-manual/classes.rst
-@@ -3166,6 +3166,9 @@ The variables used by this class are:
- -  :term:`SPL_SIGN_ENABLE`: enable signing the FIT image.
- -  :term:`SPL_SIGN_KEYDIR`: directory containing the signing keys.
- -  :term:`SPL_SIGN_KEYNAME`: base filename of the signing keys.
-+-  :term:`SPL_DTB_BINARY`: Name of the SPL device tree binary. Can be set to an
-+   empty string to indicate that no SPL should be created and added to the FIT
-+   image.
- -  :term:`UBOOT_FIT_ADDRESS_CELLS`: ``#address-cells`` value for the FIT image.
- -  :term:`UBOOT_FIT_DESC`: description string encoded into the FIT image.
- -  :term:`UBOOT_FIT_GENERATE_KEYS`: generate the keys if they don't exist yet.
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index bd82b9484..d722d722f 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -8875,6 +8875,11 @@ system and gives an overview of their function and contents.
-       section in the Yocto Project Board Support Package Developer's Guide
-       for additional information.
+diff --git a/documentation/ref-manual/tasks.rst b/documentation/ref-manual/tasks.rst
+index d7b19e04b..90f70c1ac 100644
+--- a/documentation/ref-manual/tasks.rst
++++ b/documentation/ref-manual/tasks.rst
+@@ -225,7 +225,7 @@ section in the Yocto Project Overview and Concepts Manual.
+ -----------------
  
-+   :term:`SPL_DTB_BINARY`
-+      When inheriting the :ref:`ref-classes-uboot-sign` class, the
-+      :term:`SPL_DTB_BINARY` variable contains the name of the SPL binary to be
-+      compiled.
-+
-    :term:`SPL_MKIMAGE_DTCOPTS`
-       Options for the device tree compiler passed to ``mkimage -D`` feature
-       while creating a FIT image with the :ref:`ref-classes-uboot-sign`
+ Runs QA checks on packaged files. For more information on these checks,
+-see the :ref:`ref-classes-insane` class.
++see the :doc:`/ref-manual/qa-checks` document.
+ 
+ .. _ref-tasks-package_write_deb:
+ 
 
 -- 
 2.50.1
