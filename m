@@ -2,57 +2,57 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 66A10C87FCC
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 77239C87FD2
 	for <webhook@archiver.kernel.org>; Tue, 29 Jul 2025 11:30:11 +0000 (UTC)
 Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
- by mx.groups.io with SMTP id smtpd.web11.4866.1753788610821631631
+ by mx.groups.io with SMTP id smtpd.web10.4702.1753788610702172864
  for <docs@lists.yoctoproject.org>;
  Tue, 29 Jul 2025 04:30:11 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=kXLhXfAw;
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Zm5b42ss;
  spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 6A92743882;
-	Tue, 29 Jul 2025 11:30:09 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 05A9F43881;
+	Tue, 29 Jul 2025 11:30:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
 	t=1753788609;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=IZpn3xnOexifeJLoTGUw4kMbm5Y/AD9QaOC0206LRvQ=;
-	b=kXLhXfAwKld8KpVm4yvs1JiCz1TL/ctXnZvdgcL3VZZT0wkLyzTtVZnKvlKeBMZS6+MN87
-	cGN52aUjlyY9mb7DILC+ZpFJnE7h0O/3K5avUn7db06ZHLuLoI8pO4HhAHR+obciN7h9Zl
-	2QOvv7FwDHNNcHX8Am8KnWOqF8ww4ni11DBeR2aDB4BQbP0nKl5l3r0U9aX4pAYzTapkm2
-	xYHIJm7Urlrm2LGZ0t9zKZCL9avGZU3vM9V0jqYtedCGZNRWGyx88mT9I5k+gYgLsN6/D0
-	5yp4CwkbsTvXhlUYPc5EK67L284t3yMmaVMJWy2a3A0yZ1g2+NY6Lr1TZv4Jkw==
+	bh=dzE5Tb5+n3dPvU+pCvJG44TnQn+ZMMS0n9Ul8HHn9UY=;
+	b=Zm5b42ssNnoROKs3jN8MW7HschfYulX+7k78XqUxCmxmlE54OqYEOqbMZP1lE5Rf/gCINr
+	nZzKf5vxS+XOv9FU3S3qpRpxY15RqpYfDLGFCdS+Ap+6Ku9wXMwHLxyVzo23V/sYMmMjpo
+	Ij9bW4CTG59LZUndJWeVASOrsqXCs+ZL5NAhvvVSkZlv0m50ns5xpXuvoMntuJ9Ri8UXzr
+	cQF+M7+emUyIBomawjiwBQAIM4JT/gn0gSYKWEszI6AO48aMfrC/66fnOhRHX4NAwXLgjB
+	RLA51MAaVXMuBU/+m1e50woomLzma7SzljiW5/d3Usr6UC07CxwCuTxbUV95lg==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Tue, 29 Jul 2025 13:30:04 +0200
-Subject: [PATCH 3/5] ref-manual/variables.rst: fix the glossary
+Date: Tue, 29 Jul 2025 13:30:02 +0200
+Subject: [PATCH 1/5] Add a script to validate documentation glossaries
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250729-variables-checks-v1-3-5ad6ca9b9386@bootlin.com>
+Message-Id: <20250729-variables-checks-v1-1-5ad6ca9b9386@bootlin.com>
 References: <20250729-variables-checks-v1-0-5ad6ca9b9386@bootlin.com>
 In-Reply-To: <20250729-variables-checks-v1-0-5ad6ca9b9386@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1405;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4970;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=9c1ll1xRom7PfDFD0GRRJF2kiq/a7tn0U6hyez15xdY=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBoiLC/7yGVZN8V7eXf9Ze150taEI2tzey/MXY9k
- k2o7R5YXxeJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaIiwvwAKCRDRgEFAKaOo
- NhmYD/4xcvlrKYh78ODLWpq3yupAVV8VkJWmLKhBfXbgRqL5SK73M9/u2deXdRzrQWNU/2JN+pK
- YB1wJjulgyaBk2e8HXMqPVxjEHVnodLRigVs7ATQP2v5CKckzxZrrIkJcb+h672pptqphy/zSGv
- JrEKz7C3Z4Kr5MtumXVE5aZU8Nt/wAuebkclOCWskc7QfRb2AXXMDr67I+KFAc+EBh1VT6wr0E0
- PB1+LZaY2JxdjzYgprhp7uxmKAoeJ52fbsFA9HHkZP0xOz+ochdND5EYusltIwkAMXR7WLoE1Fu
- CRiGdExuIFCQC6H4ITcqCtZYe4nahyLyhEHPo7d+Pw/Jd6ngXAEJA8vYw6lbQzaa9L1ZUvvoBxx
- eyX/uSMCGAWKKg52zs8qBrLTnfIWPEQ73UQOvlm/i/zyEH6kXRlBx/OiokO1wp4aMc9KwyAU4xH
- 1d2dtKWgRdWOjV6hwVQxEsa90MVac3PPQ6ZUHSAa8t2WuCUP6vw1QI3x0MxFVJOowIDLKVsRe56
- fU3fsmZI1yakYssFE2Q/nYjRH1fuP3p0whucO9O8n0Ddg2YMfPHQfmVatIn/uicjVPJpyWDMWHm
- gCaoLYzWr4S2uTvtvWvhRGekuI9pC8r9EpS5kPqLv/9Hqhbxur6jSONFXi6m0uR3O2pDKer0Wbj
- TmpoDl2ej9aVxxA==
+ bh=9Mmxe4nPtaFomWEcDbrRD7akpGTYtqsOhyymlEqcIMQ=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBoiLC/AYSct8Y2kAx541RFPgJhFPXyaMaWUvTi/
+ rQ/uOc4LyqJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaIiwvwAKCRDRgEFAKaOo
+ NtbFEACPRCRmWObTmn4Gx44W7NOd6qcblHQvD3Yi897PzlydlzPVsgHAygen055+vIJr295W6ub
+ n+NZuLdCigQLhBnimI+YeXu5NUUrMmWO8PnzwiJvss8CPg07A9iMOtGjzLEc2DohoFDAHl1+/iL
+ fwnaA6VHtXSZI6tKBpruzP8z0ufq4TajLmenyEzqr4vZsPVrbtrhZ2/8CrADCnX+LQYWPIGf5JI
+ BsNlVdA/GVrsHakhxyk/0U2RXO8VwQ3gppAXCHGCqUV1j/NPJ4cCGxe3d6dKUe/ny4RT4StVg4k
+ yajnEMP9JpvqDT6dGdXju755PcWiB7ee0AuCZbe71cUL/HppbhmnqzrnRTH38nKeu66XezPwJBt
+ aWofN8K6/9oSbr6Gx9bOhtWe6cHXZBF0MX2csFLEmpGrDGmyN2RSYcjR8zKdUseCi/jfUx6ESXO
+ OAgt5IltPLuQ7B+44Ns8oa9Ty4u44IzoPdiE82AjQowEZ//vBAQ+d13Z8DHj4pqcSdvQjpwjPcb
+ BsgGXt2C9bdYxGzMThphrZO58qK01XJAgAGGMjEh0e5wqxcURdW683nljg/o/jCh4lCJ7xEKNay
+ UrzTYi9KSfyJDBZTJDEQLy9zoAi1p/t3H5DcxjDa7bHHOPxErQNedeQkhPaRlwaO+bEuKws+86N
+ yMiBvzIEpBxNPMw==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-GND-State: clean
@@ -64,38 +64,147 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Tue, 29 Jul 2025 11:30:11 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7416
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7414
 
-documentation/scripts/check-glossaries returns:
+Instead of tracking the glossary manually, add a small script that
+checks if it is properly sorted.
 
-  WARNING: ref-manual/variables.rst: The variable EFI_PROVIDER shouldn't be in the glossary.
-  WARNING: ref-manual/variables.rst: The variable ZSTD_THREADS shouldn't be in the glossary.
+Add two comments between the start and end of the glossary for the
+script to know where it's located.
+
+The script also checks if the variables are properly sorted. It uses
+difflib and returns the diff if there's a difference between the
+unsorted and sorted list.
+
+Messages beginning with "WARNING:" are reported by the Autobuilder,
+which is the reason for this format.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/ref-manual/variables.rst | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ documentation/ref-manual/variables.rst |  6 +++
+ documentation/tools/check-glossaries   | 90 ++++++++++++++++++++++++++++++++++
+ 2 files changed, 96 insertions(+)
 
 diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index 6c2344950..15ca6543a 100644
+index e4d5a9c97..6c2344950 100644
 --- a/documentation/ref-manual/variables.rst
 +++ b/documentation/ref-manual/variables.rst
-@@ -11,13 +11,13 @@ system and gives an overview of their function and contents.
-    check_glossary_begin
+@@ -7,6 +7,9 @@ Variables Glossary
+ This chapter lists common variables used in the OpenEmbedded build
+ system and gives an overview of their function and contents.
  
++..
++   check_glossary_begin
++
  :term:`A <ABIEXTENSION>` :term:`B` :term:`C <CACHE>`
--:term:`D` :term:`E <EFI_PROVIDER>` :term:`F <FAKEROOT>`
-+:term:`D` :term:`E <EFI_ARCH>` :term:`F <FAKEROOT>`
+ :term:`D` :term:`E <EFI_PROVIDER>` :term:`F <FAKEROOT>`
  :term:`G <GCCPIE>` :term:`H <HGDIR>` :term:`I <IMAGE_BASENAME>`
- :term:`K <KARCH>` :term:`L <LABELS>` :term:`M <MACHINE>`
- :term:`N <NATIVELSBSTRING>` :term:`O <OBJCOPY>` :term:`P`
- :term:`Q <QA_EMPTY_DIRS>` :term:`R <RANLIB>` :term:`S` :term:`T`
+@@ -16,6 +19,9 @@ system and gives an overview of their function and contents.
  :term:`U <UBOOT_BINARY>` :term:`V <VIRTUAL-RUNTIME>`
--:term:`W <WARN_QA>` :term:`X <XSERVER>` :term:`Z <ZSTD_THREADS>`
-+:term:`W <WARN_QA>` :term:`X <XSERVER>` :term:`Z <ZSTD_COMPRESSION_LEVEL>`
+ :term:`W <WARN_QA>` :term:`X <XSERVER>` :term:`Z <ZSTD_THREADS>`
  
- ..
-    check_glossary_end
++..
++   check_glossary_end
++
+ .. glossary::
+    :sorted:
+ 
+diff --git a/documentation/tools/check-glossaries b/documentation/tools/check-glossaries
+new file mode 100755
+index 000000000..b5dfe834e
+--- /dev/null
++++ b/documentation/tools/check-glossaries
+@@ -0,0 +1,90 @@
++#!/usr/bin/env python3
++
++import argparse
++import difflib
++import os
++import re
++
++from pathlib import Path
++
++
++def parse_arguments() -> argparse.Namespace:
++    parser = argparse.ArgumentParser(description="Print supported distributions")
++
++    parser.add_argument("-d", "--docs-dir",
++                        type=Path,
++                        default=Path(os.path.dirname(os.path.realpath(__file__))) / "documentation",
++                        help="Path to documentation/ directory in yocto-docs")
++
++    return parser.parse_args()
++
++
++glossaries = (
++    'ref-manual/variables.rst',
++    'ref-manual/terms.rst',
++)
++
++
++def main():
++
++    args = parse_arguments()
++    in_glossary = False
++    # Pattern to match:
++    # :term:`A <ABIEXTENSION>` :term:`B` :term:`C <CACHE>`
++    glossary_re = re.compile(r":term:`(?P<letter>[A-Z]{1})( <(?P<varname>[A-Z_]+)>)?`")
++    entry_re = re.compile(r"^   :term:`(?P<entry>.+)`\s*$")
++
++    for rst in glossaries:
++
++        glossary = {}
++        rst_path = Path(args.docs_dir) / rst
++
++        with open(rst_path, "r") as f:
++            for line in f.readlines():
++                if "check_glossary_begin" in line:
++                    in_glossary = True
++                    continue
++                if in_glossary:
++                    for m in re.finditer(glossary_re, line.strip()):
++                        letter = m.group("letter")
++                        varname = m.group("varname")
++                        if varname is None:
++                            varname = letter
++                        glossary[letter] = varname
++                if "check_glossary_end" in line:
++                    in_glossary = False
++                    break
++
++        entries = []
++
++        with open(rst_path, "r") as f:
++            for line in f.readlines():
++                m = re.match(entry_re, line)
++                if m:
++                    entries.append(m.group("entry"))
++
++        # We lower here because underscore (_) come before lowercase letters
++        # (the natural way) but after uppercase letters (which is not natural)
++        sorted_entries = sorted(entries, key=lambda t: t.lower())
++        diffs = list(difflib.unified_diff(entries,
++                                          sorted_entries,
++                                          fromfile="original_list",
++                                          tofile="sorted_list"))
++
++        if diffs:
++            print(f"WARNING: {rst}: entries are not properly sorted:")
++            print('\n'.join(diffs))
++
++        for letter in glossary:
++            try:
++                index = entries.index(glossary[letter])
++            except ValueError:
++                print(f"WARNING: {rst}: variable "
++                      f"{glossary[letter]} in glossary does not exist")
++            if index > 0 and entries[index - 1].startswith(letter[0]):
++                print(f"WARNING: {rst}: The variable {glossary[letter]} shouldn't be in "
++                     "the glossary.")
++
++
++if __name__ == "__main__":
++    main()
 
 -- 
 2.50.1
