@@ -2,106 +2,108 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 34BE8C87FCA
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4305FC87FC9
 	for <webhook@archiver.kernel.org>; Tue, 29 Jul 2025 09:57:00 +0000 (UTC)
 Received: from relay15.mail.gandi.net (relay15.mail.gandi.net [217.70.178.235])
- by mx.groups.io with SMTP id smtpd.web10.3373.1753783014986235350
+ by mx.groups.io with SMTP id smtpd.web11.3508.1753783014352384579
  for <docs@lists.yoctoproject.org>;
- Tue, 29 Jul 2025 02:56:55 -0700
+ Tue, 29 Jul 2025 02:56:54 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=GsrEyZ6L;
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=GLTDXG+u;
  spf=pass (domain: bootlin.com, ip: 217.70.178.235, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 450C243185;
+Received: by mail.gandi.net (Postfix) with ESMTPSA id E4F454313F;
 	Tue, 29 Jul 2025 09:56:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1753783012;
+	t=1753783013;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=B8RUsgCsIEi6kAeFZHsoEYPY1ZxFOKeXS3YczNb1Tq8=;
-	b=GsrEyZ6L7YerlNP8/iJ7gNPh5Cw3/PyGYV4R5ViVxfdODfKZZL1g1KJmy8mc/5z1Y0YGJl
-	XnA+Q8qaYCkcVLgAPzhb3dbFgxLKhVzs3CqsCbIHzX5KKVTQwpsVxlUB9TErjFvclAg6Uq
-	3D08OxbHpebtGgTZ+640oZaWbqA+NySTbNgnCeD4RTl/GjsLL2tmixoqdt8T04peUe0CjX
-	BALvmKb7gl5IdGdWcACelNF3PRGyedaNyY4uKLo1bYDxt40kMJRuRT86dt5Ls9qya493ln
-	QULYcj30HUudZjk8Ygz138hTG/PpU2ALR7bbAvib8/9b0OfygcrxMpUFAjo3Vw==
+	bh=GV1Te1FrwuNK5QGU4gDrOVtzcRCaNVMSaks9jG4nYsw=;
+	b=GLTDXG+uBAt0AoxS+9WyPCewiWauduJV78FpzQLH+MZ4dwYmzkPpwVxKmWgzYWe16scMnw
+	ghCfZ95BW5m0yllpdwYjIsoRfZwoUnn48ON8kdICpDgpTtBbUFD85FCg8VmLWSIuoSNz6W
+	b5VkFulrUn98wYrX1ktvCmzyLyFI1iErhg4gOyBCNY7M3TZumYYlBoDPi355hVGn7E2PgK
+	LqdjvGYiETo7hJijz+EvCBMzc1DEu+obHZuKMfpSm5l2/tEl86vUB6YVHTJWFJpj+w1/Km
+	M1YY0fbGGXJpczUGIbQRF+bvn5f2v2fA+ODwZm/DRxpetuvdyjstcueC95AOZw==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Tue, 29 Jul 2025 11:56:48 +0200
-Subject: [PATCH 14/19] ref-manual/classes.rst: document the testexport
- class
+Date: Tue, 29 Jul 2025 11:56:51 +0200
+Subject: [PATCH 17/19] ref-manual/qa-checks.rst: add space around equal
+ warning
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250729-release-note-5-3-first-bunch-v1-14-058971e37c93@bootlin.com>
+Message-Id: <20250729-release-note-5-3-first-bunch-v1-17-058971e37c93@bootlin.com>
 References: <20250729-release-note-5-3-first-bunch-v1-0-058971e37c93@bootlin.com>
 In-Reply-To: <20250729-release-note-5-3-first-bunch-v1-0-058971e37c93@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1444;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1372;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=sDRpPomjT/YxZGoGL19nLNdGCIU3eNOUOvhHqR/xSJ0=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBoiJrfAPeDhzi1zn2xWY4dbskPoiefGCLOzcldJ
- pdhOFyPHvyJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaIia3wAKCRDRgEFAKaOo
- Nk2xD/wIZl/tMsjra9ra92yhPZaUEZbuR1OsgwX/hxRK+u844UsCZeZDydGBJ+qwFY8Bn8XCH2z
- 259eAATOiKzU+TFWbHfqNZpH4WKQmaXbFb5uPuSFARe0zX3o1hv87Bl6K4+Yv5FSwNr+H5ErGnu
- KxIEpRfsAnRWQxSifULyu7FLDSzXHGmnoe7VarvqBUAtac2aqxKhfaC0EwVBbAYi7uxLXNLSzA3
- /MwNQdtsaJI8Yt9nTlk137iDYhnleALhXhFS6V/GNm5nVuEXu8wY2DgZ2SM+K2Gz19o/RKu8G5P
- pdzg9YTOhwKjaguqgHrCf6JuekLGyFz35QjbcIbHAvYb/NTHgAJ5Ic1iq6sEAjJnJJim58nqQ2Q
- D/GLxjgCTsOZtjiVGK7zOgCExN6HBGHIgyWB/jH+lOw6PLfTw/A0JVDphe/8rp1XakWVjKWbEeH
- po4/QRXIDw7fIoRhMHqFySE9n+FsQKFb6a93j58ZWDxMFZdNsmaNKbi/1w4TzHVxvb0q0JvFQsu
- EMmkZ2/stqtkDcBDbGak6HrM+7Ff1ftPExhY//usVKhebEwJP7Q1zOGsbwfvNSARUJz9pv3c6Gb
- 6+sAvzNBqlloU6RBFzhOCLqvxrTACX/KTe7lVST6qufIq/C8hI+A/QZrtjEIRnG7+Ih0kkE9KWu
- bKh7Zp9LWItQHpQ==
+ bh=VHFvnZ3n1GPjXI5Q0qKfqEyDEsZljByTwRd/+ugNQH0=;
+ b=kA0DAAoB0YBBQCmjqDYByyZiAGiImuCgku3OQ7j9yrimOIAs6v6ssQY9YQPNToerszT2wE8s8
+ IkCMwQAAQoAHRYhBIZIclGI3UAbuaDT/9GAQUApo6g2BQJoiJrgAAoJENGAQUApo6g2cm0P/R3U
+ wg54dFqkiJqqG/MZhtbnEieMGmeCDXdO50oJaCxSMOohm92hwkqSnJivSrdfB/soFYJmDk+sIC1
+ AUS6Rhm9aVG1pOgmFrzO5qhY7QvxtzfY5pfWDjIQ5CXO7uK2DaiXxlZTR+0SYqMaAhyG3IPMzKh
+ 1hkT4u7guUytTeLj7a8dr4SgGZwfoZAl3Z1D+1kw0NKE6ljHYvqvPFQtVW/vMsSCCRsbfXqRGRA
+ sWkjd2r0fMxhgRZ+8AAnAMqGkj8Lm/Y3uSlIPM5RkGbpRFI6HnUxGy9/mWdlvva13mnSxN1Lpex
+ FxjNpmSJ7ksH/2jHm1UacI8kS5g1Xef2ZExJ5dktR0WYzXwwWNFaFG+/Z94v47zqxw15GVlHnaY
+ 7Jw6I7ctYUilRfRGCcGH9/wTbWSMdVkdmM2eCmn5JGCfcKYFwwEaBeZdGii1tHT9gx+P4ULRf9j
+ E0YaoYuk891YZo+td0233Rt+zXYbeH3FJJL1lscgBFECk+jmOlcUm4rl2A2oETMUSjRFgmctXV4
+ TTjARQlSosx4kzzZjZm37pKwh1qSE1zn/7kDK/o2ysxcqRkS2Gmz036I0pUX0BRy3kdASMb/hCS
+ C5fA8skJ9lppL4+KomBYtJgmZcyJkZ99d3X3t+d6nGfbKeo+SnXIp3dbuuwwrPXI3u01QOHlt5E
+ tqOB3
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdelgeejhecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephfffufggtgfgkfhfjgfvvefosehtjeertdertdejnecuhfhrohhmpeetnhhtohhnihhnucfiohgurghrugcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepheetgfehkeehfeelgeeguddvgeegteduledtveelteefvdevtdefleetleffleetnecuffhomhgrihhnpehruhhnvgigphhorhhtvggurdhphienucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmeeftgekudemvggsrgejmedusgeksgemrgehtgelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdugeemheehieemjegrtddtmeeftgekudemvggsrgejmedusgeksgemrgehtgelpdhhvghloheplgduvdejrddtrddurddungdpmhgrihhlfhhrohhmpegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepfedprhgtphhtthhopeguohgtsheslhhishhtshdrhihotghtohhprhhojhgvtghtrdhorhhgpdhrtghpthhtoheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhrtghpt
- hhtohepthhhohhmrghsrdhpvghtrgiiiihonhhisegsohhothhlihhnrdgtohhm
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdelgeejhecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephfffufggtgfgkfhfjgfvvefosehtjeertdertdejnecuhfhrohhmpeetnhhtohhnihhnucfiohgurghrugcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepheeigeeuhfefgeehfffgueeiteehieelfeehjeektefgkeeuheeuleduvdelgffhnecukfhppedvrgdtudemtggsudegmeehheeimeejrgdttdemfegtkedumegvsggrjeemudgskegsmegrhegtleenucevlhhushhtvghrufhiiigvpeeinecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemfegtkedumegvsggrjeemudgskegsmegrhegtledphhgvlhhopegluddvjedrtddruddrudgnpdhmrghilhhfrhhomheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeefpdhrtghpthhtohepughotghssehlihhsthhsrdihohgtthhophhrohhjvggtthdrohhrghdprhgtphhtthhopegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdprhgtphhtthhopehthhhomhgrshdrphgvthgriiiiohhnihessghoo
+ hhtlhhinhdrtghomh
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Tue, 29 Jul 2025 09:57:00 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7412
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7409
 
-This class has been in OE-Core for a while but never documented in the
-reference manual. Add some description for it and link to the existing
-documentation on it.
+After commit 24772dd2ae6c ("parse/ConfHandler: Add warning for
+deprecated whitespace usage") in BitBake, a warning is printed is
+there's a missing space around an equal assignment in recipes.
+
+Add a qa-check entry to qa-checks.rst.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/ref-manual/classes.rst | 16 ++++++++++++++++
+ documentation/ref-manual/qa-checks.rst | 16 ++++++++++++++++
  1 file changed, 16 insertions(+)
 
-diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
-index 586930f66..d12b1c56b 100644
---- a/documentation/ref-manual/classes.rst
-+++ b/documentation/ref-manual/classes.rst
-@@ -2968,6 +2968,22 @@ class assuming :term:`PATCHRESOLVE` is set to "user", the
- :ref:`ref-classes-cml1` class, and the :ref:`ref-classes-devshell` class all
- use the :ref:`ref-classes-terminal` class.
+diff --git a/documentation/ref-manual/qa-checks.rst b/documentation/ref-manual/qa-checks.rst
+index 91a0f6149..69ecad74b 100644
+--- a/documentation/ref-manual/qa-checks.rst
++++ b/documentation/ref-manual/qa-checks.rst
+@@ -649,6 +649,22 @@ Errors and Warnings
+     on the operating system. If you are seeing this message then the specified script
+     may need to be patched to have a shorter in order to avoid runtime problems.
  
-+.. _ref-classes-testexport:
++.. _qa-check-space-around-equal:
 +
-+``testexport``
-+==============
++-  ``<filename>:<line number> has a lack of whitespace around the assignment: '<assignment>'``
 +
-+Based on the :ref:`ref-classes-testimage` class, the
-+:ref:`ref-classes-testexport` class can be used to export the test environment
-+outside of the :term:`OpenEmbedded Build System`. This will generate the
-+directory structure to execute the runtime tests using the
-+:oe_git:`runexported.py </openembedded-core/tree/meta/lib/oeqa/runexported.py>`
-+Python script.
++   This warning indicated that there is missing spaces around an assignment.
 +
-+For more details on how to use :ref:`ref-classes-testexport`, see
-+the :ref:`test-manual/runtime-testing:Exporting Tests` section in the Yocto
-+Project Test Environment Manual.
++   For example, the following assignments would print a warning::
 +
- .. _ref-classes-testimage:
++      FOO="bar"
++      FOO= "bar"
++      FOO ="bar"
++
++   These should be replaced by::
++
++      FOO = "bar"
++
+ .. _qa-check-src-uri-bad:
  
- ``testimage``
+ - ``<recipename>: SRC_URI uses unstable GitHub archives [src-uri-bad]``
 
 -- 
 2.50.1
