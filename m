@@ -2,223 +2,180 @@ Return-Path: <quentin.schulz@cherry.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9859DC87FCB
-	for <webhook@archiver.kernel.org>; Fri,  1 Aug 2025 10:49:47 +0000 (UTC)
-Received: from DU2PR03CU002.outbound.protection.outlook.com (DU2PR03CU002.outbound.protection.outlook.com [52.101.65.55])
- by mx.groups.io with SMTP id smtpd.web11.84694.1754045376034767475
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 973F7C87FCA
+	for <webhook@archiver.kernel.org>; Fri,  1 Aug 2025 10:49:57 +0000 (UTC)
+Received: from DU2PR03CU002.outbound.protection.outlook.com (DU2PR03CU002.outbound.protection.outlook.com [52.101.65.2])
+ by mx.groups.io with SMTP id smtpd.web11.84697.1754045395564436975
  for <docs@lists.yoctoproject.org>;
- Fri, 01 Aug 2025 03:49:38 -0700
+ Fri, 01 Aug 2025 03:49:55 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@cherry.de header.s=selector1 header.b=C8W1zuum;
- spf=pass (domain: cherry.de, ip: 52.101.65.55, mailfrom: quentin.schulz@cherry.de)
+ dkim=pass header.i=@cherry.de header.s=selector1 header.b=OJqrzr8w;
+ spf=pass (domain: cherry.de, ip: 52.101.65.2, mailfrom: quentin.schulz@cherry.de)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RqWNPH8yNjXiSdP3UPKKXWDMiuv7hA2UChL+ynFOzta3wrjV3PidoeOuOpmRxZ05pzMwtWhoVxhcn7Zm9aPSxXRYWE/RF0TGqD3iIp/UN4dkXg9kalzuW/Tz7DT+LjoWEa1reEohbNwNeO9hH6PJp3EH4yMXuv8XYmivsObsqx9CeEYMg9HPJ3cJ3JthUajQOTZY6bTTNlk4lP4IZbWQbUfWh04DO0wu8+K+VcS/xG/hnw3ICwAYccKL/qnBFb8SF+5lAqzj8yseuWJIJm4pfumYn2b9MevHds/DkWOGwH6xX8gmlXaBQUwiRDSl8FsUld9x+EbC0IGMgH0frnYvKg==
+ b=tjR+REkveIYeJXDvaju7EP9GcFgUAIrpOyA9y/igZwBmtmF9oxeFlbgtoYfzpFQcAqu1GwLqTsS7rMv91ohXCXNyIlWubOWuBzwDzsflWaebVh0b8cAFKzhW9+GugfYyF9Siihr/8D91Ra4qx57SEaqbVGh8utWHZlGpIKlkcJ44RJ25YpQougpacmZplZf47nZodIAdqrMfgfzYX9/+tfTghoR1jbEfsdlcTwL/fKGtApCcKqW51XLhXqssaQlkggzQxaijtOOBghlU6t6xyfo6RtRmhuPEb3mI8LjKiE1yTH9ivlA6N0us0j/ri7dikBtSEMxRxdSh5IlnV9g2RQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=D3dykm42jkOdhlQgB903g61V05n70xxCxwLonIpQT1I=;
- b=gUnmmGjkr3pxgQb7E0kjDPdri8cB0YCPsBFwlawVVIFr6eYIvy3pKWJ9dfyKz3j3Ay6OsIkWqdJR9NdFKBs3Uj7A8OTfaVPscnCPbrxqTDajRiiYHIJVpGOyqPhNVZyLg+SOPHX3P4oKNa22WinZKbBIH2WklGAPNB0s0KkX8CyKAVs8mdSCikpQXNVQAmFiNyWSrD9D4a3Fm3qf3pA1ltVGSX7PM0RVRcCgjT1bYXjXfbXJY+ECiMaK2GLj/J5/JcuOrQGVoAk2v9cov6T9M2hrU/6irk6/FRHQojhixzUTdC0Rn9k9ZM8YThIZkZarGvTj0P8D5QolUvBByRu/Jg==
+ bh=hM3EqyuowSy49DUwxX0SxmWL/1yR/FzDw0AZ/aOzsow=;
+ b=svtlAhbWpk83JtFDPoUJqTRjia1uCyztdPG8Agm0BcOQSEDdzNGOg44aGn2g2tImzyejThbCGfdntd9O+sWDooIo8qGLQJbbRBvMbnLj1As2BRVxMYIBQDSVp7vsk616T0ZX8myMNN8YAZ5EKTKRxRnUfuJJI0r4cpyebJmSb6nE4sKKpd8WlamtnKo5b6YSZiUdQEATJzQ4eQX6XWJuI7AH8y3uS2nRmiqv+eJLdKserPDtDwxfTaetGt4aIdffjKnRDmKmc4g+qs/LgoLh1Y9eiEojjHrleDzNxRC4/wTX97XA5IMj/GhNq/shv6cH+YISfKUMqLyCcW687PLq6A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
  dkim=pass header.d=cherry.de; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=D3dykm42jkOdhlQgB903g61V05n70xxCxwLonIpQT1I=;
- b=C8W1zuumJn2sjB53g/R5hOHs+ryVIZH1unZQUE/mMgDXCWZXrpj6CkDu0B1Xc69XMKfa9XGYHWr+TsORmr1CmsAbfwk8rs/hcCubC6y3ENGVQNVwkm33frZIdRIBOkwUAzzj+ryq2E3I0tm4Ief26n84kPuP9mO3Ku5cEyeD5eE=
+ bh=hM3EqyuowSy49DUwxX0SxmWL/1yR/FzDw0AZ/aOzsow=;
+ b=OJqrzr8whwtrz5sa7hqR1YmotJNtCyaBhMidIfPHxtZHQxB/wjCi8J4mv762ELDzlqKtDO1BWmb20jPQR8tu7EWWat3TlDSZ9yYZSeYlRz2vScdMvtiFcxNZHap03h6dSCKoCLYDpAr/7r2w82ttHVIAk6A9qWxObTy2wIE2q1o=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=cherry.de;
 Received: from AS8PR04MB8897.eurprd04.prod.outlook.com (2603:10a6:20b:42c::20)
  by DU0PR04MB9495.eurprd04.prod.outlook.com (2603:10a6:10:32f::18) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8989.16; Fri, 1 Aug
- 2025 10:49:33 +0000
+ 2025 10:49:53 +0000
 Received: from AS8PR04MB8897.eurprd04.prod.outlook.com
  ([fe80::5ee:7297:93b4:a8d1]) by AS8PR04MB8897.eurprd04.prod.outlook.com
  ([fe80::5ee:7297:93b4:a8d1%4]) with mapi id 15.20.8989.015; Fri, 1 Aug 2025
- 10:49:33 +0000
-Message-ID: <14df4315-b01d-4b8f-9cf4-c112f7097cd8@cherry.de>
-Date: Fri, 1 Aug 2025 12:49:30 +0200
+ 10:49:53 +0000
+Message-ID: <0845868e-52cc-4c22-9a6f-95af7ba3a30d@cherry.de>
+Date: Fri, 1 Aug 2025 12:49:48 +0200
 User-Agent: Mozilla Thunderbird
 From: Quentin Schulz <quentin.schulz@cherry.de>
-Subject: Re: [docs] [PATCH] doc/bitbake-user-manual-ref-variables: document
- BB_DEFER_BBCLASSES
-To: antonin.godard@bootlin.com, bitbake-devel@lists.openembedded.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- docs@lists.yoctoproject.org
-References: <20250724-bb-defer-bbclasses-v1-1-70f1826d4b83@bootlin.com>
+Subject: Re: [docs] [PATCH 2/3] ref-manual/classes.rst: drop obsolete QA
+ errors
+To: antonin.godard@bootlin.com, docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+References: <20250723-refactor-qa-checks-v1-0-3a72c751ba83@bootlin.com>
+ <20250723-refactor-qa-checks-v1-2-3a72c751ba83@bootlin.com>
 Content-Language: en-US
-In-Reply-To: <20250724-bb-defer-bbclasses-v1-1-70f1826d4b83@bootlin.com>
+In-Reply-To: <20250723-refactor-qa-checks-v1-2-3a72c751ba83@bootlin.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: PA7P264CA0113.FRAP264.PROD.OUTLOOK.COM
- (2603:10a6:102:34c::19) To AS8PR04MB8897.eurprd04.prod.outlook.com
+X-ClientProxiedBy: PA7P264CA0116.FRAP264.PROD.OUTLOOK.COM
+ (2603:10a6:102:34c::7) To AS8PR04MB8897.eurprd04.prod.outlook.com
  (2603:10a6:20b:42c::20)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: AS8PR04MB8897:EE_|DU0PR04MB9495:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6091b2b6-55ba-404d-2021-08ddd0e91960
+X-MS-Office365-Filtering-Correlation-Id: 1782adea-9e8c-4907-7b51-08ddd0e9258f
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016|7053199007;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
 X-Microsoft-Antispam-Message-Info: 
-	=?utf-8?B?RHN2Z2FSN1gveUt0ZzdjT0sxZElPZ3lhbHhwNi9RYlYvandkMURsK2R1WmMz?=
- =?utf-8?B?SVpaM0pCRy9BTURmODZZNHRuQ1BHME5sYXQ1TUQxWThmS0hYWGZwTXJMenpv?=
- =?utf-8?B?MnFZcnFRaHJNRDlBZnNEajNEdnBadnkwVjE5SHJxdk42a1l5NEpEeXhkNlo0?=
- =?utf-8?B?ZlgwZHhpWEhBMTdPSHlqNkxlWW9wT3BlblNTMWt1eTB4WDFuVUlJYjJ0V3dK?=
- =?utf-8?B?c1lzYjgwR2Fpa1BOaG1ZV3RMb3dOVFBldzBZUTlBampIbVl4ZGgxV0ZPbXQ5?=
- =?utf-8?B?eXpSbzRjejBmbDJaMndyUXRtM2llZTc4eURIdzljTlhmaG9GRFUvd0x2V1Vo?=
- =?utf-8?B?MVBqSTZ6M0dOWWhZSXlLVjRoZ1hUS2E1UHFacXVnekZaTlhZZ0ZhcDZRK2cx?=
- =?utf-8?B?OHp6b2xCTFE4RWlXOWovaUIyVEw4NFpoOUwzQmdubHQ4MW50a2wzYnVIMVFn?=
- =?utf-8?B?Tktwd0hiUXhIU000dlVVSXBnQlpVQjFYR0NDcmFPUG1raDA3eGVFSEVtdnVT?=
- =?utf-8?B?bXFmREJJUWFSdnM3cHFISUlrV1dtOXlWZ0tRRTlXeTc5TEl6d0RpY1RpTjZS?=
- =?utf-8?B?WXNSK2JFNnN4L1EvZUhvTWI4K2pTdldhZC9sSEJuZzlLTTl0eHhGaWtUVkkx?=
- =?utf-8?B?b2dNaXVWamFTdHY3WDVidFFzakF1dHBWT3U2WDViV01ZaEYxOUNZdGpjV1g4?=
- =?utf-8?B?K2lUckE5TGFqWGRxT2hING1WYVhUakF1dU1NWXdvNnhrRklESkw1RXdITFBZ?=
- =?utf-8?B?eUtMVVN5SVJKVEF3Z0c2YkNTYitXbWNrVGtML2FEMnRuaTFoRUlnUWkxby94?=
- =?utf-8?B?MThDcEpFTGdnMHJCTTdyOFUyUzFnZDByYkJyYmt1d2htWGVpTTdnYXBDN2p5?=
- =?utf-8?B?bmJNaTFjOEdvOC80TWJLS1lDN01NbnovUWh1VDQzeHdqNE95dUg5dEFLb2JY?=
- =?utf-8?B?YzY5VEdsUndjbTVYL3V4VUNqSFRHR1VPclFIREJLNEl3MzFCZ1YwRnpoZkYv?=
- =?utf-8?B?MU5uUjMrSkhaQ2xmMmV4bmx4eTNvUEp2YTB2cVBNQUl3emNvbnRORnZ0bTFy?=
- =?utf-8?B?VWVmUGkybEJIYTg1Sys2V3dsUG1aYUNUUGwzOTZhRFJNczBjNU9BTVBrNW1F?=
- =?utf-8?B?Z2JMU3ZQbS95eExXelJra3NpbkNOdkZMOFpWZHhOYkdTVnoycXlSODFSWXdR?=
- =?utf-8?B?U0dvY1RpOExrOGRiZFh6NHU4NXAvTUZuWUYzcDd6ZmtSVitTNzQybW1OYTEr?=
- =?utf-8?B?ZjF6Q2lLeHpna1JRYTJoZlduaWpmYlIxYzRIQ2lvQ2VpNjNEbHM0VG9zZHZX?=
- =?utf-8?B?bS9WdGZ3dlNUdU45WUxWamtpK3pzMkYyRExpbnU3TENhZEZFQ3JMMm9mVXlF?=
- =?utf-8?B?M3pGRFliS1FhS0IrUWtmZVZIOE5KVm9xVml5c0dQenNPeU9xMGlQZ2lXWVV3?=
- =?utf-8?B?aWFsQ3dVSnhiMmdnMUg5UzBJNU1JUmRDWDMzR29LNGdBTXpwanZWZzhLSzgy?=
- =?utf-8?B?WE0zZUJ5OHE1eTJEdVhibU5kMlB0NkxGb0NiZ1hzd29NaHpVdStWRS90K3ZL?=
- =?utf-8?B?RncrTDlSVXBwZy8zenJUMDNYMm55QUlBZDMvSUNtaEU3cFhQV2ozUThKWlNh?=
- =?utf-8?B?aUJpZ1hSTTQyang5bUtKbkkra29TRis5cUU1dGJ6dmR6NE51ckhOZVVEcFJS?=
- =?utf-8?B?UDJvdjhrUi9GNjdLOFFtQitsRWw5b29ISUlVTHR3TkhXelk2ZGtaZVdkVFU0?=
- =?utf-8?B?cXNCVnIxYW1temJUdlIveVdFVDNhdyszcVZrNUJPUFAxTndhYVBvSVcrZThO?=
- =?utf-8?B?UDNPU1pOcnlCOWNCaklDZ1I5RFkrVTV2YmQ5OWQwSjJHRzhpcVo5alpUQmoy?=
- =?utf-8?B?b3hILzR1OHFSSnk2enJRQzJHRTRXMkkvQ0xoOUQzOHcyR3JkQjBqTHl1NDRm?=
- =?utf-8?Q?fu0/JtWveg8=3D?=
+	=?utf-8?B?OGJISzFGREVJVy9qL3MwYVRrbWdBVXJ6ZE1hS01GdzdGRUljcC9xSkFXT1lT?=
+ =?utf-8?B?QlE4dndEWDAwS2dVYWV5a3JOdXBNQzQxODBiOWFWRFoyRGpIUDBRbjdHUDVM?=
+ =?utf-8?B?N1BBN3B0M1psUXBqdW5TL1VHcjZFM1VHVEJDeDFMeGJQVnJ5YWhqRXZvcjM3?=
+ =?utf-8?B?UUY2dU9aMDM4cVhOWnBRSWdyV040dzU1bDVxWFZMRVF0UUN0TmJzYzlsNzFr?=
+ =?utf-8?B?N2oweGllSmZIOSszcjFFSzNONFZqcGFiL1ZzTTU5VWZmWnJ3ejVHRmZHbWpr?=
+ =?utf-8?B?MTJvSXRRUjVmV0Z0TDBzOHNISFlGaEJ0ZXhWY2NLc3FUNlFoVENFc0loaHZB?=
+ =?utf-8?B?MTJKcUUxSHhPYS9RQmljOTNpVmw0aHNmQm1oNmRXK1lwRkg2Vk4xaUczQ3hi?=
+ =?utf-8?B?U3F6T2hYWHd3VWdkbURPR09DTWVsSG5CbUlEQmg0THpxTzVFc01uYzVwSll4?=
+ =?utf-8?B?TGZTV0xLbDRsdjRzeVZiT2lFZFcvU1Q0ckNJZ01VelFUMXRueTY1MXpUNkZy?=
+ =?utf-8?B?Y3ZiYVhmYUxCSTAzQnc0Y2g5UFk2YWgrakZVNjhCem9HNzFUbjJzbUhLNDg3?=
+ =?utf-8?B?dDYvbm5EWVJka2JLSWUwUDdzTHNYWmtaT21xQ2hTT1FERW14SGYrZTRsZU11?=
+ =?utf-8?B?YTZjcWVkSmF1b2tCQ0RrTU5CL05NdzBGYll2KzdxVWwxODhkbndueklEVWxl?=
+ =?utf-8?B?ZXJXdjNaV3NHeVVlbE9Ca2tOS01pZEhCZDZYMGhwcnF0bFJ6d040SzZQeUJJ?=
+ =?utf-8?B?M0JMVkFsS2RFa051a1YwNDNoTnhBamViamhBNXp3b1dOcnFRTWJJck44Zlc0?=
+ =?utf-8?B?TDhVbURnbnlrVUJXVnRVTE52Y1BXM0lyb01Hem9rZXVWMEdXc080K3NMVUFy?=
+ =?utf-8?B?R0dkT21rbS9DN3V5RS9JdkZhTUJqMmJkS0dHQW1URGZ1cnBuTCtnNHhWRU5Q?=
+ =?utf-8?B?UExlNm9Ja2s1MldqWHJKWnY4Wk9qWjV0ZmRFakZ6Tkg3OVhaalZxSnNQSndE?=
+ =?utf-8?B?aG9SK1NCTi9kZUdwd2FGeTlMajVaS1NIeERSVzc1NDAxSFprNkM3d1FjMHhM?=
+ =?utf-8?B?WWFEOGozeWhFN1lwTFM2VXJEV3RROWJDYVRQd1AxT3NnNmJEMnVKUjRoeGd0?=
+ =?utf-8?B?UjFPQlgrU2pPalF0QlByVGpQekl3OWtNTFJGbndxUFpkR1lTMHdtRS9DM2ZG?=
+ =?utf-8?B?aTE5VkoyVWUrcU1MYVNKNHhLMDhyU2NEbFUzQzBpbnRhRXBXYmFxT1Vrd0dk?=
+ =?utf-8?B?WURSMHBqbk5kMVhnTzVWMEdjVm5jVElTUjloNmh0T1BMWmNwVmljanBTRXgz?=
+ =?utf-8?B?cGdZelFtZHBncVRtV0ZNQWRPNzMvSk42cHp2anAxWE93aGNZM2ExN1paT0Jn?=
+ =?utf-8?B?c0JMTmZnQmJMQ2hmOXJNUlJBUXg2TlhnZUhLS2NDQ1dlWlZtU0J1cWRFR1M4?=
+ =?utf-8?B?N0JwWUhUKzkrdjV4SUpBSld6Q29nbVJobktveDhJYWpyOTZnYS9xcFBLdVJp?=
+ =?utf-8?B?dE1zV2JhbURUNWwvVFFGRWRjNHZ4UVdXSGh5cmNHT3FtaXFiaVpvN1cyTXY5?=
+ =?utf-8?B?YVVTVTRFM3hxejZJckVTTCtrQ2ZCaHNBTGFxRC9lTXRjNkhEaFhubDlKc0Z4?=
+ =?utf-8?B?MnRmckJVZG1xVmJTWkFwZTlIYXZjMHJBNVdQQjZENmdGYTJvUStWZWxVbklD?=
+ =?utf-8?B?NkdlYzBnS3BISllTNkR0T053d2tobGRVODBsSC9RN0lTcUs4cVZwS2orcFIr?=
+ =?utf-8?B?WHJ4MVhnSDNhRnprc1llakRJdU5KTVNhaUY3dUE1ZlBENlZwZGpjSk0wSjJu?=
+ =?utf-8?B?dEJsNFB1b0FPYWUzYjcrZWUvU3FBWmVhbjc2aDVwM0RnZ0NBZFRhdkxyNUJM?=
+ =?utf-8?B?ZmNHTmxwaUI1ME1uVFJxMU9MUmhXN0MvN2pza3FTRGhwaEY3V3AwcldMNnhS?=
+ =?utf-8?Q?PtApuXxiU9c=3D?=
 X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8897.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8897.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?utf-8?B?NE9EYWdWckg2VktlYkJQdnZFcGdQa2grQXI4U2xFbFN0dG9oLzYvRWFITVJE?=
- =?utf-8?B?Sks4TWoyd1ZGcU9Bc1k1akM0WGNadHpWZTVTeDc0NGVjcktqQXdiWVV2SWdh?=
- =?utf-8?B?NkhNNVBiMVUybUFkVEIrSWRUUE5Damc0WHppbUo4SlhQbDBRVkJ0VDVzamFz?=
- =?utf-8?B?Mml1YlN6ZDZFZ1BHZWpVcHdNbFBRb1ZxcWV0R0l0cU5sYWllL3pKTnRmN3po?=
- =?utf-8?B?TVRGc1V6Q0dXdWFXcjZWRjYxQkdCU0orV1I1VThBT1dJS3pPWm9EajB5MWpE?=
- =?utf-8?B?Q3hKTzJQbm1hQzdVOWxVdEtCRk5KYlhndEhzYVhpMWFvbG5nUnRkTWNNNWR3?=
- =?utf-8?B?NTR4Tm8rYTBmcWN0SE50OHZFY29PL1RWYWVyUExXRzAyYWVuQUJMTXJGZHVP?=
- =?utf-8?B?M3RSSit5bHZPWkxLMko4TGxjQ1JXT29yQ1hzNDRKd0U5TExaNnBRQjBvMVVq?=
- =?utf-8?B?UE5wQmNzY2RaeEhVMEJFTElUREY5VUF5SVRrUWlWdG81cHVEWGtWak8rS0dx?=
- =?utf-8?B?bTBObGFKMm1UdzhQNVMxY3N3WStNMWVqemRHaUdyZ0Ntd0l6YkxScGZBME9q?=
- =?utf-8?B?RCtEZ1d3MEpoTFdLR0d6ZldtQ3cxZUlEM3V1eHRLQnUzWGhPZ2VFaHZXZXJN?=
- =?utf-8?B?dUZWS3ZvWXVNMFNnYkk0dDNnRmZSN1pualFOTGN4bWVHRTVrdGxZeEsvbCts?=
- =?utf-8?B?cERueXVEOGVUUFNrdXRmeUo3TUlMWElzcy9PQzNtQnFYN0Q2RG1lbVViM0ts?=
- =?utf-8?B?RnVueXZzWHhvM21BNWNIOHY3aTlSWG1OV0JNY1JQRFNqbE1Edmk5eERBampp?=
- =?utf-8?B?d2xwSjViVjNSMnF6aXUzbXo0YkhjUEJ5MkpIckUwVnBnWTZlT1dNZmxwejU3?=
- =?utf-8?B?ancvZHB4K3FKS1FXYW1aT3JpakhFWUU0U0FHUkltZ254ZmtFc2VvSFYyRnJS?=
- =?utf-8?B?WVM5T05CeUtibVhpRjJrVHFxZ05ZWHlEV1FJTWtDbkdXM2t5YXFLNm5wOTJw?=
- =?utf-8?B?ZHl0RDQ0UzNDdkw5SDhydzVKbkJzekFIQjhndGV3MklDWXgwVDVYL2VrSm1a?=
- =?utf-8?B?a2N2bTZVcVBuUStSUFlESm9XdGg3Smc5UUdGVk5MaHBteWpQY21ad2g1R0xN?=
- =?utf-8?B?Y3dMZzYrTHA5ZDQySDVnTS93R2V6S3Y0YkxicVNDQksvS2ZJemFtNTVKS1ow?=
- =?utf-8?B?QVQyRkdUNHhsdTd6VWdwaDFhZkJESzFZUytKRDVjNXhKbHBxQU53S0I2TUdV?=
- =?utf-8?B?dTdndHBIc0hRcXJrK0dUOG1BUWNTQlBrVW5vUGtMbXVLQ09tdGdhSGU5dnBF?=
- =?utf-8?B?MUtScGhjUkFFS21pdk5TTnpkUnBkMDVjMytPTFpkWXB3Ty9PSVJIR2FMa2lJ?=
- =?utf-8?B?ZDlIOEJSaElCR29ISDNhT3ZzamhQTnBEREtEK0pTb1RGT2ZFNUl0UGxZamVO?=
- =?utf-8?B?emppM2VlK1FkU3pPVkZPRnhjVHBQMnJhemtVOTFnOVQxdm1qSExYSmZ2bmF1?=
- =?utf-8?B?aURSeWkwK0E4VmczT25oenl2YzBxd0xNWnBqN2k2Y1M1cS9LdmNxNVpzQTI3?=
- =?utf-8?B?dzFLNmdWTTlvejk2MnUrazFTTjA0WTE4eW45dmJhc1R2QlI1dVVmby9mWHFp?=
- =?utf-8?B?QXZoclM1TUJUb1dOekxxM0ExTWZYZjhnbmlhRXFjUmtPYkxVVitwM1RvZzBS?=
- =?utf-8?B?ZXEyMUlUdmF2cWZHN01HRUhCMFhoaEZnYndlMExYVDlqZDkyM1AzY2lYSTNw?=
- =?utf-8?B?cWV3cXF0bld0TkQ3S1dBUUc4UmtVNGFIM0h1L1NWbnV5RXBlS2ZiRFRmdlpw?=
- =?utf-8?B?VjZKcWNTM2c3Z3RBS1N2emEyNzdSLytReUpzbVhoRkZYRWJPb0JBM3Y2aWZS?=
- =?utf-8?B?NVNGeDN3anQzVTFZTHBPQ0tqbGZ2QmYwYnBWWk9NYVFpQ1NZY0lpVzd1Q0Vu?=
- =?utf-8?B?bGVHUlhKc1VMQ2VNalJ0R2tLQmZBeDYySjVhclI0K0NDc25Sb2duUkFuQ0Vy?=
- =?utf-8?B?VDRQdWxiRDRPMlNJRzBmNkJGZWpBL0wvWDJacU9kS3JqY1IwcHpiRUVXbVE1?=
- =?utf-8?B?RFpReXRsdVNONElMdkF1T0d5UXo3eXhBWlRBYUlhRlpuck92UVVyUlB4N2s1?=
- =?utf-8?B?NW1lNERITHZBVVY1aEpCVVlJMFc2ZklIRVVGdmxtMFJzSlBQV2RHNUVWazls?=
- =?utf-8?B?eUE9PQ==?=
+	=?utf-8?B?LysrTFJ3MmFDd2NNajlsSndWUklTZkdXTmNyMFZXTGJUV0R5YmhUNEJkK1ly?=
+ =?utf-8?B?Q2RJYmVBRGpJYXlGMGkyMU5mbmJaUEV1WTFkSlFKMkFqWnJoT2VrcjhSQ3d2?=
+ =?utf-8?B?L3A3WnRBYmtxMVJZZGxHWlRHZFk0MEkzZFRIZ2RTTXdKYzlCeHRZOVZ1TS9J?=
+ =?utf-8?B?Q21OMjZrY0xuUWRxaENhcHJiSmdxa1N6cjVZdDM4TmRzVndnaS82ekZ0akxo?=
+ =?utf-8?B?eDJodEVVTFNMeThNY2pxVkhsR0s2c1JZVG9mSzA2Nnp0cVorbmQ1MzhWSTFN?=
+ =?utf-8?B?ZHZPR3RFaDNXcTZMOFhNVmw4K3VRVFNoQ0ZxbWxPY052OWtXaXVwK01odEtw?=
+ =?utf-8?B?K1k5aGdzL0Y5Ulg0RlFtSG1hQzRhSEI1SUNJc3pNRzlIQzFxcmd5VUNtYTVx?=
+ =?utf-8?B?OWJWbExJSUJQeUREQ1ZOeXZPeWlmMXAwQUFnRVkzeE44ZXJDNmh5TnQ0eUJF?=
+ =?utf-8?B?NDRmMmlEd09rSzZiVmJ0dkpBaG5GK2N5UE9ydVR4SGFBT1doejIvNWFzY1c2?=
+ =?utf-8?B?OW15NGZGWDJ5STJmRGQyR2hSWWNWdlNPd05qcFIvUHNpUGE3N2RiaDJONE1S?=
+ =?utf-8?B?T3l3dE1YQXYvTVZCbTJhWDFqelEzU09McWtsV0dMK1dWMDJOM0FqcTd6eHhG?=
+ =?utf-8?B?aUNtWDRMZGRhRmpUQ1p2VjkxMEhTUDNkN0JHMjQzYUQvcGI3dEk2N1lOSkM0?=
+ =?utf-8?B?YkN0bVdjNkhXWHZxVGF0UDcxeDlTcGtZRHQrdkEyVzF3bjR5bk44V1JoazZJ?=
+ =?utf-8?B?TnVSR2ZlckVIQXRUZ2xOM3BEeStvaGtEdGllUnR1T3F6TGx6M0lUR1NBQmoz?=
+ =?utf-8?B?V1ZEdHptckRBVzU0ZzNRRFFmYVl5UDRWeVRCbHNxakl4OHBoMEVid3NNUTFM?=
+ =?utf-8?B?UDV5RzBXbHpMbUtMUWdsSDdIc3h6UGpVTFFmSm82REcveVNxUjJyQ0tlM2lU?=
+ =?utf-8?B?UDZaUk9vVUh0NlNvUnJDUXRWTmVRMFZkdlF0blNXWkJQbjhIM3B1bHdGNDNi?=
+ =?utf-8?B?elRHRDlvNjBpM2gyaTJ5bXRZWWxzWC81MjB6Mzk2RkNqMEY4Y29GanB3SGdp?=
+ =?utf-8?B?UWtrdTJxakc0d1E1OHlQZUJTNWFPUmp5ZlRuY1M3T0paNFc1UVNZejlCZE14?=
+ =?utf-8?B?VGtDWWFmWFd1R3BBaVM0VXhFR3dWVWVtZ2R3aGI0YnNDSTRkclpxNUFvV0hG?=
+ =?utf-8?B?b2JFeWZGQ0JHZlpwZkUxZWd6Q3hKOHYxS2NyOEFBN1ErcFV3MlI2OS94aWh5?=
+ =?utf-8?B?cEppNTJjczQrVk5IM0hKc3IyMlJseS9vMno3eFZqY0VFM0thWW8ySnBHSlAw?=
+ =?utf-8?B?QXBFSXFUYUwvbk1UWGRZZ0dKcGkwT0NCOGNtYmdTRGJ4T25HYjhxOVc3eFJS?=
+ =?utf-8?B?UDdnWmNxRi9Bd1IwZnhDM1owM0RCUjZMdm93NUV2OXFDeTFBa1AveVM2SGlL?=
+ =?utf-8?B?cURBNTRQcit0QStEZkwyK2NkSFdwd0U0SmtHVVBaMFBweTNIZlNGUUNkazdx?=
+ =?utf-8?B?NXJqK3J1UlZ4SmxqeTQyOUp0WjFta3k5QjJJMnNDZ1JjcDJTY2N5bHY2TU1L?=
+ =?utf-8?B?S0NnaFlLbW9ScW1aOUNhNmJkWHRuNmh5dFZ6NlRNZ1FnQUZ0VDBHVWVnazhP?=
+ =?utf-8?B?ZTg1UkIrdHlTb3QvOTl5dEIxaTVuakJwak5PMkoxVzhNQmN5WW9XcG5wUXo5?=
+ =?utf-8?B?WStMTTVuM1Z5TEl2ZFBmUGdYd25uNXB1MXNiOGNwSkFRa09JMHlPK3NjelBL?=
+ =?utf-8?B?ZytLOHFKTytjWkNqVmJBNk1INnk5VExCQVVaTHFkR21UZ1VLakxCQkpQZW9r?=
+ =?utf-8?B?MCt6VjkxYXBpcXUzb1RoWTg2L29waWRDM3pLa0tkQzJYYWZrdnUzb2t1emx3?=
+ =?utf-8?B?c3pqc1JUekdTMjZ0bDVtVU5wMVN1Ti9zcENuU1B1Q2ZKVlRHR1dwMldsc1Vm?=
+ =?utf-8?B?MFRWQnlsUjNIYVY2Tk9xZGFoZEptWmxBWVp4djY2ZmpCYXZTRmE1OEtkVnAx?=
+ =?utf-8?B?b2RSV2NDbUY3RDZiWk94TDEwb3NYOFEzYjZoMFRoRWZnL0J2WUtiWisvKzA4?=
+ =?utf-8?B?K05qSE9JY3k4V3dyYUVCVEgvVDJERC9vbWZwSzRLRHJpc3ZqYW9Id0RtWWxm?=
+ =?utf-8?B?clpTYVZoekJTUm11a080TENpd1pXK1FDVHBQenVkbFZ4ZUZYZzYxMFFONU9S?=
+ =?utf-8?B?THc9PQ==?=
 X-OriginatorOrg: cherry.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6091b2b6-55ba-404d-2021-08ddd0e91960
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1782adea-9e8c-4907-7b51-08ddd0e9258f
 X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8897.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Aug 2025 10:49:32.9105
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Aug 2025 10:49:53.3402
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: JvqRHb+o7AOxnVlcINyaFry+91JH8bjLuaoVRF0nFkRxotJsCXsvcN5LamMC/893FzQ+i6sW5DMJRfUW488QXisEy1JhjvbWzYj5iei1lFo=
+X-MS-Exchange-CrossTenant-UserPrincipalName: Sw4EDoU4nFMw0gx8+SrmEnfjKDfu1zD137uzPOPjgRpZ/21A6odRpsve/eqXTaGTaz8VaRR1HToFHq3krA9hD0cl8AFmR8NVNTRopnXpPqE=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR04MB9495
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 01 Aug 2025 10:49:47 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7425
+ <docs@lists.yoctoproject.org>; Fri, 01 Aug 2025 10:49:57 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7427
 
 Hi Antonin,
 
-On 7/24/25 12:15 PM, Antonin Godard via lists.yoctoproject.org wrote:
-> Document the BB_DEFER_BBCLASSES variable added in 8e741b2e885a
-> ("ast/BBHandler: Add support for BB_DEFER_BBCLASSES").
+On 7/23/25 4:27 PM, Antonin Godard via lists.yoctoproject.org wrote:
+> Drop after commit 068d38214307 ("insane: remove obsolete QA errors")
+> from OE-Core.
 > 
-> Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
-> ---
->   .../bitbake-user-manual-metadata.rst                  |  3 +++
->   .../bitbake-user-manual-ref-variables.rst             | 19 +++++++++++++++++++
->   2 files changed, 22 insertions(+)
-> 
-> diff --git a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst b/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
-> index f60a9d8312..8df81e9b66 100644
-> --- a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
-> +++ b/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
-> @@ -871,6 +871,9 @@ In all cases, if the expression evaluates to an
->   empty string, the statement does not trigger a syntax error because it
->   becomes a no-op.
->   
-> +See also :term:`BB_DEFER_BBCLASSES` for automatically promoting classes
-> +``inherit`` calls to ``inherit_defer``.
-> +
->   ``include`` Directive
->   ---------------------
->   
-> diff --git a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
-> index 6be8dbbf63..cc1f74825f 100644
-> --- a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
-> +++ b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
-> @@ -141,6 +141,25 @@ overview of their function and contents.
->         The default umask to apply to tasks if specified and no task specific
->         umask flag is set.
->   
-> +   :term:`BB_DEFER_BBCLASSES`
-> +      The classes listed in this variable have their :ref:`inherit
-> +      <ref-bitbake-user-manual-metadata-inherit>` calls automatically promoted
-> +      to deferred inherits. See :ref:`inherit_defer
-> +      <ref-bitbake-user-manual-metadata-inherit-defer>` for more information on
-> +      deferred inherits.
-> +
-> +      This means that if :term:`BB_DEFER_BBCLASSES` is set as follows::
-> +
-> +         BB_DEFER_BBCLASSES = "foo"
-> +
-> +      The following statement::
-> +
-> +         inherit foo
-> +
-> +      Will automatically be equal to calling::
-> +
-> +         inherit_defer foo
-> +
 
-Reading this I was wondering whether BB_DEFER_BBCLASSES needed to be set 
-before the inherit statement for it to apply, but quickly looking at the 
-code, it doesn't seem like this limitation exists?
+Actually, they were removed in bcc03ea19e103f6aa93bada2f49fcc5cc7bc0790 
+for split-strip and a67e9ebfd5b8002fd4a7d8d27ff0d997817f76e1 for the 
+other two accordingo the commit log.
 
-Additionally, is there a typical use-case users would encounter that 
-would require this? I can see that in poky we use it for native inherit 
-which I believe we ask people to always inherit last in a recipe?
+The former goes back to Thud and the latter to Hardknott. Considering we 
+aren't supporting any version before Kirkstone, it's fine to keep both 
+changes in one commit :)
 
-Maybe this is something we could document in YP docs also? That is 
-defaults to "native nativesdk cross crosssdk" and that you typically 
-want to add to this variable and not override it (I'm guessing?).
+However, this should be backported to kirkstone and later still 
+supported branches!
 
-Cheers,
+Maybe fix the commit log so we aren't confused by a backport to branches 
+which do not contain this fix.
+
+Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
+
+Thanks!
 Quentin
 
