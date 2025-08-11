@@ -1,198 +1,246 @@
-Return-Path: <jan.vermaete@gmail.com>
+Return-Path: <ecordonnier@snap.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 31837C87FDB
-	for <webhook@archiver.kernel.org>; Mon, 11 Aug 2025 12:16:36 +0000 (UTC)
-Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
- by mx.groups.io with SMTP id smtpd.web10.46687.1754914590833640439
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 55D48C87FDB
+	for <webhook@archiver.kernel.org>; Mon, 11 Aug 2025 12:43:56 +0000 (UTC)
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+ by mx.groups.io with SMTP id smtpd.web10.47180.1754916231972524456
  for <docs@lists.yoctoproject.org>;
- Mon, 11 Aug 2025 05:16:30 -0700
+ Mon, 11 Aug 2025 05:43:52 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=IBotCI38;
- spf=pass (domain: gmail.com, ip: 209.85.128.179, mailfrom: jan.vermaete@gmail.com)
-Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-71b6ab52e8cso42143187b3.0
-        for <docs@lists.yoctoproject.org>; Mon, 11 Aug 2025 05:16:30 -0700 (PDT)
+ dkim=pass header.i=@snap.com header.s=google header.b=GoYpe/05;
+ spf=pass (domain: snapchat.com, ip: 209.85.208.43, mailfrom: ecordonnier@snapchat.com)
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-6154655c8aeso6018340a12.3
+        for <docs@lists.yoctoproject.org>; Mon, 11 Aug 2025 05:43:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754914590; x=1755519390; darn=lists.yoctoproject.org;
+        d=snap.com; s=google; t=1754916230; x=1755521030; darn=lists.yoctoproject.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=u4XQFF22OKrcMkqnc6Ec01jS3oc4j78Tt69NJvKkX7M=;
-        b=IBotCI38fmfJIrSRuTE7sPeDhS1ojXEgGxK/1CPIGe2T0q2YKlynWJtuQ4h0G6YPrb
-         z6wJU5SMEV/ntVhqDakiYgNSmbWwAhKbAQjFNckHRg0gTgLEUu/t2opKedCy9JQdQ7vi
-         NVKO64tHxRvdn7pzSW1XNDStZXWkoqV5kY0VkbwUoCVI8cmy+GmaEN8qUZoHRVzJ5APM
-         IwCeVvHsPDIHVyJg8nrnX5EaveQEuzqMHoOUlF4/AX/oRJrAiPG5xyuVAWSaaD/7Sn7g
-         CxhNMOmeUt787GWATai73rtiaL01SqG8SAvTSYHTpB3ms28w4MQBy1Eqoe4ZlzznlFd2
-         GGRg==
+        bh=HJa6xCNRywNmMSTV3UYcj4K+aMtc6IJeL0ywnTyf8nw=;
+        b=GoYpe/05TbzglCrnOSqj/KKTUVWDXPYKkWsTOxKmH8JK1UN+MNjSFNVYTGpUXyubew
+         sGDMjPdb7o8Txg6mFTRlfLpAZ7S3z9LN+M9S5wAKEctcUGmQP61jlxyK7PT40VS22B0C
+         ZwRzEvrfez3TqFoDaMTULw9LUswKrAn/wsXw4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754914590; x=1755519390;
+        d=1e100.net; s=20230601; t=1754916230; x=1755521030;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=u4XQFF22OKrcMkqnc6Ec01jS3oc4j78Tt69NJvKkX7M=;
-        b=Kd5R30TZVNLJXUYa3mV6og+rVFXM9wey5eURvcrJo/YKu+078fM4wIwcwQUePBIrGj
-         rvRuqBo5H0pEU4iBehEnRhn3xgLhJiDUxUCvUK2JQMEE9zbj48zKO3tT6E/sUkDuTfnt
-         cSdFhzImmSCs/O7ubdF73kxovNQxlDMkBOocKLXdGtZwKeax4ANnksBtb8k14GKhTDwb
-         bau8fq2ueftST51lzvR41dEpyKVSqVGUhT1xZ17VCF9Wqxa7zUIbfghps3f+WgoywlMm
-         GxpelmsWi4Tj2ICUrLsyXX6DDmVrLsadL0U1E1aXQe8Q1dDDSev5Qi1DASkAHqTBNWK2
-         OBTA==
-X-Forwarded-Encrypted: i=1; AJvYcCUHa/rgMrnmOXhoFZqDY3uEa6I7vE7L2HP4bm+he0HLo6vKPY3kG5pHBUcTMY39vY2x76+A@lists.yoctoproject.org
-X-Gm-Message-State: AOJu0YxpLvLFhkxfDR43IraOj381WDshd7h7QQSN8baeu1kUTGJd45c6
-	0BwGpSDyh46LKzaubq/KJwbICTrUxZUOxt419qp//BRfQXVMParlFEeo/aDeXcMqX5jtVycul58
-	qS/SKtKz7uRAeLnEhEyhCiTIMHR0J8Uc=
-X-Gm-Gg: ASbGnctxNfRa+/tqE9f1hYmTgbGZ8LF8YXnEqK24dbTeT4yZZ/JJXeIo6d/Fvb8CVbB
-	5eECbpNlXNHP/O9NPxhv4YppG6itSTcLPtnJ5YC9wRQQEODs0AtQySHJ2/L2De6PtLwC2/Ygm0U
-	CaE+QfKRG1vYF5nM2VreMgljmo9VPWC8AcQBtuZcpSN0fBIQSJSJLcBC5NWYTIQ+ajfTrRebb9m
-	ZOKqd6q
-X-Google-Smtp-Source: AGHT+IGyaalE6CVCJIDqHI55DvaEp9UmtsgDOhi3tFuq4ATDJTJGmcgFtdiHkOO/eO5VMvDHpst+9Q6D5Xny2sNit/k=
-X-Received: by 2002:a05:690c:a089:10b0:71b:f500:70c0 with SMTP id
- 00721157ae682-71bf5007437mr98315437b3.6.1754914589472; Mon, 11 Aug 2025
- 05:16:29 -0700 (PDT)
+        bh=HJa6xCNRywNmMSTV3UYcj4K+aMtc6IJeL0ywnTyf8nw=;
+        b=dCiTK+2QhGT05QHWbtDEFiSg6aTQcfWQkLssU1sOgPBthc/GGQWtIkkDPxXIkhhNVx
+         Y8u5K1iC2I5M6+qrQc+pcR+doH5Q6g1Ix0eQxPt4o8vZguWJJruzd8Hf/rmYbF9elJJ2
+         oa8FihMjIZJ1NHSe1Keny1JlPv4UXLj4e951KDId1OA+cpTyroifjMxFy5kEyjZNiuZJ
+         paTggv0x5RAKO5a2LKdZx3drLwyBnDEd2eoGvioPpt/7I18+0u8agnmYfLELVcpl/lvN
+         bfu14FX2zHl+SuikL/WHqgxfBtBFkX8XSata8JCtkBWcSZzdl9Kb5tshUjOyEpYemjha
+         U+/w==
+X-Forwarded-Encrypted: i=1; AJvYcCWycC2ULBJjWj+u+D3KXn4lzX0qqcS+JHmTIOWSmCtKz82cV0OzC/NAIz9qSsU7NfinaNfj@lists.yoctoproject.org
+X-Gm-Message-State: AOJu0YzYz0dGJKxOmml5/n712A8ke4XqkllUezZ+8nmktYuxR2h5Hsay
+	TkyKOUnyIrxRjnpgWRSD+BqlABC3VjKL6nvuErzLOsHFYkonS6vn2Bo6t9AtZJVGlngrzalORDy
+	4FyY0qIZZG4NAhWFQic28gzEHQKE2Jdt4N8cP+YgMtA==
+X-Gm-Gg: ASbGncsYr2lvnyYzUfcZHKBGXFF1zRwvZ5nNNTd5VKL7P7X9/8erpOrZQcy7DBTwdUd
+	8iIP+cCkOG4nueNA7R0uxunG9zzsf+48Lep1hNsQgm7gASWDxjK0L8+fqABAzNHj3OZx9jhJz9z
+	diaY2kNCDJLudLLuE6HVrutbNhGVwiXIU/KelJPLB4Bfg/754TYqY+VCCFz0vcLLaBiXVK1mGnx
+	DRvpP0=
+X-Google-Smtp-Source: AGHT+IGZERBpqxMD2xL+ktAgk++Syi63Ooh+lhYWPh5oAlj0zGPaIRWt2cv2MUhVec0MidcgpkFgxau8XKOyQ9QvXlM=
+X-Received: by 2002:a17:907:3d4c:b0:ae0:ad8c:a559 with SMTP id
+ a640c23a62f3a-af9c640e351mr1337149966b.4.1754916230268; Mon, 11 Aug 2025
+ 05:43:50 -0700 (PDT)
 MIME-Version: 1.0
 References: <20250808174828.236218-1-jan.vermaete@gmail.com>
- <CAMKF1srX4oUqvD3+X4-nf3r4ANuZ0XyyJ3UM0ea2+5fCU=Fwqw@mail.gmail.com> <CAHUKmYbRWmCZkWr-oS0EAAkqsmFLo2qqDWXMMRi1MUk0qR67aQ@mail.gmail.com>
-In-Reply-To: <CAHUKmYbRWmCZkWr-oS0EAAkqsmFLo2qqDWXMMRi1MUk0qR67aQ@mail.gmail.com>
-From: jan vermaete <jan.vermaete@gmail.com>
-Date: Mon, 11 Aug 2025 14:16:18 +0200
-X-Gm-Features: Ac12FXxIQYpmqw7waqFkDfABWuW8ZE6gNMggywfv1gp9C5AvQCUQVeUxvB38Mdc
-Message-ID: <CABF_=yhhsm=j2qQM_tkMkkKDurg_Rwi7sOAZQgA_HFLpBO7BFw@mail.gmail.com>
+ <CAMKF1srX4oUqvD3+X4-nf3r4ANuZ0XyyJ3UM0ea2+5fCU=Fwqw@mail.gmail.com>
+ <CAHUKmYbRWmCZkWr-oS0EAAkqsmFLo2qqDWXMMRi1MUk0qR67aQ@mail.gmail.com> <CABF_=yhhsm=j2qQM_tkMkkKDurg_Rwi7sOAZQgA_HFLpBO7BFw@mail.gmail.com>
+In-Reply-To: <CABF_=yhhsm=j2qQM_tkMkkKDurg_Rwi7sOAZQgA_HFLpBO7BFw@mail.gmail.com>
+From: Etienne Cordonnier <ecordonnier@snap.com>
+Date: Mon, 11 Aug 2025 14:43:39 +0200
+X-Gm-Features: Ac12FXxbZ3-4cbGYO2LXkZzCNlocf6j0N3-hOW5ApOsPq5-7DvPQ1xrnleXgbJ4
+Message-ID: <CAHUKmYbwek+5wWO1GaoM4us-CryArB+FHdB06a6nH=VD2ra2nA@mail.gmail.com>
 Subject: Re: [docs] [PATCH] sdk: The main in the C example should return an int
-To: Etienne Cordonnier <ecordonnier@snap.com>
+To: jan vermaete <jan.vermaete@gmail.com>
 Cc: raj.khem@gmail.com, docs@lists.yoctoproject.org
-Content-Type: multipart/alternative; boundary="000000000000b782da063c15e48c"
+Content-Type: multipart/alternative; boundary="00000000000084335a063c164603"
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 11 Aug 2025 12:16:36 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7451
+ <docs@lists.yoctoproject.org>; Mon, 11 Aug 2025 12:43:56 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7452
 
---000000000000b782da063c15e48c
+--00000000000084335a063c164603
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Could be, but the example as it is now in the document is not longer
-compiling.
+"Could be, but the example as it is now in the document is not longer
+compiling."
 
-Jan Vermaete
-=E2=80=9CSuccess is a self-correcting phenomenom.=E2=80=9D -- Gary Hamel
+-> not because of a missing "return 0" or a lack of void keyword in main,
+so I don't know why you mention this. I agree that adding int as return
+type is necessary: "int main()", the other changes can be added, but is
+purely based on personal preference and not needed to fix the build. IMO
+"int main()" is better than "int main(void)", which is why this was changed
+in C23.
 
+On Mon, Aug 11, 2025 at 2:16=E2=80=AFPM jan vermaete <jan.vermaete@gmail.co=
+m> wrote:
 
-On Mon, 11 Aug 2025 at 13:59, Etienne Cordonnier <ecordonnier@snap.com>
-wrote:
-
-> - "return 0" is optional in main after C99, so adding it is just personal
-> preference but not strictly necessary
-> - int main(void) and "int main()" are fully equivalent in C23, so changin=
-g
-> this is also personal preference
+> Could be, but the example as it is now in the document is not longer
+> compiling.
 >
-> On Sat, Aug 9, 2025 at 4:48=E2=80=AFAM Khem Raj via lists.yoctoproject.or=
-g
-> <raj.khem=3Dgmail.com@lists.yoctoproject.org> wrote:
+> Jan Vermaete
+> =E2=80=9CSuccess is a self-correcting phenomenom.=E2=80=9D -- Gary Hamel
 >
->> On Fri, Aug 8, 2025 at 10:48=E2=80=AFAM Jan Vermaete via
->> lists.yoctoproject.org <jan.vermaete=3Dgmail.com@lists.yoctoproject.org>
->> wrote:
->> >
->> > see C17 (ISO/IEC 9899:2018)
->> >
->> > Signed-off-by: Jan Vermaete <jan.vermaete@gmail.com>
->> > ---
->> >  documentation/sdk-manual/working-projects.rst | 3 ++-
->> >  1 file changed, 2 insertions(+), 1 deletion(-)
->> >
->> > diff --git a/documentation/sdk-manual/working-projects.rst
->> b/documentation/sdk-manual/working-projects.rst
->> > index 4236bcec2..7df73b1b1 100644
->> > --- a/documentation/sdk-manual/working-projects.rst
->> > +++ b/documentation/sdk-manual/working-projects.rst
->> > @@ -56,9 +56,10 @@ project:
->> >
->> >           #include <stdio.h>
->> >
->> > -         main()
->> > +         int main()
->> >               {
->> >                   printf("Hello World!\n");
->> > +                 return 0;
->> >               }
->> >
+>
+> On Mon, 11 Aug 2025 at 13:59, Etienne Cordonnier <ecordonnier@snap.com>
+> wrote:
+>
+>> - "return 0" is optional in main after C99, so adding it is just persona=
+l
+>> preference but not strictly necessary
+>> - int main(void) and "int main()" are fully equivalent in C23, so
+>> changing this is also personal preference
 >>
+>> On Sat, Aug 9, 2025 at 4:48=E2=80=AFAM Khem Raj via lists.yoctoproject.o=
+rg
+>> <https://urldefense.proofpoint.com/v2/url?u=3Dhttp-3A__lists.yoctoprojec=
+t.org&d=3DDwMFaQ&c=3DncDTmphkJTvjIDPh0hpF_4vCHvabgGkICC2epckfdiw&r=3DAhkbNo=
+nVuMIGRfPx_Qj9TsRih1DULJTKUkSGa66m67E&m=3Df-tqaJMvLQZsto9LmB4OqePZ_OjDN3dti=
+7PPJVlvEhjKheIUAUdL0o3fi3YkQ4tk&s=3D3ohM9rWyyPHVETHCYT9vX7yeUFDmw-5TRFHoFHI=
+PcO4&e=3D>
+>> <raj.khem=3Dgmail.com@lists.yoctoproject.org> wrote:
 >>
->> I will go a step further
->>
->> #include <stdio.h>
->>
->> int main(void) {
->>     printf("Hello World!\n");
->>     return 0;
->> }
->>
->> int main(void) explicitly states the function takes no parameters
->>
->> >     -  ``configure.ac``::
->> > --
->> > 2.39.5
->> >
->> >
->> >
->> >
->>
->> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
->> Links: You receive all messages sent to this group.
->>
-> View/Reply Online (#7447):
->> https://urldefense.proofpoint.com/v2/url?u=3Dhttps-3A__lists.yoctoprojec=
-t.org_g_docs_message_7447&d=3DDwIFaQ&c=3DncDTmphkJTvjIDPh0hpF_4vCHvabgGkICC=
-2epckfdiw&r=3DAhkbNonVuMIGRfPx_Qj9TsRih1DULJTKUkSGa66m67E&m=3DWr6Y2z0KzaAxC=
-Z5tlqzjl7FhG_g1bUuEOT6AUyTYPNRZJqCnZHTFik8OoRKFmsdV&s=3DVeFiakPBZ2lD6GB4rKk=
-9wgyvPjT5NnLtMkngVkCPcUY&e=3D
->> Mute This Topic:
->> https://urldefense.proofpoint.com/v2/url?u=3Dhttps-3A__lists.yoctoprojec=
-t.org_mt_114604610_7048771&d=3DDwIFaQ&c=3DncDTmphkJTvjIDPh0hpF_4vCHvabgGkIC=
+>>> On Fri, Aug 8, 2025 at 10:48=E2=80=AFAM Jan Vermaete via
+>>> lists.yoctoproject.org
+>>> <https://urldefense.proofpoint.com/v2/url?u=3Dhttp-3A__lists.yoctoproje=
+ct.org&d=3DDwMFaQ&c=3DncDTmphkJTvjIDPh0hpF_4vCHvabgGkICC2epckfdiw&r=3DAhkbN=
+onVuMIGRfPx_Qj9TsRih1DULJTKUkSGa66m67E&m=3Df-tqaJMvLQZsto9LmB4OqePZ_OjDN3dt=
+i7PPJVlvEhjKheIUAUdL0o3fi3YkQ4tk&s=3D3ohM9rWyyPHVETHCYT9vX7yeUFDmw-5TRFHoFH=
+IPcO4&e=3D>
+>>> <jan.vermaete=3Dgmail.com@lists.yoctoproject.org>
+>>> wrote:
+>>> >
+>>> > see C17 (ISO/IEC 9899:2018)
+>>> >
+>>> > Signed-off-by: Jan Vermaete <jan.vermaete@gmail.com>
+>>> > ---
+>>> >  documentation/sdk-manual/working-projects.rst | 3 ++-
+>>> >  1 file changed, 2 insertions(+), 1 deletion(-)
+>>> >
+>>> > diff --git a/documentation/sdk-manual/working-projects.rst
+>>> b/documentation/sdk-manual/working-projects.rst
+>>> > index 4236bcec2..7df73b1b1 100644
+>>> > --- a/documentation/sdk-manual/working-projects.rst
+>>> > +++ b/documentation/sdk-manual/working-projects.rst
+>>> > @@ -56,9 +56,10 @@ project:
+>>> >
+>>> >           #include <stdio.h>
+>>> >
+>>> > -         main()
+>>> > +         int main()
+>>> >               {
+>>> >                   printf("Hello World!\n");
+>>> > +                 return 0;
+>>> >               }
+>>> >
+>>>
+>>>
+>>> I will go a step further
+>>>
+>>> #include <stdio.h>
+>>>
+>>> int main(void) {
+>>>     printf("Hello World!\n");
+>>>     return 0;
+>>> }
+>>>
+>>> int main(void) explicitly states the function takes no parameters
+>>>
+>>> >     -  ``configure.ac
+>>> <https://urldefense.proofpoint.com/v2/url?u=3Dhttp-3A__configure.ac&d=
+=3DDwMFaQ&c=3DncDTmphkJTvjIDPh0hpF_4vCHvabgGkICC2epckfdiw&r=3DAhkbNonVuMIGR=
+fPx_Qj9TsRih1DULJTKUkSGa66m67E&m=3Df-tqaJMvLQZsto9LmB4OqePZ_OjDN3dti7PPJVlv=
+EhjKheIUAUdL0o3fi3YkQ4tk&s=3Dj2m9TmXi_dMLEfSZID4zMoJqhFaWviDSvxcmjsPHbDE&e=
+=3D>
+>>> ``::
+>>> > --
+>>> > 2.39.5
+>>> >
+>>> >
+>>> >
+>>> >
+>>>
+>>> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
+>>> Links: You receive all messages sent to this group.
+>>>
+>> View/Reply Online (#7447):
+>>> https://urldefense.proofpoint.com/v2/url?u=3Dhttps-3A__lists.yoctoproje=
+ct.org_g_docs_message_7447&d=3DDwIFaQ&c=3DncDTmphkJTvjIDPh0hpF_4vCHvabgGkIC=
 C2epckfdiw&r=3DAhkbNonVuMIGRfPx_Qj9TsRih1DULJTKUkSGa66m67E&m=3DWr6Y2z0KzaAx=
-CZ5tlqzjl7FhG_g1bUuEOT6AUyTYPNRZJqCnZHTFik8OoRKFmsdV&s=3D_YRG74nRBir2XpojvN=
-O2_Ql-6pOAuN6ghYEWvaWkFY4&e=3D
->> Group Owner: docs+owner@lists.yoctoproject.org
->> Unsubscribe:
->> https://urldefense.proofpoint.com/v2/url?u=3Dhttps-3A__lists.yoctoprojec=
-t.org_g_docs_unsub&d=3DDwIFaQ&c=3DncDTmphkJTvjIDPh0hpF_4vCHvabgGkICC2epckfd=
-iw&r=3DAhkbNonVuMIGRfPx_Qj9TsRih1DULJTKUkSGa66m67E&m=3DWr6Y2z0KzaAxCZ5tlqzj=
-l7FhG_g1bUuEOT6AUyTYPNRZJqCnZHTFik8OoRKFmsdV&s=3DWsKidALHg4Vou-YCH1sq9unNEf=
-mLi-zpe-ED9HKD7tU&e=3D
->> [ecordonnier@snap.com]
->> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
->>
->>
+CZ5tlqzjl7FhG_g1bUuEOT6AUyTYPNRZJqCnZHTFik8OoRKFmsdV&s=3DVeFiakPBZ2lD6GB4rK=
+k9wgyvPjT5NnLtMkngVkCPcUY&e=3D
+>>> Mute This Topic:
+>>> https://urldefense.proofpoint.com/v2/url?u=3Dhttps-3A__lists.yoctoproje=
+ct.org_mt_114604610_7048771&d=3DDwIFaQ&c=3DncDTmphkJTvjIDPh0hpF_4vCHvabgGkI=
+CC2epckfdiw&r=3DAhkbNonVuMIGRfPx_Qj9TsRih1DULJTKUkSGa66m67E&m=3DWr6Y2z0KzaA=
+xCZ5tlqzjl7FhG_g1bUuEOT6AUyTYPNRZJqCnZHTFik8OoRKFmsdV&s=3D_YRG74nRBir2Xpojv=
+NO2_Ql-6pOAuN6ghYEWvaWkFY4&e=3D
+>>> Group Owner: docs+owner@lists.yoctoproject.org
+>>> Unsubscribe:
+>>> https://urldefense.proofpoint.com/v2/url?u=3Dhttps-3A__lists.yoctoproje=
+ct.org_g_docs_unsub&d=3DDwIFaQ&c=3DncDTmphkJTvjIDPh0hpF_4vCHvabgGkICC2epckf=
+diw&r=3DAhkbNonVuMIGRfPx_Qj9TsRih1DULJTKUkSGa66m67E&m=3DWr6Y2z0KzaAxCZ5tlqz=
+jl7FhG_g1bUuEOT6AUyTYPNRZJqCnZHTFik8OoRKFmsdV&s=3DWsKidALHg4Vou-YCH1sq9unNE=
+fmLi-zpe-ED9HKD7tU&e=3D
+>>> [ecordonnier@snap.com]
+>>> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
+>>>
+>>>
 
---000000000000b782da063c15e48c
+--00000000000084335a063c164603
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"auto">Could be, but the example as it is now in the document is=
- not longer compiling.<br clear=3D"all"><br clear=3D"all"><div><div dir=3D"=
-ltr" class=3D"gmail_signature" data-smartmail=3D"gmail_signature">Jan Verma=
-ete<br>=E2=80=9CSuccess is a self-correcting phenomenom.=E2=80=9D -- Gary H=
-amel</div></div></div><div><br></div><div><br><div class=3D"gmail_quote gma=
-il_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">On Mon, 11 Aug 20=
-25 at 13:59, Etienne Cordonnier &lt;<a href=3D"mailto:ecordonnier@snap.com"=
->ecordonnier@snap.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_qu=
-ote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex=
-"><div dir=3D"ltr">- &quot;return 0&quot; is optional in main after C99, so=
- adding it is just personal preference but not strictly necessary<br>-=C2=
-=A0int main(void) and &quot;int main()&quot; are fully equivalent in C23, s=
-o changing this is also personal preference</div><br><div class=3D"gmail_qu=
-ote"></div><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr"=
->On Sat, Aug 9, 2025 at 4:48=E2=80=AFAM Khem Raj via <a href=3D"http://list=
-s.yoctoproject.org" target=3D"_blank">lists.yoctoproject.org</a> &lt;raj.kh=
-em=3D<a href=3D"mailto:gmail.com@lists.yoctoproject.org" target=3D"_blank">=
-gmail.com@lists.yoctoproject.org</a>&gt; wrote:<br></div></div><div class=
-=3D"gmail_quote"><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px =
-0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex"></blockq=
-uote></div><div class=3D"gmail_quote"><blockquote class=3D"gmail_quote" sty=
-le=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);paddi=
-ng-left:1ex">On Fri, Aug 8, 2025 at 10:48=E2=80=AFAM Jan Vermaete via<br>
-<a href=3D"http://lists.yoctoproject.org" rel=3D"noreferrer" target=3D"_bla=
+<div dir=3D"ltr">&quot;Could be, but the example as it is now in the docume=
+nt is not longer compiling.&quot;<br><br>-&gt; not because of a missing &qu=
+ot;return 0&quot; or a lack of void keyword in main, so I don&#39;t know wh=
+y you mention this. I agree that adding int as return type is necessary: &q=
+uot;int main()&quot;, the other changes can be added, but is purely based o=
+n personal preference and not needed to fix the build. IMO &quot;int main()=
+&quot; is better than &quot;int main(void)&quot;, which is why this was cha=
+nged in C23.</div><br><div class=3D"gmail_quote gmail_quote_container"><div=
+ dir=3D"ltr" class=3D"gmail_attr">On Mon, Aug 11, 2025 at 2:16=E2=80=AFPM j=
+an vermaete &lt;<a href=3D"mailto:jan.vermaete@gmail.com">jan.vermaete@gmai=
+l.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"ma=
+rgin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:=
+1ex"><div dir=3D"auto">Could be, but the example as it is now in the docume=
+nt is not longer compiling.<br clear=3D"all"><br clear=3D"all"><div><div di=
+r=3D"ltr" class=3D"gmail_signature">Jan Vermaete<br>=E2=80=9CSuccess is a s=
+elf-correcting phenomenom.=E2=80=9D -- Gary Hamel</div></div></div><div><br=
+></div><div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_=
+attr">On Mon, 11 Aug 2025 at 13:59, Etienne Cordonnier &lt;<a href=3D"mailt=
+o:ecordonnier@snap.com" target=3D"_blank">ecordonnier@snap.com</a>&gt; wrot=
+e:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0=
+.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex"><div dir=3D"l=
+tr">- &quot;return 0&quot; is optional in main after C99, so adding it is j=
+ust personal preference but not strictly necessary<br>-=C2=A0int main(void)=
+ and &quot;int main()&quot; are fully equivalent in C23, so changing this i=
+s also personal preference</div><br><div class=3D"gmail_quote"></div><div c=
+lass=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Sat, Aug 9, 2=
+025 at 4:48=E2=80=AFAM Khem Raj via <a href=3D"https://urldefense.proofpoin=
+t.com/v2/url?u=3Dhttp-3A__lists.yoctoproject.org&amp;d=3DDwMFaQ&amp;c=3DncD=
+TmphkJTvjIDPh0hpF_4vCHvabgGkICC2epckfdiw&amp;r=3DAhkbNonVuMIGRfPx_Qj9TsRih1=
+DULJTKUkSGa66m67E&amp;m=3Df-tqaJMvLQZsto9LmB4OqePZ_OjDN3dti7PPJVlvEhjKheIUA=
+UdL0o3fi3YkQ4tk&amp;s=3D3ohM9rWyyPHVETHCYT9vX7yeUFDmw-5TRFHoFHIPcO4&amp;e=
+=3D" target=3D"_blank">lists.yoctoproject.org</a> &lt;raj.khem=3D<a href=3D=
+"mailto:gmail.com@lists.yoctoproject.org" target=3D"_blank">gmail.com@lists=
+.yoctoproject.org</a>&gt; wrote:<br></div></div><div class=3D"gmail_quote">=
+<blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-=
+left:1px solid rgb(204,204,204);padding-left:1ex"></blockquote></div><div c=
+lass=3D"gmail_quote"><blockquote class=3D"gmail_quote" style=3D"margin:0px =
+0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">On F=
+ri, Aug 8, 2025 at 10:48=E2=80=AFAM Jan Vermaete via<br>
+<a href=3D"https://urldefense.proofpoint.com/v2/url?u=3Dhttp-3A__lists.yoct=
+oproject.org&amp;d=3DDwMFaQ&amp;c=3DncDTmphkJTvjIDPh0hpF_4vCHvabgGkICC2epck=
+fdiw&amp;r=3DAhkbNonVuMIGRfPx_Qj9TsRih1DULJTKUkSGa66m67E&amp;m=3Df-tqaJMvLQ=
+Zsto9LmB4OqePZ_OjDN3dti7PPJVlvEhjKheIUAUdL0o3fi3YkQ4tk&amp;s=3D3ohM9rWyyPHV=
+ETHCYT9vX7yeUFDmw-5TRFHoFHIPcO4&amp;e=3D" rel=3D"noreferrer" target=3D"_bla=
 nk">lists.yoctoproject.org</a> &lt;jan.vermaete=3D<a href=3D"mailto:gmail.c=
 om@lists.yoctoproject.org" target=3D"_blank">gmail.com@lists.yoctoproject.o=
 rg</a>&gt;<br>
@@ -237,7 +285,11 @@ int main(void) {<br>
 <br>
 int main(void) explicitly states the function takes no parameters<br>
 <br>
-&gt;=C2=A0 =C2=A0 =C2=A0-=C2=A0 ``<a href=3D"http://configure.ac" rel=3D"no=
+&gt;=C2=A0 =C2=A0 =C2=A0-=C2=A0 ``<a href=3D"https://urldefense.proofpoint.=
+com/v2/url?u=3Dhttp-3A__configure.ac&amp;d=3DDwMFaQ&amp;c=3DncDTmphkJTvjIDP=
+h0hpF_4vCHvabgGkICC2epckfdiw&amp;r=3DAhkbNonVuMIGRfPx_Qj9TsRih1DULJTKUkSGa6=
+6m67E&amp;m=3Df-tqaJMvLQZsto9LmB4OqePZ_OjDN3dti7PPJVlvEhjKheIUAUdL0o3fi3YkQ=
+4tk&amp;s=3Dj2m9TmXi_dMLEfSZID4zMoJqhFaWviDSvxcmjsPHbDE&amp;e=3D" rel=3D"no=
 referrer" target=3D"_blank">configure.ac</a>``::<br>
 &gt; --<br>
 &gt; 2.39.5<br>
@@ -291,6 +343,7 @@ ordonnier@snap.com</a>]<br>
 <br>
 </blockquote></div>
 </blockquote></div></div>
+</blockquote></div>
 
---000000000000b782da063c15e48c--
+--00000000000084335a063c164603--
 
