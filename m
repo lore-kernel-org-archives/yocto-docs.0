@@ -1,349 +1,177 @@
-Return-Path: <ecordonnier@snap.com>
+Return-Path: <quentin.schulz@cherry.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 55D48C87FDB
-	for <webhook@archiver.kernel.org>; Mon, 11 Aug 2025 12:43:56 +0000 (UTC)
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
- by mx.groups.io with SMTP id smtpd.web10.47180.1754916231972524456
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8C3C7C87FDB
+	for <webhook@archiver.kernel.org>; Mon, 11 Aug 2025 13:20:46 +0000 (UTC)
+Received: from OSPPR02CU001.outbound.protection.outlook.com (OSPPR02CU001.outbound.protection.outlook.com [40.107.159.56])
+ by mx.groups.io with SMTP id smtpd.web11.47518.1754918440452717569
  for <docs@lists.yoctoproject.org>;
- Mon, 11 Aug 2025 05:43:52 -0700
+ Mon, 11 Aug 2025 06:20:40 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@snap.com header.s=google header.b=GoYpe/05;
- spf=pass (domain: snapchat.com, ip: 209.85.208.43, mailfrom: ecordonnier@snapchat.com)
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-6154655c8aeso6018340a12.3
-        for <docs@lists.yoctoproject.org>; Mon, 11 Aug 2025 05:43:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=snap.com; s=google; t=1754916230; x=1755521030; darn=lists.yoctoproject.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=HJa6xCNRywNmMSTV3UYcj4K+aMtc6IJeL0ywnTyf8nw=;
-        b=GoYpe/05TbzglCrnOSqj/KKTUVWDXPYKkWsTOxKmH8JK1UN+MNjSFNVYTGpUXyubew
-         sGDMjPdb7o8Txg6mFTRlfLpAZ7S3z9LN+M9S5wAKEctcUGmQP61jlxyK7PT40VS22B0C
-         ZwRzEvrfez3TqFoDaMTULw9LUswKrAn/wsXw4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754916230; x=1755521030;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=HJa6xCNRywNmMSTV3UYcj4K+aMtc6IJeL0ywnTyf8nw=;
-        b=dCiTK+2QhGT05QHWbtDEFiSg6aTQcfWQkLssU1sOgPBthc/GGQWtIkkDPxXIkhhNVx
-         Y8u5K1iC2I5M6+qrQc+pcR+doH5Q6g1Ix0eQxPt4o8vZguWJJruzd8Hf/rmYbF9elJJ2
-         oa8FihMjIZJ1NHSe1Keny1JlPv4UXLj4e951KDId1OA+cpTyroifjMxFy5kEyjZNiuZJ
-         paTggv0x5RAKO5a2LKdZx3drLwyBnDEd2eoGvioPpt/7I18+0u8agnmYfLELVcpl/lvN
-         bfu14FX2zHl+SuikL/WHqgxfBtBFkX8XSata8JCtkBWcSZzdl9Kb5tshUjOyEpYemjha
-         U+/w==
-X-Forwarded-Encrypted: i=1; AJvYcCWycC2ULBJjWj+u+D3KXn4lzX0qqcS+JHmTIOWSmCtKz82cV0OzC/NAIz9qSsU7NfinaNfj@lists.yoctoproject.org
-X-Gm-Message-State: AOJu0YzYz0dGJKxOmml5/n712A8ke4XqkllUezZ+8nmktYuxR2h5Hsay
-	TkyKOUnyIrxRjnpgWRSD+BqlABC3VjKL6nvuErzLOsHFYkonS6vn2Bo6t9AtZJVGlngrzalORDy
-	4FyY0qIZZG4NAhWFQic28gzEHQKE2Jdt4N8cP+YgMtA==
-X-Gm-Gg: ASbGncsYr2lvnyYzUfcZHKBGXFF1zRwvZ5nNNTd5VKL7P7X9/8erpOrZQcy7DBTwdUd
-	8iIP+cCkOG4nueNA7R0uxunG9zzsf+48Lep1hNsQgm7gASWDxjK0L8+fqABAzNHj3OZx9jhJz9z
-	diaY2kNCDJLudLLuE6HVrutbNhGVwiXIU/KelJPLB4Bfg/754TYqY+VCCFz0vcLLaBiXVK1mGnx
-	DRvpP0=
-X-Google-Smtp-Source: AGHT+IGZERBpqxMD2xL+ktAgk++Syi63Ooh+lhYWPh5oAlj0zGPaIRWt2cv2MUhVec0MidcgpkFgxau8XKOyQ9QvXlM=
-X-Received: by 2002:a17:907:3d4c:b0:ae0:ad8c:a559 with SMTP id
- a640c23a62f3a-af9c640e351mr1337149966b.4.1754916230268; Mon, 11 Aug 2025
- 05:43:50 -0700 (PDT)
+ dkim=pass header.i=@cherry.de header.s=selector1 header.b=cdu2EKAy;
+ spf=pass (domain: cherry.de, ip: 40.107.159.56, mailfrom: quentin.schulz@cherry.de)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=DL1PM5FXqIQ4SonJgb1DJCxPEdi0JqnG7oNix1Yp3zo9MxQjhyWaR8Z50WFDL5XtM5Ud95nV8EJCl2K9KYMfqbBbGehPGh9t21k4a5xF0BagoGoJJUm0aRjEgPzIWlPZgSVu13ulUENGCrnOXYvcSInrQ+0muYvIB65578m+wEs/pV//hhb7wu47HrQiuTK2jA3dkz3sbc8QuUqV7U/feuv53oCzYRBakTUU8zhFqMS5APF9mITKx9X2dYzIEg3xbtr0cPwXnf8kef8jFn+sYlj8V9ZBSV9+qP4nynMBPubMpTomPsHdRA56HkuGFSnJzpRMLB5g1MVb10rlWhkfKg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ywm/48auma6Rh9liVC1aSTQMS/c/B9A2OaY87Ri9DYY=;
+ b=DHp7y+FjtbbedyWhTc1tB/A3rVwC18W6xReag4A5cXzCODV80a+O79hQyZcEDLGBxGj0u2rzcxPg0bgj8fLGchKhJdsZGNNdUY5CpxtbpOMe48OO/9ZWLtCeXLBINNLUe9nzAXvyvHgKGc2IGdUdtBaHFqmCUZdB0PcWtgMTwuqR2xxF3oCYAb4BarREpR1Vcql5LfdQo7ZQGgOU0jhwb5u274TnimeA7cffHFNPy6lvVmEh8NACn+vlwzL7xFR/37NsP1BYv5Be3Lg0JWCAmdeaVnOz3CSN57Zjmu+2F88K3K6ogHd5GA3rM6KAQLh4b/48imdS0XHwEjdM9IabpA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
+ dkim=pass header.d=cherry.de; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ywm/48auma6Rh9liVC1aSTQMS/c/B9A2OaY87Ri9DYY=;
+ b=cdu2EKAyCkC4H/VkzfsaS4L108WQZT0XazY0SemDA7KRngOq7QmU2M7CwtRZkCkQhlP0rUcpC3f/ykler0tCUKmVqYHmfPUUX/CeQsIMnD4IgVS18ObmPEIMJC+tvLhxLSG+2V+1/5fXg42fIeVZlNgKQxd1W8hEUZQhS8ZnSoQ=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=cherry.de;
+Received: from AS8PR04MB8897.eurprd04.prod.outlook.com (2603:10a6:20b:42c::20)
+ by AS8PR04MB8882.eurprd04.prod.outlook.com (2603:10a6:20b:42d::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.9; Mon, 11 Aug
+ 2025 13:20:36 +0000
+Received: from AS8PR04MB8897.eurprd04.prod.outlook.com
+ ([fe80::5ee:7297:93b4:a8d1]) by AS8PR04MB8897.eurprd04.prod.outlook.com
+ ([fe80::5ee:7297:93b4:a8d1%4]) with mapi id 15.20.9031.011; Mon, 11 Aug 2025
+ 13:20:36 +0000
+Message-ID: <7cb5573e-3d3c-42c8-adbf-c66fc1399f94@cherry.de>
+Date: Mon, 11 Aug 2025 15:20:34 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [docs] [PATCH] overview-manual/yp-intro.rst: fix broken link to
+ article
+To: erik@awto.se, docs@lists.yoctoproject.org
+References: <20250806123528.44117-1-erik@awto.se>
+Content-Language: en-US
+From: Quentin Schulz <quentin.schulz@cherry.de>
+In-Reply-To: <20250806123528.44117-1-erik@awto.se>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR4P281CA0432.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:d1::18) To AS8PR04MB8897.eurprd04.prod.outlook.com
+ (2603:10a6:20b:42c::20)
 MIME-Version: 1.0
-References: <20250808174828.236218-1-jan.vermaete@gmail.com>
- <CAMKF1srX4oUqvD3+X4-nf3r4ANuZ0XyyJ3UM0ea2+5fCU=Fwqw@mail.gmail.com>
- <CAHUKmYbRWmCZkWr-oS0EAAkqsmFLo2qqDWXMMRi1MUk0qR67aQ@mail.gmail.com> <CABF_=yhhsm=j2qQM_tkMkkKDurg_Rwi7sOAZQgA_HFLpBO7BFw@mail.gmail.com>
-In-Reply-To: <CABF_=yhhsm=j2qQM_tkMkkKDurg_Rwi7sOAZQgA_HFLpBO7BFw@mail.gmail.com>
-From: Etienne Cordonnier <ecordonnier@snap.com>
-Date: Mon, 11 Aug 2025 14:43:39 +0200
-X-Gm-Features: Ac12FXxbZ3-4cbGYO2LXkZzCNlocf6j0N3-hOW5ApOsPq5-7DvPQ1xrnleXgbJ4
-Message-ID: <CAHUKmYbwek+5wWO1GaoM4us-CryArB+FHdB06a6nH=VD2ra2nA@mail.gmail.com>
-Subject: Re: [docs] [PATCH] sdk: The main in the C example should return an int
-To: jan vermaete <jan.vermaete@gmail.com>
-Cc: raj.khem@gmail.com, docs@lists.yoctoproject.org
-Content-Type: multipart/alternative; boundary="00000000000084335a063c164603"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8PR04MB8897:EE_|AS8PR04MB8882:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6d74bea8-addb-451d-52ab-08ddd8d9db12
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: 
+	BCL:0;ARA:13230040|376014|366016|1800799024|10070799003|7053199007;
+X-Microsoft-Antispam-Message-Info: 
+	=?utf-8?B?YzExbCtFb0t2VVZyb3plOC9ObTA2OUpMdVBwM0RHTWczVFZDNHB6L01waTAx?=
+ =?utf-8?B?bjlNTnhxcWhlamhoRW1iak9BN3h4MzF2dzhkc1h0TmtTd3pjM3JKeG1XRXFT?=
+ =?utf-8?B?RGdDbWlDdDRpZ0VZS2E3QmY4ZGk3NzRDMG1USHppWE0rRnR5UCtKcnlUWXNB?=
+ =?utf-8?B?bkdCWEw0Sy8xcjJDMDY1K1JPWmlzY2JkUjRhTkJ4YWwvVjQxbndJd0swalZR?=
+ =?utf-8?B?K3hVKzA4TjVEVTVrdlkvUkFyTHBpK0Y4d0NnaDlqaGZSMjNqbytMdnlMNlVH?=
+ =?utf-8?B?NnBKYWU3anJmN01XWEhaVDU5N0ZqMXRNNFlGNEdxcmUyc2RPNi9aZkpVSm9D?=
+ =?utf-8?B?clhvK3FYUnkvSkJqMG9uRmQzdCtGKy9mYnM5Um5YT2xWT3pxdkpRMUZMckNR?=
+ =?utf-8?B?QnIzTXZiSm1YUWZrOTJTV0hoc3BpbFR6b3BVcHhYSFFqM1ZuTUZrMDB2SEJK?=
+ =?utf-8?B?b1hPb1RHc25jcGdPdGZQbGRsZDdrNmxTenB4dGZHdVZKWkpoekdTOFVHOE9O?=
+ =?utf-8?B?QjZWYjA5UThuNkhGZWdCODNkemdNb2Z0ckNuc21saDJxb2gxWFp5QUkvR3My?=
+ =?utf-8?B?MS8rc0RVb1dRcXFMcG51U3VyKzlhU1c2MjRvSys1QVF2enJrYkg1Z01EdnVu?=
+ =?utf-8?B?SXQ4LzE5VnBEazh2Zm5XOXhIR2lwbXNpUWYzZ0RsVklRdGhDRk1GNzNlb2N2?=
+ =?utf-8?B?VXIrWXI3OTVpdWxNVlVOdUZKbGp1WDlZZGFsOTdTTWdJTHNQZUhKLzZVZVY4?=
+ =?utf-8?B?dC9rOWJJMFprTGx3WmZDME1oZEJ4aW9FWXliQi9ET2dTdnRZODdFaVNiL2FH?=
+ =?utf-8?B?L1dja05xTTdKYUE2aEp0ODAwQmF1UHgweWJoT2RrMGN5b2E5RnV3WThWMk5G?=
+ =?utf-8?B?OHI1TWVmT01GZFRCOG9KeXlNSXBNNGRoWjAzUE1SVUp1Yjc0SVp1M001cWNz?=
+ =?utf-8?B?ZGNHTXNUTzFNeGN5ckRqclVablh5MXUrM3lwT2NuZXVkTDZhZFVaajhGcFhp?=
+ =?utf-8?B?aVdycXJsSVVlVlh5YXRaOEppT0lGUksyY0Uvb3RDRVo5VTNVTGZZeW9Fbk5G?=
+ =?utf-8?B?QmhtMVNNY0luRUNTUGpVcUtNM2pTY2dOcDJRSDJRS29sQVhNNFUrOHhjTzV3?=
+ =?utf-8?B?RWlTN1YwR2hjK0dYMVpsOHVmcFAwTm4xelVzN2F6WUM3aFNMVFZzN3JsY0pU?=
+ =?utf-8?B?eWkwNm1PS2hWVVVSTnlDNDlaelRlU3RKWGpCTkhybFJhU1NYSThMMmxhMTRD?=
+ =?utf-8?B?TVJzbUdwRHo2SUI4dUN3K1NNNVlmYm82VGQ1eDBsQ0RCbTllOGVMWEJWT1pr?=
+ =?utf-8?B?RjM4YXZTZU1zZEttR2kwK0Y4bWhDNkZVTVdqa1c3NEhOSEFKdml0UTJiZXMv?=
+ =?utf-8?B?blpqaS8xeW1BR2x3d0NEdXlNajBPanErelZ1c3J0NkFqN0p3OURTWHFVWUxm?=
+ =?utf-8?B?SWI5MS8vcEZRT1RWVzkwRDZEbHhhV3prODY5cENSMU9vd0dybnRNNGNCL2tr?=
+ =?utf-8?B?NkNVanhXNnBsUFBWYlJyT2NyQ3JlbjNUeHQ0cUFLRExLZERTYUY0Q3Z1TjNU?=
+ =?utf-8?B?RzQ3TmdXYWFaM1RvMkZOTTBBTlZDYlU5Q2ZqZTVhcS9mYVlncWIwczhyUUc4?=
+ =?utf-8?B?dVNhTHMrWDQzYkx2VzlrT0EzVG0vQVFZeFFXc0Z3Z0NOdnB1cXFrOE9ra1RX?=
+ =?utf-8?B?MTFnakQyZGI3eGpQYVpRbnVEemE4WXpWV3hHQVZlcU90anVnSlRHKzRMYktF?=
+ =?utf-8?B?Uk16cXVLT3ZNTUtjYWtPemN0RjEvdDRtU1kyM3RwUk1VWlBHVjN4Wkg4OTNY?=
+ =?utf-8?B?bnVDSmZjM1NPVjZmUWdoOVBCZUNKejQ5eGQvZ3VsaHJ3Unh2QVhpRW04MzB5?=
+ =?utf-8?B?a0g1N0s3WFE0MHB1RXhFTll5UEFtZGY1MDF4Z01heTBOK2NUSjJ1SXZ3L1Bu?=
+ =?utf-8?Q?niAgI5XFznk=3D?=
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8897.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(10070799003)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?utf-8?B?RXk2Z3RlblJiOThTVytIQkNmZ2dNRzA5THJVQ1FhMTg0VGVEMS96WDJWclZQ?=
+ =?utf-8?B?WFc5aUxQYTFJRXV3bldvK1prNUVnMUhOd1NjdDAyWWFzbDdydzhjN3lhVngx?=
+ =?utf-8?B?emlGNndrNFd0SnY4Z2lYbGVrK1l2MEh2aXZwM1phQXhSZVFpYWtsRUQzZU1a?=
+ =?utf-8?B?SWhIQm04RVVRLzAzbUVZRUFYMjhmYUExUEdodmluY1VmY3EzN0dpQmIwMFJu?=
+ =?utf-8?B?U1ZFYmRHeGFNMENySDNyWXoyaTVYMDVKWGRTZ0lyeG1DWlk3NEtjTzI0NWt2?=
+ =?utf-8?B?c0Y1RWN6L0trSjlFRXZMTFM5Nm5ZYlFLbExWb3FEM0tGb2xWT2F1ZVFnMGhQ?=
+ =?utf-8?B?ZVZUVnFvZm1zd0FudE5YQWxCYlBOajcvVFBkd3JIalM5OVoyekZUNjB5VWxt?=
+ =?utf-8?B?Wmg2bStvdUFweGkrWXFFa0FzTEJvdHpZMGd0REFzYncrSE5qRXBOci9LcnRP?=
+ =?utf-8?B?NDFxKzh5a1dZa3B5a1ZJZFVqNE5sZXZCRUg4U0E3OU5nbVlQeEphcW85TUYy?=
+ =?utf-8?B?ZlcwKzVJWUhpYUFlOC82c2svMWJtOVlzYnRwMkpYU0laRzh2bDFaT09QME5x?=
+ =?utf-8?B?Ui9xK3RxbjVPNGRGck5QWkV0NUpQdzl4bHB4Q1BHRC9XVDhPbTZMdjE2eDBU?=
+ =?utf-8?B?T25mbkRJcUlNb0l2S011Zmk0RkpTZFpuMTQwcmJLcDBTU3I5czlSRFg4L2x1?=
+ =?utf-8?B?bGROU2o1RVZWK00yYUdUREZVZ1hXZTNUVFgxUDNsMWZEU29pQmp3dUVuWlNq?=
+ =?utf-8?B?Ym9YdEtzNFFuU3pDQTZMWjltTXZmN0txSDdRaERsZ1JtMDVHTFFSY0RsTERZ?=
+ =?utf-8?B?dzBSYmF4NlpORjdaVWpZSmZsNElKbzlqcGpucVBNcDAwbERIWk11UzR0aXhI?=
+ =?utf-8?B?VkxJQkNhS01VRk1zVFZOZzhHZUEwank1eERBK3QwYk84UStOOFEyb3lrakt0?=
+ =?utf-8?B?bldMRm1tTDgzdjM4ZzNhdHU1NzJmUEJsN0xwenJpdGFYanVIaWVINUxZS3dv?=
+ =?utf-8?B?Q3B1Tnh6TktURkx2OTNIN3c2czJwQUlGSU1FUmJReVRRalFtaFlEemszVmFn?=
+ =?utf-8?B?S0NQdnpKdHljejl3VWVxSyszWmdYdnRIN1lBTGx6UUNXaElxbFVhenZqNHBB?=
+ =?utf-8?B?K1pSTGxGYytpN0MzSEVtTjkzbmROSDIyekt4NUV5YnNQNEpvcVJXK0dURUFH?=
+ =?utf-8?B?ZUdIcWUvS1BIYk5aaXdpdVFKZ0RZMzNLcDhaMEExRTdETTRZc0dablQyS215?=
+ =?utf-8?B?UzlKWW9uWjFtelFOOXFTdG9aeUJqeXBJNVZzdG05bVZQS0R3WnlKb3ZGcjlF?=
+ =?utf-8?B?YzJxWjUzcHBVMmZSdFRob3Q2MGhqMEJHcWxZWEozN3ViWENINndKbFNhbXky?=
+ =?utf-8?B?LzZhVVlLaGl0NjZtOHNENExFKzVNVm1paHhTaTRDRmdNbTBIRU1lN0FHN1B2?=
+ =?utf-8?B?TUZ0RlFpd2VRT2lscFNWejVOY1c2WHdFcUpXcXlaZ1BsQ1RSaWFBak92enVn?=
+ =?utf-8?B?aWprc3lOMlVSSkltbmlacGt3c0hGWkhOSEM1azFGcFJ3MHMwMzlQTDhXQzZt?=
+ =?utf-8?B?a3B6MFNuODY2NzhiMVRGM1hvRTlabDRrN1kxS3Mwenc1SC9ERDhUNVZLS1gw?=
+ =?utf-8?B?VXV3MG5sSGVaUW4wRVVoeGl5ejZFWVpPOGQ5b0hIeUNuUVJ4Q0ZYVzcvVTQv?=
+ =?utf-8?B?N05MaXJxQlNyR0JYZGJ6bkNzOGhzNk8vWVZzeFc1MXM2ODdNdnBYZjZYeVhL?=
+ =?utf-8?B?TkV5VDhDbys1SjhtR2d6aUJDYmFLbzVEdEtZNE5OUGx0L0ZJTFBGUnFyZGI3?=
+ =?utf-8?B?ZDdwSDdkNnc3bXA3QmFXT3o1bStDNUpyT01zK1hBaC9OZDlqbWdDY3pEd3RS?=
+ =?utf-8?B?dHFidlpIREN5WWpadFRqalNJZk9kWCtaL2JybVRIOHlienAybEdJRkN2ZGpK?=
+ =?utf-8?B?NzhXVm1ocU1qdlVZR0JkTzZNcWNPTUpmcWRtOE8rdit0WTBLakp3bjZTV0Fj?=
+ =?utf-8?B?NXppSmpaWnVja2d0bmtLOW13R0RxL2pGZlJRTUQrYW9nRTVuZEc1N2RpYWlV?=
+ =?utf-8?B?QUxxZWVVaWI5VFFIb1VKbHRwM1BJOWw0d21ZT0lFa3JkZnVTa1BJRDBwMFVV?=
+ =?utf-8?B?T3Nud1Bkd2F2ZVlEZmxDTVMwVTRrL09yUGVsajZuS2lZNXhIUWRXOXZRRkI1?=
+ =?utf-8?B?QlpCT0M5bzBNRDhVazh0TVhRTlRhd3dZdFdRM3djeWlDaElQZGVJMlVzdERw?=
+ =?utf-8?B?YWJwblptRXVNcHE2ZzVwakZPWGNRPT0=?=
+X-OriginatorOrg: cherry.de
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6d74bea8-addb-451d-52ab-08ddd8d9db12
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8897.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Aug 2025 13:20:36.5809
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: w5bjoTHd1TnBkc6Ky+tMSTF1DTXtAuMuFErnW4+gxAk/QaLQkN5C80CDgXmsVDCkw1JzsWjU2c6jENlmWbXuz4mPE0r1C4NcE1G1kR534mE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8882
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 11 Aug 2025 12:43:56 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7452
+ <docs@lists.yoctoproject.org>; Mon, 11 Aug 2025 13:20:46 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7453
 
---00000000000084335a063c164603
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Hi Erik,
 
-"Could be, but the example as it is now in the document is not longer
-compiling."
+On 8/6/25 2:35 PM, Erik Lindsten via lists.yoctoproject.org wrote:
+> [You don't often get email from erik=awto.se@lists.yoctoproject.org. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
+> 
+> Signed-off-by: Erik Lindsten <erik@awto.se>
 
--> not because of a missing "return 0" or a lack of void keyword in main,
-so I don't know why you mention this. I agree that adding int as return
-type is necessary: "int main()", the other changes can be added, but is
-purely based on personal preference and not needed to fix the build. IMO
-"int main()" is better than "int main(void)", which is why this was changed
-in C23.
+I checked the last working archive on archive.org from 2019 and compared 
+it with that one, virtually identical, so
 
-On Mon, Aug 11, 2025 at 2:16=E2=80=AFPM jan vermaete <jan.vermaete@gmail.co=
-m> wrote:
+Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
 
-> Could be, but the example as it is now in the document is not longer
-> compiling.
->
-> Jan Vermaete
-> =E2=80=9CSuccess is a self-correcting phenomenom.=E2=80=9D -- Gary Hamel
->
->
-> On Mon, 11 Aug 2025 at 13:59, Etienne Cordonnier <ecordonnier@snap.com>
-> wrote:
->
->> - "return 0" is optional in main after C99, so adding it is just persona=
-l
->> preference but not strictly necessary
->> - int main(void) and "int main()" are fully equivalent in C23, so
->> changing this is also personal preference
->>
->> On Sat, Aug 9, 2025 at 4:48=E2=80=AFAM Khem Raj via lists.yoctoproject.o=
-rg
->> <https://urldefense.proofpoint.com/v2/url?u=3Dhttp-3A__lists.yoctoprojec=
-t.org&d=3DDwMFaQ&c=3DncDTmphkJTvjIDPh0hpF_4vCHvabgGkICC2epckfdiw&r=3DAhkbNo=
-nVuMIGRfPx_Qj9TsRih1DULJTKUkSGa66m67E&m=3Df-tqaJMvLQZsto9LmB4OqePZ_OjDN3dti=
-7PPJVlvEhjKheIUAUdL0o3fi3YkQ4tk&s=3D3ohM9rWyyPHVETHCYT9vX7yeUFDmw-5TRFHoFHI=
-PcO4&e=3D>
->> <raj.khem=3Dgmail.com@lists.yoctoproject.org> wrote:
->>
->>> On Fri, Aug 8, 2025 at 10:48=E2=80=AFAM Jan Vermaete via
->>> lists.yoctoproject.org
->>> <https://urldefense.proofpoint.com/v2/url?u=3Dhttp-3A__lists.yoctoproje=
-ct.org&d=3DDwMFaQ&c=3DncDTmphkJTvjIDPh0hpF_4vCHvabgGkICC2epckfdiw&r=3DAhkbN=
-onVuMIGRfPx_Qj9TsRih1DULJTKUkSGa66m67E&m=3Df-tqaJMvLQZsto9LmB4OqePZ_OjDN3dt=
-i7PPJVlvEhjKheIUAUdL0o3fi3YkQ4tk&s=3D3ohM9rWyyPHVETHCYT9vX7yeUFDmw-5TRFHoFH=
-IPcO4&e=3D>
->>> <jan.vermaete=3Dgmail.com@lists.yoctoproject.org>
->>> wrote:
->>> >
->>> > see C17 (ISO/IEC 9899:2018)
->>> >
->>> > Signed-off-by: Jan Vermaete <jan.vermaete@gmail.com>
->>> > ---
->>> >  documentation/sdk-manual/working-projects.rst | 3 ++-
->>> >  1 file changed, 2 insertions(+), 1 deletion(-)
->>> >
->>> > diff --git a/documentation/sdk-manual/working-projects.rst
->>> b/documentation/sdk-manual/working-projects.rst
->>> > index 4236bcec2..7df73b1b1 100644
->>> > --- a/documentation/sdk-manual/working-projects.rst
->>> > +++ b/documentation/sdk-manual/working-projects.rst
->>> > @@ -56,9 +56,10 @@ project:
->>> >
->>> >           #include <stdio.h>
->>> >
->>> > -         main()
->>> > +         int main()
->>> >               {
->>> >                   printf("Hello World!\n");
->>> > +                 return 0;
->>> >               }
->>> >
->>>
->>>
->>> I will go a step further
->>>
->>> #include <stdio.h>
->>>
->>> int main(void) {
->>>     printf("Hello World!\n");
->>>     return 0;
->>> }
->>>
->>> int main(void) explicitly states the function takes no parameters
->>>
->>> >     -  ``configure.ac
->>> <https://urldefense.proofpoint.com/v2/url?u=3Dhttp-3A__configure.ac&d=
-=3DDwMFaQ&c=3DncDTmphkJTvjIDPh0hpF_4vCHvabgGkICC2epckfdiw&r=3DAhkbNonVuMIGR=
-fPx_Qj9TsRih1DULJTKUkSGa66m67E&m=3Df-tqaJMvLQZsto9LmB4OqePZ_OjDN3dti7PPJVlv=
-EhjKheIUAUdL0o3fi3YkQ4tk&s=3Dj2m9TmXi_dMLEfSZID4zMoJqhFaWviDSvxcmjsPHbDE&e=
-=3D>
->>> ``::
->>> > --
->>> > 2.39.5
->>> >
->>> >
->>> >
->>> >
->>>
->>> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
->>> Links: You receive all messages sent to this group.
->>>
->> View/Reply Online (#7447):
->>> https://urldefense.proofpoint.com/v2/url?u=3Dhttps-3A__lists.yoctoproje=
-ct.org_g_docs_message_7447&d=3DDwIFaQ&c=3DncDTmphkJTvjIDPh0hpF_4vCHvabgGkIC=
-C2epckfdiw&r=3DAhkbNonVuMIGRfPx_Qj9TsRih1DULJTKUkSGa66m67E&m=3DWr6Y2z0KzaAx=
-CZ5tlqzjl7FhG_g1bUuEOT6AUyTYPNRZJqCnZHTFik8OoRKFmsdV&s=3DVeFiakPBZ2lD6GB4rK=
-k9wgyvPjT5NnLtMkngVkCPcUY&e=3D
->>> Mute This Topic:
->>> https://urldefense.proofpoint.com/v2/url?u=3Dhttps-3A__lists.yoctoproje=
-ct.org_mt_114604610_7048771&d=3DDwIFaQ&c=3DncDTmphkJTvjIDPh0hpF_4vCHvabgGkI=
-CC2epckfdiw&r=3DAhkbNonVuMIGRfPx_Qj9TsRih1DULJTKUkSGa66m67E&m=3DWr6Y2z0KzaA=
-xCZ5tlqzjl7FhG_g1bUuEOT6AUyTYPNRZJqCnZHTFik8OoRKFmsdV&s=3D_YRG74nRBir2Xpojv=
-NO2_Ql-6pOAuN6ghYEWvaWkFY4&e=3D
->>> Group Owner: docs+owner@lists.yoctoproject.org
->>> Unsubscribe:
->>> https://urldefense.proofpoint.com/v2/url?u=3Dhttps-3A__lists.yoctoproje=
-ct.org_g_docs_unsub&d=3DDwIFaQ&c=3DncDTmphkJTvjIDPh0hpF_4vCHvabgGkICC2epckf=
-diw&r=3DAhkbNonVuMIGRfPx_Qj9TsRih1DULJTKUkSGa66m67E&m=3DWr6Y2z0KzaAxCZ5tlqz=
-jl7FhG_g1bUuEOT6AUyTYPNRZJqCnZHTFik8OoRKFmsdV&s=3DWsKidALHg4Vou-YCH1sq9unNE=
-fmLi-zpe-ED9HKD7tU&e=3D
->>> [ecordonnier@snap.com]
->>> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
->>>
->>>
+This reminded me to check with linkcheck if there are other broken 
+links. Sadly it is less useful now that websites block bots much more 
+aggressively so there are a lot more false positives and manual checks 
+involved (and cannot be part of CI at all due to that). We have many 
+many links (especially CVEs and link to commits) so it'll take a while 
+to run, I'll post patches when I find the time.
 
---00000000000084335a063c164603
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">&quot;Could be, but the example as it is now in the docume=
-nt is not longer compiling.&quot;<br><br>-&gt; not because of a missing &qu=
-ot;return 0&quot; or a lack of void keyword in main, so I don&#39;t know wh=
-y you mention this. I agree that adding int as return type is necessary: &q=
-uot;int main()&quot;, the other changes can be added, but is purely based o=
-n personal preference and not needed to fix the build. IMO &quot;int main()=
-&quot; is better than &quot;int main(void)&quot;, which is why this was cha=
-nged in C23.</div><br><div class=3D"gmail_quote gmail_quote_container"><div=
- dir=3D"ltr" class=3D"gmail_attr">On Mon, Aug 11, 2025 at 2:16=E2=80=AFPM j=
-an vermaete &lt;<a href=3D"mailto:jan.vermaete@gmail.com">jan.vermaete@gmai=
-l.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"ma=
-rgin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:=
-1ex"><div dir=3D"auto">Could be, but the example as it is now in the docume=
-nt is not longer compiling.<br clear=3D"all"><br clear=3D"all"><div><div di=
-r=3D"ltr" class=3D"gmail_signature">Jan Vermaete<br>=E2=80=9CSuccess is a s=
-elf-correcting phenomenom.=E2=80=9D -- Gary Hamel</div></div></div><div><br=
-></div><div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_=
-attr">On Mon, 11 Aug 2025 at 13:59, Etienne Cordonnier &lt;<a href=3D"mailt=
-o:ecordonnier@snap.com" target=3D"_blank">ecordonnier@snap.com</a>&gt; wrot=
-e:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0=
-.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex"><div dir=3D"l=
-tr">- &quot;return 0&quot; is optional in main after C99, so adding it is j=
-ust personal preference but not strictly necessary<br>-=C2=A0int main(void)=
- and &quot;int main()&quot; are fully equivalent in C23, so changing this i=
-s also personal preference</div><br><div class=3D"gmail_quote"></div><div c=
-lass=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Sat, Aug 9, 2=
-025 at 4:48=E2=80=AFAM Khem Raj via <a href=3D"https://urldefense.proofpoin=
-t.com/v2/url?u=3Dhttp-3A__lists.yoctoproject.org&amp;d=3DDwMFaQ&amp;c=3DncD=
-TmphkJTvjIDPh0hpF_4vCHvabgGkICC2epckfdiw&amp;r=3DAhkbNonVuMIGRfPx_Qj9TsRih1=
-DULJTKUkSGa66m67E&amp;m=3Df-tqaJMvLQZsto9LmB4OqePZ_OjDN3dti7PPJVlvEhjKheIUA=
-UdL0o3fi3YkQ4tk&amp;s=3D3ohM9rWyyPHVETHCYT9vX7yeUFDmw-5TRFHoFHIPcO4&amp;e=
-=3D" target=3D"_blank">lists.yoctoproject.org</a> &lt;raj.khem=3D<a href=3D=
-"mailto:gmail.com@lists.yoctoproject.org" target=3D"_blank">gmail.com@lists=
-.yoctoproject.org</a>&gt; wrote:<br></div></div><div class=3D"gmail_quote">=
-<blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-=
-left:1px solid rgb(204,204,204);padding-left:1ex"></blockquote></div><div c=
-lass=3D"gmail_quote"><blockquote class=3D"gmail_quote" style=3D"margin:0px =
-0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">On F=
-ri, Aug 8, 2025 at 10:48=E2=80=AFAM Jan Vermaete via<br>
-<a href=3D"https://urldefense.proofpoint.com/v2/url?u=3Dhttp-3A__lists.yoct=
-oproject.org&amp;d=3DDwMFaQ&amp;c=3DncDTmphkJTvjIDPh0hpF_4vCHvabgGkICC2epck=
-fdiw&amp;r=3DAhkbNonVuMIGRfPx_Qj9TsRih1DULJTKUkSGa66m67E&amp;m=3Df-tqaJMvLQ=
-Zsto9LmB4OqePZ_OjDN3dti7PPJVlvEhjKheIUAUdL0o3fi3YkQ4tk&amp;s=3D3ohM9rWyyPHV=
-ETHCYT9vX7yeUFDmw-5TRFHoFHIPcO4&amp;e=3D" rel=3D"noreferrer" target=3D"_bla=
-nk">lists.yoctoproject.org</a> &lt;jan.vermaete=3D<a href=3D"mailto:gmail.c=
-om@lists.yoctoproject.org" target=3D"_blank">gmail.com@lists.yoctoproject.o=
-rg</a>&gt;<br>
-wrote:<br>
-&gt;<br>
-&gt; see C17 (ISO/IEC 9899:2018)<br>
-&gt;<br>
-&gt; Signed-off-by: Jan Vermaete &lt;<a href=3D"mailto:jan.vermaete@gmail.c=
-om" target=3D"_blank">jan.vermaete@gmail.com</a>&gt;<br>
-&gt; ---<br>
-&gt;=C2=A0 documentation/sdk-manual/working-projects.rst | 3 ++-<br>
-&gt;=C2=A0 1 file changed, 2 insertions(+), 1 deletion(-)<br>
-&gt;<br>
-&gt; diff --git a/documentation/sdk-manual/working-projects.rst b/documenta=
-tion/sdk-manual/working-projects.rst<br>
-&gt; index 4236bcec2..7df73b1b1 100644<br>
-&gt; --- a/documentation/sdk-manual/working-projects.rst<br>
-&gt; +++ b/documentation/sdk-manual/working-projects.rst<br>
-&gt; @@ -56,9 +56,10 @@ project:<br>
-&gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0#include &lt;stdio.h&gt;<br>
-&gt;<br>
-&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0main()<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0int main()<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0{<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0pr=
-intf(&quot;Hello World!\n&quot;);<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return =
-0;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
-&gt;<br>
-<br>
-<br>
-I will go a step further<br>
-<br>
-#include &lt;stdio.h&gt;<br>
-<br>
-int main(void) {<br>
-=C2=A0 =C2=A0 printf(&quot;Hello World!\n&quot;);<br>
-=C2=A0 =C2=A0 return 0;<br>
-}<br>
-<br>
-int main(void) explicitly states the function takes no parameters<br>
-<br>
-&gt;=C2=A0 =C2=A0 =C2=A0-=C2=A0 ``<a href=3D"https://urldefense.proofpoint.=
-com/v2/url?u=3Dhttp-3A__configure.ac&amp;d=3DDwMFaQ&amp;c=3DncDTmphkJTvjIDP=
-h0hpF_4vCHvabgGkICC2epckfdiw&amp;r=3DAhkbNonVuMIGRfPx_Qj9TsRih1DULJTKUkSGa6=
-6m67E&amp;m=3Df-tqaJMvLQZsto9LmB4OqePZ_OjDN3dti7PPJVlvEhjKheIUAUdL0o3fi3YkQ=
-4tk&amp;s=3Dj2m9TmXi_dMLEfSZID4zMoJqhFaWviDSvxcmjsPHbDE&amp;e=3D" rel=3D"no=
-referrer" target=3D"_blank">configure.ac</a>``::<br>
-&gt; --<br>
-&gt; 2.39.5<br>
-&gt;<br>
-&gt;<br>
-&gt; <br>
-&gt;<br>
-<br>
--=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-<br>
-Links: You receive all messages sent to this group.<br></blockquote></div><=
-div class=3D"gmail_quote"><blockquote class=3D"gmail_quote" style=3D"margin=
-:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex"=
->
-View/Reply Online (#7447): <a href=3D"https://urldefense.proofpoint.com/v2/=
-url?u=3Dhttps-3A__lists.yoctoproject.org_g_docs_message_7447&amp;d=3DDwIFaQ=
-&amp;c=3DncDTmphkJTvjIDPh0hpF_4vCHvabgGkICC2epckfdiw&amp;r=3DAhkbNonVuMIGRf=
-Px_Qj9TsRih1DULJTKUkSGa66m67E&amp;m=3DWr6Y2z0KzaAxCZ5tlqzjl7FhG_g1bUuEOT6AU=
-yTYPNRZJqCnZHTFik8OoRKFmsdV&amp;s=3DVeFiakPBZ2lD6GB4rKk9wgyvPjT5NnLtMkngVkC=
-PcUY&amp;e=3D" rel=3D"noreferrer" target=3D"_blank">https://urldefense.proo=
-fpoint.com/v2/url?u=3Dhttps-3A__lists.yoctoproject.org_g_docs_message_7447&=
-amp;d=3DDwIFaQ&amp;c=3DncDTmphkJTvjIDPh0hpF_4vCHvabgGkICC2epckfdiw&amp;r=3D=
-AhkbNonVuMIGRfPx_Qj9TsRih1DULJTKUkSGa66m67E&amp;m=3DWr6Y2z0KzaAxCZ5tlqzjl7F=
-hG_g1bUuEOT6AUyTYPNRZJqCnZHTFik8OoRKFmsdV&amp;s=3DVeFiakPBZ2lD6GB4rKk9wgyvP=
-jT5NnLtMkngVkCPcUY&amp;e=3D</a> <br>
-Mute This Topic: <a href=3D"https://urldefense.proofpoint.com/v2/url?u=3Dht=
-tps-3A__lists.yoctoproject.org_mt_114604610_7048771&amp;d=3DDwIFaQ&amp;c=3D=
-ncDTmphkJTvjIDPh0hpF_4vCHvabgGkICC2epckfdiw&amp;r=3DAhkbNonVuMIGRfPx_Qj9TsR=
-ih1DULJTKUkSGa66m67E&amp;m=3DWr6Y2z0KzaAxCZ5tlqzjl7FhG_g1bUuEOT6AUyTYPNRZJq=
-CnZHTFik8OoRKFmsdV&amp;s=3D_YRG74nRBir2XpojvNO2_Ql-6pOAuN6ghYEWvaWkFY4&amp;=
-e=3D" rel=3D"noreferrer" target=3D"_blank">https://urldefense.proofpoint.co=
-m/v2/url?u=3Dhttps-3A__lists.yoctoproject.org_mt_114604610_7048771&amp;d=3D=
-DwIFaQ&amp;c=3DncDTmphkJTvjIDPh0hpF_4vCHvabgGkICC2epckfdiw&amp;r=3DAhkbNonV=
-uMIGRfPx_Qj9TsRih1DULJTKUkSGa66m67E&amp;m=3DWr6Y2z0KzaAxCZ5tlqzjl7FhG_g1bUu=
-EOT6AUyTYPNRZJqCnZHTFik8OoRKFmsdV&amp;s=3D_YRG74nRBir2XpojvNO2_Ql-6pOAuN6gh=
-YEWvaWkFY4&amp;e=3D</a> <br>
-Group Owner: <a href=3D"mailto:docs%2Bowner@lists.yoctoproject.org" target=
-=3D"_blank">docs+owner@lists.yoctoproject.org</a><br>
-Unsubscribe: <a href=3D"https://urldefense.proofpoint.com/v2/url?u=3Dhttps-=
-3A__lists.yoctoproject.org_g_docs_unsub&amp;d=3DDwIFaQ&amp;c=3DncDTmphkJTvj=
-IDPh0hpF_4vCHvabgGkICC2epckfdiw&amp;r=3DAhkbNonVuMIGRfPx_Qj9TsRih1DULJTKUkS=
-Ga66m67E&amp;m=3DWr6Y2z0KzaAxCZ5tlqzjl7FhG_g1bUuEOT6AUyTYPNRZJqCnZHTFik8OoR=
-KFmsdV&amp;s=3DWsKidALHg4Vou-YCH1sq9unNEfmLi-zpe-ED9HKD7tU&amp;e=3D" rel=3D=
-"noreferrer" target=3D"_blank">https://urldefense.proofpoint.com/v2/url?u=
-=3Dhttps-3A__lists.yoctoproject.org_g_docs_unsub&amp;d=3DDwIFaQ&amp;c=3DncD=
-TmphkJTvjIDPh0hpF_4vCHvabgGkICC2epckfdiw&amp;r=3DAhkbNonVuMIGRfPx_Qj9TsRih1=
-DULJTKUkSGa66m67E&amp;m=3DWr6Y2z0KzaAxCZ5tlqzjl7FhG_g1bUuEOT6AUyTYPNRZJqCnZ=
-HTFik8OoRKFmsdV&amp;s=3DWsKidALHg4Vou-YCH1sq9unNEfmLi-zpe-ED9HKD7tU&amp;e=
-=3D</a>=C2=A0 [<a href=3D"mailto:ecordonnier@snap.com" target=3D"_blank">ec=
-ordonnier@snap.com</a>]<br>
--=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-<br>
-<br>
-</blockquote></div>
-</blockquote></div></div>
-</blockquote></div>
-
---00000000000084335a063c164603--
+Thanks!
+Quentin
 
