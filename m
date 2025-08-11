@@ -1,103 +1,263 @@
-Return-Path: <alex.kanavin@gmail.com>
+Return-Path: <ecordonnier@snap.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 57937C87FD2
-	for <webhook@archiver.kernel.org>; Mon, 11 Aug 2025 09:25:45 +0000 (UTC)
-Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
- by mx.groups.io with SMTP id smtpd.web11.43985.1754904335161039763
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1A9BEC87FD2
+	for <webhook@archiver.kernel.org>; Mon, 11 Aug 2025 11:59:36 +0000 (UTC)
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+ by mx.groups.io with SMTP id smtpd.web10.46384.1754913572111362758
  for <docs@lists.yoctoproject.org>;
- Mon, 11 Aug 2025 02:25:35 -0700
+ Mon, 11 Aug 2025 04:59:32 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=f6hk/UZl;
- spf=pass (domain: gmail.com, ip: 209.85.219.50, mailfrom: alex.kanavin@gmail.com)
-Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-70749d4c5b5so36271796d6.1
-        for <docs@lists.yoctoproject.org>; Mon, 11 Aug 2025 02:25:35 -0700 (PDT)
+ dkim=pass header.i=@snap.com header.s=google header.b=G8HNYPTc;
+ spf=pass (domain: snapchat.com, ip: 209.85.208.51, mailfrom: ecordonnier@snapchat.com)
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-605b9488c28so7519183a12.2
+        for <docs@lists.yoctoproject.org>; Mon, 11 Aug 2025 04:59:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754904334; x=1755509134; darn=lists.yoctoproject.org;
+        d=snap.com; s=google; t=1754913570; x=1755518370; darn=lists.yoctoproject.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=uCDde5ru3BT4Vqdee9OvEdeMYKQl0Kl/+rmU3I55exM=;
-        b=f6hk/UZl0QfV1RzrM+t8kZs1+F6fk7kidhbiM4AZMtqzxWvBLPzA7U56oU+DDybcrp
-         e+bSvWUK0gUh+/P+gKSelCOU7a9c8q6HQrRqYT76PsKPV76VX8rvV3ZJ8Hv436Zy0da0
-         ie64mr0MtjmjFueY4CGAyJWer/jC4M4xc/TqZ2fKpZLbqdqUKOA8muOYGzHymBX0iWSp
-         tCIOY9pPuSoUMG0ic9gCsUpH2OgZnXcZoABGzeQOp/c31ZEZJoGLUnyihLKaJxZSS0PC
-         JGiJ1DBUe/y1+jVlZUv+mYKtx5jgIwjP8Q81QK2z9bxL63ILWLtZXv6cT7snbisgRV7J
-         Hyyw==
+        bh=CdhF8ZoeyMSYoB4CUzppwHqjGYdmlazOXdpjSZlZvDI=;
+        b=G8HNYPTcShZkOZZPIBhNx4M038FD/2ZNB76Vfoy1sG7PdcaBcHK9kUoSs2cUVKOE+8
+         j8gWpxvZVPE3RJmJuBX+3qVlzsCsQitn1S4ysMFkdQHGNfJ4mVPS917r3eJc9iKzxEFn
+         yTBxB1qic2j1Qvj0OU1gh4glSB3R3jSDAEVo4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754904334; x=1755509134;
+        d=1e100.net; s=20230601; t=1754913570; x=1755518370;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=uCDde5ru3BT4Vqdee9OvEdeMYKQl0Kl/+rmU3I55exM=;
-        b=VJIjiVcZN7Z7Vd4t4PXJfdJVPMfzzeekR24DUHBLcre20qXlSE6i7Z52sTifjwRd6o
-         0JtJAPvp88gECCCiJq1Rfp4ErkdEev7EwbkMZlS1t/LRwGZsdbQIEQBV+qKC8dWy1QPD
-         YVwSwL7lGJ6UzINzuNk3XoyW2HTxRfKre3/eibKcQNZQnhbQP7wNte3Z5Rlfwm3Oml/r
-         JibUR9JiZhFcuVGQr0b+G1KjxhL/3ByRov4ZYF9IBw4HbRNXfbwSL/SgxVRhotsMnpRf
-         Zf2qjOgWLed8ZEP4U1lviPq7UEvGrq2r/aojMaMeRCfjQ3ak8CDxaGWHNtC+9Vy/vBM5
-         FHZQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVpI/1avPj5sKDtswoZjaQsd43PiPJqPSE5sOg+5I+MhjR8XhtJoAjVkP3PQs2qpGavKUm1@lists.yoctoproject.org
-X-Gm-Message-State: AOJu0YwHwAVTqmqCZ1+Nk8aOGw1EOgevPDKrGaWLm+b0Glog1eEElCj+
-	YnHPhSpBNF5q6I9gY+C2+9cAWVJzJzYrlnYcegKPkaknKIlcIRSfIw1Pzg5P2fiJvy6s8EoxjBo
-	45jHjhA0OegFjXr5fChauuvUei2RkM8c=
-X-Gm-Gg: ASbGncudWMzVtuILb8qVatJyI1Cs2p00Nv4SsLG4wmqZezDJwRIdSRzawPDIWC+F7FZ
-	qR6pHaQWDIVkRGEG7bi7KQ+SUZU5xIvhjMU2Edfmp2AOWs14XM6MxHPXSUkHir59VFCHdZYmdKj
-	NT+m1ceTYF6eqk1FfID+D/DqOi4CLWjF+eMWWZg2cQh+wGmTOv5Fg+qHrrLXpTc2Z3HuCcP6M12
-	tcLmdM=
-X-Google-Smtp-Source: AGHT+IFh0mBR5zm9T8ZfQH2264pWWjTa7VIkatZ8nYktCLi5+Jas2IPfWCfb3bN4+FfLOwHsZTx5j8wO6yco8NEpzOU=
-X-Received: by 2002:a05:6214:2349:b0:709:82d8:6c68 with SMTP id
- 6a1803df08f44-7099a4a0544mr125933796d6.34.1754904334024; Mon, 11 Aug 2025
- 02:25:34 -0700 (PDT)
+        bh=CdhF8ZoeyMSYoB4CUzppwHqjGYdmlazOXdpjSZlZvDI=;
+        b=eUlMu8ElZ+sgAnxVdvrbWuFwK40AZDIyPw4g4G/DQX8ztux6FU8NSfDHgOZaDxJXd+
+         l7SW3onZYtoeatw48Ouf7qc5aA1v+78mi36bTgvC/fWsXhx5Bva92AyQuUxHGu6ZQfjE
+         3KGINy2Q5WgAGI8WQ1WZJvOxQNlddPwpMcssn/Zp5k17+5mlSNALQoNRHMGs/6eXBLkX
+         lG+d64XhLcnTEOEVjKBVCbaJzUv9l5+UIYVtDIwigzB5pdfMkZUFqr+kOASGXcyaJwMD
+         LzNdZ0YBz+0Bh5LukMKfl8dPhPzIuouzbuIyP2kGTxtNgGRNLD87WW4nrkmI8aQQY2DU
+         lzEg==
+X-Forwarded-Encrypted: i=1; AJvYcCVqMTnXAErN3Emv8gC/fb+2kql1wlpDdPvJ0KnPKcJcRi6f3NHC1BNPYIHmJoUVcL+euGf4@lists.yoctoproject.org
+X-Gm-Message-State: AOJu0YwpMZtdIS74RpE5Bbj2ykVKkIedeO2RWHDQ/YN48skCOOS4L1CE
+	XyKhUQConZL4Qk8ME1/zSvzP8J5hEJK+JVI6sVfALgLuQsBCd0G4Pk5q4VPRZtMBCrYbVD8orUN
+	DHURUgboQEj2IOtvnbLnblR5AgLv/bVxhSxm71X1Zjg==
+X-Gm-Gg: ASbGncstUnIAPF5k0kIhdpQTxO/XJM9J91uS/EFVfVogXg8R8TmY/G9wa9/iSpOLKMl
+	MnqzWEx440w7TPteRvmUqRqIEAy+IDGOJ6tCqGkJQbRD/WFvK69Flnv+NUQtSfb7rTHuCUP/4G3
+	q6c64uHijlC5k+rGx/y1ALl19VMnAtCgZz/Z/pKhnWFeeNTEL/SXJTIN2kFWZ2ThgMg8/bV5tD0
+	VC3Bw==
+X-Google-Smtp-Source: AGHT+IGUcPxIDlGpedK1xuUI2tTzo4tSdvlFg7FaIMgJBaM3WRpML2agmoqqmdCa1+KWm6+++UGuFvCZqAAsrd0JQZU=
+X-Received: by 2002:a17:907:2d14:b0:ae3:f16a:c165 with SMTP id
+ a640c23a62f3a-af9c655e9eamr1203044666b.31.1754913570359; Mon, 11 Aug 2025
+ 04:59:30 -0700 (PDT)
 MIME-Version: 1.0
-References: <20250810222523.2487072-1-richard.purdie@linuxfoundation.org>
-In-Reply-To: <20250810222523.2487072-1-richard.purdie@linuxfoundation.org>
-From: Alexander Kanavin <alex.kanavin@gmail.com>
-Date: Mon, 11 Aug 2025 11:25:22 +0200
-X-Gm-Features: Ac12FXzF4EkxSVBYXnA8DpZ2IzETcoirMhFRQo3vZMb2Etb_t6VQfDDxxhm7Z4k
-Message-ID: <CANNYZj8e=BpGeFryh0+bn6sRT2jFRjJ=n=kwdVHMEaTx9YG00w@mail.gmail.com>
-Subject: Re: [OE-core] [PATCH] Revert "qemux86-64: Reduce tuning to core2-64"
-To: richard.purdie@linuxfoundation.org
-Cc: openembedded-core@lists.openembedded.org, 
-	docs <docs@lists.yoctoproject.org>, Antonin Godard <antonin.godard@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"
+References: <20250808174828.236218-1-jan.vermaete@gmail.com> <CAMKF1srX4oUqvD3+X4-nf3r4ANuZ0XyyJ3UM0ea2+5fCU=Fwqw@mail.gmail.com>
+In-Reply-To: <CAMKF1srX4oUqvD3+X4-nf3r4ANuZ0XyyJ3UM0ea2+5fCU=Fwqw@mail.gmail.com>
+From: Etienne Cordonnier <ecordonnier@snap.com>
+Date: Mon, 11 Aug 2025 13:59:19 +0200
+X-Gm-Features: Ac12FXwGy6njyeZJ4Gii4PRc9LFp5gNRb29GWmyWvV6OC4CHxvUdrlMIJGmplc8
+Message-ID: <CAHUKmYbRWmCZkWr-oS0EAAkqsmFLo2qqDWXMMRi1MUk0qR67aQ@mail.gmail.com>
+Subject: Re: [docs] [PATCH] sdk: The main in the C example should return an int
+To: raj.khem@gmail.com
+Cc: jan.vermaete@gmail.com, docs@lists.yoctoproject.org
+Content-Type: multipart/alternative; boundary="000000000000f931ce063c15a7a8"
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 11 Aug 2025 09:25:45 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7449
+ <docs@lists.yoctoproject.org>; Mon, 11 Aug 2025 11:59:36 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7450
 
-On Mon, 11 Aug 2025 at 00:25, Richard Purdie via
-lists.openembedded.org
-<richard.purdie=linuxfoundation.org@lists.openembedded.org> wrote:
+--000000000000f931ce063c15a7a8
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+- "return 0" is optional in main after C99, so adding it is just personal
+preference but not strictly necessary
+- int main(void) and "int main()" are fully equivalent in C23, so changing
+this is also personal preference
+
+On Sat, Aug 9, 2025 at 4:48=E2=80=AFAM Khem Raj via lists.yoctoproject.org
+<raj.khem=3Dgmail.com@lists.yoctoproject.org> wrote:
+
+> On Fri, Aug 8, 2025 at 10:48=E2=80=AFAM Jan Vermaete via
+> lists.yoctoproject.org <jan.vermaete=3Dgmail.com@lists.yoctoproject.org>
+> wrote:
+> >
+> > see C17 (ISO/IEC 9899:2018)
+> >
+> > Signed-off-by: Jan Vermaete <jan.vermaete@gmail.com>
+> > ---
+> >  documentation/sdk-manual/working-projects.rst | 3 ++-
+> >  1 file changed, 2 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/documentation/sdk-manual/working-projects.rst
+> b/documentation/sdk-manual/working-projects.rst
+> > index 4236bcec2..7df73b1b1 100644
+> > --- a/documentation/sdk-manual/working-projects.rst
+> > +++ b/documentation/sdk-manual/working-projects.rst
+> > @@ -56,9 +56,10 @@ project:
+> >
+> >           #include <stdio.h>
+> >
+> > -         main()
+> > +         int main()
+> >               {
+> >                   printf("Hello World!\n");
+> > +                 return 0;
+> >               }
+> >
 >
-> This was originally applied as our autobuilder had older hardware and couldn't
-> cope with the newer settings. This has been resolved in the new cluster so we
-> can go back to the newer tuning, which software is now more likely to need.
+>
+> I will go a step further
+>
+> #include <stdio.h>
+>
+> int main(void) {
+>     printf("Hello World!\n");
+>     return 0;
+> }
+>
+> int main(void) explicitly states the function takes no parameters
+>
+> >     -  ``configure.ac``::
+> > --
+> > 2.39.5
+> >
+> >
+> >
+> >
+>
+> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
+> Links: You receive all messages sent to this group.
+> View/Reply Online (#7447):
+> https://urldefense.proofpoint.com/v2/url?u=3Dhttps-3A__lists.yoctoproject=
+.org_g_docs_message_7447&d=3DDwIFaQ&c=3DncDTmphkJTvjIDPh0hpF_4vCHvabgGkICC2=
+epckfdiw&r=3DAhkbNonVuMIGRfPx_Qj9TsRih1DULJTKUkSGa66m67E&m=3DWr6Y2z0KzaAxCZ=
+5tlqzjl7FhG_g1bUuEOT6AUyTYPNRZJqCnZHTFik8OoRKFmsdV&s=3DVeFiakPBZ2lD6GB4rKk9=
+wgyvPjT5NnLtMkngVkCPcUY&e=3D
+> Mute This Topic:
+> https://urldefense.proofpoint.com/v2/url?u=3Dhttps-3A__lists.yoctoproject=
+.org_mt_114604610_7048771&d=3DDwIFaQ&c=3DncDTmphkJTvjIDPh0hpF_4vCHvabgGkICC=
+2epckfdiw&r=3DAhkbNonVuMIGRfPx_Qj9TsRih1DULJTKUkSGa66m67E&m=3DWr6Y2z0KzaAxC=
+Z5tlqzjl7FhG_g1bUuEOT6AUyTYPNRZJqCnZHTFik8OoRKFmsdV&s=3D_YRG74nRBir2XpojvNO=
+2_Ql-6pOAuN6ghYEWvaWkFY4&e=3D
+> Group Owner: docs+owner@lists.yoctoproject.org
+> Unsubscribe:
+> https://urldefense.proofpoint.com/v2/url?u=3Dhttps-3A__lists.yoctoproject=
+.org_g_docs_unsub&d=3DDwIFaQ&c=3DncDTmphkJTvjIDPh0hpF_4vCHvabgGkICC2epckfdi=
+w&r=3DAhkbNonVuMIGRfPx_Qj9TsRih1DULJTKUkSGa66m67E&m=3DWr6Y2z0KzaAxCZ5tlqzjl=
+7FhG_g1bUuEOT6AUyTYPNRZJqCnZHTFik8OoRKFmsdV&s=3DWsKidALHg4Vou-YCH1sq9unNEfm=
+Li-zpe-ED9HKD7tU&e=3D
+> [ecordonnier@snap.com]
+> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
+>
+>
 
-The other reason was that qemu's TCG implementation of these v3
-instructions back then was very new and had subtle bugs which have
-since been fixed.
+--000000000000f931ce063c15a7a8
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This change merits a mention in release notes:
+<div dir=3D"ltr">- &quot;return 0&quot; is optional in main after C99, so a=
+dding it is just personal preference but not strictly necessary<br>-=C2=A0i=
+nt main(void) and &quot;int main()&quot; are fully equivalent in C23, so ch=
+anging this is also personal preference</div><br><div class=3D"gmail_quote =
+gmail_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">On Sat, Aug 9,=
+ 2025 at 4:48=E2=80=AFAM Khem Raj via <a href=3D"http://lists.yoctoproject.=
+org">lists.yoctoproject.org</a> &lt;raj.khem=3D<a href=3D"mailto:gmail.com@=
+lists.yoctoproject.org">gmail.com@lists.yoctoproject.org</a>&gt; wrote:<br>=
+</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;b=
+order-left:1px solid rgb(204,204,204);padding-left:1ex">On Fri, Aug 8, 2025=
+ at 10:48=E2=80=AFAM Jan Vermaete via<br>
+<a href=3D"http://lists.yoctoproject.org" rel=3D"noreferrer" target=3D"_bla=
+nk">lists.yoctoproject.org</a> &lt;jan.vermaete=3D<a href=3D"mailto:gmail.c=
+om@lists.yoctoproject.org" target=3D"_blank">gmail.com@lists.yoctoproject.o=
+rg</a>&gt;<br>
+wrote:<br>
+&gt;<br>
+&gt; see C17 (ISO/IEC 9899:2018)<br>
+&gt;<br>
+&gt; Signed-off-by: Jan Vermaete &lt;<a href=3D"mailto:jan.vermaete@gmail.c=
+om" target=3D"_blank">jan.vermaete@gmail.com</a>&gt;<br>
+&gt; ---<br>
+&gt;=C2=A0 documentation/sdk-manual/working-projects.rst | 3 ++-<br>
+&gt;=C2=A0 1 file changed, 2 insertions(+), 1 deletion(-)<br>
+&gt;<br>
+&gt; diff --git a/documentation/sdk-manual/working-projects.rst b/documenta=
+tion/sdk-manual/working-projects.rst<br>
+&gt; index 4236bcec2..7df73b1b1 100644<br>
+&gt; --- a/documentation/sdk-manual/working-projects.rst<br>
+&gt; +++ b/documentation/sdk-manual/working-projects.rst<br>
+&gt; @@ -56,9 +56,10 @@ project:<br>
+&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0#include &lt;stdio.h&gt;<br>
+&gt;<br>
+&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0main()<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0int main()<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0{<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0pr=
+intf(&quot;Hello World!\n&quot;);<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return =
+0;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
+&gt;<br>
+<br>
+<br>
+I will go a step further<br>
+<br>
+#include &lt;stdio.h&gt;<br>
+<br>
+int main(void) {<br>
+=C2=A0 =C2=A0 printf(&quot;Hello World!\n&quot;);<br>
+=C2=A0 =C2=A0 return 0;<br>
+}<br>
+<br>
+int main(void) explicitly states the function takes no parameters<br>
+<br>
+&gt;=C2=A0 =C2=A0 =C2=A0-=C2=A0 ``<a href=3D"http://configure.ac" rel=3D"no=
+referrer" target=3D"_blank">configure.ac</a>``::<br>
+&gt; --<br>
+&gt; 2.39.5<br>
+&gt;<br>
+&gt;<br>
+&gt; <br>
+&gt;<br>
+<br>
+-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-<br>
+Links: You receive all messages sent to this group.<br>
+View/Reply Online (#7447): <a href=3D"https://urldefense.proofpoint.com/v2/=
+url?u=3Dhttps-3A__lists.yoctoproject.org_g_docs_message_7447&amp;d=3DDwIFaQ=
+&amp;c=3DncDTmphkJTvjIDPh0hpF_4vCHvabgGkICC2epckfdiw&amp;r=3DAhkbNonVuMIGRf=
+Px_Qj9TsRih1DULJTKUkSGa66m67E&amp;m=3DWr6Y2z0KzaAxCZ5tlqzjl7FhG_g1bUuEOT6AU=
+yTYPNRZJqCnZHTFik8OoRKFmsdV&amp;s=3DVeFiakPBZ2lD6GB4rKk9wgyvPjT5NnLtMkngVkC=
+PcUY&amp;e=3D" rel=3D"noreferrer" target=3D"_blank">https://urldefense.proo=
+fpoint.com/v2/url?u=3Dhttps-3A__lists.yoctoproject.org_g_docs_message_7447&=
+amp;d=3DDwIFaQ&amp;c=3DncDTmphkJTvjIDPh0hpF_4vCHvabgGkICC2epckfdiw&amp;r=3D=
+AhkbNonVuMIGRfPx_Qj9TsRih1DULJTKUkSGa66m67E&amp;m=3DWr6Y2z0KzaAxCZ5tlqzjl7F=
+hG_g1bUuEOT6AUyTYPNRZJqCnZHTFik8OoRKFmsdV&amp;s=3DVeFiakPBZ2lD6GB4rKk9wgyvP=
+jT5NnLtMkngVkCPcUY&amp;e=3D</a> <br>
+Mute This Topic: <a href=3D"https://urldefense.proofpoint.com/v2/url?u=3Dht=
+tps-3A__lists.yoctoproject.org_mt_114604610_7048771&amp;d=3DDwIFaQ&amp;c=3D=
+ncDTmphkJTvjIDPh0hpF_4vCHvabgGkICC2epckfdiw&amp;r=3DAhkbNonVuMIGRfPx_Qj9TsR=
+ih1DULJTKUkSGa66m67E&amp;m=3DWr6Y2z0KzaAxCZ5tlqzjl7FhG_g1bUuEOT6AUyTYPNRZJq=
+CnZHTFik8OoRKFmsdV&amp;s=3D_YRG74nRBir2XpojvNO2_Ql-6pOAuN6ghYEWvaWkFY4&amp;=
+e=3D" rel=3D"noreferrer" target=3D"_blank">https://urldefense.proofpoint.co=
+m/v2/url?u=3Dhttps-3A__lists.yoctoproject.org_mt_114604610_7048771&amp;d=3D=
+DwIFaQ&amp;c=3DncDTmphkJTvjIDPh0hpF_4vCHvabgGkICC2epckfdiw&amp;r=3DAhkbNonV=
+uMIGRfPx_Qj9TsRih1DULJTKUkSGa66m67E&amp;m=3DWr6Y2z0KzaAxCZ5tlqzjl7FhG_g1bUu=
+EOT6AUyTYPNRZJqCnZHTFik8OoRKFmsdV&amp;s=3D_YRG74nRBir2XpojvNO2_Ql-6pOAuN6gh=
+YEWvaWkFY4&amp;e=3D</a> <br>
+Group Owner: <a href=3D"mailto:docs%2Bowner@lists.yoctoproject.org" target=
+=3D"_blank">docs+owner@lists.yoctoproject.org</a><br>
+Unsubscribe: <a href=3D"https://urldefense.proofpoint.com/v2/url?u=3Dhttps-=
+3A__lists.yoctoproject.org_g_docs_unsub&amp;d=3DDwIFaQ&amp;c=3DncDTmphkJTvj=
+IDPh0hpF_4vCHvabgGkICC2epckfdiw&amp;r=3DAhkbNonVuMIGRfPx_Qj9TsRih1DULJTKUkS=
+Ga66m67E&amp;m=3DWr6Y2z0KzaAxCZ5tlqzjl7FhG_g1bUuEOT6AUyTYPNRZJqCnZHTFik8OoR=
+KFmsdV&amp;s=3DWsKidALHg4Vou-YCH1sq9unNEfmLi-zpe-ED9HKD7tU&amp;e=3D" rel=3D=
+"noreferrer" target=3D"_blank">https://urldefense.proofpoint.com/v2/url?u=
+=3Dhttps-3A__lists.yoctoproject.org_g_docs_unsub&amp;d=3DDwIFaQ&amp;c=3DncD=
+TmphkJTvjIDPh0hpF_4vCHvabgGkICC2epckfdiw&amp;r=3DAhkbNonVuMIGRfPx_Qj9TsRih1=
+DULJTKUkSGa66m67E&amp;m=3DWr6Y2z0KzaAxCZ5tlqzjl7FhG_g1bUuEOT6AUyTYPNRZJqCnZ=
+HTFik8OoRKFmsdV&amp;s=3DWsKidALHg4Vou-YCH1sq9unNEfmLi-zpe-ED9HKD7tU&amp;e=
+=3D</a>=C2=A0 [<a href=3D"mailto:ecordonnier@snap.com" target=3D"_blank">ec=
+ordonnier@snap.com</a>]<br>
+-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-<br>
+<br>
+</blockquote></div>
 
-======
-qemux86-64 MACHINE now defaults to x86-64-v3 micro-architecture level
-
-The previous default was Core 2 era processors. This change means that
-the toolchain is configured to build for that level, and qemu is
-configured to emulate it.
-
-v3 level adds support for AVX/AVX2/BMI/BMI2/F16C and other newer
-instructions which are seeing increasing usage in modern software and
-add performance benefits. Please see
-https://en.wikipedia.org/wiki/X86-64#Microarchitecture_levels for
-definition of the levels and lists of Intel/AMD CPUs where support for
-the instructions was first added.
-
-Note that if qemu system emulation is used on an x86 build machine
-with kvm enabled, then the build machine's CPU must also be recent
-enough to support these instructions natively.
-======
-
-Alex
+--000000000000f931ce063c15a7a8--
 
