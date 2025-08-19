@@ -1,108 +1,92 @@
-Return-Path: <alex.kanavin@gmail.com>
+Return-Path: <joaomarcos.costa@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B2FE1CA0EED
-	for <webhook@archiver.kernel.org>; Tue, 19 Aug 2025 09:43:12 +0000 (UTC)
-Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
- by mx.groups.io with SMTP id smtpd.web11.10163.1755596588665250822
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 968E6CA0EEB
+	for <webhook@archiver.kernel.org>; Tue, 19 Aug 2025 16:04:54 +0000 (UTC)
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+ by mx.groups.io with SMTP id smtpd.web10.18603.1755619493177888762
  for <docs@lists.yoctoproject.org>;
- Tue, 19 Aug 2025 02:43:08 -0700
+ Tue, 19 Aug 2025 09:04:54 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=R8doh7Uf;
- spf=pass (domain: gmail.com, ip: 209.85.219.50, mailfrom: alex.kanavin@gmail.com)
-Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-70a88db0bd8so44742866d6.0
-        for <docs@lists.yoctoproject.org>; Tue, 19 Aug 2025 02:43:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755596588; x=1756201388; darn=lists.yoctoproject.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=VBRUE8a2XavcR+7d2IT5XpTVKaBmDy3kaBu827QNKbY=;
-        b=R8doh7Uf20Fe29HSaX+VldNFofebuY8ZmUqmiINyGMlYuN0HcG0BaD98xn4cU4RZmI
-         7/srFcL9HG+MhJIDdq/Ayx//77zRPwE0o79vQrvjQDgyjNKnkSi7YTh5W5mGCsDsjuyf
-         M0qXXK7pfunCkPPOG5jkdXZ+vKUJOIOgrg6B6xqOzpd3cyw7gpD2MzIh5VzpbO7HSf+D
-         h7/drU82guzbdy9hxiXmapFLJaocARrAO//1lp3pJAaBrsKYS6DmyeclQrcX1Rzz0rlo
-         yw1FYXLFoyDAoGzxNsc6vWUU5C5FvJxtCbomD2mf9fxwPW0d8hA6RR6zByiPlO1tTJzL
-         AVYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755596588; x=1756201388;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=VBRUE8a2XavcR+7d2IT5XpTVKaBmDy3kaBu827QNKbY=;
-        b=Nncy+1CAnnqgVDwbJSsbgBe6IvKY5MZ82DNnJfVM8I1bNTN4QWoSDB8b36VDYWHfHg
-         xp7Rjy7W8uATnvkKn/YSybmriiow/UeVRicFkZ4rnaFRLLvZ0jSZCllI5NI89nT0HxRA
-         9r8gkAEgAXCaUjzRLnELGjtzprWJgOYQquEXqXt2Y4ffy6kmPLYt5ylm1lE+B4HRoQUi
-         KVc60z55dURu2bzwXAvcCthfe8+sXPS0YAdbywPZ8iZU0MLMm4tvjWQFregcww+VM1Ak
-         PuVJv3WRiHTbYl7TpkChNa5lNEmXgqfmvTttTPOxIgdztlhRFBgGG4E+pGr1KTiclH0T
-         UPkA==
-X-Forwarded-Encrypted: i=1; AJvYcCVklULBZ6rwvY21I0Cclx1R8UlqkKicdNrv/CL123M2mR4b+edfbqsucAN6e8rHPVnlP3lW@lists.yoctoproject.org
-X-Gm-Message-State: AOJu0Yza0bwZg35Z0y7jaDD8hDydUxvmx2sHR8tsVEPUoou/PlinRwc3
-	NG5gcG81gbA8zD57uNq5SuLMOn5DI1t3Rh05nZbKSkGM4eMxcQ+IOcJSrm1l55orlDQN3qJkGJA
-	VqPeO2jfdrw9Cyt5kgYX+uzwmxzlyz+k=
-X-Gm-Gg: ASbGncsQYhcdhnFhGPRHJfkN8HWOEXUsKfUkxlporYKC64TmiasZ3SPK73gGax5wxw+
-	K/hVdS7smplo+tR1UIsxuY6IZeJ1+kG0MGyy5SfdxpqbBdDTJjofg+YfyxQ+kGKD8Wb8wkoaulJ
-	NBPlhQUqu8y3iDXxg7MyiNusqE5xitK7RhZvYnqbEb0OYgoIXjHOtBMnBkBlXncJoL4KMDTv+Er
-	I4uA9eMjVk6ticvmY9RguI/8Nx73EHLwB16slGGrTebZXms4MJ+
-X-Google-Smtp-Source: AGHT+IEC4up9ErhVMXH8BSWrf+MtZbqn+pl1jCbdK2lRyGEa0O3l+BOTKYjEk0GKGtBPLF0LSK6+10okP53NRkJOSc0=
-X-Received: by 2002:a05:6214:410e:b0:707:5633:d702 with SMTP id
- 6a1803df08f44-70c2b6da85fmr18513246d6.9.1755596587645; Tue, 19 Aug 2025
- 02:43:07 -0700 (PDT)
+ dkim=fail reason="dkim: body hash did not verify" header.i=@bootlin.com header.s=dkim header.b=xYC6z+wK;
+ spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: joaomarcos.costa@bootlin.com)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id C4745C6B3B0
+	for <docs@lists.yoctoproject.org>; Tue, 19 Aug 2025 16:04:37 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 5779760697
+	for <docs@lists.yoctoproject.org>; Tue, 19 Aug 2025 16:04:51 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id EE60F1C22C587;
+	Tue, 19 Aug 2025 18:04:48 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1755619490; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=p6DPKTGGKAWX6LAODRFTO7qwo1Hk2mcklm9J90UBQgQ=;
+	b=xYC6z+wKchkC11GrmK+JhlWDE+30+BdnL1t/4DvJQd+IDrsS5knbWBq5KXoRlu0cIlFBEv
+	GmCMk3HL1B+hd+frR5xPp/Djq1HAzcl0tuzfg7+6zkFW0jkT/xzUVYxmOGkU04cRf73MLp
+	t/RtRMHmVDQw1povTQKsSDV02ucJSl9h9HgazJtW3LgdglEpSoJvvfUOz35FYjajQrTNDP
+	t++mrwoHTKKBltswaKzKQxDKW+jax6FB1+9A/EVjO/wHkplAiju0W/aJQVplBodQjJsPvn
+	2eIciIUBvpEcvnVqzzarjOAzfP/wXJ6MQcNCV06GBZ76GLFeZTZ1reDGFB4dUw==
+From: joaomarcos.costa@bootlin.com
+To: docs@lists.yoctoproject.org
+Cc: thomas.petazzoni@bootlin.com,
+	Joao Marcos Costa <joaomarcos.costa@bootlin.com>
+Subject: [docs][PATCH] ref-manual/variables.rst: expand IMAGE_OVERHEAD_FACTOR glossary entry
+Date: Tue, 19 Aug 2025 18:04:31 +0200
+Message-ID: <20250819160431.382820-1-joaomarcos.costa@bootlin.com>
+X-Mailer: git-send-email 2.47.0
 MIME-Version: 1.0
-References: <20250810222523.2487072-1-richard.purdie@linuxfoundation.org> <CANNYZj8e=BpGeFryh0+bn6sRT2jFRjJ=n=kwdVHMEaTx9YG00w@mail.gmail.com>
-In-Reply-To: <CANNYZj8e=BpGeFryh0+bn6sRT2jFRjJ=n=kwdVHMEaTx9YG00w@mail.gmail.com>
-From: Alexander Kanavin <alex.kanavin@gmail.com>
-Date: Tue, 19 Aug 2025 11:42:56 +0200
-X-Gm-Features: Ac12FXx3rRCwpdh5ZYsE7Vn4SJA7AyBA3hbwGFZ6yQ9QuMSp5YDcrRNMwwz-nyo
-Message-ID: <CANNYZj_PJgweyLaffD0h+8DZUHXY3hMkKv7RmkWNn857wGptcw@mail.gmail.com>
-Subject: Re: [OE-core] [PATCH] Revert "qemux86-64: Reduce tuning to core2-64"
-To: Antonin Godard <antonin.godard@bootlin.com>
-Cc: openembedded-core@lists.openembedded.org, 
-	docs <docs@lists.yoctoproject.org>
-Content-Type: text/plain; charset="UTF-8"
+X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: quoted-printable
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 19 Aug 2025 09:43:12 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7454
+ <docs@lists.yoctoproject.org>; Tue, 19 Aug 2025 16:04:54 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7455
 
-On Mon, 11 Aug 2025 at 11:25, Alexander Kanavin <alex.kanavin@gmail.com> wrote:
->
-> On Mon, 11 Aug 2025 at 00:25, Richard Purdie via
-> lists.openembedded.org
-> <richard.purdie=linuxfoundation.org@lists.openembedded.org> wrote:
-> >
-> > This was originally applied as our autobuilder had older hardware and couldn't
-> > cope with the newer settings. This has been resolved in the new cluster so we
-> > can go back to the newer tuning, which software is now more likely to need.
->
-> The other reason was that qemu's TCG implementation of these v3
-> instructions back then was very new and had subtle bugs which have
-> since been fixed.
->
-> This change merits a mention in release notes:
->
-> ======
-> qemux86-64 MACHINE now defaults to x86-64-v3 micro-architecture level
->
-> The previous default was Core 2 era processors. This change means that
-> the toolchain is configured to build for that level, and qemu is
-> configured to emulate it.
->
-> v3 level adds support for AVX/AVX2/BMI/BMI2/F16C and other newer
-> instructions which are seeing increasing usage in modern software and
-> add performance benefits. Please see
-> https://en.wikipedia.org/wiki/X86-64#Microarchitecture_levels for
-> definition of the levels and lists of Intel/AMD CPUs where support for
-> the instructions was first added.
->
-> Note that if qemu system emulation is used on an x86 build machine
-> with kvm enabled, then the build machine's CPU must also be recent
-> enough to support these instructions natively.
-> ======
+From: Joao Marcos Costa <joaomarcos.costa@bootlin.com>
 
+There's a (second) overhead factor applied in images generated with Wic,
+and this is already documented in the .wks reference. However, the
+IMAGE_OVERHEAD_FACTOR entry does not mention it, and by looking at the
+partition sizes (e.g. with parted) one may find it confusing that they
+don't match with the expected rootfs size (e.g. in a scenario where the
+extra space is "0" and IMAGE_OVERHEAD_FACTOR=3D"1.0").
 
-The change has now merged, so the above can be added to the docs too.
+This second overhead is already documented, though:
+https://docs.yoctoproject.org/ref-manual/kickstart.html#command-part-or-p=
+artition
 
-Alex
+Mention the '--overhead-factor' option in the glossary entry and add a
+reference to the wks documentation.
+
+Signed-off-by: Joao Marcos Costa <joaomarcos.costa@bootlin.com>
+---
+ documentation/ref-manual/variables.rst | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-m=
+anual/variables.rst
+index d559899c6..c18bc7ba4 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -4166,6 +4166,11 @@ system and gives an overview of their function and=
+ contents.
+       added to the image by using the :term:`IMAGE_ROOTFS_EXTRA_SPACE`
+       variable.
+=20
++      When using Wic tool, beware that a second overhead factor is also =
+applied.
++      This overhead's value is defined by the ``--overhead-factor`` opti=
+on, and
++      not by :term:`IMAGE_OVERHEAD_FACTOR`. See the
++      ":doc:`/ref-manual/kickstart`" chapter for details.
++
+    :term:`IMAGE_PKGTYPE`
+       Defines the package type (i.e. DEB, RPM or IPK) used by the
+       OpenEmbedded build system. The variable is defined appropriately b=
+y
+--=20
+2.47.0
+
 
