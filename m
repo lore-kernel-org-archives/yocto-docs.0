@@ -2,67 +2,67 @@ Return-Path: <tim.orling@konsulko.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EA85FCA0EE6
-	for <webhook@archiver.kernel.org>; Tue, 19 Aug 2025 21:08:15 +0000 (UTC)
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
- by mx.groups.io with SMTP id smtpd.web10.4902.1755637688545650308
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 16439CA0EE6
+	for <webhook@archiver.kernel.org>; Tue, 19 Aug 2025 21:35:46 +0000 (UTC)
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+ by mx.groups.io with SMTP id smtpd.web11.5522.1755639337544604787
  for <docs@lists.yoctoproject.org>;
- Tue, 19 Aug 2025 14:08:08 -0700
+ Tue, 19 Aug 2025 14:35:37 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@konsulko.com header.s=google header.b=dHHFzwik;
- spf=pass (domain: konsulko.com, ip: 209.85.215.170, mailfrom: tim.orling@konsulko.com)
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-b47475cf8ecso1752685a12.0
-        for <docs@lists.yoctoproject.org>; Tue, 19 Aug 2025 14:08:08 -0700 (PDT)
+ dkim=pass header.i=@konsulko.com header.s=google header.b=qGH7Io/W;
+ spf=pass (domain: konsulko.com, ip: 209.85.215.176, mailfrom: tim.orling@konsulko.com)
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-b4717543ed9so3953988a12.3
+        for <docs@lists.yoctoproject.org>; Tue, 19 Aug 2025 14:35:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google; t=1755637687; x=1756242487; darn=lists.yoctoproject.org;
+        d=konsulko.com; s=google; t=1755639336; x=1756244136; darn=lists.yoctoproject.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=mOk54X8KuCusbyfvb5pWXVi/RhBPXbP9GfRE9Vcf+lY=;
-        b=dHHFzwikhHDaSYz+0Hi1L14ciSFwe3ji37+hZqu2Hm2iyx3WlnVUNGjc4Y/WadUNGh
-         O5c8yQS0Ky6hPMrp7v9oQQaTTnmJwx5CBXVHPiOmtqgC2z5Jp7hMdF6AZ3MIm3w6Svse
-         UBPJhgJuJhdZ3IfgsCfw3Qu+Ld4Yrq4MBwbew=
+        bh=X6lv70nlMop5hbcU1dAJ9RgaCLOfObNI8fP67sX/ouQ=;
+        b=qGH7Io/WkwcS5N3XvefWQAmt8kuBlDdAOY2JH0w0QPTjg2d3Tn8lXos7f/tY1gbQhN
+         UMLmC9Hd6wXs9mm3zhNupihd7jpTnqlatdVt1Osf6XKvGJ928xzNFPXMuZODRH3s7xkQ
+         lcOStrCCMqiNolsw+w1jjmA1Q7kfZtZRsIOOk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755637687; x=1756242487;
+        d=1e100.net; s=20230601; t=1755639336; x=1756244136;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=mOk54X8KuCusbyfvb5pWXVi/RhBPXbP9GfRE9Vcf+lY=;
-        b=V+j70lJR8BIWizl6BpiWjU5pUAp2HRS0l28gcHLd/7WQtRMFTOpsdC2jDvKfR2l5+M
-         BJOLFymVXRnkt8PORvlLlTQ9jQetlZjcm2FGreVsEJHzLw8YDuel2HXjlSSD4hgsEyn3
-         vUFx/QMHX3HPQy6RlXDgsDN4Tww5Uo42AAOzVranpbl0gF8FkuN2eHZj+e31TrPwCe9+
-         ozSHC55Jv5VMOF2EYepC9c88gARPfa0dX43l/gGlKW05puXIVs39B3ooPYCog23nKrPr
-         gK2iwFC2ELObyPFZJ7xWTNclmvav5PD0eLAA6y/4mcH7vq1BFN9seVyPZNJPySL3WN+I
-         IRuw==
-X-Gm-Message-State: AOJu0Yx7vtxytY/+aK1FWRBF3Ib2oJLABA/DtL0JEnPnlznBKXTrrAiM
-	wrQqbRnq7/ZbIaK4LO3mfGny9DcyT+dqYS+lSVFGYLVsPSt8M8t5OXNb0mdCvEsqy80mrv1KPSb
-	MZWoYK30=
-X-Gm-Gg: ASbGncswD8YZUQvaRKcHHkzzuNpNbNVENNBHv9NUoSXBZI+2VhWRqXnoscw74+muT8y
-	BqOkznzBrDVei9f9lher1TEVNOlAA0u36ILHBVsO0Co3GQh1/B6hVfmCUX5IOKgI2SR3CV79ZvH
-	UJnVRL8T0+Wh879Pn1R6VfOjdgrGSFoXw+BSbDRQ6joXnfFTAmatLzxx/bJNaGaC95cNg+yEyBA
-	HdlM6HIKJa3xuHSXLqHJ8CRuA+L0AkUTNo4S08sWnCu+V1Um396h/WpjDJn0ztV6tbMJJZlTTYg
-	1Rr3t3SJTUf2kfbpdIWiP+J3tJjzRIl9BDBOBumV0NcmLAg758Hzw5FujYNX2gndcvMgwErslZf
-	gpLQ1gxLSecvEkmlyI93xekRVaV6WH+aiZcKTXGVR1cPMM22TDaMTAo0siIVmIA==
-X-Google-Smtp-Source: AGHT+IHX60jqKsItM3ynpEze434IFBqLi922l2xsZMfeSDnh/ultLDstnz+7Mng6xEhpR8tHAYJspQ==
-X-Received: by 2002:a17:903:1103:b0:244:7bce:9530 with SMTP id d9443c01a7336-245ef1235d2mr4559565ad.18.1755637687096;
-        Tue, 19 Aug 2025 14:08:07 -0700 (PDT)
+        bh=X6lv70nlMop5hbcU1dAJ9RgaCLOfObNI8fP67sX/ouQ=;
+        b=J9p5YUPeu9V38D1b3Z4rguyPDXTAnS4crHpRZZrbtEqi8dB//73fbx2KTkF6IwAhTl
+         p4RIQoSAT6QbADg1EETDSXJEiwsA9Cg5knjzzR5nTcSzhVQbmuPBp4vjOoP4W4J4QPLc
+         C+2k4bf6TDAne/kGQaKlCe8rkUoJQmRCLSwFv2Jcsbu9P81X54PfolUH8w/iFkLjVvU9
+         4nYUOqFbuq/el0o7v2q4uI10X+htMh/hvJGyUBoipz1On2DS3smEwAyrsgnefWLnctwU
+         DV4hZwuD4mxygi3a51Z99EE6C1V0z+XYIUkvjHIz/cldUfVQY7zhPnp0Pofc3b6AvMDn
+         KQVg==
+X-Gm-Message-State: AOJu0Yy6piVgYV2POTg9PUNHiUZ5ylpwv03H8Wzy3UExyYKOcVztgZwp
+	T5D5vXleZ+Sz49Tkdlj+0qghYIPLd8//0VGtLT4tJ0Rb75PTUq7IVI7oqE1y02TRe94KduI02ZV
+	Q11J+Mtk=
+X-Gm-Gg: ASbGncsjI74KmLmYhSgOLFgGGfZ/ljMmLhl6gI6vj3ufdDmSZ8MFDklvCcUbW3TGDGd
+	ppf9dgP7zAsnHFhqZbkA+tnkWMKr45RlhVBExy5Dms9b2Ir23TchFM5/jP6gb7M+rv1ZjCauG2q
+	69uxghIuLY5ASsocUfKUgPCwSIw6CAFZ083uH/wj6CiYW1YO7HN8nwvLYGfCPiwpqoqIL28dDEc
+	+IQKudn1X9699B9Zvcd6MX7KJMTal2JxHFZTWcvyCRSn4PD7PVxTFT1frJyNYt+HYQMUysqnqgB
+	DYDOHPtrp7Daitni77pELPd1o9dUG+utVeVaq5Sr0koUdluOfxysujTkxzrY5dfTPXhS1NSbMQt
+	iy76owRIrgZiait7nYMqtQ/T51r+sfAbJh9mKwz64ufnLGGInQaV3+HRSuYFFyw==
+X-Google-Smtp-Source: AGHT+IEoSfOzm+UspX043Bg6t96/0VhkZ4VI9N5vt3UMS+YsaYi/TOFCmlC/oPT0WjJObKjZoXo+Sg==
+X-Received: by 2002:a17:903:198e:b0:235:f143:9b07 with SMTP id d9443c01a7336-245ef0d5758mr5744635ad.5.1755639334065;
+        Tue, 19 Aug 2025 14:35:34 -0700 (PDT)
 Received: from localhost (c-98-232-159-17.hsd1.or.comcast.net. [98.232.159.17])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-245ed33d2a3sm6412195ad.12.2025.08.19.14.08.06
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-324d31b83dcsm1748041a91.2.2025.08.19.14.35.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Aug 2025 14:08:06 -0700 (PDT)
+        Tue, 19 Aug 2025 14:35:33 -0700 (PDT)
 From: tim.orling@konsulko.com
 To: docs@lists.yoctoproject.org
 Cc: Tim Orling <tim.orling@konsulko.com>
-Subject: [RFC][PATCH] brief-yoctoprojectqs: add bitbake-setup info
-Date: Tue, 19 Aug 2025 14:07:16 -0700
-Message-ID: <20250819210758.3606038-1-tim.orling@konsulko.com>
+Subject: [RFC][PATCH v2] brief-yoctoprojectqs: add bitbake-setup info
+Date: Tue, 19 Aug 2025 14:34:46 -0700
+Message-ID: <20250819213530.3616042-1-tim.orling@konsulko.com>
 X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 19 Aug 2025 21:08:15 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7456
+ <docs@lists.yoctoproject.org>; Tue, 19 Aug 2025 21:35:46 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7457
 
 From: Tim Orling <tim.orling@konsulko.com>
 
@@ -74,11 +74,15 @@ used by bitbake-setup to setup SSTATE_MIRRORS, etc.
 
 Signed-off-by: Tim Orling <tim.orling@konsulko.com>
 ---
- documentation/brief-yoctoprojectqs/index.rst | 223 ++++++++++---------
- 1 file changed, 122 insertions(+), 101 deletions(-)
+Changes in v2:
+  - fix typos/grammar errors
+  - use commas instead of en dash
+
+ documentation/brief-yoctoprojectqs/index.rst | 221 ++++++++++---------
+ 1 file changed, 121 insertions(+), 100 deletions(-)
 
 diff --git a/documentation/brief-yoctoprojectqs/index.rst b/documentation/brief-yoctoprojectqs/index.rst
-index 4a6f13d7e..e304869d9 100644
+index 4a6f13d7e..8ef1f5bf5 100644
 --- a/documentation/brief-yoctoprojectqs/index.rst
 +++ b/documentation/brief-yoctoprojectqs/index.rst
 @@ -87,75 +87,112 @@ distribution:
@@ -90,12 +94,11 @@ index 4a6f13d7e..e304869d9 100644
 +Use Git to Clone bitbake-setup
 +==============================
  
--Once you complete the setup instructions for your machine, you need to
+ Once you complete the setup instructions for your machine, you need to
 -get a copy of the Poky repository on your build host. Use the following
 -commands to clone the Poky repository.
-+Once you complete the setup instructions for you machine, you need to
 +get a copy of the bitbake-setup tool to setup the Poky reference
-+distributioin on your build host. Use the following commands to clone
++distribution on your build host. Use the following commands to clone
 +the bitbake repository.
  
  .. code-block:: shell
@@ -128,8 +131,8 @@ index 4a6f13d7e..e304869d9 100644
 +   $ ./bitbake-setup/bin/bitbake-setup init
 +
 +By default, this will setup in $HOME/bitbake-builds. If you prefer to
-+setup your builds in a different directory--for example the current
-+directory--you can instead use the ``--top-dir`` argument:
++setup your builds in a different directory, for example the current
++directory, you can instead use the ``--top-dir`` argument:
  
  .. code-block:: shell
  
