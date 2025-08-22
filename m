@@ -1,261 +1,223 @@
-Return-Path: <chee.yang.lee@intel.com>
+Return-Path: <quentin.schulz@cherry.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4F88BCA0EED
-	for <webhook@archiver.kernel.org>; Fri, 22 Aug 2025 04:06:11 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by mx.groups.io with SMTP id smtpd.web11.1074.1755835566126541728
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2AFBACA0EEB
+	for <webhook@archiver.kernel.org>; Fri, 22 Aug 2025 14:32:35 +0000 (UTC)
+Received: from GVXPR05CU001.outbound.protection.outlook.com (GVXPR05CU001.outbound.protection.outlook.com [52.101.83.31])
+ by mx.groups.io with SMTP id smtpd.web10.11585.1755873146747811568
  for <docs@lists.yoctoproject.org>;
- Thu, 21 Aug 2025 21:06:06 -0700
+ Fri, 22 Aug 2025 07:32:28 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@intel.com header.s=Intel header.b=nX2aMqKP;
- spf=pass (domain: intel.com, ip: 192.198.163.16, mailfrom: chee.yang.lee@intel.com)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755835566; x=1787371566;
-  h=from:to:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=0ZY5fSHJ8yXUKMSehrtODNYgr/TFnG8AvWsyVCnhhHw=;
-  b=nX2aMqKPkKSUzTiHeYQtY5zmmljvm5RoKX9YmoA9BvHAC5OIIFe7jDgI
-   uU3x23y7Ul+SVFut/lVkbtdWihej4U3BLYlrb4Utg2vQ9VxHqUPzcQ7pO
-   PF9nxajdsrsDy+F8ZS3JRCjHhg0vFZ/AyraIBfoZr7klKDZT2EPZ30YTN
-   CFnXEathWvBbx3Zhdz5FlyeRa+EWUxixVOjvIFsBZt/bjkhXSXAF4CJB0
-   bvi+4CxWmYww/l1NhUDVDZ6iiZ8XUD/ZNutX80Im8RQRQ9knupXvFO20I
-   5e361eNjzfTuQkkr5fzJ/rtPWFS90pa0cUf9q7x4mfbiaripsSYmMYSWH
-   A==;
-X-CSE-ConnectionGUID: MremT/3gRDOpKjZhhGaRRA==
-X-CSE-MsgGUID: N95eZ6edTOOSCzPXHvBZWA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11529"; a="45706256"
-X-IronPort-AV: E=Sophos;i="6.17,309,1747724400"; 
-   d="scan'208";a="45706256"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2025 21:06:05 -0700
-X-CSE-ConnectionGUID: Q19jsdexQVSPWftSeeCBog==
-X-CSE-MsgGUID: Ewmoj+L6T6qa1/Q/74/aOQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,309,1747724400"; 
-   d="scan'208";a="167833333"
-Received: from cheeyang-desk4.png.intel.com ([10.107.249.123])
-  by orviesa006.jf.intel.com with ESMTP; 21 Aug 2025 21:06:04 -0700
-From: chee.yang.lee@intel.com
-To: docs@lists.yoctoproject.org
-Subject: [PATCH] migration-guides: add release notes for 4.0.29
-Date: Fri, 22 Aug 2025 12:05:45 +0800
-Message-ID: <20250822040545.120904-1-chee.yang.lee@intel.com>
-X-Mailer: git-send-email 2.43.0
+ dkim=pass header.i=@cherry.de header.s=selector1 header.b=N5puihez;
+ spf=pass (domain: cherry.de, ip: 52.101.83.31, mailfrom: quentin.schulz@cherry.de)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=kggFy5Uu39Sl2K0VhJIz5K8nUirT1l4WaJlP/686KRErqhw0ifDAp8DjTg2wuvBm93j5vSDo61Ts7fEpVyfAjItWX68gCeBEzMjg3kTynCLj0G+HDzLh6Q1ViL6oHLnmaxcdUu5qhEZPqR6bjtHZkMVD36qGGLEo6ebQQ3jQ9akBY7MNH2wj/iXmsK/VRKtRFlvlzczP0i6VFZdb7KKdQxJRk9TL00TteOtG/ej+VPU4rCXcAaOWumJTx4anGPe90GxTWMJEGhHJ+mpJama7d+FvOXvFNEYu21BBOhRnz5b4/P8BkRV5ar3Pofrw2eqzMR246ve3LV9gbSVt0HL5SA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=93XSPHkQAIfq0biwwTDgy0vM7wYsCPKQkKvejXlVwQc=;
+ b=mi44CiE0pU7fAYf2dcfmm11BOtvPXkOMMYWnIT+2ktp+bht1QJdkbRYF5RSnKOKQ+ehi4YfOUd1gLi3RLIyvuGN2r+euHwzrCNuGHegTA4h25x4V8E8HyUog9ejD95lBQIZyDA1F1D6hOp/kitDiaeTpwsLRNVgR7iYhKfwDvrRPA8UxTeAxtKp3KyhZeat649NW8rlJfasC4K53kcaxrgOAWBfPQoLjdCRNZuPQIN+Es6gVYc/u1RpNGsxQvmNcBBvy6rK8RsD1WRJjWmPqrDepGqctkSE9wiUksKNPvME5qCw1HepTyQRv/wHBR82WY0hsyR6kbRHjDjOYgVze8Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
+ dkim=pass header.d=cherry.de; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=93XSPHkQAIfq0biwwTDgy0vM7wYsCPKQkKvejXlVwQc=;
+ b=N5puihezOxwLd8v7dldSbYpjy2c8XjHA0Uc21AmgbG4cJqzOEWvLNxoXRz9W7xdKp4RSInvKMu0/fwGkORn/KourqzVXkN9VeNWolVSpQ4w28dcfBGlrYqEm7PAQcFYVpY7tIe9iem2t1gg+XTYmHjrX2Nh4Z+oql85nFQBhgok=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=cherry.de;
+Received: from AS8PR04MB8897.eurprd04.prod.outlook.com (2603:10a6:20b:42c::20)
+ by AS8PR04MB8707.eurprd04.prod.outlook.com (2603:10a6:20b:42a::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.17; Fri, 22 Aug
+ 2025 14:32:22 +0000
+Received: from AS8PR04MB8897.eurprd04.prod.outlook.com
+ ([fe80::5ee:7297:93b4:a8d1]) by AS8PR04MB8897.eurprd04.prod.outlook.com
+ ([fe80::5ee:7297:93b4:a8d1%4]) with mapi id 15.20.9052.014; Fri, 22 Aug 2025
+ 14:32:21 +0000
+Message-ID: <a106fc65-b72d-4701-b1f7-917dbfe5bfc6@cherry.de>
+Date: Fri, 22 Aug 2025 16:32:20 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [docs][PATCH] ref-manual/variables.rst: expand
+ IMAGE_OVERHEAD_FACTOR glossary entry
+To: joaomarcos.costa@bootlin.com, docs@lists.yoctoproject.org
+Cc: thomas.petazzoni@bootlin.com
+References: <20250819160431.382820-1-joaomarcos.costa@bootlin.com>
+Content-Language: en-US
+From: Quentin Schulz <quentin.schulz@cherry.de>
+In-Reply-To: <20250819160431.382820-1-joaomarcos.costa@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR0P281CA0206.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:ad::15) To AS8PR04MB8897.eurprd04.prod.outlook.com
+ (2603:10a6:20b:42c::20)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8PR04MB8897:EE_|AS8PR04MB8707:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5f19c0e2-5bde-42a0-2afc-08dde188b46a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: 
+	BCL:0;ARA:13230040|376014|366016|1800799024|10070799003|7053199007;
+X-Microsoft-Antispam-Message-Info: 
+	=?utf-8?B?Qzc3NFF3dWZZNjlBZHlNSmxJVzRjOWVzMjYwZ21PVlpkeUZxaS9KbldUUHQy?=
+ =?utf-8?B?b2gvYWx4cHcwNUdqYzN1aHVtcjdBczJrSG1XUkJGNnlGRER3RkdKZzQzaHla?=
+ =?utf-8?B?ZVNBU1JDRzk2TVBMQmlzczlTTmRiZU9pc2FGSW5FK1F4Mng2RlB3bFlzbTVX?=
+ =?utf-8?B?OElidDF6RnlUL3VzNjNIdUdqZWxNT1Y4TDdVMGJjcUQ0eGg2ak9NRWwxR2tv?=
+ =?utf-8?B?c2NzSEhOU011T0JoMnNCRHY5VjZRaENSTUVUWktFcEQrYmhidEFyakpUbWhY?=
+ =?utf-8?B?aldSbUt0LzFDZDhEYVNqRjJDRVBuNTVQd0hOU280UXpkUU1QcEtybHRmMlJy?=
+ =?utf-8?B?VjZMSjdjZDZOZ0w2UzZRZ0xNUTgrMHNQUUp5UFVhWGtKNWFQR1A2VmE3RHV3?=
+ =?utf-8?B?ckIxN0ZQTlEzdlBFclFhS2VxSStPeUszM09sNFRaaUhsS0hFVjFwcEFhUndL?=
+ =?utf-8?B?a3JvckUyRUNRYXRWbTZiMTR0VTRqVG1IcHBVZDZIbHQ4ZVR1b1JYZkxtR1FV?=
+ =?utf-8?B?ZlZHNzhYMzVFYk1BSFdXY2Vabkx0MGYza1VaTStrMlU2a3RNd0lqTlVrSUtU?=
+ =?utf-8?B?ZUk5TmhZK3hQQTRTdTNwL2oySVVGSzlpeTJURE0vWWdIOTVhTnlTYmw5MVU0?=
+ =?utf-8?B?bUg1M3NEMEhpNTE4a1duVWhNdFpDUVFvUnVYZ3dweVNrTFYycjE2VWc5ekxU?=
+ =?utf-8?B?NURxem95dGgwdEFBZnZuUnZIVDZ2R3MzenQ0WVVZMEtSVk1CTHpQV3Vtekhu?=
+ =?utf-8?B?MHAzMWVURHVDc2htVUduZERJVnc3bmNkanZOWUJLU3hBREVOK3g5M0JPSjlI?=
+ =?utf-8?B?WHJKYTEyN2NnYmt4QkR5aE5TSGJvSmFYSGl6SEw5L0l0S3lrdFpRVEV2UUVX?=
+ =?utf-8?B?bVIweWR1aGNTb1JmRGVBWkRiWnhoTFc2MG8yOUVIbFltaXhJczRFclV0MGQz?=
+ =?utf-8?B?d3hZL1BFVE1lYy9JTXVKM2dtQ0ZkS082SFZvQWsrdTFWMjhwcGltT3NMTVlT?=
+ =?utf-8?B?MlQxVWFIeUJvVitYOVZpM251SVhoeklWQXc0NDV2ZFFlUlZ5eFJ4cktpdHA2?=
+ =?utf-8?B?R3B3YlJRNzhmREFqaEpzOFpZTzBkT1FWZW11NGtMbTRJUXN3dmJ1MVdWbzNz?=
+ =?utf-8?B?aEkxMEtCZW5RUG9pRUNNR2FBWFNqZERFeGZhU3N0ZWxyYXp6Z3dORi80SHh5?=
+ =?utf-8?B?c0pJSCtndUQvUzQ1d1lvUHZ1RDYxSnpQSVpha0Zxck92dFJRVkl0ZE1pZjRt?=
+ =?utf-8?B?ZmJ5di9BaCt1SnZaWVdOTHFVMnd0ckdlYnFaZE5IYUF1TVkrdnZ4NmVvZnpj?=
+ =?utf-8?B?QUtlaW5sOG9QZGRpaUNabTFNODllZ2VtWVFxeUF2UHBLblBLeWUwQmxYc2Nt?=
+ =?utf-8?B?TkMrYjRoOGxpZjBDSXpVU0JsclliNm1sVFAxUjRWc1VmMFZUKzFHM1U0Vmpo?=
+ =?utf-8?B?VDdzN1kvL1JySUVCaEdmRFZPZVJFV05nU0hUTVpDektPWEFQQkgyYUc3cHM0?=
+ =?utf-8?B?MEJqLzd0d3I5dDNGb0R2Z1lIQkEzQSsyNnJzelRDazk1Z3RJOXl2SnJmVzcx?=
+ =?utf-8?B?cHAvN3dMR0NyRVlNWmNWV2FKOUpvOHpSMFRTeFczQzVMYk9aNVFwazJTaEUz?=
+ =?utf-8?B?VzBHUUtGRXk3dGtJMWcvd3Vhd3FzNnRYMWVsR0hxT1EzWGdQcFExZHY1MS83?=
+ =?utf-8?B?VGw3WjdRUWFTUWhQYWY3R2g2SVQwcnZwSWpBd0RmYWo2ejEzYXlackNXaTRw?=
+ =?utf-8?B?ZVYrNDVDZ1JQK3dCcEcvYWNoak5HOHFJaUVBTXQwRU9IRkI4M2o4am5CZ2pj?=
+ =?utf-8?Q?/SIagmlygHwUpMHev2+0XybLjEgAbS9vbNUQY=3D?=
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8897.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(10070799003)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?utf-8?B?c2NzZTFNZitOY1VFRGg5TlpXclpYalpaV2VGS1JQRnY2a1VTZDlkMjVpM2N3?=
+ =?utf-8?B?SzlZYUlkM3Jkb1NKT3RJOHdaMUhJYk90MXhlbUl3MTFnMVJhZTNyOXVBSnFu?=
+ =?utf-8?B?RnZRYVVpWkdYdTBSc2ZiTTg4YjVvT3RKV1dvRTQ0b1lGQUxkcXVvVzcycVlp?=
+ =?utf-8?B?RTRBaE16TVNqYTNycllRK0JFNkxXWUNUYkxjTk5XSUZRdUM3ZEpGSDZDUlV4?=
+ =?utf-8?B?TjlaMDZZQVpVTTF3d1R2YXJOeTlxb2NkSDE3c1krYXJhTWw1cjJIZ1oxSWdN?=
+ =?utf-8?B?UzNrUTBDNUNYYkRTSjA4OGd4N3QyT3ZwdlZLbmJ2UUFxbTdOUmNSblRLMm5z?=
+ =?utf-8?B?TFRpZThxM3ZxalFMMlNTNTZBZWpIbVpYVEFUS0o0N0JWYW05WkhXdFNuODFU?=
+ =?utf-8?B?aEs0elhWS0xtT0FjSUlVcTE4cUZia1VUWFR5bHowZElwTm9neDhzaGJzSU9V?=
+ =?utf-8?B?amZJM21SNUlaNU8yNU02M1JEVU1HcDRkTWw3aEdPdVF5bmJsdm5RakNVeVZJ?=
+ =?utf-8?B?MmZmRlg4akNtNDlHWXN1Zm03ak5uM1Y3QStQc3ZOZk5lZTRwSzdybmpmNWlh?=
+ =?utf-8?B?dktkTHU2OXNLUnNURitSRjdmMHhPS0h0Q3c1YlMrb2VDOEVyVmpKTDRjbVdm?=
+ =?utf-8?B?SGhkbkFnMWZPS3RpSFJoMms4NmhTZENJN3N0akR4VXNNakRkeWhiWnBNWjRy?=
+ =?utf-8?B?NUZOQ0FETno0NWdacDdLeE9jSnRyVjdtMm13UWE3dGY4bndlVVdBeXVZK05K?=
+ =?utf-8?B?eGJtb1ovR3F3UXBiWWFkSFhiWHgwTGFldm1kOFdrSDYyRERBV3FZQVhHY05m?=
+ =?utf-8?B?RmtkSjJnbVNOTGd6T0pudnp3V1RKOUVlRW03RmZMVUlVUDUxdTU4ekF0NVFp?=
+ =?utf-8?B?WVJZTkh3c2VVYnptalU1TW1ta3BoMXA1cmRIOE04ZFRQQVNBN0RubDNaajhx?=
+ =?utf-8?B?TlN5MTRBcXpWQjB2dnZnTmFVZmJSNEZhOE1US3ZHa1VkdTRGRjQ1dmZld2dk?=
+ =?utf-8?B?cFlEQ0lPSHdjZmQ5WTMwWTdHRDhSMEh0dmY2d1ZHUnJyYTlNOUVRbzM4YjRT?=
+ =?utf-8?B?UUdOZnhQa1h5YjE0M1h1eGtEbE4xekFLN1NSeUd4QVFsOXVDdytYYW0xUnZo?=
+ =?utf-8?B?R3oxRnVsTk1zNXFYVUcrTHlYd3hBMGYxQTdMWGRKOU1vbkw2aHExcUhwTHND?=
+ =?utf-8?B?RDRQK2JVZTYvN2lBNHg0S1RjMzdNdDM3bG1SekxnWWFNallseGJDczlkWUF6?=
+ =?utf-8?B?OHl1c2k5TUJLalkyYTBuNStVUVgxZ0NmVFJlT1JQcGtqdGhPcmtzRVFLdnkw?=
+ =?utf-8?B?MFl6a0V6QkhYSjlOZm1yYlNjYXM5UEZuNkY4QWtkNW4zQ3Q5bDd6L0RzWkRy?=
+ =?utf-8?B?VEk1cG1mdWJjMjkxMUVwSVdSMXNYV0FMc2llRmVqTUlLYy9ZS1hKdG5jOEJx?=
+ =?utf-8?B?Rm5XM3hyU2xrbmsrekFadGwwTHlUOVl1M1ZWUWZaWCtpZWJIMm0yQUJiL3Nx?=
+ =?utf-8?B?MVdDN09nZ0xrZHpydThCMGJvZXJKSHhTRHFvTVRjaGJubThMTGowSmZ3Rm5Y?=
+ =?utf-8?B?WkZCaVNwemgyYllvTHorMjFORDF1WkJzM3I1R1pwc0RXaGg1eENxZ2Mxa0Y2?=
+ =?utf-8?B?cjV5OGlicjc1S2dxMmFpS2lqeXRuUm5BRkZxQnl4Sytoa0g5VFNKY014V3N2?=
+ =?utf-8?B?akVyWW5DUFF3Nm4yRWJ0WjFoVHJpRnJxYWMrWCtGZHR2KzZGUVh0cEpCUUZo?=
+ =?utf-8?B?UVMvSmxnbEZzNjFqbmNueXVuaTZIRkgwcWxwR2Y0QWNpb0hXemxrdlpoZHMw?=
+ =?utf-8?B?YVp6NFgwVnl6ZjhhWnUrUDcxcWdnYkR2TjlmNjlmeWdJeVh5SHllTGJ6cUww?=
+ =?utf-8?B?Wmo0QStVU01vUFdkUlJ4V1YvK1JDbDA4MVg4TnZCTS9zbG5pYjRpNy81c1R5?=
+ =?utf-8?B?aWppNEgyRVNrNzJXeVYvYkRWekJWL29hWERRSnUvWC93TmZsZ05XZzd3MzFG?=
+ =?utf-8?B?S2E4czRmdHd5UWNCaGJQdTRrWm9oTm4wdm1SMVpWQTBNZUhYdU9zR2VMSWZ3?=
+ =?utf-8?B?SkpJZUxkZ2JkWHZIZlBWODVCVWNvS1JaQWo3dWM0V3hJN0xSZERQRFFqdW5E?=
+ =?utf-8?B?LzhmcG5kVWY1OEQ2UkZCbjVFYU1QTm9Fb2Z0N1BkVjB3cDRtRHlnbEVkVk5p?=
+ =?utf-8?B?cUluTHFUSzR1ZmpEbk1NblNueUlGRjFyRUNvdEd4dWxud3FjckF0RGRVMDB2?=
+ =?utf-8?B?UkpYMXJLS1oyTnJ3WkxIR3dWL29BPT0=?=
+X-OriginatorOrg: cherry.de
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5f19c0e2-5bde-42a0-2afc-08dde188b46a
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8897.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Aug 2025 14:32:21.6698
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: sM/relbGr1/hwODidyjOT9+rGymMTBgRnqLlTsXxcRKw3QxwRzohChYqUgWYRQdA5nLSZyWHf+7Tnm92LHrGycxvp/8JGdxhBmftKXvNFI4=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8707
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 22 Aug 2025 04:06:11 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7461
+ <docs@lists.yoctoproject.org>; Fri, 22 Aug 2025 14:32:35 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7462
 
-From: Lee Chee Yang <chee.yang.lee@intel.com>
+Hi Joao,
 
-Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
----
- .../migration-guides/release-4.0.rst          |   1 +
- .../migration-guides/release-notes-4.0.29.rst | 178 ++++++++++++++++++
- 2 files changed, 179 insertions(+)
- create mode 100644 documentation/migration-guides/release-notes-4.0.29.rst
+On 8/19/25 6:04 PM, Joao Marcos Costa via lists.yoctoproject.org wrote:
+> From: Joao Marcos Costa <joaomarcos.costa@bootlin.com>
+> 
+> There's a (second) overhead factor applied in images generated with Wic,
+> and this is already documented in the .wks reference. However, the
+> IMAGE_OVERHEAD_FACTOR entry does not mention it, and by looking at the
+> partition sizes (e.g. with parted) one may find it confusing that they
+> don't match with the expected rootfs size (e.g. in a scenario where the
+> extra space is "0" and IMAGE_OVERHEAD_FACTOR="1.0").
+> 
+> This second overhead is already documented, though:
+> https://docs.yoctoproject.org/ref-manual/kickstart.html#command-part-or-partition
+> 
+> Mention the '--overhead-factor' option in the glossary entry and add a
+> reference to the wks documentation.
+> 
 
-diff --git a/documentation/migration-guides/release-4.0.rst b/documentation/migration-guides/release-4.0.rst
-index 19b114680..c0fee34bf 100644
---- a/documentation/migration-guides/release-4.0.rst
-+++ b/documentation/migration-guides/release-4.0.rst
-@@ -35,3 +35,4 @@ Release 4.0 (kirkstone)
-    release-notes-4.0.26
-    release-notes-4.0.27
-    release-notes-4.0.28
-+   release-notes-4.0.29
-diff --git a/documentation/migration-guides/release-notes-4.0.29.rst b/documentation/migration-guides/release-notes-4.0.29.rst
-new file mode 100644
-index 000000000..668a5012b
---- /dev/null
-+++ b/documentation/migration-guides/release-notes-4.0.29.rst
-@@ -0,0 +1,178 @@
-+Release notes for Yocto-4.0.29 (Kirkstone)
-+------------------------------------------
-+
-+Security Fixes in Yocto-4.0.29
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+-  avahi: Fix :cve_nist:`2024-52615`
-+-  binutils: Fix :cve_nist:`2025-7545` and :cve_nist:`2025-7546`
-+-  coreutils: Fix :cve_nist:`2025-5278`
-+-  curl: Fix :cve_nist:`2024-11053` and :cve_nist:`2025-0167`
-+-  dropbear: Fix :cve_nist:`2025-47203`
-+-  ffmpeg: Ignore :cve_nist:`2022-3109` and :cve_nist:`2022-3341`
-+-  gdk-pixbuf: Fix :cve_nist:`2025-7345`
-+-  ghostscript: Ignore :cve_nist:`2025-46646`
-+-  gnupg: Fix :cve_nist:`2025-30258`
-+-  gnutls: Fix :cve_nist:`2025-6395`, :cve_nist:`2025-32988`, :cve_nist:`2025-32989` and
-+   :cve_nist:`2025-32990`
-+-  iputils: Fix :cve_nist:`2025-48964`
-+-  libarchive: Fix :cve_nist:`2025-5914`, :cve_nist:`2025-5915`, :cve_nist:`2025-5916` and
-+   :cve_nist:`2025-5917`
-+-  libpam: Fix :cve_nist:`2025-6020`
-+-  libsoup-2.4: Fix :cve_nist:`2025-4945`
-+-  libsoup-2.4: Fix :cve_nist:`2025-4969` (update patch)
-+-  libsoup: Fix :cve_nist:`2025-4945`, :cve_nist:`2025-6021`, :cve_nist:`2025-6170`,
-+   :cve_nist:`2025-49794` and :cve_nist:`2025-49796`
-+-  ncurses: Fix :cve_nist:`2025-6141`
-+-  ofono: Fix :cve_nist:`2023-4232` and :cve_nist:`2023-4235`
-+-  openssl: Fix :cve_nist:`2024-41996`
-+-  python3-urllib3: Fix :cve_nist:`2025-50181`
-+-  ruby: Fix :cve_nist:`2024-43398` (update patches)
-+-  sqlite3: Fix :cve_nist:`2025-6965` and :cve_nist:`2025-7458`
-+-  sqlite3: Ignore :cve_nist:`2025-3277`
-+-  systemd: Fix :cve_nist:`2025-4598`
-+-  xwayland: Fix :cve_nist:`2025-49175`, :cve_nist:`2025-49176`, :cve_nist:`2025-49177`,
-+   :cve_nist:`2025-49178`, :cve_nist:`2025-49179` and :cve_nist:`2025-49180`
-+
-+
-+Fixes in Yocto-4.0.29
-+~~~~~~~~~~~~~~~~~~~~~
-+
-+-  bintuils: stable 2.38 branch update
-+-  bitbake: test/fetch: Switch u-boot based test to use our own mirror
-+-  build-appliance-image: Update to kirkstone head revision
-+-  conf.py: improve SearchEnglish to handle terms with dots
-+-  db: ignore implicit-int and implicit-function-declaration issues fatal with gcc-14
-+-  dev-manual/start.rst: added missing command in Optimize your VHDX file using DiskPart
-+-  glibc: stable 2.35 branch updates
-+-  gnutls: patch read buffer overrun in the "pre_shared_key" extension
-+-  gnutls: patch reject zero-length version in certificate request
-+-  linux-yocto/5.15: update to v5.15.186
-+-  migration-guides: add release notes for 4.0.28
-+-  oeqa/core/decorator: add decorators to skip based on :term:`HOST_ARCH`
-+-  openssl: upgrade to 3.0.17
-+-  orc: set :term:`CVE_PRODUCT`
-+-  overview-manual/concepts.rst: fix sayhello hardcoded bindir
-+-  poky.conf: bump version for 4.0.29
-+-  python3: update CVE product
-+-  ref-manual: document :term:`KERNEL_SPLIT_MODULES` variable
-+-  scripts/install-buildtools: Update to 4.0.28
-+-  sudo: upgrade to 1.9.17p1
-+-  tcf-agent: correct the :term:`SRC_URI`
-+
-+
-+Known Issues in Yocto-4.0.29
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+- N/A 
-+
-+
-+Contributors to Yocto-4.0.29
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+-  Aleksandar Nikolic
-+-  Antonin Godard
-+-  Archana Polampalli
-+-  Bruce Ashfield
-+-  Changqing Li
-+-  Chen Qi
-+-  Colin Pinnell McAllister
-+-  Daniel Díaz
-+-  Deepesh Varatharajan
-+-  Divya Chellam
-+-  Dixit Parmar
-+-  Enrico Jörns
-+-  Guocai He
-+-  Hitendra Prajapati
-+-  Lee Chee Yang
-+-  Marco Cavallini
-+-  Martin Jansa
-+-  Peter Marko
-+-  Praveen Kumar
-+-  Richard Purdie
-+-  Rob Woolley
-+-  Ross Burton
-+-  Steve Sakoman
-+-  Vijay Anusuri
-+-  Yash Shinde
-+-  Yogita Urade
-+-  Zhang Peng
-+
-+
-+Repositories / Downloads for Yocto-4.0.29
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+poky
-+
-+-  Repository Location: :yocto_git:`/poky`
-+-  Branch: :yocto_git:`kirkstone </poky/log/?h=kirkstone>`
-+-  Tag:  :yocto_git:`yocto-4.0.29 </poky/log/?h=yocto-4.0.29>`
-+-  Git Revision: :yocto_git:`81ab000fa437ca04f584a3327b076f7a512dc6d0 </poky/commit/?id=81ab000fa437ca04f584a3327b076f7a512dc6d0>`
-+-  Release Artefact: poky-81ab000fa437ca04f584a3327b076f7a512dc6d0
-+-  sha: 2fecf3cac5c2361c201b5ae826960af92289862ec9be13837a8431138e534fd2
-+-  Download Locations:
-+   https://downloads.yoctoproject.org/releases/yocto/yocto-4.0.29/poky-81ab000fa437ca04f584a3327b076f7a512dc6d0.tar.bz2
-+   https://mirrors.kernel.org/yocto/yocto/yocto-4.0.29/poky-81ab000fa437ca04f584a3327b076f7a512dc6d0.tar.bz2
-+
-+openembedded-core
-+
-+-  Repository Location: :oe_git:`/openembedded-core`
-+-  Branch: :oe_git:`kirkstone </openembedded-core/log/?h=kirkstone>`
-+-  Tag:  :oe_git:`yocto-4.0.29 </openembedded-core/log/?h=yocto-4.0.29>`
-+-  Git Revision: :oe_git:`bd620eb14660075fd0f7476bbbb65d5da6293874 </openembedded-core/commit/?id=bd620eb14660075fd0f7476bbbb65d5da6293874>`
-+-  Release Artefact: oecore-bd620eb14660075fd0f7476bbbb65d5da6293874
-+-  sha: f32ab195c7090268e6e87ccf8db2813cf705c517030654326d14b25d926de88e
-+-  Download Locations:
-+   https://downloads.yoctoproject.org/releases/yocto/yocto-4.0.29/oecore-bd620eb14660075fd0f7476bbbb65d5da6293874.tar.bz2
-+   https://mirrors.kernel.org/yocto/yocto/yocto-4.0.29/oecore-bd620eb14660075fd0f7476bbbb65d5da6293874.tar.bz2
-+
-+meta-mingw
-+
-+-  Repository Location: :yocto_git:`/meta-mingw`
-+-  Branch: :yocto_git:`kirkstone </meta-mingw/log/?h=kirkstone>`
-+-  Tag:  :yocto_git:`yocto-4.0.29 </meta-mingw/log/?h=yocto-4.0.29>`
-+-  Git Revision: :yocto_git:`87c22abb1f11be430caf4372e6b833dc7d77564e </meta-mingw/commit/?id=87c22abb1f11be430caf4372e6b833dc7d77564e>`
-+-  Release Artefact: meta-mingw-87c22abb1f11be430caf4372e6b833dc7d77564e
-+-  sha: f0bc4873e2e0319fb9d6d6ab9b98eb3f89664d4339a167d2db6a787dd12bc1a8
-+-  Download Locations:
-+   https://downloads.yoctoproject.org/releases/yocto/yocto-4.0.29/meta-mingw-87c22abb1f11be430caf4372e6b833dc7d77564e.tar.bz2
-+   https://mirrors.kernel.org/yocto/yocto/yocto-4.0.29/meta-mingw-87c22abb1f11be430caf4372e6b833dc7d77564e.tar.bz2
-+
-+meta-gplv2
-+
-+-  Repository Location: :yocto_git:`/meta-gplv2`
-+-  Branch: :yocto_git:`kirkstone </meta-gplv2/log/?h=kirkstone>`
-+-  Tag:  :yocto_git:`yocto-4.0.29 </meta-gplv2/log/?h=yocto-4.0.29>`
-+-  Git Revision: :yocto_git:`d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a </meta-gplv2/commit/?id=d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a>`
-+-  Release Artefact: meta-gplv2-d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a
-+-  sha: c386f59f8a672747dc3d0be1d4234b6039273d0e57933eb87caa20f56b9cca6d
-+-  Download Locations:
-+   https://downloads.yoctoproject.org/releases/yocto/yocto-4.0.29/meta-gplv2-d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a.tar.bz2
-+   https://mirrors.kernel.org/yocto/yocto/yocto-4.0.29/meta-gplv2-d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a.tar.bz2
-+
-+bitbake
-+
-+-  Repository Location: :oe_git:`/bitbake`
-+-  Branch: :oe_git:`2.0 </bitbake/log/?h=2.0>`
-+-  Tag:  :oe_git:`yocto-4.0.29 </bitbake/log/?h=yocto-4.0.29>`
-+-  Git Revision: :oe_git:`8e2d1f8de055549b2101614d85454fcd1d0f94b2 </bitbake/commit/?id=8e2d1f8de055549b2101614d85454fcd1d0f94b2>`
-+-  Release Artefact: bitbake-8e2d1f8de055549b2101614d85454fcd1d0f94b2
-+-  sha: fad4e7699bae62082118e89785324b031b0af0743064caee87c91ba28549afb0
-+-  Download Locations:
-+   https://downloads.yoctoproject.org/releases/yocto/yocto-4.0.29/bitbake-8e2d1f8de055549b2101614d85454fcd1d0f94b2.tar.bz2
-+   https://mirrors.kernel.org/yocto/yocto/yocto-4.0.29/bitbake-8e2d1f8de055549b2101614d85454fcd1d0f94b2.tar.bz2
-+
-+meta-yocto
-+
-+-  Repository Location: :yocto_git:`/meta-yocto`
-+-  Branch: :yocto_git:`kirkstone </meta-yocto/log/?h=kirkstone>`
-+-  Tag: :yocto_git:`yocto-4.0.29 </meta-yocto/log/?h=yocto-4.0.29>`
-+-  Git Revision: :yocto_git:`e916d3bad58f955b73e2c67aba975e63cd191394 </meta-yocto/commit/?id=e916d3bad58f955b73e2c67aba975e63cd191394>`
-+
-+yocto-docs
-+
-+-  Repository Location: :yocto_git:`/yocto-docs`
-+-  Branch: :yocto_git:`kirkstone </yocto-docs/log/?h=kirkstone>`
-+-  Tag: :yocto_git:`yocto-4.0.29 </yocto-docs/log/?h=yocto-4.0.29>`
-+-  Git Revision: :yocto_git:`bf855ecaf4bec4cef9bbfea2e50caa65a8339828 </yocto-docs/commit/?id=bf855ecaf4bec4cef9bbfea2e50caa65a8339828>`
-+
--- 
-2.43.0
+I'm wondering if this isn't rather a bug than a feature?
 
+Why would we need to have two overhead factors?
+
+Also, I'm wondering if this isn't a case of:
+- IMAGE_OVERHEAD_FACTOR for setting an overhead factor for the filesystem
+- --overhead-factor for setting an overhead factor for the partition
+
+In which case you would have a filesystem which doesn't take the whole 
+partition. I assume if you have systemd-growfs/systemd-repart it'll take 
+the whole partition at first boot?
+
+Both would have a valid use-case. I imagine that it'd be perfectly fine 
+to have an overhead-factor of 0 for a filesystem that already has an 
+overhead (e.g. for journaling).
+
+> Signed-off-by: Joao Marcos Costa <joaomarcos.costa@bootlin.com>
+> ---
+>   documentation/ref-manual/variables.rst | 5 +++++
+>   1 file changed, 5 insertions(+)
+> 
+> diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+> index d559899c6..c18bc7ba4 100644
+> --- a/documentation/ref-manual/variables.rst
+> +++ b/documentation/ref-manual/variables.rst
+> @@ -4166,6 +4166,11 @@ system and gives an overview of their function and contents.
+>         added to the image by using the :term:`IMAGE_ROOTFS_EXTRA_SPACE`
+>         variable.
+>   
+> +      When using Wic tool, beware that a second overhead factor is also applied.
+> +      This overhead's value is defined by the ``--overhead-factor`` option, and
+
+Gut feeling says we shouldn't us "'s" here.
+
+How this sentence is worded could be interpreted like so:
+
+"I do not put --overhead-factor so there is no overhead factor"
+
+whereas what actually happens is that the default is 30% if this 
+argument is missing.
+
+> +      not by :term:`IMAGE_OVERHEAD_FACTOR`. See the
+> +      ":doc:`/ref-manual/kickstart`" chapter for details.
+
+Maybe we could point at the section (command: part or partition) since 
+that parameter only applies to that?
+
+Cheers,
+Quentin
 
