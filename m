@@ -2,71 +2,119 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A6665CA0FF9
-	for <webhook@archiver.kernel.org>; Fri, 29 Aug 2025 07:41:39 +0000 (UTC)
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by mx.groups.io with SMTP id smtpd.web10.8270.1756453289593448596
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 32650C8303F
+	for <webhook@archiver.kernel.org>; Fri, 29 Aug 2025 09:04:50 +0000 (UTC)
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by mx.groups.io with SMTP id smtpd.web10.9258.1756458286951992045
  for <docs@lists.yoctoproject.org>;
- Fri, 29 Aug 2025 00:41:29 -0700
+ Fri, 29 Aug 2025 02:04:48 -0700
 Authentication-Results: mx.groups.io;
- dkim=fail reason="dkim: body hash did not verify" header.i=@bootlin.com header.s=dkim header.b=b+2JZ7kS;
- spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=JEVPviDH;
+ spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 65F61C8F467
-	for <docs@lists.yoctoproject.org>; Fri, 29 Aug 2025 07:41:13 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 447621A0D64;
+	Fri, 29 Aug 2025 09:04:45 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id DDD3B606C3
-	for <docs@lists.yoctoproject.org>; Fri, 29 Aug 2025 07:41:27 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 19CD51C22D77F;
-	Fri, 29 Aug 2025 09:41:25 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 1D018606B9;
+	Fri, 29 Aug 2025 09:04:45 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E6D361C228B4F;
+	Fri, 29 Aug 2025 11:04:35 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1756453287; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=81cvUebqt9lwqz2kVMczK/k6gO/iEVTzieEor6YO8qA=;
-	b=b+2JZ7kSD6sCuzXGvlGy6kBL/Cc1WihkvokMfBs8CP5MW/qCvAz8OANxdeWOk/GiI0kdU8
-	xF+YWIPLrYz+TkaxSfixdU2p8rap30B9KvCJ6ez+eAN3q8mvz2QTcls8TPQgFwpVf8dAAU
-	DnCnr0Hm8XtgC3t2coRb53GRwAje7b//P7eoo5RaVta8nGogsWWmZjzRLBmXMbKsFg3N/6
-	NLbr4Ay//8iBNYeqWLUdcVMoqm6BmvaAHBzl6mk1MODxkUQQCPOZe2+41zqFFd+jMeIed9
-	cVeShpPPwfIOOEpoMxphKjFtSHsnphgDIfqyR3Xup1ap+tFOoe8G5TgHELeekw==
+	t=1756458284; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=ZaGYQqdJGXKh20ghy3LdsFgTzFk/X5YzYHxrMrtA2p8=;
+	b=JEVPviDH3XLPek2RiPsN3PFh7JV4AflluoTke8hycxk5V5zbVF2d2lf65PBhWNhniYRMg6
+	SqwxRIRTOkWB5a5Ro++0G3N3y5+AXYxHQ9z70ipvrYZcK2MrrMWbGuspLSziTMy9duwOg/
+	bgVUHTy7gsmaIQHmxtw1KeKB/Ow5SKLlRbc/9o0pq4z4NKjwu1MuS5SaxD/EUEAubRxm0N
+	niU4akbmmlB7k5bMGNQ7gruAca8NeuaaroYxwv7YcM3b55/2x4emueUg/Newaz2UVqM2zW
+	n2SRl7p9wUfXiDhghKdTHsi4+7qIOZOJ5MVsAPTLKa5uCuu9etEA5D9inxTRww==
 From: Antonin Godard <antonin.godard@bootlin.com>
-To: docs@lists.yoctoproject.org,
-	Antonin Godard <antonin.godard@bootlin.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH] poky.yaml.in: increase required disk space to 140G
-Date: Fri, 29 Aug 2025 09:41:03 +0200
-Message-ID: <175645283484.82658.15102558079325317032.b4-ty@bootlin.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250715-update-disk-usage-v1-1-ee95dddc838b@bootlin.com>
-References: <20250715-update-disk-usage-v1-1-ee95dddc838b@bootlin.com>
+Date: Fri, 29 Aug 2025 11:04:04 +0200
+Subject: [PATCH] migration-guides/release-notes-5.3.rst: add x86 qemu
+ micro-arch level bump
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250829-qemu-level-5-3-v1-1-d2cac1e1bce1@bootlin.com>
+X-B4-Tracking: v=1; b=H4sIAANtsWgC/yXMQQqDMBBG4avIrDsQo4LxKqWLRH/tFLWaqAji3
+ U3r8lu8d1CAFwSqkoM8NgnyHSPSR0L1244dWJpo0koXqtSGZwwr99jQc8EZ5860JnVKl8ZSjCa
+ PVvb/8Pm6HVb3Qb38LnSeF9+V12hyAAAA
+X-Change-ID: 20250829-qemu-level-5-3-4b9f91b0289a
+To: docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Alexander Kanavin <alex.kanavin@gmail.com>, 
+ Antonin Godard <antonin.godard@bootlin.com>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2174;
+ i=antonin.godard@bootlin.com; h=from:subject:message-id;
+ bh=6KOMDmR+OvB2MvoDhBmr8nDTAIXMGC+dHLon8pvnjPM=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBosW0jYjFe8kONrIYEsyibG0NVtag/o8wcpKMo7
+ DLJyzTe6ZCJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaLFtIwAKCRDRgEFAKaOo
+ NvP3D/wPSfJz/kYpuRKa9R1LcYfBTQlTGLx9eewfGkPPuuWdM7Eiehjue81B3jmFcWI5IePWld+
+ R9pAwOjCo+jq2wKprs79hC/rXeaPPAjlPyFRe5OhdLAoCuajVTxL91q0cOeiHAsI4p1nQTM5NFM
+ Quf/j/lKQTGnFyws7gA7Fqfp08T5YtU2gXW9RnQo/3gcJZ4P5FeSx/5HaPSHwZfANPJ5LfNK/tx
+ sBLDlH1sHj8OSNngsSaxM3R+u16nk9R3eFeuSiZYsQP1Um4LFLuuTPGluNTrVH32/Z818HbZaHc
+ Kp0uStx81YF83mBorFoL+72Uq19wU0lWeVOab33WfsDGkzF+2p40A8TuqzfkHTMHekB50k36qw5
+ Lp2Orcow77RE+tycZkARhkaJpTHkTlo10EuxoMvLLa2VLTbCV9ossIAk+i5bncx3LDLPHkS4dhO
+ tqaKh3mpZldLdYlkScZDP4rdJLpIofFXgJhLOFCOIxdrwurnXSh64rUaRFlaGE2Hat7LmGJ7FnN
+ F4oQDqYVtI7QpsxYexQQZz8B7yySVabqsqfAIz310TRzAOxlJ7Ee9A2t4ImKJhJ49t65xVMj4wD
+ epJ2LGWPGYTMTZQ6EjyRP+FimnrhhLSt5xdG883m71zZRr5OhCKncSGEoaxjMXlocDLZSGpk8zp
+ BC5HzVmK+Za+2xg==
+X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
+ fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
-Content-Transfer-Encoding: quoted-printable
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 29 Aug 2025 07:41:39 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7469
+ <docs@lists.yoctoproject.org>; Fri, 29 Aug 2025 09:04:50 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7471
 
+After commit c9585bb8689b ("Revert "qemux86-64: Reduce tuning to
+core2-64"") in OE-Core, document the QEMU x86 micro-architecture level
+bump in the release notes for 5.3.
 
-On Tue, 15 Jul 2025 10:51:15 +0200, Antonin Godard wrote:
-> Increase the minimum size requirement to 140G, after running a build
-> with distro Poky. The size after rm_work has increase of only 1G, so
-> leave the current value for MIN_DISK_SPACE_RM_WORK.
->=20
-> Also, update the comment to mention that this is for distro Poky. It wa=
-s
-> mentioned in commit message 285ba689ce3a ("manuals: update disk space
-> requirements"), but not in the comment here.
->=20
-> [...]
+Co-authored-by: Alexander Kanavin <alex.kanavin@gmail.com>
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+---
+ documentation/migration-guides/release-notes-5.3.rst | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-Applied, thanks!
+diff --git a/documentation/migration-guides/release-notes-5.3.rst b/documentation/migration-guides/release-notes-5.3.rst
+index f32c6162d..4782c2436 100644
+--- a/documentation/migration-guides/release-notes-5.3.rst
++++ b/documentation/migration-guides/release-notes-5.3.rst
+@@ -311,6 +311,25 @@ New Features / Enhancements in |yocto-ver|
+    -  Refactor :ref:`ref-classes-qemu` functions into library functions (in
+       :oe_git:`lib/oe/qemu.py </openembedded-core/tree/meta/lib/oe/qemu.py>`).
+ 
++   -  The ``qemux86-64`` :term:`MACHINE` now defaults to the ``x86-64-v3``
++      micro-architecture level.
++
++      The previous default was Core 2 era processors. This change means that the
++      toolchain is configured to build for that level, and QEMU is configured to
++      emulate it.
++
++      The v3 level adds support for AVX/AVX2/BMI/BMI2/F16C and other newer
++      instructions which are seeing increasing usage in modern software and add
++      performance benefits. Please see :wikipedia:`X86-64 Microarchitecture
++      levels <X86-64#Microarchitecture_levels>` for definition of the levels and
++      lists of Intel/AMD CPUs where support for the instructions was first
++      added.
++
++      Note that if QEMU system emulation is used on an x86 build machine with
++      :wikipedia:`KVM <Kernel-based_Virtual_Machine>` enabled, then the build
++      machine's CPU must also be recent enough to support these instructions
++      natively.
++
+ -  Documentation changes:
+ 
+    -  Part of :term:`BitBake` internals are now documented at
 
-[1/1] poky.yaml.in: increase required disk space to 140G
-      commit: dbc6137cd13f982a7fd4d1b2df79dccb177db0fc
+---
+base-commit: dbc6137cd13f982a7fd4d1b2df79dccb177db0fc
+change-id: 20250829-qemu-level-5-3-4b9f91b0289a
 
 Best regards,
---=20
+--  
 Antonin Godard <antonin.godard@bootlin.com>
+
 
