@@ -1,94 +1,91 @@
-Return-Path: <joaomarcos.costa@bootlin.com>
+Return-Path: <skandigraun@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 535EECA0FFF
-	for <webhook@archiver.kernel.org>; Mon,  1 Sep 2025 16:08:21 +0000 (UTC)
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by mx.groups.io with SMTP id smtpd.web11.55796.1756742893541291353
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BA554CA1005
+	for <webhook@archiver.kernel.org>; Tue,  2 Sep 2025 06:17:35 +0000 (UTC)
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+ by mx.groups.io with SMTP id smtpd.web11.70793.1756793845237720700
  for <docs@lists.yoctoproject.org>;
- Mon, 01 Sep 2025 09:08:14 -0700
+ Mon, 01 Sep 2025 23:17:25 -0700
 Authentication-Results: mx.groups.io;
- dkim=fail reason="dkim: body hash did not verify" header.i=@bootlin.com header.s=dkim header.b=s1IDnIvY;
- spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: joaomarcos.costa@bootlin.com)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 9F2B71A09A0
-	for <docs@lists.yoctoproject.org>; Mon,  1 Sep 2025 16:08:11 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 736AA60699;
-	Mon,  1 Sep 2025 16:08:11 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8AEBC1C22DCBC;
-	Mon,  1 Sep 2025 18:08:06 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1756742891; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding; bh=/0cSPT8n3MK9HCAiacs1lraNtbTZgkzI12TaYHpmvIw=;
-	b=s1IDnIvYbgCqz51OL8kQf/l5GtAMg14rWx0MAkHr4F4BQMXeikMmUFuXEdEh1LxSry9QZC
-	EMRCwyogTZvD7ovRkdXkalbZ/aHuJdePfu244/FFnAWwPA/fEkYj39n5LHeSUFBkO9k9qH
-	SrKBeMYCXHQI+E7fgeErDQUgzkD4WyRRUhQgtOWl4+AGFIA99OrN8p4zmmv7JJXyHl2QcW
-	YvlqQ2LV4D0zj8XxwuEVqxdzyjkCy2bD+2B9IzMDqafIn1C5WS4cRJUFjdkNFVWrkX8RWs
-	0vo9k/j+plcyU69sLPGbyUedeizuJWMT3yA7GOHJst1LZFQGfq+6DJLEVDoFtQ==
-From: joaomarcos.costa@bootlin.com
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=elYNhM+F;
+ spf=pass (domain: gmail.com, ip: 209.85.218.51, mailfrom: skandigraun@gmail.com)
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b042ec947e4so253739566b.0
+        for <docs@lists.yoctoproject.org>; Mon, 01 Sep 2025 23:17:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756793844; x=1757398644; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=koXfBQs0zab77gaOQkSVbvWIsfCCnvfFqaOpsqUoDf4=;
+        b=elYNhM+FJxe1TXQ7Q8eCzYGv7xe43b0G6QP98zlutDiWrEt7Tb9juCbcsY8ic/0bGc
+         BvuFxEuzj3HIiqAw90WGa3BIozwNyy2Q+bTjfptKG1N1b/r2H4VW8o/LLCylFwzkHiOO
+         PlIoz/+LJENEXbUCtNcXV5WV7nvOJXWvLNxxs/ASEIoE5+LPdZB/+yfAZ2JFPT0nXbit
+         LEP4rAUXZbxKEGGD3ElDFZ3RnBQpXVVC84NYCWMSRqzsp7Z2moYHKVj+jadHsJTsHtAS
+         hda2ExVLIMKrmiDeW/edfbY1ynlnyz7kttYn/uopIkDxuAqpQe2Z0r8DjCwBa0aD+HPi
+         OG9g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756793844; x=1757398644;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=koXfBQs0zab77gaOQkSVbvWIsfCCnvfFqaOpsqUoDf4=;
+        b=PastIkccSpQpwhdi38BCWDEXJNJpG++rk1NJBbYWVi+wN/h2N3ncF1yibDotGSRxRy
+         7LCx9sI77QVySBLnZma0FvJEwGpkYh/i6WgXAAq0jbFY9fdVsbNmIsSlvzN2I1vfopK3
+         bAAMZpi+AiwsLf1ZGMX+Px5jMH46HgbdpOTd6xjF46H7xE/MtqKxdADpDYm0o4G2xOnL
+         8ZnmISGJ3pEVd5K+D0ACROlydTJsX4askWG4z2NFIpS3MCHERKJU5zTcgp3ID3x/xKq7
+         qCoBaApNXn1z5va6utI7FnmzPgAfcbTl7uQSFbgs2yRwHrjAQNodCzKCBSb3jUo0W16C
+         F9qg==
+X-Gm-Message-State: AOJu0YzxoNOC/4MeKW4AKJtW679TAVzcJTWGLWUSJH9/yTxqQ9yJwvvT
+	Ywd/bdhiHC8F8+0kS8mf4QOy/W/DCYDsfF01pZS2ZKax2fliZj3WJXJhi4JMpA==
+X-Gm-Gg: ASbGncvK7WMViCjFBcPiH/6GHpLr5W43LgHpLQpro5XctqQvnCNhAuzAlP5ukhhZw+X
+	Mc7Tct3h1rkZMvIeJNiPb72L3XgE1fX1P2XUgpA+k7PwxaD/k9+cY3P4WiJckAlrTjC3X3MJvgH
+	RtooGDttXF60h9DVt1wWRD6aDzUurrQtjOgDepYYF2SxAQ7vRKDuwwhX/3jgdVqLFObdfPaEH03
+	d6t3VynsnyHG/B/fdwt+0Tlidjpy2/KvFymfvCYo5zrb9w9WEulRJgkxJYb96PkrKTRIi+87isG
+	BZSUFKFnKi6AyjD45qY/QKPnDMKJq3coFBnfs5f+H/gS7IYQJPSH3yNgO4u5V6WsvcGzKozfaUa
+	hyU3G5IPAj/lIcUPvriAVBjV9ABfSu54=
+X-Google-Smtp-Source: AGHT+IEb72v5N8TUHNEBlT6Apv8gHMQe8rSIZpbDlV+Wu+qCOApWR8n52LrWedpDjqwQ79t32wBYXA==
+X-Received: by 2002:a17:907:7f0a:b0:afe:ad45:acf5 with SMTP id a640c23a62f3a-b01d9755fb1mr1022239266b.34.1756793843450;
+        Mon, 01 Sep 2025 23:17:23 -0700 (PDT)
+Received: from desktop ([51.154.145.205])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afefcc1c6fdsm1043560466b.75.2025.09.01.23.17.22
+        for <docs@lists.yoctoproject.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 01 Sep 2025 23:17:23 -0700 (PDT)
+From: Gyorgy Sarvari <skandigraun@gmail.com>
 To: docs@lists.yoctoproject.org
-Cc: thomas.petazzoni@bootlin.com,
-	quentin.schulz@cherry.de,
-	Joao Marcos Costa <joaomarcos.costa@bootlin.com>
-Subject: [docs][PATCH v3] ref-manual/variables.rst: expand IMAGE_OVERHEAD_FACTOR glossary entry
-Date: Mon,  1 Sep 2025 18:07:59 +0200
-Message-ID: <20250901160759.556662-1-joaomarcos.costa@bootlin.com>
-X-Mailer: git-send-email 2.47.0
+Subject: [PATCH] migration-5.3.rst: update removed recipes list
+Date: Tue,  2 Sep 2025 08:17:22 +0200
+Message-ID: <20250902061722.2226405-1-skandigraun@gmail.com>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-X-Last-TLS-Session-Version: TLSv1.3
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 01 Sep 2025 16:08:21 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7478
+ <docs@lists.yoctoproject.org>; Tue, 02 Sep 2025 06:17:35 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7479
 
-From: Joao Marcos Costa <joaomarcos.costa@bootlin.com>
+Add a note about the removed xf86-input-mouse and xf86-input-vmmouse recipes.
 
-There's a (second) overhead factor applied in images generated with Wic,
-and this is already documented in the .wks reference. However, the
-IMAGE_OVERHEAD_FACTOR entry does not mention it, and by looking at the
-partition sizes (e.g. with parted) one may find it confusing that they
-don't match with the expected rootfs size (e.g. in a scenario where the
-extra space is "0" and IMAGE_OVERHEAD_FACTOR=3D"1.0").
-
-This second overhead is already documented, though:
-https://docs.yoctoproject.org/ref-manual/kickstart.html#command-part-or-p=
-artition
-
-Mention the '--overhead-factor' option in the glossary entry and add a
-reference to the wks documentation.
-
-Signed-off-by: Joao Marcos Costa <joaomarcos.costa@bootlin.com>
+Signed-off-by: Gyorgy Sarvari <skandigraun@gmail.com>
 ---
- documentation/ref-manual/variables.rst | 6 ++++++
- 1 file changed, 6 insertions(+)
+ documentation/migration-guides/migration-5.3.rst | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-m=
-anual/variables.rst
-index d559899c6..18ead7d04 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -4166,6 +4166,12 @@ system and gives an overview of their function and=
- contents.
-       added to the image by using the :term:`IMAGE_ROOTFS_EXTRA_SPACE`
-       variable.
-=20
-+      When using Wic tool, beware that a second overhead factor is also =
-applied.
-+      This overhead value is defined by the ``--overhead-factor`` option=
-, which
-+      defaults to "1.3" when omitted. See the
-+      :ref:`ref-manual/kickstart:command: part or partition` chapter in
-+      :doc:`/ref-manual/kickstart` for details.
+diff --git a/documentation/migration-guides/migration-5.3.rst b/documentation/migration-guides/migration-5.3.rst
+index 97e41605f4..2d2f8d91ad 100644
+--- a/documentation/migration-guides/migration-5.3.rst
++++ b/documentation/migration-guides/migration-5.3.rst
+@@ -174,6 +174,11 @@ The following recipes have been removed in this release:
+    removed in May 2024 with dfa482f1998 ("python3-requests: cleanup RDEPENDS"),
+    and there is no other user of this variable.
+ 
++-  ``xf86-input-mouse``: The project has stopped supporting Linux.
 +
-    :term:`IMAGE_PKGTYPE`
-       Defines the package type (i.e. DEB, RPM or IPK) used by the
-       OpenEmbedded build system. The variable is defined appropriately b=
-y
---=20
-2.47.0
-
++-  ``xf86-input-vmmouse``: It has a runtime dependency on ``xf86-input-mouse``,
++   which stopped supporting Linux.
++
+ Removed :term:`PACKAGECONFIG` entries
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 
 
