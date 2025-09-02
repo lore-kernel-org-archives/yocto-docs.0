@@ -1,91 +1,145 @@
-Return-Path: <skandigraun@gmail.com>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BA554CA1005
-	for <webhook@archiver.kernel.org>; Tue,  2 Sep 2025 06:17:35 +0000 (UTC)
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
- by mx.groups.io with SMTP id smtpd.web11.70793.1756793845237720700
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6CB25CA0FFE
+	for <webhook@archiver.kernel.org>; Tue,  2 Sep 2025 07:06:56 +0000 (UTC)
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+ by mx.groups.io with SMTP id smtpd.web11.71308.1756796807131728843
  for <docs@lists.yoctoproject.org>;
- Mon, 01 Sep 2025 23:17:25 -0700
+ Tue, 02 Sep 2025 00:06:48 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=elYNhM+F;
- spf=pass (domain: gmail.com, ip: 209.85.218.51, mailfrom: skandigraun@gmail.com)
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b042ec947e4so253739566b.0
-        for <docs@lists.yoctoproject.org>; Mon, 01 Sep 2025 23:17:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756793844; x=1757398644; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=koXfBQs0zab77gaOQkSVbvWIsfCCnvfFqaOpsqUoDf4=;
-        b=elYNhM+FJxe1TXQ7Q8eCzYGv7xe43b0G6QP98zlutDiWrEt7Tb9juCbcsY8ic/0bGc
-         BvuFxEuzj3HIiqAw90WGa3BIozwNyy2Q+bTjfptKG1N1b/r2H4VW8o/LLCylFwzkHiOO
-         PlIoz/+LJENEXbUCtNcXV5WV7nvOJXWvLNxxs/ASEIoE5+LPdZB/+yfAZ2JFPT0nXbit
-         LEP4rAUXZbxKEGGD3ElDFZ3RnBQpXVVC84NYCWMSRqzsp7Z2moYHKVj+jadHsJTsHtAS
-         hda2ExVLIMKrmiDeW/edfbY1ynlnyz7kttYn/uopIkDxuAqpQe2Z0r8DjCwBa0aD+HPi
-         OG9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756793844; x=1757398644;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=koXfBQs0zab77gaOQkSVbvWIsfCCnvfFqaOpsqUoDf4=;
-        b=PastIkccSpQpwhdi38BCWDEXJNJpG++rk1NJBbYWVi+wN/h2N3ncF1yibDotGSRxRy
-         7LCx9sI77QVySBLnZma0FvJEwGpkYh/i6WgXAAq0jbFY9fdVsbNmIsSlvzN2I1vfopK3
-         bAAMZpi+AiwsLf1ZGMX+Px5jMH46HgbdpOTd6xjF46H7xE/MtqKxdADpDYm0o4G2xOnL
-         8ZnmISGJ3pEVd5K+D0ACROlydTJsX4askWG4z2NFIpS3MCHERKJU5zTcgp3ID3x/xKq7
-         qCoBaApNXn1z5va6utI7FnmzPgAfcbTl7uQSFbgs2yRwHrjAQNodCzKCBSb3jUo0W16C
-         F9qg==
-X-Gm-Message-State: AOJu0YzxoNOC/4MeKW4AKJtW679TAVzcJTWGLWUSJH9/yTxqQ9yJwvvT
-	Ywd/bdhiHC8F8+0kS8mf4QOy/W/DCYDsfF01pZS2ZKax2fliZj3WJXJhi4JMpA==
-X-Gm-Gg: ASbGncvK7WMViCjFBcPiH/6GHpLr5W43LgHpLQpro5XctqQvnCNhAuzAlP5ukhhZw+X
-	Mc7Tct3h1rkZMvIeJNiPb72L3XgE1fX1P2XUgpA+k7PwxaD/k9+cY3P4WiJckAlrTjC3X3MJvgH
-	RtooGDttXF60h9DVt1wWRD6aDzUurrQtjOgDepYYF2SxAQ7vRKDuwwhX/3jgdVqLFObdfPaEH03
-	d6t3VynsnyHG/B/fdwt+0Tlidjpy2/KvFymfvCYo5zrb9w9WEulRJgkxJYb96PkrKTRIi+87isG
-	BZSUFKFnKi6AyjD45qY/QKPnDMKJq3coFBnfs5f+H/gS7IYQJPSH3yNgO4u5V6WsvcGzKozfaUa
-	hyU3G5IPAj/lIcUPvriAVBjV9ABfSu54=
-X-Google-Smtp-Source: AGHT+IEb72v5N8TUHNEBlT6Apv8gHMQe8rSIZpbDlV+Wu+qCOApWR8n52LrWedpDjqwQ79t32wBYXA==
-X-Received: by 2002:a17:907:7f0a:b0:afe:ad45:acf5 with SMTP id a640c23a62f3a-b01d9755fb1mr1022239266b.34.1756793843450;
-        Mon, 01 Sep 2025 23:17:23 -0700 (PDT)
-Received: from desktop ([51.154.145.205])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afefcc1c6fdsm1043560466b.75.2025.09.01.23.17.22
-        for <docs@lists.yoctoproject.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Sep 2025 23:17:23 -0700 (PDT)
-From: Gyorgy Sarvari <skandigraun@gmail.com>
-To: docs@lists.yoctoproject.org
-Subject: [PATCH] migration-5.3.rst: update removed recipes list
-Date: Tue,  2 Sep 2025 08:17:22 +0200
-Message-ID: <20250902061722.2226405-1-skandigraun@gmail.com>
-X-Mailer: git-send-email 2.51.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=rU9Chn4P;
+ spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id C8968C8EC76
+	for <docs@lists.yoctoproject.org>; Tue,  2 Sep 2025 07:06:29 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id B823760695;
+	Tue,  2 Sep 2025 07:06:44 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 53AB11C22DA85;
+	Tue,  2 Sep 2025 09:06:43 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1756796804; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=H1qFIGWmh9R149FQ/i+PuLEKfl17PagoDaLNfvu/CTg=;
+	b=rU9Chn4PIGqpIlk3pN6NLzxUDIJHxP3tTXoMNUQ42xMkVWRPbCwz2N75wCZIuqR1+Nt685
+	D9QE/nIWl585HTSGjB3pVVVxb7lOQ81mTZ7V/iZLH1crXPAUdmMXIy2PTHv1xRLIG7FwdR
+	Z7ZBawwJCGGLg3OXDiYk/Yl7fWGp2oTpggX18jya/NX+s9iZMOvOvmV2YSkVkPj8NWpC6n
+	scQ7TY0vNVpFPVJEeFteSnElr8m2bdgvSNqTx+KDfyRC8cscxS8+zVaeuRfMvoJAyOriCB
+	H7wrt85bHGVGgob5oDOYTgI2Pidy8TkTS4hvBzaY33TDP+nDuE+zuqK3FyZLUg==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 02 Sep 2025 09:06:42 +0200
+Message-Id: <DCI4HPNGMKTB.1NCT4AGVSGSF0@bootlin.com>
+Subject: Re: [docs] [PATCH] dev-manual/security-subjects.rst: update mailing
+ lists
+Cc: "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>
+From: "Antonin Godard" <antonin.godard@bootlin.com>
+To: <quentin.schulz@cherry.de>, <docs@lists.yoctoproject.org>
+References: <20250829-update-security-lists-v1-1-42d02ed2eb24@bootlin.com>
+ <d790220a-b0bd-425c-92b4-9e6b9a1c3293@cherry.de>
+In-Reply-To: <d790220a-b0bd-425c-92b4-9e6b9a1c3293@cherry.de>
+X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 02 Sep 2025 06:17:35 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7479
+ <docs@lists.yoctoproject.org>; Tue, 02 Sep 2025 07:06:56 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7480
 
-Add a note about the removed xf86-input-mouse and xf86-input-vmmouse recipes.
+On Mon Sep 1, 2025 at 1:35 PM CEST, Quentin Schulz via lists.yoctoproject.o=
+rg wrote:
+> Hi Antonin,
+>
+> On 8/29/25 11:08 AM, Antonin Godard via lists.yoctoproject.org wrote:
+>> Update mailing lists following changes by Michael Halstead
+>> (https://lists.yoctoproject.org/g/yocto-security/message/1478).
+>>=20
+>> Also fix formatting/spacing.
+>>=20
+>> Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+>> ---
+>>   documentation/dev-manual/security-subjects.rst | 23 ++++++++++++++----=
+-----
+>>   1 file changed, 14 insertions(+), 9 deletions(-)
+>>=20
+>> diff --git a/documentation/dev-manual/security-subjects.rst b/documentat=
+ion/dev-manual/security-subjects.rst
+>> index 1b02b6a9e9..6785b5a16a 100644
+>> --- a/documentation/dev-manual/security-subjects.rst
+>> +++ b/documentation/dev-manual/security-subjects.rst
+>> @@ -52,19 +52,24 @@ for them for significant issues.
+>>   Security-related discussions at the Yocto Project
+>>   -------------------------------------------------
+>>  =20
+>> -We have set up two security-related mailing lists:
+>> +We have set up two security-related emails/mailing lists:
+>>  =20
+>> -  -  Public List: yocto [dash] security [at] yoctoproject[dot] org
+>> +  -  Public Mailing List: yocto [dash] security [at] yoctoproject[dot] =
+org
+>>  =20
+>> -    This is a public mailing list for anyone to subscribe to. This list=
+ is an
+>> -    open list to discuss public security issues/patches and security-re=
+lated
+>> -    initiatives. For more information, including subscription informati=
+on,
+>> -    please see the  :yocto_lists:`yocto-security mailing list info page=
+ </g/yocto-security>`.
+>> +     This is a public mailing list for anyone to subscribe to. This lis=
+t is an
+>> +     open list to discuss public security issues/patches and security-r=
+elated
+>> +     initiatives. For more information, including subscription informat=
+ion,
+>> +     please see the  :yocto_lists:`yocto-security mailing list info pag=
+e
+>> +     </g/yocto-security>`.
+>>  =20
+>> -  - Private List: security [at] yoctoproject [dot] org
+>> +     This list requires moderator approval for new topics to be posted,=
+ to avoid
+>> +     private security reports to be posted by mistake.
+>>  =20
+>> -    This is a private mailing list for reporting non-published potentia=
+l
+>> -    vulnerabilities. The list is monitored by the Yocto Project Securit=
+y team.
+>> +  -  Yocto Project Security Team: security [at] yoctoproject [dot] org
+>> +
+>> +     This is an email for reporting non-published potential vulnerabili=
+ties.
+>> +     Emails sent to this address are forwarded to the Yocto Project Sec=
+urity
+>> +     Team members.
+>>  =20
+>
+> Matches what Michael said on the ML, so I guess
+>
+> Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
+>
+> Please also backport wherever appropriate (maybe we should think about=20
+> having this under the same mechanism we use for migration manuals so=20
+> it's never outdated even in old release manuals?).
 
-Signed-off-by: Gyorgy Sarvari <skandigraun@gmail.com>
----
- documentation/migration-guides/migration-5.3.rst | 5 +++++
- 1 file changed, 5 insertions(+)
+I think the idea is good.
 
-diff --git a/documentation/migration-guides/migration-5.3.rst b/documentation/migration-guides/migration-5.3.rst
-index 97e41605f4..2d2f8d91ad 100644
---- a/documentation/migration-guides/migration-5.3.rst
-+++ b/documentation/migration-guides/migration-5.3.rst
-@@ -174,6 +174,11 @@ The following recipes have been removed in this release:
-    removed in May 2024 with dfa482f1998 ("python3-requests: cleanup RDEPENDS"),
-    and there is no other user of this variable.
- 
-+-  ``xf86-input-mouse``: The project has stopped supporting Linux.
-+
-+-  ``xf86-input-vmmouse``: It has a runtime dependency on ``xf86-input-mouse``,
-+   which stopped supporting Linux.
-+
- Removed :term:`PACKAGECONFIG` entries
- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- 
+One tricky point is that this is part of the development manual which has b=
+een
+split in multiple documents not so long ago, so it wouldn't apply to old
+releases =E2=86=92 maybe we should move this out of the development manual =
+and make it a
+distinct (and more visible) section? What do you think? This is about secur=
+ity,
+not really a development task.
+
+Antonin
+
+--=20
+Antonin Godard, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
 
