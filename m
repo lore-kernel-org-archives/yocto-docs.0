@@ -2,89 +2,121 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 22ED5CA1005
-	for <webhook@archiver.kernel.org>; Tue,  2 Sep 2025 11:45:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8B8D1CA1012
+	for <webhook@archiver.kernel.org>; Thu,  4 Sep 2025 09:59:39 +0000 (UTC)
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by mx.groups.io with SMTP id smtpd.web11.75315.1756813545417096134
+ by mx.groups.io with SMTP id smtpd.web10.35468.1756979973829417404
  for <docs@lists.yoctoproject.org>;
- Tue, 02 Sep 2025 04:45:46 -0700
+ Thu, 04 Sep 2025 02:59:34 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=B5yDYkQJ;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=SYgwad+2;
  spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 7A4831A0D26
-	for <docs@lists.yoctoproject.org>; Tue,  2 Sep 2025 11:45:43 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 38BE11A0D64
+	for <docs@lists.yoctoproject.org>; Thu,  4 Sep 2025 09:59:32 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 5335260695;
-	Tue,  2 Sep 2025 11:45:43 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 65EFE1C22DBA2;
-	Tue,  2 Sep 2025 13:45:41 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 111A5606BB;
+	Thu,  4 Sep 2025 09:59:32 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 92D651C22DD68;
+	Thu,  4 Sep 2025 11:59:30 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1756813543; h=from:subject:date:message-id:to:mime-version:content-type:
+	t=1756979971; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=zBUKwP95buBvWeWsGjQ4M6atCayACHCtq6I0zE3lfu4=;
-	b=B5yDYkQJp8pVJWOy0nU3P5bIt0klf/+hPDj6Q4NlapOmiFSjEWvZVreo4poqzcET/8FrFZ
-	wX4V6U8I0Vy8M981rCKH7O+edOwDaggpmXT3ZlkrcMnb8tE2WtJDT+Ec0iAMDmkDs55y6/
-	6bnbRL0YXPiEufhgWRBIt6w9kU9uvT22HyNrj2JGNRWhg2JMGj9JECnpXvbRnKtLiKV3t2
-	P+cSfG2ulR2Ls8njHd8CtKVYaqDWBo4XpbA9o5DfQu0KMqfpJFHQjtEDsXYAgxyG2KC+ND
-	7IQRlgJ4kL/hi8wa8SVWLSG63dpA03K7/9NDJ0uYELIvGPOIp8GZWkO2AW8sPQ==
+	bh=PdEgWX0AewzMTuYi/Vt2S1J2Yk5JqtAO0Z6ZPh/rYXQ=;
+	b=SYgwad+2Na+PsnpHR02n9jNoYQ9YU4hpwee9r4qdyx2+InJMz1QVxlG3PmhFbZQ4ZPy/QC
+	pA1NxRrSWl5NBxMeTZzcjrvhbH3w/GJu2UZq4zZMdu7bBe7h8bgCoO0TWjmXpeB2eAN8e8
+	zJd1ykM05aJc6cxpeO1KYTSKSbwa+RqQbiNwzIFo8uXfGQT1wo9VbNSH6W7M3neVWCJnkI
+	Y/2rG30vd84fG07MMhLKLcpVM+HJi8wURpTju5LptzzyypSKvellOu/sQ1K21snAUkykXe
+	6OdzNzxdReWQQ8ukekCuv9QN1z+hrWWXSU1nMAgnEuWK2ObnShw6Ox6DW7Owcw==
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 02 Sep 2025 13:45:40 +0200
-Message-Id: <DCIAFAYHYCJ1.24FYABCZ6HR0A@bootlin.com>
-Subject: Re: [docs] [PATCH] migration-5.3.rst: update removed recipes list
+Date: Thu, 04 Sep 2025 11:59:30 +0200
+Message-Id: <DCJXF3HI42NB.34PICRHH011PC@bootlin.com>
+Subject: Re: [bitbake-devel] [PATCH] doc: improve BitBake README testing
+ instructions
+Cc: <docs@lists.yoctoproject.org>
 From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: <skandigraun@gmail.com>, <docs@lists.yoctoproject.org>
-References: <20250902061722.2226405-1-skandigraun@gmail.com>
-In-Reply-To: <20250902061722.2226405-1-skandigraun@gmail.com>
+To: <mohamedaymanworkspace2@gmail.com>,
+ <bitbake-devel@lists.openembedded.org>
+References: <20250818163337.3440-1-mohamedaymanworkspace2@gmail.com>
+In-Reply-To: <20250818163337.3440-1-mohamedaymanworkspace2@gmail.com>
 X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 02 Sep 2025 11:45:58 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7483
+ <docs@lists.yoctoproject.org>; Thu, 04 Sep 2025 09:59:39 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7484
 
-On Tue Sep 2, 2025 at 8:17 AM CEST, Gyorgy Sarvari via lists.yoctoproject.o=
+Hi,
+
+On Mon Aug 18, 2025 at 6:33 PM CEST, Mohamed Ayman via lists.openembedded.o=
 rg wrote:
-> Add a note about the removed xf86-input-mouse and xf86-input-vmmouse reci=
-pes.
+> Clarified the testing section by:
+> - Adding context on setting PATH before running selftests
+> - Documenting how to install pytest using pip
+> - Providing an example command for running pytest on lib/bb/tests
 >
-> Signed-off-by: Gyorgy Sarvari <skandigraun@gmail.com>
+> These additions make it easier for new contributors to run the
+> testsuite and ensure consistent testing practices.
+>
+> Signed-off-by: Mohamed Ayman <mohamedaymanworkspace2@gmail.com>
 > ---
->  documentation/migration-guides/migration-5.3.rst | 5 +++++
->  1 file changed, 5 insertions(+)
+>  bitbake/README | 7 +++++++
+>  1 file changed, 7 insertions(+)
 >
-> diff --git a/documentation/migration-guides/migration-5.3.rst b/documenta=
-tion/migration-guides/migration-5.3.rst
-> index 97e41605f4..2d2f8d91ad 100644
-> --- a/documentation/migration-guides/migration-5.3.rst
-> +++ b/documentation/migration-guides/migration-5.3.rst
-> @@ -174,6 +174,11 @@ The following recipes have been removed in this rele=
-ase:
->     removed in May 2024 with dfa482f1998 ("python3-requests: cleanup RDEP=
-ENDS"),
->     and there is no other user of this variable.
-> =20
-> +-  ``xf86-input-mouse``: The project has stopped supporting Linux.
-> +
-> +-  ``xf86-input-vmmouse``: It has a runtime dependency on ``xf86-input-m=
-ouse``,
-> +   which stopped supporting Linux.
-> +
->  Removed :term:`PACKAGECONFIG` entries
->  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> =20
+> diff --git a/bitbake/README b/bitbake/README
+> index e9f4c858ee..938eec47ce 100644
+> --- a/bitbake/README
+> +++ b/bitbake/README
+> @@ -54,10 +54,17 @@ The assumption is made that this testsuite is run fro=
+m an initialized OpenEmbedd
+>  environment (i.e. `source oe-init-build-env` is used). If this is not th=
+e case, run the
+>  testsuite as follows:
+>
+> +# ensure local tools are on PATH and run the selftest script
 
-Thanks for taking the time to update the release notes!
+This should probably be aligned to "export PATH=3D$(pwd)/bin:$PATH" below?
 
-I will merge this once your patch makes it to master in OE-Core.
+    # ensure local tools are on PATH and run the selftest script
+    export PATH=3D$(pwd)/bin:$PATH
+    bin/bitbake-selftest
+
+>      export PATH=3D$(pwd)/bin:$PATH
+>      bin/bitbake-selftest
+>
+>  The testsuite can alternatively be executed using pytest, e.g. obtained =
+from PyPI (in this
+>  case, the PATH is configured automatically):
+>
+> +# install pytest into a virtualenv or pipx (recommended)
+> +python -m pip install --user pytest
+> +
+> +# run tests (example)
+> +python -m pytest lib/bb/tests -q
+
+Same comment as the one above.
+
+Otherwise, how does this differ from simply running "pytest"?
+
+I tried this and it gave:
+
+   $ python -m pytest lib/bb/tests -q
+
+   no tests ran in 0.10s
+
+I'm not sure this does anything?
+
+Instead running for example "python -m pytest lib/bb/tests/color.py" works,=
+ so
+if the intent was to showcase how to run tests separately, I would rather
+showcase an example like this.
 
 Antonin
 
---=20
+--
 Antonin Godard, Bootlin
 Embedded Linux and Kernel engineering
 https://bootlin.com
-
 
