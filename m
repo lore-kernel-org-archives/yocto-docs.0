@@ -1,84 +1,101 @@
-Return-Path: <alex.kanavin@gmail.com>
+Return-Path: <pierre-loup.gosse@smile.fr>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2D8F2CA0FED
-	for <webhook@archiver.kernel.org>; Fri,  5 Sep 2025 10:16:16 +0000 (UTC)
-Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
- by mx.groups.io with SMTP id smtpd.web10.17936.1757067366168622473
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BFF32CAC586
+	for <webhook@archiver.kernel.org>; Mon,  8 Sep 2025 14:01:04 +0000 (UTC)
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+ by mx.groups.io with SMTP id smtpd.web11.14460.1757340058244767522
  for <docs@lists.yoctoproject.org>;
- Fri, 05 Sep 2025 03:16:06 -0700
+ Mon, 08 Sep 2025 07:00:58 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=KXfJ8mxE;
- spf=pass (domain: gmail.com, ip: 209.85.219.46, mailfrom: alex.kanavin@gmail.com)
-Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-726549f81a6so20785736d6.2
-        for <docs@lists.yoctoproject.org>; Fri, 05 Sep 2025 03:16:06 -0700 (PDT)
+ dkim=pass header.i=@smile.fr header.s=google header.b=QVuBa9Cq;
+ spf=pass (domain: smile.fr, ip: 209.85.128.49, mailfrom: pierre-loup.gosse@smile.fr)
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-45dda7d87faso19872125e9.2
+        for <docs@lists.yoctoproject.org>; Mon, 08 Sep 2025 07:00:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757067365; x=1757672165; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=smile.fr; s=google; t=1757340057; x=1757944857; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=upTwZKyiBNnC+OkjgBwo72rjaO0JALTLkZu8FhzInpo=;
-        b=KXfJ8mxEyw/KqnWQ/JV5ZnjmssbACJ82LOzRqqW2yVpgVhRQ+TwSrBjb/Lr8EozWTB
-         NGKtEGCbu0BP6g+9OG0eNbuIDMVQfdKEOpH1u6TxybDe6OGgYnkJWyW1K7wuIYPawJYJ
-         ZozIZ6N+FHmxYFVWb50TwQtpGflYwc31yN1Xc9FB3hB80Y+GOK4NBzdFCJBAR9SFMpUh
-         7LSf311HTuCipJ7+3dIMN2Bg047fTMtj1ioZdoghIsn/z2b6teMHec8B2EnKdkMaBdd+
-         OJDSRagyg0uyCaMisWT2BpJMP1663WWi7na3GA0gklG8CZxZCJ2LxwQf74MHvCmR+xS0
-         AnMA==
+        bh=qk7NQMcUd4UShJFMtYhJyWPlGGnMmwt/BhIlZOat6Sk=;
+        b=QVuBa9CqSFXRZ8NvpxnP8MXW47ES/IDgKuyjIbu7cM5HiUh+FAwot9cHkCvcjUoJ+6
+         cc4JDCLREpYF5t882x7lP+QQJBX7q6s1EmyxzzT6QpAEAT17jX29SaVwVQ/w8OzLROq6
+         Ax1WyIzAxagRVbvBoT2c07r499Yc4Kbvis6dA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757067365; x=1757672165;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1757340057; x=1757944857;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=upTwZKyiBNnC+OkjgBwo72rjaO0JALTLkZu8FhzInpo=;
-        b=krVrVyFa0DM0WksfhkYbYXM9Aj1qidlhwMxoX0XiautrY3mhkDUZsbLMlRhCt6Tacx
-         tDk1oKsSLA+15z+h1HkdBY9TEY8mCX858/Um6J9d7ZmFRLiz/ADra2zeZTzL/HgkK49U
-         dF9kYC7Oyu3lUEaaNA5S22935Drhz7GLZ+x1A52CC1/sHYbPG52B9QzVC3D+tlUvkQLN
-         qNwkq305cskWKOl5LF2ZhzsA2uncN8eptN9zfUZdYEfd83HWa9ZWdnc1I4GMmrvgrc53
-         eMUpy4X9obVIwNa6J2rD1RW3EseUzLJhie9ddQNFTfHi0zV2dAIkHSnizJZkO9KJr/da
-         1LoQ==
-X-Gm-Message-State: AOJu0YxSoCOAUVc/ASdPhry2+nAy0O8HB2zi96r/jFMDrRVVLjh6Nmb0
-	W9UGBG1QRBa95bgWT6LONFsjwkehkUJQkWF1SaytB9269L9MgLFJ9q8qyZ3XZXddl688t9Zspv9
-	+2dhzXmWc5KO8S8plKs/CrfBfOrVpzEg=
-X-Gm-Gg: ASbGncvHdhgIHtWZchweDHfibHk/FSmrZQlw8/9RrlEdK5lJMbwm5mNr0/VScykGh0T
-	S6CHWwFbD1aGeqJObAN8LzT99aR1RWavlO0cb1C8HJq4WV2X5H/+qYMZOLOHVVmm7nEDT90AsbA
-	qAg0EfmUHd04pl974557tiyjtbcWZXKJ7uP2L4PDuwGTYO3ykezcCS+rHsfp07YnyosPvMRkuDc
-	3bSF6qguO98G6yu8Td9Bcfue4cK35MxNobPH/69kpHtoBqVIzkTz5miMQM0556eZ/V0VwaWnj2K
-	m5RUMOyNc6ffzPMs5UGIdT4ZjfnUsVQQoRocbNWy
-X-Google-Smtp-Source: AGHT+IEbz/0vHGTD60pyOKsJbzxXy70sM50ED6IHOdlwgbUoZ1y7MdxxdEUX0czRA4bAWoFjEGQdmeOVH3OYx0I9p7w=
-X-Received: by 2002:a05:6214:20cf:b0:70d:f719:df3a with SMTP id
- 6a1803df08f44-7209d44bc7emr151496586d6.61.1757067364980; Fri, 05 Sep 2025
- 03:16:04 -0700 (PDT)
+        bh=qk7NQMcUd4UShJFMtYhJyWPlGGnMmwt/BhIlZOat6Sk=;
+        b=XilVQQQE003BT6yP/oUgRUyMPu+ZTFd5szJ3Rnc7HzlPZWj1F5wTgfpGQXceAbmBfI
+         sNv45eCAXkbw18/GeHvYO42xj1EDHbOy1CCmo7jOEYxQlXxQH2Z9qOraqEbS0m3eCSAo
+         bPvumOI8J9BarE1ZwFcthATQ981LS8XPVPAAo6figfNOhA2am+WN+YsgXWBLszbaiJur
+         lpqY49BBky9yESdoq2x6NG9HrQmK1o84ljAW4t+WL8rnfle6Z36+TSbBC81WWJ+gR6C+
+         UF9I4AvPn+84RmXfU67kuGIBgnc0UDxjIqWU0i5nuxDUc4JtJKPasmWOX59holqpQLZ7
+         8e0A==
+X-Gm-Message-State: AOJu0YzXXI35QlhSbwymzzcZnpv76mx/6FO+N610AbRDZssgHFxaNXza
+	efcU/UYDWMDV7XXXLkKp6Nl9LbZVnPRIuxU6I1S+HUI6XfQGtSWZHp6Skxy1hh5l4XUO+Kyq9XI
+	WHqMp
+X-Gm-Gg: ASbGnctXlcqtER+JCafpyt8YKqDDU1WxfMmnFPeIRJNeApGITkztCVHQQ/NFnoxDfcU
+	n8jZbysEa52jNgqURib0gTkuOBeAgujdCBZXmUp10KszueUECXf9NCJAQTLxWqSd6hfyXsM1/b+
+	v19qweanBHVT+FMBf2rB4ROMqSAjXxzmA06RmhSJ2Oe1/Z0CxWq1+Hw+jLgssqcn2HOu1NYgfLL
+	rAHNTy2h3i8lPjkAotCOmswqjTIddHlR1LesKV4zrLR5ycfsqBQa/Gujxb7SYkh9+35/kbQTaTh
+	sNWytw/yeKNm1Z3Yq7oy0v9aUTZ/qpI0MH1yVqSU85cAqzg6Y+iqr8Czqa60ZoYVusYMRAuaS3R
+	BkA9IM/09Tvoqj8sBc9UF+phejbuwR8tbVAvZ7xY0NqWGyxgmWxFYpHXph1pYgcZ+h3mSY5gTYR
+	ARwxBg2S+9hKgbRrLf7nBOFwS1dFe3SYHn6/ylLr0e
+X-Google-Smtp-Source: AGHT+IE8vGkFHtjS5oS9IJhjfLxaMzcTCLNayxzm93e3PB8uMbDXaOckkcXkkgqqpWecKfHF0dyllg==
+X-Received: by 2002:a05:600c:1f91:b0:45d:d5df:ab2d with SMTP id 5b1f17b1804b1-45dddeef92cmr64447285e9.26.1757340054939;
+        Mon, 08 Sep 2025 07:00:54 -0700 (PDT)
+Received: from localhost.localdomain (2a01cb000301bd0008156b32089b8a82.ipv6.abo.wanadoo.fr. [2a01:cb00:301:bd00:815:6b32:89b:8a82])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3dc1cd4a7d2sm21938924f8f.33.2025.09.08.07.00.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Sep 2025 07:00:54 -0700 (PDT)
+From: pierre-loup.gosse@smile.fr
+To: docs@lists.yoctoproject.org
+Cc: Pierre-Loup GOSSE <pierre-loup.gosse@smile.fr>,
+	Alexander Kanavin <alex.kanavin@gmail.com>
+Subject: [PATCH 3/3] migration-guides/release-notes-5.3.rst: new wic option extra-partition-space
+Date: Mon,  8 Sep 2025 16:00:48 +0200
+Message-Id: <20250908140048.352088-3-pierre-loup.gosse@smile.fr>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250908140048.352088-1-pierre-loup.gosse@smile.fr>
+References: <20250908140048.352088-1-pierre-loup.gosse@smile.fr>
 MIME-Version: 1.0
-References: <VMV8.1757060410591652906.CpIm@lists.yoctoproject.org>
-In-Reply-To: <VMV8.1757060410591652906.CpIm@lists.yoctoproject.org>
-From: Alexander Kanavin <alex.kanavin@gmail.com>
-Date: Fri, 5 Sep 2025 12:15:54 +0200
-X-Gm-Features: Ac12FXyEixWOOHEem6_6Twrw-l-ePsWg3ztt8FhKlbmmjRgfRXne-tU-wn0JY_I
-Message-ID: <CANNYZj9t1k+Ua-ftT2EGozxp1GZ5QHCHW0J1424pqo8zgxU52Q@mail.gmail.com>
-Subject: Re: [docs] Performing Automated Runtime Testing - Exporting tests not
- described well
-To: barne.carstensen@danfoss.com
-Cc: docs@lists.yoctoproject.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 05 Sep 2025 10:16:16 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7486
+ <docs@lists.yoctoproject.org>; Mon, 08 Sep 2025 14:01:04 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7489
 
-On Fri, 5 Sept 2025 at 10:20, Barne Carstensen via
-lists.yoctoproject.org
-<barne.carstensen=3Ddanfoss.com@lists.yoctoproject.org> wrote:
-> Maybe it is worth updating the commands in the document. And also if poss=
-ible add more description to the oe-test script or at least link to some do=
-cumentation of it. I am not able to find anything about it and had to figur=
-e things out as good as I could via the -h (help) flag.
+From: Pierre-Loup GOSSE <pierre-loup.gosse@smile.fr>
 
-Yes, absolutely. Testexport is one of the more esoteric yocto
-features, and is thus prone to not being well described. Can you
-prepare a patch?
+After commit c7f51c23fd268 ("wic: add --extra-partition-space option to
+set unused space") in openembedded-core, document the new Wic-specific
+option extra-partition-space.
 
-Alex
+CC: Alexander Kanavin <alex.kanavin@gmail.com>
+Signed-off-by: Pierre-Loup GOSSE <pierre-loup.gosse@smile.fr>
+---
+ documentation/migration-guides/release-notes-5.3.rst | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/documentation/migration-guides/release-notes-5.3.rst b/documentation/migration-guides/release-notes-5.3.rst
+index f32c6162d..cb6c32555 100644
+--- a/documentation/migration-guides/release-notes-5.3.rst
++++ b/documentation/migration-guides/release-notes-5.3.rst
+@@ -363,6 +363,9 @@ New Features / Enhancements in |yocto-ver|
+          :term:`BitBake` variables. This directory is usually found in
+          :term:`STAGING_DIR`.
+ 
++   - Add the Wic-specific option ``--extra-partiton-space`` to add extra empty
++     space after the space filled by the filesystem in the partition.
++
+ -  SDK-related changes:
+ 
+    -  Include additional information about Meson setting in the SDK environment
+-- 
+2.34.1
+
 
