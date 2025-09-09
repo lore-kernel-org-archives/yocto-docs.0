@@ -1,99 +1,126 @@
-Return-Path: <pierre-loup.gosse@smile.fr>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C9D03CAC581
-	for <webhook@archiver.kernel.org>; Mon,  8 Sep 2025 14:01:04 +0000 (UTC)
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
- by mx.groups.io with SMTP id smtpd.web10.14480.1757340055747531668
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 131FDCA0FED
+	for <webhook@archiver.kernel.org>; Tue,  9 Sep 2025 13:30:04 +0000 (UTC)
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+ by mx.groups.io with SMTP id smtpd.web11.13182.1757424597462966318
  for <docs@lists.yoctoproject.org>;
- Mon, 08 Sep 2025 07:00:56 -0700
+ Tue, 09 Sep 2025 06:29:58 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@smile.fr header.s=google header.b=ffiNc49T;
- spf=pass (domain: smile.fr, ip: 209.85.221.42, mailfrom: pierre-loup.gosse@smile.fr)
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3c46686d1e6so2932837f8f.3
-        for <docs@lists.yoctoproject.org>; Mon, 08 Sep 2025 07:00:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=smile.fr; s=google; t=1757340054; x=1757944854; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8q1w7ZYb1jY5Wqk/z5pHakOkMM2heezIYBnDvgjN/a4=;
-        b=ffiNc49TjH6r3ijSV9jeOewTz35v5Fr+svlrReLPiSivyj1e0jKdj45a6t5EIdzU1S
-         P4zYA3a2/78yHz6s0u9UNrTEilLTR2dhmMbBDDR8+GJjKNqu9juX152naaa9SscN/a5/
-         xCF+RLU5dYNFdjMDVvQvPAPd2cilNNGJ35hmo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757340054; x=1757944854;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8q1w7ZYb1jY5Wqk/z5pHakOkMM2heezIYBnDvgjN/a4=;
-        b=ccntCHbf59dPa0OfxV100qh5uzvYGCb2LHAVF+zGWrVdYUXa0d8FrZplGX0UbIIQcP
-         RuHdwRUtZmbFrp/my59phRgBYSiXNCmQ9PwZ1xad6Z9zNjLcoVqYtGXRHEx0WAopsI9H
-         fVcq60vk/sJz0g7w3LIj+hHS3BAbHTcE4wFXuEAuypWwm35DsrD0Wcu8J7FJadUJlZ+r
-         tkny3pjAwa8aRAqA/kbZMlf4as4caU2QCQh/z4tvu5+Cyej2RCHeLD1963YnMt8sbrUd
-         DJbQYyS0YK0CO3CIlFWxkvUL7MkJvXE8l8gxKLO4EsvL/i9ugrolrgiQ26shBK47lMVc
-         2kWQ==
-X-Gm-Message-State: AOJu0YwQV4B+zgNmXedoPJLjnAsiKJdtQV7w0V3X5GSgcimEJvGt18sj
-	DybfnpU8zKv0HXAGg2VNrbG/TbqYvKOMY9w7Ync8WreUOw4aHm+JFB9sWVcI6GYwLLM8zK5CAxd
-	Xm8DS
-X-Gm-Gg: ASbGnctdWsg5lvMASj3oVqFshY6eRVs00MVKKoW8ODCYYFPmKZpElcokpxXgz+2G8+j
-	6DPe/mRypXU0D2ou7UUNsy3jjvxTYfzOPCrEy02XEEBzqREdE3iymvfa6foNFqtw40VlyX+ao2w
-	uUOAlzl0tJMWNR6Qs7c8+Xf5muZu6gzMDHLQ/+7I7BoTSSi60Tr+LkrZ0WXacpTDdZpJd8CiZPk
-	Th9Gm8vPGkLxpm3Pph79zMs0LNCWiUxXvt9vA8gl1KB0RjYY/gVkJY+dMyS/azHw123ENuqHBLv
-	sd0HBNpY5F5hKW6PnOZWmMm6ZHXvYf62V+Nm7j42zLasMXVgbJiwuoXbDES+UW3HcOcxK4UPpHA
-	3O0soODrP7vBQTtZJgPEPaEarETqYCwZi9gb+d80nIJuk+Jzy0wLeF3D1PYuKInF2EpQPjhtsjz
-	/sFigpGEM1Dgof2C+IJq/kwlxrtmVy64nsw7Ihgolb
-X-Google-Smtp-Source: AGHT+IHwIq4TTBF+eNlWRAufbq2YoBcZfkpZndiBabhxKIONIE3VtkaZlb/5zMEYMlZlTPLtICvVqQ==
-X-Received: by 2002:a5d:5847:0:b0:3e5:190b:b04e with SMTP id ffacd0b85a97d-3e64317fdd0mr4948644f8f.37.1757340054002;
-        Mon, 08 Sep 2025 07:00:54 -0700 (PDT)
-Received: from localhost.localdomain (2a01cb000301bd0008156b32089b8a82.ipv6.abo.wanadoo.fr. [2a01:cb00:301:bd00:815:6b32:89b:8a82])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3dc1cd4a7d2sm21938924f8f.33.2025.09.08.07.00.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Sep 2025 07:00:53 -0700 (PDT)
-From: pierre-loup.gosse@smile.fr
-To: docs@lists.yoctoproject.org
-Cc: Pierre-Loup GOSSE <pierre-loup.gosse@smile.fr>,
-	Alexander Kanavin <alex.kanavin@gmail.com>
-Subject: [PATCH 2/3] migration-guides/migration-5.3.rst: wic option extra-space renaming
-Date: Mon,  8 Sep 2025 16:00:47 +0200
-Message-Id: <20250908140048.352088-2-pierre-loup.gosse@smile.fr>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250908140048.352088-1-pierre-loup.gosse@smile.fr>
-References: <20250908140048.352088-1-pierre-loup.gosse@smile.fr>
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=Vs/5RsFv;
+ spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 49B8F4E40C12;
+	Tue,  9 Sep 2025 13:29:55 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 23C8F60630;
+	Tue,  9 Sep 2025 13:29:55 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5F6A6102F26A4;
+	Tue,  9 Sep 2025 15:29:48 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1757424594; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=jMmTMT3D2uEqNrc3fGnoNMqMep917ofa3by/S5dlaPA=;
+	b=Vs/5RsFv0m06uZ6LziXh+xOw71CgMabn/nlBdX5ax2nHAsuz7FYjjLLBxnYZGg0gtSCtd1
+	zfpQJgp6FsCSS9Fzs/KGnYk11hfu1pg8LwwXrg6MdLbLad2EPaxtMgKsOEJ9KwDJaaXPzW
+	H6g7qLCSUG9M2kz9GSSDfgOSUZDH4VsFh8onwzMxZik917y/UxHcYuF73W5Co29IPSXyMj
+	00WZxiSwdFesiLWTd5euQkcVGNlzeUyMaVLQp1BAAL6yLYcRfbCZTaGRRtkVCwMEyPxgL0
+	kWKKdwDsC45ceUEObQNNvb36PeO09WAWyh3SScp5Q2eWCL/xw9qsT7kzVeC+OQ==
+From: Antonin Godard <antonin.godard@bootlin.com>
+Date: Tue, 09 Sep 2025 15:29:41 +0200
+Subject: [PATCH] migration-guides/migration-5.3.rst: add note on systemd
+ pni-names change
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250909-systemd-pni-names-v1-1-efb2fef7aaf8@bootlin.com>
+X-B4-Tracking: v=1; b=H4sIAMQrwGgC/yXMQQqDMBBG4avIrB1IgwrxKsVFGn/bKRglo6Ule
+ HfTdvkt3sukSAKlvsqU8BKVJRZc6orCw8c7WMZissa2xpmG9aMb5pHXKBz9DGXv0IWm7YwNjkq
+ 3Jkzy/j2vw9+6354I23dEx3ECMnJWEXUAAAA=
+X-Change-ID: 20250904-systemd-pni-names-a9e6c45602c9
+To: docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Koen Kooi <koen.kooi@oss.qualcomm.com>, Ross Burton <Ross.Burton@arm.com>, 
+ Antonin Godard <antonin.godard@bootlin.com>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2593;
+ i=antonin.godard@bootlin.com; h=from:subject:message-id;
+ bh=amJ1MBTXmKL3l3epGBdutX7nO6g+ZK5R52ShAinQEU0=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBowCvLDseQreXzWdl0DZpHDirW+vNYBleTNUcNg
+ 2lgL4S42zGJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaMArywAKCRDRgEFAKaOo
+ NqJLEACCiT3N+mEm+F1Yo+7jphOLMzNQH0Za0AdEVaveijjLywQajoWn/7JxZ/IKhUN2mLv13qZ
+ kBc/lE/MbER8/N/9pYaQ6nfr4h2Ic8G//ds+5u8xuqOu3f1Nf2XJycd8eV0/PG6w8TNaCbolZrh
+ +Uz00HPlpcQ7XpQrOts1JxrjTn1pxSzKZ93E96v5nSyRWNgB4wtDFTdb82zauwr1Wd6/sWZEKEh
+ 4ztvzN7Mu85CzPJx0Rn64aArjMF/qNUdRfpGF+eKeQ5FziEyTl+SH/QH5L+W/XVrgw4/x6TSTgA
+ f3VVN8iB5O4ttTttrb2CtNW+se3UWlbrbm25kUl6H8CrYUJEVToTG7LCaiDrQSstB5guUbmv8g1
+ nhIcYsSFlCDpxCyEFhXelHlSjJR8PpStLzcZbN2qWjtTQwvACXqwzdjxtTg3WteW8woUDPiE4EF
+ iVp7/4P+HHTb93UXbIlUeXogO2tfIkKZXUIy/zz8NPCV1wx40NVZTD86+bUOGZLFr8rnpeYat0G
+ ElWuNwofUeH7WERjgSYkBdymISdexpWUMgN/DXtSBXXOEE+IWZmgrVxlNEcyc5KBs+fLD2bhtlF
+ 10Q/inXX26StMty25vZrCJNNd0BqY1zp60gaxO1p1fJQuVNjDyct/InHikM4xs1tquUeo6oIGEM
+ SGKL+uw30+mcR0w==
+X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
+ fpr=8648725188DD401BB9A0D3FFD180414029A3A836
+X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 08 Sep 2025 14:01:04 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7488
+ <docs@lists.yoctoproject.org>; Tue, 09 Sep 2025 13:30:04 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7490
 
-From: Pierre-Loup GOSSE <pierre-loup.gosse@smile.fr>
+Add a migration note on the pni-names default policy change after commit
+<> in OE-Core.
 
-After commit 47533f20a7ec ("wic: rename wks flag --extra-space to
---extra-filesystem-space") in openembedded-core, document the
-renaming of the Wic-specific option extra-space to
-extra-filesystem-space.
-
-CC: Alexander Kanavin <alex.kanavin@gmail.com>
-Signed-off-by: Pierre-Loup GOSSE <pierre-loup.gosse@smile.fr>
+Cc: Koen Kooi <koen.kooi@oss.qualcomm.com>
+Cc: Ross Burton <Ross.Burton@arm.com>
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/migration-guides/migration-5.3.rst | 2 ++
- 1 file changed, 2 insertions(+)
+ documentation/migration-guides/migration-5.3.rst | 25 ++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
 diff --git a/documentation/migration-guides/migration-5.3.rst b/documentation/migration-guides/migration-5.3.rst
-index 97e41605f..805b2a409 100644
+index 2d2f8d91a..8aa7b537f 100644
 --- a/documentation/migration-guides/migration-5.3.rst
 +++ b/documentation/migration-guides/migration-5.3.rst
-@@ -247,3 +247,5 @@ Miscellaneous changes
+@@ -118,6 +118,31 @@ class. Instead, one should create a new recipe to build this FIT image, as
+ described in the :ref:`Removed Classes <migration-guides/migration-5.3:Removed
+ Classes>` section of the Migration notes for |yocto-ver| (|yocto-codename|).
  
- -  ``xserver-xorg``: remove sub-package ``${PN}-xwayland``, as ``xwayland`` is
-    now its own recipe.
++systemd Predictable Interface Names no longer MAC policy by default
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 +
-+-  The Wic-specific option ``--extra-space`` has been renamed to ``--extra-filesystem-space``.
-\ No newline at end of file
--- 
-2.34.1
++The :oe_git:`systemd recipe </openembedded-core/tree/meta/recipes-core/systemd>`
++used to forcibly set the MAC policy by default when the ``pni-names``
++:term:`distro feature <DISTRO_FEATURES>` was enabled. See
++https://www.freedesktop.org/software/systemd/man/latest/systemd.link.html#AlternativeNamesPolicy=.
++
++This is no longer the case. Instead, when the ``pni-names`` :term:`distro
++feature <DISTRO_FEATURES>` is enabled, the default policy from systemd is
++selected (from https://github.com/systemd/systemd/blob/main/network/99-default.link).
++
++To set the MAC policy to systemd, add the following to a systemd ``.bbappend``
++file in your custom layer::
++
++   do_install:append() {
++          if ${@bb.utils.contains('PACKAGECONFIG', 'pni-names', 'true', 'false', d)}; then
++                  if ! grep -q '^NamePolicy=.*mac' ${D}${nonarch_libdir}/systemd/network/99-default.link; then
++                          sed -i '/^NamePolicy=/s/$/ mac/' ${D}${nonarch_libdir}/systemd/network/99-default.link
++                  fi
++                  if ! grep -q 'AlternativeNamesPolicy=.*mac' ${D}${nonarch_libdir}/systemd/network/99-default.link; then
++                          sed -i '/AlternativeNamesPolicy=/s/$/ mac/' ${D}${nonarch_libdir}/systemd/network/99-default.link
++                  fi
++   }
++
+ Supported kernel versions
+ ~~~~~~~~~~~~~~~~~~~~~~~~~
+ 
+
+---
+base-commit: ee0b46bd074dd34c3d6b401e65d2c519c2c3d47b
+change-id: 20250904-systemd-pni-names-a9e6c45602c9
+
+Best regards,
+--  
+Antonin Godard <antonin.godard@bootlin.com>
 
 
