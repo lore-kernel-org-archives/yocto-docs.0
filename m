@@ -1,92 +1,71 @@
-Return-Path: <patrick.vogelaar.dev@mailbox.org>
+Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6E917CAC583
-	for <webhook@archiver.kernel.org>; Wed, 10 Sep 2025 14:55:12 +0000 (UTC)
-Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
- by mx.groups.io with SMTP id smtpd.web10.20573.1757516101922079459
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9C5D0CAC58E
+	for <webhook@archiver.kernel.org>; Fri, 12 Sep 2025 00:41:21 +0000 (UTC)
+Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
+ by mx.groups.io with SMTP id smtpd.web10.3496.1757637674207869425
  for <docs@lists.yoctoproject.org>;
- Wed, 10 Sep 2025 07:55:02 -0700
+ Thu, 11 Sep 2025 17:41:14 -0700
 Authentication-Results: mx.groups.io;
- dkim=fail reason="dkim: body hash did not verify" header.i=@mailbox.org header.s=mail20150812 header.b=DtnNknsl;
- dkim=fail reason="dkim: body hash did not verify" header.i=@mailbox.org header.s=mail20150812 header.b=CYtClDaN;
- spf=pass (domain: mailbox.org, ip: 80.241.56.152, mailfrom: patrick.vogelaar.dev@mailbox.org)
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [10.196.197.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4cMNyW3hQKz9v4D;
-	Wed, 10 Sep 2025 16:54:59 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1757516099;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=Ug5v62dNN3QSmbts7Q/nxZG7ewHSz8FpjJKg4MEMSaY=;
-	b=DtnNknslNxQ5Yn9L66Z1TtwNGIyDtFdZpvd0vgCW2HNaKiQacIvapCEBRPciT3HnMOcQON
-	DrBP+hzOh53HB7BaJu5z/DTuTMZh+/uFmreN4Kq7SuynJdEHmaVHA5Ps0RgFStgz8Y7Ldc
-	zCBVqCoSRx0ILSdLZDbdedQ3UlAl+ceHGU/ejipRnbcM5V0ZhfOo4Vp4+/ZaaxIjgYvm0p
-	Eu0/Wdgofvvr4zireSj/RScTEjj2TdE5wwSn64EzoIqeQOhbpyPUIeZ9wpjzBXjhrApsuU
-	fKwn8q/qjIlVtoZ7X25PwIHUOrdwbnMfMEw4S6+h7VvAS9ZniUwEate/ohoomg==
-From: Patrick Vogelaar <patrick.vogelaar.dev@mailbox.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1757516097;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=Ug5v62dNN3QSmbts7Q/nxZG7ewHSz8FpjJKg4MEMSaY=;
-	b=CYtClDaN+fJ6MEfV/czqFdKSk/ImJqU4iW/2X9GLWpmDJbuXdQoHRYu3pg+xcgY2HTjXxC
-	nFDWTN8/QW896Yl6RaDUOUkQJtCon6/4rdf9wlskzo/Ps2WytwUx5HdgeusTel0swIGyvm
-	kxpTxTgsUCs2C/B0ALN+6PNzVFAddtYWRCJs9TeAb7j7y2iEYnb9qqQcsqXW7lXqozZyUc
-	KMKDJDU7gTWnhldSk+AMH/tTgQ3Oa5kDuhTS5MnTJU21d2bxsfDBiLgAnJZNyLGNPhH2oe
-	mBICZYDJh46njUJUqBFCVuSvWvoiCD848oWzWcY6fQjt0H7sKat1vBBHaNbsDg==
-To: bitbake-devel@lists.openembedded.org
-Cc: docs@lists.yoctoproject.org,
-	Patrick Vogelaar <patrick.vogelaar.dev@mailbox.org>
-Subject: [docs][PATCH] doc: enhance SRCREV_FORMAT description
-Date: Wed, 10 Sep 2025 16:54:00 +0200
-Message-Id: <20250910145400.232143-1-patrick.vogelaar.dev@mailbox.org>
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=SWtqRuYD;
+ spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
+	To:From:Date:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=hpfM2YLA8bH0hIaaWTO4OB/HtWNgmRKlZtjEA+SXhjQ=; b=SWtqRuYDqAFmSPHkYNbiyf8TKR
+	8/Iwq8hJBcTWbFMjgqhHqBUxl7Jwt0+XFgfq43JjUKgHFiDdn/FP8I+aRiG3fhovWA8fmSodq7bud
+	44oYjHIAuzVpJoi1uwEyLND47WfikWB8ps8lNiuaMOHazp00GtEjTRLFcmS4EqzpPSsuek7xhn73V
+	081FpCknQy3mSzQqzLeeyLe5tH4Rha6mFtFC4/28rVGNqnAiGUDIhyveEmQoAGYeD1T8ckfvjurfg
+	a4BWToO/U8pj4+39GZr1+I+vowmBy4IkAINNTrL3wCee/mFCTbsVjin6YEpiHSXEpvAfGbnuuvfJe
+	b2KtDDrg==;
+Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:59662 helo=asus)
+	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <rpjday@crashcourse.ca>)
+	id 1uwrqe-0000000G4sy-48Hc
+	for docs@lists.yoctoproject.org;
+	Thu, 11 Sep 2025 20:41:12 -0400
+Date: Thu, 11 Sep 2025 20:41:04 -0400 (EDT)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+To: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: what packages/python modules do i need to build docs?
+Message-ID: <8c6111e2-44ee-e1c8-2d36-e0958d7701c6@crashcourse.ca>
 MIME-Version: 1.0
-X-MBO-RS-ID: 6df1d29f548423db950
-X-MBO-RS-META: 9w6yxgbuhzu9qytq8zpd3d7gjcwdxsbi
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
+X-AntiAbuse: Original Domain - lists.yoctoproject.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - crashcourse.ca
+X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 10 Sep 2025 14:55:12 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7497
+ <docs@lists.yoctoproject.org>; Fri, 12 Sep 2025 00:41:21 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7498
 
-Adding documentation for having an empty first component for the
-SRCREV_FORMAT.
 
-Signed-off-by: Patrick Vogelaar <patrick.vogelaar.dev@mailbox.org>
----
- .../bitbake-user-manual-ref-variables.rst                   | 6 ++++++
- 1 file changed, 6 insertions(+)
+  (not as dumb a question as you might think.)
 
-diff --git a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rs=
-t b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
-index 810f88689..07e754096 100644
---- a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
-+++ b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
-@@ -1670,6 +1670,12 @@ overview of their function and contents.
-       ``AUTOINC`` placeholder is added and if needed. And, this placehol=
-der
-       is placed at the start of the returned string.
-=20
-+      The :term:`SRCREV_FORMAT` can also take the form "_component2".
-+      This assumes that there is a component in the :term:`SRC_URI` that=
- does not
-+      have a name assigned. While this is not considered good practice, =
-it can be
-+      usefull if a ``.bbappend`` file needs to extend the :term:`SRC_URI=
-` with
-+      an additional repository.
-+
-    :term:`STAMP`
-       Specifies the base path used to create recipe stamp files. The pat=
-h
-       to an actual stamp file is constructed by evaluating this string a=
-nd
+i'm moving from ubuntu to debian trixie 13, and i'm documenting how to
+build a dev system for some colleagues, and i want to make sure they
+(and i) can "make html" at a bare minimum, so i'm looking at my
+current ubuntu 25.04 setup to see what i installed to be able to build
+yocto docs, and i see that i have both some sphinx-related packages
+*and* ppi3 modules installed, and i'm wondering what is the actual
+minimum i need to build the docs.
+
+  what is the recommended S/W to install in debian 13 for this? i
+prefer to keep things minimal.
+
+rday
 
