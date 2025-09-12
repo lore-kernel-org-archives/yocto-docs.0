@@ -2,208 +2,123 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 38C3ACAC582
-	for <webhook@archiver.kernel.org>; Fri, 12 Sep 2025 11:28:05 +0000 (UTC)
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by mx.groups.io with SMTP id smtpd.web11.14428.1757676481256716350
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3DA96CA101F
+	for <webhook@archiver.kernel.org>; Fri, 12 Sep 2025 13:57:46 +0000 (UTC)
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+ by mx.groups.io with SMTP id smtpd.web10.17341.1757685457893421651
  for <docs@lists.yoctoproject.org>;
- Fri, 12 Sep 2025 04:28:02 -0700
+ Fri, 12 Sep 2025 06:57:38 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=raZhGFOt;
- spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=kHq4PpRm;
+ spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 6ED2D1A0DCD
-	for <docs@lists.yoctoproject.org>; Fri, 12 Sep 2025 11:27:59 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id C488DC8EC56
+	for <docs@lists.yoctoproject.org>; Fri, 12 Sep 2025 13:57:19 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 4560B60638;
-	Fri, 12 Sep 2025 11:27:59 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 54F70102F2A3E;
-	Fri, 12 Sep 2025 13:27:47 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id A5AD660638;
+	Fri, 12 Sep 2025 13:57:35 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 74A88102F2942;
+	Fri, 12 Sep 2025 15:57:33 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1757676478; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=oxCroEavSvYB4z/af5VQwpRdPuw6HURnQhmTSadOZMs=;
-	b=raZhGFOtNipW4n6Vf4xM1kQQt7fu/8yxNyZDsGMMK2MnPneARs0UWAm5qoLWEO7o4kO7Rb
-	6DSZlzXv7O++K9js0ovuuNVSis2a0ZSH3q+qC4nYiDRE/fvLAeyYUCePpaPyLko/Xykue7
-	AFPy4IKbiBoV/dRKSF+ySEAGli4q9dypsIBvSHclghLcmyJwboS38C284ll0r5xq0iiFGl
-	84k0q/b1znuwWCzwkSTOe/RgGyXv57ujRfhyab6WH9hC6lD0i/YtLGlHK/h0SPJRhryLBm
-	jaCDgVR17Wst4Ihb47GrjpwVeBiNEALcncJsoVlUI1oeYVjDFBLLrmNS9qgXwg==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 12 Sep 2025 13:27:45 +0200
-Message-Id: <DCQSB16YG4WC.12YXCXX57B55Q@bootlin.com>
-Subject: Re: [docs] [PATCH] migration-guides/migration-5.3.rst: add note on
- systemd pni-names change
-Cc: "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>, "Koen Kooi"
- <koen.kooi@oss.qualcomm.com>, "Ross Burton" <Ross.Burton@arm.com>
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: "Quentin Schulz" <quentin.schulz@cherry.de>,
- <docs@lists.yoctoproject.org>
-References: <20250909-systemd-pni-names-v1-1-efb2fef7aaf8@bootlin.com>
- <890a75e3-89f3-4d74-b0f2-415f739ea227@cherry.de>
- <DCP56XVBU6BM.34FBDVS5XWORH@bootlin.com>
- <bec3b912-1220-4478-a30e-4c4d828860b5@cherry.de>
- <DCP5POSAGUMF.23UE4FM0ZY1DN@bootlin.com>
- <f270625a-1bb3-4f42-b8ad-4ef13aced825@cherry.de>
-In-Reply-To: <f270625a-1bb3-4f42-b8ad-4ef13aced825@cherry.de>
+	t=1757685455; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=/UKbJpPFD+iCpHQigkbHudFC91xyjlQk2q3jUATpeHw=;
+	b=kHq4PpRm1qB2KQx6ijfnrQ4lixb8n+BN1lB0Z31a9D2Q5/EEVdWnBN+a4inT108NLx79m/
+	8K30R0TEwDmSoQEuiAhPjixeJeaeuqC/F8a59sQLAM69FHQA2jrSi7redgjus2xvQwO+K5
+	mrW6nCW+ozA9hq2s4AZEUhCY0XVCRUmnv2Msy90l1Js+tAhfOwC42m8Dyii9sxRqE5XzEy
+	JB21AgZxuCl+mz9+x6EW4c3Ii9uuQi9dGJLF3TDYlH5z5KPwZfVRTguNH/43ckJ5yYDAft
+	KsK3mAKmVB3WDAE2GTdIGODufef1EX+VtucOYMuxRQ+IdEdW70P1aEQt9+jGTg==
+From: Antonin Godard <antonin.godard@bootlin.com>
+Date: Fri, 12 Sep 2025 15:56:59 +0200
+Subject: [PATCH v2] migration-guides/migration-5.3.rst: add note on systemd
+ pni-names change
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250912-systemd-pni-names-v2-1-2615197df69f@bootlin.com>
+X-B4-Tracking: v=1; b=H4sIAKomxGgC/22NQQ6CMBBFr0K6dkxpAK0r72FYlDKVMdKSTiUSw
+ t0FjDuXL3n//VkwRkIWl2wWEUdiCn4FdciE7Yy/I1C7slBSlVLLAnjihH0LgyfwpkcGo7GyRVl
+ JZbVYd0NER++9eau/zK/mgTZtoc3oiFOI03465pv36+s//TGHHNA1yqE7GePO1yaE9CR/tKEX9
+ bIsHz5W/vjGAAAA
+X-Change-ID: 20250904-systemd-pni-names-a9e6c45602c9
+To: docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Quentin Schulz <quentin.schulz@cherry.de>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2340;
+ i=antonin.godard@bootlin.com; h=from:subject:message-id;
+ bh=IQ2LagiilxownVkVGjZrhwKUyIh49xmtLNtk6kbGC+I=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBoxCbNiII9FIVizHyO9z7OFTt1mHtGx9eC8CGM1
+ 66iNyNa9VSJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaMQmzQAKCRDRgEFAKaOo
+ Nt9GD/4rBTUf/KC8XVUNHc4OyOFQgeGrEv3rNmfUYHHWF9vM7CIAHLDX6ok0+C6xyzCF9bN4AUO
+ 2mCjZozyGEldLRRooYWnV7o6LQZVoc6DhCoBYNa2wpCsAFAvO1vPdYgcf6Tx4LnABu6CyzM1IpN
+ beVbeRDmEkaBsbye8MQxemuP3loxxEWrQvMjVfpOF4KmKfZPE2BKgQWNQr4eWkDNWPSy11voqiI
+ 56tTYvAWEjV3NiDNbGxo57IhhGpBvIQw7g0En/XpGt74TOt/txbUp8AsM/yhj0c7J0ALqLk8lTR
+ BEAy9JOP8w+qu893rjpmMTbsdgE0yugFfNOauwYhfs6mDmeX9jyQuvwRGu5ny/w5JBFOcPD7itb
+ 5qSeo+NBQrYXntTUQWCcoqN+82PkR+N780YGHCrb/6vbpzxYyfw29T/cKlmLvDtfXK7ODuqIAFp
+ hUTRyBPdefR4qfruBNTocF2I4HG3w6tP4/nDWe54Fwuk012ASFedzvd0rcbEm2c3P2dC9Dilanv
+ 3xJ4q2AE8eOW18XpgBG8HFqN0gYbCSZNelWVceMZ5WCOOqYZoshxOS9fEdD+ii13ZvWi7WlyDz8
+ bWVkKY0flCdYKlGRFQdMqcvWw6SGZMm2SFTjr3ZqoUHkeyf6A7D/fQ9dAXjzlYJGeKk6xHeiSc6
+ WZZgqlllD5VKCCQ==
+X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
+ fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 12 Sep 2025 11:28:05 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7500
+ <docs@lists.yoctoproject.org>; Fri, 12 Sep 2025 13:57:46 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7501
 
-On Wed Sep 10, 2025 at 4:08 PM CEST, Quentin Schulz wrote:
-> Hi Antonin,
->
-> On 9/10/25 3:32 PM, Antonin Godard via lists.yoctoproject.org wrote:
->> On Wed Sep 10, 2025 at 3:16 PM CEST, Quentin Schulz via lists.yoctoproje=
-ct.org wrote:
->>> Hi Antonin,
->>>
->>> On 9/10/25 3:08 PM, Antonin Godard wrote:
->>>> On Tue Sep 9, 2025 at 3:59 PM CEST, Quentin Schulz via lists.yoctoproj=
-ect.org wrote:
->>>>> Hi Antonin,
->>>>>
->>>>> On 9/9/25 3:29 PM, Antonin Godard via lists.yoctoproject.org wrote:
->>>>>> Add a migration note on the pni-names default policy change after co=
-mmit
->>>>>> <> in OE-Core.
->>>>>>
->>>>>
->>>>> General question, the systemd manpage specifies the policy as mac and
->>>>> not MAC, should we follow that as well?
->>>>>
->>>>>> Cc: Koen Kooi <koen.kooi@oss.qualcomm.com>
->>>>>> Cc: Ross Burton <Ross.Burton@arm.com>
->>>>>> Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
->>>>>> ---
->>>>>>     documentation/migration-guides/migration-5.3.rst | 25 ++++++++++=
-++++++++++++++
->>>>>>     1 file changed, 25 insertions(+)
->>>>>>
->>>>>> diff --git a/documentation/migration-guides/migration-5.3.rst b/docu=
-mentation/migration-guides/migration-5.3.rst
->>>>>> index 2d2f8d91a..8aa7b537f 100644
->>>>>> --- a/documentation/migration-guides/migration-5.3.rst
->>>>>> +++ b/documentation/migration-guides/migration-5.3.rst
->>>>>> @@ -118,6 +118,31 @@ class. Instead, one should create a new recipe =
-to build this FIT image, as
->>>>>>     described in the :ref:`Removed Classes <migration-guides/migrati=
-on-5.3:Removed
->>>>>>     Classes>` section of the Migration notes for |yocto-ver| (|yocto=
--codename|).
->>>>>>    =20
->>>>>> +systemd Predictable Interface Names no longer MAC policy by default
->>>>>> +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->>>>>> +
->>>>>> +The :oe_git:`systemd recipe </openembedded-core/tree/meta/recipes-c=
-ore/systemd>`
->>>>>> +used to forcibly set the MAC policy by default when the ``pni-names=
-``
->>>>>> +:term:`distro feature <DISTRO_FEATURES>` was enabled. See
->>>>>
->>>>> s/was/is/ ?
->>>>>
->>>>>> +https://www.freedesktop.org/software/systemd/man/latest/systemd.lin=
-k.html#AlternativeNamesPolicy=3D.
->>>>>> +
->>>>>> +This is no longer the case. Instead, when the ``pni-names`` :term:`=
-distro
->>>>>
->>>>> SHould we justify here why it is no longer the case?
->>>>>
->>>>>> +feature <DISTRO_FEATURES>` is enabled, the default policy from syst=
-emd is
->>>>>> +selected (from https://github.com/systemd/systemd/blob/main/network=
-/99-default.link).
->>>>>> +
->>>>>> +To set the MAC policy to systemd, add the following to a systemd ``=
-.bbappend``
->>>>>
->>>>> s/to systemd/in systemd/ ?
->>>>>
->>>>>> +file in your custom layer::
->>>>>> +
->>>>>> +   do_install:append() {
->>>>>> +          if ${@bb.utils.contains('PACKAGECONFIG', 'pni-names', 'tr=
-ue', 'false', d)}; then
->>>>>> +                  if ! grep -q '^NamePolicy=3D.*mac' ${D}${nonarch_=
-libdir}/systemd/network/99-default.link; then
->>>>>> +                          sed -i '/^NamePolicy=3D/s/$/ mac/' ${D}${=
-nonarch_libdir}/systemd/network/99-default.link
->>>>>> +                  fi
->>>>>> +                  if ! grep -q 'AlternativeNamesPolicy=3D.*mac' ${D=
-}${nonarch_libdir}/systemd/network/99-default.link; then
->>>>>> +                          sed -i '/AlternativeNamesPolicy=3D/s/$/ m=
-ac/' ${D}${nonarch_libdir}/systemd/network/99-default.link
->>>>>> +                  fi
->>>>>
->>>>> My brain's sh parser says this is invalid because we're missing a
->>>>> closing fi for the outermost if block.
->>>>
->>>> Yes, my bad I must have removed it by mistake
->>>>
->>>>> I'm also a bit worried about this code snippet as it'll just not be
->>>>> tested or maintained once this gets merged.
->>>>
->>>> This snippet belongs to a release note for 5.3 so it already matches t=
-he Yocto
->>>> version? I will include the version of systemd version here at the tim=
-e of
->>>> writing to give some more context.
->>>>
->>>
->>> Does this mean that we already know it's not going to be compatible wit=
-h
->>> Wrynose?
->>>
->>> People are told to follow each migration manual between their current
->>> and target Yocto releases, so this will essentially be understood as
->>> "apply for any release starting from 5.3".
->>>
->>> We already saw how well maintained old example recipes were since we
->>> don't test them, I'm not sure it makes sense to have code snippets we'l=
-l
->>> likely never test as well?
->>=20
->> A simpler approach could be to say:
->>=20
->> """
->> To set the mac policy to systemd, modify the ``99-default-link.link`` fi=
-le
->> provided by systemd in a ``.bbappend`` file to set the ``NamePolicy=3D``=
- and
->> ``AlternativeNamesPolicy=3D`` settings to "mac".
->> """
->>=20
->> This should not require maintenance. Do you agree?
->>=20
-[...]
-> We could simply say that when pni-names is unset, NamePolicy and=20
-> AlternativeNamesPolicy are unset. Otherwise, the systemd upstream=20
-> default is used.
->
-> Maybe add a link to the manpage as well, via :manpage:`systemd.link(5)`=
-=20
-> (not tested)?
->
-> No better suggestion though :/
+Add a migration note on the pni-names default policy change after commit
+9b34a810496f ("systemd: stop enabling non-standard "mac" policy when
+using the 'pni-names' DISTRO_FEATURE") in OE-Core.
 
-Yes, I think we both want to keep things simple. I'll send a v2 with a link=
- to
-the manpage and just mention the NamePolicy and AlternativeNamesPolicy opti=
-ons,
-as you phrased it.
+Cc: Koen Kooi <koen.kooi@oss.qualcomm.com>
+Cc: Ross Burton <Ross.Burton@arm.com>
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+---
+Changes in v2:
+- Suggested by Quentin Schulz: simplify note on how to revert to the mac
+  policy, and mention the systemd version at the time of writing the
+  note.
+- Link to v1: https://lore.kernel.org/r/20250909-systemd-pni-names-v1-1-efb2fef7aaf8@bootlin.com
+---
+ documentation/migration-guides/migration-5.3.rst | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-Thanks!
-Antonin
+diff --git a/documentation/migration-guides/migration-5.3.rst b/documentation/migration-guides/migration-5.3.rst
+index 2d2f8d91a..cca93cbb3 100644
+--- a/documentation/migration-guides/migration-5.3.rst
++++ b/documentation/migration-guides/migration-5.3.rst
+@@ -118,6 +118,22 @@ class. Instead, one should create a new recipe to build this FIT image, as
+ described in the :ref:`Removed Classes <migration-guides/migration-5.3:Removed
+ Classes>` section of the Migration notes for |yocto-ver| (|yocto-codename|).
+ 
++systemd Predictable Interface Names no longer MAC policy by default
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++The :oe_git:`systemd recipe </openembedded-core/tree/meta/recipes-core/systemd>`
++used to forcibly set the "mac" policy by default when the ``pni-names``
++:term:`distro feature <DISTRO_FEATURES>` is enabled.
++
++This is no longer the case as this was not following upstream changes. Now when
++the ``pni-names`` :term:`distro feature <DISTRO_FEATURES>` is enabled, the
++default policy from systemd is selected (from
++https://github.com/systemd/systemd/blob/v257.8/network/99-default.link).
++
++To set back the "mac" policy in systemd (version 257.8 at the time of writing
++this note), you should set the ``NamePolicy`` and ``AlternativeNamesPolicy`` as
++detailed in :manpage:`systemd.link(5)`.
++
+ Supported kernel versions
+ ~~~~~~~~~~~~~~~~~~~~~~~~~
+ 
 
---=20
-Antonin Godard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+---
+base-commit: ee0b46bd074dd34c3d6b401e65d2c519c2c3d47b
+change-id: 20250904-systemd-pni-names-a9e6c45602c9
+
+Best regards,
+--  
+Antonin Godard <antonin.godard@bootlin.com>
 
 
