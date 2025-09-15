@@ -2,109 +2,108 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AC6A5CAC597
-	for <webhook@archiver.kernel.org>; Mon, 15 Sep 2025 12:27:01 +0000 (UTC)
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by mx.groups.io with SMTP id smtpd.web11.31851.1757939220539240058
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B2C46CAC597
+	for <webhook@archiver.kernel.org>; Mon, 15 Sep 2025 12:28:41 +0000 (UTC)
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+ by mx.groups.io with SMTP id smtpd.web10.31832.1757939313924765891
  for <docs@lists.yoctoproject.org>;
- Mon, 15 Sep 2025 05:27:01 -0700
+ Mon, 15 Sep 2025 05:28:34 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=i/H37T4x;
- spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=btmGId2Q;
+ spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id C34DFC00782
-	for <docs@lists.yoctoproject.org>; Mon, 15 Sep 2025 12:26:42 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 629D34E40B62;
+	Mon, 15 Sep 2025 12:28:32 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 1559B6063F
-	for <docs@lists.yoctoproject.org>; Mon, 15 Sep 2025 12:26:59 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2CB39102F2ABE;
-	Mon, 15 Sep 2025 14:26:58 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 34F036063F;
+	Mon, 15 Sep 2025 12:28:32 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6581F102F2AB8;
+	Mon, 15 Sep 2025 14:28:30 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1757939218; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=RAOOyqsmnV08yy0lvRJx1K86bBPmfFJoauyB4THv3TM=;
-	b=i/H37T4x5e2OROkLl10gzZBY5nqjW5PLp+in5h167dMQvE4w2PBFRxfe6VHVrxmBEgVoVw
-	oYbkv2O/uKtq/2FMsE62WENORVTOwdjWEMrm+V7DcJ9ufFTEH4JqigN17mIZA17YqFDEeV
-	nHZGB8iN0fCAHp09kaKJXfg7+Y9KkNVBMTI0krjhjnBMe1G8VfEPrFxN69ABHndLiCl/T0
-	zz9aXZvXRg/PY+ATsK1v2TZ92Grb6Rg/lvNY38uek0XOmw+jgyPv7Tpgpj8BelXUzyFfi7
-	JC9eFmyFbI5OWKEtOH3e4P8Xr+32M0bTwFRX501J1RmBIvWJ7HytkuVocmqxFw==
+	t=1757939311; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=ZpHFkb3ZjTsjLelivfULXTPVsAMUEinAK8sXN/fBcWE=;
+	b=btmGId2QgrNdcVFjgddeTvJPxanC618/GO4Pf/yD4E2L6nbtU7UWEEqkH5XDyHliP2b1jr
+	hIXi+f4qTkL6mkk/hPZD2VJ6KPwM6N+jdLeJQGfMSDl7doXfHJhUIbEjscYgkI+mQ9l1mz
+	h7L+tYpxDb6Io3SmwEDEnWO6xdaRmoom76p9NxFNR7gqgw+ptZFsY6M2hKeeMXZ2rxL3kQ
+	IqmMaaIlKN/xuYUi30IsX+X0JVFeBEI5/JwrVTwf7dpTm6zdaLA931rUbxi5PvUXcNt80h
+	plnKaPED/nJ15qgKqhI6mQPgDKI5cL0UGzf8AjohF3YQqOuJJW1pI3wvQRCs0g==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Mon, 15 Sep 2025 14:26:50 +0200
-Subject: [PATCH] ref-manual/structure.rst: extend PERSISTENT_DIR
- description
+Date: Mon, 15 Sep 2025 14:28:03 +0200
+Subject: [PATCH] bitbake-user-manual/ref-variables: extend PERSISTENT_DIR
+ doc
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250915-improve-persistent-dir-v1-1-ba42b490453e@bootlin.com>
-X-B4-Tracking: v=1; b=H4sIAAkGyGgC/yXMQQrCMBBG4auUWTswLQrqVcRFkv7qCKZhJi1C6
- d2NuvwW763kMIXTuVvJsKjrlBv6XUfpEfIdrGMzDTIc5NTvWV/FpgVcYK5ekSuPaowjQpIQIVG
- oxcVw0/dvfLn+7XN8ItXvjbbtA0TsoGp6AAAA
-X-Change-ID: 20250914-improve-persistent-dir-e8eac0abe0b0
-To: docs@lists.yoctoproject.org
+Message-Id: <20250915-improve-persistent-dir-v1-1-c0f64b6c5b74@bootlin.com>
+X-B4-Tracking: v=1; b=H4sIAFIGyGgC/yXMQQ6CMBBG4auQWTsJJSDoVYwLpH91TCzNTCUmh
+ LtTdfkt3lvJoAKjc7WSYhGTORa4Q0XTY4x3sPhiauqmq0+uZXklnRdwgppYRszsRXnwfR+Ofmz
+ dEKjESRHk8xtfrn/b+/bElL832rYdm8l2EnoAAAA=
+X-Change-ID: 20250914-improve-persistent-dir-8d77f6da418f
+To: bitbake-devel@lists.openembedded.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Antonin Godard <antonin.godard@bootlin.com>
+ docs@lists.yoctoproject.org, Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1626;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1775;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=x5iw3D/Zm9H22m0BpyISZowBSFSDxK7CRdO/e0h7UZ8=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBoyAYRcvZXxbm0leNh4jJnyIar444ERuoz7kvbq
- C5j5O0bCtKJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaMgGEQAKCRDRgEFAKaOo
- NjObD/40PiP050y7OqOp4lAxGiBXNhuFOanwaey/mjZJ2ZBd8Fu/fduPhatEsdVk7xUqtn0w/yR
- rQewF4FJwuW7AJ9caskEKaxRDLY985QMFyaGsGLmFXF/Xjd5ogxyaiKDq3f3X+Z3m9S6Ui14/rH
- adQqCOWq4ngtuuAhxWEu/y9c/THY2gL8cKbnhbq6BTpowY8TxvRuHuX8XJNr+Iu4eYEHn6bB2DJ
- 2dinFlUwQYgkgQNN+VRX+1HEd2bccaU898fCSQH14DCuU/Tl6ujeA7ctpAwN1Z63lasF7J45Bec
- 3nlmufnd+GjrPdrtjZcnRcMjsDxt3SY71/GxhI56aJWPhY7gdrfNzr5XRBEyNeBp7L96uwbgS5q
- XH1goW44ycY+M2zhsPcZb2sWmXPvsPrFGZ3bs9g8G0qhjgvVuBgVeV2py0k7o/p4/TjIA+TQyLD
- cFM1jdHogjIrE0NVs96y+dE9AzNhIPUpRUnYC6TyZy9KpK8Cwf2H+zuPPTmx29nC99afYBe0BWp
- +UEZWq+ECr6koCegGWqGesJkAalCVOq2KY2dFUzh0DTlNRqNYowyxy8RAtNEwtxTk2zLj0Y+3Dw
- rMFys1pXQJ1EzujoVSL2gZdZSjXAtgbFOyPW91JdasRG6rt6DwFSD0n4kQKVKN80pi87dsqfjqB
- zZRTjvSB1/n7+xg==
+ bh=mzaxt+NfKuEpPlAHPN1yypwu9OtTj80mpfl2XIkY+Bs=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBoyAZuI4cDawPwLRk5eaDWRNfrx5rkYm3Q31zsE
+ UW1g4UDS0uJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaMgGbgAKCRDRgEFAKaOo
+ NkkoD/46o6DTlj7ME3k05C51n5vmbMvLygdfX3F5zd400pIli/63foeG6GA4UsjB4C23CxW+yGu
+ 4PjC9QoUcWUuqDytnFYBes/oRFTg7RiYauaQmKCiyIcR0dFMftKOTvY//vYRC0Sji+rrRCirnEg
+ 1NSa4LX9JV43RYlzRLxPDPVU7ZemNEvIZ2l0o+dBxWAsdbuqK1xCjT/36wRBCbiVtRAFvK2ZVie
+ lXIXkfNGbZhF5/i13gRSYPdIQvqSv0q7KIYyzA60x4YHNeaPMXMy4buSocxb0GYpjmkfmyNElJ8
+ jByq9Ay31EC469D48rUAv5fKZ/yB7L0WZHbC5RiCVg516f44eEsaMFjMZMP4lci2mjKcHG+iSFw
+ IobV3AeyOu6FdWe6hvLJWQJ5XT0aAxtBj9/YzNksn1SO1LH+7QTeE2dHaYyHaWZl6mBNNUu9L5x
+ PpbpznWWQ+T/DaDkeMEmMpfAy2ZYpQarfcTHhdpysRSIgSJVHVDwTHeesG6Qa/pbZ/PePGrW72T
+ ugyEm/q4pQFA4YFyTWLpvh3RuIXZw4s251IaYxzcKq1rjVsJpNdF8/J4dU6qF2tCsKiS/29yku4
+ po33KckZnn0ghEnbggA//CVg9fZVKu5WpaFhMQdnLI2M/Ug+oYLj1Izf06WGvY5cmKEOxfIjvj9
+ ax3yypB30sis60g==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 15 Sep 2025 12:27:01 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7515
+ <docs@lists.yoctoproject.org>; Mon, 15 Sep 2025 12:28:41 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7516
 
-Extend the description of PERSISTENT_DIR to mention that it should not
-be shared between builds. Add a note on sharing the hash equivalence
-database by setting up a server and not sharing the file in this
-directory.
+Extend the current documentation of PERSISTENT_DIR:
+
+- Mention that it also contains the hash equivalence database when
+  BB_HASHSERVE = auto.
+- Mention that it should not be shared between builds.
 
 [YOCTO #15727]
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/ref-manual/structure.rst | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/documentation/ref-manual/structure.rst b/documentation/ref-manual/structure.rst
-index c9c44bc63..660cc9be1 100644
---- a/documentation/ref-manual/structure.rst
-+++ b/documentation/ref-manual/structure.rst
-@@ -253,6 +253,17 @@ It also contains ``sanity_info``, a text file keeping track of important
- build information such as the values of :term:`TMPDIR`, :term:`SSTATE_DIR`,
- as well as the name and version of the host distribution.
+diff --git a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
+index 810f886897..3b8fab52e8 100644
+--- a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
++++ b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
+@@ -1313,8 +1313,13 @@ overview of their function and contents.
+    :term:`PERSISTENT_DIR`
+       Specifies the directory BitBake uses to store data that should be
+       preserved between builds. In particular, the data stored is the data
+-      that uses BitBake's persistent data API and the data used by the PR
+-      Server and PR Service.
++      that uses BitBake's persistent data API, the data used by the PR
++      Server and PR Service, and the default location of the Hash Equivalence
++      database (when :term:`BB_HASHSERVE` is set to ``auto``).
++
++      This directory should not be shared between different builds. If you need
++      to share the Hash Equivalence database, you should setup a Hash
++      Equivalence server instead.
  
-+This directory should not be shared between builds.
-+
-+.. note::
-+
-+   The default location of the :ref:`overview-manual/concepts:Hash Equivalence`
-+   database is this directory (when :term:`BB_HASHSERVE` is set to ``auto``). If
-+   you need to share the :ref:`overview-manual/concepts:Hash Equivalence`
-+   database, don't share this file and instead refer to the
-+   :doc:`/dev-manual/hashequivserver` document of the Yocto Project Development
-+   Tasks Manual to setup Hash Equivalence server.
-+
- .. _structure-build-conf-local.conf:
- 
- ``build/conf/local.conf``
+    :term:`PF`
+       Specifies the recipe or package name and includes all version and
 
 ---
-base-commit: dbc6137cd13f982a7fd4d1b2df79dccb177db0fc
-change-id: 20250914-improve-persistent-dir-e8eac0abe0b0
+base-commit: 546b347b4d3d82c01ecc99f45296f66e44638adc
+change-id: 20250914-improve-persistent-dir-8d77f6da418f
 
 Best regards,
 --  
