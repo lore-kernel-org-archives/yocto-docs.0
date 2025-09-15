@@ -2,111 +2,109 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 73E3FCAC59A
-	for <webhook@archiver.kernel.org>; Mon, 15 Sep 2025 12:21:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AC6A5CAC597
+	for <webhook@archiver.kernel.org>; Mon, 15 Sep 2025 12:27:01 +0000 (UTC)
 Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by mx.groups.io with SMTP id smtpd.web11.31666.1757938904326549466
+ by mx.groups.io with SMTP id smtpd.web11.31851.1757939220539240058
  for <docs@lists.yoctoproject.org>;
- Mon, 15 Sep 2025 05:21:44 -0700
+ Mon, 15 Sep 2025 05:27:01 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=hllxomVY;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=i/H37T4x;
  spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 76BBBC8F1D2
-	for <docs@lists.yoctoproject.org>; Mon, 15 Sep 2025 12:21:26 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id C34DFC00782
+	for <docs@lists.yoctoproject.org>; Mon, 15 Sep 2025 12:26:42 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id B4D496063F
-	for <docs@lists.yoctoproject.org>; Mon, 15 Sep 2025 12:21:42 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 03FB2102F2AC9;
-	Mon, 15 Sep 2025 14:21:41 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 1559B6063F
+	for <docs@lists.yoctoproject.org>; Mon, 15 Sep 2025 12:26:59 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2CB39102F2ABE;
+	Mon, 15 Sep 2025 14:26:58 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1757938902; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=/jUJk0NyVBvcCvw0JaIixXjPzQ3bwIT6zoNq+0phrxE=;
-	b=hllxomVYiWIKwGyV3NTOFE+y9OZlyW+OL8MemmfF09Mw2ODyByfEa8CFLOzVRLyLM3Z8AJ
-	TIwfg9HvViV6iHmbUVQnyyR4Mf6u1tZ1ssbOywpontR8o+wAwENymhNZ2vI8yKiBftSJ2r
-	UM0blltZffhqWcxjQde4xbBJx59w81/nxNXye1l2u0DY4pWMAEyw4Lmrdmo8puLRJuZJxu
-	6bGFKqy69lmM/UrPAFnaBGZA19fqshWGfd//UbEdFHONpI/kUwWURyb91DjlW0hCPZYgq4
-	ZFTxEfFjq4DgfXib1yO6EJyAyR8hwhr7+fpzR//1Mha4C41hq9hTza2fRZrYMA==
+	t=1757939218; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=RAOOyqsmnV08yy0lvRJx1K86bBPmfFJoauyB4THv3TM=;
+	b=i/H37T4x5e2OROkLl10gzZBY5nqjW5PLp+in5h167dMQvE4w2PBFRxfe6VHVrxmBEgVoVw
+	oYbkv2O/uKtq/2FMsE62WENORVTOwdjWEMrm+V7DcJ9ufFTEH4JqigN17mIZA17YqFDEeV
+	nHZGB8iN0fCAHp09kaKJXfg7+Y9KkNVBMTI0krjhjnBMe1G8VfEPrFxN69ABHndLiCl/T0
+	zz9aXZvXRg/PY+ATsK1v2TZ92Grb6Rg/lvNY38uek0XOmw+jgyPv7Tpgpj8BelXUzyFfi7
+	JC9eFmyFbI5OWKEtOH3e4P8Xr+32M0bTwFRX501J1RmBIvWJ7HytkuVocmqxFw==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Mon, 15 Sep 2025 14:19:52 +0200
-Subject: [PATCH] set_versions.py: add bitbake-active-releases special
- argument
+Date: Mon, 15 Sep 2025 14:26:50 +0200
+Subject: [PATCH] ref-manual/structure.rst: extend PERSISTENT_DIR
+ description
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250915-bitbake-active-releases-v1-1-a2fdd3979965@bootlin.com>
-X-B4-Tracking: v=1; b=H4sIAGcEyGgC/x3MQQqDMBBG4avIrDtgUk3Bq0gXSfyjg0UlI1IQ7
- 25w+S3eO0mRBUpddVLGISrrUmBeFcXJLyNYhmKytW2MtR8Osgc/g33c5QBn/OAVysm0oQ0uvp1
- LVOotI8n/Offf67oBlf6qPmkAAAA=
-X-Change-ID: 20241227-bitbake-active-releases-f15b5b6c366f
+Message-Id: <20250915-improve-persistent-dir-v1-1-ba42b490453e@bootlin.com>
+X-B4-Tracking: v=1; b=H4sIAAkGyGgC/yXMQQrCMBBG4auUWTswLQrqVcRFkv7qCKZhJi1C6
+ d2NuvwW763kMIXTuVvJsKjrlBv6XUfpEfIdrGMzDTIc5NTvWV/FpgVcYK5ekSuPaowjQpIQIVG
+ oxcVw0/dvfLn+7XN8ItXvjbbtA0TsoGp6AAAA
+X-Change-ID: 20250914-improve-persistent-dir-e8eac0abe0b0
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1647;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1626;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=GyvGHp8xTASp47otgcKVR442D39pMBtfD0cdxE9N4RY=;
- b=kA0DAAoB0YBBQCmjqDYByyZiAGjIBNWgNnqp6/8H76/HeRos5WhRbIxViR4rMf7sw3X4BLNMv
- okCMwQAAQoAHRYhBIZIclGI3UAbuaDT/9GAQUApo6g2BQJoyATVAAoJENGAQUApo6g2ozUQAKmL
- c2pWnjcB+PaimZn0orqBiKQzOxJmNBvCogY5qBsq7tD3Sse3uNaOQzWPM9U6QrIgoBQymgO4/QW
- L+XYT0to9O7PpbdQuoQyz/15tLYyfR6neQWAuWpNdBsvOgXyERleGswyppLsZOVP3/NvdCLt/Ld
- /RSYRYhZTfeUnRd5KqfgTbsybyjkKBLT9zcWBGNxNeO//RZdlFq76K7MmC5XJdZluWqZvqh9NfI
- 4YlP2LePkVWygu+c30CqghsLu1zn13jbmyFEljWrGooG1X2UAT1OcgW6SN8tfZVVrzHNtGVbiFn
- hlU8yEVO2KSAgv95eDDfxQQa/0nI2vLX8rKwgeuBFgOc7D+C2i5DL8Ah1cnsJL6YxGIr3yPL+OC
- 1YsxjbtO6PcwdH4B3MwMAgMwBi0cFa6PZ6W+3/JKydOPjwbEIM+9CkvstaC+nuWpysYnni1O1qb
- wm65/yo+xdcXojHvnxrc2uTuTconWHaMbAkg7VUTsOmSAOZ+VY1PRtrzpYNOORM8zRtk4eZAAE6
- DqIqMr8edKBfbFvCwgL4kAT/EGuvgPnU86T5fMGpP9L+YDmocrxtZSN9t1cw5MP8z53hcD3wrKE
- LqykyrXsyPKkcyuymPgTIQQcR+nF9n3Jh/yoMu46GbneClljZV58O/ai5m+4U3VEJ66G4dlg66C
- n4yb4
+ bh=x5iw3D/Zm9H22m0BpyISZowBSFSDxK7CRdO/e0h7UZ8=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBoyAYRcvZXxbm0leNh4jJnyIar444ERuoz7kvbq
+ C5j5O0bCtKJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaMgGEQAKCRDRgEFAKaOo
+ NjObD/40PiP050y7OqOp4lAxGiBXNhuFOanwaey/mjZJ2ZBd8Fu/fduPhatEsdVk7xUqtn0w/yR
+ rQewF4FJwuW7AJ9caskEKaxRDLY985QMFyaGsGLmFXF/Xjd5ogxyaiKDq3f3X+Z3m9S6Ui14/rH
+ adQqCOWq4ngtuuAhxWEu/y9c/THY2gL8cKbnhbq6BTpowY8TxvRuHuX8XJNr+Iu4eYEHn6bB2DJ
+ 2dinFlUwQYgkgQNN+VRX+1HEd2bccaU898fCSQH14DCuU/Tl6ujeA7ctpAwN1Z63lasF7J45Bec
+ 3nlmufnd+GjrPdrtjZcnRcMjsDxt3SY71/GxhI56aJWPhY7gdrfNzr5XRBEyNeBp7L96uwbgS5q
+ XH1goW44ycY+M2zhsPcZb2sWmXPvsPrFGZ3bs9g8G0qhjgvVuBgVeV2py0k7o/p4/TjIA+TQyLD
+ cFM1jdHogjIrE0NVs96y+dE9AzNhIPUpRUnYC6TyZy9KpK8Cwf2H+zuPPTmx29nC99afYBe0BWp
+ +UEZWq+ECr6koCegGWqGesJkAalCVOq2KY2dFUzh0DTlNRqNYowyxy8RAtNEwtxTk2zLj0Y+3Dw
+ rMFys1pXQJ1EzujoVSL2gZdZSjXAtgbFOyPW91JdasRG6rt6DwFSD0n4kQKVKN80pi87dsqfjqB
+ zZRTjvSB1/n7+xg==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 15 Sep 2025 12:21:51 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7514
+ <docs@lists.yoctoproject.org>; Mon, 15 Sep 2025 12:27:01 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7515
 
-We will use this in the autobuilder when generating the docs so we can
-propagate the current active releases to bitbake, and have the correct
-entries in bitbake's switchers.js.
+Extend the description of PERSISTENT_DIR to mention that it should not
+be shared between builds. Add a note on sharing the hash equivalence
+database by setting up a server and not sharing the file in this
+directory.
+
+[YOCTO #15727]
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
-IMPORTANT: must be merged with following series/patches:
-- "doc: fix the switchers menu" on the bitbake-devel list
-- "scripts/run-docs-build: improvements for the bitbake menu" on the
-  yocto-autobuilder-helper/yocto-patches list
----
- documentation/set_versions.py | 11 +++++++++++
+ documentation/ref-manual/structure.rst | 11 +++++++++++
  1 file changed, 11 insertions(+)
 
-diff --git a/documentation/set_versions.py b/documentation/set_versions.py
-index b8dd4b1b9..36105fbc5 100755
---- a/documentation/set_versions.py
-+++ b/documentation/set_versions.py
-@@ -85,6 +85,17 @@ bitbake_mapping = {
-     "dunfell" : "1.46",
- }
+diff --git a/documentation/ref-manual/structure.rst b/documentation/ref-manual/structure.rst
+index c9c44bc63..660cc9be1 100644
+--- a/documentation/ref-manual/structure.rst
++++ b/documentation/ref-manual/structure.rst
+@@ -253,6 +253,17 @@ It also contains ``sanity_info``, a text file keeping track of important
+ build information such as the values of :term:`TMPDIR`, :term:`SSTATE_DIR`,
+ as well as the name and version of the host distribution.
  
-+# Special argument "bitbake-active-releases" prints the active bitbake releases
-+# we define here, and exits. This is used in the autobuilder to pass this information to
-+# bitbake's set_versions.py, which in turn sets bitbake's switchers.js
-+# appropriately.
-+if len(sys.argv) > 1:
-+    if sys.argv[1] == "bitbake-active-releases":
-+        for release in activereleases:
-+            if release in bitbake_mapping:
-+                print("%s,%s" % (bitbake_mapping[release], release))
-+        exit(0)
++This directory should not be shared between builds.
 +
- # 3.4 onwards doesn't have poky version
- # Early 3.4 release docs do reference it though
- poky_mapping = {
++.. note::
++
++   The default location of the :ref:`overview-manual/concepts:Hash Equivalence`
++   database is this directory (when :term:`BB_HASHSERVE` is set to ``auto``). If
++   you need to share the :ref:`overview-manual/concepts:Hash Equivalence`
++   database, don't share this file and instead refer to the
++   :doc:`/dev-manual/hashequivserver` document of the Yocto Project Development
++   Tasks Manual to setup Hash Equivalence server.
++
+ .. _structure-build-conf-local.conf:
+ 
+ ``build/conf/local.conf``
 
 ---
 base-commit: dbc6137cd13f982a7fd4d1b2df79dccb177db0fc
-change-id: 20241227-bitbake-active-releases-f15b5b6c366f
+change-id: 20250914-improve-persistent-dir-e8eac0abe0b0
 
 Best regards,
 --  
