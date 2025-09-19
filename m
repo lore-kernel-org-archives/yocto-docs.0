@@ -2,62 +2,61 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 27445CAC592
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 296A7CAC59A
 	for <webhook@archiver.kernel.org>; Fri, 19 Sep 2025 12:19:07 +0000 (UTC)
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by mx.groups.io with SMTP id smtpd.web11.14824.1758284342875828170
+ by mx.groups.io with SMTP id smtpd.web10.14922.1758284343215299779
  for <docs@lists.yoctoproject.org>;
  Fri, 19 Sep 2025 05:19:03 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=nOO1zykV;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=LSOmXWY3;
  spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 743F34E40D65
+	by smtpout-03.galae.net (Postfix) with ESMTPS id DE4F84E40D67
 	for <docs@lists.yoctoproject.org>; Fri, 19 Sep 2025 12:19:01 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 44F2D606A8;
+	by smtpout-01.galae.net (Postfix) with ESMTPS id B6CDC606A8;
 	Fri, 19 Sep 2025 12:19:01 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B934E102F1C98;
-	Fri, 19 Sep 2025 14:18:57 +0200 (CEST)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 078C6102F1D63;
+	Fri, 19 Sep 2025 14:19:00 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1758284340; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=MJ34m4veOKQRhmu+Mr80mEa1cifApWhCAcBlusgfW0c=;
-	b=nOO1zykVi24txb8A52UPfsjeIlyT8eFddfSOEazk44AFL5zDx4QkRJ2W1+dXrkWVDmOLYy
-	ehWtZ506hpSAvgvvPvPq9zZV3V5r9WXj9rS3CyWRdXipcMuOKZ14kVKUmQsGqdLa+/56Jy
-	0BCbL41tZVBajJdipXKlgGPyK2xfMJk+oaPBuv6XRU7NYfEnUU1KffPJzavlI3Q3B9u5BM
-	EFO47bmCxWWoQKKSIwR4okxvMwgymrlkyHoTrWpNfrzVa7pnGsP2A5i1GWTXFxfeUzDCS1
-	rKk0Wddj/eguetyfX8k34neJoSCwrhAsKMKeQ3ztfMS23aI+Hfra7w+77xpJHg==
+	t=1758284341; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=/RYtgCy+j+S/DFpJ0dUP0DN9xBJcVc22RsU+uPo6kMQ=;
+	b=LSOmXWY35Qy5svIuxSJQa5G4cGzvCBtPuMpWj87UqcISG1GD6mzE8PKkc7t7mcVWAcYcAl
+	6pRo9jAwwq1qVHdhxdEORumbBr7St8yGjNFuSl8IgKxY6ydN2ftbJIm6aiIJtlbqzkhiws
+	zTdELrsYmYthJitGCVGc+CSR0J4RwONxF2rnOShfYXeq869yKsDrbpTV8XPU27a96LB1vb
+	wQ6O2GSGOlPdyh4jxjyFdiVtAgV2MsBl3nbsfpNIRP1W6VbXSBuJO6b21ypUpqXg96Jr3z
+	xmaNQk1q3xyEq02schmwinGxWjmwxMEvdvPM+ANuI9Ea9t8MszI1veraGSjq6Q==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Subject: [PATCH v2 0/2] Update yocto-check-layer documentation
-Date: Fri, 19 Sep 2025 14:18:42 +0200
-Message-Id: <20250919-update-compatible-doc-v2-0-c428da260487@bootlin.com>
+Date: Fri, 19 Sep 2025 14:18:43 +0200
+Subject: [PATCH v2 1/2] dev-manual/layers.rst: yocto-check-layer: mention
+ --machines and --dependency
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIACJKzWgC/4WNTQ6CMBBGr2Jm7ZiWghFX3sOw6M8gY5CSthAN4
- e4WPIDLl7zvfQtECkwRrocFAs0c2Q8ZiuMBbKeHByG7zFCIohK1rHEanU6E1r9Gndj0hM5bPFf
- SkTH64loNeTsGavm9d+/Nj+NknmTTFtuMjmPy4bMfz3Lz/n3MEgW2SqtS1bKshLoZ71PPwymL0
- Kzr+gWldIvwzgAAAA==
-X-Change-ID: 20250919-update-compatible-doc-651debba8dfa
+Message-Id: <20250919-update-compatible-doc-v2-1-c428da260487@bootlin.com>
+References: <20250919-update-compatible-doc-v2-0-c428da260487@bootlin.com>
+In-Reply-To: <20250919-update-compatible-doc-v2-0-c428da260487@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Quentin Schulz <quentin.schulz@cherry.de>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=804;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1558;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=LynfI6C1YR1uTtS/TCEAFWqzvlekr+RYVg3v5x+TzdM=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBozUoxTxY/7A9N2T92lujnbP42A7wKGTkUF16Pk
- 3LJfUewMZ2JAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaM1KMQAKCRDRgEFAKaOo
- NjF+D/9WQjYo3aDZKtxwU0F481X+pcXsP8342aUUsxVQorFFTtpWL4ionE8VvfB1mTvLS26bUa+
- ArRtEuzI0bzRZ53sJF/bc29PbF7prTWqqxORat8tsZZHoogvZ77K7LDg9pYIEujVK7sPayumkl8
- cHWpeV/mxXSetMKTpanFh5F3z+BmK2+lnunKknLYB6ro3G3wMfqHqcw1eL8H4jbwn7CgBFf0tNR
- gonGtdpsHr59qudx+7L5K65G29tJ9j/JryQayKJBFyJMA5A1G/64u8LTL3mE4o0dhj9nGu9wsA+
- j4lVUrudBJRa0CNDc4/oimsoBZHiACFVJK8wT9jGpxj17fSB/wFRdGUklHgOno1ea2j9yq2JHoo
- oRPif+g22jVP64KtuI6IVn3YHGB62pGAZ6FHOGKTEPS7/RLfHcilb+QL8ODguu/ImdDKFNjRHAA
- LSMqsmcfkV0PeDaG72nXZ8b99cLxZKddqeUPz/IahyEuI5ABHZHKdhrORHDPgjvCT+O9oQYobEQ
- D3gXm0mZvdPoGiYxLogioba5XptXlVzVsvu/5aFp0cPcw8VhS1UHr0TqaxeNrJovwdSup59BfOS
- hiseepyqfBU0YeJ5i0fyiNXw4gDYgdnrTmkHWPBgy/Qqr3LWOc+96zKLi60xDcNmTjRn41DU/iC
- GzH3K2tIokTBWYw==
+ bh=m9ojDRSjTqtVps87cXjKBdNP+n71W3mzw4AS46V7Z3c=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBozUox30BcuNawDb8DhWrMz+2uIDzaoLvb6YOT9
+ NXw+VSysuWJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaM1KMQAKCRDRgEFAKaOo
+ NsbJEACrVKkYFg3j7h4mlpRRPl+CNUET+pdFbkAbFrHQrPlCcmiXywkHHUC2c8hmjzGGFOKZUzR
+ TO/THBKJSlfeZYt5edcJv+DBk6tRVoXngQf41u6RQQESKjqCQypbLhni3KSRLS6oY17xV/RRdJt
+ j29VIV+ZdsWSs8HEcz9WUmTyb/UAqxcyCMXtZZhB4caTYThtjWvUwL160BoND6vbI08rtP3lswA
+ xNjvLdKs2hKZlBPrLjwV7obuE8Wl8LZev3P8YQ+rowHt0BdOB4zJiZc6iHxhTWF0wnBXooLeR5p
+ DVOwmQcSwtqDs5zoYy47Mo4PGobsgCI9IMpibFvasStvWsKd6WkHNYVnq+kmxkslgQF+NqpnTQs
+ CxPskHc9TG7Ey9rDwb3fI0WLSo0sPJfOEJS4Kz+4eaCZQ4FraeN9NMT30+4UEXX5xyCnK4rrHRy
+ 1dhMRDczuIiTz2Y3CxhIledZ4PHg36lZdvSKlX1Ws8mHtcG3o/1YgRKJBpI8WVnJVTJmvLNM2y+
+ vPlqxVPm2sb+iv22uI743XkBa+t8DLvWKe+Crj6vPsTtkr+afaIUtLZ2bO1RNLlhI9b256a2XGp
+ VXRHvUlyrWDacjPLMdwswMj272dCJI0ptWrNOhDLJJy2+0gdN0AokRvJZqUGEd2jVTmUo0SxYej
+ a7SZt1cbSlLIJSg==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
@@ -65,29 +64,48 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Fri, 19 Sep 2025 12:19:07 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7561
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7562
 
+The yocto-check-layer script should be run with the --machines arguments
+to test the different machines present in a BSP layer. Mention it in the
+documentation. The --dependency can also be used so also mention that.
+
+[YOCTO #15974]
+
+Cc: Mark Hatle <mark.hatle@kernel.crashing.org>
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
-Changes in v2:
-- Mention --dependency
-- Pass layer dir as last argument after --
-- Link to v1: https://lore.kernel.org/r/20250919-update-compatible-doc-v1-0-f3a343914503@bootlin.com
+ documentation/dev-manual/layers.rst | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
----
-Antonin Godard (2):
-      dev-manual/layers.rst: yocto-check-layer: mention --machines and --dependency
-      test-manual/yocto-project-compatible.rst: fix a typo
+diff --git a/documentation/dev-manual/layers.rst b/documentation/dev-manual/layers.rst
+index fbf3f1a33..bba46b1d6 100644
+--- a/documentation/dev-manual/layers.rst
++++ b/documentation/dev-manual/layers.rst
+@@ -376,6 +376,21 @@ directory::
+ Be sure to provide the actual directory for your
+ layer as part of the command.
+ 
++For :term:`BSP <Board Support Package (BSP)>` layers, the ``--machines``
++argument should be passed as part of the command::
++
++   $ source oe-init-build-env
++   $ yocto-check-layer --machines <machine1> <machine2> ... -- your_layer_directory
++
++These machines are the ones present in your BSP layer, in the ``conf/machine/``
++directory.
++
++You should also pass the dependencies of your layer using the ``--dependency``
++argument::
++
++   $ source oe-init-build-env
++   $ yocto-check-layer --dependency <layer1_directory> <layer2_directory> ... -- your_layer_directory
++
+ Entering the command causes the script to determine the type of layer
+ and then to execute a set of specific tests against the layer. The
+ following list overviews the test:
 
- documentation/dev-manual/layers.rst                    | 15 +++++++++++++++
- documentation/test-manual/yocto-project-compatible.rst |  2 +-
- 2 files changed, 16 insertions(+), 1 deletion(-)
----
-base-commit: e77139b5c616e6e5ad436eb91416fd804389425f
-change-id: 20250919-update-compatible-doc-651debba8dfa
-
-Best regards,
---  
-Antonin Godard <antonin.godard@bootlin.com>
+-- 
+2.51.0
 
 
