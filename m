@@ -1,107 +1,107 @@
-Return-Path: <yoann.congal@smile.fr>
+Return-Path: <richard.purdie@linuxfoundation.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0926FCA100F
-	for <webhook@archiver.kernel.org>; Mon, 22 Sep 2025 21:03:26 +0000 (UTC)
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
- by mx.groups.io with SMTP id smtpd.web10.1205.1758574999346507144
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 39E3DCA100F
+	for <webhook@archiver.kernel.org>; Mon, 22 Sep 2025 21:35:26 +0000 (UTC)
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+ by mx.groups.io with SMTP id smtpd.web10.1923.1758576923847447563
  for <docs@lists.yoctoproject.org>;
- Mon, 22 Sep 2025 14:03:19 -0700
+ Mon, 22 Sep 2025 14:35:24 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@smile.fr header.s=google header.b=X3U/EU8l;
- spf=pass (domain: smile.fr, ip: 209.85.221.46, mailfrom: yoann.congal@smile.fr)
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-3f0ae439b56so2410709f8f.3
-        for <docs@lists.yoctoproject.org>; Mon, 22 Sep 2025 14:03:19 -0700 (PDT)
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=FIUgj375;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.128.42, mailfrom: richard.purdie@linuxfoundation.org)
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-46d40c338b8so11604305e9.0
+        for <docs@lists.yoctoproject.org>; Mon, 22 Sep 2025 14:35:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=smile.fr; s=google; t=1758574997; x=1759179797; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ge0tl04XOl9geBcDLQLsdRus9o5ykcY5A+sDqhyCoVg=;
-        b=X3U/EU8l/Wk8b7LcSf1GUZygnWrFRqIHCH9AjDxrIU3VKEp+AB8Ql0Kmpp63iy+8QX
-         MCZwcSVCHeRwWIyZgxrx2kqbEX0yCROUJJRMVnAHy3T8GsSY1pRUQKDhWbdchPV6pTmQ
-         LjXCyIpfiv/UPJrNRo9hTD4yOvpdBD9pdkIqk=
+        d=linuxfoundation.org; s=google; t=1758576922; x=1759181722; darn=lists.yoctoproject.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:to:from:subject:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vRST0IbHA5m04YmmKdq5idmYweeNADDZTZcazRz3RKM=;
+        b=FIUgj375vs+ZteUiNUpE5VN1vkPYUwKD8Q7WO7ea+i9NNxLOUDL2qm6ZouuF9RTL/b
+         asqUvI1LLETpO2vP3e3M0vsk/aYDoZSik7BqXCE5vMNJr1iXrV7I7u3fvNAFuvQ6PxEs
+         mkthQiMeEZ0JM4shbu8k/RpJh/UWz/V3nz6ag=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758574997; x=1759179797;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Ge0tl04XOl9geBcDLQLsdRus9o5ykcY5A+sDqhyCoVg=;
-        b=ahaKR3kKRJsgg8rz/Xw2r1FXqPVjqPQvw2JbTW/wNdgtAxsiN5s6Z4QPiH/vX2axfv
-         RXZfhpfHhY2PCP7xbq2D+0fkrsScEXKf9gay4iVufaK85nfskmho+yB+jDWxlSBzYUEc
-         9eySz6fRBgVl7NMwl+hrlS4mZPePmxCLOjdtMvgDpN2Wl+96bw+L0uORFP3wXSlPwRlq
-         TpewLa+hv4xFKm+K+zoBOpjqyHqI91OZ1BN4Ta8OzyvKPVrIzJsZ07Ip7cHt+zIdVtRW
-         YOo/kdS/gqrH5/bR9eDUE1n3p+6BEjiYvSce6FVNpalMm3EdSZK8TSAAXtz8r+FnYIeU
-         RBjA==
-X-Gm-Message-State: AOJu0YyfJmEVYBxYlFhrRnNg5FEHLdG4Jn+3DnwHrGGd6Khl3QuWX3vX
-	xmxtzPvRRS2vX20OlQtjuHRWMfJ8yeR36e5q4z4X3L5DuCbFcXja4EML5+YQlBKrOE4ZhiQpcSz
-	kF/uF8VA=
-X-Gm-Gg: ASbGncuBZFFjUNM0mqLPq03uT+q3gufghgvzJShrc+y3rDdhA3jZ4QKNVqV2aPK1fvl
-	ChVgb/vfuv3X08qcHd3XEdSWCwUipZkEOiBOW5VwgPF9NSilPbQ3nlMlhWMvB95RTjyw5NFwnO1
-	5TQ+EVrMAeMHLOzCp9M9tp1Vbr6a6WgTJ1r1H8LFSz6WH09HSTj4UoU23zKf8ATx8KXmOueOxy2
-	9cWganVKnle/tiLhAeLNf66LWxbMXaQ6WKn0tx3XHBk7MbS02B36xTL+GikA+QK5QMTprPV14TJ
-	ezkiqLNKdqxNzeALLZMSWKLcu409y4vHIl5vC/qRU3zUkQoccRMAqfaOdl9M1b02g3MfVNgCpOF
-	0eCDUhUrzPYdu/PtbmTnbS1Z1eRkWZzv6xFMoA4PdOI+7kqPqySk+he2Mnz8z+MuqkqYC3iZEPO
-	0bie9cSrliVXlB9O3aMTgS6FXYbOc9zA==
-X-Google-Smtp-Source: AGHT+IGoUpZa0pzGYCl9DP2YZAkTpLbzv4hbWuPq8hYAQ5a9yK50yuvCsau1Sqzk5SEJE8aGHm3dfg==
-X-Received: by 2002:a05:6000:40da:b0:3f2:dc6e:6a83 with SMTP id ffacd0b85a97d-405cb9a5341mr71162f8f.59.1758574997262;
-        Mon, 22 Sep 2025 14:03:17 -0700 (PDT)
-Received: from P-ASN-ECS-830T8C3.home (2a01cb001331aa0017b58d8bf04048c3.ipv6.abo.wanadoo.fr. [2a01:cb00:1331:aa00:17b5:8d8b:f040:48c3])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3ee073f3d73sm20954876f8f.8.2025.09.22.14.03.16
+        d=1e100.net; s=20230601; t=1758576922; x=1759181722;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:to:from:subject:message-id:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=vRST0IbHA5m04YmmKdq5idmYweeNADDZTZcazRz3RKM=;
+        b=ZLR3lKCYOC2vEFas5oakLh2xQ57q09fhp7OOpdsoESptB94WXQa3ZacC3lGlasSkjE
+         k+UOOs6HEq++4VV98FyrIfhE6u6/m6r4XgV9BMdT5eq2bSIRi2I+eUuqcbnzza1DLOtt
+         S5J/64Br8YaZOAn9NxqyhswsRug7cAr6qYqf87IO8zlFbnsDK5eEeJk0sh0UIkKne4PT
+         3+1JFttkA4qpil+gICxuxAMNGMZkr0ljMacfN+z25iA7DK1/GZ+li6kM5qUQl6a+rmAT
+         xoLKz0hvweMyzIGBMSv5Zy7ETIwNt6lqV94Rsf3H3kHJbdcx7VpRNMSsMYtrdDIfrhhA
+         TPdA==
+X-Forwarded-Encrypted: i=1; AJvYcCX+zQAy+asu1GdmHFT4pkU93moiTdx2X9LglUBf0ptl9sHVPDCoU6qbjCkHdeo4xxB0kwKP@lists.yoctoproject.org
+X-Gm-Message-State: AOJu0YyNL12z0BHtmfRDI0HWVfvmdwwNmqyUCgDLqpDHsZxSV4PPR/dy
+	rlqRoYoyxZSOQCCxkl8bFsIrw16fQVUJ6eFB1WsYyuflwkybWIv8gCJZFSfON91OMK4=
+X-Gm-Gg: ASbGncvdw6KcimLj/CyNg+cfvcomeI5XWiQnpdEexLuRzfSueVGyMp1oPzTokFEUHys
+	9TOa8nHC8mmdXimhVYF5tXUYY37ZzvKEOB7UFc9GpW6EI/JiN3R0MXFKUseG7bhPBm2O+wsEpO7
+	5On8C7hVZIcUnZRtZzJmJSip0OPLZHiqjffV95ac0CtWYhYLehTdi1VG2MA92udCmS3AnNszx9v
+	BaOkPyJwL5pxmxZSqrMOyCDqMsr0lMBYsmdjAdE6VI4Q9pN/oziiLur3p1RFgZ/t39P3uKBKtLW
+	n1+DgGHPozlCwJraMIZBbY4iNKO3ZuW/k1Wlo3Ih96fe2ZAwDSXNIyyVC4nWM4j6utjpyL/Wnwy
+	ThBDEB9eWPg84CZr6EMM6r2tf9c/QA4Ici6e/6FGWCYQUuK5UpVgpNYSKcflmQjKa5XrX4rN1eH
+	GdmpwZnYi8kcw=
+X-Google-Smtp-Source: AGHT+IECfMUoyNsfWh6YxfdngX0S46/by37X6cRj1NR1WZjPIDEBDuy7gKwWIOZPhtQiz+l13PlIcQ==
+X-Received: by 2002:a05:600c:1d0d:b0:45b:8b3e:9f66 with SMTP id 5b1f17b1804b1-46e1d98bfb7mr2639945e9.13.1758576922218;
+        Mon, 22 Sep 2025 14:35:22 -0700 (PDT)
+Received: from ?IPv6:2001:8b0:aba:5f3c:3a01:b456:f5e4:5350? ([2001:8b0:aba:5f3c:3a01:b456:f5e4:5350])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4613d14d212sm282462725e9.12.2025.09.22.14.35.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Sep 2025 14:03:16 -0700 (PDT)
-From: Yoann Congal <yoann.congal@smile.fr>
-To: docs@lists.yoctoproject.org
-Cc: Yoann Congal <yoann.congal@smile.fr>
-Subject: [PATCH] migration-guides/release-notes-5.3: using runqemu with compressed images
-Date: Mon, 22 Sep 2025 23:02:49 +0200
-Message-Id: <20250922210249.467942-1-yoann.congal@smile.fr>
-X-Mailer: git-send-email 2.39.5
+        Mon, 22 Sep 2025 14:35:21 -0700 (PDT)
+Message-ID: <16be91f360b269bf508b2b5a2f36ddebc3b66a2c.camel@linuxfoundation.org>
+Subject: Re: [docs] [PATCH] docs: add util-linux-script package for Fedora
+ 42+
+From: Richard Purdie <richard.purdie@linuxfoundation.org>
+To: antonin.godard@bootlin.com, adrian.freihofer@siemens.com, 
+	docs@lists.yoctoproject.org
+Date: Mon, 22 Sep 2025 22:35:20 +0100
+In-Reply-To: <DCZE1KGZEHV7.37QOM8E99CAEB@bootlin.com>
+References: <20250922065859.157251-1-adrian.freihofer@siemens.com>
+	 <DCZE1KGZEHV7.37QOM8E99CAEB@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.0-1 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 22 Sep 2025 21:03:26 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7578
+ <docs@lists.yoctoproject.org>; Mon, 22 Sep 2025 21:35:26 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7579
 
-From: Yoann Congal <yoann.congal@smile.fr>
+On Mon, 2025-09-22 at 16:11 +0200, Antonin Godard via lists.yoctoproject.or=
+g wrote:
+> On Mon Sep 22, 2025 at 8:58 AM CEST, Adrian Freihofer via lists.yoctoproj=
+ect.org wrote:
+> > From: Adrian Freihofer <adrian.freihofer@siemens.com>
+> >=20
+> > Fedora 42 split the script utility from util-linux into a separate
+> > util-linux-script package. This change adds conditional installation
+> > of util-linux-script for Fedora 42 and later versions.
+> > https://src.fedoraproject.org/rpms/util-linux/c/5a2471d6e5b0055cb607b30=
+dc2e9613b312ffb74?branch=3Drawhide
+> >=20
+>=20
+> Hi Adrian,
+>=20
+> I just realized that Fedora 42 is not (yet) part of the supported distrib=
+utions,
+> see https://git.yoctoproject.org/meta-yocto/tree/meta-poky/conf/distro/po=
+ky.conf#n33.
+>=20
+> So it does not really make sense to make this appear here for now. Howeve=
+r I'll
+> keep this patch handy once we add support for it.
 
-In OE-core commits:
-* b5f8c3e029 (selftest: runqemu: add tests for booting zst compressed image, 2025-07-31)
-* e069fe2480 (runqemu: Add support for running compressed .zst rootfs images, 2025-07-31)
-runqemu gained the ability to run compressed image (+associated test).
+There is a fedora42 worker present on the autobuilder now:
 
-Add this information to the release-notes for 5.3.
+https://autobuilder.yoctoproject.org/valkyrie/#/workers
 
-Signed-off-by: Yoann Congal <yoann.congal@smile.fr>
----
- documentation/migration-guides/release-notes-5.3.rst | 7 +++++++
- 1 file changed, 7 insertions(+)
+so we probably should update that!
 
-diff --git a/documentation/migration-guides/release-notes-5.3.rst b/documentation/migration-guides/release-notes-5.3.rst
-index 0ff3883bf..417087e35 100644
---- a/documentation/migration-guides/release-notes-5.3.rst
-+++ b/documentation/migration-guides/release-notes-5.3.rst
-@@ -330,6 +330,11 @@ New Features / Enhancements in |yocto-ver|
-       machine's CPU must also be recent enough to support these instructions
-       natively.
- 
-+   -  ``runqemu`` can now run compressed images with snapshot mode. For example,
-+      with ``IMAGE_FSTYPES = "... ext4.zst ..."``, you can run::
-+
-+         runqemu snapshot ext4.zst <image-recipe>
-+
- -  Documentation changes:
- 
-    -  Part of :term:`BitBake` internals are now documented at
-@@ -445,6 +450,8 @@ New Features / Enhancements in |yocto-ver|
- 
-       -  ``context.py``: use :term:`TEST_SUITES` if set.
- 
-+      - ``runqemu``: add new test for booting compressed images.
-+
-    -  :ref:`ref-classes-testexport`: capture all tests and data from all layers
-       (instead of the :term:`OpenEmbedded-Core (OE-Core)` layer only).
- 
+Cheers,
+
+Richard
 
