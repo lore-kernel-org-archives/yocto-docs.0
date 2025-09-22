@@ -1,72 +1,79 @@
-Return-Path: <adrian.freihofer@siemens.com>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5DC1CCAC5A7
-	for <webhook@archiver.kernel.org>; Mon, 22 Sep 2025 06:59:17 +0000 (UTC)
-Received: from mta-65-226.siemens.flowmailer.net (mta-65-226.siemens.flowmailer.net [185.136.65.226])
- by mx.groups.io with SMTP id smtpd.web10.45463.1758524350203483681
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 29E92CAC5A8
+	for <webhook@archiver.kernel.org>; Mon, 22 Sep 2025 14:11:30 +0000 (UTC)
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+ by mx.groups.io with SMTP id smtpd.web10.52978.1758550281110976549
  for <docs@lists.yoctoproject.org>;
- Sun, 21 Sep 2025 23:59:11 -0700
+ Mon, 22 Sep 2025 07:11:22 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=adrian.freihofer@siemens.com header.s=fm1 header.b=hpM5Dtye;
- spf=pass (domain: rts-flowmailer.siemens.com, ip: 185.136.65.226, mailfrom: fm-1329275-20250922065906c71d9b171a00020725-yfivfw@rts-flowmailer.siemens.com)
-Received: by mta-65-226.siemens.flowmailer.net with ESMTPSA id 20250922065906c71d9b171a00020725
-        for <docs@lists.yoctoproject.org>;
-        Mon, 22 Sep 2025 08:59:07 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm1;
- d=siemens.com; i=adrian.freihofer@siemens.com;
- h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc;
- bh=ACHl2lCAAjeBxjw5yBjXVaF9vLdRwhkYnzcq4Qfrsqk=;
- b=hpM5DtyerXaZWz0osIUAttJYIhkLBH0jKLGwOp8LIaeS30gqpbKsnJJqPdRvPzsngHj4qz
- pkXoBXbl++fPgYzHjYKi0zuDmDY4Rc8t9VqdkPC7ELVpUOxBM1Rc9oAzpu5lR/8nxd40YIrj
- 2ERJVbCLpxidvtnT5trmb18WjX7wLpqTOMhOvuMYUOBT44cjInHxJVAksr4FF0s/6n3sqB0Q
- M9zRq+WFeilaXw/VLD6RrYwVKdY/WuK5ym7XJIjb0PtypSsXWzqzj3qx3g4RVKmC0V3Q3AOA
- Sgbt/bluzMO71BaMyVnMu5RpvYc4hURedPyt37fVCHH956bM/viGghsw==;
-From: AdrianF <adrian.freihofer@siemens.com>
-To: docs@lists.yoctoproject.org
-Cc: Adrian Freihofer <adrian.freihofer@siemens.com>
-Subject: [PATCH] docs: add util-linux-script package for Fedora 42+
-Date: Mon, 22 Sep 2025 08:58:59 +0200
-Message-ID: <20250922065859.157251-1-adrian.freihofer@siemens.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Flowmailer-Platform: Siemens
-Feedback-ID: 519:519-1329275:519-21489:flowmailer
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=Q3khdp0L;
+ spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 04CC74E40D01;
+	Mon, 22 Sep 2025 14:11:19 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id CE7B660634;
+	Mon, 22 Sep 2025 14:11:18 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 81AF7102F1954;
+	Mon, 22 Sep 2025 16:11:12 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1758550278; h=from:subject:date:message-id:to:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=ZnHDbHlQP+2Trv2qzKjDNIq6+2aLC4jmC3RSeydB/1U=;
+	b=Q3khdp0LlRalgB4+AD8rmlHmBxltLrkQv9ixavUv+VIKVDQcYqcEyLHBuk7kZX4qikyVKe
+	XuSuXiGPdzQkAO9td52aqb4E596u5w+0HG4CHgW9V/H0Pbo0Gt8Nn0etoZKgwVEaCFO1xY
+	LV41OUctUZptQJGiWYK36WACOjLxm0qRDzke8NILe9FiY5fw04wx05XAchyUpomfLvB8CA
+	/cMufx1rh/CRy0aYjrK5WW0W6haB9RJVkWCFPho48KcwpUH4Jiieop+G7BnDjSx5nmgGEF
+	fgPT/TO3/BLgUIE5cBtW+kMXg4WJre1X0ZNrnUCm7hUyEMgDNwbve9mE69RUTw==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 22 Sep 2025 16:11:08 +0200
+Message-Id: <DCZE1KGZEHV7.37QOM8E99CAEB@bootlin.com>
+To: <adrian.freihofer@siemens.com>, <docs@lists.yoctoproject.org>
+Subject: Re: [docs] [PATCH] docs: add util-linux-script package for Fedora
+ 42+
+From: "Antonin Godard" <antonin.godard@bootlin.com>
+References: <20250922065859.157251-1-adrian.freihofer@siemens.com>
+In-Reply-To: <20250922065859.157251-1-adrian.freihofer@siemens.com>
+X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 22 Sep 2025 06:59:17 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7571
+ <docs@lists.yoctoproject.org>; Mon, 22 Sep 2025 14:11:30 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7572
 
-From: Adrian Freihofer <adrian.freihofer@siemens.com>
+On Mon Sep 22, 2025 at 8:58 AM CEST, Adrian Freihofer via lists.yoctoprojec=
+t.org wrote:
+> From: Adrian Freihofer <adrian.freihofer@siemens.com>
+>
+> Fedora 42 split the script utility from util-linux into a separate
+> util-linux-script package. This change adds conditional installation
+> of util-linux-script for Fedora 42 and later versions.
+> https://src.fedoraproject.org/rpms/util-linux/c/5a2471d6e5b0055cb607b30dc=
+2e9613b312ffb74?branch=3Drawhide
+>
 
-Fedora 42 split the script utility from util-linux into a separate
-util-linux-script package. This change adds conditional installation
-of util-linux-script for Fedora 42 and later versions.
-https://src.fedoraproject.org/rpms/util-linux/c/5a2471d6e5b0055cb607b30dc2e9613b312ffb74?branch=rawhide
+Hi Adrian,
 
-The package is added conditionally using rpm macro evaluation to
-maintain compatibility with older Fedora versions where script was
-included in the base util-linux package.
+I just realized that Fedora 42 is not (yet) part of the supported distribut=
+ions,
+see https://git.yoctoproject.org/meta-yocto/tree/meta-poky/conf/distro/poky=
+.conf#n33.
 
-Note that different distributions handle this differently - for example,
-Debian provides the script utility in a separate bsdutils package
-rather than in util-linux.
+So it does not really make sense to make this appear here for now. However =
+I'll
+keep this patch handy once we add support for it.
 
-Signed-off-by: Adrian Freihofer <adrian.freihofer@siemens.com>
----
- documentation/tools/host_packages_scripts/fedora_essential.sh | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks,
+Antonin
 
-diff --git a/documentation/tools/host_packages_scripts/fedora_essential.sh b/documentation/tools/host_packages_scripts/fedora_essential.sh
-index ea14134398b..99e5d2c0b0b 100644
---- a/documentation/tools/host_packages_scripts/fedora_essential.sh
-+++ b/documentation/tools/host_packages_scripts/fedora_essential.sh
-@@ -1 +1 @@
--sudo dnf install bzip2 ccache chrpath cpio cpp diffstat diffutils file findutils gawk gcc gcc-c++ git glibc-devel glibc-langpack-en gzip hostname libacl make patch perl perl-Data-Dumper perl-File-Compare perl-File-Copy perl-FindBin perl-Text-ParseWords perl-Thread-Queue perl-bignum perl-locale python python3 python3-GitPython python3-jinja2 python3-pexpect python3-pip rpcgen socat tar texinfo unzip wget which xz zstd
-+sudo dnf install bzip2 ccache chrpath cpio cpp diffstat diffutils file findutils gawk gcc gcc-c++ git glibc-devel glibc-langpack-en gzip hostname libacl make patch perl perl-Data-Dumper perl-File-Compare perl-File-Copy perl-FindBin perl-Text-ParseWords perl-Thread-Queue perl-bignum perl-locale python python3 python3-GitPython python3-jinja2 python3-pexpect python3-pip rpcgen socat tar texinfo unzip wget which xz zstd $([ $(rpm -E %fedora) -ge 42 ] && echo "util-linux-script")
--- 
-2.51.0
+--=20
+Antonin Godard, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
