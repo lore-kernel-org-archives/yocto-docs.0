@@ -1,83 +1,223 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <paul@pbarker.dev>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1C283CAC5A7
-	for <webhook@archiver.kernel.org>; Wed, 24 Sep 2025 08:36:15 +0000 (UTC)
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by mx.groups.io with SMTP id smtpd.web11.7908.1758702971520079985
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A14E6CAC5AE
+	for <webhook@archiver.kernel.org>; Wed, 24 Sep 2025 16:20:59 +0000 (UTC)
+Received: from fhigh-b5-smtp.messagingengine.com (fhigh-b5-smtp.messagingengine.com [202.12.124.156])
+ by mx.groups.io with SMTP id smtpd.web10.18396.1758730850814992253
  for <docs@lists.yoctoproject.org>;
- Wed, 24 Sep 2025 01:36:12 -0700
+ Wed, 24 Sep 2025 09:20:51 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=ZPgNkq/F;
- spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id A2D231A0EFE;
-	Wed, 24 Sep 2025 08:36:09 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 7A8DF60634;
-	Wed, 24 Sep 2025 08:36:09 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id EB09F102F18CC;
-	Wed, 24 Sep 2025 10:36:06 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1758702969; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=kO9YhQT6mR3317cJ/ub3k6O4UxWYAaeRpkZmemJoAJo=;
-	b=ZPgNkq/F4o83sSRChd+yyO7RVszWpbBpNOm6TU/HSK4xEsgXiUmrSnSRFZKxLTdQIcHGNt
-	hM9WP2exrIg6cDozD+sYBxukqmfQ/0ZelBRNr29HLp+49UAfHoBaGVw3VUAvnI/sWq403K
-	x6SNn36DKtomiQLykAsd0FuMbalAEM521RdrxjWc8m73vrP5RTWfZpFMblsO5pGvoW3sTW
-	dW9/oxFEFDYI1JTaRXHtqzXMCObuCvWL0ZOm8TNLuxbNaZNn3zVGnVs5tV8vFOgVhrPKUq
-	7LjzY5p/jW3oslnkkEvGyGAFQ1zg5Ag9WjA2RVipk29alVoNQCQZsoe0y/HA1A==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 24 Sep 2025 10:36:06 +0200
-Message-Id: <DD0W651ZACFT.1YL4JQYXNINAR@bootlin.com>
-Cc: <tim.orling@konsulko.com>, <docs@lists.yoctoproject.org>
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: <alex.kanavin@gmail.com>
+ dkim=pass header.i=@pbarker.dev header.s=fm3 header.b=hzZZIiCj;
+ dkim=pass header.i=@messagingengine.com header.s=fm1 header.b=fbJZCx2M;
+ spf=pass (domain: pbarker.dev, ip: 202.12.124.156, mailfrom: paul@pbarker.dev)
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id EBFF97A01D6;
+	Wed, 24 Sep 2025 12:20:49 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-03.internal (MEProxy); Wed, 24 Sep 2025 12:20:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pbarker.dev; h=
+	cc:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm3; t=1758730849; x=1758817249; bh=jSgR5h8pS6
+	PR2STCd73HJaFmBhid7sIceKqnm0lS2k8=; b=hzZZIiCjLgIuNrmUnEnROUWQsO
+	Jk5YqM4J0VcX8z0mhuePc+jep2m9HqJjLV1+78HdTCZhUX29jbrCGfTyJikU6f+Y
+	R2mATSVa0Q9VjFtIiMxGN/LKdEtt2Y1WqsgSC+ETy/wtFDVuQtVOl6ukCdVvVVjS
+	B99yg228Ob5l2MGSo+PUlGGXIxhu9MGSRNJCORFe6fewYBhEQbegdb6KfblBCd0K
+	IG8rT+Z/xYBEW1u3moAdgzJrWyvaXn8Ogu3ET49HbrW9z+dN7r96p/qfmaTDsle+
+	EOkqeUztuVm8A2233igFoYh3uE4J+LsSYAxmh+n0+3m2hdBQpejYJfS1dP9w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1758730849; x=1758817249; bh=jSgR5h8pS6PR2STCd73HJaFmBhid7sIceKq
+	nm0lS2k8=; b=fbJZCx2MeULy1fqeT4R99/MYt21Phjx0Y4g8i4P8QVeC1sUZmSa
+	FXszNYZzc11x6pWWiy/8ZxCDSHNcDGkP1LsJdAukiXLVyDvj6nYiZagStng7t+GE
+	ezNlcFW5fwrE6NJ8yPJBzTMiFmiJ/QKZFz+PRfZV5UYbTP2DqV1fg89fNPl7H13v
+	aI4RPJnuftwER6eqJcjHE14YK93DCJ+0XFbJLbn37siU6ls72V8lBsXsFviob7BS
+	x35BbWYuMxWYiKKiG/cG4xpQLcR+Gvl51pwK4zRUg+AdSloRGyxHG7qg/e+Mq1Oh
+	ZYLKqGkCAOAXBW1tzVKD90IGAtEMlRdXS4A==
+X-ME-Sender: <xms:YRrUaHw1Eq1_mEUSzmQvOKKOkCt46TeBC11u9wqdl0cTa4IXOKfrng>
+    <xme:YRrUaPcjZxdLhZHwgrcMG8eu_hWvjETakbAy4hD6nhCfxI6ZmxpznConlCPYiBREI
+    m8RqbdbPhzVNCzdabbBlkM_1SuLYt2wKlwowohy2OeD0fPi8biirlc>
+X-ME-Received: <xmr:YRrUaDKDyCLHRqhyP8kNB6m_e9uhaJyrq93dAu_7vdZ_RB6MLkqhpnm8x25L8btMznCVOsZ2JyBao3mtySsm7yryCTKsWA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdeigedtjecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecunecujfgurhepkffuhffvveffjghftggfggesghdtreertd
+    erjeenucfhrhhomheprfgruhhluceurghrkhgvrhcuoehprghulhesphgsrghrkhgvrhdr
+    uggvvheqnecuggftrfgrthhtvghrnhepjedufedvhfehvedtudelvdeljeeiheeiveffle
+    ehffeftdfguddvveejkeehfffhnecuffhomhgrihhnpeihohgtthhophhrohhjvggtthdr
+    ohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    hprghulhesphgsrghrkhgvrhdruggvvhdpnhgspghrtghpthhtohepvddpmhhouggvpehs
+    mhhtphhouhhtpdhrtghpthhtohepshhkrghnughighhrrghunhesghhmrghilhdrtghomh
+    dprhgtphhtthhopeguohgtsheslhhishhtshdrhihotghtohhprhhojhgvtghtrdhorhhg
+X-ME-Proxy: <xmx:YRrUaAFGHS3pClJnkzDQ78Gdr82tDL69YLm9UPvWHzrKQOm2h5ItWQ>
+    <xmx:YRrUaNqf34amqoZV2jFryAjaw8ig8Mur_fbvKerEpAsp12xAD9jwkg>
+    <xmx:YRrUaJSeYZsCucwMO-mrjCnX5RWDUeywYqRlJRZiwom22V7AHzmfrA>
+    <xmx:YRrUaKN0SxdJU4CJWucdHadw8nI3zjh-SUS43lTnDndFkZHuc6j3LQ>
+    <xmx:YRrUaDsOeKTJoCebg9dWq7HrKcJWo40z7e4dU_tHEYhmAfJ__JY-9JRj>
+Feedback-ID: i51494658:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 24 Sep 2025 12:20:48 -0400 (EDT)
+Message-ID: <201149f2ca63a54ae38a34cedccc9c3267d1eacd.camel@pbarker.dev>
 Subject: Re: [docs] [RFC][PATCH v2] brief-yoctoprojectqs: add bitbake-setup
  info
+From: Paul Barker <paul@pbarker.dev>
+To: Gyorgy Sarvari <skandigraun@gmail.com>
+Cc: docs@lists.yoctoproject.org
+Date: Wed, 24 Sep 2025 17:20:39 +0100
+In-Reply-To: <0696dfc6-fb46-43b0-bf2b-776e56ddc8e3@gmail.com>
 References: <20250819213530.3616042-1-tim.orling@konsulko.com>
- <DD0B43YZK3LO.1TVXDXSLGVPIU@bootlin.com>
- <CANNYZj9n0Na=y9+-mY=AYc37-iYyLoQFX33q7D5ptsuxcsbiZA@mail.gmail.com>
-In-Reply-To: <CANNYZj9n0Na=y9+-mY=AYc37-iYyLoQFX33q7D5ptsuxcsbiZA@mail.gmail.com>
-X-Last-TLS-Session-Version: TLSv1.3
+	 <0696dfc6-fb46-43b0-bf2b-776e56ddc8e3@gmail.com>
+Autocrypt: addr=paul@pbarker.dev; prefer-encrypt=mutual;
+ keydata=mQINBGC756sBEADXL6cawsZRrDvICz9Y1SG0/lW1me4xpq36obh7a0IGAzp3ywNRb/4MO
+ DTqP4+DD0cIFuDY41/N17g0sNlp8z+/k/IIDmNPtYQOTVmAkrkdDU4BP8dD3Cp1PUw6nrbInfujAJ
+ NrVM0IVDkwKTbL2Nu1P+xns4MIpF9Kj4XN5celYJ9vEJ2n0Bo0nO5T5vg46dihIaDl+24iNIHSsHq
+ YyEdMBfY8kY2RulpaAyFOuaaHdIeDkejVvO5xLSiYLjB5qrRhgH134lJXsuLOsFQ64ybGECuOasnb
+ auevsPBAaroQW0pqVb9FneGrWHxMCLlQHJRqQJRdVa6bsUdp6NWra8/0msPawSrFwGQdfJBTA3aXJ
+ C2CG1JxEgj6QQjEQA49DSjgzdhInbiIK8Vbp/zedM4aVue7qJnwPMTFQM9lYx63b7wLN4Tu8B9YZ0
+ UFdSwMCJuqmYGsYRUYdwM3ArjS0VO6WpU+HBKvzLK5GQfUTSM8KaZ5eA2Uo2ain8SSZb+WptUYKpx
+ F9jbtCPbjpZKzGuX4iHFl9eT75TM9iXJNGAjB5xigkADLwVfPoJ5E53S+KdNVuOWHugyLMPNAQHOw
+ pw5Rey+0zxyzPd4wphutc93UIU5g/029ngAc7DuKCq12jl7fhkjqFlFtYPIc1k7nd+RSezmH/qRes
+ bMErHSX1MBSZQARAQABtB5QYXVsIEJhcmtlciA8cGF1bEBwYmFya2VyLmRldj6JAlcEEwEIAEECGw
+ EFCwkIBwIGFQoJCAsCBBYCAwECHgECF4ACGQEWIQSYsqrBAKw/grtdVGd0l1yBt+ZrrAUCaAzHVAU
+ JCTdOhgAKCRB0l1yBt+ZrrA51EACS7IYZaliCgQEhq8nnsQotchJtIZbO6nr8tk+6gicX0loJYqsY
+ P2/XZ/MaF8kWYSGPIHjiCcB8tEISUFKPAvfCu0Q/X7n62AkSUZOhsQ6T/ajCaXStv/P28kQmGzoCp
+ 6ljK/zALMWKvWFEbLaZprIWV8AZJxzJWhfSdb+1XnLlmwhBCfjXJeR/TlGWhNTqTO6vyAtZ5OpGgq
+ 6N9EG60EQd4YWYwliDhCoUYRYR8qpp9JMrsDm/dzwd/A2/3rR0zzCtkha29kHqdVJtsd7bbiVLr8/
+ Zpa9Wcd7EG32CC25DUdkarU7f2P+goFVXfddGQRPy7l9uwF4kmtLGeuxWCCS8+4FPadifGvL8UoE9
+ 62fbxdHTzhjj0Yqs8zDgEwQUxFjpbmTseVx7QdoEe783jWqH4QhCeuo2kSjC4/VIRGDAS0/7Hq3rj
+ Iqqg6zGY8YQRvUyoOLn7Ip7WbHkZOUtWPjPbxe2tgeCttZkGrLQCosH0dlC0Hm7KWs+XHFp5d8OVd
+ WzIgWUvYkVaDeLHe3b6tM8AXoixS1rSQrnrAs/O/62Nx+k9+XVAy1clY2jdYOstuPvDhcqkT10RPs
+ o2qQnH7RGh2DCVu1D10XwDE1CWZ4Op70BO3g/I02ojT6kG4MHh6JX9+tjpjOINQQf+rGiHzj1YZYf
+ z0oc2b0NQI//cy/pDbQjUGF1bCBCYXJrZXIgPHBhdWxAcGF1bGJhcmtlci5tZS51az6JAlQEEwEIA
+ D4CGwEFCwkIBwIGFQoJCAsCBBYCAwECHgECF4AWIQSYsqrBAKw/grtdVGd0l1yBt+ZrrAUCaAzHVg
+ UJCTdOhgAKCRB0l1yBt+ZrrBr7D/oCOAaVVHKCuFHHJjnCNuN06o7BRgBUR8IzQxDSc0WIhTSNaa7
+ OWPSDanFtDJwOVhe7Ongu8ZF8gsLXg8jb9iS8J2lsm9q4tID3NCQIL0PgjI2/hKKOt1dZs4RGcFXj
+ v1nVEwFcvaJE4996tr9UMeZeOtipdlnGoh4Sozs2UvWydnc8SZZ3hCqxbJiorxD7wdrR4As5rqesP
+ YwiNqE4KW3jUavf1Sr0U94Umv4l5UPGQQekBxjh1ujsCo05g4IByS3RlDBxCQDvXAMBVHW20PLofD
+ aFqNpynQwAdpBS/cvX7tDK2pq+Rd4YK8uuDoHxH18dfCZcGYzSEUJ6y+rbYiJGh01mJFOM0oJP4DO
+ 9L79mJpURUdZNhI5/GVkCCxwt6HcNt24ertMlHDQkhZ6igP7zBgzODZ1sizODISaBh4M7lyxsBl76
+ 0dwghNbczt5ytG37mPLWjYaiJMeU7xQtoQo3yZDQvUSMnfFMxWYJO9Hi4P6H2gnMsDrPRnfr68vfP
+ rbseTtQM8cpfGnV0FzdFfHSTMJfcFA4BdeCJsn73JHuNEBMjDvUfgjN1a661nEzA5Zd26HQZQ1mQM
+ zRkrHto4z7Y86q05esioZ8Vd2Dhm1SMCBY9PNd5QrGpS67uP0wGOK2o3q9eQmxjenFHGAaOuTEZWT
+ UpTTTw8SSeLBAHSSQ37QbUGF1bCBCYXJrZXIgPHBhdWxAcGJya3IudWs+iQJTBBMBCAA+AhsBBQsJ
+ CAcCBhUKCQgLAgQWAgMBAh4BAheAFiEEmLKqwQCsP4K7XVRndJdcgbfma6wFAmgMx1cFCQk3ToYAC
+ gkQdJdcgbfma6xTZw/2PQ+vjkegBRAHxNIMcj0j9QfP45ZE4bmyGrCDb5i8BwoAJccilT8chvVFgB
+ AjG40Zx4oFcRKYYe6AkC6/B5U71307/nqPtt0gEy0VmTi0V+28eQPrNiTLa+OL9B5SGki/45N3g5V
+ hdqDNdvx/P2k1cg8YsndVE5ASmdPI2l96n7dqd0fW2C/rzrYNUQ+mPyvNgOGcD82YzahLRfb2u/GV
+ CWzEc2iplJeeWlUGoYHPCo4ztZDqJghCfgBab0RBJexdTyJl2QFs/osCM3yp02nTEUV/EiKbXcuWu
+ 4fvJ3xRtopQ49DMQtsTS3xB0vaPgPeBYb6DeJsLpR6be31mvEmhHGPEuVlxXNsXig1JNS0S+U0NhH
+ R1fKNc1uwHE2eTFhFKHK+BhyzJGBWU3reEGjm9BygE9G591bz3+UASdqeT7FY7MGq55NqUVHTlW9R
+ +L+IYXzlKvtcF8xDaZLo5MGD/2WTjdbMm25cMc+Nj4MpElAKdvjneViv8NIfyBnXcXi4zU89mh377
+ 2+rcJTO/Hy87NN1G2LEOKr9zFgvm+CLeoGi2Ay8NyrB3q5+ptE3ziYIPJmq84qFw1SUy4Nq+VF4yc
+ OqpPZn7Ij1ga5IAOHNRi5MbyRFROYOeaOj7sz7S7roHQwdP3Q1qTwTOv30hlOSe6uz4PTBiEIKBQH
+ ep0k17xg==
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-dXhSn9TXGHaQKxxdhHhS"
+User-Agent: Evolution 3.56.1-1 
+MIME-Version: 1.0
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 24 Sep 2025 08:36:15 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7587
+ <docs@lists.yoctoproject.org>; Wed, 24 Sep 2025 16:20:59 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7588
 
-On Tue Sep 23, 2025 at 6:38 PM CEST, Alexander Kanavin via lists.yoctoproje=
-ct.org wrote:
-> On Tue, 23 Sept 2025 at 18:06, Antonin Godard via
-> lists.yoctoproject.org
-> <antonin.godard=3Dbootlin.com@lists.yoctoproject.org> wrote:
->> Do we want to list this here? I feel like this could distract from the p=
-oint of
->> this section, which is to showcase how to use bitbake-setup. I think we =
-need a
->> separate section on fragments that we could link from here. I know this =
-is
->> additional work: we can merge this as-is but probably a task for later.
->
-> I too think properly documenting the oe-core fragment implementation
-> and available fragments should be done first, and only then full
-> bitbake-setup documentation should be based on it. Bitbake manual
-> describes the addfragments keyword, but not what is actually done with
-> that keyword in oe-core, or available tooling (in oe-core) to manage
-> fragments, or available fragments.
 
-I'm working on adding the docs on the fragments at the moment, it should be=
- out
-this week.
+--=-dXhSn9TXGHaQKxxdhHhS
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Antonin
+On Thu, 2025-08-21 at 22:17 +0200, Gyorgy Sarvari wrote:
+> On 8/19/25 23:34, Tim Orling via lists.yoctoproject.org wrote:
+> > +      To use such mirrors, ``bitbake-setup`` includes the following in=
+ your
+> > +	  ``conf/auto.conf`` file (or you can add it to ``conf/local.conf``) =
+in
+> > +	  the :term:`Build Directory`::
+> > =20
+> > -         BB_HASHSERVE_UPSTREAM =3D "wss://hashserv.yoctoproject.org/ws=
+"
+> > -         SSTATE_MIRRORS ?=3D "file://.* http://sstate.yoctoproject.org=
+/all/PATH;downloadfilename=3DPATH"
+> > -         BB_HASHSERVE =3D "auto"
+> > -         BB_SIGNATURE_HANDLER =3D "OEEquivHash"
+> > +            OE_FRAGMENTS +=3D "core/yocto/sstate-mirror-cdn"
+> > =20
+> >        The hash equivalence server needs the websockets python module v=
+ersion 9.1
+> >        or later. Debian GNU/Linux 12 (Bookworm) and later, Fedora, Cent=
+OS Stream
+> >=20
+>=20
+> Random note: today was the first time I tried the official Yocto
+> SSTATE_MIRRORS, since it is enabled by default with bitbake-setup. Until
+> now I only used SSTATE_MIRRORS only on my local network, using direct IP
+> addresses.
+>=20
+> One thing I noticed was that it absolutely hammers the DNS: it sends
+> hundreds of requests/second over and over again, resolving the
+> SSTATE_MIRRORS url for each request. My PiHole kept stopping resolving
+> queries just after a few seconds when I started the build - it turns out
+> that by default it rate-limits clients with more than 1000
+> requests/minute, didn't even know that it does that.
+>=20
+> I don't know if this is something that should be documented here (as
+> long as it exists), or somewhere else, or maybe nowhere. But anyway, I
+> thought I share while the memories are fresh.
+
+I spotted this email while reading the more recent replies in the thread.
+
+If everything is working as intended, DNS responses will be cached by the
+client for a sensible amount of time and you won't see hundreds of requests=
+ per
+second.
+
+I've seen a similar issue before with pi-hole though. Pi-hole uses dnsmasq
+which gives replies with a TTL of zero when the DNS entry is locally set or
+automatically added by the DHCP server - this tells the client not to cache=
+ the
+result at all. The dnsmasq docs say that the default local-ttl of zero "is =
+the
+correct thing to do in almost all situations" but I strongly disagree!
+
+To fix this I created a config file at `/etc/dnsmasq.d/99-local.conf` on my
+pi-hole server with the following contents so that local records will be ca=
+ched
+by clients for a minute:
+
+    local-ttl=3D60
+    dhcp-ttl=3D60
+
+(if you're running pi-hole in docker then setting this inside the docker
+container is left as an exercise for the reader)
+
+I saw this while using an sstate mirror on an internal Minio instance, so t=
+he
+DNS records were local to my pi-hole instance. You may need to look into ot=
+her
+dnsmasq TTL settings or the TTL values being set by your upstream DNS serve=
+r if
+you're seeing external DNS entries not being cached.
+
+Thanks,
 
 --=20
-Antonin Godard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Paul Barker
 
+--=-dXhSn9TXGHaQKxxdhHhS
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iIcEABYKAC8WIQSzjPXf5Y1BDWhU2iCrY1Tsnbr0bgUCaNQaVxEccGF1bEBwYmFy
+a2VyLmRldgAKCRCrY1Tsnbr0bkwJAQD0VoYCvqAQOqzDb0GKjWMDOoD0smRVkBXP
+lhwfKGkvdwEAw4atzW0dxAMgkNp0s4P4ggfzknmju09CpDKYn8VY+QA=
+=VAMG
+-----END PGP SIGNATURE-----
+
+--=-dXhSn9TXGHaQKxxdhHhS--
 
