@@ -1,173 +1,158 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <bhstalel@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E40B3CAC5A7
-	for <webhook@archiver.kernel.org>; Thu, 25 Sep 2025 14:30:10 +0000 (UTC)
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by mx.groups.io with SMTP id smtpd.web10.13044.1758810604757023407
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 11B3ACAC5A7
+	for <webhook@archiver.kernel.org>; Thu, 25 Sep 2025 14:55:41 +0000 (UTC)
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+ by mx.groups.io with SMTP id smtpd.web10.13712.1758812137078695916
  for <docs@lists.yoctoproject.org>;
- Thu, 25 Sep 2025 07:30:05 -0700
+ Thu, 25 Sep 2025 07:55:37 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=MWaf9d4o;
- spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 64828C011EF
-	for <docs@lists.yoctoproject.org>; Thu, 25 Sep 2025 14:29:45 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 8B8CF6062C;
-	Thu, 25 Sep 2025 14:30:02 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BCEA3102F189D;
-	Thu, 25 Sep 2025 16:30:00 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1758810601; h=from:subject:date:message-id:to:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=VCNWGNnKBwzz88UqZ0wSpDbAjYp275Sefj3to6ebk/0=;
-	b=MWaf9d4ookO88WTfof15I1sJNWGQkE6WgjSOUZORfudJPi7niOsrrIGHoOXhTH9A/dr+9N
-	aL28tGpX6GbGDJgPh0g0dy8uMr18rey1sPn2p4rRQ1+WxrWUjZ3ctpFRee0VXm4w1KCxGQ
-	EPDCS3gjot23hu5SAuO+SAyPXbA4UeYa0X892r9ENve5E+UV6c/jWbJEvK4qTia2RxuRKB
-	HBzT8ql6imrYdEkz+PsneQ/hqQGSL+J08AerUIP+uZ+ToeDu5NbroR9RajCkGWWBU5ku/s
-	g5wwjQ1u2oNmwsGdmpW8w8Nc8HLS/GO1lXKZYummYDaHNEvG9PGTUUtkhhgdoQ==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 25 Sep 2025 16:29:59 +0200
-Message-Id: <DD1YBMXM5MUJ.2N2XDSIL5KN6P@bootlin.com>
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: <bhstalel@gmail.com>, <docs@lists.yoctoproject.org>
-Subject: Re: [docs][PATCH 2/2] ref-manual/classes.rst: add diagram for
- classes used by base.bbclass
-References: <20250921164306.53501-1-bhstalel@gmail.com>
- <20250921164306.53501-3-bhstalel@gmail.com>
-In-Reply-To: <20250921164306.53501-3-bhstalel@gmail.com>
-X-Last-TLS-Session-Version: TLSv1.3
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=UnqwW0/x;
+ spf=pass (domain: gmail.com, ip: 209.85.160.181, mailfrom: bhstalel@gmail.com)
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4b78f4aa547so1942131cf.3
+        for <docs@lists.yoctoproject.org>; Thu, 25 Sep 2025 07:55:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758812136; x=1759416936; darn=lists.yoctoproject.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=HTwZxMX9ts4jPoi1ZV5sEpsXiiB8j1pAsom/mibn0yo=;
+        b=UnqwW0/xgkNrJWccgbKVNb0Rm8W84/0tYUKiNtNJqatmgMaQa2iE53OG0ABxo2W0XO
+         79GBIFuLYyYC6HT8QZdYuRHoeL/GKRRFsuDglHWpzAIR4a3tEri/xn/RkqX3EKXoo3D6
+         IoJ03LApldJGaKjLE8kulKbNSbOaigoho9mC0PcCCseETFwx9R9oUE92vYmKT0LKvK/V
+         NMukb2fV9heJWPgSg7319t3exbKVEU1Pj50aorj+kgZLqL/iiE+6fMCSI1gwiNDsMrUa
+         hsVCCvEUq/Gy4M3F9leeUdtpBjJTUNB4bWHI4+ZY30ksZGQf8XtBYCc5PgWHLYOto6sZ
+         ukqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758812136; x=1759416936;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=HTwZxMX9ts4jPoi1ZV5sEpsXiiB8j1pAsom/mibn0yo=;
+        b=F2ywRRmGbms6MwfDmPZuYvlNYvoYBXfYRAIu77M0DRyhkB+M9wzZGTVGL0mBnZDFm2
+         tCwMP5dFPLNJVH34SaLvTjLF/0sOrubwiILwvi/HE41T4fSZBdDE2SOBIgHzJJ0qYcpD
+         ty0nZl6HRE2NBmFJkXmOAD2CGdAZOguUOQOT3dgJ/6N09tLfl0TZFkkt5QC9DXFWGodo
+         G6eFkMlMLeJjEMyYdMaCFXRigRYJYM+/5vfxpBqepYYmUvGLeFN0LzzrrAddcfudQMI+
+         CTiwVo+cU+px4ClaD6MGtmzP/F9VCfU9UqF1FtThdMTM8JR9eSaA9Qi3zemcDp8YOQpn
+         yXeQ==
+X-Gm-Message-State: AOJu0Yw7QXmVksCjLiZULG+QT9Z4y30UivwJ8wqkLsJfuc0WhhRNAWQc
+	QsOvvW3ki2OL1Euc1LzYqCR4MALpI1eer4ihUKGyWJ0lLHxYVZ4iGfQiBnm5uQ4cKkmDcLW4oWp
+	9oy+2K6KxYrIDJPZV6MJZabEfbrUu/YT3FZQy
+X-Gm-Gg: ASbGncsZLg4idk9ytDpdFXfXsWSJJ+voEBFPnplz0tNqQhL3b/8buMbbzg4CZKoQO+O
+	PhmmtzSJOWDzTu2cmtel/bNRINkx7BsiEmgIMsNIcDAWEHUWxRUp/hYcX1v9avZMAAiedR8brlb
+	XJBnrXIoYF0k992tD5id23cSITWO7u5Gbu3EvYmBHfXLvmEefHf2FIukxhcthnBGv7a9PRA6ToI
+	jvRTpQ=
+X-Google-Smtp-Source: AGHT+IG+dulIsWvobcb3BXiKij6irHhlq70lkLCgpMZDb563y7OR1s8FOSfn3v9S/kvcpdCXhNO+4qMMlITPPp6efn0=
+X-Received: by 2002:a05:622a:606:b0:4c4:6b67:ccec with SMTP id
+ d75a77b69052e-4da488a0571mr33636611cf.4.1758812135671; Thu, 25 Sep 2025
+ 07:55:35 -0700 (PDT)
+MIME-Version: 1.0
+References: <20250921164306.53501-1-bhstalel@gmail.com> <20250921164306.53501-2-bhstalel@gmail.com>
+ <DCZEHNS2J0WG.2PV5B9HWKUBSV@bootlin.com> <1867ACF8FB1FE7F2.23261@lists.yoctoproject.org>
+ <CAOgG7m0qPUsyWcDmvfTggN7_=cKfmOKQtQ_A7OMCFDtjSd6wXw@mail.gmail.com> <DD0BBH0D637J.242PE62ZN7FPV@bootlin.com>
+In-Reply-To: <DD0BBH0D637J.242PE62ZN7FPV@bootlin.com>
+From: Talel BELHADJ SALEM <bhstalel@gmail.com>
+Date: Thu, 25 Sep 2025 15:55:24 +0100
+X-Gm-Features: AS18NWCQBX_ZVeAQuTrAfoDVbcvy_bwZwHiNt3l_Yy9fUhVgNayEqwLHNnc-UeE
+Message-ID: <CAOgG7m3mi37XpX9QCn11TxfvP9hLsswuoLLy-X3_uzDGJn73RQ@mail.gmail.com>
+Subject: Re: [docs][PATCH 1/2] ref-manual/classes.rst: add details about
+ actions done by base.bbclass
+To: Antonin Godard <antonin.godard@bootlin.com>
+Cc: docs@lists.yoctoproject.org
+Content-Type: multipart/alternative; boundary="00000000000092d00a063fa15cdd"
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 25 Sep 2025 14:30:10 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7600
+ <docs@lists.yoctoproject.org>; Thu, 25 Sep 2025 14:55:41 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7601
 
-On Sun Sep 21, 2025 at 6:43 PM CEST, BELHADJ SALEM Talel via lists.yoctopro=
-ject.org wrote:
-> The diagram is created using draw.io, I used it also
-> to create the BitBake Tasks Map, and I was informed by
-> Michael back then to use Inkscape, but I was not successful
-> learning it, and that led to me postponing lot of
-> contributions. So, I thought contributing draw.io SVGs
-> is better than nothing, one day I will fix them with
-> Inkscape.
+--00000000000092d00a063fa15cdd
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> Signed-off-by: Talel BELHAJ SALEM <bhstalel@gmail.com>
-> ---
->  documentation/ref-manual/classes.rst           |   7 +++++++
->  .../figures/base_bbclass_inherits.png          | Bin 0 -> 168001 bytes
->  .../ref-manual/svg/base_bbclass_inherits.svg   |   4 ++++
->  3 files changed, 11 insertions(+)
->  create mode 100644 documentation/ref-manual/figures/base_bbclass_inherit=
-s.png
->  create mode 100644 documentation/ref-manual/svg/base_bbclass_inherits.sv=
-g
+Hello Antonin
+
+I fixed fonts and size of the diagram, regarding the colors palette, I am
+not sure how to do that in draw.io
+but I kept things simple and used only black, grey and white.
+I am sending a v2
+
+On Tue, Sep 23, 2025 at 5:15=E2=80=AFPM Antonin Godard <antonin.godard@boot=
+lin.com>
+wrote:
+
+> On Mon Sep 22, 2025 at 8:12 PM CEST, Talel BELHADJ SALEM wrote:
+> > I will wait for your review on the 2/2 patch before submitting v2.
+> >
+> > Kind Regards
+> > Talel
 >
-> diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-man=
-ual/classes.rst
-> index 791c6b2ef..703ad98dc 100644
-> --- a/documentation/ref-manual/classes.rst
-> +++ b/documentation/ref-manual/classes.rst
-> @@ -191,6 +191,13 @@ The following actions, among others, are handled by =
-this class:
->  - Handle the provided license via :term:`LICENSE` and :term:`LIC_FILES_C=
-HKSUM` variables
->  - Prepare the native recipe that correspond to the scheme set in :term:`=
-SRC_URI`
-> =20
-> +Besides that, the :ref:`ref-classes-base` class inherits more classes to=
- provide more
-> +utilities, set up toolchain variables, add more tasks, and more. The fol=
-lowing diagram
-> +shows how :ref:`ref-classes-base` is related to other classes:
-> +
-> +.. image:: figures/base_bbclass_inherits.png
+> Feel free to send the first one separately. It's not strictly related to
+> the
+> second one if I understood correctly.
+>
+> Reviewing the diagram will take a bit more time.
+>
+> One remark I just had is that we would need to stick with the Yocto Proje=
+ct
+> color scheme, fonts, etc. See:
+>
+> https://git.yoctoproject.org/yocto-docs/tree/documentation/standards.md#n=
+173
+>
+> Thanks,
+> Antonin
+>
+> --
+> Antonin Godard, Bootlin
+> Embedded Linux and Kernel engineering
+> https://bootlin.com
+>
+>
 
-Other places that use SVGs make the following call:
+--00000000000092d00a063fa15cdd
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-  .. image:: svg/base_bbclass_inherits.*
-     :width: 100%
+<div dir=3D"ltr">Hello Antonin<div><br></div><div>I fixed fonts and size of=
+ the diagram, regarding the colors palette, I am not sure how to do that in=
+ <a href=3D"http://draw.io">draw.io</a></div><div>but I kept things simple =
+and used only black, grey and white.</div><div>I am sending a v2</div></div=
+><br><div class=3D"gmail_quote gmail_quote_container"><div dir=3D"ltr" clas=
+s=3D"gmail_attr">On Tue, Sep 23, 2025 at 5:15=E2=80=AFPM Antonin Godard &lt=
+;<a href=3D"mailto:antonin.godard@bootlin.com">antonin.godard@bootlin.com</=
+a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0p=
+x 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">On=
+ Mon Sep 22, 2025 at 8:12 PM CEST, Talel BELHADJ SALEM wrote:<br>
+&gt; I will wait for your review on the 2/2 patch before submitting v2.<br>
+&gt;<br>
+&gt; Kind Regards<br>
+&gt; Talel<br>
+<br>
+Feel free to send the first one separately. It&#39;s not strictly related t=
+o the<br>
+second one if I understood correctly.<br>
+<br>
+Reviewing the diagram will take a bit more time.<br>
+<br>
+One remark I just had is that we would need to stick with the Yocto Project=
+<br>
+color scheme, fonts, etc. See:<br>
+<a href=3D"https://git.yoctoproject.org/yocto-docs/tree/documentation/stand=
+ards.md#n173" rel=3D"noreferrer" target=3D"_blank">https://git.yoctoproject=
+.org/yocto-docs/tree/documentation/standards.md#n173</a><br>
+<br>
+Thanks,<br>
+Antonin<br>
+<br>
+-- <br>
+Antonin Godard, Bootlin<br>
+Embedded Linux and Kernel engineering<br>
+<a href=3D"https://bootlin.com" rel=3D"noreferrer" target=3D"_blank">https:=
+//bootlin.com</a><br>
+<br>
+</blockquote></div>
 
-Can you use that instead? It will render the file as non-pixelated in the h=
-tml
-page, which is nicer.
-
-> +   :align: center
-
-Some comments on the diagram:
-
-- I think it's great, it shows what you described in the the line above, i.=
-e.
-  the graph of inheritance.
-
-- I'm not sure representing the classes-global/ and classes/ directories ad=
-d
-  much to the diagram. In fact, I would remove the directories here and jus=
-t
-  represent the inheritance between classes.
-
-- This class can evolve over time, and maybe more classes will be inherited=
- in
-  the future. So I don't think we need to be exhaustive here. Instead I wou=
-ld do
-  something like:
-
-  base.bbclass --------------------> patch.bbclass
-                inherit          |-> staging.bbclass
-                                 |-> mirrors.bbclass
-                                 |-> utils.bbclass
-                                 |-> utility-tasks.bbclass
-                                 |-> logging.bbclass
-                                 \-> ...
-
-  This is just to give the idea of including the "..." at the end. Users ca=
-n read
-  the file if they want the exaustive list.
-
-- I would not include the terminal.bbclass inherit. Classes can include oth=
-er
-  classes but I think the main point of this diagram is to show the basic
-  inherits of the base class.
-
-- I like the TOOLCHAIN/TOOLCHAIN_NATIVE mention.
-
->  .. _ref-classes-bash-completion:
-> =20
->  ``bash-completion``
-> diff --git a/documentation/ref-manual/figures/base_bbclass_inherits.png b=
-/documentation/ref-manual/figures/base_bbclass_inherits.png
-
-No need to include the PNG here. SVGs are automatically converted to PNGs.
-
-[...]
-> diff --git a/documentation/ref-manual/svg/base_bbclass_inherits.svg b/doc=
-umentation/ref-manual/svg/base_bbclass_inherits.svg
-> new file mode 100644
-> index 000000000..f223eb4d1
-> --- /dev/null
-> +++ b/documentation/ref-manual/svg/base_bbclass_inherits.svg
-> @@ -0,0 +1,4 @@
-> +<?xml version=3D"1.0" encoding=3D"UTF-8"?>
-> +<!-- Do not edit this file with editors other than draw.io -->
-
-Hmm... if we really can't open that with Inkscape that's a problem from
-maintenance :/ I tried opening it with inkscape and indeed, I can't edit th=
-e
-text and so on. Maybe there's an option in draw.io for exporting for other
-editors? Otherwise sadly we can't merge this, as we wouldn't be able to
-maintain it easily.
-
-Thanks,
-Antonin
-
---=20
-Antonin Godard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
+--00000000000092d00a063fa15cdd--
 
