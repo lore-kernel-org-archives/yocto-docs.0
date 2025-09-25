@@ -2,101 +2,103 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6E27DCAC5B3
-	for <webhook@archiver.kernel.org>; Thu, 25 Sep 2025 07:29:27 +0000 (UTC)
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by mx.groups.io with SMTP id smtpd.web10.5653.1758785357390875539
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F36C4CAC5A5
+	for <webhook@archiver.kernel.org>; Thu, 25 Sep 2025 08:51:57 +0000 (UTC)
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by mx.groups.io with SMTP id smtpd.web10.6660.1758790311725239474
  for <docs@lists.yoctoproject.org>;
- Thu, 25 Sep 2025 00:29:18 -0700
+ Thu, 25 Sep 2025 01:51:53 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=fSqs8Dps;
- spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=MKBOj/7u;
+ spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 137514E40DD4;
-	Thu, 25 Sep 2025 07:29:16 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id DECAA1A0FBB
+	for <docs@lists.yoctoproject.org>; Thu, 25 Sep 2025 08:51:49 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id DEDD36062C;
-	Thu, 25 Sep 2025 07:29:15 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0B218102F1881;
-	Thu, 25 Sep 2025 09:29:15 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id B44FD6062C;
+	Thu, 25 Sep 2025 08:51:49 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4E2A6102F187A;
+	Thu, 25 Sep 2025 10:51:47 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1758785355; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1758790308; h=from:subject:date:message-id:to:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=Pzm3PsFn0nZyR7D8wCdz0U1mVgaBDCen9XyBEyAaVbE=;
-	b=fSqs8DpsizWlozkVWp5zbTDf7OhBLRflW4chT0IYg/4Gp+mgsIMxD4HR4Zkdv/nUdtLhcN
-	UtTAW8ICDwWj3zgXXHxY6IPMlcn73+c+YKRDqIF5W/y22em9cNqKorISGTEgtTK0T7cyhr
-	Lqa1sQRniL3qGpzbAuE3XukPtTFds+puMjOO7foIIgYo/4qhpExX6FlkAwQMMJ/3wHUdcG
-	Jr6X9wnKFu6CfIx9Xvj0EGxNNjRkZvGPtT58vxH2mHJxKFtIsjKVyjkjocF9Bu3T+kjYU2
-	Ghxgc+skF99LzftWAv50ENaYj6Wwjar7E12c3xFtJmdosm7fpw6OIhVnR1T4yQ==
-From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Thu, 25 Sep 2025 09:28:53 +0200
-Subject: [PATCH 1/2] ref-manual/structure: document the auto.conf file
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250925-fragments-v1-1-c9f747361fb2@bootlin.com>
-References: <20250925-fragments-v1-0-c9f747361fb2@bootlin.com>
-In-Reply-To: <20250925-fragments-v1-0-c9f747361fb2@bootlin.com>
-To: docs@lists.yoctoproject.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Tim Orling <tim.orling@konsulko.com>, 
- Alexander Kanavin <alex.kanavin@gmail.com>, 
- Antonin Godard <antonin.godard@bootlin.com>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1117;
- i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=pumsJEGfIVbLcWpi+Ml86tx/umSI6Sxp+U/8B/ftV5Q=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBo1O9Bb06jlXh0L3aanTauG7gcy6rX3t6Ee3uE1
- N/k1hW/5TGJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaNTvQQAKCRDRgEFAKaOo
- NhegD/9dSBrJLM5Ih5vBnWHY24CimOwiyyWtwAhEEWI2FkLbvM/REimusVYnOrbA3vljSlzoOgT
- hkiTRsT25BbKL0kFaMsqq791ZKP5D2sUNXc80uIQmScbAXsrktUwBIzngZVjrJoLd0dn9RL9QsI
- L7p1rRWCX2I02OK9WxPV8uzrJ9XpkU1y5OYOE0sgX9tw3c4C2MWv+oXu/Bq7dxQ34e3oCl9dfku
- +C0NcvbOxfVSrr3gZYNoWIGEldSuvBFY6JO5QTU7JxLzxIo11ZR4nEy0YCzQ9L7xpuiafoXHWai
- 6GyDVUO6au6B5Z0E13HK5uC6WFjmb6JWqFqzdKj8UQeoPB9jL/thKD4sglJ4vsOxBJoVPt7GUPM
- CawKTWZeL8JPrAiMPv/HJw3cdYhPORM5Z3MdGE13cObmyjQ2oPaXT5SmEuyPsQ9RSmegoF73Cw1
- 3hKgMakJvmu49Ig+1u93AkFzfnKUww9r0Pjlcl9qLXkwE3qhSbF74v8AoZLBJSubQntbNIFNtfO
- kvdyPt2bdjQNJqJleoZbMJ5+LYV9N9if+eywD4rPv0tTYPg0LhFELogztmNyHQGAchRSRE6PDEb
- VwT0irIFsMMBsskULVjYz1Fwa+sdUBqKlfF88y6gF97u8QKdpsFhYPe73f/WzwXXxq7g0GUANCW
- M+zt8q+VIuXAINg==
-X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
- fpr=8648725188DD401BB9A0D3FFD180414029A3A836
+	bh=LXmfCBj0nu30tNCmab/nH23I+0v5s2x9TLM3KghgLl4=;
+	b=MKBOj/7uiZZROcZagiWpLhIUc5lSDYiUWkDXXNLOO5+35lsRapccCzWRScol3VRjkGgr9x
+	mBpUmvjCHL6YlUib4UlTSF+CHoInnBXp/CMvOdHA+ss7aF27PC2DhVGLKDYz04ITbdIhRw
+	JwnVUUtKWL9WVpRPNa1dTAwgzHyBmHu2+pBhPQxg9PlYkk/3s5tL9pwaoXT5DUHGP4tzNb
+	lwrg/BQIUHUL+Tdy7Q2PVzjG867kx1NlhAD1aNVC/0IYG7I0cmzZ+NQ/o8DORqoJp2RcHQ
+	v2ajYCQ4LFo5koGTTCAHkZO6F51dGEcW2lovKxpG4Ih2TyYjmUEBKOjFrf8R1Q==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 25 Sep 2025 10:51:46 +0200
+Message-Id: <DD1R4OC249CA.3QCJ0Q1LI5ELE@bootlin.com>
+Subject: Re: [docs] [PATCH 1/2] kernel-dev/common.rst: fix the in-tree
+ defconfig description
+From: "Antonin Godard" <antonin.godard@bootlin.com>
+To: <adam.blank.g@gmail.com>, <docs@lists.yoctoproject.org>
+References: <20250923121422.24593-1-adam.blank.g@gmail.com>
+ <20250923121422.24593-2-adam.blank.g@gmail.com>
+In-Reply-To: <20250923121422.24593-2-adam.blank.g@gmail.com>
 X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 25 Sep 2025 07:29:27 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7592
+ <docs@lists.yoctoproject.org>; Thu, 25 Sep 2025 08:51:57 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7594
 
-Add documentation for auto.conf, which is used by external tools for
-automatically setting variables.
+On Tue Sep 23, 2025 at 2:14 PM CEST, Adam Blank via lists.yoctoproject.org =
+wrote:
+> The description of the relation between KBUILD_DEFCONFIG and
+> SRC_URI is reversed. In fact it is the SRC_URI provided
+> defconfig which will be dropped by the kernel-yocto class
+> if both are provided.
+>
+> Signed-off-by: Adam Blank <adam.blank.g@gmail.com>
+> ---
+>  documentation/kernel-dev/common.rst | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/documentation/kernel-dev/common.rst b/documentation/kernel-d=
+ev/common.rst
+> index 654c4e0a0..c7b25765a 100644
+> --- a/documentation/kernel-dev/common.rst
+> +++ b/documentation/kernel-dev/common.rst
+> @@ -655,7 +655,7 @@ Aside from modifying your kernel recipe and providing=
+ your own
+>  :term:`SRC_URI` to use a ``defconfig`` other than your "in-tree" file (e=
+.g.
+>  a kernel's ``linux-``\ `machine`\ ``.inc`` file). In other words, if the
+>  build system detects a statement that identifies an "out-of-tree"
+> -``defconfig`` file, that statement will override your
+> +``defconfig`` file, that statement will be overriden by your
 
-Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
----
- documentation/ref-manual/structure.rst | 9 +++++++++
- 1 file changed, 9 insertions(+)
+s/overriden/overridden/
 
-diff --git a/documentation/ref-manual/structure.rst b/documentation/ref-manual/structure.rst
-index c9c44bc63..ef6523ed8 100644
---- a/documentation/ref-manual/structure.rst
-+++ b/documentation/ref-manual/structure.rst
-@@ -345,6 +345,15 @@ This configuration file is generated by :doc:`bblock </dev-manual/bblock>` and
- contains the signatures locked by ``bblock``. By default, it does not exist
- and will be created upon the first invocation of ``bblock``.
- 
-+.. _structure-build-conf-auto.conf:
-+
-+``build/conf/auto.conf``
-+------------------------
-+
-+This file contains configuration variables that are automatically modified by
-+tools such as :oe_git:`bitbake-config-build </bitbake/tree/bin/bitbake-config-build>`.
-+This file should not be modified manually.
-+
- .. _structure-build-downloads:
- 
- ``build/downloads/``
+Thanks, I can also verify that behavior so the logic is indeed reverted.
 
--- 
-2.51.0
+In this case I think the previous sentence should also be removed:
+
+  Aside from modifying your kernel recipe and providing your own ``defconfi=
+g``
+  file, you need to be sure no files or statements set :term:`SRC_URI` to u=
+se a
+  ``defconfig`` other than your "in-tree" file (e.g. a kernel's ``linux-``\
+  `machine`\ ``.inc`` file).
+
+And instead only have one:
+
+  If the build system detects a statement that identifies an "out-of-tree"
+  ``defconfig`` file, that statement will be overriden by your
+  :term:`KBUILD_DEFCONFIG` variable.
+
+What do you think?
+
+Antonin
+
+--=20
+Antonin Godard, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
