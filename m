@@ -1,148 +1,106 @@
-Return-Path: <bhstalel@gmail.com>
+Return-Path: <richard.purdie@linuxfoundation.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 45F29CCA468
-	for <webhook@archiver.kernel.org>; Tue, 30 Sep 2025 11:19:00 +0000 (UTC)
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
- by mx.groups.io with SMTP id smtpd.web10.23046.1759231133574737800
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2975DCCA470
+	for <webhook@archiver.kernel.org>; Tue, 30 Sep 2025 13:40:41 +0000 (UTC)
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+ by mx.groups.io with SMTP id smtpd.web11.25542.1759239637475346739
  for <docs@lists.yoctoproject.org>;
- Tue, 30 Sep 2025 04:18:53 -0700
+ Tue, 30 Sep 2025 06:40:37 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=YZ3JOpVZ;
- spf=pass (domain: gmail.com, ip: 209.85.160.181, mailfrom: bhstalel@gmail.com)
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4dffec0f14eso1819211cf.0
-        for <docs@lists.yoctoproject.org>; Tue, 30 Sep 2025 04:18:53 -0700 (PDT)
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=VNzuM0mN;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.128.47, mailfrom: richard.purdie@linuxfoundation.org)
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-46e42deffa8so51190765e9.0
+        for <docs@lists.yoctoproject.org>; Tue, 30 Sep 2025 06:40:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759231132; x=1759835932; darn=lists.yoctoproject.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=XWulUT7M19YFfNl/3+uqWJG4cUjIqaMwSYhNgvlUKBg=;
-        b=YZ3JOpVZET1KE1CEKPWJUNk3Nv34d3qDJGw2ZkkvLysJ7X0RQF/8ssdDRUPovdQXQB
-         DfX7W8w8jbaesHWby8If1+NjUgVB+iJPFbFYw2Q/dkoQ1POqj0xEdE3GH8oQLm4c/Lo0
-         tH//zI1XI6MEyiSW6qnu6OQ7yh/j7cXjF3BQuRE8//BpDgbdkEsK14l3Z/s5HIOgBpM+
-         PtfH18epFoPurzayAYsmrIYjNj//6v/YB7c4E7YIdCp/wLiIHgFkcar9m38F71ftE5PW
-         ecPtIFunH1piS5qVsLs+/du557u6nHNSPxVd+dTGYWkEwqVALx262sqfI3AwAjjlvK/a
-         WZeQ==
+        d=linuxfoundation.org; s=google; t=1759239635; x=1759844435; darn=lists.yoctoproject.org;
+        h=mime-version:user-agent:content-transfer-encoding:date:cc:to:from
+         :subject:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=RSECzYKe8rIQe472OhMry5bXQ/UTnNSs0ycjeJxSn0o=;
+        b=VNzuM0mNUr+lkhiC8ZEWzTnNR+U7b6mMyIxvdfGmNt1KWpNbTEYW/lrQCp/9Q68qj8
+         WCgcP7eFe0HCxKhviltEl6FunpQ9iUXp2vTpq6C/Jel5vITl9pp3f9WwnUbsphl48JM6
+         kVlY46yk7zVJNlpG5ULnpdqUHKqbqLWDF8Pmo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759231132; x=1759835932;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=XWulUT7M19YFfNl/3+uqWJG4cUjIqaMwSYhNgvlUKBg=;
-        b=F+kBBc4zFD56XpsnPmmqp2dXOTTaxKuYSpzDKHdx5E8hq7h3AAVrrPQ42cGMEqlK0H
-         5eZEW5t8HlqcENMmhOilt2KF8C7/Kkv9M/OHxj5pAqFNdUi6zHbilJqzidCyO0VMqNuu
-         zIHXXG+Qgvx66HVdaIxY+8rytZH9GIDL6411LI8LNCX96LBcCBMYbH3/Q3XzZlcrz7Zg
-         fPNeiAJzNGsMecp8BlYnlCB6B4S97ee7QB+/p6TKtqzpNNnZOi3rtdHuzh7DaWpErzlC
-         zhZ1xG57A0ZUWx8Z0MkcWfJhsrVg0ByykpZM8XohTyaLdW4o3N4oVgQv/+EKuQu0bT7F
-         K49Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVz1C+5fkmlvnBjBfSZBjoQAV8+WUHmydjEBWdXU4wkF4XMBmYUbl9pTF1PWVpWwSR3k+xe@lists.yoctoproject.org
-X-Gm-Message-State: AOJu0Yz5x7iInLfb/32Jbt4IS4BNXxyGyNPqGkhB+BGgQQyF1NUa3+xW
-	luDK4mg+QS+jCvV562yuIgZevdIYYvc3MeI4ZU/GvWVRRsQX2BUqj/gNL3nDj8hEmtBUacMGfEB
-	xgFrfRrJKTk/BOL0etf8EzsUyfAA/f4U=
-X-Gm-Gg: ASbGnctJcx+odHICQqZ+K6805e0DIwUS16sK3IbWd12PHPBnhgIM387gYUfEbcDHbZw
-	67Sb4TflzXILK/Xh6Z5qhDufpt+MLk9YJi3HJH5WukdBOYdj9/bX9/q35aMJcrAvUFfbLHI2iE/
-	F0SyCHWYtdF3PHwjZ8sazb5OgF83Rgmr7MtJvuqTOYAshimvMuHsl2P0nLBw6dASIdkzBPwcE5H
-	qpN2X3bvDmZrkLRitxJzJ7oM7pkbeh7DZBD3A7PDnLZiZDbHlUIfVoQ03wQ3irFr+7ZKlnMvukC
-X-Google-Smtp-Source: AGHT+IEyeC5uHuKk5+z9i3IwvVTMkn6C+v4a5Hp+vc6y6ogPnJXKgFhTUbmm5HmeNeBft0MyepyATbe2VYYrpTP70EM=
-X-Received: by 2002:a05:622a:289:b0:4b5:f4c0:60b with SMTP id
- d75a77b69052e-4da4bbe3625mr168830751cf.11.1759231132392; Tue, 30 Sep 2025
- 04:18:52 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1759239635; x=1759844435;
+        h=mime-version:user-agent:content-transfer-encoding:date:cc:to:from
+         :subject:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RSECzYKe8rIQe472OhMry5bXQ/UTnNSs0ycjeJxSn0o=;
+        b=ky6biOGNhpFAkuF41A6aah8VQFEt/RQJ55w9eBeMI4J4lMGJWKGUbpJmEPQXW0wmZ4
+         fb/nGIMGG/suevAehYbEViGTdpOZUGUdx4QnJuAHy+Ez5Z1ohwWh3mfcCKyc/fgb1P0M
+         tVD8lcxqWndLA+Dqt5jZXTzknJ6hBzguqbfd5129Hth7MuMYTRN8hixWshen7TfIBUOQ
+         0O90DULM6oOr9FNiLBOLvxj+90Fl4PyWumgH7ctFz5VgLrobOIKM65vPVsHhRXeW0WIB
+         cR+VYlWKg6o1QxAuSMugwWBL1b6N481J1UC9LZuGqhQ+M6JrLfYMIQoKg7k78OCrzNDE
+         k3hg==
+X-Gm-Message-State: AOJu0Yzr4BSe40Ti2POWGpd6YrXiAPfIOzpDUYWOpNA4gooQLzhAPil7
+	orDHlFWDCfhb1bUyUXL/y1dJ6OB6W7tsT278oDqzo/UgI7NtT3y08Zr3lexnONRahqdtWUFh7Lx
+	y8n3I
+X-Gm-Gg: ASbGnctOJpo3IU8lNbvQhZzym8FyV31GEJz6JTHmy1LVSmdXfyVmBhMG9L4kE7vGimb
+	lhFU86CzEz6uV2RJwzCWnJrhJ/MSliUW8HjAf5jw2IDkQCi1uBY4mWcDV+D+EMYWNR5srCrCejM
+	LZaGHfipU9tEpDgjT4Z7UZMLagXbpIyva9V2eXuSWo0WsDMstjgYW47nWLbmRYX9iTryIkTT4Ed
+	pEDUYLOUD/CL6kJGVxwNafekrjSEMtvtqnByjQ1hgrJjBDh1Rvs1aoJzkoqY5lste+bAac2wY2H
+	3bBHFy01Kuzkqu/7aj7zmrXZTrg008p/jps4pEI79whwn7q8Qr+8/vg849YjzJGurn1g8HbArgg
+	yhn4unrf+zipBMAq8isvsBRK1p6ir5IHGWqOgsGwRVISzsVWtmB+WhSZ8ehpLUOE6ko4x5Bqcam
+	5dCirhKfWn/m/Tm6Dxl1D5tCW7CzWJonIkupuk4936la0=
+X-Google-Smtp-Source: AGHT+IG2Rdd1YCl8KWNzy9e6/qbQBZRDtbTUlanfcMhBcpKVPdmFfj7d8XcoSGokTLYxz66Prim+7w==
+X-Received: by 2002:a05:600c:6296:b0:46e:2330:e959 with SMTP id 5b1f17b1804b1-46e32a2bd38mr197853585e9.37.1759239635220;
+        Tue, 30 Sep 2025 06:40:35 -0700 (PDT)
+Received: from ?IPv6:2001:8b0:aba:5f3c:55be:9f8:6c8b:6835? ([2001:8b0:aba:5f3c:55be:9f8:6c8b:6835])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46e56ee6b19sm66624375e9.0.2025.09.30.06.40.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Sep 2025 06:40:34 -0700 (PDT)
+Message-ID: <061e6150ce177221f7b6ee8754b03a20347a92c3.camel@linuxfoundation.org>
+Subject: Notes for uninative.bbclass doc enhancement
+From: Richard Purdie <richard.purdie@linuxfoundation.org>
+To: docs <docs@lists.yoctoproject.org>, "antonin.godard"
+	 <antonin.godard@bootlin.com>
+Cc: Ross Burton <ross.burton@arm.com>
+Date: Tue, 30 Sep 2025 14:40:33 +0100
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.0-1 
 MIME-Version: 1.0
-References: <20250921164306.53501-1-bhstalel@gmail.com> <20250921164306.53501-3-bhstalel@gmail.com>
- <DD1YBMXM5MUJ.2N2XDSIL5KN6P@bootlin.com> <d81a1245-ad48-49e2-ad01-111102059a54@gmail.com>
-In-Reply-To: <d81a1245-ad48-49e2-ad01-111102059a54@gmail.com>
-From: Talel BELHADJ SALEM <bhstalel@gmail.com>
-Date: Tue, 30 Sep 2025 12:18:40 +0100
-X-Gm-Features: AS18NWDbKF_TCtWJcYhuaGJf2Wtczmvi5lR72tUU4V4phiW9iNuqkS9sd2DDVo4
-Message-ID: <CAOgG7m3FSG44kT_2j5kpMkShDwjjW60LoSABijLAGDQjibAQgg@mail.gmail.com>
-Subject: Re: [docs][PATCH 2/2] ref-manual/classes.rst: add diagram for classes
- used by base.bbclass
-To: Gyorgy Sarvari <skandigraun@gmail.com>
-Cc: antonin.godard@bootlin.com, docs@lists.yoctoproject.org
-Content-Type: multipart/alternative; boundary="000000000000b9604e064002ea89"
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 30 Sep 2025 11:19:00 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7629
+ <docs@lists.yoctoproject.org>; Tue, 30 Sep 2025 13:40:41 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7630
 
---000000000000b9604e064002ea89
-Content-Type: text/plain; charset="UTF-8"
+I was asked some questions about uninative, I've tried to write
+something to enhance the class documentation on it:
 
-Hello,
+"""
+Uninative allows binaries to run on systems with older or newer glibc
+versions. This means native recipe sstate can be shared among different
+distros of different versions, i.e. the sstate cache is 'universal'.
 
-It seems that Inkspace really requires time to learn, it is not easy as
-draw.io or other platforms.
+To allow this to work, we change the dynamic loader to our own ld.so
+when binaries are compiled using the --dynamic-linker option. This
+means when the binary is executed, it finds our own ld.so and that
+loader has a modified search path which finds a newer glibc version.
 
-I planned to add lot of diagrams as the documentation is really missing
-diagrams.
+We don't change the linking of the binaries at link time since the
+headers on the system wouldn't match the newer glibc and this causes
+obtuse failures. Changing the loader is effectively the same as if the
+system had a glibc upgrade after the binary was compiled, so it is a
+mechanism supported by upstream.
 
-I have to learn Inkscape then.
+One caveat to this approach is that the uninative glibc binary must be
+equal to or newer in version to the versions on all the systems  using
+the common sstate cache. This is why we upgrade uninative regularly and
+on our stable branches too.
 
-Thanks anyways for the review.
-Kind regards
-Talel
+Another potential issue is static linking. Static libraries created on
+a system with a new glibc version may have symbols not present in older
+versions, which would then fail during linking on older systems. This
+is one reason we don't use static linking for our native binaries.
+"""
 
-On Thu, 25 Sep 2025 at 19:00 Gyorgy Sarvari <skandigraun@gmail.com> wrote:
+I'm hoping this is useful info and simple to extend
+https://docs.yoctoproject.org/ref-manual/classes.html#uninative with.
 
-> On 9/25/25 16:29, Antonin Godard via lists.yoctoproject.org wrote:
-> > On Sun Sep 21, 2025 at 6:43 PM CEST, BELHADJ SALEM Talel via
-> lists.yoctoproject.org wrote:
-> > Hmm... if we really can't open that with Inkscape that's a problem from
-> > maintenance :/ I tried opening it with inkscape and indeed, I can't edit
-> the
-> > text and so on. Maybe there's an option in draw.io for exporting for
-> other
-> > editors? Otherwise sadly we can't merge this, as we wouldn't be able to
-> > maintain it easily.
-> >
-> >
-> As a test, when exporting as svg from draw.io, try to uncheck all the
-> "Embed foo" checkboxes - that usually produces a more SVG-like SVG
-> (instead of embedding raster-graphics and similar shenanigans)
->
+Cheers,
 
---000000000000b9604e064002ea89
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"auto">Hello,</div><div dir=3D"auto"><br></div><div dir=3D"auto"=
->It seems that Inkspace really requires time to learn, it is not easy as <a=
- href=3D"http://draw.io">draw.io</a> or other platforms.</div><div dir=3D"a=
-uto"><br></div><div dir=3D"auto">I planned to add lot of diagrams as the do=
-cumentation is really missing diagrams.</div><div dir=3D"auto"><br></div><d=
-iv dir=3D"auto">I have to learn Inkscape then.</div><div dir=3D"auto"><br><=
-/div><div dir=3D"auto">Thanks anyways for the review.</div><div dir=3D"auto=
-">Kind regards</div><div dir=3D"auto">Talel</div><div><br><div class=3D"gma=
-il_quote gmail_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">On Th=
-u, 25 Sep 2025 at 19:00 Gyorgy Sarvari &lt;<a href=3D"mailto:skandigraun@gm=
-ail.com">skandigraun@gmail.com</a>&gt; wrote:<br></div><blockquote class=3D=
-"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left-width:1px;borde=
-r-left-style:solid;padding-left:1ex;border-left-color:rgb(204,204,204)">On =
-9/25/25 16:29, Antonin Godard via <a href=3D"http://lists.yoctoproject.org"=
- rel=3D"noreferrer" target=3D"_blank">lists.yoctoproject.org</a> wrote:<br>
-&gt; On Sun Sep 21, 2025 at 6:43 PM CEST, BELHADJ SALEM Talel via <a href=
-=3D"http://lists.yoctoproject.org" rel=3D"noreferrer" target=3D"_blank">lis=
-ts.yoctoproject.org</a> wrote:<br>
-&gt; Hmm... if we really can&#39;t open that with Inkscape that&#39;s a pro=
-blem from<br>
-&gt; maintenance :/ I tried opening it with inkscape and indeed, I can&#39;=
-t edit the<br>
-&gt; text and so on. Maybe there&#39;s an option in <a href=3D"http://draw.=
-io" rel=3D"noreferrer" target=3D"_blank">draw.io</a> for exporting for othe=
-r<br>
-&gt; editors? Otherwise sadly we can&#39;t merge this, as we wouldn&#39;t b=
-e able to<br>
-&gt; maintain it easily.<br>
-&gt;<br>
-&gt;<br>
-As a test, when exporting as svg from <a href=3D"http://draw.io" rel=3D"nor=
-eferrer" target=3D"_blank">draw.io</a>, try to uncheck all the<br>
-&quot;Embed foo&quot; checkboxes - that usually produces a more SVG-like SV=
-G<br>
-(instead of embedding raster-graphics and similar shenanigans)<br>
-</blockquote></div></div>
-
---000000000000b9604e064002ea89--
+Richard
 
