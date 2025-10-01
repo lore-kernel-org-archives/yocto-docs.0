@@ -1,106 +1,90 @@
-Return-Path: <richard.purdie@linuxfoundation.org>
+Return-Path: <adam.blank.g@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2975DCCA470
-	for <webhook@archiver.kernel.org>; Tue, 30 Sep 2025 13:40:41 +0000 (UTC)
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
- by mx.groups.io with SMTP id smtpd.web11.25542.1759239637475346739
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C212BCAC5BB
+	for <webhook@archiver.kernel.org>; Wed,  1 Oct 2025 13:46:57 +0000 (UTC)
+Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
+ by mx.groups.io with SMTP id smtpd.web10.18325.1759326409474934842
  for <docs@lists.yoctoproject.org>;
- Tue, 30 Sep 2025 06:40:37 -0700
+ Wed, 01 Oct 2025 06:46:49 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=VNzuM0mN;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.128.47, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-46e42deffa8so51190765e9.0
-        for <docs@lists.yoctoproject.org>; Tue, 30 Sep 2025 06:40:37 -0700 (PDT)
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=VcB/CPjN;
+ spf=pass (domain: gmail.com, ip: 209.85.219.54, mailfrom: adam.blank.g@gmail.com)
+Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-7960d69f14bso39057176d6.2
+        for <docs@lists.yoctoproject.org>; Wed, 01 Oct 2025 06:46:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1759239635; x=1759844435; darn=lists.yoctoproject.org;
-        h=mime-version:user-agent:content-transfer-encoding:date:cc:to:from
-         :subject:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=RSECzYKe8rIQe472OhMry5bXQ/UTnNSs0ycjeJxSn0o=;
-        b=VNzuM0mNUr+lkhiC8ZEWzTnNR+U7b6mMyIxvdfGmNt1KWpNbTEYW/lrQCp/9Q68qj8
-         WCgcP7eFe0HCxKhviltEl6FunpQ9iUXp2vTpq6C/Jel5vITl9pp3f9WwnUbsphl48JM6
-         kVlY46yk7zVJNlpG5ULnpdqUHKqbqLWDF8Pmo=
+        d=gmail.com; s=20230601; t=1759326408; x=1759931208; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=/J18el0xMEKwCJ9ium+LLjp90fvibgGgslt/cIitDIo=;
+        b=VcB/CPjNoZ57xvUGWZXQ0LbATlscz98VwceETnMAlMIoITdC23OXoy8IBTa04uSy1G
+         oVmwX0v58bHtj1bID2IgDMqCK26JRwTXTwnuxaQ5hBi/8OwUbgsw7ivGnC3M7qu2sYmS
+         gUqStMPvb8oN7JP5Z8HM8zR9rDOrG9mdTxz7LLkPhAB2R3Jvhpp7hfN2OI8+ZmR+DL0d
+         N+W0ddMZy1Af1mXt1EKcolhPFjPoDTAD3oL8EnuxQ/2Y32S5aSuedGNA8uMcKasXHqPk
+         zOQFoAVo0WZQFbymTQvIeF+T1jCGLvwNvKcxIuYxFsVLSE0ossIjkq+R+j3e/9droj1a
+         Ma6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759239635; x=1759844435;
-        h=mime-version:user-agent:content-transfer-encoding:date:cc:to:from
-         :subject:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RSECzYKe8rIQe472OhMry5bXQ/UTnNSs0ycjeJxSn0o=;
-        b=ky6biOGNhpFAkuF41A6aah8VQFEt/RQJ55w9eBeMI4J4lMGJWKGUbpJmEPQXW0wmZ4
-         fb/nGIMGG/suevAehYbEViGTdpOZUGUdx4QnJuAHy+Ez5Z1ohwWh3mfcCKyc/fgb1P0M
-         tVD8lcxqWndLA+Dqt5jZXTzknJ6hBzguqbfd5129Hth7MuMYTRN8hixWshen7TfIBUOQ
-         0O90DULM6oOr9FNiLBOLvxj+90Fl4PyWumgH7ctFz5VgLrobOIKM65vPVsHhRXeW0WIB
-         cR+VYlWKg6o1QxAuSMugwWBL1b6N481J1UC9LZuGqhQ+M6JrLfYMIQoKg7k78OCrzNDE
-         k3hg==
-X-Gm-Message-State: AOJu0Yzr4BSe40Ti2POWGpd6YrXiAPfIOzpDUYWOpNA4gooQLzhAPil7
-	orDHlFWDCfhb1bUyUXL/y1dJ6OB6W7tsT278oDqzo/UgI7NtT3y08Zr3lexnONRahqdtWUFh7Lx
-	y8n3I
-X-Gm-Gg: ASbGnctOJpo3IU8lNbvQhZzym8FyV31GEJz6JTHmy1LVSmdXfyVmBhMG9L4kE7vGimb
-	lhFU86CzEz6uV2RJwzCWnJrhJ/MSliUW8HjAf5jw2IDkQCi1uBY4mWcDV+D+EMYWNR5srCrCejM
-	LZaGHfipU9tEpDgjT4Z7UZMLagXbpIyva9V2eXuSWo0WsDMstjgYW47nWLbmRYX9iTryIkTT4Ed
-	pEDUYLOUD/CL6kJGVxwNafekrjSEMtvtqnByjQ1hgrJjBDh1Rvs1aoJzkoqY5lste+bAac2wY2H
-	3bBHFy01Kuzkqu/7aj7zmrXZTrg008p/jps4pEI79whwn7q8Qr+8/vg849YjzJGurn1g8HbArgg
-	yhn4unrf+zipBMAq8isvsBRK1p6ir5IHGWqOgsGwRVISzsVWtmB+WhSZ8ehpLUOE6ko4x5Bqcam
-	5dCirhKfWn/m/Tm6Dxl1D5tCW7CzWJonIkupuk4936la0=
-X-Google-Smtp-Source: AGHT+IG2Rdd1YCl8KWNzy9e6/qbQBZRDtbTUlanfcMhBcpKVPdmFfj7d8XcoSGokTLYxz66Prim+7w==
-X-Received: by 2002:a05:600c:6296:b0:46e:2330:e959 with SMTP id 5b1f17b1804b1-46e32a2bd38mr197853585e9.37.1759239635220;
-        Tue, 30 Sep 2025 06:40:35 -0700 (PDT)
-Received: from ?IPv6:2001:8b0:aba:5f3c:55be:9f8:6c8b:6835? ([2001:8b0:aba:5f3c:55be:9f8:6c8b:6835])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46e56ee6b19sm66624375e9.0.2025.09.30.06.40.34
+        d=1e100.net; s=20230601; t=1759326408; x=1759931208;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/J18el0xMEKwCJ9ium+LLjp90fvibgGgslt/cIitDIo=;
+        b=stOiAsiXt+pxMWqB4W+m9xWaWUYhU9GSPIZXjBRkpU4BbnbfFzJhuce4D1E8hiZzlh
+         XOefX77LoEd/eQ7V82eKFH10bQHjmLR+tuWZAZuvxEqfWTAHRxBP9ygXxpyRjBBuRdAL
+         cECqwkJVwpkmCI9jGvJX4zCgY8X1Jz11O2RsekrI6fmMrfcVBFwJl6+MIh7URmwAnUK+
+         mvkz00pWDf+DScqarYupVX+H9SQ331cNrTtinE1OfvUMLa7lAsMc8nzQwXln8q5klQ/D
+         8979LqhtSc6vkUMNViNUCU97ueV5KiwajmcAPUAo0kgm/q02kVNVtC1/SfOkhSmshhvt
+         mTYw==
+X-Gm-Message-State: AOJu0YxGKXMVTH9YFvppYbsnGfxrGo2nk6Jt3j1eZYrui+2u6lFCIqS0
+	EWFxaJtTpUKh3ED0FsFw2lhKsOYywOlE5ZRPLuKEnbCf/3rfoFR5xD/XqGO0k1vL
+X-Gm-Gg: ASbGncsYuq3elme6wpuZ9IEg5LE1lzmtMxcF2xrnDBNBl7gyozTfSbjPCPWHxgQrVXc
+	S2MqjlfPU0MXjtY80GTy5sSsrxrd7YK/cyDnQmrY1xDY4vz7zhiiW3WbUXEBTzUsJ45E2zV42Bb
+	pI2MUW/HVTTPcWgvaxObohYVdfFvDVgU3uY3s8Q8cHn/M7cTsC3nFK0UARaNHbTnz0b5TkzSM2Y
+	9hmJjRkt65pvQncm19Ji8qNhLgF94KBeydTAQkqg/MoH4STd99/p9n2O20V5Xg3hylJo53TA1jW
+	HoO8aZucw1ArVdrHIwvuXzAdsCOsTV7ij++ZH+6t5n8PjlZODBry3BK7XaKD0A/dBmBHp9G+SbA
+	VsCyX4CTKBRMzuINLVQ1rlZSOEdrwOAeFS+dqWSJQYh44v10JIE9M4A+HeXFk82tNz1w=
+X-Google-Smtp-Source: AGHT+IFGJF1cPmL5c5tMM23abBSfQUw3AziFF7uheBRgNO0uQEgkTCydn1GCbyjelAazIINJlvyVnQ==
+X-Received: by 2002:ad4:5d45:0:b0:78e:7a30:4d62 with SMTP id 6a1803df08f44-8739c0fa850mr49198526d6.4.1759326408349;
+        Wed, 01 Oct 2025 06:46:48 -0700 (PDT)
+Received: from localhost.localdomain ([2a02:a312:c8a8:7a00:1161:4d76:e4be:ebaa])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8016e0bc852sm111464646d6.60.2025.10.01.06.46.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Sep 2025 06:40:34 -0700 (PDT)
-Message-ID: <061e6150ce177221f7b6ee8754b03a20347a92c3.camel@linuxfoundation.org>
-Subject: Notes for uninative.bbclass doc enhancement
-From: Richard Purdie <richard.purdie@linuxfoundation.org>
-To: docs <docs@lists.yoctoproject.org>, "antonin.godard"
-	 <antonin.godard@bootlin.com>
-Cc: Ross Burton <ross.burton@arm.com>
-Date: Tue, 30 Sep 2025 14:40:33 +0100
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.0-1 
+        Wed, 01 Oct 2025 06:46:48 -0700 (PDT)
+From: Adam Blank <adam.blank.g@gmail.com>
+To: docs@lists.yoctoproject.org
+Cc: Adam Blank <adam.blank.g@gmail.com>
+Subject: [PATCH] ref-manual/variables.rst: fix the description of STAGING_DIR
+Date: Wed,  1 Oct 2025 15:46:35 +0200
+Message-ID: <20251001134636.27829-1-adam.blank.g@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 30 Sep 2025 13:40:41 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7630
+ <docs@lists.yoctoproject.org>; Wed, 01 Oct 2025 13:46:57 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7631
 
-I was asked some questions about uninative, I've tried to write
-something to enhance the class documentation on it:
+There is no single "recipe-sysroots" directory, but rather many
+"recipe-sysroot*" directories.
 
-"""
-Uninative allows binaries to run on systems with older or newer glibc
-versions. This means native recipe sstate can be shared among different
-distros of different versions, i.e. the sstate cache is 'universal'.
+Signed-off-by: Adam Blank <adam.blank.g@gmail.com>
+---
+ documentation/ref-manual/variables.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-To allow this to work, we change the dynamic loader to our own ld.so
-when binaries are compiled using the --dynamic-linker option. This
-means when the binary is executed, it finds our own ld.so and that
-loader has a modified search path which finds a newer glibc version.
-
-We don't change the linking of the binaries at link time since the
-headers on the system wouldn't match the newer glibc and this causes
-obtuse failures. Changing the loader is effectively the same as if the
-system had a glibc upgrade after the binary was compiled, so it is a
-mechanism supported by upstream.
-
-One caveat to this approach is that the uninative glibc binary must be
-equal to or newer in version to the versions on all the systems  using
-the common sstate cache. This is why we upgrade uninative regularly and
-on our stable branches too.
-
-Another potential issue is static linking. Static libraries created on
-a system with a new glibc version may have symbols not present in older
-versions, which would then fail during linking on older systems. This
-is one reason we don't use static linking for our native binaries.
-"""
-
-I'm hoping this is useful info and simple to extend
-https://docs.yoctoproject.org/ref-manual/classes.html#uninative with.
-
-Cheers,
-
-Richard
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index 18ead7d04..9dfc6f47c 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -9273,7 +9273,7 @@ system and gives an overview of their function and contents.
+       directory for the build host.
+ 
+    :term:`STAGING_DIR`
+-      Helps construct the ``recipe-sysroots`` directory, which is used
++      Helps construct the ``recipe-sysroot*`` directories, which are used
+       during packaging.
+ 
+       For information on how staging for recipe-specific sysroots occurs,
 
