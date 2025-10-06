@@ -1,138 +1,79 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <alex.kanavin@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D489CCAC5B8
-	for <webhook@archiver.kernel.org>; Mon,  6 Oct 2025 16:15:01 +0000 (UTC)
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by mx.groups.io with SMTP id smtpd.web11.379.1759767296187856586
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F040ACAC5B8
+	for <webhook@archiver.kernel.org>; Mon,  6 Oct 2025 16:28:14 +0000 (UTC)
+Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+ by mx.groups.io with SMTP id smtpd.web11.142.1759768087705327412
  for <docs@lists.yoctoproject.org>;
- Mon, 06 Oct 2025 09:14:57 -0700
+ Mon, 06 Oct 2025 09:28:07 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=L2hnJg5m;
- spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 27ACC4E40EED
-	for <docs@lists.yoctoproject.org>; Mon,  6 Oct 2025 16:14:54 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id DA13C606B7;
-	Mon,  6 Oct 2025 16:14:53 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6E4E9102F1E99;
-	Mon,  6 Oct 2025 18:14:50 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1759767293; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=UMFoKDQvP6QHZKpEf1eg8JUwTq/uxozKhACAij+wgi8=;
-	b=L2hnJg5mjK3rdjVshiTCYaIXCPWqNQvP65xwpIxlcG5tj5eJt9HsE6oneRcPFu7XE2lC8t
-	MIPgFs1D1dSK0VIFi01jZNKLfrrcEWNMtZUBPMTcAuoU+UutGn0dCsJrNx/K76m23nEmVm
-	lMMRCI52dqiqq8iKdn/v4QCDeh8FR/HujMYOVOi317DRlGs4suZ+Ls92TV30oHCybEKUmL
-	LURF150iVFAOgAuIxtNaLf3zRD6Jq9JS3JNmRmpdqVep22lX15A59+kJPeH5otJUpnVq6W
-	k/vy6KjFv9k1jszJxRwsDCtnpIkrOLrTNrhvpTn+mE2fNA+rdb1Enbm9V1X7lw==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 06 Oct 2025 18:14:49 +0200
-Message-Id: <DDBDFWFF5Q1P.3I70CPJOP6EO1@bootlin.com>
-To: <alex.kanavin@gmail.com>, <docs@lists.yoctoproject.org>
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=JQ2mEDPh;
+ spf=pass (domain: gmail.com, ip: 209.85.219.51, mailfrom: alex.kanavin@gmail.com)
+Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-87499a3cd37so38849026d6.3
+        for <docs@lists.yoctoproject.org>; Mon, 06 Oct 2025 09:28:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1759768087; x=1760372887; darn=lists.yoctoproject.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=sRVFAW3DCGIjVCjUR5VwS0ExSpEpgJWxbo/bnuiVmtw=;
+        b=JQ2mEDPhg6QA589BKpNquUVXI9yxJWNO5pNUqWuZB59rNoy7G1VafIDCOjSbatXbwG
+         VSOfxNoiBQdg+gpzM9rDNZBHIK6474dptQSZINpwxjeeMMkPS0Vw+oYi5NvTYmXxRmCR
+         uvKn56sowhN2ghqZEK5aKF432ldBkc81u/C6o6b4POQbH173mQsFh+PsNKmTSsAJ965c
+         TmBn+hrBoPhemPxHTDWQ0xPh+ooqSEA8eThTpLAaXfREozb6Xz3/R7xtEdu0+T/mSCTY
+         /99iQIAMcNfGeOo8Tt3/iVBtCFHnEsVS2nAYYp4zrcszkgwFW/Bluah725rTztxD5a9U
+         ne1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759768087; x=1760372887;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=sRVFAW3DCGIjVCjUR5VwS0ExSpEpgJWxbo/bnuiVmtw=;
+        b=fBPAzvaV67+LIjxNIUeZifytwAW2vICrkUl9EnAfO1dybfZg5bXvNDyNT5h4llRu0l
+         gzXUhruhjZlENbRqahfFBWfwpYYR+TVLnj3bxY8lIoViGxhs6MI6itxpC5aYhnGJPBuF
+         1AAhQ2EuwKS+pOMsKRVo/84EVnaSfEyMoooR5JhRuGPlW9KzuRf+mQpWRjPWuF2LiZBn
+         TxWX2exwg5tt/vaezs0I2FqFUY4O1lQc3V/fFwlTa91XNKP0wMJgiXW0DsTjG2J8tUs3
+         Vbl4l/2FDKwXvpaOtrfvpsM8wE4c1iGSiu4KviXnGc5VZnMeqLkUXxuvCstJ4iE/1iyD
+         vPSQ==
+X-Gm-Message-State: AOJu0Ywsud4jL4jfW1m63C2NdQyg6DKQEh7Rv2qjlo4Ffp19YvTSsuEu
+	7KFpNki4yquN0ebPB0edDtmFIRtSgtPu1BCz56LYD1WwOkAU2Z578ehz+7FwHT8vO3Bb17a/NzX
+	Lx9V8UJ4noDE4rbsoM0hxq1+ZWlyX9ug=
+X-Gm-Gg: ASbGncuSuBSaiqV1yxyjzY2xOzGVcPWHw1NkQG1aznYfn83eqUKB6ELmIOisQTKrSjI
+	bsmGPU/9TaI+4ZelGuGsLy/2fzTTfixZRCyBK5fWo5SLK+4q+hgqJwbeT7xpzqW2ZYIp2uzMtX1
+	Pt1bZi7jk8bWuUEUwdsdgXj5Rb731WY7M3T1//L+qIRgLi4Z7iw7t6FS+kiKKm21SLFQDPDC674
+	BG+b6rFtCUL+cJXp4U3CoIE/MA8uowMDy/bE26ZNf4FXw5tzIo+TTsoiEXEDJdp6asSW7kGljrE
+	hE+N2rvvC9sJLqN6a1b+4tSusfgL/h9gcuhry3tSf10NZbFvLjzWcmWnzQXRdi8LgUax72Gn2qc
+	=
+X-Google-Smtp-Source: AGHT+IG2C4fnuPNeIAihS96Njj75MYUtEVnteUIUA7FLY1nVyH7u9Yfq10YcOpIdvqnuRefOPACylAxOFMupzeVlg/k=
+X-Received: by 2002:a05:6214:202c:b0:86c:7f02:ac62 with SMTP id
+ 6a1803df08f44-879dc88761fmr186869656d6.54.1759768086703; Mon, 06 Oct 2025
+ 09:28:06 -0700 (PDT)
+MIME-Version: 1.0
+References: <20251006134757.36206-1-alex@linutronix.de> <DDBDFWFF5Q1P.3I70CPJOP6EO1@bootlin.com>
+In-Reply-To: <DDBDFWFF5Q1P.3I70CPJOP6EO1@bootlin.com>
+From: Alexander Kanavin <alex.kanavin@gmail.com>
+Date: Mon, 6 Oct 2025 18:27:55 +0200
+X-Gm-Features: AS18NWCHrrmibkgTG4PKBgCe6hhsLVwWnWsgnSXYXv8uM7Gb9uqwbyJOzSTshoo
+Message-ID: <CANNYZj8NSPGDX=Mp9Cn2+CjgpVTuRYWkApPr1zk1Wjb+mMq98A@mail.gmail.com>
 Subject: Re: [docs] [PATCH] ref-manual: correctly document the difference
  between auto.conf and newly added toolcfg.conf
-Cc: "Alexander Kanavin" <alex@linutronix.de>
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-References: <20251006134757.36206-1-alex@linutronix.de>
-In-Reply-To: <20251006134757.36206-1-alex@linutronix.de>
-X-Last-TLS-Session-Version: TLSv1.3
+To: Antonin Godard <antonin.godard@bootlin.com>
+Cc: docs@lists.yoctoproject.org, Alexander Kanavin <alex@linutronix.de>
+Content-Type: text/plain; charset="UTF-8"
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 06 Oct 2025 16:15:01 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7659
+ <docs@lists.yoctoproject.org>; Mon, 06 Oct 2025 16:28:14 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7660
 
-On Mon Oct 6, 2025 at 3:47 PM CEST, Alexander Kanavin via lists.yoctoprojec=
-t.org wrote:
-> Signed-off-by: Alexander Kanavin <alex@linutronix.de>
-> ---
->  documentation/ref-manual/fragments.rst |  4 ++--
->  documentation/ref-manual/structure.rst | 15 ++++++++++++---
->  2 files changed, 14 insertions(+), 5 deletions(-)
->
-> diff --git a/documentation/ref-manual/fragments.rst b/documentation/ref-m=
-anual/fragments.rst
-> index c0118876c..7fd08656d 100644
-> --- a/documentation/ref-manual/fragments.rst
-> +++ b/documentation/ref-manual/fragments.rst
-> @@ -94,7 +94,7 @@ Note that in this case, the fragment will be defined tw=
-ice in
->  :term:`OE_FRAGMENTS`, and the last value is taken into account:
-> =20
->  .. code-block::
-> -   :caption: build/conf/auto.conf
-> +   :caption: build/conf/toolcfg.conf
-> =20
->     OE_FRAGMENTS +=3D " ... machine/qemuarm64 machine/qemux86-64"
-> =20
-> @@ -103,7 +103,7 @@ In the above example, the value of :term:`MACHINE` is=
- thus equal to
-> =20
->  When a fragment is enabled with :ref:`ref-bitbake-config-build-enable-fr=
-agment`,
->  its name is automatically appended to the :term:`OE_FRAGMENTS` variable =
-in
-> -:ref:`structure-build-conf-auto.conf`.
-> +:ref:`structure-build-conf-toolcfg.conf`.
-> =20
->  .. note::
-> =20
-> diff --git a/documentation/ref-manual/structure.rst b/documentation/ref-m=
-anual/structure.rst
-> index 1aaafcf79..0ef51fa4f 100644
-> --- a/documentation/ref-manual/structure.rst
-> +++ b/documentation/ref-manual/structure.rst
-> @@ -356,15 +356,24 @@ This configuration file is generated by :doc:`bbloc=
-k </dev-manual/bblock>` and
->  contains the signatures locked by ``bblock``. By default, it does not ex=
-ist
->  and will be created upon the first invocation of ``bblock``.
-> =20
-> -.. _structure-build-conf-auto.conf:
-> +.. _structure-build-conf-toolcfg.conf:
-> =20
-> -``build/conf/auto.conf``
-> -------------------------
-> +``build/conf/toolcfg.conf``
-> +---------------------------
-> =20
->  This file contains configuration variables that are automatically modifi=
-ed by
->  tools such as :oe_git:`bitbake-config-build </bitbake/tree/bin/bitbake-c=
-onfig-build>`.
->  This file should not be modified manually.
-> =20
-> +.. _structure-build-conf-auto.conf:
-> +
-> +``build/conf/auto.conf``
-> +------------------------
-> +
-> +This file is intended for use by continuous integration environments, su=
-ch as the
-> +Yocto Project's autobuilder. It should not be created or modified when r=
-unning
-> +local builds.
-> +
->  .. _structure-build-downloads:
-> =20
->  ``build/downloads/``
+On Mon, 6 Oct 2025 at 18:14, Antonin Godard <antonin.godard@bootlin.com> wrote:
 
-We also need to update the auto.conf reference in the fragments documentati=
-on.
-Do you want to send a patch?
+> We also need to update the auto.conf reference in the fragments documentation.
+> Do you want to send a patch?
 
-But otherwise this change looks good to me, thank you!
+I am unable to find any other auto.conf references, other than the
+ones the patch is fixing. Can you point me to them please?
 
-Antonin
-
---=20
-Antonin Godard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
+Alex
 
