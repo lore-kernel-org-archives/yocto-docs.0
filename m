@@ -2,62 +2,61 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 498CECCA476
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4A30BCCD182
 	for <webhook@archiver.kernel.org>; Mon,  6 Oct 2025 13:03:29 +0000 (UTC)
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by mx.groups.io with SMTP id smtpd.web11.33336.1759755798586635419
+ by mx.groups.io with SMTP id smtpd.web10.33254.1759755798706256730
  for <docs@lists.yoctoproject.org>;
  Mon, 06 Oct 2025 06:03:19 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=XUyCQU8s;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=dBa4XpnN;
  spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id D09D71A1179
-	for <docs@lists.yoctoproject.org>; Mon,  6 Oct 2025 13:03:16 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 6AC541A117A
+	for <docs@lists.yoctoproject.org>; Mon,  6 Oct 2025 13:03:17 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id A77E2606B7;
-	Mon,  6 Oct 2025 13:03:16 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 75D75102F1D62;
-	Mon,  6 Oct 2025 15:03:14 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 42AC9606B7
+	for <docs@lists.yoctoproject.org>; Mon,  6 Oct 2025 13:03:17 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8B5F4102F1D6A;
+	Mon,  6 Oct 2025 15:03:16 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
 	t=1759755796; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=pTo+JFJVsrs9vEm6Q/I2zmkmqLFH6e7RWIblf4AWAp8=;
-	b=XUyCQU8stHzCdvU2Ne8XAU4bu+VA0G6YDZ4tb7YYzDdMzUGEtOhOd+i3ooe96KnX7bhD1I
-	m2VKklq8c2Vh3f59LVUKfsra5RwLXm/YaCnYzjazRml0IKC/CTL/GlBB9xht3QRjSMzFiw
-	ZmJz3OOStfoANncBnkhcBruIS9nwXBkSEZinmm4klVu5BC1OJdPR5OBPOyNlL7cLz4sBHh
-	JX0EJDzOEoexcmIbemHbaAAhb0ID0XJw2yxmBd5T990c167Mca4JEFHp0j3rEw6gpghtWL
-	85a7zKbEKPWjgMCITKXBPVxLM4ilgLoAS39Oku9J5dlCjinQQfhATnv5XYercw==
+	 content-transfer-encoding:in-reply-to:references;
+	bh=OFwgZ0/c8RBfydbxSrxAahD6IXgQpZO1kV8fJZD/jtE=;
+	b=dBa4XpnNwhRu7vrI2kwYoIumJ8Nnz9iEw3zAp2Of+II/3V+vMxEKAXD4n3GxyRpuQLrrnD
+	1vchO8dTmD54ovLxkfZ8VBQWxXUGwgIIeA+uzooC2FRGnqfKvN6Fxg4RZ22umfQh9wEHuo
+	BMnPG7JrPDltidHKPUZXEQM3ptSp0AIpNxd6kd96qgGLpFgRvTZx3EKBQtAyweZV7hpASY
+	FrwEXpRmQoy45ucNk9YL3+LxQx4Bu3OmYphWn7xpByca1ZriNWkMliSKcQ+ncJGcJDcwSW
+	2IVuFzVzLSbRd5hJyTJz7EEHsIk8Oq98kvBEdTQxktSRHJlGC2T+clUMULOtdA==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Subject: [PATCH 0/2] Improve uninative class/variables
-Date: Mon, 06 Oct 2025 15:03:03 +0200
-Message-Id: <20251006-uninative-class-extend-v1-0-1a9e30e95e8f@bootlin.com>
+Date: Mon, 06 Oct 2025 15:03:04 +0200
+Subject: [PATCH 1/2] ref-manual/variables.rst: document
+ UNINATIVE_URL/CHECKSUM
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAe+42gC/x3MQQqDMBBG4avIrB1IFFvqVcRFEn/bgTJKRkUQ7
- 97Q5bd47yJDFhj11UUZh5gsWuDritIn6BssUzE1rum8cw/eVTRscoDTN5gxzg06sYtAfLbp5aO
- nEq8Zs5z/8TDe9w9tBhflaAAAAA==
-X-Change-ID: 20251006-uninative-class-extend-0beeb73c91b1
+Message-Id: <20251006-uninative-class-extend-v1-1-1a9e30e95e8f@bootlin.com>
+References: <20251006-uninative-class-extend-v1-0-1a9e30e95e8f@bootlin.com>
+In-Reply-To: <20251006-uninative-class-extend-v1-0-1a9e30e95e8f@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Antonin Godard <antonin.godard@bootlin.com>, 
- Richard Purdie <richard.purdie@linuxfoundation.org>
+ Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=703;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1814;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=lAW3XTIAGGKhU6A1+W9aVnLEvzm7zdg7Ezq7wzX/MFI=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBo474R8mBtdomCfu7PBC9WFwpOuHqXKTwmkw1Go
- JzJDu8xDM2JAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaOO+EQAKCRDRgEFAKaOo
- NgnDEACTM1nyUrrshhiGTUzdH0OMf10SzLS1syFPLA+ZfJWAo6/safCWLQzPeAC6LDvNh8WN48u
- lE0VpKm/DYh5BhG220gpmHvcrW31Ax+vRHynrLZuVSvPCj51zjFXBp7bLFnqaTCdeIJO5trpNJ0
- hjS/lYh+yhPgvVOs0UjSTnuZ03jm0Vzhs7YjWmJlPQY30cZMm+bHOf5ja1cDyJW96mBmBnnPMt3
- tLivzsATYUgKsB9xnBvYiYIaWr1FdEg1oIRL9h96GX44S92bC2q8H6tygBNQ5NEOsJ/SBicK5n8
- K6yw8qqkTcLVeqEH9/Mak7oeHaUUfCi1Gh6uWHNUSlfYk7BNsaItwdXtKwEbcSZdmscceAM2UY2
- SFo15JCIBTPeBUCjh71HGhgQGKDaDahb/Dwx9R1C5Bq7xa5g6YC1nqZssMvmmS4WJG7yW+mRSX9
- gKbex4rnXX09TvIRV7kWispgYtuWtRPk2ySU8umJKaiUSRQdKOAeY6l3GmyiBsvFWVinDQuwKqY
- nLoZU+CUDKVnwb9/JWol880weqFIXoD4OxrXQwghzuuTK60mOxH4nMJrRf47y/diRq9P8v0kgnM
- TjMa/BtL8pLderdOL8Bo6Wh3UMyOSUsCY3nzgqwOwjQ9fGLFVQyv5Ar5ngIY/Wqz7JGz9lpTSbj
- qCvlwUwxD9r+aHQ==
+ bh=PoaXEIBFNMvTEuQ63Eg4IVG068LZQstAzfrk3WfB2Z0=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBo474RB2OS7zjrUiFG2gB7ooVqIfZeYwyH7gcxq
+ NcJd8lK8rqJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaOO+EQAKCRDRgEFAKaOo
+ NisaD/9mP5yu3nWhjG5Zbp0AobmsD7E3bqtSDjMmHlAH/i/n1z+dPe3sR5v1eLCH3A5Aob4lb7w
+ sASNNa8tfNv8TNDHABPDmsWLhXqUzOVVQ/Qaq2QK8EFx5bYjMMkPiytbPse3Iy5P7qPvUquV31U
+ CrHTaZrGIt6U6JNyvC94I5K8W7GVpihYILu177IsML0IhG3a4mA6GIJiEO7ivYcYGLUqfC68rOm
+ xIwfkQez0prwDyP2ONRMdhTK92/N9O6dbENa5U/UA7IeZptrQQ81TJIbEU88o26N9FMjqwnze6H
+ Wd3LOS2pfGvhSvTZPvOQoiwTFOQKw1up8V+GZaV9Onghs45LutZH40VnmxoVHU0ERtCOYx3b42g
+ SOTtJGs1hE5GaxrORpcyctgpGcpWmYAJfKdYQxRM2mvfEKFi50Y48YGIz5epOkyzga1TE6s3mW7
+ 0nhTZIVgXgrSym14sfNEfhLSWGwGqDUpE1yMvc38rn//nbVgFaLuFdIQyHBSVf/bh6bNO4YtpyT
+ cIHouoqXaB47Frcc4b4OIWnwjcPasBxNVHAmuXqs8WjIZVNq4/zf292rgiPcqV5jM2N4/Dn6s+M
+ zMHEDZDHYlRdDqPj3aLe2Z+67GUGou5lAAS2u5hAOIDzfWMfI6DfAScZB92F+Tspe/THrmIi4aj
+ YT+wH6Zau7cqmEA==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
@@ -65,25 +64,44 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Mon, 06 Oct 2025 13:03:29 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7655
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7654
 
-After https://lore.kernel.org/r/061e6150ce177221f7b6ee8754b03a20347a92c3.camel@linuxfoundation.org.
+Document the UNINATIVE_URL and UNINATIVE_CHECKSUM variables.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
-Antonin Godard (2):
-      ref-manual/variables.rst: document UNINATIVE_URL/CHECKSUM
-      ref-manual/classes.rst: extend the uninative class documentation
+ documentation/ref-manual/variables.rst | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
- documentation/ref-manual/classes.rst   | 61 +++++++++++++++++++++++++---------
- documentation/ref-manual/variables.rst | 16 +++++++++
- 2 files changed, 61 insertions(+), 16 deletions(-)
----
-base-commit: 09c7800333b17b21e50d2a089a3ae1b123697243
-change-id: 20251006-uninative-class-extend-0beeb73c91b1
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index 1d4ec413c..5cae725c2 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -10909,6 +10909,22 @@ system and gives an overview of their function and contents.
+       `Unified Kernel Image (UKI) <https://uapi-group.org/specifications/specs/unified_kernel_image/>`__.
+       Defaults to ``ukify build``.
+ 
++   :term:`UNINATIVE_CHECKSUM`
++      When inheriting the :ref:`ref-classes-uninative` class, the
++      :term:`UNINATIVE_CHECKSUM` variable flags contain the checksums of the
++      uninative tarball as specified by the :term:`UNINATIVE_URL` variable.
++      There should be one checksum per tarballs published at
++      :term:`UNINATIVE_URL`, which match architectures. For example::
++
++         UNINATIVE_CHECKSUM[aarch64] ?= "812045d826b7fda88944055e8526b95a5a9440bfef608d5b53fd52faab49bf85"
++         UNINATIVE_CHECKSUM[i686] ?= "5cc28efd0c15a75de4bcb147c6cce65f1c1c9d442173a220f08427f40a3ffa09"
++         UNINATIVE_CHECKSUM[x86_64] ?= "4c03d1ed2b7b4e823aca4a1a23d8f2e322f1770fc10e859adcede5777aff4f3a"
++
++   :term:`UNINATIVE_URL`
++      When inheriting the :ref:`ref-classes-uninative` class, the
++      :term:`UNINATIVE_URL` variable contains the URL where the uninative
++      tarballs are published.
++
+    :term:`UNKNOWN_CONFIGURE_OPT_IGNORE`
+       Specifies a list of options that, if reported by the configure script
+       as being invalid, should not generate a warning during the
 
-Best regards,
---  
-Antonin Godard <antonin.godard@bootlin.com>
+-- 
+2.51.0
 
 
