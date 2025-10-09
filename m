@@ -1,240 +1,169 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <quentin.schulz@cherry.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 80C97CCD188
-	for <webhook@archiver.kernel.org>; Thu,  9 Oct 2025 07:26:45 +0000 (UTC)
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by mx.groups.io with SMTP id smtpd.web11.6363.1759994802814638546
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1AECCCCA470
+	for <webhook@archiver.kernel.org>; Thu,  9 Oct 2025 08:46:36 +0000 (UTC)
+Received: from MRWPR03CU001.outbound.protection.outlook.com (MRWPR03CU001.outbound.protection.outlook.com [40.107.130.9])
+ by mx.groups.io with SMTP id smtpd.web11.7220.1759999593089675400
  for <docs@lists.yoctoproject.org>;
- Thu, 09 Oct 2025 00:26:43 -0700
+ Thu, 09 Oct 2025 01:46:33 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=0YwelhH0;
- spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 705F94E40FAA
-	for <docs@lists.yoctoproject.org>; Thu,  9 Oct 2025 07:26:41 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 40E2F6062C
-	for <docs@lists.yoctoproject.org>; Thu,  9 Oct 2025 07:26:41 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 90691102F21C1;
-	Thu,  9 Oct 2025 09:26:40 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1759994800; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=TDE8mmeGwbIfdzuIE8K/6Qe5onXLdRcXODAC+weUxbw=;
-	b=0YwelhH0sWtfn2+Xk8yo43xro2V0ziENNSMQeFkfssD3ucyU9XB8YrpIhpcqBh36bljhWC
-	mjMQpLDKUdbgynsp8Hv7Y+YZhKbZh0Z2vsyFatIH49JnuFa/b6vJEOrHCLrofVxM/rkXW7
-	gcRj0gEKEBJX07WrQ9ZiQiHQE7cfKfZdzst5tpn1EiDs4L8aTylQL3oaYN5avp+ZjaR7vk
-	2q+An8qQ/KuwG0gaf79dBSggfiHGGlIipojZWm9IhbOHnfsQJlby/zXSrpyBM/zF2xfxkT
-	vtdzn+U4LHcpOX/wITk9HZaEjWQYZBlMsE9naGMSDI0yJ9Y3HuwNiNtuwiqEnQ==
-From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Thu, 09 Oct 2025 09:26:32 +0200
-Subject: [PATCH v2 1/2] tools/build-docs-container: add option to install
- essential packages
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251009-build-docs-container-essentials-v2-1-f135032bb43d@bootlin.com>
+ dkim=pass header.i=@cherry.de header.s=selector1 header.b=bcsCcH8d;
+ spf=pass (domain: cherry.de, ip: 40.107.130.9, mailfrom: quentin.schulz@cherry.de)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=LbASLwW8UbYFzk0EpmKbmlyG42O8dPfFO5tM09hSweSf2liJ3XMm8QMn8hOrUfZ6Z1lfml6kQQpc+cKUwDufeDSf/g9ovyEPi1Mc7bbMZx+XkZjl8G7+cRBgvg2yljf6gyeheWiF/ke4piJI6FwIr7O33q5zX2fygMezft/8EFIL13qgZLC7m9Rwc1n/j2eWyFoACT/Z3bjjLM7QUdO/w8OIMv2m262tkGmaeJRpb+I0rjRgM/Alg7fwJzDr6AA+tO9xaGZ3JvpnyKergl+fg+o3fgEZqgw0PE8fdpmql387GiBa89e2Q9mX+QjXJsu/wB+CDXcTNftMOCntG8M/5w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=k4Bd/iTrF5FdoGMbFoCGvVlHxXdyf86xmjhgiBjN+fk=;
+ b=Hcwd4pZncQxAST0YQLUQwVQ9KGwtsWtxvZt9uh75ZrcI7C5DQ6pb2Mkx+ozbf+avqEg9xMl5TllLpLupvjwzCklb3q4xZ6W2PUhUrSYMHjHqy8sE87KyFwH701YpAwD8SNJrCkQebvjukpV7RYacDKsB+tyyfstnfnP8vbUpKfL3M6sLG7Rie9k9V+IXFnpdd3zmTW6iHoEHVTsXrNUaM0u5rbV9kqGxDW0rJbiw52v+Y80OY0nG86d7NyU24r9vPVAygZeAHJM3yKIW48LNp+5MFBYZIRcOxwZd4sd8Q1e6Qzjxijw3mcdKjtE11S0wQpJqb/SMteH8JWFLA0398A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
+ dkim=pass header.d=cherry.de; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=k4Bd/iTrF5FdoGMbFoCGvVlHxXdyf86xmjhgiBjN+fk=;
+ b=bcsCcH8dOCx5GtX2OWKXzjP/SKoRJ8/QNQZERRZpEGApif/kYxJ8esjj8eQS8HDKBONvA6Rhu+4cwwv75mh9W7xXhajA6bubfimmy3uwutNbMkbxI6ojMObRX53lzQ3lu5koy6PGrVN0aXFKlEOPudfl6fCx7+0Bpd40tNXK6gA=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=cherry.de;
+Received: from AS8PR04MB8897.eurprd04.prod.outlook.com (2603:10a6:20b:42c::20)
+ by GV1PR04MB10079.eurprd04.prod.outlook.com (2603:10a6:150:1ab::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9203.9; Thu, 9 Oct
+ 2025 08:46:27 +0000
+Received: from AS8PR04MB8897.eurprd04.prod.outlook.com
+ ([fe80::5ee:7297:93b4:a8d1]) by AS8PR04MB8897.eurprd04.prod.outlook.com
+ ([fe80::5ee:7297:93b4:a8d1%6]) with mapi id 15.20.9203.007; Thu, 9 Oct 2025
+ 08:46:27 +0000
+Message-ID: <271c9642-3de7-48fe-a3f8-27cfc6c2eb52@cherry.de>
+Date: Thu, 9 Oct 2025 10:46:25 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [docs] [PATCH v2 2/2] tools/build-docs-container: remove obsolete
+ comments
+To: antonin.godard@bootlin.com, docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 References: <20251009-build-docs-container-essentials-v2-0-f135032bb43d@bootlin.com>
-In-Reply-To: <20251009-build-docs-container-essentials-v2-0-f135032bb43d@bootlin.com>
-To: docs@lists.yoctoproject.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Antonin Godard <antonin.godard@bootlin.com>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6518;
- i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=Nx9I2I3vWCfMGKdNJxhtjjdB+OB+sPQ39/tCILstzqA=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBo52OutvuQ1UBqKc2jv0TS1Edx8kdJB4RP+rBl5
- HxijTPUPgGJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaOdjrgAKCRDRgEFAKaOo
- NqxpD/9UxCARYILHoBUsLx5uJFltqo5rc3OCT3vrPStfKHjJxMcwWXTL3DJXxaZhR0OU3LykQyI
- Dohp94RNcoiHsapS65tSCzVzjSPThCfhRv1CNjIbiALLAGCKgK2I1/7VB1eNtNyRr96F711XvLq
- VXEsOiDywjCHexN9GBc5VSy7p/cFepzBZ5WaGXNd77Rv9JfxgGXtySL93e5H3/lf/6OVn9uRE2K
- cOkITd7fWyfha3ft2qvUPt+R88rYIQ2pyzVkHcWx/ce4HJjAdJIy/C/+1zw5GbFdWPn7G7tmOVd
- Yafru4U/wp474cud04yd/+Za55OV0+3JOPINrb+2vbLY0JRksLmqiTyo2YoMre70W4aB5Ij9DWT
- bn9nyvwVDcKJK8dSjeLg2ZnpfjfKmwy6bJH24yKs7tRi0nruN995YLzvo/8UYhEWcutuMlvedu6
- SGcdE7SVkxo4t/yOtccn44qasp/RxEtieK8/qOnKGHbdo2UsYt5CPQQAsKdRWr1KyshuQjJDRW4
- n2F5tuWI9PBgDQ2uxvWQcIQKkB44HBKnNuHIxua3W6aOI1J5Q4a0GhPjNndnMZRrZS5vzGe5eO5
- 47TYR9OjMr3pJeTHt8i6nXXnjILe3/ynY+xceDewK4hjoBpaXscQCUzVuQIzu89kvFsWdnicEjh
- FlwLLWRSVIhG9rg==
-X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
- fpr=8648725188DD401BB9A0D3FFD180414029A3A836
-X-Last-TLS-Session-Version: TLSv1.3
+ <20251009-build-docs-container-essentials-v2-2-f135032bb43d@bootlin.com>
+Content-Language: en-US
+From: Quentin Schulz <quentin.schulz@cherry.de>
+In-Reply-To: <20251009-build-docs-container-essentials-v2-2-f135032bb43d@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR3P281CA0150.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:95::19) To AS8PR04MB8897.eurprd04.prod.outlook.com
+ (2603:10a6:20b:42c::20)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8PR04MB8897:EE_|GV1PR04MB10079:EE_
+X-MS-Office365-Filtering-Correlation-Id: 63637c24-2533-4005-3000-08de07105578
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info: 
+	=?utf-8?B?S0Z0U2NlWDFucDl5UkVycEUrSGV4S045WUpscDI5ZEdoejg4Y0hmd2hERDB3?=
+ =?utf-8?B?aGNVVG0xRTJvTXExaHZJZEtmcWxyNDg2NmJnQTk1cU83TWd1dldreGFITFZJ?=
+ =?utf-8?B?TllNOWdIaHFoSUNxbWZ6eGJBWDh0TkNIazdMRFFFYUdiSXZnVW90L3NqRUdQ?=
+ =?utf-8?B?aDRld3I5dUdTamRpbHRtTDdFRURnN3FPcXdVaWRUcEVIdkxsa1UyTXYyRHRR?=
+ =?utf-8?B?L3RhRmp5a1M4RFBoazVQMS9aeWlUYzdFczRPOHdsTC9HU2RGTlBpdWJBY0NG?=
+ =?utf-8?B?OFp4cmNPM0RtandJSnVrS3hScEtQN20rN1d6ZG93TVNWRUU2QVRiQXJBNHFl?=
+ =?utf-8?B?RjB5Qk41NlJ3Z3JkK29qTFRSZStwaVFqVU9tWE9vaW8zd3FoRVprWkRhb1J0?=
+ =?utf-8?B?c3pycDJkWjJoUGlpam41Z0x4MGRaR0NFVUdLcUt5NGoxcWxXUkhOOFpkdkU5?=
+ =?utf-8?B?NVFVcTVSRWRVb0lkcjdyYUp3NzlCRnFIQS9LODR2d29JSzJOd2RrR0pjRll1?=
+ =?utf-8?B?SDZSeEFmb3hUY0RaU0xpUDVKQmlwNHgzVkdKdERuQU4xM3V5dE1xblZxOUNo?=
+ =?utf-8?B?VkkwVnFjTyttbUkyQmhEVENBUkQycm5pV0FjOCthMVVOcXVXTXl6MitobE9T?=
+ =?utf-8?B?L0xRUEVYWGhIcTlNaExEYVdIUjNpZ0ljckJvTmVkYWI4WXBCR2hHbkRWR2Ns?=
+ =?utf-8?B?akMrR2JrekVDUloxU2NnUTdQdnM0c2pKaHY0SUVrb1hnR1JiNmxqckdqRzYx?=
+ =?utf-8?B?TS9ybTJ1WndhRWZ5NEJ4T0VUdU95QUNrSzIyRFR5QkR6d0RzTVpKdFJveUZS?=
+ =?utf-8?B?NmlWa0drNGZHY2hiNHhzOG9lQ2srZ2hCa29pMjBwOTNmQ0g5bGVEQzBndVdj?=
+ =?utf-8?B?MmJTTlErSkpHeGtBVy8xK1RJcm5WYTQ0di8zQ2pCQ0xveEQyZDZYa2VCT2p1?=
+ =?utf-8?B?b1VBSU42TGl1Q1hlTGZOLzVmaHhSbVF6UEpqZ3NEWVU0SUN1WXVObWNpYmhn?=
+ =?utf-8?B?YjJDdHIyUzBJTGVTT01vNXM2UUVrd00rYjhNNnNWeVQ2V3BzTmNJa3FHN2dJ?=
+ =?utf-8?B?SU1XaTRTeWRzWHdRdzRtb3BvVGdRYmE5SCtyeDdkRWJ3TGxld3dpWC9IVm1S?=
+ =?utf-8?B?UnJ2b045UWIzNVM0ZCtlZWZCeGIrZnRXdDI3RVlEa1pJNXZkNlVnNnQ3VmU0?=
+ =?utf-8?B?Z3V6M0plUEhSaGdNTVlXcXVuU3hHQWVxZTZ3ME8veFBQQnVRRnZrbk1WdlZZ?=
+ =?utf-8?B?aUU1Z3pGOTc2TGlKcHNzZ0NSSzJuZmlpZ0l5TXNUaEhiak9PRVpVZm82ZGIw?=
+ =?utf-8?B?amZqeXVRZmh6T1FnNm5jNDZ4a1IwTzltRllzMlZWS3JiQ0pBU3hmTFh0YnpR?=
+ =?utf-8?B?dC82SGlDa3VzQmp5ZWFkZDZ6c0pVL0drM0xaWTRWd1VkcnFxNWFpeXd0MC9Y?=
+ =?utf-8?B?VjY4eFU1OGpBWEhZVnVBaGlTek9PQjdST1psYzhCZ0ZsaC9RWENkYy9JbjUr?=
+ =?utf-8?B?VTR0RFVHczIvQmJZTDU1dmpXQWxteitpWXRNWHhNd2E3aytqL0k5dmdqeDhD?=
+ =?utf-8?B?Z1p0bm94NVM1SllyZk1hVXk3b3pjNnE5eENqTEZXYjkzbmNyM1BJSHgxV2lr?=
+ =?utf-8?B?M05XclRBOUZwTHI5aU9jQUVpYWMzVzN3RjVlaEswNWhlRC9mYjJFWjU4dDI4?=
+ =?utf-8?B?dUloYnVkejlDeDcxd1g1c1dsWHU5QWRRMWc5QW5vQjAyemFTOUdvS2xVMFNB?=
+ =?utf-8?B?N1lWMU5yTTNqUVFmSmttcC9HdlRHK05QYVhFa0RHbzFtWDFqV09pcGZleTRs?=
+ =?utf-8?B?dFpPSXBVUWlEbTJmWkhRUWxwRTJ2OEZJcFQ1cWZ5YXZTaEVWUDR1OFdJRGJO?=
+ =?utf-8?B?U21kclZXYkg4Vy9memU0K1pjQnV4bHhyZ3NqN05rLzFHS1djYVJEUWNlQW1X?=
+ =?utf-8?Q?RFZ8bYo7FSy2BoT3BOCOGWljcUEa6xYq?=
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8897.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?utf-8?B?RDdUTVorcFVXNjMzd29Fc3pDTU5wQ0NwQXpMK3pNdXNaQ0R4QWF1SnpVZWV5?=
+ =?utf-8?B?eHBoVXVnenQ0N1p0UHFvVkdqTy91QTYrT1ZMWmt6allkTHlNM25BZmJ3elln?=
+ =?utf-8?B?OEFjYnhZNkZqT05UbzA4Q0RDS0N4eSt2QWIyVCtnUE5xaWNyOUFGcjIwY1li?=
+ =?utf-8?B?aXNkSE0xRGpScUtpWWJXeHp6VDB3bUUyNC9BTU9lVWcxUzA3RCtKMkR6VWJt?=
+ =?utf-8?B?S3VsZjFXbHc5TzMzTlBUaEFYWGFZTFhpaGhyZFY4R3lhMnVoM0FPVGkveUZz?=
+ =?utf-8?B?ZXFnRkk3Qyt4VVRHR2hXckUyM2ljQTA0Q1UrOWp3R1FSREN2cGk0Rk1XL1ha?=
+ =?utf-8?B?NkEwRmJqMTNGcU9rcEQ4cVJHRFlsTWRpamh1aHlEbGI1amtVSG9UNHFMVzNP?=
+ =?utf-8?B?TkpKVC9ickRnS1pDcUptTS9TKy92SXV4TkZoQ0NEQnJDbEVjQjNXZkdkaHNB?=
+ =?utf-8?B?b2wxbWhFZXhpQVdYK1lTWTk4WGlBRGl5ODBqcWsvSGZkU0pYY3RjWm55cnNW?=
+ =?utf-8?B?eHlGN3paQTJWNmgvaGJZekNjZzJSTjFQdWFjUzFLYUZPdGkwb2plaXdaYVBX?=
+ =?utf-8?B?NXJYZ2NWTTV3RUFXOWc5NlJuVlREcUtYbzlBcG9rU21lUGpQZWVsZEViUFRl?=
+ =?utf-8?B?NUMvTndiNEZhL3ZaZWx5djZLOVM3akRobGlvdXgwWDY2cXcxTXZFQk13TzBZ?=
+ =?utf-8?B?aWZwZHhaTHkzM3QzZDhwSWsyejRNRXRpS0pMajd4UVRwOWo4M1NQNXFHWHpi?=
+ =?utf-8?B?NXJCTjhLQ2Z1b3NrK2RIdC9aR0xoNjM2SnNCb3UyZ3RSWGNrUEU1OUM0MFRJ?=
+ =?utf-8?B?T3pEc1VTYXZjMEFRRmJTcnhoUC9SMHg4TnRYRWxJL2Q1MHhFK21LVHZrNGE2?=
+ =?utf-8?B?bml2RWkrWjNGWVBxQ05tWmpsWFVxbG5HT0RxMlB0cjI4ZlhmdnZlVDJFOERw?=
+ =?utf-8?B?TmNkUjJNak95U2xZc0pqaVZ6THJ6TlE4S3kwNU9rWUJ1VmdFT0ZlK1JMSEFy?=
+ =?utf-8?B?K0tDcGd6QlgwNWpoQjhSZTlSTDdvR0x3Y2NJcHd3bmcxSzdaSWpFS2x3ZnQ0?=
+ =?utf-8?B?bWZmKzRDWm5GTm9yZU9NWUF0ZElWQUdDa2MvU0xEb3oyTFk0bWtmRW9rWGRl?=
+ =?utf-8?B?bTFMVTB4cE5paW9rYWJrVFFZWWphWWpyd2FSOWdRdEp4MU8vbXlmNktCdno4?=
+ =?utf-8?B?MkVTNHluaWh6ZjNSV1VJT2dKMFBvOEszU1A2d2dQbVQrRTlZUUl5eWhhY05G?=
+ =?utf-8?B?SFcycEk0QkNyaTJQYWdRZGlLcy9YZEtGRFRTckp2cEJiM3BSUGZyZWoyYWxZ?=
+ =?utf-8?B?YTY1T3ExWjNhVy92dDQvWi92b0F2c0tzZ3pFbGhUUVBtTnc3bEhnam1LQ29G?=
+ =?utf-8?B?c1NJbjl3WlNIQTkydGlQL25Pb1BpMGRYckdMQ1FLTk9MMzBBalMyTTlxbWMr?=
+ =?utf-8?B?NDBWQ0g3RW5sZi9LTS9xVGNuYUpyLzlROFl0QVpmYkZTYlBxMVRHNHhaZ3BE?=
+ =?utf-8?B?bE9Td0hkUGRvOWlpY2xIK0Vydkhoa0xXaTMrTjBlSEYyeVZOWlpsTjkrUVNB?=
+ =?utf-8?B?MkRzZ242ejJnZlg1aG0zNGNhU1BWSU5MMFA3NEx5cUIwTHU4MUVhL2Z1b3Zq?=
+ =?utf-8?B?enN1SzRtazZSUXBWZDRvRkxCRlR0eFFuanlaL0F3alVRT0M4VjAvaDZadHlx?=
+ =?utf-8?B?UEpIOThqdlpSK3NrWGl6NEMvNEJsVjlPZGwwVXJKc1RrU3FxSG1DQ00rSy91?=
+ =?utf-8?B?SlNDcUVMY2dDc2pWZFIyNU4vZ3dBWG1pajhsQzRpVE1ZNURYbFg5c2JaaGNF?=
+ =?utf-8?B?R0RObFZrV1lBbkJkU3Z4MW45eG85ZkxuVEJzQm11Z05FZ1p4cnRPOVMrSHMy?=
+ =?utf-8?B?eVpsSkI1Y1prai93ZCtGNlVVRjNrWVZWOHNtSTRkajEyNVA5WHZka0xqSzJ5?=
+ =?utf-8?B?VVltYVR4OXQ3dUxzYm9acjVPRlhPOHBLbitsbkVUWkxkUjZGUis4UE5hZjV2?=
+ =?utf-8?B?Y3BabDFuNC9zNjdpYUJ0UTN1cVdXNXlKN2c2R3QwNnlWbEYrbzlRVm0xVDNJ?=
+ =?utf-8?B?T3ZZMmpZUWYyK3dMMjhNT28rdTR2bEtMcVVyTHhnZVJqeE81bmhXL0xUZUwr?=
+ =?utf-8?B?RGdVcy82cGNxczJSSDZGalluSVhUTG13NG5GRC9rWmtERmRkWU9VNUxjNEk4?=
+ =?utf-8?B?OWc9PQ==?=
+X-OriginatorOrg: cherry.de
+X-MS-Exchange-CrossTenant-Network-Message-Id: 63637c24-2533-4005-3000-08de07105578
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8897.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Oct 2025 08:46:27.1577
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 10+J3gmmjXL6lVrNW1B8LUGSqNQJTWH9ze1jfha7DHJFSLPSgloGBpgYtD6yll3QrpNYizCkndb7o/Avat0nQA3oIvcVf+ARLTUYX/kit9A=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10079
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 09 Oct 2025 07:26:45 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7666
+ <docs@lists.yoctoproject.org>; Thu, 09 Oct 2025 08:46:36 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7669
 
-The script currently only installs the files necessary to build the
-docs. Since we also have the essential packages listed it can be useful
-to include them in the containers, at least to validate that these
-successfully install.
+Hi Antonin,
 
-Add an env variable for including these packages in the container. The
-default is to not include these, so the current behavior is unchanged.
+On 10/9/25 9:26 AM, Antonin Godard via lists.yoctoproject.org wrote:
+> Leap 15.6 worked fine on my local builds, with Docker or Podman.
+> Ubuntu 23.04 got removed from the list of distros we test.
+> 
+> Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 
-Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
----
- documentation/tools/Containerfile.apt    |  4 ++++
- documentation/tools/Containerfile.dnf    |  4 ++++
- documentation/tools/Containerfile.zypper |  4 ++++
- documentation/tools/build-docs-container | 17 +++++++++++++++++
- 4 files changed, 29 insertions(+)
+Tested-by: Quentin Schulz <quentin.schulz@cherry.de>
+Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
 
-diff --git a/documentation/tools/Containerfile.apt b/documentation/tools/Containerfile.apt
-index 5e30b65eb..a573786f0 100644
---- a/documentation/tools/Containerfile.apt
-+++ b/documentation/tools/Containerfile.apt
-@@ -1,6 +1,8 @@
- ARG ARG_FROM=debian:12 # default value to avoid warning
- FROM $ARG_FROM
- 
-+ARG INCLUDE_ESSENTIAL_PACKAGES=0
-+ARG ESSENTIAL=ubuntu_essential.sh
- ARG DOCS=ubuntu_docs.sh
- ARG DOCS_PDF=ubuntu_docs_pdf.sh
- 
-@@ -8,12 +10,14 @@ ENV DEBIAN_FRONTEND=noninteractive
- ARG TZ=Europe/Vienna
- 
- # relative to the location of the dockerfile
-+COPY --chmod=777 ${ESSENTIAL} /temp/host_packages_essential.sh
- COPY --chmod=777 ${DOCS} /temp/host_packages_docs.sh
- COPY --chmod=777 ${DOCS_PDF} /temp/host_packages_docs_pdf.sh
- 
- RUN ln -fs "/usr/share/zoneinfo/$TZ" /etc/localtime \
-  && apt-get update \
-  && apt-get install -y sudo \
-+ && if [ "$INCLUDE_ESSENTIAL_PACKAGES" = "1" ]; then yes | /temp/host_packages_essential.sh; fi \
-  && yes | /temp/host_packages_docs.sh \
-  && yes | /temp/host_packages_docs_pdf.sh \
-  && apt-get --yes autoremove \
-diff --git a/documentation/tools/Containerfile.dnf b/documentation/tools/Containerfile.dnf
-index 3dae74445..65c526705 100644
---- a/documentation/tools/Containerfile.dnf
-+++ b/documentation/tools/Containerfile.dnf
-@@ -1,17 +1,21 @@
- ARG ARG_FROM=fedora:40 # default value to avoid warning
- FROM $ARG_FROM
- 
-+ARG INCLUDE_ESSENTIAL_PACKAGES=0
-+ARG ESSENTIAL=fedora_essential.sh
- ARG DOCS=fedora_docs.sh
- ARG DOCS_PDF=fedora_docs_pdf.sh
- ARG PIP3=pip3_docs.sh
- 
- # relative to the location of the dockerfile
-+COPY --chmod=777 ${ESSENTIAL} /temp/host_packages_essential.sh
- COPY --chmod=777 ${DOCS} /temp/host_packages_docs.sh
- COPY --chmod=777 ${DOCS_PDF} /temp/host_packages_docs_pdf.sh
- COPY --chmod=777 ${PIP3} /temp/pip3_docs.sh
- 
- RUN dnf update -y \
-  && dnf install -y sudo \
-+ && if [ "$INCLUDE_ESSENTIAL_PACKAGES" = "1" ]; then yes | /temp/host_packages_essential.sh; fi \
-  && yes | /temp/host_packages_docs.sh \
-  && yes | /temp/host_packages_docs_pdf.sh \
-  && yes | /temp/pip3_docs.sh \
-diff --git a/documentation/tools/Containerfile.zypper b/documentation/tools/Containerfile.zypper
-index f27ad1b47..3850b9ff9 100644
---- a/documentation/tools/Containerfile.zypper
-+++ b/documentation/tools/Containerfile.zypper
-@@ -1,11 +1,14 @@
- ARG ARG_FROM=opensuse/leap:15.4 # default value to avoid warning
- FROM $ARG_FROM
- 
-+ARG INCLUDE_ESSENTIAL_PACKAGES=0
-+ARG ESSENTIAL=opensuse_essential.sh
- ARG DOCS=opensuse_docs.sh
- ARG DOCS_PDF=opensuse_docs_pdf.sh
- ARG PIP3=pip3_docs.sh
- 
- # relative to the location of the dockerfile
-+COPY --chmod=777 ${ESSENTIAL} /temp/host_packages_essential.sh
- COPY --chmod=777 ${DOCS} /temp/host_packages_docs.sh
- COPY --chmod=777 ${DOCS_PDF} /temp/host_packages_docs_pdf.sh
- COPY --chmod=777 ${PIP3} /temp/pip3_docs.sh
-@@ -20,6 +23,7 @@ RUN for script in /temp/*.sh; do \
- 
- RUN zypper update -y \
-  && zypper install -y sudo \
-+ && if [ "$INCLUDE_ESSENTIAL_PACKAGES" = "1" ]; then yes | /temp/host_packages_essential.sh; fi \
-  && yes | /temp/host_packages_docs.sh \
-  && yes | /temp/host_packages_docs_pdf.sh \
-  && yes | /temp/pip3_docs.sh \
-diff --git a/documentation/tools/build-docs-container b/documentation/tools/build-docs-container
-index 70e05f295..615e83d6c 100755
---- a/documentation/tools/build-docs-container
-+++ b/documentation/tools/build-docs-container
-@@ -24,6 +24,7 @@ SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
- CONTAINERCMD=${CONTAINERCMD:-docker}
- DOCS_DIR="$SCRIPT_DIR/../.."
- SH_DIR="$SCRIPT_DIR/host_packages_scripts"
-+INCLUDE_ESSENTIAL_PACKAGES=${INCLUDE_ESSENTIAL_PACKAGES:-0}
- 
- function usage()
- {
-@@ -49,6 +50,16 @@ $0 OCI_IMAGE [make arguments...]
-    documentation/Makefile, see that file for what's supported. This is typically
-    intended to be used to provide specific make targets.
-    Default: publish
-+
-+   Environment variables:
-+
-+   - CONTAINERCMD can be set to 'docker' or 'podman' to select the
-+     container engine (default: 'docker').
-+
-+   - INCLUDE_ESSENTIAL_PACKAGES can be set to 0 or 1 to also include essential
-+     packages listed in documentation/tools/host_packages_scripts/*_essential.sh.
-+     This is not required to build the documentation but can be useful to validate
-+     the installation of packages listed in these files (default: 0).
- "
- }
- 
-@@ -85,6 +96,7 @@ main ()
-     "debian:12"*|\
-     "debian:13"*)
-       containerfile=Containerfile.debian
-+      essential=ubuntu_essential.sh
-       docs=ubuntu_docs.sh
-       docs_pdf=ubuntu_docs_pdf.sh
-       ;;
-@@ -93,6 +105,7 @@ main ()
-     "fedora:41"*|\
-     "fedora:42"*)
-       containerfile=Containerfile.fedora
-+      essential=fedora_essential.sh
-       docs=fedora_docs.sh
-       docs_pdf=fedora_docs_pdf.sh
-       pip3=pip3_docs.sh
-@@ -119,6 +132,7 @@ main ()
-     # "leap:15.6"*)
-       image=opensuse/leap:$version
-       containerfile=Containerfile.zypper
-+      essential=opensuse_essential.sh
-       docs=opensuse_docs.sh
-       docs_pdf=opensuse_docs_pdf.sh
-       pip3=pip3_docs.sh
-@@ -129,6 +143,7 @@ main ()
-     "ubuntu:24.04"*|\
-     "ubuntu:25.04"*)
-       containerfile=Containerfile.ubuntu
-+      essential=ubuntu_essential.sh
-       docs=ubuntu_docs.sh
-       docs_pdf=ubuntu_docs_pdf.sh
-       ;;
-@@ -142,6 +157,8 @@ main ()
-   $OCI build \
-     --tag "yocto-docs-$sanitized_dockername:latest" \
-     --build-arg ARG_FROM="docker.io/$image" \
-+    --build-arg INCLUDE_ESSENTIAL_PACKAGES="${INCLUDE_ESSENTIAL_PACKAGES}" \
-+    --build-arg ESSENTIAL="$essential" \
-     --build-arg DOCS="$docs" \
-     --build-arg DOCS_PDF="$docs_pdf" \
-     --build-arg PIP3="${pip3:-}" \
-
--- 
-2.51.0
-
+Thanks!
+Quentin
 
