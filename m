@@ -1,184 +1,1510 @@
-Return-Path: <quentin.schulz@cherry.de>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 99769CCD185
-	for <webhook@archiver.kernel.org>; Thu,  9 Oct 2025 12:32:47 +0000 (UTC)
-Received: from AM0PR83CU005.outbound.protection.outlook.com (AM0PR83CU005.outbound.protection.outlook.com [52.101.69.44])
- by mx.groups.io with SMTP id smtpd.web10.11026.1760013165809754415
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D696FCAC5BB
+	for <webhook@archiver.kernel.org>; Fri, 10 Oct 2025 07:32:14 +0000 (UTC)
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+ by mx.groups.io with SMTP id smtpd.web11.3777.1760081527827461347
  for <docs@lists.yoctoproject.org>;
- Thu, 09 Oct 2025 05:32:46 -0700
+ Fri, 10 Oct 2025 00:32:09 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@cherry.de header.s=selector1 header.b=JF+2iWAg;
- spf=pass (domain: cherry.de, ip: 52.101.69.44, mailfrom: quentin.schulz@cherry.de)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=K8xqssm9Og8jpcpSqbiBdi/04MN1n3vyV37AvROFrCZcYxKbuz7RlKvFerSQ0zElTlqIoyFdCIjWQGkomRQETW2HwPI9102+4nNiavfOALXey/BlS6Bd4tFSbXYVhX89HLD3hbPZyDu+2l5twTfK0qsoAlXapaRShM/qKsChmLl+No9oxMbCZHJghmcA92fk0qx6yjw0uerQd0gcNkzfIzHmEWv6lXCx4OIe3Sn9MePu8/Fe4fCAYnDEHyX4K9HqUR8g82q0Yr3o0KkUz01rDSU+AXUKVi2yxOmA2J05mGVkAoCzxs9jCyaScbWAptHLEfgOZxhvVYwh9jQW7E753g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=V4AoGdX9XS3xzXOZy+DmSH36UtkEUQ0T5ko0izii3f4=;
- b=SFMeS572T8QxyBOvMfZD1kyRJF/hrBQCSV6Q8kP7dKdpdIMQzDWuKstqpgBP6uShl8I4oASDeE9uQ5NTzKtsQKdZ1blpmsTecAw1LX1sTdmXOr+952+1iACjYS2ifw8/u2N/5Oihaoctru3LtmdPH/IMHMAU5XBQbJxQIHh1a3AGEpD6TGb+bGr7brKlUU98P+aMVdTSmnJ2s8YMwpjfD1ck0GF5cJrDwv0/H62gaP81TKzAN8fO5qky37DWISqpJazimn7llp0t7Xl22xSZZJ6Ps+37U31K1USA2r/7QncWl7iKhL/1eo3l5AxLN+JNUwFoW+8c6FV4gBfjprvQSg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
- dkim=pass header.d=cherry.de; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=V4AoGdX9XS3xzXOZy+DmSH36UtkEUQ0T5ko0izii3f4=;
- b=JF+2iWAg0++B+PkXtkihtmhc3UwIfZaJb8IpuygY3O4phcIpLAuyuwS71maefcq/lxjxmj2w9iOTQKq5GL1RThU0sKePIXpUKpyxg8GEiF8haJKtJ0lt1fqPfVjsq5bpEdPBgjWaKJ5khSNs1zaIUK1yeHPAfLnPTnGq+zgYwRY=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=cherry.de;
-Received: from AS8PR04MB8897.eurprd04.prod.outlook.com (2603:10a6:20b:42c::20)
- by AS5PR04MB11371.eurprd04.prod.outlook.com (2603:10a6:20b:6c2::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9182.20; Thu, 9 Oct
- 2025 12:32:42 +0000
-Received: from AS8PR04MB8897.eurprd04.prod.outlook.com
- ([fe80::5ee:7297:93b4:a8d1]) by AS8PR04MB8897.eurprd04.prod.outlook.com
- ([fe80::5ee:7297:93b4:a8d1%6]) with mapi id 15.20.9203.007; Thu, 9 Oct 2025
- 12:32:42 +0000
-Message-ID: <df5d5e00-f950-4e52-a6fd-b7d1cd3822b6@cherry.de>
-Date: Thu, 9 Oct 2025 14:32:41 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [docs] [PATCH] tools/build-docs-container: use CONTAINERCMD to
- append args
-To: antonin.godard@bootlin.com, docs@lists.yoctoproject.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-References: <20251009-fix-build-docs-container-args-v1-1-169ce4248462@bootlin.com>
-Content-Language: en-US
-From: Quentin Schulz <quentin.schulz@cherry.de>
-In-Reply-To: <20251009-fix-build-docs-container-args-v1-1-169ce4248462@bootlin.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR4P281CA0004.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:c8::16) To AS8PR04MB8897.eurprd04.prod.outlook.com
- (2603:10a6:20b:42c::20)
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=FuC61P6r;
+ spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 7185EC00DA7
+	for <docs@lists.yoctoproject.org>; Fri, 10 Oct 2025 07:31:47 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 1BC9A606F8
+	for <docs@lists.yoctoproject.org>; Fri, 10 Oct 2025 07:32:06 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id AF49D102F19E6;
+	Fri, 10 Oct 2025 09:32:03 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1760081525; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=Xaw5VtJ5LPxvE2tjH4nN4NUb0XFxMCr6D40Yy/hkvlc=;
+	b=FuC61P6rl9Q6A2APeZUe02vbcH+FkHsrZI/+pW02qdrV1gAtrUu3kOG4Z2cthWGVqJU12Z
+	9fjx0FlnZGOLUyQWVD4Llgg7Cc7FnczQjqvdizlCu51DB+mP3GnzTkBK97FXRQ60zYG/A3
+	C1J7dwNjS4/6psmZZIg3IMcX4lznzGEWWYEFeEZcEiwYz0+DZ/vVkzCxOFbxmNw8TaY6kN
+	dA/lR/odc072chX2eKRhKlQNTpeA9NuVeFQIvXKIp1gWsIuxa0xwdjgVBn0bNAVL2fE6ZT
+	C9pynlQZzL2cy5+mEIQWdBArbCOzOWpp1L2brtarBnnK+UNZxLa9md7aZncuPg==
+From: Antonin Godard <antonin.godard@bootlin.com>
+Date: Fri, 10 Oct 2025 09:31:57 +0200
+Subject: [PATCH v2] ref-manual/qa-checks.rst: fix references
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8PR04MB8897:EE_|AS5PR04MB11371:EE_
-X-MS-Office365-Filtering-Correlation-Id: d34475f2-989b-4a4f-b9c4-08de072ff108
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info: 
-	=?utf-8?B?dzllRzNvTzgrVDBIQ2J2WGtBQ0l5aVJ1U0R3cVZXMzdZWS9oUXcwU2ZXOEpy?=
- =?utf-8?B?bWNLQWJySUI1TjA2K1FSMWdZclcydWJ2bGNhSFYxU3QreVIvbGpxWDhCYlpv?=
- =?utf-8?B?YXNnMm5pUmIxU0xZYkVGK3NVenN6VVJySDNET2pPRVlnek1iT0NDaXF6dDFR?=
- =?utf-8?B?ekJJMGRqejRvVjNrcnhnazdSSHErbmwxOFlKTHZlWkRyVWFTbEtvU2J3UnFY?=
- =?utf-8?B?eU5hRHBXYTNXcFJtall5cUhHZTRhNXNHazMwYjBzU2Jta09rb29yMmRxOTd2?=
- =?utf-8?B?TkZ4bWNEOGFZdGpMUklsODlTS2Q1THc0NDVjYjhPMWRheG0wa1ZxdVFSUkdJ?=
- =?utf-8?B?OVdUQ1F0QSs1bGRobHB2UVJVMm90N2RlQytxNjE3Y2xIWlZpcDdLVXo0WVFC?=
- =?utf-8?B?TnFCQjZ5WjZGUVl2NU1MRmc3cndjSXU5Q3doLzBXVThKTHR1SkxuVk1KYWhx?=
- =?utf-8?B?UVZFMGVkdEFRUUpiVmFsRXJ2Z1h0WHcrT0ZmQjZ6ZlJtbzlXa2ZkOGwrNVVT?=
- =?utf-8?B?VjFaRDZFWmFtR1F6QldLa1k1V2Q1TDdBWVNGQXlvdzhUWXY3MDZhRDg2aWJL?=
- =?utf-8?B?YUQ2SEdKcFVzSUJ0UHEyS21SQ0I4RmVUc3hrcGs0bFpHR09aMGVGTjVob3NU?=
- =?utf-8?B?Nkpnc3VUakpOTkllbWJyM2trTURrclJwWnUvWjVQYmlaWG1VWEZmdUFFZGVY?=
- =?utf-8?B?VFVkT1dBOCt4eHp1MU10UW9XaU84VEtHQ0FTcCsxWDU3SGhwOVNhUUdyWHNF?=
- =?utf-8?B?UHJSb0JnQm5jd0pkVjM1VFBkcmNKYWlkTzVWODJxOCtMcDZxZStYRlpwN0RG?=
- =?utf-8?B?SCs2QXdFTGZBdjBvc1REaXY3MkFUTEUyQzdqWncvcEJRNkJ3bC90Rm0xOWQ2?=
- =?utf-8?B?eW1UNCtIQU5IdXhMMExqRkFVb0o3NjZqdUtJa3JBeHdnVFhUUXZ4VFFzdldx?=
- =?utf-8?B?VEFRbFpsWC85b2hDaExYQlQ4ZEU1dHllaFFZZ0EvNE5WK0sySXJhdUt3aXdy?=
- =?utf-8?B?MDNhZnBVSVByNkhEOVBaU3lSNVAreU1OeEtFbzIyQ1VrVnhESkFWOEx0bGox?=
- =?utf-8?B?aXpLQ1dDNkIyTlUxN0tEMktEUFpnVE5VZEJkMndJODFlRWpXMjNraG9vbWg0?=
- =?utf-8?B?eStZUmliUHVLZEJSZFRBWGxLOS9EWjVZM0s0TVptRm5OTVpNSEE3Z1hkSU5F?=
- =?utf-8?B?dy8rWERhdWxTeDFpdldzR2M2MWZ5cUo1cEx3MlZLTHMwVlhXQ3l3QXdiT0p3?=
- =?utf-8?B?bDhGSFNjYlZOd2U1bHpYaWswa1JpQmlzNVZCRFY2UFMyMzVxZUxSQVkwZUlI?=
- =?utf-8?B?VFNENTZiMVdPdGRQdzhXeGNaMWxsZmZXSkhuc3BSb0NDKy82YVp5dThhbG5C?=
- =?utf-8?B?c0FsTFQ5S2ZxZ0FZWHpCTkhueTk5dFp3TUNsNmNOTXArbWx1VURFYTJqVEI4?=
- =?utf-8?B?UHY0NjVybEhtWHN5eGViY29PaHRTSEJIZ2d2ZTFiaXNiejlMWHQwbDlQNGpx?=
- =?utf-8?B?Z05aMVg4Y0xGSXMyT2I3N0x6YzVrSmhtbkRqelBiOXBicDMxSGxtRU9EeG81?=
- =?utf-8?B?VFl0REFQT1IyeXlaVkQxZ0JPcjkrbENPS3FMV2dQbmoyd3NnUWx6UlZzLzFE?=
- =?utf-8?B?R0FybmtPNnlqdmljR0s5NWtQeHE3M1JQNHZtQ3RzUEVUS1NIV1RETnRuSWhE?=
- =?utf-8?B?bDZ3WDNXWWxTZkl6Q1VyRzA1cm80V202bzM0YmZMckQ5TzNaQ3JsZVhUVjB1?=
- =?utf-8?B?V2tDQWhpODYwaGpxSll1eWJ1S1RvTmdweUdyclJrTGtUc2ZMbHRkN0ZISEFT?=
- =?utf-8?B?bTQ3OEdJcHlCNDg5YVZDSkR1dVVUZ3gzeWNaSmdrSnZsbXd1MDBJL0M3TStj?=
- =?utf-8?B?NzgyREFkbEpxY2Z6UnRJTFQrNGFRR0ZTbkJhN2hLQUZndFE9PQ==?=
-X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8897.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?utf-8?B?azUzd3E2T2ZaR3BrT296Tmc3MGY0Sjl0NFc5cTlQenJmU0kvUXM4WWM0NmFj?=
- =?utf-8?B?Mm5RdDNaU25yWDVWTlNSU1BUL3lIRHJQTzVLc0M2WVJOSlVRNzQvaGE3MXoz?=
- =?utf-8?B?TytDTERGLzNrdnRXdzJTRUdQSExpOHFZMnY0QWw0MUZEVVhOMnE0M0xTUmRx?=
- =?utf-8?B?eGJRL2hpTlYzQlNtTGhLM3puVTJRaVhGd3kxTTFhQ1BxNWU5YjJPZERGdTlh?=
- =?utf-8?B?N3dmbU5HMEtCaUwwcnY3aGp5RmVhVTlNWGlqTmFjNG1jNTZSU3hNUTdsdjhP?=
- =?utf-8?B?dGVLb1J2ZTZqUFJiTUNSc1dqWFdNR1NSQmtPbTFZc2E1ekR2OE4zRDJCTGZL?=
- =?utf-8?B?MWJXMGswV1NPd2FFRlE5V0psbmRwRWU0S3VlN3dlbGVmOFRpN0V1Nk5OREIz?=
- =?utf-8?B?VG1PTHMwQzVORWM1QkVQVG9kTWxpWUI3WS9LWXY3UWhWdytVVG5qckpOdm05?=
- =?utf-8?B?NEFrTGwrcUE5T0U2TG9LZzVqNCtFUzF5QjRBOFJpbmhSd2xiOTBnVldmaGRs?=
- =?utf-8?B?eFhEdG1reXM3YWxIMTNzSUhnandtQUx2QnhacnRoR2tkTzJKQnFtb2M3OUlx?=
- =?utf-8?B?MnVNTEJpVXdENVRoZTI4bmM3azJLTVR3SXIzeWhRc09MbHN4RjNQbm56Rk9u?=
- =?utf-8?B?V3pPYlQ4L01VQkhCMTZmbzZTYXg0N2xuOGowUE1ENENzMHJacHordjk2ZkVR?=
- =?utf-8?B?dnR1VTVqeDFqRWFrVUhYUEMzdmk0MWNDN2ZscnB5WldkNU51Z2o5MElTUmpv?=
- =?utf-8?B?Z0pLMzJJbW9FYktZNnNiS254Q0o3eHNKSlBRSTg4Y2U4aDhtbHc1cENPai84?=
- =?utf-8?B?ZnA0UzFHNWw0M3Z5TjQxRjFnOXBzK2VkZUs5RkZxdVp5Q2sxVmVwWWJkeFhv?=
- =?utf-8?B?TlBUelFobGVha0RqSUpnbzRlTkdBYy9UVlNMY1F0TXpuRHozeTl3Smg2Q3Ir?=
- =?utf-8?B?UisxRWpXQ3c4UExUODdGeC9qZllmNEh6NVYzam1aNnNuT0pHUjlydEpnT0xT?=
- =?utf-8?B?LzkvLzZ3ZGlxR01KY0J5cllNcU1oRzA1RkdEVjVoSHVocFNnUHBHWmRaM051?=
- =?utf-8?B?dU54QnEvbW5TaWZTaG1UVEdQMWhKdjFGVGF5ZFRsSDA2Q2twZllaMGJJaS9S?=
- =?utf-8?B?cXlCRWVQb1Q4UXVYSnBPWkpqb09adDl4STd2aVlsVmpQM0c5RmlZdFlxMHdz?=
- =?utf-8?B?M1dPZFpzc1V3Wm5VMmpLNFRXTm4vQ2p2Mkp3TlRZVU9xRHB0ekswY3dsdXZP?=
- =?utf-8?B?WG5FRDRRdnFNMGlIcTZDOGZkWkdOOEtyN2NqZThpZ2kyRFBEZVNLV05UUHVl?=
- =?utf-8?B?MzNTR2orMktpMHVXTUEzdHhoWlhYQWlWNmhRdjRNZ1BydFVCM2hyaWtoT2x2?=
- =?utf-8?B?T2U0T2RGY2lpckhwUUNJREtJdWZIeTlHdkZmdFprNVJDQjNxNFk5RHZTQVJ2?=
- =?utf-8?B?YjJBcE5VV2R1R3RXcEprbUpoTFZ1NWZkWkpPUE41TjhjQWJSNXF5Q0pmallC?=
- =?utf-8?B?ZjZsNm9FM2pBczduTXZFeHhmYW10Ukc1eDV3RGxLZ1RiT2VzMHBJRlg3VEMy?=
- =?utf-8?B?N3R0UGNCOTY2R2lxSmZKdnBxcmZTVFkvaUVhdDVLRmRMcFlXS0tlMmcyK1Rp?=
- =?utf-8?B?WkRSTUc0Z2NTemx3cm83RWhYNXpDOU1GbXdMbWxZbmtNcExmZGZLbmlzWEtj?=
- =?utf-8?B?MXU2Wm1QK3VQRHdnTk82aW9PYUIyc2FPREk3ZStYYU56YkdMRnZHOFVDSW9y?=
- =?utf-8?B?enpvdjE5VndaWm55L2J2WjAxbUQ4akZVbFpvUmtoVzh1UjZlYTY5ZTFlNS9m?=
- =?utf-8?B?eXVGZEhRQUY4M2Rodk96T243UzRVeDFhNHVCeXhXNkFHVlFhNXBmaTE3S2NI?=
- =?utf-8?B?UzhBY05MMEZZVTVHakZiYjJZRURKUXAxRk5VTUFEUDNRWHk1aEdodWxFdDdZ?=
- =?utf-8?B?bittVnFLZVVwM0NXZ1hxM3F1SERsV3krSTZwY1FUUng3NmZDelJMc1JGY0NV?=
- =?utf-8?B?dlF2NGNpQTlDdVFIR09SK2NGbFdFekpZb3ZsS0g1TFN6SGZ1WjFMTmhDYnkw?=
- =?utf-8?B?L05GY3lhdGVnU1JlN1A5NnBHNDY0RWcxT3Vhd2t5UUtmZVNtbzVFZVpGd0py?=
- =?utf-8?B?ZjBZalJBdTArbGdFRWZmUmNHem5CZzMyeVltemRmaU9TbHJXMFNOaFRSU2g0?=
- =?utf-8?B?QWc9PQ==?=
-X-OriginatorOrg: cherry.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: d34475f2-989b-4a4f-b9c4-08de072ff108
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8897.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Oct 2025 12:32:42.4021
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: iXrlbVcLYJV+83srfgS3Z2Sc3yYhe8Oo7GYFV2iAy+lqu1otUKgfyMT4K1XbinQZUADQ7EeGAx7iUKRZsa9ilU23+1msCkkn8PTEc9dqtZQ=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS5PR04MB11371
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251010-fix-qa-checks-doc-v2-1-bc282000721b@bootlin.com>
+X-B4-Tracking: v=1; b=H4sIAGy26GgC/32NQQ7CMAwEv1L5jFETUalw4h+oh9RxiAU0kFQRq
+ OrfMX0Ax1ntzi5QOAsXODULZK5SJE0KdtcARTddGcUrg21tZ9q2xyBvfDmkyHQr6BMhBc+HLhx
+ 77wl098yspc15GZSjlDnlz3ZRzS/9Z6sGDarN0mhdbzmcx5Tmu0x7Sg8Y1nX9AujuW6W0AAAA
+X-Change-ID: 20251008-fix-qa-checks-doc-cfde45f98ddc
+To: docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Antonin Godard <antonin.godard@bootlin.com>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=66277;
+ i=antonin.godard@bootlin.com; h=from:subject:message-id;
+ bh=GYmP1QdOkPx3//Bes7sW3X8fGP928/LsvHKaH6pxFJA=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBo6LZzMKiUXEIhtauJRUTfyS/XeNn3QOICW2gHT
+ ITZxF1RxPuJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaOi2cwAKCRDRgEFAKaOo
+ Nk59D/41zy2DZ26WszhIXcs3afpS1jZmJB0khOsSqG7sYKC6tcjeYDCAB72DTzlwnTILCEYMjWH
+ ZoqkHeaUjL9FF86kXmbpfoWphsK2khqP3GM09IsPZMxXFnL5lNwYPYY3nKTYIfvTUOXHe4IWtgQ
+ KRk1qO+nIT359Wx8EZH9alWFzEQqfQbmxnbGfvrJ4/H8lxXDzCGBlF4le6I8RY3zphSxUljX0qW
+ bSQVq7iXVrXNjCBsPewpMPpca1ypucAij1EJkV+qx8Q7YbfDdOC9QUKaaaUI6pImaEfF1G1r5cY
+ A7iIpYxz7vvvmhSsqXYoi7XqUXo56J48cEEFxzPZ0hIalUck3IZDdRkM50rsoBpRIB2W0GcBy2Q
+ AQ+d4TMVUsc3E+PBgpJgolcQ6Q34iqkLdcQzsSmWV0Vaq/HwhctbXxKYf8k6b1sGI7/bhk4Iri+
+ ONGGSkBw4JK0UjzcSxhlBVv5BlHq+q4fLsnAbj5JqJFT0qQZdCK6wcvR9cR/z4Dq4Yr1K0FNKlk
+ /ppgqb3FB3pRmTMLfqbQtYT25tw835Jri6IYqDP4JPDUOFyLGjsy/Tr6s7ok7ii1TV3N6djAYBm
+ RoBRqbd1F3WBc04OKfuOda1kmfgoXTfdW0zy7pl+SSopb8EY99zm826RhiTrxvXybZAH77wRFMm
+ 22nUGR4DEQbdveQ==
+X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
+ fpr=8648725188DD401BB9A0D3FFD180414029A3A836
+X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 09 Oct 2025 12:32:47 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7680
+ <docs@lists.yoctoproject.org>; Fri, 10 Oct 2025 07:32:14 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7681
 
-Hi Antonin,
+The references in this document do not work because references need to
+be associated to a title. Change the bullet list into a section
+separated document. This way we can cross-reference QA checks in other
+parts of the documentation (it was previously failing when attempted).
 
-On 10/9/25 12:05 PM, Antonin Godard via lists.yoctoproject.org wrote:
-> What we have is OCI = $(which $CONTAINERCMD) = /usr/bin/{docker,podman}.
-> So we never pass these if conditions. Compare against CONTAINERCMD instead.
-> 
-> Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+The diff is a bit hard to digest, but there are no changes to content
+except for:
 
-Nope, this won't work if you call the script with docker but run with 
-podman. This would be the case if you have podman-docker package 
-installed on fedora for example, c.f. 
-https://packages.fedoraproject.org/pkgs/podman/podman-docker/.
+- A fixed typo (inhert -> inherit)
+- Indentation
 
-So we do really want to test OCI I think.
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+---
+Changes in v2:
+- Fix spacing in configure-gettext
+- Link to v1: https://lore.kernel.org/r/20251008-fix-qa-checks-doc-v1-1-5f92cb2a82ef@bootlin.com
+---
+ documentation/ref-manual/qa-checks.rst | 1104 +++++++++++++++++++-------------
+ 1 file changed, 643 insertions(+), 461 deletions(-)
 
-A few options:
-- "$(basename "$OCI")"
-- if [[ "$OCI" =~ "/docker$" ]];
-   elif [[ "$OCI" =~ "/podman$" ]]
-   c.f. 
-https://www.gnu.org/software/bash/manual/html_node/Conditional-Constructs.html#index-_005b_005b
-- if echo "$OCI" | grep -q -w docker; then
-   elif echo "$OCI" | grep -q -w podman; then
+diff --git a/documentation/ref-manual/qa-checks.rst b/documentation/ref-manual/qa-checks.rst
+index 69ecad74b..9dfbbff02 100644
+--- a/documentation/ref-manual/qa-checks.rst
++++ b/documentation/ref-manual/qa-checks.rst
+@@ -45,31 +45,37 @@ Errors and Warnings
+ 
+ .. _qa-check-already-stripped:
+ 
+--  ``File '<file>' from <recipename> was already stripped, this will prevent future debugging! [already-stripped]``
++``already-stripped``
++--------------------
+ 
+-   Produced binaries have already been stripped prior to the build
+-   system extracting debug symbols. It is common for upstream software
+-   projects to default to stripping debug symbols for output binaries.
+-   In order for debugging to work on the target using ``-dbg`` packages,
+-   this stripping must be disabled.
++``File '<file>' from <recipename> was already stripped, this will prevent future debugging! [already-stripped]``
+ 
+-   Depending on the build system used by the software being built,
+-   disabling this stripping could be as easy as specifying an additional
+-   configure option. If not, disabling stripping might involve patching
+-   the build scripts. In the latter case, look for references to "strip"
+-   or "STRIP", or the "-s" or "-S" command-line options being specified
+-   on the linker command line (possibly through the compiler command
+-   line if preceded with "-Wl,").
++Produced binaries have already been stripped prior to the build
++system extracting debug symbols. It is common for upstream software
++projects to default to stripping debug symbols for output binaries.
++In order for debugging to work on the target using ``-dbg`` packages,
++this stripping must be disabled.
+ 
+-   .. note::
++Depending on the build system used by the software being built,
++disabling this stripping could be as easy as specifying an additional
++configure option. If not, disabling stripping might involve patching
++the build scripts. In the latter case, look for references to "strip"
++or "STRIP", or the "-s" or "-S" command-line options being specified
++on the linker command line (possibly through the compiler command
++line if preceded with "-Wl,").
+ 
+-      Disabling stripping here does not mean that the final packaged
+-      binaries will be unstripped. Once the OpenEmbedded build system
+-      splits out debug symbols to the ``-dbg`` package, it will then
+-      strip the symbols from the binaries.
++.. note::
++
++   Disabling stripping here does not mean that the final packaged
++   binaries will be unstripped. Once the OpenEmbedded build system
++   splits out debug symbols to the ``-dbg`` package, it will then
++   strip the symbols from the binaries.
+ 
+ .. _qa-check-arch:
+ 
++``arch``
++--------
++
+ -  ``Architecture did not match (<file_arch>, expected <machine_arch>) in <file> [arch]``
+ 
+    By default, the OpenEmbedded build system checks the Executable and
+@@ -120,488 +126,591 @@ Errors and Warnings
+ 
+ .. _qa-check-build-deps:
+ 
+--  ``<packagename1> rdepends on <packagename2>, but it isn't a build dependency? [build-deps]``
++``build-deps``
++--------------
+ 
+-   There is a runtime dependency between the two specified packages, but
+-   there is nothing explicit within the recipe to enable the
+-   OpenEmbedded build system to ensure that dependency is satisfied.
+-   This condition is usually triggered by an
+-   :term:`RDEPENDS` value being added at the packaging
+-   stage rather than up front, which is usually automatic based on the
+-   contents of the package. In most cases, you should change the recipe
+-   to add an explicit :term:`RDEPENDS` for the dependency.
++``<packagename1> rdepends on <packagename2>, but it isn't a build dependency? [build-deps]``
++
++There is a runtime dependency between the two specified packages, but
++there is nothing explicit within the recipe to enable the
++OpenEmbedded build system to ensure that dependency is satisfied.
++This condition is usually triggered by an
++:term:`RDEPENDS` value being added at the packaging
++stage rather than up front, which is usually automatic based on the
++contents of the package. In most cases, you should change the recipe
++to add an explicit :term:`RDEPENDS` for the dependency.
+ 
+ .. _qa-check-buildpaths:
+ 
+-- ``File <filename> in package <packagename> contains reference to TMPDIR [buildpaths]``
++``buildpaths``
++--------------
++
++``File <filename> in package <packagename> contains reference to TMPDIR [buildpaths]``
+ 
+-    This check ensures that build system paths (including :term:`TMPDIR`) do not
+-    appear in output files, which not only leaks build system configuration into
+-    the target, but also hinders binary reproducibility as the output will change
+-    if the build system configuration changes.
++This check ensures that build system paths (including :term:`TMPDIR`) do not
++appear in output files, which not only leaks build system configuration into
++the target, but also hinders binary reproducibility as the output will change
++if the build system configuration changes.
+ 
+-    Typically these paths will enter the output through some mechanism in the
+-    configuration or compilation of the software being built by the recipe. To
+-    resolve this issue you will need to determine how the detected path is
+-    entering the output. Sometimes it may require adjusting scripts or code to
+-    use a relative path rather than an absolute one, or to pick up the path from
+-    runtime configuration or environment variables.
++Typically these paths will enter the output through some mechanism in the
++configuration or compilation of the software being built by the recipe. To
++resolve this issue you will need to determine how the detected path is
++entering the output. Sometimes it may require adjusting scripts or code to
++use a relative path rather than an absolute one, or to pick up the path from
++runtime configuration or environment variables.
+ 
+ .. _qa-check-configure-gettext:
+ 
+--  ``AM_GNU_GETTEXT used but no inherit gettext [configure-gettext]``
++``configure-gettext``
++---------------------
+ 
+-    If a recipe is building something that uses automake and the automake
+-    files contain an ``AM_GNU_GETTEXT`` directive then this check will fail
+-    if there is no ``inherit gettext`` statement in the recipe to ensure
+-    that gettext is available during the build. Add ``inherit gettext`` to
+-    remove the warning.
++``AM_GNU_GETTEXT used but no inherit gettext [configure-gettext]``
++
++If a recipe is building something that uses automake and the automake
++files contain an ``AM_GNU_GETTEXT`` directive then this check will fail
++if there is no ``inherit gettext`` statement in the recipe to ensure
++that gettext is available during the build. Add ``inherit gettext`` to
++remove the warning.
+ 
+ .. _qa-check-configure-unsafe:
+ 
+--  ``This autoconf log indicates errors, it looked at host include and/or library paths while determining system capabilities. Rerun configure task after fixing this. [configure-unsafe]``
++``configure-unsafe``
++--------------------
++
++``This autoconf log indicates errors, it looked at host include and/or library paths while determining system capabilities. Rerun configure task after fixing this. [configure-unsafe]``
+ 
+-   The log for the :ref:`ref-tasks-configure` task
+-   indicates that paths on the host were searched for files, which is
+-   not appropriate when cross-compiling. Look for "is unsafe for
+-   cross-compilation" or "CROSS COMPILE Badness" in the specified log
+-   file.
++The log for the :ref:`ref-tasks-configure` task
++indicates that paths on the host were searched for files, which is
++not appropriate when cross-compiling. Look for "is unsafe for
++cross-compilation" or "CROSS COMPILE Badness" in the specified log
++file.
+ 
+ .. _qa-check-debug-deps:
+ 
+--  ``<packagename> rdepends on <debug_packagename> [debug-deps]``
++``debug-deps``
++--------------
+ 
+-   There is a dependency between the specified non-dbg package (i.e. a
+-   package whose name does not end in ``-dbg``) and a package that is a
+-   ``dbg`` package. The ``dbg`` packages contain debug symbols and are
+-   brought in using several different methods:
++``<packagename> rdepends on <debug_packagename> [debug-deps]``
+ 
+-   -  Using the ``dbg-pkgs``
+-      :term:`IMAGE_FEATURES` value.
++There is a dependency between the specified non-dbg package (i.e. a
++package whose name does not end in ``-dbg``) and a package that is a
++``dbg`` package. The ``dbg`` packages contain debug symbols and are
++brought in using several different methods:
+ 
+-   -  Using :term:`IMAGE_INSTALL`.
++-  Using the ``dbg-pkgs``
++   :term:`IMAGE_FEATURES` value.
+ 
+-   -  As a dependency of another ``dbg`` package that was brought in
+-      using one of the above methods.
++-  Using :term:`IMAGE_INSTALL`.
+ 
+-   The dependency might have been automatically added because the
+-   ``dbg`` package erroneously contains files that it should not contain
+-   (e.g. a non-symlink ``.so`` file) or it might have been added
+-   manually (e.g. by adding to :term:`RDEPENDS`).
++-  As a dependency of another ``dbg`` package that was brought in
++   using one of the above methods.
++
++The dependency might have been automatically added because the
++``dbg`` package erroneously contains files that it should not contain
++(e.g. a non-symlink ``.so`` file) or it might have been added
++manually (e.g. by adding to :term:`RDEPENDS`).
+ 
+ .. _qa-check-debug-files:
+ 
+--  ``non debug package contains .debug directory: <packagename> path <path> [debug-files]``
++``debug-files``
++---------------
++
++``non debug package contains .debug directory: <packagename> path <path> [debug-files]``
+ 
+-   The specified package contains a ``.debug`` directory, which should
+-   not appear in anything but the ``-dbg`` package. This situation might
+-   occur if you add a path which contains a ``.debug`` directory and do
+-   not explicitly add the ``.debug`` directory to the ``-dbg`` package.
+-   If this is the case, add the ``.debug`` directory explicitly to
+-   ``FILES:${PN}-dbg``. See :term:`FILES` for additional
+-   information on :term:`FILES`.
++The specified package contains a ``.debug`` directory, which should
++not appear in anything but the ``-dbg`` package. This situation might
++occur if you add a path which contains a ``.debug`` directory and do
++not explicitly add the ``.debug`` directory to the ``-dbg`` package.
++If this is the case, add the ``.debug`` directory explicitly to
++``FILES:${PN}-dbg``. See :term:`FILES` for additional
++information on :term:`FILES`.
+ 
+ .. _qa-check-dep-cmp:
+ 
+--  ``<var>:<packagename> is invalid: <comparison> (<value>)   only comparisons <, =, >, <=, and >= are allowed [dep-cmp]``
++``dep-cmp``
++-----------
+ 
+-   If you are adding a versioned dependency relationship to one of the
+-   dependency variables (:term:`RDEPENDS`,
+-   :term:`RRECOMMENDS`,
+-   :term:`RSUGGESTS`,
+-   :term:`RPROVIDES`,
+-   :term:`RREPLACES`, or
+-   :term:`RCONFLICTS`), you must only use the named
+-   comparison operators. Change the versioned dependency values you are
+-   adding to match those listed in the message.
++``<var>:<packagename> is invalid: <comparison> (<value>)   only comparisons <, =, >, <=, and >= are allowed [dep-cmp]``
++
++If you are adding a versioned dependency relationship to one of the
++dependency variables (:term:`RDEPENDS`,
++:term:`RRECOMMENDS`,
++:term:`RSUGGESTS`,
++:term:`RPROVIDES`,
++:term:`RREPLACES`, or
++:term:`RCONFLICTS`), you must only use the named
++comparison operators. Change the versioned dependency values you are
++adding to match those listed in the message.
+ 
+ .. _qa-check-dev-deps:
+ 
+--  ``<packagename> rdepends on <dev_packagename> [dev-deps]``
++``dev-deps``
++------------
++
++``<packagename> rdepends on <dev_packagename> [dev-deps]``
+ 
+-   There is a dependency between the specified non-dev package (a package
+-   whose name does not end in ``-dev``) and a package that is a ``dev``
+-   package. The ``dev`` packages contain development headers and are
+-   usually brought in using several different methods:
++There is a dependency between the specified non-dev package (a package
++whose name does not end in ``-dev``) and a package that is a ``dev``
++package. The ``dev`` packages contain development headers and are
++usually brought in using several different methods:
+ 
+-   -  Using the ``dev-pkgs``
+-      :term:`IMAGE_FEATURES` value.
++-  Using the ``dev-pkgs``
++   :term:`IMAGE_FEATURES` value.
+ 
+-   -  Using :term:`IMAGE_INSTALL`.
++-  Using :term:`IMAGE_INSTALL`.
+ 
+-   -  As a dependency of another ``dev`` package that was brought in
+-      using one of the above methods.
++-  As a dependency of another ``dev`` package that was brought in
++   using one of the above methods.
+ 
+-   The dependency might have been automatically added (because the
+-   ``dev`` package erroneously contains files that it should not have
+-   (e.g. a non-symlink ``.so`` file) or it might have been added
+-   manually (e.g. by adding to :term:`RDEPENDS`).
++The dependency might have been automatically added (because the
++``dev`` package erroneously contains files that it should not have
++(e.g. a non-symlink ``.so`` file) or it might have been added
++manually (e.g. by adding to :term:`RDEPENDS`).
+ 
+ .. _qa-check-desktop:
+ 
+--  ``"Desktop file issue: ... [desktop]``
++``desktop``
++-----------
+ 
+-   Runs the ``desktop-file-validate`` program against any
+-   ``.desktop`` files to validate their contents against the
+-   specification for ``.desktop`` files.
++``"Desktop file issue: ... [desktop]``
++
++Runs the ``desktop-file-validate`` program against any
++``.desktop`` files to validate their contents against the
++specification for ``.desktop`` files.
+ 
+ .. _qa-check-dev-so:
+ 
+--  ``non -dev/-dbg/nativesdk- package contains symlink .so: <packagename> path '<path>' [dev-so]``
++``dev-so``
++----------
++
++``non -dev/-dbg/nativesdk- package contains symlink .so: <packagename> path '<path>' [dev-so]``
+ 
+-   Symlink ``.so`` files are for development only, and should therefore
+-   go into the ``-dev`` package. This situation might occur if you add
+-   ``*.so*`` rather than ``*.so.*`` to a non-dev package. Change
+-   :term:`FILES` (and possibly
+-   :term:`PACKAGES`) such that the specified ``.so``
+-   file goes into an appropriate ``-dev`` package.
++Symlink ``.so`` files are for development only, and should therefore
++go into the ``-dev`` package. This situation might occur if you add
++``*.so*`` rather than ``*.so.*`` to a non-dev package. Change
++:term:`FILES` (and possibly
++:term:`PACKAGES`) such that the specified ``.so``
++file goes into an appropriate ``-dev`` package.
+ 
+ .. _qa-check-empty-dirs:
+ 
+--  ``<packagename> installs files in <path>, but it is expected to be empty [empty-dirs]``
++``empty-dirs``
++--------------
+ 
+-   The specified package is installing files into a directory that is
+-   normally expected to be empty (such as ``/tmp``). These files may
+-   be more appropriately installed to a different location, or
+-   perhaps alternatively not installed at all, usually by updating the
+-   :ref:`ref-tasks-install` task/function.
++``<packagename> installs files in <path>, but it is expected to be empty [empty-dirs]``
++
++The specified package is installing files into a directory that is
++normally expected to be empty (such as ``/tmp``). These files may
++be more appropriately installed to a different location, or
++perhaps alternatively not installed at all, usually by updating the
++:ref:`ref-tasks-install` task/function.
+ 
+ .. _qa-check-file-rdeps:
+ 
+--  ``<packagename> requires <files>, but no providers in its RDEPENDS [file-rdeps]``
++``file-rdeps``
++--------------
++
++``<packagename> requires <files>, but no providers in its RDEPENDS [file-rdeps]``
+ 
+-   A file-level dependency has been identified from the specified
+-   package on the specified files, but there is no explicit
+-   corresponding entry in :term:`RDEPENDS`. If
+-   particular files are required at runtime then :term:`RDEPENDS` should be
+-   declared in the recipe to ensure the packages providing them are
+-   built.
++A file-level dependency has been identified from the specified
++package on the specified files, but there is no explicit
++corresponding entry in :term:`RDEPENDS`. If
++particular files are required at runtime then :term:`RDEPENDS` should be
++declared in the recipe to ensure the packages providing them are
++built.
+ 
+ .. _qa-check-files-invalid:
+ 
+--  ``FILES variable for package <packagename> contains '//' which is invalid. Attempting to fix this but you should correct the metadata. [files-invalid]``
++``files-invalid``
++-----------------
+ 
+-   The string "//" is invalid in a Unix path. Correct all occurrences
+-   where this string appears in a :term:`FILES` variable so
+-   that there is only a single "/".
++``FILES variable for package <packagename> contains '//' which is invalid. Attempting to fix this but you should correct the metadata. [files-invalid]``
++
++The string "//" is invalid in a Unix path. Correct all occurrences
++where this string appears in a :term:`FILES` variable so
++that there is only a single "/".
+ 
+ .. _qa-check-host-user-contaminated:
+ 
+--  ``<package name>: <path> is owned by gid/uid <gid/uid>, which is the same as the user running bitbake. This may be due to host contamination [host-user-contaminated]``
++``host-user-contaminated``
++--------------------------
++
++``<package name>: <path> is owned by gid/uid <gid/uid>, which is the same as the user running bitbake. This may be due to host contamination [host-user-contaminated]``
+ 
+-   Checks that no package produced by the
+-   recipe contains any files outside of ``/home`` with a user or group
+-   ID that matches the user running BitBake. A match usually indicates
+-   that the files are being installed with an incorrect UID/GID, since
+-   target IDs are independent from host IDs. For additional information,
+-   see the section describing the
+-   :ref:`ref-tasks-install` task.
++Checks that no package produced by the
++recipe contains any files outside of ``/home`` with a user or group
++ID that matches the user running BitBake. A match usually indicates
++that the files are being installed with an incorrect UID/GID, since
++target IDs are independent from host IDs. For additional information,
++see the section describing the
++:ref:`ref-tasks-install` task.
+ 
+ .. _qa-check-infodir:
+ 
+--  ``The /usr/share/info/dir file is not meant to be shipped in a particular package. [infodir]``
++``infodir``
++-----------
+ 
+-   The ``/usr/share/info/dir`` should not be packaged. Add the following
+-   line to your :ref:`ref-tasks-install` task or to your
+-   ``do_install:append`` within the recipe as follows::
++``The /usr/share/info/dir file is not meant to be shipped in a particular package. [infodir]``
+ 
+-      rm ${D}${infodir}/dir
++The ``/usr/share/info/dir`` should not be packaged. Add the following
++line to your :ref:`ref-tasks-install` task or to your
++``do_install:append`` within the recipe as follows::
+ 
+-.. _qa-check-installed-vs-shipped:
++   rm ${D}${infodir}/dir
+ 
+--  ``<recipename>: Files/directories were installed but not shipped in any package [installed-vs-shipped]``
++.. _qa-check-installed-vs-shipped:
+ 
+-   Files have been installed within the
+-   :ref:`ref-tasks-install` task but have not been
+-   included in any package by way of the :term:`FILES`
+-   variable. Files that do not appear in any package cannot be present
+-   in an image later on in the build process. You need to do one of the
+-   following:
++``installed-vs-shipped``
++------------------------
+ 
+-   -  Add the files to :term:`FILES` for the package you want them to appear
+-      in (e.g. ``FILES:${``\ :term:`PN`\ ``}`` for the main
+-      package).
++``<recipename>: Files/directories were installed but not shipped in any package [installed-vs-shipped]``
+ 
+-   -  Delete the files at the end of the :ref:`ref-tasks-install` task if the
+-      files are not needed in any package.
++Files have been installed within the
++:ref:`ref-tasks-install` task but have not been
++included in any package by way of the :term:`FILES`
++variable. Files that do not appear in any package cannot be present
++in an image later on in the build process. You need to do one of the
++following:
+ 
+--  ``<oldpackage>-<oldpkgversion> was registered as shlib provider for <library>, changing it to <newpackage>-<newpkgversion> because it was built later``
++-  Add the files to :term:`FILES` for the package you want them to appear
++   in (e.g. ``FILES:${``\ :term:`PN`\ ``}`` for the main
++   package).
+ 
+-   This message means that both ``<oldpackage>`` and ``<newpackage>``
+-   provide the specified shared library. You can expect this message
+-   when a recipe has been renamed. However, if that is not the case, the
+-   message might indicate that a private version of a library is being
+-   erroneously picked up as the provider for a common library. If that
+-   is the case, you should add the library's ``.so`` filename to
+-   :term:`PRIVATE_LIBS` in the recipe that provides
+-   the private version of the library.
++-  Delete the files at the end of the :ref:`ref-tasks-install` task if the
++   files are not needed in any package.
+ 
+ .. _qa-check-incompatible-license:
+ 
+--  ``Excluding <package> from packaging as it has incompatible license(s): <license> [incompatible-license]``
++``incompatible-license``
++------------------------
++
++``Excluding <package> from packaging as it has incompatible license(s): <license> [incompatible-license]``
+ 
+-   Report when packages are excluded from being created due to being marked with
+-   a license that is in :term:`INCOMPATIBLE_LICENSE`.
++Report when packages are excluded from being created due to being marked with
++a license that is in :term:`INCOMPATIBLE_LICENSE`.
+ 
+ .. _qa-check-invalid-chars:
+ 
+--  ``<variable> has non <envoding> characters [invalid-chars]``
++``invalid-chars``
++-----------------
+ 
+-   Checks that the recipe metadata variables :term:`DESCRIPTION`,
+-   :term:`SUMMARY`, :term:`LICENSE`, and :term:`SECTION` do not contain
+-   non-UTF-8 characters. Some package managers do not support such characters.
++``<variable> has non <envoding> characters [invalid-chars]``
++
++Checks that the recipe metadata variables :term:`DESCRIPTION`,
++:term:`SUMMARY`, :term:`LICENSE`, and :term:`SECTION` do not contain
++non-UTF-8 characters. Some package managers do not support such characters.
+ 
+ .. _qa-check-invalid-packageconfig:
+ 
+--  ``<package>: invalid PACKAGECONFIG(s): <configs> [invalid-packageconfig]``
++``invalid-packageconfig``
++-------------------------
++
++``<package>: invalid PACKAGECONFIG(s): <configs> [invalid-packageconfig]``
+ 
+-   Checks that no undefined features are being added to :term:`PACKAGECONFIG`.
+-   For example, any name "foo" for which the following form does not exist::
++Checks that no undefined features are being added to :term:`PACKAGECONFIG`.
++For example, any name "foo" for which the following form does not exist::
+ 
+-      PACKAGECONFIG[foo] = "..."
++   PACKAGECONFIG[foo] = "..."
+ 
+ .. _qa-check-la:
+ 
+--  ``<file> failed sanity test (workdir) in path <path> [la]``
++``la``
++------
+ 
+-   The specified ``.la`` file contains :term:`TMPDIR`
+-   paths. Any ``.la`` file containing these paths is incorrect since
+-   ``libtool`` adds the correct sysroot prefix when using the files
+-   automatically itself.
++``<file> failed sanity test (workdir) in path <path> [la]``
++
++The specified ``.la`` file contains :term:`TMPDIR`
++paths. Any ``.la`` file containing these paths is incorrect since
++``libtool`` adds the correct sysroot prefix when using the files
++automatically itself.
+ 
+ .. _qa-check-ldflags:
+ 
+--  ``File '<file>' in package '<package>' doesn't have GNU_HASH (didn't pass LDFLAGS?) [ldflags]``
++``ldflags``
++-----------
++
++``File '<file>' in package '<package>' doesn't have GNU_HASH (didn't pass LDFLAGS?) [ldflags]``
+ 
+-   This indicates that binaries produced when building the recipe have
+-   not been linked with the :term:`LDFLAGS` options
+-   provided by the build system. Check to be sure that the :term:`LDFLAGS`
+-   variable is being passed to the linker command. A common workaround
+-   for this situation is to pass in :term:`LDFLAGS` using
+-   :term:`TARGET_CC_ARCH` within the recipe as
+-   follows::
++This indicates that binaries produced when building the recipe have
++not been linked with the :term:`LDFLAGS` options
++provided by the build system. Check to be sure that the :term:`LDFLAGS`
++variable is being passed to the linker command. A common workaround
++for this situation is to pass in :term:`LDFLAGS` using
++:term:`TARGET_CC_ARCH` within the recipe as
++follows::
+ 
+-      TARGET_CC_ARCH += "${LDFLAGS}"
++   TARGET_CC_ARCH += "${LDFLAGS}"
+ 
+ .. _qa-check-libdir:
+ 
+--  ``<packagename>: found library in wrong location [libdir]``
++``libdir``
++----------
+ 
+-   The specified file may have been installed into an incorrect
+-   (possibly hardcoded) installation path. For example, this test will
+-   catch recipes that install ``/lib/bar.so`` when ``${base_libdir}`` is
+-   "lib32". Another example is when recipes install
+-   ``/usr/lib64/foo.so`` when ``${libdir}`` is "/usr/lib". False
+-   positives occasionally exist. For these cases add "libdir" to
+-   :term:`INSANE_SKIP` for the package.
++``<packagename>: found library in wrong location [libdir]``
++
++The specified file may have been installed into an incorrect
++(possibly hardcoded) installation path. For example, this test will
++catch recipes that install ``/lib/bar.so`` when ``${base_libdir}`` is
++"lib32". Another example is when recipes install
++``/usr/lib64/foo.so`` when ``${libdir}`` is "/usr/lib". False
++positives occasionally exist. For these cases add "libdir" to
++:term:`INSANE_SKIP` for the package.
+ 
+ .. _qa-check-libexec:
+ 
+--  ``<packagename>: <path> is using libexec please relocate to <libexecdir> [libexec]``
++``libexec``
++-----------
++
++``<packagename>: <path> is using libexec please relocate to <libexecdir> [libexec]``
+ 
+-   The specified package contains files in ``/usr/libexec`` when the
+-   distro configuration uses a different path for ``<libexecdir>`` By
+-   default, ``<libexecdir>`` is ``$prefix/libexec``. However, this
+-   default can be changed (e.g. ``${libdir}``).
++The specified package contains files in ``/usr/libexec`` when the
++distro configuration uses a different path for ``<libexecdir>`` By
++default, ``<libexecdir>`` is ``$prefix/libexec``. However, this
++default can be changed (e.g. ``${libdir}``).
+ 
+ .. _qa-check-mime:
+ 
+-- ``package contains mime types but does not inherit mime: <packagename> path '<file>' [mime]``
++``mime``
++--------
+ 
+-   The specified package contains mime type files (``.xml`` files in
+-   ``${datadir}/mime/packages``) and yet does not inherit the
+-   :ref:`ref-classes-mime` class which will ensure that these get
+-   properly installed. Either add ``inherit mime`` to the recipe or remove the
+-   files at the :ref:`ref-tasks-install` step if they are not needed.
++``package contains mime types but does not inherit mime: <packagename> path '<file>' [mime]``
++
++The specified package contains mime type files (``.xml`` files in
++``${datadir}/mime/packages``) and yet does not inherit the
++:ref:`ref-classes-mime` class which will ensure that these get
++properly installed. Either add ``inherit mime`` to the recipe or remove the
++files at the :ref:`ref-tasks-install` step if they are not needed.
+ 
+ .. _qa-check-mime-xdg:
+ 
+-- ``package contains desktop file with key 'MimeType' but does not inhert mime-xdg: <packagename> path '<file>' [mime-xdg]``
++``mime-xdg``
++------------
++
++``package contains desktop file with key 'MimeType' but does not inherit mime-xdg: <packagename> path '<file>' [mime-xdg]``
+ 
+-    The specified package contains a .desktop file with a 'MimeType' key
+-    present, but does not inherit the :ref:`ref-classes-mime-xdg`
+-    class that is required in order for that to be activated. Either add
+-    ``inherit mime`` to the recipe or remove the files at the
+-    :ref:`ref-tasks-install` step if they are not needed.
++The specified package contains a .desktop file with a 'MimeType' key
++present, but does not inherit the :ref:`ref-classes-mime-xdg`
++class that is required in order for that to be activated. Either add
++``inherit mime`` to the recipe or remove the files at the
++:ref:`ref-tasks-install` step if they are not needed.
+ 
+ .. _qa-check-missing-update-alternatives:
+ 
+-- ``<recipename>: recipe defines ALTERNATIVE:<packagename> but doesn't inherit update-alternatives. This might fail during do_rootfs later! [missing-update-alternatives]``
++``missing-update-alternatives``
++-------------------------------
+ 
+-    This check ensures that if a recipe sets the :term:`ALTERNATIVE` variable that the
+-    recipe also inherits :ref:`ref-classes-update-alternatives` such
+-    that the alternative will be correctly set up. If you are seeing this message, either
+-    add ``inherit update-alternatives`` to your recipe or remove the reference to the variable
+-    if it is not needed.
++``<recipename>: recipe defines ALTERNATIVE:<packagename> but doesn't inherit update-alternatives. This might fail during do_rootfs later! [missing-update-alternatives]``
++
++This check ensures that if a recipe sets the :term:`ALTERNATIVE` variable that the
++recipe also inherits :ref:`ref-classes-update-alternatives` such
++that the alternative will be correctly set up. If you are seeing this message, either
++add ``inherit update-alternatives`` to your recipe or remove the reference to the variable
++if it is not needed.
+ 
+ .. _qa-check-packages-list:
+ 
+--  ``<packagename> is listed in PACKAGES multiple times, this leads to packaging errors. [packages-list]``
++``packages-list``
++-----------------
++
++``<packagename> is listed in PACKAGES multiple times, this leads to packaging errors. [packages-list]``
+ 
+-   Package names must appear only once in the
+-   :term:`PACKAGES` variable. You might receive this
+-   error if you are attempting to add a package to :term:`PACKAGES` that is
+-   already in the variable's value.
++Package names must appear only once in the
++:term:`PACKAGES` variable. You might receive this
++error if you are attempting to add a package to :term:`PACKAGES` that is
++already in the variable's value.
+ 
+ .. _qa-check-patch-fuzz:
+ 
+-- ``Fuzz detected: <patch output> [patch-fuzz]``
++``patch-fuzz``
++--------------
+ 
+-    This check looks for evidence of "fuzz" when applying patches within the :ref:`ref-tasks-patch`
+-    task. Patch fuzz is a situation when the ``patch`` tool ignores some of the context
+-    lines in order to apply the patch. Consider this example:
++``Fuzz detected: <patch output> [patch-fuzz]``
+ 
+-    Patch to be applied::
++This check looks for evidence of "fuzz" when applying patches within the :ref:`ref-tasks-patch`
++task. Patch fuzz is a situation when the ``patch`` tool ignores some of the context
++lines in order to apply the patch. Consider this example:
+ 
+-        --- filename
+-        +++ filename
+-         context line 1
+-         context line 2
+-         context line 3
+-        +newly added line
+-         context line 4
+-         context line 5
+-         context line 6
++Patch to be applied::
+ 
+-    Original source code::
++   --- filename
++   +++ filename
++    context line 1
++    context line 2
++    context line 3
++   +newly added line
++    context line 4
++    context line 5
++    context line 6
+ 
+-        different context line 1
+-        different context line 2
+-        context line 3
+-        context line 4
+-        different context line 5
+-        different context line 6
++Original source code::
+ 
+-    Outcome (after applying patch with fuzz)::
++   different context line 1
++   different context line 2
++   context line 3
++   context line 4
++   different context line 5
++   different context line 6
+ 
+-        different context line 1
+-        different context line 2
+-        context line 3
+-        newly added line
+-        context line 4
+-        different context line 5
+-        different context line 6
++Outcome (after applying patch with fuzz)::
+ 
+-    Chances are, the newly added line was actually added in a completely
+-    wrong location, or it was already in the original source and was added
+-    for the second time. This is especially possible if the context line 3
+-    and 4 are blank or have only generic things in them, such as ``#endif`` or ``}``.
+-    Depending on the patched code, it is entirely possible for an incorrectly
+-    patched file to still compile without errors.
++   different context line 1
++   different context line 2
++   context line 3
++   newly added line
++   context line 4
++   different context line 5
++   different context line 6
+ 
+-    *How to eliminate patch fuzz warnings*
++Chances are, the newly added line was actually added in a completely
++wrong location, or it was already in the original source and was added
++for the second time. This is especially possible if the context line 3
++and 4 are blank or have only generic things in them, such as ``#endif`` or ``}``.
++Depending on the patched code, it is entirely possible for an incorrectly
++patched file to still compile without errors.
+ 
+-    Use the ``devtool`` command as explained by the warning. First, unpack the
+-    source into devtool workspace::
++*How to eliminate patch fuzz warnings*
+ 
+-            devtool modify <recipe>
++Use the ``devtool`` command as explained by the warning. First, unpack the
++source into devtool workspace::
+ 
+-    This will apply all of the patches, and create new commits out of them in
+-    the workspace --- with the patch context updated.
++   devtool modify <recipe>
+ 
+-    Then, replace the patches in the recipe layer::
++This will apply all of the patches, and create new commits out of them in
++the workspace --- with the patch context updated.
+ 
+-            devtool finish --force-patch-refresh <recipe> <layer_path>
++Then, replace the patches in the recipe layer::
+ 
+-    The patch updates then need be reviewed (preferably with a side-by-side diff
+-    tool) to ensure they are indeed doing the right thing i.e.:
++   devtool finish --force-patch-refresh <recipe> <layer_path>
+ 
+-    #. they are applied in the correct location within the file;
+-    #. they do not introduce duplicate lines, or otherwise do things that
+-       are no longer necessary.
++The patch updates then need be reviewed (preferably with a side-by-side diff
++tool) to ensure they are indeed doing the right thing i.e.:
+ 
+-    To confirm these things, you can also review the patched source code in
+-    devtool's workspace, typically in ``<build_dir>/workspace/sources/<recipe>/``
++#. they are applied in the correct location within the file;
++#. they do not introduce duplicate lines, or otherwise do things that
++   are no longer necessary.
+ 
+-    Once the review is done, you can create and publish a layer commit with
+-    the patch updates that modify the context. Devtool may also refresh
+-    other things in the patches, those can be discarded.
++To confirm these things, you can also review the patched source code in
++devtool's workspace, typically in ``<build_dir>/workspace/sources/<recipe>/``
++
++Once the review is done, you can create and publish a layer commit with
++the patch updates that modify the context. Devtool may also refresh
++other things in the patches, those can be discarded.
+ 
+ .. _qa-check-patch-status:
+ 
+-- ``Missing Upstream-Status in patch <patchfile> Please add according to <url> [patch-status]``
++``patch-status``
++----------------
++
++-  ``Missing Upstream-Status in patch <patchfile> Please add according to <url> [patch-status]``
+ 
+-    The ``Upstream-Status`` value is missing in the specified patch file's header.
+-    This value is intended to track whether or not the patch has been sent
+-    upstream, whether or not it has been merged, etc.
++   The ``Upstream-Status`` value is missing in the specified patch file's header.
++   This value is intended to track whether or not the patch has been sent
++   upstream, whether or not it has been merged, etc.
+ 
+-    For more information, see the
+-    ":ref:`contributor-guide/recipe-style-guide:patch upstream status`"
+-    section in the Yocto Project and OpenEmbedded Contributor Guide.
++   For more information, see the
++   ":ref:`contributor-guide/recipe-style-guide:patch upstream status`"
++   section in the Yocto Project and OpenEmbedded Contributor Guide.
+ 
+-- ``Malformed Upstream-Status in patch <patchfile> Please correct according to <url> [patch-status]``
++-  ``Malformed Upstream-Status in patch <patchfile> Please correct according to <url> [patch-status]``
+ 
+-    The ``Upstream-Status`` value in the specified patch file's header is invalid -
+-    it must be a specific format. See the "Missing Upstream-Status" entry above
+-    for more information.
++   The ``Upstream-Status`` value in the specified patch file's header is invalid -
++   it must be a specific format. See the "Missing Upstream-Status" entry above
++   for more information.
+ 
+ .. _qa-check-pep517-backend:
+ 
+--  ``inherits setuptools3 but has pyproject.toml with <build backend>, use the correct class [pep517-backend]``
++``pep517-backend``
++------------------
+ 
+-   Checks that a recipe inheriting :ref:`ref-classes-setuptools3` has a
+-   PEP517-compliant backend.
++``inherits setuptools3 but has pyproject.toml with <build backend>, use the correct class [pep517-backend]``
++
++Checks that a recipe inheriting :ref:`ref-classes-setuptools3` has a
++PEP517-compliant backend.
+ 
+ .. _qa-check-perllocalpod:
+ 
+-- ``<packagename> contains perllocal.pod (<files>), should not be installed [perllocalpod]``
++``perllocalpod``
++----------------
++
++``<packagename> contains perllocal.pod (<files>), should not be installed [perllocalpod]``
+ 
+-    ``perllocal.pod`` is an index file of locally installed modules and so shouldn't be
+-    installed by any distribution packages. The :ref:`ref-classes-cpan` class
+-    already sets ``NO_PERLLOCAL`` to stop this file being generated by most Perl recipes,
+-    but if a recipe is using ``MakeMaker`` directly then they might not be doing this
+-    correctly. This check ensures that perllocal.pod is not in any package in order to
+-    avoid multiple packages shipping this file and thus their packages conflicting
+-    if installed together.
++``perllocal.pod`` is an index file of locally installed modules and so shouldn't be
++installed by any distribution packages. The :ref:`ref-classes-cpan` class
++already sets ``NO_PERLLOCAL`` to stop this file being generated by most Perl recipes,
++but if a recipe is using ``MakeMaker`` directly then they might not be doing this
++correctly. This check ensures that perllocal.pod is not in any package in order to
++avoid multiple packages shipping this file and thus their packages conflicting
++if installed together.
+ 
+ .. _qa-check-perm-config:
+ 
+--  ``Fixup Perms: invalid config line <line> [perm-config]``
++``perm-config``
++---------------
++
++``Fixup Perms: invalid config line <line> [perm-config]``
+ 
+-   Reports lines in ``fs-perms.txt`` that have an invalid format.
++Reports lines in ``fs-perms.txt`` that have an invalid format.
+ 
+ .. _qa-check-perm-line:
+ 
+--  ``Fixup perms: <config> invalid line: <line> [perm-line]``
++``perm-line``
++-------------
+ 
+-   Reports lines in ``fs-perms.txt`` that have an invalid format.
++``Fixup perms: <config> invalid line: <line> [perm-line]``
++
++Reports lines in ``fs-perms.txt`` that have an invalid format.
+ 
+ .. _qa-check-perm-link:
+ 
+--  ``Fixup Perms: Unable to correct directory link, target already exists: <directory> -> <target> [perm-link]``
++``perm-link``
++-------------
++
++``Fixup Perms: Unable to correct directory link, target already exists: <directory> -> <target> [perm-link]``
+ 
+-   Reports lines in ``fs-perms.txt`` that specify 'link' where the specified
+-   target already exists.
++Reports lines in ``fs-perms.txt`` that specify 'link' where the specified
++target already exists.
+ 
+ .. _qa-check-perms:
+ 
+--  ``perms``: Currently, this check is unused but reserved.
++``perms``
++---------
++
++Currently, this check is unused but reserved.
+ 
+ .. _qa-check-pkgconfig:
+ 
+--  ``<file> failed sanity test (tmpdir) in path <path> [pkgconfig]``
++``pkgconfig``
++-------------
++
++``<file> failed sanity test (tmpdir) in path <path> [pkgconfig]``
+ 
+-   The specified ``.pc`` file contains
+-   :term:`TMPDIR`\ ``/``\ :term:`WORKDIR`
+-   paths. Any ``.pc`` file containing these paths is incorrect since
+-   ``pkg-config`` itself adds the correct sysroot prefix when the files
+-   are accessed.
++The specified ``.pc`` file contains
++:term:`TMPDIR`\ ``/``\ :term:`WORKDIR`
++paths. Any ``.pc`` file containing these paths is incorrect since
++``pkg-config`` itself adds the correct sysroot prefix when the files
++are accessed.
+ 
+ .. _qa-check-pkgname:
+ 
+--  ``<packagename> doesn't match the [a-z0-9.+-]+ regex [pkgname]``
++``pkgname``
++-----------
+ 
+-   The convention within the OpenEmbedded build system (sometimes
+-   enforced by the package manager itself) is to require that package
+-   names are all lower case and to allow a restricted set of characters.
+-   If your recipe name does not match this, or you add packages to
+-   :term:`PACKAGES` that do not conform to the
+-   convention, then you will receive this error. Rename your recipe. Or,
+-   if you have added a non-conforming package name to :term:`PACKAGES`,
+-   change the package name appropriately.
++``<packagename> doesn't match the [a-z0-9.+-]+ regex [pkgname]``
++
++The convention within the OpenEmbedded build system (sometimes
++enforced by the package manager itself) is to require that package
++names are all lower case and to allow a restricted set of characters.
++If your recipe name does not match this, or you add packages to
++:term:`PACKAGES` that do not conform to the
++convention, then you will receive this error. Rename your recipe. Or,
++if you have added a non-conforming package name to :term:`PACKAGES`,
++change the package name appropriately.
+ 
+ .. _qa-check-pkgvarcheck:
+ 
++``pkgvarcheck``
++---------------
++
+ -  ``<recipefile>: Variable <variable> is set as not being package specific, please fix this. [pkgvarcheck]``
+ 
+    Certain variables (:term:`RDEPENDS`,
+@@ -618,7 +727,7 @@ Errors and Warnings
+    assignments to these variables within your recipe.
+ 
+ 
+-- ``recipe uses DEPENDS:${PN}, should use DEPENDS [pkgvarcheck]``
++-  ``recipe uses DEPENDS:${PN}, should use DEPENDS [pkgvarcheck]``
+ 
+    This check looks for instances of setting ``DEPENDS:${PN}``
+    which is erroneous (:term:`DEPENDS` is a recipe-wide variable and thus
+@@ -627,194 +736,258 @@ Errors and Warnings
+ 
+ .. _qa-check-pn-overrides:
+ 
+--  ``Recipe <recipefile> has PN of "<recipename>" which is in OVERRIDES, this can result in unexpected behavior. [pn-overrides]``
++``pn-overrides``
++----------------
+ 
+-   The specified recipe has a name (:term:`PN`) value that
+-   appears in :term:`OVERRIDES`. If a recipe is named
+-   such that its :term:`PN` value matches something already in :term:`OVERRIDES`
+-   (e.g. :term:`PN` happens to be the same as :term:`MACHINE`
+-   or :term:`DISTRO`), it can have unexpected
+-   consequences. For example, assignments such as
+-   ``FILES:${PN} = "xyz"`` effectively turn into ``FILES = "xyz"``.
+-   Rename your recipe (or if :term:`PN` is being set explicitly, change the
+-   :term:`PN` value) so that the conflict does not occur. See
+-   :term:`FILES` for additional information.
++``Recipe <recipefile> has PN of "<recipename>" which is in OVERRIDES, this can result in unexpected behavior. [pn-overrides]``
++
++The specified recipe has a name (:term:`PN`) value that
++appears in :term:`OVERRIDES`. If a recipe is named
++such that its :term:`PN` value matches something already in :term:`OVERRIDES`
++(e.g. :term:`PN` happens to be the same as :term:`MACHINE`
++or :term:`DISTRO`), it can have unexpected
++consequences. For example, assignments such as
++``FILES:${PN} = "xyz"`` effectively turn into ``FILES = "xyz"``.
++Rename your recipe (or if :term:`PN` is being set explicitly, change the
++:term:`PN` value) so that the conflict does not occur. See
++:term:`FILES` for additional information.
+ 
+ .. _qa-check-shebang-size:
+ 
+-- ``<packagename>: <file> maximum shebang size exceeded, the maximum size is 128. [shebang-size]``
++``shebang-size``
++----------------
++
++``<packagename>: <file> maximum shebang size exceeded, the maximum size is 128. [shebang-size]``
++
++This check ensures that the shebang line (``#!`` in the first line) for a script
++is not longer than 128 characters, which can cause an error at runtime depending
++on the operating system. If you are seeing this message then the specified script
++may need to be patched to have a shorter in order to avoid runtime problems.
++
++.. _qa-check-shlib-provider:
+ 
+-    This check ensures that the shebang line (``#!`` in the first line) for a script
+-    is not longer than 128 characters, which can cause an error at runtime depending
+-    on the operating system. If you are seeing this message then the specified script
+-    may need to be patched to have a shorter in order to avoid runtime problems.
++Shlib provider
++--------------
++
++``<oldpackage>-<oldpkgversion> was registered as shlib provider for <library>, changing it to <newpackage>-<newpkgversion> because it was built later``
++
++This message means that both ``<oldpackage>`` and ``<newpackage>``
++provide the specified shared library. You can expect this message
++when a recipe has been renamed. However, if that is not the case, the
++message might indicate that a private version of a library is being
++erroneously picked up as the provider for a common library. If that
++is the case, you should add the library's ``.so`` filename to
++:term:`PRIVATE_LIBS` in the recipe that provides
++the private version of the library.
+ 
+ .. _qa-check-space-around-equal:
+ 
+--  ``<filename>:<line number> has a lack of whitespace around the assignment: '<assignment>'``
++``space-around-equal``
++----------------------
+ 
+-   This warning indicated that there is missing spaces around an assignment.
++``<filename>:<line number> has a lack of whitespace around the assignment: '<assignment>'``
+ 
+-   For example, the following assignments would print a warning::
++This warning indicated that there is missing spaces around an assignment.
+ 
+-      FOO="bar"
+-      FOO= "bar"
+-      FOO ="bar"
++For example, the following assignments would print a warning::
+ 
+-   These should be replaced by::
++   FOO="bar"
++   FOO= "bar"
++   FOO ="bar"
+ 
+-      FOO = "bar"
++These should be replaced by::
++
++   FOO = "bar"
+ 
+ .. _qa-check-src-uri-bad:
+ 
+-- ``<recipename>: SRC_URI uses unstable GitHub archives [src-uri-bad]``
++``src-uri-bad``
++---------------
++
++-  ``<recipename>: SRC_URI uses unstable GitHub archives [src-uri-bad]``
+ 
+-    GitHub provides "archive" tarballs, however these can be re-generated
+-    on the fly and thus the file's signature will not necessarily match that
+-    in the :term:`SRC_URI` checksums in future leading to build failures. It is
+-    recommended that you use an official release tarball or switch to
+-    pulling the corresponding revision in the actual git repository instead.
++   GitHub provides "archive" tarballs, however these can be re-generated
++   on the fly and thus the file's signature will not necessarily match that
++   in the :term:`SRC_URI` checksums in future leading to build failures. It is
++   recommended that you use an official release tarball or switch to
++   pulling the corresponding revision in the actual git repository instead.
+ 
+ 
+-- ``SRC_URI uses PN not BPN [src-uri-bad]``
++-  ``SRC_URI uses PN not BPN [src-uri-bad]``
+ 
+-    If some part of :term:`SRC_URI` needs to reference the recipe name, it should do
+-    so using ${:term:`BPN`} rather than ${:term:`PN`} as the latter will change
+-    for different variants of the same recipe e.g. when :term:`BBCLASSEXTEND`
+-    or multilib are being used. This check will fail if a reference to ``${PN}``
+-    is found within the :term:`SRC_URI` value --- change it to ``${BPN}`` instead.
++   If some part of :term:`SRC_URI` needs to reference the recipe name, it should do
++   so using ${:term:`BPN`} rather than ${:term:`PN`} as the latter will change
++   for different variants of the same recipe e.g. when :term:`BBCLASSEXTEND`
++   or multilib are being used. This check will fail if a reference to ``${PN}``
++   is found within the :term:`SRC_URI` value --- change it to ``${BPN}`` instead.
+ 
+ .. _qa-check-staticdev:
+ 
+--  ``non -staticdev package contains static .a library: <packagename> path '<path>' [staticdev]``
++``staticdev``
++-------------
+ 
+-   Static ``.a`` library files should go into a ``-staticdev`` package.
+-   Change :term:`FILES` (and possibly
+-   :term:`PACKAGES`) such that the specified ``.a`` file
+-   goes into an appropriate ``-staticdev`` package.
++``non -staticdev package contains static .a library: <packagename> path '<path>' [staticdev]``
++
++Static ``.a`` library files should go into a ``-staticdev`` package.
++Change :term:`FILES` (and possibly
++:term:`PACKAGES`) such that the specified ``.a`` file
++goes into an appropriate ``-staticdev`` package.
+ 
+ .. _qa-check-symlink-to-sysroot:
+ 
+--  ``Symlink <path> in <packagename> points to TMPDIR [symlink-to-sysroot]``
++``symlink-to-sysroot``
++----------------------
++
++``Symlink <path> in <packagename> points to TMPDIR [symlink-to-sysroot]``
+ 
+-   The specified symlink points into :term:`TMPDIR` on the
+-   host. Such symlinks will work on the host. However, they are clearly
+-   invalid when running on the target. You should either correct the
+-   symlink to use a relative path or remove the symlink.
++The specified symlink points into :term:`TMPDIR` on the
++host. Such symlinks will work on the host. However, they are clearly
++invalid when running on the target. You should either correct the
++symlink to use a relative path or remove the symlink.
+ 
+ .. _qa-check-recipe-naming:
+ 
+--  ``Recipe <recipe> appears native/nativesdk but is not, should inherit native/nativesdk``
++Recipe naming
++-------------
++
++``Recipe <recipe> appears native/nativesdk but is not, should inherit native/nativesdk``
+ 
+-   Checks that the recipe name and recipe class match, so that ``*-native``
+-   recipes inherit :ref:`ref-classes-native` and ``nativesdk-*`` recipes
+-   inherit :ref:`ref-classes-nativesdk`.
++Checks that the recipe name and recipe class match, so that ``*-native``
++recipes inherit :ref:`ref-classes-native` and ``nativesdk-*`` recipes
++inherit :ref:`ref-classes-nativesdk`.
+ 
+ .. _qa-check-rpaths:
+ 
+--  ``package <packagename> contains bad RPATH <rpath> in file <file> [rpaths]``
++``rpaths``
++----------
+ 
+-   The specified binary produced by the recipe contains dynamic library
+-   load paths (rpaths) that contain build system paths such as
+-   :term:`TMPDIR`, which are incorrect for the target and
+-   could potentially be a security issue. Check for bad ``-rpath``
+-   options being passed to the linker in your
+-   :ref:`ref-tasks-compile` log. Depending on the build
+-   system used by the software being built, there might be a configure
+-   option to disable rpath usage completely within the build of the
+-   software.
++``package <packagename> contains bad RPATH <rpath> in file <file> [rpaths]``
++
++The specified binary produced by the recipe contains dynamic library
++load paths (rpaths) that contain build system paths such as
++:term:`TMPDIR`, which are incorrect for the target and
++could potentially be a security issue. Check for bad ``-rpath``
++options being passed to the linker in your
++:ref:`ref-tasks-compile` log. Depending on the build
++system used by the software being built, there might be a configure
++option to disable rpath usage completely within the build of the
++software.
+ 
+ .. _qa-check-textrel:
+ 
+--  ``ELF binary '<file>' has relocations in .text [textrel]``
++``textrel``
++-----------
++
++``ELF binary '<file>' has relocations in .text [textrel]``
+ 
+-   The specified ELF binary contains relocations in its ``.text``
+-   sections. This situation can result in a performance impact at
+-   runtime.
++The specified ELF binary contains relocations in its ``.text``
++sections. This situation can result in a performance impact at
++runtime.
+ 
+-   Typically, the way to solve this performance issue is to add "-fPIC"
+-   or "-fpic" to the compiler command-line options. For example, given
+-   software that reads :term:`CFLAGS` when you build it,
+-   you could add the following to your recipe::
++Typically, the way to solve this performance issue is to add "-fPIC"
++or "-fpic" to the compiler command-line options. For example, given
++software that reads :term:`CFLAGS` when you build it,
++you could add the following to your recipe::
+ 
+-      CFLAGS:append = " -fPIC "
++   CFLAGS:append = " -fPIC "
+ 
+-   For more information on text relocations at runtime, see
+-   https://www.akkadia.org/drepper/textrelocs.html.
++For more information on text relocations at runtime, see
++https://www.akkadia.org/drepper/textrelocs.html.
+ 
+ .. _qa-check-unhandled-features-check:
+ 
+-- ``<recipename>: recipe doesn't inherit features_check [unhandled-features-check]``
++``unhandled-features-check``
++----------------------------
+ 
+-    This check ensures that if one of the variables that the
+-    :ref:`ref-classes-features_check` class supports (e.g.
+-    :term:`REQUIRED_DISTRO_FEATURES`) is used, then the recipe
+-    inherits :ref:`ref-classes-features_check` in order for
+-    the requirement to actually work. If you are seeing this message, either
+-    add ``inherit features_check`` to your recipe or remove the reference to
+-    the variable if it is not needed.
++``<recipename>: recipe doesn't inherit features_check [unhandled-features-check]``
++
++This check ensures that if one of the variables that the
++:ref:`ref-classes-features_check` class supports (e.g.
++:term:`REQUIRED_DISTRO_FEATURES`) is used, then the recipe
++inherits :ref:`ref-classes-features_check` in order for
++the requirement to actually work. If you are seeing this message, either
++add ``inherit features_check`` to your recipe or remove the reference to
++the variable if it is not needed.
+ 
+ .. _qa-check-unimplemented-ptest:
+ 
+-- ``<tool> tests detected [unimplemented-ptest]``
++``unimplemented-ptest``
++-----------------------
++
++``<tool> tests detected [unimplemented-ptest]``
+ 
+-    This check will detect if the source of the package contains some
+-    upstream-provided tests and, if so, that ptests are implemented for this
+-    recipe.  See the ":ref:`test-manual/ptest:testing packages with ptest`"
+-    section in the Yocto Project Development Tasks Manual. See also the
+-    ":ref:`ref-classes-ptest`" section.
++This check will detect if the source of the package contains some
++upstream-provided tests and, if so, that ptests are implemented for this
++recipe.  See the ":ref:`test-manual/ptest:testing packages with ptest`"
++section in the Yocto Project Development Tasks Manual. See also the
++":ref:`ref-classes-ptest`" section.
+ 
+ .. _qa-check-unknown-configure-option:
+ 
+--  ``<recipe>: configure was passed unrecognized options: <options> [unknown-configure-option]``
+-
+-   The configure script is reporting that the specified options are
+-   unrecognized. This situation could be because the options were
+-   previously valid but have been removed from the configure script. Or,
+-   there was a mistake when the options were added and there is another
+-   option that should be used instead. If you are unsure, consult the
+-   upstream build documentation, the ``./configure --help`` output, and
+-   the upstream change log or release notes. Once you have worked out
+-   what the appropriate change is, you can update
+-   :term:`EXTRA_OECONF`,
+-   :term:`PACKAGECONFIG_CONFARGS`, or the
+-   individual :term:`PACKAGECONFIG` option values
+-   accordingly.
++``unknown-configure-option``
++----------------------------
++
++``<recipe>: configure was passed unrecognized options: <options> [unknown-configure-option]``
++
++The configure script is reporting that the specified options are
++unrecognized. This situation could be because the options were
++previously valid but have been removed from the configure script. Or,
++there was a mistake when the options were added and there is another
++option that should be used instead. If you are unsure, consult the
++upstream build documentation, the ``./configure --help`` output, and
++the upstream change log or release notes. Once you have worked out
++what the appropriate change is, you can update
++:term:`EXTRA_OECONF`,
++:term:`PACKAGECONFIG_CONFARGS`, or the
++individual :term:`PACKAGECONFIG` option values
++accordingly.
+ 
+ .. _qa-check-unlisted-pkg-lics:
+ 
+--  ``LICENSE:<packagename> includes licenses (<licenses>) that are not listed in LICENSE [unlisted-pkg-lics]``
++``unlisted-pkg-lics``
++---------------------
+ 
+-   The :term:`LICENSE` of the recipe should be a superset
+-   of all the licenses of all packages produced by this recipe. In other
+-   words, any license in ``LICENSE:*`` should also appear in
+-   :term:`LICENSE`.
++``LICENSE:<packagename> includes licenses (<licenses>) that are not listed in LICENSE [unlisted-pkg-lics]``
++
++The :term:`LICENSE` of the recipe should be a superset
++of all the licenses of all packages produced by this recipe. In other
++words, any license in ``LICENSE:*`` should also appear in
++:term:`LICENSE`.
+ 
+ .. _qa-check-useless-rpaths:
+ 
+--  ``<packagename>: <file> contains probably-redundant RPATH <rpath> [useless-rpaths]``
++``useless-rpaths``
++------------------
++
++``<packagename>: <file> contains probably-redundant RPATH <rpath> [useless-rpaths]``
+ 
+-   The specified binary produced by the recipe contains dynamic library
+-   load paths (rpaths) that on a standard system are searched by default
+-   by the linker (e.g. ``/lib`` and ``/usr/lib``). While these paths
+-   will not cause any breakage, they do waste space and are unnecessary.
+-   Depending on the build system used by the software being built, there
+-   might be a configure option to disable rpath usage completely within
+-   the build of the software.
++The specified binary produced by the recipe contains dynamic library
++load paths (rpaths) that on a standard system are searched by default
++by the linker (e.g. ``/lib`` and ``/usr/lib``). While these paths
++will not cause any breakage, they do waste space and are unnecessary.
++Depending on the build system used by the software being built, there
++might be a configure option to disable rpath usage completely within
++the build of the software.
+ 
+ .. _qa-check-usrmerge:
+ 
+-- ``<packagename> package is not obeying usrmerge distro feature. /<path> should be relocated to /usr. [usrmerge]``
++``usrmerge``
++------------
+ 
+-    If ``usrmerge`` is in :term:`DISTRO_FEATURES`, this check will ensure that no package
+-    installs files to root (``/bin``, ``/sbin``, ``/lib``, ``/lib64``) directories. If you are seeing this
+-    message, it indicates that the :ref:`ref-tasks-install` step (or perhaps the build process that
+-    :ref:`ref-tasks-install` is calling into, e.g. ``make install`` is using hardcoded paths instead
+-    of the variables set up for this (``bindir``, ``sbindir``, etc.), and should be
+-    changed so that it does.
++``<packagename> package is not obeying usrmerge distro feature. /<path> should be relocated to /usr. [usrmerge]``
++
++If ``usrmerge`` is in :term:`DISTRO_FEATURES`, this check will ensure that no package
++installs files to root (``/bin``, ``/sbin``, ``/lib``, ``/lib64``) directories. If you are seeing this
++message, it indicates that the :ref:`ref-tasks-install` step (or perhaps the build process that
++:ref:`ref-tasks-install` is calling into, e.g. ``make install`` is using hardcoded paths instead
++of the variables set up for this (``bindir``, ``sbindir``, etc.), and should be
++changed so that it does.
+ 
+ .. _qa-check-var-undefined:
+ 
++``var-undefined``
++-----------------
++
+ -  ``WORKDIR, DEPLOY_DIR, D, PN and PKGD all must be defined, unable to package [var-undefined]`` 
+ 
+    Reports when variables fundamental to packaging (i.e. :term:`WORKDIR`,
+@@ -823,40 +996,49 @@ Errors and Warnings
+ 
+ .. _qa-check-version-going-backwards:
+ 
+--  ``Package version for package <package> went backwards which would break package feeds (from <version2> to <version1>) [version-going-backwards]``
++``version-going-backwards``
++---------------------------
+ 
+-   If the :ref:`ref-classes-buildhistory` class is enabled, reports when a
+-   package being written out has a lower version than the previously written
+-   package under the same name. If you are placing output packages into a feed
+-   and upgrading packages on a target system using that feed, the version of a
+-   package going backwards can result in the target system not correctly
+-   upgrading to the "new" version of the package.
++``Package version for package <package> went backwards which would break package feeds (from <version2> to <version1>) [version-going-backwards]``
+ 
+-   .. note::
++If the :ref:`ref-classes-buildhistory` class is enabled, reports when a
++package being written out has a lower version than the previously written
++package under the same name. If you are placing output packages into a feed
++and upgrading packages on a target system using that feed, the version of a
++package going backwards can result in the target system not correctly
++upgrading to the "new" version of the package.
+ 
+-      This is only relevant when you are using runtime package management
+-      on your target system.
++.. note::
++
++   This is only relevant when you are using runtime package management
++   on your target system.
+ 
+ .. _qa-check-virtual-slash:
+ 
+-- ``<variable> is set to <value> but the substring 'virtual/' holds no meaning in this context. It only works for build time dependencies, not runtime ones. It is suggested to use 'VIRTUAL-RUNTIME_' variables instead.``
++``virtual-slash``
++-----------------
+ 
+-    ``virtual/`` is a convention intended for use in the build context
+-    (i.e. :term:`PROVIDES` and :term:`DEPENDS`) rather than the runtime
+-    context (i.e. :term:`RPROVIDES` and :term:`RDEPENDS`). Use
+-    :term:`VIRTUAL-RUNTIME` variables instead for the latter.
++``<variable> is set to <value> but the substring 'virtual/' holds no meaning in this context. It only works for build time dependencies, not runtime ones. It is suggested to use 'VIRTUAL-RUNTIME_' variables instead. [virtual-slash]``
++
++``virtual/`` is a convention intended for use in the build context
++(i.e. :term:`PROVIDES` and :term:`DEPENDS`) rather than the runtime
++context (i.e. :term:`RPROVIDES` and :term:`RDEPENDS`). Use
++:term:`VIRTUAL-RUNTIME` variables instead for the latter.
+ 
+ .. _qa-check-xorg-driver-abi:
+ 
+--  ``Package <packagename> contains Xorg driver (<driver>) but no xorg-abi- dependencies [xorg-driver-abi]``
++``xorg-driver-abi``
++-------------------
++
++``Package <packagename> contains Xorg driver (<driver>) but no xorg-abi- dependencies [xorg-driver-abi]``
+ 
+-   The specified package contains an Xorg driver, but does not have a
+-   corresponding ABI package dependency. The xserver-xorg recipe
+-   provides driver ABI names. All drivers should depend on the ABI
+-   versions that they have been built against. Driver recipes that
+-   include ``xorg-driver-input.inc`` or ``xorg-driver-video.inc`` will
+-   automatically get these versions. Consequently, you should only need
+-   to explicitly add dependencies to binary driver recipes.
++The specified package contains an Xorg driver, but does not have a
++corresponding ABI package dependency. The xserver-xorg recipe
++provides driver ABI names. All drivers should depend on the ABI
++versions that they have been built against. Driver recipes that
++include ``xorg-driver-input.inc`` or ``xorg-driver-video.inc`` will
++automatically get these versions. Consequently, you should only need
++to explicitly add dependencies to binary driver recipes.
+ 
+ Configuring and Disabling QA Checks
+ ===================================
 
-This script has worked fine for me with podman-docker script with only 
-podman installed on my system, can you tell me what the issue is so 
-we're sure we're fixing the issues?
+---
+base-commit: 09c7800333b17b21e50d2a089a3ae1b123697243
+change-id: 20251008-fix-qa-checks-doc-cfde45f98ddc
 
-Cheers,
-Quentin
+Best regards,
+--  
+Antonin Godard <antonin.godard@bootlin.com>
+
 
