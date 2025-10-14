@@ -1,147 +1,129 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <pierre-loup.gosse@smile.fr>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1070ACCD184
-	for <webhook@archiver.kernel.org>; Tue, 14 Oct 2025 09:38:29 +0000 (UTC)
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by mx.groups.io with SMTP id smtpd.web11.11406.1760434702886092031
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 08CCDCCD184
+	for <webhook@archiver.kernel.org>; Tue, 14 Oct 2025 12:31:00 +0000 (UTC)
+Received: from mail-wm1-f65.google.com (mail-wm1-f65.google.com [209.85.128.65])
+ by mx.groups.io with SMTP id smtpd.web11.14890.1760445053608205817
  for <docs@lists.yoctoproject.org>;
- Tue, 14 Oct 2025 02:38:23 -0700
+ Tue, 14 Oct 2025 05:30:53 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=HQqbqzbW;
- spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id E1CC9C09F80
-	for <docs@lists.yoctoproject.org>; Tue, 14 Oct 2025 09:38:01 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id E7074606EC
-	for <docs@lists.yoctoproject.org>; Tue, 14 Oct 2025 09:38:20 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1C6A8102F228B;
-	Tue, 14 Oct 2025 11:38:19 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1760434700; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=IjzWAg/sNuqzCFnfX+lr/eOWs+O2caV6Rxj/s5h5yBA=;
-	b=HQqbqzbWKYlEw0PqHeSBFnsKdkn8rX9iyg0AqU+pSe2XQR9cAASssNH8+rtWnbN7i6iO0/
-	RuzyK+jAgwTUyJZvjD76GZy/4pxvZrJtwVSzHPHCbm4K4e/4RoX2VeAemOfkzMcHyt4J+y
-	EK+3jQyVeYBtXrLmJLB2xAScPrzNExF66y2hBcm1fZPzr2cJQzFAwTruRKRUzPjV31rDgQ
-	Tn6apLeSSwabLgZ0PwcXSLAr/q5BA4jI282YiJ+GyrYXBCks2Wlfma7DTnQaTLaBKZdDqQ
-	af8c0LKcQ09pNiEz8iXQPobEAWjlTVGx1hz30WGp/PD3gd01ID6cmhE+uGUAGw==
-From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Tue, 14 Oct 2025 11:38:12 +0200
-Subject: [PATCH] ref-manual/classes.rst: uboot-config: improve
- documentation
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251014-improve-uboot-config-class-v1-1-9163eea15557@bootlin.com>
-X-B4-Tracking: v=1; b=H4sIAAMa7mgC/x3MwQqDMAwA0F+RnBdoq8K6Xxk71Jq6wNZIoyKI/
- 27x+C7vAKXCpPBqDii0sbLkCvtoIH5Dngh5rAZnXG+N7ZD/c5GNcB1EFoySE08Yf0EVjRt679o
- Unt5DDeZCifc7f3/O8wIN0wETbAAAAA==
-X-Change-ID: 20251014-improve-uboot-config-class-02b5923fa899
+ dkim=pass header.i=@smile.fr header.s=google header.b=RSLLR6zp;
+ spf=pass (domain: smile.fr, ip: 209.85.128.65, mailfrom: pierre-loup.gosse@smile.fr)
+Received: by mail-wm1-f65.google.com with SMTP id 5b1f17b1804b1-46e52279279so37670555e9.3
+        for <docs@lists.yoctoproject.org>; Tue, 14 Oct 2025 05:30:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=smile.fr; s=google; t=1760445052; x=1761049852; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=RSiV9Ok7xXT5Eoi9L0Jz06Zz6oZdhVkicxhwy2KzzNc=;
+        b=RSLLR6zpzIJ34SWHt42qDZMxipseYhmurg2CCLgWUvup9ic66Z+vro2wQRr2bT7+gT
+         chiRyuCtGr2GDlqT8BUQi05iI8iAMuDaanf+CcvGNN19kJeoQf1EASYP77vbmjXNaHkC
+         wtAYUVnd2MxYiQRQmbCauwbP4NRMRPRy8q/v0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760445052; x=1761049852;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=RSiV9Ok7xXT5Eoi9L0Jz06Zz6oZdhVkicxhwy2KzzNc=;
+        b=Gk9md2zjIRVgXyZb5i7umkqKTgCxsxkD+6K3WvgG3Qp45XFKEsah211wT/1vyXPoYn
+         CXicFiMYZ9w3cfEfQRiCVAKKy53sq5ykL5Uctr2wddxATDVVaaoa2+IF6VHqYmrrfH+P
+         V1w5AAjG5VHZSbeXQ+jdA45iVpNGv5My7wbd9SPc6GlBbRFJ236RGs+yiG3sw2E7AGOq
+         cnj8AF3qk/ZutUNBg5tnyhTFeUZYLQeFenvHbj7Vcl0GXjYkp5Fd0ylry+phEOS3ivkx
+         e3T3fuVXEUHOqvunKn6dFVGRGguTM9cSE3sqKvDZcipJH4OWq+VR956qnmr7wjcnbqCk
+         ClzQ==
+X-Gm-Message-State: AOJu0YzekJmbI0Qx6o71gI2gJTTETGRaResdrLQuBxTCpkc3dHnZMJcF
+	2mBFTdCmAlmB5dwuSPFado7kewhyMXrJWDc9JX8g0NlxR9N+bWCac8d8bTiVR24LFUuxP/jgFIo
+	7sp48ChA=
+X-Gm-Gg: ASbGncvzmYUvAEXJ/mxCnGs8JVwfON1UuKp0AYhStaQIG2u+oUIsZ5GhqBygDZgORLS
+	ka5JltMKH53jWGJf+7XH2d8n4+8TDfboR7aGzJ0Rd4EbBvNCFWAlXkYAtvg/sKfcGTjbvaiyFKt
+	Cxy3P7wxgTEoRPbQ/5tiFcuUyRd04sDUyMbMshYT8cJFYLabjTteCceMRiMRAdKP525tpiowrJ2
+	oQZVPdbb8Vewor8S6if+7Tjg67wwXOfVijhXLdBGh2szBD7/WMfM6VPraV7J2T48GalkyOmqJEF
+	4NQupcGSeQSPAMkyJ91qhPfRl7RPXcWKY4exmwnOSDPO/BW6au2xbQYnUMHgT1Jo2fRhV9MpBS6
+	Uu7PO7+pARNpWAwpWYX/ECHkmdJKiKjOYrsp4WYhrcoecmYY1cuK6yyv1fjFtsJUGaTyq9B+p
+X-Google-Smtp-Source: AGHT+IEU1u0wV5GAxxTw+nOYYaMuYynE2jxmoQ+ZmahH/rQvrJezoXFI2HXKxWgNYs6WfKSRdx+JYg==
+X-Received: by 2002:a05:600c:1f93:b0:46e:376c:b1f0 with SMTP id 5b1f17b1804b1-46fa9a8ca9fmr177418175e9.7.1760445051892;
+        Tue, 14 Oct 2025 05:30:51 -0700 (PDT)
+Received: from localhost.localdomain ([195.68.54.115])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46fab3d92c0sm151934715e9.3.2025.10.14.05.30.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Oct 2025 05:30:51 -0700 (PDT)
+From: pierre-loup.gosse@smile.fr
 To: docs@lists.yoctoproject.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Antonin Godard <antonin.godard@bootlin.com>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2759;
- i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=vGeTKpX93zhw5lIToPu9qTa7WlZj/Q3UvNoPPYUduOk=;
- b=owEBbAKT/ZANAwAKAdGAQUApo6g2AcsmYgBo7hoKlX83InWo2f6Od7qi/RELAlK0PZd0Atn9H
- UrpkrXB8R+JAjIEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaO4aCgAKCRDRgEFAKaOo
- NkJ6D/i1OfJgF/9dp8u8724Rdhbv7zDo8CffknTWzWjk2PEpQUNZcImMMGbTkaBHdvX/gUFNdMu
- 6NVTi/C/HOsKe3huDyYy/CdSupL/AYXDuXYAIOijSfIRz7jZM0zhRVjqVTcNx2pFPKWRN6dpi4D
- h5lLS2/fGd9Zd3HIcVpbh0dwilCT6+rpOPhDKAT8JGGCRi3x/AsHHn0W27g2gnBdqrtQnkHmpB3
- OPFC8hanS/wrvSAHd3V+J7J+S72xSgjqdEqM9sjlgdysX1wKiUAT3JGJ/Q1Sn4G7tMHtt3hE2Id
- Mx0npAIqQ9r9d6y5IifGeHurc/0UnMS8Q2b2HX53KpagaU46FxV024BNncSNgTCYkvCqQxSYMW8
- Zjt11lIQErJh6Fk2mp8u9AxjCp3/49i3K7SoGToTl9PqnS356BujdC7pbBgX/zdDVu4qsmpRAAN
- FAaqrOk15bNnN2amRkhVg+CbQUgPqXqn223FCpv8Sr8j+A+Qo2vChXZOQ8C+BkFYW+V56bSj+IG
- qOjqPd0bHuy7YYPu9yBxOFVHyEQQrh8vdsXuokqQAVFpnYXm69T4PMJMY6PQRjKrgsc/A3orFZX
- XdBG2y6XeoR/Xg6sny6IH0gu+VMNlIBtwF1SuiQsGTVxw3/cSOER47NNmhOhbCb5kN1VN820t47
- m8qYgTIynFA6J
-X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
- fpr=8648725188DD401BB9A0D3FFD180414029A3A836
-X-Last-TLS-Session-Version: TLSv1.3
+Cc: Pierre-Loup GOSSE <pierre-loup.gosse@smile.fr>
+Subject: [PATCH] ref-manual/variables.rst: document IMAGE_EXTRA_PARTITION_FILES
+Date: Tue, 14 Oct 2025 14:30:19 +0200
+Message-Id: <20251014123019.3321312-1-pierre-loup.gosse@smile.fr>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 14 Oct 2025 09:38:29 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7699
+ <docs@lists.yoctoproject.org>; Tue, 14 Oct 2025 12:31:00 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7700
 
-Improve the documentation of the uboot-config class. It was not
-explaining any of its entry in UBOOT_CONFIG. Mention that using
-UBOOT_CONFIG and UBOOT_MACHINE at the same time is not possible.
+From: Pierre-Loup GOSSE <pierre-loup.gosse@smile.fr>
 
-Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+Added by commit 3892912bd7e0 ("wic: extra partition plugin") in OE-Core.
+
+Signed-off-by: Pierre-Loup GOSSE <pierre-loup.gosse@smile.fr>
 ---
- documentation/ref-manual/classes.rst | 42 +++++++++++++++++++++++++++++++++---
- 1 file changed, 39 insertions(+), 3 deletions(-)
+ documentation/ref-manual/variables.rst | 39 ++++++++++++++++++++++++++
+ 1 file changed, 39 insertions(+)
 
-diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
-index 662121ed9..f1fe48648 100644
---- a/documentation/ref-manual/classes.rst
-+++ b/documentation/ref-manual/classes.rst
-@@ -3170,15 +3170,51 @@ variable using the "type" varflag. Here is an example::
- ================
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index 591c03028..cdcc8b877 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -3956,6 +3956,45 @@ system and gives an overview of their function and contents.
+       material for Wic is located in the
+       ":doc:`/ref-manual/kickstart`" chapter.
  
- The :ref:`ref-classes-uboot-config` class provides support for U-Boot configuration for
--a machine. Specify the machine in your recipe as follows::
-+a machine. Specify the machine in your recipe with configuration entries::
- 
--   UBOOT_CONFIG ??= <default>
-+   UBOOT_CONFIG ??= "foo bar"
-    UBOOT_CONFIG[foo] = "config,images,binary"
-+   UBOOT_CONFIG[bar] = "config2,images2,binary2"
- 
--You can also specify the machine using this method::
-+The above options correspond to:
++   :term:`IMAGE_EXTRA_PARTITION_FILES`
++      A space-separated list of files installed into the extra partition
++      when preparing an image using the Wic tool with the
++      ``extra_partition`` source plugin. By default,
++      the files are
++      installed under the same name as the source files. To change the
++      installed name, separate it from the original name with a semi-colon
++      (;). Source files need to be located in
++      :term:`DEPLOY_DIR_IMAGE`. Here is a
++      example::
 +
-+-  ``config``: the defconfig file selected for the build of this entry. These
-+   files are found in the source tree's ``configs`` folder.
++         IMAGE_EXTRA_PARTITION_FILES = "foo bar.conf;bar"
 +
-+   *This option is mandatory.*
++      Alternatively, source files can be picked up using a glob pattern. In
++      this case, the destination file must have the same name as the base
++      name of the source file path. To install files into a directory
++      within the target location, pass its name after a semi-colon (;).
++      Here are two examples::
 +
-+-  ``images``: the image types to append to the :term:`IMAGE_FSTYPES` variable
-+   for image generation.
++         IMAGE_EXTRA_PARTITION_FILES = "foo/*"
++         IMAGE_EXTRA_PARTITION_FILES = "foo/*;bar/"
 +
-+   .. note::
++      The first example
++      installs all files from ``${DEPLOY_DIR_IMAGE}/foo``
++      into the root of the target partition. The second example installs
++      the same files into a ``bar`` directory within the target partition.
 +
-+      Appending the value of :term:`IMAGE_FSTYPES` is possible because the logic
-+      of this class is called from an Anonymous Python function.
++      You can also specify the target by label, UUID or partname if multiple
++      extra partitions coexist. Here are two examples::
 +
-+   This option is not mandatory.
++         IMAGE_EXTRA_PARTITION_FILES_label-config = "foo/*"
++         IMAGE_EXTRA_PARTITION_FILES_uuid-e7d0824e-cda3-4bed-9f54-9ef5312d105d = "foo/*;bar/"
 +
-+-  ``binary``: the binary to select as the main binary for this configuration
-+   entry. When U-boot compiles, it sometimes outputs more than one binary as a
-+   result, for example::
++      You can find information on how to use the Wic tool in the
++      ":ref:`dev-manual/wic:creating partitioned images using wic`"
++      section of the Yocto Project Development Tasks Manual. Reference
++      material for Wic is located in the
++      ":doc:`/ref-manual/kickstart`" chapter.
 +
-+      u-boot.bin
-+      u-boot-with-spl.bin
-+
-+   Setting the ``binary`` value to ``u-boot-with-spl.bin`` will make this binary
-+   the one selected for this entry.
-+
-+   This option is not mandatory, but the value of :term:`UBOOT_BINARY` is used
-+   instead and should be set.
-+
-+You can also specify the defconfig used during the build using this method::
- 
-    UBOOT_MACHINE = "config"
- 
-+In this case, the value of :term:`UBOOT_BINARY` should also bet set.
-+
-+Using :term:`UBOOT_MACHINE` and :term:`UBOOT_CONFIG` at the same time is not
-+possible.
-+
- See the :term:`UBOOT_CONFIG` and :term:`UBOOT_MACHINE` variables for additional
- information.
- 
-
----
-base-commit: 8b85245490ae0b19a9c3880ec31e55b42e19d094
-change-id: 20251014-improve-uboot-config-class-02b5923fa899
-
-Best regards,
---  
-Antonin Godard <antonin.godard@bootlin.com>
+    :term:`IMAGE_FEATURES`
+       The primary list of features to include in an image. Typically, you
+       configure this variable in an image recipe. Although you can use this
+-- 
+2.34.1
 
 
