@@ -1,758 +1,207 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <quentin.schulz@cherry.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9EDA0CCD1A2
-	for <webhook@archiver.kernel.org>; Thu, 16 Oct 2025 08:55:01 +0000 (UTC)
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by mx.groups.io with SMTP id smtpd.web10.3554.1760604895697138085
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1648ACCD194
+	for <webhook@archiver.kernel.org>; Thu, 16 Oct 2025 10:06:02 +0000 (UTC)
+Received: from MRWPR03CU001.outbound.protection.outlook.com (MRWPR03CU001.outbound.protection.outlook.com [40.107.130.8])
+ by mx.groups.io with SMTP id smtpd.web10.4352.1760609159229928406
  for <docs@lists.yoctoproject.org>;
- Thu, 16 Oct 2025 01:54:56 -0700
+ Thu, 16 Oct 2025 03:05:59 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=YhHAL9pT;
- spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 625EB1A1416
-	for <docs@lists.yoctoproject.org>; Thu, 16 Oct 2025 08:54:54 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 39CC96062C
-	for <docs@lists.yoctoproject.org>; Thu, 16 Oct 2025 08:54:54 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2DF78102F22FA;
-	Thu, 16 Oct 2025 10:54:53 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1760604893; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=mtph6QcLoz1SoA1IYECVt0oVAZJiR5l8eLjxeP9SxnI=;
-	b=YhHAL9pTfv11GYI1ZDwRyhVfs44IjrtwtRHd/n3Viix6J7xVi0DAKT7QfHVO4ylQvxNCeM
-	9IuR1XjaRmTCONo/NGRoWF/VcySUtb+uOTh1thLk5m4rO8c1G80WcK8KOiFzW6Hj1x33ol
-	dEU0ouQKJQ+x6RkJOJhI9/aMV786mMFWMUlMEEkxoqKZeVSSdZNVUnwEUs7Coe8IA6RyMB
-	U2SuSsDkzcvBsCNOfXmNQgp+TQ8fPL1t9fkeL70VEyTt4fDbSS7uJWktK5oRQe5X7mPQKe
-	CllvUBkKEq3gc7MFLXzeUsim4p3PoNykDibEQg9kG2pWAoqXza2ebqE45v0QTw==
-From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Thu, 16 Oct 2025 10:54:07 +0200
-Subject: [PATCH 17/17] migration-guides/release-notes-5.3: updates
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251016-release-note-5-3-second-hunk-v1-17-20f21db1f93c@bootlin.com>
+ dkim=pass header.i=@cherry.de header.s=selector1 header.b=JkVKVWwI;
+ spf=pass (domain: cherry.de, ip: 40.107.130.8, mailfrom: quentin.schulz@cherry.de)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=URltEEXR+yfcMJGgaeRxpwGCvNh+IvQU5N+56JAsVyI/k+rev6XVn1n0J1BX0AfsO9GgwUCrQXolTSUUvqdpZSD0rb+UkBzA7vb/Urg43eFtydeh8uioejDw8WtSqY4GLwGOnpZYxRH55bo5FRFRxFAYz1YckDxVRNitw9tCIIL0QQJ/8TjJjo7tVI2Bq2vGFeqC+xs795U2y3Uoh0POTRCk+JxXRU51t9sAUwv2LzyQ3LxdS4ip09dYfQeMQu8dUagTPNPODUhA18c9OJ2DJB3Y9FvCiTubPmGwYHL1gurFLmga+J9kNJq4iAFa8woIRvSC9F8oMdn+aIpARLrFJw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=QEZ1ofhJ2ekSbukbP4Lk+C5IckvRL/k+l93RatM7H8w=;
+ b=C+HTOPV77uWYMq39RbMvBLuJBfJU6NidD4l06ILurRzCU7bJ9q9EfYpuIykTDFRiF30xaFsn6Hg7SPCkPzotOXxyGkO0ei3Nm21PC6f6KLq6r6oCJLHdvn2eklkYrUo3gIoX3xEM5yVnD4KPXdxlo9YcKpwqWWGhahJsuIbINQDmaN3mBG1uZVOjIS9Z9dqXIEvN8ApTlVl/w1Hd2rHso2j7daX3zYRKMGbDZn5rvOdaM1MIU3MwrFIoxgzZDs3w60ZzjjqyYXnwjs1IJVU55TpTTfexQKHIIePy/NSHwJzR0ykh8+2uru4N+CzeVNEENgsv1wLlE3V45Xc84/2YrQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
+ dkim=pass header.d=cherry.de; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QEZ1ofhJ2ekSbukbP4Lk+C5IckvRL/k+l93RatM7H8w=;
+ b=JkVKVWwIE1ph89Agysg0I2XSxtndhWglt8CcDqJdXp372mkcRkRSfq0zyPhoP7l24+gbXCrsYMsefMETLnVZJl7FO9AvBKIc11cXBqwJ7lAv4q9QExSMv5Ne8MHZUJNMKwe9lBKi7M/JBJr/Y+u8Ruk8hsR0jYhr3ElPKqppA5c=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=cherry.de;
+Received: from AS8PR04MB8897.eurprd04.prod.outlook.com (2603:10a6:20b:42c::20)
+ by GVXPR04MB10635.eurprd04.prod.outlook.com (2603:10a6:150:21b::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.9; Thu, 16 Oct
+ 2025 10:05:53 +0000
+Received: from AS8PR04MB8897.eurprd04.prod.outlook.com
+ ([fe80::5ee:7297:93b4:a8d1]) by AS8PR04MB8897.eurprd04.prod.outlook.com
+ ([fe80::5ee:7297:93b4:a8d1%6]) with mapi id 15.20.9228.010; Thu, 16 Oct 2025
+ 10:05:53 +0000
+Message-ID: <797f1d09-53da-4590-9d2e-69fda8c65580@cherry.de>
+Date: Thu, 16 Oct 2025 12:05:52 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [docs] [PATCH 04/17] ref-manual/classes.rst: ccache: mention that
+ the host's ccache can be used
+To: antonin.godard@bootlin.com, docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 References: <20251016-release-note-5-3-second-hunk-v1-0-20f21db1f93c@bootlin.com>
-In-Reply-To: <20251016-release-note-5-3-second-hunk-v1-0-20f21db1f93c@bootlin.com>
-To: docs@lists.yoctoproject.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Antonin Godard <antonin.godard@bootlin.com>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=29682;
- i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=Xo5UANWey5OG7CTgV+oPk24q5o2hWpnNl53QuG88W+s=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBo8LLRAP6y5GgPLBmeyogm38QLCOaPAMLG6vvZm
- /PJIgUf/gqJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaPCy0QAKCRDRgEFAKaOo
- No2sD/4/0HVg1Oa2GOfmlygceOsA9cmF4XwU4W7IaDHL52LA7HwRqfMg0j21EbT9vzgAXl6WYuM
- Pdif+goENbDc2+tA1fH3xtfLtwrQYEwCLyKZptnc5oFjRF4plXn2F6g+wNNaPO32fw14Dcb9KjD
- HNneDjOJDRRaHjq5hU6K0YgouXqjMSl9JWJR6wyENTzLPnZOXgmOd313tMQ5/MQ48SJGp9i8MtL
- TxNXCjweI2Am4aLtbXddsbA+7MspUoXkHoIOZqieZKBuLs5sk/LiaaITDQn+8rHyTpb6/ICbJA1
- VR47dpuXxWike1LJxxqeN6Evn+NaIyvDY/FzC3uCx+LPM+JozFh5JlbtaH6YudZEerQ8S7f8Zdu
- 1o8B54Rgb5FVPLAz6j3ayi0twthzpHdov240EuwD/ZoJNMJT1DUt+XdVS7/WgDrYKHKnYXmySGX
- wDKkCJJU5OroUfu2VnT8xA6J99oj2duylwUqeOzOXlgtVE2mpR+QynOSqkjliySN9NDq89Vk/kh
- bBgtXSPfV6edo4YTrHseer17eYxB+xLUBaKXzG27rv/2Q1vL5/EHGVat4kO8ezc15Y7zUN6s8NP
- ej72V7hdBkyfsmyz1EdAKjWgzx5su2QDCRnB67HGFGije+Bo4qoR6UzvT+A8QHZ/Q8xRq1E7SFn
- M4CJzfhk9QMHNwA==
-X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
- fpr=8648725188DD401BB9A0D3FFD180414029A3A836
-X-Last-TLS-Session-Version: TLSv1.3
+ <20251016-release-note-5-3-second-hunk-v1-4-20f21db1f93c@bootlin.com>
+Content-Language: en-US
+From: Quentin Schulz <quentin.schulz@cherry.de>
+In-Reply-To: <20251016-release-note-5-3-second-hunk-v1-4-20f21db1f93c@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR0P281CA0241.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:af::19) To AS8PR04MB8897.eurprd04.prod.outlook.com
+ (2603:10a6:20b:42c::20)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8PR04MB8897:EE_|GVXPR04MB10635:EE_
+X-MS-Office365-Filtering-Correlation-Id: 323a4fd1-bbff-405b-53ca-08de0c9b973a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info: 
+	=?utf-8?B?Nzl0OHBtR3p3K0p6QTlRZm9paFpyL2pScUlTNzNRQmQrN3J0bnVuUGpDOUVM?=
+ =?utf-8?B?WVI0aEJlbmdBQVhWU2x5TW41YitQUVU1dFNraWtyWmxlSG9Qd3Y1YW9BczdR?=
+ =?utf-8?B?MnhpSmdyWWRtajlPa0t6cmN2Z05sMkdId3R6ZDJHcDExWmFJN3VSS0hVeTJz?=
+ =?utf-8?B?UG1mRmR0dHI5RHRhbnhLMXRpMEdUbzBGM3ZuTWZGV3EwbWNRWGpRa2Ztb202?=
+ =?utf-8?B?dHBxVTZlakNhNE1mWHBKRVBpRmdzT2RJS0V0U3dqcUw1WE02VUZ6NEQ5OTdu?=
+ =?utf-8?B?TWdjWWdSVnM1L3NjZlRLYW5MTGRud0R6S2VKMFQ1R3poQVgydkFWN3RaVjJp?=
+ =?utf-8?B?NnZMV0kvb1F6MWZmRzdUSElIKzd6NHI1QzNoTkloZnB1dWZ6THFmVnVvZCt5?=
+ =?utf-8?B?VlNDb1lGSU0rcUlkUTQ2Rm9wUmN4T1kxQUM3UDRWbUtoL25DZ0hseHc3U3FY?=
+ =?utf-8?B?bldCcFlScytXemdncDFoVGJDNlZCYk0xV2tadFU2eEZHczQ3RHJsREUvNFJ0?=
+ =?utf-8?B?VFNjR1gvdXRvTjRaODVLSWlaMnV0OEhzVzQrakpaanh4YVNuTVBFUHJQYVJH?=
+ =?utf-8?B?SE9sSEhISXFseW5KZmNVc0NGV0dKTENtMHlrc0thYTh4NEwrOFdGUUE3UnhO?=
+ =?utf-8?B?OWc4TTVjY29GbmZXNUZ3VWRuR1hNK2tnVmxWckFuV1ArNUt3YnlML1M4Y1Ur?=
+ =?utf-8?B?TVVsdVdHRytlY3BIRWkySUJXTDJnQ2c4dkorRlpsU1ZKM3F3N3lUMCtUdGRO?=
+ =?utf-8?B?L3c4eEVZK2RjbFpQQU5TMHhSQVFYVG9RMGlvQ1ExOFNpblZwVFhLWTRiVVJM?=
+ =?utf-8?B?ZWIwV1Q3VFZkcXN1SE4wWTJWYlNaY1JpMUVIY2VYNllPbTROdm5NalZ2amZ1?=
+ =?utf-8?B?L0d2L1ZuL21ZTE1Xb2JPT2g3UDBaN3dRNGRXcmEwK282cDRJWVZWVUpRdWNj?=
+ =?utf-8?B?NThLODhHOU1pTE95a0dCbHFyeS92QVo0OG1SSFduUzZZRUlMcUdLUmRjS2hj?=
+ =?utf-8?B?UUR2SUEvK080YnRuMFBPMDFySC9STXR1QUUrSXczcGRMOWk5dFRqSk52a3Zh?=
+ =?utf-8?B?SHJpZGI1SkVnZk1OcW9KQk5XRiswMGhrc2hEVjZ0L1pzeXB0Ym5YZ0pkcVhy?=
+ =?utf-8?B?VTM0emhNMTdOM25QTzgwMFB4S1IwbGNNZjZNdDNyOE5nRDB4KzdzM2U5WWph?=
+ =?utf-8?B?bFdkK1B2YjFLNmNjMWpZY2lGby9LL2NLMTBWRURuVzR0ZmtSVW1JM1NiTC9L?=
+ =?utf-8?B?RWNQcnp1NXBEalFUeWRmbFlYQW0vV2kwODJRUXN1ZStuWHAvTFV0MGFYdWFj?=
+ =?utf-8?B?dXIyTSsyeVFJWDkvclhLNUdsbGpWbStiTnoyVEJNam4rbmE2SWJCRW9zRXNo?=
+ =?utf-8?B?bFhNSnN3ZnB1amljRXhzQ0UyOFFRNG9JZUl2Q0ZyVnJ5VUo0MGVJUWlDQWpk?=
+ =?utf-8?B?WkdlUmF2bEl2WHNrajdGMG1FVzZRV2h0K3FoZzAwSGRsUitBWjJIeVIwSTIr?=
+ =?utf-8?B?L3hkL1UvUXlKZW5HN2Y2TEwySk1VV3JiQXFwYU5IdHVyRDVYenk1cGJNTDVx?=
+ =?utf-8?B?bVh4Q0pBUzJQVFh6bm1ZRVNYanBUTEFNeC9CUHVtbGJqZVFoakhiLzU2NjNH?=
+ =?utf-8?B?eVpQK0RtcXJDbWtOaHdPbmxxTk44d3V0M2VpVWY0WDFpVXR5ejU5SFZhQ2xi?=
+ =?utf-8?B?aUx4a2ljc3JodVNjbDJ6ZEVJNkdrTzRvcDREODRjSE5MNzhvOVZvU0ozMjZh?=
+ =?utf-8?B?anVqSXUya2dKUzFQT3hWeW1SbXo0Z2kxY1F5cEtLQ3Z6ODR1QnkyWmlSOVpK?=
+ =?utf-8?B?SEdMVGoxYzhrT0tsbXBXM3FPeTYzbCtWSHhXQmh0bkZpUGlWek1VbENKUHlv?=
+ =?utf-8?B?VnRjSEJwR3JCdW0xa0hheFNTakwwTy82cVgvZVBrR3JRbzlESngyQlRPNDlR?=
+ =?utf-8?Q?qnXWHbL7YBwABMFBGryiwxJAm2hZiGpJ?=
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8897.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?utf-8?B?RERGWWRvbHZSY3ZXTnNvWnNkNXE0aXFHbmp4dk5WbTN2amRIZVBmM2JWYWFo?=
+ =?utf-8?B?VTRJaEt4bHYvSllSbUpQM2xsUkVlZEs3SnRVbFFVYU5yK3JKckcvM1Y4bnJV?=
+ =?utf-8?B?TENIWmN6QU13STUzNVJqOTgyOXRtME9kaU1IQkRETGZUZlFEZ09LR0xwSjQw?=
+ =?utf-8?B?bVQ3OWp6My93YXVlL3d0Y3JQaVdVRlVSMmxsM2pSemx5c3ZlbU1YdE9UM2dU?=
+ =?utf-8?B?S3NUTGgvNXFOZjJBNDVrdzRrR3c4ZHRzL3dJYVJZZlJ3STF2aGdKdjREd0xH?=
+ =?utf-8?B?Um14SnUyWkJCNmhnZGhtdm9kc2xydnVVYTg4b2ljYmNsc0ZORVBCbGZ1d20z?=
+ =?utf-8?B?N1Q0eTU0SUdqd2R1NHROWVJWbVQvV3JNYWlXNCtkbU1yK001MFRESjJ4cU56?=
+ =?utf-8?B?Z1BBNm1QVDJJNk83d2ZFcEhkQ285a2E0TGkrajE3ZWVrOXNPUXdqOENDaktI?=
+ =?utf-8?B?dkd4R29vMjROd0ZkU3ZLNHpPL3lObW5JdHdJa2NmZk4xZE80REdXRjZBc0tY?=
+ =?utf-8?B?WE94Ni9sMFNQSjJ6blhPUmc3cUpVNFhvODhCZ2FmZHRleFhCcTE4M05QTFBo?=
+ =?utf-8?B?M2VBN0hNQVZWb0psbk1rZ2NCb3dDZlk0SG82N1M4S3Zmb09rdmc1dnlvb2FN?=
+ =?utf-8?B?ajhEcXRsRG9QdklCYndMUndueVpEMFdLM1pJN3l5WDRkZ1E4S1VsNHZHL0NW?=
+ =?utf-8?B?WjJENGR5QlNJMGI0cEhyNmJ5bi9nVUYwTzJYNS90cGZTcVlCUlRYSkVzMFMr?=
+ =?utf-8?B?bllhYlJHam1UV1RweFZ2Y0xTN3VDNmNtYWdWaGVKSVVqTXliUHFZdFNxRGtW?=
+ =?utf-8?B?azlyS3p4bHpkQjh2MWpSdEdsN1NFei9EV0RDNVp4K0RGTXNsdVlVanBscnhs?=
+ =?utf-8?B?RkdEV1psVmhyUUFLN2YxSUV5aVhKL1VvTTdrV2NUVXNkMW1xMTFiSVdQcmRu?=
+ =?utf-8?B?bUZYSG9PNVF4c1NYQWRERk1aVy9oOEZaVURHdS92WHlFVVl2c0lUbkdBQmg1?=
+ =?utf-8?B?anE2SzNuV1pXWWphQWl3dnJMT0FpTTgyRkd1eUlIZjExYms4ajRZWDRyVURW?=
+ =?utf-8?B?QWowQjgzT2VTZVVhOW83aGU5QmZCNVZIWERBSVk1SkcrUm1vZDlwTXpoTWxu?=
+ =?utf-8?B?bFQzWHZ4WCtIZXJQRUsyUUFtUWY3ejBZZndyLzhtOStTdVp2YmRGRHFHU3pX?=
+ =?utf-8?B?bGR1TUhsMjJ5SitsbFNOVEZKY2VvV2w2UkVLMTd0ZUdsY2RGTmFHbnNucVNh?=
+ =?utf-8?B?TTUxVlNzOVVLUlNaRmRJeU5hVEROSVpjbE9wUHRMMGF3K3dhakV6cklZd3hx?=
+ =?utf-8?B?TThsdUFuRDhZZnR6OEozOFEyRmp3TlJwTWUzTTFIdjQveTJjNWZBWEpGQ2M0?=
+ =?utf-8?B?UWJ4c2pHTXhyZHhoWlhKK1lia0JQMHVyRUZkdFo2NVM0M2R4dWZ0RGJtR3h3?=
+ =?utf-8?B?MUdvVjdrU1NkdXpDV3hBOUFKUWxVOGFEdHFwa3VQVmpNQWt2VjZ0dDNOY1Vu?=
+ =?utf-8?B?c25Tb0dkSGlMYnpzQmhCRGxnSHN3bGUrTy9PMDVvRHVLS3pVYkhHemR4YVZM?=
+ =?utf-8?B?TitzOURCQVAxWHRLWi80ZW9HUHVKVzJ1anFONGZxZTNlZmVRczByYU5Ma0ty?=
+ =?utf-8?B?SG9HTkZSeVlGMk5uUDY2dDc3Rm5GY0k2VW02eUo5Z3NiVUpMVUQycWxjckY4?=
+ =?utf-8?B?cGgzc1IwaHJ5Z1MrVnN5Q3BMd0NVeCtxclQ1QURxWWRGMXRCbmpmTXVkQTZR?=
+ =?utf-8?B?TnFVUnllejNkU3pZNFlxc3FxSjRlME5VbTFlbk81M0tTckd1VDhOWnFpSEU0?=
+ =?utf-8?B?Z0hKTCtOdmQwTmFLbVRPVUM4czIyVVVJOXhEaG90VWVhdHBTRXNDZlY1OXVs?=
+ =?utf-8?B?MlVVQ3JvQnJYSUlVMG9zeFN6M1kyWHk2OFZHc05tMUZJZWtIZHU4V2M1VUFJ?=
+ =?utf-8?B?bTd5T3NMNFVxbFRCNFVFOWlaekt5V0pNcWRZdmVUdUJ2WXZYcEJDN3lJemtG?=
+ =?utf-8?B?WHY5bUFZamdrU2x0Z1E2bWxJYit6MVBtekNrQUNZMjZvekordDNWcVNjVEp2?=
+ =?utf-8?B?bkd0NVdzMG4ybEFJSThxL2NFcFJQcitCYVluQW0rTmFFYlZOeTBLaDNlakNG?=
+ =?utf-8?B?aDQ4eXNLb0EvQ2tYL1kySUxsUlF4TFVmcHFoQ1VSMDVrSmdRU2lzSWdDOFpv?=
+ =?utf-8?B?c1E9PQ==?=
+X-OriginatorOrg: cherry.de
+X-MS-Exchange-CrossTenant-Network-Message-Id: 323a4fd1-bbff-405b-53ca-08de0c9b973a
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8897.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Oct 2025 10:05:53.2442
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 0tdPnGn/fTeBXzP4oICS6KR+TUJKCUDZplJZO01ZdgLjPwnxgFbM5RFUrRKICVj59Zo7SaibiotJgajcez4DQwAMY7A/cSea+shO0jdVAM0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10635
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 16 Oct 2025 08:55:01 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7727
+ <docs@lists.yoctoproject.org>; Thu, 16 Oct 2025 10:06:02 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7728
 
-Update the release notes and migration manual for 5.3.
+Hi Antonin,
 
-This covers commits from bd4625cd4db0 ("build-appliance-image: Update to
-master head revision") to 4a1f38dd8db1 ("bitbake: knotty, uihelper:
-Remove running_pids and lastpids") in Poky.
+On 10/16/25 10:53 AM, Antonin Godard via lists.yoctoproject.org wrote:
+> This feature was added by commit cc91a0f6500e ("ccache: enable ccache
+> for all recipes if it is in HOSTTOOLS") in OE-Core.
+> 
+> Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+> ---
+>   documentation/ref-manual/classes.rst | 13 +++++++++++--
+>   1 file changed, 11 insertions(+), 2 deletions(-)
+> 
+> diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
+> index e89b27eec..f10903e74 100644
+> --- a/documentation/ref-manual/classes.rst
+> +++ b/documentation/ref-manual/classes.rst
+> @@ -392,8 +392,17 @@ file for details about how to enable this mechanism in your configuration
+>   file, how to disable it for specific recipes, and how to share ``ccache``
+>   files between builds.
+>   
+> -However, using the class can lead to unexpected side-effects. Thus, using
+> -this class is not recommended.
+> +By default, :ref:`ref-classes-native` recipes are not supported by the
+> +:ref:`ref-classes-ccache` class. It is possible to add Ccache support for these
+> +recipes if the following configuration statements are provided from a
+> +:term:`configuration file`, which makes the class use the host's Ccache
+> +instead::
+> +
+> +   ASSUME_PROVIDED += "ccache-native"
+> +   HOSTTOOLS += "ccache"
+> +
+> +Using the :ref:`ref-classes-ccache` class can lead to unexpected side-effects.
+> +Using this class is not recommended.
 
-Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
----
- documentation/migration-guides/migration-5.3.rst   |  46 ++-
- .../migration-guides/release-notes-5.3.rst         | 341 +++++++++++++++++++--
- 2 files changed, 364 insertions(+), 23 deletions(-)
+I was absolutely convinced ccache was enabled by default for target 
+recipes, but doesn't seem to be the case?
 
-diff --git a/documentation/migration-guides/migration-5.3.rst b/documentation/migration-guides/migration-5.3.rst
-index 985712cb2..485002e0e 100644
---- a/documentation/migration-guides/migration-5.3.rst
-+++ b/documentation/migration-guides/migration-5.3.rst
-@@ -134,10 +134,19 @@ To set back the "mac" policy in systemd (version 257.8 at the time of writing
- this note), you should set the ``NamePolicy`` and ``AlternativeNamesPolicy`` as
- detailed in :manpage:`systemd.link(5)`.
- 
-+Removal of unlicensed Linux kernel firmwares
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+The ``linux-firmware`` recipe now has a way of excluding firmwares that do not
-+provide any license information. The recipe holds an internal list of firmwares
-+to exclude via a variable named ``REMOVE_UNLICENSED``. See :oe_git:`the recipe
-+</openembedded-core/tree/meta/recipes-kernel/linux-firmware>` for a complete
-+overview of the removed firmwares.
-+
- Supported kernel versions
- ~~~~~~~~~~~~~~~~~~~~~~~~~
- 
--The :term:`OLDEST_KERNEL` setting is XXX in this release, meaning that
-+The :term:`OLDEST_KERNEL` setting is 5.15 in this release, meaning that
- out the box, older kernels are not supported. See :ref:`4.3 migration notes
- <migration-4.3-supported-kernel-versions>` for details.
- 
-@@ -147,7 +156,9 @@ Supported distributions
- Compared to the previous releases, running BitBake is supported on new
- GNU/Linux distributions:
- 
---  XXX
-+-  Debian 13 (Trixie)
-+-  Fedora 42
-+-  Ubuntu 25.04
- 
- On the other hand, some earlier distributions are no longer supported:
- 
-@@ -174,6 +185,10 @@ The following variables have been removed:
-    :term:`BitBake` invocation and replace it with information about what was
-    built during the build. This was partly broken and hard to maintain.
- 
-+-  ``GPE_MIRROR``: this variable used to contain the
-+   "http://gpe.linuxtogo.org/download/source" URL, but was not used by any
-+   recipe in OE-Core.
-+
- Removed recipes
- ~~~~~~~~~~~~~~~
- 
-@@ -195,6 +210,11 @@ The following recipes have been removed in this release:
- -  ``xf86-input-vmmouse``: It has a runtime dependency on ``xf86-input-mouse``,
-    which stopped supporting Linux.
- 
-+-  ``babeltrace``: Removed in favour of ``babeltrace2``.
-+
-+-  ``cwautomacros``: A long-obsolete set of custom :ref:`ref-classes-autotools`
-+   macros, not used by any other recipe.
-+
- Removed :term:`PACKAGECONFIG` entries
- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- 
-@@ -206,6 +226,8 @@ Removed :term:`PACKAGECONFIG` entries
- 
- -  ``mesa``: ``kmsro``, ``osmesa``, ``xa``
- 
-+-  ``systemd``: ``dbus``
-+
- Removed classes
- ~~~~~~~~~~~~~~~
- 
-@@ -269,4 +291,22 @@ Miscellaneous changes
- -  ``xserver-xorg``: remove sub-package ``${PN}-xwayland``, as ``xwayland`` is
-    now its own recipe.
- 
---  The Wic-specific option ``--extra-space`` has been renamed to ``--extra-filesystem-space``.
-\ No newline at end of file
-+-  ``gdk-pixbuf``: drop the ``GDK_PIXBUF_LOADERS`` variable, which was part of
-+   the recipe's :term:`PACKAGECONFIG`. Instead the :term:`PACKAGECONFIG` can be
-+   modified directly to achieve the same result.
-+
-+-  Remove the ``meta/conf/distro/include/distro_alias.inc`` include file,
-+   which associated a recipe name to one or more Distribution package name.
-+   This file is not used and maintained anymore.
-+
-+-  Remove the ``nghttp2-proxy`` package from the ``nghttp2`` recipe as the
-+   ``nghttp2-proxy`` package became empty after an upgrade that makes it a
-+   library recipe only (due to
-+   :term:`EXTRA_OEMAKE` containing ``-DENABLE_APP=OFF`` by default in the
-+   recipe).
-+
-+-  Remove the ``util-linux-fcntl-lock`` package (in the ``util-linux`` recipe) as
-+   util-linux now supports the ``--fcntl`` flag for the ``flock`` command.
-+
-+   Recipes currently using the ``fcntl-lock`` command should replace these by
-+   ``flock --fcntl``.
-diff --git a/documentation/migration-guides/release-notes-5.3.rst b/documentation/migration-guides/release-notes-5.3.rst
-index 417087e35..57f50f4e1 100644
---- a/documentation/migration-guides/release-notes-5.3.rst
-+++ b/documentation/migration-guides/release-notes-5.3.rst
-@@ -11,10 +11,21 @@ Release notes for |yocto-ver| (|yocto-codename|)
- New Features / Enhancements in |yocto-ver|
- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- 
---  Linux kernel XXX, gcc 15, glibc XXX, LLVM XXX, and over XXX other
-+-  Linux kernel 6.16, gcc 15, glibc 2.42, LLVM 21.1.1, and over 300 other
-    recipe upgrades.
- 
---  Minimum Python version required on the host: XXX.
-+-  Minimum Python version required on the host: 3.9.
-+
-+-  Host requirements changes:
-+
-+   -  The minimum disk space requirement is now 140Gbytes (previously 90Gbytes).
-+
-+   -  The minimum RAM requirement is now 32Gbytes (previously 8Gbytes).
-+
-+   -  These changes are mainly due to recent additions of the LLVM and other
-+      such resource heavy recipes. For guidance on how to limit the resources
-+      used by the :term:`OpenEmbedded Build System`, see the
-+      :doc:`/dev-manual/limiting-resources` guide.
- 
- -  BitBake changes:
- 
-@@ -36,10 +47,18 @@ New Features / Enhancements in |yocto-ver|
-       -  ``az``: Add sanity check to check that :term:`AZ_SAS` starts with ``?``
-          to mark the start of the query parameters.
- 
--      -  ``git``: Add the tag to shallow clone tarball name.
-+      -  ``git``:
-+
-+         -  Add the tag to shallow clone tarball name.
-+         -  Verify if local clones contains a tag, when the ``tag=`` parameter
-+            is used in :term:`SRC_URI`.
-+
-+   -  ``knotty``:
-+
-+      -  Pass failed task logs through the log infrastructure (use
-+         ``bb.plain()`` instead of ``print()``).
- 
--   -  ``knotty``: pass failed task logs through the log infrastructure (use
--      ``bb.plain()`` instead of ``print()``)
-+      -  Improve refresh rate of the footer progress bar.
- 
-    -  Add support for automatically promoting class inherits to deferred
-       inherits by listing them in the :term:`BB_DEFER_BBCLASSES` variable.
-@@ -92,6 +111,17 @@ New Features / Enhancements in |yocto-ver|
-       :term:`BitBake` to specify what to profile. Can be "main", "idle" or
-       "parsing". Split the reports in separate files.
- 
-+   -  A "filtering" functionality was added and allows modifying the value of a
-+      variable before its value is returned by :term:`BitBake`. The
-+      ``setVarFilter`` API can be used for applying the filters, but it is
-+      **not** recommended for general use. It was added for internal use in
-+      the :term:`OpenEmbedded Build System` in the :ref:`ref-classes-native`
-+      class. The list of filters that are allows are derived from a select
-+      list of functions that must be added using a ``filter_proc`` decorator.
-+
-+   -  ``tests/parse``: Add tests for ``include``, ``require`` and
-+      ``include_all``.
-+
- -  Toolchain changes:
- 
-    -  The Clang/LLVM toolchain can now be used as part of the build.
-@@ -106,6 +136,12 @@ New Features / Enhancements in |yocto-ver|
-       The toolchain is also customizable on a per-recipe basis, using the
-       :term:`TOOLCHAIN` and :term:`TOOLCHAIN_NATIVE` variables.
- 
-+      .. warning::
-+
-+         The :term:`TOOLCHAIN` should **not** be set globally. For overridding
-+         the toolchain globally, use :term:`PREFERRED_TOOLCHAIN_TARGET`,
-+         :term:`PREFERRED_TOOLCHAIN_NATIVE` and :term:`PREFERRED_TOOLCHAIN_SDK`.
-+
-    -  Multiple recipes were pinned to use the GCC/Binutils toolchain as they do
-       not support being built with Clang/LLVM yet. In these recipes the
-       :term:`TOOLCHAIN` variable is set to "gcc".
-@@ -119,14 +155,42 @@ New Features / Enhancements in |yocto-ver|
-    -  ``bitbake.conf``: Drop ``lz4`` from :term:`HOSTTOOLS`, as it is not
-       required anymore, and the ``lz4-native`` package is used instead.
- 
--   -  ``conf/fragments``: add a fragment for the CDN :ref:`sstate-cache
--      <overview-manual/concepts:shared state cache>` mirror.
-+   -  :term:`Configuration Fragments <Configuration Fragment>`:
-+
-+      -  Add a fragment for the CDN :ref:`sstate-cache
-+         <overview-manual/concepts:shared state cache>` mirror.
-+
-+      -  Add a ``show-fragments`` sub-command to the
-+         :oe_git:`bitbake-config-build </bitbake/tree/bin/bitbake-config-build>`
-+         utility, to show the content of fragments from command-line.
- 
-    -  ``default-distrovars``: set an empty default for :term:`LICENSE_PATH`.
- 
-    -  The default definition of :term:`UNPACKDIR` is no longer
-       ``sources-unpack`` but ``sources``.
- 
-+   -  The default value for :term:`IMAGE_FSTYPES` (defined in
-+      :oe_git:`bitbake.conf </openembedded-core/tree/meta/conf/bitbake.conf>`)
-+      is now ``tar.zst`` (previously ``tar.gz``).
-+
-+   -  Remove the ``meta/conf/distro/include/distro_alias.inc`` include file,
-+      which associated a recipe name to one or more Distribution package name.
-+      This file is not used and maintained anymore.
-+
-+   -  A new configuration file :ref:`structure-build-conf-toolcfg.conf` is now
-+      used by :oe_git:`bitbake-config-build </bitbake/tree/bin/bitbake-config-build>`
-+      to manage :term:`Configuration Fragments <Configuration Fragment>`.
-+
-+   -  ``bitbake.conf``: add :term:`TMPDIR` to the ``GIT_CEILING_DIRECTORIES``
-+      Git variable. This avoids Git trying to find a repository higher than
-+      :term:`TMPDIR` in recipes that use the :ref:`structure-build-work-shared`
-+      directory for storing their sources. This fixes reproducibility issues.
-+
-+   -  Changes to the ``genericarm64`` machine configuration:
-+
-+      -  Increase the :term:`Initramfs` maximum size.
-+      -  Install extra Linux firmware packages to fix Linux kernel warnings.
-+
- -  New variables:
- 
-    -  The ``VIRTUAL-RUNTIME_dbus`` variable, to allow changing the runtime
-@@ -159,6 +223,16 @@ New Features / Enhancements in |yocto-ver|
-       deployed filenames. Users can now override :term:`UBOOT_VERSION` to
-       changes the output filenames.
- 
-+   -  The :term:`FIT_LINUX_BIN` variable which specifies the path to the Linux
-+      Kernel binary in the context of the :ref:`ref-classes-kernel-fit-image`
-+      class. Setting the variable to an empty string allows use cases where the
-+      kernel binary is not included in the FIT image itself.
-+
-+   -  The :term:`UBOOT_MAKE_OPTS` variable specifies extra options passed to
-+      ``make`` when building U-boot. Extra options can also be passed as the
-+      fourth argument of the :term:`UBOOT_CONFIG` variable. See the
-+      documentation of :ref:`ref-classes-uboot-config` for more details.
-+
- -  Kernel-related changes:
- 
-    -  ``linux/generate-cve-exclusions``: use data from CVEProject instead of
-@@ -186,6 +260,8 @@ New Features / Enhancements in |yocto-ver|
-    -  ``linux-yocto``: when built for RISC-V, enable features in
-       :term:`KERNEL_FEATURES` based on features listed in :term:`TUNE_FEATURES`.
- 
-+   -  ``perf``: Enable ``coresight`` if enabled in :term:`MACHINE_FEATURES`.
-+
- -  New core recipes:
- 
-    -  ``python3-pdm``, ``python3-pdm-backend`` and ``python3-pdm-build-locked``,
-@@ -210,6 +286,13 @@ New Features / Enhancements in |yocto-ver|
-       to code blocks in Sphinx. It is part of ``buildtools-docs-tarball`` for later
-       use in the Yocto Project documentation.
- 
-+   -  ``python3-coherent-licensed``: License management tooling for Coherent
-+      System and skeleton projects. It became a new dependency of
-+      ``python3-zipp``.
-+
-+   -  ``gn``: a commonly used build tool to generate `ninja
-+      <https://ninja-build.org/>`__ files.
-+
-    -  LLVM/Clang related recipes:
- 
-       -  ``clang``: LLVM based C/C++ compiler.
-@@ -225,11 +308,15 @@ New Features / Enhancements in |yocto-ver|
-       -  ``llvm-tblgen-native``: LLVM TableGen binaries for the build host,
-          often used to build LLVM projects.
- 
-+      -  ``lld``: the LLVM Linker.
-+
-       -  ``lldb``: LLDB debugger for LLVM projects.
- 
-       -  ``llvm-project-source``: canonical git mirror of the LLVM subversion
-          repository.
- 
-+      -  ``llvm``: The LLVM Compiler Infrastructure.
-+
-       -  ``openmp``: LLVM OpenMP compiler Runtime.
- 
-   -  ``kernel-signing-keys-native``: this recipe is used in the
-@@ -242,6 +329,9 @@ New Features / Enhancements in |yocto-ver|
-    -  ``glvnd``, which enables OpenGL Vendor Neutral Dispatch Library
-       support when using recipes such as ``mesa``.
- 
-+   -  ``opencl``: support for the :wikipedia:`Open Machine Language (OpenCL)
-+      <OpenCL>` framework.
-+
- -  New core classes:
- 
-    -  The new :ref:`ref-classes-kernel-fit-image` class replaces the previous
-@@ -255,6 +345,10 @@ New Features / Enhancements in |yocto-ver|
-       maintain Go recipes that use a ``BPN-go-mods.inc`` and
-       ``BPN-licenses.inc`` and update these files automatically.
- 
-+   -  The new :ref:`ref-classes-python_pdm` class supports building Python
-+      recipes with the `PDM <https://pdm-project.org/>`__ package and dependency
-+      manager.
-+
- -  Architecture-specific changes:
- 
-    -  Rework the RISC-V :term:`TUNE_FEATURES` to make them based of the RISC-V
-@@ -299,6 +393,16 @@ New Features / Enhancements in |yocto-ver|
-       </openembedded-core/tree/meta/conf/machine/include/riscv/README>` for more
-       information.
- 
-+   -  Add support for new Arm64 cores, which are represented as files to be
-+      included in :term:`MACHINE` configuration in :term:`OpenEmbedded-Core
-+      (OE-Core)`. The new configuration files are:
-+
-+      -  :oe_git:`conf/machine/include/arm/arch-armv8-7a.inc </openembedded-core/tree/meta/conf/machine/include/arm/arch-armv8-7a.inc>`
-+      -  :oe_git:`conf/machine/include/arm/arch-armv8-8a.inc </openembedded-core/tree/meta/conf/machine/include/arm/arch-armv8-8a.inc>`
-+      -  :oe_git:`conf/machine/include/arm/arch-armv9-1a.inc </openembedded-core/tree/meta/conf/machine/include/arm/arch-armv9-1a.inc>`
-+      -  :oe_git:`conf/machine/include/arm/arch-armv9-2a.inc </openembedded-core/tree/meta/conf/machine/include/arm/arch-armv9-2a.inc>`
-+      -  :oe_git:`conf/machine/include/arm/arch-armv9-3a.inc </openembedded-core/tree/meta/conf/machine/include/arm/arch-armv9-3a.inc>`
-+
-    -  ``arch-mips.inc``: Use ``-EB``/``-EL`` for denoting Endianness.
- 
-    -  Enable ``riscv32`` as supported arch for ``musl`` systems.
-@@ -306,6 +410,15 @@ New Features / Enhancements in |yocto-ver|
-    -  Powerpc: Use ``-maltivec`` in compiler flags if ``altivec`` is in
-       :term:`TUNE_FEATURES`.
- 
-+   -  ``arm``: add a ``nocrypto`` feature to :term:`TUNE_FEATURES` to complement
-+      the ``crypto`` feature to explicitly disable cryptographic extensions via
-+      Gcc flags.
-+
-+      This lead to the creation of two new tunes:
-+
-+      -  ``tune-cortexa72-nocrypto``
-+      -  ``tune-cortexa53-nocrypto``
-+
- -  QEMU / ``runqemu`` changes:
- 
-    -  Refactor :ref:`ref-classes-qemu` functions into library functions (in
-@@ -330,19 +443,40 @@ New Features / Enhancements in |yocto-ver|
-       machine's CPU must also be recent enough to support these instructions
-       natively.
- 
--   -  ``runqemu`` can now run compressed images with snapshot mode. For example,
--      with ``IMAGE_FSTYPES = "... ext4.zst ..."``, you can run::
-+   -  ``runqemu``:
-+
-+      -  The script can now run compressed images with snapshot mode. For
-+         example, with ``IMAGE_FSTYPES = "... ext4.zst ..."``, you can run::
-+
-+            runqemu snapshot ext4.zst <image-recipe>
- 
--         runqemu snapshot ext4.zst <image-recipe>
-+      -  Add support for the ``erofs`` filesystem types.
-+
-+      -  The :term:`BitBake` environment is now a requirement, and the script
-+         cannot run without a successful call to ``bitbake -e``.
-+
-+         The script will also raise an error with the ``bitbake`` command is not
-+         found.
- 
- -  Documentation changes:
- 
-+   -  Add documentation on :term:`Configuration Fragments <Configuration
-+      Fragment>`:
-+
-+      -  :doc:`/ref-manual/fragments`
-+      -  :doc:`/dev-manual/creating-fragments`
-+
-    -  Part of :term:`BitBake` internals are now documented at
-       :yocto_docs:`/bitbake/bitbake-user-manual/bitbake-user-manual-library-functions.html`.
- 
-    -  A new :doc:`/dev-manual/limiting-resources` guide was created to help
--      users limit the host resources used by the :term:`OpenEmbedded Build
--      System`.
-+      users limit the resources used by the :term:`OpenEmbedded Build System`.
-+
-+   -  A new :doc:`/dev-manual/hashequivserver` guide was created to help users
-+      setting up a :ref:`overview-manual/concepts:Hash Equivalence` server.
-+
-+   -  The QA checks defined in the :term:`OpenEmbedded Build System` were
-+      gathered in :doc:`/ref-manual/qa-checks`.
- 
- -  Core library changes:
- 
-@@ -352,6 +486,9 @@ New Features / Enhancements in |yocto-ver|
- 
- -  Go changes:
- 
-+   -  :ref:`ref-classes-go-mod-update-modules`: Update license finding to use
-+      the new ``find_licenses_up`` library function.
-+
- -  Rust changes:
- 
-    -  ``rust-llvm``:
-@@ -362,6 +499,9 @@ New Features / Enhancements in |yocto-ver|
-       -  Disable the following feature through configuration
-          (:ref:`ref-tasks-configure`): libedit, benchmarks.
- 
-+   -  Add the ``has-thread-local`` option to the
-+      :ref:`ref-classes-rust-target-config` class.
-+
- -  Wic Image Creator changes:
- 
-    -  After a Python upgrade, WIC plugins containing dashes (``-``) for their
-@@ -387,14 +527,37 @@ New Features / Enhancements in |yocto-ver|
-          :term:`BitBake` variables. This directory is usually found in
-          :term:`STAGING_DIR`.
- 
--   - Add the Wic-specific option ``--extra-partiton-space`` to add extra empty
--     space after the space filled by the filesystem in the partition.
-+   -  The Wic-specific option ``--extra-space`` is now also named
-+      ``--extra-filesystem-space``.
-+
-+   -  Add the Wic-specific option ``--extra-partiton-space`` to add extra empty
-+      space after the space filled by the filesystem in the partition.
-+
-+   -  Add the Wic-specific plugin ``extra_partition``. This plugin allows
-+      creating a new partition with custom files installed from
-+      :term:`DEPLOY_DIR_IMAGE`. See the documentation of
-+      :term:`IMAGE_EXTRA_PARTITION_FILES` for more details.
-+
-+   -  ``bootimg_pcbios``: move Syslinux install into separate functions, to make
-+      it easier to add new bootloaders.
-+
-+      The Grub bootloader is now possible to install with this Wic plugin.
- 
- -  SDK-related changes:
- 
-    -  Include additional information about Meson setting in the SDK environment
-       setup script (host system, CPU family, etc.).
- 
-+   -  Add Go to :term:`SDK_TOOLCHAIN_LANGS`, except for the following
-+      architecture on which this is not supported:
-+
-+      -  RISC-V 32 bits (``rv32``)
-+      -  PowerPC
-+
-+   -  Image-based SDKs can now include Zsh completions by adding the
-+      ``zsh-completion-pkgs`` feature to the :term:`IMAGE_FEATURES` variable in
-+      the image recipe.
-+
- -  Testing-related changes:
- 
-    -  ``bitbake/tests/fetch``: Add tests for ``gitsm`` with git-lfs.
-@@ -402,6 +565,9 @@ New Features / Enhancements in |yocto-ver|
-    -  ``bitbake/lib/bb/tests/fetch``: add a test case to ensure Git shallow
-       fetch works for tag containing slashes.
- 
-+   -  :ref:`ref-classes-testexport`: capture all tests and data from all layers
-+      (instead of the :term:`OpenEmbedded-Core (OE-Core)` layer only).
-+
-    -  OEQA:
- 
-       -  SDK:
-@@ -452,8 +618,16 @@ New Features / Enhancements in |yocto-ver|
- 
-       - ``runqemu``: add new test for booting compressed images.
- 
--   -  :ref:`ref-classes-testexport`: capture all tests and data from all layers
--      (instead of the :term:`OpenEmbedded-Core (OE-Core)` layer only).
-+      -  General improvements of the parallelization of tests, namely fixing
-+         some tests that could spawn an unlimited number of threads leading to
-+         OOM kills.
-+
-+      -  A new SDK test is now running for Go after ``go`` was added to
-+         :term:`SDK_TOOLCHAIN_LANGS`.
-+
-+      -  Commands sent over SSH (using the ``OESSHTarget`` class) will now error
-+         when an SSH failure occurs. It is possible to ignore these errors by
-+         passing ``ignore_ssh_fails`` when executing a command.
- 
- -  Utility script changes:
- 
-@@ -465,6 +639,8 @@ New Features / Enhancements in |yocto-ver|
-          patch files *must* include an ``Upstream-Status`` to pass with this
-          script.
- 
-+      -  Show the :term:`DISTRO` used when running the script.
-+
-       -  :ref:`ref-classes-yocto-check-layer` class:
- 
-          -  Refactor to be extended easily.
-@@ -487,7 +663,11 @@ New Features / Enhancements in |yocto-ver|
- 
-    -  ``buildstats-diff``: find last two Buildstats files if none are specified.
- 
--   -  ``pybootchartgui``: visualize ``/proc/net/dev`` network stats in graphs.
-+   -  ``pybootchartgui``:
-+
-+      -  visualize ``/proc/net/dev`` network stats in graphs.
-+
-+      -  account for network statistics when calculating extents.
- 
- -  Packaging changes:
- 
-@@ -496,6 +676,19 @@ New Features / Enhancements in |yocto-ver|
-       detailed information on the files used during the compilation and improve
-       SPDX accuracy.
- 
-+   -  When using the ``ipk`` and ``rpm`` package managers, give out more possible
-+      reasons about unmatched packages.
-+
-+      For example::
-+
-+         E: Package 'catch2' has no installation candidate
-+         catch2 is a recipe. Its generated packages are: ['catch2-src', 'catch2-dbg', 'catch2-staticdev', 'catch2-dev', 'catch2-doc']
-+         Either specify a generated package or set ALLOW_EMPTY:${PN} = "1" in catch2 recipe
-+
-+   -  ``package.py``: replace all files unconditionally when copying debug
-+      sources (passing ``-u`` to the ``cpio`` command in
-+      ``copydebugsources()``). This improves reproducibility.
-+
- -  LLVM related changes:
- 
-    -  Like ``gcc-source``, the LLVM project sources are part of ``work-shared``
-@@ -532,8 +725,16 @@ New Features / Enhancements in |yocto-ver|
- 
-    -  Handle workspaces for multiconfig.
- 
-+   -  Fix upgrade for recipes with Git submodules.
-+
- -  Patchtest-related changes:
- 
-+   -  Multiple improvements to the tool's :oe_git:`README
-+      </openembedded-core/tree/scripts/patchtest.README>`.
-+
-+   -  Don't match :term:`BitBake` Python expansions as GitHub usernames
-+      (``${@...}`` syntax).
-+
- -  Security changes:
- 
-    -  ``openssl``: add FIPS support. This can be enabled through the ``fips``
-@@ -541,6 +742,10 @@ New Features / Enhancements in |yocto-ver|
- 
- -  :ref:`ref-classes-cve-check` changes:
- 
-+
-+   -  ``cve-update-db-native``: FKIE: use Secondary metric if there is no
-+      Primary metric.
-+
- -  New :term:`PACKAGECONFIG` options for individual recipes:
- 
-    -  ``ppp``: ``l2tp``, ``pptp``
-@@ -551,13 +756,34 @@ New Features / Enhancements in |yocto-ver|
-    -  ``openssl``: ``fips``
-    -  ``qemu``: ``sdl-image``, ``pixman``
-    -  ``wget``: ``pcre2``
--   -  ``mesa``: ``asahi``, ``amd``, ``svga``, ``teflon``, ``nouveau``
-+   -  ``mesa``: ``asahi``, ``amd``, ``svga``, ``teflon``, ``nouveau``,
-+      ``xmlconfig``
-+   -  ``dbus``: ``traditional-activation``, ``message-bus``
-+   -  ``cmake``: ``debugger``
-+   -  ``libcxx``: ``unwind-cross``
-+   -  ``tiff``: ``lerc``
-+   -  ``freetype``: ``brotli``
-+   -  ``gawk``: ``pma-if-64bit``
-+   -  ``x264``: ``ffmpeg``, ``opencl``
- 
- -  Systemd related changes:
- 
-    -  Enable getty generator by default by adding ``serial-getty-generator`` to
-       :term:`PACKAGECONFIG`.
- 
-+   -  Now uses the :term:`USE_NLS` variable to enable or disable building
-+      translations.
-+
-+   -  Fix deduplicated templates and instance lines in preset files when listing
-+      both template and instances in :term:`SYSTEMD_SERVICE`.
-+
-+   -  Stop enabling non-standard MAC policy when using the 'pni-names' feature
-+      (part of :term:`DISTRO_FEATURES`). Instead, follow what is provided by
-+      upstream systemd.
-+
-+   -  Install ``systemd-sysv-install`` when using the
-+      ``systemd-systemctl-native`` recipe.
-+
- -  :ref:`ref-classes-sanity` class changes:
- 
-    -  :ref:`ref-classes-insane`: Move test for invalid :term:`PACKAGECONFIG` to
-@@ -573,6 +799,9 @@ New Features / Enhancements in |yocto-ver|
-       install ``libstdc++-14-dev`` instead of ``libgcc-14-dev`` to avoid build
-       issues when building :ref:`ref-classes-native` with Clang.
- 
-+   -  Drop the ``var-undefined`` QA check as it was not relevant for the
-+      variables it was checking for, as those are mandatory by default.
-+
- -  U-boot related changes:
- 
-    -  :ref:`ref-classes-uboot-sign`: Add support for setting firmware property
-@@ -586,6 +815,11 @@ New Features / Enhancements in |yocto-ver|
-       variable to automatically set U-boot configuration options (for example
-       ``CONFIG_RISCV_ISA_F``).
- 
-+   -  Improve the way build directories are split when having multiple
-+      configurations listed in :term:`UBOOT_CONFIG`. This fixes an issue where
-+      two or more of these configurations were using the same directory for
-+      building (because these were using the same defconfig file).
-+
- -  Miscellaneous changes:
- 
-    -  ``dropbear``: The ``dropbearkey.service`` can now take extra arguments for
-@@ -645,12 +879,79 @@ New Features / Enhancements in |yocto-ver|
-    -  :ref:`ref-classes-externalsrc`: Always ask Git for location of ``.git``
-       directory (may be different from the default ``${S}/.git``).
- 
--   -  :ref:`ref-classes-features_check`: Add support for required
--      :term:`TUNE_FEATURES`.
-+   -  :ref:`ref-classes-features_check`: Add support for :term:`REQUIRED_TUNE_FEATURES`.
- 
-    -  ``openssh``: limit read access to ``sshd_config`` file (set its filemode
-       to ``0600``).
- 
-+   -  ``barebox-tools`` now installs the ``rk-usb-loader`` utility.
-+
-+   -  The :ref:`ref-classes-setuptools3_legacy` class now supports the
-+      :ref:`qa-check-pep517-backend` QA check.
-+
-+   -  The :ref:`ref-classes-ccache` class now supports using Ccache for native
-+      recipes when the local build configuration contains::
-+
-+         ASSUME_PROVIDED += "ccache-native"
-+         HOSTTOOLS += "ccache"
-+
-+   -  :ref:`ref-classes-python_pep517`: use ``pyproject-build`` instead of
-+      calling the module with ``nativepython3``.
-+
-+   -  ``dbus-glib``: include the binding tools separately into the
-+      ``${PN}-tools`` package.
-+
-+   -  ``dbus``: use the :ref:`ref-classes-systemd` class to handle the unit
-+      files of D-Bus.
-+
-+   -  ``dpkg``: add :ref:`ptest <test-manual/ptest:testing packages with ptest>`
-+      support.
-+
-+   -  ``shared-mime-info``: Now uses the :term:`USE_NLS` variable to enable or
-+      disable building translations.
-+
-+   -  ``p11-kit``: Now uses the :term:`USE_NLS` variable to enable or
-+      disable building translations.
-+
-+   -  ``babeltrace2``: Enable Python plugins
-+
-+   -  ``initramfs-framework``: mount a temporary filesystem on ``/run`` and move
-+      it to the root filesystem directory before calling ``switch_root``.
-+
-+   -  ``python3``: Pass ``PLATFORM_TRIPLET`` explicitly when cross compiling to
-+      make it deterministic instead of letting Python detect the platform
-+      triplet (``${HOST_ARCH}-${HOST_OS}``).
-+
-+   -  ``pulseaudio``: Add the ``audio`` group explicitly if
-+      ``pulseaudio-server`` is used.
-+
-+   -  ``oe/license_finder``: Add ``find_licenses_up`` function to find licenses
-+      upwards until reaching a predefined top directory (as an argument).
-+
-+   -  ``mesa``:
-+
-+      -  Build Mesa's Asahi tools when ``asahi`` is part of the recipe's
-+         :term:`PACKAGECONFIG` variable.
-+
-+      -  The ``mesa`` recipe now declares two new :term:`PROVIDES` for Vulkan
-+         and OpenCL ICD. These virtual provider are respectively named
-+         ``virtual-opencl-icd`` and ``virtual-vulkan-icd``.
-+
-+      -  ``mesa-demos``: split info tools to a separate package
-+         ``mesa-demos-info``.
-+
-+   -  ``vte``: skip :ref:`ref-classes-gobject-introspection` with Clang on Arm,
-+      as it caused build failures.
-+
-+   -  ``shadow``: Increase the maximum group name length from 24 to 32 (default
-+      value provided by upstream recipe, was previously hardcoded to 24).
-+
-+   -  ``udev-extraconf``: Speed up the ``mount.sh`` script by passing the block
-+      device of interest to ``blkid`` when getting partition label names.
-+
-+   -  ``piglit``: enable OpenCL support if ``opencl`` is part of the
-+      :term:`DISTRO` features.
-+
- Known Issues in |yocto-ver|
- ~~~~~~~~~~~~~~~~~~~~~~~~~~~
- 
+Are we not recommending using ccache for **any** recipe or simply native 
+recipe? I'm asking because this seems to imply we shouldn't use it for 
+anything but the paragraph before only applies to native recipes. Maybe 
+we could add something to make it explicit non-native recipes also are 
+discouraged to use ccache?
 
--- 
-2.51.0
+So now I'm wondering if we can remove ccache from 
+documentation/tools/host_packages_scripts/almalinux_essential.sh and 
+documentation/tools/host_packages_scripts/fedora_essential.sh? If we do, 
+we should probably add a note here stating you need to have ccache 
+installed on your host system (which is kind of implied above when we 
+say "use the host's Ccache" but maybe we could do better?).
 
+Cheers,
+Quentin
 
