@@ -1,206 +1,252 @@
-Return-Path: <paul@pbarker.dev>
+Return-Path: <quentin.schulz@cherry.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5F94DCCD183
-	for <webhook@archiver.kernel.org>; Thu, 16 Oct 2025 10:57:42 +0000 (UTC)
-Received: from fhigh-a6-smtp.messagingengine.com (fhigh-a6-smtp.messagingengine.com [103.168.172.157])
- by mx.groups.io with SMTP id smtpd.web10.5300.1760612260173479927
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 69AB4CCD194
+	for <webhook@archiver.kernel.org>; Thu, 16 Oct 2025 11:02:52 +0000 (UTC)
+Received: from AM0PR02CU008.outbound.protection.outlook.com (AM0PR02CU008.outbound.protection.outlook.com [52.101.72.0])
+ by mx.groups.io with SMTP id smtpd.web11.5484.1760612564854971489
  for <docs@lists.yoctoproject.org>;
- Thu, 16 Oct 2025 03:57:40 -0700
+ Thu, 16 Oct 2025 04:02:45 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@pbarker.dev header.s=fm1 header.b=Wp5RaSwM;
- dkim=pass header.i=@messagingengine.com header.s=fm2 header.b=ZCQTBKDI;
- spf=pass (domain: pbarker.dev, ip: 103.168.172.157, mailfrom: paul@pbarker.dev)
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 5F3CB1400183;
-	Thu, 16 Oct 2025 06:57:39 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Thu, 16 Oct 2025 06:57:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pbarker.dev; h=
-	cc:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm1; t=1760612259; x=1760698659; bh=vQ3d7LxQco
-	9u/DA4SdRQ4389PwpO6iEowIIt1KY7Jnc=; b=Wp5RaSwM4pPUleWWpJEcmJGNg0
-	w5XWlxPuHHUGsuex9plXUbv6im6BGWxGdTjrTUJ2JHrGs4FF+P6uOswLy9nwKg8i
-	TdZPIa4Hg83caa8mlBqQQXgyEFOvV7wPpZcUSSkdf20lTNbjzZXoGPee44Aam53s
-	Mea/+2DLmuKWlkg1rPg4IlrJ+7dPlVZRavKc8QmN8T8bVI8uV4np0bDKrCZFzphj
-	wdA11zPfdZE5Vdoe4LZzcjHJ0mtUT+WY3i7ySjgORCDJEjhJ8wzbn0uYHCMOsS8d
-	fLwah+5+qC+rlYdU0dTAcRb3xYrEGp9wNhWJAKPlItugnFFWo+5Gbc6L93Bw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1760612259; x=1760698659; bh=vQ3d7LxQco9u/DA4SdRQ4389PwpO6iEowII
-	t1KY7Jnc=; b=ZCQTBKDI1tEoPx3sP2IQ1EvQbXSbmbW1KjLqNByGStQBYWEaPRL
-	v1qxSi3cAo46XfKNut98qpL611KveJSIyuPb6p0JIRh2FOIO4n+dkJPdjNLToHek
-	uI7yES194CBWv6/IcSCr0fek3tm/BO4EVv/5iOCEVkBRAnzUPAm5cMwMkOdSRh14
-	PL8xEaJwTci73WZffhDAL86gmJrC05xIIgzZRZEYahYZAKZoeOXq+Br3FGPAuR4Z
-	ulKDOnGfqViHaIYDDqf4UfSYhHNRZyx5SYGijPp22QN8m9UvQWE+yoyk0+SGYoJy
-	Yo3LVzNJYCGlr3ASzriC8cUrOee60xgwZDg==
-X-ME-Sender: <xms:o8_waMX6YHy_jzlKKAuH5fRY3aPg3M4gHfYU7KO_0zj1_U-p-zT16A>
-    <xme:o8_waIC7BcyFjxOc4myy8pwGOjyP5v42sZIjhB86DCDlOlEkRGUfiivBYTIZTGS77
-    F-4SlvwuzNIU9OwrWfA2IEbHo4o5vkxGvl-CwXYf3tccM_xY81Bwg>
-X-ME-Received: <xmr:o8_waNzdYxObXu75YlrSUvMXMjActGJvEKwzMTtYlkgOdRFld1GC7QATaYoQsbmztU2p-8EOX1O-4hsQgT2a3L8vtWmoLg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduvdeiudduucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepkffuhffvveffjghftggfggesghdtreertderjeenucfhrhhomheprfgruhhluceu
-    rghrkhgvrhcuoehprghulhesphgsrghrkhgvrhdruggvvheqnecuggftrfgrthhtvghrnh
-    epfeffvdefgeevkeduhfetueehhfeikedvieeufeevieffueektdeluddtgfegveehnecu
-    vehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepphgruhhlse
-    hpsggrrhhkvghrrdguvghvpdhnsggprhgtphhtthhopeefpdhmohguvgepshhmthhpohhu
-    thdprhgtphhtthhopegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomh
-    dprhgtphhtthhopeguohgtsheslhhishhtshdrhihotghtohhprhhojhgvtghtrdhorhhg
-    pdhrtghpthhtohepthhhohhmrghsrdhpvghtrgiiiihonhhisegsohhothhlihhnrdgtoh
-    hm
-X-ME-Proxy: <xmx:o8_waFCiczKhzzQ3MyRLfeiur2qileELh9cTRwzuEZhndP8c91UNYg>
-    <xmx:o8_waKZ3MctWcTD1YoBSwvUjnDKmMr-nrz7iIzMb_Xm2LLP47lcB-Q>
-    <xmx:o8_waNiWKEEU-DOgsBuDiqSvNe2YMB2lhilay7Pz66JHk3EXZeDsFw>
-    <xmx:o8_waM5TwQKKJU6Dwv-aUChuSQ3cwz3S7GvSJLt5AXh7qU3gzJJk-g>
-    <xmx:o8_waBYExrikDFdb06FSty_Am_ViF3obDbiZDIhXwyBUSdz6h5j6ZRoV>
-Feedback-ID: i51494658:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 16 Oct 2025 06:57:38 -0400 (EDT)
-Message-ID: <ae9751dcf85b11592bde525aa84b51c83e96b3aa.camel@pbarker.dev>
-Subject: Re: [PATCH 17/17] migration-guides/release-notes-5.3: updates
-From: Paul Barker <paul@pbarker.dev>
-To: Antonin Godard <antonin.godard@bootlin.com>, docs@lists.yoctoproject.org
+ dkim=pass header.i=@cherry.de header.s=selector1 header.b=kmeMRrfY;
+ spf=pass (domain: cherry.de, ip: 52.101.72.0, mailfrom: quentin.schulz@cherry.de)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dAWx7TA/DCK0SWjSIAtEZ+YVX4u3AEa4/etpwvNab+HAXRW4yjeSSvcXSD8chY9+J+AgZPsOKv9aI/T2wENRO1h/Q1cTuwQYPkF36Y/5Nusg1AMeF0emapOkMbeWzFFIl9Ybm0//K718TLMARkqBFsw14d+dDniMEOAid+QXrYe9B15vyKPGYnPCBD9Plu9gKQU3jE/0Ynre7XgPjGofAEGTkn4mjQw5EmAsbdzYvdKJlQD4sv/7NqbkpkGDjIcrafC+dzMeOrdsrhjf1Xu+swTvKzpGnk0ZKwhHbYyjSQ6IB0jsCGEKCOTGUOB2PaEPja93Y4mA6+HmlEN3t8h4pQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=MyUZVs8Bq4+Q2MMSFheWteGD3ksmD7pO6WixXRceDSE=;
+ b=uNcjjlevEvlqC7r7/kGGl93yeJ+Uaa5uwjf7fcIrUhrvd8+ukDN9M1HDL7GXGvDcv9mVSyE6UGd5SS5OWjlBdRz1L1btRMQ8OtBUAOm+gx4OZ2Dt/NJp9te5Itg0vR7qhcOr4AwatvMht5ByjzU17GotPVOy33IjzvAvb/3Ojbu+O9UwGVh4sAUFVY3dp8uZvChixcZA4AsZ0/r5dgR1pe7xJkcSpxIyaopIHQjPUHfu7ejTKgQTJxC8nmsB95o51dMyUCpLG7PVYN13XJoF6gvVi/iLILqnaqLmBEkRDoOXmloHYQ1txjk7vhmCErhsMc5DDhwGKKQMEYs1XWdxSA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
+ dkim=pass header.d=cherry.de; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=MyUZVs8Bq4+Q2MMSFheWteGD3ksmD7pO6WixXRceDSE=;
+ b=kmeMRrfYUw0x5i6qzcuoDAc35Uu+jovtbyerDecwFx9/0b9TiFz6aOh+iNHI2LREN+MNdUNBZKBhvRx5DcNgnFBUOaZPZG9meLPNIN+BFtq4qoINLDjose2TISCWEKtvSRCJbPgnsYL5wIkBhOLuR28irsY1PMDiTMdXwCqNywE=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=cherry.de;
+Received: from AS8PR04MB8897.eurprd04.prod.outlook.com (2603:10a6:20b:42c::20)
+ by VI2PR04MB11243.eurprd04.prod.outlook.com (2603:10a6:800:29a::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.12; Thu, 16 Oct
+ 2025 11:02:38 +0000
+Received: from AS8PR04MB8897.eurprd04.prod.outlook.com
+ ([fe80::5ee:7297:93b4:a8d1]) by AS8PR04MB8897.eurprd04.prod.outlook.com
+ ([fe80::5ee:7297:93b4:a8d1%6]) with mapi id 15.20.9228.010; Thu, 16 Oct 2025
+ 11:02:38 +0000
+Message-ID: <368a4429-8ba5-4c93-b855-18c80d323a73@cherry.de>
+Date: Thu, 16 Oct 2025 13:02:37 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [docs] [PATCH 17/17] migration-guides/release-notes-5.3: updates
+To: antonin.godard@bootlin.com, docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Date: Thu, 16 Oct 2025 11:57:34 +0100
+References: <20251016-release-note-5-3-second-hunk-v1-0-20f21db1f93c@bootlin.com>
+ <20251016-release-note-5-3-second-hunk-v1-17-20f21db1f93c@bootlin.com>
+Content-Language: en-US
+From: Quentin Schulz <quentin.schulz@cherry.de>
 In-Reply-To: <20251016-release-note-5-3-second-hunk-v1-17-20f21db1f93c@bootlin.com>
-References: 
-	<20251016-release-note-5-3-second-hunk-v1-0-20f21db1f93c@bootlin.com>
-	 <20251016-release-note-5-3-second-hunk-v1-17-20f21db1f93c@bootlin.com>
-Autocrypt: addr=paul@pbarker.dev; prefer-encrypt=mutual;
- keydata=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
- ep0k17xg==
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-W5bBXwXk0fm8DHnb0wke"
-User-Agent: Evolution 3.56.1-1 
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR3P281CA0102.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:a1::17) To AS8PR04MB8897.eurprd04.prod.outlook.com
+ (2603:10a6:20b:42c::20)
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8PR04MB8897:EE_|VI2PR04MB11243:EE_
+X-MS-Office365-Filtering-Correlation-Id: d38d219d-1575-480e-9312-08de0ca384fe
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
+X-Microsoft-Antispam-Message-Info: 
+	=?utf-8?B?YmhzZGxodElWSlhkemJwWnkyNnMwWFM4cm85WDlLV1llUWNlbE1vbklTdDM3?=
+ =?utf-8?B?aEVBakZEU1A5MW82dXFOT292SmI1cDNWcXFIVWR0L2p3UFA3by9QUVhWN2tO?=
+ =?utf-8?B?eFAvRzZZK3hSTnVYczNyVmZ2d2JMamRxVkl0UVdHc3gwaElNTzVkbkRxdlZH?=
+ =?utf-8?B?UkhNbXRiWXY3T0VrY0J4S3Vrem5adGZ2TUJlaHFKMW5VOFlmWFRzL242OW9U?=
+ =?utf-8?B?ZzdzdDRtOHJMSWFiSGZOVWxzS05zYXhOTDNvdVUybm1NcWt4RysyWlQ2KzB3?=
+ =?utf-8?B?MkF5bUVPQ2tUOUtuRjFCQll1MGR6dFB2SWNxU1kzUjJ1emhMRHk3WEpEMHVo?=
+ =?utf-8?B?bTdQaG9WM0FSSFFYeWFZNVdBYVlnUHBRTVp1U3NoY2hiM2FjelZISE9iNkNr?=
+ =?utf-8?B?OWVRNFJiR1lDUkZ1ZnhubGlsRzVVMGYyNmhFWHZxZ0orazdHeXR0QXRISWxC?=
+ =?utf-8?B?clB6RkhhZ3VqNUhOU2FudmRPdy9TVUZRSW1Xd2UzNll5Y3hEajQvTDZVQVFz?=
+ =?utf-8?B?YU5EZ3RKejZ4eERZNG5vZlBPTi9zaTdpU1cxT1ZibEtIWmZBblNiRlJMbFJX?=
+ =?utf-8?B?N3ZsSHBMTUtNV05UbFlzbk9SL25HTVorR0Z4MkdXN3N5SWtUa2dRVHlJcCsx?=
+ =?utf-8?B?R2k5YTZzcTI5S1JyRWFIMTZnZHZBb3dmc3MvWEVGK2U0VG5VTzV0cUhRclJN?=
+ =?utf-8?B?eFFqV3ZUM2tueVhrQ1NabDB3TnExbkY0aU4rNVhPUjNxU1k1cUo4T0xLbTRx?=
+ =?utf-8?B?cnRjbmRKUnZKMnNQSUZ0WmFMT24rbzNZKy8yMlMxNG50c3o2U25RUXQvbk9F?=
+ =?utf-8?B?eG8vSGdhekZ3L0srOFpDQjJqWnJDQlVjWDhlZ3FKaTlYU1J1ZG5ZbElsL25m?=
+ =?utf-8?B?UVNxdEJJRnNJbE1HMnBMaEhyRHJZdW43a2M4a3dFd1RqMzVCVVlzN0J2L0pl?=
+ =?utf-8?B?TlBBRkRyc0pCd2hkTjluRVpuSkI5a1YrMHBpL0FLNTAyTVFtT0ozNm1OcWZJ?=
+ =?utf-8?B?K3pkd293WkdBM1NBS0gxQTl5TXF2VERiN21MRS9id2ZDQ1p0c2pKUHlQaWZZ?=
+ =?utf-8?B?Q0Y1VmxDTG02bGZsU08waHYwQUhqMGJkMnRuWGlBTC9HaDMvak1ObXkzTFU5?=
+ =?utf-8?B?b1B4cEdLMk9Cc2JDcXh3Z1pYSXBVRWFtSnFXQTd2MkhIN2JFNE03UGpiOEJF?=
+ =?utf-8?B?Z1Y4aTBvdFljQ09VTXhZSjM0emNialdFMXQ0Z21yMWx0eXFlU25WZDhQVFdi?=
+ =?utf-8?B?ci8vK1A0YXBPM3RGeGJnL1h6T1hzQTUva0I3Ync2WnpwNmZESURtYmFvQ2xn?=
+ =?utf-8?B?M0RVaUZIOUdmZ282VjRUejNmandLcWFRWjVSWkdoVkU1azNIazJUL3NweVp6?=
+ =?utf-8?B?OUlrQXhDR3FyMU5uRHhiZnBZanZYNjhZa1V2QUhBdnpIZXdHbS9VSlZMa2xn?=
+ =?utf-8?B?SVovSE9pQVR0bndpaUhFS0RMVERCdlN3Tm9wVHRkbnZlTnRtOE1KS01vZDgx?=
+ =?utf-8?B?eWpXajQvOG1ZM0dlTWdON0FGZXljRzZsUXhXaEorTXVzUWxMaXBHNnBBMFNY?=
+ =?utf-8?B?eGxnMVhLekFoVStxSnNLV05CU0h1QXlpbUx4REp4YUxSYUllU1JpVStMNy9B?=
+ =?utf-8?B?UHFlQkhiakdZZENvYkROTHNvVnRRWmhyVWdQS3dxZ3hkUEtnS1FjRmNyb0NV?=
+ =?utf-8?B?dGpPL2pCR3llSHlEajFwQzdJSFJyNWJmSlhIdlA5dGNLeWM5cytGV3VWTnQ4?=
+ =?utf-8?B?SUV4SnJUNnYwcVJqMUZWRDRBdVZpL05HdzB1ZXFIOHpRU25nSnpnQ1MxWmdO?=
+ =?utf-8?B?dEVySjRtbm9hUDR3T0srR09sTVhDSnl3L28xVUpNZkppa0ZoQTQzY3huUUoz?=
+ =?utf-8?B?TGdTOTNsdXg2RXdHKzRMWmUzeTRudlFWaFpiMG1WS3hWbURoTDhCSlJzbXZp?=
+ =?utf-8?Q?1TtATVEXmxk0aVKL19wXu4hWwpncWDLw?=
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8897.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?utf-8?B?eWZaUUN0emRrOXR5MkxFN0NjRExXMUsxVGM3dVVSY01uamN6ZWJVY2UyYUsw?=
+ =?utf-8?B?eUYwUElHdE5lWXB0b2lBbkMzZGkySWNWSStnclRXQzFMWm1ZZlJscGdRMlVi?=
+ =?utf-8?B?VUtkQzlLMFc0dHllSnpHcE1aZW04TTlXNnRSdEtEYzY3NHJRTG03N1g5bXZO?=
+ =?utf-8?B?ek0wUGUzbTR3UGhWbS9HWExGUFR1TkZGMS9RN29hYjJqQzdkZ1NJeElmeFJ4?=
+ =?utf-8?B?R3dQb1VtNXBxUG9oNUMzS2JndzRXWURDbE1FYU1PS3NSODhNSmlMalBJcDRH?=
+ =?utf-8?B?N0ptRy83WTVjVmEwaXZ0dEdEaFRSTjgrbko5cU8xTDZ5bTVmbUZmNU1odDZQ?=
+ =?utf-8?B?MjNpUmJSV0hvVTN1dE1NYTlRbVU0Y3BGcEV3UUUrWkY1TFFzRSszdlBUZGlV?=
+ =?utf-8?B?WXhsa3lOV3VTU3QyWGxpblV6WDZTTHdZZ3ZFYXEzNzNsQUVyY0ppSWlmaTFs?=
+ =?utf-8?B?dzh2UWQ4eXp1OWNUdFUrWUV6K3M3WHA2K21pQmVLelEyYlVTMU1ucjRhSDZj?=
+ =?utf-8?B?ckgvYVp4WWZCdUFnd3I4Z0xqc0k1dW5qakxNRWVlRE9jNno1TFZCNXV0SnUy?=
+ =?utf-8?B?b2pQUksxV3hpenpISjJlOTdXaCtGN1dVNWVHbmVHbzJjS2hFSCt5ZWd2V1lj?=
+ =?utf-8?B?TE1XNHMveFdsa0tWL1orV2QraHRxb0JHVXNaL2RUOHZjWVpHVC9XNm1IOE1j?=
+ =?utf-8?B?akFwVmhCQ21mSXZMZmtZZ3IrYnAwVG0zQ05kbFBmN0lkdVZxNDEvUzBkbjdw?=
+ =?utf-8?B?SE5VZXZpdERkbStZajFGNnNKMFhFTXZXYVNBMXdmbTJacklYQ2FMWElBZUsz?=
+ =?utf-8?B?MkdIVWpmeWt2V2s4ZDN4QVErZXNuelh4MUpDcWdoejVuMVpwUnlhQlpJS3cw?=
+ =?utf-8?B?dEtzTnlQU0Y4MmJyeFp0a0doQ3h5eEIzRHp6S1RjR0dJcWpXRUkzbSsvcUpq?=
+ =?utf-8?B?RnFCV0Eyd0ZWZ090RlAyRml0bVNRc3B6aGVaQ2Z5ZlB4QVhMSnpTanNnemt3?=
+ =?utf-8?B?c0taa2pXUGd0R1ByNTZ2R0s1eUVBMHpkRS9BMFMyMzdqaHdJdWtnS3FpbXph?=
+ =?utf-8?B?OHBVUTB1L05FSUo1VDR5TE1FRFVIeC9ZaldTNERlQzR0YTFMZ2g3dUlIODNL?=
+ =?utf-8?B?eUR4TURNaGJCRE00ZWRUMGpxSVgzOW04c0l6OWtGeG45alM4TmdTdStKMTkv?=
+ =?utf-8?B?WHBnRVVpZjcvSkMyTHhGaktQZ1U2Z3hVb1FUVFlQdG9lRldEUEVkOW01ZDg5?=
+ =?utf-8?B?em81alN1SmMycDNINjhvd0kzVUowU3UxU1JnQS8vNkJndUpvaE9VTHpvaklp?=
+ =?utf-8?B?NzcwckdOUWl0QUIrdFdaNUx4UWlUb0w3ay9pcWNYekVuTy9La1JwVzBPcVNM?=
+ =?utf-8?B?bmdJVjhhR1prOVRsVHRldE9xaWxPOHF6K29YZU1CaVRsaFNkSWdtL3dqbGZX?=
+ =?utf-8?B?cVJ4Ly9oWmtKOVp3RjFyeUVZOFlEWkd5Qy9iR1YzeVAycUN5SVVrU3FaOFR3?=
+ =?utf-8?B?bVhXT1pWdWhkOTE5S004Ujd2Y3BsaitnbWFqbEltb000THh4dVJwK29LL0RT?=
+ =?utf-8?B?clFnWXdUclVmbU5TSWQ5bzVLcFFjZy81b3gvZmxTNlY4NUViQnE2bGtTbkI2?=
+ =?utf-8?B?M1BZNytOOFNkY24rcGxrYlVCUVkveUNRaXNCZnFuL3ZmOGxucC93MVI3eGVv?=
+ =?utf-8?B?cWsvU0VmZXJsMEZHNEZvM3VueWpidlNYODg1ZnVMa1R1M3J1aXJBdUxDV0J3?=
+ =?utf-8?B?N0NPSnAxaFhNUEVVQzJWSXI2YXRFYWV6YndCVHlyRlRBTTUwZjVXTjdLVTha?=
+ =?utf-8?B?RTN2bjh1akdHR3hhSGZWdGdOdE5RaWN1Qkl1SFVnWStlSFRZR1BicEJtOHMr?=
+ =?utf-8?B?Y1dGYVVoaXhMNzNtUjFmZHFIenpTaWY5YTAydGViVE9KM0k5MDgvcjBEcFBw?=
+ =?utf-8?B?VVJQK1JVbTFSWVJBbTlrUWxRMENVbEN3YjI5c3l5S2FMbWNBK3hZdXFHQnkz?=
+ =?utf-8?B?c2FyM0xVR2RFSnNZbnZCWWJsbktxd0J0RGkxaVEzZGxWaUZTVytwUHNBV0s3?=
+ =?utf-8?B?ODYyMGpmK001Q2dtRFc4NGozTDFlT280T1ljNEd0VDZvQ2YydHorQmxOKy9M?=
+ =?utf-8?B?WDFoMjJGMldibFRCaGtjVnFWOHN1TUtLdlJoMlR4dGhPYWE1ZXlPWHo2dFJo?=
+ =?utf-8?B?aEE9PQ==?=
+X-OriginatorOrg: cherry.de
+X-MS-Exchange-CrossTenant-Network-Message-Id: d38d219d-1575-480e-9312-08de0ca384fe
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8897.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Oct 2025 11:02:38.5095
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6EkE2X9NBvyE9aHcSKhJIt2yGe/8sPxtYRhgZnAiqj75IfSKZSSOgGeyD+m8aqDntg/EZQur1aRDYMW3T+P/UuKTRZqFikM0xDLi110ILfY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB11243
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 16 Oct 2025 10:57:42 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7741
+ <docs@lists.yoctoproject.org>; Thu, 16 Oct 2025 11:02:52 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7742
 
+Hi Antonin,
 
---=-W5bBXwXk0fm8DHnb0wke
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Didn't go through the whole patch, but...
 
-On Thu, 2025-10-16 at 10:54 +0200, Antonin Godard wrote:
-> Update the release notes and migration manual for 5.3.
->=20
-> This covers commits from bd4625cd4db0 ("build-appliance-image: Update to
-> master head revision") to 4a1f38dd8db1 ("bitbake: knotty, uihelper:
-> Remove running_pids and lastpids") in Poky.
->=20
-> Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
-> ---
->  documentation/migration-guides/migration-5.3.rst   |  46 ++-
->  .../migration-guides/release-notes-5.3.rst         | 341 +++++++++++++++=
-++++--
->  2 files changed, 364 insertions(+), 23 deletions(-)
->=20
-> diff --git a/documentation/migration-guides/migration-5.3.rst b/documenta=
-tion/migration-guides/migration-5.3.rst
-> index 985712cb2..485002e0e 100644
-> --- a/documentation/migration-guides/migration-5.3.rst
-> +++ b/documentation/migration-guides/migration-5.3.rst
-> @@ -134,10 +134,19 @@ To set back the "mac" policy in systemd (version 25=
-7.8 at the time of writing
->  this note), you should set the ``NamePolicy`` and ``AlternativeNamesPoli=
-cy`` as
->  detailed in :manpage:`systemd.link(5)`.
-> =20
-> +Removal of unlicensed Linux kernel firmwares
-> +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+On 10/16/25 10:54 AM, Antonin Godard via lists.yoctoproject.org wrote:
+[...]
+> @@ -147,7 +156,9 @@ Supported distributions
+>   Compared to the previous releases, running BitBake is supported on new
+>   GNU/Linux distributions:
+>   
+> --  XXX
+> +-  Debian 13 (Trixie)
+> +-  Fedora 42
+> +-  Ubuntu 25.04
+>   
+>   On the other hand, some earlier distributions are no longer supported:
+>   
+
+Weren't we supposed to remove support for Bullseye?
+
+[...]
+>   
+> @@ -206,6 +226,8 @@ Removed :term:`PACKAGECONFIG` entries
+>   
+>   -  ``mesa``: ``kmsro``, ``osmesa``, ``xa``
+>   
+> +-  ``systemd``: ``dbus``
 > +
-> +The ``linux-firmware`` recipe now has a way of excluding firmwares that =
-do not
-> +provide any license information. The recipe holds an internal list of fi=
-rmwares
-> +to exclude via a variable named ``REMOVE_UNLICENSED``. See :oe_git:`the =
-recipe
-> +</openembedded-core/tree/meta/recipes-kernel/linux-firmware>` for a comp=
-lete
-> +overview of the removed firmwares.
+>   Removed classes
+>   ~~~~~~~~~~~~~~~
+>   
+> @@ -269,4 +291,22 @@ Miscellaneous changes
+>   -  ``xserver-xorg``: remove sub-package ``${PN}-xwayland``, as ``xwayland`` is
+>      now its own recipe.
+>   
+> --  The Wic-specific option ``--extra-space`` has been renamed to ``--extra-filesystem-space``.
+> \ No newline at end of file
+> +-  ``gdk-pixbuf``: drop the ``GDK_PIXBUF_LOADERS`` variable, which was part of
+> +   the recipe's :term:`PACKAGECONFIG`. Instead the :term:`PACKAGECONFIG` can be
+> +   modified directly to achieve the same result.
+> +
+> +-  Remove the ``meta/conf/distro/include/distro_alias.inc`` include file,
+> +   which associated a recipe name to one or more Distribution package name.
+> +   This file is not used and maintained anymore.
+> +
+> +-  Remove the ``nghttp2-proxy`` package from the ``nghttp2`` recipe as the
+> +   ``nghttp2-proxy`` package became empty after an upgrade that makes it a
+> +   library recipe only (due to
+> +   :term:`EXTRA_OEMAKE` containing ``-DENABLE_APP=OFF`` by default in the
+> +   recipe).
+> +
+> +-  Remove the ``util-linux-fcntl-lock`` package (in the ``util-linux`` recipe) as
+> +   util-linux now supports the ``--fcntl`` flag for the ``flock`` command.
+> +
+> +   Recipes currently using the ``fcntl-lock`` command should replace these by
+> +   ``flock --fcntl``.
 
-I think we should be more explicit about the default behaviour, perhaps:
+Would suggest starting the list items with "Removed".
 
-    By default, the ``linux-firmware`` recipe now excludes firmwares that d=
-o not
-    provide any license information. The recipe holds an internal list of f=
-irmwares
-    to exclude via a variable named ``REMOVE_UNLICENSED``, this variable ma=
-y be
-    overridden if unlicensed firmware is needed. See :oe_git:`the recipe
-    </openembedded-core/tree/meta/recipes-kernel/linux-firmware>` for a com=
-plete
-    overview of the removed firmwares.
+> diff --git a/documentation/migration-guides/release-notes-5.3.rst b/documentation/migration-guides/release-notes-5.3.rst
+> index 417087e35..57f50f4e1 100644
+> --- a/documentation/migration-guides/release-notes-5.3.rst
+> +++ b/documentation/migration-guides/release-notes-5.3.rst
+> @@ -11,10 +11,21 @@ Release notes for |yocto-ver| (|yocto-codename|)
+>   New Features / Enhancements in |yocto-ver|
+>   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>   
+> --  Linux kernel XXX, gcc 15, glibc XXX, LLVM XXX, and over XXX other
+> +-  Linux kernel 6.16, gcc 15, glibc 2.42, LLVM 21.1.1, and over 300 other
+>      recipe upgrades.
+>   
+> --  Minimum Python version required on the host: XXX.
+> +-  Minimum Python version required on the host: 3.9.
+> +
+> +-  Host requirements changes:
+> +
+> +   -  The minimum disk space requirement is now 140Gbytes (previously 90Gbytes).
+> +
+> +   -  The minimum RAM requirement is now 32Gbytes (previously 8Gbytes).
+> +
 
-The rest of the release note changes look good!
+It's time I stop building on my laptop then :)
+[...]
+> @@ -159,6 +223,16 @@ New Features / Enhancements in |yocto-ver|
+>         deployed filenames. Users can now override :term:`UBOOT_VERSION` to
+>         changes the output filenames.
+>   
+> +   -  The :term:`FIT_LINUX_BIN` variable which specifies the path to the Linux
+> +      Kernel binary in the context of the :ref:`ref-classes-kernel-fit-image`
+> +      class. Setting the variable to an empty string allows use cases where the
+> +      kernel binary is not included in the FIT image itself.
+> +
 
-Thanks,
+See feedback on an earlier patch, this is currently incorrect.
 
---=20
-Paul Barker
-
---=-W5bBXwXk0fm8DHnb0wke
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iIcEABYKAC8WIQSzjPXf5Y1BDWhU2iCrY1Tsnbr0bgUCaPDPnhEccGF1bEBwYmFy
-a2VyLmRldgAKCRCrY1Tsnbr0bncZAQDm6wtbzYJ4zVAudGTxE03dZCdKs6xTLuJR
-gVvfpRY/HAD/Qj94SJjda1HDI1grzXZ7usJE2hqVFfF/f8FXGzdg3gg=
-=o94u
------END PGP SIGNATURE-----
-
---=-W5bBXwXk0fm8DHnb0wke--
+Cheers,
+Quentin
 
