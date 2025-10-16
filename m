@@ -2,61 +2,61 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 639EACCD19A
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5EE78CCD194
 	for <webhook@archiver.kernel.org>; Thu, 16 Oct 2025 08:55:01 +0000 (UTC)
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by mx.groups.io with SMTP id smtpd.web10.3550.1760604891263482882
+ by mx.groups.io with SMTP id smtpd.web10.3551.1760604892161822137
  for <docs@lists.yoctoproject.org>;
- Thu, 16 Oct 2025 01:54:51 -0700
+ Thu, 16 Oct 2025 01:54:52 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=AwNvi2AT;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=CdKzzdFS;
  spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 007791A1415
+	by smtpout-02.galae.net (Postfix) with ESMTPS id DC0011A1416
 	for <docs@lists.yoctoproject.org>; Thu, 16 Oct 2025 08:54:50 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id CB4086062C
-	for <docs@lists.yoctoproject.org>; Thu, 16 Oct 2025 08:54:49 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0AFB6102F22FD;
-	Thu, 16 Oct 2025 10:54:48 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id B2C9B6062C
+	for <docs@lists.yoctoproject.org>; Thu, 16 Oct 2025 08:54:50 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 96F3B102F22F1;
+	Thu, 16 Oct 2025 10:54:49 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
 	t=1760604889; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=j0kp1v47Dur4sJeL9dJt7ywyLoTzP5CGccVLNdfD58Y=;
-	b=AwNvi2ATSIpgivmX2qKcKm8OGFIOj5tT7kOuhzZhZ3hEHKjyLXA1/q9t8x9uAMhfSwMKIN
-	KoOc3rZxz/MbcowjvxdEP7Y43KE1I2XxQ9aMoY9VAUTxQHQTOovq27r9YEioWwK4mZ9C1L
-	vCXnpJzxuiofvOph++rMMffJ+iLMjlD+d8o36F3pkCKlFyqfDG3cy3pA2nTvWNI8dlcb10
-	zip/lWE5t+wLdVJz/cTP3030ob/EjmyRr902gNm2FYybTDLHQaa5nHh9mnU30lKdFVUOHR
-	waOu9rRkLvHxQSksPM+TnNGXkqXnP+FIEoITgGO+DYCaKYfJsxPghArGUqWCiA==
+	bh=IxNXS0yorEpgExxXhd0aLWly40EmOmaM1BRV+xHS72o=;
+	b=CdKzzdFSvczk9DCeymEW9qFIjNLzNWGUB3O/sgplpUG/NrnkJRydk1V+4U/BRQxnlY2ID8
+	spe4QX9WsKsXp1SrjArgBc4RDR7F//kQhOt8Wz+kyY3AHjgHrVmplt6wkRV/kJWGx+qh9T
+	VKauLGKst6bnCq3yQVk6F6c4TzA8eCKFV5Aje4AVIqCimR+j9OFK9lH8MMF3oZ9gAWp6T6
+	Vids4GPujvGS48iQpE3jfDCE07CLy2hSprthdg8qKYt1iuqgoeijWPME1DdNFNBt2uOtab
+	FRVh7xE8sczUudpiDQ85GN3dxf21amUFpZSSqufsUtFy1n3CCFMSKYCGkWracQ==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Thu, 16 Oct 2025 10:54:01 +0200
-Subject: [PATCH 11/17] ref-manual/classes.rst: gettext: extend the
- documentation of the class
+Date: Thu, 16 Oct 2025 10:54:02 +0200
+Subject: [PATCH 12/17] ref-manual/classes.rst: document the
+ rust-target-config class
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251016-release-note-5-3-second-hunk-v1-11-20f21db1f93c@bootlin.com>
+Message-Id: <20251016-release-note-5-3-second-hunk-v1-12-20f21db1f93c@bootlin.com>
 References: <20251016-release-note-5-3-second-hunk-v1-0-20f21db1f93c@bootlin.com>
 In-Reply-To: <20251016-release-note-5-3-second-hunk-v1-0-20f21db1f93c@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1013;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1166;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=rV5CpVtRufGCdMs/EtHeQr++E1P8yThB8NvNI1YAhEw=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBo8LLQMCBx7pEnYrGVDeY1KqSiQ3V9/Daf+JIQL
- Ap5QdRQ9DWJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaPCy0AAKCRDRgEFAKaOo
- NgcPD/0dPx4mtC4QLsy65RlFkBfk3px5SP0Xlh+XZvbg0n2zbWbP+bbgbuD1sb3Jw04yiE5IICN
- CowSvdQBgOVvE4uw8VqHkmrgNJjcpI5t/nCfkMjEQ4+2Jlrm6h1qYv8A7An5ICwJ+irx2O0RxP0
- eCv7f9cFhJ0dUBILPg6PjK2NZ7ORoCQO6DGA8iSyf3HDG6TJehQQP0YrJExb4GPtnaojuFH7mIZ
- fNh7qamkR3i2+3zsMVmiVe6Q3PEACTqL6TVpAxaRIyweLIN23QD/qnn0VUqggW+hvCPlUEwIkwW
- QgGxWlmPlD4rBXn8RFtxmnn9VwUAIMzEFDe6nT8m3liIpzm6VUZjCxgNWUGbIxvu03/oJ/vHLXW
- AWUtzh23I9yIEI0kobEphjLRbGsYmkbZAEijKg+7m+HVaaYmSwsskJH3OpzT6eGco+k5+IBrnvc
- d4IqDnXc3HGLbz9YpflTd3HMdsYxt2GBfayESQ1BSl2h7BtczOvXniMMiwYtPczuA2Qrx1jaYn4
- iLW3nZv4v5BxaizzU0b2tUuwdO8sCjVtVG3uxWZDd8MQSO20Hen1eelHDH5OmNZcReFe8bSGf6r
- uD5oSkgWz0BFDBheTppokhraDhpkUZs/2KXGbgIRUouzfmA+lYM5Chc2a2fzt1d0I0XHVU3nehl
- UHt9ZgZZGBVW2MA==
+ bh=qe44iqyX6/j+MM/tULb2zbFVqG4k7FsNV7NMael5Xok=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBo8LLQAQ8kJkoa1QdWwUytoz1qgjg5nUfUAPDPD
+ L764LDZNUiJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaPCy0AAKCRDRgEFAKaOo
+ NpMCD/9FcyMhR4/ktgVT31iQLhrBH95mbTBT5VKMD20jDWZUNQw9/VF5Fupq2Yjjng5ZscPx62w
+ 52ROzwOVuKg22ujUj4oyv9XiaBg8+urud6whUPlP/lwaOsuCc97NEylRgfAL5wciY/fJ4VNFCZ3
+ JZEAY6VqrlbZzyeYwsPSMnZiyTyveqtXlegvzOOli2wOj45XZZWck4bJbEnx3zexZk/VJZc59kx
+ 47ZtR8S3hG97TtzzoCe26YrEWJqGCxgaax3NMTMZDny3ZCDR7M5ict3Pn3137wWcwTJBL+YD/wi
+ LGv/cTzYGjVsHHyPhL9eWPt6d45dgGUwYU1Q7n8biA0+ewGuBK2PuugGjk4IQ6SQc5elSj4muke
+ r60Z6YQWMNfMv6lcdUl8mJDey8MBEdFrqxYKfYX3+zemvqEdySHg7pxyuY38GGOMqtXvGXXg65D
+ dUXgcNgmB8iLLYa3VLLT853qJ/TLuWOu/hdNRWfJ34+CNQP2W8WBNtIqMRznfWhWjeNM71yXUi7
+ Ndk6R62V9yKcoOojXzmPrIV4hjFkd9+7ge/tJOnkAvJipECbKsx2Uu6rw3RBTW+3HMzxnAFsnxl
+ xCcdapXNLdg5BNsOsARSkNnUHr7shpYp9l8Oxyz4l4hxaJ/4loL8WkIYeCxtD3Ffl7IuslV4Vqe
+ jPrFgv79nL8mchw==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
@@ -64,32 +64,39 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Thu, 16 Oct 2025 08:55:01 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7721
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7722
 
-Mention the use of USE_NLS, INHIBIT_DEFAULT_DEPS and the cross-canadian
-class.
+Document the rust-target-config class.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/ref-manual/classes.rst | 5 +++++
- 1 file changed, 5 insertions(+)
+ documentation/ref-manual/classes.rst | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
 diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
-index 68edbc9dd..d898034f4 100644
+index d898034f4..9fbdb22e1 100644
 --- a/documentation/ref-manual/classes.rst
 +++ b/documentation/ref-manual/classes.rst
-@@ -968,6 +968,11 @@ software that uses the GNU ``gettext`` internationalization and localization
- system. All recipes building software that use ``gettext`` should inherit this
- class.
+@@ -2634,6 +2634,19 @@ The :ref:`ref-classes-rust-common` class is an internal class to the
+ :ref:`ref-classes-cargo_common` and :ref:`ref-classes-rust` classes and is not
+ intended to be used directly.
  
-+This class will configure recipes to *not* build translations if the
-+:term:`USE_NLS` variable is set to ``no``. It will also do the same if the
-+:term:`INHIBIT_DEFAULT_DEPS` variable is set (unless the recipe inheriting the
-+class also inherits the :ref:`ref-classes-cross-canadian` class).
++.. _ref-classes-rust-target-config:
 +
- .. _ref-classes-github-releases:
++``rust-target-config``
++======================
++
++The :ref:`ref-classes-rust-target-config` class is an internal class to the
++:ref:`ref-classes-cargo_common` and :ref:`ref-classes-rust` classes and is not
++intended to be used directly.
++
++It is used to generate a JSON specification file from the features listed in
++:term:`TUNE_FEATURES`, which is used for cross-compiling. The logic is done in a
++``do_rust_gen_targets`` task.
++
+ .. _ref-classes-sanity:
  
- ``github-releases``
+ ``sanity``
 
 -- 
 2.51.0
