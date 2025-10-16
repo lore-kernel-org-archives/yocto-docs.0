@@ -2,47 +2,47 @@ Return-Path: <paul@pbarker.dev>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4F275CCD194
-	for <webhook@archiver.kernel.org>; Thu, 16 Oct 2025 10:38:22 +0000 (UTC)
-Received: from fout-a1-smtp.messagingengine.com (fout-a1-smtp.messagingengine.com [103.168.172.144])
- by mx.groups.io with SMTP id smtpd.web10.4793.1760611099983749146
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4E98ECCD183
+	for <webhook@archiver.kernel.org>; Thu, 16 Oct 2025 10:41:42 +0000 (UTC)
+Received: from fhigh-a6-smtp.messagingengine.com (fhigh-a6-smtp.messagingengine.com [103.168.172.157])
+ by mx.groups.io with SMTP id smtpd.web10.4887.1760611296971750574
  for <docs@lists.yoctoproject.org>;
- Thu, 16 Oct 2025 03:38:20 -0700
+ Thu, 16 Oct 2025 03:41:37 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@pbarker.dev header.s=fm1 header.b=Yl72Xsj/;
- dkim=pass header.i=@messagingengine.com header.s=fm2 header.b=iUUy7mtY;
- spf=pass (domain: pbarker.dev, ip: 103.168.172.144, mailfrom: paul@pbarker.dev)
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfout.phl.internal (Postfix) with ESMTP id 4A16FEC01C2;
-	Thu, 16 Oct 2025 06:38:19 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Thu, 16 Oct 2025 06:38:19 -0400
+ dkim=pass header.i=@pbarker.dev header.s=fm1 header.b=vQJjNMT9;
+ dkim=pass header.i=@messagingengine.com header.s=fm2 header.b=fxsYURnY;
+ spf=pass (domain: pbarker.dev, ip: 103.168.172.157, mailfrom: paul@pbarker.dev)
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 1718514000F6;
+	Thu, 16 Oct 2025 06:41:36 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-04.internal (MEProxy); Thu, 16 Oct 2025 06:41:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pbarker.dev; h=
 	cc:cc:content-type:content-type:date:date:from:from:in-reply-to
 	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm1; t=1760611099; x=1760697499; bh=/LgkGzDvWQ
-	NY3bUHGxuy+IncVm2czp8VmjAsrCHrNz4=; b=Yl72Xsj/y8c0nmhOqAqFc38epG
-	t/rvOjM3YGo7QV/uFSg/jNItuEb0wV4WU4F7ZIh73UyTq2H0FoYA4TiUAvF2y5Fs
-	uJnzFwjz+DdtT0h8WQ6UlGwh7dP8ZRJOpdMkRI8SV5Ml9baOZ0L4Q/SktVipMvLG
-	5pCG/kEoaTMJAZFGS8uRLwuMtRVuV+g2M9CtfA+HFSJj8pR0zFr53vtf72ZHhjX8
-	vtrhnqcS9/+hlPW5mzA2oo9Jzr7nmZi72d5sEq0FZwOYYQKm02NbDJEFoSxVu/Gn
-	tIyKyE4vGHQpkK+7E1StrBlJ+mScMOptSZAE5c2VE8DtAwRwTpcUj/KytQVg==
+	:subject:to:to; s=fm1; t=1760611296; x=1760697696; bh=FCHG7GyvRd
+	tuzr/PlSsHOJUKitmtqsDCGm+jmZf4zHk=; b=vQJjNMT9UKpk5Y7JfNgL9EfDq6
+	Y+Zx7ZX29QuSm+laClbgpI1SJxTnFOPXtsGwEVLMG5N1OAGRex7xbL3uixBelmYd
+	bD//B+awOS2W+8WSi95L4flrj6BgKyfaDCH7tdKhQ0igsRHHAnqavqHOAh5MRAwk
+	f+cZWZhROJjCvEEJylhFyrilQ9zacPJ/PuCVlG2F3wd0fTq50iL30RD/fg5NwLRv
+	WNZMe+0KNr3r3/fsddnsFkxs2ncT6J3YrmR6/LfT2UO7GBqVRCpAR8IV1Lvt1Jnp
+	d1LtDkinf7JWUCHQ93yuH+z+fE/HaIE4KAmXm07gjs5npP2FPst4lKmGyrhQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-type:content-type:date:date
 	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
 	:message-id:mime-version:references:reply-to:subject:subject:to
 	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1760611099; x=1760697499; bh=/LgkGzDvWQNY3bUHGxuy+IncVm2czp8VmjA
-	srCHrNz4=; b=iUUy7mtYKR2YsKS4tYnJoemwGFyo5GkTrQBhvn0K0GWODKwGR1+
-	OvK166/cSpcFgEQ/N7aPDqVDwzJiEgcCx8LlBmSu216eLjJAkEDNt0G4gLm4SBi+
-	ciLA2qGJMUgJpzJpsecpjVIfFkRtHTjQpYWQP4jufLuJ/Ab6AQ2OQsWNk6MdP4ZU
-	Upw9D07v81Vm7t8JOA3C8BYBfYvfH3u9eWrnq0H0UUkPAwQyzB7OA7914ziKBiCJ
-	0MfLfJZd0Pbn+/p4MtZHMMuexFeL3g9DOUrXiVwdyhHKQYvWZJ1NpUdKjdB8h/nd
-	gUC/K3BtyFvndauB59mNUyHs+c0t30U1IrQ==
-X-ME-Sender: <xms:G8vwaLRVYigdLjVCyuMnjJcrtu1dCBLqHwmdsoS_pDeW5K1Sic_Z2g>
-    <xme:G8vwaEMtoFaLF00UktSYszIRS-OOfyKCbdI7bMUh9mPYj2fnos224bmJE4ykzGY9B
-    0unkIqXAWWFBrvkllnbTlOtwVE-KhkRsWJ9AjS9Wkg40GKiqSW5KvQ>
-X-ME-Received: <xmr:G8vwaON_H9Oop2dUmmJMQ5P9FMREGuzGyyLqgk3rmr8zvZL9vh-UkcXjwXmQapsmRY3gpaI1lQZObxM4iIdcmfuL85vdfg>
+	1760611296; x=1760697696; bh=FCHG7GyvRdtuzr/PlSsHOJUKitmtqsDCGm+
+	jmZf4zHk=; b=fxsYURnYqeIP719VR504/i9dpwBosj/huIeg6NhFbTHEWS8XkCH
+	9HI2n/Qk1Nh2L+80DFqrSZ8fbKx2BPYTYXGJXC1gwpLpQGvj31irpuICu6pj62wx
+	9GNXxoNQ/u4RZ8snZ7rR57uQz6Wb49+s2IOGOQHrRqQdg+SVJ48OZ2+RrkPmQIlg
+	33YgMIZKcUSpvZEUBdq/TgmxekiCjsD7guBeBrWpV+5uBqezt9dG7nrfPJytnuOQ
+	he+uNvbuN+BedwlCnwyM3KXR6ZsYLJ1PySp+kU455f2faEEn6U9svcZonMAGfU7H
+	ioAgRA3slG7RvoyV5sMTErcS616+9I9jH/Q==
+X-ME-Sender: <xms:38vwaG8mRr-uQ_gnN8nCFbBb_aYAwPhtwQQ_ItRS_QJgJLaLC7lMxg>
+    <xme:38vwaOIOjNmgvascklc0THHa5dTlEvP9L-Y2CyD379_CBFbCb89TCtKPuRTCTiSe2
+    buua91wIxsAMD6tis-kS6eGqi8JU1RkLJLRhkfAKQMr8je_2HEYzEU>
+X-ME-Received: <xmr:38vwaJZq114tsXpBhvdoNN8Zx5TstFlOTdemkVk9GsatVfKXP-kYvLaj-MJQpYCyPt2Lb7D4dK_HwL8WCkKhYIHTj_gpZA>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduvdeitdejucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
@@ -55,25 +55,25 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduvdeitdejucetufdote
     dprhgtphhtthhopeguohgtsheslhhishhtshdrhihotghtohhprhhojhgvtghtrdhorhhg
     pdhrtghpthhtohepthhhohhmrghsrdhpvghtrgiiiihonhhisegsohhothhlihhnrdgtoh
     hm
-X-ME-Proxy: <xmx:G8vwaEvpXdmuPBjHEro96oNmPJyVGYZpbw3drU_J2miggRrrngoQwg>
-    <xmx:G8vwaIUyG3IRk-gyNzNV4dWfPl2UZBISomJK8iIzBTdKC_xVR61XCg>
-    <xmx:G8vwaMuBJfj_gHuRXm7yGwMLNh0AUt88FzZ-LFdFNRdrVtCogpYiHw>
-    <xmx:G8vwaEWvi3kFr2QKupd4R8KZhKsVc8JBpAupELXOyt6811WNmqjgWw>
-    <xmx:G8vwaIlkivFxxIAx9JgWoK0gcte8Z3MeKpwV1MFlgWhD8QpEPTXxX08j>
+X-ME-Proxy: <xmx:38vwaIKpjSpzZSf7gOFNNJLMPnQLHyJ4C79xubMe_lpQoxeStzsieA>
+    <xmx:38vwaPBz1c6ne5EBrThAqEqhVL6QTS8_nKD-LtNncaChW6h9PhZxNQ>
+    <xmx:38vwaFp-3eLsJykckLTm8-l6FfGye8cdBXTZx-KzojGGV5y_3tXTng>
+    <xmx:38vwaCiynowWqTmynpZZZ2O2zLQyTKqQeYE4SFcOm3_36NZfToqlwg>
+    <xmx:4MvwaJjUXj6Q3e9UqHzm__EzYwp73bmYCGJpB-jilcgiot2OrsD0jYwz>
 Feedback-ID: i51494658:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 16 Oct 2025 06:38:18 -0400 (EDT)
-Message-ID: <6a2311de937c3894f640c5981131db71c7812274.camel@pbarker.dev>
-Subject: Re: [PATCH 11/17] ref-manual/classes.rst: gettext: extend the
- documentation of the class
+ 16 Oct 2025 06:41:35 -0400 (EDT)
+Message-ID: <7f4c1d050bc4f2774cc2576d56f2af4c08b490be.camel@pbarker.dev>
+Subject: Re: [PATCH 15/17] ref-manual/classes.rst: document the
+ relative_symlinks class
 From: Paul Barker <paul@pbarker.dev>
 To: Antonin Godard <antonin.godard@bootlin.com>, docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Date: Thu, 16 Oct 2025 11:38:13 +0100
-In-Reply-To: <20251016-release-note-5-3-second-hunk-v1-11-20f21db1f93c@bootlin.com>
+Date: Thu, 16 Oct 2025 11:41:30 +0100
+In-Reply-To: <20251016-release-note-5-3-second-hunk-v1-15-20f21db1f93c@bootlin.com>
 References: 
 	<20251016-release-note-5-3-second-hunk-v1-0-20f21db1f93c@bootlin.com>
-	 <20251016-release-note-5-3-second-hunk-v1-11-20f21db1f93c@bootlin.com>
+	 <20251016-release-note-5-3-second-hunk-v1-15-20f21db1f93c@bootlin.com>
 Autocrypt: addr=paul@pbarker.dev; prefer-encrypt=mutual;
  keydata=mQINBGC756sBEADXL6cawsZRrDvICz9Y1SG0/lW1me4xpq36obh7a0IGAzp3ywNRb/4MO
  DTqP4+DD0cIFuDY41/N17g0sNlp8z+/k/IIDmNPtYQOTVmAkrkdDU4BP8dD3Cp1PUw6nrbInfujAJ
@@ -119,70 +119,72 @@ Autocrypt: addr=paul@pbarker.dev; prefer-encrypt=mutual;
  OqpPZn7Ij1ga5IAOHNRi5MbyRFROYOeaOj7sz7S7roHQwdP3Q1qTwTOv30hlOSe6uz4PTBiEIKBQH
  ep0k17xg==
 Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-Fbljz1jiUr6yls1nChOM"
+	protocol="application/pgp-signature"; boundary="=-oQz8ph9xBnPNVNBlejZ5"
 User-Agent: Evolution 3.56.1-1 
 MIME-Version: 1.0
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 16 Oct 2025 10:38:22 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7737
+ <docs@lists.yoctoproject.org>; Thu, 16 Oct 2025 10:41:42 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7738
 
 
---=-Fbljz1jiUr6yls1nChOM
+--=-oQz8ph9xBnPNVNBlejZ5
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 On Thu, 2025-10-16 at 10:54 +0200, Antonin Godard wrote:
-> Mention the use of USE_NLS, INHIBIT_DEFAULT_DEPS and the cross-canadian
-> class.
+> Added by commit e478550c8cd8 ("openssl/fontconfig/bzip2: Use relative
+> symlinks instead of absolute ones (using a new class)") in OE-Core.
 >=20
 > Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 > ---
->  documentation/ref-manual/classes.rst | 5 +++++
->  1 file changed, 5 insertions(+)
+>  documentation/ref-manual/classes.rst | 19 +++++++++++++++++++
+>  1 file changed, 19 insertions(+)
 >=20
 > diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-man=
 ual/classes.rst
-> index 68edbc9dd..d898034f4 100644
+> index 9fbdb22e1..4d74563e1 100644
 > --- a/documentation/ref-manual/classes.rst
 > +++ b/documentation/ref-manual/classes.rst
-> @@ -968,6 +968,11 @@ software that uses the GNU ``gettext`` international=
-ization and localization
->  system. All recipes building software that use ``gettext`` should inheri=
-t this
->  class.
+> @@ -2494,6 +2494,25 @@ The :ref:`ref-classes-recipe_sanity` class checks =
+for the presence of any host s
+>  recipe prerequisites that might affect the build (e.g. variables that
+>  are set or software that is present).
 > =20
-> +This class will configure recipes to *not* build translations if the
-> +:term:`USE_NLS` variable is set to ``no``. It will also do the same if t=
-he
-> +:term:`INHIBIT_DEFAULT_DEPS` variable is set (unless the recipe inheriti=
-ng the
-> +class also inherits the :ref:`ref-classes-cross-canadian` class).
+> +.. _ref-classes-relative_symlinks:
 > +
+> +``relative_symlinks``
+> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> +
+> +The :ref:`ref-classes-relative_symlinks` class walks the symbolic links =
+in the
+> +:term:`D` directory and replaces links pointing to absolute paths to rel=
+ative
+> +paths. This is occasionally used in some recipes that create wrong symbo=
+lic
+> +links when their :ref:`ref-classes-native` version is built, and/or woul=
+d cause
+> +breakage in in the :ref:`overview-manual/concepts:shared state cache`.
 
-I think the first sentence here is clearer if we say it the other way
-around:
-
-This class will configure recipes to build translations *unless* the
-:term:`USE_NLS` variable is set to "no".
+Typo: "in in" should just be "in".
 
 Thanks,
 
 --=20
 Paul Barker
 
---=-Fbljz1jiUr6yls1nChOM
+--=-oQz8ph9xBnPNVNBlejZ5
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: This is a digitally signed message part
 
 -----BEGIN PGP SIGNATURE-----
 
-iIcEABYKAC8WIQSzjPXf5Y1BDWhU2iCrY1Tsnbr0bgUCaPDLFREccGF1bEBwYmFy
-a2VyLmRldgAKCRCrY1Tsnbr0btEHAQCc9FkDTNGVuKaYEr3BXErbmYDL1tWG4lHL
-caPiYTHdQQEAiXAI58icmXXXRKYNftj+owTPYV9H7IrM+ANOEpYNewY=
-=hkvq
+iIcEABYKAC8WIQSzjPXf5Y1BDWhU2iCrY1Tsnbr0bgUCaPDL2hEccGF1bEBwYmFy
+a2VyLmRldgAKCRCrY1Tsnbr0bsB7AQDGTVxiWtNGvcbFJkQ1IaCvQHGREI0KeeZ6
+Da9qx9T7CAD8CXeD3uLBqelnt5l5Kt9F3RPvEYxMlhsItiQzQs/GdQE=
+=9tA8
 -----END PGP SIGNATURE-----
 
---=-Fbljz1jiUr6yls1nChOM--
+--=-oQz8ph9xBnPNVNBlejZ5--
 
