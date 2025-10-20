@@ -1,312 +1,313 @@
-Return-Path: <quentin.schulz@cherry.de>
+Return-Path: <adrian.freihofer@siemens.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A2229CCD193
-	for <webhook@archiver.kernel.org>; Mon, 20 Oct 2025 16:34:44 +0000 (UTC)
-Received: from AS8PR04CU009.outbound.protection.outlook.com (AS8PR04CU009.outbound.protection.outlook.com [52.101.70.59])
- by mx.groups.io with SMTP id smtpd.web11.1838.1760978073827799785
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3E140CCD1A2
+	for <webhook@archiver.kernel.org>; Mon, 20 Oct 2025 21:15:04 +0000 (UTC)
+Received: from MRWPR03CU001.outbound.protection.outlook.com (MRWPR03CU001.outbound.protection.outlook.com [40.107.130.43])
+ by mx.groups.io with SMTP id smtpd.web10.3685.1760994900557043395
  for <docs@lists.yoctoproject.org>;
- Mon, 20 Oct 2025 09:34:34 -0700
+ Mon, 20 Oct 2025 14:15:01 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@cherry.de header.s=selector1 header.b=RqfIhnxL;
- spf=pass (domain: cherry.de, ip: 52.101.70.59, mailfrom: quentin.schulz@cherry.de)
+ dkim=pass header.i=@siemens.com header.s=selector2 header.b=iP68Vr1w;
+ spf=pass (domain: siemens.com, ip: 40.107.130.43, mailfrom: adrian.freihofer@siemens.com)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=me8nQPMmsfPTPfN8e+1Efx/hP0Cc0/gvzpJyXl55jqw2VZnvNjD+QOGPXwQANOR7inN99DP+/Gyf21jjUnu52wg6xhHns0XxvJk5IjcPDTP0dimiQ3udFR3TpMbFFxM3vmABwGKVwZaC3oZckIrC3KJpmQuSmgXLfyjcUtAL5Z0NPXM7eAf2/qSMMpIC3LAsnC4Bn+VuNHqnNL0GD6d8b6nJ1VA0v80dZOPk4vSA4vhpOR+IYhymj+QpehM+gWRhfBYbFAyobVR+sP23LPw4KAL021fElku2AOFn36vyn4S9XZuCNWeYGN2tFXzcuEDV85PJNFsKd3PKXyklPB3UmQ==
+ b=fs7ws5NrEjBAuwhQd1ULayFcqHyLADcuyWw9Og7xaLcTMhCIcy4tmDKZL3oG7WT6GBYeAOsxbrn1+7kNcCkrOVtOV5kNs0uvzC/2RUT7reROuznV41nV+s5TboHxVJCEStTdT0HgNpVLbO4j6xhBsHrJDmCykzpAPQ6S7m9iPaAa0mESLvLAOGwdsJQ/DgEdY6m5JJOf4IkS9o/p9efzfsM5UpHsf/snIUfEAf3ZZvopAGtHfm+DqqkGa0KtOWaTaPciI4JM6xp49R7sx0w0wsLiIc7Aqq3KaWqODNqnpP3XcMESbTv0/1Y5GMOlBsXy+GKfPEoGpsvVYGgBIZfYZw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7humVsSvTFZ3DEBjJboh1iepADmFqEIf1AUXY9jEgKQ=;
- b=wICiFrPqraO3D8tVWDe//gLDaYyp+N2D4A3+hv4loCHl9ATeftS1FVHdDcozjMB2CsPHDHRuYGpsw8hTFsUd3Dq41+NQhaWO2z8iCpGnqPJbca4ECso8SDtpP7SJEJSC1H/O8uq3gLSpCR9X2hxfGVeJmN/SoHWlEaiBRDaEupHt7U1FDwD7V18Q6Vjjl9pbZ9QsZMx297H3U1CdS0AUTPsdaw422bM9T+fOzy7CstS+Y3p/MyVrQcPV1Etl35z0IgYB74dx/9yT3nPpphaqI6edgTaJarNOvCLv8DOyKis7M9sLUP3wz9RlalpGtIEK2tkEq1rKPAWFPlkssyC74g==
+ bh=nVR9cmunGofbKnYMjYCiKmFckrxtogNGKHZSnKrp+DI=;
+ b=NNzOnvmsaoHAGGiw2/3qFJ07mZRq5qPSsDhjgO60CXqvZMdvmYuqIzY0cXYOOQaOE5Rhs/IkLBlyZx6ym9ZCIm+mo6LZsuakJnfVZsB2kFYht+I7QwegW2uf+W7Ueu2WW7+cnJke8OAK5o5rFuszdVwqrorDe+A6g6SxgqHVG8dv2isX/1OW/wzEOpma1cglsXB76Fvlg6GRfAB5lDpeEiHGsYwfkyfpI9zBu9uuxd550YlU97/nm3lR7VUm++/4PpsoRVSrft6+a/Q92emGjo98gfZb4ajH+FfYdqu3olwaaZFBNVd1ml4NTy6+AEceqQdqdXS41XNHWp4kWs6bZA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
- dkim=pass header.d=cherry.de; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
- s=selector1;
+ smtp.mailfrom=siemens.com; dmarc=pass action=none header.from=siemens.com;
+ dkim=pass header.d=siemens.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=siemens.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7humVsSvTFZ3DEBjJboh1iepADmFqEIf1AUXY9jEgKQ=;
- b=RqfIhnxLyWUBZE0ciWmtmJpD/VPDsMw5jCWrysezoIw+ZsryY9P+gu86rG1tuKd3xukKJXmo1xSc22sIvkPUMU+dncQvwboV9lbkg7XzfVTTl1e18X1ifcJRJQ1ibE5TFfRXfncz/lt6iktfCVAxuF1D+DlqiDCsKTJ6b9IeJAc=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=cherry.de;
-Received: from AS8PR04MB8897.eurprd04.prod.outlook.com (2603:10a6:20b:42c::20)
- by AM9PR04MB8322.eurprd04.prod.outlook.com (2603:10a6:20b:3e3::9) with
+ bh=nVR9cmunGofbKnYMjYCiKmFckrxtogNGKHZSnKrp+DI=;
+ b=iP68Vr1w0euLDEh4UBjH2rD8bIwQBfGFwddXEAsifb+6UATulncNQs1NCqi2djL51i833CmgE1Kjd38fUxX3fca95YOhwb2Z0jUGP/NcxN5cyBi7CEXNYseRLaERfhiX/A69imcrZDm5ZIWRou9Lj8sDO6/oEBDuISUz0mdV0AFJ/PZhUbGdKbGjJooKWq4olJCF5dIqfm7SowATOpCq5Noo1jLeXlSj/kaI9d9nWIV/yDTOYA3iTIuXBsCFZTaPmQ+iyX8rqtGWBg7LTKnjcSnt1unyMiveNEV1oLfQh3ieRc6Kwf8BiF8qkHE20cIUSZpbjeC2mV0+fCdBH8TTxw==
+Received: from VI1PR10MB3535.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:800:13e::21)
+ by DU0PR10MB7947.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:10:31d::9) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.16; Mon, 20 Oct
- 2025 16:34:30 +0000
-Received: from AS8PR04MB8897.eurprd04.prod.outlook.com
- ([fe80::5ee:7297:93b4:a8d1]) by AS8PR04MB8897.eurprd04.prod.outlook.com
- ([fe80::5ee:7297:93b4:a8d1%6]) with mapi id 15.20.9228.015; Mon, 20 Oct 2025
- 16:34:30 +0000
-Message-ID: <d57d7e77-635e-48d8-9962-f9dfca91be23@cherry.de>
-Date: Mon, 20 Oct 2025 18:34:28 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [docs] [PATCH v2] ref-manual/variables.rst: document
- IMAGE_EXTRA_PARTITION_FILES
-To: pierre-loup.gosse@smile.fr, docs@lists.yoctoproject.org
-Cc: Antonin Godard <antonin.godard@bootlin.com>
-References: <20251016083417.1286684-1-pierre-loup.gosse@smile.fr>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.15; Mon, 20 Oct
+ 2025 21:14:56 +0000
+Received: from VI1PR10MB3535.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::1bda:8069:a646:6213]) by VI1PR10MB3535.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::1bda:8069:a646:6213%3]) with mapi id 15.20.9228.015; Mon, 20 Oct 2025
+ 21:14:56 +0000
+From: "Freihofer, Adrian" <adrian.freihofer@siemens.com>
+To: Antonin Godard <antonin.godard@bootlin.com>, "docs@lists.yoctoproject.org"
+	<docs@lists.yoctoproject.org>
+CC: "kavinaya@qti.qualcomm.com" <kavinaya@qti.qualcomm.com>
+Subject: Re: [docs] [PATCH] ref-manual/variables.rst: cover FIT_LINUX_BIN
+ variable
+Thread-Topic: [docs] [PATCH] ref-manual/variables.rst: cover FIT_LINUX_BIN
+ variable
+Thread-Index: AQHcQRgdVVaV0/dHk0ijpB0wE+jHZrTKmLsAgADwiyc=
+Date: Mon, 20 Oct 2025 21:14:56 +0000
+Message-ID: 
+ <VI1PR10MB35359630A67B9F6996D495CF8EF5A@VI1PR10MB3535.EURPRD10.PROD.OUTLOOK.COM>
+References: <20251019164740.3795019-1-adrian.freihofer@siemens.com>
+ <DDMY5GUGNQIG.2PSN7OVYSED7K@bootlin.com>
+In-Reply-To: <DDMY5GUGNQIG.2PSN7OVYSED7K@bootlin.com>
+Accept-Language: en-US, de-CH
 Content-Language: en-US
-From: Quentin Schulz <quentin.schulz@cherry.de>
-In-Reply-To: <20251016083417.1286684-1-pierre-loup.gosse@smile.fr>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: VI1PR07CA0153.eurprd07.prod.outlook.com
- (2603:10a6:802:16::40) To AS8PR04MB8897.eurprd04.prod.outlook.com
- (2603:10a6:20b:42c::20)
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: 
+ MSIP_Label_9d258917-277f-42cd-a3cd-14c4e9ee58bc_Enabled=True;MSIP_Label_9d258917-277f-42cd-a3cd-14c4e9ee58bc_SiteId=38ae3bcd-9579-4fd4-adda-b42e1495d55a;MSIP_Label_9d258917-277f-42cd-a3cd-14c4e9ee58bc_SetDate=2025-10-20T21:14:55.558Z;MSIP_Label_9d258917-277f-42cd-a3cd-14c4e9ee58bc_Name=C1
+ -
+ Restricted;MSIP_Label_9d258917-277f-42cd-a3cd-14c4e9ee58bc_ContentBits=1;MSIP_Label_9d258917-277f-42cd-a3cd-14c4e9ee58bc_Method=Standard;
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=siemens.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: VI1PR10MB3535:EE_|DU0PR10MB7947:EE_
+x-ms-office365-filtering-correlation-id: 13ee9281-2849-42e7-e08d-08de101db85a
+x-ms-exchange-atpmessageproperties: SA
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: 
+ BCL:0;ARA:13230040|376014|31052699007|39142699007|1800799024|366016|38070700021|13003099007|7053199007|8096899003;
+x-microsoft-antispam-message-info: 
+ =?us-ascii?Q?xxSYPI218ft1n2AcEBSqJ0j19/yCbfjTSN2F4c2sC5tTvm7zoCaTvbI/h0mg?=
+ =?us-ascii?Q?nS5YCVOMZMHnOaDSLS7ahGyHZLlr0i1Vk2o0GL8ZzsClPFtWiMZUVD9tQjEV?=
+ =?us-ascii?Q?rwiHCDCxtG4beWDptx8FagLBJ7n4PTE9ymOibdQirQCO3k7BiHOMwgNofQGX?=
+ =?us-ascii?Q?YddjnXQTqmHGAB5tAQcGaYjstgrWEcPYwltL33HuPew9gKu/pEF1lP9NkQiF?=
+ =?us-ascii?Q?JCKrHJVZt8rmZu37i/sdFzIv/avDkrrgLORfAHqFIeL4WdV6dEuT0HtIK8nY?=
+ =?us-ascii?Q?43Rm/qAQ5MB16pBrdqu6V1khqPP17wGFNr9NimkmKnVfDhnyzMOXq8t7dZBB?=
+ =?us-ascii?Q?HLkGAXPlUu5SCOJT8+WXKtBsX1e0qyGooHO+cOVq1q042umzi3LBfevHPhIc?=
+ =?us-ascii?Q?t2xBrekEyvegklz7vLRFXWphitDjRsUbS0Xv/sjJ+3lq4YDTsA6Ll/2mIuJA?=
+ =?us-ascii?Q?kMjfaAqKozmCyWUss1Xddwg5r4CYea6QKmm7XOiJLXxMf/ZRnNX8Pb0YnJjP?=
+ =?us-ascii?Q?xBO0PPTwMtD7OWyW0wDAZQgavokre2K00M/ZDiRE6NMpUYBnvwfzSu+lz4sP?=
+ =?us-ascii?Q?i51Y2d987URTMWAt+PocqjY7oK88C3WbbBCW8Df8V/zK4W5xYq0Z0P6CoBPV?=
+ =?us-ascii?Q?uL6/wPHFKAHirGKmoKXfNxi+EqaLq5WqtotlUTC/Nh1naHJ8rAvFZ6MBmAlC?=
+ =?us-ascii?Q?EemAU9zcYOvIbcyR4kcI4Wk6KIwGUt1K/9R5+7QsYyJi/OJ44Pc+QY0sfjR1?=
+ =?us-ascii?Q?d5zXtlDUE6C7hWYG4QPY1HLuqaPx4bP6ytbJLJFKWUGUNSukJVSyuVu2SX0V?=
+ =?us-ascii?Q?j1s8fPlXRJoBLQ+rlJAia5oy/zsDiXEbW07kVqtmjnVGoqFFIwuaE2r9ntTr?=
+ =?us-ascii?Q?N+7D/U8EFyhFAOFfQFDy0jeLIGzle8F+A8Bk1hYKJl9agjmuQMuI03JRfQ84?=
+ =?us-ascii?Q?MXo6B3Zkt2uLgHQWVPiAZuqQQggAm16QCwDdePUVuvMnGYHqShFAkCBvwYlC?=
+ =?us-ascii?Q?5sm5yDoQg87dZhFm0wDIWHcyRSyeG7gBFL3zncoBvAbzyjWKxq3n/Caw0chz?=
+ =?us-ascii?Q?/0LEuUxYgZs+PAxFkmlvSHBbwyuH+A1DWVdTpvBQ12YBG/ZUp21HKhPPUNAt?=
+ =?us-ascii?Q?JBEMzrQT3nlyqbBiQhNPvLkocDZHzwRf2MwXq5BCywYaJv/N91pT/iQeCFD+?=
+ =?us-ascii?Q?/HADt6lbDBqMZO7NmXbdG3BOcGETaMYBHepiAJRlxta60d1V12qAItfCByh0?=
+ =?us-ascii?Q?UI2CXI5QD+qorVqsf/btK6pY3SiFbQ5FPIFE2maebpOubDrShLOc2YUiOKpF?=
+ =?us-ascii?Q?ja+KP5wyym+zoYl8DRCfbw2W3uExDBhkVuXGzrKDI1c4l86if63CcRNz5tXZ?=
+ =?us-ascii?Q?FVCBtQI4nNPAH60B5qsySad9Jx5YCpM7ZwhreVFjC+uQSb+2sBA/o8LixLO3?=
+ =?us-ascii?Q?cDi5dmBNNJEM1ZBvrOzuYZOzFLryyXii4Amn1l5nwNuYBxyyVd0CMA=3D=3D?=
+x-forefront-antispam-report: 
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR10MB3535.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(31052699007)(39142699007)(1800799024)(366016)(38070700021)(13003099007)(7053199007)(8096899003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: 
+ =?us-ascii?Q?QOrcXW5jPIjNrMigoHwyY5o2I0FbkZU/l5tg4TJq5Ji82Nd41Soh2SUatINY?=
+ =?us-ascii?Q?jdq7Nji7ASgMAT9aQeO6dmwQbldn4wlINlLrLuZqeBnsIQiT5JtR7IF688ZD?=
+ =?us-ascii?Q?YR4650umEheIg99pH15oAmxgRqMIYw6t6Ofc1mipIs9iMnPgkud82gG5TMsF?=
+ =?us-ascii?Q?FuyCivEqp3FWL16nbVxQXqxrlqg0tmlq9ndFumN4YOku0+soD2+a8/+tZV5S?=
+ =?us-ascii?Q?lKJYbP5td+mKO5WHAg9oMJNfpwnP+TjsNhr4YhUE3mycWx63S2ItgjlJbcgN?=
+ =?us-ascii?Q?+MEWPO6w9EDpPl2TbBMCy/xteksWpnh+DDgSPXJVItIqkooEOnCAbZtdE5gd?=
+ =?us-ascii?Q?4+szfL8amIfGl+ZsTKlnLRry0+wOT00eXpBhX0uAWPULuRb4Eka+0PwX1+ji?=
+ =?us-ascii?Q?d2r/XyZ5CblnBSfd/251scH984jRhzY46Dfmy7q72RQcCRvx6BXwxoMh1sTW?=
+ =?us-ascii?Q?uScWNXg4FHoqlt2xmbVOUL8FnsiXsR8uIh28HrlIsTcafFL4UeDID1pYR/B2?=
+ =?us-ascii?Q?I3Ct8KNISbV0BoXS0UwWuLnW0eRSQdHJWZkKVa0A3+UL+SrZrBhD7EszhdYF?=
+ =?us-ascii?Q?9OjAwDmc3iSuAn9ieGnugsVZaceKJ9wH2r5oQEeUDfzQYWWhqTw50UB5kP7N?=
+ =?us-ascii?Q?xPTNC2vz9bnDW13znBIu8A9kB1DGlmXqwRVWDdSVPKBhDesbxtavwL6Au6xJ?=
+ =?us-ascii?Q?Sm2aw6swCdTLXSYG5IysUku56q6UERwTGsei13R19h5eJRgYz/4DlK8tVcp6?=
+ =?us-ascii?Q?IIKB142Hb6OqmkvNzzjA2QX0LEl/gT3E8pepK8Ybp+XU5bGlSLeD10kC/klH?=
+ =?us-ascii?Q?snFImnt8NB9CPn8PNzs7z21uOxGydHnuX4uKFWUZzdaAyt5pWyqbMC+GSeTx?=
+ =?us-ascii?Q?gbET2fo1ySYFzmKWZkvzyqeQMlw0CJhUa5oAFavmBqHRXOe5DDnlzFoaiWTc?=
+ =?us-ascii?Q?MKQAJKwPiNO0d3f2TWuuycepYbAgpKAouNUF60DuE/0XcGGv3QM8Fug6TccD?=
+ =?us-ascii?Q?71YYWiT4j4tZTW5y7wO37QDGJWOdfOh5EZyvAqZ10Ti1ZJ0BL9Be+EHCNZ7w?=
+ =?us-ascii?Q?vWPO0mZF95faOUlb0RUyEFZ6iPrBEfYP2z0CBEMcO/sNp1dJma+tjcQ/GrBA?=
+ =?us-ascii?Q?yAcNYmN0lQa2Bq3IOKqx91BYAnsi0hpdiWef8yG0FC7rqqCg1yOfSCqaQaYh?=
+ =?us-ascii?Q?6thjxQWbHDqbVR06Ffe1dW8B65Clq8ZoIhwh3ahjoHRRoC5KEIOZ73VP9ZLk?=
+ =?us-ascii?Q?EKa91nDxknsWwGEMgJPFkFLQlMKlzUlPZlqXeAWcXfJNaw7vVik2YqCMFWvT?=
+ =?us-ascii?Q?f3zJkBa9Sq2vY6cGOuR1QHoM/L8r84tmdKOE39W3QR81K5SWCkXEcAmTD07R?=
+ =?us-ascii?Q?Kzoq/82Cq5OBAjOMjBtY3aRN1BdwIv7GUoMHNZ8o5s+ThVHbwmAqIpn6X4Cw?=
+ =?us-ascii?Q?zPB0oqLFgZ1O4s/MXTVr41eOadA46cfl5LNeX4afF/6v7qzdV66oXVcW0MVm?=
+ =?us-ascii?Q?vuRM3Ne2NpX6qHPNpohjEsC4gnAhu1L93qRGJ3hl6/JwdFkw7mB1Y3DfoSmW?=
+ =?us-ascii?Q?AEDkF0vr3PK92ttTu5acR+Rk3PPAN2zF3wevp9xR1H3gaImDHE5cn5xDs+TL?=
+ =?us-ascii?Q?oA=3D=3D?=
+Content-Type: multipart/alternative;
+	boundary="_000_VI1PR10MB35359630A67B9F6996D495CF8EF5AVI1PR10MB3535EURP_"
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8PR04MB8897:EE_|AM9PR04MB8322:EE_
-X-MS-Office365-Filtering-Correlation-Id: df899cea-1a36-41c2-dbea-08de0ff68ae5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016|7053199007;
-X-Microsoft-Antispam-Message-Info: 
-	=?utf-8?B?Y2o4RkU2V0xlM2dkcUNnRXNHT1cycjlOTmRHR2k2UFV3a2VmcWFtUWVucUJy?=
- =?utf-8?B?QlNoanE0UkV0L3Jqa0toaEZjbFJHanZvdDlVMHhUY0FoWTBmemNNMEVqODJH?=
- =?utf-8?B?MGxIMkR5YlNzQlBOdmM3Q0cwbzNvTGdQOUh1UlNudDlyUUowMTlvazNxbmtU?=
- =?utf-8?B?aWxMbEFrbDFDNEF1b3Y2MWhWL2dBM0NDWHFIRXJDRG0zeVgrbWQydWM2RXkz?=
- =?utf-8?B?aXlOSURoZmk2azQ4Vll6Sk0rcTBSamxXZHpJenBXTWJ6U1VUUzhVNUJCVC92?=
- =?utf-8?B?NGtxMHdZQVhMaDZHbzRqZnlMRExCZHozcy9KMTRheVdnK0RxVmgvRFpFS1ZO?=
- =?utf-8?B?V3hHYURUcEh2WGN3ejY1QTJPanhoQW1LMFVNV0lEUEF2ditEMDhJTE94Y3Ir?=
- =?utf-8?B?cGgvTzFLd1d5NWxDam5BeTRGdmRTKzNuZ1R2d0YzNFhXYXVKKzVYenEwNXln?=
- =?utf-8?B?M1JmV1NkZlZNNGZseUVzc1dka2pSZGl0RFpTRHh5ZVU5ZC9yZkRKWkc0amRw?=
- =?utf-8?B?bnlUUnM4czhGN21vczkwS3FKUW9TUFk2bHFGVklhd3J6ZThNbHNTeXFZUFZl?=
- =?utf-8?B?b05SS05kdGI2Mmt3Z25tVDJrWExZaklRZEl6emtydHZTTHBMTEhWeXFCVjQ3?=
- =?utf-8?B?eGQzcXdjelpGMnNhNTNhWkhtTlFKSUlRa3MxdzF6U1hPby9RYVZUMGJLQi9T?=
- =?utf-8?B?OEJla3YyWTBubjBPcEdNUlNxQm0vbWJGYTlGakxiazdFMVRKQmpKblFydmtx?=
- =?utf-8?B?eFpzS1BGN1hNNnFnTGpUcmJqVi8wM3JqM1pDNXZoYW85NUNxR0JLdmFOWDVI?=
- =?utf-8?B?cUNROTJVUE55ZDdGamluZkx1MTRUNkFtekxYTGNVcU53azQ0QW9ZcmF5YVBX?=
- =?utf-8?B?TUtSbDJQSWd2cStxclBHV0txbHJnSXQwSjNqNlFMclZoaEtuUTBBazVNb3c3?=
- =?utf-8?B?UWJOYm5tZENQdnA1VmxGRVN4NXllcjNYaE9sandsSXdJOWxPVUdITStCRTBj?=
- =?utf-8?B?eHVGc0w1U2lkSGRyVjlSWUFEN2VtQTIwdjRzWmZ3VUlkK2JLWnRwSmZPdGtF?=
- =?utf-8?B?dzE2NVo2bHZvbWJXTGJrMTBZN2pYTndyYXdGVnF2aGhFOWFoTUU0NTRMMVVm?=
- =?utf-8?B?eEVhcWtUanRpUGVFdWlvVnB3VDVQamptVWFuK25CQ3pFbzEvVnovMVZkaVRj?=
- =?utf-8?B?SDVtY3FTSHZwclJBVFRPd05Qa2taVVliNzBHLzI5YlV0aHI2SDlQNDRuclph?=
- =?utf-8?B?QnU0VUI5SnRSemRtUCtGWGNvUVFvTm11WFdsT1pFN2RUdEFnZEpFN1hTTlN5?=
- =?utf-8?B?UnlvQktuZTB0UGkvb2krYlhoODdNV0lTZHNHQzRVN1c3dHAzb2U1R2JQZnQw?=
- =?utf-8?B?eXU0bktaTzJNUys3cFFibis5YWIxYlViSGhOYXY4SzhzakJYV3Z0SVNuUXc1?=
- =?utf-8?B?ZXNCUmJTQzU0dlpzN2hKRlY5bkh3dFArbzQ5UWd5Sm1yQ1RCTGdhdGkybUkr?=
- =?utf-8?B?YklpeG1NQytPTEVjZktydjkxY0xvdHRLTFlQZm9PYVhFTTV3YmZ4RDFLVjNh?=
- =?utf-8?B?aHZmYnpSR0lKL056VlhIazQ1TmE0cDZNQ1F0ZERBOHdmYmJGWS9uaEdJMjFP?=
- =?utf-8?B?RW1XYUhrSmpxOCtpQ3J6QzJqbG1ITTlrSnZwRURlNkoxQXVMd0dmUHEvOXU1?=
- =?utf-8?B?Z0x4dXJoYlVqT2NmaW5GMWNLTEY4UWp5MDZLRFVEaTBoLytrQTVuV1NvY1Vr?=
- =?utf-8?B?QXVTRkZabXcyZHVHRWVtSGNYQUtmWUxaUFlCdHA3NjBFNFBHSHhEamFDZXc0?=
- =?utf-8?B?YjBPaGV5a2J1MENtajNRU2lwZlB1aDFQN25zNXU1bzBWczREYzI4cGdaUWhx?=
- =?utf-8?B?NmdVekhxeE1sQmo1dVBPMVY4eEVEcFdPemJIWFFtSmR6cERwUWU2RkdSTmtu?=
- =?utf-8?Q?ZYGgraFhy0CgdpSM9Fbsb9OJlF8aLl3x?=
-X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8897.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?utf-8?B?Q3ZnL3k2RGhZaWVrb3NQZDV0Yk9BbzNMUmd1MU0rZEREcTUvUWxaZGJwcjhU?=
- =?utf-8?B?Qm51UnVQb1NJZm9hbStCcmQwMUdDNnRINWRzM2VTcTEzY3U3Qk02Qy8yNnUx?=
- =?utf-8?B?a2o4SWsycG1tOG1MbzNHM0JsNG11T1dPZUNTajZyWnJVVkZpMnJXbmdhNUND?=
- =?utf-8?B?UmlRZzFPMnpPMVZ5bG9lK3lOTkZWaEhqZUF6anY0RU9qTHFSMUIrWW1yWHNL?=
- =?utf-8?B?d203MmIrVFQ5d1U3a0kxZFdycEtxMnRPRmVZcHlNYzdnRjBGVUI5U3FkZ1g2?=
- =?utf-8?B?ck1BZis5T3pJalRnYm9KRTFGRXJsS3hoVERoRUtNVnpoVFhnb0liY0c5MmRU?=
- =?utf-8?B?MFlwdlMyVGtuMGtXMnE2U2E1WkhIUVdoRTJKckQ3OXVuSUNRMDE0Nmw0eXdm?=
- =?utf-8?B?QW4yeXdsMktnYzdXbkNVWkluSnZRNWU1Tm02b0djV3Z3R1FvMDVqVXNubGxI?=
- =?utf-8?B?bmRVSmRQcXZJdExPRmNEdFRkV2pkTFVjRjhPVUxPSVdXZnUyQ0k0YXNEckd2?=
- =?utf-8?B?WHcybFcxamdSS3JvUHhQcUtjQWFqdC9yVXI3OUpHVjQ0U1JSSnlOV2lhbmRm?=
- =?utf-8?B?R0draUlrdDNtNFh3ZXNaVlVHNlVmaVI1czkxOUd6dTdnMmdUalRBM2ZtbVUz?=
- =?utf-8?B?OGFVK1cxUnZzc3VrQVozVGIxNkpNakJRUFc0WCtCaXhIV0sxN3daRW1LbjJJ?=
- =?utf-8?B?cnlaR2xzS3BCc1hGMk9LOWtBR0FsL09NVDROQjliYlJCWEVEb1NUK3ZNU1JN?=
- =?utf-8?B?SC9wR3IyZmQ5UkxRTUt0VWFPU3BPS2ZvVnJXazhYZGhLTC90SS81M00yd2xG?=
- =?utf-8?B?d09rQUZjRjE1bTFVcEZRQ1hVRFV6UEFBOStsRUlNVjZPUzMvaHNnRkhwYXlI?=
- =?utf-8?B?aVpVQmJtRlBuM08wMVZ5YnZ4d2RqOXRsOVlGWGpkNlArdjJyRkVPTVQwcFpH?=
- =?utf-8?B?d0tRTDUwSDVMNk1hbXFqVzQzYWpndXMxU1BQZEhNK0tYaUMwTlFZZ1Boemov?=
- =?utf-8?B?dGRYSGpuVm03U0ZkQVcrazM1R2VuUUVoRk5ldjJqTWM1L3RJWGRjZ1B5T0lm?=
- =?utf-8?B?Szdicy8rZXNpV0RoVWF5UmtoZStVVFFtdmVBQ0FlcTdyeDlqSTZyNWRJV0sv?=
- =?utf-8?B?L1M0eXlJZkY3Qk5QY1pzc3Zoa0IxREpmUEpIaUgxdTF6UGhZcWhzZC9uMUpV?=
- =?utf-8?B?eTJBaUNOYkczUVhleVlIQ0pjRjM3L3pJbWJzdkw1MVJ3Mmd0ZWdSS1FidzYr?=
- =?utf-8?B?N2pCZ1Ewb2VPbkNsUGxJQ2xQQ3JtSE5McjJRSVVvWUNOTG5tSTdrc0NtOUJ3?=
- =?utf-8?B?UlU3Um0razdZYUJRb1Y1YkZ3ZkNRNGwrQ2s3Y2tyV3MvcVJSVHgyZ010YnBE?=
- =?utf-8?B?RWlUdm1EVjVueGVrclg0MlVDeEN6ejlpSmFhOUxoTElLby9HTDl5a1NBV1lL?=
- =?utf-8?B?b3NDcHdzM2xIWmRwMVJZSm1VR2VQRnMzKzQzNUFBaGV4SnJJUHVwdGxGZkc1?=
- =?utf-8?B?aFRNZEVnTkNMRk9sNm9hTm5uRlhBRXhDN2dQUDlXMkk0Vm1wajlob1NMUzg2?=
- =?utf-8?B?Z2IvVEp0dENUMGsxQ3g3WDZwaUJvcDNhRWRxYUltWXdObVZJcml2NWsxTlFT?=
- =?utf-8?B?SGV4S1dwWGtQbTNURzZaUDFSeCtZY3dBcDc0aDFTL3NEeWtiWkdPR1FKLzFP?=
- =?utf-8?B?TThqcXNHNng1NEovV1NSWUgydCtkVmNDb2pmNjR4K3VkMHFHamdvaGVBcTFy?=
- =?utf-8?B?MTBaa3pPRURPVHhKVXRta3V3UVlXYVFUczI5di9YeWZrTVNVeG5VZTBOSVlB?=
- =?utf-8?B?YjFlM1VmbXp0Ums5dWZUMk15OC9tVm53L1pZYzRKb2pEclhjZkgwVnhRZ2xt?=
- =?utf-8?B?VWdFMTc4c1ZWS1BKSDI1eTR2TFBKSmdhZUZHN2VIei9QcVNCKzFhbGxoQm9z?=
- =?utf-8?B?TlA2SnNPaGJCMFRSYTNXRFR5NXVUUmp1bWZmbUVEamNZNWI4U0JBbFZvS29I?=
- =?utf-8?B?V2YvNDBJQ1lzNG5QWXBPazVXMjRXVzE0OVIxMjFrSmhPZXdqWnJKQk16VnMv?=
- =?utf-8?B?UUY1c0dhZ1lLamRlbFRTVi8zMEVnMWVPUjBhR0g5bnBNcTlCZVhMM2lWb09s?=
- =?utf-8?B?TkpjUVh6M2xrc0kxem5TdTBGbXJkTElKK2JLanJRU3gzWHMzMlBkY0FXSGV4?=
- =?utf-8?B?Q2c9PQ==?=
-X-OriginatorOrg: cherry.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: df899cea-1a36-41c2-dbea-08de0ff68ae5
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8897.eurprd04.prod.outlook.com
+X-OriginatorOrg: siemens.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Oct 2025 16:34:30.1071
+X-MS-Exchange-CrossTenant-AuthSource: VI1PR10MB3535.EURPRD10.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 13ee9281-2849-42e7-e08d-08de101db85a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Oct 2025 21:14:56.5723
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8GcsuJCIf6UJFAOZv3IR4qCNpST49UEg2uTntuJJ4S+4cRR10y9umgXrmSzaQr4aUNO/Rf1D+Kks3jwxAY16FW8K9+XG0RAzKsHofVTXgJ4=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8322
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 38ae3bcd-9579-4fd4-adda-b42e1495d55a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: FSkeCu3lTjmLHlQjiCEOFriL744mvQDTiBgkx0N650wZxHaU6VSR3kUpT6en29qro6lnP8nhUFBPX3O+BBZHx2aEQwnaZ+vQvYyWEBHp8Bo=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR10MB7947
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 20 Oct 2025 16:34:44 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7761
+ <docs@lists.yoctoproject.org>; Mon, 20 Oct 2025 21:15:04 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7762
 
-Hi Pierre-Loup,
+--_000_VI1PR10MB35359630A67B9F6996D495CF8EF5AVI1PR10MB3535EURP_
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 
-Thanks for the patch!
+Hi Antonin,
 
-On 10/16/25 10:34 AM, Pierre-loup GOSSE via lists.yoctoproject.org wrote:
-> [You don't often get email from pierre-loup.gosse=smile.fr@lists.yoctoproject.org. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
-> 
-> From: Pierre-Loup GOSSE <pierre-loup.gosse@smile.fr>
-> 
-> Added by commit 3892912bd7e0 ("wic: extra partition plugin") in OE-Core.
-> 
-> Signed-off-by: Pierre-Loup GOSSE <pierre-loup.gosse@smile.fr>
-> Cc: Antonin Godard <antonin.godard@bootlin.com>
-> ---
-> changes in v2:
-> - apply suggested changes
-> ---
->   documentation/ref-manual/variables.rst | 50 ++++++++++++++++++++++++++
->   1 file changed, 50 insertions(+)
-> 
-> diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-> index 591c03028..72791f8f3 100644
-> --- a/documentation/ref-manual/variables.rst
-> +++ b/documentation/ref-manual/variables.rst
-> @@ -3956,6 +3956,56 @@ system and gives an overview of their function and contents.
->         material for Wic is located in the
->         ":doc:`/ref-manual/kickstart`" chapter.
-> 
-> +   :term:`IMAGE_EXTRA_PARTITION_FILES`
-> +      A space-separated list of files installed into the extra partition
-> +      when preparing an image using the Wic tool with the
-> +      ``extra_partition`` source plugin. By default,
+Sorry for not checking the queued patches before sending my patch.
 
-I don't believe we've ever explained what the extra_partition plugin 
-does so it's a bit difficult to follow what to do here. How do I know if 
-this applies to my setup? In which scenario should I use this source plugin?
+Indeed, Quentin's comment is valid. FIT_LINUX_BIN refers to a file. I am co=
+nfident that my patch is correct. Therefore, you are welcome to either take=
+ my patch or simply apply that single-word correction to your own. Both opt=
+ions are appreciated. Thank you.
 
-First, I believe (reading 
-scripts/lib/wic/plugins/source/extra_partition.py) we should say "extra 
-partition(s)" in the above as there can be multiple ones (which is also 
-implied with the later examples).
+Regards,
+Adrian
+________________________________
+From: Antonin Godard <antonin.godard@bootlin.com>
+Sent: Monday, October 20, 2025 08:47
+To: Freihofer, Adrian (SI B PRO TI EAC CCP) <adrian.freihofer@siemens.com>;=
+ docs@lists.yoctoproject.org <docs@lists.yoctoproject.org>
+Cc: kavinaya@qti.qualcomm.com <kavinaya@qti.qualcomm.com>
+Subject: Re: [docs] [PATCH] ref-manual/variables.rst: cover FIT_LINUX_BIN v=
+ariable
 
-Then we should probably explain what this plugin is for (but probably 
-better in documentation/dev-manual/wic.rst?) and how I know whether it's 
-used (--source extra_partition in the wks file).
+Hi,
 
-> +      the files are
-> +      installed under the same name as the source files. To change the
-> +      installed name, separate it from the original name with a semi-colon
-> +      (;). Source files need to be located in
-> +      :term:`DEPLOY_DIR_IMAGE`. Here is a
+On Sun Oct 19, 2025 at 6:47 PM CEST, Adrian Freihofer via lists.yoctoprojec=
+t.org wrote:
+> From: Adrian Freihofer <adrian.freihofer@siemens.com>
+>
+> Document the FIT_LINUX_BIN variable used in the fit-image class to specif=
+y
+> the kernel binary name included in the FIT image.
 
-s/a/an/
+Thanks for the patch. I also sent a patch for this last week:
+https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Flore.ke=
+rnel.org%2Fyocto-docs%2F20251016-release-note-5-3-second-hunk-v1-14-20f21db=
+1f93c%40bootlin.com%2F&data=3D05%7C02%7Cadrian.freihofer%40siemens.com%7C0a=
+d15534d3614def82cb08de0fa4a2bf%7C38ae3bcd95794fd4addab42e1495d55a%7C1%7C0%7=
+C638965396937776315%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiI=
+wLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&=
+sdata=3DF8KN667flkk3CMCj0u%2Fv5zZOOO13E02pwB7csZ5UIEc%3D&reserved=3D0<https=
+://lore.kernel.org/yocto-docs/20251016-release-note-5-3-second-hunk-v1-14-2=
+0f21db1f93c@bootlin.com/>
 
-> +      example::
-> +
-> +         IMAGE_EXTRA_PARTITION_FILES = "foo bar.conf;bar"
-> +
-> +      In the above example, the file ``foo`` is installed with its original name
-> +      ``foo``, while the file ``bar.conf`` is installed and renamed to ``bar``.
-> +
-> +      Alternatively, source files can be picked up using a glob pattern. In
+Quentin had interesting comments on it, and I think your patch more or less
+matches mine, so the comments still apply. Can you have a look?
 
-The million dollar questions:
+Antonin
 
-1. does the glob pattern include "hidden files" (file/directory starting 
-with dot ("."))?
-2. does the glob pattern include recursively (if there is a directory in 
-that foo/ directory, does it get included and its files as well?)?
+--
+Antonin Godard, Bootlin
+Embedded Linux and Kernel engineering
+https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fbootlin=
+.com%2F&data=3D05%7C02%7Cadrian.freihofer%40siemens.com%7C0ad15534d3614def8=
+2cb08de0fa4a2bf%7C38ae3bcd95794fd4addab42e1495d55a%7C1%7C0%7C63896539693780=
+2952%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIl=
+AiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=3DMsnMf7O=
+sDmqPIuh8Lc7C2zlz6gDvGyV43Yu6Xn9K7qM%3D&reserved=3D0<https://bootlin.com/>
 
-> +      this case, the destination file must have the same name as the base
-> +      name of the source file path. To install files into a directory
 
-It's not that it must have the same name (implying the user has to do 
-something) is that it simply will as there's no way to change it. So, 
-s/must/will/ in the sentence above. BUT, you can specify that the 
-directory before the glob pattern can be renamed (and you provide the 
-example below already, so that's neat).
+--_000_VI1PR10MB35359630A67B9F6996D495CF8EF5AVI1PR10MB3535EURP_
+Content-Type: text/html; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 
-> +      within the target location, pass its name after a semi-colon (;).
-> +      Here are two examples::
-> +
-> +         IMAGE_EXTRA_PARTITION_FILES = "foo/*"
-> +         IMAGE_EXTRA_PARTITION_FILES = "foo/*;bar/"
-> +
-> +      The first example
+<html>
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dus-ascii"=
+>
+<style type=3D"text/css" style=3D"display:none;"> P {margin-top:0;margin-bo=
+ttom:0;} </style>
+</head>
+<body dir=3D"ltr">
+<div style=3D"font-family: &quot;Arial&quot;, &quot;Helvetica&quot;, sans-s=
+erif; font-size: 10pt; color: rgb(0, 0, 0);" class=3D"elementToProof">
+Hi Antonin,</div>
+<div style=3D"font-family: &quot;Arial&quot;, &quot;Helvetica&quot;, sans-s=
+erif; font-size: 10pt; color: rgb(0, 0, 0);" class=3D"elementToProof">
+<br>
+</div>
+<div style=3D"font-family: &quot;Arial&quot;, &quot;Helvetica&quot;, sans-s=
+erif; font-size: 10pt; color: rgb(0, 0, 0);" class=3D"elementToProof">
+Sorry for not checking the queued patches before sending my patch.</div>
+<div style=3D"font-family: &quot;Arial&quot;, &quot;Helvetica&quot;, sans-s=
+erif; font-size: 10pt; color: rgb(0, 0, 0);" class=3D"elementToProof">
+<br>
+</div>
+<div style=3D"font-family: &quot;Arial&quot;, &quot;Helvetica&quot;, sans-s=
+erif; font-size: 10pt; color: rgb(0, 0, 0);" class=3D"elementToProof">
+Indeed, Quentin's comment is valid. <code>FIT_LINUX_BIN</code>&nbsp;refers =
+to a file. I am confident that my patch is correct. Therefore, you are welc=
+ome to either take my patch or simply apply that single-word correction to =
+your own. Both options are appreciated.
+ Thank you.</div>
+<div style=3D"font-family: &quot;Arial&quot;, &quot;Helvetica&quot;, sans-s=
+erif; font-size: 11pt; color: rgb(0, 0, 0);" class=3D"elementToProof">
+<br>
+</div>
+<div style=3D"font-family: &quot;Arial&quot;, &quot;Helvetica&quot;, sans-s=
+erif; font-size: 11pt; color: rgb(0, 0, 0);" class=3D"elementToProof">
+Regards,</div>
+<div style=3D"font-family: &quot;Arial&quot;, &quot;Helvetica&quot;, sans-s=
+erif; font-size: 11pt; color: rgb(0, 0, 0);" class=3D"elementToProof">
+Adrian</div>
+<div id=3D"appendonsend"></div>
+<hr style=3D"display:inline-block;width:98%" tabindex=3D"-1">
+<div id=3D"divRplyFwdMsg" dir=3D"ltr"><font face=3D"Calibri, sans-serif" st=
+yle=3D"font-size:11pt" color=3D"#000000"><b>From:</b> Antonin Godard &lt;an=
+tonin.godard@bootlin.com&gt;<br>
+<b>Sent:</b> Monday, October 20, 2025 08:47<br>
+<b>To:</b> Freihofer, Adrian (SI B PRO TI EAC CCP) &lt;adrian.freihofer@sie=
+mens.com&gt;; docs@lists.yoctoproject.org &lt;docs@lists.yoctoproject.org&g=
+t;<br>
+<b>Cc:</b> kavinaya@qti.qualcomm.com &lt;kavinaya@qti.qualcomm.com&gt;<br>
+<b>Subject:</b> Re: [docs] [PATCH] ref-manual/variables.rst: cover FIT_LINU=
+X_BIN variable</font>
+<div>&nbsp;</div>
+</div>
+<div class=3D"BodyFragment"><font size=3D"2"><span style=3D"font-size:11pt;=
+">
+<div class=3D"PlainText">Hi,<br>
+<br>
+On Sun Oct 19, 2025 at 6:47 PM CEST, Adrian Freihofer via lists.yoctoprojec=
+t.org wrote:<br>
+&gt; From: Adrian Freihofer &lt;adrian.freihofer@siemens.com&gt;<br>
+&gt;<br>
+&gt; Document the FIT_LINUX_BIN variable used in the fit-image class to spe=
+cify<br>
+&gt; the kernel binary name included in the FIT image.<br>
+<br>
+Thanks for the patch. I also sent a patch for this last week:<br>
+<a href=3D"https://lore.kernel.org/yocto-docs/20251016-release-note-5-3-sec=
+ond-hunk-v1-14-20f21db1f93c@bootlin.com/">https://eur01.safelinks.protectio=
+n.outlook.com/?url=3Dhttps%3A%2F%2Flore.kernel.org%2Fyocto-docs%2F20251016-=
+release-note-5-3-second-hunk-v1-14-20f21db1f93c%40bootlin.com%2F&amp;data=
+=3D05%7C02%7Cadrian.freihofer%40siemens.com%7C0ad15534d3614def82cb08de0fa4a=
+2bf%7C38ae3bcd95794fd4addab42e1495d55a%7C1%7C0%7C638965396937776315%7CUnkno=
+wn%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMi=
+IsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&amp;sdata=3DF8KN667flkk3CMC=
+j0u%2Fv5zZOOO13E02pwB7csZ5UIEc%3D&amp;reserved=3D0</a><br>
+<br>
+Quentin had interesting comments on it, and I think your patch more or less=
+<br>
+matches mine, so the comments still apply. Can you have a look?<br>
+<br>
+Antonin<br>
+<br>
+-- <br>
+Antonin Godard, Bootlin<br>
+Embedded Linux and Kernel engineering<br>
+<a href=3D"https://bootlin.com/">https://eur01.safelinks.protection.outlook=
+.com/?url=3Dhttps%3A%2F%2Fbootlin.com%2F&amp;data=3D05%7C02%7Cadrian.freiho=
+fer%40siemens.com%7C0ad15534d3614def82cb08de0fa4a2bf%7C38ae3bcd95794fd4adda=
+b42e1495d55a%7C1%7C0%7C638965396937802952%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0e=
+U1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoy=
+fQ%3D%3D%7C0%7C%7C%7C&amp;sdata=3DMsnMf7OsDmqPIuh8Lc7C2zlz6gDvGyV43Yu6Xn9K7=
+qM%3D&amp;reserved=3D0</a><br>
+<br>
+</div>
+</span></font></div>
+</body>
+</html>
 
-s/example/line in this example/
-
-> +      installs all files from ``${DEPLOY_DIR_IMAGE}/foo``
-
-We are inconsistent here, all other examples do not specify foo/ 
-directory is from DEPLOY_DIR_IMAGE (it is made explicit in the first few 
-lines of this glossary entry so I think that ought to be enough?).
-
-> +      into the root of the target partition. The second example installs
-
-s/example/line in this example/
-
-> +      the same files into a ``bar`` directory within the target partition.
-> +      The ``bar/`` directory is automatically created if it does not exist.
-> +
-> +      You can also specify the target by label, UUID or partname if multiple
-
-Should "partname" be "part-name" here maybe? To match the prefix used in 
-the IMAGE_EXTRA_PARTITION_FILES_ below? Or rather say "partition name"?
-
-> +      extra partitions coexist. Here are some examples::
-> +
-> +         IMAGE_EXTRA_PARTITION_FILES_label-config = "foo/*"
-> +         IMAGE_EXTRA_PARTITION_FILES_uuid-e7d0824e-cda3-4bed-9f54-9ef5312d105d = "foo/*;bar/"
-> +         IMAGE_EXTRA_PARTITION_FILES_part-name-foo = "foo"
-> +
-> +      Here are the simplified corresponding entries in the WKS file::> +
-> +         part --source extra_partition --fstype=ext4 --label config
-> +         part --source extra_partition --fstype=ext4 --uuid e7d0824e-cda3-4bed-9f54-9ef5312d105d
-> +         part --source extra_partition --fstype=ext4 --part-name foo
-> +
-
-On first read, I thought the WKS file was another way to represent the 
-example provided just above (the one with the variables), but it isn't 
-at all, that's just the companion WKS setup so that the variables make 
-sense :)
-
-It'd be nice also to specify what would then happen, just to be on the 
-safe side.
-
-I can suggest the following rewording (replace starting from "Here are 
-some examples::" above):
-
-"""
-Let's take the following example. This would be the WKS file for the 
-image currently being built::
-
-    part --source extra_partition --fstype=ext4 --label config
-    part --source extra_partition --fstype=ext4 --uuid 
-e7d0824e-cda3-4bed-9f54-9ef5312d105d
-    part --source extra_partition --fstype=ext4 --part-name foo
-
-and the following part of the image recipe::
-
-    IMAGE_EXTRA_PARTITION_FILES_label-config = "foo/*"
-  
-IMAGE_EXTRA_PARTITION_FILES_uuid-e7d0824e-cda3-4bed-9f54-9ef5312d105d = 
-"foo/*;bar/"
-    IMAGE_EXTRA_PARTITION_FILES_part-name-foo = "foo"
-
-Then:
-
--  The partition labeled config would get [...].
--  The partition whose UUID is e7d0824e-cda3-4bed-9f54-9ef5312d105d 
-would get [...]
--  The partition named foo would get [...]
-"""
-
-Cheers,
-Quentin
+--_000_VI1PR10MB35359630A67B9F6996D495CF8EF5AVI1PR10MB3535EURP_--
 
