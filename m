@@ -1,110 +1,100 @@
-Return-Path: <raj.khem@gmail.com>
+Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BFB22CCD1AB
-	for <webhook@archiver.kernel.org>; Wed, 22 Oct 2025 20:41:36 +0000 (UTC)
-Received: from mail-yx1-f47.google.com (mail-yx1-f47.google.com [74.125.224.47])
- by mx.groups.io with SMTP id smtpd.web11.5044.1761165690080623565
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D9EFCCCD1AB
+	for <webhook@archiver.kernel.org>; Wed, 22 Oct 2025 21:00:36 +0000 (UTC)
+Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
+ by mx.groups.io with SMTP id smtpd.web10.5587.1761166827302734069
  for <docs@lists.yoctoproject.org>;
- Wed, 22 Oct 2025 13:41:30 -0700
+ Wed, 22 Oct 2025 14:00:27 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=Odd+u9JK;
- spf=pass (domain: gmail.com, ip: 74.125.224.47, mailfrom: raj.khem@gmail.com)
-Received: by mail-yx1-f47.google.com with SMTP id 956f58d0204a3-63e330a1360so36622d50.3
-        for <docs@lists.yoctoproject.org>; Wed, 22 Oct 2025 13:41:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761165689; x=1761770489; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uMz4MjWmEjo8MCVFCQmb3m8xWWVoRp7Aa5V83Qc6Zy8=;
-        b=Odd+u9JKmqa2+nWZ5v8M+egXrQ3zCafoibiYr5KXfKnfMgH+NYoRVKOyRKhr0pEizU
-         DgTkCkF617pGQWY446EuG9Lp/RGamDX7DaFYd4QYUvyi88KhMoJh7wHq7yTrE5NlEkL5
-         bsjTdK96oVMNAMseB1FRiQ80eMOqurLsJnE3lf8y/DQD8qYf6cqnpErAhCuqqNZW2Nly
-         libxUKXcYpZ5SyZmJFb2RB3iV5IBWfx1/nI1Ay0ALJnlJH59mHXhEyeU/hQ3G1ATCGie
-         VW6EswoW/D6yyCPLwIfar9qDb5pZ55yaKF/q+OmZx9MVUxYCfsoj5s0Cx2chXPhLjoYF
-         K0tQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761165689; x=1761770489;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uMz4MjWmEjo8MCVFCQmb3m8xWWVoRp7Aa5V83Qc6Zy8=;
-        b=KdSBYCpoo0lJyPvSVzsxDwVLZ1L9py/IIQmSx+VDOwhWvVW8me85vps1mRMzf8nlo8
-         CYUNt12cuyc7JWtdV0QlLl7+qsT4XRQMZ1BY8uJZ0XfM1VM4LTmfQXsNucg73RgYNP+J
-         7S5Mtc/15QU3atXQjbpfTt7fJtk3AOuJVcqw3X/uyiuns/XEEDnTEE4BScoN7F58tmd9
-         YuJ0CpFGKC8X8JHgp6lwyKWaf9mk0n38z1dAAoWo63zoZVUiZWf7/wF6Lc48O5Fu02Up
-         3riuBiIJaKQEGBut0wTEXFMdgLxZbBofgzY0YwNCX+3rfvdVHjssKwEtBFU1HOlE9Rmt
-         1UkQ==
-X-Gm-Message-State: AOJu0YzX46gPvWBxQVN3dYuSdYWGsVWRKvSfBxUaM5VD1/aJAuGPlogo
-	xCSlOJIfQisC7HkOGgp/JMN0SOD5nJ/DwpP++gK3E9ECdr6mF06pnAp/CLuURRKFHr/3+H2vuss
-	SUthXJIlUvypQIHSEs2CMa3aoVODHEqduEa/6
-X-Gm-Gg: ASbGncs/rpmdhVBSWtWWFqT1z5QRNm2PbvK6PClwk0x7y71ynLd5S6QauOraDZZiGAO
-	jmaR3Z7880cy66bghFgUf84VLWU2eim7K/WHU/Han7RvgjSfN4E56iOkcXqXMeQU2zWptGD1zjD
-	05pyiBcI5B3K/kXKoAlrXTJdreUUx1JNFU5GKnDMP1heEAp6m2x6omvl0veQ4UkdUd+8icFq+TV
-	HAnCeM2NYqUtG0AM1m/RAqqp4UhUdjCLowvzcRoLyzLmT0FixvV9ndgQVvxIicO/3oZupagZwmK
-	I1Wz62NchoRWUdHQDb3jSdKUROS4KJOJr/hRFA6jJwu6fju6aqXmsfUo17+7qn32Ekh3nrf0W/I
-	djC+FiYqcy7l05A0=
-X-Google-Smtp-Source: AGHT+IGtgdfp/TiDDgyF2zZqkZcE1bp5L8zekrKH1YAwXiGxrLz5gJaswwr6hQ+4cto6EEQVKho6ciw0nWRTMmzoZpo=
-X-Received: by 2002:a05:690e:434e:b0:63e:28ce:9a95 with SMTP id
- 956f58d0204a3-63f378e15e0mr31295d50.67.1761165689012; Wed, 22 Oct 2025
- 13:41:29 -0700 (PDT)
-MIME-Version: 1.0
-References: <4b7c71ff-0697-b099-0764-3cfdfbee1313@crashcourse.ca>
-In-Reply-To: <4b7c71ff-0697-b099-0764-3cfdfbee1313@crashcourse.ca>
-From: Khem Raj <raj.khem@gmail.com>
-Date: Wed, 22 Oct 2025 13:41:02 -0700
-X-Gm-Features: AS18NWBqhpMJfdnBlihVWdzQF4MFZ_16b0_6P94y_lIoAnWoTCwy1O4qVKJTP9M
-Message-ID: <CAMKF1srZwLCmPYfMeg_SnNjHYfVV0AHKK6QJWON03AyMbSTy0A@mail.gmail.com>
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=xUru7nHh;
+ spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:References:
+	Message-ID:In-Reply-To:Subject:cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=7xtIjRPBxKm7nGPBLSeQiGqzAdfzlgKjcDquHOWj1NY=; b=xUru7nHhSD5fhm7uXAFgkmCVa5
+	Y/fmoMeWn3CNEGUxrmkl0AUffPJziIHgoGE4L94KJyPaGgB1z7XF6WpnGc1vmqTqfpzSV0JQvuzcy
+	APkrmU0ZUoN1BUrDkUnX4N/X2C40hu9wgZXTGFwtkQwNR3SpK1Gx6npfNArcjkA9E2G6mBtUKSbBh
+	NBI8yJayRfKP6qb1qkjxV4n1YQ7X4Lpdi7n689hkEZN9PhbVi7zhX+oNN43qPfbH69avJzjQg2h0S
+	pMUkpeyYRENvDbj1pd6cEjdChOK7TWR//VNhoSWrxal3fe0YOU/bwCtfV/RToqbkyz5BjEgcRXx0X
+	vQVw4k+Q==;
+Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:44138 helo=rday)
+	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <rpjday@crashcourse.ca>)
+	id 1vBfwU-0000000A3zo-3OEq;
+	Wed, 22 Oct 2025 17:00:25 -0400
+Date: Wed, 22 Oct 2025 17:02:52 -0400 (EDT)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+To: raj.khem@gmail.com
+cc: YP docs mailing list <docs@lists.yoctoproject.org>
 Subject: Re: [docs] political question: which vendors should be listed as
  providing support?
-To: rpjday@crashcourse.ca
-Cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <CAMKF1srZwLCmPYfMeg_SnNjHYfVV0AHKK6QJWON03AyMbSTy0A@mail.gmail.com>
+Message-ID: <cae364e5-12b4-e69a-fa62-dfc37d3c2d4b@crashcourse.ca>
+References: <4b7c71ff-0697-b099-0764-3cfdfbee1313@crashcourse.ca> <CAMKF1srZwLCmPYfMeg_SnNjHYfVV0AHKK6QJWON03AyMbSTy0A@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="8323329-1031915777-1761166978=:762222"
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
+X-AntiAbuse: Original Domain - lists.yoctoproject.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - crashcourse.ca
+X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 22 Oct 2025 20:41:36 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7777
+ <docs@lists.yoctoproject.org>; Wed, 22 Oct 2025 21:00:36 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7778
 
-On Wed, Oct 22, 2025 at 1:37=E2=80=AFPM Robert P. J. Day via
-lists.yoctoproject.org <rpjday=3Dcrashcourse.ca@lists.yoctoproject.org>
-wrote:
->
->
->   reading here:
->
-> file:///home/rpjday/oe/layers/yocto-docs/documentation/_build/html/overvi=
-ew-manual/yp-intro.html
->
-> and that page states:
->
-> "commercial Linux vendors such as Wind River, Mentor Graphics,
-> Timesys, and ENEA could take it and provide ongoing support"
->
->   well, sure, but there are a *lot* of other sources for support that
-> are not listed there that might deserve a mention. perhaps that
-> sentence should include a link to, perhaps:
->
->   https://www.yoctoproject.org/about/participants/
->
-> or at least a more all-encompassing list of support providers.
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-I think a link is a good option provided it is kept uptodate.
+--8323329-1031915777-1761166978=:762222
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 
+On Wed, 22 Oct 2025, Khem Raj via lists.yoctoproject.org wrote:
+
+> On Wed, Oct 22, 2025 at 1:37 PM Robert P. J. Day via
+> lists.yoctoproject.org <rpjday=crashcourse.ca@lists.yoctoproject.org>
+> wrote:
+> >
+> >
+> >   reading here:
+> >
+> > file:///home/rpjday/oe/layers/yocto-docs/documentation/_build/html/overview-manual/yp-intro.html
+> >
+> > and that page states:
+> >
+> > "commercial Linux vendors such as Wind River, Mentor Graphics,
+> > Timesys, and ENEA could take it and provide ongoing support"
+> >
+> >   well, sure, but there are a *lot* of other sources for support that
+> > are not listed there that might deserve a mention. perhaps that
+> > sentence should include a link to, perhaps:
+> >
+> >   https://www.yoctoproject.org/about/participants/
+> >
+> > or at least a more all-encompassing list of support providers.
 >
-> rday
->
-> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
-> Links: You receive all messages sent to this group.
-> View/Reply Online (#7775): https://lists.yoctoproject.org/g/docs/message/=
-7775
-> Mute This Topic: https://lists.yoctoproject.org/mt/115899908/1997914
-> Group Owner: docs+owner@lists.yoctoproject.org
-> Unsubscribe: https://lists.yoctoproject.org/g/docs/unsub [raj.khem@gmail.=
-com]
-> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
->
+> I think a link is a good option provided it is kept uptodate.
+
+  I'm sure there is a significant difference between "participants"
+and orgs that provide actual support; I'm just saying that the list on
+that page is awfully short and it would be useful to have a separate
+list/link for support providers. How one gets onto that list is a
+whole other issue.
+
+rday
+--8323329-1031915777-1761166978=:762222--
 
