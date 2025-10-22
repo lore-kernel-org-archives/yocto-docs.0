@@ -2,14 +2,14 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4179ECCD1AB
-	for <webhook@archiver.kernel.org>; Wed, 22 Oct 2025 18:54:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9EDE3CCD1BE
+	for <webhook@archiver.kernel.org>; Wed, 22 Oct 2025 20:37:26 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.web10.2682.1761159251139455997
+ by mx.groups.io with SMTP id smtpd.web10.4985.1761165444730844520
  for <docs@lists.yoctoproject.org>;
- Wed, 22 Oct 2025 11:54:11 -0700
+ Wed, 22 Oct 2025 13:37:25 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=ZJBZWBqB;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=HM7hZ/O9;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
@@ -17,24 +17,25 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=q1f4wW7yC6OYK8qPQhQ98R0TeJ+qQcu0/jquO7ecE5U=; b=ZJBZWBqBzSfri4/AjyCVqfOwmn
-	FTrUKhu/EjyO4UjpbIMTHopL3jA/KSJdMsd9CTjDzTRW8MDaW5c8wT9cQyUi2TQ0ph14q+jr7qsWI
-	PCTLJJmQzt7CO5xvWi2O41AMb/5WRahmprOtXovYOFv8PE3PPut0cmwn7NA1Rfx0WyzD1tOeIPqaO
-	5GWMGgcURyNUZQxA52zhRUs4YdIXOyDuD1Mke9GS/IV2RoZoQyYLpvAtaPqPSVfe6T62K4k33gq0x
-	nJ0HycJQJAUpnsYPoMCyjLu1Mr03BfRkokfnkurG9GLwIqvjCSlVkhDnuhCbIadX1w2VOb0oXG+zO
-	t+wddXLA==;
-Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:60178 helo=rday)
+	bh=v6c305TlXZ5kTK/jNzgG6ebjytly9HL/iPkErZW/5PE=; b=HM7hZ/O90iIxR/qJtymmuz4+3u
+	gWg4aYUz+PLiJ6EWVaWvAIjb+7rvwT8aYtgeSECzZT9WdNMVfWx/j85LX7Z9ebfg67p5fh6tSVPi6
+	zDZRtYh93mOEmKttVVZVAtHzdRZDNKSmWGts4uotF6kDNHDs06SjRMlTqfKO54SAgCUduApC5fK3O
+	nQBAFXknYciz+LAE9niY4vddIHzcNqUdg94lbk7tE9zIkxHq8ExF7RqFRNNN0T22spFctUoagqjIo
+	HABZiFoica7GRmnya2Lhm8Fmd5gTi+PTmA/a5RCvTyLJ3/3NRbfC0Icw9waoM0JkAVZKt8FrhrN+I
+	es7lwxAg==;
+Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:52520 helo=rday)
 	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1vBdyI-00000009kah-2N43
+	id 1vBfaB-0000000A0LI-0Jj9
 	for docs@lists.yoctoproject.org;
-	Wed, 22 Oct 2025 14:54:09 -0400
-Date: Wed, 22 Oct 2025 14:56:28 -0400 (EDT)
+	Wed, 22 Oct 2025 16:37:22 -0400
+Date: Wed, 22 Oct 2025 16:39:51 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: i think some of the YP "reference" material is overly verbose
-Message-ID: <cea30fa7-5446-c3ab-04c3-5e38761283ac@crashcourse.ca>
+Subject: political question: which vendors should be listed as providing
+ support?
+Message-ID: <4b7c71ff-0697-b099-0764-3cfdfbee1313@crashcourse.ca>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -50,34 +51,26 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 22 Oct 2025 18:54:16 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7774
+ <docs@lists.yoctoproject.org>; Wed, 22 Oct 2025 20:37:26 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7775
 
 
-  for a while, i've thought that there's too much "reference" or
-"glossary" material that is overly verbose because it's trying to do
-the job of *explaining* stuff, rather than simply summarizing it and
-then redirecting the reader to where that concept is *fully*
-discussed in the appropriate manual.
+  reading here:
 
-  here is one example i just ran across:
+file:///home/rpjday/oe/layers/yocto-docs/documentation/_build/html/overview-manual/yp-intro.html
 
-file:///home/rpjday/oe/layers/yocto-docs/documentation/_build/html/ref-manual/classes.html#cve-check
+and that page states:
 
-that section is in the reference manual, but it's far more than just
-"reference"; rather, it's trying to provide a lengthy explanation of
-the cve-check.bbclass file.
+"commercial Linux vendors such as Wind River, Mentor Graphics,
+Timesys, and ENEA could take it and provide ongoing support"
 
-  there's quite a lot of that, and i think it's inappropriate since
-reference material should (IMNSHO) be terse and to the point, then
-hand the reader off to the full section of the appropriate manual that
-gets into all the detail.
+  well, sure, but there are a *lot* of other sources for support that
+are not listed there that might deserve a mention. perhaps that
+sentence should include a link to, perhaps:
 
-  it may sound extreme, but i think ideally all of those class
-reference entries should be at most two paragraphs, with a link
-elsewhere to the full explanation.
+  https://www.yoctoproject.org/about/participants/
 
-  thoughts?
+or at least a more all-encompassing list of support providers.
 
 rday
 
