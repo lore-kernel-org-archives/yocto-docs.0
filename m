@@ -2,14 +2,14 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5E3E0CCD1BE
-	for <webhook@archiver.kernel.org>; Thu, 23 Oct 2025 11:49:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 98883CCD1BE
+	for <webhook@archiver.kernel.org>; Thu, 23 Oct 2025 12:38:02 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.web11.18125.1761220185345503560
+ by mx.groups.io with SMTP id smtpd.web10.19057.1761223074477499739
  for <docs@lists.yoctoproject.org>;
- Thu, 23 Oct 2025 04:49:45 -0700
+ Thu, 23 Oct 2025 05:37:54 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=Xn1mtRb8;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=p8VTA9Ja;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
@@ -17,26 +17,26 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=EhJ5fcrvKs/hyBaCA6gAHMIjQYgxGp2bOWq3ui1DAmQ=; b=Xn1mtRb83jRxLXzKbSnnrAHPMO
-	r1vT8faCpm8pn90paqTsBAxHRKuEDYHvp+bY9G5X+gQp09An3E95kM3kIa9iExym7AYbQwQs0ZklZ
-	yEQrIW+4cWg/2WRpCJ5wPlfYP6R8hn7Utt+28v/89g0yxOUqBj3UZOfK+T9OVxKMzSpdxAU4u+T+o
-	5R8eXv42uPlehd/kffQ+d+fdashp1aHVFg9fZ4alrUCejT6kR1p3AWkgYogpjSkIfdS+7a1+KNW1i
-	5JQqoHSypnfckQj/aU84REYC5zr4b7KpSy0WqWgller+Teu+K4YtHYHbChrY1CWBsrWIw/U12UGNR
-	SSmYbpmA==;
-Received: from [147.129.179.166] (port=42332 helo=rday)
+	bh=pTVKdK9GW1vgMAkBBi32d0uwY+TjBEWuUaqUmoQ7jvs=; b=p8VTA9JaMaLHMeihCUgjG4c+K8
+	i3ZdyBxgn/gBx6+ccVWETlVHq2etpcekAgi+GmsB//zOdRULD8A+K1/EaGnmxLfY8g1TKK+ITrv3y
+	WdJ+IKTYUm5gzdzuZXQlh8JkWklO2bNDqe/EIdtmdx+UbIbDWCkNMytkIktKAN+KDw4vy9hOChx17
+	84NiJsuArYxuF9gpAeHavJvT7jHshclVpq0H2MTYpJiNuP85E3vba8JfebMVihRB+E0QIVF+LLFM2
+	dB5MHRSqocbF6a1vpKiyxR41IRqGF14Vl4ZwGMwZT7y9TnK41L24WUZGEkY6mJuA+s9J4mPz44Uyn
+	B1/yzOAA==;
+Received: from [147.129.179.166] (port=37496 helo=rday)
 	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1vBtp6-0000000CBG6-330A
+	id 1vBuZg-0000000CIXe-31x2
 	for docs@lists.yoctoproject.org;
-	Thu, 23 Oct 2025 07:49:43 -0400
-Date: Thu, 23 Oct 2025 07:52:14 -0400 (EDT)
+	Thu, 23 Oct 2025 08:37:51 -0400
+Date: Thu, 23 Oct 2025 08:40:20 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: *very* pedantic observation about how sphinx spaces bullet lists
-Message-ID: <bba108a7-aba1-f4d7-776e-6ebb1431f84a@crashcourse.ca>
+Subject: observations on YP overview manual, ch 3
+Message-ID: <e59c985c-1b0d-3702-fb17-363ad6ed161c@crashcourse.ca>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: multipart/mixed; boundary="8323329-586481880-1761223229=:930949"
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
 X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
 X-AntiAbuse: Original Domain - lists.yoctoproject.org
@@ -50,28 +50,31 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 23 Oct 2025 11:49:52 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7784
+ <docs@lists.yoctoproject.org>; Thu, 23 Oct 2025 12:38:02 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7785
+
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
+
+--8323329-586481880-1761223229=:930949
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 
 
-  something i noticed a while back so i figured i'll just whine about
-it now -- sphinx has a curious inconsistency about how it spaces
-bullet lists, and you can see an example here:
+  from here:
 
-  https://docs.yoctoproject.org/overview-manual/yp-intro.html#features
+https://docs.yoctoproject.org/overview-manual/development-environment.html#
 
-the pattern seems to be that if a bullet point consists of a single
-paragraph, then the next bullet point follows immediately after with
-no apparent spacing (as in the first two points in that list).
+* section 3.3, "For any supported release of Yocto Project, you can
+also go to the Yocto Project Website and select the “DOWNLOADS” item
+from the “SOFTWARE” menu ...".  i do not see any link or menu entry
+named "SOFTWARE". same claim is made a but further down.
 
-  but the instant a bullet point consists of two or more paragraphs,
-then sphinx adds a bit of space before the next point -- see the extra
-space between points two and three in that same list. then it goes
-back to no spacing for the rest of the list.
+  ah, the graphic on that page shows where it used to be, so that
+graphic is clearly out of date.
 
-  that appears to be consistently inconsistent throughout (see the
-other lists on that page to confirm). not fatal, of course, just
-visually weird.
+  i think that's it for that section.
 
 rday
+--8323329-586481880-1761223229=:930949--
 
