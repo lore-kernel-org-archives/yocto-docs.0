@@ -2,14 +2,14 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CF286CCD1A5
-	for <webhook@archiver.kernel.org>; Fri, 24 Oct 2025 09:50:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D0306CCD1AB
+	for <webhook@archiver.kernel.org>; Fri, 24 Oct 2025 09:52:19 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.web11.6607.1761299453956974128
+ by mx.groups.io with SMTP id smtpd.web11.6626.1761299533778632394
  for <docs@lists.yoctoproject.org>;
- Fri, 24 Oct 2025 02:50:54 -0700
+ Fri, 24 Oct 2025 02:52:13 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=eEIunele;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=DmQoBufq;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:References:
@@ -17,28 +17,28 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
 	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=brlvWB85bG8vT7TgzxZJlWZQZFFhdlsGQj/SPQ9EUAY=; b=eEIunelek/ofxdt5foqu3/s5K/
-	QD5JzptNrSRrC+eASUAn/YTVSzbpcCwjUVCcA2lNAfnx+GehME3QGwfl2g7yb9rnHe9QHfXWLsG6n
-	/nUcG7XUIqCc/sayaDQBuzBDHSY7LRRkxsiJGezDay4fguwse2FgsUOCixs8Nw5jOzOiGm2gD+5PC
-	KmoNnPBlkMpMjZV67rG1Sz8klHAOnjvaO4No0GQrWSPwh3w9gD+W+7DgdpFBemeofjbYlpdt+Rrag
-	9xK3sEHkzrb2t+aMPTxLKfWXCqhWskW48dcJKCSZ5dqOr4i30Xqi6rHL49ycT4c/xrv8K8DNFNu7r
-	IjeScN1g==;
-Received: from [147.129.179.166] (port=59226 helo=rday)
+	bh=oSnW3IWOaCuWQWiwwodVVmukZaMo0a5agEbXCu/B9fM=; b=DmQoBufqt3uS38uZ0pi3rgL37Z
+	sCOBI1Hx/k8C1yoEMp+fam2F3Roq/CyvP2ppMBI16vHegPfYVTZ2l6YEXay/EokEXBxmaxXMkKEzA
+	lvs770mp3Q7wj0kNMV9S5bSp72Mi0Ppv/wS2ik/l7xY/L3qbiNj5PtGFJ272l19pCDC/MktgdeOPA
+	lpGE1cJNWP1x2RstEQ/wST+dZuMKdMuh3rtenfEHOSDC0ovrhAG1WCZZ+4ykuZDtogkffDd/U/+So
+	U89bxvuh+N8juMgTmLzA4TM43X5RIB0y7mfFH/LM7j+f4Wg3FFAXwO/pSZ9loPReQNVOG3oQW8OKO
+	mpSIU7dg==;
+Received: from [147.129.179.166] (port=38970 helo=rday)
 	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1vCERY-0000000FrE5-49v9;
-	Fri, 24 Oct 2025 05:50:52 -0400
-Date: Fri, 24 Oct 2025 05:53:19 -0400 (EDT)
+	id 1vCESt-0000000FrOv-13CF;
+	Fri, 24 Oct 2025 05:52:12 -0400
+Date: Fri, 24 Oct 2025 05:54:50 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: Paul Barker <paul@pbarker.dev>
 cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: Re: summary of observations for overview manual, chapter 2
-In-Reply-To: <5b81132d588a9220cb13cd5b683d32a8c332010b.camel@pbarker.dev>
-Message-ID: <00c6101d-0fa6-6d58-a8fd-ef702cba70d7@crashcourse.ca>
-References: <1994ea5f-2ea1-094c-66ee-faf26f0d5791@crashcourse.ca> <5b81132d588a9220cb13cd5b683d32a8c332010b.camel@pbarker.dev>
+Subject: Re: observations on YP overview manual, ch 3
+In-Reply-To: <89dc93e796c8a8ab920324f64168e4a5f04cd51b.camel@pbarker.dev>
+Message-ID: <93d6ba04-0274-74d9-0fc3-b951f089dada@crashcourse.ca>
+References: <e59c985c-1b0d-3702-fb17-363ad6ed161c@crashcourse.ca> <89dc93e796c8a8ab920324f64168e4a5f04cd51b.camel@pbarker.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: multipart/mixed; boundary="8323329-439147684-1761299691=:3917649"
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
 X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
 X-AntiAbuse: Original Domain - lists.yoctoproject.org
@@ -52,53 +52,44 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 24 Oct 2025 09:50:59 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7811
+ <docs@lists.yoctoproject.org>; Fri, 24 Oct 2025 09:52:19 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7812
+
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
+
+--8323329-439147684-1761299691=:3917649
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 
 On Fri, 24 Oct 2025, Paul Barker wrote:
 
-> On Thu, 2025-10-23 at 07:46 -0400, Robert P. J. Day wrote:
-> >   full list of observations for:
+> On Thu, 2025-10-23 at 08:40 -0400, Robert P. J. Day wrote:
+> >   from here:
 > >
-> > https://docs.yoctoproject.org/overview-manual/yp-intro.html#
+> > https://docs.yoctoproject.org/overview-manual/development-environment.html#
 > >
-> > (including ones i posted yesterday, just so it's all in one place).
+> > * section 3.3, "For any supported release of Yocto Project, you can
+> > also go to the Yocto Project Website and select the “DOWNLOADS” item
+> > from the “SOFTWARE” menu ...".  i do not see any link or menu entry
+> > named "SOFTWARE". same claim is made a but further down.
 > >
-> > * typo in first graphic, "YP-Comptible"
+> >   ah, the graphic on that page shows where it used to be, so that
+> > graphic is clearly out of date.
 > >
-> > * reference to "ECOSYSTEM" tab on YP home page, but i don't see such a
-> > tab at that page
+> >   i think that's it for that section.
 > >
-> > * "commercial Linux vendors such as Wind River, Mentor Graphics,
-> > Timesys, and ENEA could take it and provide ongoing support." That
-> > list of vendors certainly looks like it could use updating, perhaps
-> > with a link to a more current page.
-> >
-> > * i believe "ENEA" is properly rendered as "Enea".
-> >
-> > * there is a reference to Clutter, but Clutter's own web site suggests
-> > it's being retired: https://blogs.gnome.org/clutter/. should that list
-> > of available system components, "X11, Wayland, GTK+, Qt, Clutter, and
-> > SDL" include XWayland as well? or be updated in any other way?
-> >
-> > * "produces packages in standard formats (i.e. RPM, DEB, IPK, and
-> > TAR)" ... i through tar format was obsoleted a while back. also, right
-> > after that, "by using utilities on the target such as rpm or ipk" ...
-> > i thought the ipk-related utility was opkg. is that not what that
-> > should say? and add "apt".
+> > rday
 >
-> There is no package_tar bbclass nowadays, so we should drop TAR from that list
-> and update the list of utilities to rpm, apt and opkg.
+> I don't think the website screenshot is adding value to the docs here.
+> We can drop the screenshot and update the text to match the current
+> website.
 >
-> Are you able to send patches for these changes?
+> Are you able to send a patch for this?
 
-  i can send patches for some of it. regarding the packaging, it seems
-the list should include "dpkg/apt" to show that both of those will be
-installed.
-
-  the other observations should be handled by people who deal with the
-graphics and who can make a policy decision as to which companies to
-list as YP members or supporters.
+  if people are good with dropping the screenshot, sure, i can provide
+a patch.
 
 rday
+--8323329-439147684-1761299691=:3917649--
 
