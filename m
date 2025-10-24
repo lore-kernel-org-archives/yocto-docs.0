@@ -2,40 +2,42 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B4EF7CCF9E0
-	for <webhook@archiver.kernel.org>; Fri, 24 Oct 2025 19:13:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C2C25CCF9E3
+	for <webhook@archiver.kernel.org>; Fri, 24 Oct 2025 19:28:16 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.web10.1702.1761333214432772475
+ by mx.groups.io with SMTP id smtpd.web11.1966.1761334094304639356
  for <docs@lists.yoctoproject.org>;
- Fri, 24 Oct 2025 12:13:34 -0700
+ Fri, 24 Oct 2025 12:28:14 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=yyoZ1eb/;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=RgQq8qNq;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
-	To:From:Date:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=PyZVLcTAynlZOQhTWftLNMVEX4HW7EH3e6g22y1cCl0=; b=yyoZ1eb/By4LGrMFdljm0wIP1V
-	YwdOLE8jeFB8hZ5IaskfyR66xRNGJp1GDT3Ow6XWqWr4Xj5jyEtDC4lUnRhSRB4mTvYoVli8e4KeS
-	zbH7KhXVfsG6ThOj+N7oRzUbFfJ9R1JLFhO9JapCgUPYMCbBP3kf9E0xCojX3tF3vlNDcCz33mQPX
-	LSdocppLvBfTSDJJ3rbhAUO+OMXBQDvY+eBZkJ+bkKN81inX2uPXM/5ZuKty4/Jr7Oh8y/dWS/uR1
-	HlnrjWW+D0Iw6AcBrz3X6xSvfywANyfjJ4iSrR5vVgdQD9lhalw6PvPIGgFdVWrGl+/dgqXJr0mxQ
-	tBCT8NbQ==;
-Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:33560 helo=rday)
+	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:References:
+	Message-ID:In-Reply-To:Subject:To:From:Date:Sender:Reply-To:Cc:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=TmGiQovEfrioM67HUQnwd9i4Vr4hgIRy7EVZmSmoyy4=; b=RgQq8qNqHM7rr6ZfTxr/z2r9HW
+	sDeVYgtNIyDkSIZ8Azrb6kgVEUj5ynci2oRGtV1Ug8amlvdT06GoVaRbv1wKB/MJiyOJRb1fCk8H2
+	uGbamt2p0F66SWCKK18J0Zy5Ps6l8n+x0vLtk9Pv5aL5UGlPPlNogqH3fEQBQ39MvvDhzh/SXWG2z
+	niCEa/hl8QV5qXXcqXfcAHMQBo+Ue5jCvNWrH5IrnTragb5/XjD3Dz0k9pjlye1TRm80PBHzqmDNj
+	HOX6ConYcs4Rl4TDucOO+HdCJ1rceCIKwP83hc+10KMAtHDXhmPmh3AVjAvwnC1xqHQfG+erNqKSc
+	IKP8ZMKQ==;
+Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:46626 helo=rday)
 	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1vCNE4-0000000HIfy-3sKN
+	id 1vCNSK-0000000HKmc-2h7s
 	for docs@lists.yoctoproject.org;
-	Fri, 24 Oct 2025 15:13:32 -0400
-Date: Fri, 24 Oct 2025 15:16:06 -0400 (EDT)
+	Fri, 24 Oct 2025 15:28:12 -0400
+Date: Fri, 24 Oct 2025 15:30:47 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: "https://git.yoctoproject.org/" versus
+Subject: Re: [docs] "https://git.yoctoproject.org/" versus
  "git://git.yoctoproject.org/"
-Message-ID: <7a10e529-305d-5974-6ba6-5694b8555608@crashcourse.ca>
+In-Reply-To: <1871833A13E9D135.18865@lists.yoctoproject.org>
+Message-ID: <5edc243b-6a95-a484-d5c8-00bdc45e40da@crashcourse.ca>
+References: <1871833A13E9D135.18865@lists.yoctoproject.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -51,13 +53,18 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 24 Oct 2025 19:13:36 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7838
+ <docs@lists.yoctoproject.org>; Fri, 24 Oct 2025 19:28:16 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7839
 
+On Fri, 24 Oct 2025, Robert P. J. Day wrote:
 
-  it seems that the docs bounce around between those two URLs for
-git cloning YP source ... should the docs standardize on one versus
-the other?
+>
+>   it seems that the docs bounce around between those two URLs for
+> git cloning YP source ... should the docs standardize on one versus
+> the other?
+
+  i should have mentioned that the git:// protocol URL simply
+redirects to the https:// protocol URL.
 
 rday
 
