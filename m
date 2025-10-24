@@ -2,74 +2,82 @@ Return-Path: <paul@pbarker.dev>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9B7AECCD1AB
-	for <webhook@archiver.kernel.org>; Fri, 24 Oct 2025 08:09:08 +0000 (UTC)
-Received: from fout-b7-smtp.messagingengine.com (fout-b7-smtp.messagingengine.com [202.12.124.150])
- by mx.groups.io with SMTP id smtpd.web10.4601.1761293345855715905
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A60F7CCD1A5
+	for <webhook@archiver.kernel.org>; Fri, 24 Oct 2025 08:18:18 +0000 (UTC)
+Received: from fhigh-b7-smtp.messagingengine.com (fhigh-b7-smtp.messagingengine.com [202.12.124.158])
+ by mx.groups.io with SMTP id smtpd.web11.5000.1761293894035572618
  for <docs@lists.yoctoproject.org>;
- Fri, 24 Oct 2025 01:09:06 -0700
+ Fri, 24 Oct 2025 01:18:14 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@pbarker.dev header.s=fm1 header.b=iKBMALyf;
- dkim=pass header.i=@messagingengine.com header.s=fm2 header.b=IZmr40ax;
- spf=pass (domain: pbarker.dev, ip: 202.12.124.150, mailfrom: paul@pbarker.dev)
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfout.stl.internal (Postfix) with ESMTP id 1623B1D00158;
-	Fri, 24 Oct 2025 04:09:05 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Fri, 24 Oct 2025 04:09:05 -0400
+ dkim=pass header.i=@pbarker.dev header.s=fm1 header.b=XNUo5DZ6;
+ dkim=pass header.i=@messagingengine.com header.s=fm2 header.b=cJlbd2l0;
+ spf=pass (domain: pbarker.dev, ip: 202.12.124.158, mailfrom: paul@pbarker.dev)
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 2899A7A011C;
+	Fri, 24 Oct 2025 04:18:13 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Fri, 24 Oct 2025 04:18:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pbarker.dev; h=
-	cc:content-type:content-type:date:date:from:from:in-reply-to
+	cc:cc:content-type:content-type:date:date:from:from:in-reply-to
 	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm1; t=1761293344; x=1761379744; bh=oSFE1rJxzn
-	ETX9zD54mZ/UVgb6YRkAew2o8ke2gltoI=; b=iKBMALyfWIN9V3lpbH9AhQRv2p
-	873NBoWMquy+6qCFHcTKCfbHGKS3u3PnZVwIXRgLM+E682BT3cOP+O3kQH1/yYSX
-	DhWOOb9sgPr4qOos8aU/IIADWqgD2XGcRpu11j+l1jgOzdQxE4bmf7yFOFJ4OiED
-	NqVMumtZFu+hL7BvgCTbRc2fSODQxfUUgRzymyZVJhY94ikwZM1D77zWASuQGZBP
-	t+q1G4Jx3tb4fa7m+HbGC4PcKreQCd2tRV0VzmEJ3AFcjRoesyTQqvwHM4yi9uK+
-	GyM4kVqInd9JajXosFolpfWikGnXrY4Xekcm0AlnRsBkhcpzj3/T0myQefHQ==
+	:subject:to:to; s=fm1; t=1761293893; x=1761380293; bh=A1W1/mpuUw
+	Rke3WBxzD1DJJ7SAoi8btPPhCdmRQSD7U=; b=XNUo5DZ6JXzlgUjwXJdwkEaK7s
+	zvcQaGhKXSKtZZr8ouwnMt3nUV4kaTld5yJPlaMmfpAmPGkVwfbb+aDCT13V8p50
+	q3ZsweH8QpLQ4AvpTXXfuDXUW69lZ7/mMq1jfvxFQWyg0fcsXbUE3x4fRVwZSB7X
+	H5ACcKNqpccBB6PmM2Gwp6l7157+C4yFM1PVwQ3G6r6dW5p3v3BxPYNMnE5ZicxV
+	yaeJE6uGPE9VOMCEFvByznQlFPJIfsmgFbreJqdgKcoWGFUC/5571r1PNqUCt9sj
+	J9YqYlJGlVnaz2LeDON4czkk2xr5HYwRZNtLkv6cvcKHXb7i0bsnmLqQqpbQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:content-type:content-type:date:date
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
 	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
 	:message-id:mime-version:references:reply-to:subject:subject:to
 	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1761293344; x=1761379744; bh=oSFE1rJxznETX9zD54mZ/UVgb6YRkAew2o8
-	ke2gltoI=; b=IZmr40axHmC4BdXxWNZOKeK+4Z1vTXfrHznCkiyRrWLBcE98aD7
-	pvHrWJSUgLC1q8pCmkbIgHv2EdE14YTbCW4iaQD5UH+yg8TbAFRuDXMCNwc3avJM
-	t40/qbpWJHk3Yrfyts8NSGBDocEbQ2G7BRU4pFN1db9jDIyjXGyhF2ed1B9zBOEH
-	b/Hfh2CTFLitL9wVIZUbOstwfW5LqSZRLQTfNvJrkQmDLbyMKkhrl4T7uB6IHB4M
-	nwjI3qJqhfhhG8nXvvZ8ALXuuCr1F4QKumUC3+U3BxGv8qCSMiTlZgLxGK1l8hSv
-	2sOAa+Z7lP9BkJ2Zf39SfY+71Muip0EAUow==
-X-ME-Sender: <xms:IDT7aGiddsWqzlCadpR4Q5e8X_7MHjdLLHzO0YUOsqI74xL19wdHEA>
-    <xme:IDT7aNAUYMkRBJYao83nLL5AsZ6zMW4h1d28GXAveeQWt5JymEG46tEOxNHjGRCfo
-    A6r5A08OE154P7S6T40JTLbr6s_voihV_-E5vTHcYWgsQMB51Y80g>
-X-ME-Received: <xmr:IDT7aLuypNQxX1oCpT0iY7qAxCW8eV1P1W6mlEKW70GqYi_6PDoV6_d0Wh7N93cksx-iHBslINm5_t3RYcqOL62yRAJWTg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddugeekkedvucetufdoteggodetrf
+	1761293893; x=1761380293; bh=A1W1/mpuUwRke3WBxzD1DJJ7SAoi8btPPhC
+	dmRQSD7U=; b=cJlbd2l0KDEfZJUszlUAo96BxrEf+zIVmVt7M1DIVFXCQ/cbjGR
+	otIePfdTrsZjWL1p+0JY3hifd89TscU+PU3s5VBuKH19zwTNdCZ23zYgx5sYECQh
+	vDTfHwp8TIaQhWhUOaxRnrKFYySZ34aY3GPVb2k6sHQLcRyPZFT447K4Ee3lTSWD
+	OiQuQo6kKPBj2d9R0fq1/1+QPQBCPu+FZ48YGWSpLTzUU4ip92tR+JU40J4JUIT/
+	NoySpCP0ij6qCQI2yzFXaVa09ayh2HfR30yqP51JojVrPjntzlVtSpM9nD2w5+62
+	EXYCNsBtrNwLB9qQJywk9fhyKd3/uoBeemQ==
+X-ME-Sender: <xms:Qzb7aFlxmtJNsxkGiUVpn2RQWSmubAu6S9qVeKI4DPYm1NSV1zqlRA>
+    <xme:Qzb7aOpGxPKJyyGnlA_BI4oSlUwdSWE4cQs8u__vtEEAvcBOAMRWyBWKXHFuKgSCu
+    b8uVrJbDupRlxmfrYAQ9JjnWW7dSn0hZ4He__gUTcMtHcF0A0J7vYU>
+X-ME-Received: <xmr:Qzb7aGGjQa6R8a5JOA-MIOHelA_gIeF13TCZXIkdddSFf_OrHFKSu8wS-nViKScRqhEpdCgrk2CnyGKUQ4oJEZKVhXBtBg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddugeekkeegucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepkffuhffvffgjfhgtfgggsehgtderredtreejnecuhfhrohhmpefrrghulhcuuegr
-    rhhkvghruceophgruhhlsehpsggrrhhkvghrrdguvghvqeenucggtffrrghtthgvrhhnpe
-    ekgedtffekieegheeukeegfedtgfehfeejkeejffejgffgiedtlefgkeekgfegvdenucff
-    ohhmrghinhephihotghtohhprhhojhgvtghtrdhorhhgnecuvehluhhsthgvrhfuihiivg
-    eptdenucfrrghrrghmpehmrghilhhfrhhomhepphgruhhlsehpsggrrhhkvghrrdguvghv
-    pdhnsggprhgtphhtthhopedvpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehrph
-    hjuggrhiestghrrghshhgtohhurhhsvgdrtggrpdhrtghpthhtohepughotghssehlihhs
-    thhsrdihohgtthhophhrohhjvggtthdrohhrgh
-X-ME-Proxy: <xmx:IDT7aKZk8piB4fVTDjHkF6EvpbB2wJ7exPFYufvi5QDQ0Wa8I5_sHA>
-    <xmx:IDT7aGV8cIwNK4srCCZlmk52dAVgks4-kkRAU6ltEUqmhZd_Et015Q>
-    <xmx:IDT7aG6gW7z4HHt6D1lNzMyqO4b77nWdwkq4Qh75BKTiwKfH0Z6tSg>
-    <xmx:IDT7aJjVIqoLt392RnVBBkPiDd1kDYe4WSLV_cWXKj1U-HCU40EwUg>
-    <xmx:IDT7aHCDFLMr7RpPJ5QU96jSh7LZ8xLcB-eF0B3O5sh52GHiV0oDAMo->
+    gurhepkffuhffvveffjghftggfggesghdtreertderjeenucfhrhhomheprfgruhhluceu
+    rghrkhgvrhcuoehprghulhesphgsrghrkhgvrhdruggvvheqnecuggftrfgrthhtvghrnh
+    epjedufedvhfehvedtudelvdeljeeiheeiveffleehffeftdfguddvveejkeehfffhnecu
+    ffhomhgrihhnpeihohgtthhophhrohhjvggtthdrohhrghenucevlhhushhtvghrufhiii
+    gvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehprghulhesphgsrghrkhgvrhdruggv
+    vhdpnhgspghrtghpthhtohepgedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprh
+    hpjhgurgihsegtrhgrshhhtghouhhrshgvrdgtrgdprhgtphhtthhopehmrghrkhdrhhgr
+    thhlvgeskhgvrhhnvghlrdgtrhgrshhhihhnghdrohhrghdprhgtphhtthhopehrrghjrd
+    hkhhgvmhesghhmrghilhdrtghomhdprhgtphhtthhopeguohgtsheslhhishhtshdrhiho
+    tghtohhprhhojhgvtghtrdhorhhg
+X-ME-Proxy: <xmx:Qzb7aCwEvjRlxhlcOy_Q2OrQmU6nxVtmqwYQoyKS-Q5owzBkc0v_hQ>
+    <xmx:Qzb7aDpiIrVzK4Q1ooyt99iwv-XnXBost_6v8sZihP46kGbhqMyisQ>
+    <xmx:Qzb7aEjViPiS2c1-kjJ9BkrfO0DNmEi5WttcuiEq7mbwR6k3hLERvg>
+    <xmx:Qzb7aIgSVHN30_fdzxlqMKMVXdHWN-WbNXsuIJRTOuc9Mz-lvH4qrg>
+    <xmx:RTb7aJ-5SpkKpqh3oMPpCee6BCWIwBs-_Z9lO-9MTfPUJkXzWOgxbsnD>
 Feedback-ID: i51494658:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 24 Oct 2025 04:09:04 -0400 (EDT)
-Message-ID: <14682cecda7f4c87fb6272c95a79cf8388018940.camel@pbarker.dev>
-Subject: Re: where is the "ECOSYSTEM" tab on the YP home page?
+ 24 Oct 2025 04:18:11 -0400 (EDT)
+Message-ID: <09b8e4f82bb36236b6642e53f7aa270e0ad7af7c.camel@pbarker.dev>
+Subject: Re: [docs] political question: which vendors should be listed as
+ providing support?
 From: Paul Barker <paul@pbarker.dev>
-To: "Robert P. J. Day" <rpjday@crashcourse.ca>, YP docs mailing list
-	 <docs@lists.yoctoproject.org>
-Date: Fri, 24 Oct 2025 09:08:59 +0100
-In-Reply-To: <3f870a18-887d-bc8d-6243-8c84a6e9af09@crashcourse.ca>
-References: <3f870a18-887d-bc8d-6243-8c84a6e9af09@crashcourse.ca>
+To: "Robert P. J. Day" <rpjday@crashcourse.ca>, Mark Hatle
+	 <mark.hatle@kernel.crashing.org>
+Cc: raj.khem@gmail.com, YP docs mailing list <docs@lists.yoctoproject.org>
+Date: Fri, 24 Oct 2025 09:18:06 +0100
+In-Reply-To: <1fe3bad1-8226-b22d-ece0-d918a193db3e@crashcourse.ca>
+References: <4b7c71ff-0697-b099-0764-3cfdfbee1313@crashcourse.ca>
+	 <CAMKF1srZwLCmPYfMeg_SnNjHYfVV0AHKK6QJWON03AyMbSTy0A@mail.gmail.com>
+	 <cae364e5-12b4-e69a-fa62-dfc37d3c2d4b@crashcourse.ca>
+	 <1c03195e-e70c-4523-900c-b6469f7975a7@kernel.crashing.org>
+	 <1fe3bad1-8226-b22d-ece0-d918a193db3e@crashcourse.ca>
 Autocrypt: addr=paul@pbarker.dev; prefer-encrypt=mutual;
  keydata=mQINBGC756sBEADXL6cawsZRrDvICz9Y1SG0/lW1me4xpq36obh7a0IGAzp3ywNRb/4MO
  DTqP4+DD0cIFuDY41/N17g0sNlp8z+/k/IIDmNPtYQOTVmAkrkdDU4BP8dD3Cp1PUw6nrbInfujAJ
@@ -115,54 +123,106 @@ Autocrypt: addr=paul@pbarker.dev; prefer-encrypt=mutual;
  OqpPZn7Ij1ga5IAOHNRi5MbyRFROYOeaOj7sz7S7roHQwdP3Q1qTwTOv30hlOSe6uz4PTBiEIKBQH
  ep0k17xg==
 Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-v9OD/cG3eD721GapwA3h"
+	protocol="application/pgp-signature"; boundary="=-9rJBKvaeazIHVz0ZBu1f"
 User-Agent: Evolution 3.56.1-1 
 MIME-Version: 1.0
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 24 Oct 2025 08:09:08 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7787
+ <docs@lists.yoctoproject.org>; Fri, 24 Oct 2025 08:18:18 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7788
 
 
---=-v9OD/cG3eD721GapwA3h
+--=-9rJBKvaeazIHVz0ZBu1f
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, 2025-10-22 at 17:45 -0400, Robert P. J. Day wrote:
->   from:
+On Thu, 2025-10-23 at 05:50 -0400, Robert P. J. Day wrote:
+> On Wed, 22 Oct 2025, Mark Hatle wrote:
 >=20
-> https://docs.yoctoproject.org/overview-manual/yp-intro.html
+> >=20
+> >=20
+> > On 10/22/25 4:00 PM, Robert P. J. Day wrote:
+> > > On Wed, 22 Oct 2025, Khem Raj via lists.yoctoproject.org wrote:
+> > >=20
+> > > > On Wed, Oct 22, 2025 at 1:37=E2=80=AFPM Robert P. J. Day via
+> > > > lists.yoctoproject.org <rpjday=3Dcrashcourse.ca@lists.yoctoproject.=
+org>
+> > > > wrote:
+> > > > >=20
+> > > > >=20
+> > > > >    reading here:
+> > > > >=20
+> > > > > file:///home/rpjday/oe/layers/yocto-docs/documentation/_build/htm=
+l/overview-manual/yp-intro.html
+> > > > >=20
+> > > > > and that page states:
+> > > > >=20
+> > > > > "commercial Linux vendors such as Wind River, Mentor Graphics,
+> > > > > Timesys, and ENEA could take it and provide ongoing support"
+> > > > >=20
+> > > > >    well, sure, but there are a *lot* of other sources for support=
+ that
+> > > > > are not listed there that might deserve a mention. perhaps that
+> > > > > sentence should include a link to, perhaps:
+> > > > >=20
+> > > > >    https://www.yoctoproject.org/about/participants/
+> > > > >=20
+> > > > > or at least a more all-encompassing list of support providers.
+> > > >=20
+> > > > I think a link is a good option provided it is kept uptodate.
+> > >=20
+> > >    I'm sure there is a significant difference between "participants"
+> > > and orgs that provide actual support; I'm just saying that the list o=
+n
+> > > that page is awfully short and it would be useful to have a separate
+> > > list/link for support providers. How one gets onto that list is a
+> > > whole other issue.
+> >=20
+> > (in the distant past) it was always expected that list would be
+> > updated or pointing to another page.  The text that is there is
+> > based on the original membership of the Yocto Project, and I suspect
+> > does need to be updated.  IMHO members (not participants) should be
+> > the ones listed.
+> >=20
+> > The original list was based on OSVs specifically, but this can
+> > absolutely be word-smithed to be more generic then just OSVs.
 >=20
-> "For a look at the Yocto Project community and the companies involved
-> with the Yocto Project, see the =E2=80=9CCOMMUNITY=E2=80=9D and =E2=80=9C=
-ECOSYSTEM=E2=80=9D tabs on
-> the Yocto Project home page."
->=20
->   i don't see an "ECOSYSTEM" tab ... am i just missing it?
+>   Well, this is not something for which I can submit a simple patch,
+> so I'll leave it for someone higher up the food chain.
 >=20
 > rday
 
-This probably refers to an older version of the project website. We should
-point to the pages on Members (https://www.yoctoproject.org/members/) and
-Participants (https://www.yoctoproject.org/about/participants/).
+I think we should drop these sentences so that this definition remains on
+topic, we can just keep the first sentence:
+
+    *Images and Code Transfer Easily:* Yocto Project output can easily
+    move between architectures without moving to new development
+    environments.
+
+We have a later entry in the same list on the "Rich Ecosystem of Individual=
+s
+and Organizations". We could perhaps add a sentence there to say that ongoi=
+ng
+support is available from several Operating System Vendors (OSVs) and
+consultants within the Yocto Project ecosystem.
 
 Thanks,
 
 --=20
 Paul Barker
 
---=-v9OD/cG3eD721GapwA3h
+--=-9rJBKvaeazIHVz0ZBu1f
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: This is a digitally signed message part
 
 -----BEGIN PGP SIGNATURE-----
 
-iIcEABYKAC8WIQSzjPXf5Y1BDWhU2iCrY1Tsnbr0bgUCaPs0GxEccGF1bEBwYmFy
-a2VyLmRldgAKCRCrY1Tsnbr0bocSAQDO5Yp/fKR4uxW1/XdoMFTklNU4EknjH1TO
-3b5crW/gSQD+IhvRlMOPq15HrZ6eMUnBEDXh73uAQoRPy/z31Oeqqws=
-=mimw
+iIcEABYKAC8WIQSzjPXf5Y1BDWhU2iCrY1Tsnbr0bgUCaPs2PhEccGF1bEBwYmFy
+a2VyLmRldgAKCRCrY1Tsnbr0bjuzAQCxj9Vaa3D1/VVcct308EkZY6PJi+9IXUS6
+NpRg64bAoQD/YflOmW7+30lSEZFl+KE0RBBivARHLVHDE+m/G2koAQA=
+=+xGo
 -----END PGP SIGNATURE-----
 
---=-v9OD/cG3eD721GapwA3h--
+--=-9rJBKvaeazIHVz0ZBu1f--
 
