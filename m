@@ -2,102 +2,99 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F19F9CCF9F0
-	for <webhook@archiver.kernel.org>; Fri, 24 Oct 2025 08:20:38 +0000 (UTC)
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by mx.groups.io with SMTP id smtpd.web11.5036.1761294033288693055
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 06654CCF9EE
+	for <webhook@archiver.kernel.org>; Fri, 24 Oct 2025 08:20:39 +0000 (UTC)
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by mx.groups.io with SMTP id smtpd.web10.4943.1761294034744783042
  for <docs@lists.yoctoproject.org>;
- Fri, 24 Oct 2025 01:20:33 -0700
+ Fri, 24 Oct 2025 01:20:35 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=Zwpesmei;
- spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=zEfvWa4g;
+ spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 1B281C0C41F
-	for <docs@lists.yoctoproject.org>; Fri, 24 Oct 2025 08:20:12 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 67B611A163C
+	for <docs@lists.yoctoproject.org>; Fri, 24 Oct 2025 08:20:33 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id EB9E160703
-	for <docs@lists.yoctoproject.org>; Fri, 24 Oct 2025 08:20:31 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 563E8102F247A;
-	Fri, 24 Oct 2025 10:20:31 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 3FA8960703
+	for <docs@lists.yoctoproject.org>; Fri, 24 Oct 2025 08:20:33 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9C5F1102F2482;
+	Fri, 24 Oct 2025 10:20:32 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1761294031; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1761294032; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=3TI6FZXza3hZm31nrRu4T+4VBNjGRqohqb6gQiDX/cc=;
-	b=Zwpesmei3jivJDKRcQAYrkvFqM7+MVl+rXjsCnOstNlDsTEjFXo+kaw9YaKuUSBH2LumPs
-	6ujc1KRXTsiNgWNU5qB5ezxB+236dn9qLwMtk2ava+itPKt0/lzd7HhdqEX1AsAnDqjWv9
-	pvsOshQwz1B+vFi5ozBFPpoJBAB4hljq5TJHO3m1+bu+q6R9f9y973UqkSTlJX9bjAdy3m
-	aOADd/QUvJknISBotW+iG8VhT0+gorIjRNl/evOcFYKWNSKrZGQMGMsrwDJMVJSvht8G38
-	5F3Fec6Ozi/gbfnI0ZYHorKD0a2MWlDbS+qJmxa/HyNxrsmCBKTVMW0nPRbu1g==
+	bh=k69E9/5LVr66vaBpzwBRCaR+CFzSaVAMmxYbZbnXxpM=;
+	b=zEfvWa4gE1k2/tJ2e+/mtgG9WcMz3c5jXYaxSS0HsUH3IcoAGGkFOrWE7X2ys1zMwJy7FO
+	Rm1YM+nOIxgmNLbcoGzG2GEmmdf9ZCHR8/fdE2J5oANy8ysWLB53aNUT42/6my4B0ZLDqX
+	J+tqOD3yYXHNZiP2Frn2mnqPB1vl8bk1tf3/bIWyV4EzvgEGM889mlocdYvWTuNiNTSUD2
+	c3lKqBBoW6FUxZIdi/udRN2LnSv6xXDq4AmiQ78JxfmxujzSxttx8a9A9bmzR16JClATNe
+	0fS07jTkiwCywCRGy/60urw2TPpg9xjr/Tp35wQo32R+KHsludVxeZNjt3mqJw==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Fri, 24 Oct 2025 10:19:53 +0200
-Subject: [PATCH v2 04/16] ref-manual/classes.rst: ccache: mention that the
- host's ccache can be used
+Date: Fri, 24 Oct 2025 10:19:55 +0200
+Subject: [PATCH v2 06/16] ref-manual/variables.rst: document the
+ REQUIRED_TUNE_FEATURES variable
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251024-release-note-5-3-second-hunk-v2-4-d15dabc095d0@bootlin.com>
+Message-Id: <20251024-release-note-5-3-second-hunk-v2-6-d15dabc095d0@bootlin.com>
 References: <20251024-release-note-5-3-second-hunk-v2-0-d15dabc095d0@bootlin.com>
 In-Reply-To: <20251024-release-note-5-3-second-hunk-v2-0-d15dabc095d0@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1425;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1522;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=0nSHWzKsr0gwsemyUQnPcP8AsNTuNdKs6/qNoGDn9H0=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBo+zbI4vWFi8TXgiA6wDZs7vlCBNml5WvfStJN4
- n71dk0EgISJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaPs2yAAKCRDRgEFAKaOo
- NokHD/9T7EKy9tsIKk70Zz/omU/NCEdc7gsKAjZ49OjV2fUMSvlbNor3GxcIjTfR8BebyG35TEg
- h1ozvG/F29dUv/x2XQ6s3UK3QA5tnAFUda9TRTBT258eAHIfxdktkdoNm1K00/1XqUyGx1lAprI
- Pilvew/eK5K4+QJElbAbt7x5FhuxHG/AAZL6RG/rgxNish2VrMRt0W6pL5vDwFmdFzyLV1ct+9m
- mDfDl3scs/Do7fW4dAaizEC+0gelFSimqmbzIFLf4V6WQqZs3TcQO0Y+8dBLMxVAhKwoo4a/hw5
- VfXYKxglk0zLvKVY3MzXWVOadkr4USsTkUKovzOopndNO09wAqUYpQHKsXGSC1oHtM7725RS0Sv
- GYhf/7VjOigu1S8iYecjOFsRdEWMs0g0oO5TSR+GVcbXFJxQXSUAn24v0ksbbyXLjuBOvO37xjZ
- 7Y28B3lIRHvZRvp1hhVGy9pbgGMLl83t/oMq3vuduXmMw6WclRLQzgHPXuq70iYU/A/JEkdCXUA
- EDxGAkxelH7kRpZOsmRppqOc2HpEuT9AYE8+VymcD3JNOtB10mSm4Mtnknpend3gryI+R4jE6Us
- 128HfT/UWxu4CMZa8iOw44vdgv/TUtAjuY76YL421Mo/bSMgfgUvhNU1nTUr1dMj2UbXQ6FCf6U
- VYnptCeqwJyOHlw==
+ bh=wugvFGGpHV1ddD0KYOVWCXbyGOMtm/XZvDnbXdFZBOI=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBo+zbIKk8x75Uf7RZujcF2lGfAA3BFkyZT+JJR+
+ 10j7+tliEiJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaPs2yAAKCRDRgEFAKaOo
+ NiF/D/4gpRggIfEkbFbObqg7OC/FfK+UgH4F1PPTdTpazvuqiFgBfRUzmjBIEbOA7DxDM/aFlhj
+ jN9fZMBA3/DfMgSqAs8wrWiLzZyHpMcAlu0gSe+mcH/+bVWdwXu6gFuC5Olle3y7bo22k1PjfZo
+ rmGMiZ4uO5EZRXFf2guOj4phv3wws7U5XTi8Ej6+jKeakoIQ2+gWja0g2X5iIPYq5yZFM9tnkNk
+ wdkmQCngaHirStQV+SWa4eMJTaV94cEdHANWGjkOMN2MGUWj+khscwlpgR0QdQusPPtgIqBYSkq
+ M0NefGgLWZdCLuReKE61JenYLhUqINGsqJSaKllxkaGyOHI0S3xaClyq8Ko9FZDtRTuMeQDGHa5
+ JU0ZPmcWhH2jJJFZd87gZdkA5WjTT6505bVenePOuITncQTjD4z2HD+bzTZ56Brl8Hl56rKdnQE
+ BcczPscpBycUsjY7An7fy+DNUNnFSLjyOOXSpxR6V/mh6HwXsWXIqilTgmGN4zmE6OVTQ4y5TSj
+ oudQKFFwMjI62YSTfe2DQxHbkw8GFbdVkLLwcH3BEhFeOeFzM5XUVaDYrQOw6ArbJ+Mabnl+K9T
+ Kb8Dd8+GZFBc8WJaVLAEQppZD8SnHnftj13uKiy/Z9LKVhMvPcIF1UrL+kMamLiQCHh6ujPZHEb
+ mkrve8K2SiOrupg==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 24 Oct 2025 08:20:38 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7793
+ <docs@lists.yoctoproject.org>; Fri, 24 Oct 2025 08:20:39 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7794
 
-This feature was added by commit cc91a0f6500e ("ccache: enable ccache
-for all recipes if it is in HOSTTOOLS") in OE-Core.
+Very similar to REQUIRED_DISTRO_FEATURES, added by commit a8ef7339ecb9
+("features_check.bbclass: Add support for required TUNE_FEATURES") in
+OE-Core.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/ref-manual/classes.rst | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ documentation/ref-manual/variables.rst | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
-index f93897be1..4372bbf06 100644
---- a/documentation/ref-manual/classes.rst
-+++ b/documentation/ref-manual/classes.rst
-@@ -392,8 +392,17 @@ file for details about how to enable this mechanism in your configuration
- file, how to disable it for specific recipes, and how to share ``ccache``
- files between builds.
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index 63f29575b..27f761b72 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -7886,6 +7886,15 @@ system and gives an overview of their function and contents.
+       the recipe will be skipped, and if the build system attempts to build
+       the recipe then an error will be triggered.
  
--However, using the class can lead to unexpected side-effects. Thus, using
--this class is not recommended.
-+By default, :ref:`ref-classes-native` recipes are not supported by the
-+:ref:`ref-classes-ccache` class. It is possible to add Ccache support for these
-+recipes if the following configuration statements are provided from a
-+:term:`configuration file`, which uses the host's ``ccache`` binary via
-+:term:`HOSTTOOLS` instead of building ``ccache-native``::
++   :term:`REQUIRED_TUNE_FEATURES`
++      When inheriting the :ref:`ref-classes-features_check` class, this variable
++      identifies tune features that must exist in the current configuration in
++      order for the :term:`OpenEmbedded Build System` to build the recipe. In
++      other words, if the :term:`REQUIRED_TUNE_FEATURES` variable lists a
++      feature that does not appear in :term:`TUNE_FEATURES` within the current
++      configuration, then the recipe will be skipped, and if the build system
++      attempts to build the recipe then an error will be triggered.
 +
-+   ASSUME_PROVIDED += "ccache-native"
-+   HOSTTOOLS += "ccache"
-+
-+Using the :ref:`ref-classes-ccache` class can lead to unexpected side-effects.
-+Using this class is not recommended.
- 
- .. _ref-classes-chrpath:
- 
+    :term:`REQUIRED_VERSION`
+       If there are multiple versions of a recipe available, this variable
+       determines which version should be given preference.
 
 -- 
 2.51.0
