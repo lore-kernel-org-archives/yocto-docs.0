@@ -2,99 +2,97 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 06654CCF9EE
-	for <webhook@archiver.kernel.org>; Fri, 24 Oct 2025 08:20:39 +0000 (UTC)
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by mx.groups.io with SMTP id smtpd.web10.4943.1761294034744783042
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E7557CCD1AB
+	for <webhook@archiver.kernel.org>; Fri, 24 Oct 2025 08:20:48 +0000 (UTC)
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+ by mx.groups.io with SMTP id smtpd.web10.4948.1761294038888410901
  for <docs@lists.yoctoproject.org>;
- Fri, 24 Oct 2025 01:20:35 -0700
+ Fri, 24 Oct 2025 01:20:39 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=zEfvWa4g;
- spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=fO5rx7VR;
+ spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 67B611A163C
-	for <docs@lists.yoctoproject.org>; Fri, 24 Oct 2025 08:20:33 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 98A18C0C41B
+	for <docs@lists.yoctoproject.org>; Fri, 24 Oct 2025 08:20:17 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 3FA8960703
-	for <docs@lists.yoctoproject.org>; Fri, 24 Oct 2025 08:20:33 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9C5F1102F2482;
-	Fri, 24 Oct 2025 10:20:32 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 729A360703
+	for <docs@lists.yoctoproject.org>; Fri, 24 Oct 2025 08:20:37 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3F5E9102F2489;
+	Fri, 24 Oct 2025 10:20:36 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1761294032; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1761294036; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=k69E9/5LVr66vaBpzwBRCaR+CFzSaVAMmxYbZbnXxpM=;
-	b=zEfvWa4gE1k2/tJ2e+/mtgG9WcMz3c5jXYaxSS0HsUH3IcoAGGkFOrWE7X2ys1zMwJy7FO
-	Rm1YM+nOIxgmNLbcoGzG2GEmmdf9ZCHR8/fdE2J5oANy8ysWLB53aNUT42/6my4B0ZLDqX
-	J+tqOD3yYXHNZiP2Frn2mnqPB1vl8bk1tf3/bIWyV4EzvgEGM889mlocdYvWTuNiNTSUD2
-	c3lKqBBoW6FUxZIdi/udRN2LnSv6xXDq4AmiQ78JxfmxujzSxttx8a9A9bmzR16JClATNe
-	0fS07jTkiwCywCRGy/60urw2TPpg9xjr/Tp35wQo32R+KHsludVxeZNjt3mqJw==
+	bh=brJfjuULOxzwo+MVdt9TE/+ayfDxze1XFgRMUEnGV2Y=;
+	b=fO5rx7VR9Bg+3QZNVAYT4REkHAezxiFijvlOgyEsWrnaul6aAaav/dfoaAXCZuhGUBR+IU
+	J9ReRMbof9h+DDwrw12tKV5rYksSq0Yp1jT13XqGww2a1SdOvSVuzGK8G48W+FzVzqkmXB
+	ZzrSDpb3KuEIZrpK//KzKs2Quh7T8ONwTRz6V2gB/ILqAzjWyE+SeQM1rijfoVVsI3GTCW
+	+GmbYea0/z79Cl1xuBSTarvY3HMqz5YeYCCaP5gI9vuA4Dj8P3/8Lrj4t9zZU5pJw+S9Ia
+	E/VDtgjnBqDSlPC3ZAoq0MYSS6EMid8JzPxKyoA13b9fKGz1zEL5cWMX9gbFMA==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Fri, 24 Oct 2025 10:19:55 +0200
-Subject: [PATCH v2 06/16] ref-manual/variables.rst: document the
- REQUIRED_TUNE_FEATURES variable
+Date: Fri, 24 Oct 2025 10:20:00 +0200
+Subject: [PATCH v2 11/16] ref-manual/classes.rst: gettext: extend the
+ documentation of the class
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251024-release-note-5-3-second-hunk-v2-6-d15dabc095d0@bootlin.com>
+Message-Id: <20251024-release-note-5-3-second-hunk-v2-11-d15dabc095d0@bootlin.com>
 References: <20251024-release-note-5-3-second-hunk-v2-0-d15dabc095d0@bootlin.com>
 In-Reply-To: <20251024-release-note-5-3-second-hunk-v2-0-d15dabc095d0@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1522;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1038;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=wugvFGGpHV1ddD0KYOVWCXbyGOMtm/XZvDnbXdFZBOI=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBo+zbIKk8x75Uf7RZujcF2lGfAA3BFkyZT+JJR+
- 10j7+tliEiJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaPs2yAAKCRDRgEFAKaOo
- NiF/D/4gpRggIfEkbFbObqg7OC/FfK+UgH4F1PPTdTpazvuqiFgBfRUzmjBIEbOA7DxDM/aFlhj
- jN9fZMBA3/DfMgSqAs8wrWiLzZyHpMcAlu0gSe+mcH/+bVWdwXu6gFuC5Olle3y7bo22k1PjfZo
- rmGMiZ4uO5EZRXFf2guOj4phv3wws7U5XTi8Ej6+jKeakoIQ2+gWja0g2X5iIPYq5yZFM9tnkNk
- wdkmQCngaHirStQV+SWa4eMJTaV94cEdHANWGjkOMN2MGUWj+khscwlpgR0QdQusPPtgIqBYSkq
- M0NefGgLWZdCLuReKE61JenYLhUqINGsqJSaKllxkaGyOHI0S3xaClyq8Ko9FZDtRTuMeQDGHa5
- JU0ZPmcWhH2jJJFZd87gZdkA5WjTT6505bVenePOuITncQTjD4z2HD+bzTZ56Brl8Hl56rKdnQE
- BcczPscpBycUsjY7An7fy+DNUNnFSLjyOOXSpxR6V/mh6HwXsWXIqilTgmGN4zmE6OVTQ4y5TSj
- oudQKFFwMjI62YSTfe2DQxHbkw8GFbdVkLLwcH3BEhFeOeFzM5XUVaDYrQOw6ArbJ+Mabnl+K9T
- Kb8Dd8+GZFBc8WJaVLAEQppZD8SnHnftj13uKiy/Z9LKVhMvPcIF1UrL+kMamLiQCHh6ujPZHEb
- mkrve8K2SiOrupg==
+ bh=WssX9NDWKyCc7vjExCZnYzVSEGWsyL2vgRejzBO2X1o=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBo+zbJ07yBiADtgutgOl8abCm1qWMSsCyLVsR6A
+ oheD/yDaKOJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaPs2yQAKCRDRgEFAKaOo
+ NvmYD/9RnzanHpy3oEmlCI+Gvqo5w5nVCx9FMXVSM5sR9TkgyW+9Cwakn++5xc5kZ9Er3Kj7rGs
+ U5w3gXm4s6MSFCB60pVwQLCjtRErV29tO44sICDYcdMunHOWgBaeJiTzRdV/ibVZS8oh3+FFbwV
+ +ykdw0C1UOImaz97vjQwwBe9wMFhbC+47p98P0r0Fu1WOL+XpIdkyfnblCvhVcQM+1aOXICfnGD
+ YoU/w4P5V+SCpOW0o4QhBacLsZCWKJJBBeyA7Ei2+3C4nArRER9zqYwVgk2RgPEopwlOm21Hefd
+ XOvnFmR0qH68haPay5496/m+NjeysoYKrGe1zuIC7eMpxvPuGBs5CsHfMuHsEvWCOGo9tIhdwQl
+ UP2ObO85W8+SW7Oi2XSkhQPNPTIy0Cf2PWfB28m9XUfXhiDOruEUrGAXOboq58eVApAa+MHp5lj
+ eXxW0hLTe6iKfHpk9Zykx/vt8H5+DljwZbwT7zt1tdD5+FzWcfb9JxW4E+pA+w9z2MZb2qDhmTK
+ Cw0SZ/+3p4yBXzOLfOlbj7DwDw6Rj6u0nIC5zKs0CUNRWdhJ4ACPpUWngkuk6Yzig3IKDTfBZLa
+ lZol7Yrqv4CE+NdiXrEr6TwTEf5X3naNifsvPE6SfDrsux2smp9Q9E1wvYbH3wTiQuzgJy8oYO7
+ p4fsp7f9Z2JvRdQ==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 24 Oct 2025 08:20:39 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7794
+ <docs@lists.yoctoproject.org>; Fri, 24 Oct 2025 08:20:48 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7800
 
-Very similar to REQUIRED_DISTRO_FEATURES, added by commit a8ef7339ecb9
-("features_check.bbclass: Add support for required TUNE_FEATURES") in
-OE-Core.
+Mention the use of USE_NLS, INHIBIT_DEFAULT_DEPS and the cross-canadian
+class.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/ref-manual/variables.rst | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ documentation/ref-manual/classes.rst | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index 63f29575b..27f761b72 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -7886,6 +7886,15 @@ system and gives an overview of their function and contents.
-       the recipe will be skipped, and if the build system attempts to build
-       the recipe then an error will be triggered.
+diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
+index 34bc7fed8..cd447d2c2 100644
+--- a/documentation/ref-manual/classes.rst
++++ b/documentation/ref-manual/classes.rst
+@@ -968,6 +968,14 @@ software that uses the GNU ``gettext`` internationalization and localization
+ system. All recipes building software that use ``gettext`` should inherit this
+ class.
  
-+   :term:`REQUIRED_TUNE_FEATURES`
-+      When inheriting the :ref:`ref-classes-features_check` class, this variable
-+      identifies tune features that must exist in the current configuration in
-+      order for the :term:`OpenEmbedded Build System` to build the recipe. In
-+      other words, if the :term:`REQUIRED_TUNE_FEATURES` variable lists a
-+      feature that does not appear in :term:`TUNE_FEATURES` within the current
-+      configuration, then the recipe will be skipped, and if the build system
-+      attempts to build the recipe then an error will be triggered.
++This class will configure recipes to build translations *unless*:
 +
-    :term:`REQUIRED_VERSION`
-       If there are multiple versions of a recipe available, this variable
-       determines which version should be given preference.
++-  the :term:`USE_NLS` variable is set to ``no``, or
++
++-  the :term:`INHIBIT_DEFAULT_DEPS` variable is set, unless the recipe inheriting
++   the :ref:`ref-classes-gettext` class also inherits the
++   :ref:`ref-classes-cross-canadian` class.
++
+ .. _ref-classes-github-releases:
+ 
+ ``github-releases``
 
 -- 
 2.51.0
