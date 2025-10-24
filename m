@@ -2,60 +2,61 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1A06ACCF9E9
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 119BCCCF9E0
 	for <webhook@archiver.kernel.org>; Fri, 24 Oct 2025 08:20:49 +0000 (UTC)
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by mx.groups.io with SMTP id smtpd.web11.5042.1761294042342825164
+ by mx.groups.io with SMTP id smtpd.web11.5041.1761294041845284444
  for <docs@lists.yoctoproject.org>;
  Fri, 24 Oct 2025 01:20:42 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=a0qZiXQE;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=Vdez5a3Z;
  spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 04EB14E412CE
-	for <docs@lists.yoctoproject.org>; Fri, 24 Oct 2025 08:20:41 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id D206060703
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 810024E41268
 	for <docs@lists.yoctoproject.org>; Fri, 24 Oct 2025 08:20:40 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2C9D5102F248E;
-	Fri, 24 Oct 2025 10:20:40 +0200 (CEST)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 5911B60703
+	for <docs@lists.yoctoproject.org>; Fri, 24 Oct 2025 08:20:40 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 33543102F248B;
+	Fri, 24 Oct 2025 10:20:39 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1761294040; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1761294039; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=QxVbbPoHy+2ItKpXV4tEl4nhzeeVWLqBldzqDdxj2oU=;
-	b=a0qZiXQE5OqIn6Uw8iQ3qkwoFZI74iZgciVEL6ehYjSfpC1bu7HJjUMuP/ZX/Ko3pRApo4
-	XjEonoNwzG2v8FvRbFlFOC+7QIg00TxZIuVL5pI1mU3B+aGfpiWraVAk6zkcSAR3rBbaM+
-	30L4HjfNfvwKssrL7HPFJHgvC72VoetrFIrTsBxejmKZWPtRSCG8Rc2Ov8OfWnb5klVI0J
-	Sr6HL4AjdDe0hTUvKFjICsbxRUkDgaWLFsK92HXcWZXB65j/a7MUyXqT0Z+vMxruMqppj0
-	1jw08C9tspQnb0Z3l6a5fBMgXu+ST7kr2Y6lSaMRLaf2A68Bn1NDCgutFr3rEw==
+	bh=VLPWWiRTVtL9il0jJFPm/4r7I+gIArmpwe2wJEe9448=;
+	b=Vdez5a3ZaApkW1b7aJLG5iJcuWX5Gk1/8hfa6DsCeNp8Vh5se43P347MIMhSYUO63jtZyo
+	P9ndEWN3nlM66EWBNA2QRFK1TGsRA7kxncfNmRYZhPN2n7hD/fkwFq1x+CvfN/RoCxNtam
+	nwX91b8aE91nANNKZT1Vl377FIBVLyAanDNLGczleG0Y0xXMjUB1ZhslaIwdkmBni4cKYC
+	jEHDk5j4kEyJnGTfnRiNRoo4cJBWWk13pALhTeEpjr56Zs4MXkg5blB/bbkKt6v/0pPTes
+	IrnMvrLdrz+mHzI0m6MMzYotvvUFy65M1aG69vCCMpafacOtGISXMDLjr+p9jg==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Fri, 24 Oct 2025 10:20:04 +0200
-Subject: [PATCH v2 15/16] ref-manual: document UBOOT_MAKE_OPTS
+Date: Fri, 24 Oct 2025 10:20:03 +0200
+Subject: [PATCH v2 14/16] ref-manual/classes.rst: document the
+ relative_symlinks class
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251024-release-note-5-3-second-hunk-v2-15-d15dabc095d0@bootlin.com>
+Message-Id: <20251024-release-note-5-3-second-hunk-v2-14-d15dabc095d0@bootlin.com>
 References: <20251024-release-note-5-3-second-hunk-v2-0-d15dabc095d0@bootlin.com>
 In-Reply-To: <20251024-release-note-5-3-second-hunk-v2-0-d15dabc095d0@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2759;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1464;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=fshRnOsoqeMy2SG6mv+152UTJS71YaS8VoxvxuE/gII=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBo+zbK25F92WImTIVN3qVnyMabRxfkQoLWsUTIY
- ctCpxtKtmOJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaPs2ygAKCRDRgEFAKaOo
- NsILEACUsDVii2Ej8XKc4p6CDyIkEs5/XMczD098W1L6DL3YzuAIo+liUv+DF5BhMsa1nsIOXld
- 615U9v07p4Bw5IU7HbdsvYd44g0aMEnx6S5M/tybJWIpMoefXPxeDEPfGn0bJDBZIFy22PJQzxv
- tDKUYIBMVa0nIRnoDBqXbrrBp1ScEIZVuTxIRA4fIf147jjjRwqSP5NEpBSYNLan8iJ3MNZ5Npn
- BQuHcLv34XVVLOnYaHr+Mp1qfihClmCh+eK+oOwWAvTX+ippq1YYSPYMy6FE/tUWeLM1EkTGMGl
- pol0vaGC3lD6Ju2iAspgy3HrysyIC3/iS4XSXlbI6mfwpaM8e6FsIFtu8D+juI5xqzT50PdAYJn
- NtEGVb1xcl2Cjn0DzpFW65OHBoaVJWkB8p5po6SWasqx1+lejdt7hWzyVIjyr/KjeyhKDm/TVO2
- Gxc8QfntNH0K9GknfJtFv7szQffvAF4jJ1/UMSUg2VDp3mPQtiIuapFeNAP7upmsuUh9sUUNWyO
- UtOHXsSmsz1pXGdshItNbfAWvwO+aJvObPUlll6cDibjqMlLG6M6g2yYPYrtNAybeccQyUEEdAT
- Sc/frss8Ld4j34HuVF92b1oP9llF419PDP/WPl1D+/NwPE61R5IgUUUp5i0kYSX3qo03DHIX897
- 7zWIEYRU3F0gk1A==
+ bh=35d6ksizHqAIkyE5O70WpN5OP3rXi6azpoki4FwthfA=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBo+zbKPnK5rdodY/b6I9EYpsOu3UnlIXXwzeQ2E
+ jJ0fVj4/6WJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaPs2ygAKCRDRgEFAKaOo
+ NhopD/9vBP2sjSih7OYcoZB8lQg+MFq0fO4GIzehN5FTQwOOB9uqizKLpfSFORlcW3bS5H3KXt3
+ S5YUGrkODLEYVml9GOcEK6WIEJi1UI1ovzuLGhCvahLTA91evYMMpdXGJdgk5i9W0eDcgHyhHit
+ sSsR8WPm6jeDE08Scv8yvCYBWOrOJnazawvDwqEivlpIsqXOu/+/ZbDWYA47mMp7SAVSfMWVYTn
+ Xq4W2ZmrHeVDdvLtOdQTkktQ+Pj2/Zoc1EYkrWPtX0izu6MVMNyG+bxIHVfbv9CGQwEaRgR8+6v
+ Ii0gfxVAcXGQ1PGOhjJFIgl/zrJ9UID392V8BtLeN5GDyr2ekuugw1J2GIdYFCKKlS/eL7fXD1u
+ FiyYvg4rP7z48rdaL+qQ+yRvLVdM45xuw7Qd2gOT69mQYspUFJvVliESPbEdp37wrUey4lp8HU5
+ ASf86ZQ3eluj3vx8bYrjzsYJhwECTkWDYbOFUW++naeVFYjrnCf6qg327ffIXlzhhUHM7EE/eAV
+ y0VUHa9kHUnv5lusUB+9SaQ9A3Ah5YuIRzPr9fmSh7bL3GvsYBGCHe1X4TxvNckuszPLfBHb7Ct
+ DwkaKHLpga/3i2qWer8KAJ+cHN8PvOtKV4cVYGusmN/3BW3HX2B9dYPMKS9BwGz07zXtLTzATf4
+ x1xB0jweAlYUswQ==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
@@ -63,66 +64,46 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Fri, 24 Oct 2025 08:20:49 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7804
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7803
 
-This variable was added by commit 3338330e0c46 ("u-boot: Add specifying
-make options as part the config looping") in OE-Core. Document how to
-use the option in UBOOT_CONFIG.
+Added by commit e478550c8cd8 ("openssl/fontconfig/bzip2: Use relative
+symlinks instead of absolute ones (using a new class)") in OE-Core.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/ref-manual/classes.rst   | 13 ++++++-------
- documentation/ref-manual/variables.rst |  4 ++++
- 2 files changed, 10 insertions(+), 7 deletions(-)
+ documentation/ref-manual/classes.rst | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
 diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
-index 60529ef9f..a0089c415 100644
+index d29feb6c6..60529ef9f 100644
 --- a/documentation/ref-manual/classes.rst
 +++ b/documentation/ref-manual/classes.rst
-@@ -3240,8 +3240,8 @@ There are two ways to configure the recipe for your machine:
- -  Using :term:`UBOOT_CONFIG` variable. For example::
+@@ -2497,6 +2497,25 @@ The :ref:`ref-classes-recipe_sanity` class checks for the presence of any host s
+ recipe prerequisites that might affect the build (e.g. variables that
+ are set or software that is present).
  
-       UBOOT_CONFIG ??= "foo bar"
--      UBOOT_CONFIG[foo] = "config,images,binary"
--      UBOOT_CONFIG[bar] = "config2,images2,binary2"
-+      UBOOT_CONFIG[foo] = "config,images,binary,makeopts"
-+      UBOOT_CONFIG[bar] = "config2,images2,binary2,makeopts2"
- 
-    In this example, all possible configurations are selected (``foo`` and
-    ``bar``), but it is also possible to build only ``foo`` or ``bar`` by
-@@ -3272,13 +3272,12 @@ There are two ways to configure the recipe for your machine:
-          u-boot.bin
-          u-boot-with-spl.bin
- 
--      Setting the ``binary`` value to ``u-boot-with-spl.bin`` will make this
--      binary the one deployed in :term:`DEPLOY_DIR_IMAGE`. It is renamed to
--      include the build configuration name in the process (``foo`` or ``bar`` in
--      the above example).
--
-       This option defaults to :term:`UBOOT_BINARY` if unset.
- 
-+   -  ``makeopts``: the additional options passed to ``make`` when compiling U-boot
-+      for this configuration entry. The options in this entry are added before
-+      the options in :term:`UBOOT_MAKE_OPTS`.
++.. _ref-classes-relative_symlinks:
 +
- -  Or, using the :term:`UBOOT_MACHINE` variable (and its companion variable
-    :term:`UBOOT_BINARY`). For example::
- 
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index d249ca383..6aba20d52 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -10842,6 +10842,10 @@ system and gives an overview of their function and contents.
-       Please see the "Selection of Processor Architecture and Board Type"
-       section in the U-Boot README for valid values for this variable.
- 
-+   :term:`UBOOT_MAKE_OPTS`
-+      The :term:`UBOOT_MAKE_OPTS` variable can be used to pass extra options to
-+      ``make`` when U-boot is compiled.
++``relative_symlinks``
++=====================
 +
-    :term:`UBOOT_MAKE_TARGET`
-       Specifies the target called in the ``Makefile``. The default target
-       is "all".
++The :ref:`ref-classes-relative_symlinks` class walks the symbolic links in the
++:term:`D` directory and replaces links pointing to absolute paths to relative
++paths. This is occasionally used in some recipes that create wrong symbolic
++links when their :ref:`ref-classes-native` version is built, and/or would cause
++breakage in the :ref:`overview-manual/concepts:shared state cache`.
++
++For example, if the following symbolic link is found in :term:`D`::
++
++   /usr/bin/foo -> /sbin/bar
++
++It is replaced by::
++
++   /usr/bin/foo -> ../../sbin/bar
++
+ .. _ref-classes-relocatable:
+ 
+ ``relocatable``
 
 -- 
 2.51.0
