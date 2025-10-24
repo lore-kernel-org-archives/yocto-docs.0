@@ -2,74 +2,74 @@ Return-Path: <paul@pbarker.dev>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6A3D4CCD1A5
-	for <webhook@archiver.kernel.org>; Fri, 24 Oct 2025 08:51:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6BECCCCD1A5
+	for <webhook@archiver.kernel.org>; Fri, 24 Oct 2025 08:56:59 +0000 (UTC)
 Received: from fhigh-b8-smtp.messagingengine.com (fhigh-b8-smtp.messagingengine.com [202.12.124.159])
- by mx.groups.io with SMTP id smtpd.web10.5535.1761295901797851145
+ by mx.groups.io with SMTP id smtpd.web11.5729.1761296209880280547
  for <docs@lists.yoctoproject.org>;
- Fri, 24 Oct 2025 01:51:41 -0700
+ Fri, 24 Oct 2025 01:56:50 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@pbarker.dev header.s=fm1 header.b=UaL6VGr1;
- dkim=pass header.i=@messagingengine.com header.s=fm2 header.b=dK5/PzqL;
+ dkim=pass header.i=@pbarker.dev header.s=fm1 header.b=pEJAnQD2;
+ dkim=pass header.i=@messagingengine.com header.s=fm2 header.b=WDCXfPTI;
  spf=pass (domain: pbarker.dev, ip: 202.12.124.159, mailfrom: paul@pbarker.dev)
-Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id CD4577A0047;
-	Fri, 24 Oct 2025 04:51:40 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-12.internal (MEProxy); Fri, 24 Oct 2025 04:51:40 -0400
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 0FA697A00AB;
+	Fri, 24 Oct 2025 04:56:49 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Fri, 24 Oct 2025 04:56:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pbarker.dev; h=
 	cc:content-type:content-type:date:date:from:from:in-reply-to
 	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm1; t=1761295900; x=1761382300; bh=XdGG4ngRXj
-	SYt4FqnZG8e53Dndjl05gyLw1Qsk+u3+I=; b=UaL6VGr1xj84+r5x286+FLPDH9
-	wpQad6thSsE5msZjQFH0/WOxcKReiS7qj/SGv1TZAKdT+fTQELRb+8H6k37f2wzx
-	r/8/t+CtzZp5jMgPRCNHdacsyzfj+Iw5WUBVdmgFiUPEj3luXfVs3SWQMDJq8Eft
-	qPcA8760YJrThW1jyUUU1EArtRjArBTxiNk+x2hQ0f4z0xhfSygkGeEHRogQ0FxW
-	UaLwrXX0+R1CMPvP8MeKoczEW6QiZK7Dptv/vDCqJPWKX4SXkpH9CEi8DDTzVAfA
-	WcIBb9hApfNmSD1U6oZKT8aeQLbbYlbfAUE9wSGM66f/PgY1i/qJi+3ST25Q==
+	:subject:to:to; s=fm1; t=1761296208; x=1761382608; bh=mWFOBOaKNi
+	UyRrtmAliXUR7N5B/+xJDTqhjjqtEcY74=; b=pEJAnQD2WpS6DtLVEfA98s7Byq
+	WuUbr92T1eZu6IEr3jANlZ7gtSzPiURoqbnT508Li6/6GCYaDAY8kG72p0MnSm1p
+	L5llwMagTYIttMiWU/nU6tZSzFDQrCoSj2vimpYLzFJdagTHkVi7QqHZXGWFpHuB
+	sFzzigph+KHOYc7pi7J/Q3KuAs+OIiEAJ6G1g9Zs5g4iPoF8rHjfB+DDVgXWJfHl
+	slwDPlQ/c1yakpexGZ+l33spraRhA1HkzECfVxtt5udvVYC90cp7n3krupl0N4Fk
+	Qoo6YCOXbyO1qoDf4Zw1O4WZ+nUaorkfYQJVPRP+P+O03uUTrZe0sATqSBgA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:content-type:content-type:date:date
 	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
 	:message-id:mime-version:references:reply-to:subject:subject:to
 	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1761295900; x=1761382300; bh=XdGG4ngRXjSYt4FqnZG8e53Dndjl05gyLw1
-	Qsk+u3+I=; b=dK5/PzqLKz12Cvg9vHVbpI+dVGirIGUnuE1FItiJCWR5wDnyDim
-	eBUqlOe3F7S899y8zOEVryqh4dYQj5PBxxXO1svoG7m/8E3KN68RRSw4KewvkLaR
-	+KWzCWP9dyKndIWkdf2tYg1MZCqUpczkgU1dHvOMgLxW+QynXBPwNJBkHQJ10umN
-	wrtfkXXFGNFM6M/oUUPTZkoKNRrM06hqyoS0T2K8lQClUC+I7JeiNr5QPdVqNWVN
-	kLSkzjhQMipsszYK1fwmKjZVaDb/VVqd5MSv0HwaG/1zsIY1X49kqa62s21o+i4a
-	WeQfKrwZz+zlLQWaQJv9dhKWy8AnaMnNo9g==
-X-ME-Sender: <xms:HD77aBZPg_78yHPX6x1kzeWACJrUDcuEOxWmj7D5PrNLQf7bUTgX0g>
-    <xme:HD77aOYP0ivxWLNeTXbRJUpHLVbluNctkuIDyw5GbubdM6WkhK3aWH_Rxmk-ueNvQ
-    _jD33VKNudr_P_f7Zm-Xxo561h60Swx9HkMhDLzM_S7tAKAWWARoUKL>
-X-ME-Received: <xmr:HD77aBlfCrPQ6oJuh560T4cTlPIQPfoW-Jb8NjtPTrXashtjCc4rB_fxbVwNnLr67hnXdo4KsxtMjTt1BpIDMJTtqPZCuQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddugeekleduucetufdoteggodetrf
+	1761296208; x=1761382608; bh=mWFOBOaKNiUyRrtmAliXUR7N5B/+xJDTqhj
+	jqtEcY74=; b=WDCXfPTIbKyB2UCFGUUFIdMkwkO4n1RjfWi1KH84nAGsaY3ImDf
+	hx0wYqkVf1dSgGdSMKeqlkjYfY2PtXA477mxonGQWj49YRlHWmiGirzLA5aAXKfn
+	NDKgn0w9sCiJvOzTkor6uzBWCoSwQKsp+d0cRvXzeMNPKttnO78mYRQ2thneHSxc
+	q0CbLVqAVxmiSvYjlCxV4494YWdghcOgW4LGuJAx8O5Ap2auoT5ZGBmUbFONy6mY
+	oYbRJ0v6QydqJWAlsqTD3007xoF+XhijUcZXVrjKw5kBUHOk2ECqIMXElcsRfcdT
+	0znwmG9E1ZhwSRr7cMH427YEUnjit2dgJ6Q==
+X-ME-Sender: <xms:UD_7aES7F63zeOUeZ9vVxUbYpeSiqLUjK5Zc8-RK1d-5A9UOU3ytvw>
+    <xme:UD_7aHxznXjShc69JttuMR-vt2anS7ycWfg679Yj2eyJjSgOkNq8lSEpVSB0UTvC7
+    clcS06Hz9jE9LdKK9Qd5d6h2VF86kMKe9oRFeF2eUQNdd-34JZ2Ww>
+X-ME-Received: <xmr:UD_7aPeJZANxiNAQX_Zn1Z2ocE7fLJGVqmkyD9Lc5_J3-lc8PEDPWHPliLys54Bz7LltdydfK8Lh7VHPZqfiyItoxcDYWQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddugeekledvucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
     gurhepkffuhffvffgjfhgtfgggsehgtderredtreejnecuhfhrohhmpefrrghulhcuuegr
     rhhkvghruceophgruhhlsehpsggrrhhkvghrrdguvghvqeenucggtffrrghtthgvrhhnpe
-    fhtedukedufeeghfffvdfhudeuhfefhfejgeehfeeuueefgfejudefgeeufeefleenucff
-    ohhmrghinhephihotghtohhprhhojhgvtghtrdhorhhgpdhgihhthhhusgdrtghomhenuc
-    evlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehprghulhes
-    phgsrghrkhgvrhdruggvvhdpnhgspghrtghpthhtohepvddpmhhouggvpehsmhhtphhouh
-    htpdhrtghpthhtoheprhhpjhgurgihsegtrhgrshhhtghouhhrshgvrdgtrgdprhgtphht
-    thhopeguohgtsheslhhishhtshdrhihotghtohhprhhojhgvtghtrdhorhhg
-X-ME-Proxy: <xmx:HD77aKw8wQ0l962hjXGV0UMymkQ_8FcyVQD6JWWjHXDLjhgneegOUQ>
-    <xmx:HD77aPPaH3jMcWomaqCa2u7eTul4Gdm_UnfaMlEC9mS7R4UjHBA7Xw>
-    <xmx:HD77aOR24vOqrclsLlHgRTQOuC-NHdvQeabiD2E0ZLYTzo8QKUxGvA>
-    <xmx:HD77aNYpAnwYpY1z_ywShugfAIh0K-cc5akgnhJecmm-ovUi_svZZA>
-    <xmx:HD77aD4V5dXQDgg4NjrW9Z3u1z6H2W1A8rAPvnBugRh8VIH3ZsRBRtDO>
+    ekgedtffekieegheeukeegfedtgfehfeejkeejffejgffgiedtlefgkeekgfegvdenucff
+    ohhmrghinhephihotghtohhprhhojhgvtghtrdhorhhgnecuvehluhhsthgvrhfuihiivg
+    eptdenucfrrghrrghmpehmrghilhhfrhhomhepphgruhhlsehpsggrrhhkvghrrdguvghv
+    pdhnsggprhgtphhtthhopedvpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehrph
+    hjuggrhiestghrrghshhgtohhurhhsvgdrtggrpdhrtghpthhtohepughotghssehlihhs
+    thhsrdihohgtthhophhrohhjvggtthdrohhrgh
+X-ME-Proxy: <xmx:UD_7aDLxUE8VB-uzRhPMqgSO0Be6yIpViwqXQLQ36p_e2OyE5ntn9A>
+    <xmx:UD_7aAEcCB4oUnbQ0WsytzpFQfrdMhuF6dJ-gED8As8W8DnifxiJDw>
+    <xmx:UD_7aNq9IF_VI0jZZZqB9l-uAap2Nnr1lfc-ju4ELcZfwPkzJm3lBA>
+    <xmx:UD_7aJRkD9gzIBauKjtdRVL4_oU-8mF7ZTjCiZ5mw3OyiV5k2VdcAQ>
+    <xmx:UD_7aIz5SRPSgW7-zKPhuULtMDqqgDqDGy-a639tAkiPgzK6_Dz1LAQ3>
 Feedback-ID: i51494658:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 24 Oct 2025 04:51:39 -0400 (EDT)
-Message-ID: <7ac5874010cb90849578cf48ba73c4747f9f675b.camel@pbarker.dev>
-Subject: Re: *very* pedantic observation about how sphinx spaces bullet lists
+ 24 Oct 2025 04:56:48 -0400 (EDT)
+Message-ID: <89dc93e796c8a8ab920324f64168e4a5f04cd51b.camel@pbarker.dev>
+Subject: Re: observations on YP overview manual, ch 3
 From: Paul Barker <paul@pbarker.dev>
 To: "Robert P. J. Day" <rpjday@crashcourse.ca>, YP docs mailing list
 	 <docs@lists.yoctoproject.org>
-Date: Fri, 24 Oct 2025 09:51:34 +0100
-In-Reply-To: <bba108a7-aba1-f4d7-776e-6ebb1431f84a@crashcourse.ca>
-References: <bba108a7-aba1-f4d7-776e-6ebb1431f84a@crashcourse.ca>
+Date: Fri, 24 Oct 2025 09:56:43 +0100
+In-Reply-To: <e59c985c-1b0d-3702-fb17-363ad6ed161c@crashcourse.ca>
+References: <e59c985c-1b0d-3702-fb17-363ad6ed161c@crashcourse.ca>
 Autocrypt: addr=paul@pbarker.dev; prefer-encrypt=mutual;
  keydata=mQINBGC756sBEADXL6cawsZRrDvICz9Y1SG0/lW1me4xpq36obh7a0IGAzp3ywNRb/4MO
  DTqP4+DD0cIFuDY41/N17g0sNlp8z+/k/IIDmNPtYQOTVmAkrkdDU4BP8dD3Cp1PUw6nrbInfujAJ
@@ -115,67 +115,62 @@ Autocrypt: addr=paul@pbarker.dev; prefer-encrypt=mutual;
  OqpPZn7Ij1ga5IAOHNRi5MbyRFROYOeaOj7sz7S7roHQwdP3Q1qTwTOv30hlOSe6uz4PTBiEIKBQH
  ep0k17xg==
 Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-5C3ZiAg71GKzWSxjHZfK"
+	protocol="application/pgp-signature"; boundary="=-jIP/t7hJtbIN7eOqCVYy"
 User-Agent: Evolution 3.56.1-1 
 MIME-Version: 1.0
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 24 Oct 2025 08:51:49 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7809
+ <docs@lists.yoctoproject.org>; Fri, 24 Oct 2025 08:56:59 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7810
 
 
---=-5C3ZiAg71GKzWSxjHZfK
+--=-jIP/t7hJtbIN7eOqCVYy
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, 2025-10-23 at 07:52 -0400, Robert P. J. Day wrote:
->   something i noticed a while back so i figured i'll just whine about
-> it now -- sphinx has a curious inconsistency about how it spaces
-> bullet lists, and you can see an example here:
+On Thu, 2025-10-23 at 08:40 -0400, Robert P. J. Day wrote:
+>   from here:
 >=20
->   https://docs.yoctoproject.org/overview-manual/yp-intro.html#features
+> https://docs.yoctoproject.org/overview-manual/development-environment.htm=
+l#
 >=20
-> the pattern seems to be that if a bullet point consists of a single
-> paragraph, then the next bullet point follows immediately after with
-> no apparent spacing (as in the first two points in that list).
+> * section 3.3, "For any supported release of Yocto Project, you can
+> also go to the Yocto Project Website and select the =E2=80=9CDOWNLOADS=E2=
+=80=9D item
+> from the =E2=80=9CSOFTWARE=E2=80=9D menu ...".  i do not see any link or =
+menu entry
+> named "SOFTWARE". same claim is made a but further down.
 >=20
->   but the instant a bullet point consists of two or more paragraphs,
-> then sphinx adds a bit of space before the next point -- see the extra
-> space between points two and three in that same list. then it goes
-> back to no spacing for the rest of the list.
+>   ah, the graphic on that page shows where it used to be, so that
+> graphic is clearly out of date.
 >=20
->   that appears to be consistently inconsistent throughout (see the
-> other lists on that page to confirm). not fatal, of course, just
-> visually weird.
+>   i think that's it for that section.
 >=20
 > rday
 
-It looks like there is an open issue for this against sphinx_rtd_theme
-[1]. We could try the CSS fragment included in a comment there to see if
-it fixes things, or work with upstream to land a proper fix.
+I don't think the website screenshot is adding value to the docs here.
+We can drop the screenshot and update the text to match the current
+website.
 
-[1]: https://github.com/readthedocs/sphinx_rtd_theme/issues/1555
-
-I'd prefer it if someone with more HTML/CSS knowledge than me looks at
-this!
+Are you able to send a patch for this?
 
 Thanks,
 
 --=20
 Paul Barker
 
---=-5C3ZiAg71GKzWSxjHZfK
+--=-jIP/t7hJtbIN7eOqCVYy
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: This is a digitally signed message part
 
 -----BEGIN PGP SIGNATURE-----
 
-iIcEABYKAC8WIQSzjPXf5Y1BDWhU2iCrY1Tsnbr0bgUCaPs+FhEccGF1bEBwYmFy
-a2VyLmRldgAKCRCrY1Tsnbr0bomoAQCB8xfab5ojJs5p+etmcbaBl88Rq6sI8CGH
-pMi9ZfyjmAD/baK9RgWnZTwZt9Mev8c/qD/FMqHEoaqyeOqaMQx0lQ0=
-=rVVe
+iIcEABYKAC8WIQSzjPXf5Y1BDWhU2iCrY1Tsnbr0bgUCaPs/SxEccGF1bEBwYmFy
+a2VyLmRldgAKCRCrY1Tsnbr0bgc6AP9CFQ7pv68y+/h8pB4n7e2j5Dt0L/ClBNeb
+SJpzDxAq4gD/a+ZwRoGT/iWC37Wglx8FYa7eVssUHfNfoj5Il+jN6gc=
+=AAwp
 -----END PGP SIGNATURE-----
 
---=-5C3ZiAg71GKzWSxjHZfK--
+--=-jIP/t7hJtbIN7eOqCVYy--
 
