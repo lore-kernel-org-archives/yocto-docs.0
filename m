@@ -1,98 +1,126 @@
-Return-Path: <rpjday@crashcourse.ca>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1752FCCF9EA
-	for <webhook@archiver.kernel.org>; Mon, 27 Oct 2025 11:19:34 +0000 (UTC)
-Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.web10.29463.1761563965059451476
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 92F06CCF9E5
+	for <webhook@archiver.kernel.org>; Mon, 27 Oct 2025 12:44:14 +0000 (UTC)
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by mx.groups.io with SMTP id smtpd.web11.31553.1761569049916054327
  for <docs@lists.yoctoproject.org>;
- Mon, 27 Oct 2025 04:19:25 -0700
+ Mon, 27 Oct 2025 05:44:10 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=BNNzseL/;
- spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:References:
-	Message-ID:In-Reply-To:Subject:cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=itR1MHM/R1CztNks44dpqPywVpWey5LxJQreWcD/pAQ=; b=BNNzseL/SZ4d1/O7CjeUsOwMck
-	MeSLguO9K0U+DZxWgkmnqrTrPcriy7oavfxsRNI2BZeCl1dRoGyqhtqQ5E9ot9TBvqOGEu+6CULZs
-	UMm9BypDq+QL4T316zcU5HVkfMhha+ZhkSkFnNJyfHDNDbyfwR5dQ1YV3aPZRMOUOvzKR1dAC6OW6
-	KTRcJMriO+4nPU/kKgFNz0JpoiI3vs6WwFsQz7AbSUF4O0nr5pcqGLM090UJ6WxahfpF1yYM0+x0o
-	QuEWSgPR8LQcd4KRwCCLYetTUVQxSw2Ra+IBel8GIy4Ldkp1kz9MzJ2dL5WvqZiPXObOfrMdu8/NX
-	k9JyG1LA==;
-Received: from [147.129.179.166] (port=37946 helo=rday)
-	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1vDLFx-00000008xdB-3WsT;
-	Mon, 27 Oct 2025 07:19:23 -0400
-Date: Mon, 27 Oct 2025 07:22:05 -0400 (EDT)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: Alexander Kanavin <alex.kanavin@gmail.com>
-cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: Re: [docs] we *need* an earlier and better explanation for "container
- layers"
-In-Reply-To: <CANNYZj8+a2VC+g97Y9qzJ+yNEBzf7V6Opp6Ez2WdZsQaaW0FKg@mail.gmail.com>
-Message-ID: <133f710f-b13b-4445-39f5-6f51a0e57d9e@crashcourse.ca>
-References: <fd973751-adb0-636f-a9f1-b22f63573e60@crashcourse.ca> <CANNYZj8+a2VC+g97Y9qzJ+yNEBzf7V6Opp6Ez2WdZsQaaW0FKg@mail.gmail.com>
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=ifUkH485;
+ spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 4F44C1A16B1
+	for <docs@lists.yoctoproject.org>; Mon, 27 Oct 2025 12:44:08 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 25FD16062C;
+	Mon, 27 Oct 2025 12:44:08 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3553C102F24FE;
+	Mon, 27 Oct 2025 13:43:51 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1761569032; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=NHAGVO+NdVoIM4J3LtsOyF79XuwVY0oBZJ5FKT12pec=;
+	b=ifUkH485A75p48/zS1JbNXudoslCn88ow3POaW02AgM9qTujfVWGGBWmo04Xb5TtdSSvqZ
+	cnXIMxVJ9sQR3dNlJd7xelECj2oFKRUDkFn6V5DmV2NZOCHcUxHinHmxSvACx84vmACN7a
+	cTSw0RhkQd7jNyjpo4443xmiPBPmDG4huAugTFcoRUQHqGeDh+6iPR7LQFWWIc9YaSHkHP
+	0gdSr1ZsePXx061pBzFLxIEeem/ppM9/X5/yFKSYoXIIXbZeiA0wsnPfj+NUF4IDTMrT8T
+	PPrRaMqvJ5LdSMvffGnHngGMzPSAKLKYOwiluvl3fDMHYddRyS4fI/pJOg5J7w==
+From: Antonin Godard <antonin.godard@bootlin.com>
+Subject: [PATCH v3 00/16] Updates for 5.3
+Date: Mon, 27 Oct 2025 13:43:32 +0100
+Message-Id: <20251027-release-note-5-3-second-hunk-v3-0-07d36e2380b8@bootlin.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAPRo/2gC/4XNQQ7CIBCF4as0rB0DVIy48h7GRRmmFq1goG00T
+ e9uqRvd6PIlL98/skTRUWL7YmSRBpdc8PMoVwXDpvJnAmfnzSSXimupIVJLVSLwoSNQUEIiDN5
+ C0/srGBTaIFm7Q8Nm4h6pdo+FP57eO/XmQthlMz8al7oQn0t/EPm3pAQX29+pQQAHyWsprBG1L
+ vFgQuha59cYbizHBvnByc0fTs6cFcpWBrlWln9z0zS9AGhH9I8rAQAA
+X-Change-ID: 20250929-release-note-5-3-second-hunk-bc19bcedd8cb
+To: docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Antonin Godard <antonin.godard@bootlin.com>, 
+ Quentin Schulz <quentin.schulz@cherry.de>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2716;
+ i=antonin.godard@bootlin.com; h=from:subject:message-id;
+ bh=BbAzUgzr2VA87p/7Qn+uCOGy4sJYcE56/qi/yUwRxlM=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBo/2kEGjVgMLRsOU16Iq4P+GzCgBEIy6sYFcMtb
+ mB94x9LrYyJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaP9pBAAKCRDRgEFAKaOo
+ NqyVEACM9G2Pd+Yhua3PfkFY09axnSi/GAbXW6Xu5P8TVprro++zMSU8T1rr6U6wKawGRuQitwg
+ xmePWascp5Q8FjzppmQrh9c3FiYVmlti7xMtOFWu4y7WY7d+HNQesui6Cx9fCjlrBilYCSr9OQe
+ WBcKqNFb/MzcpFCteGc+6M43dwrfwBj1cXc6raGXpePK4Klq97FfUZJu9N7G04RYXhFAeMd8DOw
+ pDUysMs+pEq3W2vdF/fVRrV8WMSCM1ZqPNVj5vkdomYFdA2W8X9C+PNykEhpNSmriYNzffqhT7B
+ 3Ux/OfIAABgWcJnVtnL3rjHEY6ZMShEFlYbaEevVPkUW9/UorOcQBTYG6qBraijUfnPGz3BYxrN
+ icrUYAyU94oRKCAE0cn+A1rRGpvHAoLiE1UGlPfLf7EQgRQIDBIAO/IU8QABuKpI1Qm6HQ9Pe9U
+ DbGAG9/nUvByX+IpVNE3IH0eqpBhGmenHsNxiLYTf+TpIX0b0s84G7+NXp0YRFqBv/5ubop9qTE
+ sA7xtIHLIhaS0N8JlrHoZXi7C3bczk4Tl5cGnKyOMxRmD14/5vlPZOuaih8UH41UhVHxZv1bk0e
+ dgoULA2/a5H9Noe2aCRf46uzsnDUKDdpuRmpm+anR1zC/fRsNR0SWUEbktARFH01nlMLpWEp3gG
+ n+qU9Qunw7VeWCQ==
+X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
+ fpr=8648725188DD401BB9A0D3FFD180414029A3A836
+X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 27 Oct 2025 11:19:34 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7848
+ <docs@lists.yoctoproject.org>; Mon, 27 Oct 2025 12:44:14 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7849
 
-On Mon, 27 Oct 2025, Alexander Kanavin wrote:
+Update the documentation and release notes for 5.3, covering changes
+from bd4625cd4db0 ("build-appliance-image: Update to master head
+revision") to 4a1f38dd8db1 ("bitbake: knotty, uihelper: Remove
+running_pids and lastpids") in Poky.
 
-> On Fri, 24 Oct 2025 at 15:43, Robert P. J. Day via
-> lists.yoctoproject.org <rpjday=crashcourse.ca@lists.yoctoproject.org>
-> wrote:
->
-> > i realize all of this sounds trivially simple to denizens of this
-> > list, but i recall those many years ago how i was confused as to how
-> > these "layers" worked when there were these different combinations not
-> > clearly explained.
-> >
-> >   thoughts?
->
-> I do have some:
->
-> - first, let's just drop the 'container layer' term altogether.
-> There's no special handling for that, it's only a matter of arranging
-> the file tree.
->
-> - instead explain that a layer is defined by presence of
-> conf/layer.conf and enabled by adding the directory containing that to
-> BBLAYERS
->
-> - and multiple layers in a repository can be arranged in broadly three ways:
->
-> -- repo checkout with a single layer at the top level
-> -- repo checkout with several layers in their own directories under
-> the top level (meta-openembedded)
-> -- tree-like directory structures where a layer is nested inside
-> another layer, but neverthless they need to be enabled individually
+Note: this is based on the current master-next as it requires the
+uboot-config changes.
 
-  i agree that "container layer" is not a helpful descriptor. i also
-agree that the emphasis should be on what constitutes a proper layer,
-with a casual addendum of, "by the way, a single git checkout can
-fetch not just a single layer, but several layers in a couple
-different layouts, etc ... with references to real examples such as
-meta-openembedded and meta-security to drive home the explanation.
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+---
+Changes in v3:
+- Apply suggestions/rewordings/formatting from Quentin and Gyorgy (thanks!)
+- Link to v2: https://lore.kernel.org/r/20251024-release-note-5-3-second-hunk-v2-0-d15dabc095d0@bootlin.com
 
-rday
+Changes in v2:
+- Corrections based on the comments of v1. Thanks Paul and Quentin!
+- Drop the FIT_LINUX_BIN patch for now as it may be reverted on OE-Core.
+- Remove mention of IMAGE_EXTRA_PARTITION_FILES for now as a v2 will be
+  sent.
+- Link to v1: https://lore.kernel.org/r/20251016-release-note-5-3-second-hunk-v1-0-20f21db1f93c@bootlin.com
+
+---
+Antonin Godard (16):
+      ref-manual/qa-checks.rst: drop var-undefined
+      ref-manual/features.rst: add new opencl feature
+      ref-manual/classes.rst: document the python_pdm class
+      ref-manual/classes.rst: ccache: mention that the host's ccache can be used
+      ref-manual/classes,variables: document the CCACHE_DISABLE variable
+      ref-manual/variables.rst: document the REQUIRED_TUNE_FEATURES variable
+      ref-manual/variables.rst: document the REQUIRED_MACHINE_FEATURES variable
+      ref-manual/variables.rst: document the REQUIRED_COMBINED_FEATURES variable
+      ref-manual/variables.rst: document the REQUIRED_IMAGE_FEATURES variable
+      ref-manual/variables.rst: document the USE_NLS variable
+      ref-manual/classes.rst: gettext: extend the documentation of the class
+      ref-manual/classes.rst: document the rust-target-config class
+      ref-manual/features.rst: add entry for the coresight machine feature
+      ref-manual/classes.rst: document the relative_symlinks class
+      ref-manual: document UBOOT_MAKE_OPTS
+      migration-guides/release-notes-5.3: updates
+
+ documentation/migration-guides/migration-5.3.rst   |  47 ++-
+ .../migration-guides/release-notes-5.3.rst         | 335 +++++++++++++++++++--
+ documentation/ref-manual/classes.rst               |  76 ++++-
+ documentation/ref-manual/features.rst              |   8 +
+ documentation/ref-manual/qa-checks.rst             |  11 -
+ documentation/ref-manual/variables.rst             |  68 +++++
+ 6 files changed, 505 insertions(+), 40 deletions(-)
+---
+base-commit: 05b96f7b0e092b32a88b769d747df05135fc9522
+change-id: 20250929-release-note-5-3-second-hunk-bc19bcedd8cb
+
+Best regards,
+--  
+Antonin Godard <antonin.godard@bootlin.com>
+
 
