@@ -2,40 +2,39 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7E3F0CCF9F0
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6C323CCF9EA
 	for <webhook@archiver.kernel.org>; Mon, 27 Oct 2025 12:44:34 +0000 (UTC)
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by mx.groups.io with SMTP id smtpd.web10.31744.1761569071568619414
+ by mx.groups.io with SMTP id smtpd.web11.31556.1761569064940825046
  for <docs@lists.yoctoproject.org>;
- Mon, 27 Oct 2025 05:44:31 -0700
+ Mon, 27 Oct 2025 05:44:25 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=j4ye8/94;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=Q+oiEQvt;
  spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 4724D1A16B4;
-	Mon, 27 Oct 2025 12:44:30 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id A312E1A16B1
+	for <docs@lists.yoctoproject.org>; Mon, 27 Oct 2025 12:44:23 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 1D8866062C;
-	Mon, 27 Oct 2025 12:44:30 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B3A47102F2502;
-	Mon, 27 Oct 2025 13:44:28 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 785D36062C;
+	Mon, 27 Oct 2025 12:44:23 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DAE71102F2500;
+	Mon, 27 Oct 2025 13:44:07 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1761569069; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1761569048; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=/d9AjYCoGrhxDg3RqC52o+CCl6aK8Tw3j+8OEspbkYk=;
-	b=j4ye8/94TH3b+sld1DnSAKpLe4MC+Q/2R3fQk56uYpS14SKpHcCqhmfbbgnhCQDFgtTutb
-	0JyQTEu1imt1TMmNlwEGovERyhAMeKtGCyVtE8Jwgboioxoc1c76Zv1CZQ5WtXWHFTY3zA
-	l19UHXfBhnB6/yUudXd5iD3y3J5ApDvV6byql2fGsyluRP26raJ8XI9c2lm/RdeHGTlwlt
-	yhCLdIsI7b1kw4nk4sbCR6sYxd1ekvI+afwom3h3QzyRaOB6RMu7CU4qq8rRSrLL94XLoR
-	kjEs9ju7FDXmvdWyjcIgLLdHxlCdxJApUn/qERluKSKBTdo61GVmH83rvTluoA==
+	bh=TC5cC3+7nwLwRN/YzfFZkcwerHbu+pU/BEXqG/rRcw8=;
+	b=Q+oiEQvtP5iPz9QCvwo/E4c6MY5cTLKncfGDIuPEig9KS2PeGiYDyHpmi1mpGcMtYAdotP
+	Hdch8alKH5b5jThwb9fsWiYalz8Bej0YkXN3uNThfq7ZppkvffErhZr+oP94pvEWZx2r3l
+	eUmNUNhG/d1dDvooxUEOd4Wfq9E70Lxe1EBVFN0QrUCHOaiY68aEtwHRYPw50BTC6g6jQO
+	aKq/zP/inZQ8MPLDkR9oVDv4PkCTTRvlp/uhn3FYdylfWyKogs/JGw9TPDM9UPhvrrjtzE
+	j9Qur15s4Y5gp2OuN2jOBAMw8Jp21zaEYz18idTJDnRe17p0kP0D/fgpRBtl1Q==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Mon, 27 Oct 2025 13:43:39 +0100
-Subject: [PATCH v3 07/16] ref-manual/variables.rst: document the
- REQUIRED_MACHINE_FEATURES variable
+Date: Mon, 27 Oct 2025 13:43:33 +0100
+Subject: [PATCH v3 01/16] ref-manual/qa-checks.rst: drop var-undefined
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251027-release-note-5-3-second-hunk-v3-7-07d36e2380b8@bootlin.com>
+Message-Id: <20251027-release-note-5-3-second-hunk-v3-1-07d36e2380b8@bootlin.com>
 References: <20251027-release-note-5-3-second-hunk-v3-0-07d36e2380b8@bootlin.com>
 In-Reply-To: <20251027-release-note-5-3-second-hunk-v3-0-07d36e2380b8@bootlin.com>
 To: docs@lists.yoctoproject.org
@@ -43,21 +42,21 @@ Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
  Antonin Godard <antonin.godard@bootlin.com>, 
  Quentin Schulz <quentin.schulz@cherry.de>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1605;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1230;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=fIxThbGqy8XUsrACN0fv0RQgveYGhSQAjsGDQ5PxBxE=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBo/2kFAO5gVXHf1wDbzD2/+7PiUAre85mIvNxmd
- wAh3iEWG9yJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaP9pBQAKCRDRgEFAKaOo
- NvICD/48o766DW66f7gqQQTDGl589YyxlOdne+Iu/llo9xl+kIOctvozceiJPTWM3HNo4RRFsnx
- bA0H2fK0rLhxK7dCuGwXDX41qRHHm0RgHVZyONrZ2ob0LAXm6/aeNwT1XvOaXOsrS8CoZy+4mE6
- wIx50e5hgtf27/qjaB3JJq3Bfjnm+xpPMRncqlpn4B9JuyWhsysoWI71a1Du+MMFSa7f6/u6yLp
- lSy7dxOcqMCfdF5Pu59tRF48S0xwM/GJ5Z7UgS+n3HE9DUKG8P4fgrJsfZ91BBLCGOM03w58J8O
- BDBKbI3sAC61eTzSdHu/4y76ChqiCjrKzZXDgnIDTzX9JJM4GmARlxrEmSDrXIIAPiownIqjadf
- CAoRZoqLOz4mbnqxlIIoXAAh+EQbyTCFJoSmysDoWGZuuRvrqcHlIONBnDOH0YEl/SlO12IuLQg
- Hi0/QQ6WYDVTzY6WxyHJJJW0T3AvYO7e67wSsixkDlKo84YoPR2gz/DmjRZ6ScD9mHOuBdcxA8r
- hut4V18gx5Bg+skueNAU74OcqCKR8cp6Ki98wfrOqIqJEjVxzxfbqQUZfzEX8E8eKAZ7yXoVmy3
- G8Y/+3f6+u+YJUgYxqqMGXrBa+nyPI82pxohH4O8PVtnn0XKO7qhi2K3k+j0Y3WtMxPAd27+65z
- nj7tafp5zehlxOg==
+ bh=Omzp9bhO7JfhGPac+6+d3zqRYr2jZ1IghJTI+rWAPFk=;
+ b=kA0DAAoB0YBBQCmjqDYByyZiAGj/aQSj/A35gsR13ZVuaEkqWwRhw5GUAdeoEUXG/gHHouVPt
+ IkCMwQAAQoAHRYhBIZIclGI3UAbuaDT/9GAQUApo6g2BQJo/2kEAAoJENGAQUApo6g29aYP/A/k
+ JRBL2t6OPqaS/TStI7WNzCKV2I3/5YfvvRgY7eLXJCtrMXnKRsc1neDiXy++CW9dBWLRlMSgEzM
+ PNvFS1tGb+cXjfb/yICkxAkoI8iQeuirVmJqIhmRvy3QSAjQduBC3OmCczIxRaWukvetw3YtX6m
+ D8lTQdJlZJB+7rYtA2qCn9GYtzB7jEvKP0wzYBMikWHzeRo8zDgsoODe9Ttb5pR0OAPBZnRI3qm
+ X/nnLO/RmlWPxZ7WHkWcbIEWK1kf2T/jZFnmXFXCVPeEdTmo8BQ62kmC63MBLUsHksPfVwf72Sd
+ DtOFqOkxUYh9iRfiMH3/SJA5/3zSICiMepcnF0E76yfh5aZdNAZRmaV/ZYbJDbWQZxvLlZueOHU
+ XhTXUTCJVqK6xsGv/s6YRWffhgZUsgPtqs/QRQApU2drllVhYht8u7m6oEVkEII7EDrekO8gwzs
+ VtXOekklTDeLDJgjjMD6JIhRq5M5tl81vYVcmhL5MM0ukGqvBnZqQQf/jLYFDjgi7SP2GdkIUyP
+ y0CqCIqJ9z3oCocS9RaOUvM3MBjyNwfT8PCo0DJqo8TfAc5QGECmNa/LmAyhtKYcQ/l5q6rWoqu
+ vdVieUkddbPcRt0q55DyOkZSr3xMCA6+j3mGIWElflzeZmT0bjjpPCsx8gh3o+tZxPTTlHuhA77
+ 14H7E
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
@@ -65,37 +64,39 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Mon, 27 Oct 2025 12:44:34 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7856
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7850
 
-Added in OE-Core commit: 5f4875b950ce ("distro_features_check: expand
-with MACHINE_FEATURES and COMBINED_FEATURES, rename").
+Drop the var-undefined after it was dropped in OE-Core cb69d7eba802
+("package: Drop var-undefined QA check").
 
 Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/ref-manual/variables.rst | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ documentation/ref-manual/qa-checks.rst | 11 -----------
+ 1 file changed, 11 deletions(-)
 
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index 5af64a018..40232ba0e 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -7950,6 +7950,15 @@ system and gives an overview of their function and contents.
-       the recipe will be skipped, and if the build system attempts to build
-       the recipe then an error will be triggered.
+diff --git a/documentation/ref-manual/qa-checks.rst b/documentation/ref-manual/qa-checks.rst
+index 9dfbbff02..9654cf08e 100644
+--- a/documentation/ref-manual/qa-checks.rst
++++ b/documentation/ref-manual/qa-checks.rst
+@@ -983,17 +983,6 @@ message, it indicates that the :ref:`ref-tasks-install` step (or perhaps the bui
+ of the variables set up for this (``bindir``, ``sbindir``, etc.), and should be
+ changed so that it does.
  
-+   :term:`REQUIRED_MACHINE_FEATURES`
-+      When inheriting the :ref:`ref-classes-features_check` class, this variable
-+      identifies :term:`MACHINE_FEATURES` that must exist in the current
-+      configuration in order for the :term:`OpenEmbedded Build System` to build
-+      the recipe. In other words, if the :term:`REQUIRED_MACHINE_FEATURES` variable
-+      lists a feature that does not appear in :term:`MACHINE_FEATURES` within the
-+      current configuration, then the recipe will be skipped, and if the build
-+      system attempts to build the recipe then an error will be triggered.
-+
-    :term:`REQUIRED_TUNE_FEATURES`
-       When inheriting the :ref:`ref-classes-features_check` class, this variable
-       identifies tune features that must exist in the current configuration in
+-.. _qa-check-var-undefined:
+-
+-``var-undefined``
+------------------
+-
+--  ``WORKDIR, DEPLOY_DIR, D, PN and PKGD all must be defined, unable to package [var-undefined]`` 
+-
+-   Reports when variables fundamental to packaging (i.e. :term:`WORKDIR`,
+-   :term:`DEPLOY_DIR`, :term:`D`, :term:`PN`, and :term:`PKGD`) are undefined
+-   during :ref:`ref-tasks-package`.
+-
+ .. _qa-check-version-going-backwards:
+ 
+ ``version-going-backwards``
 
 -- 
 2.51.0
