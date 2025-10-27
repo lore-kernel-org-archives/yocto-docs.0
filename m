@@ -2,61 +2,61 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D69E9CCF9F0
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E6DA6CCF9F1
 	for <webhook@archiver.kernel.org>; Mon, 27 Oct 2025 12:44:44 +0000 (UTC)
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by mx.groups.io with SMTP id smtpd.web11.31569.1761569076654309690
+ by mx.groups.io with SMTP id smtpd.web11.31570.1761569077604937374
  for <docs@lists.yoctoproject.org>;
- Mon, 27 Oct 2025 05:44:36 -0700
+ Mon, 27 Oct 2025 05:44:37 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=fWDbW85n;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=h1vCd3NU;
  spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 5B2661A16BB
-	for <docs@lists.yoctoproject.org>; Mon, 27 Oct 2025 12:44:35 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 557411A16B4
+	for <docs@lists.yoctoproject.org>; Mon, 27 Oct 2025 12:44:36 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 3207F6062C
-	for <docs@lists.yoctoproject.org>; Mon, 27 Oct 2025 12:44:35 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4AF21102F24FC;
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 2C31E6062C
+	for <docs@lists.yoctoproject.org>; Mon, 27 Oct 2025 12:44:36 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0374B102F2503;
 	Mon, 27 Oct 2025 13:44:34 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1761569074; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1761569075; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=227XCwD+7DLXpT9xUYhiaJIYS4xQLVhSPceYbtST7cc=;
-	b=fWDbW85njHSsEUXPtZxmcMoAtviyDeCEifBQ7XOdTEpeuOx27S1VbVqYRuT1QMi8lH3xzq
-	vPLlzA7mlrLwDXV1bylh7nw8JbL0BvRQs9/LOOvT5AvAgFcUWATDw/tjVHX+Qsdw9e16U8
-	mlZYJ5zheW3TP2MLiAGu8ZutTFEJ96cnvPgbkRuQtPosioPK20PLIN0asgrfl7R96cFzf1
-	6UpDpMQIq+X5MRLv2C0ZBLRTIu7g0eUwfGZ6KlQZUkN0jY4U6LJTKttW6zGRi7JxOhKOc8
-	BdQ8S3DPAXyjXaSAXbhSVMQvDGuPaWW9Gg//gGHe+e1i0rONq38bMkFPvI+V2w==
+	bh=1/m284fooksfBMc30lVBUhcnFGaXgJkw/BJfQfSJMaI=;
+	b=h1vCd3NUY5+0GW+3hGtQEIz7PkW9zvHpQ+ueHm58eJLMYQXxOYfaj39MRxb4XgX36skaXT
+	LdqUW8EAVLhzmwdDq+AmA3srIdj4y0DO2PjtUsnftmhncweEj0f24/rAfzQ3wM6pl3vTJO
+	Qg9xGFAqlkIIzK8jJn7LGoGA2PybyWsE8sz2NNr4kumdOncIQRLgyLGjRAJAS2RhlqYzGF
+	bbS6UM1M17QqpEBIm6cR0Cte3kNdtelCyx9D8DNxyGTERWJIIAcB8C3xHdbHxgFd8BDGCb
+	gk6wj+/OHucWA7B0j5B8bZbCgH9+pJDXT/sYVniU/AUeFll156jPFjEiSK00oQ==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Mon, 27 Oct 2025 13:43:44 +0100
-Subject: [PATCH v3 12/16] ref-manual/classes.rst: document the
- rust-target-config class
+Date: Mon, 27 Oct 2025 13:43:45 +0100
+Subject: [PATCH v3 13/16] ref-manual/features.rst: add entry for the
+ coresight machine feature
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251027-release-note-5-3-second-hunk-v3-12-07d36e2380b8@bootlin.com>
+Message-Id: <20251027-release-note-5-3-second-hunk-v3-13-07d36e2380b8@bootlin.com>
 References: <20251027-release-note-5-3-second-hunk-v3-0-07d36e2380b8@bootlin.com>
 In-Reply-To: <20251027-release-note-5-3-second-hunk-v3-0-07d36e2380b8@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1166;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=945;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=Gi0g82s/LYgh27giLGRlyl2HtYnhAhb+QQo2y+Ugz0Y=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBo/2kG7/Ka8F2vNYRZye9oLL0hcb/KFwWolnmqX
- akWktrAG1KJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaP9pBgAKCRDRgEFAKaOo
- NgA5D/4lPzKOn3lexCXYI0DhbUaVXlbE7vUgnwS7laAVFYq1TYzQoVEjDI53SEj0bP7od1YC+mV
- JeyNfuP9dgl4Wu3Q0HlxrKHcOMTTPUJ+QcBVaaLwUDr26qQkbgcNWzbUBUshq6uYGYZ8UEY2m/V
- 2wD7aN49lqXfXtqEiYWzzijRdU0BjFzOlFXcqjvsCCrdjF9RWqcnHumaJWime+l3R+Tr3brDiq6
- XxdKM8YHWiPpPeqjEy59pWRRyY9EUUdAhQ6TZLYMQaxx6O05xC84qyofqzSFFOL0c9fofxGFip+
- MTq21McDm17PqX+mEPU83xylM8AeGfKBnwekNe5YIAmSd6FIXsx0AiqqgoAhljXp0568DzrhQ1n
- zIO8S2EUKPNVcFZlDyb04y9yElms9OI+20u9QTwmZAnHGU4zzO3/4SKc/3+JdAcDe1+kbdMcCpK
- JAwRMOcijX3IuKjf6ME/Ny5npHfdDC6Sl/00z0OCYUGWCWt3Xc6MTJoszt2EFiDeksmg76Al03P
- FidMbX6iR+p0SqlKX/JmxKhXoqNUjzYqq5s2YjhQFHrIXBf24WcJyN6oB8zxn/wslYnr7OjJzSb
- 6TgFVpi3wvBxM1J36ZSf1fDwCiUDhJu4x3kLziQR41V51OeW3CQPOSRwt2GhqpUciZCRurxY6OG
- 4hvl5O7Pdu9jdsQ==
+ bh=OKphqcQoLtRwqv65Bkau1Kc4cOZiyKpwewpg+jQGxwA=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBo/2kGe0pZMkohyM8MqOYk9WPQkYFnRCLrPR9bl
+ pkgQsY4qcqJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaP9pBgAKCRDRgEFAKaOo
+ NtLpEACBfvX+Q4hBUCyviCLhMjd+6BNjEZ1BZh9gyRQWQxLm7kTN32vdrfymT8niMjzcMaffreo
+ RsNriYZx26PWDB4hL3q/qZkNHtSbp1/vye7hmM/khKC3S1uKBCYhBq8ijCxLa/W1RmLxBrMjBS6
+ 8/mKWrQ97ujrvr/qAxe/hip2enqtEmUxpTW2ZwaP82cjnJ/QXtK41x6L4g1g4tBiyomGRuXgnN5
+ 8+kwBVdnCyT8CqomEwljfEqUoADDUnS4FUDZk1nO/v0RKyGPDTD1szBaFdIy+3JoOGoP0z3Xm7X
+ +fH9e67tiZh9rxbDT0niLn5s9iarR5xc5IaAmbKFbdcpvZyMrJV/XHxlJeFvVXgv1d4r6h3HsZX
+ VfD1LtBnbOjy4ogH9NTarAkFuEY6hsINc5wG6D9HLOwCEN14IiD4/MOUN1XTKD0IP9CJ6OPJRnE
+ pLGPlGClqGexYGltKqX+8GgejOhDosLR1uwgKIhCHDlxf5ubYglC9nklUTTQGxOb1XzV2QJoZr6
+ IIgXF+Z5MUjW2aiv+bRXaCxFwFB8yF6mJYslahpR4u/kSrLbskF5b8bEEScwKW20EC5ghyXiEIg
+ +gtE4O12zHtTnwg2NBB5iEVrJCsm6FGC9CiUhYHe+slsty+3GtAb3LYzsnek26QvT1qC62DH2FU
+ M1Myq6u4Wra5hqw==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
@@ -64,39 +64,32 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Mon, 27 Oct 2025 12:44:44 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7861
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7862
 
-Document the rust-target-config class.
+Added by commit c455bd039104 ("perf: enable coresight if enabled in
+MACHINE_FEATURES") in OE-Core.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/ref-manual/classes.rst | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ documentation/ref-manual/features.rst | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
-index 5903a4b9a..0e616420c 100644
---- a/documentation/ref-manual/classes.rst
-+++ b/documentation/ref-manual/classes.rst
-@@ -2638,6 +2638,19 @@ The :ref:`ref-classes-rust-common` class is an internal class to the
- :ref:`ref-classes-cargo_common` and :ref:`ref-classes-rust` classes and is not
- intended to be used directly.
+diff --git a/documentation/ref-manual/features.rst b/documentation/ref-manual/features.rst
+index b295ab44e..40651a4c9 100644
+--- a/documentation/ref-manual/features.rst
++++ b/documentation/ref-manual/features.rst
+@@ -54,6 +54,11 @@ Project metadata:
  
-+.. _ref-classes-rust-target-config:
-+
-+``rust-target-config``
-+======================
-+
-+The :ref:`ref-classes-rust-target-config` class is an internal class to the
-+:ref:`ref-classes-cargo_common` and :ref:`ref-classes-rust` classes and is not
-+intended to be used directly.
-+
-+It is used to generate a JSON specification file from the features listed in
-+:term:`TUNE_FEATURES`, which is used for cross-compiling. The logic is done in a
-+``do_rust_gen_targets`` task.
-+
- .. _ref-classes-sanity:
+ -  *bluetooth:* Hardware has integrated BT
  
- ``sanity``
++-  *coresight:* Support for the `Coresight
++   <https://docs.kernel.org/trace/coresight/coresight.html>`__ Linux Kernel
++   feature on Arm processors. This feature depends on the ``opencsd`` recipe
++   which is present in the :yocto_git:`meta-arm </meta-arm>` :term:`layer`.
++
+ -  *efi:* Support for booting through EFI
+ 
+ -  *ext2:* Hardware HDD or Microdrive
 
 -- 
 2.51.0
