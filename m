@@ -1,67 +1,77 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F300FCCD1BF
-	for <webhook@archiver.kernel.org>; Tue, 28 Oct 2025 11:44:57 +0000 (UTC)
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by mx.groups.io with SMTP id smtpd.web10.9295.1761651894761395981
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 314A3CCD1BF
+	for <webhook@archiver.kernel.org>; Tue, 28 Oct 2025 11:58:08 +0000 (UTC)
+Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
+ by mx.groups.io with SMTP id smtpd.web10.9497.1761652685244352744
  for <docs@lists.yoctoproject.org>;
- Tue, 28 Oct 2025 04:44:56 -0700
+ Tue, 28 Oct 2025 04:58:05 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=EWZJGp9l;
- spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 084044E41392;
-	Tue, 28 Oct 2025 11:44:53 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id C8E5D606AB;
-	Tue, 28 Oct 2025 11:44:52 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6FF94102F250E;
-	Tue, 28 Oct 2025 12:44:50 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1761651892; h=from:subject:date:message-id:to:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=ufCVOgoA6m32e+7Y5j1Iz3Ya6ii81N+gv1RXGyyccXQ=;
-	b=EWZJGp9l49lQaidabKSZQxDQkEhg6Am+Ejkp6t7nJhWLLsrCdWtXnFWiT8BJp1xthT8uvd
-	gTJS5GAXPM20EvThYLQs4gRPEppiw5gO+217FkuBSqDhBPr8eaEWz7IrBHaLXwcUHyqtPD
-	WAgxXjlR0Fmx/+afH+I1ROajJf4TcFsUZq7/U8tLtjUfMu6nTk9xhZSluPl2UCntWLGmxg
-	ldZ7gb5QOZ/DSBt4WF2KQqedOq8fA3J2KAqqJNAGAAoaq22Kmbv5FIMRYJIb4UwI6+b0Pm
-	2UhK881w1GnTlzx+/Ymjld7tWg4qUCjjO2m8L81OJZaU4jf9Sq4jAPHjClOmqw==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 28 Oct 2025 12:44:49 +0100
-Message-Id: <DDTXH5FCNZ06.2QT6HN8KPCYED@bootlin.com>
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: "Robert P. J. Day" <rpjday@crashcourse.ca>, "YP docs mailing list"
- <docs@lists.yoctoproject.org>
-Subject: Re: [docs] whatever happened with the notion of documenting dynamic
- layers?
-References: <ec497032-eb7d-3aaf-ad59-7316b3bd6921@crashcourse.ca>
-In-Reply-To: <ec497032-eb7d-3aaf-ad59-7316b3bd6921@crashcourse.ca>
-X-Last-TLS-Session-Version: TLSv1.3
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=atpz2n63;
+ spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
+	To:From:Date:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=tmDmAo2gqV5tBzJaMg1T+dPHrQ3whQYt1hVFOkuojEg=; b=atpz2n63dofPWn89QNEeQL+PZt
+	kRc3SErmM+NTnEGRS8f94pchX1CuOMnsJ4swOV+2tcm1zPjBECTJTrQE0K4+OvDdvIiA5Qy6/VnHU
+	cTCMgcbVl9m7Vfmf1EaSnzOluSxSZ+QDjxH3Z0NGbJkHlB3KkSD/HcPodLOAz1UCrZ8FFpCr/MoM5
+	Q3Nyl23RVVkakxqoGO3WhrU+nVfA4hLPvbNTN8KnG16EjxfWvUgzldqNpI2N8wps5ygGpqgadigFh
+	S/d0doK5K323vs2j3NgDQRGX3ylkgT0B1wph5XSP3IHyDgaOWsTmAe6V/PJhxddNDKsx43oxfuPr3
+	c9KRvfdQ==;
+Received: from [147.129.179.166] (port=45228 helo=rday)
+	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <rpjday@crashcourse.ca>)
+	id 1vDiKv-0000000CbQD-2Yq7
+	for docs@lists.yoctoproject.org;
+	Tue, 28 Oct 2025 07:58:03 -0400
+Date: Tue, 28 Oct 2025 08:00:51 -0400 (EDT)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+To: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: [PATCH] dev-manual/layers.rst: document "bitbake-layers
+ show-machines"
+Message-ID: <cd97575f-dc17-df8f-7d9f-a253df64a09e@crashcourse.ca>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
+X-AntiAbuse: Original Domain - lists.yoctoproject.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - crashcourse.ca
+X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 28 Oct 2025 11:44:57 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7880
+ <docs@lists.yoctoproject.org>; Tue, 28 Oct 2025 11:58:08 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7881
 
-On Tue Oct 28, 2025 at 11:34 AM CET, Robert P. J. Day wrote:
->
->   i recall someone mentioned that dynamic layers are currently not
-> documented in the YP docs.
 
-Hi Robert,
+The "show-machines" subcommand is not mentioned in the docs; add it.
 
-I believe you are talking about:
-https://bugzilla.yoctoproject.org/show_bug.cgi?id=3D15713
+Signed-off-by: Robert P. J. Day <Crpjday@crashcourse.ca>
 
-Antonin
+---
 
---=20
-Antonin Godard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+diff --git a/documentation/dev-manual/layers.rst b/documentation/dev-manual/layers.rst
+index cc7103ba6..e1c9aaeef 100644
+--- a/documentation/dev-manual/layers.rst
++++ b/documentation/dev-manual/layers.rst
+@@ -873,6 +873,8 @@ The following list describes the available commands:
+    can replicate the directory structure and revisions of the layers in a current build.
+    For more information, see ":ref:`dev-manual/layers:saving and restoring the layers setup`".
+
++-  ``show-machines``: Lists the machines available in the currently configured layers.
++
+ Creating a General Layer Using the ``bitbake-layers`` Script
+ ============================================================
 
 
