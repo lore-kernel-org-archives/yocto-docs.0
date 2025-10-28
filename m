@@ -2,14 +2,14 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7F3D1CCD1BF
-	for <webhook@archiver.kernel.org>; Tue, 28 Oct 2025 10:34:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9BD73CCF9E0
+	for <webhook@archiver.kernel.org>; Tue, 28 Oct 2025 10:54:57 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.web11.5105.1761647646442497145
+ by mx.groups.io with SMTP id smtpd.web11.5444.1761648897002848130
  for <docs@lists.yoctoproject.org>;
- Tue, 28 Oct 2025 03:34:06 -0700
+ Tue, 28 Oct 2025 03:54:57 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=NN9h1C5e;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=YWBdmfKI;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
@@ -17,24 +17,24 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=IaJ5W2+GhqW5qLSoGV6urckk6qd78f9VlG/JB2xiGxw=; b=NN9h1C5e2JCK2u13ZDkqSlGxko
-	+1+lJJT48fih/afq+tHX8mgTFP2HxHjyY+WT8lYAWqoV9sN4Fp3I6P7olzzpyhmi5n18kHxxAc1dq
-	C8subN4Q2YlmlKnGS2xPbSi8CKXlC90OFutjb46+dQf4MmtEyTLgkriwxJl5baRyMM9TcJvwiJd0y
-	aIKLjBnT/KwJqlnUVaDXQCT6FEorluqPWfZ556JyPPx61eUzFjS3VeEAye+WjlkXO2XUoTdODZrG5
-	nam4ZYvrFQ8BHRAEnwJ5gUrvLdR6dj6LcQlg190By6BjE0Zw4MSZtdHo6JKK2Rs5Q975LOtjWfWwW
-	xfX2kECw==;
-Received: from [147.129.179.166] (port=38024 helo=rday)
+	bh=EHUIHiE312LGzqzGPCEKUr/AP/6hZHE3l4s3IUcTLP0=; b=YWBdmfKIgRFRezUC4xBZXmh8MX
+	PnCPNq1aCSp6MS4r8qXNL0VlqKAae3Wui1GDO+LdUXr0UmoCLIozK8AqUuEB73kLd4G0yRuCKVF3G
+	TiubfiHkPkhSmzXkaHFOOoz7suZbqfEr0JGFG3lzQUyXfivHyYRUlKtCKh7m2rkx+3Pc7ldsrWCyP
+	y+TFVO/GwJZ0ATFvpNnX8IAKnfrqchTNz7wAViA1YX+W2aGV+NC7tnfp346K7kFlqLsWzZWKQP77f
+	XlWm6+ywCSxKGRhxSx39QMFQq8fWt5+eWNjjnVRIac1NVvLGp6SHMCsxRMvtjDay+zmDC+ha3INTr
+	MwTd5EXw==;
+Received: from [147.129.179.166] (port=57518 helo=rday)
 	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1vDh1e-0000000CPWO-2Ddu
+	id 1vDhLo-0000000CSJh-3Une
 	for docs@lists.yoctoproject.org;
-	Tue, 28 Oct 2025 06:34:05 -0400
-Date: Tue, 28 Oct 2025 06:36:52 -0400 (EDT)
+	Tue, 28 Oct 2025 06:54:55 -0400
+Date: Tue, 28 Oct 2025 06:57:42 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: whatever happened with the notion of documenting dynamic layers?
-Message-ID: <ec497032-eb7d-3aaf-ad59-7316b3bd6921@crashcourse.ca>
+Subject: should meta-xfce layer use dynamic-layers feature?
+Message-ID: <a49eeec2-9048-1b31-a317-de344e7c0bd1@crashcourse.ca>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -50,10 +50,28 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 28 Oct 2025 10:34:07 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7878
+ <docs@lists.yoctoproject.org>; Tue, 28 Oct 2025 10:54:57 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7879
 
 
-  i recall someone mentioned that dynamic layers are currently not
-documented in the YP docs.
+  not afraid to embarrass myself but as i was perusing dynamic layers,
+i ran across this in the meta-openembedded/meta-xfce layer:
+
+https://git.openembedded.org/meta-openembedded/tree/meta-xfce/README.md
+
+which reads, in part:
+
+  meta-xfce depends on meta-oe, meta-gnome and meta-multimedia in this
+  repository.
+
+  To avoid dependencies on meta-multimedia you need to mask recipes by
+  adding this to local.conf:
+
+  BBMASK = "meta-xfce/recipes-multimedia"
+
+isn't that exactly what dynamic layers are supposed to address? the
+conditional inclusion of recipes based on which layers you include? or
+is the above doing something different?
+
+rday
 
