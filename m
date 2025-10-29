@@ -1,81 +1,85 @@
-Return-Path: <rpjday@crashcourse.ca>
+Return-Path: <alex.kanavin@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D0996CCF9E9
-	for <webhook@archiver.kernel.org>; Wed, 29 Oct 2025 10:29:26 +0000 (UTC)
-Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.web11.3497.1761733760541966117
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AF137CCF9E9
+	for <webhook@archiver.kernel.org>; Wed, 29 Oct 2025 10:30:26 +0000 (UTC)
+Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
+ by mx.groups.io with SMTP id smtpd.web11.3503.1761733823123720340
  for <docs@lists.yoctoproject.org>;
- Wed, 29 Oct 2025 03:29:20 -0700
+ Wed, 29 Oct 2025 03:30:23 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=EjxLhvBb;
- spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
-	To:From:Date:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=itNM61KJcZIMBrpEtT7Xh6sTi7UK8ArQ2vl7H2zb1Pk=; b=EjxLhvBbvwtkyg/l0/RbqeweQg
-	XCN96oqoafVIULusaGtC3H5mt4rBkbvF+Svh7KymH7qgIZEiMkzh80/CpxqjvZ/c0gLvMfkBhFM80
-	vpQRqdKFZPlA+m9e2yt7JGLCZ6eoXztoYMaolyrXrbDxdnBal8MQH+ct0Nzgjw18NrHmF6t3BxuWD
-	dCtiAe2CflO8RA6YittS13wqTSU6mu7Fqk/Omfc65oBYH1Wl0uHBVVaPuh/By6nFaSP2ycGH9l1BO
-	Z5mxqO4s6vjphzfOxiNAA1uhW+Uw4pboOrylBCGYhK+4j3wv+M2Zhe14sSh77DUv8p5Su8UGhwdA1
-	pWs7Ssog==;
-Received: from [147.129.179.166] (port=56130 helo=rday)
-	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1vE3Qa-0000000FsYk-0l0v
-	for docs@lists.yoctoproject.org;
-	Wed, 29 Oct 2025 06:29:19 -0400
-Date: Wed, 29 Oct 2025 06:32:09 -0400 (EDT)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: [PATCH] dev-manual/new-recipe.rst: replace 'bitbake -e' with
- 'bitbake-getvar'
-Message-ID: <fa6e98c8-8edb-d7c0-5407-b1f27ce83078@crashcourse.ca>
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=b7vWkdw1;
+ spf=pass (domain: gmail.com, ip: 209.85.219.48, mailfrom: alex.kanavin@gmail.com)
+Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-87d8fa51993so82469946d6.1
+        for <docs@lists.yoctoproject.org>; Wed, 29 Oct 2025 03:30:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761733822; x=1762338622; darn=lists.yoctoproject.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=DrEHPz9eqFsM0m0kjy8DEc6LShFFpylVbVuSie2HOc0=;
+        b=b7vWkdw1OGu6V2RtfaIw460Yd0azOLQG1t/34SuWKzLj1vZegutCsKxkJ7+Pxj6Xql
+         pNCITryWwfpCrCSJIVUeY985lpGguLus1HDwlBqR/nBOGZ3y+IR1qPGHQPeRTscDpBiM
+         azBwvR/+Sw8P2MjHgPcflTI/SpHKEGwFRe+fOrxK/LWjegtTE40gaDWlDitM+sDv89GR
+         TXPXeXuYFBn6mwE8AHwkxtbylWFKsBYb1xBSNVsf1v2NnCecI6cd/0V+fCo/3sQttJeA
+         9qV8bWFiiFrPlIlIgWZqcIJm1pXn0h3CXmLbM/7fnd3sfMnx8TBPmKz0I+Z5nxMJaniQ
+         iG0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761733822; x=1762338622;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=DrEHPz9eqFsM0m0kjy8DEc6LShFFpylVbVuSie2HOc0=;
+        b=cwnI4hKDSKZLV0yo2LihTmL8iBQYyYg9zjszOy2DFg0RedkFX8CO8TSvZlyIw9Jpv4
+         ROiwSaMDgQzlJRRb/abh3kOngK4I40mCKTnPEsFyPP53YiG3abvLMST+pQKa91dVTW/Z
+         qtrs8FiqxsqagXX4GXWpuJ+xSg76etc4GbLhT5cZGh7Z+6mAHNSp7jEoaStqdWT1mehE
+         8iVMwxdDBK4bkSw1/303TLh5doCWLM5RsJK/kcWw0iI7Yfza2b0aM4l+XbY/TVqxp7Re
+         S0o+QXT3FAOpwCs2nnKt6STb2Hsbkl9XlXkeMFotPLECdrdABTqM+AiHjVVVByzAK3EH
+         NCxQ==
+X-Gm-Message-State: AOJu0YxzTt8OKFEdAbR5oJMHVzRkoTSOnagRmr9z2irLl3czuxXkHC5F
+	rmLIEwMVftR5AUjHZxOU08yzkvUNPjSkbKnNhRM+8FqbtYmGR8BmseZTDLvioohuzIZSIFoH4p5
+	YVO4h8wSQA601yVtjBe/zdZmbyeNSBxA=
+X-Gm-Gg: ASbGnct+gUSIGUI8+qxlcQdlA7sa7afPvaATNVOfrdo4ZoIituAfKJ54toJ/AARx3bv
+	1+NlybQrfN0o7MsxHN0dAUO+Ym425wl7k/rj+c7Uhdr64m5Tt78CT1kwJwTQhKK/ZS5G1ujdL8b
+	sEiE8aSR6EZONiuqR9ayg8Ec3vXukxyTMR6dgNJANaJNnEzvkMwE2VQp+mAcDbs98EGsoP5nh7I
+	vNAoZJRcGJru0FYDEZsmhHJ2Xh7iMu6qvjwE6L9aDwCACKbSVShUAuRtlJgYnMFsdSbApewC857
+	hoAUNRAcqL5d5xT7FuKlD7UQaepjuYiK2s+qwDNzZ2L26DBwpqMe1hHEL2md9dZzzlsAk2HpidA
+	P8MHg1ngrKFrb+neDrhW91HlTkM8g
+X-Google-Smtp-Source: AGHT+IFNpMeEXI/BCWT3LTRzUCimitffdSnAxc1Fa917nUJq6TxPlwl88pvTynu2FKaAp+XSa8gKarBb38nJzLe7Z+s=
+X-Received: by 2002:a05:6214:2122:b0:87c:22af:e987 with SMTP id
+ 6a1803df08f44-88009bfaebdmr30702446d6.48.1761733822079; Wed, 29 Oct 2025
+ 03:30:22 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+References: <8bc6e10f-f341-b615-e4e7-fdafe0905ec7@crashcourse.ca>
+In-Reply-To: <8bc6e10f-f341-b615-e4e7-fdafe0905ec7@crashcourse.ca>
+From: Alexander Kanavin <alex.kanavin@gmail.com>
+Date: Wed, 29 Oct 2025 11:30:10 +0100
+X-Gm-Features: AWmQ_bn86Puaxh-VhIXE8MOoN_a5LfdPoQcb85oGkZ_O6dfRpx4BnUUm00443EE
+Message-ID: <CANNYZj8cGtxi7s_mhFQ57HQc11sggUmRriBF1cPGGgyDETeUCg@mail.gmail.com>
+Subject: Re: [docs] should section on "Unpacking Code" not mention UNPACKDIR?
+To: rpjday@crashcourse.ca
+Cc: YP docs mailing list <docs@lists.yoctoproject.org>
+Content-Type: text/plain; charset="UTF-8"
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 29 Oct 2025 10:29:26 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7895
+ <docs@lists.yoctoproject.org>; Wed, 29 Oct 2025 10:30:26 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7896
 
+On Wed, 29 Oct 2025 at 11:06, Robert P. J. Day via
+lists.yoctoproject.org <rpjday=crashcourse.ca@lists.yoctoproject.org>
+wrote:
+> here:
+>
+> https://docs.yoctoproject.org/dev-manual/new-recipe.html#unpacking-code
+>
+> there is no mention of UNPACKDIR. is that deliberate? does the reader,
+> at this point, not need to know about those underlying details?
 
-Replace the legacy call to 'bitbake -e' to get the value of a recipe's
-variable with the newer call to 'bitbake-getvar'.
+Maybe not. The defaults for S and UNPACKDIR are set such that it works
+for git checkouts, and almost all tarballs. And if doesn't work, then
+the reader needs to know only about S, perhaps saying what the default
+value of it (from bitbake.conf) would be useful though.
 
-Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
-
----
-
-diff --git a/documentation/dev-manual/new-recipe.rst b/documentation/dev-manual/new-recipe.rst
-index aa4fb97a4..55099efbb 100644
---- a/documentation/dev-manual/new-recipe.rst
-+++ b/documentation/dev-manual/new-recipe.rst
-@@ -219,9 +219,9 @@ compilation and packaging files, and so forth.
-
- The path to the per-recipe temporary work directory depends on the
- context in which it is being built. The quickest way to find this path
--is to have BitBake return it by running the following::
-+is to use the ``bitbake-getvar`` utility::
-
--   $ bitbake -e basename | grep ^WORKDIR=
-+   $ bitbake-getvar -r basename WORKDIR
-
- As an example, assume a Source Directory
- top-level folder named ``poky``, a default :term:`Build Directory` at
+Alex
 
