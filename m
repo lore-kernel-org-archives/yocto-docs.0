@@ -2,27 +2,26 @@ Return-Path: <foss@0leil.net>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 10F57CCF9F7
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1098DCCF9F1
 	for <webhook@archiver.kernel.org>; Wed, 29 Oct 2025 17:43:00 +0000 (UTC)
-Received: from smtp-42a9.mail.infomaniak.ch (smtp-42a9.mail.infomaniak.ch [84.16.66.169])
- by mx.groups.io with SMTP id smtpd.web11.11090.1761759778313607425
+Received: from smtp-bc09.mail.infomaniak.ch (smtp-bc09.mail.infomaniak.ch [45.157.188.9])
+ by mx.groups.io with SMTP id smtpd.web10.11017.1761759778898880167
  for <docs@lists.yoctoproject.org>;
- Wed, 29 Oct 2025 10:42:58 -0700
+ Wed, 29 Oct 2025 10:42:59 -0700
 Authentication-Results: mx.groups.io;
- dkim=none (message not signed); spf=pass (domain: 0leil.net, ip: 84.16.66.169, mailfrom: foss+yocto@0leil.net)
+ dkim=none (message not signed); spf=pass (domain: 0leil.net, ip: 45.157.188.9, mailfrom: foss+yocto@0leil.net)
 Received: from smtp-4-0001.mail.infomaniak.ch (smtp-4-0001.mail.infomaniak.ch [10.7.10.108])
-	by smtp-4-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4cxZMh5mdWzT3g;
-	Wed, 29 Oct 2025 18:42:56 +0100 (CET)
-Received: from unknown by smtp-4-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4cxZMh3BprzHbK;
-	Wed, 29 Oct 2025 18:42:56 +0100 (CET)
+	by smtp-4-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4cxZMj3PprzVGd;
+	Wed, 29 Oct 2025 18:42:57 +0100 (CET)
+Received: from unknown by smtp-4-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4cxZMj0tJMzG7x;
+	Wed, 29 Oct 2025 18:42:57 +0100 (CET)
 From: Quentin Schulz <foss+yocto@0leil.net>
-Date: Wed, 29 Oct 2025 18:42:40 +0100
-Subject: [PATCH 1/3] kernel-dev: common: migrate bitbake -e to
- bitbake-getvar
+Date: Wed, 29 Oct 2025 18:42:42 +0100
+Subject: [PATCH 3/3] dev-manual: debugging: use bitbake-getvar in Viewing
+ Variable Values section
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251029-bitbake-e-v1-1-c06ad212db9e@cherry.de>
+Message-Id: <20251029-bitbake-e-v1-3-c06ad212db9e@cherry.de>
 References: <20251029-bitbake-e-v1-0-c06ad212db9e@cherry.de>
 In-Reply-To: <20251029-bitbake-e-v1-0-c06ad212db9e@cherry.de>
 To: docs@lists.yoctoproject.org
@@ -30,51 +29,107 @@ Cc: "Robert P. J. Day" <rpjday@crashcourse.ca>,
  Quentin Schulz <quentin.schulz@cherry.de>
 X-Mailer: b4 0.14.3
 X-Infomaniak-Routing: alpha
+Content-Transfer-Encoding: quoted-printable
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Wed, 29 Oct 2025 17:43:00 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7904
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7905
 
 From: Quentin Schulz <quentin.schulz@cherry.de>
 
-It's recommended to use bitbake-getvar for a few releases now so let's
-use that instead of bitbake -e.
+We should recommend using bitbake-getvar command wherever possible as
+its output is much less confusing and overwhelming than bitbake -e.
 
-While at it, use a cross-reference for "OpenEmbedded Build System".
+Unfortunately, bitbake-getvar currently doesn't list Python tasks or
+functions, unlike bitbake -e, so keep the latter for some corner cases.
 
 Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
 ---
- documentation/kernel-dev/common.rst | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ documentation/dev-manual/debugging.rst | 34 ++++++++++++++++++++--------=
+------
+ 1 file changed, 20 insertions(+), 14 deletions(-)
 
-diff --git a/documentation/kernel-dev/common.rst b/documentation/kernel-dev/common.rst
-index bd6c3fb2c..ef9a8d8fe 100644
---- a/documentation/kernel-dev/common.rst
-+++ b/documentation/kernel-dev/common.rst
-@@ -1431,15 +1431,13 @@ Expanding Variables
- ===================
- 
- Sometimes it is helpful to determine what a variable expands to during a
--build. You can examine the values of variables by examining the
--output of the ``bitbake -e`` command. The output is long and is more
--easily managed in a text file, which allows for easy searches::
-+build. You can examine the value of a variable by running the ``bitbake-getvar``
-+command::
- 
--   $ bitbake -e virtual/kernel > some_text_file
-+   $ bitbake-getvar -r virtual/kernel VARIABLE
- 
--Within the text file, you can see
--exactly how each variable is expanded and used by the OpenEmbedded build
--system.
-+The output of the command explains exactly how the variable is expanded and used
-+by the :term:`OpenEmbedded Build System`.
- 
- Working with a "Dirty" Kernel Version String
- ============================================
+diff --git a/documentation/dev-manual/debugging.rst b/documentation/dev-m=
+anual/debugging.rst
+index 6c45ccf65..9ee153d95 100644
+--- a/documentation/dev-manual/debugging.rst
++++ b/documentation/dev-manual/debugging.rst
+@@ -111,17 +111,17 @@ occurred in your project. Perhaps an attempt to :re=
+f:`modify a variable
+ <bitbake-user-manual/bitbake-user-manual-metadata:modifying existing
+ variables>` did not work out as expected.
+=20
+-BitBake's ``-e`` option is used to display variable values after
+-parsing. The following command displays the variable values after the
+-configuration files (i.e. ``local.conf``, ``bblayers.conf``,
++BitBake's ``bitbake-getvar`` command is used to display variable values =
+after
++parsing. The following command displays the variable value for :term:`OV=
+ERRIDES`
++after the configuration files (i.e. ``local.conf``, ``bblayers.conf``,
+ ``bitbake.conf`` and so forth) have been parsed::
+=20
+-   $ bitbake -e
++   $ bitbake-getvar OVERRIDES
+=20
+-The following command displays variable values after a specific recipe h=
+as
+-been parsed. The variables include those from the configuration as well:=
+:
++The following command displays the value of :term:`PV` after a specific =
+recipe
++has been parsed::
+=20
+-   $ bitbake -e recipename
++   $ bitbake-getvar -r recipename PV
+=20
+ .. note::
+=20
+@@ -135,19 +135,25 @@ been parsed. The variables include those from the c=
+onfiguration as well::
+    the recipe datastore, which means that variables set within one task
+    will not be visible to other tasks.
+=20
+-In the output of ``bitbake -e``, each variable is preceded by a
+-description of how the variable got its value, including temporary
+-values that were later overridden. This description also includes
+-variable flags (varflags) set on the variable. The output can be very
++In the output of ``bitbake-getvar``, the line containing the value of th=
+e
++variable is preceded by a description of how the variable got its value,
++including temporary values that were later overridden. This description =
+also
++includes variable flags (varflags) set on the variable. The output can b=
+e very
+ helpful during debugging.
+=20
+ Variables that are exported to the environment are preceded by
+-``export`` in the output of ``bitbake -e``. See the following example::
++``export`` in the output of ``bitbake-getvar``. See the following exampl=
+e::
+=20
+    export CC=3D"i586-poky-linux-gcc -m32 -march=3Di586 --sysroot=3D/home=
+/ulf/poky/build/tmp/sysroots/qemux86"
+=20
+-In addition to variable values, the output of the ``bitbake -e`` and
+-``bitbake -e``=C2=A0recipe commands includes the following information:
++Shell functions and tasks can also be inspected with the same mechanism:=
+:
++
++   $ bitbake-getvar -r recipename do_install
++
++For Python functions and tasks, ``bitbake -e recipename`` can be used in=
+stead.
++
++Moroever, the output of the ``bitbake -e`` and ``bitbake -e``=C2=A0recip=
+e commands
++includes the following information:
+=20
+ -  The output starts with a tree listing all configuration files and
+    classes included globally, recursively listing the files they include
 
--- 
+--=20
 2.51.0
 
 
