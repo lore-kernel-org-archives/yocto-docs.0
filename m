@@ -1,80 +1,93 @@
-Return-Path: <rpjday@crashcourse.ca>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A8167CCF9E0
-	for <webhook@archiver.kernel.org>; Tue, 28 Oct 2025 18:37:50 +0000 (UTC)
-Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.web11.17005.1761676667905473235
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 26912CCF9F0
+	for <webhook@archiver.kernel.org>; Wed, 29 Oct 2025 08:36:16 +0000 (UTC)
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+ by mx.groups.io with SMTP id smtpd.web11.2521.1761726973491702065
  for <docs@lists.yoctoproject.org>;
- Tue, 28 Oct 2025 11:37:48 -0700
+ Wed, 29 Oct 2025 01:36:14 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=vbaSk3LD;
- spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
-	To:From:Date:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=qh+LmjNh2MqcafEcePHxfNMiFWqIo21IFexc0xFZILU=; b=vbaSk3LDkU8TAwu2C2nuAXrXNJ
-	0bxMDWlmZuKqYtLtDrZexBpnuK9M45RnwO7+GZW/OhTwPPvlUp22/SADAw8qemxrqT3YfoMNioMJp
-	nvkCi52mnOfJnRQ+dcMhtxRAxVyr7Mbo07OPs5uxB8kV/z7Y/oe+Bvjz5iMMA8rgaDC08iigewXOV
-	A0d+TmU5/GslTTnOjPkoPFDoEjxB6zAnhS6JQ6gw83pm8PVS+DrxSqsf0kjD7clI8lCVTRuDj5zmj
-	02YkbwhcehxWxPDi8uHYCjSGqHZLyatVF3OkLj9NZHahAWoHn5Xjq5HGFBoMT5J7BHs/j0qJSwYuh
-	HR3YKSqg==;
-Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:52224 helo=rday)
-	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1vDoZi-0000000Daf8-32GM
-	for docs@lists.yoctoproject.org;
-	Tue, 28 Oct 2025 14:37:46 -0400
-Date: Tue, 28 Oct 2025 14:40:32 -0400 (EDT)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: whether "bitbake -e" examples should be updated
-Message-ID: <a21a032d-3f13-03fa-a7d2-69112eafa2fa@crashcourse.ca>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=k4eVbhm9;
+ spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id C34454E413CB
+	for <docs@lists.yoctoproject.org>; Wed, 29 Oct 2025 08:36:11 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 938CE60709;
+	Wed, 29 Oct 2025 08:36:11 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 139E41031151A;
+	Wed, 29 Oct 2025 09:36:09 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1761726970; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=TkhjY0xIMNbVhH9VP6Rhz0gmrWnnRxT0/bUl6bV8ePo=;
+	b=k4eVbhm9RAadMVcg4ysgDcSXDM+Dt7GyIegCPN486MhQ2Uc55QR5T+c0ZP3aDc76G8gnGa
+	fW0wCO8H37x0edCCHiTHhkHSEPoR84OGJ5LLGTuyhMm99NyFs4m4Fg/A2EAyh4vGqW+Xnl
+	7PIDQfFu4w1R81Zt5FWcB/Gd/0oZnlHajeanOHxRuYK0IkEVlzUNFA5jPXmHaGVxuHHouT
+	6+76J5APD6HuwxCK+XTOOSYwnXh5g1h+ICK8DPeIGGSXycjtupMsvKN+NbuLNl5ZLiWcyd
+	rZS6IBhf/h1/Em/GG0K+0vRqjzk+6XGnMbmqgSwwZSD+MkM+xM/1XzRQ0G9L/Q==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 29 Oct 2025 09:36:09 +0100
+Message-Id: <DDUO391B8U3V.1PFKOVDH6732C@bootlin.com>
+From: "Antonin Godard" <antonin.godard@bootlin.com>
+To: "Richard Purdie" <richard.purdie@linuxfoundation.org>
+Subject: [scarthgap] Pull request
+Cc: <docs@lists.yoctoproject.org>
+X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 28 Oct 2025 18:37:50 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7887
+ <docs@lists.yoctoproject.org>; Wed, 29 Oct 2025 08:36:16 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7891
 
+The following changes since commit 6cd7492bf83232744390f34e496367e94b63e701=
+:
 
-  more nitpicky pedantry ... here:
+  vulnerabilities: update nvdcve file name (2025-10-13 09:13:32 +0200)
 
-https://docs.yoctoproject.org/dev-manual/new-recipe.html#running-a-build-on-the-recipe
+are available in the Git repository at:
 
-the reader is advised to display the value of a variable relative to a
-recipe basename with:
+  git@push.yoctoproject.org:yocto-docs scarthgap-next
 
-  $ bitbake -e basename | grep ^WORKDIR=
+for you to fetch changes up to a8687e4bb2e822670b6ad110613a12fa02943d3d:
 
-well, sure, but as we all know, there's the newer:
+  ref-manual/classes.rst: document the relative_symlinks class (2025-10-27 =
+17:07:07 +0100)
 
-  $ bitbake-getvar -r basename WORKDIR
+----------------------------------------------------------------
+Antonin Godard (9):
+      ref-manual/variables.rst: document UNINATIVE_URL/CHECKSUM
+      ref-manual/classes.rst: extend the uninative class documentation
+      ref-manual/classes,variables: document the CCACHE_DISABLE variable
+      ref-manual/variables.rst: document the REQUIRED_MACHINE_FEATURES vari=
+able
+      ref-manual/variables.rst: document the REQUIRED_COMBINED_FEATURES var=
+iable
+      ref-manual/variables.rst: document the REQUIRED_IMAGE_FEATURES variab=
+le
+      ref-manual/variables.rst: document the USE_NLS variable
+      ref-manual/classes.rst: gettext: extend the documentation of the clas=
+s
+      ref-manual/classes.rst: document the relative_symlinks class
 
-which inspires the question -- should that second variation be *added*
-to that page, or should it *replace* the older command because there's
-little point in explaining the earlier command?
+Jo=C3=A3o Marcos Costa (1):
+      variables.rst: fix LAYERDEPENDS description
 
-  more globally, how complete are the docs in terms of explaining all
-the cool debugging scripts provided in oe-core/scripts? i know the dev
-manual has an entire section on debugging, so i'll get to that later.
+Paul Barker (1):
+      dev-manual, test-manual: Update autobuilder output links
 
-rday
+Robert P. J. Day (1):
+      overview-manual/yp-intro.rst: update on-target packaging info
 
+ documentation/dev-manual/vulnerabilities.rst      |  2 +-
+ documentation/overview-manual/yp-intro.rst        | 11 +--
+ documentation/ref-manual/classes.rst              | 96 ++++++++++++++++++-=
+----
+ documentation/ref-manual/variables.rst            | 71 ++++++++++++++++-
+ documentation/test-manual/reproducible-builds.rst |  2 +-
+ documentation/test-manual/test-process.rst        |  2 +-
+ 6 files changed, 157 insertions(+), 27 deletions(-)
 
