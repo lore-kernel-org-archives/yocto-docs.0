@@ -2,14 +2,14 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 88D2CCCF9F1
-	for <webhook@archiver.kernel.org>; Thu, 30 Oct 2025 11:21:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9E29ECCF9F0
+	for <webhook@archiver.kernel.org>; Thu, 30 Oct 2025 11:41:26 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.web01.20335.1761823293157170889
+ by mx.groups.io with SMTP id smtpd.web10.23472.1761824485327943477
  for <docs@lists.yoctoproject.org>;
- Thu, 30 Oct 2025 04:21:33 -0700
+ Thu, 30 Oct 2025 04:41:25 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=vtTr3oD5;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=C55uU/6R;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:References:
@@ -17,26 +17,26 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
 	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=7s1QqTtcjr5C4ArEJ96kPS9u1YNUM/9UtK7dG+qF0Cc=; b=vtTr3oD58vYH80SACHG2/FbAFC
-	OTi2X60bDOf+3H01fmB9+lJmz74zC/IPnkNzUIn/jKucYVgQ/be3FQ5RHYZpwlZvWLn3YdTJVhb67
-	uZdEMlW4wu7LGYUpDJc1ES2b6isInkLUE8jNQDDZKBQi8fXhEVX8TFp2rnThz+LG1Vh2drX6bVMDZ
-	E0BMwVO27gollGPv+aC796G+u+wT2sNDuIIFK5+nNd+/1neIFnG6RxMMOrt+lmM2Cht2GmRqmJDLX
-	hSGsOReicz76VIJce+7xiUqOW6XCucc4wew2fvDRO+hIb7QQu1gz9HI1LWAe/14SWwnUUOYjnfZ2s
-	kvvdzQsQ==;
-Received: from [147.129.179.166] (port=54310 helo=rday)
+	bh=E77S0IBlBVu+Dluo5LkXSRKlfhN8BF3PbqaBXhiJscw=; b=C55uU/6ROKg1sBYW+t9HzrMgvA
+	uRwd5W8rHqwJMvSxmJs4oWupudjFpSoUOGPRj+Xt+KzEQtsz4Jpj8xzn0ussSLWr5YT2G131SRkML
+	LKyDnoBWbt0S1CntldZrnbuoDcUoEOa6/Bb9aSpvQafdk+9PhE6v78jrKq9FYM6RRXRhJo89f6Oqj
+	vjZ/kB4hN1In0WyAvEzHeUaJG9u1t+LF3YYemybxoS9KSltwS6a4ofazDwVhwECufdughwO0EPMWJ
+	FHqILCyK+tFyPybp2kWOKt9vjiS7e4Uxip5wB09cMBwp7af/rt30F7xLVVzMx8g2VfCC/PUzSGBg2
+	hNH+dUIw==;
+Received: from [147.129.179.166] (port=47356 helo=rday)
 	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1vEQia-00000001thM-2w1j;
-	Thu, 30 Oct 2025 07:21:31 -0400
-Date: Thu, 30 Oct 2025 07:24:22 -0400 (EDT)
+	id 1vER1o-00000001wKW-3s8s;
+	Thu, 30 Oct 2025 07:41:23 -0400
+Date: Thu, 30 Oct 2025 07:44:14 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: Quentin Schulz <quentin.schulz@cherry.de>
 cc: YP docs mailing list <docs@lists.yoctoproject.org>
 Subject: Re: [docs] i may take a crack at writing a section on
  FILESOVERRIDES
 In-Reply-To: <2c92a61a-25ac-4b38-97fd-03af06f38bb0@cherry.de>
-Message-ID: <90026cf2-57d6-3d45-2836-ebb5b4614e56@crashcourse.ca>
+Message-ID: <7419be5d-0cc8-c135-96e7-eae5d31cf80d@crashcourse.ca>
 References: <e91d023a-dc34-656c-cbf6-05bc0fd15a71@crashcourse.ca> <2c92a61a-25ac-4b38-97fd-03af06f38bb0@cherry.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -53,8 +53,8 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 30 Oct 2025 11:21:36 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7915
+ <docs@lists.yoctoproject.org>; Thu, 30 Oct 2025 11:41:26 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7916
 
 On Thu, 30 Oct 2025, Quentin Schulz wrote:
 
@@ -93,11 +93,9 @@ On Thu, 30 Oct 2025, Quentin Schulz wrote:
 > https://pretalx.com/media/yocto-project-summit-2022-05/submissions/SCYYWD/resources/Demystifying_the_OVERRIDES_mec_2lZOP3n.pdf
 > slides 102 and 103
 
-  that's why i think there are quite a few places where something that
-is explained in only a couple of paragraphs needs to be broken out and
-turned into a full sub-section. that's not something that can be
-dashed off, it needs someone to sit back and think about how to do
-that while keeping the flow.
+https://bugzilla.yoctoproject.org/show_bug.cgi?id=16048
+
+not sure how many other fields i should have filled in.
 
 rday
 
