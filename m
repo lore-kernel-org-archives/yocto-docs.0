@@ -2,42 +2,39 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9E29ECCF9F0
-	for <webhook@archiver.kernel.org>; Thu, 30 Oct 2025 11:41:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BE3F0CCF9E3
+	for <webhook@archiver.kernel.org>; Thu, 30 Oct 2025 12:10:46 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.web10.23472.1761824485327943477
+ by mx.groups.io with SMTP id smtpd.web11.24183.1761826239255924820
  for <docs@lists.yoctoproject.org>;
- Thu, 30 Oct 2025 04:41:25 -0700
+ Thu, 30 Oct 2025 05:10:39 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=C55uU/6R;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=qYWkbYMZ;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:References:
-	Message-ID:In-Reply-To:Subject:cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=E77S0IBlBVu+Dluo5LkXSRKlfhN8BF3PbqaBXhiJscw=; b=C55uU/6ROKg1sBYW+t9HzrMgvA
-	uRwd5W8rHqwJMvSxmJs4oWupudjFpSoUOGPRj+Xt+KzEQtsz4Jpj8xzn0ussSLWr5YT2G131SRkML
-	LKyDnoBWbt0S1CntldZrnbuoDcUoEOa6/Bb9aSpvQafdk+9PhE6v78jrKq9FYM6RRXRhJo89f6Oqj
-	vjZ/kB4hN1In0WyAvEzHeUaJG9u1t+LF3YYemybxoS9KSltwS6a4ofazDwVhwECufdughwO0EPMWJ
-	FHqILCyK+tFyPybp2kWOKt9vjiS7e4Uxip5wB09cMBwp7af/rt30F7xLVVzMx8g2VfCC/PUzSGBg2
-	hNH+dUIw==;
-Received: from [147.129.179.166] (port=47356 helo=rday)
+	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
+	To:From:Date:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=Z5wTXb26ArIBVpPGztE6nwRyii07GsirFeo39ht9Ntc=; b=qYWkbYMZtA58tGMf5T5y+1iazU
+	vTLVXkqhSh7N5J9SPrfmA43HlatwslYsIsStC8D79lcaP7bHrWH8LniKeBjSphGOxUy4SMh5AWZma
+	FAlNW7Ny29zs4MdrAAV4wuZA2eNaCgWjyAXO7MtTrc86prhfQdac7/pp+enFX3Vnb6RT3wGeqOP9d
+	y4yikKTeaegdaXL6xvBZTD2BGLTrALA8sRbLrvINH935zrMZDtrNOVzfsDoMttqXGn5fjoeVj//1r
+	h1mqDO9sx6TUvcWvGqNo31NmVDE7SaN8k8j7bwEF4AaM3agWpFry4EWF9T9XT0IU+TyqcUyPq+fqK
+	rKYbVy1w==;
+Received: from [147.129.179.166] (port=48800 helo=rday)
 	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1vER1o-00000001wKW-3s8s;
-	Thu, 30 Oct 2025 07:41:23 -0400
-Date: Thu, 30 Oct 2025 07:44:14 -0400 (EDT)
+	id 1vERUA-000000020kF-2Iuf
+	for docs@lists.yoctoproject.org;
+	Thu, 30 Oct 2025 08:10:37 -0400
+Date: Thu, 30 Oct 2025 08:13:32 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: Quentin Schulz <quentin.schulz@cherry.de>
-cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: Re: [docs] i may take a crack at writing a section on
- FILESOVERRIDES
-In-Reply-To: <2c92a61a-25ac-4b38-97fd-03af06f38bb0@cherry.de>
-Message-ID: <7419be5d-0cc8-c135-96e7-eae5d31cf80d@crashcourse.ca>
-References: <e91d023a-dc34-656c-cbf6-05bc0fd15a71@crashcourse.ca> <2c92a61a-25ac-4b38-97fd-03af06f38bb0@cherry.de>
+To: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: [PATCH] dev-manual/new-recipe.rst: typo, "whith" -> "which"
+Message-ID: <f5c9043d-4e1d-426b-58a3-ebf485c74871@crashcourse.ca>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -53,49 +50,28 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 30 Oct 2025 11:41:26 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7916
+ <docs@lists.yoctoproject.org>; Thu, 30 Oct 2025 12:10:46 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7917
 
-On Thu, 30 Oct 2025, Quentin Schulz wrote:
 
->
->
-> On 10/30/25 11:50 AM, Robert P. J. Day via lists.yoctoproject.org wrote:
-> >
-> >    related to my earlier whining about how much documentation was being
-> > (IMHO, inappropriately) dumped into the reference manual, i'm looking
-> > at the section on fetching:
-> >
-> > https://docs.yoctoproject.org/dev-manual/new-recipe.html#fetching-code
-> >
-> > and how there is that lonely sentence referencing FILESOVERRIDES:
-> >
-> > "The OpenEmbedded build system uses FILESOVERRIDES for scanning
-> > directory locations for local files in SRC_URI."
-> >
-> >    i think that feature merits a comprehensive sub-section under
-> > fetching (pulling out most of what is in the reference manual).
-> >
-> >    also, as much as possible, i think the docs should refer to actual
-> > examples ripped from oe-core -- for this feature, i would bolster the
-> > explanation with the perfect example of using FILESOVERRIDES:
-> >
-> > https://git.openembedded.org/openembedded-core/tree/meta/recipes-bsp/formfactor
-> >
-> >    not going to do all that right this instant, but i'm convinced it's
-> > worth doing.
-> >
->
-> Note that there is some surprising behavior when using the layout allowed by
-> FILESOVERRIDES and bbappends and I think it really is important to document
-> that.
->
-> https://pretalx.com/media/yocto-project-summit-2022-05/submissions/SCYYWD/resources/Demystifying_the_OVERRIDES_mec_2lZOP3n.pdf
-> slides 102 and 103
+Fix typo "whith", should be "which".
 
-https://bugzilla.yoctoproject.org/show_bug.cgi?id=16048
+Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
 
-not sure how many other fields i should have filled in.
+---
 
-rday
+diff --git a/documentation/dev-manual/new-recipe.rst b/documentation/dev-manual/new-recipe.rst
+index aa4fb97a4..56a50efbe 100644
+--- a/documentation/dev-manual/new-recipe.rst
++++ b/documentation/dev-manual/new-recipe.rst
+@@ -439,7 +439,7 @@ Licensing
+ =========
+
+ Your recipe needs to define variables related to the license
+-under whith the software is distributed. See the
++under which the software is distributed. See the
+ :ref:`contributor-guide/recipe-style-guide:recipe license fields`
+ section in the Contributor Guide for details.
+
+
 
