@@ -1,82 +1,86 @@
-Return-Path: <rpjday@crashcourse.ca>
+Return-Path: <foss@0leil.net>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AE660CCF9F0
-	for <webhook@archiver.kernel.org>; Thu, 30 Oct 2025 14:54:57 +0000 (UTC)
-Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.web01.23616.1761836096591870664
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9BBD0CCF9FA
+	for <webhook@archiver.kernel.org>; Thu, 30 Oct 2025 15:18:07 +0000 (UTC)
+Received: from smtp-bc0e.mail.infomaniak.ch (smtp-bc0e.mail.infomaniak.ch [45.157.188.14])
+ by mx.groups.io with SMTP id smtpd.web10.183.1761837483799000343
  for <docs@lists.yoctoproject.org>;
- Thu, 30 Oct 2025 07:54:57 -0700
+ Thu, 30 Oct 2025 08:18:04 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=SkIbgVMH;
- spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
-	To:From:Date:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=CqLt1+16ig1SbdXgFZlFd/CTb1VpA5abH8kPTv2PbqU=; b=SkIbgVMH3xuCUcFmqCw6+ccYTw
-	ELHRLyGeKBCwQQX6fPu1rPeJ6eExi4tohYbNTgXfkfEoFTtqJHK1AZJclF+Id8Yd5gF0fbYEkmGLt
-	HpVBHxILIYM2M65dYVQsJ+sLsYMt5JZQf7rMsh+HKgdn4gmNZTveh34ERfCc7HFb6voA3SVbbXlVw
-	sMBvxv9jNopFP0UrKbCWJvm3zi1oIlrF7umECNavKN+K1nUJ9oGJhSLQPMpBrTui1d3UYpCVa5LZG
-	pLMjnLm587T29COyLGczgQtuVik44YB0n2ymAb8nm7djPGWuhGoYJfhtb70ha+RLp36EL+ULaY1Gx
-	oLX1kINw==;
-Received: from [147.129.179.166] (port=52260 helo=rday)
-	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1vEU37-00000002YMK-23GD
-	for docs@lists.yoctoproject.org;
-	Thu, 30 Oct 2025 10:54:54 -0400
-Date: Thu, 30 Oct 2025 10:57:47 -0400 (EDT)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: is there any point covering versioning of pre-release packages?
-Message-ID: <e68572a2-7c31-403d-caeb-a5a4abc9d9cb@crashcourse.ca>
+ dkim=none (message not signed); spf=pass (domain: 0leil.net, ip: 45.157.188.14, mailfrom: foss+yocto@0leil.net)
+Received: from smtp-3-0001.mail.infomaniak.ch (unknown [IPv6:2001:1600:4:17::246c])
+	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4cy7610BQRznMr;
+	Thu, 30 Oct 2025 16:18:01 +0100 (CET)
+Received: from unknown by smtp-3-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4cy7603RFkz53f;
+	Thu, 30 Oct 2025 16:18:00 +0100 (CET)
+From: Quentin Schulz <foss+yocto@0leil.net>
+Subject: [PATCH RFC 0/3] fix epub and latexpdf targets not finding glob
+ images
+Date: Thu, 30 Oct 2025 16:17:45 +0100
+Message-Id: <20251030-fix-make-multi-target-v1-0-213616ed1f0a@cherry.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAJmBA2kC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1NDAyNL3bTMCt3cxOxU3dzSnJJM3ZLEovTUEt0Uo5RUyxSTtDTz1GQloN6
+ ColSgQrC50UpBbs5KsbW1AAh+5o9sAAAA
+X-Change-ID: 20251029-fix-make-multi-target-d2de9d4ff7ec
+To: docs@lists.yoctoproject.org
+Cc: Quentin Schulz <quentin.schulz@cherry.de>
+X-Mailer: b4 0.14.3
+X-Infomaniak-Routing: alpha
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 30 Oct 2025 14:54:57 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7920
+ <docs@lists.yoctoproject.org>; Thu, 30 Oct 2025 15:18:07 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7921
 
+Currently the `make all` target simply doesn't work, it'll fail the epub
+build because of missing images (the ones listed in image or figure
+directives with glob patterns).
 
-  here:
+The same can be reproduced with `make html epub` or `make html
+latexpdf`. This is due to how Sphinx caches the output of the parsing
+step and the way we generate the PDFs and PNGs from SVGs for the epub
+and latexpdf targets (which are run after the html target).
 
-https://docs.yoctoproject.org/dev-manual/new-recipe.html#properly-versioning-pre-release-recipes
+This migrates us from this Makefile logic to
+sphinxcontrib-svg2pdfconverter, or rather an in-tree fork of it.
 
-there's a discussion of using that "~rc1" approach to versioning
-pre-release packages, but the one example shown there:
+Marked as RFC because
+1) The source code of the plugin is licensed under BSD-3-Clause and
+   IANAL so I don't know if it's fine for us,
+2) I would rather use upstream and add sphinxcontrib-svg2pdfconverter to
+   Pipfile and the docs building instructions, but we need the MR[1] to
+   be merged and a new release made before we can do that. Once upstream
+   merges it, we likely will need to add a recipe for it in OE-Core to
+   be able to still build the docs with the docs toolchain I believe?
 
-  irssi_0.8.16-rc1.bb
+See the last patch in the series for a description of the actual
+problem, a dive-in Sphinx cache and why I believe this is the proper
+fix.
 
-doesn't even use that anymore, and in all the layers i have checked
-out, i can see a single example in the rpi layer:
+[1] https://github.com/missinglinkelectronics/sphinxcontrib-svg2pdfconverter/pull/31
 
-  linux-firmware-rpidistro_git.bb:PV = "20240709-2~bpo12+1+rpt3"
+Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
+---
+Quentin Schulz (3):
+      sphinx: import sphinxcontrib.rsvgconverter sphinx plugin in-tree
+      sphinx: rsvgconverter: add support for PNG output
+      convert SVGs to PDF and PNG using rsvgconverter plugin
 
-that same irssi example is mentioned here as well:
+ documentation/Makefile                |  26 +--------
+ documentation/conf.py                 |   5 ++
+ documentation/sphinx/rsvgconverter.py | 106 ++++++++++++++++++++++++++++++++++
+ 3 files changed, 114 insertions(+), 23 deletions(-)
+---
+base-commit: 8b85245490ae0b19a9c3880ec31e55b42e19d094
+change-id: 20251029-fix-make-multi-target-d2de9d4ff7ec
 
-https://docs.yoctoproject.org/dev-manual/new-recipe.html#storing-and-naming-the-recipe
-
-but that technique seems incredibly infrequent. is it still worth
-covering? it just seems to break up the flow of that chapter to
-discuss something the average developer may never, ever see.
-
-rday
-
+Best regards,
+-- 
+Quentin Schulz <quentin.schulz@cherry.de>
 
 
