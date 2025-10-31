@@ -2,90 +2,156 @@ Return-Path: <alex.kanavin@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C5CF5CCFA00
-	for <webhook@archiver.kernel.org>; Fri, 31 Oct 2025 15:45:18 +0000 (UTC)
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
- by mx.groups.io with SMTP id smtpd.web10.18891.1761925512347946228
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CEA41CCF9F8
+	for <webhook@archiver.kernel.org>; Fri, 31 Oct 2025 15:46:18 +0000 (UTC)
+Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
+ by mx.groups.io with SMTP id smtpd.web11.18567.1761925575285332530
  for <docs@lists.yoctoproject.org>;
- Fri, 31 Oct 2025 08:45:12 -0700
+ Fri, 31 Oct 2025 08:46:15 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=cgJMp4O+;
- spf=pass (domain: gmail.com, ip: 209.85.160.174, mailfrom: alex.kanavin@gmail.com)
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-4e8850b09eeso22121261cf.0
-        for <docs@lists.yoctoproject.org>; Fri, 31 Oct 2025 08:45:12 -0700 (PDT)
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=ct99+aVS;
+ spf=pass (domain: gmail.com, ip: 209.85.219.45, mailfrom: alex.kanavin@gmail.com)
+Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-81efcad9c90so26884096d6.0
+        for <docs@lists.yoctoproject.org>; Fri, 31 Oct 2025 08:46:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761925511; x=1762530311; darn=lists.yoctoproject.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=4rqTOmMGZWPAFhKRQCU73vgtzd7hbkqp8WfkGzOkAKQ=;
-        b=cgJMp4O+N5gbdY3Oe/ALZu0BZrsyIspdercjlW3NGYU1qD28y8mQwZQMXKqAvBpKwx
-         PcmZfRzNwyjrpkKnbjpTDuGGH+2iYfHSe7ID0KtrZ8PrrOPpcG5jRQ7aV1FZuKzjzfvZ
-         Df2lVhz9tUZV24KYiDG650kU6+xtOAhNyj8oRHHE1jnDI5MhHmgEsDjYvN8/d6cFElcw
-         pvKJErvZqpkAbqiQDiYfFsNzt2Qs2CYNMX05HRkQo+r55zRonSk9CvGAH21PFtl4Qgn9
-         oeO7BdxBU8y/+89GxAtMh1AHarzms7kWJtnVLR5P2rfq1zsElpRzzcGdaWnihRW03yYy
-         z0DA==
+        d=gmail.com; s=20230601; t=1761925574; x=1762530374; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ShbJi6ACJLSIalAaRn/ViMqPlg3M7tfWY+gPGLW9ihM=;
+        b=ct99+aVSQ3Hn8/YQhnomG+T6WpZ3d/FY7HHgfLHP8PwtADQO6Ygl3m0uEeEz1C+zQn
+         taF4dc6hIdpO6wCIwb/qsrBa8dRAnzQyPECeos6Hw5qwn4kr1reYqUbSw2Ca0parz+4N
+         oVGa/JOTZWr1nXoe3i6OLZJoUT+lPOUMWHY5BF3aMOaqm8VrIN38bs0H4xZsXJTkW22d
+         GQeh/RXPseUSUkvnPPLrfW/R7g0Kal+Pg3liXUkjQGnNh3dV0JdlN2zw1tAgGnvHPYMo
+         9x5CjyOUTMRqhi/mUMFt/pU9yTQjX2fcLeSCkBqaz0z3ynoNmYK6no1Kv9fNnWJ7SHj+
+         ISHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761925511; x=1762530311;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4rqTOmMGZWPAFhKRQCU73vgtzd7hbkqp8WfkGzOkAKQ=;
-        b=Zpu8lgAeX/+y1jlW/03k3CJj4F4ljXgrhvk/dLn0t8Xg/xCqeisxvGIunXVVnR6TA6
-         dzoXRWwpJGT0zBSDdekUAT4PHprIIXBex3eX/Qc/izhq6D5u05bhctrdTkOHWrh8Zjyc
-         96264svyri05Jt8DpqrzQ1qDw4lb98hm7yQ4XVOmiC4WIPrK7k1beQT9pOYm+qyKOS0o
-         /R8z67LWc47SUenjJi/nrvf64TMh/3B1d+zEtJJqXwK73K7VrdL1Hl9kytc48xUbhirF
-         nVc9EfB1qXt0d3uRSECN2MMZHtQv7m3oII20HTSv7EZD0GMJ3oDaBVIMI4k5NaFPwSBK
-         xFFg==
-X-Gm-Message-State: AOJu0YxhyQK1elQKjbHKWokmAWrCjZufnrzWNxmD7/MpLgzIij1KtiaO
-	E6dP8ZQ8sBbe/1vqOwEekb7gkjf99VkL1R1CuFKmRXQd2CfG2gY7ri/tULk1SGQ572Vd7l5MV+D
-	J95VEh+2RT9lxZvEbzGTlrIsqO2Qd1Xw=
-X-Gm-Gg: ASbGncttmQJPJy9K/1cC1j1OGIKVhO+SjVTEWejg6SvmOM79+X2jfY6FVx4yH5Dk9nh
-	Fq2srMCIphTM2iEimtxhPdL9dwHZ0QjwnnO+lLrf3NLLaDKH4avmkaA6pWRkDYrab0mDSSoJvXu
-	i37Lr4sPE2YFN6R1DmyLrkhPEWfT5P+EEeqUQ3VcfhfgPHwU/4/7ncgpqnE684EyG+IjWBm5NyI
-	WuD6zbDbNzlJWtUfZfiClMsVFipSJTJ24ZPImDUHjA/Vjvz4ME0ZKawtJ4AxkHBAM4GqVj3bPhm
-	ZKZM49AkWKGLCr50pqmRvHYCMsLG5MNIRBZ00sfIdEeR28MO3mqg4IlSngPbd2ssGgjh
-X-Google-Smtp-Source: AGHT+IEhxPzu8mJbM4zxf+e06RFfvOTN34z4fvPEtF12HOoMcSZeM7M0bw3/nnnbRF6elE6GBkGK9VqjhSjyCtUMqAY=
-X-Received: by 2002:a05:622a:228e:b0:4e8:ada8:6c22 with SMTP id
- d75a77b69052e-4ed3109b8fdmr46037961cf.72.1761925511180; Fri, 31 Oct 2025
- 08:45:11 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1761925574; x=1762530374;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ShbJi6ACJLSIalAaRn/ViMqPlg3M7tfWY+gPGLW9ihM=;
+        b=GGiEwyDj204O8+VbL1A5nEi1n5OovNULJ2WiDMIXglahiRo2lTckEeeTcDoc3WqQhq
+         gz7xDvJxlyGZfJ5Y7mC74Vi5kGsmBLTy0ddOyImyUOGVcgNzy6CDFUjm5yacZvaCP5l/
+         becHq+KMs1TUnMwYcB90wMQH8GxOv+p1RddKUkH9zT88TtHGvF8dDsUsiCkf7BWKx86k
+         a7rBLSP3nugqVAR1au7vLfVg2i/BhfEZxkejNFIA61O0EUJaYGWAODUhQbWpINdjBuX0
+         CU+62Lue6U7hX4SpArnbNF66LPSBhMXtrMPBnaqH9znUyQvXwBBnehrz0LetA2Wp/EpQ
+         mPwA==
+X-Gm-Message-State: AOJu0YyW0E7OvTEERF7XvcC03UiOXbx6hjiH+08nM81iNs8dJAcBSq2D
+	9VU751rG/ze4bzOSWYXel3zG/2yIPpBu7Kz/X6QCJM18vS4XeDkOpWrm9qod2AH+6Evs5cgEwD4
+	LEbg1YRkqLKqD8ru2giuuLfs2ViOoWCs=
+X-Gm-Gg: ASbGncv81DslOG7dys3s193CCJruZSY7Ep3Nx4AV2AR0SKATGBIHm8jCTEUoKFevy78
+	xM1yDymSfwHhRrl4UwX7adT99i5YI0mUAxFH8uv4qZ3aMdGLlBUL6HbJJhIv2ZsXdx9qAtjfvaa
+	Rj/rWJd9X3xYaP08DysFovaBR8/QgoRE9GstVQrbOLZIeGUaE6Klrmz9j2W39NPGJEFfezIRSlZ
+	rHrrXzNjVacCCzH4juO2b3G3L2sjwA8G5yER4BQt6JqX2/ohvVi3rV09VhNd7U+CmK9Y15sW6fp
+	CSd1jx42RCG+huHxfOW5LQPTd1gKEkT09IoIS9dh1X5ZQH1ysN985jczEQ==
+X-Google-Smtp-Source: AGHT+IENvz5K+H3016wX9FofccjaZD2ihyXG4zYSu8rpo2bY49ENnCHnLvPw6vOFUDJyhyDRlfVY+zMBjVpJLEBaF1U=
+X-Received: by 2002:a05:6214:1cc1:b0:87c:1d89:a24d with SMTP id
+ 6a1803df08f44-8802f31767amr47906076d6.27.1761925574185; Fri, 31 Oct 2025
+ 08:46:14 -0700 (PDT)
 MIME-Version: 1.0
-References: <20251030-bitbake-setup-v1-0-f44a8a2b7c0b@bootlin.com> <20251030-bitbake-setup-v1-1-f44a8a2b7c0b@bootlin.com>
-In-Reply-To: <20251030-bitbake-setup-v1-1-f44a8a2b7c0b@bootlin.com>
+References: <20251030-bitbake-setup-v1-0-f44a8a2b7c0b@bootlin.com> <20251030-bitbake-setup-v1-2-f44a8a2b7c0b@bootlin.com>
+In-Reply-To: <20251030-bitbake-setup-v1-2-f44a8a2b7c0b@bootlin.com>
 From: Alexander Kanavin <alex.kanavin@gmail.com>
-Date: Fri, 31 Oct 2025 16:44:59 +0100
-X-Gm-Features: AWmQ_bnPtF23SHf2eXxt3aekgDg5d88VOWU2nTQqV7J6_HbL0YccL7sxgRcl128
-Message-ID: <CANNYZj9a_rsLcB8zajPocywjO8WDOw17PcLj3Pao-8UZEUNmqg@mail.gmail.com>
-Subject: Re: [docs] [PATCH 1/6] ref-manual/structure.rst: update the
- description of local.conf and bblayers.conf
+Date: Fri, 31 Oct 2025 16:46:02 +0100
+X-Gm-Features: AWmQ_bn_jnrENdwRnEnllyRU05aeSz4gCK8c_Tzq34v1eSWaUi6I2pOidaKFMgM
+Message-ID: <CANNYZj8L33HvQLvML-91137pcXbKWSoroaCZLRgiqC8FF5uirA@mail.gmail.com>
+Subject: Re: [docs] [PATCH 2/6] ref-manual/structure.rst: document the
+ site.conf file
 To: antonin.godard@bootlin.com
 Cc: docs@lists.yoctoproject.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 31 Oct 2025 15:45:18 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7952
+ <docs@lists.yoctoproject.org>; Fri, 31 Oct 2025 15:46:18 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7953
+
+lgtm
+
+Alex
 
 On Thu, 30 Oct 2025 at 17:29, Antonin Godard via
 lists.yoctoproject.org
-<antonin.godard=bootlin.com@lists.yoctoproject.org> wrote:
-> +This configuration file contains the local user configurations for the build
+<antonin.godard=3Dbootlin.com@lists.yoctoproject.org> wrote:
+>
+> This was not documented and its usage is going to increase massively
+> once users start using bitbake-setup. Add a description for this file as
+> well as an example on how bitbake-setup shares it for multiple builds,
+> to insist on the "site-wide" usage of this file.
+>
+> Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+> ---
+> Note: a link to bitbake-setup documentation comes in the next patch.
+> ---
+>  documentation/ref-manual/structure.rst | 29 ++++++++++++++++++++++++++++=
++
+>  1 file changed, 29 insertions(+)
+>
+> diff --git a/documentation/ref-manual/structure.rst b/documentation/ref-m=
+anual/structure.rst
+> index f7d7a819d..d817ee426 100644
+> --- a/documentation/ref-manual/structure.rst
+> +++ b/documentation/ref-manual/structure.rst
+> @@ -339,6 +339,35 @@ Once the build process gets the sample file, it uses=
+ ``sed`` to substitute final
+>     version of the ``bblayers.conf.sample`` file in the ``meta-poky/conf/=
+templates/default``
+>     directory.
+>
+> +.. _structure-build-conf-site.conf:
+> +
+> +``build/conf/site.conf``
+> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> +
+> +This configuration file contains the site specific configurations for yo=
+ur build
 > +environment.
 > +
-> +You could for example edit this file to limit the number of threads used by
-> +:term:`BitBake` (:term:`BB_NUMBER_THREADS`) or set the location from which you
+> +You could for example edit this file to limit the number of threads used=
+ by
+> +:term:`BitBake` (:term:`BB_NUMBER_THREADS`) or set the location from whi=
+ch you
 > +want to access downloaded files (:term:`DL_DIR`).
-
-These both belong in site.conf. I think a much better example of using
-local.conf would be:
-
-You could for example experiment with setting (or adding to)
-DISTRO_FEATURES or IMAGE_FEATURES, or adjust build configurations for
-specific recipes by setting PACKAGECONFIG for them. If you would like
-to publish and share changes made to this file, it is recommended to
-put them into a distro config, or to create layer fragments from
-changes made here.
-
-
-Alex
+> +
+> +This file can be shared for multiple build directories. For example,
+> +``bitbake-setup`` makes the :ref:`structure-build-conf-site.conf` file a
+> +symbolic link to a common ``site.conf`` file::
+> +
+> +   =E2=94=9C=E2=94=80=E2=94=80 poky-master-poky-distro_poky-machine_qemu=
+x86-64/
+> +   =E2=94=82   =E2=94=94=E2=94=80=E2=94=80 build/
+> +   =E2=94=82       =E2=94=94=E2=94=80=E2=94=80 conf/
+> +   =E2=94=82           =E2=94=94=E2=94=80=E2=94=80 site.conf -> ../../..=
+/site.conf
+> +   =E2=94=9C=E2=94=80=E2=94=80 poky-master-poky-with-sstate-distro_poky-=
+machine_qemux86-64/
+> +   =E2=94=82   =E2=94=94=E2=94=80=E2=94=80 build/
+> +   =E2=94=82       =E2=94=94=E2=94=80=E2=94=80 conf/
+> +   =E2=94=82           =E2=94=94=E2=94=80=E2=94=80 site.conf -> ../../..=
+/site.conf
+> +   =E2=94=94=E2=94=80=E2=94=80 site.conf
+> +
+> +This way, site-specific settings can be shared for multiple build
+> +configurations.
+> +
+>  .. _structure-build-conf-bblock.conf:
+>
+>  ``build/conf/bblock.conf``
+>
+> --
+> 2.51.0
+>
+>
+> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
+> Links: You receive all messages sent to this group.
+> View/Reply Online (#7927): https://lists.yoctoproject.org/g/docs/message/=
+7927
+> Mute This Topic: https://lists.yoctoproject.org/mt/116033120/1686489
+> Group Owner: docs+owner@lists.yoctoproject.org
+> Unsubscribe: https://lists.yoctoproject.org/g/docs/unsub [alex.kanavin@gm=
+ail.com]
+> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
+>
 
