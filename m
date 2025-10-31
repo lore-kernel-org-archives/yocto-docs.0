@@ -2,14 +2,14 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 29294CCF9F8
-	for <webhook@archiver.kernel.org>; Fri, 31 Oct 2025 13:26:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 54698CCF9F8
+	for <webhook@archiver.kernel.org>; Fri, 31 Oct 2025 14:02:58 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.web10.15564.1761917210448848548
+ by mx.groups.io with SMTP id smtpd.web11.16137.1761919369443313768
  for <docs@lists.yoctoproject.org>;
- Fri, 31 Oct 2025 06:26:50 -0700
+ Fri, 31 Oct 2025 07:02:49 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=QsbU1N+C;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=WwrQRxdb;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
@@ -17,25 +17,25 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=KHbcs1fyqgVyc44eYPayg1nZkYh9Dl2I4meP0sYtZFw=; b=QsbU1N+C210aDu5d1bRazJNpu/
-	IH/QrIHEuMLsDSP9kqJjjhXk6DmDBd55wydKthfKOxEXVBQwzZOzB73dt0wYDtd/QHp3WUnSfLCVm
-	vgeTwk+6LjAyYLDDGXzf+SxP9GFAKjfAKJKBfuRd/Y1TrpGkzn1xiguv7/E8wC+eoZYmWFcSpP9Xb
-	4FGga3pOeXmKxay7GoCHSmiqJ+M9YO9WEJLWlrprS1Kl0vxNdCFdKvJHoUldJ7KLaXNof2oKJjU2q
-	NhGoUcqFW6B1sPKjQdKm8n+ekK1fJLw9+REEHA6i58zIVnfwLKz7mNLkoC8xP4wTLyE2ik+BQ2bUZ
-	s0aTyaeQ==;
-Received: from [147.129.179.166] (port=37446 helo=rday)
+	bh=nUtMNjpwE1jD+4+hD8kkqg0IVdqKo+Qp3wDtlVJtNCQ=; b=WwrQRxdbGQSHoJ/ZJ6nMlazWe5
+	YpXmu0p+jc/Qktgt78zkRlWRAyXMGVOvBNoMtgZa/2TEHfmIP2ajI6sJWu0AHTcMatD3piCFbT7fU
+	Y3JZ/756fGopNPDxrpE0kpUN+mh/C5jIefBQZxGIb8cfPWxCKpwK6IEgh5GIOSlJjGNXlf4ISQgxJ
+	VWyJLJY8yYX/E/bvU8KCWTax+9yuLsdFNstEFW2E8qcCar8jCOnven2k/uyVTo7jj0XKbgy/rXUsB
+	wtVA+WNzm7/h8cO2JwZI4wRW2W26Bqf7CTd7rwSbdw8K5OzJQF6QScxQxp+yd5Wm7KCRIrFkvCAWo
+	LIazD7Ug==;
+Received: from [147.129.179.166] (port=34762 helo=rday)
 	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1vEp9P-00000005ri1-3Np8
+	id 1vEpiG-00000005xVL-0uuJ
 	for docs@lists.yoctoproject.org;
-	Fri, 31 Oct 2025 09:26:47 -0400
-Date: Fri, 31 Oct 2025 09:29:35 -0400 (EDT)
+	Fri, 31 Oct 2025 10:02:47 -0400
+Date: Fri, 31 Oct 2025 10:05:45 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: [PATCH] dev-manual/new-recipe.rst: update code snippet from sed
- recipe
-Message-ID: <6766a20a-e028-7803-2ffe-645f669fd2bc@crashcourse.ca>
+Subject: dev manual, "5.23 Recipe SYntax" ... talking about functions or
+ tasks?
+Message-ID: <f9c5f224-1015-bb70-f28b-0eccf4c29486@crashcourse.ca>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -51,32 +51,24 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 31 Oct 2025 13:26:58 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7950
+ <docs@lists.yoctoproject.org>; Fri, 31 Oct 2025 14:02:58 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7951
 
 
-Update the snippet from OE-Core's sed recipe; might as well
-keep up to date.
+  i find this section confusing and possibly incomplete:
 
-Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+https://docs.yoctoproject.org/dev-manual/new-recipe.html#recipe-syntax
 
----
+  The bullet point is labelled "Functions", but almost immediately
+switches into referring to a "task function". so is it a function or a
+task? what is this meant to refer to? it gets more confusing by
+referring to the "function" from sed which is actually the task
+do_install(), then goes on to talk about adding new functions between
+tasks.
 
-diff --git a/documentation/dev-manual/new-recipe.rst b/documentation/dev-manual/new-recipe.rst
-index aa4fb97a4..30cc27248 100644
---- a/documentation/dev-manual/new-recipe.rst
-+++ b/documentation/dev-manual/new-recipe.rst
-@@ -1461,8 +1461,10 @@ chapter of the BitBake User Manual.
-       do_install () {
-           autotools_do_install
-           install -d ${D}${base_bindir}
--          mv ${D}${bindir}/sed ${D}${base_bindir}/sed
--          rmdir ${D}${bindir}/
-+          if [ ! ${D}${bindir} -ef ${D}${base_bindir} ]; then
-+              mv ${D}${bindir}/sed ${D}${base_bindir}/sed
-+              rmdir ${D}${bindir}/
-+          fi
-       }
+  if this section is meant to explain tasks and not just functions, it
+should also mention "addtask". but i'm not sure what point is trying
+to be made here.
 
-    It is
+rday
 
