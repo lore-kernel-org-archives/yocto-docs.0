@@ -2,59 +2,59 @@ Return-Path: <alex.kanavin@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 14B6ACCF9F8
-	for <webhook@archiver.kernel.org>; Fri, 31 Oct 2025 16:08:19 +0000 (UTC)
-Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
- by mx.groups.io with SMTP id smtpd.web11.19164.1761926896727642119
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 181DECCFA00
+	for <webhook@archiver.kernel.org>; Fri, 31 Oct 2025 16:13:39 +0000 (UTC)
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+ by mx.groups.io with SMTP id smtpd.web11.19309.1761927214014748188
  for <docs@lists.yoctoproject.org>;
- Fri, 31 Oct 2025 09:08:16 -0700
+ Fri, 31 Oct 2025 09:13:34 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=Lz1ZDNhc;
- spf=pass (domain: gmail.com, ip: 209.85.219.43, mailfrom: alex.kanavin@gmail.com)
-Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-87c13813464so36946666d6.1
-        for <docs@lists.yoctoproject.org>; Fri, 31 Oct 2025 09:08:16 -0700 (PDT)
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=HHjRXNjM;
+ spf=pass (domain: gmail.com, ip: 209.85.219.50, mailfrom: alex.kanavin@gmail.com)
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-880255e7e4aso18098496d6.0
+        for <docs@lists.yoctoproject.org>; Fri, 31 Oct 2025 09:13:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761926896; x=1762531696; darn=lists.yoctoproject.org;
+        d=gmail.com; s=20230601; t=1761927213; x=1762532013; darn=lists.yoctoproject.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=H6NSOUNMfF2tsRnQeRVjjVsuVG5YBUSiEsIOZrkpISY=;
-        b=Lz1ZDNhcbtmDQWl1usw7G+1tnPLJgRaqiu+/QWbkP/CmNOwOlWdOX0abiV/R1MBZSd
-         xPoDvjWm2sr2w6x6szMjUCpI40abdeVTut93fO4QuhFCtZ1PgpjZP9Sl/8Jrv8Ge6u33
-         p95GLs8qISYDHmbNW/TIDA0CZ7WULQhl3r5gBEslleShw6Ou+iZiDKGB6EDNPXd7IRr8
-         4Hg9l3Br1KUxIDYOw7jnj+gV62rbe3xnYASeHzIGJ674IdNFrym+WGso/u+7r/2jYBhb
-         a7eNt/jLOeQ2c63s5ExoZY+oFpc5dE1Cmc9GhN83MW52TdbsYfnuKinxQb3P4lHEE5pI
-         xmow==
+        bh=JGJ2XmPtvBpTZNsFAnIun3UoGLMgoBgA4eGRUC1D0Qc=;
+        b=HHjRXNjMyZRrAv6mhy++vrgHvLOtZHMiETAiqk3Sko1aAE12GoYEypJORP/vMjZBW6
+         CMlJKL2MdmrVAilOErBCcOB2ZCPcbrQ4o0NUv+/jds0B6f63ASKyb6TOAX/vHfafoz8h
+         O1S1QCBs57X1Z0WP2UOIAZkg+OTxLqbf+H2pczaW2B7Mf9dpZPrWFZ1Pou4iETP0KtQ7
+         sBv8geN5qUzWkDXAKDInQajILwffmKXxWP0ScwODNmXQj2AxbDQohVV9FWbL91bUlnz5
+         x10DQRDkbmuxphNf4ZHoevnfElZC6XAmZ1GHmbj2NO0bKZccLeXcHZ7v08sNedy/4WGq
+         oFHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761926896; x=1762531696;
+        d=1e100.net; s=20230601; t=1761927213; x=1762532013;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=H6NSOUNMfF2tsRnQeRVjjVsuVG5YBUSiEsIOZrkpISY=;
-        b=n4r3+ixEJQ0S2IHiRzgJnfO2oQW5ujLGlKiQnVjCG0Bw9tIXuIMC1KkOavrwR8pmI4
-         Q5SPQqSANx+YkaY6EM8W0AT/m3SNno2iG/9uLEEOXgS6kd0gCCBVX0Ct2r+HnUKPRv2r
-         Ct+98rhpZNrWRScefpuWrSAnouSMBbByxt1Rp7lZB5jMGnJlKbgs4Hka5pUipToboiU3
-         qeUHZSqZPxElgXGjy+/VH9WxO3Le7BLIzdhrAFxjTsDYEDArlnb72pWmUqrXu2Hk61NK
-         Pc4uEWWrWl9hOwEnGhP6aeJnn/KEU6X+hB778ZoZz2YQE98ll88Q7XK5mH3JNULdYHnN
-         tCgA==
-X-Gm-Message-State: AOJu0Yzq4sD4rXRCIOKxiS4CMC6tLFdju4HrlHorwnM48OJVvwAtnI+j
-	BpkDKYg2+/rFwcl21xdblDWF+4y+Z14Yg3zzl2nI7df8EmcR5uJqUguAMNkQl33Ry3qRiIEwk1+
-	1M9OTTfvihxO4j94qJdI2nYYC7BGd3Bs=
-X-Gm-Gg: ASbGnct0U6sg/RWshlZVTpnpoPBMPsNiMxlzrYoe7oGTDGM5itImP7pqEYcphoRSx2Y
-	hfuw+3+4HDUN1TZt+o6V5YC6DGKLq6oQpkvlgmeQRJUZ7mLoYvaVYyvEt8NRHO6I6zDiVQt1rop
-	V2nKvfpOIttLrfQNew1eLrKIJQcDrb5HsJuEGv3Lr70SL41oqPWpB4Y9X5F1+cBDCtJTUOuGid0
-	WaGKVHIeIB/ifvhFx4q7o2oLedpSwyxqUodNdXfum8iOwScfq1KL/9hWHf0gVmHSormun6zbPtp
-	YAPJR0T6yHD1nhYoiuoY88Jro3Rk3dK7CjitPX8IhUn6eod2WWzNFCVYfKEN3CXN0lGR
-X-Google-Smtp-Source: AGHT+IGMh3bu7cYSqoKPQqKH2SmMKzOZ2AZJ5b9/1CYoJ1g89f/m6nz+TQjwOwLaamw2aLmqy9yp5aK7rCMfyr2hheU=
-X-Received: by 2002:ad4:5bec:0:b0:87d:ff71:8fe6 with SMTP id
- 6a1803df08f44-8802f2fe005mr45074416d6.24.1761926895638; Fri, 31 Oct 2025
- 09:08:15 -0700 (PDT)
+        bh=JGJ2XmPtvBpTZNsFAnIun3UoGLMgoBgA4eGRUC1D0Qc=;
+        b=QwD4n4bC/vCVHZS21oSxnWrVWiYyHpTDo27wykz3LcLADWGzIxeWnzN4C81SZw5/2J
+         TSfXe/9QW/VaG5Uh0CMA0vO3nfpAWor7xjn+QCuxlfpRZI/C+WDOZE9Mjo4Ah5ZjUa39
+         SWCn5QUaRdwxbieimT4sqRcoXjqF181pCmoZfZ1+Titi7EJnscUoB/11ey1Q/9EiRgom
+         LmNXnOCoMp0g9Ua1YlJk5iK7FGeVgmbd0Y2J1oW99BHJlmxyGkjrp1L3LYQ+GY6hc4vp
+         u6HRdF2LEL6eTtL/ytgv82Sj9vnNFhAjTCTv2MNoDZaDZ1vT3kKn7ondMEx9D1pN78Vr
+         Kt9g==
+X-Gm-Message-State: AOJu0YzhVW/KjohTO7fEjXYctBXC+YcH04ZCjhI6HbP6D2L9e82JBTqj
+	pbRRZIWIsO3Py5tDwzU7pvATTVR+O8tggqZWnrmoEX/Ovno0n5dndLibGjqoYVbP/kx1LAUoJN+
+	oGzqVM5KewrLn4isdwVNEI/QmCPHId2bpsQ==
+X-Gm-Gg: ASbGncueIQYs96Ea9DOyZAILnuZE0mZtpTClZ+oCq05DUPvoAztJaRJotUKeFJfr1fV
+	g4TkasbVGuGbVDUQjzHkEfl9+yavbHofPiwxbHl9Y+DSat+3/WvJUqmed4p9PLLOzO/gA/2erzT
+	HO3LG8D52lN8cOvK19dGLZIgjOXfOWDAYxUyMDd5aUwtrd0reC16TVBiLRNGeD30HAc4YXWjsqw
+	mXnbqjZhCE9bmSVn67gBeFg/Md/hIoSyzN0AFRPfIjKfhwNoqGcic+SEoz1HaoPUovlgLd6BeYr
+	079Mx+jS4I+3gGQv6Gl5pblk05bRztiaSi0Cs/n9W1AJYKu+8lQKUr9oaQ==
+X-Google-Smtp-Source: AGHT+IGqmfP0r2fs6HpA700EevTB7yNJwCHodW8Ggty1IZw9C42jS+7KmqMEcU6YyfPKd/ig7NkWsCsXGgR8O9s22Uo=
+X-Received: by 2002:a05:6214:262f:b0:880:42a7:772c with SMTP id
+ 6a1803df08f44-88042a77e91mr17867346d6.54.1761927212908; Fri, 31 Oct 2025
+ 09:13:32 -0700 (PDT)
 MIME-Version: 1.0
 References: <20251030-bitbake-setup-v1-0-f44a8a2b7c0b@bootlin.com> <20251030-bitbake-setup-v1-4-f44a8a2b7c0b@bootlin.com>
 In-Reply-To: <20251030-bitbake-setup-v1-4-f44a8a2b7c0b@bootlin.com>
 From: Alexander Kanavin <alex.kanavin@gmail.com>
-Date: Fri, 31 Oct 2025 17:08:03 +0100
-X-Gm-Features: AWmQ_bnwswLtDo53eE5ZPOSt7gbuYJY77SX4mwGWdp_vH5YPgSAP1nYqejfLO9A
-Message-ID: <CANNYZj8=Fvwcqf+Mei7DoH1egppRtdmTb7S6EcnpESMh3+z+EQ@mail.gmail.com>
+Date: Fri, 31 Oct 2025 17:13:21 +0100
+X-Gm-Features: AWmQ_bm8yI408CShjTYpmtY97HUvOfTAAJJicHRg8wlf7UI-6HMe8f7t1lyGG-o
+Message-ID: <CANNYZj_+stD==a=fvhPJ5yuboKp6R3JiX_LpnaX=iv3+fp6owg@mail.gmail.com>
 Subject: Re: [docs] [PATCH 4/6] brief-yoctoprojectqs: switch to bitbake-setup
 To: antonin.godard@bootlin.com
 Cc: docs@lists.yoctoproject.org, Tim Orling <tim.orling@konsulko.com>
@@ -62,97 +62,19 @@ Content-Type: text/plain; charset="UTF-8"
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 31 Oct 2025 16:08:19 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7954
+ <docs@lists.yoctoproject.org>; Fri, 31 Oct 2025 16:13:39 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7955
 
 On Thu, 30 Oct 2025 at 17:29, Antonin Godard via
 lists.yoctoproject.org
 <antonin.godard=bootlin.com@lists.yoctoproject.org> wrote:
-> +The ``init`` command creates a new folder in the top directory. Its name is
-> +derived from the selected configuration above.
-> +
-> +For the selected options in the above example, this would be::
-> +
-> +   poky-master-poky-distro_poky-machine_qemux86-64
-> +
-> +This will be our example configuration in the following sections.
-> +
-> +This directory contains:
-> +
-> +-  The :term:`Build Directory`, named ``build``. Later, when the build
-> +   completes, the :term:`Build Directory` contains all the files created during
-> +   the build.
-> +
-> +   This :term:`Build Directory` also contains a ``README``, describing the
-> +   currently configuration and minimal instructions.
-> +
-> +-  The :term:`layers <Layer>` needed to build the Poky reference distribution,
-> +   in the ``layers`` directory.
-> +
-> +-  A ``config`` directory, representing the current configuration used in this
-> +   directory.
+> -      The hash equivalence server needs the websockets python module version 9.1
+> -      or later. Debian GNU/Linux 12 (Bookworm) and later, Fedora, CentOS Stream
+> -      9 and later, and Ubuntu 22.04 (LTS) and later, all have a recent enough
+> -      package. Other supported distributions need to get the module some other
+> -      place than their package feed, e.g. via ``pip``.
 
-Note the terminology section here:
-https://git.openembedded.org/bitbake/commit/?id=b96154aeb1fc89184ac245e0d68e6e726fe80c04
-
-Particularly, the build directory is
-'poky-master-poky-distro_poky-machine_qemux86-64', and 'build' is
-*bitbake* build directory under that. I'm not sure if existing
-definitions in documentation can be adjusted, but confusion should be
-avoided as much as possible :)
-
-> +#.  **Initialize the Build Environment:** Source the ``init-build-env``
-> +    environment setup script within the build directory to setup Yocto Project's
-> +    build environment on your :term:`Build Host`:
-
-Better: bitbake build directory, bitbake build environment.
-
-> +    The current configuration does not allow the ``root`` user to login. As this
-> +    can be useful for development, you can enable ``root`` login by opening the
-> +    :ref:`structure-build-conf-site.conf` file and adding the following
-> +    statement::
-> +       EXTRA_IMAGE_FEATURES = "allow-empty-password empty-root-password allow-root-login"
-
-This should be going to local.conf, certainly not site.conf! (because
-site.conf is shared between all builds set up by bitbake-setup, and so
-they will all have root with empty password :)
-
-Also, I proposed a fragment that does the same (patches sent),
-hopefully that goes through review and lands in master soon-ish, then
-this can be too described in fragment termsB.
-
-> +    .. note::
-> +
-> +       These set up the environment similar to what was previously in the local
-> +       configuration file :ref:`local.conf <structure-build-conf-local.conf>`,
-> +       which is now largely empty.
-> +
-> +    .. note::
-> +
-> +       You can significantly speed up your build and guard against fetcher
-> +       failures by using :ref:`overview-manual/concepts:shared state cache`
-> +       mirrors and enabling :ref:`overview-manual/concepts:hash equivalence`.
-> +       This way, you can use pre-built artifacts rather than building them.
-> +       This is relevant only when your network and the server that you use
-> +       can download these artifacts faster than you would be able to build them.
-> +
-> +       To use such mirrors, enable the
-> +       :ref:`ref-fragments-core-yocto-sstate-mirror-cdn` fragment::
-> +
-> +          $ bitbake-config-build enable-fragment core/yocto/sstate-mirror-cdn
-
-Or you can make that choice (poky with sstate) when setting up a build
-with bitbake-setup in the first place.
-
-> +#.  **Find a Layer:** Many hardware layers, or :ref:`BSP layers
-> +    <overview-manual/concepts:bsp layer>` are available. The
-> +    :oe_layerindex:`layer index <>` can be used to find such layers. This example
-> +    adds the :yocto_git:`meta-yocto-bsp </meta-yocto/tree/meta-yocto-bsp>` BSP
-> +    layer.
-
-That is assuming the user has selected 'nodistro' which does not
-include meta-yocto. If they selected poky, then we need another layer
-as an example, probably meta-raspberrypi?
-
-Alex
+This should be kept, but slightly rephrased to refer to the fragment
+that enables sstate acceleration: "the hash equivalence server
+specified by the fragment...".
 
