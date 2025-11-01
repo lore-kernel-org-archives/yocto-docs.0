@@ -1,170 +1,116 @@
-Return-Path: <raj.khem@gmail.com>
+Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 167FCCCF9FE
-	for <webhook@archiver.kernel.org>; Sat,  1 Nov 2025 03:11:36 +0000 (UTC)
-Received: from mail-yx1-f43.google.com (mail-yx1-f43.google.com [74.125.224.43])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.2819.1761966693812281408
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 09C24CCFA00
+	for <webhook@archiver.kernel.org>; Sat,  1 Nov 2025 13:47:34 +0000 (UTC)
+Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.5697.1762004844263539939
  for <docs@lists.yoctoproject.org>;
- Fri, 31 Oct 2025 20:11:33 -0700
+ Sat, 01 Nov 2025 06:47:24 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=mn4NSaGZ;
- spf=pass (domain: gmail.com, ip: 74.125.224.43, mailfrom: raj.khem@gmail.com)
-Received: by mail-yx1-f43.google.com with SMTP id 956f58d0204a3-63f9beb27b9so1168367d50.1
-        for <docs@lists.yoctoproject.org>; Fri, 31 Oct 2025 20:11:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761966693; x=1762571493; darn=lists.yoctoproject.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=2QUwDuIOuaRUv41SzLcc2Rza7HOplH4xxYDoiGOB6hU=;
-        b=mn4NSaGZyQdpFjaqLtkSW4vTpz7TjAO2UWz0O0d/eKNCdE8VnN92vP1UpNqvtHyJq0
-         fEDc2U/5+JskDIOZNGRUG+4Sc1m/ur+tLqwmo43MDkC9sL1udtVRlvsHNwJWXq+Vhmfw
-         9yyW7Db04lk8M5krnJ02uwoCoWI47yoINTJ2PWKzurWLMEKlAzAHxcaEKF/ocgQgaLs2
-         8hTgMHcsycsU5Lm4cuu4ZwD6zJo//sLI25JCi+wX2s2hjj+G0pOKZ1Rl4bKzFfIfXX/B
-         sDtdwQS89IelRCn+HbST9vRY/q74mX6WVPyDyrBULjQ7HA6kkgHgAOFer50Kgz5lg4+x
-         XUqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761966693; x=1762571493;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2QUwDuIOuaRUv41SzLcc2Rza7HOplH4xxYDoiGOB6hU=;
-        b=gisjhqVg8Ha5sWUFKHBjfYYbFpeOdd0+GngdUC/BVF9uZTglwy6zmLS8ntCWbZrzkv
-         WYbahWzKZYF0h21wXMdVz8YdOOB572gdIYgVvjzBgwSQ7NBF3bRE1ZuoTwVG3VENjAFE
-         J+4PmVOBCjSs+b5HK5sr4LL38hw8XaDXZpP7y6phbXIuvkkQCzHzov4lV2xVMe1gT4Hx
-         hmnJQNpSD6cNN1v1vyHA/fw+tAl+/Qv0PVY9DdMarO5Av5TZ/KtdMk8I9e3Mmj8WX8PT
-         /kFBaAF7si5Scv4wyRNRae/EjsTzZ6oUitQk3JiFDT1Arnhg/lHDSAv0dEPJQg5k9b+f
-         C5uQ==
-X-Gm-Message-State: AOJu0Yzbd4gCE1464IyzFlEZ5WaGLt5/dJmoY6lRgF8Tyf6V+gC1tGgW
-	wcT7uaJlRdMICA5tN7cESsyMToN70imbM5zlWC0BBBb97u9F0cnOoitYlwzQ1XDYAphn802cCgI
-	tV++JPDwtPaZQWvt8o/+7DsLjdb4udeA=
-X-Gm-Gg: ASbGncvK3mEAcusSG0SKYOlUUQx2pfxDwRCU0cbNRmf0OcVVhKdZALKhQc5QI+OWeiV
-	fyyH6xiyd5vTpqJGimyD33PjYnp/dZmTo2hwzj4WYrI9G5mGpLF2tmGh2F3Lfx8kjga755qfsRz
-	dBZX+6j7PbfUrmMKkPDSXBqzrFcRUfnKEYjHjiwZ7+pcRAE8shn+mX3wfmFk1shZglvuZfgaTzN
-	/UFXjYC+BMIILazvnWL4SJ/9rd6W5xOHIGJPt15y/J4wWQwTnTulyP76j0pESBkA6NSBTofSAvS
-	PGi2MbAiAKsmk9pov6ph7jHTbkp673p8zNxlCZzBlu99ZbFgShCf2ehZqtV7hnKTIggvyxYUVeU
-	vLJRy3JusmTGwww==
-X-Google-Smtp-Source: AGHT+IFe++BfmUIA4bbhV8eFLIYEEY/xjxjNSM82WjHiGozDRh5sts9eMqdZDY1wLkdQYUVju4tpsDoKdqkTze+fwu4=
-X-Received: by 2002:a05:690e:1552:10b0:63e:30e1:1792 with SMTP id
- 956f58d0204a3-63f92271f0bmr3834476d50.7.1761966692720; Fri, 31 Oct 2025
- 20:11:32 -0700 (PDT)
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=FeOOGGcq;
+ spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
+	To:From:Date:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=v/Sm7mxpOSt/fak+oFxfHuA2nsg3d6wk9jrjjPFU8Ok=; b=FeOOGGcqaBo3i9d9/av/bbZN+f
+	Jk1dxyFEOFMQRu8yORT31cHFBbFtTcBIpq/LfXv7JXvgCzYsgHtWgunUDxfomzC0jd4AQkFw3a9J5
+	AQGJYYTMSiLa/ItX26xX3W6FyqR7dJtJ1rcV0QqPozBYk0axWowKYK35IS/j/MJE6vFOICCm/LiMZ
+	xHvxsw+6QgODcz/V7E3O1SMFgd7jzYNHA1juM5dEXzqenJ+bzvtOBKZv8pkmnR7zyAPM4rphFUkJs
+	CL0M/Cbtr4HJtnIJ4qIENrzOHMBlWoWDK9J1sJkATtIYoOeklBGx9JDmLHXq+NqXjDI+NxTAxohFV
+	7Z1Ac7mw==;
+Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:52204 helo=rday)
+	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <rpjday@crashcourse.ca>)
+	id 1vFBwr-00000009T6N-2IIe
+	for docs@lists.yoctoproject.org;
+	Sat, 01 Nov 2025 09:47:21 -0400
+Date: Sat, 1 Nov 2025 09:46:25 -0400 (EDT)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+To: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: examples and docs for COMPATIBLE_MACHINE are inconsistent and
+ incomplete
+Message-ID: <67c6ae2d-687d-6679-c5a8-c2492a807ad2@crashcourse.ca>
 MIME-Version: 1.0
-References: <c9484193-1798-8f94-97d9-71294d9700a0@crashcourse.ca>
-In-Reply-To: <c9484193-1798-8f94-97d9-71294d9700a0@crashcourse.ca>
-From: Khem Raj <raj.khem@gmail.com>
-Date: Fri, 31 Oct 2025 20:11:21 -0700
-X-Gm-Features: AWmQ_bnWal7Xrn7ILwAaZsM8bYgOQTdXl1K9_JaTaDbrWMIoWK60viTqpVVfQ7I
-Message-ID: <CAMKF1sp7u5vQzdqvk5+3uoxndbr2ga7RSBTGOEiEj_aVNJOXfQ@mail.gmail.com>
-Subject: Re: [docs] has anyone documented how RISC-V was added to YP?
-To: rpjday@crashcourse.ca
-Cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Content-Type: multipart/alternative; boundary="000000000000d364a606427fd604"
+Content-Type: text/plain; charset=US-ASCII
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
+X-AntiAbuse: Original Domain - lists.yoctoproject.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - crashcourse.ca
+X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Sat, 01 Nov 2025 03:11:36 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7960
-
---000000000000d364a606427fd604
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Fri, Oct 31, 2025 at 12:09=E2=80=AFPM Robert P. J. Day via lists.yoctopr=
-oject.org
-<rpjday=3Dcrashcourse.ca@lists.yoctoproject.org> wrote:
-
->
-> here:
->
-> https://docs.yoctoproject.org/dev-manual/new-machine.html
->
-> we read: "Although well within the capabilities of the Yocto Project,
-> adding a totally new architecture might require changes to gcc/glibc
-> and to the site information, which is beyond the scope of this
-> manual."
->
-> but perhaps it would be cool to, for interested readers, point to
-> something that documents how the RISC-V architecture was added to YP
-> so they can see what was involved.
->
->   has anyone written such a thing?
+ <docs@lists.yoctoproject.org>; Sat, 01 Nov 2025 13:47:34 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7961
 
 
+  i know i've whinged on about this before, but the docs discussing
+COMPATIBLE_MACHINE:
 
-Not written but done it :) perhaps history is in commit messages now . It
-was certainly piecemealled in
+https://docs.yoctoproject.org/dev-manual/new-machine.html#adding-a-kernel-for-the-machine
+https://docs.yoctoproject.org/ref-manual/variables.html#term-COMPATIBLE_MACHINE
 
->
->
-> rday
->
-> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
-> Links: You receive all messages sent to this group.
-> View/Reply Online (#7958):
-> https://lists.yoctoproject.org/g/docs/message/7958
-> Mute This Topic: https://lists.yoctoproject.org/mt/116054043/1997914
-> Group Owner: docs+owner@lists.yoctoproject.org
-> Unsubscribe: https://lists.yoctoproject.org/g/docs/unsub [
-> raj.khem@gmail.com]
-> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
->
->
+don't match up, and also aren't consistent with some of its usage, and
+also doesn't cover the variations in the meta-yocto-bsp layer.
 
---000000000000d364a606427fd604
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+  first, are the strings provided to that variable normal REs, such
+that they will match longer strings in which they are a substring?
+that seems to be the rationale for the anchors ^ and $, correct? so
+this example in the dev manual does not do what the typical reader
+would expect (at least it's not explained if it would match longer
+strings if that's what the example is supposed to show):
 
-<div><br></div><div><br><div class=3D"gmail_quote gmail_quote_container"><d=
-iv dir=3D"ltr" class=3D"gmail_attr">On Fri, Oct 31, 2025 at 12:09=E2=80=AFP=
-M Robert P. J. Day via <a href=3D"http://lists.yoctoproject.org">lists.yoct=
-oproject.org</a> &lt;rpjday=3D<a href=3D"mailto:crashcourse.ca@lists.yoctop=
-roject.org">crashcourse.ca@lists.yoctoproject.org</a>&gt; wrote:<br></div><=
-blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-l=
-eft-width:1px;border-left-style:solid;padding-left:1ex;border-left-color:rg=
-b(204,204,204)"><br>
-here:<br>
-<br>
-<a href=3D"https://docs.yoctoproject.org/dev-manual/new-machine.html" rel=
-=3D"noreferrer" target=3D"_blank">https://docs.yoctoproject.org/dev-manual/=
-new-machine.html</a><br>
-<br>
-we read: &quot;Although well within the capabilities of the Yocto Project,<=
-br>
-adding a totally new architecture might require changes to gcc/glibc<br>
-and to the site information, which is beyond the scope of this<br>
-manual.&quot;<br>
-<br>
-but perhaps it would be cool to, for interested readers, point to<br>
-something that documents how the RISC-V architecture was added to YP<br>
-so they can see what was involved.<br>
-<br>
-=C2=A0 has anyone written such a thing?</blockquote><div dir=3D"auto"><br><=
-/div><div dir=3D"auto"><br></div><div dir=3D"auto">Not written but done it =
-:) perhaps history is in commit messages now . It was certainly piecemealle=
-d in=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0=
-px 0.8ex;border-left-width:1px;border-left-style:solid;padding-left:1ex;bor=
-der-left-color:rgb(204,204,204)" dir=3D"auto"><br>
-<br>
-rday<br>
-<br>
--=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-<br>
-Links: You receive all messages sent to this group.<br>
-View/Reply Online (#7958): <a href=3D"https://lists.yoctoproject.org/g/docs=
-/message/7958" rel=3D"noreferrer" target=3D"_blank">https://lists.yoctoproj=
-ect.org/g/docs/message/7958</a><br>
-Mute This Topic: <a href=3D"https://lists.yoctoproject.org/mt/116054043/199=
-7914" rel=3D"noreferrer" target=3D"_blank">https://lists.yoctoproject.org/m=
-t/116054043/1997914</a><br>
-Group Owner: <a href=3D"mailto:docs%2Bowner@lists.yoctoproject.org" target=
-=3D"_blank">docs+owner@lists.yoctoproject.org</a><br>
-Unsubscribe: <a href=3D"https://lists.yoctoproject.org/g/docs/unsub" rel=3D=
-"noreferrer" target=3D"_blank">https://lists.yoctoproject.org/g/docs/unsub<=
-/a> [<a href=3D"mailto:raj.khem@gmail.com" target=3D"_blank">raj.khem@gmail=
-.com</a>]<br>
--=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-<br>
-<br>
-</blockquote></div></div>
+  COMPATIBLE_MACHINE = '(qemux86|qemumips)'
 
---000000000000d364a606427fd604--
+or am i misunderstanding? given this other example in the variable
+glossary:
+
+  COMPATIBLE_MACHINE = "^(aarch64|mips64)$"
+
+the average reader would be entirely entitled to be confused.
+
+  next, parentheses would seem to be superfluous, as in these examples
+ripped from the code base:
+
+meta/recipes-extended/baremetal-example/baremetal-helloworld_git.bb:COMPATIBLE_MACHINE =
+"qemuarmv5|qemuarm|qemuarm64|qemuriscv64|qemuriscv32|qemux86|qemux86-64"
+
+(again, without the ^ and $ anchors, it would be possible to match
+longer strings, yes?)
+
+  i don't see in the docs any mention that you can use wildcard
+patterns, such as:
+
+meta/recipes-connectivity/ssh-pregen-hostkeys/ssh-pregen-hostkeys_1.0.bb:COMPATIBLE_MACHINE = "^qemu.*$"
+
+  finally, there are these override usages from meta-yocto-bsp:
+
+linux-yocto-dev.bbappend:COMPATIBLE_MACHINE:genericarm64 = "genericarm64"
+linux-yocto-dev.bbappend:COMPATIBLE_MACHINE:genericx86 = "genericx86"
+linux-yocto-dev.bbappend:COMPATIBLE_MACHINE:genericx86-64 = "genericx86-64"
+linux-yocto-dev.bbappend:COMPATIBLE_MACHINE:beaglebone-yocto = "beaglebone-yocto"
+linux-yocto_6.12.bbappend:COMPATIBLE_MACHINE:genericarm64 = "genericarm64"
+linux-yocto_6.12.bbappend:COMPATIBLE_MACHINE:beaglebone-yocto = "beaglebone-yocto"
+linux-yocto_6.12.bbappend:COMPATIBLE_MACHINE:genericx86 = "genericx86"
+linux-yocto_6.12.bbappend:COMPATIBLE_MACHINE:genericx86-64 = "genericx86-64"
+linux-yocto_6.16.bbappend:COMPATIBLE_MACHINE:genericarm64 = "genericarm64"
+linux-yocto_6.16.bbappend:COMPATIBLE_MACHINE:beaglebone-yocto = "beaglebone-yocto"
+linux-yocto_6.16.bbappend:COMPATIBLE_MACHINE:genericx86 = "genericx86"
+linux-yocto_6.16.bbappend:COMPATIBLE_MACHINE:genericx86-64 = "genericx86-64"
+
+whose usage is not explained in the docs.
+
+
+rday
 
