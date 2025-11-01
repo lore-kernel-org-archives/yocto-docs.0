@@ -2,14 +2,14 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 09C24CCFA00
-	for <webhook@archiver.kernel.org>; Sat,  1 Nov 2025 13:47:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6476DCCFA00
+	for <webhook@archiver.kernel.org>; Sat,  1 Nov 2025 18:46:05 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.5697.1762004844263539939
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.11746.1762022761427410552
  for <docs@lists.yoctoproject.org>;
- Sat, 01 Nov 2025 06:47:24 -0700
+ Sat, 01 Nov 2025 11:46:01 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=FeOOGGcq;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=IE2mB1S/;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
@@ -17,25 +17,24 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=v/Sm7mxpOSt/fak+oFxfHuA2nsg3d6wk9jrjjPFU8Ok=; b=FeOOGGcqaBo3i9d9/av/bbZN+f
-	Jk1dxyFEOFMQRu8yORT31cHFBbFtTcBIpq/LfXv7JXvgCzYsgHtWgunUDxfomzC0jd4AQkFw3a9J5
-	AQGJYYTMSiLa/ItX26xX3W6FyqR7dJtJ1rcV0QqPozBYk0axWowKYK35IS/j/MJE6vFOICCm/LiMZ
-	xHvxsw+6QgODcz/V7E3O1SMFgd7jzYNHA1juM5dEXzqenJ+bzvtOBKZv8pkmnR7zyAPM4rphFUkJs
-	CL0M/Cbtr4HJtnIJ4qIENrzOHMBlWoWDK9J1sJkATtIYoOeklBGx9JDmLHXq+NqXjDI+NxTAxohFV
-	7Z1Ac7mw==;
-Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:52204 helo=rday)
+	bh=IDE1tirM+hmj1HAHkaEH3CQYz5mH93Gicdqd7UGXd6U=; b=IE2mB1S/xWLxT160kBJQh3g7pU
+	zWFsKZgDL59PVI/40/ofHh2DgGOtzBDVdg9TsWgPNCjJHswXK4F6ySEMF4M8uYAut0kypeh9jlEDj
+	AePTAvSW6sAle5nAI3YgQ2mEuNGWqMLvwg9xvE5nI+ZTctXc/a9HMFPPa0zK5kZPFGqPliijmLt+W
+	N+/Zs0bf8XASKP06UeG4zojTw7/WjpEKVEmHtsEV4Ae3WGBKaMf4IddS/rRzZw1LlUxiSVa8De4ee
+	Xed6g+8TJPqZW5iUT3TSVSuLPvLuB/GddpUyHVTsscKMm4UnU/8HEbMq7rw83flqYZkt7tAviqrOt
+	6ao5aTMg==;
+Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:46824 helo=rday)
 	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1vFBwr-00000009T6N-2IIe
+	id 1vFGbr-0000000A9qZ-0iiR
 	for docs@lists.yoctoproject.org;
-	Sat, 01 Nov 2025 09:47:21 -0400
-Date: Sat, 1 Nov 2025 09:46:25 -0400 (EDT)
+	Sat, 01 Nov 2025 14:45:59 -0400
+Date: Sat, 1 Nov 2025 14:45:03 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: examples and docs for COMPATIBLE_MACHINE are inconsistent and
- incomplete
-Message-ID: <67c6ae2d-687d-6679-c5a8-c2492a807ad2@crashcourse.ca>
+Subject: out-of-date definition of WORKDIR in dev manual?
+Message-ID: <9c98c5d1-a78f-7b03-cd5d-8481d26529e8@crashcourse.ca>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -51,66 +50,28 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Sat, 01 Nov 2025 13:47:34 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7961
+ <docs@lists.yoctoproject.org>; Sat, 01 Nov 2025 18:46:05 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7962
 
 
-  i know i've whinged on about this before, but the docs discussing
-COMPATIBLE_MACHINE:
+here:
 
-https://docs.yoctoproject.org/dev-manual/new-machine.html#adding-a-kernel-for-the-machine
-https://docs.yoctoproject.org/ref-manual/variables.html#term-COMPATIBLE_MACHINE
+https://docs.yoctoproject.org/dev-manual/temporary-source-code.html#finding-temporary-source-code
 
-don't match up, and also aren't consistent with some of its usage, and
-also doesn't cover the variations in the meta-yocto-bsp layer.
+we read:
 
-  first, are the strings provided to that variable normal REs, such
-that they will match longer strings in which they are a substring?
-that seems to be the rationale for the anchors ^ and $, correct? so
-this example in the dev manual does not do what the typical reader
-would expect (at least it's not explained if it would match longer
-strings if that's what the example is supposed to show):
+  The path to the work directory for the recipe (WORKDIR) is defined
+  as follows:
 
-  COMPATIBLE_MACHINE = '(qemux86|qemumips)'
+  ${TMPDIR}/work/${MULTIMACH_TARGET_SYS}/${PN}/${EXTENDPE}${PV}-${PR}
 
-or am i misunderstanding? given this other example in the variable
-glossary:
+actually, it is currently:
 
-  COMPATIBLE_MACHINE = "^(aarch64|mips64)$"
+  BASE_WORKDIR ?= "${TMPDIR}/work"
+  WORKDIR = "${BASE_WORKDIR}/${MULTIMACH_TARGET_SYS}/${PN}/${PV}"
 
-the average reader would be entirely entitled to be confused.
-
-  next, parentheses would seem to be superfluous, as in these examples
-ripped from the code base:
-
-meta/recipes-extended/baremetal-example/baremetal-helloworld_git.bb:COMPATIBLE_MACHINE =
-"qemuarmv5|qemuarm|qemuarm64|qemuriscv64|qemuriscv32|qemux86|qemux86-64"
-
-(again, without the ^ and $ anchors, it would be possible to match
-longer strings, yes?)
-
-  i don't see in the docs any mention that you can use wildcard
-patterns, such as:
-
-meta/recipes-connectivity/ssh-pregen-hostkeys/ssh-pregen-hostkeys_1.0.bb:COMPATIBLE_MACHINE = "^qemu.*$"
-
-  finally, there are these override usages from meta-yocto-bsp:
-
-linux-yocto-dev.bbappend:COMPATIBLE_MACHINE:genericarm64 = "genericarm64"
-linux-yocto-dev.bbappend:COMPATIBLE_MACHINE:genericx86 = "genericx86"
-linux-yocto-dev.bbappend:COMPATIBLE_MACHINE:genericx86-64 = "genericx86-64"
-linux-yocto-dev.bbappend:COMPATIBLE_MACHINE:beaglebone-yocto = "beaglebone-yocto"
-linux-yocto_6.12.bbappend:COMPATIBLE_MACHINE:genericarm64 = "genericarm64"
-linux-yocto_6.12.bbappend:COMPATIBLE_MACHINE:beaglebone-yocto = "beaglebone-yocto"
-linux-yocto_6.12.bbappend:COMPATIBLE_MACHINE:genericx86 = "genericx86"
-linux-yocto_6.12.bbappend:COMPATIBLE_MACHINE:genericx86-64 = "genericx86-64"
-linux-yocto_6.16.bbappend:COMPATIBLE_MACHINE:genericarm64 = "genericarm64"
-linux-yocto_6.16.bbappend:COMPATIBLE_MACHINE:beaglebone-yocto = "beaglebone-yocto"
-linux-yocto_6.16.bbappend:COMPATIBLE_MACHINE:genericx86 = "genericx86"
-linux-yocto_6.16.bbappend:COMPATIBLE_MACHINE:genericx86-64 = "genericx86-64"
-
-whose usage is not explained in the docs.
-
+i have no idea if/how that passage should be updated.
 
 rday
+
 
