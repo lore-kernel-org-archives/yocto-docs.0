@@ -2,58 +2,58 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 78849CCFA03
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8201FCCF9F8
 	for <webhook@archiver.kernel.org>; Mon,  3 Nov 2025 16:33:44 +0000 (UTC)
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.1767.1762187621061366878
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.1766.1762187620637668034
  for <docs@lists.yoctoproject.org>;
- Mon, 03 Nov 2025 08:33:41 -0800
+ Mon, 03 Nov 2025 08:33:40 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=e2dbMwXG;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=fQ/hAtTL;
  spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id C01801A185F
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 53BD61A184F
 	for <docs@lists.yoctoproject.org>; Mon,  3 Nov 2025 16:33:39 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 90ACC60628
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 2A2B660628
 	for <docs@lists.yoctoproject.org>; Mon,  3 Nov 2025 16:33:39 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 272E110B501AA
-	for <docs@lists.yoctoproject.org>; Mon,  3 Nov 2025 17:33:39 +0100 (CET)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8AA3F10B5009C
+	for <docs@lists.yoctoproject.org>; Mon,  3 Nov 2025 17:33:38 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1762187619; h=from:subject:date:message-id:to:mime-version:content-type:
+	t=1762187618; h=from:subject:date:message-id:to:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=VXeEtP7UQv1EkC9OfkxhS3k1XQimZbs8zCQO2qHuXkg=;
-	b=e2dbMwXGaOGj5ecJjUR19Tg2ci10mCGrhrFmRh/jZnXJ20eLVccBgNimpd+lu29EAcp0iN
-	7gDdC+52QnNMhFDRkAvba3o20A6cUtcG2PBRzwaoc5PkWo/rc2z34pUEI3+z7/8edk95vi
-	fhryeRrVGemFJj9N7XcWIqet59XLUA4c0+Moskp7hcwQrOlgsNXvzyS9HlBhH0e3dUjOHz
-	OXl3ppYQO42kv2aCZI24KYO/6uhHFG54Vw1UEkjHZRrMnDg7/IruiCXSTHf07UTZ1d7w+G
-	w7NNXhcD71X26RfHbieoQx3h8kEy4ZheAOCQ6mpAG56Si7NxtQfPrip5hiqZ/g==
+	bh=V69Tlp92Ezj4iicJV4EPfrymBxe1pKGX7wEao2pR9tk=;
+	b=fQ/hAtTL2I49tFvsAUMoW6z1hDhlMwsmQHhHzCv8O2GIy5Liow2ei7VteD/uE3Lir/wueu
+	L1hD3vNf0zu24ai0MzU+BCLIox47O93nrmUMEAW1F0wuCobm/aKPjaIujxy8RaJZlfoqpG
+	Qzz1jhp575lPcSZlGvtXB+DzPToEd3rKIpX/oP6xIz5tJ+4MRd6Y9ws+fuzd5CoaA4zKkp
+	fxsIwmi6Hnx2O9gKf4vdeO6jFLwuPS4M62QHpTAX74OHNN7CTFEEI8aAehMdNFX3O60kwR
+	NXNoNeuYjuedMSbDL+9Guqx8DZi4cFWx5dNwnYaqvFKZjuvQODvL4++Xuz++tw==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Mon, 03 Nov 2025 17:33:10 +0100
-Subject: [PATCH v2 6/6] ref-manual/terms.rst: update Poky description
+Date: Mon, 03 Nov 2025 17:33:09 +0100
+Subject: [PATCH v2 5/6] dev-manual: add a document to setup poky manually
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251103-bitbake-setup-v2-6-89fbb14cfbbd@bootlin.com>
+Message-Id: <20251103-bitbake-setup-v2-5-89fbb14cfbbd@bootlin.com>
 References: <20251103-bitbake-setup-v2-0-89fbb14cfbbd@bootlin.com>
 In-Reply-To: <20251103-bitbake-setup-v2-0-89fbb14cfbbd@bootlin.com>
 To: docs@lists.yoctoproject.org
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2039;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=8679;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=uEHzqAKXqc7JJMqCqzTjRdy94fUsCEFbaZDd6cPSWsI=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpCNlfq3CEZrsza8qg2YsQaonspwubUK3ZNqK6p
- /alAq4qykeJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaQjZXwAKCRDRgEFAKaOo
- NnG4D/92ZVod6vxzFZuS20pmXFhrGCmIx9vouPzoSci2ePAezyji4DWlL18Zg2i87PrcuFlWMaj
- WJIZkvq8J/odSk05kLBs5RhpvDOxd2c6OREM0Ydy8KTJXG0OepOlgi42z+1iU3FnY5Bhaxu4taB
- BbiQFtxk0WxuNgVuesQ4dE0Rv7JNJWsZm7G3VNgzqophGSb1xjzW+8zvhHMvoepUtNoGfC/vy8N
- FydCVT7YFeQuotZtFyGWgNegifEODEZKI6ZaJ+B36KoaTPkft6yXQkc3O3rFCvSIQRpqXLzJN5f
- qRDYKv6fmjQ8RuaTAhGoVXzvTenF8qMoxSZSVEaOVXEsq5pUAHHXosPXQnEa+bO/DEqv1p8IW8C
- KcRvx/Zjdj40CCP+f30RSYZoaPOdgSIwvMHT/E9EqROSMseUaFI6+EF+K/WAUoeaIIFMZf5Cbns
- 8Sb8ZbMBetuSr84xGuv7avGGipT0t0I6WusVoXbY60eU0rX4bptLeid4VXCp8K42BBCSY8Y1k9j
- s5l9hQOm2hvbHr4Xvm+21IyE3lbTsDU2SZNpfL8icfSB2Ip3fKDY/UCquxVJmf2axLYgePyFxcK
- 7HnMEQhtV/icfWT79YZDswI+Ro5t4TxcjhqLkLr7zpprosWTFPdXH1NVTe0RGXrJ4lpZ7R0plra
- eDR/Bz6iRypJXdg==
+ bh=Z5gU/CkotIzlC0/PPNe+2fbpeufc/Z03YlSZ4BNkOn0=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpCNlf++GMVPSJJnMKVLVl6KTYN22R0SQ2v/4JK
+ Jmb+qxzFr2JAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaQjZXwAKCRDRgEFAKaOo
+ NuwwEAC0N5h37Rb9c2tYkj0TCp5DwQ2t6KdxA+zSS9cy71b608tZ/YDTFZMz+Im1nQTT+f7p0QA
+ P/BtKRRk/MsjI/6miZgT5+H2KcXidEjYYl5hfWQ1KpwZqE/UCPlvMMEedgoFORaYJMJn4j4GP2V
+ tzCB5Zv7cZjka6PMY9fSUezQz2EWCdm+hDNA3mM3CN9VFGLdlu1wKqDglUGetPHcT7MEbiDJgB6
+ xjh1f4VrM91eRPqgK7Lar0LKQUXIidcljDxiVA4CtpxX5eC3+VSH6xwQMoawpI8fxlXPAZYwD62
+ 6Hp0zuuYTxZFkahXulbzDG9JaHdAFoTw49MB/QiRCz5cWdyo9fv3LJbFjzRCd2Kat124CZ4ak0x
+ 9LGxInJA8kVti4BQzlWUwXpKeofB2XDbaxp+EbpEYmLuaupyOE6OMS1lHIRaJWK5/Fs1vk0jGd8
+ N1v9KG0/GXhXHkseWetcpVXSIA7WhKxBbC0o6oy9ebE87w6SBxVs4gwVHb4BoUkdfFnN/4hwq8v
+ gEB68R5PZjtzKkjz+oUNJ7HTO2xRpXy5jg2hX+wzxPrePXWbi3xAzRnyWoi/u7b8rl5Vi0Fhy/M
+ 0LPbt7rVKhh6DrvpnY/zTqvJP3o6uh9ugi0tzoGL4ZAKAUsP7i+pPnefFgElxF16g5jNqdSfdew
+ A0JR8vamER7pOjQ==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
@@ -61,50 +61,196 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Mon, 03 Nov 2025 16:33:44 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7981
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7980
 
-Poky as in the repository will no longer be updated. Update the
-description of Poky to remove the last bullet point, and add a note to
-say that Poky was used before.
+Add a new document describing how to setup the Poky reference
+distribution manually. This document is referenced in the Quick Guide,
+so that users that _know_ they want to setup Poky without bitbake-setup
+have a link to it.
+
+This document is also important to reflect the layout of the layers
+expected by the bblayers.conf.sample file, as explained in [1].
+
+[1]: https://lore.kernel.org/poky/20251028-update-bblayers-sample-v1-1-97ec54cda94e@bootlin.com/
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/ref-manual/terms.rst | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ documentation/brief-yoctoprojectqs/index.rst   |  10 +-
+ documentation/dev-manual/index.rst             |   1 +
+ documentation/dev-manual/poky-manual-setup.rst | 125 +++++++++++++++++++++++++
+ 3 files changed, 135 insertions(+), 1 deletion(-)
 
-diff --git a/documentation/ref-manual/terms.rst b/documentation/ref-manual/terms.rst
-index e25c714d9..6a9f88061 100644
---- a/documentation/ref-manual/terms.rst
-+++ b/documentation/ref-manual/terms.rst
-@@ -461,11 +461,26 @@ universal, the list includes them just in case:
-       -  A means by which to test the Yocto Project components (i.e. Poky
-          is used to validate the Yocto Project).
+diff --git a/documentation/brief-yoctoprojectqs/index.rst b/documentation/brief-yoctoprojectqs/index.rst
+index f8d09bb53..1d03e8c09 100644
+--- a/documentation/brief-yoctoprojectqs/index.rst
++++ b/documentation/brief-yoctoprojectqs/index.rst
+@@ -205,6 +205,12 @@ This directory contains:
+ -  A ``config`` directory, representing the current configuration used for this
+    :term:`bitbake:setup`.
  
--      -  A vehicle through which you can download the Yocto Project.
--
-       Poky is not a product level distro. Rather, it is a good starting
-       point for customization.
++.. note::
++
++   It is also possible to setup the :term:`Poky` reference distro manually. For
++   that refer to the :doc:`/dev-manual/poky-manual-setup` section of the Yocto
++   Project Development Tasks Manual.
++
+ Building Your Image
+ ===================
  
-+      .. note::
-+
-+         Poky also used to be a repository containing the combination of
-+         :term:`BitBake`, :term:`OpenEmbedded-Core (OE-Core)`, the
-+         :yocto_git:`meta-yocto </meta-yocto>` repository and the Yocto Project
-+         documentation -- which were combined with the :yocto_git:`combo-layer
-+         </poky-config>` tool.
-+
-+         This repository is still hosted at :yocto_git:`/poky` and is still
-+         updated for maintained releases that are older than Whinlatter (5.3).
-+         Newer releases now use ``bitbake-setup`` to clone and setup the initial
-+         :term:`OpenEmbedded Build System` environment. For more information on
-+         how to use ``bitbake-setup``, see the :doc:`/brief-yoctoprojectqs/index`
-+         document. An alternative can be to setup the above repositories
-+         manually, by following the :doc:`/dev-manual/poky-manual-setup`
-+         section of the Yocto Project Development Tasks Manual.
-+
-       .. note::
+@@ -261,7 +267,9 @@ an entire Linux distribution, including the toolchain, from source.
  
-          Poky began as an open-source project initially developed by
+        These set up the environment similar to what was previously in the local
+        configuration file :ref:`local.conf <structure-build-conf-local.conf>`,
+-       which is now largely empty.
++       which is now largely empty. To setup the build how it was done
++       previously, see the :doc:`/dev-manual/poky-manual-setup` section of the
++       Yocto Project Development Tasks Manual.
+ 
+     The current configuration does not allow the ``root`` user to login. As this
+     can be useful for development, you can enable ``root`` login by opening the
+diff --git a/documentation/dev-manual/index.rst b/documentation/dev-manual/index.rst
+index 7a581236a..adf776e00 100644
+--- a/documentation/dev-manual/index.rst
++++ b/documentation/dev-manual/index.rst
+@@ -17,6 +17,7 @@ Yocto Project Development Tasks Manual
+    upgrading-recipes
+    temporary-source-code
+    creating-fragments
++   poky-manual-setup
+    quilt.rst
+    development-shell
+    python-development-shell
+diff --git a/documentation/dev-manual/poky-manual-setup.rst b/documentation/dev-manual/poky-manual-setup.rst
+new file mode 100644
+index 000000000..c760f2c2c
+--- /dev/null
++++ b/documentation/dev-manual/poky-manual-setup.rst
+@@ -0,0 +1,125 @@
++.. SPDX-License-Identifier: CC-BY-SA-2.0-UK
++
++Setting Up the Poky Reference Distro Manually
++*********************************************
++
++While the default way to setup the :term:`Poky` reference distro is to use
++``bitbake-setup``, it is also possible to manually setup the environment. This
++document guides through this setup step-by-step.
++
++.. note::
++
++   This document will produce a setup similar to what is described in
++   :doc:`/brief-yoctoprojectqs/index`, which shows how to setup :term:`Poky`
++   with ``bitbake-setup``.
++
++Use Git to Clone The Layers
++===========================
++
++Go to :yocto_wiki:`Releases wiki page </Releases>`, and choose a release
++(such as ``&DISTRO_REL_LATEST_TAG;``), corresponding to either the latest stable
++release or a Long Term Support release.
++
++Once you complete the setup instructions for your machine (see the
++:doc:`/ref-manual/system-requirements` section of the Yocto Project Reference
++Manual), you need to get a copy of the different :term:`layers <Layer>` needed
++to setup the :term:`Poky` reference distribution on your build host. Use the
++following commands:
++
++.. code-block:: shell
++
++   $ mkdir layers/
++   $ git clone -b &DISTRO_REL_LATEST_TAG; https://git.openembedded.org/bitbake ./layers/bitbake
++   $ git clone -b &DISTRO_REL_LATEST_TAG; https://git.openembedded.org/openembedded-core ./layers/openembedded-core
++   $ git clone -b &DISTRO_REL_LATEST_TAG; https://git.yoctoproject.org/meta-yocto ./layers/meta-yocto
++
++Building Your Image
++===================
++
++Use the following steps to build your image. The build process creates
++an entire Linux distribution, including the toolchain, from source.
++
++.. note::
++
++   -  If you are working behind a firewall and your build host is not
++      set up for proxies, you could encounter problems with the build
++      process when fetching source code (e.g. fetcher failures or Git
++      failures).
++
++   -  If you do not know your proxy settings, consult your local network
++      infrastructure resources and get that information. A good starting
++      point could also be to check your web browser settings. Finally,
++      you can find more information on the
++      ":yocto_wiki:`Working Behind a Network Proxy </Working_Behind_a_Network_Proxy>`"
++      page of the Yocto Project Wiki.
++
++#.  **Initialize the Build Environment:** From your current working directory,
++    setup a build environment with the following command:
++
++    .. code-block:: shell
++
++       $ TEMPLATECONF=$PWD/layers/meta-yocto/meta-poky/conf/templates/default source ./layers/openembedded-core/oe-init-build-env
++
++    Among other things, the script creates the :term:`Build Directory`, which is
++    ``build`` in this case and is located in the :term:`Source Directory`.
++    After the script runs, your current working directory is set to the
++    :term:`Build Directory`. Later, when the build completes, the :term:`Build
++    Directory` contains all the files created during the build.
++
++#.  **Examine Your Local Configuration File:** When you set up the build
++    environment, a local configuration file named ``local.conf`` becomes
++    available in a ``conf`` sub-directory of the :term:`Build Directory`. For
++    this example, the defaults are set to build for a ``qemux86-64`` target,
++    which is suitable for emulation. The package manager used is set to the RPM
++    package manager.
++
++    .. tip::
++
++       You can significantly speed up your build and guard against fetcher
++       failures by using :ref:`overview-manual/concepts:shared state cache`
++       mirrors and enabling :ref:`overview-manual/concepts:hash equivalence`.
++       This way, you can use pre-built artifacts rather than building them.
++       This is relevant only when your network and the server that you use
++       can download these artifacts faster than you would be able to build them.
++
++       To use such mirrors, uncomment the below lines in your ``conf/local.conf``
++       file in the :term:`Build Directory`::
++
++          BB_HASHSERVE_UPSTREAM = "wss://hashserv.yoctoproject.org/ws"
++          SSTATE_MIRRORS ?= "file://.* http://sstate.yoctoproject.org/all/PATH;downloadfilename=PATH"
++          BB_HASHSERVE = "auto"
++          BB_SIGNATURE_HANDLER = "OEEquivHash"
++
++       The hash equivalence server needs the websockets python module version 9.1
++       or later. Debian GNU/Linux 12 (Bookworm) and later, Fedora, CentOS Stream
++       9 and later, and Ubuntu 22.04 (LTS) and later, all have a recent enough
++       package. Other supported distributions need to get the module some other
++       place than their package feed, e.g. via ``pip``.
++
++#.  **Start the Build:** Continue with the following command to build an OS
++    image for the target, which is ``core-image-sato`` in this example:
++
++    .. code-block:: shell
++
++       $ bitbake core-image-sato
++
++    For information on using the ``bitbake`` command, see the
++    :ref:`overview-manual/concepts:bitbake` section in the Yocto Project Overview and
++    Concepts Manual, or see
++    :ref:`bitbake-user-manual/bitbake-user-manual-intro:the bitbake command`
++    in the BitBake User Manual.
++
++#.  **Simulate Your Image Using QEMU:** Once this particular image is
++    built, you can start QEMU, which is a Quick EMUlator that ships with
++    the Yocto Project:
++
++    .. code-block:: shell
++
++       $ runqemu qemux86-64
++
++    If you want to learn more about running QEMU, see the
++    :ref:`dev-manual/qemu:using the quick emulator (qemu)` chapter in
++    the Yocto Project Development Tasks Manual.
++
++#.  **Exit QEMU:** Exit QEMU by either clicking on the shutdown icon or by typing
++    ``Ctrl-C`` in the QEMU transcript window from which you evoked QEMU.
 
 -- 
 2.51.0
