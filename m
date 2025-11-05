@@ -1,101 +1,323 @@
-Return-Path: <alex.kanavin@gmail.com>
+Return-Path: <chee.yang.lee@intel.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CAECDCCF9E3
-	for <webhook@archiver.kernel.org>; Tue,  4 Nov 2025 13:09:32 +0000 (UTC)
-Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.17238.1762261767606292085
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 79CB6CCFA04
+	for <webhook@archiver.kernel.org>; Wed,  5 Nov 2025 07:27:34 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.4074.1762327648562781564
  for <docs@lists.yoctoproject.org>;
- Tue, 04 Nov 2025 05:09:27 -0800
+ Tue, 04 Nov 2025 23:27:29 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=Evg9yY10;
- spf=pass (domain: gmail.com, ip: 209.85.219.46, mailfrom: alex.kanavin@gmail.com)
-Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-8801f4e308dso50106616d6.0
-        for <docs@lists.yoctoproject.org>; Tue, 04 Nov 2025 05:09:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762261766; x=1762866566; darn=lists.yoctoproject.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=nEHRy8XeKQR62j9KgWjgUQtGsolNa/CVbnCx4/9vzWg=;
-        b=Evg9yY10U9f5gfQGZYStldyU/Yy0QifY+Q3cdMlPG9++WquskyQv9SbxhNthWSx41H
-         PTcg6vn+bOfjy9X/mOMic7V4AWQArvaa5ly1zk+Fz6V/QXLsir88FA3WQLLQmAT5o+dq
-         fhgJlkIyaJ5VsFnTJ1IfqBm8H5HhwcfX+9FV1QB2wOZXL18KHZ56Oku0janQvSqxjuwc
-         QVlX93V7oeu4CDvVf3RHeWgIeAop605ED6VqeZUMDa3b7oTwfbZ42QHYyNTuF0Dlwj+y
-         +f1nwVjlLOLH5KZOuNhvMulDF138n3e4Ojtu4AXzg3+jQ6fPnr2UwSN98O+Y6bxROiaf
-         Ei8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762261766; x=1762866566;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=nEHRy8XeKQR62j9KgWjgUQtGsolNa/CVbnCx4/9vzWg=;
-        b=JOdme8vQ3wwOu7EMKhiHT/HYiOk0m6gSf2o6+zu+VF492rhUD/vZ9MdRpdNzqL1XCe
-         QeHRC4qEz60L6XlWmsdgmWKsUI4ej9r/1zO7XQ+S9mEzcXt3gjKHICdpZ6M3+x73Er12
-         7jXgl0Xf3uRzZyZ9Fru3Slich3tzu8OuHI0C34q8yIa0c9aD8C52lRp9jiZbXE56/EYt
-         iTx8/I81+jXYo9R67Fd7om6BdrhHGFLX4MSenOhk+aVLX0Nowv0EYYc1p18up6iKLceN
-         jTL0QbaBWM4/Tq3zIE7UDqWSp8k4SoyaUh/mTx7ahjIofR4WVZ9AkQlH48uqxPaJOUXt
-         2BIA==
-X-Gm-Message-State: AOJu0YwVPkgsEbBfG+BxZZe3pfhQa3Etg0mTXvW3pVNew9Mw4zIElHSH
-	ai6JL5OkJMzWSQWUyrd0YDG+7+Hp9zJoz1BwGKZk2hhpPkpk7wGtzj/qwyET2y/uB+4NO+yCvJf
-	Uqy0wl5kctZvnCzf6zGSYv5XKbuPQEUQ=
-X-Gm-Gg: ASbGncve4Oj/WKiCcl20sueOcQdB+M8CVE07se+wFLPYe8Rge9nTtdhJFNvpJa+MbdI
-	UjuUtRoPCB7zdD2c7enAq2SEegMJhKbw2scUwixd43z51kNl/Lt3qLVnNWVezldJgi4TmeIG3FF
-	cbM2mj77GnvZlMhIQVxXfjZFowuT1yipfAoR4jFTMRROlM0C8waixTqjgX5Mo/EdsxMz48cTxHX
-	zhWLbC0BfbksPQm3ZsryCVn5y8htHddA9RqAAWNZmV+sA92ObMCuOx3e+6HKXEECjP/XecRMu2V
-	JAnAvKiOahlIxkAYKqM=
-X-Google-Smtp-Source: AGHT+IGcsyptCkNNgElDMHUqp59G9XasYlNh+kD6ps4orOkoq3zmQYarxU6Rv4iwNbpPAGrre9J9rapc+IDbwbRYxDs=
-X-Received: by 2002:a05:6214:2426:b0:880:52d3:9bff with SMTP id
- 6a1803df08f44-88052d39e83mr89696586d6.52.1762261766499; Tue, 04 Nov 2025
- 05:09:26 -0800 (PST)
+ dkim=pass header.i=@intel.com header.s=Intel header.b=JiEl4/XW;
+ spf=pass (domain: intel.com, ip: 198.175.65.12, mailfrom: chee.yang.lee@intel.com)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1762327649; x=1793863649;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=LIIh0+ATFsw+o2e/FVgNuDKSbteZa2ETF8tKNvG0YwI=;
+  b=JiEl4/XWr7AE1jCRqEe2USyCCRbd4jwKSIZFrI5sZ4wOO/XLEAUWxZI5
+   +4NxLFUgJ39RcuCFDGD4On/O5CdfFek6rl12IQY+rFkOPDrTuTGCFhSrI
+   N5pqPIReIBHlZZzwdv7oaGi7GDgDXGCjoTbJ6uAJz6BhG0z4lxUuV8k5M
+   hf4K7O8oH/xZtbbpzNF+gBdHh2YWHV3/f9h7Yd8gobethxVhfUSVN1zL5
+   /FzcfRwW4KdIZYxiDTs1cXLHhzFisNeCO13GgAct8+d1k1ka5KNNDAeMX
+   Qfr+ak12HGv8YzRI9C5qCSoYJBaGmsgE01adNJGYmRrg2Ke5uYYSkxYvW
+   g==;
+X-CSE-ConnectionGUID: 91GB9197RnKqMf+/YLeJkQ==
+X-CSE-MsgGUID: PWHPVcD8SYCsU9eN/9A7UA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11603"; a="75883742"
+X-IronPort-AV: E=Sophos;i="6.19,281,1754982000"; 
+   d="scan'208";a="75883742"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2025 23:27:28 -0800
+X-CSE-ConnectionGUID: Ok6bSMV3SA6Ak3fhXMqy5w==
+X-CSE-MsgGUID: uGIh8Ii4SfiruIhSbx9PKA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,281,1754982000"; 
+   d="scan'208";a="187226401"
+Received: from cheeyang-desk4.png.intel.com ([10.107.249.123])
+  by fmviesa006.fm.intel.com with ESMTP; 04 Nov 2025 23:27:27 -0800
+From: chee.yang.lee@intel.com
+To: docs@lists.yoctoproject.org
+Subject: [PATCH] migration-guides: add release notes for 5.0.13
+Date: Wed,  5 Nov 2025 15:27:00 +0800
+Message-ID: <20251105072700.1209561-1-chee.yang.lee@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <20251103-bitbake-setup-v2-0-89fbb14cfbbd@bootlin.com> <20251103-bitbake-setup-v2-4-89fbb14cfbbd@bootlin.com>
-In-Reply-To: <20251103-bitbake-setup-v2-4-89fbb14cfbbd@bootlin.com>
-From: Alexander Kanavin <alex.kanavin@gmail.com>
-Date: Tue, 4 Nov 2025 14:09:14 +0100
-X-Gm-Features: AWmQ_bnTyhL5FZ68E-bmUHrs4nDI2c45Kq15pA86ebglmCJSR2z5BOIG3wUlZEM
-Message-ID: <CANNYZj9T_QkU4YJJncEm6DXgaK6nh0ry-We=8fMTcyzQ_FVq1w@mail.gmail.com>
-Subject: Re: [docs] [PATCH v2 4/6] brief-yoctoprojectqs: switch to bitbake-setup
-To: antonin.godard@bootlin.com
-Cc: docs@lists.yoctoproject.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 04 Nov 2025 13:09:32 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7985
+ <docs@lists.yoctoproject.org>; Wed, 05 Nov 2025 07:27:34 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7986
 
-On Mon, 3 Nov 2025 at 17:33, Antonin Godard via lists.yoctoproject.org
-<antonin.godard=bootlin.com@lists.yoctoproject.org> wrote:
-> +    The current configuration does not allow the ``root`` user to login. As this
-> +    can be useful for development, you can enable ``root`` login by opening the
-> +    :ref:`local.conf <structure-build-conf-local.conf>` file in ``conf/`` and
-> +    adding the following statement::
-> +
-> +       EXTRA_IMAGE_FEATURES = "allow-empty-password empty-root-password allow-root-login"
+From: Lee Chee Yang <chee.yang.lee@intel.com>
 
-The fragment that does this has now landed:
-https://git.openembedded.org/openembedded-core/commit/?id=e135458415dea5bbc4651e05dafe0b6903b65751
-so this can be rewritten in fragment terms. Also you can add a note
-that rephrases the cautions and appropriate use from the fragment
-description/commit.
+Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
+---
+ .../migration-guides/release-5.0.rst          |   1 +
+ .../migration-guides/release-notes-5.0.13.rst | 241 ++++++++++++++++++
+ 2 files changed, 242 insertions(+)
+ create mode 100644 documentation/migration-guides/release-notes-5.0.13.rst
 
-> +#.  **Find a Layer:** Many hardware layers, or :ref:`BSP layers
-> +    <overview-manual/concepts:bsp layer>` are available. The
-> +    :oe_layerindex:`layer index <>` can be used to find such layers. This example
-> +    adds the :yocto_git:`meta-yocto-bsp </meta-yocto/tree/meta-yocto-bsp>` BSP
-> +    layer.
+diff --git a/documentation/migration-guides/release-5.0.rst b/documentation/migration-guides/release-5.0.rst
+index 523521b37..808ead9af 100644
+--- a/documentation/migration-guides/release-5.0.rst
++++ b/documentation/migration-guides/release-5.0.rst
+@@ -19,3 +19,4 @@ Release 5.0 (scarthgap)
+    release-notes-5.0.10
+    release-notes-5.0.11
+    release-notes-5.0.12
++   release-notes-5.0.13
+diff --git a/documentation/migration-guides/release-notes-5.0.13.rst b/documentation/migration-guides/release-notes-5.0.13.rst
+new file mode 100644
+index 000000000..e683adc30
+--- /dev/null
++++ b/documentation/migration-guides/release-notes-5.0.13.rst
+@@ -0,0 +1,241 @@
++.. SPDX-License-Identifier: CC-BY-SA-2.0-UK
++
++Release notes for Yocto-5.0.13 (Scarthgap)
++------------------------------------------
++
++Security Fixes in Yocto-5.0.13
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++-  busybox: Fix :cve_nist:`2025-46394`
++-  cups: Fix :cve_nist:`2025-58060` and :cve_nist:`2025-58364`
++-  curl: Fix :cve_nist:`2025-9086`
++-  dpkg: Fix :cve_nist:`2025-6297`
++-  expat: follow-up Fix :cve_nist:`2024-8176`
++-  ffmpeg: Fix :cve_nist:`2025-1594`
++-  ffmpeg: Ignore :cve_nist:`2023-49502`, :cve_nist:`2023-50007`, :cve_nist:`2023-50008`,
++   :cve_nist:`2023-50009`, :cve_nist:`2023-50010`, :cve_nist:`2024-31578`, :cve_nist:`2024-31582`
++   and :cve_nist:`2024-31585`
++-  ghostscript: Fix :cve_nist:`2025-59798`, :cve_nist:`2025-59799` and :cve_nist:`2025-59800`
++-  glib-2.0: Fix :cve_nist:`2025-6052` and :cve_nist:`2025-7039`
++-  go-binary-native: Ignore :cve_nist:`2025-0913`
++-  go: Fix :cve_nist:`2025-4674`, :cve_nist:`2025-47906` and :cve_nist:`2025-47907`
++-  grub2: Fix :cve_nist:`2024-56738`
++-  grub2: Ignore :cve_nist:`2024-2312`
++-  gstreamer1.0-plugins-bad: Fix :cve_nist:`2025-3887`
++-  gstreamer1.0-plugins-base: Fix :cve_nist:`2025-47807`
++-  gstreamer1.0-plugins-base: Ignore :cve_nist:`2025-47806` and :cve_nist:`2025-47808`
++-  gstreamer1.0-plugins-good: Ignore :cve_nist:`2025-47183` and :cve_nist:`2025-47219`
++-  gstreamer1.0: Ignore :cve_nist:`2025-2759`
++-  libpam: Fix :cve_nist:`2024-10963`
++-  libxslt: Fix :cve_nist:`2025-7424`
++-  openssl: Fix :cve_nist:`2025-9230`, :cve_nist:`2025-9231` and :cve_nist:`2025-9232`
++-  pulseaudio: Ignore :cve_nist:`2024-11586`
++-  qemu: Ignore :cve_nist:`2024-7730`
++-  tiff: Fix :cve_nist:`2025-9900`
++-  tiff: Ignore :cve_nist:`2024-13978`, :cve_nist:`2025-8176`, :cve_nist:`2025-8177`,
++   :cve_nist:`2025-8534` and :cve_nist:`2025-8851`
++-  vim: Fix :cve_nist:`2025-9389`
++-  wpa-supplicant: Fix :cve_nist:`2022-37660`
++
++
++Fixes in Yocto-5.0.13
++~~~~~~~~~~~~~~~~~~~~~
++
++-  binutils: fix build with gcc-15
++-  bitbake: Use a "fork" multiprocessing context
++-  bitbake: bitbake: Bump version to 2.8.1
++-  build-appliance-image: Update to scarthgap head revision
++-  buildtools-tarball: fix unbound variable issues under 'set -u'
++-  cmake: fix build with gcc-15 on host
++-  conf/bitbake.conf: use gnu mirror instead of main server
++-  contributor-guide: submit-changes: align :term:`CC` tag description
++-  contributor-guide: submit-changes: clarify example with Yocto bug ID
++-  contributor-guide: submit-changes: fix improper bold string
++-  contributor-guide: submit-changes: make "Crediting contributors" part of "Commit your changes"
++-  contributor-guide: submit-changes: make the Cc tag follow kernel guidelines
++-  contributor-guide: submit-changes: number instruction list in commit your changes
++-  contributor-guide: submit-changes: reword commit message instructions
++-  cpio: Pin to use C17 std
++-  cups: upgrade to 2.4.11
++-  curl: update :term:`CVE_STATUS` for :cve_nist:`2025-5025`
++-  dbus-glib: fix build with gcc-15
++-  default-distrovars.inc: Fix CONNECTIVITY_CHECK_URIS redirect issue
++-  dev-manual/building.rst: add note about externalsrc variables absolute paths
++-  dev-manual/security-subjects.rst: update mailing lists
++-  elfutils: fix build with gcc-15
++-  examples: genl: fix wrong attribute size
++-  expect: Fix build with GCC 15
++-  expect: Revert "expect-native: fix do_compile failure with gcc-14"
++-  expect: cleanup do_install
++-  expect: don't run aclocal in do_configure
++-  expect: fix native build with GCC 15
++-  expect: update code for Tcl channel implementation
++-  ffmpeg: upgrade to 6.1.3
++-  gdbm: Use C11 standard
++-  git: fix build with gcc-15 on host
++-  gmp: Fix build with GCC15/C23
++-  gmp: Fix build with older gcc versions
++-  kernel-dev/common.rst: fix the in-tree defconfig description
++-  lib/oe/utils: use multiprocessing from bb
++-  libarchive: patch regression of patch for :cve_nist:`2025-5918`
++-  libgpg-error: fix build with gcc-15
++-  libtirpc: Fix build with gcc-15/C23
++-  license.py: avoid deprecated ast.Str
++-  llvm: fix build with gcc-15
++-  llvm: update to 18.1.8
++-  m4: Stick to C17 standard
++-  migration-guides: add release notes for 4.0.29 5.0.12
++-  ncurses: Pin to C17 standard
++-  oeqa/sdk/cases/buildcpio.py: use gnu mirror instead of main server
++-  openssl: upgrade to 3.2.6
++-  p11-kit: backport fix for handle :term:`USE_NLS` from master
++-  pkgconfig: fix build with gcc-15
++-  poky.conf: bump version for 5.0.13
++-  pulseaudio: Add audio group explicitly
++-  ref-manual/structure: document the auto.conf file
++-  ref-manual/variables.rst: expand :term:`IMAGE_OVERHEAD_FACTOR` glossary entry
++-  ref-manual/variables.rst: fix the description of :term:`KBUILD_DEFCONFIG` :term:`STAGING_DIR`
++-  rpm: keep leading "/" from sed operation
++-  ruby-ptest: some ptest fixes
++-  runqemu: fix special characters bug
++-  rust-llvm: fix build with gcc-15
++-  sanity.conf: Update minimum bitbake version to 2.8.1
++-  scripts/install-buildtools: Update to 5.0.12
++-  sdk: The main in the C example should return an int
++-  selftest/cases/meta_ide.py: use use gnu mirror instead of main server
++-  shared-mime-info: Handle :term:`USE_NLS`
++-  sudo: remove devtool FIXME comment
++-  systemd: backport fix for handle :term:`USE_NLS` from master
++-  systemtap: Fix task_work_cancel build
++-  test-manual/yocto-project-compatible.rst: fix a typo
++-  test-manual: update runtime-testing Exporting Tests section
++-  unifdef: Don't use C23 constexpr keyword
++-  unzip: Fix build with GCC-15
++-  util-linux: use ${B} instead of ${WORKDIR}/build, to fix building under devtool
++-  vim: upgrade to 9.1.1683
++-  yocto-uninative: Update to 4.9 for glibc 2.42 GCC 15.1
++
++
++Known Issues in Yocto-5.0.13
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++- N/A
++
++Contributors to Yocto-5.0.13
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++Thanks to the following people who contributed to this release:
++-  Adam Blank
++-  Adrian Freihofer
++-  Aleksandar Nikolic
++-  Antonin Godard
++-  Archana Polampalli
++-  AshishKumar Mishra
++-  Barne Carstensen
++-  Chris Laplante
++-  Deepak Rathore
++-  Divya Chellam
++-  Gyorgy Sarvari
++-  Haixiao Yan
++-  Hitendra Prajapati
++-  Hongxu Jia
++-  Jan Vermaete
++-  Jiaying Song
++-  Jinfeng Wang
++-  Joao Marcos Costa
++-  Joshua Watt
++-  Khem Raj
++-  Kyungjik Min
++-  Lee Chee Yang
++-  Libo Chen
++-  Martin Jansa
++-  Michael Halstead
++-  Nitin Wankhade
++-  Peter Marko
++-  Philip Lorenz
++-  Praveen Kumar
++-  Quentin Schulz
++-  Ross Burton
++-  Stanislav Vovk
++-  Steve Sakoman
++-  Talel BELHAJ SALEM
++-  Vijay Anusuri
++-  Vrushti Dabhi
++-  Yogita Urade
++
++
++Repositories / Downloads for Yocto-5.0.13
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++yocto-docs
++
++-  Repository Location: :yocto_git:`/yocto-docs`
++-  Branch: :yocto_git:`scarthgap </yocto-docs/log/?h=scarthgap>`
++-  Tag:  :yocto_git:`yocto-5.0.13 </yocto-docs/log/?h=yocto-5.0.13>`
++-  Git Revision: :yocto_git:`6f086fd3d9dbbb0c80f6c3e89b8df4fed422e79a </yocto-docs/commit/?id=6f086fd3d9dbbb0c80f6c3e89b8df4fed422e79a>`
++-  Release Artefact: yocto-docs-6f086fd3d9dbbb0c80f6c3e89b8df4fed422e79a
++-  sha: 454601d8b6034268212f74ca689ed360b08f7a4c7de5df726aa3706586ca4351
++-  Download Locations:
++   https://downloads.yoctoproject.org/releases/yocto/yocto-5.0.13/yocto-docs-6f086fd3d9dbbb0c80f6c3e89b8df4fed422e79a.tar.bz2
++   https://mirrors.kernel.org/yocto/yocto/yocto-5.0.13/yocto-docs-6f086fd3d9dbbb0c80f6c3e89b8df4fed422e79a.tar.bz2
++
++poky
++
++-  Repository Location: :yocto_git:`/poky`
++-  Branch: :yocto_git:`scarthgap </poky/log/?h=scarthgap>`
++-  Tag:  :yocto_git:`yocto-5.0.13 </poky/log/?h=yocto-5.0.13>`
++-  Git Revision: :yocto_git:`f16cffd030d21d12dd57bb95cfc310bda41f8a1f </poky/commit/?id=f16cffd030d21d12dd57bb95cfc310bda41f8a1f>`
++-  Release Artefact: poky-f16cffd030d21d12dd57bb95cfc310bda41f8a1f
++-  sha: 1367e43907f5ffa725f3afb019cd7ca07de21f13e5e73a1f5d1808989ae6ed2a
++-  Download Locations:
++   https://downloads.yoctoproject.org/releases/yocto/yocto-5.0.13/poky-f16cffd030d21d12dd57bb95cfc310bda41f8a1f.tar.bz2
++   https://mirrors.kernel.org/yocto/yocto/yocto-5.0.13/poky-f16cffd030d21d12dd57bb95cfc310bda41f8a1f.tar.bz2
++
++openembedded-core
++
++-  Repository Location: :oe_git:`/openembedded-core`
++-  Branch: :oe_git:`scarthgap </openembedded-core/log/?h=scarthgap>`
++-  Tag:  :oe_git:`yocto-5.0.13 </openembedded-core/log/?h=yocto-5.0.13>`
++-  Git Revision: :oe_git:`7af6b75221d5703ba5bf43c7cd9f1e7a2e0ed20b </openembedded-core/commit/?id=7af6b75221d5703ba5bf43c7cd9f1e7a2e0ed20b>`
++-  Release Artefact: oecore-7af6b75221d5703ba5bf43c7cd9f1e7a2e0ed20b
++-  sha: 4dcf636ec4a7b38b47a24e9cb3345b385bc126bb19620bf6af773bf292fef6b2
++-  Download Locations:
++   https://downloads.yoctoproject.org/releases/yocto/yocto-5.0.13/oecore-7af6b75221d5703ba5bf43c7cd9f1e7a2e0ed20b.tar.bz2
++   https://mirrors.kernel.org/yocto/yocto/yocto-5.0.13/oecore-7af6b75221d5703ba5bf43c7cd9f1e7a2e0ed20b.tar.bz2
++
++meta-yocto
++
++-  Repository Location: :yocto_git:`/meta-yocto`
++-  Branch: :yocto_git:`scarthgap </meta-yocto/log/?h=scarthgap>`
++-  Tag:  :yocto_git:`yocto-5.0.13 </meta-yocto/log/?h=yocto-5.0.13>`
++-  Git Revision: :yocto_git:`3ff7ca786732390cd56ae92ff4a43aba46a1bf2e </meta-yocto/commit/?id=3ff7ca786732390cd56ae92ff4a43aba46a1bf2e>`
++-  Release Artefact: meta-yocto-3ff7ca786732390cd56ae92ff4a43aba46a1bf2e
++-  sha: 8efbaeab49dc3e1c4b67ff8d5801df1b05204c2255d18cff9a6857769ae33b23
++-  Download Locations:
++   https://downloads.yoctoproject.org/releases/yocto/yocto-5.0.13/meta-yocto-3ff7ca786732390cd56ae92ff4a43aba46a1bf2e.tar.bz2
++   https://mirrors.kernel.org/yocto/yocto/yocto-5.0.13/meta-yocto-3ff7ca786732390cd56ae92ff4a43aba46a1bf2e.tar.bz2
++
++meta-mingw
++
++-  Repository Location: :yocto_git:`/meta-mingw`
++-  Branch: :yocto_git:`scarthgap </meta-mingw/log/?h=scarthgap>`
++-  Tag:  :yocto_git:`yocto-5.0.13 </meta-mingw/log/?h=yocto-5.0.13>`
++-  Git Revision: :yocto_git:`bd9fef71ec005be3c3a6d7f8b99d8116daf70c4f </meta-mingw/commit/?id=bd9fef71ec005be3c3a6d7f8b99d8116daf70c4f>`
++-  Release Artefact: meta-mingw-bd9fef71ec005be3c3a6d7f8b99d8116daf70c4f
++-  sha: ab073def6487f237ac125d239b3739bf02415270959546b6b287778664f0ae65
++-  Download Locations:
++   https://downloads.yoctoproject.org/releases/yocto/yocto-5.0.13/meta-mingw-bd9fef71ec005be3c3a6d7f8b99d8116daf70c4f.tar.bz2
++   https://mirrors.kernel.org/yocto/yocto/yocto-5.0.13/meta-mingw-bd9fef71ec005be3c3a6d7f8b99d8116daf70c4f.tar.bz2
++
++bitbake
++
++-  Repository Location: :oe_git:`/bitbake`
++-  Branch: :oe_git:`2.8 </bitbake/log/?h=2.8>`
++-  Tag:  :oe_git:`yocto-5.0.13 </bitbake/log/?h=yocto-5.0.13>`
++-  Git Revision: :oe_git:`1c9ec1ffde75809de34c10d3ec2b40d84d258cb4 </bitbake/commit/?id=1c9ec1ffde75809de34c10d3ec2b40d84d258cb4>`
++-  Release Artefact: bitbake-1c9ec1ffde75809de34c10d3ec2b40d84d258cb4
++-  sha: 98bf54fa3abe237b73a93b1e33842a429209371fca6e409c258a441987879d16
++-  Download Locations:
++   https://downloads.yoctoproject.org/releases/yocto/yocto-5.0.13/bitbake-1c9ec1ffde75809de34c10d3ec2b40d84d258cb4.tar.bz2
++   https://mirrors.kernel.org/yocto/yocto/yocto-5.0.13/bitbake-1c9ec1ffde75809de34c10d3ec2b40d84d258cb4.tar.bz2
++
+-- 
+2.43.0
 
-See a separate email about using raspberry pi instead:
-https://lists.yoctoproject.org/g/docs/message/7984
-
-Also this was not addressed?
-https://lists.yoctoproject.org/g/docs/message/7955
-You can add to that that the missing websockets dependency can be
-fulfilled by installing buildtools, with 'bitbake-setup
-install-buildtools'.
-
-Other than these three issues, the patchset is good!
-
-Alex
 
