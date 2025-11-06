@@ -2,141 +2,133 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 07BB0CCFA03
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 08BCFCCF9F8
 	for <webhook@archiver.kernel.org>; Thu,  6 Nov 2025 09:11:46 +0000 (UTC)
 Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.10740.1762420299874534541
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.10741.1762420300025697305
  for <docs@lists.yoctoproject.org>;
  Thu, 06 Nov 2025 01:11:40 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=KBtt2B4S;
+ dkim=fail reason="dkim: body hash did not verify" header.i=@bootlin.com header.s=dkim header.b=e/sfw+DN;
  spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 190CBC0FA84
+	by smtpout-04.galae.net (Postfix) with ESMTPS id A92D7C0FA88
 	for <docs@lists.yoctoproject.org>; Thu,  6 Nov 2025 09:11:17 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 256526068C
+	by smtpout-01.galae.net (Postfix) with ESMTPS id A80C16068C
 	for <docs@lists.yoctoproject.org>; Thu,  6 Nov 2025 09:11:38 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 894031185079E
-	for <docs@lists.yoctoproject.org>; Thu,  6 Nov 2025 10:11:37 +0100 (CET)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 29011102F2506
+	for <docs@lists.yoctoproject.org>; Thu,  6 Nov 2025 10:11:38 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1762420297; h=from:subject:date:message-id:to:mime-version:content-type:
+	t=1762420298; h=from:subject:date:message-id:to:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=vTvqDLemjD1D0IF7YWy+qpL4NnCshl2wbhDyYZKQR24=;
-	b=KBtt2B4SrT9kKTKgLOBieluTgrGL32kVf1May58FkY8n4dqpr4dTO6sFdl2+GYKwdYeeXo
-	I20oTeYGQGyu6a3v6X/o/UrNYDe9yl7UJGYzG/xXpzpsvqrEWPeqQ3CvYc/qdmCS5jTSUo
-	ng7v1vcPdlQKlD3ij699TBcSgaAwLLbE9LKrjJEihFEGnkiAbEOr4CdPxq7uC7A1AlXfmC
-	xT8pKB+lB6qEGNLEa3xJYPCFxzE3jDjMyj6BTLwNhCevMaxLHIF7JPfyQ5QMDXynT0v2qr
-	x8wieR1o4dV0WJJVpgWDeRiGtA6qWr01dajguuJ9RbUyD374QPk4fDRYFdMPrw==
+	bh=kGpj9YbIu1JYl0xvHnkrfSczCaeMOrearn4lKS63t6s=;
+	b=e/sfw+DNtC5vKSIGZ6OkrRXxbp6X4m4Z0zUrUIysj78Jy0R0HZm16kXV4T3+lUl4/PyJ8c
+	lTGrSyCGZ42p5Yi1D6e3R63Bd57hjx/rEcwNL/ZhV2AcLprip8H4dr+8xO9Cjm4B/onYmn
+	2UCb6MVt77EErW19u7EomNa2eJzjjKYQyqnWbsqnSMR+aJ50mSjKhLtP1urSqz1txtKLu1
+	fIVkdZ5es+6ElIvpcg/gdt8QvbCurA0aLQ4CECIh/yPynx/p/ChlbALvaGtlJ5rqqRziG7
+	UGCjMQzA5oSLawweOz1t/8YRgRtftXjHW+l9ID/X9+VehXIdHAP8lqsl4uhTnw==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Thu, 06 Nov 2025 10:11:18 +0100
-Subject: [PATCH v3 1/7] ref-manual/structure.rst: update the description of
- local.conf and bblayers.conf
+Date: Thu, 06 Nov 2025 10:11:19 +0100
+Subject: [PATCH v3 2/7] ref-manual/structure.rst: document the site.conf
+ file
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251106-bitbake-setup-v3-1-97db90f85f84@bootlin.com>
+Message-Id: <20251106-bitbake-setup-v3-2-97db90f85f84@bootlin.com>
 References: <20251106-bitbake-setup-v3-0-97db90f85f84@bootlin.com>
 In-Reply-To: <20251106-bitbake-setup-v3-0-97db90f85f84@bootlin.com>
 To: docs@lists.yoctoproject.org
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3807;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2177;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=gdbMIaT8ylYo2ppsiz5Rgx8BSjVnTSzjztmlAsSKNhY=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpDGZGtRhfi6jjXbmZXuKWkC3Xts9SXOBz8ri4i
- eNMoSelPvuJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaQxmRgAKCRDRgEFAKaOo
- NkhTEACP3skaMvho2e62pYC2PdMVYapSB68/qPJ+KWSXrv/Tg7ipLaBaN7GVSvuo2FHVQKDijWi
- 7C53f4cdKSjREckV2EutAwXHECWc8wLzYKCeBdgXDtHz4UkTe0eyAUzaGjtMd60rcFmIyuPZmNc
- GxPTbrqybmFVyRR2CDPItUvoFQLk5GeEX/VLpRlE9M52CH/e2fqQQo8CCQqhoZ7Xn91d+KgLRG/
- YPQUyoEvnOo43CZomX4UefMkoV0DRaegN6+NARalzTADxOgHN2LB2+iuKeQR7WYhCMpHiLUzCIT
- kw775BbCE0SIpyMwbVee+NqtvaZnNzfpCPvOmSjcSS1xOOuupUUfuL8bV8Ql/qZAVHbn++E0j8X
- fpgrPpEif/d42DDimatO862YwYrqfZsCXRa5PdlhGFCBgfITKqsrN+uLzWlhopVxKxqOwE/bsOH
- Alj+nXMP1ZVHwxQjRd4U8cAJvkk/dGlKG0pVxDXJ1dsPl2cBmetIOnxwKDWWKSRvpHglDzm7ADn
- LXtIlbgSwgWWzSQGM0U3kuCRAzhEWAyQjKPHKlwejFJDCHMuiLIeXR9DGPsC3rTIhpN/uD850GK
- DFxdP31RwMFLCwdIrdL4a7OOS/cA2AoSdwpn8g4GjacX2NO4NtMUHthQ/GsAMzZ06eIj142Nd4W
- Fbg/n4QjWRKgo9g==
+ bh=RlLGG7QqyIDv673TmVZfXqhu2AUmWa9mOWK+wBaLUYE=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpDGZGvQAxHKInQtSFg/IFMPzJAMGnIX6yi3Pz+
+ deT4kWfhtGJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaQxmRgAKCRDRgEFAKaOo
+ Nr9ED/9QQnC9frEYcD0bJzA+gqMImaG52VjtCL6FacrNxBnWkpTX1AY/pvE+yUzsiLEAYu8p9bj
+ 5Ndwh7RJtKvBW56oEuK9EPETgHEzpwOWFIUkC8DiC5ZjIVyi+DaT/Jr4S6EKFD+ag4hHKlhKJtu
+ qtlYewWQxPIZQu3vOaqzSHRdCydnj91DVEakWOoveTWtS+PvzyyWFxOLuu90a1cvd6VGxv1fglQ
+ W6BMTcgGKuiUJxKdAKnP6AKrSnJGbwEa3UsVdG1ACK4lBd4gguNs3g1V2mb0bTHU8dnv6ggq5ME
+ xpXU5sKBC85kNfH3CDW7NdbFuhQbSp+ZKuCcwt/cJVLS3t4N2LjCDnS7WeMSyw/jNLUMPhjSErL
+ Sdo0BjY462Cx4GvRhjzMwBWIR7c6t2p0fLnk0qz61pauKd/c54q2kFfqyYD7IJPIs+iyScPsJCU
+ nnjNI8X1gqNPStO3TPlf+NHwZWOLIHQsKq3qdsfYs513xEWydx/ysCdK45NyDr96lDgEDY6CkX6
+ iTVuXss7gIihCEJdGigOI/KN9Suv/c4AJvbxd6Ikly7W0dYfe4q7EJ9lFWCxtLmu1vjtJ9y+1KD
+ 4w0X+A9Oec+r4tuY2C6mIjwZpujnmYX4/DpNnyJwsgRjgg5mexm0Ktwi0Qyzcvjna2tXBdy/YT8
+ uLaOUJdzxkT5G4w==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: quoted-printable
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Thu, 06 Nov 2025 09:11:46 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7998
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7999
 
-The local.conf file is now mostly empty with the default way of setting
-up the environment (with bitbake-setup), and this file is meant to hold
-local user configurations, rather than an extensive list of variables.
-Adjust the description to reflect the intended way of using this
-configuration file.
-
-Also, for both local.conf and bblayers.conf, rephrase the current
-usage of the template files (.sample files) to _not_ imply that it is
-the default way the OpenEmbedded build system sets things up.
+This was not documented and its usage is going to increase massively
+once users start using bitbake-setup. Add a description for this file as
+well as an example on how bitbake-setup shares it for multiple builds,
+to insist on the "site-wide" usage of this file.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/ref-manual/structure.rst | 36 +++++++++++++++-------------------
- 1 file changed, 16 insertions(+), 20 deletions(-)
+Note: a link to bitbake-setup documentation comes in the next patch.
+---
+ documentation/ref-manual/structure.rst | 29 ++++++++++++++++++++++++++++=
++
+ 1 file changed, 29 insertions(+)
 
-diff --git a/documentation/ref-manual/structure.rst b/documentation/ref-manual/structure.rst
-index 2640f461d..a2f2fd450 100644
+diff --git a/documentation/ref-manual/structure.rst b/documentation/ref-m=
+anual/structure.rst
+index a2f2fd450..f0205f0e5 100644
 --- a/documentation/ref-manual/structure.rst
 +++ b/documentation/ref-manual/structure.rst
-@@ -269,22 +269,19 @@ This directory should not be shared between builds.
- ``build/conf/local.conf``
- -------------------------
- 
--This configuration file contains all the local user configurations for
--your build environment. The ``local.conf`` file contains documentation
--on the various configuration options. Any variable set here overrides
--any variable set elsewhere within the environment unless that variable
--is hard-coded within a file (e.g. by using '=' instead of '?='). Some
--variables are hard-coded for various reasons but such variables are
--relatively rare.
--
--At a minimum, you would normally edit this file to select the target
--:term:`MACHINE`, which package types you wish to use
--(:term:`PACKAGE_CLASSES`), and the location from
--which you want to access downloaded files (:term:`DL_DIR`).
--
--If ``local.conf`` is not present when you start the build, the
--OpenEmbedded build system creates it from ``local.conf.sample`` when you
--``source`` the top-level build environment setup script
-+This configuration file contains the local user configurations for the build
+@@ -343,6 +343,35 @@ Once the build process gets the sample file, it uses=
+ ``sed`` to substitute final
+    version of the ``bblayers.conf.sample`` file in the ``meta-poky/conf/=
+templates/default``
+    directory.
+=20
++.. _structure-build-conf-site.conf:
++
++``build/conf/site.conf``
++=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
++
++This configuration file contains the site specific configurations for yo=
+ur build
 +environment.
 +
-+You could for example experiment with setting (or adding to)
-+:term:`DISTRO_FEATURES` or :term:`IMAGE_FEATURES`, or adjust build
-+configurations for specific recipes by setting the :term:`PACKAGECONFIG`
-+variables for them. If you would like to publish and share changes made to this
-+file, it is recommended to put them into a distro :term:`configuration file`, or
-+to create layer :term:`configuration fragments <Configuration Fragment>` from
-+changes made here.
++You could for example edit this file to limit the number of threads used=
+ by
++:term:`BitBake` (:term:`BB_NUMBER_THREADS`) or set the location from whi=
+ch you
++want to access downloaded files (:term:`DL_DIR`).
 +
-+The :term:`OpenEmbedded Build System` can create it from a ``local.conf.sample``
-+file when you ``source`` the top-level build environment setup script
- :ref:`structure-core-script`.
- 
- The source ``local.conf.sample`` file used depends on the
-@@ -321,12 +318,11 @@ which are directory trees, traversed (or walked) by BitBake. The
- ``bblayers.conf`` file uses the :term:`BBLAYERS`
- variable to list the layers BitBake tries to find.
- 
--If ``bblayers.conf`` is not present when you start the build, the
--OpenEmbedded build system creates it from ``bblayers.conf.sample`` when
--you ``source`` the top-level build environment setup script (i.e.
-+The OpenEmbedded build system can create it from a ``bblayers.conf.sample`` file
-+when you ``source`` the top-level build environment setup script (i.e.
- :ref:`structure-core-script`).
- 
--As with the ``local.conf`` file, the source ``bblayers.conf.sample``
-+As with the :ref:`structure-build-conf-local.conf` file, the source ``bblayers.conf.sample``
- file used depends on the :term:`TEMPLATECONF` script variable, which
- defaults to ``meta-poky/conf/templates/default`` when you are building from the Yocto
- Project development environment, and to ``meta/conf/templates/default`` when you are
++This file can be shared for multiple build directories. For example,
++``bitbake-setup`` makes the :ref:`structure-build-conf-site.conf` file a
++symbolic link to a common ``site.conf`` file::
++
++   =E2=94=9C=E2=94=80=E2=94=80 poky-master-poky-distro_poky-machine_qemu=
+x86-64/
++   =E2=94=82=C2=A0=C2=A0 =E2=94=94=E2=94=80=E2=94=80 build/
++   =E2=94=82=C2=A0=C2=A0  =C2=A0=C2=A0 =E2=94=94=E2=94=80=E2=94=80 conf/
++   =E2=94=82=C2=A0=C2=A0  =C2=A0=C2=A0  =C2=A0=C2=A0 =E2=94=94=E2=94=80=E2=
+=94=80 site.conf -> ../../../site.conf
++   =E2=94=9C=E2=94=80=E2=94=80 poky-master-poky-with-sstate-distro_poky-=
+machine_qemux86-64/
++   =E2=94=82=C2=A0=C2=A0 =E2=94=94=E2=94=80=E2=94=80 build/
++   =E2=94=82=C2=A0=C2=A0  =C2=A0=C2=A0 =E2=94=94=E2=94=80=E2=94=80 conf/
++   =E2=94=82=C2=A0=C2=A0  =C2=A0=C2=A0  =C2=A0=C2=A0 =E2=94=94=E2=94=80=E2=
+=94=80 site.conf -> ../../../site.conf
++   =E2=94=94=E2=94=80=E2=94=80 site.conf
++
++This way, site-specific settings can be shared for multiple build
++configurations.
++
+ .. _structure-build-conf-bblock.conf:
+=20
+ ``build/conf/bblock.conf``
 
--- 
+--=20
 2.51.0
 
 
