@@ -2,97 +2,79 @@ Return-Path: <alex.kanavin@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AE261CCFA03
-	for <webhook@archiver.kernel.org>; Thu,  6 Nov 2025 11:50:47 +0000 (UTC)
-Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.13418.1762429837592307573
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1D4EACCFA03
+	for <webhook@archiver.kernel.org>; Thu,  6 Nov 2025 13:14:38 +0000 (UTC)
+Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.15030.1762434874150422579
  for <docs@lists.yoctoproject.org>;
- Thu, 06 Nov 2025 03:50:37 -0800
+ Thu, 06 Nov 2025 05:14:34 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=CUdSwY6z;
- spf=pass (domain: gmail.com, ip: 209.85.219.44, mailfrom: alex.kanavin@gmail.com)
-Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-8801e4da400so10459246d6.3
-        for <docs@lists.yoctoproject.org>; Thu, 06 Nov 2025 03:50:37 -0800 (PST)
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=bSTAfYmI;
+ spf=pass (domain: gmail.com, ip: 209.85.219.54, mailfrom: alex.kanavin@gmail.com)
+Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-87bb66dd224so10801186d6.3
+        for <docs@lists.yoctoproject.org>; Thu, 06 Nov 2025 05:14:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762429836; x=1763034636; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ca7IZDmhwqxAtwJcEVJlN1QnHAEILc8ENm66owReKpo=;
-        b=CUdSwY6zt6LT8EKsrCKaCittPR09GIa1RvDAk70p4o+gHNMyIdzwLm6QCFU1wRohGF
-         fP64QemcqT9URz6vEsP+fLITRiDufy1Pjxl5XP9oUQiuB9sJkzgHgJrjw9k4D49wLn/r
-         xJJVpiPDPFuCuTp/xEsfmAZFExZH+A4FDtTZ0KX8P10AjYC961X+Hst82aQTlMtL1WRn
-         ZN0ctpeogswXaS9Dwt5FFsFibs/uUiSRrq8MEq9BmL1z96HLRKAvkjqA5urIsZtnI3gG
-         tMepy+bTJVXDGjjlp7qXxL7A0vyIU/vWoLSnOyWzZhW0885ko5is7ujPQtlvfIWczbsf
-         epdA==
+        d=gmail.com; s=20230601; t=1762434873; x=1763039673; darn=lists.yoctoproject.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=1w6rgRiDt8bMNENFyDkUIeWiNr4j2ORO1QuHCsH/MpU=;
+        b=bSTAfYmIna3KjrjY0Xi0Nttj0JaQafA6k3SK0Mu/EmsTg55jBN4x+tkVFjuWrdDu5P
+         9quFe3I7pwqkbYRVB/f6QPNzYazCE1eMfMcl3+Mm6diQHPiz+hPEUeVEDl6cnHpnVmGk
+         ehIGpBSlz9+vOP6n88rIcVl0is00QYmoxCCUZTOU1kLcf+9CAAm6zAqtFC9BVcZiywxr
+         F+H9hw64C/pgv9a+pEW5Zq0nXsDZcpfdMocxhzYw4C/6MWf4SbRXhgqexx9ZqLQWFDRP
+         jOXA37HK4oUpTwUdnSwOzqsW2HJ8VW2ExgTOlvs/uQb9ozj8Cmuxdy6zC6xY13DR1vi+
+         LH2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762429836; x=1763034636;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Ca7IZDmhwqxAtwJcEVJlN1QnHAEILc8ENm66owReKpo=;
-        b=axvphBjXBPssYc3gGbn0LNsa44Ir4l5d3Lpk+WkL8eGET997hEVCXx5n75UwKZAWyP
-         7E4Vu7y6hZHmgf3lMYBlhpH0RJ4jefrbho4kwu4eKAMktZ0iiDDeeBLRpOWr7ON14ljU
-         FtjLFOniHW2BmRt/G7is3rGgbb+mg29uFF2nIUULUsI8n7LP+rxmBAnMNlAUVnxvzdvb
-         cZG4TzfWAY8if5JsijS7wmHXAUc21PKo56yGidHs9Ofz+O+OiHqkF0gtaZfvMeTE81zn
-         gOuv5LtlSJkJfqWQrKTS5zx3qGP4uQRDgXlz1hWOhEO1eSMEynh3SckFHKaxhlFz1z6S
-         2VmA==
-X-Forwarded-Encrypted: i=1; AJvYcCXLDkjryM/cMwXhVaYYxBvVyie67+rEQn6ZFPWajeNs7G5JSHRDgTU8iX7HF720EAyGMl3/@lists.yoctoproject.org
-X-Gm-Message-State: AOJu0Yy+JVj6vt0qUKCTHebCXkuhb8RXZ4brILFXrX/axqhudRZf6sQe
-	k/uHN5t6gG9ZsASWolQSL3SgIklQ5JgmOgIh5DuzUW8T+89cx0DSHC2ROIAs1DPYyPjTtY4C2Am
-	ZdvvYWWwlCULFXqssHVwxd/uB5nBcaHs=
-X-Gm-Gg: ASbGncuAUcclt0spLUcAwqJHWqKrhntEvMjgnxLacYJthU+ulYUml2p1ORk4nRItBjr
-	803vAuhCo5EGugcZ55/CnQ4IAfjr8GBNj46mKsWwriApN7b1ike6M8yIT/K6wQpxVq4rW/gPtLO
-	OYKHUFVOFSRHB0VcSgU3vJw97OPhG/3R8WyEmInxbRJf8krQkTUVWYFRrjU95ozsCoJdbrMBMWK
-	0dhXPJhYkly7kri7B+oi97YmuaWrqI3NIge/dRFPjohfDUnHHdzbpk8OQ==
-X-Google-Smtp-Source: AGHT+IFmzJj07Q4NppuaZLfNZN99/JTELUYCK/2FuV3VThiID1Xu20OvgdVJIMDiy+j/tD0kgMUUx6IzsqOdRTSk/i4=
-X-Received: by 2002:ad4:5ae1:0:b0:880:460a:96ce with SMTP id
- 6a1803df08f44-880712226b9mr97558176d6.63.1762429836508; Thu, 06 Nov 2025
- 03:50:36 -0800 (PST)
+        d=1e100.net; s=20230601; t=1762434873; x=1763039673;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1w6rgRiDt8bMNENFyDkUIeWiNr4j2ORO1QuHCsH/MpU=;
+        b=UciN4wvoGQ0q/JxdmnTYwtR4tP0WfsGY8gneZ8AIlxPbQdLp9DqXVZEsq8TFRNXTHP
+         MtOsSOf6NvX4wks0peqKEee81BEzKgPydHVNq0lelJXsarci9j0+/W4u0g8S5NbJ8KI7
+         X2pGpfQ/l8Idp16NF/sn7nkLtKEiAelj5qcOfNiizpPrLeNLJDORvbm1M0ny/D13GZ2T
+         1LXQ12hEV7CHUbOSVpEeViuKaPRtNc0mT7dIP3CxA3KzOfuyVhb/IRiteUTKgn/4Tijt
+         M4XWBFedMarOGbKakbOBmg1C0DZwVyIGzZCUH9Uyb1rfNpQ2xDZshx4sT+nXN/rZbL/F
+         XrBw==
+X-Gm-Message-State: AOJu0Yzo2q8PDzOgTod6164Km+doi0MMq3V9jnPyLVWE5+AuDQKprRVm
+	H+3yOcmiopQVpa25cCHvlhBQyYf/pgnuC5rK40183XxxakIWTsrm/sEcmWdshaM8KV61v3UfmfD
+	CEi9vfmEj6OziImNOSvVjPY3+ZCjIMuw=
+X-Gm-Gg: ASbGncvO3ZwZJFV0s7PYJDJs+oSbqTYlKVljwUgB7rAfFcMRs34UZuCo0GNc/i8/FCQ
+	AlR1koxPAhxIas469DKiIuVdO6guYwz3c8BSJtlps/BdTzQSXAP3KDXq+f8RaJopKWJDnW83NV+
+	CiSusd48WJQ1NomnskWpUw1nOwI96PYtHJGSB0ZmHOUh3QGLkcoZiDPR7ynq9yo2berKhz4k/Dg
+	HI54/eDcExW59q7EW4XjhPX6KybzxIDzs2blymDoo2B+nYF8Nt54lZ2vzIyYpsxlXvYz3BG+TKV
+	x1/hT9Ypg+J/k9zaRko/MtffpQBaRHco58roBtuL
+X-Google-Smtp-Source: AGHT+IHjCm+n9t+BP4CZPGdFRp4QfopBW0pXAiA+2EpbPgKwt4zldUfVEM7WdaSW0+bf3AzJJkBAV/S3l8UOUuOvyi8=
+X-Received: by 2002:ad4:5ce7:0:b0:880:23fb:9e63 with SMTP id
+ 6a1803df08f44-88071191f52mr93692416d6.56.1762434873019; Thu, 06 Nov 2025
+ 05:14:33 -0800 (PST)
 MIME-Version: 1.0
-References: <20251105232718.2801446-1-yoann.congal@smile.fr>
- <DE1GB2U0LTRC.11DTXWB7ZUB7T@bootlin.com> <CANNYZj_KS5BKsGMiQkLSyCKtma_BYcqJ+W3_jw80SzR6D-80Pw@mail.gmail.com>
- <DE1HVJAH8J7U.29XUESHFLVEGD@bootlin.com>
-In-Reply-To: <DE1HVJAH8J7U.29XUESHFLVEGD@bootlin.com>
+References: <20251106-bitbake-setup-v3-0-97db90f85f84@bootlin.com>
+In-Reply-To: <20251106-bitbake-setup-v3-0-97db90f85f84@bootlin.com>
 From: Alexander Kanavin <alex.kanavin@gmail.com>
-Date: Thu, 6 Nov 2025 12:50:25 +0100
-X-Gm-Features: AWmQ_bnysqalFcp1AX699N-CQHVG1E3C4JepWC1YCa7S7cvm50O65TylzXj0qdY
-Message-ID: <CANNYZj8+BELKtPY+0bojL+zv4tbCsqgxmYUXnWLpr28urbCCSQ@mail.gmail.com>
-Subject: Re: [docs] [master-next][PATCH] bitbake-user-manual-environment-setup:
- Document "{THISDIR}" in bb-layers
-To: Antonin Godard <antonin.godard@bootlin.com>
-Cc: Yoann Congal <yoann.congal@smile.fr>, bitbake-devel@lists.openembedded.org, 
-	Yocto Docs ML <docs@lists.yoctoproject.org>
+Date: Thu, 6 Nov 2025 14:14:22 +0100
+X-Gm-Features: AWmQ_bm3tdoTp9M--tHj0xX2lgiZjq1kGYIPgZUWxEUt2lGq8CJE8z7ZMYDOTUA
+Message-ID: <CANNYZj91Ob9JOfXcUVMfdDdXeZ61gYy8rFPZzEoRgcj_mUmb_Q@mail.gmail.com>
+Subject: Re: [docs] [PATCH v3 0/7] Start switching the documentation to bitbake-setup
+To: antonin.godard@bootlin.com
+Cc: docs@lists.yoctoproject.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 06 Nov 2025 11:50:47 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8009
+ <docs@lists.yoctoproject.org>; Thu, 06 Nov 2025 13:14:38 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8010
 
-On Thu, 6 Nov 2025 at 10:12, Antonin Godard <antonin.godard@bootlin.com> wr=
-ote:
-> >>       This useful for a project that holds a single :term:`generic
-> >>       configuration` file next to a local layer::
-> >>
-> >>          =E2=94=9C=E2=94=80=E2=94=80 meta-myproject/
-> >>          =E2=94=94=E2=94=80=E2=94=80 myproject.conf.json
-> >
-> > I thought the use case should be described along these lines:
-> >
-> > This is useful when (one or more) configuration files and (one or
-> > more) layers are hosted in the same git repository, which is cloned
-> > and managed independently from bitbake-setup workflows.
->
-> Rephrased, thanks. I'm about to send the v2.
+On Thu, 6 Nov 2025 at 10:11, Antonin Godard via lists.yoctoproject.org
+<antonin.godard=bootlin.com@lists.yoctoproject.org> wrote:
+> Changes in v3:
+> - Add suggestions/corrections by Alex (thanks!)
+> - Add a patch to document core/yocto/root-login-with-empty-password.
+> - Add websockets note and mention buildtools.
+> - Use meta-raspberrypi as the example BSP layer.
+> - Link to v2: https://lore.kernel.org/r/20251103-bitbake-setup-v2-0-89fbb14cfbbd@bootlin.com
 
-Note I just sent
-https://lists.openembedded.org/g/bitbake-devel/message/18285
-
-I do apologize for shifting the configuration format like this at the
-last moment, but I do believe avoiding tokens and not doing
-post-prosessing on values is beneficial for clarity and validation.
+Thanks, I think this is good to go.
 
 Alex
 
