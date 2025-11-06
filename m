@@ -1,88 +1,302 @@
-Return-Path: <alex.kanavin@gmail.com>
+Return-Path: <yoann.congal@smile.fr>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AB498CCF9F8
-	for <webhook@archiver.kernel.org>; Thu,  6 Nov 2025 08:28:35 +0000 (UTC)
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.10216.1762417713318654994
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C730ECCFA19
+	for <webhook@archiver.kernel.org>; Thu,  6 Nov 2025 08:43:35 +0000 (UTC)
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.10379.1762418612889014796
  for <docs@lists.yoctoproject.org>;
- Thu, 06 Nov 2025 00:28:33 -0800
+ Thu, 06 Nov 2025 00:43:33 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=lGq/GRJ2;
- spf=pass (domain: gmail.com, ip: 209.85.160.176, mailfrom: alex.kanavin@gmail.com)
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-4e8a25d96ecso3805161cf.0
-        for <docs@lists.yoctoproject.org>; Thu, 06 Nov 2025 00:28:33 -0800 (PST)
+ dkim=pass header.i=@smile.fr header.s=google header.b=1gHLnXmX;
+ spf=pass (domain: smile.fr, ip: 209.85.128.46, mailfrom: yoann.congal@smile.fr)
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4711b95226dso7753405e9.0
+        for <docs@lists.yoctoproject.org>; Thu, 06 Nov 2025 00:43:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762417712; x=1763022512; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=93vX0/Sc1fw8nqMvo9r+Hf72mt3nrlAanhadY9VEmFA=;
-        b=lGq/GRJ2X2IxL3owbl/TGPoP3e+uuYjCK511qymuiSAHn295YkaGOOptF5v+YRq+f2
-         OwULM4q2aqkE6YMOvdQowHVjgtpFFxrlix3wqpn3CauOdmBr6PEXv6YbAw/r48dPJC9f
-         0G/lBTVw5AosHMT9vKuua5ICtsNINkPbkd49lXAGziBeLjNFme4G4O1XQz++k06M5nNd
-         wvi/IK9PL8qESdQPpVPLKnILpHnH483nr8slxja1/A4UogZlCLBoQ1W6L/ZSQh9oWou9
-         yQjPnB6h0rggJHfCUwLdCMtK/xWfMCcA5MFF04klFuWnhXYDDJPNZ0VlOuZQsrtKnHNh
-         VvVQ==
+        d=smile.fr; s=google; t=1762418611; x=1763023411; darn=lists.yoctoproject.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=TTtpROsIdOTyrLKvNN5DBBS0/aaTzuqIEhpVk1s7iLg=;
+        b=1gHLnXmX3vUbiglJBFE8BuJVNKrJGJXhhILfKeN55cNLZeP67qY1ebcgf8F2y9D3lT
+         nGmLAp4WDVN5YQM7XXh85EphziQQ7EsfYR3zuo/KXWzidCXbGv8KOjW3Q9g6gDo0rDAP
+         2taXO1bYzaoHNUcl+/ADsqA6fGqJj0QHjICYk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762417712; x=1763022512;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=93vX0/Sc1fw8nqMvo9r+Hf72mt3nrlAanhadY9VEmFA=;
-        b=DVrRrAO9ep62alAbGlHO0Vi/8aJu+HclUr+4xP47+Ey/00BD7amP3KusKhpUddCPxB
-         KxspIH+F6pvlRKOBgh4yC5C2NC+3zAsmi5RzuaW3YapI/33kS21zsrx0x32Qbq5djKAw
-         uCZ0B/DGH+qrimfvJqJSqryHFlqRsMrQ+8I0skxOJxqIH5UYQvDcOCqxHvPNW9eeS4Qq
-         sRn6zH/jC37FEcx8L2IiD8GhQDShApQ2ZJO8+0PQFtCejSGJ+Qe1o5yc/e+l2ZcqNA6E
-         0htNX1zAxM1kt+5KsLSclchLtMLWV7f5pBRqDfVFrP78xnAjfBNP9eJfQMddSbwc+/XE
-         +Wfw==
-X-Forwarded-Encrypted: i=1; AJvYcCV14ZcMl4kpls9KWrjoPu7J3SIY4Jp12eHG7JOtqW4ht8n+yjE3Qv6uJ4Mj+tQUXfblAup2@lists.yoctoproject.org
-X-Gm-Message-State: AOJu0Ywdydj6sZks4rG9+bkiVGDLec2aEXQZr82+PI+BXxJ4Qwe5BFF1
-	VlB9VKSTNNpoaR8tLct2Bzk0uYWE5Hi5TwiMFVA5MfRjlk5qtihUeOvxd25FxeEddkss6/jMiOr
-	konpGbajlne0AVuqdxgCyAdfuBV8P1Ag=
-X-Gm-Gg: ASbGnctZR5sPxSdFoG0edeCo+DJ1FWA+13kSdh95a+BTES3sAvpst/+SE5iKfWTl9a0
-	cCSx0XgzGHmovw5rjysVoMxsLGgekCkfIW8qP3ciaWRNNGiwHAYfBEyfpLaTGzReXQa7Uvr7rVK
-	sgB2GEX5xJF74ysoNy3wEZHbg+8xj1sKtg5CkGe5p2hhFlXAva4rlRbELh2ZXfxDWi/wLMHZj/H
-	BvnL963B+fmg/nZ3FqOs7/Awk4LOT4YUhWbHrAt3ESflXe2mZtwIngxo+v0UJR9jWWYyRd/Vbu6
-	YHnYwKfxehrSkEvOYPk=
-X-Google-Smtp-Source: AGHT+IG4rHlqxtgrxfcSyjPjg8APP/spVouznjWVtNvSQw8vzqHRxflMY52rqkNb8eDLHB38CziOzuOSuPuid9kVpZw=
-X-Received: by 2002:a05:622a:53ca:b0:4eb:779d:e8a6 with SMTP id
- d75a77b69052e-4ed72629a1bmr87323921cf.77.1762417712225; Thu, 06 Nov 2025
- 00:28:32 -0800 (PST)
+        d=1e100.net; s=20230601; t=1762418611; x=1763023411;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=TTtpROsIdOTyrLKvNN5DBBS0/aaTzuqIEhpVk1s7iLg=;
+        b=g8n7S2XObQY9IZZ+wR2HlEKJXpGiWukOLwmV7aVfoRB6UvTT2rTk3Pn6LgkR2T7fDX
+         K2KSanAL6V20FBW5xhynk2L2ajnkQj6YM7un9I2mZX8G4BaqM0mfdmZsOX0ueX+/pMID
+         iJ5LtgaE5nXNZPcHl0l5rEWvmIGql9CwtieZgoedg9gAiGP6M3vXXe48cGHOK79mdsr2
+         vDAQthH2/FoxLMOQwfRKQ687LNzashdbd+H4XVp/gbE8KnZAWUlqpk4I08h3xVe8c7Jx
+         +jYxe4DlyGt3tbrkCBUklz1eJAIm6MuX73PJyZhwC80qX0F43SCdL5aOOcIoFGfOAeNi
+         cyxw==
+X-Forwarded-Encrypted: i=1; AJvYcCV8zw+L6cl7JAe3ixdS/+LuujRVAHVYXnp/oRxvJ2elD+81b0IPFNTZSdk6o89N5wmMyHE8@lists.yoctoproject.org
+X-Gm-Message-State: AOJu0YyE7bKd5ZBSn5BgXmsQoIZtiP51SZXizTnwjLrTjL44yuGrQqjJ
+	4lMFVNF6YcPiW857DrpdD5uAQ37jSC7TutnK6G/YQGI2MldEnqJpP5+jKVMALAB82M5iJxrFOUY
+	TSuPAEef8fexMWHHEmg7e+dMWgIGwkzjdnTQn9DY0Hg==
+X-Gm-Gg: ASbGncsU5iWRkuF6DytWNRoEkM7B0MrRQFRQp7FP/ku1s6tB6n55I4kpxxsk68R0MxN
+	aLfxa92SZuC9uTtPPz3dWpiC7oqHKGPOKyOEfNvn1kj7/Wb7s1BVDzXO6w6vVlvZGN8TT2qdRXt
+	kHb3YSkfWQ14pr573MTioGR/b8eEMybVfmLrnytMY8Zl4qhTHJ3AcBO7n4/QvHeeJf5NhQcCvAO
+	t0cgTBvpKLWrhInm7P17Nphtz9sJ1tQacT2aPZ/u1GkS7H6o4tGiroPDn+Hno0Af/GDoyWudoU1
+	rDOya2kpM/UTrmEMC0s=
+X-Google-Smtp-Source: AGHT+IGc5lHrzPusKcW/ZSPrGSdkKQZoJSuekzCCuJolJ8PaTATBKN3rMnOLOE6tvLZ0nNNf0gAhLUn7CBemTnhfnLU=
+X-Received: by 2002:a05:600c:4584:b0:477:55de:4a6 with SMTP id
+ 5b1f17b1804b1-4775cdbe238mr56171635e9.3.1762418610898; Thu, 06 Nov 2025
+ 00:43:30 -0800 (PST)
 MIME-Version: 1.0
 References: <20251105232718.2801446-1-yoann.congal@smile.fr> <DE1GB2U0LTRC.11DTXWB7ZUB7T@bootlin.com>
 In-Reply-To: <DE1GB2U0LTRC.11DTXWB7ZUB7T@bootlin.com>
-From: Alexander Kanavin <alex.kanavin@gmail.com>
-Date: Thu, 6 Nov 2025 09:28:21 +0100
-X-Gm-Features: AWmQ_bkeHyAnDTkXJ3Vhl6WhfVbWkyW1UMSkBH8lQXsIERfNkEDeVIVDLJcjRWI
-Message-ID: <CANNYZj_KS5BKsGMiQkLSyCKtma_BYcqJ+W3_jw80SzR6D-80Pw@mail.gmail.com>
-Subject: Re: [docs] [master-next][PATCH] bitbake-user-manual-environment-setup:
+From: Yoann Congal <yoann.congal@smile.fr>
+Date: Thu, 6 Nov 2025 09:43:05 +0100
+X-Gm-Features: AWmQ_bnlOLNDWxZfoLhLQ2eIsbgK5GYFtKbTA8KDHrUDwtlifHjW7f0KlcaLYhM
+Message-ID: <CAMSfU+4_kj4+9C5bDuVYtSFZG92yHNUPWEEPbxEDTGgrMB5Z7g@mail.gmail.com>
+Subject: Re: [master-next][PATCH] bitbake-user-manual-environment-setup:
  Document "{THISDIR}" in bb-layers
-To: antonin.godard@bootlin.com
-Cc: Yoann Congal <yoann.congal@smile.fr>, bitbake-devel@lists.openembedded.org, 
+To: Antonin Godard <antonin.godard@bootlin.com>
+Cc: bitbake-devel@lists.openembedded.org, 
 	Yocto Docs ML <docs@lists.yoctoproject.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/alternative; boundary="0000000000003f9c510642e90f4f"
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 06 Nov 2025 08:28:35 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7995
+ <docs@lists.yoctoproject.org>; Thu, 06 Nov 2025 08:43:35 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/7996
 
-On Thu, 6 Nov 2025 at 08:59, Antonin Godard via lists.yoctoproject.org
-<antonin.godard=3Dbootlin.com@lists.yoctoproject.org> wrote:
+--0000000000003f9c510642e90f4f
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Le jeu. 6 nov. 2025 =C3=A0 08:58, Antonin Godard <antonin.godard@bootlin.co=
+m> a
+=C3=A9crit :
+
+> Hi,
+>
+> On Thu Nov 6, 2025 at 12:27 AM CET, Yoann Congal wrote:
+> > From: Yoann Congal <yoann.congal@smile.fr>
+> >
+> > A "bb-layers" element can either:
+> > * start with "{THISDIR}/meta-xxx", then "meta-xxx" is found relative to
+> >   the configuration file,
+> > * or not, the layer is found where bitbake-setup has cloned
+> >   the layer from the "sources" list (usually a layers/ directory)
+> >
+> > Signed-off-by: Yoann Congal <yoann.congal@smile.fr>
+> > Cc: Antonin Godard <antonin.godard@bootlin.com>
+> > ---
+> >  .../bitbake-user-manual-environment-setup.rst                  | 3 +++
+> >  1 file changed, 3 insertions(+)
+> >
+> > diff --git
+> a/doc/bitbake-user-manual/bitbake-user-manual-environment-setup.rst
+> b/doc/bitbake-user-manual/bitbake-user-manual-environment-setup.rst
+> > index ad8143711..d9b7492b9 100644
+> > --- a/doc/bitbake-user-manual/bitbake-user-manual-environment-setup.rst
+> > +++ b/doc/bitbake-user-manual/bitbake-user-manual-environment-setup.rst
+> > @@ -593,6 +593,9 @@ These files are written in the JSON file format and
+> are stored in a
+> >        variables to include in :term:`BB_ENV_PASSTHROUGH_ADDITIONS`.
+> >
+> >     -  ``bb-layers`` (*optional*): Layers to add to the
+> ``bblayers.conf`` file.
+> > +      If the path starts by ``{THISDIR}/``, it will be relative to the
+> directory
+> > +      containing the configuration file. If not, it will be relative t=
+o
+> the
+> > +      directory used by ``bitbake-setup`` to store the sources.
+> >        This cannot be used in conjunction with the ``oe-template``
+> option.
+> >
+> >     -  ``oe-template`` (*optional*, OpenEmbedded specific): OpenEmbedde=
+d
+> template
+>
+> I actually did write something about it yesterday (not sent yet). I
+> extended it
+> a bit more, namely to show the common use-case. Your patch helped me
+> clarify it
+> further, thanks. Let me know if making what follows part of my patch if o=
+k
+> to
+> you:
+>
+
+That is very good. Definitively OK to me.
+
+
+>
+>    -  ``bb-layers`` (*optional*): Layers to add to the ``bblayers.conf``
+> file
+>       (paths are relative to the ``layers/`` directory of a :term:`Setup`=
+,
+>       unless ``{THISDIR}`` is used, see below).
+>
+>       The ``bb-layers`` option cannot be used in conjunction with the
+>       ``oe-template`` option where the ``bblayers.conf`` files comes from
+> the
+>       template itself.
+>
+>       Local layers (layers not part of the ``sources``) can be added to
+>       ``bb-layers`` by specifying their path with the ``{THISDIR}`` speci=
+al
+>       keyword. For example::
+>
+>          {
+>             ...
+>             "bb-layers": [
+>                "{THISDIR}/meta-myproject"
+>             ],
+>             ...
+>          }
+>
+>       ``{THISDIR}`` translates to the parent directory of the current
+>       :term:`Generic Configuration` file.
+>
 >       This useful for a project that holds a single :term:`generic
 >       configuration` file next to a local layer::
 >
 >          =E2=94=9C=E2=94=80=E2=94=80 meta-myproject/
 >          =E2=94=94=E2=94=80=E2=94=80 myproject.conf.json
+>
+> Antonin
+>
+> --
+> Antonin Godard, Bootlin
+> Embedded Linux and Kernel engineering
+> https://bootlin.com
+>
+>
 
-I thought the use case should be described along these lines:
+--=20
+Yoann Congal
+Smile ECS
 
-This is useful when (one or more) configuration files and (one or
-more) layers are hosted in the same git repository, which is cloned
-and managed independently from bitbake-setup workflows.
+--0000000000003f9c510642e90f4f
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Alex
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote g=
+mail_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">Le=C2=A0jeu. 6 =
+nov. 2025 =C3=A0=C2=A008:58, Antonin Godard &lt;<a href=3D"mailto:antonin.g=
+odard@bootlin.com">antonin.godard@bootlin.com</a>&gt; a =C3=A9crit=C2=A0:<b=
+r></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex=
+;border-left:1px solid rgb(204,204,204);padding-left:1ex">Hi,<br>
+<br>
+On Thu Nov 6, 2025 at 12:27 AM CET, Yoann Congal wrote:<br>
+&gt; From: Yoann Congal &lt;<a href=3D"mailto:yoann.congal@smile.fr" target=
+=3D"_blank">yoann.congal@smile.fr</a>&gt;<br>
+&gt;<br>
+&gt; A &quot;bb-layers&quot; element can either:<br>
+&gt; * start with &quot;{THISDIR}/meta-xxx&quot;, then &quot;meta-xxx&quot;=
+ is found relative to<br>
+&gt;=C2=A0 =C2=A0the configuration file,<br>
+&gt; * or not, the layer is found where bitbake-setup has cloned<br>
+&gt;=C2=A0 =C2=A0the layer from the &quot;sources&quot; list (usually a lay=
+ers/ directory)<br>
+&gt;<br>
+&gt; Signed-off-by: Yoann Congal &lt;<a href=3D"mailto:yoann.congal@smile.f=
+r" target=3D"_blank">yoann.congal@smile.fr</a>&gt;<br>
+&gt; Cc: Antonin Godard &lt;<a href=3D"mailto:antonin.godard@bootlin.com" t=
+arget=3D"_blank">antonin.godard@bootlin.com</a>&gt;<br>
+&gt; ---<br>
+&gt;=C2=A0 .../bitbake-user-manual-environment-setup.rst=C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 | 3 +++<br>
+&gt;=C2=A0 1 file changed, 3 insertions(+)<br>
+&gt;<br>
+&gt; diff --git a/doc/bitbake-user-manual/bitbake-user-manual-environment-s=
+etup.rst b/doc/bitbake-user-manual/bitbake-user-manual-environment-setup.rs=
+t<br>
+&gt; index ad8143711..d9b7492b9 100644<br>
+&gt; --- a/doc/bitbake-user-manual/bitbake-user-manual-environment-setup.rs=
+t<br>
+&gt; +++ b/doc/bitbake-user-manual/bitbake-user-manual-environment-setup.rs=
+t<br>
+&gt; @@ -593,6 +593,9 @@ These files are written in the JSON file format an=
+d are stored in a<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 variables to include in :term:`BB_ENV_PASST=
+HROUGH_ADDITIONS`.<br>
+&gt;=C2=A0 <br>
+&gt;=C2=A0 =C2=A0 =C2=A0-=C2=A0 ``bb-layers`` (*optional*): Layers to add t=
+o the ``bblayers.conf`` file.<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 If the path starts by ``{THISDIR}/``, it will be=
+ relative to the directory<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 containing the configuration file. If not, it wi=
+ll be relative to the<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 directory used by ``bitbake-setup`` to store the=
+ sources.<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 This cannot be used in conjunction with the=
+ ``oe-template`` option.<br>
+&gt;=C2=A0 <br>
+&gt;=C2=A0 =C2=A0 =C2=A0-=C2=A0 ``oe-template`` (*optional*, OpenEmbedded s=
+pecific): OpenEmbedded template<br>
+<br>
+I actually did write something about it yesterday (not sent yet). I extende=
+d it<br>
+a bit more, namely to show the common use-case. Your patch helped me clarif=
+y it<br>
+further, thanks. Let me know if making what follows part of my patch if ok =
+to<br>
+you:<br></blockquote><div><br></div><div>That is very good. Definitively OK=
+ to me.</div><div>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"ma=
+rgin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:=
+1ex">
+<br>
+=C2=A0 =C2=A0-=C2=A0 ``bb-layers`` (*optional*): Layers to add to the ``bbl=
+ayers.conf`` file<br>
+=C2=A0 =C2=A0 =C2=A0 (paths are relative to the ``layers/`` directory of a =
+:term:`Setup`,<br>
+=C2=A0 =C2=A0 =C2=A0 unless ``{THISDIR}`` is used, see below).<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0 The ``bb-layers`` option cannot be used in conjunction=
+ with the<br>
+=C2=A0 =C2=A0 =C2=A0 ``oe-template`` option where the ``bblayers.conf`` fil=
+es comes from the<br>
+=C2=A0 =C2=A0 =C2=A0 template itself.<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0 Local layers (layers not part of the ``sources``) can =
+be added to<br>
+=C2=A0 =C2=A0 =C2=A0 ``bb-layers`` by specifying their path with the ``{THI=
+SDIR}`` special<br>
+=C2=A0 =C2=A0 =C2=A0 keyword. For example::<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0{<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ...<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 &quot;bb-layers&quot;: [<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&quot;{THISDIR}/meta=
+-myproject&quot;<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ],<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ...<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0 ``{THISDIR}`` translates to the parent directory of th=
+e current<br>
+=C2=A0 =C2=A0 =C2=A0 :term:`Generic Configuration` file.<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0 This useful for a project that holds a single :term:`g=
+eneric<br>
+=C2=A0 =C2=A0 =C2=A0 configuration` file next to a local layer::<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=E2=94=9C=E2=94=80=E2=94=80 meta-myprojec=
+t/<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=E2=94=94=E2=94=80=E2=94=80 myproject.con=
+f.json<br>
+<br>
+Antonin<br>
+<br>
+-- <br>
+Antonin Godard, Bootlin<br>
+Embedded Linux and Kernel engineering<br>
+<a href=3D"https://bootlin.com" rel=3D"noreferrer" target=3D"_blank">https:=
+//bootlin.com</a><br>
+<br>
+</blockquote></div><div><br clear=3D"all"></div><br><span class=3D"gmail_si=
+gnature_prefix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature"><d=
+iv dir=3D"ltr"><font face=3D"Raleway, regular">Yoann Congal</font><div><fon=
+t face=3D"Raleway, regular">Smile ECS</font></div></div></div></div>
+
+--0000000000003f9c510642e90f4f--
 
