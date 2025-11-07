@@ -2,109 +2,90 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 662ADCCFA1E
-	for <webhook@archiver.kernel.org>; Fri,  7 Nov 2025 11:17:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C8D61CCFA05
+	for <webhook@archiver.kernel.org>; Fri,  7 Nov 2025 11:16:59 +0000 (UTC)
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.8962.1762514217584252426
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.9042.1762514217584703017
  for <docs@lists.yoctoproject.org>;
  Fri, 07 Nov 2025 03:16:58 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=zp1KoSxp;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=1B3ZadRK;
  spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 7EF4D4E41595
-	for <docs@lists.yoctoproject.org>; Fri,  7 Nov 2025 11:16:55 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 0D4F34E41596
+	for <docs@lists.yoctoproject.org>; Fri,  7 Nov 2025 11:16:56 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 48EA2606A6;
+	by smtpout-01.galae.net (Postfix) with ESMTPS id D7EBB606A6;
 	Fri,  7 Nov 2025 11:16:55 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1560D1185236F;
-	Fri,  7 Nov 2025 12:16:53 +0100 (CET)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3750011852224;
+	Fri,  7 Nov 2025 12:16:55 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1762514214; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=EEr4BmdbfMiQ8giHXBdq8RZ1QdIMZzv2nP+e2lteh/w=;
-	b=zp1KoSxpr+QLJ98W90dPCSr15wp/pq8C9jNXzF+uEam4ijFnHGOvlZKsRal3qt+egFKCk7
-	/JErT0obXjzPNGU/aCa/V9JJkncBao44K1E03JjqBGdGf+v+MwRb+rmCtDhP0/41VTgJQm
-	l+M5tfJwHkiezPYz6tSA9q5mPqYcjT6RzKnY1oTSBc2wSpraaNEffji6wOxXOtIf+ZBeKh
-	SgXoNZD+0i2glRCFf7OYrDHo9tqzIVdTIHUonLDKzbgx5hxGxdx7Dfud4K4teXNsLP9FlZ
-	vD8bC0mUWXMawXLGjZ2wG+horz2CmeIido2HLoAM5zC1276+QnL/4GJCVgjw3g==
+	t=1762514215; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=dlrPpa+h9rWpU8SfUTAUGaBDzSD6jY375gYxV0hq7/w=;
+	b=1B3ZadRK/jU61aUVz5/AC51k82agExQ8o1/XD1OtoVUbebLKGhBWbA2xhVq5L3YtVTT2Wc
+	yJBCdEx2Lxrq6IzTh7+b1alu2XsrvEQPNh3o6QRqCJnzk3z8xbwZ6HpfiyIFoS2FkSrGHW
+	X7RNDm3qmCXDfD3Mg+ZAK3TIwVzPEdWB9JmCIDTErTEeNTyY5IeePmlxPiNILE59nQz0j2
+	qUYL6M5pF0Ajz9AK0cG6K3ozpwCOI093CpjcZXMZGT9zMCmcmajkcgc0Ns44Brjfxfzfm0
+	vmqfTPWonC7Ccz+PK6VAxwxVcj5ju1alcXhsThuDII/3wATANmBCTYNa4AfJJQ==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Subject: [PATCH v3 0/2] Add bitbake-setup documentation
-Date: Fri, 07 Nov 2025 12:16:43 +0100
-Message-Id: <20251107-bitbake-setup-v3-0-9aa227ade002@bootlin.com>
+Date: Fri, 07 Nov 2025 12:16:44 +0100
+Subject: [PATCH v3 1/2] doc/conf.py: add wikipedia extlink
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIABzVDWkC/12NTQ6DIBgFr9KwLo1AFemq92i6APys9EcMIGljv
- HtBN63LSd7Mm5AHZ8Cj025CDqLxxvYJ2H6HdCf7G2DTJEa0oCUpGMHKBCUfgD2EccCgaiWFFNB
- wjZIzOGjNe+ldriv7Ud1BhxzJi874YN1nOYwk79Z2im/akeACV6yUXNdUyKM6K2vD0/QHbV8o1
- yP99autT5NPOaXQ8lJoVv778zx/AfODnt7+AAAA
-X-Change-ID: 20251031-bitbake-setup-eb8ba9a9ed7c
+Message-Id: <20251107-bitbake-setup-v3-1-9aa227ade002@bootlin.com>
+References: <20251107-bitbake-setup-v3-0-9aa227ade002@bootlin.com>
+In-Reply-To: <20251107-bitbake-setup-v3-0-9aa227ade002@bootlin.com>
 To: bitbake-devel@lists.openembedded.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  docs@lists.yoctoproject.org, Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1537;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=652;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=GLfhhJzhhN4TfZjF/adSs9a0inZiUsKjstzpWTk6f6Q=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpDdUlkxSZy8hSI7JtaDAdmZCSsmXsgjBEpiTit
- dNeTbnk3LiJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaQ3VJQAKCRDRgEFAKaOo
- Nh6zEAC9FPUkyrTj3C+3SMCQx2z/tt+Z+6g617Ibvw3BpFUM5QIzlnV6aMeEIFWQ/iG+MEa4LxJ
- k7KDvy7Se96K9yTCe+StfLY4cYgcmdq05b4zXbY1NxHlRR4/EHAi3cNy/vbSj7jxG0joaSDBM5l
- y6566bOJ/Y8i0yh7ChoyLjwev6AZmo5jlS6qxxFOyTiURSq8eTVzG7BoiEgth1pHgL5OudZgXp7
- ioj5d416cOaJCvZrd3NVCyixGroFBISjuOoycNokjd4Q4rM1Z1yyQoinm7Jrmw2aM8U7sIdMrxb
- 5aMdVj1K2ojGK3fsxcnMU3qZae8FxMjgL/XYUx0bLUCVp0IfjAf5mS4mwa+v2UCyfLGhM6UXRRU
- bfiUO/Sl92OEWVDsLLXyADkfxYBHlHWLfD0YXEGKVF4PZleYWKGOYsoYnF01H/TEJUhTAxNQdG9
- iddrRSLXqGrCMs0zBG98B22BIGQHWu2cNyOVgqppUes6JGxpVoL+O8JIJ6nj3+dFIoRcrx6uDrZ
- ROHGcm5v76iWk16pBg6MI5nHF6uVTieD8JE+AfDuwnhd7RPn6mrb7MBdlCr8/XQfiPpq9F6HuPR
- 2lLIDnjuv7HSqskRjBE2fVSo92fxvh1V4ZP1wQsy4crJIshFs0eZhPdVhYbQmLE6jfSUnCPmSo9
- vzYXS8zUDy1FdsQ==
+ bh=8Uyj02sdsC+CaHZ7lVuFOsunetTYcsZQ2pPDNsTWABg=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpDdUlbPQmSbWERLmhK+Y04tCEZiZVISUmTAJr9
+ DBY4MQtqoCJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaQ3VJQAKCRDRgEFAKaOo
+ NtSYD/wMFx6NQCeJAsQv3ux8GHcyCplTD9Ra6Izziyi/lY2TePwvvwWjVWoVr6CGr8Uk4lqLYuM
+ r4dCcvNqZCzpPo8dh5kGVlhfcATt5eBSEPbxE6mmlXJsGQtJsM+P0XPnhL4jPHEUFKFq1IVBdNC
+ F11rLJ96rqIgObw7FGZp4GVZXk9Ipq0qMvPdT3gY/kr4nNasYsP/I9AGa5q5e6nmHDVNU28jZgh
+ 6B9+NjHYA6lX07iUUOkVHxdKDfFlKN80/s/arPmjKAC/k3CmXXd8NAsfXOeAI3GYzpioEgi1yEx
+ dGxcCIgaBG5jGcLJlE1x4BIzOHRx27Ukp8o6+w/jTtFP2g7Ts7Iy03Xs3/gJSfVaV7792k9fgza
+ wHkbqS+GEdvBYa/ngE5/mnHpaVdeZk1l2mGaGKybiRM7d/v2UWiOK/eVUcPAwr8eOG6Lu7FTVch
+ +0Sd6J7JQYOXhpvAqloVPZ93/OXEoJqXU8JiVVJ7e9Xksu4WWBnrKW0U+B7+INvoXbZ+sIUDjSE
+ R8QuXSNACrdRiAs5fFarMp4Go0hspVmYF5rrjA3BhufVnYQEfmGBGwmhHa5U8e7bdopn4U+epUZ
+ BtG2JtRa4PMPPixeeFfyphdvTB65lOqKjpY3oaABkruQFSyDNofhnhb2gG3Ji6TWx7tz59+VMAQ
+ ar26wXIEnG0Rprg==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 07 Nov 2025 11:17:00 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8012
+ <docs@lists.yoctoproject.org>; Fri, 07 Nov 2025 11:16:59 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8013
 
-Add the reference documentation for bitbake-setup, in a new
-bitbake-user-manual-environment-setup.rst document.
+For use in the documentation.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
-Changes in v3:
-- Suggestions and corrections from Alex (thanks!)
-- I've added documentation for bb-layers-file-relative.
-- I've updated the bitbake-setup init section and enumerated the
-  different ways to pass a config to init.
-  I've also added an example on how to pass a URL to the init command to
-  fetch a configuration.
-- Link to v2: https://lore.kernel.org/r/20251106-bitbake-setup-v2-0-2722ef759c35@bootlin.com
+ doc/conf.py | 1 +
+ 1 file changed, 1 insertion(+)
 
-Changes in v2:
-- Apply suggestions/corrections from Alex and Johannes (thanks!)
-- Add missing 'expires' generic config.
-- Add the doc for {THISDIR}
-- Reorganize the terminology a bit. Start from the directories, unroll
-  the terminology from there.
-- Add definition for the Specific Configuration.
-- Link to v1: https://lore.kernel.org/r/20251103-bitbake-setup-v1-0-635a7c829a4b@bootlin.com
+diff --git a/doc/conf.py b/doc/conf.py
+index f61241e28b..bce386624e 100644
+--- a/doc/conf.py
++++ b/doc/conf.py
+@@ -39,6 +39,7 @@ author = 'Richard Purdie, Chris Larson, and Phil Blundell'
+ extlinks = {
+     'yocto_docs': ('https://docs.yoctoproject.org%s', None),
+     'oe_lists': ('https://lists.openembedded.org%s', None),
++    'wikipedia': ('https://en.wikipedia.org/wiki/%s', None),
+ }
+ 
+ # -- General configuration ---------------------------------------------------
 
----
-Antonin Godard (2):
-      doc/conf.py: add wikipedia extlink
-      Add bitbake-setup documentation
-
- .../bitbake-user-manual-environment-setup.rst      | 822 +++++++++++++++++++++
- doc/conf.py                                        |   1 +
- doc/index.rst                                      |   1 +
- 3 files changed, 824 insertions(+)
----
-base-commit: dcb17758b99767ab6da4172cf60eabc9269082dd
-change-id: 20251031-bitbake-setup-eb8ba9a9ed7c
-
-Best regards,
---  
-Antonin Godard <antonin.godard@bootlin.com>
+-- 
+2.51.0
 
 
