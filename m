@@ -1,123 +1,110 @@
-Return-Path: <alex.kanavin@gmail.com>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 451CBCCFA13
-	for <webhook@archiver.kernel.org>; Thu,  6 Nov 2025 13:43:08 +0000 (UTC)
-Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.15686.1762436587151347326
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 662ADCCFA1E
+	for <webhook@archiver.kernel.org>; Fri,  7 Nov 2025 11:17:00 +0000 (UTC)
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.8962.1762514217584252426
  for <docs@lists.yoctoproject.org>;
- Thu, 06 Nov 2025 05:43:07 -0800
+ Fri, 07 Nov 2025 03:16:58 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=cCttfwoQ;
- spf=pass (domain: gmail.com, ip: 209.85.219.52, mailfrom: alex.kanavin@gmail.com)
-Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-88051279e87so11527816d6.3
-        for <docs@lists.yoctoproject.org>; Thu, 06 Nov 2025 05:43:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762436586; x=1763041386; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LWjjtLYhgoe2r/AxoBn4YN6En2GI/CMMz7dehtBBZLY=;
-        b=cCttfwoQYXrhUxcVhqL+dQs0F5oXlttyYQz7IJbgSD3sgisGuA4GjLASimseUW5jxt
-         5VuK+X59/AVmwAfyk0DSmkv/LylVLncgb/tLWAlKUct+kplw/4174pLguSsgE1NSiyi0
-         qPOlmUOBuJJrAnW7gcDfr+pH4/rvX71PT3vj7HVVpLJt0T2cEwAzQ3gCgtdjHg5njXCg
-         XmF9MATK40IdGl9WB3yNXl0L+/TjlAVNGJmmnhd67Ht0aPzoIZPSEjYvQ5oqiz6EDSYl
-         krr13H6Fcv0S93z8woXBjogki9WR3GCIjnCVWu7GDOIKNdozxAXLXMf76IuThX+BBPM3
-         Oyzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762436586; x=1763041386;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=LWjjtLYhgoe2r/AxoBn4YN6En2GI/CMMz7dehtBBZLY=;
-        b=JX2QJwlXQvFePMHsFDwalR81+pS8H6VjOmx2m0pwz7X6mdFYq+YtQIKwC4ZbATLRyr
-         SYm1KAILNK8Ro4IdgL6yTT2Iz7n62hRdiA8yAGs9cTaBN9NbTAeQKxL3/Bo2alySFVWH
-         wYbBEUEAlhhRRs7DI8VcaQRBr75x5M7FoEM90rhhPogwm0A+jjsrFOlm7Za38jzqjXOM
-         DEu9Q381e/ZYHNSr+MtGWeNFIO7vawB/halziVWZwSHBPHqypKgqU6I61DpDzM8JWWk7
-         eICzfbgyvUwbS04gSyFfmW2jFEVJJR+U6jr+drVWi0TEY9gI1Ulbkb+OBabzGLASLjdH
-         evkw==
-X-Forwarded-Encrypted: i=1; AJvYcCUVsjWrDPm8qi6PriYzG1vkh1pisY/6lb+vuD/gV1h5ZgN2paSqdpsl+ebwlpvM8apqJOmF@lists.yoctoproject.org
-X-Gm-Message-State: AOJu0YwWxsu05CWXry/pFQtI8buYG6Wl+J56NfGVbERQnLzsd6Ld4Ygf
-	0z8q3luOl7JMDby+T/8VUT0RY0bpDKLfrT2J8UbGyI8aEG99Bt3Cj6G8dKWiu6yzuMbC9oerFmZ
-	bKupvhVJp488iLOOfW/2WF4Ph8LfPg2U=
-X-Gm-Gg: ASbGncs0uiwKG8PtF4Yhxa0txB3v0tOZ1MxtBC+ULZpGcNN4h6RAIGh17PoT9j3MVOW
-	WdPIyVULnwU0Xgie9XVQOFhshM93FmY02lLgYMLVS06N0oTPEtGZypA811gwHUs+3gwjEvFdcSt
-	Fmt0Jh8jwXsDHMSHbLZmZ6LPr1l5NFcBRMrm1yC10XGFu5CF+bwcCZJTDTaxkxlYG4EmntZ8RS3
-	44M7SWjTDpYAx4c8kYI20EGJUHIKah8gLsHG8mj3AQNpsBP8vdqOuGTKPKZ2vcva6nC8w772UfH
-	Gc0zKCOmPN2xyGZh1eJcczaTbttpMA==
-X-Google-Smtp-Source: AGHT+IEjopTxcEYT6IHbWR3GOfUuypW7gIwzKrOBmembVX9dSUNHjfsSu2B9dbSEUWxnpx2v5sCedqv5xgBx/DaUIfc=
-X-Received: by 2002:a05:6214:f27:b0:880:52b8:2f9e with SMTP id
- 6a1803df08f44-88071192619mr96194376d6.21.1762436586107; Thu, 06 Nov 2025
- 05:43:06 -0800 (PST)
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=zp1KoSxp;
+ spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 7EF4D4E41595
+	for <docs@lists.yoctoproject.org>; Fri,  7 Nov 2025 11:16:55 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 48EA2606A6;
+	Fri,  7 Nov 2025 11:16:55 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1560D1185236F;
+	Fri,  7 Nov 2025 12:16:53 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1762514214; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=EEr4BmdbfMiQ8giHXBdq8RZ1QdIMZzv2nP+e2lteh/w=;
+	b=zp1KoSxpr+QLJ98W90dPCSr15wp/pq8C9jNXzF+uEam4ijFnHGOvlZKsRal3qt+egFKCk7
+	/JErT0obXjzPNGU/aCa/V9JJkncBao44K1E03JjqBGdGf+v+MwRb+rmCtDhP0/41VTgJQm
+	l+M5tfJwHkiezPYz6tSA9q5mPqYcjT6RzKnY1oTSBc2wSpraaNEffji6wOxXOtIf+ZBeKh
+	SgXoNZD+0i2glRCFf7OYrDHo9tqzIVdTIHUonLDKzbgx5hxGxdx7Dfud4K4teXNsLP9FlZ
+	vD8bC0mUWXMawXLGjZ2wG+horz2CmeIido2HLoAM5zC1276+QnL/4GJCVgjw3g==
+From: Antonin Godard <antonin.godard@bootlin.com>
+Subject: [PATCH v3 0/2] Add bitbake-setup documentation
+Date: Fri, 07 Nov 2025 12:16:43 +0100
+Message-Id: <20251107-bitbake-setup-v3-0-9aa227ade002@bootlin.com>
 MIME-Version: 1.0
-References: <20251106-bitbake-setup-v2-0-2722ef759c35@bootlin.com> <20251106-bitbake-setup-v2-2-2722ef759c35@bootlin.com>
-In-Reply-To: <20251106-bitbake-setup-v2-2-2722ef759c35@bootlin.com>
-From: Alexander Kanavin <alex.kanavin@gmail.com>
-Date: Thu, 6 Nov 2025 14:42:54 +0100
-X-Gm-Features: AWmQ_blqi0tDYCIFtfkQXnYFzGZaiZ6QFZolztzp8ih7bba72rV6jx-qvPGw_Zc
-Message-ID: <CANNYZj-v2AOqTdnA+KegBc9zC9TxEuJsM7d8vMEOsCr_wnT_zA@mail.gmail.com>
-Subject: Re: [docs] [PATCH v2 2/2] Add bitbake-setup documentation
-To: antonin.godard@bootlin.com
-Cc: bitbake-devel@lists.openembedded.org, 
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, docs@lists.yoctoproject.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIABzVDWkC/12NTQ6DIBgFr9KwLo1AFemq92i6APys9EcMIGljv
+ HtBN63LSd7Mm5AHZ8Cj025CDqLxxvYJ2H6HdCf7G2DTJEa0oCUpGMHKBCUfgD2EccCgaiWFFNB
+ wjZIzOGjNe+ldriv7Ud1BhxzJi874YN1nOYwk79Z2im/akeACV6yUXNdUyKM6K2vD0/QHbV8o1
+ yP99autT5NPOaXQ8lJoVv778zx/AfODnt7+AAAA
+X-Change-ID: 20251031-bitbake-setup-eb8ba9a9ed7c
+To: bitbake-devel@lists.openembedded.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ docs@lists.yoctoproject.org, Antonin Godard <antonin.godard@bootlin.com>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1537;
+ i=antonin.godard@bootlin.com; h=from:subject:message-id;
+ bh=GLfhhJzhhN4TfZjF/adSs9a0inZiUsKjstzpWTk6f6Q=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpDdUlkxSZy8hSI7JtaDAdmZCSsmXsgjBEpiTit
+ dNeTbnk3LiJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaQ3VJQAKCRDRgEFAKaOo
+ Nh6zEAC9FPUkyrTj3C+3SMCQx2z/tt+Z+6g617Ibvw3BpFUM5QIzlnV6aMeEIFWQ/iG+MEa4LxJ
+ k7KDvy7Se96K9yTCe+StfLY4cYgcmdq05b4zXbY1NxHlRR4/EHAi3cNy/vbSj7jxG0joaSDBM5l
+ y6566bOJ/Y8i0yh7ChoyLjwev6AZmo5jlS6qxxFOyTiURSq8eTVzG7BoiEgth1pHgL5OudZgXp7
+ ioj5d416cOaJCvZrd3NVCyixGroFBISjuOoycNokjd4Q4rM1Z1yyQoinm7Jrmw2aM8U7sIdMrxb
+ 5aMdVj1K2ojGK3fsxcnMU3qZae8FxMjgL/XYUx0bLUCVp0IfjAf5mS4mwa+v2UCyfLGhM6UXRRU
+ bfiUO/Sl92OEWVDsLLXyADkfxYBHlHWLfD0YXEGKVF4PZleYWKGOYsoYnF01H/TEJUhTAxNQdG9
+ iddrRSLXqGrCMs0zBG98B22BIGQHWu2cNyOVgqppUes6JGxpVoL+O8JIJ6nj3+dFIoRcrx6uDrZ
+ ROHGcm5v76iWk16pBg6MI5nHF6uVTieD8JE+AfDuwnhd7RPn6mrb7MBdlCr8/XQfiPpq9F6HuPR
+ 2lLIDnjuv7HSqskRjBE2fVSo92fxvh1V4ZP1wQsy4crJIshFs0eZhPdVhYbQmLE6jfSUnCPmSo9
+ vzYXS8zUDy1FdsQ==
+X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
+ fpr=8648725188DD401BB9A0D3FFD180414029A3A836
+X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 06 Nov 2025 13:43:08 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8011
+ <docs@lists.yoctoproject.org>; Fri, 07 Nov 2025 11:17:00 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8012
 
-On Thu, 6 Nov 2025 at 10:23, Antonin Godard via lists.yoctoproject.org
-<antonin.godard=3Dbootlin.com@lists.yoctoproject.org> wrote:
+Add the reference documentation for bitbake-setup, in a new
+bitbake-user-manual-environment-setup.rst document.
 
-> +      :term:`Generic Configuration` files are stored in :term:`registrie=
-s
-> +      <Registry>`, and can be listed with the :ref:`ref-bbsetup-command-=
-init`
-> +      command.
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+---
+Changes in v3:
+- Suggestions and corrections from Alex (thanks!)
+- I've added documentation for bb-layers-file-relative.
+- I've updated the bitbake-setup init section and enumerated the
+  different ways to pass a config to init.
+  I've also added an example on how to pass a URL to the init command to
+  fetch a configuration.
+- Link to v2: https://lore.kernel.org/r/20251106-bitbake-setup-v2-0-2722ef759c35@bootlin.com
 
-'list' command, not 'init'.
+Changes in v2:
+- Apply suggestions/corrections from Alex and Johannes (thanks!)
+- Add missing 'expires' generic config.
+- Add the doc for {THISDIR}
+- Reorganize the terminology a bit. Start from the directories, unroll
+  the terminology from there.
+- Add definition for the Specific Configuration.
+- Link to v1: https://lore.kernel.org/r/20251103-bitbake-setup-v1-0-635a7c829a4b@bootlin.com
 
-> +The choices made during the bare ``bitbake-setup init`` command can also=
- be
-> +passed directly on the command-line, for example::
-> +
-> +   bitbake-setup init poky-master poky distro/poky-tiny
-> +
-> +``bitbake-setup`` will stop and ask to make a choice if the above comman=
-d does
-> +not contain all of the required configurations to complete the sequence =
-of
-> +choices.
+---
+Antonin Godard (2):
+      doc/conf.py: add wikipedia extlink
+      Add bitbake-setup documentation
 
-The first argument to 'init' specifies a generic configuration id in
-the registry, or a path to the generic configuration file on local
-disk, or a http URI which bitbake-setup will use to obtain the generic
-configuration file.
+ .../bitbake-user-manual-environment-setup.rst      | 822 +++++++++++++++++++++
+ doc/conf.py                                        |   1 +
+ doc/index.rst                                      |   1 +
+ 3 files changed, 824 insertions(+)
+---
+base-commit: dcb17758b99767ab6da4172cf60eabc9269082dd
+change-id: 20251031-bitbake-setup-eb8ba9a9ed7c
 
-(this probably isn't clear, but it's easy to bypass the registry when
-the user already has a configuration file locally or on the internet,
-and they want to use that file directly, for example if they want to
-change something in the file and test that it works, or otherwise have
-a workflow that doesn't involve a registry)
+Best regards,
+--  
+Antonin Godard <antonin.godard@bootlin.com>
 
-> +      ``{THISDIR}`` translates to the parent directory of the current
-> +      :term:`Generic Configuration` file.
-> +
-> +      This is useful when (one or more) configuration files and (one or
-> +      more) layers are hosted in the same Git repository, which is clone=
-d
-> +      and managed independently from bitbake-setup workflows. For exampl=
-e::
-> +
-> +         =E2=94=9C=E2=94=80=E2=94=80 meta-myproject/
-> +         =E2=94=94=E2=94=80=E2=94=80 myproject.conf.json
-
-Once THISDIR is replaced one way or another, this should be updated.
-
-Other than that, I'm very happy with this! Thanks!
-
-Alex
 
