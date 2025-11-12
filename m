@@ -2,33 +2,33 @@ Return-Path: <ross.burton@arm.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9240DCCFA1A
-	for <webhook@archiver.kernel.org>; Wed, 12 Nov 2025 15:20:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 096E3CCFA1A
+	for <webhook@archiver.kernel.org>; Wed, 12 Nov 2025 15:40:40 +0000 (UTC)
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.16148.1762960794931302906
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.219.1762962032322693581
  for <docs@lists.yoctoproject.org>;
- Wed, 12 Nov 2025 07:19:55 -0800
+ Wed, 12 Nov 2025 07:40:32 -0800
 Authentication-Results: mx.groups.io;
  dkim=none (message not signed); spf=pass (domain: arm.com, ip: 217.140.110.172, mailfrom: ross.burton@arm.com)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E171E1595
-	for <docs@lists.yoctoproject.org>; Wed, 12 Nov 2025 07:19:46 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2B3691515
+	for <docs@lists.yoctoproject.org>; Wed, 12 Nov 2025 07:40:24 -0800 (PST)
 Received: from cesw-amp-gbt-1s-m12830-04.lab.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 355263F66E
-	for <docs@lists.yoctoproject.org>; Wed, 12 Nov 2025 07:19:54 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 74C9A3F66E
+	for <docs@lists.yoctoproject.org>; Wed, 12 Nov 2025 07:40:31 -0800 (PST)
 From: Ross Burton <ross.burton@arm.com>
 To: docs@lists.yoctoproject.org
-Subject: [PATCH] documentation: link to the Releases page on yoctoproject.org instead of wiki
-Date: Wed, 12 Nov 2025 15:19:49 +0000
-Message-ID: <20251112151949.2524963-1-ross.burton@arm.com>
+Subject: [PATCH v2] documentation: link to the Releases page on yoctoproject.org instead of wiki
+Date: Wed, 12 Nov 2025 15:40:24 +0000
+Message-ID: <20251112154024.2573140-1-ross.burton@arm.com>
 X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 12 Nov 2025 15:20:02 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8024
+ <docs@lists.yoctoproject.org>; Wed, 12 Nov 2025 15:40:40 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8025
 
 We have a machine-generated Releases page[1] which is preferable to the
 wiki.
@@ -40,10 +40,10 @@ Signed-off-by: Ross Burton <ross.burton@arm.com>
  documentation/contributor-guide/submit-changes.rst | 4 ++--
  documentation/dev-manual/layers.rst                | 7 +++----
  documentation/dev-manual/poky-manual-setup.rst     | 2 +-
- documentation/dev-manual/security-subjects.rst     | 2 +-
+ documentation/dev-manual/security-subjects.rst     | 8 ++++----
  documentation/dev-manual/start.rst                 | 2 +-
  documentation/ref-manual/release-process.rst       | 3 ++-
- 6 files changed, 10 insertions(+), 10 deletions(-)
+ 6 files changed, 13 insertions(+), 13 deletions(-)
 
 diff --git a/documentation/contributor-guide/submit-changes.rst b/documen=
 tation/contributor-guide/submit-changes.rst
@@ -106,21 +106,31 @@ t stable
 =20
 diff --git a/documentation/dev-manual/security-subjects.rst b/documentati=
 on/dev-manual/security-subjects.rst
-index 6785b5a16a..2746852138 100644
+index 6785b5a16a..1ec7c8b385 100644
 --- a/documentation/dev-manual/security-subjects.rst
 +++ b/documentation/dev-manual/security-subjects.rst
-@@ -44,7 +44,7 @@ See the
+@@ -44,10 +44,10 @@ See the
  documentation for details regarding the policies and maintenance of stab=
 le
  branches.
 =20
 -The :yocto_wiki:`Releases page </Releases>` contains a list
-+The :yocto_home:`Releases </development/releases/>` page contains a list
- of all releases of the Yocto Project. Versions in gray are no longer act=
+-of all releases of the Yocto Project. Versions in gray are no longer act=
 ively
- maintained with security patches, but well-tested patches may still be a=
+-maintained with security patches, but well-tested patches may still be a=
 ccepted
- for them for significant issues.
+-for them for significant issues.
++The :yocto_home:`Releases </development/releases/>` page contains a list=
+ of all
++releases of the Yocto Project, grouped into current and previous release=
+s.
++Previous releases are no longer actively maintained with security patche=
+s, but
++well-tested patches may still be accepted for them for significant issue=
+s.
+=20
+ Security-related discussions at the Yocto Project
+ -------------------------------------------------
 diff --git a/documentation/dev-manual/start.rst b/documentation/dev-manua=
 l/start.rst
 index 2a1be7260e..b21cd4f0f8 100644
