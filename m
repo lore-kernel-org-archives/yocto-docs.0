@@ -1,169 +1,68 @@
-Return-Path: <ross.burton@arm.com>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 096E3CCFA1A
-	for <webhook@archiver.kernel.org>; Wed, 12 Nov 2025 15:40:40 +0000 (UTC)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.219.1762962032322693581
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DE6D6CD5BA0
+	for <webhook@archiver.kernel.org>; Thu, 13 Nov 2025 08:42:36 +0000 (UTC)
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.19384.1763023345665810376
  for <docs@lists.yoctoproject.org>;
- Wed, 12 Nov 2025 07:40:32 -0800
+ Thu, 13 Nov 2025 00:42:26 -0800
 Authentication-Results: mx.groups.io;
- dkim=none (message not signed); spf=pass (domain: arm.com, ip: 217.140.110.172, mailfrom: ross.burton@arm.com)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2B3691515
-	for <docs@lists.yoctoproject.org>; Wed, 12 Nov 2025 07:40:24 -0800 (PST)
-Received: from cesw-amp-gbt-1s-m12830-04.lab.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 74C9A3F66E
-	for <docs@lists.yoctoproject.org>; Wed, 12 Nov 2025 07:40:31 -0800 (PST)
-From: Ross Burton <ross.burton@arm.com>
-To: docs@lists.yoctoproject.org
-Subject: [PATCH v2] documentation: link to the Releases page on yoctoproject.org instead of wiki
-Date: Wed, 12 Nov 2025 15:40:24 +0000
-Message-ID: <20251112154024.2573140-1-ross.burton@arm.com>
-X-Mailer: git-send-email 2.43.0
-MIME-Version: 1.0
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=lWwcqL3e;
+ spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id A25BF1A1A71
+	for <docs@lists.yoctoproject.org>; Thu, 13 Nov 2025 08:42:23 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 797506068C;
+	Thu, 13 Nov 2025 08:42:23 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3D992102F1BFF;
+	Thu, 13 Nov 2025 09:42:22 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1763023343; h=from:subject:date:message-id:to:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=1J5GSA++MgNwOrwmh7AAi/uSQjmvq326P993Tmd8GCA=;
+	b=lWwcqL3eLNzrZ/5qnX7QbnVfTVJIQZpMjdWSokVXux2E8FzYlbRpk9jUcHZhTwANYgLkku
+	TlARGZ59Mjb/LEc51XPo0VZumExBCyxg738KQOUBzQieWJtihLoPPFbDnXurbrnZroqeO1
+	NxFOFVnCfjyhgiHYlqao1YQgeUoKHRC79Sczqhx6gtPdTR8QfMmldMqz2Yzezezhs1y3mk
+	od41G1mzRz8TwfzsskD0V74YQKt0lReko1hU7OFa0vyOVpCJ+ciPKa7yZgEAjZZGLNtHmV
+	vsz2PrYUy2YNCcCul/UEYPt6W52uDVLBRwBtZ4OekfHiB3Ai+fAqMh7qakJJuA==
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 13 Nov 2025 09:42:21 +0100
+Message-Id: <DE7FM5UY8B22.3BSZWV4MP4558@bootlin.com>
+From: "Antonin Godard" <antonin.godard@bootlin.com>
+To: <daniel.turull@ericsson.com>, <docs@lists.yoctoproject.org>
+Subject: Re: [docs] [PATCH v2] vulnerabilities: add section for kernel CVEs
+ vulnerabilities
+References: <20251110084548.3333453-1-daniel.turull@ericsson.com>
+In-Reply-To: <20251110084548.3333453-1-daniel.turull@ericsson.com>
+X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 12 Nov 2025 15:40:40 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8025
+ <docs@lists.yoctoproject.org>; Thu, 13 Nov 2025 08:42:36 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8026
 
-We have a machine-generated Releases page[1] which is preferable to the
-wiki.
+Hi,
 
-[1] https://www.yoctoproject.org/development/releases/
+Thanks for the revised patch. I've noticed some minor formatting/spelling f=
+ixes
+I've pushed here:
+https://git.yoctoproject.org/yocto-docs/commit/?id=3D70cb90312e23b4b1a531b3=
+ec9bd03232ab116e99
 
-Signed-off-by: Ross Burton <ross.burton@arm.com>
----
- documentation/contributor-guide/submit-changes.rst | 4 ++--
- documentation/dev-manual/layers.rst                | 7 +++----
- documentation/dev-manual/poky-manual-setup.rst     | 2 +-
- documentation/dev-manual/security-subjects.rst     | 8 ++++----
- documentation/dev-manual/start.rst                 | 2 +-
- documentation/ref-manual/release-process.rst       | 3 ++-
- 6 files changed, 13 insertions(+), 13 deletions(-)
+Let me know if they make sense to you, I'll just integrate them in your pat=
+ch if
+they do.
 
-diff --git a/documentation/contributor-guide/submit-changes.rst b/documen=
-tation/contributor-guide/submit-changes.rst
-index e3b29500d3..0c2120eb04 100644
---- a/documentation/contributor-guide/submit-changes.rst
-+++ b/documentation/contributor-guide/submit-changes.rst
-@@ -697,8 +697,8 @@ backported to a stable branch unless the bug in quest=
-ion does not affect the
- master branch or the fix on the master branch is unsuitable for backport=
-ing.
-=20
- The list of stable branches along with the status and maintainer for eac=
-h
--branch can be obtained from the
--:yocto_wiki:`Releases wiki page </Releases>`.
-+branch can be obtained from the :yocto_home:`Releases </development/rele=
-ases/>`
-+page.
-=20
- .. note::
-=20
-diff --git a/documentation/dev-manual/layers.rst b/documentation/dev-manu=
-al/layers.rst
-index cc7103ba61..8b1341c8f3 100644
---- a/documentation/dev-manual/layers.rst
-+++ b/documentation/dev-manual/layers.rst
-@@ -123,10 +123,9 @@ Follow these general steps to create your layer with=
-out using tools:
-       Lists all layers on which this layer depends (if any).
-=20
-    -  :term:`LAYERSERIES_COMPAT`:
--      Lists the :yocto_wiki:`Yocto Project </Releases>`
--      releases for which the current version is compatible. This
--      variable is a good way to indicate if your particular layer is
--      current.
-+      Lists the :yocto_home:`Yocto Project releases </development/releas=
-es/>`
-+      for which the current version is compatible. This variable is a go=
-od
-+      way to indicate if your particular layer is current.
-=20
-=20
-    .. note::
-diff --git a/documentation/dev-manual/poky-manual-setup.rst b/documentati=
-on/dev-manual/poky-manual-setup.rst
-index 3e7c7d5066..bcda9d7e7d 100644
---- a/documentation/dev-manual/poky-manual-setup.rst
-+++ b/documentation/dev-manual/poky-manual-setup.rst
-@@ -16,7 +16,7 @@ document guides through this setup step-by-step.
- Use Git to Clone The Layers
- =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D
-=20
--Go to :yocto_wiki:`Releases wiki page </Releases>`, and choose a release
-+Go to the :yocto_home:`Releases </development/releases/>` page, and choo=
-se a release
- (such as ``&DISTRO_REL_LATEST_TAG;``), corresponding to either the lates=
-t stable
- release or a Long Term Support release.
-=20
-diff --git a/documentation/dev-manual/security-subjects.rst b/documentati=
-on/dev-manual/security-subjects.rst
-index 6785b5a16a..1ec7c8b385 100644
---- a/documentation/dev-manual/security-subjects.rst
-+++ b/documentation/dev-manual/security-subjects.rst
-@@ -44,10 +44,10 @@ See the
- documentation for details regarding the policies and maintenance of stab=
-le
- branches.
-=20
--The :yocto_wiki:`Releases page </Releases>` contains a list
--of all releases of the Yocto Project. Versions in gray are no longer act=
-ively
--maintained with security patches, but well-tested patches may still be a=
-ccepted
--for them for significant issues.
-+The :yocto_home:`Releases </development/releases/>` page contains a list=
- of all
-+releases of the Yocto Project, grouped into current and previous release=
-s.
-+Previous releases are no longer actively maintained with security patche=
-s, but
-+well-tested patches may still be accepted for them for significant issue=
-s.
-=20
- Security-related discussions at the Yocto Project
- -------------------------------------------------
-diff --git a/documentation/dev-manual/start.rst b/documentation/dev-manua=
-l/start.rst
-index 2a1be7260e..b21cd4f0f8 100644
---- a/documentation/dev-manual/start.rst
-+++ b/documentation/dev-manual/start.rst
-@@ -661,7 +661,7 @@ described in the ":ref:`dev-manual/start:accessing so=
-urce archives`" section.
-    .. note::
-=20
-       For a "map" of Yocto Project releases to version numbers, see the
--      :yocto_wiki:`Releases </Releases>` wiki page.
-+      :yocto_home:`Releases </development/releases/>` page.
-=20
-    You can use the "RELEASE ARCHIVE" link to reveal a menu of all Yocto
-    Project releases.
-diff --git a/documentation/ref-manual/release-process.rst b/documentation=
-/ref-manual/release-process.rst
-index 639921b9f6..8263548448 100644
---- a/documentation/ref-manual/release-process.rst
-+++ b/documentation/ref-manual/release-process.rst
-@@ -62,7 +62,8 @@ codename are likely to be compatible and thus work toge=
-ther.
-=20
- Releases are given a nominal release version as well but the codename is
- used in repositories for this reason. You can find information on Yocto
--Project releases and codenames at :yocto_wiki:`/Releases`.
-+Project releases and codenames in the :yocto_home:`Releases page
-+</development/releases/>`.
-=20
- Our :doc:`/migration-guides/index` detail how to migrate from one releas=
-e of
- the Yocto Project to the next.
+Antonin
+
 --=20
-2.43.0
+Antonin Godard, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
