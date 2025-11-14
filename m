@@ -2,63 +2,77 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 14E46CE8D60
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 14E0ACE8D5E
 	for <webhook@archiver.kernel.org>; Fri, 14 Nov 2025 17:16:56 +0000 (UTC)
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.3592.1763140613672699816
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.3512.1763140613764374997
  for <docs@lists.yoctoproject.org>;
  Fri, 14 Nov 2025 09:16:54 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=o223eTkG;
- spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=vNqKfv/s;
+ spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 01FF91A1AAD
-	for <docs@lists.yoctoproject.org>; Fri, 14 Nov 2025 17:16:52 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id CEA8AC10F69;
+	Fri, 14 Nov 2025 17:16:29 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id C55FD6060E;
+	by smtpout-01.galae.net (Postfix) with ESMTPS id A28306060E;
 	Fri, 14 Nov 2025 17:16:51 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6542310371CD9;
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C046910371CD4;
 	Fri, 14 Nov 2025 18:16:50 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
 	t=1763140611; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=EB4b1rNGwfhv/0IO02/rMOdm7h/0w6wSso/1qijeJmc=;
-	b=o223eTkGyZk2lu0fa/TDBPw3+uiD6AHPYP4E25m9l8oxO2Rw2wKGVpAzAYX2j7YMRIbrSz
-	ST2wfgqmgLA2cngjAQ3LGe4JngLZKGx5BEijt2QsiSgUi7yk43qU8GXZnkFt+o4+Pj6gWR
-	EeBUtER6A3VlbumKLpxcd0vyDxXnAfv+gLjViKFDyTJlU4UGU5IJJ6ZQ0f6aKM3Rw7fJh0
-	xQepQomR8oNzIVXErM/NvawQCIDCFkqDN1DJPhjmh5u9KMg69Jj1fpd0kX+5xomBnLpeI6
-	8ZUVnnLR/nMsq8OZTO/acr5xOj+kAFi2wxMZ92MSemw04xIYpJSQtoCgZaVYKg==
+	 content-transfer-encoding; bh=Hhc3pL/nJ3g0oS0PVcky9eo5snYfYdls9aL7V3OAc2Q=;
+	b=vNqKfv/ssGOtiCY/A1+duk6hzcABNxPPuBhvMWzB6Y8yhTsySw8ZwxS+PQyOiNRYkcStKl
+	kuqtkjgcSrbgCshNKjQULMjY+7x8ne+F/BEXXJbCw7J/MFD8ZE+ges/qsSuz1LXDWXdowT
+	aA7lECrEcwlWggh9DEzSMULkUnwtqU+fxT2+Y736WWljvmSEMj3/in+j6MqoxY7ieBcxfw
+	7fkplTn3q4hixprfz+waFOyqahQ74LLW5Srclwk8DByblyFIn1G1WzBwycX4Pbm9Uv/h88
+	ss3q3SllAz2iA5MhwpeZ1b/gGjpmArGcNGsAIVaZWNOA1nx8zgwA29g0ziyQKw==
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 14 Nov 2025 18:16:49 +0100
-Message-Id: <DE8L6MC9L8SP.3L7FCCQDFN208@bootlin.com>
-Subject: [walnascar] Pull request
+Date: Fri, 14 Nov 2025 18:16:50 +0100
+Message-Id: <DE8L6MGTEMRC.1B5MHJLDN9JKL@bootlin.com>
 Cc: <docs@lists.yoctoproject.org>
 From: "Antonin Godard" <antonin.godard@bootlin.com>
 To: "Richard Purdie" <richard.purdie@linuxfoundation.org>
+Subject: [master] Pull request
 X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Fri, 14 Nov 2025 17:16:56 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8050
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8049
 
-The following changes since commit aef25e0ba434384a60b3e9733040ab266e0429c3=
+The following changes since commit 650d5a2c8e64958c53b26f37164d90e9ee997187=
 :
 
-  ref-manual/classes,variables: document the CCACHE_DISABLE variable (2025-=
-10-27 17:04:52 +0100)
+  brief-yoctoprojectqs/index.rst: refresh after bitbake-setup updates (2025=
+-11-14 16:29:33 +0000)
 
 are available in the Git repository at:
 
-  git@push.yoctoproject.org:yocto-docs walnascar-next
+  git@push.yoctoproject.org:yocto-docs master-next
 
-for you to fetch changes up to 5ca6617dcceb5f5496ac9ee5d00ee9f7d3a2d5a2:
+for you to fetch changes up to 992d0725e8b4fdcdc2e9a101ce51ebef94a00112:
 
-  migration-guides: add release notes for 4.0.31 (2025-11-14 18:10:02 +0100=
+  migration-guides: add release notes for 4.0.31 (2025-11-14 17:49:35 +0100=
 )
 
 ----------------------------------------------------------------
+Adrian Freihofer (1):
+      ref-manual/variables.rst: cover new FIT_KERNEL variables
+
+Ahmad Fatoum (1):
+      migration-guides: 5.3: mention barebox migration guides
+
+Antonin Godard (2):
+      tools/build-docs-container: add support for ubuntu 25.10
+      ref-manual/system-requirements.rst: add ubuntu 25.10 to supported dis=
+tros
+
+Daniel Turull (1):
+      vulnerabilities: add section for kernel CVEs vulnerabilities
+
 Enrico J=C3=B6rns (1):
       dev-manual/sbom.rst: reflect that create-spdx is enabled by default
 
@@ -73,11 +87,12 @@ Quentin Schulz (4):
 section
       overview-manual: migrate to SVG + fix typo
 
-Robert P. J. Day (4):
+Robert P. J. Day (5):
       dev-manual/layers.rst: document "bitbake-layers show-machines"
       dev-manual/new-recipe.rst: update "recipetool -h" output
       dev-manual/new-recipe.rst: replace 'bitbake -e' with 'bitbake-getvar'
       dev-manual/new-recipe.rst: typo, "whith" -> "which"
+      dev-manual/new-recipe.rst: update code snippet from sed recipe
 
 Ross Burton (1):
       documentation: link to the Releases page on yoctoproject.org instead =
@@ -89,11 +104,14 @@ Walter Werner SCHNEIDER (1):
  documentation/contributor-guide/submit-changes.rst |   4 +-
  documentation/dev-manual/debugging.rst             |  34 +--
  documentation/dev-manual/layers.rst                |   9 +-
- documentation/dev-manual/new-recipe.rst            |  29 +--
+ documentation/dev-manual/new-recipe.rst            |  35 +--
+ documentation/dev-manual/poky-manual-setup.rst     |   2 +-
  documentation/dev-manual/sbom.rst                  |  15 +-
  documentation/dev-manual/security-subjects.rst     |   8 +-
  documentation/dev-manual/start.rst                 |   2 +-
+ documentation/dev-manual/vulnerabilities.rst       | 199 +++++++++++++++++
  documentation/kernel-dev/common.rst                |  20 +-
+ documentation/migration-guides/migration-5.3.rst   |   4 +
  documentation/migration-guides/release-4.0.rst     |   1 +
  documentation/migration-guides/release-5.0.rst     |   1 +
  .../migration-guides/release-notes-4.0.31.rst      | 210 +++++++++++++++++=
@@ -104,8 +122,10 @@ Walter Werner SCHNEIDER (1):
  .../overview-manual/svg/key-dev-elements.svg       | 172 +++++++++++++++
  documentation/overview-manual/yp-intro.rst         |   2 +-
  documentation/ref-manual/release-process.rst       |   3 +-
- documentation/ref-manual/variables.rst             |   4 +-
- 17 files changed, 691 insertions(+), 64 deletions(-)
+ documentation/ref-manual/system-requirements.rst   |   1 +
+ documentation/ref-manual/variables.rst             |  68 +++++-
+ documentation/tools/build-docs-container           |   4 +-
+ 22 files changed, 962 insertions(+), 73 deletions(-)
  create mode 100644 documentation/migration-guides/release-notes-4.0.31.rst
  create mode 100644 documentation/migration-guides/release-notes-5.0.13.rst
  delete mode 100644 documentation/overview-manual/figures/key-dev-elements.=
