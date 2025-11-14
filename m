@@ -1,377 +1,133 @@
-Return-Path: <stondo@gmail.com>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4F96CCE8D44
-	for <webhook@archiver.kernel.org>; Fri, 14 Nov 2025 15:23:35 +0000 (UTC)
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.336.1763133805868264280
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AF235CE8D4F
+	for <webhook@archiver.kernel.org>; Fri, 14 Nov 2025 16:44:45 +0000 (UTC)
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.2775.1763138682729981710
  for <docs@lists.yoctoproject.org>;
- Fri, 14 Nov 2025 07:23:26 -0800
+ Fri, 14 Nov 2025 08:44:43 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=YXzTbOit;
- spf=pass (domain: gmail.com, ip: 209.85.208.169, mailfrom: stondo@gmail.com)
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-37b9728a353so20115601fa.0
-        for <docs@lists.yoctoproject.org>; Fri, 14 Nov 2025 07:23:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763133803; x=1763738603; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=65HAi9UfX4mUyFm7qzJHCO3rGTqQy/FwPHFB6g6P15I=;
-        b=YXzTbOitvZYbjhBrQyN9xKtSSPsnxqdxCMIGinL2jWtb3OQbeQrqUECE74NjxK/xOM
-         jxERTYR6AqJx6DMhOxzHHNYjZanFIQAlbmpcNM0j3Yn9EHX9ATGEZrSCS3Izw3/VwLmr
-         Z+EipEPVgiB7XLCCBR0gKA9fqBiCLMFzvAH2d+pG7yi5psRayh+W0M5Wj8QtL63w3PrF
-         cmV5Ch+ShVDtEWejtYQx9h2ORoFHTTTyD5fSmImlj4Ou6fdAFi4xuaEwrkDQjLZhvif4
-         BXn7CaxxHs861Q7cWg/qCw5aZrnvLJsBFfAcmNwYkVdAOCg82LaiWjEPu1BAEjjAxXU2
-         gHaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763133803; x=1763738603;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=65HAi9UfX4mUyFm7qzJHCO3rGTqQy/FwPHFB6g6P15I=;
-        b=rPBAd6eb360jfRrfRC1VRElwm7WG5vkOC0j5VYkKq0oowp20AqSJxRSp1JwdH7X0Em
-         pziW1Gjo0f2b3rqNHQETznX3fTojHc7I/D7/gtRQLZ2ifwCjRhYsEnBkkKXJaoAAlCAn
-         T41t91SCgInluKiNBtYyYBX++Wp5yaUQEN2drKQWTP9NMfSItmafImIr6cvtxKkTn1LN
-         3XZ1B2UrHxjHEnC4WbxGeCo+/2Yh77Os63O+bVtAtEzfYDTlVIvVlDQFFZoj9DvbHNiy
-         EQAFXo4T1lTdTEheizZguKda/Gbbifr+GXYcRIuScJm1pli2JNBKjiMT9vfgHPXBmRWs
-         BQcQ==
-X-Gm-Message-State: AOJu0YzSmmB55yCsqqWO4CFm21DZdUUKrXnEEAwwhZeYF+oO68WnV+xy
-	ssUnYNdbBXWmtRuSxgTol3eMa4UY3sY6MNo5Uodj0a00Sj4o6b+G4Z8DqvIN4xij
-X-Gm-Gg: ASbGnct6sKQZfW4V8SoBmTQBlkKTunwH79nn1mPOtUuGv2v+EwyEaI/cKAHedAQIw7I
-	9t+vIVeFIyp47RD/3lD6yVBwWvAIgR7pXYhKbDDBYHVmR++Aromsavo26o9y9JVT9pYkps+u89N
-	rr3/zYQaJ+50ZSgfTMLmvu3+KVhuizyh/93jxGQpAgEhjaL+dWpKwvBBq1r9s41o6nVttiNJlNK
-	Ir3HvHE734IyU3gdyht17lE0kqADo6ZyadiZEkvKReF3zy+tFirEO9r/lXh2pAZvqHtaChSPAMD
-	ZgHiJ+381L7KKkp3Y4ZPt/3Gv9FDOk815UQ/SrnurCu0lN62qju41n7nmg8bGENEgpbyWgtNMVy
-	rrpvofNVV55hmuvbF05UZZqWh4OA860RRACoLjTxl3jKwIvnRpGrbsC9AcGtTP+lAP18ChAbjuq
-	/EUKkNwldxUrxIDSkuxibVR7A=
-X-Google-Smtp-Source: AGHT+IFnWYWHNvJ63GAUs//0f3TBNxhYoGXrzMrkENMePGgvCp0YwXjrlGkXIBvSznIbJ2uYLMuKLA==
-X-Received: by 2002:a17:907:6e90:b0:b70:e15b:286a with SMTP id a640c23a62f3a-b7367c2938amr345339866b.57.1763131944713;
-        Fri, 14 Nov 2025 06:52:24 -0800 (PST)
-Received: from fedora ([81.6.40.67])
-        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-b734fda8bc8sm402985566b.49.2025.11.14.06.52.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Nov 2025 06:52:24 -0800 (PST)
-From: Stefano Tondo <stondo@gmail.com>
-To: docs@lists.yoctoproject.org
-Cc: Stefano Tondo <stefano.tondo.ext@siemens.com>,
-	peter.marko@siemens.com,
-	adrian.freihofer@siemens.com
-Subject: [docs] ref-manual: Document SPDX 3.0.1 variables
-Date: Fri, 14 Nov 2025 15:52:17 +0100
-Message-ID: <20251114145220.71823-1-stondo@gmail.com>
-X-Mailer: git-send-email 2.51.1
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=m8F2RCwy;
+ spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 42C744E416B6;
+	Fri, 14 Nov 2025 16:44:41 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 1985E6060E;
+	Fri, 14 Nov 2025 16:44:41 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6AED710371CCB;
+	Fri, 14 Nov 2025 17:44:40 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1763138680; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=AiKKvesHxlnm8k7b0ozjMONvDFDN69CnfFJwWK3Jrfc=;
+	b=m8F2RCwy3iSm5F02mV+cJ6zpxIGvYhCq+FSSMcn6ub0nL1yLz4ze3k5+wE7axg9wQGK1Ha
+	+7BLio8a+Per0QL0KQbOsDr+/JjTMwEyKALciVso4sxXkeIyQok+MKpammkTRnRekufGmg
+	82DCAWv5p1IFuOeb8HsA3nrusZxgJAXbk/FMnazGzuHnpfiUzzzsWGvi/XcIH0KMaeA9kR
+	iGkFVIzzEik93q8pZdHNLC/bIxK4d85mx0Uhh8Zwu5guuPH9Rx4sst9qkFv9hEzvUPfTyg
+	3vPyFJmbpLmdPj7qDbjAac0zpWRq0EShzzdPLO3pebv+W/MI5ObJcdR79qGatQ==
+From: Antonin Godard <antonin.godard@bootlin.com>
+Date: Fri, 14 Nov 2025 17:44:21 +0100
+Subject: [PATCH 2/2] bitbake-selftest: setup: add test for
+ --update-bb-conf=no
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251114-bitbake-setup-conf-updates-v1-2-990583d8251b@bootlin.com>
+References: <20251114-bitbake-setup-conf-updates-v1-0-990583d8251b@bootlin.com>
+In-Reply-To: <20251114-bitbake-setup-conf-updates-v1-0-990583d8251b@bootlin.com>
+To: bitbake-devel@lists.openembedded.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ docs@lists.yoctoproject.org, Antonin Godard <antonin.godard@bootlin.com>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2962;
+ i=antonin.godard@bootlin.com; h=from:subject:message-id;
+ bh=oSoVIGpWifQNULIQAkSZLwhMMElBl0JPJZ0o1bH4Baw=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpF1x1a7HbvfJknW+0LWCXP8z6od+0bShGgGRWd
+ 0Q88HFHF+WJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaRdcdQAKCRDRgEFAKaOo
+ Nu5DEADDGi13j3zL6ISki4e4ZvTrpB2On/e0szsWJJ0hq02pUmZQWWxmOX8QNTlBVZ1HZZftdHc
+ /W3MVR+ZMDg29ojKwDR+0nJ4n+2MM4HmQCgC9KH7XXUsjDmztbMlRplH5dcja1MFFqEPjz5RbvQ
+ CBEzuJlgORtfXlQcBLgrj9nYupNfHEDTlJ9d6IgrqzQAFaiEYEQlfABMBtkM/W/jmSoL+7sYZ8I
+ RDLkp7Q5VIZQc394/D5zC0GJZVNSPNmkM4sxiPjrJ/XICOO/ab2OA8qeOdalk8j/F4Atq4q8Oqm
+ F7p9iWIxwzGYHq3bCYhd1YqhlIndHL/1nniWqFKRRCRazjISaOZTHEiVSu9cIgEUvyV4QLv0wtU
+ 4yZ6eCvFH3gVGdvhJRbqFKtkkzcIITKztlTNhL/AMvsQSCTvBkuqrfOvF66XZQ3QTJMb7frUJoX
+ 2vUb3TaCA4MdzulXlQJ/Am+hQWRFoRSQ7Fk/3Nsq8O2QpWyOq9oGwfKYfE4g2o6TBJgl2DJx+ea
+ 9KzNnDERqy4Ya1Ffx8mAI3GxBOd1cOGhDePskJhOWqGaLdpBnMopnxBiIi4JBbZPzn7LObhUW8A
+ /rJBnBOVxKonwtL+pOB7OilOLb0HBmXy+w72YVMptHaCgs+w0DlgK3+ylYUeuYg4EaPA8pV4cJm
+ BBwuagSDm3NSsCg==
+X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
+ fpr=8648725188DD401BB9A0D3FFD180414029A3A836
+X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 14 Nov 2025 15:23:35 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8045
+ <docs@lists.yoctoproject.org>; Fri, 14 Nov 2025 16:44:45 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8048
 
-From: Stefano Tondo <stefano.tondo.ext@siemens.com>
+We want to check that with --update-bb-conf set to 'no' our BitBake
+configuration remains unchanged. For this create a list of checksums of
+the files in conf/ and compare before/after bitbake-setup update
+--update-bb-conf=no.
 
-Add comprehensive documentation for SPDX-related variables in the
-Yocto reference manual. This includes documenting previously
-undocumented variables and updating existing documentation with
-SPDX 3.0.1 specific information.
-
-Variables documented:
-- SPDX_INCLUDE_SOURCES: Control source file inclusion in SBOM
-  Updated with concrete SPDX 3.0.1 size data (~260 MB without sources,
-  ~2.5-2.6 GB with sources)
-- SPDX_INCLUDE_COMPILED_SOURCES: Control compiled source inclusion
-- SPDX_UUID_NAMESPACE: Namespace for UUID generation in SPDX documents
-- SPDX_NAMESPACE_PREFIX: URI prefix for SPDX documents
-- SPDX_PRETTY: JSON output formatting control
-- SPDX_LICENSES: Path to SPDX license identifier mapping file
-- SPDX_CUSTOM_ANNOTATION_VARS: Custom annotation variables
-- SPDX_MULTILIB_SSTATE_ARCHS: Architecture list for dependency collection
-
-These variables are defined in meta/classes/spdx-common.bbclass and
-are now properly documented in the reference manual with detailed
-descriptions and practical usage information.
-
-Signed-off-by: Stefano Tondo <stefano.tondo.ext@siemens.com>
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/ref-manual/variables.rst | 186 ++++---------------------
- 1 file changed, 30 insertions(+), 156 deletions(-)
+ lib/bb/tests/setup.py | 35 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
 
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index a80ef364e..6a4472531 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -1526,11 +1526,6 @@ system and gives an overview of their function and contents.
-    :term:`CC`
-       The minimal command and arguments used to run the C compiler.
+diff --git a/lib/bb/tests/setup.py b/lib/bb/tests/setup.py
+index 58049c8c7a..b4258f0492 100644
+--- a/lib/bb/tests/setup.py
++++ b/lib/bb/tests/setup.py
+@@ -6,6 +6,8 @@
  
--   :term:`CCACHE_DISABLE`
--      When inheriting the :ref:`ref-classes-ccache` class, the
--      :term:`CCACHE_DISABLE` variable can be set to "1" in a recipe to disable
--      `Ccache` support. This is useful when the recipe is known to not support it.
--
-    :term:`CCLD`
-       The minimal command and arguments used to run the linker when the C
-       compiler is being used as the linker.
-@@ -3961,70 +3956,6 @@ system and gives an overview of their function and contents.
-       material for Wic is located in the
-       ":doc:`/ref-manual/kickstart`" chapter.
+ from bb.tests.fetch import FetcherTest
+ import json
++import hashlib
++import glob
  
--   :term:`IMAGE_EXTRA_PARTITION_FILES`
--      A space-separated list of files installed into the extra partition(s)
--      when preparing an image using the Wic tool with the
--      ``extra_partition`` source plugin. By default,
--      the files are
--      installed under the same name as the source files. To change the
--      installed name, separate it from the original name with a semi-colon
--      (;). Source files need to be located in
--      :term:`DEPLOY_DIR_IMAGE`. Here is an
--      example::
--
--         IMAGE_EXTRA_PARTITION_FILES = "foobar file.conf;config"
--
--      In the above example, the file ``foobar`` is installed with its original name
--      ``foobar``, while the file ``file.conf`` is installed and renamed to ``config``.
--
--      Alternatively, source files can be picked up using a glob pattern.
--      However, hidden files are ignored, and the pattern is non-recursive
--      (subdirectories are ignored).
--      The destination file will have the same name as the base
--      name of the source file path. To install files into a renamed directory
--      within the target location, pass its name after a semi-colon (;).
--      Here are two examples::
--
--         IMAGE_EXTRA_PARTITION_FILES = "foo/*"
--         IMAGE_EXTRA_PARTITION_FILES = "foo/*;bar/"
--
--      The first line in this example
--      installs all files from ``foo`` directory
--      into the root of the target partition. The second line in this example installs
--      the same files into a ``bar`` directory within the target partition.
--      The ``bar/`` directory is automatically created if it does not exist.
--
--      You can also specify the target by label, UUID or partition name if multiple
--      extra partitions coexist. Let's take the following example. This would be
--      the WKS file for the image currently being built::
--
--         part --source extra_partition --fstype=ext4 --label foo
--         part --source extra_partition --fstype=ext4 --uuid e7d0824e-cda3-4bed-9f54-9ef5312d105d
--         part --source extra_partition --fstype=ext4 --part-name config
--
--      And the following configuration::
--
--         IMAGE_EXTRA_PARTITION_FILES_label-foo = "foo/*"
--         IMAGE_EXTRA_PARTITION_FILES_uuid-e7d0824e-cda3-4bed-9f54-9ef5312d105d = "foo/*;bar/"
--         IMAGE_EXTRA_PARTITION_FILES_part-name-config = "config"
--
--      Then:
--
--      -  The partition labeled "foo" would get all files from the ``foo``
--         directory.
--
--      -  The partition whose UUID is "e7d0824e-cda3-4bed-9f54-9ef5312d105d"
--         would get all files from the ``foo`` directory, installed into a
--         ``bar`` directory.
--
--      -  The partition named "config" would get the file ``config``.
--
--      You can find information on how to use the Wic tool in the
--      ":ref:`dev-manual/wic:creating partitioned images using wic`"
--      section of the Yocto Project Development Tasks Manual. Reference
--      material for Wic is located in the
--      ":doc:`/ref-manual/kickstart`" chapter.
--
-    :term:`IMAGE_FEATURES`
-       The primary list of features to include in an image. Typically, you
-       configure this variable in an image recipe. Although you can use this
-@@ -5523,7 +5454,7 @@ system and gives an overview of their function and contents.
-       information on how this variable is used.
- 
-    :term:`LAYERDEPENDS`
--      Lists the layers, separated by spaces, on which this layer depends.
-+      Lists the layers, separated by spaces, on which this recipe depends.
-       Optionally, you can specify a specific layer version for a dependency
-       by adding it to the end of the layer name. Here is an example::
- 
-@@ -7940,16 +7871,6 @@ system and gives an overview of their function and contents.
-    :term:`REPODIR`
-       See :term:`bitbake:REPODIR` in the BitBake manual.
- 
--   :term:`REQUIRED_COMBINED_FEATURES`
--      When inheriting the :ref:`ref-classes-features_check` class, this variable
--      identifies combined features (the intersection of :term:`MACHINE_FEATURES`
--      and :term:`DISTRO_FEATURES`) that must exist in the current configuration
--      in order for the :term:`OpenEmbedded Build System` to build the recipe. In
--      other words, if the :term:`REQUIRED_COMBINED_FEATURES` variable lists a
--      feature that does not appear in :term:`COMBINED_FEATURES` within the
--      current configuration, then the recipe will be skipped, and if the build
--      system attempts to build the recipe then an error will be triggered.
--
-    :term:`REQUIRED_DISTRO_FEATURES`
-       When inheriting the :ref:`ref-classes-features_check`
-       class, this variable identifies distribution features that must exist
-@@ -7960,41 +7881,6 @@ system and gives an overview of their function and contents.
-       the recipe will be skipped, and if the build system attempts to build
-       the recipe then an error will be triggered.
- 
--   :term:`REQUIRED_IMAGE_FEATURES`
--      When inheriting the :ref:`ref-classes-features_check` class, this variable
--      identifies image features that must exist in the current
--      configuration in order for the :term:`OpenEmbedded Build System` to build
--      the recipe. In other words, if the :term:`REQUIRED_IMAGE_FEATURES` variable
--      lists a feature that does not appear in :term:`IMAGE_FEATURES` within the
--      current configuration, then the recipe will be skipped, and if the build
--      system attempts to build the recipe then an error will be triggered.
--
--      Compared to other ``REQUIRED_*_FEATURES`` variables, the
--      :term:`REQUIRED_IMAGE_FEATURES` varible only targets image recipes, as the
--      :term:`IMAGE_FEATURES` variable is handled by the :ref:`ref-classes-core-image`
--      class). However, the :term:`REQUIRED_IMAGE_FEATURES` varible can also be
--      set from a :term:`Configuration File`, such as a distro
--      configuration file, if the list of required image features should apply to
--      all images using this :term:`DISTRO`.
--
--   :term:`REQUIRED_MACHINE_FEATURES`
--      When inheriting the :ref:`ref-classes-features_check` class, this variable
--      identifies :term:`MACHINE_FEATURES` that must exist in the current
--      configuration in order for the :term:`OpenEmbedded Build System` to build
--      the recipe. In other words, if the :term:`REQUIRED_MACHINE_FEATURES` variable
--      lists a feature that does not appear in :term:`MACHINE_FEATURES` within the
--      current configuration, then the recipe will be skipped, and if the build
--      system attempts to build the recipe then an error will be triggered.
--
--   :term:`REQUIRED_TUNE_FEATURES`
--      When inheriting the :ref:`ref-classes-features_check` class, this variable
--      identifies tune features that must exist in the current configuration in
--      order for the :term:`OpenEmbedded Build System` to build the recipe. In
--      other words, if the :term:`REQUIRED_TUNE_FEATURES` variable lists a
--      feature that does not appear in :term:`TUNE_FEATURES` within the current
--      configuration, then the recipe will be skipped, and if the build system
--      attempts to build the recipe then an error will be triggered.
--
-    :term:`REQUIRED_VERSION`
-       If there are multiple versions of a recipe available, this variable
-       determines which version should be given preference.
-@@ -8962,10 +8848,21 @@ system and gives an overview of their function and contents.
- 
-          SPDX_INCLUDE_COMPILED_SOURCES = "1"
- 
--      According to our tests, building ``core-image-minimal`` for the
--      ``qemux86-64`` machine, enabling this option compared with the
--      :term:`SPDX_INCLUDE_SOURCES` reduces the size of the  ``tmp/deploy/spdx``
--      directory from 2GB to 1.6GB.
-+      According to our tests on release 4.1 "langdale" (SPDX 2.2 format), building
-+      ``core-image-minimal`` for the ``qemux86-64`` machine, enabling this
-+      option compared with the :term:`SPDX_INCLUDE_SOURCES` reduced the size
-+      of the ``tmp/deploy/spdx`` directory from 2GB to 1.6GB.
+ class BitbakeSetupTest(FetcherTest):
+     def setUp(self):
+@@ -360,3 +362,36 @@ print("BBPATH is {{}}".format(os.environ["BBPATH"]))
+                 self.assertIn("Existing bitbake configuration directory renamed to {}/build/conf-backup.".format(setuppath), out[0])
+                 self.assertIn('-{}+{}'.format(prev_test_file_content, test_file_content), out[0])
+             self.check_setupdir_files(setuppath, test_file_content)
 +
-+      With SPDX 3.0.1 JSON-LD format, the uncompressed image SBOM file
-+      (``core-image-minimal-qemux86-64.rootfs.spdx.json``) is approximately
-+      **260 MB without sources** (``SPDX_INCLUDE_SOURCES = "0"``), and increases to
-+      **~2.5-2.6 GB when sources are included** (either ``SPDX_INCLUDE_SOURCES = "1"``
-+      or ``SPDX_INCLUDE_COMPILED_SOURCES = "1"``). This represents approximately
-+      a **10x size increase** when including source files.
++        # do the same as the previous test, but now without updating the bitbake configuration (--update-bb-conf=no)
++        # and check that files have not been modified
 +
-+      Note: SPDX 3.0.1 JSON-LD files are not compressed by default, unlike the
-+      tar.zst format used in SPDX 2.2. Compression (e.g. zstd) can significantly
-+      reduce the file size.
- 
-    :term:`SPDX_INCLUDE_SOURCES`
-       This option allows to add a description of the source files used to build
-@@ -8979,8 +8876,8 @@ system and gives an overview of their function and contents.
- 
-          SPDX_INCLUDE_SOURCES = "1"
- 
--      According to our tests on release 4.1 "langdale", building
--      ``core-image-minimal`` for the ``qemux86-64`` machine, enabling
-+      According to our tests on release 4.1 "langdale" (SPDX 2.2 format),
-+      building ``core-image-minimal`` for the ``qemux86-64`` machine, enabling
-       this option multiplied the total size of the ``tmp/deploy/spdx``
-       directory by a factor of 3  (+291 MiB for this image),
-       and the size of the ``IMAGE-MACHINE.spdx.tar.zst`` in
-@@ -8988,6 +8885,17 @@ system and gives an overview of their function and contents.
-       image), compared to just using the :ref:`ref-classes-create-spdx` class
-       with no option.
- 
-+      With SPDX 3.0.1 JSON-LD format, the uncompressed image SBOM file
-+      (``core-image-minimal-qemux86-64.rootfs.spdx.json``) is approximately
-+      **260 MB without sources** (default: ``SPDX_INCLUDE_SOURCES = "0"``),
-+      and increases to **~2.5-2.6 GB when sources are included**
-+      (``SPDX_INCLUDE_SOURCES = "1"``). This represents approximately a
-+      **10x size increase** when including source files.
++        def _conf_chksum(confdir: str) -> list:
++            sums = []
++            for f in glob.glob(f'{confdir}/*'):
++                if not os.path.islink(f):
++                    with open(f, 'rb') as fd:
++                        sum = os.path.basename(f) + '_' + hashlib.file_digest(fd, "sha256").hexdigest()
++                        sums.append(sum)
++            return sums
 +
-+      Note: SPDX 3.0.1 JSON-LD files are not compressed by default, unlike the
-+      tar.zst format used in SPDX 2.2. Compression (e.g. zstd) can significantly
-+      reduce the file size.
-+
-    :term:`SPDX_NAMESPACE_PREFIX`
-       This option could be used in order to change the prefix of ``spdxDocument``
-       and the prefix of ``documentNamespace``. It is set by default to
-@@ -10906,12 +10814,6 @@ system and gives an overview of their function and contents.
-       Please see the "Selection of Processor Architecture and Board Type"
-       section in the U-Boot README for valid values for this variable.
- 
--   :term:`UBOOT_MAKE_OPTS`
--      The :term:`UBOOT_MAKE_OPTS` variable can be used to pass extra options to
--      ``make`` when U-Boot is configured and compiled.
--
--      See the :ref:`ref-classes-uboot-config` class for more information.
--
-    :term:`UBOOT_MAKE_TARGET`
-       Specifies the target called in the ``Makefile``. The default target
-       is "all".
-@@ -11034,22 +10936,6 @@ system and gives an overview of their function and contents.
-       `Unified Kernel Image (UKI) <https://uapi-group.org/specifications/specs/unified_kernel_image/>`__.
-       Defaults to ``ukify build``.
- 
--   :term:`UNINATIVE_CHECKSUM`
--      When inheriting the :ref:`ref-classes-uninative` class, the
--      :term:`UNINATIVE_CHECKSUM` variable flags contain the checksums of the
--      uninative tarball as specified by the :term:`UNINATIVE_URL` variable.
--      There should be one checksum per tarballs published at
--      :term:`UNINATIVE_URL`, which match architectures. For example::
--
--         UNINATIVE_CHECKSUM[aarch64] ?= "812045d826b7fda88944055e8526b95a5a9440bfef608d5b53fd52faab49bf85"
--         UNINATIVE_CHECKSUM[i686] ?= "5cc28efd0c15a75de4bcb147c6cce65f1c1c9d442173a220f08427f40a3ffa09"
--         UNINATIVE_CHECKSUM[x86_64] ?= "4c03d1ed2b7b4e823aca4a1a23d8f2e322f1770fc10e859adcede5777aff4f3a"
--
--   :term:`UNINATIVE_URL`
--      When inheriting the :ref:`ref-classes-uninative` class, the
--      :term:`UNINATIVE_URL` variable contains the URL where the uninative
--      tarballs are published.
--
-    :term:`UNKNOWN_CONFIGURE_OPT_IGNORE`
-       Specifies a list of options that, if reported by the configure script
-       as being invalid, should not generate a warning during the
-@@ -11069,7 +10955,7 @@ system and gives an overview of their function and contents.
- 
-    :term:`UNPACKDIR`
-       This variable, used by the :ref:`ref-classes-base` class,
--      specifies where fetched sources should be unpacked by the
-+      specifies where fetches sources should be unpacked by the
-       :ref:`ref-tasks-unpack` task.
- 
-    :term:`UPDATERCPN`
-@@ -11145,18 +11031,6 @@ system and gives an overview of their function and contents.
-       the Yocto Project Development Tasks Manual for information on how to
-       use this variable.
- 
--   :term:`USE_NLS`
--      Determine if language translations should be built for recipes that can
--      build them. This variable can be equal to:
--
--      -  ``yes``: translations are enabled.
--      -  ``no``: translation are disabled.
--
--      Recipes can use the value of this variable to enable language
--      translations in their build. Classes such as :ref:`ref-classes-gettext`
--      use the value of this variable to enable :wikipedia:`Gettext <Gettext>`
--      support.
--
-    :term:`USE_VT`
-       When using
-       :ref:`SysVinit <dev-manual/new-recipe:enabling system services>`,
++        prev_test_file_content = test_file_content
++        test_file_content = 'modified-in-branch-no-bb-conf-update\n'
++        branch = "another-branch-no-bb-conf-update"
++        self.git('checkout -b {}'.format(branch), cwd=self.testrepopath)
++        self.add_file_to_testrepo('test-file', test_file_content)
++        json_1 = self.add_json_config_to_registry('test-config-1.conf.json', branch, branch)
++        for c in ('gadget', 'gizmo',
++                  'gizmo-env-passthrough',
++                  'gizmo-no-fragment',
++                  'gadget-notemplate', 'gizmo-notemplate'):
++            setuppath = os.path.join(self.tempdir, 'bitbake-builds', 'test-config-1-{}'.format(c))
++            os.environ['BBPATH'] = os.path.join(setuppath, 'build')
++            # write something in local.conf and bblayers.conf
++            for f in ["local.conf", "bblayers.conf"]:
++                with open(f"{setuppath}/build/conf/{f}", "w") as fd:
++                    fd.write("deadbeef")
++            sums_before = _conf_chksum(f"{setuppath}/build/conf")
++            out = self.runbbsetup("update --update-bb-conf='no'")
++            sums_after = _conf_chksum(f"{setuppath}/build/conf")
++            self.assertEqual(sums_before, sums_after)
+
 -- 
-2.51.1
+2.51.0
 
 
