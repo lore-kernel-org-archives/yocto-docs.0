@@ -1,171 +1,221 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <stondo@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 630D2CE7AED
-	for <webhook@archiver.kernel.org>; Fri, 14 Nov 2025 11:18:49 +0000 (UTC)
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.15748.1763119122986342717
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4F998CE8D40
+	for <webhook@archiver.kernel.org>; Fri, 14 Nov 2025 15:21:05 +0000 (UTC)
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.195.1763133659884434181
  for <docs@lists.yoctoproject.org>;
- Fri, 14 Nov 2025 03:18:43 -0800
+ Fri, 14 Nov 2025 07:21:00 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=k5I6CqzV;
- spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id A7F621A1AA3
-	for <docs@lists.yoctoproject.org>; Fri, 14 Nov 2025 11:18:41 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 801EB6060E
-	for <docs@lists.yoctoproject.org>; Fri, 14 Nov 2025 11:18:41 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0F2EF102F292F;
-	Fri, 14 Nov 2025 12:18:41 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1763119121; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=aOnGpiT1boy1QdgHflCdgnA8DOC/QoD4+JNme5tKQLU=;
-	b=k5I6CqzVAzSqlegzzsNHFYas33F/o0BBJMp6TFAMcCyuXxJQUxl0nC2Enm8HBwwQtjstfD
-	jRsJQgC8CAAZp4PhzktMqsAu3XxRN7zH/i4eDRDBq4/gbuia2IC4Um6gUytnnOhSDM7FiI
-	thTpnU8F/t24VfTHkhmsEVqfhENtJ0FBKByFsNbUEeDlHfzxk7Zb3cfA9kMYBvXuxS2puT
-	a7ZK6lh7jy0bVZJMpdoFUS12p6x0nG2wRpVLQP89PkNjNN2HYXpHN6elqP45Nas2tiyb6c
-	LsCVlJPTQDiRBtvuW43cVsvvTr1JTodxVjFXyxrWrZEDvFiEl3JXg2cCBCY53w==
-From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Fri, 14 Nov 2025 12:18:24 +0100
-Subject: [PATCH 2/2] brief-yoctoprojectqs/index.rst: refresh after
- bitbake-setup updates
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251114-update-bbsetup-doc-v1-2-07e623b8ad2a@bootlin.com>
-References: <20251114-update-bbsetup-doc-v1-0-07e623b8ad2a@bootlin.com>
-In-Reply-To: <20251114-update-bbsetup-doc-v1-0-07e623b8ad2a@bootlin.com>
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=UxngI7ov;
+ spf=pass (domain: gmail.com, ip: 209.85.218.41, mailfrom: stondo@gmail.com)
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-b736ffc531fso102851166b.1
+        for <docs@lists.yoctoproject.org>; Fri, 14 Nov 2025 07:20:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763133658; x=1763738458; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=87chftUnLMQo1mIgTLuYVnz8edTxG/kmBNCmo5eRzX4=;
+        b=UxngI7ovR5btzIxxysqXer4/q4UhSJYpCIK5hjD6F0rSwDFGcRC82+BsAA7ptxZDlM
+         T1/XZsifu1umKiUb8dLIZUSde+Q27RirkYPmDEwmr9G35y1i6Y+ea9N1EgaZG0vQ24b5
+         Sc35fcpwrdLEUNXQoHQsaAfSUfanPPKhI2SC76g5TEKOARuTkxCxl1PczVEbn+QQupBM
+         Hz9GDmhoup7R6ZIMtzOmAwlYZheOxYi0aMDcmqegaBHls9PN1kGu0suXZP9zOZuY6N+/
+         AQHL81j6j7lorPz71AOUmk3j8XLWp6OG1F2bjnsyOu/6SN/LfLsW/fC1ijED18AgOhSJ
+         Pecw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763133658; x=1763738458;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=87chftUnLMQo1mIgTLuYVnz8edTxG/kmBNCmo5eRzX4=;
+        b=NBq5Nh50h1r1CClvAKF8+ipwmUlKMwzEhizOG/Kkic5WykLPRsQvlE+Z+ERxO2/5Uc
+         KA38FLCfK36XMGu7H5ZGoHzj4W6Xia56yiYN0kDBDh/Wz9OBbpmJQEINdS4ZrZRio2Me
+         IJVQzDimlek2VKOAb+ZwtGLYcpEe4EKe/arWj3waKNPtEJhrX2vi2DWwli6zAsBVSUUw
+         2KtHuk/Y+3NdvY/GZCCXHAnDYjUVrvY0sKwNj5B/YUpitKky8009tliavVgfCaJN/KA9
+         2BmUxY/2f7bn29izVPmcapGEzBfh5w5+zFqS/92AepfA1YGMUM3Dp5alrwnVfXly61vY
+         APEA==
+X-Gm-Message-State: AOJu0YwYI52/bDGgzTVBf04aufGOYjMl8qCCRhlgAs/2NepmmLiHFDNh
+	TOP0b0WVzUnqtZ/YdO6mbL12UGzcWP19z+jEo3i8UUfMVyZOtBJ1f0qFjrErM39o
+X-Gm-Gg: ASbGncuQobuCeqdjw5onBhHsFF+r7zAyX3nn2/STowJV1Zt9gLJioToo5OJPA3zg8pk
+	/WOdta77EkQVCps1h4HfP5HG10QJwytjemnBsFYh6nY/K/IliH5D0bBQX5Nm1ijWRQl5KJ831yy
+	EdWoudq7zI21697+0EMfaEiHkPVLtKXB+MCiHxYNkZ6+c9FXjHVcswUhj4ua319j95XOoNhuWcq
+	DsExmuo8H8cKRRCMHWiraFdudoiUg3iP1IWqyu2ny6PWPZcGtVOIvEkJDrVG2GOomOfcceWsn1m
+	CkzHrzm+6oF/9fjcLXkWTszrCFi2LQyPyyZuAwpoELlMebKzNh/IQAGrS8WEz+ZjDhq+dT3tsPi
+	UL3YZQSUIB2ysjxjVITI9WRwO/ccNsg4aaOcYZoHhFFHl8IXfGDy/l7VlIDgDStECl1ezxi5tZX
+	T9CQ6K8xsI7nhzLXL7BCS0C/o=
+X-Google-Smtp-Source: AGHT+IFncSWo4prLFi+RYM0IhRW2jyre8jzuUHPKSDefHerPaUuJdnxqNCtz/qPZ5QSAwpON9QTAgg==
+X-Received: by 2002:a17:907:72d3:b0:b73:16fe:92d0 with SMTP id a640c23a62f3a-b736780d5fcmr372447866b.18.1763133178885;
+        Fri, 14 Nov 2025 07:12:58 -0800 (PST)
+Received: from fedora ([81.6.40.67])
+        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-b734fdaf30dsm399456966b.60.2025.11.14.07.12.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Nov 2025 07:12:58 -0800 (PST)
+From: Stefano Tondo <stondo@gmail.com>
 To: docs@lists.yoctoproject.org
-Cc: Antonin Godard <antonin.godard@bootlin.com>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3807;
- i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=QXB7jzv0J/12pXCigMRbVkWs6gXqddQ+L+7BaM4Hc8E=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpFxAPihJqPj4zxeWSp2HmfeDIFxVb77lJZDGOQ
- cZF94P5ejeJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaRcQDwAKCRDRgEFAKaOo
- NsbSD/wMRYw3f8yiMEiJnz1wmRiXgKayj3o2/VKtxqv2SFTix9yFvsB90NQGcB/b1epi3mjoy2g
- GMr/uX+h2yNZNGjH/FE7nybIOPjkIb5Tbtxv11XUejQqjCZ3IwQxW6vWsj1rvA0Mdd6qkpMwtHJ
- ucV7UbuR3xMSPzLHMP5bPRkL7Qmj0svOfB/N22sw0XT9JJR5t3TPHUSWVepBN2FxD+nA6GhkR4E
- boh3l+h5UuhoJgLOyFoCKW9noqtsSqX47S2CcnC+SvUyespXM6wn9fC7CqfNVt5bDjKE6Gz7hJt
- 0ZOOSKIFAsNnKdlgM2iy9++BVH4+mpiD7E6aAbA/B+OQ8Jqt++ylG9h4PNxwlTZ9jMsDEIt/MQ9
- IBFX00l4lCmJRaX2ymbHIOnCZx+2l5oFObcicUCa5hQy0diioeqovo2F989wRHLrU4HQXqOcvpJ
- 2EqJaGrpJ7I2T/3EozEIvh756qPET29aL+fKPiym8yBbnukYQcGc//9JKl5lAu3rZAp7/y4zy0T
- Ab9ImMtLtv6bLOn1JHVuCA4pnl3O3BTkF/Lsw3Hr6aYmKmk6PXhwU6W+eKuabBC46L23UuJK+GG
- XnZ0m+WW4MGfHuiodqKHHUBYWiAXPKt/RGx998td23hDLdbnH41C0jdz8EOJPGQcgrwbJdxX4Tf
- wcDyAETMJwYig2g==
-X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
- fpr=8648725188DD401BB9A0D3FFD180414029A3A836
-X-Last-TLS-Session-Version: TLSv1.3
+Cc: Stefano Tondo <stefano.tondo.ext@siemens.com>,
+	peter.marko@siemens.com,
+	adrian.freihofer@siemens.com
+Subject: [docs][PATCH v2] ref-manual: Document SPDX 3.0.1 variables
+Date: Fri, 14 Nov 2025 16:12:50 +0100
+Message-ID: <20251114151255.74797-1-stondo@gmail.com>
+X-Mailer: git-send-email 2.51.1
+In-Reply-To: <20251114145220.71823-1-stondo@gmail.com>
+References: <20251114145220.71823-1-stondo@gmail.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 14 Nov 2025 11:18:49 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8043
+ <docs@lists.yoctoproject.org>; Fri, 14 Nov 2025 15:21:05 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8044
 
-Refresh the brief-yoctoprojectqs document after changes in upstream
-bitbake-setup:
+From: Stefano Tondo <stefano.tondo.ext@siemens.com>
 
-- Choices are now indexed starting from 1.
-- Users can now choose the setup dir name during the init.
+Add comprehensive documentation for SPDX-related variables in the
+Yocto reference manual. This includes documenting previously
+undocumented variables and updating existing documentation with
+SPDX 3.0.1 specific information.
 
-Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+New variables documented:
+- SPDX_LICENSES: Path to SPDX license identifier mapping file
+- SPDX_MULTILIB_SSTATE_ARCHS: Architecture list for dependency collection
+- SPDX_UUID_NAMESPACE: Namespace for UUID generation in SPDX documents
+
+Updated existing variables with SPDX 3.0.1 data:
+- SPDX_INCLUDE_SOURCES: Added concrete SPDX 3.0.1 size data
+  (~260 MB without sources, ~2.5-2.6 GB with sources)
+- SPDX_INCLUDE_COMPILED_SOURCES: Updated with SPDX 3.0.1 format information
+
+The size information is based on building core-image-minimal for
+qemux86-64 with SPDX 3.0.1 JSON-LD format. The uncompressed SBOM
+file is approximately 260 MB without sources and increases to
+~2.5-2.6 GB when sources are included (approximately 10x increase).
+
+Note: SPDX 3.0.1 uses uncompressed JSON-LD format by default,
+unlike the tar.zst compression used in SPDX 2.2.
+
+These variables are defined in meta/classes/spdx-common.bbclass.
+
+Signed-off-by: Stefano Tondo <stefano.tondo.ext@siemens.com>
 ---
- documentation/brief-yoctoprojectqs/index.rst | 43 +++++++++++++++++-----------
- 1 file changed, 26 insertions(+), 17 deletions(-)
 
-diff --git a/documentation/brief-yoctoprojectqs/index.rst b/documentation/brief-yoctoprojectqs/index.rst
-index 2a7bd575c..211b6d70f 100644
---- a/documentation/brief-yoctoprojectqs/index.rst
-+++ b/documentation/brief-yoctoprojectqs/index.rst
-@@ -127,11 +127,11 @@ differ from the examples below.
-    .. code-block:: shell
- 
-       Available configurations:
--      0. poky-master  Poky - The Yocto Project testing distribution configurations and hardware test platforms
--      1. oe-nodistro  OpenEmbedded - 'nodistro' basic configuration
-+      1. poky-master  Poky - The Yocto Project testing distribution configurations and hardware test platforms
-+      2. oe-nodistro  OpenEmbedded - 'nodistro' basic configuration
- 
-       Please select one of the above configurations by its number:
--      0
-+      1
- 
-    Depending on the choice above, new options can be prompted to further specify
-    which configuration to use. For example:
-@@ -139,37 +139,46 @@ differ from the examples below.
-    .. code-block:: shell
- 
-       Available bitbake configurations:
--      0. poky Poky - The Yocto Project testing distribution
--      1. poky-with-sstate     Poky - The Yocto Project testing distribution with internet sstate acceleration. Use with caution as it requires a completely robust local network with sufficient bandwidth.
-+      1. poky Poky - The Yocto Project testing distribution
-+      2. poky-with-sstate     Poky - The Yocto Project testing distribution with internet sstate acceleration. Use with caution as it requires a completely robust local network with sufficient bandwidth.
- 
-       Please select one of the above bitbake configurations by its number:
--      0
-+      1
- 
- #. Choose a target :term:`MACHINE` (for example, ``qemux86-64``):
- 
-    .. code-block:: shell
- 
-       Target machines:
--      0. machine/qemux86-64
--      1. machine/qemuarm64
--      2. machine/qemuriscv64
--      3. machine/genericarm64
--      4. machine/genericx86-64
-+      1. machine/qemux86-64
-+      2. machine/qemuarm64
-+      3. machine/qemuriscv64
-+      4. machine/genericarm64
-+      5. machine/genericx86-64
- 
-       Please select one of the above options by its number:
--      0
-+      1
- 
- #. Choose a :term:`DISTRO` (for example, ``poky``):
- 
-    .. code-block:: shell
- 
-       Distribution configuration variants:
--      0. distro/poky
--      1. distro/poky-altcfg
--      2. distro/poky-tiny
-+      1. distro/poky
-+      2. distro/poky-altcfg
-+      3. distro/poky-tiny
- 
-       Please select one of the above options by its number:
--      0
-+      1
-+
-+#. Choose a :term:`bitbake:setup` directory name:
-+
-+   .. code-block:: shell
-+
-+      Enter setup directory name: [poky-master-poky-distro_poky-machine_qemux86-64]
-+
-+   Press Enter to leave it to the default value shown in the brackets, or type a
-+   custom directory name.
- 
- .. note::
- 
-@@ -181,7 +190,7 @@ differ from the examples below.
-       $ bitbake-setup init --non-interactive poky-master poky-with-sstate distro/poky machine/qemux86-64
- 
- The ``init`` command creates a new :term:`bitbake:Setup` in the
--:term:`bitbake:top directory`. Its name is derived from the selected
-+:term:`bitbake:top directory`. The default name is derived from the selected
- configuration above.
- 
- For the selected options in the above example, this would be::
+Changes in v2:
+- Fixed unintended removal of non-SPDX variables (CCACHE_DISABLE,
+  IMAGE_EXTRA_PARTITION_FILES, REQUIRED_*_FEATURES)
+- Fixed unintended change to LAYERDEPENDS description
+- Only SPDX-related variables are now modified
 
+ documentation/ref-manual/variables.rst | 72 +++++++++++++++++++++++---
+ 1 file changed, 66 insertions(+), 6 deletions(-)
+
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index a80ef364e..c098227f2 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -8962,10 +8962,21 @@ system and gives an overview of their function and contents.
+ 
+          SPDX_INCLUDE_COMPILED_SOURCES = "1"
+ 
+-      According to our tests, building ``core-image-minimal`` for the
+-      ``qemux86-64`` machine, enabling this option compared with the
+-      :term:`SPDX_INCLUDE_SOURCES` reduces the size of the  ``tmp/deploy/spdx``
+-      directory from 2GB to 1.6GB.
++      According to our tests on release 4.1 "langdale" (SPDX 2.2 format), building
++      ``core-image-minimal`` for the ``qemux86-64`` machine, enabling this
++      option compared with the :term:`SPDX_INCLUDE_SOURCES` reduced the size
++      of the ``tmp/deploy/spdx`` directory from 2GB to 1.6GB.
++
++      With SPDX 3.0.1 JSON-LD format, the uncompressed image SBOM file
++      (``core-image-minimal-qemux86-64.rootfs.spdx.json``) is approximately
++      **260 MB without sources** (``SPDX_INCLUDE_SOURCES = "0"``), and increases to
++      **~2.5-2.6 GB when sources are included** (either ``SPDX_INCLUDE_SOURCES = "1"``
++      or ``SPDX_INCLUDE_COMPILED_SOURCES = "1"``). This represents approximately
++      a **10x size increase** when including source files.
++
++      Note: SPDX 3.0.1 JSON-LD files are not compressed by default, unlike the
++      tar.zst format used in SPDX 2.2. Compression (e.g. zstd) can significantly
++      reduce the file size.
+ 
+    :term:`SPDX_INCLUDE_SOURCES`
+       This option allows to add a description of the source files used to build
+@@ -8979,8 +8990,8 @@ system and gives an overview of their function and contents.
+ 
+          SPDX_INCLUDE_SOURCES = "1"
+ 
+-      According to our tests on release 4.1 "langdale", building
+-      ``core-image-minimal`` for the ``qemux86-64`` machine, enabling
++      According to our tests on release 4.1 "langdale" (SPDX 2.2 format),
++      building ``core-image-minimal`` for the ``qemux86-64`` machine, enabling
+       this option multiplied the total size of the ``tmp/deploy/spdx``
+       directory by a factor of 3  (+291 MiB for this image),
+       and the size of the ``IMAGE-MACHINE.spdx.tar.zst`` in
+@@ -8988,6 +8999,42 @@ system and gives an overview of their function and contents.
+       image), compared to just using the :ref:`ref-classes-create-spdx` class
+       with no option.
+ 
++      With SPDX 3.0.1 JSON-LD format, the uncompressed image SBOM file
++      (``core-image-minimal-qemux86-64.rootfs.spdx.json``) is approximately
++      **260 MB without sources** (default: ``SPDX_INCLUDE_SOURCES = "0"``),
++      and increases to **~2.5-2.6 GB when sources are included**
++      (``SPDX_INCLUDE_SOURCES = "1"``). This represents approximately a
++      **10x size increase** when including source files.
++
++      Note: SPDX 3.0.1 JSON-LD files are not compressed by default, unlike the
++      tar.zst format used in SPDX 2.2. Compression (e.g. zstd) can significantly
++      reduce the file size.
++
++   :term:`SPDX_LICENSES`
++      Path to the JSON file containing SPDX license identifier mappings. This
++      file maps common license names to official SPDX license identifiers used
++      during SBOM generation.
++
++      The default value is::
++
++         SPDX_LICENSES = "${COREBASE}/meta/files/spdx-licenses.json"
++
++      You can override this variable to use a custom license mapping file if
++      your organization uses different license naming conventions.
++
++   :term:`SPDX_MULTILIB_SSTATE_ARCHS`
++      The list of sstate architectures to consider when collecting SPDX
++      dependencies. This includes multilib architectures when multilib is
++      enabled.
++
++      The default value is::
++
++         SPDX_MULTILIB_SSTATE_ARCHS = "${SSTATE_ARCHS}"
++
++      This variable is used internally by the SPDX generation classes to
++      ensure all relevant dependencies are included in the SBOM, regardless
++      of whether multilib is enabled or not.
++
+    :term:`SPDX_NAMESPACE_PREFIX`
+       This option could be used in order to change the prefix of ``spdxDocument``
+       and the prefix of ``documentNamespace``. It is set by default to
+@@ -9015,6 +9062,19 @@ system and gives an overview of their function and contents.
+       this option is recommended if you want to inspect the SPDX
+       output files with a text editor.
+ 
++   :term:`SPDX_UUID_NAMESPACE`
++      The namespace used for generating UUIDs in SPDX documents. This should
++      be a domain name or unique identifier for your organization to ensure
++      globally unique SPDX IDs across different builds and organizations.
++
++      The default value is::
++
++         SPDX_UUID_NAMESPACE = "sbom.openembedded.org"
++
++      You can override this variable to use your organization's domain::
++
++         SPDX_UUID_NAMESPACE = "sbom.example.com"
++
+    :term:`SPDXLICENSEMAP`
+       Maps commonly used license names to their SPDX counterparts found in
+       ``meta/files/common-licenses/``. For the default :term:`SPDXLICENSEMAP`
 -- 
-2.51.0
+2.51.1
 
 
