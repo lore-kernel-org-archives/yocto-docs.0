@@ -1,105 +1,88 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <alex.kanavin@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1BC20CE8D62
-	for <webhook@archiver.kernel.org>; Fri, 14 Nov 2025 17:16:56 +0000 (UTC)
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.3594.1763140613764117110
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7BF12CE8D70
+	for <webhook@archiver.kernel.org>; Fri, 14 Nov 2025 18:11:26 +0000 (UTC)
+Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.4816.1763143885743296445
  for <docs@lists.yoctoproject.org>;
- Fri, 14 Nov 2025 09:16:54 -0800
+ Fri, 14 Nov 2025 10:11:25 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=V0mww76M;
- spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 37973C10F6B;
-	Fri, 14 Nov 2025 17:16:30 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 0DC8E6060E;
-	Fri, 14 Nov 2025 17:16:52 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 553CB10371CD7;
-	Fri, 14 Nov 2025 18:16:50 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1763140611; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=PLIbGOdLQjSjuLnNVxpz0pcTAA2t3J9BWb6GbdZV8dU=;
-	b=V0mww76MeeSCVEGW712ukODO10ybQwacbKM2Ga+F5QuavRZx2de5mJDlsMn+TV2K7s64a3
-	QxeohP1UwTF6oi047JavovS4uhe/QL0RtkFGOfEs27POH0EOFOuQ2ja/HAsglmbjSHfmqv
-	p2G/ZMho3eUhrvCyqw42wXr+OUmQF6XsJBAJSZ/FQSzpRdevBzxh0i+glEssHqH4MAtT5Q
-	IFXR01Pb+c60Pk4yZDBzoPj6ju+GLDZ2dmZctZxnBQgQDaUG87K7sg/uDIHwApuRSDj6Yg
-	2GHGPfA2icCuT7RJKoeaDSf1i3k3Qk6XX4sSM5Ktn2tEGey540+OVHNaY5AR8A==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 14 Nov 2025 18:16:49 +0100
-Message-Id: <DE8L6M2X831Y.324NIC5CAQA3M@bootlin.com>
-Subject: [kirkstone] Pull request
-Cc: <docs@lists.yoctoproject.org>
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: "Richard Purdie" <richard.purdie@linuxfoundation.org>
-X-Last-TLS-Session-Version: TLSv1.3
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=HRIy+LJ0;
+ spf=pass (domain: gmail.com, ip: 209.85.219.43, mailfrom: alex.kanavin@gmail.com)
+Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-882390f7952so22295606d6.3
+        for <docs@lists.yoctoproject.org>; Fri, 14 Nov 2025 10:11:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763143885; x=1763748685; darn=lists.yoctoproject.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=mUilp21PJXxBHb8m2jLtCrIGI3xNjtcQVkW01LTOw6Y=;
+        b=HRIy+LJ0Bo90nZDz9pYLwAJUcJ+tRJhKC/300ll1FYqeKKLR+UevYMoPDEli01TLOq
+         IBAfzvDGqT/eOZU3Fz8VE5I326q5NIOc1LC0NP+BMcm+YYyrG/7h+Iipg1WTe5PqYSVF
+         DziRNKVfSor7ak4kzY3mfOhrmtyZw0wz0cnIOttGwT2e1euXzMcREHsnJd+46ymOXyXI
+         Qm3LtPOJz362yMd1SxXMtnX6kcUflvIc60nqU1FL3uQ3oBc3sPYKL3ULhkF2AGJcJ761
+         yzoX+J9lNzLL/OFvXQxl9wwPoWNTRBA13TyRv/HbfmazReCpj15dXPVb4s8pB8QDGhmi
+         YPUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763143885; x=1763748685;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mUilp21PJXxBHb8m2jLtCrIGI3xNjtcQVkW01LTOw6Y=;
+        b=l0gqXSsSUL+eWClSPLNnXnR3FMUat9douAHFbv36OTXBCfYzc069aA50j+iOEl6gE/
+         MESmPbX85vNCSuJnJ6JjJM93mkDgdruHcg9IL4wXMAHcadOP6ytUqt7pNGRoDAXsRzZn
+         2Sa4JoIho2kb4gQs5nJb/vU0BLkVh8Sx7/VpyQ47mVSiLnDk6kXS/STWqEllFndC6k8F
+         oMevl38WG5kTOOCpZMXNyKzT901Fkb1N5Z52R+19r0tS7U4N409KKSwwG45qSZKZ/tIq
+         3VQQLJy6ckJcHXwzl/3zu4USB1fgGvJsUpOrMAe+Q+KIqS+aICYGgA1MRhD8YXyDLJh6
+         kuzw==
+X-Forwarded-Encrypted: i=1; AJvYcCV5Ras3P+THi+I7LhlwmZtRYYK6gdUL02dCUetZd8gqQLStzIRsl+uUnoAh5aGdBWhE4cJj@lists.yoctoproject.org
+X-Gm-Message-State: AOJu0Yw722sxw+7i65HFwIprr6tAIm3eRolpcRz7gx6kfrlNtnRPZIQK
+	Hgtb0AC2ay4avQ8X4zUY2lZZVZLf23X3ULfiJ4A8YQkTXhVh6q4uEpmNDybZ7wZqCS0mUgMWvOl
+	rVwHyEecERNc+eJ2pTxInKKBXSq+4j/4=
+X-Gm-Gg: ASbGncvlaFrdwRUgJ5Xh+lUhU57U89K5+JcNyMGRJYMdzYT53KvY32EcYhOYN7YY+ka
+	/57FtKEdUEUK2HAjHqcSW6dYU6YfTWfeXm2VPFDVFutRwd4Lg4YXIHzq9ix95F13x8owuS0sZli
+	y+BfP2g586wZMs6JkI8Eopumy8G2BrLdYqfzb8yq710O75rX+m8uLxJpaFGlCiqa0sIBCVhzP6J
+	r4vwRoOdxv0rUlnd/fs9e1J4jC4TkKhgoFIU4Mix7BIXQEXF9tADUxWwV2p0/9Fi92JzA==
+X-Google-Smtp-Source: AGHT+IGDwOvYhFMLnCGVym0Vu3QFUo2gDQ6XDZFiFI0UmkvNjV/aHYO5wBD725Db/ac6zEUP3J6lNERO5unrteNdfVc=
+X-Received: by 2002:a05:6214:c43:b0:880:501f:5cd with SMTP id
+ 6a1803df08f44-882925c5665mr52349086d6.2.1763143884622; Fri, 14 Nov 2025
+ 10:11:24 -0800 (PST)
+MIME-Version: 1.0
+References: <20251114-update-bbsetup-doc-v1-0-044070bdffec@bootlin.com> <20251114-update-bbsetup-doc-v1-1-044070bdffec@bootlin.com>
+In-Reply-To: <20251114-update-bbsetup-doc-v1-1-044070bdffec@bootlin.com>
+From: Alexander Kanavin <alex.kanavin@gmail.com>
+Date: Fri, 14 Nov 2025 19:11:13 +0100
+X-Gm-Features: AWmQ_bnXxYJxuCs-uGzSJ_bvVcD85L_KOU0N0aEq1XVVxo1zuD51mnvjMY911nM
+Message-ID: <CANNYZj8jeGq8Hq87a=ha7wfb8_ra3D3v5RJseQR8ee9yyPu7bw@mail.gmail.com>
+Subject: Re: [bitbake-devel] [PATCH 1/3] doc/bitbake-setup: show how to clone
+ bitbake before using bitbake-setup
+To: antonin.godard@bootlin.com
+Cc: bitbake-devel@lists.openembedded.org, 
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, docs@lists.yoctoproject.org
+Content-Type: text/plain; charset="UTF-8"
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 14 Nov 2025 17:16:56 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8051
+ <docs@lists.yoctoproject.org>; Fri, 14 Nov 2025 18:11:26 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8053
 
-The following changes since commit 073f3bca4c374b03398317e7f445d2440a287741=
-:
+On Fri, 14 Nov 2025 at 12:12, Antonin Godard via
+lists.openembedded.org
+<antonin.godard=bootlin.com@lists.openembedded.org> wrote:
+> -#. ``bitbake-setup`` is part of the BitBake repository under
+> -   ``./bin/bitbake-setup``. To start, run:
+> +#. If you haven't already, clone the BitBake repository:
+>
+>     .. code-block:: shell
+>
+> -      $ ./bin/bitbake-setup init
+> +      $ git clone https://git.openembedded.org/bitbake
 
-  ref-manual/classes.rst: document the relative_symlinks class (2025-10-27 =
-17:09:19 +0100)
+Add a note here: bitbake-setup is not coupled to the openembedded or
+yocto releases that it is setting up, and generally a copy from
+bitbake master should be used as it aims to be backwards compatible,
+and yet have the fullest set of features.
 
-are available in the Git repository at:
-
-  git@push.yoctoproject.org:yocto-docs kirkstone-next
-
-for you to fetch changes up to 4b9df539fa06fb19ed8b51ef2d46e5c56779de81:
-
-  migration-guides: add release notes for 4.0.31 (2025-11-14 18:10:02 +0100=
-)
-
-----------------------------------------------------------------
-Lee Chee Yang (1):
-      migration-guides: add release notes for 4.0.31
-
-Quentin Schulz (4):
-      kernel-dev: common: migrate bitbake -e to bitbake-getvar
-      ref-manual: variables: migrate the OVERRIDES note to bitbake-getvar
-      dev-manual: debugging: use bitbake-getvar in Viewing Variable Values =
-section
-      overview-manual: migrate to SVG + fix typo
-
-Robert P. J. Day (4):
-      dev-manual/new-recipe.rst: update "recipetool -h" output
-      dev-manual/layers.rst: document "bitbake-layers show-machines"
-      dev-manual/new-recipe.rst: replace 'bitbake -e' with 'bitbake-getvar'
-      dev-manual/new-recipe.rst: typo, "whith" -> "which"
-
-Ross Burton (1):
-      documentation: link to the Releases page on yoctoproject.org instead =
-of wiki
-
-Walter Werner SCHNEIDER (1):
-      kernel-dev: add disable config example
-
- documentation/contributor-guide/submit-changes.rst |   4 +-
- documentation/dev-manual/debugging.rst             |  34 ++--
- documentation/dev-manual/layers.rst                |   9 +-
- documentation/dev-manual/new-recipe.rst            |  29 +--
- documentation/dev-manual/security-subjects.rst     |   8 +-
- documentation/dev-manual/start.rst                 |   2 +-
- documentation/kernel-dev/common.rst                |  20 +-
- documentation/migration-guides/release-4.0.rst     |   1 +
- .../migration-guides/release-notes-4.0.31.rst      | 210 +++++++++++++++++=
-++++
- .../overview-manual/figures/key-dev-elements.png   | Bin 20424 -> 0 bytes
- .../overview-manual/svg/key-dev-elements.svg       | 172 +++++++++++++++++
- documentation/overview-manual/yp-intro.rst         |   4 +-
- documentation/ref-manual/release-process.rst       |   3 +-
- documentation/ref-manual/variables.rst             |   4 +-
- 14 files changed, 446 insertions(+), 54 deletions(-)
- create mode 100644 documentation/migration-guides/release-notes-4.0.31.rst
- delete mode 100644 documentation/overview-manual/figures/key-dev-elements.=
-png
- create mode 100644 documentation/overview-manual/svg/key-dev-elements.svg
+Alex
 
