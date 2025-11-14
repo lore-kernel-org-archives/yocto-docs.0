@@ -2,84 +2,174 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2A617CE7AB6
-	for <webhook@archiver.kernel.org>; Fri, 14 Nov 2025 11:12:49 +0000 (UTC)
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.15648.1763118766492561535
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 165AACE7AB9
+	for <webhook@archiver.kernel.org>; Fri, 14 Nov 2025 11:12:59 +0000 (UTC)
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.15649.1763118769271062117
  for <docs@lists.yoctoproject.org>;
- Fri, 14 Nov 2025 03:12:46 -0800
+ Fri, 14 Nov 2025 03:12:49 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=hBdwQ2QS;
- spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
+ dkim=fail reason="dkim: body hash did not verify" header.i=@bootlin.com header.s=dkim header.b=M4+25CLD;
+ spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id F40DA4E416B1
-	for <docs@lists.yoctoproject.org>; Fri, 14 Nov 2025 11:12:44 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id E9A241A1AA2
+	for <docs@lists.yoctoproject.org>; Fri, 14 Nov 2025 11:12:47 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id CAABB6060E;
-	Fri, 14 Nov 2025 11:12:44 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id ACD62102F292F;
-	Fri, 14 Nov 2025 12:12:43 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id B8EA660723;
+	Fri, 14 Nov 2025 11:12:47 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6008910371C51;
+	Fri, 14 Nov 2025 12:12:46 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1763118764; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=5iEhV80lAYCSBlBxM7vV7/Lt5b9dQTxEBcMZJLvfA8U=;
-	b=hBdwQ2QSspWpl0k6ndbsjNY197LBcCYs4jL5FOmDqw/WH2eGs0qahE2nnBOepjcLWrYi9p
-	98ptQdF6MmbKfyLHDbr4hLgD4Ede7ZavDK6sdJxWuMFfmn0eEufdxbmN0hcyLrQdFYplyv
-	3u3RzmXv3D7vuz2Gp+F8g/Hu6bf8SBpoQks8DpPUz4j3MjjvRuMEgSE8nAel3chb7MpFEu
-	2cAUfC713wbhTOVI+gvG+/Eu8aNqni74NGfdwGt3xUzUin1h4/IIRIcIkivCkhyLJl/PCa
-	waC6PRNWWjyWYam2+h+vtbxP181/8ETx/CLTBxI+z/hLFzQvyMBI2nRjvOLcgA==
+	t=1763118766; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=ROiormWOmzlU78JoRAPuRB065Mh/aY6aTXtaj//E0zs=;
+	b=M4+25CLDMPZGOyp+bAlc9B415lF3d7uJY8ZECgkxIHO2AAAXliEE/xsfhg1xX/d5auTylH
+	JS0qpnHQAPIIHxfynFsqBlKarQskreHD9YH7YpsWZE2wpB4UpavLic2Ucdetuvals9OAQP
+	g6a8dVp+HIbA7ibD8rszW94E00MUTA+1nFDsanvLuy+QBpvUUwq2hVbqh8hT7mn/bUpWhN
+	/rFdd1SqEEx3vt+jYxH12IO++jM2v9wDxUtotesksY4+9LluizxY0S912uigOFjw2vhBvT
+	q8IclWpNYdJfUBuzVaoQ3H/DDENy/lhx4TCfl6jr7+Q7fnR4QV5MZ8vctvGCtg==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Subject: [PATCH 0/3] bitbake-setup doc updates
-Date: Fri, 14 Nov 2025 12:12:33 +0100
-Message-Id: <20251114-update-bbsetup-doc-v1-0-044070bdffec@bootlin.com>
+Date: Fri, 14 Nov 2025 12:12:36 +0100
+Subject: [PATCH 3/3] doc/bitbake-setup: mention the site.conf file
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAKEOF2kC/yXMQQ6CMBBA0auQWTsJAzRFr2Jc0HaEcQFNpzUmh
- LtbcfkW/++gnIQVbs0Oid+isq0VdGnAL9M6M0qohq7tDBENWGKYMqNzyrlEDJtH29uevLXGjFe
- oYUz8lM85vT/+1uJe7PPvBMfxBQohSUp2AAAA
-X-Change-ID: 20251114-update-bbsetup-doc-73731c775589
+Message-Id: <20251114-update-bbsetup-doc-v1-3-044070bdffec@bootlin.com>
+References: <20251114-update-bbsetup-doc-v1-0-044070bdffec@bootlin.com>
+In-Reply-To: <20251114-update-bbsetup-doc-v1-0-044070bdffec@bootlin.com>
 To: bitbake-devel@lists.openembedded.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  docs@lists.yoctoproject.org, Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=635;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3586;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=xlhat71o5W6rQyep215NEp+DC+JiBIN+LsBsUhHWpGE=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpFw6qCWGuhNpXFYOMXhnKcg4GPGYjgEpMNjpX6
- yIgO7xfDuuJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaRcOqgAKCRDRgEFAKaOo
- NmxqD/wOkWbBZP5WHwGUQ5jpMnfIq0rk/TNlM1LhCfARMjhsDwV1ryev1QU8tRZEtVu9MxISJ5S
- e9REUVc6bGoUAMA5wCp9suFzgoFXJmb8kKTlqSQMpUsoFGyrJa1BNNWyxFaZ8+VTHnHaee4MKqJ
- i6Thf8pYl/GfaNkiWInb66T1KqsaA+gwp+3m7ksoS2gh//cz4nV88lzQIweEKMHG+aqd/bQzal/
- mQ4D2l5l7iRQ0oC/9j4tN8wuB30zACfr+x0iPSdlG05TthGlByF7DHkVoLO/WINXSrmNA/DnRhx
- wsFeOgRiIa4TcKS1qLQX/qOEV235fViQzTGlljWjB3XcOqhYVYK39AB06D2MQi2D8SwuNg+bHmU
- /FPJT2wP03KUkuzQ7sE2qB6LKMeT6Get3Za7/qqdo7cLk2vvoLzrOOqCrH2QbNmp9eHG86rxM/0
- Uv8XrYi6CQSdO98n0dWqNXeAYVLnilAZ/3JClnvuHBCI6E9MsTUDaX8/AmFFcPrR9H1Jym2wYnJ
- 0SUE2DcNABhcLuK/NjoYwfK42+g23aGdLVifVg9isIIhR/aXH/vQ3RjM2dbtV5J3Hywhjuy2FaT
- 6d8FcMoTS2GKLM9txHlGwEx9dAdyAxjPHX3e77XMKriUIUWYPSfe1Y/9o0tES9Xan+aZogzGQDr
- bfHe86ptFLogGwA==
+ bh=1JAVIENtPn2+TJw7nc2gqUXfePZAxB06vxAb58eRCms=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpFw6r9HYVC+NExy3hJ78tG5eMxwiurxNBJo5RM
+ bTg6PmDGHiJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaRcOqwAKCRDRgEFAKaOo
+ Nhx8D/9Qb3O23vMq1Yn8MSY2wB6sksphDzFi+/EjIG4916/K85OmppTUek52GQpDW2n1EXj9qyN
+ vPUujTLwrI0DnaHKpi7wmIcaASzuBa3apIZjo6m3TRJfwhxM5vbTCAJ59qUATPfAMAOuYCaF8rM
+ W9xI3OD17M/X0VdO4vtxLyGe057wrKXQG9piOD8d6TLn5t4XQjyyFGcQUVF+TXj+ehETptT7zcs
+ Fj9Bt3ebv+iER/wqvzbSw5TcuGXq3Y2wdu0aHRoqGrorjWZPhHS7046kDjgutvHAht0yFXIS3ig
+ RYZm9H5GdydrMOx9lkCZYH68mCHxqc3ryLrZ9meFSMiTUNeBQOpeVubpx/91sYMW+wo2aMHh1Bv
+ opWfGahdPD0mtAjnyN+MkMahhMLOVF5r7zUnXb4EVYgkzNoibln6QV8fIj3GypNdiZ/3wr3dZsQ
+ UnHI6uvUxx2r3DSLcFZWy5+jKi+NDD/QG+cjnBEeZd8dM+JjaJ/i3zuh/pj95whk7/Fxlkznoso
+ qZgo9+SbbPifBWX8Ey/igt48IVgZiCY7gJQtv6yUeRLes72yddRpjaigW/p4MCpoe263zSUFISP
+ Mx1y5OjQHyJxqPX5H9iQYu3suMISnOwJWAu5X1r7lvN+2PzLjDNYmeIf2luH1zNgvsquU8IoNZt
+ 9MGTpffJ/kReSJw==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: quoted-printable
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 14 Nov 2025 11:12:49 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8037
+ <docs@lists.yoctoproject.org>; Fri, 14 Nov 2025 11:12:59 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8038
 
-Updates for bitbake-setup's documentation after feedback on the list,
-and recent changes to bitbake-setup.
+This file is central to how bitbake-setup works and there was no mention
+of it. Add it to the quick start section and the terminology.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
-Antonin Godard (3):
-      doc/bitbake-setup: show how to clone bitbake before using bitbake-setup
-      doc/bitbake-setup: quick start: change top dir path
-      doc/bitbake-setup: mention the site.conf file
+ .../bitbake-user-manual-environment-setup.rst      | 28 ++++++++++++++++=
+++----
+ 1 file changed, 24 insertions(+), 4 deletions(-)
 
- .../bitbake-user-manual-environment-setup.rst      | 46 +++++++++++++++++-----
- 1 file changed, 37 insertions(+), 9 deletions(-)
----
-base-commit: ce90d59ff1c96d04856ca5e41a963af00d1783f1
-change-id: 20251114-update-bbsetup-doc-73731c775589
+diff --git a/doc/bitbake-user-manual/bitbake-user-manual-environment-setu=
+p.rst b/doc/bitbake-user-manual/bitbake-user-manual-environment-setup.rst
+index 91caeb041d..3193952972 100644
+--- a/doc/bitbake-user-manual/bitbake-user-manual-environment-setup.rst
++++ b/doc/bitbake-user-manual/bitbake-user-manual-environment-setup.rst
+@@ -51,9 +51,10 @@ Quick Start
+       about ``bitbake-setup`` input configuration files.
+=20
+ #. With the default choices, the ``bitbake-setup init`` command creates =
+the
+-   following directories::
++   following files and directories::
+=20
+       ./bitbake-builds/
++      =E2=94=9C=E2=94=80=E2=94=80 site.conf
+       =E2=94=94=E2=94=80=E2=94=80 poky-master-poky-distro_poky-machine_q=
+emux86-64/
+        =C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 build/
+        =C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 config/
+@@ -83,6 +84,14 @@ Quick Start
+       <bitbake-user-manual/bitbake-user-manual-intro:Layers>` and other
+       repositories managed by ``bitbake-setup`` are stored and updated.
+=20
++   -  ``site.conf``: a BitBake configuration file that contains site spe=
+cific
++      configurations for your build environment. When it is created, it =
+contains
++      some variable definitions that are based on your current :term:`se=
+ttings`.
++      Comments in this file will help you understand what these variable=
+s
++      correspond to.
++
++      These configurations are shared between the :term:`setups <Setup>`=
+.
++
+ #. Source the ``init-build-env`` file present in the :term:`BitBake Buil=
+d`
+    directory:
+=20
+@@ -102,10 +111,11 @@ Terminology
+ The ``bitbake-setup`` tool revolves around some common terms we define i=
+n this
+ section.
+=20
+-``bitbake-setup`` works with a specific hierarchy of directories, that c=
+an be
+-represented as follows::
++``bitbake-setup`` works with a specific hierarchy of files and directori=
+es, that
++can be represented as follows::
+=20
+    Top Directory
++   =E2=94=9C=E2=94=80=E2=94=80 site.conf
+    =E2=94=9C=E2=94=80=E2=94=80 Setup 1
+    =E2=94=82=C2=A0=C2=A0 =E2=94=9C=E2=94=80=E2=94=80 build/
+    =E2=94=82   =E2=94=9C=E2=94=80=E2=94=80 config/
+@@ -129,7 +139,8 @@ The "Top Directory" and "Setup" directories are defin=
+ed as follows:
+       :ref:`ref-bbsetup-setting-top-dir-name` settings.
+=20
+       The top directory contains one or more :term:`Setup` directories, =
+each of
+-      them containing a :term:`Setup`.
++      them containing a :term:`Setup`, and a :term:`Site Configuration F=
+ile`
++      (named ``site.conf``).
+=20
+    :term:`Setup`
+       A Setup is the result of the :ref:`ref-bbsetup-command-init`
+@@ -144,6 +155,15 @@ The "Top Directory" and "Setup" directories are defi=
+ned as follows:
+          <bitbake-user-manual/bitbake-user-manual-intro:Layers>` or othe=
+r
+          repositories managed by ``bitbake-setup`` (``layers/`` director=
+y).
+=20
++   :term:`Site Configuration File`
++      This file named ``site.conf`` is a unique file located in the :ter=
+m:`Top
++      Directory`, and holds top-level BitBake configuration statements s=
+hared
++      between the :term:`Setups <Setup>`.
++
++      When it is created, it contains some variable definitions that are=
+ based
++      on your current :term:`settings`. Comments in this file will help =
+you
++      understand what these variables correspond to.
++
+ The following components are involved to create the content of these dir=
+ectories:
+=20
+ .. glossary::
+
+--=20
+2.51.0
 
 
