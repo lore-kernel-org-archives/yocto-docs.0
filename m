@@ -1,101 +1,105 @@
-Return-Path: <rpjday@crashcourse.ca>
+Return-Path: <alex.kanavin@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AFF36CF31B7
-	for <webhook@archiver.kernel.org>; Wed, 19 Nov 2025 12:24:06 +0000 (UTC)
-Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.5692.1763555045840593973
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0F12DCF34A5
+	for <webhook@archiver.kernel.org>; Wed, 19 Nov 2025 12:47:17 +0000 (UTC)
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.6051.1763556436221562101
  for <docs@lists.yoctoproject.org>;
- Wed, 19 Nov 2025 04:24:06 -0800
+ Wed, 19 Nov 2025 04:47:16 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=QyKDEhqg;
- spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:References:
-	Message-ID:In-Reply-To:Subject:cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=LGK/90n+hRQGWaj53LDkEjsYq/Z/edrQmt7EOLFTbFk=; b=QyKDEhqgZONBnRPPO8GymWXMXm
-	Evw8BExbEZ5iiK6/lWoukGX1cP1pSPhCrfABbmhYZRx395o4y9wumW+k23koFC5/HqFUa3hfSrh/0
-	CBzmwzdSplsGKECDC3fupv0t4GTQW8yUt9grviA3ECCAiz7JwaTPYcdrT+plcPtgm2J8PIQRBn7ar
-	wEaM39qwzayhDXgqwKrFIG5Xkz3agDz5iaWwcp6PZ1RmflZaiNdLOXFfJUA9j5mtxHM3eDPnWv+mp
-	jNXEY1XOeAHp69RLDzk+vCaTlcqg7VWT31Po6ar5IQoo5t/tJi7JInYwL4dRWTaa2zniDvt1xeF/9
-	tqe5dXLQ==;
-Received: from [147.129.179.166] (port=47896 helo=rday)
-	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1vLhE9-000000030Ec-0jkJ;
-	Wed, 19 Nov 2025 07:24:04 -0500
-Date: Wed, 19 Nov 2025 07:24:35 -0500 (EST)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: Quentin Schulz <quentin.schulz@cherry.de>
-cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: Re: [docs] can the assumption of building on ubuntu be relaxed to
- debian?
-In-Reply-To: <6b46cd9b-8e24-4edd-9051-c9c0f03617e8@cherry.de>
-Message-ID: <24ed6b79-82e5-43ed-ab11-d95792d04979@crashcourse.ca>
-References: <24bb11b9-85c3-9dc8-e655-b630dbbcbe9d@crashcourse.ca> <318bddb4-bd28-4be5-87bb-4262076bd495@cherry.de> <3ae9ad48-13bf-1afc-6ccc-3bff1fddc8a1@crashcourse.ca> <6b46cd9b-8e24-4edd-9051-c9c0f03617e8@cherry.de>
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=KhnY2Ilq;
+ spf=pass (domain: gmail.com, ip: 209.85.128.49, mailfrom: alex.kanavin@gmail.com)
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4779a637712so29620855e9.1
+        for <docs@lists.yoctoproject.org>; Wed, 19 Nov 2025 04:47:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763556434; x=1764161234; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=DnjSO/ivvFhKrN+pgKACLjjRZfzy1wwcwgW+mBQsJmc=;
+        b=KhnY2IlqMGrHGUfEe4oiux39w5OWXO5sdQkn/ewGVKjSFFyZs+V/FPhsPsqR94Ax5J
+         qlDj0LVi1BzSLygyJC4kO2DT1xeaZT6tGjWLlgLm2O7X8cUX6p5u5azVFr5bR0utkWeJ
+         vJv8ateBRvvTvtSqJCrGr5mDcHrBTgXJRIKW6115N3dUsSipFWydKqvV3I7lV7fHMOiJ
+         9iuUteW3uH6hKlZfXBcVbgZy6bdEblQ8TyDQcQbRjYyPbCjomjkdIblBQHV6CyLYM5Us
+         DQ/sbupiogx41lc3bCYU1r7DCnvr9rbU5z95AUFqsReTSq4ux23vWlMPa68krcviANN7
+         jkaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763556434; x=1764161234;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DnjSO/ivvFhKrN+pgKACLjjRZfzy1wwcwgW+mBQsJmc=;
+        b=OHT4aHN6oy5qRamdmVbtwjCiIfVHiv3re6D6MaDSiP/Yt10BYYtFxjWxnyveOsGpaO
+         zH8Jc9CNsz4ei8QSFNfb8LKqrXQrxfhydIAkeUimf7nfpl6tzNAUlfusBAKtj0nMlxFM
+         a8CuMtNuWMtFbMnIt/GWsHITTyyBFjxzlorUDCsj/kemEbipTRyKwOOa/8g0aEcOBWiV
+         XG5/uh8WYJKdt7tIFWVa2EMGiHmvNOG5tYGE+mVdURO277N0SycXF/0xmDPNhbabJv2Y
+         yI14rB1FR23DH43giBP23AEYT4CaWwR70l0tGs2+WIRrKhIVoNpsVmT7UjnloDVARZpv
+         TMog==
+X-Gm-Message-State: AOJu0YzjrIsJSXfqMvM0A1tPhMkb+OuBiPxrFdHCUWyqXxzMJ7XEhUZw
+	uk/95v5Ey47lHj/KSIB7m82FCJFiRmTW6jSzmWtqSsiY8+gUoSfBFBvlzpZNmw==
+X-Gm-Gg: ASbGncv8GDMWCT67Ykt7k0K0a5Xx2ml3JttxGcqBsELJPO7mnWv/yTI7J+w/qWpCriE
+	mM0Xg6Jx3ltcsrcelGRHhid/ZNJJtR43pAGnzFQFBBjkrtpHvd7pNbA84Tbans6RPAdRd3/tCTw
+	FzURpI6YGzd759GlTH1vI6RgRe2l7WyoY8CbAjM2U97NJ/LfUpN1TPzHZhW+c8Nyqcuuh8auSj9
+	SULA3QJVziAco6AvUxONz1JXMRbF6Ns8pGvVaHZpMv1/ZIlLjsb/CPL+OYxnPu6DGy1VNaagNtY
+	ZeVPHuI79EBZEhI/wwWSftrN6XhCJ8Bl9x4Eiid7b3Z8180JyovGbo05rhqVcw8I8d1t13vcOxq
+	rK6G454fMXp8PwUJDQjSVbkK40BpgzNPtwy5M5+v8ybIgHtnTo9lZv+DrZILh+i7ssz0ePyajby
+	Quoypd4f31imp2Zzbi1Tz0ZN7vW1YiIJPd3PAebq6/Ix6X2idr6/P6Uq+XwA==
+X-Google-Smtp-Source: AGHT+IHFDFLGkP/3UguQSo9WuJqFsefcI/zzSxvO+Suvkh+IFce19BYUB835ch/uUFe8IJz1Wsq11Q==
+X-Received: by 2002:a05:600c:4753:b0:477:333a:f71f with SMTP id 5b1f17b1804b1-4778fe60658mr200527495e9.17.1763556434195;
+        Wed, 19 Nov 2025 04:47:14 -0800 (PST)
+Received: from Zen2.lab.linutronix.de. (drugstore.linutronix.de. [80.153.143.164])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-477b102a3a1sm45374755e9.9.2025.11.19.04.47.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Nov 2025 04:47:13 -0800 (PST)
+From: Alexander Kanavin <alex.kanavin@gmail.com>
+X-Google-Original-From: Alexander Kanavin <alex@linutronix.de>
+To: docs@lists.yoctoproject.org
+Cc: Alexander Kanavin <alex@linutronix.de>
+Subject: [PATCH] brief-yoctoprojectqs: adjust bitbake-setup top dir default
+Date: Wed, 19 Nov 2025 13:47:10 +0100
+Message-Id: <20251119124710.3905807-1-alex@linutronix.de>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 19 Nov 2025 12:24:06 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8082
+ <docs@lists.yoctoproject.org>; Wed, 19 Nov 2025 12:47:17 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8083
 
-On Wed, 19 Nov 2025, Quentin Schulz wrote:
+It has changed to be the current directory, so just swap
+CWD and HOME in examples.
 
-> On 11/19/25 12:44 PM, Robert P. J. Day via lists.yoctoproject.org wrote:
-> > On Wed, 19 Nov 2025, Quentin Schulz via lists.yoctoproject.org wrote:
-> >
-> > > Hi Robert,
-> > >
-> > > On 11/19/25 12:25 PM, Robert P. J. Day via lists.yoctoproject.org wrote:
-> > > >
-> > > >     i ask this only because i recently moved off of ubuntu and onto
-> > > > generic debian 13 ("trixie").
-> > > >
-> > > > here:
-> > > >
-> > > >     https://docs.yoctoproject.org/dev/brief-yoctoprojectqs/
-> > > >
-> > > > one reads in that initial note:
-> > > >
-> > > > "The examples in this paper assume you are using a native Linux system
-> > > > running a recent Ubuntu Linux distribution."
-> > > >
-> > >
-> > > I think it can be relaxed to "a native Linux system running one of the
-> > > officially supported Linux distribution listed under" pointing at
-> > > https://docs.yoctoproject.org/dev/ref-manual/system-requirements.html#supported-linux-distributions
-> > > which is what we test BB/YP/OE with through the autobuilder as far as I
-> > > understood.
-> >
-> >    i wouldn't go that far as the examples in that guide do indeed use
-> > debian-based commands ("apt"). i'll give this some thought.
-> >
->
-> We should probably simply link at
-> https://docs.yoctoproject.org/dev/ref-manual/system-requirements.html#required-packages-for-the-build-host
-> instead of duplicating the instructions and being at risk of having
-> conflicting or outdated instructions in one place or the other.
+Signed-off-by: Alexander Kanavin <alex@linutronix.de>
+---
+ documentation/brief-yoctoprojectqs/index.rst | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-  i like this ... that "Build Host Packages" section could be halved
-by just pointing at the "required packages" section. i'll take care of
-that shortly.
+diff --git a/documentation/brief-yoctoprojectqs/index.rst b/documentation/brief-yoctoprojectqs/index.rst
+index 211b6d70f..c55279dd1 100644
+--- a/documentation/brief-yoctoprojectqs/index.rst
++++ b/documentation/brief-yoctoprojectqs/index.rst
+@@ -105,14 +105,14 @@ Setup a build environment with the following command:
+ 
+    $ ./bitbake/bin/bitbake-setup init
+ 
+-By default, this will setup a top directory in ``$HOME/bitbake-builds``.
++By default, this will setup a top directory in the current directory.
+ 
+-If you prefer to setup your builds in a different top directory, for example the
+-current directory, you can set it with the :ref:`bitbake:ref-bbsetup-command-settings` command:
++If you prefer to setup your builds in a different top directory, for example
++``$HOME/bitbake-builds``, you can set it with the :ref:`bitbake:ref-bbsetup-command-settings` command:
+ 
+ .. code-block:: shell
+ 
+-   $ ./bitbake/bin/bitbake-setup settings set --global default top-dir-prefix $PWD
++   $ ./bitbake/bin/bitbake-setup settings set --global default top-dir-prefix $HOME
+ 
+ .. note::
+ 
+-- 
+2.39.5
 
-rday
 
