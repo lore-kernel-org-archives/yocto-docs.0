@@ -1,124 +1,106 @@
-Return-Path: <rpjday@crashcourse.ca>
+Return-Path: <alex.kanavin@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5F091CF3950
-	for <webhook@archiver.kernel.org>; Wed, 19 Nov 2025 16:15:29 +0000 (UTC)
-Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.10939.1763568921901972067
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BF3E5CF3951
+	for <webhook@archiver.kernel.org>; Wed, 19 Nov 2025 16:17:09 +0000 (UTC)
+Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.10989.1763569019803102662
  for <docs@lists.yoctoproject.org>;
- Wed, 19 Nov 2025 08:15:22 -0800
+ Wed, 19 Nov 2025 08:16:59 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=KR2uIKWS;
- spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:References:
-	Message-ID:In-Reply-To:Subject:cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=BHCrVsav7+rZfkYiVKKoZ1hYn3h+r93lP5yhBmTF11c=; b=KR2uIKWSH2KjGQyRLgPrizNmVS
-	Aw+vKKeb7lXDONJLClQun3UUyq/N5lBLywtn3bzO4Sz/uaX3TO/vW5fPMOuPvngBSJZTjuBB/kCxy
-	BxTjpZ0hEDSMnbhGs0l2utzTYHu4XXR9eHADqOEvHekIGAFyzZ/UIjwfBL0sVpBAn/cNPQQEyMLCu
-	ZWlHveH9UNGt3yq69aqfUSsQqK2tzzo6r/mkhWmLZPj9NN8stoWaEbKSvXuf8GsrmmzTUk0yiU3WB
-	WslZe/cekCMMBPWo23D4gJZF3g1e2m+jAEwZgob+zNvHysY4BpSBNo2f4fTf+H1ugjeOmuuUOJEJx
-	wOFpqySw==;
-Received: from [147.129.179.166] (port=41862 helo=rday)
-	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1vLkpx-00000003Znr-1fXu;
-	Wed, 19 Nov 2025 11:15:20 -0500
-Date: Wed, 19 Nov 2025 11:15:55 -0500 (EST)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: Quentin Schulz <quentin.schulz@cherry.de>
-cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: Re: [docs] [PATCH] brief-yoctoprojectqs: shorten and clarify required
- host packages
-In-Reply-To: <e84a32a8-2c09-40db-9688-340e96474cb6@cherry.de>
-Message-ID: <75c51d5b-d1db-71b6-f797-80e21f5033d9@crashcourse.ca>
-References: <8a97eda5-0b39-03dc-1e37-76031a747f46@crashcourse.ca> <e84a32a8-2c09-40db-9688-340e96474cb6@cherry.de>
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=foqHmkfF;
+ spf=pass (domain: gmail.com, ip: 209.85.219.54, mailfrom: alex.kanavin@gmail.com)
+Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-8823fa3bd95so8577436d6.1
+        for <docs@lists.yoctoproject.org>; Wed, 19 Nov 2025 08:16:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763569017; x=1764173817; darn=lists.yoctoproject.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=jCpQ7q5zN3Ufg11G/Ga3PpXkMPCszcKCZW8R2OBOwlE=;
+        b=foqHmkfFU0KIHED8fkqzmbaRBKnBvD/xOh6FlfK4Kj8hHVPEmjnGzNCvGRQ5RRtbEV
+         EJGn1oUEnah7jUbpZm6vh27DFqtsqM0Xy216nKYUrt21I42mNBYqfpWAYlna+OcPIDpF
+         rws64DY/fF71JfK/GnWam2H3iNaZbCwluQe2q3YCpaJx3d/YHcHm0EgSO2NnlAA80Sk0
+         vjbbataWDC2gDaGNh5wmAIQaiHEMK610OY0OGouwxvQZp5B0hq7M4g90T8tf/7qib6Ng
+         EhaN81+wJsHS51TWDPipqUu1S7BulNvxSpLuaPdbBM4h7e7U04xmVlpWCf1b7uJLbjmH
+         vBQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763569017; x=1764173817;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jCpQ7q5zN3Ufg11G/Ga3PpXkMPCszcKCZW8R2OBOwlE=;
+        b=iGiIFmr14xy2h0rOJTuuMigfC9Uo6Xw1zFTulbD3fdJNtsBiuREKERXfhX4H7ELlD8
+         iIXz5APcwU1QAy0fFEYZzqPhPViceSx3ee36C+TAvESGB8C8m0M+f7RsYvUj4wqrCDs+
+         AI+gAdg27D9MAfXCstXYM2kW5dkGcRJoYRVEy5DJudXTmOihN6qX91ICfV930tK9hOz8
+         lho5uYbYXFofom9Qd5KToLq9kYGKTKkQT8Yx2lZfm5z+RSFTJSnq4gwny2iEgU5+Y78q
+         0cyMC4guILNv1Pace40godlp0zSWyHL3PoxfEHvFtM+v+1F2xddcbMkRiYniBjqRt6pU
+         1p3w==
+X-Gm-Message-State: AOJu0Yyge/UmER0KuH6L13qd1YqOER7deCBSK3ivhEqq03CHKtMQbz/L
+	0SrF8gnl8A+r9CNhaiyjrIsHhkVdY0VGHyM9kWuTatYYmFe7ww0eZZyQGHYdkN0AbCg+A6uloeT
+	PKTXeRmgQx7qji1b6pikzSuVdP3zna3Y=
+X-Gm-Gg: ASbGncvsL9ijVxnRFq7WTvazgieT6A/L6XkDV9pbcoWR0lddXk5fTWFw4BjSlcW3Jqr
+	UENUudStDKck40eBkh0+psVh/tiTV5dupRCs6pyLzRlnj4ag+4SAETNxfhgxTSQHv+fBpjncAFV
+	OoUjRmvofbQW8MRe9F5Dqm+jXRWxxJWjFoqz0oJfmrFx3MWkSpKGdPYW/HV8A8+RLfuAH/L5Vcn
+	M8iSpo5tgsI5G08A5go4JHmduoqp6onk3E8BAFF3h9DiDDX93oH3++t/3SOYhlSRmDVaFNzKSVO
+	1EECA6CxQsaNgG5QXowGOKP7yZpNPNXsbL1wdnL3
+X-Google-Smtp-Source: AGHT+IFIM4OqzbqB0orDT8pUGGNd8bkefzq9hXs67cAqmQashaV/BlJ8oiRaTNUTsQJFF52pKYYpi+c0ic5Xdn8jHDE=
+X-Received: by 2002:a05:6214:5f01:b0:880:44ca:69b0 with SMTP id
+ 6a1803df08f44-884603224c4mr43877956d6.17.1763569016695; Wed, 19 Nov 2025
+ 08:16:56 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+References: <2049e12f-12f7-dad3-c14f-c5fd384a98b9@crashcourse.ca>
+In-Reply-To: <2049e12f-12f7-dad3-c14f-c5fd384a98b9@crashcourse.ca>
+From: Alexander Kanavin <alex.kanavin@gmail.com>
+Date: Wed, 19 Nov 2025 17:16:43 +0100
+X-Gm-Features: AWmQ_bmA18_g1Z1T0jRWnCUPXL5qsxdeRdf4sgxJcu51zLOp9DM4JoG7e--Wus4
+Message-ID: <CANNYZj-mxrjMaSEb4KaK9ZoTucPf6Ths5NGDMatuNyUb_38-jA@mail.gmail.com>
+Subject: Re: [docs] thoughts on a refactored "Use Git to Clone bitbake-setup" section
+To: rpjday@crashcourse.ca
+Cc: YP docs mailing list <docs@lists.yoctoproject.org>
+Content-Type: text/plain; charset="UTF-8"
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 19 Nov 2025 16:15:29 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8093
+ <docs@lists.yoctoproject.org>; Wed, 19 Nov 2025 16:17:09 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8094
 
-On Wed, 19 Nov 2025, Quentin Schulz wrote:
-
-> Hi Robert,
+On Wed, 19 Nov 2025 at 17:04, Robert P. J. Day via
+lists.yoctoproject.org <rpjday=crashcourse.ca@lists.yoctoproject.org>
+wrote:
+>   it starts with telling the reader to "git clone" the bitbake
+> repository (which supplies the bitbake-setup command) but,
+> importantly, it makes it clear that they can clone it anywhere they
+> want, after which they will extend their search PATH with the location
+> of bitbake-setup so that that command can be called from wherever they
+> are, and here's why that's important:
 >
-> On 11/19/25 2:01 PM, Robert P. J. Day via lists.yoctoproject.org wrote:
-> >
-> > Rather than refer specifically to Ubuntu and show an example of
-> > installing essential packages, just refer the reader to the page on
-> > supported Linux distributions and leave it at that.
-> >
-> > Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
-> >
-> > ---
-> >
-> > diff --git a/documentation/brief-yoctoprojectqs/index.rst
-> > b/documentation/brief-yoctoprojectqs/index.rst
-> > index 211b6d70f..36acd655e 100644
-> > --- a/documentation/brief-yoctoprojectqs/index.rst
-> > +++ b/documentation/brief-yoctoprojectqs/index.rst
-> > @@ -71,21 +71,14 @@ can still use the Yocto Project. See the
-> >   :ref:`ref-manual/system-requirements:required git, tar, python, make and
-> > gcc versions`
-> >   section in the Yocto Project Reference Manual for information.
-> >
-> > -Build Host Packages
-> > -===================
-> > -
-> > -You must install essential host packages on your build host. The
-> > -following command installs the host packages based on an Ubuntu
-> > -distribution:
-> > -
-> > -.. literalinclude:: ../tools/host_packages_scripts/ubuntu_essential.sh
-> > -   :language: shell
-> > -
-> > -.. note::
-> > -
-> > -   For host package requirements on all supported Linux distributions,
-> > -   see the :ref:`ref-manual/system-requirements:required packages for the
-> > build host`
-> > -   section in the Yocto Project Reference Manual.
-> > +Supported Linux Distributions and Required Host Packages
-> > +========================================================
-> > +
-> > +Depending on your Linux distribution, you might have to install
-> > +some essential packages on your build host.  For host package
+>   it's because that command is location-dependent and since it can be
+> called from any number of current working directories, it needs to be
+> on your search path. and why is it location dependent? because, by
+> default, it does its processing in your current working directory
+> (something that will affect all of the subsequent commands).
 >
-> Spurious whitespace after the dot?
+>   and that (short) section could end with the reader, after setting
+> all that up, demonstrating that by 'cd'ing to different directories
+> and running:
+>
+>   $ bitbake-setup settings list
+>
+> to see how the output changes.  that's it for that section -- just
+> setting up the command and making sure the reader truly understands
+> how it is affected by the current working directory. the *next*
+> section can then get into "init", and settings defaults and so on, but
+> the above is critical for the reader to understand.
+>
+>   thoughts?
 
-  ah, the two spaces after the period? not sure how that got there.
-will fix.
+My thought is that this is too pedantic, and needlessly complicates
+matters. You do not need to put bitbake-setup in PATH, you can just
+call it with the full path, and you do not need to educate users on
+minute details of settings before they even get started. They want to
+get to a build as quickly as possible, not to get bored reading the
+docs.
 
-> It's unlikely someone's system will have all dependencies already installed so
-> I think we can just lose the first sentence?
-
-  sure.
-
-> We should probably also update the note at the top of the page. Especially the
-> "running a *recent* Ubuntu distribution". We're often a few weeks if not
-> months behind after a new distro version has been released before we actually
-> do support it officially, and we don't always backport support for that new
-> distro version on older YP/BB/OE releases.
-
-  what about "relatively recent"? that leaves a lot of wiggle room.
-
-rday
+Alex
 
