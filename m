@@ -1,96 +1,128 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7672BCF34B7
-	for <webhook@archiver.kernel.org>; Wed, 19 Nov 2025 14:45:57 +0000 (UTC)
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.8622.1763563553968260560
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 76241CF34C0
+	for <webhook@archiver.kernel.org>; Wed, 19 Nov 2025 14:46:07 +0000 (UTC)
+Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.8629.1763563558487092592
  for <docs@lists.yoctoproject.org>;
- Wed, 19 Nov 2025 06:45:54 -0800
+ Wed, 19 Nov 2025 06:45:59 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=pKdKk14H;
- spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 6D899C1118A
-	for <docs@lists.yoctoproject.org>; Wed, 19 Nov 2025 14:45:30 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id A910B60699
-	for <docs@lists.yoctoproject.org>; Wed, 19 Nov 2025 14:45:52 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 000C510371A76
-	for <docs@lists.yoctoproject.org>; Wed, 19 Nov 2025 15:45:51 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1763563552; h=from:subject:date:message-id:to:mime-version:content-type:
-	 content-transfer-encoding; bh=NJt21FhUPBh8J/ICm1LfeV43ps+xL8WUPnNESgsGuL0=;
-	b=pKdKk14HC0jd7/3pydMhKPGvAcTgnn2qCxrHNXV1dBw48ATNNBdXOBS4lurt9eubNpmw4A
-	lWDVZAxUsCIRZNzWWGZil0v8UqjfpV/Yp7yuJd/3dMSz3EsUoVOtINGJPJT9U3stAm9FLp
-	ITRJPjFiXhHtkN3vd4TUKI4FliezyaPx/hjzlK8PxchOAh1TJCURxtXjUKRHLp8A/YozyA
-	zVWfSAzkZPka2vgZ0Hf7arYCII8pt4HD0MJLcyScFV5Ugsh1G5qljeJCtftH3Z454n3c1i
-	lplnybp9VNsZgnoEgux7IwGEe/7TXsoI8Mthhhkl4HS8bzAirDIR5pUn26aBVg==
-From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Wed, 19 Nov 2025 15:45:40 +0100
-Subject: [PATCH] brief-yoctoprojectqs/index.rst: fix bitbake-setup settings
- list command
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=rKHATtvI;
+ spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
+	To:From:Date:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=dvL7fO0RN5rKlxQ4/VE3+8wrI8bW88zZLBmsLNKOvpM=; b=rKHATtvIX9KYX6KsTdrTCPJY/Z
+	Uhy+0DMSJciwNj5HVo28bjcFKDQpAS628PHDQvVVzU1j0NuXaONQ8PwJGQ7+rmJ7jvRWO09UyKJrI
+	876kMI7UVOl3BqMOyAOMnuStTqbMz4sfiln75fvE+utoH2KjqCGUn1GJu8sHlg9hhXwPvJUBwQVFs
+	LC7QoD3rAp2aTHlFswuqfcc8M7B5ZOD0WJcb41iMUgs+i53lAyQied/AqdSpTCXgGfWq4AxWmupXS
+	KWB6thYyWow9IPcxx22nZVNnG64brT5ZM3HKKWJnQq5j+FO+fnPgL5yM7NMR4cn4RMmIZ4BZkMvbs
+	8qK2etMA==;
+Received: from [147.129.179.166] (port=44894 helo=rday)
+	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <rpjday@crashcourse.ca>)
+	id 1vLjRR-00000003MDA-03I7
+	for docs@lists.yoctoproject.org;
+	Wed, 19 Nov 2025 09:45:56 -0500
+Date: Wed, 19 Nov 2025 09:46:32 -0500 (EST)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+To: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: why is "bitbake-setup list" trying to create a bitbake-builds
+ directory?
+Message-ID: <dc857b9f-0da4-25f4-6cdd-14a60cb8b179@crashcourse.ca>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251119-fix-quick-guide-v1-1-f17eaf2bed83@bootlin.com>
-X-B4-Tracking: v=1; b=H4sIABPYHWkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI1NDQ0NL3bTMCt3C0szkbN300syUVF1DYxNLs7QkQ8uUREsloK6ColSgErC
- J0bEQfnFpUlZqcgnIGKXaWgDLsalRcwAAAA==
-X-Change-ID: 20251119-fix-quick-guide-13496fb19da9
-To: docs@lists.yoctoproject.org
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1179;
- i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=vXroh9hVpxtJtjp6p/u2ZQr18ijLG0fOKxIB9441Rb0=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpHdgfLh64Cdd3AJUhHBK6GhSr/MzUH2Qxmw7Qm
- kzELnC578WJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaR3YHwAKCRDRgEFAKaOo
- NnXwEACurYWMtESfw2IkvE0/rE57ya7X9lbs8VZgMcetinaMo75+fPU8wVO3mbgLhUFXSezXwD+
- H+n4Elv/CT87SShXjcdnuJKHgVQKMBTs+TcJjSXN+eG0zfY9FTR4FeyXFxhhxV7lLNjq35KKEHx
- Y80iE3EFefgRlQgSjQeadTCwPj7CU95pbuedPdk35rnljLxYVqLwH/oCymkMRTsTKkX0p+bYz6u
- 4LEH6W9HC09yn/lRkaynhO2ZlWbsY79+dm1qasPIZsHwhd9IJiPtwYy3N0MLVK9AlycwQohQQuu
- o72Z0k5yeDAaAnPuH1S+W2BXHdS7n7KwSVzLHOFofNHQyFmfSVGMBFsnZzGnEqA+RxNBbya2u3T
- bHPatBHKCoKLgtitxPJeEH4rVGzSbhUq1qe8zFyn3xQsj5KTtBrORED+QpSActAkygXX3YYbhZg
- QgmTgOnInIxXhljMHVZGwWltBA52FEuOBFWTZ3LvSPvQjZPOyl0FhkYaRcnj3Oy+ZB/WASW1/uI
- uX7m2oqLTXH3aExQ6YY6YsSLZNBVtjFx2fAOYFkNFc3FTH/THWdU8a2F6FHj4ImeIILv93O4BtM
- FUPq0fyEtN/k7eHMEz5fDDs2beIB92H/YnQ7+OAxadJufry+oOfra1I7cCgmGl3oOUpUKC6gmfw
- SgATY/F2mbP6EUA==
-X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
- fpr=8648725188DD401BB9A0D3FFD180414029A3A836
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=US-ASCII
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
+X-AntiAbuse: Original Domain - lists.yoctoproject.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - crashcourse.ca
+X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 19 Nov 2025 14:45:57 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8087
+ <docs@lists.yoctoproject.org>; Wed, 19 Nov 2025 14:46:07 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8088
 
-The ref was confused with bitbake-setup list, but here we want to show
-bitbake-setup settings list.
 
-Reported-by: Robert P. J. Day <rpjday@crashcourse.ca>
-Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
----
- documentation/brief-yoctoprojectqs/index.rst | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+  i'm confused about why "bitbake-setup list" is not just attempting
+to "list" stuff, but is actively creating a "bitbake-builds" directory
+in my current location.
 
-diff --git a/documentation/brief-yoctoprojectqs/index.rst b/documentation/brief-yoctoprojectqs/index.rst
-index c55279dd1..07bb4e1ca 100644
---- a/documentation/brief-yoctoprojectqs/index.rst
-+++ b/documentation/brief-yoctoprojectqs/index.rst
-@@ -116,7 +116,8 @@ If you prefer to setup your builds in a different top directory, for example
- 
- .. note::
- 
--   Use :ref:`bitbake:ref-bbsetup-command-list` to get an overview of the settings.
-+   Use :ref:`bitbake-setup settings list <bitbake:ref-bbsetup-command-settings>`
-+   to get an overview of the settings.
- 
- :ref:`bitbake:ref-bbsetup-command-init` is an interactive program by default and
- will ask you to make some decisions. Depending on your answers, the output may
+  if i have no bitbake-builds in my home directory and i'm *in* that
+directory, then:
 
----
-base-commit: 5c7d56a3cedecfb85407dbc7fb9448a0def75d37
-change-id: 20251119-fix-quick-guide-13496fb19da9
+$ bitbake-setup list
+Bitbake-setup is using /home/rpjday/bitbake-builds as top directory
+("bitbake-setup settings --help" shows how to change it).
 
+
+Available configurations:
+poky-master	Poky - The Yocto Project testing distribution
+configurations and hardware test platforms
+oe-nodistro	OpenEmbedded - 'nodistro' basic configuration
+
+Run 'init' with one of the above configuration identifiers to set up a
+build.
+$
+
+  and suddenly i have a bitbake-builds directory -- that is not at all
+intuitive since all i asked for was a "list", i did not ask for
+anything to be initialized or created.
+
+  this causes unexpected behaviour if you happen to be in a
+non-writable directory, say /etc, and run the same command, which then
+blows up since it can't create that directory:
+
+$ bitbake-setup list
+Bitbake-setup is using /etc/bitbake-builds as top directory
+("bitbake-setup settings --help" shows how to change it).
+
+Traceback (most recent call last):
+  File "/home/rpjday/oe/layers/bitbake/bin/bitbake-setup", line 963,
+in <module>
+    main()
+    ~~~~^^
+  File "/home/rpjday/oe/layers/bitbake/bin/bitbake-setup", line 955,
+in main
+    d = init_bb_cache(top_dir, all_settings, args)
+  File "/home/rpjday/oe/layers/bitbake/bin/bitbake-setup", line 52, in
+init_bb_cache
+    bb.fetch.fetcher_init(d)
+    ~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/home/rpjday/oe/layers/bitbake/lib/bb/fetch2/__init__.py",
+line 516, in fetcher_init
+    _checksum_cache.init_cache(d.getVar("BB_CACHEDIR"))
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/rpjday/oe/layers/bitbake/lib/bb/cache.py", line 824, in
+init_cache
+    bb.utils.mkdirhier(cachedir)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/home/rpjday/oe/layers/bitbake/lib/bb/utils.py", line 943, in
+mkdirhier
+    raise e
+  File "/home/rpjday/oe/layers/bitbake/lib/bb/utils.py", line 940, in
+mkdirhier
+    os.makedirs(directory)
+    ~~~~~~~~~~~^^^^^^^^^^^
+  File "<frozen os>", line 218, in makedirs
+  File "<frozen os>", line 218, in makedirs
+  File "<frozen os>", line 228, in makedirs
+PermissionError: [Errno 13] Permission denied: '/etc/bitbake-builds'
+
+
+
+  that is not intuitive behaviour.
+
+rday
 
