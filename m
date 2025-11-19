@@ -2,14 +2,14 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8C63CCF31B4
-	for <webhook@archiver.kernel.org>; Wed, 19 Nov 2025 11:57:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9FA71CF31B5
+	for <webhook@archiver.kernel.org>; Wed, 19 Nov 2025 12:08:26 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.4935.1763553436109167278
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.5426.1763554099642296005
  for <docs@lists.yoctoproject.org>;
- Wed, 19 Nov 2025 03:57:16 -0800
+ Wed, 19 Nov 2025 04:08:19 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=vybIXvBq;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=bo8ckSmA;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
@@ -17,24 +17,24 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=NxVjp0ehBFJ/8nbMeSjEXyCRLCScn8+p63KxHUZ1N+8=; b=vybIXvBq54wc6IR6fgkf9SoER3
-	AAkJ4sqYIWL45oz/CfWvMRMjYmHNHIhLp4jBnC6eeG7teT2PFlztz0ubGe2oGJpCO1i32DW+43ko4
-	Vr7mLrTojkSrcIPBn1dtdaO7TrCJHvJExpn2qR0NGHVmb7f/SRQ9u5pSXTaVEarPbENu8ANY6Hy2g
-	QN1OIIjN8Tp55SBZlGMY7DwJIaILO54Jb2qjxbfHywiATStjl+ENr0dSwDkZiEOxLx8F4hWlCrMDT
-	CV17hoQmD3hTNjE8EdUhkxSttpdfGhWwjzoFBe5a410lQo8cx/J6i8IDbiphVXLnT0m9haxhjlf/j
-	KeJlgwOA==;
-Received: from [147.129.179.166] (port=46348 helo=rday)
+	bh=kuN80abXnBSAVUmkv8PHF9KcBzopTH35dHOwSNu39/k=; b=bo8ckSmAAq6nenDODnfiWaeKbQ
+	pXpax9LcWvbs8sHuCUsnY1kzaQi1ICxK+J0rKi0JVFSPp6SiSvvSjrN0fOw/jKLziPBjg16vKmqQZ
+	btpiheIYL6rrOcxiVbF7SKZzQBwdaE0lwRCbH4AnBr3uciff43LcL1uNpTWe+wVlKONlL6z3atSZM
+	2zxnGnBcUzjY2qrKaF1Nque+4CVfHE3U4aTnjueCOMZOUKJfYliOZ+aadEqGCsAiCdS2fvH+47q3U
+	QdfnAoAGJ2f9dDpF6WJpW7myt9+9/Z+KHeF3161DzIEnjn4S4GL60uHORWbQNlo4qviYIb6WSyid5
+	0tJXL7kg==;
+Received: from [147.129.179.166] (port=58332 helo=rday)
 	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1vLgo8-00000002wBz-0mj7
+	id 1vLgyt-00000002xtV-1KPC
 	for docs@lists.yoctoproject.org;
-	Wed, 19 Nov 2025 06:57:14 -0500
-Date: Wed, 19 Nov 2025 06:57:44 -0500 (EST)
+	Wed, 19 Nov 2025 07:08:18 -0500
+Date: Wed, 19 Nov 2025 07:08:54 -0500 (EST)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: super annoying pedantry: "setup" versus "set up"
-Message-ID: <466761f6-d151-1638-ccca-714a3d23f209@crashcourse.ca>
+Subject: [PATCH] Quick Build Guide: Rephrase section title for clarity.
+Message-ID: <5713d6f0-643a-2a73-008f-9be0953a7310@crashcourse.ca>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -50,20 +50,39 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 19 Nov 2025 11:57:26 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8079
+ <docs@lists.yoctoproject.org>; Wed, 19 Nov 2025 12:08:26 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8080
 
 
-  something that has always griped my wagger just a wee bit -- the
-misuse of the word "setup" when it should be "set up".
+The section title "Use Git to Clone bitbake-setup" is potentially
+misleading as it seems to suggest that one will clone a repository
+named "bitbake-setup"; rephrase to make it clear that one is cloning
+simply the "bitbake" repository.
 
-  the word "setup" is defined invariably as a *noun*, while the verb
-form should be to "set up" something:
+Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
 
-  https://www.merriam-webster.com/dictionary/setup
+---
 
-i mention this only because there's a bunch of this in the quick start
-guide. yes, it's picky, but that's what i do. :-)
+diff --git a/documentation/brief-yoctoprojectqs/index.rst b/documentation/brief-yoctoprojectqs/index.rst
+index 211b6d70f..52bc40b32 100644
+--- a/documentation/brief-yoctoprojectqs/index.rst
++++ b/documentation/brief-yoctoprojectqs/index.rst
+@@ -87,13 +87,13 @@ distribution:
+    see the :ref:`ref-manual/system-requirements:required packages for the build host`
+    section in the Yocto Project Reference Manual.
 
-rday
+-Use Git to Clone bitbake-setup
+-==============================
++Clone bitbake repositiory to get bitbake-setup
++==============================================
+
+ Once you complete the setup instructions for your machine, you need to
+ get a copy of the ``bitbake-setup`` tool to setup the :term:`Poky` reference
+ distribution on your build host. Use the following commands to clone
+-the bitbake repository.
++the bitbake repository, which provides the ``bitbake-setup`` command.
+
+ .. code-block:: shell
+
+
 
