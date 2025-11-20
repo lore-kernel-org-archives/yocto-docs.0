@@ -1,88 +1,88 @@
-Return-Path: <rpjday@crashcourse.ca>
+Return-Path: <alex.kanavin@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3E3D2CF8861
-	for <webhook@archiver.kernel.org>; Thu, 20 Nov 2025 14:07:56 +0000 (UTC)
-Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.34957.1763647672120801034
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4690ACF8860
+	for <webhook@archiver.kernel.org>; Thu, 20 Nov 2025 14:15:56 +0000 (UTC)
+Received: from mail-vk1-f181.google.com (mail-vk1-f181.google.com [209.85.221.181])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.35033.1763648155063568418
  for <docs@lists.yoctoproject.org>;
- Thu, 20 Nov 2025 06:07:52 -0800
+ Thu, 20 Nov 2025 06:15:55 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=QTPH0n8/;
- spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:References:
-	Message-ID:In-Reply-To:Subject:cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=obZxJro8uDQqIWtsq1m65gScCsFQBozCuidG4OS0NFM=; b=QTPH0n8//89Rhgp7IVJmVc6abV
-	LEbWKDNdHUevX0sH/vLlqaFDD1BGR4G9VGs1LH8wypmVPbEN/IGpTlP+pUTFzPDeVkRve5df+EFaZ
-	ZV6RuWk2g7ZT8TfudQw3NkdisVorEyEMVTeuviGnmseX4Mf4i3iG7ZSQR5nS5iCZ3imsw1OIfjADt
-	bcIDX+DA04ufdRKpR23rdNdZ/iejED133YFmImrHHMao1jMqfz657BAbhNFmr0p/U+fEDJTR0OdmS
-	vE02Z7slLY1XRwkKookR1M9m/EkErYZWT6JdwIuarLZZuWgVZnOsA0NU07WIeM5up13sbmwmLRl+7
-	i8eeEwRA==;
-Received: from [147.129.179.166] (port=53778 helo=rday)
-	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1vM5K5-000000076A6-3ktw;
-	Thu, 20 Nov 2025 09:07:50 -0500
-Date: Thu, 20 Nov 2025 09:08:28 -0500 (EST)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: alex.kanavin@gmail.com
-cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: Re: [docs] "bitbake-setup" suddenly works differently from QS
- guide
-In-Reply-To: <CANNYZj_sH4Pt+aaOP7+2oPibC32QbrYyKYZaKc2CDcVNrExXnA@mail.gmail.com>
-Message-ID: <1ea46cbe-beb1-3837-9c0b-26735a3cccc2@crashcourse.ca>
-References: <00a37b3f-b40f-f58c-3af0-3512f1f40c2a@crashcourse.ca> <CANNYZj_sH4Pt+aaOP7+2oPibC32QbrYyKYZaKc2CDcVNrExXnA@mail.gmail.com>
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=b9QeHOXc;
+ spf=pass (domain: gmail.com, ip: 209.85.221.181, mailfrom: alex.kanavin@gmail.com)
+Received: by mail-vk1-f181.google.com with SMTP id 71dfb90a1353d-55b22d3b2a6so558697e0c.1
+        for <docs@lists.yoctoproject.org>; Thu, 20 Nov 2025 06:15:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763648154; x=1764252954; darn=lists.yoctoproject.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=duCryiQiurrKIQI2Zq8deaL3WXTEVK62Jq6ew1ctIWQ=;
+        b=b9QeHOXc2JYdXA2/Lhm4MNBIaeLvu6+QjhRkxyijFKe1lfiB87jR17VWYnHOBRYAqk
+         y1ASGQkalEUTVYAlIbERdC5FVq2GyvlUT5mTZVkjq6zExH5mOLR+eVr7ymfccBRAGLnS
+         SeZ8PzSb5VJyraMNeLlwAOsbyId5VDp2u/qhSPPh0AsX6+RhpaKPYDmzBvTiqa24O59/
+         KDa4x+HHUYXURQ4bPR31FOBLZGibjQKJL+eHUlt0+29hugHJb4d3pfstjBmqgsn1MNTo
+         r1k9RgMdS4wv6SbwKM8ZibRy5UFWyLiaKft16+UD40m57m/o5Sw7Fe9UNDpJjgZ7fue3
+         N6og==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763648154; x=1764252954;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=duCryiQiurrKIQI2Zq8deaL3WXTEVK62Jq6ew1ctIWQ=;
+        b=lEywt7m71KsPlIGkOdOT2DxJ7BM6mc4QSblFdx4AxPAtpiWyEFUYkbKJrclXwBPnE1
+         vdIJdqzdxLCYxdsCJbocJtkD7hf99bsfmiGPhF3jQ0uMpwcIijUmJjdCqC5vNUJarDh9
+         wzcdGdmDGjM/TDWhCvZ0cF0ZWeJ0RDT/OGNEJWvANn6GMDQqeANrVbfGl0gWUvxufokU
+         TkhEra729duAHJMUCwnH+S417m2gJh7psq5qqyW7t9eo1NfS4D0wMgC2vG/OXTYEJDi3
+         Vq1pxjkCEHcSiMzqrztG4Av4rQ5e3jXh7jCPZnTyZ1IR58dWjRgHwv3QJzjKLDGlXOrj
+         cyDg==
+X-Gm-Message-State: AOJu0YzoS5y8E+wyBl2+yRxw9P2p6rhPglfwG6xpVgmJzzMsz+PubXRb
+	dG+Oxaw8CMV9g1Aw7N4RMkBKaALr9mzj26mz1Tt0lpmjbtN6ckIEL5AWzvYkjNKrOI/4eNEJdr7
+	sxfjbQxD9NG49f3xBslzhMp0p5xKsfB975sHQ
+X-Gm-Gg: ASbGncs8vKkZ8jUw0QzkSHffYZRLWzZC+MSnuhtyF/F/+v6tj8ozLDoYF6FnXQYx74W
+	yEF4V/GN43Uke3BG1MyAqch5A86PDADtV484WGclidK4tHL4miurhQgYYoAIfVYzp0Et26XqhQN
+	LQfwhRuIXw5YqgF/tMaiaUQZL6kYfezu+DgNEK/8HonDwczxvPFED54d/ArU7xyA58meDKKYLr7
+	OCB8au/s513bPfFP+0kSpamBFziZuzh0wN6Pca7bBJ8BnJSmFmf+Rbs/guPCVTI/XR+ueRKy4jK
+	xuMKKRhtlmjznsTKfRt8Qjrf0w+kTg==
+X-Google-Smtp-Source: AGHT+IG4ckA4dpID5MEP8yZIiz8ClDdYf6N/9uJsQXVdp7o5D+LbdO9m6NM4Rcgas0dNER6oILkk/5MSjLNwacEfXX4=
+X-Received: by 2002:a05:6122:3d0b:b0:559:a247:8c8b with SMTP id
+ 71dfb90a1353d-55b81a741f1mr769757e0c.8.1763648153756; Thu, 20 Nov 2025
+ 06:15:53 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+References: <00a37b3f-b40f-f58c-3af0-3512f1f40c2a@crashcourse.ca>
+ <CANNYZj_sH4Pt+aaOP7+2oPibC32QbrYyKYZaKc2CDcVNrExXnA@mail.gmail.com> <1ea46cbe-beb1-3837-9c0b-26735a3cccc2@crashcourse.ca>
+In-Reply-To: <1ea46cbe-beb1-3837-9c0b-26735a3cccc2@crashcourse.ca>
+From: Alexander Kanavin <alex.kanavin@gmail.com>
+Date: Thu, 20 Nov 2025 15:15:42 +0100
+X-Gm-Features: AWmQ_bkvELxZEugy3BR7oAZtY_Jp8_cTgZ6qzYdpokvh1gO-IaixYD1ZYtRmpqw
+Message-ID: <CANNYZj8BJBsYdJZhmf5JWY_=szKdpmKOrPt_zsAmBHAsF2-FYQ@mail.gmail.com>
+Subject: Re: [docs] "bitbake-setup" suddenly works differently from QS guide
+To: rpjday@crashcourse.ca
+Cc: YP docs mailing list <docs@lists.yoctoproject.org>
+Content-Type: text/plain; charset="UTF-8"
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 20 Nov 2025 14:07:56 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8102
+ <docs@lists.yoctoproject.org>; Thu, 20 Nov 2025 14:15:56 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8103
 
-On Thu, 20 Nov 2025, Alexander Kanavin via lists.yoctoproject.org wrote:
+On Thu, 20 Nov 2025 at 15:07, Robert P. J. Day via
+lists.yoctoproject.org <rpjday=crashcourse.ca@lists.yoctoproject.org>
+wrote:
 
-> On Thu, 20 Nov 2025 at 14:48, Robert P. J. Day via
-> lists.yoctoproject.org <rpjday=crashcourse.ca@lists.yoctoproject.org>
-> wrote:
-> >   something seems to have changed dramatically since yesterday ... i
-> > was following along here:
-> >
-> > https://docs.yoctoproject.org/dev/brief-yoctoprojectqs/#use-git-to-clone-bitbake-setup
-> >
-> > and i'm sure yesterday, the build directory that was created was the
-> > verbose one as described on that page; something like:
-> >
-> > Enter setup directory name: [poky-master-poky-distro_poky-machine_qemux86-64]
-> >
-> >   suddenly, it's only "distro-poky-master". i'm confused.
->
-> Robert, I don't understand why you rush to the docs list instead of
-> checking the newest bitbake commits first.
->
-> Yes, we changed it to something shorter, after lots of discussion and
-> prototyping. Yes, the change landed just two hours ago. No, the docs
-> can't magically update themselves when that happens.
+>   based on what i learned and posted in my followup, this change seems
+> confusing if the name of the generated directory depends on the order
+> of initialization. but if that's the new standard, so be it.
 
-  based on what i learned and posted in my followup, this change seems
-confusing if the name of the generated directory depends on the order
-of initialization. but if that's the new standard, so be it.
+People wanted short names. There's no way to make it happen without
+causing name clashes, so something to avoid that had to be done, and
+falling back to the full name was the obvious option. The tool prints
+a notice when this happens so the users know why they're getting a
+longer name.
 
-rday
+There's a new setting you can enable to revert to old behavior and
+make it stable. You can also pass the dir name explicitly with a
+command line option. Or you can type it out when asked.
+
+Alex
 
