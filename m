@@ -2,282 +2,139 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C6F07CFD313
-	for <webhook@archiver.kernel.org>; Mon, 24 Nov 2025 15:48:48 +0000 (UTC)
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.19771.1763999323952528543
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E53EECFA466
+	for <webhook@archiver.kernel.org>; Mon, 24 Nov 2025 15:56:58 +0000 (UTC)
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.19963.1763999812507063419
  for <docs@lists.yoctoproject.org>;
- Mon, 24 Nov 2025 07:48:44 -0800
+ Mon, 24 Nov 2025 07:56:53 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=v/HpnYH5;
- spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=piNreOoO;
+ spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 8CC634E41862;
-	Mon, 24 Nov 2025 15:48:41 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 83A53C139B1;
+	Mon, 24 Nov 2025 15:56:27 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 622E9606FC;
-	Mon, 24 Nov 2025 15:48:41 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6784010371D33;
-	Mon, 24 Nov 2025 16:48:39 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 24D40606FC;
+	Mon, 24 Nov 2025 15:56:50 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 15B6510371E19;
+	Mon, 24 Nov 2025 16:56:46 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1763999320; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1763999809; h=from:subject:date:message-id:to:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=6SsMLYAji3jArvuQV286mCCQV0gozUJXRLR5OQcbQuM=;
-	b=v/HpnYH50C0vW901dmnpohAr/jS2eLAaV1aABZ4NEQPiDXtGOvmB9RmllSwsj6GoveQOtx
-	i9vIKE/0iszOk09QGGiik2vV8hNJ1/n2nvx/APRpYf+BFUgrGYQabzn+E/zGUeyQafYzfw
-	O3bSz5rm2SpfrCmy3cCg9eae9390iD3Bmqy8t7BqZ5eJsLwHDfRy6cXoceqN7qxkzU0CGs
-	QxrbJFefVo2e914p/KmIwAErAHK+wXw9KOAYeSrvN3hr/7nELkg+6+lSspSdIpooPGtsYE
-	ARpTRWUFVoRZzqhj8oKYQuu43vKIZwG7vJ6JDxSJCmS2CDxkqv3gn2E9beGwMg==
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 24 Nov 2025 16:48:38 +0100
-Message-Id: <DEH1KJTN0DXL.1KH0Q0N5KXRGP@bootlin.com>
-Cc: "Stefano Tondo" <stefano.tondo.ext@siemens.com>,
- <peter.marko@siemens.com>, <adrian.freihofer@siemens.com>
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: <stondo@gmail.com>, <docs@lists.yoctoproject.org>
-Subject: Re: [docs][PATCH v2] ref-manual: Document SPDX 3.0.1 variables
+	bh=x21B8dBsTlrdmzx4Q/UX02ijmFVvz8kQDmCvYCDfEZI=;
+	b=piNreOoO2dgCXw1gOEWCvGb70Eme9UTc08v4OvfYEIC3wzO7FSbZmpecOonmoAzxG/cam2
+	4R2ajVKBLSnrbMEXe/7YDXAfPpulFK4IOI4ToUltZ5lq97pP9568tighwLXNIPAj/bbtT+
+	gpe35J9W/6BVdriThQRPhFIshapSxYXBDurAXNKLOYKE3wfGNFSfsaYtSHjR7y+VBEsYNP
+	3CN41/375udYXMDgIRw7hC6GGYEemlz1k/5YjCi0zMkLuR2Z8sRPMJoTPGF/KpLPWNfnsL
+	W0HnRle+IAp988+2bsMPc2+Bftkiy/EXCIQtKWm7fDTX2EovVA22TND27pc44g==
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-References: <20251114145220.71823-1-stondo@gmail.com>
- <20251114151255.74797-1-stondo@gmail.com>
-In-Reply-To: <20251114151255.74797-1-stondo@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 24 Nov 2025 16:56:46 +0100
+Message-Id: <DEH1QRTPEDL6.2XESRCG6M8CT5@bootlin.com>
+From: "Antonin Godard" <antonin.godard@bootlin.com>
+To: "Quentin Schulz" <quentin.schulz@cherry.de>, "Robert P. J. Day"
+ <rpjday@crashcourse.ca>, "YP docs mailing list"
+ <docs@lists.yoctoproject.org>
+Subject: Re: [docs] [PATCH v2] brief-yoctoprojectqs: shorten and clarify
+ required host packages
+References: <77d4de56-c700-9ae8-f03f-ede89df13e62@crashcourse.ca>
+ <DEH0FJ96MF58.TDE0QZF0AM5A@bootlin.com>
+ <74030727-ae53-4664-8693-34ecb975e557@cherry.de>
+In-Reply-To: <74030727-ae53-4664-8693-34ecb975e557@cherry.de>
 X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 24 Nov 2025 15:48:48 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8108
+ <docs@lists.yoctoproject.org>; Mon, 24 Nov 2025 15:56:58 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8109
 
 Hi,
 
-On Fri Nov 14, 2025 at 4:12 PM CET, Stefano Tondo via lists.yoctoproject.or=
-g wrote:
-> From: Stefano Tondo <stefano.tondo.ext@siemens.com>
+On Mon Nov 24, 2025 at 4:21 PM CET, Quentin Schulz wrote:
+> Hi Antonin,
 >
-> Add comprehensive documentation for SPDX-related variables in the
-> Yocto reference manual. This includes documenting previously
-> undocumented variables and updating existing documentation with
-> SPDX 3.0.1 specific information.
+> On 11/24/25 3:55 PM, Antonin Godard via lists.yoctoproject.org wrote:
+>> Hi,
+>>=20
+>> On Wed Nov 19, 2025 at 5:55 PM CET, Robert P. J. Day wrote:
+>> [...]
+>>> -Build Host Packages
+>>> -=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>>> -
+>>> -You must install essential host packages on your build host. The
+>>> -following command installs the host packages based on an Ubuntu
+>>> -distribution:
+>>> -
+>>> -.. literalinclude:: ../tools/host_packages_scripts/ubuntu_essential.sh
+>>> -   :language: shell
+>>> -
+>>> -.. note::
+>>> +Supported Linux Distributions and Required Host Packages
+>>> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D
+>>>
+>>> -   For host package requirements on all supported Linux distributions,
+>>> -   see the :ref:`ref-manual/system-requirements:required packages for =
+the build host`
+>>> -   section in the Yocto Project Reference Manual.
+>>> +For host package requirements on all supported Linux distributions,
+>>> +see the :ref:`ref-manual/system-requirements:required packages for the=
+ build host`
+>>> +section in the Yocto Project Reference Manual.
+>>=20
+>> I think this defeats the purpose of this guide being the "Quick Start Gu=
+ide". I
+>> _think_ most people run Ubuntu when they run Linux, and I believe this i=
+s the
+>> reason why this was written like so in this section.
+>>=20
 >
-> New variables documented:
-> - SPDX_LICENSES: Path to SPDX license identifier mapping file
-> - SPDX_MULTILIB_SSTATE_ARCHS: Architecture list for dependency collection
-> - SPDX_UUID_NAMESPACE: Namespace for UUID generation in SPDX documents
+> I have no data on this, so /me shrugs.
+
+I know, me neither, but it's a general feeling I get from what I've seen IR=
+L.
+
+>> So for the majority of people reading this section will be enough, and t=
+hat's
 >
-> Updated existing variables with SPDX 3.0.1 data:
-> - SPDX_INCLUDE_SOURCES: Added concrete SPDX 3.0.1 size data
->   (~260 MB without sources, ~2.5-2.6 GB with sources)
-> - SPDX_INCLUDE_COMPILED_SOURCES: Updated with SPDX 3.0.1 format informati=
-on
+> The issue is it's not everything that needs to be done according to our=
+=20
+> documentation. So it's already outdated and not well maintained. If you=
+=20
+> want to keep having it this way (which is fair, avoiding to go back and=
+=20
+> forth between the docs when one is reading "quick start" is a good=20
+> idea), I believe we can simply have an .rst with only Ubuntu=20
+> instructions that we can include in both=20
+> ref-manual/system-requirements.rst and brief-yoctoprojectqs/index.rst so=
+=20
+> that it never is outdated?
+
+Sure, having a single document for Ubuntu requirements would be an improvem=
+ent!
+
+>> the point. Also, the previous section "Compatible Linux Distribution" do=
+es
+>> mention that not all version are supported. So I think this section is f=
+ine as
 >
-> The size information is based on building core-image-minimal for
-> qemux86-64 with SPDX 3.0.1 JSON-LD format. The uncompressed SBOM
-> file is approximately 260 MB without sources and increases to
-> ~2.5-2.6 GB when sources are included (approximately 10x increase).
+> Not all doesn't specify which ones. "Recent" is relative to time and I=20
+> will not be able to build Dunfell on a Ubuntu 25.10 even though that is=
+=20
+> a recent distro and the docs said to use that. I would like to have this=
+=20
+> "recent" removed or reworded. Something like
 >
-> Note: SPDX 3.0.1 uses uncompressed JSON-LD format by default,
-> unlike the tar.zst compression used in SPDX 2.2.
->
-> These variables are defined in meta/classes/spdx-common.bbclass.
->
-> Signed-off-by: Stefano Tondo <stefano.tondo.ext@siemens.com>
-> ---
->
-> Changes in v2:
-> - Fixed unintended removal of non-SPDX variables (CCACHE_DISABLE,
->   IMAGE_EXTRA_PARTITION_FILES, REQUIRED_*_FEATURES)
-> - Fixed unintended change to LAYERDEPENDS description
-> - Only SPDX-related variables are now modified
->
->  documentation/ref-manual/variables.rst | 72 +++++++++++++++++++++++---
->  1 file changed, 66 insertions(+), 6 deletions(-)
->
-> diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-m=
-anual/variables.rst
-> index a80ef364e..c098227f2 100644
-> --- a/documentation/ref-manual/variables.rst
-> +++ b/documentation/ref-manual/variables.rst
-> @@ -8962,10 +8962,21 @@ system and gives an overview of their function an=
-d contents.
-> =20
->           SPDX_INCLUDE_COMPILED_SOURCES =3D "1"
-> =20
-> -      According to our tests, building ``core-image-minimal`` for the
-> -      ``qemux86-64`` machine, enabling this option compared with the
-> -      :term:`SPDX_INCLUDE_SOURCES` reduces the size of the  ``tmp/deploy=
-/spdx``
-> -      directory from 2GB to 1.6GB.
-> +      According to our tests on release 4.1 "langdale" (SPDX 2.2 format)=
-, building
+> :ref:`supported version of Ubuntu=20
+> distribution</ref-manual/system-requirements:supported linux distribution=
+s>`
 
-Did you really test this on langdale, or did you add langdale here because =
-it
-was mentioned in the other variable definitions?
+Ack! I agree on removing "recent" too.
 
-> +      ``core-image-minimal`` for the ``qemux86-64`` machine, enabling th=
-is
-> +      option compared with the :term:`SPDX_INCLUDE_SOURCES` reduced the =
-size
-> +      of the ``tmp/deploy/spdx`` directory from 2GB to 1.6GB.
-> +
-> +      With SPDX 3.0.1 JSON-LD format, the uncompressed image SBOM file
-
-I'm not sure it's worth mentioning JSON-LD here, as it can add confusion. I
-would just go with JSON.
-
-> +      (``core-image-minimal-qemux86-64.rootfs.spdx.json``) is approximat=
-ely
-> +      **260 MB without sources** (``SPDX_INCLUDE_SOURCES =3D "0"``), and=
- increases to
-> +      **~2.5-2.6 GB when sources are included** (either ``SPDX_INCLUDE_S=
-OURCES =3D "1"``
-> +      or ``SPDX_INCLUDE_COMPILED_SOURCES =3D "1"``). This represents app=
-roximately
-
-So SPDX_INCLUDE_COMPILED_SOURCES has the same impact on size compared to
-SPDX_INCLUDE_SOURCES? I thought the point of that variable was to optimize
-what's included in the file.
-
-> +      a **10x size increase** when including source files.
-> +
-> +      Note: SPDX 3.0.1 JSON-LD files are not compressed by default, unli=
-ke the
-> +      tar.zst format used in SPDX 2.2. Compression (e.g. zstd) can signi=
-ficantly
-> +      reduce the file size.
-
-We could use a ..note :: block here and in the other notes:
-
-"""
-.. note::
-
-   SPDX 3.0.1 JSON files are not compressed by default, unlike the tar.zst
-   format used in SPDX 2.2. Compression (e.g. zstd) can significantly reduc=
-e the
-   file size.
-"""
-
-Also, how can one enable compression? If you know, it would be worth adding=
- it
-the note. Either the way to do it or a link to the variable that controls t=
-his.
-
-> =20
->     :term:`SPDX_INCLUDE_SOURCES`
->        This option allows to add a description of the source files used t=
-o build
-> @@ -8979,8 +8990,8 @@ system and gives an overview of their function and =
-contents.
-> =20
->           SPDX_INCLUDE_SOURCES =3D "1"
-> =20
-> -      According to our tests on release 4.1 "langdale", building
-> -      ``core-image-minimal`` for the ``qemux86-64`` machine, enabling
-> +      According to our tests on release 4.1 "langdale" (SPDX 2.2 format)=
-,
-> +      building ``core-image-minimal`` for the ``qemux86-64`` machine, en=
-abling
->        this option multiplied the total size of the ``tmp/deploy/spdx``
->        directory by a factor of 3  (+291 MiB for this image),
->        and the size of the ``IMAGE-MACHINE.spdx.tar.zst`` in
-> @@ -8988,6 +8999,42 @@ system and gives an overview of their function and=
- contents.
->        image), compared to just using the :ref:`ref-classes-create-spdx` =
-class
->        with no option.
-> =20
-> +      With SPDX 3.0.1 JSON-LD format, the uncompressed image SBOM file
-> +      (``core-image-minimal-qemux86-64.rootfs.spdx.json``) is approximat=
-ely
-> +      **260 MB without sources** (default: ``SPDX_INCLUDE_SOURCES =3D "0=
-"``),
-> +      and increases to **~2.5-2.6 GB when sources are included**
-> +      (``SPDX_INCLUDE_SOURCES =3D "1"``). This represents approximately =
-a
-> +      **10x size increase** when including source files.
-> +
-> +      Note: SPDX 3.0.1 JSON-LD files are not compressed by default, unli=
-ke the
-> +      tar.zst format used in SPDX 2.2. Compression (e.g. zstd) can signi=
-ficantly
-> +      reduce the file size.
-> +
-> +   :term:`SPDX_LICENSES`
-> +      Path to the JSON file containing SPDX license identifier mappings.=
- This
-> +      file maps common license names to official SPDX license identifier=
-s used
-> +      during SBOM generation.
-> +
-> +      The default value is::
-> +
-> +         SPDX_LICENSES =3D "${COREBASE}/meta/files/spdx-licenses.json"
-
-I would avoid hardcoding a path in the docs, to decrease the maintenance
-effort. Perhaps:
-
-"""
-The default value points to a copy of the license mappings defined by SPDX
-(https://github.com/spdx/license-list-data) stored in :term:`OpenEmbedded-C=
-ore
-(OE-Core)`.
-"""
-
-Same remark for SPDX_MULTILIB_SSTATE_ARCHS and SPDX_UUID_NAMESPACE.
-
-> +
-> +      You can override this variable to use a custom license mapping fil=
-e if
-> +      your organization uses different license naming conventions.
-> +
-> +   :term:`SPDX_MULTILIB_SSTATE_ARCHS`
-> +      The list of sstate architectures to consider when collecting SPDX
-> +      dependencies. This includes multilib architectures when multilib i=
-s
-> +      enabled.
-> +
-> +      The default value is::
-> +
-> +         SPDX_MULTILIB_SSTATE_ARCHS =3D "${SSTATE_ARCHS}"
-> +
-> +      This variable is used internally by the SPDX generation classes to
-> +      ensure all relevant dependencies are included in the SBOM, regardl=
-ess
-> +      of whether multilib is enabled or not.
-> +
->     :term:`SPDX_NAMESPACE_PREFIX`
->        This option could be used in order to change the prefix of ``spdxD=
-ocument``
->        and the prefix of ``documentNamespace``. It is set by default to
-> @@ -9015,6 +9062,19 @@ system and gives an overview of their function and=
- contents.
->        this option is recommended if you want to inspect the SPDX
->        output files with a text editor.
-> =20
-> +   :term:`SPDX_UUID_NAMESPACE`
-> +      The namespace used for generating UUIDs in SPDX documents. This sh=
-ould
-> +      be a domain name or unique identifier for your organization to ens=
-ure
-> +      globally unique SPDX IDs across different builds and organizations=
-.
-> +
-> +      The default value is::
-> +
-> +         SPDX_UUID_NAMESPACE =3D "sbom.openembedded.org"
-> +
-> +      You can override this variable to use your organization's domain::
-> +
-> +         SPDX_UUID_NAMESPACE =3D "sbom.example.com"
-> +
->     :term:`SPDXLICENSEMAP`
->        Maps commonly used license names to their SPDX counterparts found =
-in
->        ``meta/files/common-licenses/``. For the default :term:`SPDXLICENS=
-EMAP`
-
-
-Thanks!
+Thanks,
 Antonin
 
 --=20
