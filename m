@@ -2,73 +2,73 @@ Return-Path: <stondo@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AD015CFD37A
-	for <webhook@archiver.kernel.org>; Tue, 25 Nov 2025 09:58:38 +0000 (UTC)
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.13680.1764064713481628986
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B2054CFD37A
+	for <webhook@archiver.kernel.org>; Tue, 25 Nov 2025 10:01:38 +0000 (UTC)
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.13746.1764064890984706989
  for <docs@lists.yoctoproject.org>;
- Tue, 25 Nov 2025 01:58:33 -0800
+ Tue, 25 Nov 2025 02:01:31 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=mUDAnb1e;
- spf=pass (domain: gmail.com, ip: 209.85.128.42, mailfrom: stondo@gmail.com)
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-47774d3536dso40933595e9.0
-        for <docs@lists.yoctoproject.org>; Tue, 25 Nov 2025 01:58:33 -0800 (PST)
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=b3hVfWXn;
+ spf=pass (domain: gmail.com, ip: 209.85.221.54, mailfrom: stondo@gmail.com)
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-42bb288c219so4540108f8f.1
+        for <docs@lists.yoctoproject.org>; Tue, 25 Nov 2025 02:01:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764064711; x=1764669511; darn=lists.yoctoproject.org;
+        d=gmail.com; s=20230601; t=1764064889; x=1764669689; darn=lists.yoctoproject.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Vl97uhdxg86km3ZrdWB919N+5SKuFhiZchV/0leW2VY=;
-        b=mUDAnb1e5kMUtR3wfl6tBAKsCLNmHO+tfvY2DP5zDsYKcL4cbX+SAQLrQYDfc+LFDV
-         PAYT9ALJyDDALc2og7fYfBi0BgFmL3ONVJ0ZkVeCZic8iodORr5Uu5podApun+lv9M5F
-         3w77FyfCXTHh1uVeO65ekgc9UUn6+JNEKsMu9KskeS0b+tif88Aox7wRHN1wCsg9IVmO
-         hNRK2p3ZtKjJQlyKBO7u3/O7cBKgv3wT32RqHvxp1Pdm8/kqAqog23QCMDfu/fQVrqJB
-         3EgwjNTcU3FGb6L9dl+VTfG2mCzJcOu3uTkIHrKIbat1nE/+i9R6YMD4qiwmujkxNehr
-         KPdw==
+        bh=1lNhmmPWKpX7Bg8xxFl/m/WxM+9rrPb5KNg/zYq3i7k=;
+        b=b3hVfWXnTkostgXGYhD4GQGis/VBTueBEHLkl1RdORvhYBbfj/aYiT4koFE3Xb7WD1
+         EQ2BHqnv2IjumllzBkmPukValbL4rrJ+HtNijsX+ht++BG1ReKUdJjlsxHn+zViEyFcF
+         F2VM0yrXGKKkIxBjJVC+/oi+EcWuaQlAX0rXFz1sB9rshsphnLvHApH1R5WK00tjgOBU
+         Yv1inwJQu/pR2rMcEyTWBW/LLTg2MVb4Df1PWUIV+keoVIBajEZOk0SvTM5FZ54/A/Wu
+         4tas073s8mApSOvWDfGzW6B0JAClW5zGHZBroLOdiN7Nx9B+UKX2WP+KhbeoEPGt1BzG
+         1GnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764064711; x=1764669511;
+        d=1e100.net; s=20230601; t=1764064889; x=1764669689;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Vl97uhdxg86km3ZrdWB919N+5SKuFhiZchV/0leW2VY=;
-        b=dBBHoasvwc16H8oB1K6yQBcQvrAbnE3YheXi1kHL0OLRq73RutQSYzNLQU1iMQGc7Y
-         dJh9hHhlc9rGWpBBmpT16mXXxLF/s+GkoIOZfjrJNUDoG9g28o6UzYlMwn0ToLimCmTS
-         lKg08W4MOddAxwnD3Wi+u6FsOaooAOgAUNm2gtYlZ25ZPQerCfb6+hhEkuIYCpdbGyxv
-         3hI5QQBeF9jHaDk+2VKP14K9Z3YVZP0pewwNUQft5F6jewaf6tIIHUXJ7R5YC2NGEpZt
-         JTctFvCwuTIP+qFlw69eaS71cN9iTIzFgsZr9OLYryqZ8L/qbVsnf8IXEiUlEClVw6d/
-         mFoA==
-X-Gm-Message-State: AOJu0Yy3aUhP4EYku4l9bPCjxfECTcq7GKtWp1V/IUz9rcEPoXZx8mF+
-	qetLyfRpzMHoZU3x0t2MwBvTFWquOjDqaNQaT0F01AFHO70IGH5IwfMU8WaljhxC5eA=
-X-Gm-Gg: ASbGncvg9Yr53sQpDV9LRrbXD+7UEU6Af6W6mCUPFbnkDtNkJE6WCy0PniJU48d/TVI
-	rFuQ7qs7+2VUJKoy0rmawNR7XLX/vEKahcT0JUhdEye3yjqDGajCayEg5OCOhUQ4Mimm1kEWwgC
-	f5jMKB0rqdiCVLv95Aj/dWFJpslU4R2uo3YsSo7K3CYx5Q7oTg6S5iKAkDelRwCRAhXSidMPs3q
-	9/v2hocWQNpxCqv1oIgQNL5bC74DzEgzJ9GpEjdvBeXd0C8Be5vk+hnWtsipF/4XgHjwX4W6zwt
-	Qibn4ZLqcg/peKcCUu71cm0M/22jg3/GJQnKdMDtfFaMQxpm+r6vauBojJSKDhiBGipUxCgJqGs
-	OUJfH8yQ94C6E0tGpSROZp638JxEJBVkkW5ImKtI15XHl/tdjaTP/2cASvnFPEVS+qkBvnvi/ug
-	mYyvF4aj52jDUcisk/2+HN0Z9grChIwB1f1SW/RDFJbB6+z0ir3OobG6KYbgH1cFwTG9VK
-X-Google-Smtp-Source: AGHT+IG1/3uDzWzlJKuZdRJt2J/DJiY1cgjBn+SipGmpR/oEOxQzZ0fYVzzp/IwgWDXUv4hUvyX1eQ==
-X-Received: by 2002:a05:600c:628f:b0:477:bf1:8c82 with SMTP id 5b1f17b1804b1-477c053c90amr162481585e9.15.1764064711243;
-        Tue, 25 Nov 2025 01:58:31 -0800 (PST)
+        bh=1lNhmmPWKpX7Bg8xxFl/m/WxM+9rrPb5KNg/zYq3i7k=;
+        b=J0EHssFTpNDMHgfrifleUZ00gCBjkW976ebf0Ivn/gW/jz5hxR3UjdwK/3A0JomgK9
+         E3dhdap8vrfon2c/IoazWJfhDgtZ/a4jTVSfqfArwTCFo1PVZ2GciXFDuumJzTVYu4Tv
+         aQ77qhyK8i3DfZFUxCsLgG9puOyvBLUThjZan0BJxzLfZqDBE5zS+rbvPedtNQvNsAxZ
+         XaCx5rX8wsDER8/wbdv9fdt4oX7+55kWDzVBc+XHpJtcMTqxj7xRpFFHYBaowA1LkSW/
+         BFOA39CiM35lq7XGRBonra85gdn/ahHA8z+QbPJ/9IGQv5Q+iKWGPm9boMHmDX0AMSDX
+         EhDA==
+X-Gm-Message-State: AOJu0Yzxf+BLfGcA4V1hnuUXA+onUkr88iqOKHeTB6eVnPVsk4sCdlFD
+	iiyW6+cM3vrSeXpKj1kLF0vflC7Dbf6BbQBd67M5d+QccI/kDTpMu44XT9QL68h6a38=
+X-Gm-Gg: ASbGncs2prUfXTDjbn3ux5ZS0Le1XlPwn9kIy+ShxSdYK8mZnvynpQ1PZVsMNUQsZrl
+	ZVMQeKtj1KSXSFo6HI518F3mxiyG3lvnBG6qAEKY0wKbCfCLAzqO8eyjrODjMfhCpblbUfy1GLU
+	WoaPY/dfWMn6DOizEIi65AMANxWZXQlaMgiF5K9/yFJ8gB69hq3pEVVl2Op1ARBDApX8qyp/Q1A
+	zYCqGOSovRY+d2qYOYI6kJZIe+n2SX9cuPhxfWqGfld/qNi7f5EvjBNJfzswmHEgDS9mv0SqxFI
+	ok9FK7CWYrD0d+qwOvADBeHQTJO8RLuvSOAKXVmBr4YN5F8mome8hTwcE16SRs5oRcRlTGQRqkt
+	9TYPbS4QzoiYyVdccNyQqILLJYsEt3VUaMfLcjXNq0sTotOCsh4zFR46ELV28H1CVqh+Dlt4K5C
+	GNLQXfAjsjFrWPmm6HP4PpnJ91NgPTcFWKUsJtKyzo8cMSSKRibGpKuAz+A2HK1icyFy4x
+X-Google-Smtp-Source: AGHT+IENqu/QeztmZq3evX0MbLAhl64a7m+GObYPeaLdqLit/PEjhcA5WWF0B6xy9ptEj1iGSO2QRw==
+X-Received: by 2002:a05:6000:2585:b0:42b:2ee0:569f with SMTP id ffacd0b85a97d-42cc1d0cf1emr16763641f8f.33.1764064888856;
+        Tue, 25 Nov 2025 02:01:28 -0800 (PST)
 Received: from fedora (mob-194-230-144-230.cgn.sunrise.net. [194.230.144.230])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-477bf1e872esm241419975e9.5.2025.11.25.01.58.29
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-42cb7fa35c2sm32115935f8f.25.2025.11.25.02.01.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Nov 2025 01:58:30 -0800 (PST)
+        Tue, 25 Nov 2025 02:01:28 -0800 (PST)
 From: stondo@gmail.com
 To: docs@lists.yoctoproject.org
 Cc: antonin.godard@bootlin.com,
 	peter.marko@siemens.com,
 	adrian.freihofer@siemens.com,
 	stefano.tondo.ext@siemens.com
-Subject: [PATCH v4] ref-manual: Document SPDX 3.0.1 variables
-Date: Tue, 25 Nov 2025 10:58:19 +0100
-Message-ID: <20251125095819.23589-1-stondo@gmail.com>
+Subject: [PATCH v5] ref-manual: Document SPDX 3.0.1 variables
+Date: Tue, 25 Nov 2025 11:01:14 +0100
+Message-ID: <20251125100114.24243-1-stondo@gmail.com>
 X-Mailer: git-send-email 2.51.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 25 Nov 2025 09:58:38 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8111
+ <docs@lists.yoctoproject.org>; Tue, 25 Nov 2025 10:01:38 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8112
 
 From: Stefano Tondo <stefano.tondo.ext@siemens.com>
 
@@ -83,19 +83,17 @@ New variables documented:
 - SPDX_UUID_NAMESPACE: Namespace for UUID generation in SPDX documents
 
 Updated existing variables with SPDX 3.0.1 data:
-- SPDX_INCLUDE_SOURCES: Added concrete SPDX 3.0.1 size data
-  (~260 MB without sources, ~2.5-2.6 GB with sources)
+- SPDX_INCLUDE_SOURCES: Added SPDX 3.0.1 distributed architecture info
+  (rootfs SBOM: 5-6 MB regardless of source inclusion settings)
 - SPDX_INCLUDE_COMPILED_SOURCES: Updated with SPDX 3.0.1 format information
 
-The size information is based on building core-image-minimal for
-qemux86-64 with SPDX 3.0.1 JSON-LD format. The uncompressed SBOM
-file is approximately 260 MB without sources and increases to
-~2.5-2.6 GB when sources are included (approximately 10x increase).
+Key architectural difference in SPDX 3.0.1:
+The rootfs SBOM (tmp/deploy/images/) contains only relationships and metadata,
+while per-package SPDX documents are stored in tmp/deploy/spdx/. This
+distributed approach means source inclusion settings have minimal impact on
+rootfs SBOM size, unlike the monolithic SPDX 2.2 format.
 
-Note: SPDX 3.0.1 uses uncompressed JSON-LD format by default,
-unlike the tar.zst compression used in SPDX 2.2.
-
-These variables are defined in meta/classes/spdx-common.bbclass.
+Tested with core-image-minimal on qemux86-64 (Yocto 5.3).
 
 Signed-off-by: Stefano Tondo <stefano.tondo.ext@siemens.com>
 ---
