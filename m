@@ -1,91 +1,100 @@
-Return-Path: <richard.purdie@linuxfoundation.org>
+Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AD91BD0EE06
-	for <webhook@archiver.kernel.org>; Tue, 25 Nov 2025 15:47:38 +0000 (UTC)
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.452.1764085649967650259
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B943ED0EE0A
+	for <webhook@archiver.kernel.org>; Tue, 25 Nov 2025 15:53:18 +0000 (UTC)
+Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.603.1764085988797376726
  for <docs@lists.yoctoproject.org>;
- Tue, 25 Nov 2025 07:47:30 -0800
+ Tue, 25 Nov 2025 07:53:09 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=ffku2TlF;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.221.49, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-42b32900c8bso3323532f8f.0
-        for <docs@lists.yoctoproject.org>; Tue, 25 Nov 2025 07:47:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1764085648; x=1764690448; darn=lists.yoctoproject.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:to:from:subject:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pBcZKRWeQbfkWKlQ9qoRsiweKBs5KpBku6L0ykAJ33o=;
-        b=ffku2TlFnUFBVP+kV7scKzM9LMiWf1Vv8KstyJEczitfRle6YMV+NN0Pp2tPnV5zgF
-         g1DiCbHP17f6MoFbDyuz42vs2vP2mPV3WgH2EszTdY9H1FsDNdy97LBR/Q1i6cPr/tcN
-         gZJkN/0BCeeKv6/Pn6v27ZxFm0RvpC8NQsU/Y=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764085648; x=1764690448;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=pBcZKRWeQbfkWKlQ9qoRsiweKBs5KpBku6L0ykAJ33o=;
-        b=w9+6gWofy3dmfc+TheoPA5EwwfK6UT2JFgx8+LsZvcZyGBan9ls/QNG2xQMNPTw1vC
-         8oeOipEG5hvoLtusKUCtwA+aJ+qFQ1XXPqk7aVRKJf1YkRlWH16adDBB1Q1T6U278dKT
-         54EYtNeAUrUPVT+Yu+JPBjfGS38csH9ptVhqouJS6z6lPCdcb24Of4YhlGQ25zRILsZr
-         dkf8QWd3Jcmj8a67PZMhUetasxv7atx5lgMBhZ1hCzHEybb/5luT1vkFJY6U0Mxt+fDD
-         EuGFtjwXpd4E6fSEYj+Rj4Gh4FK/O82GBq76qAyITGbXgA6Mz5iI4OHqY5+3eLzwcQ9R
-         T3rA==
-X-Forwarded-Encrypted: i=1; AJvYcCWorYm5Rsxa0B6VXI7jo7/9YNut/yrdcawowrRdo+1L9BIp3hkf2vlqZelQOqJX7TYj81FU@lists.yoctoproject.org
-X-Gm-Message-State: AOJu0Yzi/G1HZSKIUc2VTm/FsdCT+aEUHIhrf5afrHGL+U6qFtH8I7Hp
-	N7u44OhkfucrPwAb9y1b3KtreO9VGD3v0+QMRkJH9SGt9U0l4eSsIhRKpYYTULTUlJhaYai1exK
-	m0UwO
-X-Gm-Gg: ASbGnctu9e0xBr8G6NKyLNKbmvWKl4EQHjAW4bQH0sUjq5a1LUEoBXJUcZ2PsFktGUg
-	vLmIYJJwwxLv7BSk2O0stIzMQdhQmErTkh2hBp/YCBttsluEMOhT1TSC40IiyHzB54wWT7wGWRI
-	apd9VaufdY/g3be1DSToYuhBB6GUGq5NDHUUJbv1CSqlgECqf5e/BUun4whvuhRtoekHR7Hi2gJ
-	OjDyNwJEZRDfEH4Sdx8qfWgUwPEZBtUR98Sy5msgzWRzE8G6zkbdLzFOikZQG0Gp+d6JE3FkbHi
-	2ooeBjDar9o1GGr7ZSbOx0NaMqulYR8Lz31E8NgefEESDEqqiI84xQNH2wmg1qj+jPlj9B7/rCe
-	IaASW21Ne6PLECiPwRytcb2iWt4YsiOkCMJNbk/UGbSadPA0cTx719ZF9eOxe4kx8UnnFxzCL1s
-	to6VzYMgH4u/FnUWymsxgfV6V+fybhw7PRUo9iBgFVJNzIv3+CU21i4jjhc/O8
-X-Google-Smtp-Source: AGHT+IHPBG8T0T6NLe+33qh3sNDr5p4SyU6aQiR+H9RA98oeOr+vf+R2ioiE7yWtdsDV0Kspl1UOLg==
-X-Received: by 2002:a05:6000:420d:b0:42b:2e94:5a90 with SMTP id ffacd0b85a97d-42cc1d2e354mr15989454f8f.36.1764085648200;
-        Tue, 25 Nov 2025 07:47:28 -0800 (PST)
-Received: from ?IPv6:2001:8b0:aba:5f3c:c8cd:1015:2ce5:f243? ([2001:8b0:aba:5f3c:c8cd:1015:2ce5:f243])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42cb7fb8e62sm35026726f8f.35.2025.11.25.07.47.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Nov 2025 07:47:27 -0800 (PST)
-Message-ID: <90133708303aa9fdb7d2bc0cbe3c70aabfc3f3a0.camel@linuxfoundation.org>
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=j/s7S5gS;
+ spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:References:
+	Message-ID:In-Reply-To:Subject:cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=8ipIYX7LwgqoP84c53HZXe8dQi+pf17k/yCFd6QYHok=; b=j/s7S5gSvO4vrf149ESH0tmqEf
+	M7AplrkPHZdr46C1KsBwnNz7Neo9CYHIHsTTO1RcW5eBqZBhUSY6QpKam9V4QdiP612uny7QUW0Px
+	dzLEf/FawqYOQhBWcrjb0kZ51SG6hv74+YQDhKgtvYZUDrbDYIbzJGrMBjsIvQ2XB68I4T6JrZFv4
+	EGltlRsacCKtRFr8VgSPozZ0SCnD7DJN9DqLDSdNWwnlygCa7CZNhko6p9SuW6ZV2Z2JdTUeiQ47s
+	/OicExw96gKYyqabYnkZRIKph+7Vi4XCB+N+kNbAcXEqvl2MAnkynU+mtFk09bH2KXvGQJqqf2+Ms
+	/cyH7t0Q==;
+Received: from [147.129.179.166] (port=58546 helo=rday)
+	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <rpjday@crashcourse.ca>)
+	id 1vNvLf-00000008QA1-48Pc;
+	Tue, 25 Nov 2025 10:53:02 -0500
+Date: Tue, 25 Nov 2025 10:53:53 -0500 (EST)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+To: Richard Purdie <richard.purdie@linuxfoundation.org>
+cc: YP docs mailing list <docs@lists.yoctoproject.org>
 Subject: Re: [docs] is there any value in a short section somewhere on H/W
  bringup tools?
-From: Richard Purdie <richard.purdie@linuxfoundation.org>
-To: "Robert P. J. Day" <rpjday@crashcourse.ca>, YP docs mailing list
-	 <docs@lists.yoctoproject.org>
-Date: Tue, 25 Nov 2025 15:47:26 +0000
-In-Reply-To: <8f9e9bb5-e84e-c9a2-bd27-105ffae5c2e8@crashcourse.ca>
-References: <8f9e9bb5-e84e-c9a2-bd27-105ffae5c2e8@crashcourse.ca>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-User-Agent: Evolution 3.56.0-1 
+In-Reply-To: <90133708303aa9fdb7d2bc0cbe3c70aabfc3f3a0.camel@linuxfoundation.org>
+Message-ID: <560cd947-5501-98e6-619c-59b509468c8a@crashcourse.ca>
+References: <8f9e9bb5-e84e-c9a2-bd27-105ffae5c2e8@crashcourse.ca> <90133708303aa9fdb7d2bc0cbe3c70aabfc3f3a0.camel@linuxfoundation.org>
 MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="8323329-857962856-1764086039=:1073744"
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
+X-AntiAbuse: Original Domain - lists.yoctoproject.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - crashcourse.ca
+X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 25 Nov 2025 15:47:38 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8122
+ <docs@lists.yoctoproject.org>; Tue, 25 Nov 2025 15:53:18 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8123
 
-T24gVHVlLCAyMDI1LTExLTI1IGF0IDA2OjM1IC0wODAwLCBSb2JlcnQgUC4gSi4gRGF5IHdyb3Rl
-Ogo+IAo+IMKgIElzIHRoZXJlIGFueSB2YWx1ZSBpbiBhZGRpbmcgYSBzaG9ydCBzZWN0aW9uIG9u
-IHVzZWZ1bCBPRS1hdmFpbGFibGUKPiBoYXJkd2FyZSBicmluZ3VwIHV0aWxpdGllcz8gaSBqdXN0
-IGFkZGVkIHRoaXMgdG8gYW4gaW1hZ2UgdG8gaGVscCBtZQo+IHBva2UgYXJvdW5kIGEgbmV3IGJv
-YXJkOgo+IAo+IMKgIElNQUdFX0lOU1RBTEw6YXBwZW5kID0gIiBcCj4gwqDCoMKgwqDCoMKgwqAg
-ZGV2bWVtMiBcCj4gwqDCoMKgwqDCoMKgwqAgZHRjIFwKPiDCoMKgwqDCoMKgwqDCoCBldGh0b29s
-IFwKPiDCoMKgwqDCoMKgwqDCoCBpMmMtdG9vbHMgXAo+IMKgwqDCoMKgwqDCoMKgIGxpYmdwaW9k
-IFwKPiDCoMKgwqDCoMKgwqDCoCBsaWJ1Ym9vdGVudi1iaW4gXAo+IMKgwqDCoMKgwqDCoMKgIGxz
-aHcgXAo+IMKgwqDCoMKgwqDCoMKgIG1kaW8tdG9vbHMgXAo+IMKgwqDCoMKgwqDCoMKgIHBoeXRv
-b2wgXAo+IMKgwqDCoMKgwqDCoMKgIHNwaXRvb2xzIFwKPiDCoMKgwqDCoMKgwqDCoCB1c2J1dGls
-cyBcCj4gwqAgIgo+IAo+IG1pZ2h0IHRoaXMgYmUgc29tZXRoaW5nIHRoYXQgd291bGQgYmUgYXBw
-cm9wcmlhdGUgZm9yIHRoZSBCU1AgZ3VpZGUsCj4gb3IgYXMgYSBzZWN0aW9uIGluIHRoZSBkZXYg
-dGFza3MgbWFudWFsPyAoaSdtIHN1cmUgdGhlcmUgYXJlIG90aGVyCj4gcGFja2FnZXMgdGhhdCB3
-b3VsZCBiZWxvbmcgaGVyZSBhcyB3ZWxsLikKCk1vc3Qgb2YgdGhlc2UgYXJlIGluIG1ldGEtb3Bl
-bmVtYmVkZGVkPyBJZiBzbywgd291bGQgYSBwYWNrYWdlZ3JvdXAKdGhlcmUgbWFrZSBzZW5zZT8K
-CkNoZWVycywKClJpY2hhcmQK
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
+--8323329-857962856-1764086039=:1073744
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+
+On Tue, 25 Nov 2025, Richard Purdie wrote:
+
+> On Tue, 2025-11-25 at 06:35 -0800, Robert P. J. Day wrote:
+> >
+> >   Is there any value in adding a short section on useful OE-available
+> > hardware bringup utilities? i just added this to an image to help me
+> > poke around a new board:
+> >
+> >   IMAGE_INSTALL:append = " \
+> >         devmem2 \
+> >         dtc \
+> >         ethtool \
+> >         i2c-tools \
+> >         libgpiod \
+> >         libubootenv-bin \
+> >         lshw \
+> >         mdio-tools \
+> >         phytool \
+> >         spitools \
+> >         usbutils \
+> >   "
+> >
+> > might this be something that would be appropriate for the BSP guide,
+> > or as a section in the dev tasks manual? (i'm sure there are other
+> > packages that would belong here as well.)
+>
+> Most of these are in meta-openembedded? If so, would a packagegroup
+> there make sense?
+
+  i was thinking that very thing. could add pciutils and whatever else
+people think is appropriate.
+
+rday
+--8323329-857962856-1764086039=:1073744--
 
