@@ -2,78 +2,72 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9A860D10F33
-	for <webhook@archiver.kernel.org>; Wed, 26 Nov 2025 12:24:35 +0000 (UTC)
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.11869.1764159871740578150
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D8F51D10F3C
+	for <webhook@archiver.kernel.org>; Wed, 26 Nov 2025 13:00:15 +0000 (UTC)
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.12186.1764162014430886048
  for <docs@lists.yoctoproject.org>;
- Wed, 26 Nov 2025 04:24:33 -0800
+ Wed, 26 Nov 2025 05:00:14 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=EjYqVcnd;
- spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
+ dkim=fail reason="dkim: body hash did not verify" header.i=@bootlin.com header.s=dkim header.b=KNSxPksr;
+ spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 91420C15D73;
-	Wed, 26 Nov 2025 12:24:06 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 701894E418F7;
+	Wed, 26 Nov 2025 13:00:12 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 3C00060721;
-	Wed, 26 Nov 2025 12:24:29 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0AFD7102F08E8;
-	Wed, 26 Nov 2025 13:24:26 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 4562260721;
+	Wed, 26 Nov 2025 13:00:12 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 98605102F08EA;
+	Wed, 26 Nov 2025 14:00:11 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1764159868; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1764162011; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=Fm8EXxvj/8IMxHpndWt91kN4KZMq4cdknzIkrNJHnEQ=;
-	b=EjYqVcndaTnA9xpjzLOdF72nKjxhge567On3TV3xTAzJbCiAwteHAu3YzAWUHo2alJZ5c8
-	gTizir8tEAT52455hgBUKpyv2ULDG3QD/yVuHqaSdc+84fpbnUR/2+TVclyHyEKfbQnlxz
-	K3M7/Yne8Y9jZWqoY9IGWLmyVz0+7GmZnUY5JdW4g623Z6xoOdL/MSPhO1LasBegUGGFVm
-	pT6ofKH+SJ4ErXS22blNrJDX8Wu2zI7ZX/XeQbZm6X85AnM5iC3rS2NHAuKMV5rsRZdeU5
-	Xpjrxia4t6Kmag4BJFDzjv+CIwl3T/XEF4Y690iwG74SOlefhoxbt8dStTg7wA==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 26 Nov 2025 13:24:26 +0100
-Message-Id: <DEIMHA9D2QJK.337TAM5EX1ME1@bootlin.com>
-Subject: Re: [PATCH v5] ref-manual: Document SPDX 3.0.1 variables
-Cc: "Marko, Peter" <Peter.Marko@siemens.com>, "Freihofer, Adrian"
- <adrian.freihofer@siemens.com>
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: "Tondo, Stefano" <stefano.tondo.ext@siemens.com>, "stondo@gmail.com"
- <stondo@gmail.com>, "docs@lists.yoctoproject.org"
- <docs@lists.yoctoproject.org>
-References: <20251125100114.24243-1-stondo@gmail.com>
- <DEHSVACWEQGR.3LSFE5DPMX6O8@bootlin.com>
- <AS4PR10MB51507872845B518128E53BFEACD1A@AS4PR10MB5150.EURPRD10.PROD.OUTLOOK.COM>
-In-Reply-To: <AS4PR10MB51507872845B518128E53BFEACD1A@AS4PR10MB5150.EURPRD10.PROD.OUTLOOK.COM>
+	bh=33sqqhTnIk7DtbmE0bVWFyWIQK7EkCyLiOgXIHuH+Wc=;
+	b=KNSxPksrcGjSZSFkNV4ktWukrY0jcIUxBJmLZLyApwk4GA9y1t4enplt3uwa2BL/Yb0iVx
+	eQvoQvbADSBpBa5thBPwBoYXvm4DZjIzl7VBFlDKUMNacZi4lcOQSrAYBEphjM2q1fhkHh
+	geQgKQsWiTKmCxKyBHqqb98Rvz3fVq5GLM3f+vl/6Kyng4UVVAx23LCF7YqIihfhf/sDqc
+	IiLK+pqDE0fpAywvs1TI9xq4xp41ehpzXDl/Mm/6rn9POKv8uWfjcGP7cWHuobmdhku/2V
+	61ZX1a3PSes5i+9whob2TdL8mpNW3JsOuVsWQW1LdJTh02FuXBjplGR06qN3VQ==
+From: Antonin Godard <antonin.godard@bootlin.com>
+To: docs@lists.yoctoproject.org,
+	=?UTF-8?q?Enrico=20J=C3=B6rns?= <ejo@pengutronix.de>
+Cc: Antonin Godard <antonin.godard@bootlin.com>,
+	yocto@pengutronix.de
+Subject: Re: [PATCH] dev-manual/sbom.rst: reflect that create-spdx is enabled by default
+Date: Wed, 26 Nov 2025 13:51:27 +0100
+Message-ID: <176416145880.617433.1752444357666057432.b4-ty@bootlin.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251028081249.1378992-1-ejo@pengutronix.de>
+References: <20251028081249.1378992-1-ejo@pengutronix.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: quoted-printable
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 26 Nov 2025 12:24:35 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8124
+ <docs@lists.yoctoproject.org>; Wed, 26 Nov 2025 13:00:15 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8133
 
-Hi,
 
-On Tue Nov 25, 2025 at 2:41 PM CET, Stefano Tondo wrote:
-> Hi,
->
-> Given what I was currently working on and the state of my local repo, I t=
-hought it was smart for me to create a small script to automate the fixing =
-and it ended up in a huge mess, sorry.
+On Tue, 28 Oct 2025 09:12:22 +0100, Enrico J=C3=B6rns wrote:
+> Since nanbield (b34032ec "defaultsetup: Inherit create-spdx by
+> default"), the create-spdx class is pulled in by default, not only by
+> poky.
+>=20
+> Adapt the text to reflect this and also change INHERIT to INHERIT_DISTR=
+O
+> since this is the more concrete variable to modify for disabling
+> create-spdx.
+>=20
+> [...]
 
-I use b4 to manage patches/patch series which has been working well for me:
-https://b4.docs.kernel.org/en/latest/
+Applied, thanks!
 
-> Now I manually checked and it seems fine. I really hope I didn't miss any=
-thing else anymore.
-> V6 is going to be submitted soon..
+[1/1] dev-manual/sbom.rst: reflect that create-spdx is enabled by default
+      commit: 2b6228943443faf76c9869a0daeccfe7f93688ca
 
-Thanks, received, I'll take a look.
-
-Antonin
-
+Best regards,
 --=20
-Antonin Godard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
 
 
