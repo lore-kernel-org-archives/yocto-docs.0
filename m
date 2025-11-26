@@ -1,187 +1,240 @@
-Return-Path: <stondo@gmail.com>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 968B7D10F56
-	for <webhook@archiver.kernel.org>; Wed, 26 Nov 2025 14:00:56 +0000 (UTC)
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.13430.1764165651140269434
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 33650D11181
+	for <webhook@archiver.kernel.org>; Wed, 26 Nov 2025 15:48:37 +0000 (UTC)
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.16055.1764172107694830671
  for <docs@lists.yoctoproject.org>;
- Wed, 26 Nov 2025 06:00:51 -0800
+ Wed, 26 Nov 2025 07:48:28 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=UTGEMZ5a;
- spf=pass (domain: gmail.com, ip: 209.85.128.48, mailfrom: stondo@gmail.com)
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-477ba2c1ca2so71442555e9.2
-        for <docs@lists.yoctoproject.org>; Wed, 26 Nov 2025 06:00:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764165649; x=1764770449; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=nkXum5eECwxOloHUby47P4NTsLqGtBjC7lzjhuhCcFE=;
-        b=UTGEMZ5a460tx8bS5Nl8zMvTdfYVc+882zHYwfEpEgRLJz4c9IpKPSIIFPLQFHPFXR
-         OqLdycGtErn4oP4LHN90L5MswAOQgbmL8IJ6gIVHGradmy53JGV4UtAqUl0D7XwlH6Mt
-         wCteoaID0chcJBOo/ObBcgFmxlVxhftEFb0iO17qveFzFVDKE1NjYuN0ODegw2WLIweh
-         E52cITKUOFsgLXG1+lel6heS0ZPY2vNvn8ZAYdTtSPdSKuwZ0sVYG9ZS9g0KbYNgqDOE
-         7yvhAvMtvsWnGwyLcOdntZFzMae0QDR+F2TCcfa9JpoYXKZm8iFc/CO7FMHNz4CV3x2U
-         ijRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764165649; x=1764770449;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nkXum5eECwxOloHUby47P4NTsLqGtBjC7lzjhuhCcFE=;
-        b=EJuDOAd29abw+7Pkl3oeCejNDompNC2D4BV4eCXrNQruUQ99W6QiXvW5qdYbrUvbf2
-         fVX5bSC3Ut41ekGsv9+XM3GCfw8nQG0BiafgbsumVEMDwt5j9QvNRdr9OMvc5vf/G8Fe
-         xeL0DvZ3nv5j5Aby9RNiYrve5ko+uSVmHpKqAWo9dv/L/NOpEGJqy2Dq8FVDGdWTZOSH
-         587FusJcBhNRuqYJXcGwun0SOClHZYvqtkOUov43+Z3tQ2vQUfXlMxMxIxrKqnBZb+6A
-         zVawyNG94Mwk78QZgZ4qsUkEwcBmj6w5u7/BwuX2VFyJxMQtyZIWT6caFTaJoswZPvgz
-         VYLw==
-X-Gm-Message-State: AOJu0Yx+YH+C2HG766JOQ00shcB1BeY2ETRtjNH1jP6EFfORehUWA2kY
-	Vg/2OeYBtzaaZorCPFHomd4QRdi87oxNFubyXExg+HXQgNaBHnLYsmtZ7ESnY5oQ
-X-Gm-Gg: ASbGncsRi5q4qTobe0LpR9+7dXPEd8DyFmg+tGCYtTvpDjCqOw8IOjN4EbQkJaV3Mr9
-	0P5AWqqDQFcn2ED1XEu+U9z5OyLhicmUbFLJO2fQwH5r4zdOjwA5KjO7f544P5Boha1F3CrsXaB
-	Qbx/18WzFVulL8NfDDF7IwF3AkbkX7E7bZbswPecWgsUlbTLjPzkjdxm8HJcu4hEcTxGNPrOSYA
-	CbC2Oi+nyL5hkXOboMQaE13mBcR2yl2Ig2X5rLVlYW6HlN6CtzgsrWFJ+A8+8aZ1n/bDY6QV1Nu
-	iQ/vBPD+OXHBQTb2cCTcz2AgGqSmNGd/lJgiqX25JEeWTV0e68Sb457xx0EXPBhvTocqtQ+WrVy
-	wyTfH7fueNTYgAbXHqL2EToADOwtuGY3K/2xVrZ+8iEHiE+SDs95UMwq8Y5FDVEZTfJSuG/ncf9
-	DGAjaomzhi+nBspAFB5vUk5dM=
-X-Google-Smtp-Source: AGHT+IHwt6vk8VmzesHqupc9CWtGIpRXFgWrjzbkfViQaduNu7BwQIYBBHFIzzm/6t6eTQZdIdcfQQ==
-X-Received: by 2002:a05:600c:c83:b0:45b:7d77:b592 with SMTP id 5b1f17b1804b1-47904aed270mr73050685e9.12.1764165648812;
-        Wed, 26 Nov 2025 06:00:48 -0800 (PST)
-Received: from fedora ([81.6.40.67])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4790add608bsm46676255e9.5.2025.11.26.06.00.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Nov 2025 06:00:48 -0800 (PST)
-From: stondo@gmail.com
-To: docs@lists.yoctoproject.org
-Cc: antonin.godard@bootlin.com,
-	peter.marko@siemens.com,
-	adrian.freihofer@siemens.com,
-	Stefano Tondo <stefano.tondo.ext@siemens.com>
-Subject: [PATCH v8] ref-manual: Document SPDX 3.0.1 variables
-Date: Wed, 26 Nov 2025 15:00:43 +0100
-Message-ID: <20251126140043.65629-1-stondo@gmail.com>
-X-Mailer: git-send-email 2.51.1
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=aaAzY+tx;
+ spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 3FFB14E418DF
+	for <docs@lists.yoctoproject.org>; Wed, 26 Nov 2025 15:48:25 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 170F560721
+	for <docs@lists.yoctoproject.org>; Wed, 26 Nov 2025 15:48:25 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8977C102F08AA;
+	Wed, 26 Nov 2025 16:48:23 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1764172104; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=tB1ei5iqdycGlLIkTCV1hjfI7Y5s1RF3fnCepyrmvZ8=;
+	b=aaAzY+txUYgRBJ4B9CdxJNMtN6yC7yf1a5sYi3D/O3POUtNyzRPdZWVdB50t7a6JVjPLiV
+	jnHMyu+ZzPncxSK9AM0eB2kqrwzTalx2EdOyjmmHelqnK3mY69hk8q+3DCTvXcKuiwbMw4
+	g/bh0TlhnozDeF+so/10vktYHy49DuNEsv5ry0PteebGLpBP1fjmKraDbiy3CB1iNYrKrC
+	OrkD3JV3EpbBS7LDbg6/zjL03baH+PdO9aahcNca/H52eGXY8bfMrRccjRz3nAPOF+JCkf
+	vXRIA1QBiGCl+qRhUwzVRVhF/UIcZfg3rNqH6dxnpw5Ugmv8cYOBKSpVzdpzPQ==
+From: Antonin Godard <antonin.godard@bootlin.com>
+Date: Wed, 26 Nov 2025 16:47:43 +0100
+Subject: [PATCH] overview-manual/concepts.rst: update the cross-development
+ toolchain section
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251126-fix-concepts-toolchains-v1-1-f701b23f0aff@bootlin.com>
+X-B4-Tracking: v=1; b=H4sIAB4hJ2kC/yWMQQqDMBAAvyJ77oJJq7X9SunBxFW3lESyqQji3
+ 7vqcWBmVhBKTALPYoVEMwvHoGAuBfixDQMhd8pgS1sZY2vseUEfg6cpC+YYv6pxEOzdw92ujWn
+ vZQ1aT4lUPc6v98nycx/yed/Btv0BqnftHXsAAAA=
+X-Change-ID: 20251126-fix-concepts-toolchains-fb9b4381a706
+To: docs@lists.yoctoproject.org
+Cc: Antonin Godard <antonin.godard@bootlin.com>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=8635;
+ i=antonin.godard@bootlin.com; h=from:subject:message-id;
+ bh=JIa3NsS2onWJ3CDICj//VZbZJ3uHQwbYtjTxJEjwEpo=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpJyFGSv0MLgr/x4kE33J/8iLigfHJr1UKI+nk7
+ kTbUVVwO5KJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaSchRgAKCRDRgEFAKaOo
+ NlSxD/9rDgmA5JhspT6hnxsT1xHv1jadwb2x0HIAt8JT+Coo5E7WUeukD6vEi7Kv9SVMmg6yWcW
+ n9g6tbaH/wpxYAm2zqVGGaQo1WfwSxltizz6I46CdDv2Pq2s29IYvc4TbHGbrlaoNUISkCXmAXv
+ duyY0doSZkZv7Tytsoo2wH8aoDTNFQ6WtIXF/uofpTE2uJn1Oh4e/uGbna+JYTBV3O14y2lUkwz
+ kAmNLN8hbr8dlfLz0gGF2b6ALanUVzXl4rNGUVcga5M6+k0iqMebxwzjrJxJ9gUi+7fEVNq7Zl+
+ QioDjOZ3GckMV59uajzYwobInLKD6ip+RwfE1/xU+bD6HJ7QTjtYYLLzogsl6gSZdZaOuqI1YSz
+ Q5wy2OMIdkzE8iWzvFPlI6QpLogrR6SZEsXL06AxXMR2vumiVyBlJOpoxrAkSkM1q9LrPySkU0C
+ i4r6W3K3XoF2A8UoxKwm6i/Re7C+wxg2vaokrCEfjxLfTo+Sh3KsAj71xygJMwC2h0gbOeWqRCT
+ 9TVET2k628Y/bWaT51UAa4cHDG3LgQRXiLdNsBc80qJg/DpZz1WWQ7zOHusKYw6HPDvq4RVQ3Rc
+ vHw37puZt9oMd9Y6ptMn4Ltynu3m0gUiicj8gzzykXbwI9g+RXE727iEjG7JXbiLqoQgwANJHBx
+ 0X7u67INvU9wf9Q==
+X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
+ fpr=8648725188DD401BB9A0D3FFD180414029A3A836
+X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 26 Nov 2025 14:00:56 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8146
+ <docs@lists.yoctoproject.org>; Wed, 26 Nov 2025 15:48:37 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8147
 
-From: Stefano Tondo <stefano.tondo.ext@siemens.com>
+Update the cross-development toolchain section of the concepts document
+to make it GCC-agnostic as we now have Clang support.
 
-Add comprehensive documentation for SPDX-related variables in the
-Yocto reference manual. This includes documenting previously
-undocumented variables and updating existing documentation with
-SPDX 3.0.1 specific information.
+The chain presented to build the relocatable toolchain
+(gcc-cross-canadian) was also updated and simplified. `bitbake -g
+gcc-cross-canadian-aarch64` was used to understand it better.
 
-New variables documented:
-- SPDX_LICENSES: Path to SPDX license identifier mapping file
-- SPDX_MULTILIB_SSTATE_ARCHS: Architecture list for dependency collection
-- SPDX_UUID_NAMESPACE: Namespace for UUID generation in SPDX documents
+Also move the gcc-cross-canadian note after introducing the relocatable
+chain of dependencies, as it felt a little too soon to mention it at
+this point.
 
-Updated existing variables:
-- SPDX_INCLUDE_SOURCES: Added SPDX 3.0.1 format information
-- SPDX_INCLUDE_COMPILED_SOURCES: Clarified relationship with SPDX_INCLUDE_SOURCES
-
-Note: The langdale (SPDX 2.2) information was already present in the
-documentation. This patch adds corresponding information for SPDX 3.0.1
-format based on testing with the master branch.
-
-Signed-off-by: Stefano Tondo <stefano.tondo.ext@siemens.com>
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/ref-manual/variables.rst | 54 +++++++++++++++++++++++---
- 1 file changed, 49 insertions(+), 5 deletions(-)
+ documentation/overview-manual/concepts.rst | 108 ++++++++++++-----------------
+ 1 file changed, 43 insertions(+), 65 deletions(-)
 
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index f0a99aafb..e022d6381 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -9000,10 +9000,18 @@ system and gives an overview of their function and contents.
+diff --git a/documentation/overview-manual/concepts.rst b/documentation/overview-manual/concepts.rst
+index 397a8b84d..04a08b7db 100644
+--- a/documentation/overview-manual/concepts.rst
++++ b/documentation/overview-manual/concepts.rst
+@@ -1466,58 +1466,53 @@ build images and generally work within the Yocto Project
+ environment. When you run
+ :term:`BitBake` to create an image, the
+ OpenEmbedded build system uses the host ``gcc`` compiler to bootstrap a
+-cross-compiler named ``gcc-cross``. The ``gcc-cross`` compiler is what
+-BitBake uses to compile source files when creating the target image. You
+-can think of ``gcc-cross`` simply as an automatically generated
++cross-compiler named ``gcc-cross`` (or ``clang-cross`` if Clang is used). This
++compiler is what BitBake uses to compile source files when creating the target
++image. You can think of it simply as an automatically generated
+ cross-compiler that is used internally within BitBake only.
  
-          SPDX_INCLUDE_COMPILED_SOURCES = "1"
+-.. note::
+-
+-   The extensible SDK does not use ``gcc-cross-canadian``
+-   since this SDK ships a copy of the OpenEmbedded build system and the
+-   sysroot within it contains ``gcc-cross``.
+-
+ The chain of events that occurs when the standard toolchain is bootstrapped::
  
--      According to our tests, building ``core-image-minimal`` for the
--      ``qemux86-64`` machine, enabling this option compared with the
--      :term:`SPDX_INCLUDE_SOURCES` reduces the size of the  ``tmp/deploy/spdx``
--      directory from 2GB to 1.6GB.
-+      For SPDX 2.2 format (release 4.1 "langdale"), building
-+      ``core-image-minimal`` for the ``qemux86-64`` machine, this option
-+      reduced the size of the ``tmp/deploy/spdx`` directory from 2GB to
-+      1.6GB compared to :term:`SPDX_INCLUDE_SOURCES`, as it includes only
-+      compiled objects without original source files.
-+
-+      With SPDX 3.0.1 JSON format, enabling this option includes both
-+      compiled sources and original source files (same as
-+      ``SPDX_INCLUDE_SOURCES = "1"``), which significantly increases
-+      the SBOM size. For example, with ``core-image-minimal`` on
-+      ``qemux86-64``, the uncompressed SBOM file can grow from hundreds
-+      of megabytes to several gigabytes.
+-   binutils-cross -> linux-libc-headers -> gcc-cross -> libgcc-initial -> glibc -> libgcc -> gcc-runtime
++   gcc -> virtual/cross-binutils -> linux-libc-headers -> virtual/cross-cc -> libgcc-initial -> virtual/libc -> libgcc -> virtual/compilerlibs
  
-    :term:`SPDX_INCLUDE_SOURCES`
-       This option allows to add a description of the source files used to build
-@@ -9017,7 +9025,7 @@ system and gives an overview of their function and contents.
+--  ``gcc``: The compiler, GNU Compiler Collection (GCC).
++-  ``gcc``: The compiler, GNU Compiler Collection (GCC), provided by the
++   :term:`Build Host`, or by a :term:`buildtools` tarball.
  
-          SPDX_INCLUDE_SOURCES = "1"
+--  ``binutils-cross``: The binary utilities needed in order
+-   to run the ``gcc-cross`` phase of the bootstrap operation and build the
+-   headers for the C library.
++-  ``virtual/cross-binutils``: The binary utilities needed in order
++   to run the ``virtual/cross-cc`` phase of the bootstrap operation and
++   build the headers for the C library.
  
--      According to our tests on release 4.1 "langdale", building
-+      For SPDX 2.2 format (release 4.1 "langdale"), building
-       ``core-image-minimal`` for the ``qemux86-64`` machine, enabling
-       this option multiplied the total size of the ``tmp/deploy/spdx``
-       directory by a factor of 3  (+291 MiB for this image),
-@@ -9026,6 +9034,33 @@ system and gives an overview of their function and contents.
-       image), compared to just using the :ref:`ref-classes-create-spdx` class
-       with no option.
+ -  ``linux-libc-headers``: Headers needed for the cross-compiler and C library build.
  
-+      With SPDX 3.0.1 JSON format, including source files significantly
-+      increases the SBOM size (potentially by several gigabytes for typical
-+      images).
-+
-+   :term:`SPDX_LICENSES`
-+      Path to the JSON file containing SPDX license identifier mappings.
-+      This file maps common license names to official SPDX license
-+      identifiers used during SBOM generation.
-+
-+      The default value points to a copy of the license mappings defined
-+      by SPDX (https://github.com/spdx/license-list-data) stored in
-+      :term:`OpenEmbedded-Core (OE-Core)`.
-+
-+      You can override this variable to use a custom license mapping file
-+      if your organization uses different license naming conventions.
-+
-+   :term:`SPDX_MULTILIB_SSTATE_ARCHS`
-+      The list of sstate architectures to consider when collecting SPDX
-+      dependencies. This includes multilib architectures when multilib is
-+      enabled.
-+
-+      The default value is set to :term:`SSTATE_ARCHS`.
-+
-+      This variable is used internally by the SPDX generation classes to
-+      ensure all relevant dependencies are included in the SBOM,
-+      regardless of whether multilib is enabled or not.
-+
-    :term:`SPDX_NAMESPACE_PREFIX`
-       This option could be used in order to change the prefix of ``spdxDocument``
-       and the prefix of ``documentNamespace``. It is set by default to
-@@ -9053,6 +9088,15 @@ system and gives an overview of their function and contents.
-       this option is recommended if you want to inspect the SPDX
-       output files with a text editor.
+--  ``libgcc-initial``: An initial version of the gcc support library needed
+-   to bootstrap ``glibc``.
+-
+--  ``libgcc``: The final version of the gcc support library which
+-   can only be built once there is a C library to link against.
+-
+--  ``glibc``: The GNU C Library.
+-
+--  ``gcc-cross``: The final stage of the bootstrap process for the
++-  ``virtual/cross-cc``: The final stage of the bootstrap process for the
+    cross-compiler. This stage results in the actual cross-compiler that
+    BitBake uses when it builds an image for a targeted device.
  
-+   :term:`SPDX_UUID_NAMESPACE`
-+      The namespace used for generating UUIDs in SPDX documents. This
-+      should be a domain name or unique identifier for your organization
-+      to ensure globally unique SPDX IDs across different builds and
-+      organizations.
+    This tool is a "native" tool (i.e. it is designed to run on
+    the build host).
+ 
+--  ``gcc-runtime``: Runtime libraries resulting from the toolchain
+-   bootstrapping process. This tool produces a binary that consists of
+-   the runtime libraries need for the targeted device.
++-  ``libgcc-initial``: An initial version of the GCC support library needed
++   to bootstrap ``virtual/libc``.
 +
-+      The default value is set to a domain managed by the OpenEmbedded
-+      project. You can override this to use your organization's domain.
++-  ``virtual/libc``: An provider of the C Standard Library (for example, the GNU C Library).
 +
-    :term:`SPDXLICENSEMAP`
-       Maps commonly used license names to their SPDX counterparts found in
-       ``meta/files/common-licenses/``. For the default :term:`SPDXLICENSEMAP`
--- 
-2.51.1
++-  ``libgcc``: The final version of the GCC support library which
++   can only be built once there is a C library to link against.
++
++-  ``virtual/compilerlibs``: Runtime libraries resulting from the toolchain
++   bootstrapping process. This tool produces a binary that consists of the
++   runtime libraries need for the targeted device.
+ 
+ You can use the OpenEmbedded build system to build an installer for the
+ relocatable SDK used to develop applications. When you run the
+ installer, it installs the toolchain, which contains the development
+-tools (e.g., ``gcc-cross-canadian``, ``binutils-cross-canadian``, and
+-other ``nativesdk-*`` tools), which are tools native to the SDK (i.e.
+-native to :term:`SDK_ARCH`), you need to cross-compile and test your
+-software. The figure shows the commands you use to easily build out
+-this toolchain. This cross-development toolchain is built to execute on the
+-:term:`SDKMACHINE`, which might or might not be the same machine as
+-the Build Host.
++tools (e.g., ``gcc-cross-canadian``, ``clang-cross-canadian``,
++``binutils-cross-canadian``, and other ``nativesdk-*`` tools), which are tools
++native to the SDK (i.e. native to :term:`SDK_ARCH`), you need to cross-compile
++and test your software. The figure shows the commands you use to easily build
++out this toolchain. This cross-development toolchain is built to execute on the
++:term:`SDKMACHINE`, which might or might not be the same machine as the Build
++Host.
+ 
+ .. note::
+ 
+@@ -1527,43 +1522,26 @@ the Build Host.
+ 
+ Here is the bootstrap process for the relocatable toolchain::
+ 
+-   gcc -> binutils-crosssdk -> gcc-crosssdk-initial -> linux-libc-headers -> glibc-initial -> nativesdk-glibc -> gcc-crosssdk -> gcc-cross-canadian
+-
+--  ``gcc``: The build host's GNU Compiler Collection (GCC).
+-
+--  ``binutils-crosssdk``: The bare minimum binary utilities needed in
+-   order to run the ``gcc-crosssdk-initial`` phase of the bootstrap
+-   operation.
++   gcc -> virtual/cross-binutils -> linux-libc-headers -> virtual/cross-cc -> libgcc-initial -> virtual/libc -> gcc-cross-canadian/clang-cross-canadian
+ 
+--  ``gcc-crosssdk-initial``: An early stage of the bootstrap process for
+-   creating the cross-compiler. This stage builds enough of the
+-   ``gcc-crosssdk`` and supporting pieces so that the final stage of the
+-   bootstrap process can produce the finished cross-compiler. This tool
+-   is a "native" binary that runs on the build host.
++The chain is the same as the standard toolchain, except for the last item:
++``gcc-cross-canadian`` (or ``clang-cross-canadian``) is the final relocatable
++cross-compiler. When run on the :term:`SDKMACHINE`, this tool produces
++executable code that runs on the target device. Only one cross-canadian compiler
++is produced per architecture since they can be targeted at different processor
++optimizations using configurations passed to the compiler through the compile
++commands. This circumvents the need for multiple compilers and thus reduces the
++size of the toolchains.
+ 
+--  ``linux-libc-headers``: Headers needed for the cross-compiler.
+-
+--  ``glibc-initial``: An initial version of the Embedded GLIBC needed to
+-   bootstrap ``nativesdk-glibc``.
++.. note::
+ 
+--  ``nativesdk-glibc``: The Embedded GLIBC needed to bootstrap the
+-   ``gcc-crosssdk``.
++   The extensible SDK does not use ``gcc-cross-canadian`` or ``clang-cross-canadian``
++   since this SDK ships a copy of the OpenEmbedded build system and the
++   sysroot within it contains ``gcc-cross``.
+ 
+--  ``gcc-crosssdk``: The final stage of the bootstrap process for the
+-   relocatable cross-compiler. The ``gcc-crosssdk`` is a transitory
+-   compiler and never leaves the build host. Its purpose is to help in
+-   the bootstrap process to create the eventual ``gcc-cross-canadian``
+-   compiler, which is relocatable. This tool is also a "native" package
+-   (i.e. it is designed to run on the build host).
++.. note::
+ 
+--  ``gcc-cross-canadian``: The final relocatable cross-compiler. When
+-   run on the :term:`SDKMACHINE`,
+-   this tool produces executable code that runs on the target device.
+-   Only one cross-canadian compiler is produced per architecture since
+-   they can be targeted at different processor optimizations using
+-   configurations passed to the compiler through the compile commands.
+-   This circumvents the need for multiple compilers and thus reduces the
+-   size of the toolchains.
++   To learn how to use Clang for the SDK, see :term:`PREFERRED_TOOLCHAIN_SDK`.
+ 
+ .. note::
+ 
+
+---
+base-commit: bcb6a7c8a401ceadf69a4c0c14dbc89f85ffdebe
+change-id: 20251126-fix-concepts-toolchains-fb9b4381a706
 
 
