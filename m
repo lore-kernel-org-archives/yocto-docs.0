@@ -2,245 +2,173 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 53AAED116F6
-	for <webhook@archiver.kernel.org>; Thu, 27 Nov 2025 16:38:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 66133D116F3
+	for <webhook@archiver.kernel.org>; Thu, 27 Nov 2025 16:42:18 +0000 (UTC)
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.22600.1764261482227337752
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.22689.1764261735210063894
  for <docs@lists.yoctoproject.org>;
- Thu, 27 Nov 2025 08:38:02 -0800
+ Thu, 27 Nov 2025 08:42:15 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=hYlXrAGy;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=WxSykctb;
  spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id B5ED31A1DC7
-	for <docs@lists.yoctoproject.org>; Thu, 27 Nov 2025 16:38:00 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id B3D071A1DC3
+	for <docs@lists.yoctoproject.org>; Thu, 27 Nov 2025 16:42:13 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 8EADC60722
-	for <docs@lists.yoctoproject.org>; Thu, 27 Nov 2025 16:38:00 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 08A5B103C8C55;
-	Thu, 27 Nov 2025 17:37:59 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 7724E60722;
+	Thu, 27 Nov 2025 16:42:13 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1B2E0102F2ABC;
+	Thu, 27 Nov 2025 17:42:11 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1764261480; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=05kj1nbDncbJ1DCpZs+B3k/lQGoMCXZc1MJMmqQQqkg=;
-	b=hYlXrAGyqlh6KmTq0H2coGvNTlDx4D5pDpbTpkv5y1zNueMSH6S3UBrrr1ewFPtF3EuSCg
-	lHdWRvuqTvT2VXr51O89KwJYVUwrYz8pAzbnjef2FnZObZTSv5d6m+EYee4vx6cwyo9CGb
-	7rHF2if8XObfHTuBBOn1Sk2PIU1mgNfICVcHg53Du6ScnoTpdcIkYIs68OHy2NgUhTJA3L
-	z5T24V27zzZv97EBX+84WPch3XRyuzsvsuPZdLMgDLQd/GVRnmCK4AWq25GFhYyri7CCW1
-	tONgu6MpJ0NiE0hzdF3dfDzJFazD//pqA80P5TO33h6sJOX8q6VN2ungPfWS8w==
+	t=1764261732; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=dM33s4yK93Bz1WhWy7P4pVcVsftOJMjBL8EZ+E90G9o=;
+	b=WxSykctbJrRVAIxRlT++h+V3tFZWfD3bJAiClOOq720WB7YGDhQhuh/NaaPsqnB+aK6IP1
+	y4xx5uu3m6I4FD3OxPkeSLizwdq6fZYWehpVq+ymOoK/5t/3Dk5eY4e+BKEnYp8jLJfdeW
+	migqXxvKumGgo0c2f7MMGuJFkhgU7Uk0pxgXYl0aNQxx+uTS+8SuedSOCJmR3NKMSfRgpg
+	vv/Gko3kamjEFM2RahP1DswIabEneujUo9JxfymVoXO+26PDabIVdQ8olGnODBL8w8uc1G
+	00c8Wyrg+PCH8xLBuBdKKxhLxs2L0YVp2UKlNrr8hqweeIVJRNL3FmwUIGgB5w==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Thu, 27 Nov 2025 17:37:47 +0100
-Subject: [PATCH 3/3] brief-yoctoprojectqs/index.rst: switch shell block to
- to console lexer
+Date: Thu, 27 Nov 2025 17:42:08 +0100
+Subject: [PATCH v2] doc/bitbake-user-manual-ref-variables.rst: update
+ pressure monitoring instructions
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251127-bitbake-setup-updates-v1-3-75ac1e490a40@bootlin.com>
-References: <20251127-bitbake-setup-updates-v1-0-75ac1e490a40@bootlin.com>
-In-Reply-To: <20251127-bitbake-setup-updates-v1-0-75ac1e490a40@bootlin.com>
-To: docs@lists.yoctoproject.org
+Message-Id: <20251127-update-bb-pressure-instructions-v2-1-11f994dc3ff9@bootlin.com>
+X-B4-Tracking: v=1; b=H4sIAF9/KGkC/42OSw6CMBRFt0I6tsbWAtER+zAM+nnIM9qSvpZoC
+ Hu34AYcnuTcz8IIIgKxa7WwCDMSBl9AHipmR+3vwNEVZvIkayFky/PkdAJuDJ8iEOVYDE8pZpt
+ KlLhQ4JRqlWq0ZqWlWAO+94Vb/2PK5gE2bbWbMSKlED/7hVls3v9rs+CCn5uhuWhZOwVDZ0JIT
+ /RHG16sX9f1Cxph9t/iAAAA
+X-Change-ID: 20251127-update-bb-pressure-instructions-14ed447446aa
+To: bitbake-devel@lists.openembedded.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ docs@lists.yoctoproject.org, Quentin Schulz <quentin.schulz@cherry.de>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6033;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5429;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=emqElYsVVfKyF6fB2+oYMF5vOJ19OnjB2GSmdOFNS7U=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpKH5lXAM82NMPAfSxPfFCTImIGWuuTqH0DVvAu
- FaZi825AgiJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaSh+ZQAKCRDRgEFAKaOo
- NqPgD/4uGVwCUdeOIj/+ToJUKg+iZVP0itn4X9Wxq/t6XxHVhHtI+jcO/RIqr79i7gZWCf/H5Lf
- bXXX6Q80YxatXEmJ/Lv4RCISXKzsYLlqYV1+R6X9g6mn53Ubms/C301S67lKfzO1T0SKZI+DRLH
- 1bf/H+Z2i3mh6fMPO+C+XjS5dcxfQa1/e8IBqWbYbtXIYhxF+PPeI5XChXBWOVV4ojAC5YVRcUt
- 7fPeCYEz16yms3tQh2s8NjTStzw07vqj2e+KYsoHzc1NAY1UpBaUbnuemi0ZrA+a+07jyoeze6C
- NXfjNGooZ9HKanVKzmQDLEg2xpq+8CRDTMgKWrwiL2UYoCPQgAPkNohxtzdfG/feHXqmqEHMiNn
- Mqr0PxRTc4q7sVw4+pLRqwk+XVmKUdF+5lpQujLfBoAAgsOOebHcxgLmaUuT+yeKNmRDlWWS2oe
- dloB7+2b+tBYByHyHkopx8FseRp4LNcmXKbI1HctOUQvayxgkTWVQvd12fHR2lPyJSpMQ3/C8Vt
- YVzSvXKeEiO8eRKvEPBRwMvtx56izJhd0PFV1ERS3ZRdT6Nq+sOdDohmYqRSxzxbqyPBcYola5j
- 8Deg/TmrXdf0K/hccZPbfrQXsJGyIOQnM9btldQc01Zy5M/rO40yTX7c6qN6xq44UgOav1tOqan
- EhOqTXIOPrPnLfQ==
+ bh=+rJay+NefCG3LteZdfL8tBU39gwnyVQURhA9BfsIogM=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpKH9j0/uMPNlu6P9urpPB5voIxrhaGnlkuyM4H
+ 8waxfOM5jiJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaSh/YwAKCRDRgEFAKaOo
+ Nj1hD/0Qpju07tyQxdw8mAz+Z8+6YHXVtEauZLKBy2rhiJBE8IOR1lR5FUDcFBWHrUhfp3rhx8W
+ vTqQVJHUqgu5z2QSZ9BhfUaJuL+dBUAvGxBFJhRvVMjU2A4wLxxpzYM3I6c5zkLZxy0jIMWsw3R
+ Zp2ttLns4XvDz0++vhfr5ksor9GH6UcBXupAu6uQdxpwp2WkiX71lf/NI5iXWRUa0sAmRjWLjmS
+ FSuldkWhAJegNEmXgHnJjpLuOIGtzRw0SknR6jWLRFcDcGzVCEM4z9vUwufPgUZ05bN8dikZ5Q2
+ PPqy20qa7copgEE2b+bi8CzwNoAaEa6LESt9rQLkDYsLRjhIOE2af0ORQAGgd6OC5z9nJrNLYq/
+ o7XckzHE5weK6SK7mbPSa9ibwg5Z8fJ3uZ2TypB93BxO8/pNSj3yzNrckOkeB0UunDiaFFe5kWZ
+ oWSjTFsEaKUiZvuCJgfYyLSu3eb0BHqLDioxbCWi8jyMQ4zkUq+iFYqJlsg9BmJFY8ctOmY3H1n
+ bj7zK3z4OmF0sZSxd5s6fRTBVQflkf3B/oRnZFTModvQWYws8xhyB2WZ/F01xEnHSvbIo7m3kOy
+ 2Q8CTYdripX11pit4hmDpz1q7C6AKMR4Id0nD2MuzWBsRy6SNrYqSH9X8a0g6llniX6KMoqshHV
+ UuVZRGLhIUL2mpQ==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 27 Nov 2025 16:38:08 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8156
+ <docs@lists.yoctoproject.org>; Thu, 27 Nov 2025 16:42:18 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8157
 
-Console outputs are more accurately represented with the 'console'
-lexer. Visually, it separates the command from the output. Switch shell
-block to console blocks.
+After commit d492bbf0503d ("knotty: Integrate PSI reporting into the
+UI") on BitBake, the pressure information is no longer printed on the
+console by default and has moved to its own log domain.
 
+Update the BB_PRESSURE_* variable descriptions to show how to follow
+these messages.
+
+Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/brief-yoctoprojectqs/index.rst | 36 ++++++++++++++--------------
- 1 file changed, 18 insertions(+), 18 deletions(-)
+Changes in v2:
+- Suggested by Quentin (thanks!): Switch shell lexer to the console
+  lexer, the output is rendered better.
+- Link to v1: https://patch.msgid.link/20251127-update-bb-pressure-instructions-v1-1-36f69a25d4ef@bootlin.com
+---
+ .../bitbake-user-manual-ref-variables.rst          | 48 ++++++++++++++--------
+ 1 file changed, 30 insertions(+), 18 deletions(-)
 
-diff --git a/documentation/brief-yoctoprojectqs/index.rst b/documentation/brief-yoctoprojectqs/index.rst
-index 1e0d867d6..b8bd65f4a 100644
---- a/documentation/brief-yoctoprojectqs/index.rst
-+++ b/documentation/brief-yoctoprojectqs/index.rst
-@@ -95,13 +95,13 @@ get a copy of the ``bitbake-setup`` tool to setup the :term:`Poky` reference
- distribution on your build host. Use the following commands to clone
- the bitbake repository.
+diff --git a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
+index 734c7858a2..c95583fa4b 100644
+--- a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
++++ b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
+@@ -579,14 +579,18 @@ overview of their function and contents.
  
--.. code-block:: shell
-+.. code-block:: console
+       .. note::
  
-    $ git clone https://git.openembedded.org/bitbake
+-         You may see numerous messages printed by BitBake in case the
+-         :term:`BB_PRESSURE_MAX_CPU` is too low::
++         You can track the pressure information while a build is running with:
  
- Setup a build environment with the following command:
+-            Pressure status changed to CPU: True, IO: False, Mem: False (CPU: 1105.9/2.0, IO: 0.0/2.0, Mem: 0.0/2.0) - using 1/64 bitbake threads
++         .. code-block:: console
  
--.. code-block:: shell
-+.. code-block:: console
+-         This means that the :term:`BB_PRESSURE_MAX_CPU` should be increased to
+-         a reasonable value for limiting the CPU pressure on the system.
+-         Monitor the varying value after ``CPU:`` above to set a sensible value.
++            $ tail -F tmp/log/cooker/<machine>/console-latest.log | grep "Pressure status changed"
++            NOTE: Pressure status changed to CPU: True, IO: False, Mem: False (CPU: 1105.9/2.0, IO: 0.0/2.0, Mem: 0.0/2.0) - using 1/64 bitbake threads
++            ...
++
++         If these messages are printed a lot, it means that the :term:`BB_PRESSURE_MAX_CPU`
++         should be increased to a reasonable value for limiting the CPU pressure
++         on the system. Monitor the varying value after ``CPU:`` above to set a
++         sensible value.
  
-    $ ./bitbake/bin/bitbake-setup init
+    :term:`BB_PRESSURE_MAX_IO`
+       Specifies a maximum I/O pressure threshold, above which BitBake's
+@@ -616,14 +620,18 @@ overview of their function and contents.
  
-@@ -110,7 +110,7 @@ By default, this will setup a top directory in the current directory.
- If you prefer to setup your builds in a different top directory, for example
- ``$HOME/bitbake-builds``, you can set it with the :ref:`bitbake:ref-bbsetup-command-settings` command:
+       .. note::
  
--.. code-block:: shell
-+.. code-block:: console
+-         You may see numerous messages printed by BitBake in case the
+-         :term:`BB_PRESSURE_MAX_IO` is too low::
++         You can track the pressure information while a build is running with:
++
++         .. code-block:: console
  
-    $ ./bitbake/bin/bitbake-setup settings set --global default top-dir-prefix $HOME
+-            Pressure status changed to CPU: None, IO: True, Mem: False (CPU: 2236.0/None, IO: 153.6/2.0, Mem: 0.0/2.0) - using 19/64 bitbake threads
++            $ tail -F tmp/log/cooker/<machine>/console-latest.log | grep "Pressure status changed"
++            NOTE: Pressure status changed to CPU: None, IO: True, Mem: False (CPU: 2236.0/None, IO: 153.6/2.0, Mem: 0.0/2.0) - using 19/64 bitbake threads
++            ...
  
-@@ -125,7 +125,7 @@ differ from the examples below.
+-         This means that the :term:`BB_PRESSURE_MAX_IO` should be increased to
+-         a reasonable value for limiting the I/O pressure on the system.
+-         Monitor the varying value after ``IO:`` above to set a sensible value.
++         If these messages are printed a lot, it means that the :term:`BB_PRESSURE_MAX_IO` 
++         should be increased to a reasonable value for limiting the I/O pressure
++         on the system. Monitor the varying value after ``IO:`` above to set a
++         sensible value.
  
- #. Choose a configuration (for example, ``poky-master``):
+    :term:`BB_PRESSURE_MAX_MEMORY`
+       Specifies a maximum memory pressure threshold, above which BitBake's
+@@ -655,14 +663,18 @@ overview of their function and contents.
  
--   .. code-block:: shell
-+   .. code-block:: console
+       .. note::
  
-       Available configurations:
-       1. poky-master  Poky - The Yocto Project testing distribution configurations and hardware test platforms
-@@ -140,7 +140,7 @@ differ from the examples below.
-    Depending on the choice above, new options can be prompted to further specify
-    which configuration to use. For example:
+-         You may see numerous messages printed by BitBake in case the
+-         :term:`BB_PRESSURE_MAX_MEMORY` is too low::
++         You can track the pressure information while a build is running with:
++
++         .. code-block:: console
  
--   .. code-block:: shell
-+   .. code-block:: console
+-            Pressure status changed to CPU: None, IO: False, Mem: True (CPU: 29.5/None, IO: 0.0/2.0, Mem: 2553.3/2.0) - using 17/64 bitbake threads
++            $ tail -F tmp/log/cooker/<machine>/console-latest.log | grep "Pressure status changed"
++            NOTE: Pressure status changed to CPU: None, IO: False, Mem: True (CPU: 29.5/None, IO: 0.0/2.0, Mem: 2553.3/2.0) - using 17/64 bitbake threads
++            ...
  
-       Available bitbake configurations:
-       1. poky Poky - The Yocto Project testing distribution
-@@ -151,7 +151,7 @@ differ from the examples below.
+-         This means that the :term:`BB_PRESSURE_MAX_MEMORY` should be increased to
+-         a reasonable value for limiting the memory pressure on the system.
+-         Monitor the varying value after ``Mem:`` above to set a sensible value.
++         If these messages are printed a lot, it means that the :term:`BB_PRESSURE_MAX_MEMORY`
++         should be increased to a reasonable value for limiting the memory
++         pressure on the system. Monitor the varying value after ``Mem:`` above
++         to set a sensible value.
  
- #. Choose a target :term:`MACHINE` (for example, ``qemux86-64``):
- 
--   .. code-block:: shell
-+   .. code-block:: console
- 
-       Target machines:
-       1. machine/qemux86-64
-@@ -165,7 +165,7 @@ differ from the examples below.
- 
- #. Choose a :term:`DISTRO` (for example, ``poky``):
- 
--   .. code-block:: shell
-+   .. code-block:: console
- 
-       Distribution configuration variants:
-       1. distro/poky
-@@ -177,7 +177,7 @@ differ from the examples below.
- 
- #. Choose a :term:`bitbake:setup` directory name:
- 
--   .. code-block:: shell
-+   .. code-block:: console
- 
-       Enter setup directory name: [poky-master-poky-distro_poky-machine_qemux86-64]
- 
-@@ -189,7 +189,7 @@ differ from the examples below.
-    If you prefer to run non-interactively, you can run a command like the
-    following:
- 
--   .. code-block:: shell
-+   .. code-block:: console
- 
-       $ bitbake-setup init --non-interactive poky-master poky-with-sstate distro/poky machine/qemux86-64
- 
-@@ -248,7 +248,7 @@ an entire Linux distribution, including the toolchain, from source.
-     environment setup script within the :term:`bitbake:BitBake build` directory
-     to setup the :term:`BitBake` build environment on your host:
- 
--    .. code-block:: shell
-+    .. code-block:: console
- 
-        $ source poky-master-poky-distro_poky-machine_qemux86-64/build/init-build-env
-        Poky reference distro build
-@@ -261,7 +261,7 @@ an entire Linux distribution, including the toolchain, from source.
-     With this tool, list the currently enabled :term:`configuration fragments
-     <Configuration Fragment>`:
- 
--    .. code-block:: shell
-+    .. code-block:: console
- 
-        $ bitbake-config-build list-fragments
- 
-@@ -288,7 +288,7 @@ an entire Linux distribution, including the toolchain, from source.
-     can be useful for development, you can enable the
-     :ref:`ref-fragments-root-login-with-empty-password` fragment:
- 
--    .. code-block:: shell
-+    .. code-block:: console
- 
-        $ bitbake-config-build enable-fragment root-login-with-empty-password
- 
-@@ -318,7 +318,7 @@ an entire Linux distribution, including the toolchain, from source.
- #. **Start the Build:** Continue with the following command to build an OS
-    image for the target, which is ``core-image-sato`` in this example:
- 
--   .. code-block:: shell
-+   .. code-block:: console
- 
-       $ bitbake core-image-sato
- 
-@@ -332,7 +332,7 @@ an entire Linux distribution, including the toolchain, from source.
-    built, you can start QEMU, which is a Quick EMUlator that ships with
-    the Yocto Project:
- 
--   .. code-block:: shell
-+   .. code-block:: console
- 
-       $ runqemu qemux86-64
- 
-@@ -378,7 +378,7 @@ layer>`:
- 
-     For this, the ``bitbake-layers add-layer`` can be used:
- 
--    .. code-block:: shell
-+    .. code-block:: console
- 
-        $ bitbake-layers add-layer ../layers/meta-raspberrypi
- 
-@@ -393,7 +393,7 @@ layer>`:
-     machine, so let's make it the :term:`MACHINE` used for the build with
-     ``bitbake-config-build``:
- 
--    .. code-block:: shell
-+    .. code-block:: console
- 
-        $ bitbake-config-build enable-fragment machine/raspberrypi5
- 
-@@ -414,7 +414,7 @@ layer>`:
- #. **Start The Build:** The configuration is now set to build for the Raspberry
-    Pi 5. Start the build again:
- 
--   .. code-block:: shell
-+   .. code-block:: console
- 
-       $ bitbake core-image-sato
- 
-@@ -441,7 +441,7 @@ configuration file, a ``recipes-example`` subdirectory that contains an
- The following commands run the tool to create a layer named
- ``meta-mylayer``:
- 
--.. code-block:: shell
-+.. code-block:: console
- 
-    $ bitbake-layers create-layer ../layers/meta-mylayer
-    NOTE: Starting bitbake server...
+    :term:`BB_RUNFMT`
+       Specifies the name of the executable script files (i.e. run files)
 
--- 
-2.51.0
+---
+base-commit: 6ee4df8ab58e0175b43106d8a6cbac1f6ab8d022
+change-id: 20251127-update-bb-pressure-instructions-14ed447446aa
 
 
