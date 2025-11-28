@@ -2,309 +2,222 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 46D59D116E2
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4FCD6D116F1
 	for <webhook@archiver.kernel.org>; Fri, 28 Nov 2025 15:35:31 +0000 (UTC)
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.18697.1764344120733290475
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.18698.1764344121406799650
  for <docs@lists.yoctoproject.org>;
  Fri, 28 Nov 2025 07:35:21 -0800
 Authentication-Results: mx.groups.io;
- dkim=fail reason="dkim: body hash did not verify" header.i=@bootlin.com header.s=dkim header.b=dPuY3XYZ;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=SQgI1g4r;
  spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 3FBF91A1E09
+	by smtpout-02.galae.net (Postfix) with ESMTPS id E35DC1A1E0A
 	for <docs@lists.yoctoproject.org>; Fri, 28 Nov 2025 15:35:19 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 0BE9060706
+	by smtpout-01.galae.net (Postfix) with ESMTPS id B8DC160706
 	for <docs@lists.yoctoproject.org>; Fri, 28 Nov 2025 15:35:19 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8C7B910B02062;
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id F0AE810B02063;
 	Fri, 28 Nov 2025 16:35:18 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1764344118; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1764344119; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=XMxpaOU7Q+IJwcnasZn1LP6FQ7yfNgf9OXVfEk6idXs=;
-	b=dPuY3XYZK6gTdTwmHZdbyPVRGEH+aZOfdq3vLo+tDXIWpAhCtr/9/HZcEnm5SfPSYXoeLK
-	6viwrb3Fg0D0WAucBZyPQ5tfqtbKuxdEkob9V2OyW1RhIvkxN1HOG7OqLFRmdsXz2KvoAN
-	UrL1J3elGCpstj8h593yJyXFkTh0M3Nu7bHErqOv2h6MwG1QoyHnT7C0wzTxvsgPiKv8LK
-	bubqM82KvAYr4Saq9a6QdL/w4dXp7Cgc1mH1DpKl3bgA7p8E5WWpVzpEkoXHmTKj3Qo1l2
-	G+aSQg2dwH/fSOPQdZjbxe4v7rWw+36nZhQ/ujSRkLfsgq+VgOQs5udRaUZj1A==
+	bh=WAZ/4JnqiudUJBbfrkCoBcICvvo9JlKkMIGKdDDn8Bk=;
+	b=SQgI1g4rttnYN+gvaptodhh5fM7NeoRu5npEonnLP8Xwl+WMhASnvC0UWFlR/GEZjauz/U
+	BvIXRnxtamCQ3uTRJ90x6A9pWbje7mG/U8XSiyaPg3GXSpvhtt3wiTNEvBdrI/vMrXK1Xv
+	5l4pkMSbGLNRNqvZClSLVUNHgcB7Q6x6PQvToPfAjd5iHmpnbfPuScXU5d5ZE1sgqMlTe1
+	sedD/uqYP+ef5cTD7nPoIoSVNXpRRl630TyBV7YGAh+iZon1ZXMJhRIsL5omXO42QmDR6B
+	TlpVTYfS547Rj8KZAQ9uC8rgeRHuHslYY5ih9ZE4oHQM+cDPVN3TSrPSFNiXKQ==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Fri, 28 Nov 2025 16:35:05 +0100
-Subject: [PATCH 8/9] migration-guides/release-notes-5.3.rst: add
- contributors
+Date: Fri, 28 Nov 2025 16:35:06 +0100
+Subject: [PATCH 9/9] migration-guides/release-notes-5.3.rst: latest changes
+ from master
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20251128-release-note-5-3-updates-v1-8-6ef679198e80@bootlin.com>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251128-release-note-5-3-updates-v1-9-6ef679198e80@bootlin.com>
 References: <20251128-release-note-5-3-updates-v1-0-6ef679198e80@bootlin.com>
 In-Reply-To: <20251128-release-note-5-3-updates-v1-0-6ef679198e80@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5152;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5800;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=H9syxCDVnTNbiSX1wWSNGPglFbmIylQSgXrDPqknKeQ=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpKcEvGv8PVtmlEr4ED0vtolYGzeDH80u4S9TXp
- BrzhSghfGaJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaSnBLwAKCRDRgEFAKaOo
- Nt7lD/wOi1H5ZsXzOPJtDGV3s30HhNVN+vTec3B434Vg6wMAK5KSqjIIDd76IGqvJ0Cq51+6ZS7
- f14Y9vjaskhNHa+mRydS4SR6ptfYn3zlQ0yiaQXLDrr2noYoy8R7sraBeAajyv5+ShJYmTymp6H
- MyhydDjw8Y3vX+f029O4VgEM2ZeA2umuFfvQQYeR9Yxy9Y2x6Wl4lGZrwsU2+xNhNU8xCQ0b/mc
- LZ0j1FNcuB9er57eQFG7FjElNr/aQ7E0YUkfJEUqgzVi1xIEI3vE/wSPADWvWdnF0Ohf8updlS5
- fF1gRjLD/FLc3zPH2ahq5Z2liDvMnXNOxQjtj2MaIGl73ApeFbKlyJp/27o4zdodILG8lLfi/mm
- InJWvOOtBlMOnNsyE5LkXQcXVQHKK/bPIlY5E8Eia0H6eYlEkkp2LwT39zg1d/hpoqy74gwqWO+
- cw7AcPWXwUBew2KoOXHzWLxGhQ4YD/UxO7lp7QVSLpWXKEeTC2dfOzrDNomEZskAfcThjNGIT76
- AA4EvkAPLQTyzvRbLxTud6DoSPe54opTUWcDZ4hpFG6Q2k2JGbZ+WtdJC77xmI3Da+klqFYbZki
- K3Q8OMQ8rw7KAaToIdUYUl88vZnKtyWDcAxb9RhFhK87nCu74MHVVdDuvidxMugeFknGku5GuFx
- +Uka2slhe5fNw3A==
+ bh=uwwl6B2llheDHeKCkfBVzKQS3GA4bsAFMAwtc3Hetik=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpKcEv8+i6ZnhHLM4MzOwVzWwMOcb9farnPy/wr
+ tqJiPKsDfaJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaSnBLwAKCRDRgEFAKaOo
+ NocOEADK/aUheZ9dZJgx5/BGNEQ0j6jA9TI1Rvptyj4sa4UbgxBTfC/Zcahk56I2UmAJq7GLznT
+ ClNstzOQNuMTcr2o6RB6r5G9s+7njnis2gPrWSQGTn6gPhFiULL2U+4oF+8ZSSe6sDz9yF7IhOP
+ epqvdfoBX0ftE6Cva/ejKLCWuUuXPVXZamAS7Lfdc7gYryW5Myik6aaXGLH6SgBt17EH2bEZ05a
+ pujHlFAG8QwLQ/vtfhD5X9Ouy+Svf+bArwinO2EE595jQ9bnJ2b6eE8b/SV3lDYU+UKyABhiELN
+ /FrY+Yb88Fo38rmgEIL2MSa0hM+nFQytZxIft25vze5NkvotBgAaYLQLY2BnF4fd3dTSHHY0Pwz
+ 5T6Rqzs6irriScL6vN+6/KuIJoCY/j3BLKEIwz5CK85ptmW3SuLOXgAAOjtWJG2GZR+c3ceRsWY
+ DcCyFoK07WPWrgT2JXkwHZuxXJS4VEKOHLLkRYDuAYpHHtXE6dRGReg57OPVVPACen/deYGV9aI
+ e+2AhqsI7tH03ws49HZ3nE+H9/tmWLGJY2O4fRXwLgxn24P3LJGmvbXu0Y7/zKNkF8+xAzBAFne
+ HFoZiJ5mQYw9+0FmIioxfXKnxDrES/3m12h/IzbCfMjNnz3uIcL9etWCN7xFOulwUX5RlT1dwmr
+ Esf4F7ikEpU6Y1g==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
-Content-Transfer-Encoding: quoted-printable
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Fri, 28 Nov 2025 15:35:31 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8171
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8172
+
+Cover the changes from:
+
+- openembedded-core:
+  7d1d3b4958bc ("oeqa: runtime: logrotate: Fix typos and add comments")
+  to
+  ac7327583aef ("libdrm: upgrade 2.4.125 -> 2.4.128")
+
+- meta-yocto:
+  6257391c9594 ("yocto-bsp/6.16: specify genericarm64 SRCREV")
+  to
+  b3b659263566 ("local.conf.sample: comment out the root-with-empty-password setting")
+
+- bitbake:
+  b96154aeb1fc ("bitbake-setup: add the initial implementation")
+  to
+  720df1a53452 ("bitbake-setup: add whinlatter configs for poky and oe-nodistro")
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- .../migration-guides/release-notes-5.3.rst         | 217 +++++++++++++++=
-++++++
- 1 file changed, 217 insertions(+)
+ documentation/migration-guides/migration-5.3.rst   | 22 +++-----------
+ .../migration-guides/release-notes-5.3.rst         | 35 +++++++++++++++++++++-
+ 2 files changed, 38 insertions(+), 19 deletions(-)
 
-diff --git a/documentation/migration-guides/release-notes-5.3.rst b/docum=
-entation/migration-guides/release-notes-5.3.rst
-index ef1a0b4fb..a7e989ced 100644
+diff --git a/documentation/migration-guides/migration-5.3.rst b/documentation/migration-guides/migration-5.3.rst
+index b17cffe5a..a1586fba6 100644
+--- a/documentation/migration-guides/migration-5.3.rst
++++ b/documentation/migration-guides/migration-5.3.rst
+@@ -188,22 +188,10 @@ GNU/Linux distributions:
+ -  Debian 13 (Trixie)
+ -  Fedora 42
+ -  Ubuntu 25.04
+-
+-On the other hand, some earlier distributions are no longer supported:
+-
+--  XXX
++-  Ubuntu 25.10
+ 
+ See :ref:`all supported distributions <system-requirements-supported-distros>`.
+ 
+-Rust language changes
+-~~~~~~~~~~~~~~~~~~~~~
+-
+-systemd changes
+-~~~~~~~~~~~~~~~
+-
+-Recipe changes
+-~~~~~~~~~~~~~~
+-
+ Removed variables
+ ~~~~~~~~~~~~~~~~~
+ 
+@@ -244,6 +232,9 @@ The following recipes have been removed in this release:
+ -  ``cwautomacros``: A long-obsolete set of custom :ref:`ref-classes-autotools`
+    macros, not used by any other recipe.
+ 
++-  ``rust-llvm``: removed after the Rust and LLVM recipes were reworked to
++   depend on the ``llvm`` recipe instead.
++
+ Removed :term:`PACKAGECONFIG` entries
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 
+@@ -309,11 +300,6 @@ The following classes have been removed in this release:
+    any automated testing and it would be hard to setup and maintain a testing
+    environment for it. The original users/maintainers aren't using it now.
+ 
+-Removed features
+-~~~~~~~~~~~~~~~~
+-
+-The following features have been removed in this release:
+-
+ Miscellaneous changes
+ ~~~~~~~~~~~~~~~~~~~~~
+ 
+diff --git a/documentation/migration-guides/release-notes-5.3.rst b/documentation/migration-guides/release-notes-5.3.rst
+index a7e989ced..536067d63 100644
 --- a/documentation/migration-guides/release-notes-5.3.rst
 +++ b/documentation/migration-guides/release-notes-5.3.rst
-@@ -2188,7 +2188,224 @@ The following recipes have been upgraded:
- Contributors to |yocto-ver|
+@@ -236,8 +236,19 @@ New Features / Enhancements in |yocto-ver|
+       fourth argument of the :term:`UBOOT_CONFIG` variable. See the
+       documentation of :ref:`ref-classes-uboot-config` class for more details.
+ 
++   -  The :term:`WESTON_USER` and :term:`WESTON_USER_HOME` variables can be
++      used to define the username and home directory for the `Weston` user.
++
++-  New core tasks:
++
++   -  The :ref:`ref-tasks-list_image_features` can be used to list the available
++      :term:`IMAGE_FEATURES` for an image recipe.
++
+ -  Kernel-related changes:
+ 
++   -  Support for the 6.17 kernel exists but 6.16 is the default selected one in
++      the :term:`Poky` distro.
++
+    -  ``linux/generate-cve-exclusions``: use data from CVEProject instead of
+       the archived https://linuxkernelcves.com.
+ 
+@@ -551,6 +562,10 @@ New Features / Enhancements in |yocto-ver|
+       :term:`DEPLOY_DIR_IMAGE` directory into an extra non-rootfs partition. See the
+       :term:`IMAGE_EXTRA_PARTITION_FILES` variable for more information.
+ 
++   -  The ``--diskid`` option was added to allow passing a :wikipedia:`MS-DOS
++      </MS-DOS>` or :wikipedia:`GPT <GUID_Partition_Table>`-formatted
++      disk IDs for a partition (for example: ``deadbeef-cafe-babe-f00d-cec2ea4eface``).
++
+ -  SDK-related changes:
+ 
+    -  Include additional information about Meson setting in the SDK environment
+@@ -566,6 +581,9 @@ New Features / Enhancements in |yocto-ver|
+       ``zsh-completion-pkgs`` feature to the :term:`IMAGE_FEATURES` variable in
+       the image recipe.
+ 
++   -  The SDK build is now part of the :ref:`ref-classes-buildhistory`
++      difference analysis (``buildhistory-diff`` command).
++
+ -  Testing-related changes:
+ 
+    -  ``bitbake/tests/fetch``: Add tests for ``gitsm`` with git-lfs.
+@@ -748,8 +766,21 @@ New Features / Enhancements in |yocto-ver|
+    -  ``openssl``: add FIPS support. This can be enabled through the ``fips``
+       :term:`PACKAGECONFIG`.
+ 
+--  :ref:`ref-classes-cve-check` class changes:
++   -  The default :term:`Poky` template configuration
++      (:yocto_git:`local.conf.sample </meta-yocto/commit/meta-poky/conf/templates/default/local.conf.sample?id=b3b659263566c4d2f2813190e72d93f8598a4c47>`)
++      does not define the ``allow-empty-password``, ``empty-root-password``, and
++      ``allow-root-login`` in :term:`EXTRA_IMAGE_FEATURES` anymore.
++
++-  :term:`Toaster` changes:
++
++   -  Adapt it for :doc:`bitbake-setup
++      <bitbake:bitbake-user-manual/bitbake-user-manual-environment-setup>`.
+ 
++   -  Remove hard dependency on the :term:`Poky` repository, as its :ref:`master
++      branch is no longer updated <migration-guides/migration-5.3:The Poky
++      repository master branch is no longer updated>`.
++
++-  :ref:`ref-classes-cve-check` class changes:
+ 
+    -  ``cve-update-db-native``: FKIE: use Secondary metric if there is no
+       Primary metric.
+@@ -962,6 +993,8 @@ New Features / Enhancements in |yocto-ver|
+ Known Issues in |yocto-ver|
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-=20
-+..
-+   List obtained with the following shell snippet:
+ 
++N/A
 +
-+      authors=3D""
-+      for repo in openembedded-core yocto-docs bitbake meta-yocto; do
-+         authors=3D"${authors}\n$(git --no-pager -C $repo log --format=3D=
-"-  %an" yocto-5.2..origin/master)"
-+      done
-+      echo $authors | sort | uniq
-+
-+   Email addresses removed.
-+
- Thanks to the following people who contributed to this release:
-=20
-+-  Adam Blank
-+-  Adam Nilsson
-+-  Adrian Freihofer
-+-  Ahmad Fatoum
-+-  Alejandro Hernandez Samaniego
-+-  Aleksandar Nikolic
-+-  Alexander Kanavin
-+-  Alex Kiernan
-+-  Alon Bar-Lev
-+-  Alper Ak
-+-  Andreas Stergiopoulos
-+-  Andrej Valek
-+-  Anibal Limon
-+-  Ankur Tyagi
-+-  Anna-Lena Marx
-+-  Antonin Godard
-+-  Anuj Mittal
-+-  Archana Polampalli
-+-  Barne Carstensen
-+-  Benjamin Missey
-+-  Benjamin Sz=C5=91ke
-+-  Bo Sun
-+-  Bruce Ashfield
-+-  Carlos S=C3=A1nchez de La Lama
-+-  Changqing Li
-+-  Chen Qi
-+-  Chris Laplante
-+-  Christian Lindeberg
-+-  Christos Gavros
-+-  Daisuke Yamane
-+-  Daniel McGregor
-+-  Daniel Turull
-+-  Daniel Wagenknecht
-+-  Dan McGregor
-+-  Dario Binacchi
-+-  David Reyna
-+-  Deepak Rathore
-+-  Deepesh Varatharajan
-+-  denisova-ok
-+-  Denys Dmytriyenko
-+-  Diego de los Santos
-+-  Diego Sueiro
-+-  Divya Chellam
-+-  Dixit Parmar
-+-  Dmitry Baryshkov
-+-  Enrico J=C3=B6rns
-+-  Enrico Scholz
-+-  Erick Shepherd
-+-  Erik Lindsten
-+-  Etienne Cordonnier
-+-  Fabio Estevam
-+-  Falk Bauer
-+-  Gregor Herburger
-+-  Gu=C3=B0ni M=C3=A1r Gilbert
-+-  Gyorgy Sarvari
-+-  Haixiao Yan
-+-  Harish Sadineni
-+-  Hiago De Franco
-+-  hongxu
-+-  Hongxu Jia
-+-  Ines KCHELFI
-+-  Isaac True
-+-  Jaeyoon Jung
-+-  Jamin Lin
-+-  Jan Vermaete
-+-  Jason M. Bills
-+-  Jason Schonberg
-+-  Jayasurya Maganuru
-+-  Jeroen Hofstee
-+-  Jiaying Song
-+-  Jimmy Ho
-+-  Jinfeng Wang
-+-  Jo=C3=A3o Henrique Ferreira de Freitas
-+-  Joao Marcos Costa
-+-  Jo=C3=A3o Marcos Costa
-+-  Johannes Schneider
-+-  Jonathan Schnitzler
-+-  Jon Mason
-+-  J=C3=B6rg Sommer
-+-  Jose Quaresma
-+-  Joshua Watt
-+-  J. S.
-+-  Julian Haller
-+-  Kai Kang
-+-  Kavinaya S
-+-  Keerthivasan Raghavan
-+-  Khang D Nguyen
-+-  Khem Raj
-+-  Koch, Stefan
-+-  Koen Kooi
-+-  Kyungjik Min
-+-  Lamine REHAHLIA
-+-  Lee Chee Yang
-+-  leimaohui
-+-  Lei Maohui
-+-  Leon Anavi
-+-  Leonard Anderweit
-+-  Libo Chen
-+-  Liu Yiding
-+-  Li Wang
-+-  Louis Rannou
-+-  Luca Fancellu
-+-  Madhu Marri
-+-  Manuel Leonhardt
-+-  Marco Cavallini
-+-  Mark Asselstine
-+-  Mark Hatle
-+-  Markus Kurz
-+-  Markus Volk
-+-  Martin Jansa
-+-  Martin Siegumfeldt
-+-  Mathieu Dubois-Briand
-+-  Michael Halstead
-+-  Michael Jeanson
-+-  Michael Opdenacker
-+-  Michael Tretter
-+-  Michal Sieron
-+-  Mike Crowe
-+-  Mike Looijmans
-+-  Mikko Rapeli
-+-  Ming Liu
-+-  Mingli Yu
-+-  Moritz Haase
-+-  NeilBrown
-+-  Nguyen Dat Tho
-+-  Nikhil R
-+-  Niko Mauno
-+-  Ola x Nilsson
-+-  Olga Denisova
-+-  Osama Abdelkader
-+-  Osose Itua
-+-  Ovidiu Panait
-+-  Patrick Vogelaar
-+-  Patrick Williams
-+-  Patryk Seregiet
-+-  Paul Barker
-+-  Paul Gortmaker
-+-  Pedro Ferreira
-+-  Per x Johansson
-+-  Peter Kjellerstedt
-+-  Peter Marko
-+-  Peter Tatrai
-+-  Petr Vorel
-+-  Philip Lorenz
-+-  Philippe-Alexandre Mathieu
-+-  Pierre-Loup GOSSE
-+-  Poonam Jadhav
-+-  Praveen Kumar
-+-  Priyal Doshi
-+-  Quentin Schulz
-+-  rajmohan r
-+-  Randolph Sapp
-+-  Randy MacLeod
-+-  Raphael Schlarb
-+-  Rasmus Villemoes
-+-  Ricardo Salveti
-+-  Ricardo Simoes
-+-  Richard Gr=C3=BCnert
-+-  Richard Purdie
-+-  Robbin Van Damme
-+-  Robert P. J. Day
-+-  Robert Tiemann
-+-  Robert Yang
-+-  Rogerio Guerra Borin
-+-  Ross Burton
-+-  Ryan Eatmon
-+-  Samuli Piippo
-+-  Sandeep Gundlupet Raju
-+-  Saravanan
-+-  Siddharth Doshi
-+-  Simone Wei=C3=9F
-+-  Soumya Sambu
-+-  Stefan Eichenberger
-+-  Stefan Koch
-+-  Steffen Greber
-+-  Steve Sakoman
-+-  Talel BELHAJ SALEM
-+-  Thomas Perrot
-+-  Thune Tran
-+-  Tim Orling
-+-  Tobias Pistora
-+-  Tom Hochstein
-+-  Trevor Gamblin
-+-  Trevor Woerner
-+-  Tudor Ambarus
-+-  Uwe Kleine-K=C3=B6nig
-+-  Veeresh Kadasani
-+-  Victor Kamensky
-+-  Vijay Anusuri
-+-  Vincent Davis Jr
-+-  Vishwas Udupa
-+-  Vivek Puar
-+-  Vyacheslav Yurkov
-+-  Walter Werner SCHNEIDER
-+-  Wang Mingyu
-+-  Weisser, Pascal.ext
-+-  Yannic Moog
-+-  Yash Shinde
-+-  Yi Zhao
-+-  Yoann Congal
-+-  Yogesh Tyagi
-+-  Yogita Urade
-+-  Zhang Peng
-+-  Zoltan Boszormenyi
-+-  Zolt=C3=A1n B=C3=B6sz=C3=B6rm=C3=A9nyi
-+
- Repositories / Downloads for Yocto-|yocto-ver|
- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ Recipe License changes in |yocto-ver|
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 
 
---=20
+-- 
 2.51.0
 
 
