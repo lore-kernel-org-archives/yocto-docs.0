@@ -2,45 +2,44 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 79B1BD116F1
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 87672D116F8
 	for <webhook@archiver.kernel.org>; Mon,  1 Dec 2025 08:36:38 +0000 (UTC)
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.16807.1764578191878791151
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.17000.1764578189928629418
  for <docs@lists.yoctoproject.org>;
- Mon, 01 Dec 2025 00:36:32 -0800
+ Mon, 01 Dec 2025 00:36:30 -0800
 Authentication-Results: mx.groups.io;
- dkim=fail reason="dkim: body hash did not verify" header.i=@bootlin.com header.s=dkim header.b=DGcESJEH;
- spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
+ dkim=fail reason="dkim: body hash did not verify" header.i=@bootlin.com header.s=dkim header.b=sp6R8xrp;
+ spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 3957B1A1E8F;
-	Mon,  1 Dec 2025 08:36:30 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 568AD4E419B8;
+	Mon,  1 Dec 2025 08:36:28 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 03329606BB;
-	Mon,  1 Dec 2025 08:36:30 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 930E7119121CA;
-	Mon,  1 Dec 2025 09:36:28 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 2E328606BB;
+	Mon,  1 Dec 2025 08:36:28 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id CBF81119121CA;
+	Mon,  1 Dec 2025 09:36:26 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1764578189; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1764578187; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=H31/fnhSF4Tb6jbJ6nJIs1zGeU9N/BO13bvjnueyRrk=;
-	b=DGcESJEHMooBIsyLw4z753sHExnoOWiLoQ2PzbqnR0YL/jjP859/2RBzlNiKKl+hJOANAb
-	s65AmiZHvTJBWOj/bFQOweIp5NxUX8zI953HDc0zS/fyjUBXsMpx2eIIIPtuxcyeuH0Xoy
-	9ada3zFFME+DxAZnu2u5L+4KMQFxQcEloV6Hs1kHNrIwiqrD0REB0gpO1rkyNLAUgzpFjk
-	+OLuPKG8oWj809qqQPmxOpx/Ssd0aq6neQzspowJuqRC1Wrvmqm6kYTWpBnAlmu+xD90Cn
-	yzsFJV4Tj5hE5xpIU4k/sw1YbLDYCJZlhzuNWnB6reJSlvC6Od/rtnzN1sfgMw==
+	bh=0S0CHFxH15ZU2BvMISkVMrLJslfK7SdKFkZK2IlCfYU=;
+	b=sp6R8xrpIWm4FaHvCgUEmM67Jr1pawZ8wrB0CxEi3F2GsyXe3f2GqIM1a2rZBxccve1r+5
+	1VuzQj18SNBYYF9NUmBvF3ZPIrGpNuBMn6DlXkl+90uWBJvBwyBYntMM0ljGmd/S7zua4k
+	eLzyDUYn/zZgpzcMmxvJVg49pJYf7G6cF/BhZ/keeP0S7ErMU7mIn66VrbD1QtLkuZeH+a
+	w0WCOYHv6bukDjHR1GuqvZyfovStbBNBjlOx+N45UtVY+lmWUpI6l9J/efRugZWI6it1A8
+	69aZpLcF2ItGws+ZnIUgPWV9LIDkAvF7+BRYp9vC43wLqZ0eHJr07cwxgF6vvQ==
 From: Antonin Godard <antonin.godard@bootlin.com>
 To: docs@lists.yoctoproject.org,
-	stondo@gmail.com
+	Quentin Schulz <foss+yocto@0leil.net>
 Cc: Antonin Godard <antonin.godard@bootlin.com>,
-	peter.marko@siemens.com,
-	adrian.freihofer@siemens.com,
-	Stefano Tondo <stefano.tondo.ext@siemens.com>
-Subject: Re: [PATCH v8] ref-manual: Document SPDX 3.0.1 variables
-Date: Mon,  1 Dec 2025 09:35:54 +0100
-Message-ID: <176457799703.63554.15711052986855376345.b4-ty@bootlin.com>
+	"Robert P. J. Day" <rpjday@crashcourse.ca>,
+	Quentin Schulz <quentin.schulz@cherry.de>
+Subject: Re: [PATCH 0/2] make sure Quick Build section and System Requirements are in sync -- cover
+Date: Mon,  1 Dec 2025 09:35:52 +0100
+Message-ID: <176457799700.63554.12635925224658986035.b4-ty@bootlin.com>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251126140043.65629-1-stondo@gmail.com>
-References: <20251126140043.65629-1-stondo@gmail.com>
+In-Reply-To: <20251125-quick-start-requirements-common-v1-0-2c872b2fd45f@cherry.de>
+References: <20251125-quick-start-requirements-common-v1-0-2c872b2fd45f@cherry.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Last-TLS-Session-Version: TLSv1.3
@@ -49,27 +48,26 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Mon, 01 Dec 2025 08:36:38 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8179
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8177
 
 
-On Wed, 26 Nov 2025 15:00:43 +0100, stondo@gmail.com wrote:
-> Add comprehensive documentation for SPDX-related variables in the
-> Yocto reference manual. This includes documenting previously
-> undocumented variables and updating existing documentation with
-> SPDX 3.0.1 specific information.
->=20
-> New variables documented:
-> - SPDX_LICENSES: Path to SPDX license identifier mapping file
-> - SPDX_MULTILIB_SSTATE_ARCHS: Architecture list for dependency collecti=
-on
-> - SPDX_UUID_NAMESPACE: Namespace for UUID generation in SPDX documents
+On Tue, 25 Nov 2025 15:52:59 +0100, Quentin Schulz wrote:
+> The instructions in the Quick Build section are targeting Ubuntu users
+> and must be straightforward to follow, without having to follow a serie=
+s
+> of link. There is some requirement (specifically locales) that didn't
+> make it to the Quick Build section, so let's make sure it is in sync
+> with the section in System Requirements by simply moving the whole rST
+> content to an include file instead of just the apt instructions.
 >=20
 > [...]
 
 Applied, thanks!
 
-[1/1] ref-manual: Document SPDX 3.0.1 variables
-      commit: d1b756d820894e6528770e5023adec92e9bc5ae9
+[1/2] tools: ubuntu_docs: remove duplicate python3-saneyaml
+      commit: 3a06fe794fbca96baa470387d82cb7fd6b1af95f
+[2/2] make sure Quick Build section and System Requirements are in sync
+      commit: 411e8ebcf79d390b557aca3ea39d610cfbd06fc5
 
 Best regards,
 --=20
