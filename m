@@ -2,61 +2,60 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D4142D11711
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D420DD11712
 	for <webhook@archiver.kernel.org>; Tue,  2 Dec 2025 16:14:25 +0000 (UTC)
 Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.1090.1764692063981924606
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.1089.1764692063261367626
  for <docs@lists.yoctoproject.org>;
- Tue, 02 Dec 2025 08:14:24 -0800
+ Tue, 02 Dec 2025 08:14:23 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=Gjo5KYUd;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=tOMY6PgC;
  spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 2EEFCC15D7B
-	for <docs@lists.yoctoproject.org>; Tue,  2 Dec 2025 16:13:59 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 5A990C15D72
+	for <docs@lists.yoctoproject.org>; Tue,  2 Dec 2025 16:13:58 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 6C8CF606D6
-	for <docs@lists.yoctoproject.org>; Tue,  2 Dec 2025 16:14:22 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C861811919D0B;
-	Tue,  2 Dec 2025 17:14:21 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 987F7606D6
+	for <docs@lists.yoctoproject.org>; Tue,  2 Dec 2025 16:14:21 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id EA1D411919D0A;
+	Tue,  2 Dec 2025 17:14:20 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1764692062; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1764692061; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=RfXQJXMXr+QDgG21SbqPp/WVL1yWdBin0o/4oyFihEI=;
-	b=Gjo5KYUdyBuFoo3kfSfOJJuIIje9R0W41GF9TmNlD9PdL+k9vC3tXYuTfOq+f4zJRfrxbl
-	CJQubb5Fqz++QpjpWKOZnVDgBjjKZfby5mpu63xm0d4XdammI9ouy9atvrxQHA5WyzUyYB
-	pdk838IXpIRixesvWX6+F8Al504C4NHg9300H7GHXyuko3P0tpyB2mBK7mxUxOjkiiWu64
-	lvMDrFJ+NPq25wmTpkAbjTFAdo1w7a3wldgGJsalE5zBafly7/+z3wmrx3kFMzaiwv/Dk+
-	u9Ha1aj0q27XusS1kWwRSe4TMa3YPI0uEKGOxMMg8et9Zbm9BioWmuD3pWVk7A==
+	bh=6QlYX2760ddmBFP6QO/8s6v2zwdSLy8e2jrn3bsYQow=;
+	b=tOMY6PgCp2AAlFnuI3lpN9lwoVqmPLZZ9O4pGXhnyZiciyYrrXe9ZSXUwz8Qhjywe3kLUj
+	q2fjmol29faMXSBP+0OjjpumA4GJEAXV9o8ISRnzo2roUiUnhCltax/e554UsR5hSwy3hs
+	tjyd1nef2/XENMchETqtgpHST+t6TYnZb3REe94s97qbVRP5RVjp0x8wfnVtbsfSW+XMCG
+	Z/5WDh862rTMLIcLBWrCRUrxgb9hkoGL8WKp5lwyv1QYyMIBrwwymJmnn75+wWUpR2Pni5
+	JS4GedmjqQ7ptkMTPndvm56R26aZHIxznKvTOuuCxrEy7BA6cXpsYNxIYsAKbw==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Tue, 02 Dec 2025 17:14:16 +0100
-Subject: [PATCH 4/4] poky.yaml.in: split automatic and manually replaced
- macros
+Date: Tue, 02 Dec 2025 17:14:15 +0100
+Subject: [PATCH 3/4] set_versions.py: add wrynose as devbranch
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251202-release-updates-v1-4-889513ccc384@bootlin.com>
+Message-Id: <20251202-release-updates-v1-3-889513ccc384@bootlin.com>
 References: <20251202-release-updates-v1-0-889513ccc384@bootlin.com>
 In-Reply-To: <20251202-release-updates-v1-0-889513ccc384@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1343;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1314;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=IEZaJwMOl0W6MN/oXqQmQhrREQmQFg0iBMIdKaqHsfE=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpLxBaa+SPO8F+w2BphpPLoAg8DtGa+V4wIztSm
- 1JyMYrDZwuJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaS8QWgAKCRDRgEFAKaOo
- NlOrD/99Ohf/o1Kf4F9zgXQkk2MaO4WEgGmHxswf3aduKagymw4Fv+SmrhUA81mGAtbJ6S3KUhw
- wxumBjPTKOWi3HJ91QEW3oLxkg64aSicM+eYzsIv6p/bxn6EVXUEKl3OeeW3kbe7UnmXDxqtg1d
- JufUSa6AOaAXQrGDUZaDzTk1Psx6DUDmtPz01WNPadEe5IEdvIbolmZVLDYjEUQmvwB93i7FLyU
- GWnrwYlKtvR3r5qQS58U0REnabmJdzkaNCJgGTqp9RRJWsnJ2HDWp0g0Do5LVEWcHbwnwp4g8mq
- Bs6FXH6/iDg8w0pjNRmzRLVrpODg2seSRszl51WimK61RcQCFcG72wqJdQ2MY2m926yQI0iEJfa
- ofFsosiVZZ3kDFJESHm3OgK1v0vQ2zw4Tg5D9IKN4ze/cQ/Ov503+1AQnhjAcBQtx7gH0LzxWFy
- mhdxPtHXjasi2G4e7/RDJLDeLpgiDXHbZDCPtgj6UqJwCOfzy0ApBQ/4rN755OWmh5UpuDRiQP1
- hnOjXxbugdDPyiB/KPAGOi79tsp7yTtcOqFfdMXMw0KYXaWxOv2WmAoVz1bMUGMst77EbM+wckr
- nO0wmisImZXUyEPZghsPlkMwCG1wchW1WvBwulkdzM+2pfB+KSZHa+UCT29h324PvYajFeg5oMj
- BipnZJ0r5yCiMOA==
+ bh=ZRNCIP8kvFIUU/THHOhlsKnLCmU+TDz26TvT//Bw2dA=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpLxBa0kBjwpR2RA93kl65VWP/R6GcAPJ/vNfLv
+ UoAawKiuLuJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaS8QWgAKCRDRgEFAKaOo
+ NpbZEACGOcOa6h2nxbOf33Bg3UVAjseCpMpHNqiuvpU/vNm40ttsbM7xGrmHX0D/KN9mk6pSfII
+ YKnxaUH/0Nt23vELsTxJmGwHNieLvI1tsd1ZdZQXNaeHCjsQLIl6y/owJHjy+hmENCgQYe8HJk2
+ LXcVe4g7UoG8CLWmx7sUtw6liFU3wP0bbkk7sjzStH5OpAPZqCJrngX8k8na8RAnGMQNNei8Vf1
+ UEblLcC0/CKAy8Zm4lEYoAfr8hP7if0MhaRhAQMY6yVLY/ywBAbfnB5Cv7ciSSj3DPO7pedRFdR
+ hgk3z7hMAwZEEs983Eg2LinMvpnviDjV4hBrKbY4b4LNYMYgl+kCddif18dF6xOy/x+R94yKpq5
+ LR21uGmRRWEQwsdGG2qDqIdbBnOPIGq3M9KM4fxLHeWQ60u/koZ3t5YVHJE9Cl32xIgp03gwjbv
+ r059Zq+vhU4Jt72OHqPJj9I8j+Et8EEgBB8Dcpl1WBJWTFLZQHOXBJu4Bl5kC1uh7VEHrZ3uW9h
+ cUvaGz/Xwkb/F2bJpSLFeJJT9HaXuTD68PndcwYUkxo3ryfjQvslP8o9IgCdDeyt2IDLp7RYqgj
+ pysliREBRWEoPUSydsMdz6dPrGsNcLGJVVbu6hC+Tn/S35YShQnuWE95TD23k4cc5WJUAUJ+iMj
+ BmWbP+FgLk1NQYQ==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
@@ -64,46 +63,48 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Tue, 02 Dec 2025 16:14:25 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8189
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8188
 
-Instead of thinking some of these macros should be replaced when a new
-release is out, split the variable that should be manually maintained
-and the ones that are automatically computed in set_versions.py.
+Update set_versions.py after whinlatter release.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/poky.yaml.in | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ documentation/set_versions.py | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/documentation/poky.yaml.in b/documentation/poky.yaml.in
-index 810efd4d5..f6d6ea9fc 100644
---- a/documentation/poky.yaml.in
-+++ b/documentation/poky.yaml.in
-@@ -2,6 +2,12 @@
- # Macros used in the documentation
- #
+diff --git a/documentation/set_versions.py b/documentation/set_versions.py
+index d146f93bb..0d199a885 100755
+--- a/documentation/set_versions.py
++++ b/documentation/set_versions.py
+@@ -26,9 +26,9 @@ ourversion = None
+ if len(sys.argv) == 2:
+     ourversion = sys.argv[1]
  
-+#
-+# Automatically replaced by set_versions.py, no manual update required
-+# Values below are placeholders to give an idea on how to use them in the
-+# documentation.
-+#
-+
- # The DISTRO variable represents the current docs version. It should be used
- # when referring to the current docs version. See also DISTRO_LATEST_TAG.
- DISTRO : "5.2"
-@@ -22,6 +28,11 @@ DISTRO_REL_TAG : "yocto-$DISTRO;"
- DISTRO_REL_LATEST_TAG : "yocto-&DISTRO_LATEST_TAG;"
- DOCCONF_VERSION : "dev"
- BITBAKE_SERIES : ""
-+
-+#
-+# Not automatically replaced, manual updates required
-+#
-+
- YOCTO_DL_URL : "https://downloads.yoctoproject.org"
- YOCTO_RELEASE_DL_URL : "&YOCTO_DL_URL;/releases/yocto/yocto-&DISTRO;"
- MIN_PYTHON_VERSION : "3.9.0"
+-activereleases = ["walnascar", "scarthgap", "kirkstone"]
+-devbranch = "whinlatter"
+-ltsseries = ["scarthgap", "kirkstone"]
++activereleases = ["whinlatter", "scarthgap", "kirkstone"]
++devbranch = "wrynose"
++ltsseries = ["wrynose", "scarthgap", "kirkstone"]
+ 
+ # used by run-docs-builds to get the default page
+ if ourversion == "getlatest":
+@@ -36,6 +36,7 @@ if ourversion == "getlatest":
+     sys.exit(0)
+ 
+ release_series = collections.OrderedDict()
++release_series["wrynose"] = "5.3"
+ release_series["whinlatter"] = "5.3"
+ release_series["walnascar"] = "5.2"
+ release_series["styhead"] = "5.1"
+@@ -71,6 +72,7 @@ release_series["laverne"] = "0.9"
+ 
+ 
+ bitbake_mapping = {
++    "wrynose" : "2.16",
+     "whinlatter" : "2.14",
+     "walnascar" : "2.12",
+     "styhead" : "2.10",
 
 -- 
 2.51.0
