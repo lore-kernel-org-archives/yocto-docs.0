@@ -2,93 +2,104 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E3C52D11714
-	for <webhook@archiver.kernel.org>; Tue,  2 Dec 2025 16:14:25 +0000 (UTC)
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.1088.1764692062661936397
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 026CCD1171A
+	for <webhook@archiver.kernel.org>; Tue,  2 Dec 2025 17:00:41 +0000 (UTC)
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.842.1764694837742398344
  for <docs@lists.yoctoproject.org>;
- Tue, 02 Dec 2025 08:14:23 -0800
+ Tue, 02 Dec 2025 09:00:38 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=17Ue9ClD;
- spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=n66/YygI;
+ spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id BF81CC16A22
-	for <docs@lists.yoctoproject.org>; Tue,  2 Dec 2025 16:13:57 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id B44A01A1EDA
+	for <docs@lists.yoctoproject.org>; Tue,  2 Dec 2025 17:00:35 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 08F83606D6
-	for <docs@lists.yoctoproject.org>; Tue,  2 Dec 2025 16:14:21 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7478211919D06;
-	Tue,  2 Dec 2025 17:14:20 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 8B43B606D6
+	for <docs@lists.yoctoproject.org>; Tue,  2 Dec 2025 17:00:35 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E58F211919C30;
+	Tue,  2 Dec 2025 18:00:34 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1764692060; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=Dv3SZKj7J35bFgUn/hJlZVIO89k4Q3SbmTk8xvmtjr4=;
-	b=17Ue9ClDu7gVYLY2aEujdR3ae7CRCHZO1RFefv1sRj8otOlu2R8DIBYK0wn6T/Fv00etwc
-	ev21yZAnYB/4XStqej9veJfbGBh2q5vfGz/e7JSaZRbnHxDg4qdmZcFmWR7BrV13IToFtu
-	b93X+ep3GXXY1+hxj2QAc2pssQnHXfT6j77Q2D0VexKTTPn0O83v77WMrZP7bxLVJ7soof
-	DR5PJFfa220+ZLtvbUQ3cIy3brlcNEcobtRrRugNSQCPIFesUkrJ3zAJUaS1qEq48rTXoF
-	ABE5J/MyftjOpvRwb5lMU3wC8QJxjafTgGnGgeCIcxmk9wxN46njiuCf8xwlOA==
+	t=1764694835; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=9EHd4aovfjcAwcxFyGXM0FfBurJ97CLeoNGj5YRnBik=;
+	b=n66/YygIEqIYdD21XXPFn63E3RBvGuEh7aXS3PHEjrHbWHhykh/p8yQA18P8JsaadleQeT
+	QaNk2b6/9ETJT1NlRE/qZ2ManaXKolo0dPp4l2544FZROhUEFmMYnoliXcO0V232UrZ706
+	rSKvWWCihfPxZVkkYAil1y3tYrOoiPp31U3qc4FAbESh+xQcdwfns/ci3OOibWm65ZkdWs
+	OSPbnKJJW3OTsmHakdLjn2R7Jv479XPcTxldmjoQZWV+aQg+zUh6dbLbUyXlZVQHCWBtWA
+	VqvNF5FQijI1X5w2YrJaXXbb7bbASIvy1Po6AO+bIBQxBnVzYjrxBRQvBy8o3w==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Tue, 02 Dec 2025 17:14:14 +0100
-Subject: [PATCH 2/4] ref-manual/svg/releases.svg: mark whinlatter as
- current release
+Date: Tue, 02 Dec 2025 18:00:30 +0100
+Subject: [PATCH] contributor-guide/submit-changes.rst: remove mention of
+ Upstream-Status
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251202-release-updates-v1-2-889513ccc384@bootlin.com>
-References: <20251202-release-updates-v1-0-889513ccc384@bootlin.com>
-In-Reply-To: <20251202-release-updates-v1-0-889513ccc384@bootlin.com>
+Message-Id: <20251202-remove-upstream-status-mention-v1-1-410d15493349@bootlin.com>
+X-B4-Tracking: v=1; b=H4sIAC4bL2kC/yWNQQrCMBBFr1Jm7YBJ24VeRVzE+NUISctMUoTSu
+ 3fUzYe3+O+tpJAEpXO3kmBJmqZi4A4dxVcoT3C6G5M/+tHZsCBPC7jNWgUhs9ZQm3JGqXZlBxc
+ HP/SnEY5MMgse6fMLXK5/1nZ7I9avlbZtBztuzHWCAAAA
+X-Change-ID: 20251202-remove-upstream-status-mention-1e1c424395e1
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1198;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1733;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=Yira4u6M3QMP1bIBNbLmD6vKkBes6SZhyj5nrrwZl5o=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpLxBaXVC20bwNlO3V43jTf2StKhOee+xPZ5q7r
- Vook8oxVG6JAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaS8QWgAKCRDRgEFAKaOo
- NnTbEADHo4YVt677xE51BZ0flmWOUwVudzsPkYUgZnVSkhsiw1lAj+k9n839GaTfHd0rhvcm5MX
- Z3yEcMfbjOVyXo+imRYx8mq8E0jEdZxuBCQ88eJ8UfJof3uSWfuH3GGZVn3tn572YPW4Tqc286i
- uhM44rPARm5L566rCKGt9MwFW2Uz5iepn/qYnBYuuPc/ynJb7h1Z/v2YWpo5uNZO4GaIrD6dEJs
- Ch8ivUjeRfVK1QcuswMFWy3WSt6Atbc+R8YT1sQ+M410Zy2366xuvu8JUJz5sBIePETbIozaHO9
- CsAlUwL9/YlEgMfKaboHv8Zw8Fqjwpp8RoiKqBQCn9IiaHmVFYSjuluwBRzml8GciK89jj9+VWD
- ogv2PBXbMG2qL2Ro6uTfeiVVR90I4kYWOaAhtpmwTB8ijoLZoTSz8uUjmR0c8fpKEU6fBGm8iAl
- ZThjDgxLYx4/wvxc75AadWlYoTZaJ4PEn+WkYcHh1MtOHkFlDtDhhVz7xxkG0QRsi3veo6hWCmw
- e+1ZM3LxFLoVAfoaj99k9IK3/kiW0SzC66uxMc4jc+Wlno7o/fAEV11/uc81uCmvQrdwG3E6KM6
- vEz7V+qe0JpJ9mUOzpRobpOXpmQgfNLnBvh1jzvogX8axUd6wurZdkSx31cJLe7AZtOyZlh4gH8
- Ht56ts7HxP3RkHQ==
+ bh=+HVWWfhlFHB9MHViWTO11/Vuw5Xn5IVFbSQVaND2t4s=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpLxsyBtfdK786Yj40f7unsKAwH1fW5xmniIY3p
+ +VAleTPQY6JAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaS8bMgAKCRDRgEFAKaOo
+ NhmTD/9gGKIaExRToiR7PHQ8bcm13dUohKARECYO3JXAj0qPKimtipssu9vvSkIERN2tto/MG1r
+ Hf501s0sjbtn1j6Ys5amaG3Z9Z4EjcspUrRrha9N2KPwxULrlyRfz2MrYqKiS4ZhHth/MmdKqSR
+ cG8+0k+44qBLMwOE+KM4tIwFzo4VhDOjbrABcrwBKkqj9ABVGB5irS2VHAhEe/f5vGGI2ZcR5a1
+ VZD6BG1WQq4HhnI7Xj/CpxC2tr20blEnvlnYQcdEjGEqyyYCT51JJuiI2ULJr4Br3f5mQks6f7y
+ /qCfcdvPg3d6XNm8HpoMraBSgcuXjDKaLMBnzOYQGd4VaqKSxs8bQcbBLAXKrpazfWXbD1d2ect
+ vPz9bkyUVDpsN3OOHlfu5x/0ennOunmqXGF5QHNKj56uZwba27l09W+2SEKWpq27hkDkh+a2pmD
+ SKytli+Ga/wbLVJjKY2YpVnMNt7i3BQSUjUkTktj7CeoJPX2tumjmBXuc5cEkvf9H6hTAiO9jZw
+ rwJXyRSKZAfadGs2JGLaLLxptqtK/OdGeFjFx5cPn+WbTwdUsuGtSB4Cdwsmk+GaJb0aWDFm9ui
+ oLjZrvWFRghPuv6XKf3TuKtxa6J+pi3sPlp0ztwr8CwtOasBMLGcPlBNBpxYBP/0nnosiY4AfOZ
+ bo6qjeyf/+qAWXg==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 02 Dec 2025 16:14:25 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8186
+ <docs@lists.yoctoproject.org>; Tue, 02 Dec 2025 17:00:41 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8190
 
-Whinlatter is the new current Yocto Project release, mark it as an
-active one.
+The Upstream-Status tag is not used for patches sent on mailing lists,
+but for patches to be applied to recipes. To avoid confusion in this
+Contributor Guide, remove the mention of this tag as part of the
+Patchtest examples as it can be misinterpreted as something to include
+in a regular patch.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/ref-manual/svg/releases.svg | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ documentation/contributor-guide/submit-changes.rst | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/documentation/ref-manual/svg/releases.svg b/documentation/ref-manual/svg/releases.svg
-index e6038935f..7a0b99c3a 100644
---- a/documentation/ref-manual/svg/releases.svg
-+++ b/documentation/ref-manual/svg/releases.svg
-@@ -656,7 +656,7 @@
-          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:13.3333px;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans Bold';text-align:center;text-anchor:middle;fill:#fffefe;fill-opacity:1;stroke:none"
-          id="tspan10317-2-9-1-4-6-5-6-9">5.2</tspan></text>
-     <rect
--       style="opacity:0.75;fill:#251f32;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-opacity:1"
-+       style="opacity:1;fill:#333333;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-opacity:1"
-        id="rect917-0-0-4-4-9-4-5-3-9-2-3-67"
-        width="140"
-        height="45.000004"
+diff --git a/documentation/contributor-guide/submit-changes.rst b/documentation/contributor-guide/submit-changes.rst
+index 0c2120eb0..6306ed45b 100644
+--- a/documentation/contributor-guide/submit-changes.rst
++++ b/documentation/contributor-guide/submit-changes.rst
+@@ -329,10 +329,10 @@ Validating Patches with Patchtest
+ 
+ ``patchtest`` is available in ``openembedded-core`` as a tool for making
+ sure that your patches are well-formatted and contain important info for
+-maintenance purposes, such as ``Signed-off-by`` and ``Upstream-Status``
+-tags. Note that no functional testing of the changes will be performed by ``patchtest``.
+-Currently, it only supports testing patches for ``openembedded-core`` branches.
+-To setup, perform the following::
++maintenance purposes, such as the ``Signed-off-by`` presence. Note that no
++functional testing of the changes will be performed by ``patchtest``. Currently,
++it only supports testing patches for ``openembedded-core`` branches. To setup,
++perform the following::
+ 
+     pip install -r meta/lib/patchtest/requirements.txt
+     source oe-init-build-env
 
--- 
-2.51.0
+---
+base-commit: b1e93125d81a35e5f566ea67ae9a827d6d94913f
+change-id: 20251202-remove-upstream-status-mention-1e1c424395e1
 
 
