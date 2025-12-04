@@ -2,93 +2,93 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 16A5CD2068B
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4895AD20692
 	for <webhook@archiver.kernel.org>; Thu,  4 Dec 2025 13:17:06 +0000 (UTC)
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.43163.1764854221883530682
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.43480.1764854222002680300
  for <docs@lists.yoctoproject.org>;
  Thu, 04 Dec 2025 05:17:02 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=yNi8UMgN;
- spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=D+DwyVcm;
+ spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id EAFE64E41A28
-	for <docs@lists.yoctoproject.org>; Thu,  4 Dec 2025 13:16:59 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id AB02860731;
+	by smtpout-02.galae.net (Postfix) with ESMTPS id F36521A1F4A;
 	Thu,  4 Dec 2025 13:16:59 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 354101192257B;
-	Thu,  4 Dec 2025 14:16:57 +0100 (CET)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id B737D60737;
+	Thu,  4 Dec 2025 13:16:59 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DDDA511922578;
+	Thu,  4 Dec 2025 14:16:56 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
 	t=1764854218; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=aiXr+ZslzDLiabryIa040gNW/9IdfMsJ8079MP63BnQ=;
-	b=yNi8UMgNPAlt8PoKXQry+SMtuz2ACq4PUAaIXxR4peSe8SDQPGSAHlxCUMrhi3+BKkin3l
-	/xu8c81lz/WxDIx4QCNBcYLD8zff2n8xvMCKYfSDZoSSdJzII/7jwjj/iyHE9Df350IdgN
-	7+1kJN8ijKT4/fYJIc6QhWe3/NJJCBTYa4kzonViGivZ5vBMKI8R8FxNMXQtgtsO6E3RaT
-	piSxb7Ti1c40beDVLSLPmhbE6wjDVq1uyIzGCTRl7Phzk3R8LP4gi0cD0eKCSTNb++lXu2
-	5VvEFpTxYsTvxNMV3SN5hK7jXuykkoQNFyUpsPyuHR8D58Cy4h7VsdqyvpZ2rw==
+	bh=ZKzrzxm4t3ALT/N+Bok36gMYv/t8wb2S+jTNF2I7pkY=;
+	b=D+DwyVcmk6plYXDqhZ5+LyH4yP55zJGsyEpofoQ5AiaqCVYPbcpJZsE4YcNl3JOxCjwjNE
+	o6dXrW/snKQaS+ghowJqaOAkFM7ezOdubvHSCwTgEOAvUFjdiMABMjZIhFU/3pgv4PhtzX
+	m+2N6mTXqnZscUz8cfXzkpr4qFxImXSBiiDnFJF0GQ7DzwWfAuK1HBtwtWwMYFO5Fzom8a
+	IjcBot1XZ6uUxBte9gtV7wIigzkys9Di5oZop0T3nlIoapKOyGzS+h/vhGQquhPgl3cChV
+	Hq64xZhf5BWShBfnUN/HjPz5ZQ90iC4FnwnFN8lRc8hDF7lSfhirwhtRQ7D0hA==
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
 Date: Thu, 04 Dec 2025 14:16:56 +0100
-Message-Id: <DEPGLUEBY8HP.2A72US2T78IKO@bootlin.com>
+Message-Id: <DEPGLUAT25P5.1DR1ME2CGN5XQ@bootlin.com>
+Subject: Re: [docs] [PATCH 3/3] doc: bitbake-user-manual-metadata: reorder
+ introduction on how to locate include files
 Cc: <docs@lists.yoctoproject.org>, "Quentin Schulz"
  <quentin.schulz@cherry.de>
 From: "Antonin Godard" <antonin.godard@bootlin.com>
 To: "Quentin Schulz" <foss@0leil.net>,
  <bitbake-devel@lists.openembedded.org>
-Subject: Re: [docs] [PATCH 2/3] doc: bitbake-user-manual-intro: specify
- inherit_defer directive for recipe classes
 X-Mailer: aerc 0.21.0-30-g0177c1d31447
 References: <20251203-doc-file-include-require-v1-0-fc708832b475@cherry.de>
- <20251203-doc-file-include-require-v1-2-fc708832b475@cherry.de>
-In-Reply-To: <20251203-doc-file-include-require-v1-2-fc708832b475@cherry.de>
+ <20251203-doc-file-include-require-v1-3-fc708832b475@cherry.de>
+In-Reply-To: <20251203-doc-file-include-require-v1-3-fc708832b475@cherry.de>
 X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Thu, 04 Dec 2025 13:17:06 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8211
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8212
 
 On Wed Dec 3, 2025 at 6:06 PM CET, Quentin Schulz wrote:
 > From: Quentin Schulz <quentin.schulz@cherry.de>
 >
-> We specify the recipe classes must be used with inherit but they can
-> actually also be used with inherit_defer directive so let's make that
-> clear.
+> BitBake first searches the relative to the local directory before going
+> through BBPATH.
 >
 > Fixes: 7bd36f6c6d33 ("doc: extend classes and include/require documentati=
 on")
 > Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
 > ---
->  doc/bitbake-user-manual/bitbake-user-manual-intro.rst | 7 ++++---
+>  doc/bitbake-user-manual/bitbake-user-manual-metadata.rst | 7 ++++---
 >  1 file changed, 4 insertions(+), 3 deletions(-)
 >
-> diff --git a/doc/bitbake-user-manual/bitbake-user-manual-intro.rst b/doc/=
-bitbake-user-manual/bitbake-user-manual-intro.rst
-> index 2875e18f3..329b02829 100644
-> --- a/doc/bitbake-user-manual/bitbake-user-manual-intro.rst
-> +++ b/doc/bitbake-user-manual/bitbake-user-manual-intro.rst
-> @@ -220,9 +220,10 @@ BitBake supports class files installed in three diff=
-erent directories:
->        INHERIT +=3D "myclass"
+> diff --git a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst b/d=
+oc/bitbake-user-manual/bitbake-user-manual-metadata.rst
+> index ef8ab024d..ef401d4ab 100644
+> --- a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
+> +++ b/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
+> @@ -1054,9 +1054,10 @@ bitbake will treat that as direct value assignment=
+ in its configuration::
+>  Locating Include Files
+>  ----------------------
 > =20
->  -  ``classes-recipe/``: these classes must be inherited from a recipe us=
-ing the
-> -   :ref:`inherit <ref-bitbake-user-manual-metadata-inherit>` directive. =
-They do
-> -   not support being inherited globally. For example, you would use the =
-recipe
-> -   class named ``myclass`` like so::
-> +   :ref:`inherit <ref-bitbake-user-manual-metadata-inherit>` or
-> +   :ref:`inherit_defer <ref-bitbake-user-manual-metadata-inherit-defer>`
-> +   directive. They do not support being inherited globally. For example,=
- you
-> +   would use the recipe class named ``myclass`` like so::
+> -BitBake uses the :term:`BBPATH` variable to locate needed include files.
+> -Additionally, BitBake searches the current directory for :ref:`include
+> -<ref-include-directive>` and :ref:`require <require-inclusion>` directiv=
+es.
+> +BitBake first searches the current directory for needed include files fo=
+r
+> +:ref:`include <ref-include-directive>` and :ref:`require <require-inclus=
+ion>`
+> +directives.
+> +BitBake also uses the :term:`BBPATH` variable.
 > =20
->        inherit myclass
+>  .. note::
 > =20
+
+Yes, and it's even clearly shown in the example that follows...
 
 Reviewed-by: Antonin Godard <antonin.godard@bootlin.com>
 
