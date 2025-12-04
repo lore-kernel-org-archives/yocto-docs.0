@@ -1,150 +1,89 @@
-Return-Path: <michael.opdenacker@rootcommit.com>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E4173D1F9B7
-	for <webhook@archiver.kernel.org>; Thu,  4 Dec 2025 10:55:04 +0000 (UTC)
-Received: from dwarf.ash.relay.mailchannels.net (dwarf.ash.relay.mailchannels.net [23.83.222.53])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.40639.1764845694491404053
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E72A8D1F9DE
+	for <webhook@archiver.kernel.org>; Thu,  4 Dec 2025 12:57:25 +0000 (UTC)
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.42765.1764853039302752341
  for <docs@lists.yoctoproject.org>;
- Thu, 04 Dec 2025 02:54:54 -0800
+ Thu, 04 Dec 2025 04:57:20 -0800
 Authentication-Results: mx.groups.io;
- dkim=fail reason="dkim: body hash did not verify" header.i=@rootcommit.com header.s=hostingermail-a header.b=MfJLjZSS;
- spf=pass (domain: rootcommit.com, ip: 23.83.222.53, mailfrom: michael.opdenacker@rootcommit.com)
-X-Sender-Id: hostingeremail|x-authuser|michael.opdenacker@rootcommit.com
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-	by relay.mailchannels.net (Postfix) with ESMTP id 706778C24FE;
-	Thu, 04 Dec 2025 10:54:53 +0000 (UTC)
-Received: from fr-int-smtpout28.hostinger.io (trex-green-4.trex.outbound.svc.cluster.local [100.99.173.173])
-	(Authenticated sender: hostingeremail)
-	by relay.mailchannels.net (Postfix) with ESMTPA id 50C7F8C1B55;
-	Thu, 04 Dec 2025 10:54:52 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; d=mailchannels.net; s=arc-2022; cv=none;
-	t=1764845692;
-	b=U354wEduC2FyhRYg159LJ+H9sPXmWeIgAB822MBKQxP78dhVxw/tLQk1SJw3JcNqa/VImd
-	kpVJokHFhvfvxp+dUkYZkcyUK0DMDsvzi0X+2PpcFVhgD7AOvsnwidporfmii5OFfiVJFV
-	RjJ35YEIz39aEoRwweNjrwO2iZ+3cIXcGTzABsxJnbgso9dhk+gd0qCb8qR1+gVn0qiLBw
-	ZFfODKBI1NNxD3uKMNwP1XC0Z9PFtphriTXbHCmS7SpO9dHH3K9UipWjuCOcp3CrQHuG1V
-	r6warYTqJnobLsyhYp1Ebz29UuRPECy2GTPVYLMH6xUC439OmPJnRKD15C32oA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net;
-	s=arc-2022; t=1764845692;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6VmxV+MR2UxEwZgpT9rXaVFyyu77KWVxNuX3L5j/XlY=;
-	b=Aq3PoVoiK350tGThm17fpDqtIkNECSLe2e3neGpGyaw2/Lx2E0qdu0wxPedqvsNRZDcAbO
-	V6ssKQ8pqX9o4/tsPtu4XMh1vUNdkkwdw2FqkGq6QkpH9wzX/SapBke8zsz3x3z6bDx7kp
-	hGbd/tKvGF581PPlOr70KKgWrNDQN6hoDkF4vkItLPYzA5KyyVPoVUMxARzIXPhJN55evg
-	YkZIsOMWSJXeeA8qnlvXca472eALI9Tu20vvn/jhWncqCKGxR7FI73cz4h5uN8136gD9zT
-	hvGLFCyA3yQQSCgFUJmNzAMCfcroFxVx3E5UXpaPDWPA8i92gEWiHw2SWxFjoA==
-ARC-Authentication-Results: i=1;
-	rspamd-858948c46c-tdh6c;
-	auth=pass smtp.auth=hostingeremail
- smtp.mailfrom=michael.opdenacker@rootcommit.com
-X-Sender-Id: hostingeremail|x-authuser|michael.opdenacker@rootcommit.com
-X-MC-Relay: Neutral
-X-MailChannels-SenderId: 
- hostingeremail|x-authuser|michael.opdenacker@rootcommit.com
-X-MailChannels-Auth-Id: hostingeremail
-X-Spicy-Coil: 66bc559a7a3779a6_1764845693184_2673531325
-X-MC-Loop-Signature: 1764845693184:1935148176
-X-MC-Ingress-Time: 1764845693183
-Received: from fr-int-smtpout28.hostinger.io (fr-int-smtpout28.hostinger.io
- [148.222.54.10])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-	by 100.99.173.173 (trex/7.1.3);
-	Thu, 04 Dec 2025 10:54:53 +0000
-Received: from [IPV6:2001:861:4450:d360:93ee:beb7:5173:8b2] (unknown [IPv6:2001:861:4450:d360:93ee:beb7:5173:8b2])
-	(Authenticated sender: michael.opdenacker@rootcommit.com)
-	by smtp.hostinger.com (smtp.hostinger.com) with ESMTPSA id 4dMWcB0dymz2y9T;
-	Thu,  4 Dec 2025 10:54:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rootcommit.com;
-	s=hostingermail-a; t=1764845690;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6VmxV+MR2UxEwZgpT9rXaVFyyu77KWVxNuX3L5j/XlY=;
-	b=MfJLjZSSYIeR5qduer+pSL7l/0H5ZIraxqAJKGTt5nPXXXWX22CVSDJQ7TVWDHSSbQeNgB
-	ppWLPLzqWdC1TGOUqJvWUHlHpsqQ4kXNfgqFA7YF5KgiCyx+dzGfZ4oRExsQOtSo0hmr9t
-	LDewBhd0jXicmP76Y4vcB9wH+1DRElzVuWLUqh03SyteNSFeGCgx8P2A1NSllMhkUQuclQ
-	VoDK5zZiSMjM9iyJmwEPOH4YDBNQLdEefiWphyppEG0r9Gw+eFwfg0ddj+vzAbmGWS2gPr
-	ydgaQmpPwpBLlxwopA4ZxiiYZ0ychu6XfmkaXub9ivQlGyWhqobr/QAcyz2jOg==
-Message-ID: <af10c84c-1bda-42f4-ace0-74e7d3306cfb@rootcommit.com>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: michael.opdenacker@rootcommit.com, bitbake-devel@lists.openembedded.org,
- docs@lists.yoctoproject.org
-Subject: Re: [PATCH v5] bitbake-user-manual: Documenting BB_CMDLINE
-To: Swami <swami310@gmail.com>
-References: <20251204002531.7660-1-swami310@gmail.com>
-Content-Language: en-US, fr
-From: Michael Opdenacker <michael.opdenacker@rootcommit.com>
-Organization: Root Commit
-In-Reply-To: <20251204002531.7660-1-swami310@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Date: Thu,  4 Dec 2025 10:54:50 +0000 (UTC)
-X-CM-Analysis: v=2.4 cv=GbNFnhXL c=1 sm=1 tr=0 ts=6931687a a=I9xiqIjMKFJQXI9lKSYqCg==:617 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=d70CFdQeAAAA:8 a=pGLkceISAAAA:8 a=B_sTQ91uS8caXt9xnAoA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=NcxpMcIZDGm-g932nG_k:22
-X-CM-Envelope: MS4xfBP2aQ749JvKe4xWEfb9NbCxWP5Je4v8WwuHzmUDJ48KZtphZ0qTCqsLOB2RWPNuNb1pfiC2lkr/vQGC7WNM/I/NCMjt4096EaL022TXrDdu75BokJ5X XeeJBZnSNBearqG+yODw3T+nkt3vXCwJY7LJZtjpUIgJuCsGrAJwhkR8rz9gHHKF7HstJPFXIDReZDoQtTVoXDb04mcwWSUVlaj+zq4PXyZm7dYHl5H4v+GL KHSZ4wC5V8t3b3FBciha3COjcNp5+9lbw/yT1EyNPB+jOV7SGWZoqSFRZkH4SY/xHuMeyEMFPFM2jODHcViOKZ8QOnF/dvDdL/qpgxb00zLrLIlNtGN3cr8y fCDlyK/xuvjOQnqhvZxTfxzzSVYo+iwZhSkMZqOugke2QebD1pk9kxrzuXjx1RJBX5CUbEvddgqlmEhE6rvyQY+o0r5dDb2j5Q/Hftfs8wCAKv1PB7I=
-X-AuthUser: michael.opdenacker@rootcommit.com
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=CH/4yuY0;
+ spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 0D0A61A1F44;
+	Thu,  4 Dec 2025 12:57:17 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id C8E446068C;
+	Thu,  4 Dec 2025 12:57:16 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E9C4A11922531;
+	Thu,  4 Dec 2025 13:57:14 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1764853036; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=LptVDrsc5OFLxi5QM1u/9O02ZdJeKLWjExND0Cs/T7Q=;
+	b=CH/4yuY04CK0Cn8zcWu9cOd4xvYH39b4aWPVCz+lo3jOH4QzxHHQE3ZU1Gh8n6cYqnq5Aa
+	0nCXjm3U0d4aibmrZTLGg78L/79Uq9FkvPX8vO9GJDNg+UHQcowlepJX+VpGtonO4+KUPE
+	GTsUCzkFuJYfsfPTBaDwp3QqTDOpiqYRnEXnbFt2rUOooWodZOQosgTECSVml2iCnaXBf8
+	f/lwjZTs5WXQySwkf0znkx7dJCQlHo99UEAkj2dumvX/ZKLlIcoSsquGbxgx3Z9KRxQ4AW
+	SP59necf3Hc9RKhojHNnzm0QxN8LCgNTe+QWt4V4HAjghytXIXo62jQFBOmKig==
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 04 Dec 2025 13:57:14 +0100
+Message-Id: <DEPG6R9444HV.37PEKFWSS5JCP@bootlin.com>
+Subject: Re: [bitbake-devel] [PATCH v5] bitbake-user-manual: Documenting
+ BB_CMDLINE
+Cc: <bitbake-devel@lists.openembedded.org>, <docs@lists.yoctoproject.org>
+From: "Antonin Godard" <antonin.godard@bootlin.com>
+To: <swami310@gmail.com>, "Michael Opdenacker"
+ <michael.opdenacker@rootcommit.com>
+References: <20251204002531.7660-1-swami310@gmail.com>
+ <af10c84c-1bda-42f4-ace0-74e7d3306cfb@rootcommit.com>
+ <CA+-_CqnmcJ1txe-AuECK-sJ+N-+itruvAtQAkpNPQh4ckhPFFw@mail.gmail.com>
+In-Reply-To: <CA+-_CqnmcJ1txe-AuECK-sJ+N-+itruvAtQAkpNPQh4ckhPFFw@mail.gmail.com>
+X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 04 Dec 2025 10:55:04 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8207
+ <docs@lists.yoctoproject.org>; Thu, 04 Dec 2025 12:57:25 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8208
 
-Hi Swani
+Hi Swani,
 
-Thanks for the update!
+On Thu Dec 4, 2025 at 12:19 PM CET, Swami via lists.openembedded.org wrote:
+> Thanks Michael,
+> I will do the changes and submit a new patch.
+> I picked up documentation assuming it would be easy :)
+> Many thanks to you,Antonin, for bearing with my endless patches for such =
+a
+> small change.
+> On the positive side, I am getting comfortable with the steps by this
+> repetition.
+> Unfortunately , that is adding to much back and forth
+> Hope I can nail it with the next patch.
 
-On 12/4/25 01:25, Swami wrote:
-> Add documentation for the internal read-only variable :term:`BB_CMDLINE=
-`.
-> Fixes [YOCTO #15746]
-> Signed-off-by: Swaminathan K <swami310@gmail.com>
-> ---
->   doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst | 4 +++=
-+
->   1 file changed, 4 insertions(+)
->
-> diff --git a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.=
-rst b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
-> index 734c7858a..00b28519a 100644
-> --- a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
-> +++ b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
-> @@ -116,6 +116,10 @@ overview of their function and contents.
->         Specifies if SSL certificates should be checked when fetching. =
-The default
->         value is ``1`` and certificates are not checked if the value is=
- set to ``0``.
->  =20
-> +   :term:`BB_CMDLINE`
-> +      :term:`BB_CMDLINE` is an internal variable and is read-only. It =
-captures the exact
-> +      command line used for the current invocation of BitBake.
-> +
+No problem, that's part of the learning process and once that's settled in,
+you'll have less and less iterations on patches. :) We are happy to welcome=
+ new
+contributors.
 
+I can also suggest b4 which does makes things a bit easier to manage patche=
+s:
+https://b4.docs.kernel.org/en/latest/
 
-Oops, you have unnecessary spaces in your last line. Please remove them.=20
-My editor flags those and this is distracting for a reviewer.
-Unless Antonin prefers to fix this by himself.
+I can't make the modifications locally though, as I don't merge things on t=
+he
+bitbake (only yocto-docs). Please send a new version of the patch, that's f=
+ine!
 
-If you send a V6, you can also move "the exact" to the next line.=20
-Otherwise, your line is longer than 80
-characters and it also stands out a little bit.
-
-Sorry, documentation patches are the most difficult ones =F0=9F=98=85
-Thanks for your patience!
-Cheers
-Michael.
+Thank you,
+Antonin
 
 --=20
-Michael Opdenacker
-Root Commit
-Yocto Project and OpenEmbedded Training course - Learn by doing:
-https://rootcommit.com/training/yocto/
+Antonin Godard, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
