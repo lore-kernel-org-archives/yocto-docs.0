@@ -1,72 +1,92 @@
-Return-Path: <rpjday@crashcourse.ca>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 387CCD2A532
-	for <webhook@archiver.kernel.org>; Thu,  4 Dec 2025 20:57:50 +0000 (UTC)
-Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.54496.1764881861480881494
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 92C4BD2E024
+	for <webhook@archiver.kernel.org>; Fri,  5 Dec 2025 07:49:19 +0000 (UTC)
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.923.1764920955131368884
  for <docs@lists.yoctoproject.org>;
- Thu, 04 Dec 2025 12:57:41 -0800
+ Thu, 04 Dec 2025 23:49:16 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=Rgqu4FP5;
- spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:References:
-	Message-ID:In-Reply-To:Subject:cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=8crO1psAp40fQUP3bqrjVjvGwirtB42I4fixs6mjYkw=; b=Rgqu4FP5TnpF756qxIjD0omCud
-	w3Q21ayGpf4nf4UrVUrEL8sw9AN6u6RizSvID6E31zISs0yOkE/pGfaw4nXIZEdvyFDEz0qc6e7cC
-	EqOQsRcZqS6ZYnDdF69UZFJvkGsExHcDK/txFt7lg3ff2fWMDFNZaHZPM19TSLaaD13KzxSgYTaXA
-	JfQE/mAAXl/RpavSgGtW+C8/YedGOu4nY1vA1Jj+vMS26obuDWQg9HEGvdTazvVyayOe7VQe8JCOA
-	Pjw4TpBiqRNLR2VjwPC2uXHqk7rT1TRLZDz7eWGD1JagXI2wo7/MP/mIxPFVJp4t5dShC/COpxO96
-	F6EYt0zQ==;
-Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:58160 helo=rday)
-	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1vRGOR-0000000HV9d-1NMh;
-	Thu, 04 Dec 2025 15:57:40 -0500
-Date: Thu, 4 Dec 2025 15:59:00 -0500 (EST)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: Alexander Kanavin <alex.kanavin@gmail.com>
-cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: Re: [docs] can we standardize on the spelling of "artifacts"?
-In-Reply-To: <CANNYZj-vDD6i0hZFxnhszKYCMFofnwU8yRQoTJcz-6ohntoL6Q@mail.gmail.com>
-Message-ID: <08b4e3c5-7fe3-4868-752e-3c2ced0e90b6@crashcourse.ca>
-References: <44d6bee4-c609-3f8c-e5e6-338fce4c2719@crashcourse.ca> <CANNYZj-vDD6i0hZFxnhszKYCMFofnwU8yRQoTJcz-6ohntoL6Q@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=sMR7rnBJ;
+ spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 8305FC17870
+	for <docs@lists.yoctoproject.org>; Fri,  5 Dec 2025 07:48:49 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id E6F7F60731;
+	Fri,  5 Dec 2025 07:49:12 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C94E310B60549;
+	Fri,  5 Dec 2025 08:49:10 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1764920952; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=NdK5n0mu8SF5yZqnKvaqR6D1pmvX0juxEvDuXFLHfhw=;
+	b=sMR7rnBJ4HHCLGAywkpK3wHsAn5tVdZ0vLRsMY0AHHcwpDUW/sF4jcNf4g2LB0dicLzq0J
+	KEd6UsTZPqQD4uFB2dhLWT0sU4bdWHR1Uw9A+cDE5EfldP08WVzMsu3LDQraK1VCxFICM5
+	j9omPgRUd11URTlKqD8F8W+kuCPMbrplqVHaAueik7Sccajx9Ocw1PWC2R5fG2SG+4JDd8
+	dB6d5MUJpJ4Qi36fcrUMuDKnnhaNL5TcKR6fF5kRyfBsd729yhPZWAh9hSugPX1rljq1gC
+	Cp4Vt7mJTM33ORQ6XQmkcadSw+CcPWCUvMq/MsfAV6+AQDepjiqOOjdKZJSPWw==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 05 Dec 2025 08:49:10 +0100
+Message-Id: <DEQ49FICZ0QX.2FVRZ8Q3SVWZR@bootlin.com>
+Subject: Re: [bitbake-devel] [PATCH v6] bitbake-user-manual: Documenting
+ BB_CMDLINE
+Cc: <michael.opdenacker@rootcommit.com>
+From: "Antonin Godard" <antonin.godard@bootlin.com>
+To: <swami310@gmail.com>, <bitbake-devel@lists.openembedded.org>,
+ <docs@lists.yoctoproject.org>
+X-Mailer: aerc 0.21.0-30-g0177c1d31447
+References: <20251204234240.7224-1-swami310@gmail.com>
+In-Reply-To: <20251204234240.7224-1-swami310@gmail.com>
+X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 04 Dec 2025 20:57:50 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8225
+ <docs@lists.yoctoproject.org>; Fri, 05 Dec 2025 07:49:19 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8226
 
-On Thu, 4 Dec 2025, Alexander Kanavin wrote:
-
-> On Thu, 4 Dec 2025 at 21:34, Robert P. J. Day via
-> lists.yoctoproject.org <rpjday=crashcourse.ca@lists.yoctoproject.org>
-> wrote:
-> >   is it "artifacts" or "artefacts"?
+On Fri Dec 5, 2025 at 12:42 AM CET, Swami via lists.openembedded.org wrote:
+> Add documentation for the internal read-only variable :term:`BB_CMDLINE`.
+> Fixes [YOCTO #15746]
+> Signed-off-by: Swaminathan K <swami310@gmail.com>
+> ---
+>  doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst | 4 ++++
+>  1 file changed, 4 insertions(+)
 >
-> We can accept that either is ok? Why is there a need to standardize on
-> one, and then waste energy correcting people and patches? I won't be
-> able to remember the 'correct' option either, fwiw.
+> diff --git a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rs=
+t b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
+> index 734c7858a..32860ec0c 100644
+> --- a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
+> +++ b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
+> @@ -116,6 +116,10 @@ overview of their function and contents.
+>        Specifies if SSL certificates should be checked when fetching. The=
+ default
+>        value is ``1`` and certificates are not checked if the value is se=
+t to ``0``.
+> =20
+> +   :term:`BB_CMDLINE`
+> +      :term:`BB_CMDLINE` is an internal variable and is read-only. It ca=
+ptures
+> +      the exact command line used for the current invocation of BitBake.
+> +
+>     :term:`BB_HASH_CODEPARSER_VALS`
+>        Specifies values for variables to use when populating the codepars=
+er cache.
+>        This can be used selectively to set dummy values for variables to =
+avoid
 
-  fair enough.
+Reviewed-by: Antonin Godard <antonin.godard@bootlin.com>
 
-rday
+Thank you!
+Antonin
+
+--=20
+Antonin Godard, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
 
