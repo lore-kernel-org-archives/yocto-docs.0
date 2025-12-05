@@ -2,62 +2,61 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7341AD32D92
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 70DC8D32D8A
 	for <webhook@archiver.kernel.org>; Fri,  5 Dec 2025 14:51:42 +0000 (UTC)
 Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.7369.1764946297807285538
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.7370.1764946298118056032
  for <docs@lists.yoctoproject.org>;
  Fri, 05 Dec 2025 06:51:38 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=KQ4zy9tH;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=1E7aR5ug;
  spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 0FF7CC19648
-	for <docs@lists.yoctoproject.org>; Fri,  5 Dec 2025 14:51:12 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 332DBC19649
+	for <docs@lists.yoctoproject.org>; Fri,  5 Dec 2025 14:51:13 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 78C72606AC
-	for <docs@lists.yoctoproject.org>; Fri,  5 Dec 2025 14:51:35 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4F527102F0A9D;
-	Fri,  5 Dec 2025 15:51:33 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id A6285606AC
+	for <docs@lists.yoctoproject.org>; Fri,  5 Dec 2025 14:51:36 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4A641102F0A9B;
+	Fri,  5 Dec 2025 15:51:35 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1764946294; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=BX7F3lXYxLxypc0xk/t88KBWJTz2vI7YzXvzx806No4=;
-	b=KQ4zy9tH9FjJvR1VHl7jjM7MdykrBqSPZPGLEsfD4WUHGyoIep3ZkYxO+DqSCHvGI5kYco
-	qbc94HR90TpKm2tR39VvyzCgukLkUKxEwplYUcXNRxJkFxj5J6I3p5KNMfzfZw8w6RwloP
-	mATE2BkUIUiSedrwJLH0YcL5wxjyxZVJM5gRS+0TlpPUfS2r3IuAB3UfFaGjwaZJrK01zO
-	tNdaRkzohtcW/Hi/wrd5apzzwMlZPOO6jtDa5oL4Sr+Yz9WJck0hKeNYnqRfTJRV58ZTuI
-	HOkM3O3khuXAR/CPiQHujqOjoev3nsyso8luaqG7VOFmGQWXFPYUGvHjUIZjlw==
+	t=1764946295; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=B9jdqOvHS9vx1U1OHDQoMOzsvb2sasVWICwGeBVcipI=;
+	b=1E7aR5ugHC5hIWixkEBOvC9miOsluTGU9A/07ISavjmQiMGGR7AJvKDpEetz0HX8qAfagz
+	YW2RBkBIdMpxMpBmuX7rT/IWJ7L5CiU7o6lNDgl0rhvPNdNjOzEpu8BX29SXbu4yN3cOLe
+	RkzRPzQJl1gKKdp5JemsikRg/68NRg9+HpL2q/XURhakLHqx9MPMd0ij0vGIYISa+WdeKF
+	o0KwRexcD+mw2AYsXg3kPDXpOCP0NxdQCdJDhY9QVqes4AOMn4tk25OekOpp2d23JkyiI8
+	fkuZjFXe0Zt0xsQ2DhjI0DRJ0eHZLtTVVvBTB/IBkoFcn4xSS2Y0ll5+MU9vGw==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Subject: [PATCH 0/5] Add missing CentOS Stream / RockyLinux distros to the
- system-requirements.rst doc
-Date: Fri, 05 Dec 2025 15:51:23 +0100
-Message-Id: <20251205-build-docs-container-tlmgr-v1-0-de30623e664d@bootlin.com>
+Date: Fri, 05 Dec 2025 15:51:24 +0100
+Subject: [PATCH 1/5] tools/build-docs-container: move container files in
+ their own directory
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAGvxMmkC/yXMwQqDMAwA0F+RnBeoRS/7FdnBptFlaDuSKgPx3
- 1e347u8A4xV2ODeHKC8i0lOFe2tAXqOaWaUWA3e+b71rsewyRIxZjKknMooiRXLss6KLgQfHXV
- E3EEN3sqTfH758PjbtvBiKtcI5/kFod6K5H4AAAA=
-X-Change-ID: 20251205-build-docs-container-tlmgr-0bb2d0c4cce4
+Message-Id: <20251205-build-docs-container-tlmgr-v1-1-de30623e664d@bootlin.com>
+References: <20251205-build-docs-container-tlmgr-v1-0-de30623e664d@bootlin.com>
+In-Reply-To: <20251205-build-docs-container-tlmgr-v1-0-de30623e664d@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2711;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4042;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=nIklM476yaro6CqQlFjsY9fxty/ES25WdBvdhV3ItrQ=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpMvF0BnJzY2qr/pXHazc8mej5MmONX38M/DpMA
- uivmbLEL8iJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaTLxdAAKCRDRgEFAKaOo
- NvpMD/4+XbHnLbdfBkuMsGxGZWD9+/UhJWNltT7GJyCMeBxZh4/XOuZ0eZjIPGuVViLJlxeDGOE
- 1QZkrZAJivndN+4x5GlXW3XUxandYgX1CHh4bdglctLO1K+Yxx8evcqxIO3gai6CXMcEKbpSsWN
- o4wNi3yYvh6HhPxrBJEcwVVy02LQ4D7p0s23HeId/uyNZ7nD7XVKT7lK2J/Us7Uy1zKbtW13ro3
- 1UEohLQBaKJ+ebPP75d3xQl/kjwfwgiUqel9uTxS2Xq3Q4Cz5iXjDWCITvCej91RnVvhGKtL49i
- gS/1+NHJH7YaDAXhLNLsIRjPGGJt2GIi54VYB0O/CDm7TkA6OmNsxVlgApo4kbsuyZ1sa07T+j0
- v28U2ZrjPnGV93fq0hvafsIpWcifNveStHgmj3prid4KcOLMKtnngV7rRHVo2TQxJhkzAceO2m3
- yMOhZLihnekzciXHu0IGacegzDqkCqKrY6GrB8sUk1eFTXhs1Ra5eI4t9l8EYCqNxyGivoHZd18
- 5li4OTqKOH13KBONK4EH5sDbVwRvlAvdyW+qR3nG0PdpH0yIx3ZiYeTs/XLxYvxgW3DCHOkz0h+
- eLqwbJVz5WAAbIp1mKWcn1YqGhYbEaFkYLojyPwBnFk6TJFgyV7hCvyEF5dNNZhPFmPzFDkvtX2
- u0AFpSrh1s/rh2Q==
+ bh=ZXaf+4k0heH6JRHG+vAHZKY3GwS1qbzUWnw9hpxr/dU=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpMvF0SEYIWuFv3WCEGgNlP5ZSfpZttn+YvVMEJ
+ NBqMMfrrYuJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaTLxdAAKCRDRgEFAKaOo
+ Nu/YD/9gIhxvqa8dIfoL7Zi0BMnYXRe4A/ODohJuuEfTLD8YIxXzWnwOp3/uWkjR2j9pVAk1RsW
+ mvQyd0dpLuU0ihddJcK1B+a+klvdG30nOh18fRkbPsqvG/PLYhC5O2F3bRiiqRVfcA6CNGcbLlI
+ aZHlQqPNsHAE6Ce7LLogHOaivYhJT/FQ6mLdHpsosK7nXA7qlNhdQtVwBGVinKLC0BMj1JT1zJz
+ yDWMD+V+eYlDkMijc2CVwJr98O+tgx8kDS5yFnrwajbJLW5t0oOhrj69Cbn0qnvTfn2A1hrE+Rg
+ WQ2rlc5myxTKW7w4zMYbTtnpqwT6EzDfAYSewbb7D3/18qO/zh7/oLVNS9OI8dNZY32lWhSyBsw
+ 5sBct85X1SxPpIHsm8SiCHTHIr1sivPJ2lGsjT9otYwOGvxdUhSvsRwXwXMSJhDuYEocFZuSFin
+ W6rROLC0cfUaOBvh7TDysOyxCCXopA6uzcKCx6kJN/x8zoOB1EFugUxL76TenyLJzHj8GtdIu9w
+ FpvZbjV5i/kZhGGXB+DOYIsF0RfpcbwbryjYTouHIaNKiectiF2V+1LXxzYSgLNYYAzZ9Mkl8od
+ 8wr51NuxDzjNoxoooLI9cFA7r9pIlQoCYIM1/hfkAU2IHpN9z9iIpuvQBSNPdztcPcZCYEGr/Ya
+ KTIKTK+YJVE2SLw==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
@@ -65,57 +64,86 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Fri, 05 Dec 2025 14:51:42 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8228
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8227
 
-These two distros were missing so add a section for them along with
-their list of requirements, which all and all are very similar to
-AlmaLinux and Fedora.
-
-For these distros and AlmaLinux, we now provide a way to build the
-documentation PDF using a local installation of TeX Live packages (using
-the TeX Live package manager, tlmgr). This is not as nice as the other
-distributions where we have a working list of packages for that, but
-it's still better than the current nothing, and finding all the required
-TeX packages proves to be quite hard. Using tlmgr is also what is
-currently done for all the distros on the Autobuilder.
-
-This series also reorganizes the container files to put them in their
-own directory, along with the new entrypoint which is needed to setup
-the PATH.
+Create a directory to hold the Containerfiles as they were lying next to
+the scripts. Change the build context of the docker build command to
+build from SCRIPT_DIR and pass the host packages scripts and container
+file relative to it.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
-Antonin Godard (5):
-      tools/build-docs-container: move container files in their own directory
-      Makefile: fix rsvg-convert --format capitalization
-      tools/build-docs-container: add CentOS Stream 9 support
-      ref-manual/system-requirements.rst: fix AlmaLinux PDF build
-      ref-manual/system-requirements.rst: add RockyLinux install instructions
+ documentation/tools/build-docs-container                    | 13 ++++++-------
+ .../tools/{ => containerfiles}/Containerfile.almalinux      |  0
+ documentation/tools/{ => containerfiles}/Containerfile.apt  |  0
+ .../tools/{ => containerfiles}/Containerfile.debian         |  0
+ documentation/tools/{ => containerfiles}/Containerfile.dnf  |  0
+ .../tools/{ => containerfiles}/Containerfile.fedora         |  0
+ .../tools/{ => containerfiles}/Containerfile.ubuntu         |  0
+ .../tools/{ => containerfiles}/Containerfile.zypper         |  0
+ 8 files changed, 6 insertions(+), 7 deletions(-)
 
- documentation/Makefile                             |  4 +-
- documentation/ref-manual/system-requirements.rst   | 92 ++++++++++++++++++++--
- documentation/tools/Containerfile.almalinux        |  1 -
- documentation/tools/build-docs-container           | 50 ++++++++----
- .../tools/containerfiles/Containerfile.almalinux   |  1 +
- .../tools/{ => containerfiles}/Containerfile.apt   |  5 +-
- .../{ => containerfiles}/Containerfile.debian      |  0
- .../tools/{ => containerfiles}/Containerfile.dnf   |  5 +-
- .../{ => containerfiles}/Containerfile.fedora      |  0
- .../tools/containerfiles/Containerfile.rocky       |  1 +
- .../tools/containerfiles/Containerfile.stream      | 34 ++++++++
- .../{ => containerfiles}/Containerfile.ubuntu      |  0
- .../{ => containerfiles}/Containerfile.zypper      |  5 +-
- documentation/tools/containerfiles/entrypoint      |  6 ++
- .../host_packages_scripts/almalinux_docs_pdf.sh    |  1 -
- .../host_packages_scripts/almalinux_essential.sh   |  6 +-
- .../host_packages_scripts/centosstream_docs.sh     |  1 +
- .../centosstream_essential.sh                      |  5 ++
- .../tools/host_packages_scripts/rockylinux_docs.sh |  1 +
- .../host_packages_scripts/rockylinux_essential.sh  |  5 ++
- .../tools/host_packages_scripts/tlmgr_docs_pdf.sh  |  7 ++
- 21 files changed, 197 insertions(+), 33 deletions(-)
----
-base-commit: efa93ba6a9340cf3b3c52525de83aa74ca09c5c9
-change-id: 20251205-build-docs-container-tlmgr-0bb2d0c4cce4
+diff --git a/documentation/tools/build-docs-container b/documentation/tools/build-docs-container
+index b91a6daa9..7d25b15b9 100755
+--- a/documentation/tools/build-docs-container
++++ b/documentation/tools/build-docs-container
+@@ -23,7 +23,6 @@ set -eu -o pipefail
+ SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
+ CONTAINERCMD=${CONTAINERCMD:-docker}
+ DOCS_DIR="$SCRIPT_DIR/../.."
+-SH_DIR="$SCRIPT_DIR/host_packages_scripts"
+ INCLUDE_ESSENTIAL_PACKAGES=${INCLUDE_ESSENTIAL_PACKAGES:-0}
+ 
+ function usage()
+@@ -140,12 +139,12 @@ main ()
+     --tag "yocto-docs-$sanitized_dockername:latest" \
+     --build-arg ARG_FROM="docker.io/$image" \
+     --build-arg INCLUDE_ESSENTIAL_PACKAGES="${INCLUDE_ESSENTIAL_PACKAGES}" \
+-    --build-arg ESSENTIAL="$essential" \
+-    --build-arg DOCS="$docs" \
+-    --build-arg DOCS_PDF="$docs_pdf" \
+-    --build-arg PIP3="${pip3:-}" \
+-    --file "$SCRIPT_DIR/$containerfile" \
+-    "$SH_DIR/"
++    --build-arg ESSENTIAL="host_packages_scripts/$essential" \
++    --build-arg DOCS="host_packages_scripts/$docs" \
++    --build-arg DOCS_PDF="host_packages_scripts/$docs_pdf" \
++    --build-arg PIP3="host_packages_scripts/${pip3:-}" \
++    --file "$SCRIPT_DIR/containerfiles/$containerfile" \
++    "$SCRIPT_DIR"
+ 
+   local -a args_run=(
+     --rm
+diff --git a/documentation/tools/Containerfile.almalinux b/documentation/tools/containerfiles/Containerfile.almalinux
+similarity index 100%
+rename from documentation/tools/Containerfile.almalinux
+rename to documentation/tools/containerfiles/Containerfile.almalinux
+diff --git a/documentation/tools/Containerfile.apt b/documentation/tools/containerfiles/Containerfile.apt
+similarity index 100%
+rename from documentation/tools/Containerfile.apt
+rename to documentation/tools/containerfiles/Containerfile.apt
+diff --git a/documentation/tools/Containerfile.debian b/documentation/tools/containerfiles/Containerfile.debian
+similarity index 100%
+rename from documentation/tools/Containerfile.debian
+rename to documentation/tools/containerfiles/Containerfile.debian
+diff --git a/documentation/tools/Containerfile.dnf b/documentation/tools/containerfiles/Containerfile.dnf
+similarity index 100%
+rename from documentation/tools/Containerfile.dnf
+rename to documentation/tools/containerfiles/Containerfile.dnf
+diff --git a/documentation/tools/Containerfile.fedora b/documentation/tools/containerfiles/Containerfile.fedora
+similarity index 100%
+rename from documentation/tools/Containerfile.fedora
+rename to documentation/tools/containerfiles/Containerfile.fedora
+diff --git a/documentation/tools/Containerfile.ubuntu b/documentation/tools/containerfiles/Containerfile.ubuntu
+similarity index 100%
+rename from documentation/tools/Containerfile.ubuntu
+rename to documentation/tools/containerfiles/Containerfile.ubuntu
+diff --git a/documentation/tools/Containerfile.zypper b/documentation/tools/containerfiles/Containerfile.zypper
+similarity index 100%
+rename from documentation/tools/Containerfile.zypper
+rename to documentation/tools/containerfiles/Containerfile.zypper
+
+-- 
+2.51.0
 
 
