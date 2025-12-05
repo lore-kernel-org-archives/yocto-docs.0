@@ -1,191 +1,190 @@
-Return-Path: <peter.kjellerstedt@axis.com>
+Return-Path: <quentin.schulz@cherry.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BD2A3D32D8A
-	for <webhook@archiver.kernel.org>; Fri,  5 Dec 2025 14:59:32 +0000 (UTC)
-Received: from DUZPR83CU001.outbound.protection.outlook.com (DUZPR83CU001.outbound.protection.outlook.com [52.101.66.27])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.7578.1764946767116637513
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BD18DD32D9C
+	for <webhook@archiver.kernel.org>; Fri,  5 Dec 2025 15:04:02 +0000 (UTC)
+Received: from AM0PR83CU005.outbound.protection.outlook.com (AM0PR83CU005.outbound.protection.outlook.com [52.101.69.42])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.7806.1764947041551228992
  for <docs@lists.yoctoproject.org>;
- Fri, 05 Dec 2025 06:59:27 -0800
+ Fri, 05 Dec 2025 07:04:02 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@axis.com header.s=selector1 header.b=jEQSkKRg;
- spf=pass (domain: axis.com, ip: 52.101.66.27, mailfrom: peter.kjellerstedt@axis.com)
+ dkim=pass header.i=@cherry.de header.s=selector1 header.b=ak9SIJxe;
+ spf=pass (domain: cherry.de, ip: 52.101.69.42, mailfrom: quentin.schulz@cherry.de)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KL4WGCcWszf+axvavdKEnVlJLhxpKxZhqF9YOd0LPoIXBPOk8coy+vOkK063z66ff8Dj3c9+K7CEkcN4CABZmT2nk371iJCpTJSPrIeIWTinPH5NjUtP0itCjEDxGOg3ezh94nz4ZMh3JuHFl/rY6JhjEmMSSCOg/JxqW+T2fV1KX0lZtr+7Ba3aK6/ABgAb92hCXt6Npa6d+dtb3VauFIz2Ke/SXawTA8PCC0Ru+FHABqohRfdV5i2WsveuJoTBNlTh2Ko71szv6iXBSqraRcwuIstLVZfMXd+UXHI4x9YY+GXAKLjWGa6vqFxgK2wmGGV/sjDO1g/Ij9slw4TYLQ==
+ b=YDlha6o/jrKPuraEBuPIHXlobJaB4ai8mIc82EPsq38sc529tLEfqVWazGh3Q+ssSkrDAY6kq10HKHiktWpeK8St7mDGJjAGMqqOQw1iV2o4tlFWb818+8Mp6+P2etkybwX/QpyjuOUPvgSJ50jgStN4v5/TujHWgtZBAtA/gnqBig4YCVivjpcvMmnJdLKWueNFW4ze6stCbx0Z5wPYchl6uL/bkQoxtxCrKzCYbpRqxmOgMCTwHQRsrQ3ypM1pCH1HckPrwiUf2QagpXK4vE0kDXWcl4trnimwRR8tqtNJMZRwhmto+8QH641AduJrQZcpDZMPOONx3OZ5VaFkJw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZQgZGS4NBmcaq7hQj+jJUKdcBULwbDPQwYD43tyG9kc=;
- b=BPB6hxI5W4MBpLyluTHaxFxHiakD1+cqsu9HTzoaLHCibGZeQlryREFxd/59IooDGzJn9sqSfPVwEtkYeorNnZ1IppFFrDYSWQVA8qjabI8MJq9KvkKMTeZIjOcyE2NMHkGGQX5WQz+ec4T1QAXWbdJLRBsb3n+oGcRbFpqp+59gR8i/ENOC8C70tuPMCSWLmu+JKLAVVUE74HoJeAlBQ/k19+pv8Fj1VSiaegMM3/7G/cI78Y9GYMy+t2oi3Hx1ZeHqHMTkWe+soXzL6ivHftpouHW0dHFGH4/hGGAW14ACFRIOvhuyogE7AJQ+hpHC9pVjLOiHS4keD0DkfpnfYg==
+ bh=mneDumcvSAs17JF83Nnv0bIzpVogRQar6n4NshiWRI4=;
+ b=S6Vz/Ey+CHlbNTt3l0zHLtD6+SqoK/K9JvCvz3CZMIDA274rBjPuOyV3Ey95jIhKJnccruz2fyuoSTFyZJJx/lSoRPE/ImqnD18WQfvFV2FkNDwIQSiMYm09HBw7FKo4EgqmBudHDj254608EhMLPKC26I2mIy9i/BtIA4ic2AhGX43JCYWgAnOBl+uxYzQXVaJyv4jElkZNDSWWU8WcYY8i7qGZLvVy6Rn9q2h4b9qqOvomQKHKNfSO6kU5qmxBVLmi+INVZRgI+6DmK2pTiF+sZyOYqEywaQvIE7Uins7si0HdCS48Ah5R7UlL9dyzV+gKF8XDeiPsZoJ5yhevaQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=axis.com; dmarc=pass action=none header.from=axis.com;
- dkim=pass header.d=axis.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axis.com; s=selector1;
+ smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
+ dkim=pass header.d=cherry.de; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
+ s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZQgZGS4NBmcaq7hQj+jJUKdcBULwbDPQwYD43tyG9kc=;
- b=jEQSkKRgD6MzDRneWu1ak6ve8+w6tI2Nq9GzjxytrarwCw2jJkIR/zeNxDpf95NJ2esKW2Sl1tcxclAbqg1q6VsA49vZNpFpBT6z23d/9SXkmgSJRITUfX/emwPrzrI0PGNz64gR9UTlGjdk4rjXM2MiEeQZ54NIV9LTzCIq0Fg=
-Received: from DB5PR02MB10213.eurprd02.prod.outlook.com (2603:10a6:10:4a8::17)
- by GV1PR02MB8756.eurprd02.prod.outlook.com (2603:10a6:150:8f::20) with
+ bh=mneDumcvSAs17JF83Nnv0bIzpVogRQar6n4NshiWRI4=;
+ b=ak9SIJxeBybx5CAYUR+JKBGxcSUjCohutUgXT/3z6iy9SncZmbin6i53e60fCgRGMDJmcFGPOGkT566Q4YdJ1uAwJl5DO6MSwIjY4M06TwyPIFEyzbM6N1SJyZdRTrhSzlcsYzIw6KR7Br8Ypmm4sUoKnIyUkZM/uFzXX29n7KU=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=cherry.de;
+Received: from GVXPR04MB12038.eurprd04.prod.outlook.com (2603:10a6:150:2be::5)
+ by GV2PR04MB11960.eurprd04.prod.outlook.com (2603:10a6:150:2f5::16) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9388.11; Fri, 5 Dec
- 2025 14:59:22 +0000
-Received: from DB5PR02MB10213.eurprd02.prod.outlook.com
- ([fe80::1bee:3174:a078:5af9]) by DB5PR02MB10213.eurprd02.prod.outlook.com
- ([fe80::1bee:3174:a078:5af9%7]) with mapi id 15.20.9388.003; Fri, 5 Dec 2025
- 14:59:22 +0000
-From: Peter Kjellerstedt <peter.kjellerstedt@axis.com>
-To: "swami310@gmail.com" <swami310@gmail.com>,
-	"bitbake-devel@lists.openembedded.org"
-	<bitbake-devel@lists.openembedded.org>, "docs@lists.yoctoproject.org"
-	<docs@lists.yoctoproject.org>
-CC: "michael.opdenacker@rootcommit.com" <michael.opdenacker@rootcommit.com>
-Subject: RE: [bitbake-devel] [PATCH v6] bitbake-user-manual: Documenting
- BB_CMDLINE
-Thread-Topic: [bitbake-devel] [PATCH v6] bitbake-user-manual: Documenting
- BB_CMDLINE
-Thread-Index: AQHcZbc8iCeev6kqoEuIpcvF7zlHAbUTIpkg
-Date: Fri, 5 Dec 2025 14:59:21 +0000
-Message-ID: 
- <DB5PR02MB10213E66C93F68B28A07DDC6FEFA7A@DB5PR02MB10213.eurprd02.prod.outlook.com>
-References: <20251204234240.7224-1-swami310@gmail.com>
-In-Reply-To: <20251204234240.7224-1-swami310@gmail.com>
-Accept-Language: en-US
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9388.12; Fri, 5 Dec
+ 2025 15:03:56 +0000
+Received: from GVXPR04MB12038.eurprd04.prod.outlook.com
+ ([fe80::1033:5a9a:dc18:dad]) by GVXPR04MB12038.eurprd04.prod.outlook.com
+ ([fe80::1033:5a9a:dc18:dad%4]) with mapi id 15.20.9388.009; Fri, 5 Dec 2025
+ 15:03:56 +0000
+Message-ID: <e81c4d94-7666-4cf1-bba6-9a4a2ea4d4db@cherry.de>
+Date: Fri, 5 Dec 2025 16:03:55 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [docs] [PATCH 2/5] Makefile: fix rsvg-convert --format
+ capitalization
+To: antonin.godard@bootlin.com, docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+References: <20251205-build-docs-container-tlmgr-v1-0-de30623e664d@bootlin.com>
+ <20251205-build-docs-container-tlmgr-v1-2-de30623e664d@bootlin.com>
 Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=axis.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DB5PR02MB10213:EE_|GV1PR02MB8756:EE_
-x-ms-office365-filtering-correlation-id: 8f52d8a9-f267-4806-6aae-08de340edfa9
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|376014|1800799024|366016|38070700021;
-x-microsoft-antispam-message-info: 
- =?us-ascii?Q?3utLDN/bSJ0eoU1aX/sfafSSZaCID8kxJqvXX6wzQm1tYiDWR57fkyPi+nlt?=
- =?us-ascii?Q?0zQ7C336m7FtsF44rUhsf2HHjkUsNyDZ1/XQTltHobF6EWf0rBEJtbe026WU?=
- =?us-ascii?Q?HejxTVavpQw6HS443+6Ty0zQ7Ph5KAoWumgbI4LiyXHic+SIifPNXq2M/k8p?=
- =?us-ascii?Q?vI/CWrwf3+Uep9gqeYD2V7hKj94jQsQR5PG2O0WdvkRmN5C/jSKZc6eImetI?=
- =?us-ascii?Q?4SHlE/2fjMJxONszi9NWz7SXOBcHvfkl3j1orPcBMXFKVrqEmjZJs1iPQW+m?=
- =?us-ascii?Q?QKT2XFfoYU10u8hBPS48m8GEtQ45CwIConltnWv/IbX5GB0RkzWtEBgXXmJD?=
- =?us-ascii?Q?MCOzk7bSoCI8lqnYcXmA+7fyfwNv93n2boTMEz9LQFqxh2XN5qLmCBmavhgM?=
- =?us-ascii?Q?OC0msuHLfjPfrj6fidJy2nL8K4Rq3e7VOIHzk1462JbqZvafGOpJ6Vqe46up?=
- =?us-ascii?Q?w0WnvPO2IneoEq8qwtmFHuRl3u5O0Jlz+u2/ETxoICBwLCmrf3c240wc+qyU?=
- =?us-ascii?Q?gu8Gp+FMcfSnwDHlT1mZBAscGt/ktNq4ZSe/65gsfsXVWTqexoZHB061cj7M?=
- =?us-ascii?Q?UCMJzZdY5g28UWV9MOYkd8PBQ9cKtQ7Vw3roCOIzCfPXahyNAI2b3KQH51cR?=
- =?us-ascii?Q?oiJvEHjSWfX3fqbGY2SXPEgMibBBC+8kDxHSdW7A1BpjRd1vJQ10b2Qmtr6y?=
- =?us-ascii?Q?tWWDfGn6Gq3SAfte3pOmeyrajARSfxkG7LLau7KQBcsbGa/f6HxPUzKKYgy1?=
- =?us-ascii?Q?KO+/JsT4J1URkSFx/rvEPBhnOJiJiNw4MXgBuznQCtI0Qk7Cdbm6tGjoxPEv?=
- =?us-ascii?Q?e70MvMcveS2opfpiLxVCHbQKMqoQ0O08KcJJkQVhGwEyZMYDLV+MGSasUx5Z?=
- =?us-ascii?Q?yVdigMb3myK7cijTpiRt1PMcPPXwX3F5M0/1PaIgrq4/F4Mntzf581V9Cxtc?=
- =?us-ascii?Q?LWA5kU+lmIBgBXEKKzu5Ud/WWBMnFYq4jvGwGWnZyIjdEj6nHDP5ZyP1FuTT?=
- =?us-ascii?Q?VRqrCIfCi6UZmU/KOE1c/kBrgPlxx9BA6uVeHk5xfJPZqKEue2kVsyQ5mWoc?=
- =?us-ascii?Q?u+DI9VWv0fu0bf9GtAoIM9cowyMyR7C62LCJ+HUr0Wtuuo41FKRvbQNGlF7n?=
- =?us-ascii?Q?4tysuWJ7Jvsjz8F3AMq4EG9gzlNZF2yfit3PNHC4ev06nYz6q5FsxvbPRX51?=
- =?us-ascii?Q?yHE+0j44vCEaGEzZ2IPreMCsUkNXRjl6prn42xfDdjHo9LpdlbuNqwwH8wrw?=
- =?us-ascii?Q?6T0+uZQDKsDSyYXqSj4M8MiHlM/RTtQt8ljv9RDxvehBl8KQ/lNFTQzj2t+c?=
- =?us-ascii?Q?pewlGwxN0nt8j1+JiRBkIZN1zVQGAlee2el/bUYAt4MLxu7xodDkkZQJjVuL?=
- =?us-ascii?Q?ALQFvxkin7Bl4HuEECohojcPTjTnZODl716vFVEU9fgVTB000XOQneEgZv95?=
- =?us-ascii?Q?7Ug7QEB2laOtuCWZGHYQxjzhVRHn8l7N2y38Lhj9ROlj9RwViKtoZuVmdhaJ?=
- =?us-ascii?Q?xvJMaJACSt+UHluF/LHCpqef4nzF0put0UGg?=
-x-forefront-antispam-report: 
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB5PR02MB10213.eurprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: 
- =?us-ascii?Q?qbnY1UqgdzrWIx0X0A8oRFc34OA/Y1Zi7Kul7z7jh/RGHcf3FJO3KUJctQIe?=
- =?us-ascii?Q?PoTO7ku4dZU4PuF8/NpUR1Km7DWC0glGHSOYxUCOyPJu0qnDRXPgJHB/7dm1?=
- =?us-ascii?Q?dUlHZMu3SndxvN+gCeXbdbyocBQDMd2oxHNqIqglb1a62//D/x3fbBVvi9jr?=
- =?us-ascii?Q?YRnCAugs97JOPAFIXJSV9ZfoWf2Xi6mDSIPiFfPwCmxNBDBnCb6KLXadKfDq?=
- =?us-ascii?Q?Wp6TaEwZNXIZIQIddcGbUSnG+VwVo6zf5soJkLWOhpyqxmQhh1/P4HFSVrSE?=
- =?us-ascii?Q?pnj3jvnY5CDDgNtzW2AsQYE6OxqB468CyWPKlbjF26aLLPZLOp5srmveoSkH?=
- =?us-ascii?Q?6oNqi2/1Ng8uZRMx8XiL0UjvXMh16hVDB3fqe1QAHmCz3/6GsEasCN4/GIkw?=
- =?us-ascii?Q?yOclnMG3g3pMZGR71jruLOJ7OyMa270I7g10BLQJJPI/PD8QTHlAb8KorI1S?=
- =?us-ascii?Q?WtH6QSw7ieJngbUsEL2TO9f0SsUb0oqFweLNlvRuru8mMcgnhN5St4ITwe/m?=
- =?us-ascii?Q?lc80pNmXngUvmgY+i4jroC4OIBOQkYqLMQJp03oYGGP6gfxzrp9N05hroUIN?=
- =?us-ascii?Q?fzTLhXoKWdjut2Lx/ng0RFIV28QaT4iPJjjV4Qb7ClwYyRMISHFku0ABCdmt?=
- =?us-ascii?Q?bXFaxDhpJ2t9BfH4l8hEygZU6hlkK2kJjLllHQFjQoBdRYegpQWoY0dmGDBv?=
- =?us-ascii?Q?RsLxUzWSHtkDTEjLeg4oRotpwwKl4Ipg3nXiiiqIDQp+cSHfZCZWeR6N8V1c?=
- =?us-ascii?Q?bHth7nZ38uUu1LDQGn0V9doSOHb38e/wU1Rz46OmyFDpMG+KBrHUDAZSR6UW?=
- =?us-ascii?Q?EpxmwDmMv6KcavgfujImJPNBIXeQ/QPxaM6lm2qExUSlHAFRseCIZIaFyrNS?=
- =?us-ascii?Q?U3AEWGOI27MIhzm/UaJtZPi3ChNFpFpopAS/7VMgr2Xb8FpIZsQ0LihwmKJ0?=
- =?us-ascii?Q?5BPs1LTxbgdlA7QLOL0vjLoxXgqBEB2N9RGw6Itaby6TIW5O6txbvx1B9i/5?=
- =?us-ascii?Q?Sa+TxpS4wIHO48LCWwh1jVp6oDEfJDF13hg4JnZjFSQBSbD4JwXPCVhJUnId?=
- =?us-ascii?Q?1tH/S/cpL1Mqk63XBOdm9cM/a5YoJSyiez/Cp0S4QGr/CJDyyC+5szqnCocU?=
- =?us-ascii?Q?dGZ88k2m+fuNZIkPnjSdw/7tuyQXDEGgpQJLgXBfEbKcPrIp0KrwiGG8Vysq?=
- =?us-ascii?Q?BlkRdEH87Y4HVtHyf9PoFf4E0Sct4pIdxkA8JhsQPnS/Yw4meSNHzeDkbc9S?=
- =?us-ascii?Q?hfo/lwx4AxPMkXaKLmNYsr5MI2SMfVgycTHqjTIO+sm371vL96rC3KkAnfcG?=
- =?us-ascii?Q?wzhDAkkC4EHuma2EsdSegYpxWmkY6aC8KuzG61bXjw9y46/b7puEXM7tJGhA?=
- =?us-ascii?Q?wbe25uJ0FcYh3BlaKa/OW3GPWcFa2VRujI0k9M9xf3UNscsCtV2HqiAvchQR?=
- =?us-ascii?Q?YC6ebHt9NU1V2gslheqCNP72i8OfpwdQR+vwSq6QLr6PisemdVx4zSPFQ3Im?=
- =?us-ascii?Q?VrpwV3Q2yz2SFMv+vvwHKLTotQUOn9r8Yiaz6Vd8yEdnaTKMa0QqmwbEgg?=
- =?us-ascii?Q?=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+From: Quentin Schulz <quentin.schulz@cherry.de>
+In-Reply-To: <20251205-build-docs-container-tlmgr-v1-2-de30623e664d@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: WA1P291CA0006.POLP291.PROD.OUTLOOK.COM
+ (2603:10a6:1d0:19::14) To GVXPR04MB12038.eurprd04.prod.outlook.com
+ (2603:10a6:150:2be::5)
 MIME-Version: 1.0
-X-OriginatorOrg: axis.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GVXPR04MB12038:EE_|GV2PR04MB11960:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3288b004-cae5-41da-e78a-08de340f82fb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|10070799003|1800799024|366016;
+X-Microsoft-Antispam-Message-Info: 
+	=?utf-8?B?MjMwV2R0SCsxWmo0Mlk5eEh4eXVnS2l5N1ZmZkl5azBYMnR5L1VuS0I2U2xI?=
+ =?utf-8?B?NFIrc3dtVFJMcHVZMHJmQkttZnFMNkJWSUdsRFZWdVZmV2hTemNuSm1hemRn?=
+ =?utf-8?B?M044bHhPMm5pdzN0SktPWEtnTjR3TCtTRTBvTUd3OHQrdnlhbGRsekRsMnIw?=
+ =?utf-8?B?RUdoV3c1SVI5UXIzbmRjcU5uV3VjYXR4S0hvZllkZjFUYllkdCtncHo1cnU0?=
+ =?utf-8?B?a1gxSFdhMmVKN3A0c21rSW96aklwVTk5UmQwYi9HM2FmQnZVbHBLZTEzODdM?=
+ =?utf-8?B?RkpKdU8rM01YQXVmYzVZbkZKK2h1bVl0N1BHSG0vTG5uVy9iVGprVW5rY1dW?=
+ =?utf-8?B?VXRTZlFJQTZ2dXBCMkoyTVFFeXM2TXdrWDZFbWxaNkszb0pPQTlMUEpUbmJ5?=
+ =?utf-8?B?bWI3RHIzZlJEa2RoSnpKQmNHajJMNnk1Y1FiRGpqek5ZeXBGVjlqZFNUQUtS?=
+ =?utf-8?B?M2pqS3NjZ1FxbDVjejBWVFR4NHZ1TEV5YVRiUzYxZ2JqdDNDSjN2SW8zS3JY?=
+ =?utf-8?B?a1IvL1hNaXkrYmI0NzNWQm44aUk3dFFIWGJyNVo0VXJta29FMm5QZGxHZDVB?=
+ =?utf-8?B?aXdueWtGTmd6bG9INFdjNGdmUkFOL3p5bXVJRGxyY2t2UjBobCtEVWxoUFQ5?=
+ =?utf-8?B?dlZlY2FzZmlNdm9HdjlodGlyc1ZtVjNkT3RtbGZ3Z3hqQ3ZhV24zSzNRcjh0?=
+ =?utf-8?B?bW5Rb2MyRnNmT1dwVGFFUFBCV0RtMHJBbzFvMzVOZ2U2dElic2xucDNKWk01?=
+ =?utf-8?B?T05qSmxzZG9xcE1HUGlhcGdkQlQrd2hpL012ZVJBQVRnYXdPam1sNForaCtk?=
+ =?utf-8?B?M2hvM0czTHJROVRiaXBMTDlXeGlmNWdHWFpkOWI2UVdGd0NnN1IvdjByT3h3?=
+ =?utf-8?B?bmRWbDg0Tk9mZXdyRTdpVDMwODIzY1JWQit0TzZpeGlVSmtRSnd3ZzUzaFRX?=
+ =?utf-8?B?LzFrYllESGNaMEVnc1B0V0NFNlc3eEZLZ1RqY3dCZHhEQ25FbTdqOExQZnM1?=
+ =?utf-8?B?RkpONS92NXIxcnV4SDR5LzdmM3RWWEhaMUJ3MWJ6MXA4UWF4Z0Q3SHVJeWNY?=
+ =?utf-8?B?blp3S0RqVW1BaTRnNGRIMGRjbTZyZXIxN2NuS2hyN0dBbWk2UXRRUlNJSGth?=
+ =?utf-8?B?OTlUUUxubWl2dEJVVGxIOVVaSm1WYU5tbmdzVUVESUdlRzNFSUw1dWVuNDRm?=
+ =?utf-8?B?enFDNCtxRDRZNlFZeUlYSmJGd1NJeGluTFdBUllCWVZMeEdzeXplNnNOOC8y?=
+ =?utf-8?B?R0xzTUFqT294ZHJPUVA2MVVubGMrMTBtZ0NTaFZTV3FVVXNvaGRZai9yRURs?=
+ =?utf-8?B?VHlxa0k1MHp5Sk9tY1hJZzdVZmtNa1BCT05QaVNXdzJ3NVNtQTRNYzE4VUFX?=
+ =?utf-8?B?TTd3VHphaU93d0h5ZVFHeUtiUmlEWWpLRmMzWW5TZ0RySDJQUjdlQ1BWYWoy?=
+ =?utf-8?B?T3NkMTBSaU1tMy9vZEd4RzVSK1QxdUVkMno0d3ArZU5JbC9RSURlbmZTR2Zy?=
+ =?utf-8?B?YTE1M0FpVmhTNm9STEVOOS9Jd0FBOVRpei90NkFFR2l0cC9UYnlzbW5paGl3?=
+ =?utf-8?B?NjE3WTAxaWpGQVlPVlZZM3Q1cEhDRCtZQld5Y0tzczdCY2M3cU80QXBLcUI4?=
+ =?utf-8?B?U1lTQk9ZTEtLWG1YaTlxdTN3cE5kMkMyZUE3T1JpRk1RTEkzZ1BVNEJPRnQr?=
+ =?utf-8?B?NkRJSUVyZGVGV2wyWUNEQ3B6L0h1UHJYTitMQ1RaMC81NHUwcWVHalV5UFZZ?=
+ =?utf-8?B?NFlhUVVMaXd1aHp0VEpQcTlKQ3Q5MUIyb0JKOERFdDNzUGxaZCtHVXplS09U?=
+ =?utf-8?B?YlBTaFNVVXdGckRYTFpjU080eU9kcmJjSUdtUlhxZEkyRm9VR1cwUjNUdDQ2?=
+ =?utf-8?B?RFVqQWJXOGFkc2txMWs4em5iY0s4SXp3SGdOOWtCb1UrQ0E9PQ==?=
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR04MB12038.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(10070799003)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?utf-8?B?ZThseTA5QjhzREd3OGZKSWxzUE1NSExnU3Uyc25UbzF5dEdQeUtGSmh3djla?=
+ =?utf-8?B?VmtzNWUydVc5VUtWeTU3b291R0EwTkpvMi9uTVh1ZEFyYmdRdTJzd0NhTUZP?=
+ =?utf-8?B?SmZhamFaRk5meENmMjhDN092U0dlTmJCckhWamNLRDdlWVZXWmg0QUlocFFE?=
+ =?utf-8?B?aFZ2VXFsMXpQNXN4blljTjgralZoc0s4TEpkWlBwWWYzK1lDT2RVMkp4UkNY?=
+ =?utf-8?B?aTNwL1FEdENrcXh0cForRVdPOUhtZHdFejREWEtGNXVaSHR4RE9vdmNRVEpB?=
+ =?utf-8?B?bE9pZk5RRkhKTVRmN3pFRjZaTWZlaXlQdXlwTFQ4dUZ1UEVJTFQ4MTVXenlv?=
+ =?utf-8?B?U1l2cS9OMHF2bEpwT1BWdWhoLzlmaWx6TzJueXcvNkY1VWllQzRPRFZKRkNU?=
+ =?utf-8?B?NWhOQTJRcmovVHk5dUs0bXErY3BFeUtnYkRVSVE1SWR4UkJYY29OMi9nUVFp?=
+ =?utf-8?B?VzdGVlpkc2RRRXo4UnpZWWlNNUFXeUxVVHdRSVJCTDVrZ2trRGF4SlptaGhI?=
+ =?utf-8?B?NVgwUDJOSzh5bkZPdnVsYlQxd0h1Y0VYYzgvQ1ZKcEpjaTlKN2lESS9LYkJF?=
+ =?utf-8?B?UnFCOXpCQXpIeThMeHBIMDhGYnp2OTMzTzdrbTc2eXVIYkZNMVRrYUJkWW5i?=
+ =?utf-8?B?Wjg3cU5rbmVKQ0ppc2ZOSmlBa09lTldRd25aM043dHRxb05BVXVweDhYamNy?=
+ =?utf-8?B?YithRTlzZVlSRGpKNE5VcXhYTmFUa3h3V0hwUFpmdXRLMGxseWZGb2VSb2My?=
+ =?utf-8?B?K3RNcTFGa3VrVm5WNFBqT2gyU0xub1JTci9QNUt5THlmMkdTUEJJSE9vRyt2?=
+ =?utf-8?B?ZUp0RU1aZFFaMjRYV1dpaHdhQzd1bGFzMTQzblpLVVJIRE56SmRLbHZqMFFT?=
+ =?utf-8?B?SVdEcGRJbnQ2dmhKTFM2ekN0L1owejRDbW5FVDJPWEpBR2ZTK2ZOcUdoOGow?=
+ =?utf-8?B?NHZEV29RQUUvakFrNTYxTCtBNlhKQ0hLRW9oNVRlb1JtM0VsR0VDdzdGQkw5?=
+ =?utf-8?B?Ym5FNkVHRkF0Z0dnc3pLejA0TVJKdU9mam0yd1dTQTBHdW8yTzI2S1pLR1ND?=
+ =?utf-8?B?MWlHdVVscUVTM20vdmcyc3NvWGU1a3lWWEJSMG5qL0hwKzhsdGtISmtRK3Jv?=
+ =?utf-8?B?T1dxeXJCWHJhemdUNjdqV0toRVFGNS9OQ2pZc0xFMGdSd2FaaFlta0dpTllS?=
+ =?utf-8?B?TWFLcVkyTThLYnhVT1JmRkZDS2IreXIvUEJ6TlpqdVNJS25GUHhEL1hwSFBE?=
+ =?utf-8?B?dGlnQklqVVlzSFFJc25JOUZRWWFUMDlrS01JbGlidVYvU016dEMycEhpaVdE?=
+ =?utf-8?B?R1lKTEJlVExCalozbVBxZXp5d0o4T01pMERLU0dZTWQrbGM4aXJFcDBuV1FT?=
+ =?utf-8?B?NDgrOEs5K2lVZEh1M2tkWldJL3E4bVRVakJBMWluQllnSUlNUWZIYUxTWTNk?=
+ =?utf-8?B?dXVsbmRGdFFxaXF1WlIyQVcrYnlQdWlyUE1nVXBGamU2RWdxUGNDeFJJT1pE?=
+ =?utf-8?B?UmNvTzdhSmVpcURmT2wwdnFDUkFpL2VaUzlnL0pTOTJBdVlQcUZ1ZWVBYkhU?=
+ =?utf-8?B?R01oQXlFdCtGVG1GYTlNNi96blUzQnpPM1ByQjIyVlB3aE9NVnZSajR3VFpx?=
+ =?utf-8?B?UDR3NWluMmo3SzRoK1d6RzZSWTUvUHVqZml2Qk1wZXBFKzhVMnl6aUpuTjJS?=
+ =?utf-8?B?TXBlc1FCN2t5TXZpRFZNSE5ocHI0bEZzQk05RndZcUN6eU5jb0cyZUxVb01h?=
+ =?utf-8?B?Mm4rM0QvWlRPYzdZT2w4MVozbnVnMGNoM0JvM29INVh5WWdZSU94VjJXaGpj?=
+ =?utf-8?B?K3k1Sm9HeFhWTXJtQ1NyTUdjR2d2d3FiR1VHTC9KTGRnTDZGL2YxOE5VLyti?=
+ =?utf-8?B?dFNHOHVZRmpNRDR3SjJPWngxZWozNzFxc0pLL3ByaDJGUzM0WnJ3SWZVVVpQ?=
+ =?utf-8?B?V0RuVzVEYXIrdDByRlNMdTR0bnVhUGVxdksweVphMms0Rzh5eGErQVRFd3U0?=
+ =?utf-8?B?YURoWG1NUHJiN0hWMlFUZDdadjd4MmI4OU1JcmgrVHNwVTdGS3oraHRBOS9n?=
+ =?utf-8?B?N053TGZUUzNlS01YNWhxWTdTUit3Zk9WMi9ZQnJKWThka3FwQmZtNUtsYlFm?=
+ =?utf-8?B?ZHdtZWlpQVEvZlRWdVBma1NSbzBJWmw4Qm00bmZPOTBJemh3Ymk2bjFBMDk1?=
+ =?utf-8?Q?Oy6HihmDW3x0mdp8f1mHq0A=3D?=
+X-OriginatorOrg: cherry.de
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3288b004-cae5-41da-e78a-08de340f82fb
+X-MS-Exchange-CrossTenant-AuthSource: GVXPR04MB12038.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DB5PR02MB10213.eurprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8f52d8a9-f267-4806-6aae-08de340edfa9
-X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Dec 2025 14:59:21.9747
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Dec 2025 15:03:56.1047
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 78703d3c-b907-432f-b066-88f7af9ca3af
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: jfoXPS5448iH5Vc86Ka5sfu1DjOrp6UPwqhUYZ7WaN/N1l/P8FjCNsHU4NLpMbQw
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR02MB8756
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Yw1YRFX6RhGcThgB/Gi3STRfW4gGnNkFUaSbLeDBARKuymSEuibaJHwqiXedh0ySRCjYrb06AomXXCPQmELe94tOOQQKwjz2USMHZSwvess=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR04MB11960
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 05 Dec 2025 14:59:32 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8233
+ <docs@lists.yoctoproject.org>; Fri, 05 Dec 2025 15:04:02 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8234
 
-> -----Original Message-----
-> From: bitbake-devel@lists.openembedded.org <bitbake-devel@lists.openembed=
-ded.org> On Behalf Of Swami via lists.openembedded.org
-> Sent: den 5 december 2025 00:43
-> To: bitbake-devel@lists.openembedded.org; docs@lists.yoctoproject.org
-> Cc: michael.opdenacker@rootcommit.com; Swami <swami310@gmail.com>
-> Subject: [bitbake-devel] [PATCH v6] bitbake-user-manual: Documenting BB_C=
-MDLINE
+Hi Antonin,
 
-Change "Documenting" to "Document".
+On 12/5/25 3:51 PM, Antonin Godard via lists.yoctoproject.org wrote:
+> On some versions of rsvg-convert, capitalized formats are unknown.
+> 
+> For example on CentOS Stream 9:
+> 
+>    $ rsvg-convert --format=Png --output=ref-manual/svg/releases.png ref-manual/svg/releases.svg
+>    Unknown output format.
+> 
+> While the same command with "png" runs fine.
+> 
+> On Ubuntu 22.04, both are accepted.
+> 
+> Switch to the un-capitalized options, compatible with all versions.
+> 
 
->=20
-> Add documentation for the internal read-only variable :term:`BB_CMDLINE`.
-> Fixes [YOCTO #15746]
-> Signed-off-by: Swaminathan K <swami310@gmail.com>
+rsvg-convert doc only mentions all lowercase format options, so looks 
+fine to me
 
-Git trailers (like Signed-off-by above) are expected to be separated from=20
-the rest of the body by an empty line. I would also suggest adding an=20
-empty line before the Fixes line.
+Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
 
-> ---
->  doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst | 4 ++++
->  1 file changed, 4 insertions(+)
->=20
-> diff --git a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rs=
-t b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
-> index 734c7858a..32860ec0c 100644
-> --- a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
-> +++ b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
-> @@ -116,6 +116,10 @@ overview of their function and contents.
->        Specifies if SSL certificates should be checked when fetching. The
-> default
->        value is ``1`` and certificates are not checked if the value is se=
-t to ``0``.
->=20
-> +   :term:`BB_CMDLINE`
-> +      :term:`BB_CMDLINE` is an internal variable and is read-only. It ca=
-ptures
-> +      the exact command line used for the current invocation of BitBake.
-> +
->     :term:`BB_HASH_CODEPARSER_VALS`
->        Specifies values for variables to use when populating the codepars=
-er cache.
->        This can be used selectively to set dummy values for variables to =
-avoid
+FYI, --format=pdf is a "moving" target, that is it isn't always the same 
+PDF version depending on rsvg-convert's own version. They mention it can 
+be an issue with some latexpdf versions only supporting older PDF 
+versions. See 
+https://github.com/GNOME/librsvg/blob/main/rsvg-convert.rst#pdf-versions
 
-//Peter
+At least you're aware of it now, no idea if we should be doing something 
+about it. I guess we could try to be smart and detect the max PDF 
+version supported by latexmk at runtime and select the pdf version for 
+rsvg-convert based on that.
 
+Thanks!
+Quentin
 
