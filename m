@@ -1,165 +1,97 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <alex.kanavin@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2A6D2D41C05
-	for <webhook@archiver.kernel.org>; Thu, 11 Dec 2025 08:13:11 +0000 (UTC)
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.4587.1765440786847934168
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 52FF5D41C09
+	for <webhook@archiver.kernel.org>; Thu, 11 Dec 2025 08:51:21 +0000 (UTC)
+Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.5031.1765443075471118758
  for <docs@lists.yoctoproject.org>;
- Thu, 11 Dec 2025 00:13:08 -0800
+ Thu, 11 Dec 2025 00:51:15 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=RpNW8cVO;
- spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 97BC0C19347
-	for <docs@lists.yoctoproject.org>; Thu, 11 Dec 2025 08:12:40 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 935236068C;
-	Thu, 11 Dec 2025 08:13:04 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3E6F5103C8D53;
-	Thu, 11 Dec 2025 09:13:03 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1765440784; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=Vc+4FdPW5Mkdx8uDObLiml5B35FLMOhr4obktPPF5Gc=;
-	b=RpNW8cVOyl4KRj2UHawIuLQizvwHDljf4oZ47frmR5pUBqQBM3FC1gtnP3J4G1r369yHzS
-	Iv8GHLIzYO8GZdoMWYisktaNE4/ztFuMZcf70JNX3Ka+EMUd9eSzmSCS66GDsW/nZ4LWpD
-	a6pQKGZzfMRXRbrJso92HHMGL0xLexwbxxrth7urJSTa4QxuTQw60Dtw3yLtnWUnLV8B0f
-	wO63N73oDyizR1l5BJmZ8+yLtjHVHHW/w22Rx/RC9SMVplsIp/51QUWYwJtOVKn+nDSS9X
-	FNVJKRmD7PzeWTyf4D1o4/WFpFpk95yiVEqaGelshxUetMTyst2PkAGEexeUOA==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 11 Dec 2025 09:13:01 +0100
-Message-Id: <DEV8IYRW4N8I.1TU6E77ZW6TBL@bootlin.com>
-Cc: "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: "Quentin Schulz" <quentin.schulz@cherry.de>,
- <docs@lists.yoctoproject.org>
-Subject: Re: [docs] [PATCH 3/5] tools/build-docs-container: add CentOS
- Stream 9 support
-References: <20251205-build-docs-container-tlmgr-v1-0-de30623e664d@bootlin.com> <20251205-build-docs-container-tlmgr-v1-3-de30623e664d@bootlin.com> <7ad37c04-75cc-4389-9cf5-72b49b001f28@cherry.de>
-In-Reply-To: <7ad37c04-75cc-4389-9cf5-72b49b001f28@cherry.de>
-X-Last-TLS-Session-Version: TLSv1.3
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=Z8qaRTTA;
+ spf=pass (domain: gmail.com, ip: 209.85.219.52, mailfrom: alex.kanavin@gmail.com)
+Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-8823e39c581so10342196d6.3
+        for <docs@lists.yoctoproject.org>; Thu, 11 Dec 2025 00:51:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765443074; x=1766047874; darn=lists.yoctoproject.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=BjcTBvDNAD6mjDRaVbeRzMUALtu/uTxifrB8sD4KmY0=;
+        b=Z8qaRTTAFQknWMMKkqu0poBNXP93ItbtZL2lhS/AjqrEdCaAA64cL03LcBGSyV6wli
+         blt7ovUGYCSdzi6QGnoNEtaRljH+foIMRT++tattqgrNBS6KeEvZnQF6FBi1LDXwyv49
+         6GllFxJwoOiAyBjalahNT3h+t1GNZENFwqHodD7ZjT4m/dCXqHHdLIP1dN6ixa0+8dNi
+         G75j/L77F8jaeihwmictME5LIV8U3wwqdsvGT05IKH7SoCecUrkHjrA8xE0FTr2WmZnm
+         Vle/k93CWJ+uN6pc6KqU4w+c+D0MMRajXbqoB7TjF6OiQM5oR30QlLvG7H6ATn/jeaZD
+         TL0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765443074; x=1766047874;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BjcTBvDNAD6mjDRaVbeRzMUALtu/uTxifrB8sD4KmY0=;
+        b=lhxuGhxrIBUu9xJ5VZCSNTVdFsrZEr0+b1s8e22bcSAx8hFERkqzgttUCwgTW4DcQc
+         DcZqI2T5y7Z9cudzs2cUt6fF8L1WGdCOloK5FYW+p4XoADc30JS+maKf4NpVfbMdbWNr
+         czB/ihHMkmSLpB4ilO/bk5QgitOYj+E3OIU6NW/Mony46LiNX94/rUeOYM8rWARMldXY
+         Qn3gpXxd1XBZ02NAXJKRVFXs4K5F+VlHxVA0X8k+vl+EYi51lcQsqAUPL0renrYRd2ot
+         QpFf7D+3YLD5iDyyt+zhYbpqwFnFs8FZA/JXUBRw+QS9u9aL2SgxWU1zcWgXQK3PP6D4
+         xMPQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUwNHOarP0YOeLpRaUWbJ+ERc+loPD+PjgCrAJ4s5AQTXDE2tcdirKl4wXoy8QUeaBF5PT1@lists.yoctoproject.org
+X-Gm-Message-State: AOJu0YxfkeFLFfzKdFumTvi0j75pO7baCZUuvPH2w0WjBNNfKNjTNjEk
+	yf11CUbe4nZ9O2VXHLfQFH2RQV1fvyR48l9v3CNFg7pku/RaPsO+MOoTX9q3hFILVh15QTNysib
+	jv/kFLsQZ09svLM2wepV16OQvmaV+f7o=
+X-Gm-Gg: AY/fxX5A4lRk53r+Cj+fN1TpzPiPCaPXhMzuwC2c+9HtmG4z9d3u/kTkqZvPEsMz8r8
+	EKCiBQvKCiLQo5thF0C4EYunS6Kjpm8DtDnUbsXpl4mYEy2o5ixf1DUOoCB710IcINGQgOvbtyS
+	UABJXSrQ4EF3vcJl/r1lYudCMmdHrrC/PbN76OHp/RBqIyJxtiOUNout6H4HnnaR8WkqI6PWfbX
+	J4UY+zCiQbzBDQ+ffpcyxNTmG2L4IpH5X0QdrMU2nzFGipaATElIPZS6CY0W+Pqu/1tPSXiLINA
+	N0+S0FKsJY69+bZnskipDAwRyDs9vw==
+X-Google-Smtp-Source: AGHT+IG2W2hQ5TkkJ1AtyYWznA3wy5vlvjGMrrIaGK85qRQkky/f2uuU+DrZoovobB2UXggCef5OYTFZR5rpgCvbl0s=
+X-Received: by 2002:a05:6214:5003:b0:880:47e0:19e8 with SMTP id
+ 6a1803df08f44-88863aa6662mr82601186d6.42.1765443074394; Thu, 11 Dec 2025
+ 00:51:14 -0800 (PST)
+MIME-Version: 1.0
+References: <20251205234033.6363-1-swami310@gmail.com> <CA+-_CqnqT4roapfisF_6gt2P-OJ8gkw9GvRNEnWh9FQX6HU7Sw@mail.gmail.com>
+ <CAMSfU+5enXOdO03=d2Nfx6infFOoema2Y7xQG9VErNN1DgbE9A@mail.gmail.com>
+In-Reply-To: <CAMSfU+5enXOdO03=d2Nfx6infFOoema2Y7xQG9VErNN1DgbE9A@mail.gmail.com>
+From: Alexander Kanavin <alex.kanavin@gmail.com>
+Date: Thu, 11 Dec 2025 09:51:02 +0100
+X-Gm-Features: AQt7F2riJGGlUR-ojK6oEpqmIxAhOHBJbgQc3otRcgSeR3T_Kz7u1OO7DWivJfM
+Message-ID: <CANNYZj_a=DgXvyRRr8igP6HLee819-DKfjTnWd8WHu9Fs5Wv9A@mail.gmail.com>
+Subject: Re: [bitbake-devel] [PATCH v7] bitbake-user-manual: Document BB_CMDLINE
+To: yoann.congal@smile.fr
+Cc: swami310@gmail.com, bitbake-devel@lists.openembedded.org, 
+	docs@lists.yoctoproject.org, michael.opdenacker@rootcommit.com
+Content-Type: text/plain; charset="UTF-8"
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 11 Dec 2025 08:13:11 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8239
+ <docs@lists.yoctoproject.org>; Thu, 11 Dec 2025 08:51:21 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8240
 
-Hi,
-
-On Fri Dec 5, 2025 at 4:29 PM CET, Quentin Schulz wrote:
-> Hi Antonin,
+On Thu, 11 Dec 2025 at 08:50, Yoann Congal via lists.openembedded.org
+<yoann.congal=smile.fr@lists.openembedded.org> wrote:
+> > I have not heard anything after I submitted Patch V7. Is it accepted ?  How can I know the latest status ?
+> > Please help me understand.
 >
-> On 12/5/25 3:51 PM, Antonin Godard via lists.yoctoproject.org wrote:
+> Your patch is in the master-next branch :
+> https://git.openembedded.org/bitbake/log/?h=master-next
 >
-> [...]
->
->> diff --git a/documentation/tools/build-docs-container b/documentation/to=
-ols/build-docs-container
->> index 7d25b15b9..d753e2153 100755
->> --- a/documentation/tools/build-docs-container
->> +++ b/documentation/tools/build-docs-container
->> @@ -41,6 +41,7 @@ $0 OCI_IMAGE [make arguments...]
->>        - fedora:42
->>        - leap:15.5
->>        - leap:15.6
->> +     - tgagor/centos:stream9
->
-> quay.io/centos/centos:stream9 is probably better?
->
-> We would need to remove the docker.io prefix from the ARG_FROM and make=
-=20
-> it configurable but that should be easy to do.
+> Which means it has been selected for review and tests. Once those
+> happen you will either receive a review by mail or see your patch get
+> merged on master.
+> Merges usually happen after the patch review calls (which are on
+> monday and thursday :
+> https://www.yoctoproject.org/community/get-involved/).
+> Ping back if nothing happens in a week or so.
 
-Indeed, I'll do that thanks.
+While the process description is correct, all of this has already
+happened, and the patch landed in master some days ago. Which can be
+seen in the link above! It's just that master and master-next are the
+same at the moment.
 
->> diff --git a/documentation/tools/containerfiles/entrypoint b/documentati=
-on/tools/containerfiles/entrypoint
->> new file mode 100644
->> index 000000000..97ee93c29
->> --- /dev/null
->> +++ b/documentation/tools/containerfiles/entrypoint
->> @@ -0,0 +1,6 @@
->> +#!/usr/bin/env sh
->> +
->> +tldir=3D/opt/docs-build-tex-tools/tl/bin/x86_64-linux
->> +[ -d $tldir ] && export PATH=3D"$PATH:$tldir"
->> +
->> +make -C documentation/ "$@"
->
-> Doesn't
->
-> ENV PATH=3D"$PATH:$TEXTOOLDIR/tl/bin/x86_64-linux"
->
-> in Containerfile.stream work just fine instead of having to go through=20
-> an ENTRYPOINT?
+There are no separate notifications for when patches are accepted, you
+just need to check the upstream branches, either get the latest
+commits with git locally, or look at the commit log in a browser.
 
-Works nicely! That will allow some simplifications, thanks.
-
-> This also makes the instructions x86_64-only. I have no clue if one can=
-=20
-> run the current instructions on Aarch64 and make it work, but this for=20
-> sure won't help.
-
-Yeah correct, well I will add a warning for that, as I don't think I'll hav=
-e the
-time to add support for other archs or if even possible with this installer=
-.
-
->> diff --git a/documentation/tools/host_packages_scripts/centosstream_docs=
-.sh b/documentation/tools/host_packages_scripts/centosstream_docs.sh
->> new file mode 100644
->> index 000000000..9202afc5b
->> --- /dev/null
->> +++ b/documentation/tools/host_packages_scripts/centosstream_docs.sh
->> @@ -0,0 +1 @@
->> +sudo dnf install -y git glibc-locale-source librsvg2-tools make python3=
--pip which
->> diff --git a/documentation/tools/host_packages_scripts/centosstream_esse=
-ntial.sh b/documentation/tools/host_packages_scripts/centosstream_essential=
-.sh
->> new file mode 100644
->> index 000000000..e38fa93c2
->> --- /dev/null
->> +++ b/documentation/tools/host_packages_scripts/centosstream_essential.s=
-h
->> @@ -0,0 +1,5 @@
->> +sudo dnf install -y epel-release
->> +sudo yum install -y dnf-plugins-core
->> +sudo dnf config-manager --set-enabled crb
->> +sudo dnf makecache
->> +sudo dnf install -y bzip2 ccache chrpath cpio cpp diffstat diffutils ga=
-wk gcc gcc-c++ git glibc-devel glibc-langpack-en gzip libacl make patch per=
-l perl-Data-Dumper perl-Text-ParseWords perl-Thread-Queue python3 python3-G=
-itPython python3-jinja2 python3-pexpect python3-pip rpcgen socat tar texinf=
-o unzip wget which xz zstd
->> diff --git a/documentation/tools/host_packages_scripts/tlmgr_docs_pdf.sh=
- b/documentation/tools/host_packages_scripts/tlmgr_docs_pdf.sh
->> new file mode 100644
->> index 000000000..f3b81da3e
->> --- /dev/null
->> +++ b/documentation/tools/host_packages_scripts/tlmgr_docs_pdf.sh
->> @@ -0,0 +1,7 @@
->> +textooldir=3D${TEXTOOLDIR:-"./docs-build-tex-tools"}
->> +mkdir -p "$textooldir"/tl
->> +wget https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.g=
-z -O "$textooldir"/install-tl-unx.tar.gz
->> +zcat < "$textooldir"/install-tl-unx.tar.gz | tar xf - -C "$textooldir"
->
-> Can't this simply be
->
-> tar xzf "$textooldir"/install-tl-unx.tar.gz -C "$textooldir"
-
-It can! Thanks.
-
-Antonin
-
---=20
-Antonin Godard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
+Alex
 
