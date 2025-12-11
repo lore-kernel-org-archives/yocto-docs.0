@@ -1,124 +1,149 @@
-Return-Path: <yoann.congal@smile.fr>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5C10DD41C0F
-	for <webhook@archiver.kernel.org>; Thu, 11 Dec 2025 09:02:41 +0000 (UTC)
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.5250.1765443753472604839
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5FC98D41C14
+	for <webhook@archiver.kernel.org>; Thu, 11 Dec 2025 09:06:31 +0000 (UTC)
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.5426.1765443984311004225
  for <docs@lists.yoctoproject.org>;
- Thu, 11 Dec 2025 01:02:33 -0800
+ Thu, 11 Dec 2025 01:06:25 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@smile.fr header.s=google header.b=2HualOD5;
- spf=pass (domain: smile.fr, ip: 209.85.221.41, mailfrom: yoann.congal@smile.fr)
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-42b38de7940so287898f8f.3
-        for <docs@lists.yoctoproject.org>; Thu, 11 Dec 2025 01:02:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=smile.fr; s=google; t=1765443752; x=1766048552; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9h1EzLK3qTBqyXmyGGhT292PFJ2RMjnYmBM5al6PdLg=;
-        b=2HualOD5glwPLRqqSkR9OWiYfU2eOB2UsST3BzMJrWS4aDpX1YAnO6hueyohirjo2Z
-         RPlKeRyu93SKI7SGqcBRfHNCP+554AjtmdTOfKUdKJCixmQ4OqV53pTeiQ+JCjDl7TWz
-         MaCQERfzUVPJ3NZppH9ADXSQoesclLs3lYxiY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765443752; x=1766048552;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=9h1EzLK3qTBqyXmyGGhT292PFJ2RMjnYmBM5al6PdLg=;
-        b=W4lw5axneLKrVBCFtOzAyGDIojm3vfOUv+FhiHyZNy8wTI2RfrVgEB4X1E3+LIf51v
-         fsmCZEWBCSv6y5MmUsxS5uaLwbpgFa/PcsTwKKrUWcxp/VDuopt5DL/ZjirjtZiyZWzP
-         LwC+u2j4VPkGXybyvR+JkS4ohmieu2HZOmw4L+RHEQVZtrZSPkkryx10KnRlN0Q+6F0M
-         9FYkb7jITi8a5q0u69mQ4VUyeovA9RR6DcYC/FSXe9qW8t9f2xbrj28rih813ecIP1vh
-         m25TM8cjl1UVElWk3h9/YkiVk0+HptqrNYTjHdzKTgX7ere5JYK1l4xSTdUlgV0AaCZZ
-         kKMg==
-X-Forwarded-Encrypted: i=1; AJvYcCWGEqhNiq+eJg1TQpPyztkiHlB4iTRBAql4SGPxyDfG5WMmPOFyGiYtxKYQK0VPUyovIJxD@lists.yoctoproject.org
-X-Gm-Message-State: AOJu0Yy16uASb7yQEAcLxnPV8LnF8703B/8pL+ZRe0FrKh2BIoVcMHBh
-	eSg5nMzK1L8b/Ur6RjOeeu9S2YuZO+Jnet30Bpotz1RoSYftS+eD/68cXS+cALOjXexzkJBY57k
-	jLtMpaD7OxxGwcZfFvd3+Z9dqPOl9sqtfTeiBURs0Sg==
-X-Gm-Gg: AY/fxX4s+qNN4y+ElC2MQ7bwPT3UTXVkJ4kgDgk/BtITfGIFdxxDPnhYsoQK2N2QHMh
-	+hpdX0FHmOWgrcxwiygzC/mfqa0XDxDbgLNEA7mQJGyycSDqJrk6V7LOUdJzdU5Sqs2mkMtTjJM
-	GOJSFm4aBvmZLWqOSDoHkBaHgiHI7A2nF87NrqvM9O8YiGYzMmq5d9tTUUdbHLupHq5QE4QJ30e
-	RPEu/lwP/BzLS/E+POHyeLDcNYjlyoroYb6/PaubGJpmyjb6wmhVMzbCca9e9bQKo9nTQy6Ie3q
-	WZNhF0UxDvK2LxaJeu3HVpDlUn1i
-X-Google-Smtp-Source: AGHT+IEP+FMzHkZJv1CxJz5OShEbcY+cEZhBsN0d1jeKpSMyw1kLr1ifdbo2B/k2ekwWp18Y/bgsm68XXT9h6o/R/r8=
-X-Received: by 2002:a05:6000:2888:b0:42b:3ee9:4773 with SMTP id
- ffacd0b85a97d-42fa39d8bedmr4426973f8f.7.1765443751777; Thu, 11 Dec 2025
- 01:02:31 -0800 (PST)
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=cTSNJ6uo;
+ spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 94FA04E41B77
+	for <docs@lists.yoctoproject.org>; Thu, 11 Dec 2025 09:06:22 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 66C956068C
+	for <docs@lists.yoctoproject.org>; Thu, 11 Dec 2025 09:06:22 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D146E103C8C7B;
+	Thu, 11 Dec 2025 10:06:21 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1765443982; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=B9jdqOvHS9vx1U1OHDQoMOzsvb2sasVWICwGeBVcipI=;
+	b=cTSNJ6uoNxEgtPAw1Py+aBcHFIiUctCAPdlIm6FymHw03g+FYWD91Pn5Ufq1PqBs2EkIkP
+	eg9zzJOIlTy5D6Tjc+mtPYo8jdq+ErEldR5er+2Ogras49sYZfHQ7PVqx1vadbUI1XHthm
+	/zcoL7S4Iwfll+BVsudwo9JhNY2GQGBODqDDb8pFZ9G6l/Ixu9WEdENjQYn7cZGVKVvICc
+	7p88FAO84H2SyKPWtIvJcIQVY8HyzphLfT0+465FfAfv0qGtLyFjjadudMeRnjoA+4On3k
+	3ekSRhHIcvoDVuwkRd4UVGiFhadJa1t+BaA2pQRFvVcz6/QrX7I1Fs5bZFBddA==
+From: Antonin Godard <antonin.godard@bootlin.com>
+Date: Thu, 11 Dec 2025 10:06:14 +0100
+Subject: [PATCH v2 1/5] tools/build-docs-container: move container files in
+ their own directory
 MIME-Version: 1.0
-References: <20251205234033.6363-1-swami310@gmail.com> <CA+-_CqnqT4roapfisF_6gt2P-OJ8gkw9GvRNEnWh9FQX6HU7Sw@mail.gmail.com>
- <CAMSfU+5enXOdO03=d2Nfx6infFOoema2Y7xQG9VErNN1DgbE9A@mail.gmail.com>
- <CANNYZj_a=DgXvyRRr8igP6HLee819-DKfjTnWd8WHu9Fs5Wv9A@mail.gmail.com> <CA+-_CqnfAQu_-h=smym8CayOxCdh1PHa7dOhvMnq6axerYWO_Q@mail.gmail.com>
-In-Reply-To: <CA+-_CqnfAQu_-h=smym8CayOxCdh1PHa7dOhvMnq6axerYWO_Q@mail.gmail.com>
-From: Yoann Congal <yoann.congal@smile.fr>
-Date: Thu, 11 Dec 2025 10:02:04 +0100
-X-Gm-Features: AQt7F2qyotZr84SRr5uZa2nqwETUhabs1GrCETmR646wfmCq9slbu3QGio0SLiU
-Message-ID: <CAMSfU+6Cv-WkM_M2MNMJ_Zag4efoRnh9eCNZthE1HMDCSoW7Yw@mail.gmail.com>
-Subject: Re: [bitbake-devel] [PATCH v7] bitbake-user-manual: Document BB_CMDLINE
-To: Swaminathan K <swami310@gmail.com>
-Cc: Alexander Kanavin <alex.kanavin@gmail.com>, bitbake-devel@lists.openembedded.org, 
-	docs@lists.yoctoproject.org, michael.opdenacker@rootcommit.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251211-build-docs-container-tlmgr-v2-1-58719c103a50@bootlin.com>
+References: <20251211-build-docs-container-tlmgr-v2-0-58719c103a50@bootlin.com>
+In-Reply-To: <20251211-build-docs-container-tlmgr-v2-0-58719c103a50@bootlin.com>
+To: docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Antonin Godard <antonin.godard@bootlin.com>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4042;
+ i=antonin.godard@bootlin.com; h=from:subject:message-id;
+ bh=ZXaf+4k0heH6JRHG+vAHZKY3GwS1qbzUWnw9hpxr/dU=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpOomLH32oDdLHUUbaFRWFCfkiGP19ivY88c8GT
+ GiZQnT3aJ+JAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaTqJiwAKCRDRgEFAKaOo
+ NoJSD/4k8hJsptUTgNU2HOiVqV5GFwW0Q5sQbX8EetIj2W+cBOJhhhcnrW36svzrMulKW6e2XRm
+ 3HLc564SDbm4HNii/hBWV3RwFyNq8KwHSa18NqkpJLF/WDB5NwjZcQ2zxR94qqWl9BRKrzSLrpo
+ erv4QZb1WQPZ62SH2CDlS21bYn1I1D+D1Ykp1WzppzjHfDEy6C65DnmzQt901s1NPdllTvaowA8
+ PSpvwSYyGXhU9uNVKgQu3jUJEzMxKf8bN+y2nPye0Dq2vKtIQta9n5fqkc9q+Xb1dnP3y1Ie2QH
+ 5WOHHtNn9f3iHYlw7ea21f0Da7N8ORyg+0Hv1yrfRJF3cwES9+RTVjefxAYduFEruZqVg/pbZ/H
+ 9PeDuq7kxwCHDPgQq1kmNQmjev4NRbstTKUpuEVH85fIxZfCx3/G+LBHk7JySIXtgecI9WvxQLX
+ 34RfdJE87FcYxzqTZgJvrden77ZvXidGAxfVRJSMfXQoWTsUG3FwkQ4AEYLNFWaudSyNDFz3MFP
+ PHOydOq/nN76oGr15TtI01U5hGdwC5ZKLpYzH8Fg1UwwdKHEhBoQ7IeJQi0+qWXkM4Irm23hog9
+ dzZMUc43GCioJOgk3XieNzTeM49TdewZrFOhPgII0UUJTRy/WsDIuaInEhuTAIAb5xa0dNdDlNU
+ pDf8QMd0Ecwq5Ig==
+X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
+ fpr=8648725188DD401BB9A0D3FFD180414029A3A836
+X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 11 Dec 2025 09:02:41 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8241
+ <docs@lists.yoctoproject.org>; Thu, 11 Dec 2025 09:06:31 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8244
 
-Le jeu. 11 d=C3=A9c. 2025 =C3=A0 09:58, Swaminathan K <swami310@gmail.com> =
-a =C3=A9crit :
->
-> Thanks a lot for the clarifications. This has been one huge learning jour=
-ney for me.
-> I will start working on the next bug :)
+Create a directory to hold the Containerfiles as they were lying next to
+the scripts. Change the build context of the docker build command to
+build from SCRIPT_DIR and pass the host packages scripts and container
+file relative to it.
 
-Congrats :)
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+---
+ documentation/tools/build-docs-container                    | 13 ++++++-------
+ .../tools/{ => containerfiles}/Containerfile.almalinux      |  0
+ documentation/tools/{ => containerfiles}/Containerfile.apt  |  0
+ .../tools/{ => containerfiles}/Containerfile.debian         |  0
+ documentation/tools/{ => containerfiles}/Containerfile.dnf  |  0
+ .../tools/{ => containerfiles}/Containerfile.fedora         |  0
+ .../tools/{ => containerfiles}/Containerfile.ubuntu         |  0
+ .../tools/{ => containerfiles}/Containerfile.zypper         |  0
+ 8 files changed, 6 insertions(+), 7 deletions(-)
 
-> regards
-> Swami
->
-> On Thu, Dec 11, 2025 at 2:21=E2=80=AFPM Alexander Kanavin <alex.kanavin@g=
-mail.com> wrote:
->>
->> On Thu, 11 Dec 2025 at 08:50, Yoann Congal via lists.openembedded.org
->> <yoann.congal=3Dsmile.fr@lists.openembedded.org> wrote:
->> > > I have not heard anything after I submitted Patch V7. Is it accepted=
- ?  How can I know the latest status ?
->> > > Please help me understand.
->> >
->> > Your patch is in the master-next branch :
->> > https://git.openembedded.org/bitbake/log/?h=3Dmaster-next
->> >
->> > Which means it has been selected for review and tests. Once those
->> > happen you will either receive a review by mail or see your patch get
->> > merged on master.
->> > Merges usually happen after the patch review calls (which are on
->> > monday and thursday :
->> > https://www.yoctoproject.org/community/get-involved/).
->> > Ping back if nothing happens in a week or so.
->>
->> While the process description is correct, all of this has already
->> happened, and the patch landed in master some days ago. Which can be
->> seen in the link above! It's just that master and master-next are the
->> same at the moment.
+diff --git a/documentation/tools/build-docs-container b/documentation/tools/build-docs-container
+index b91a6daa9..7d25b15b9 100755
+--- a/documentation/tools/build-docs-container
++++ b/documentation/tools/build-docs-container
+@@ -23,7 +23,6 @@ set -eu -o pipefail
+ SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
+ CONTAINERCMD=${CONTAINERCMD:-docker}
+ DOCS_DIR="$SCRIPT_DIR/../.."
+-SH_DIR="$SCRIPT_DIR/host_packages_scripts"
+ INCLUDE_ESSENTIAL_PACKAGES=${INCLUDE_ESSENTIAL_PACKAGES:-0}
+ 
+ function usage()
+@@ -140,12 +139,12 @@ main ()
+     --tag "yocto-docs-$sanitized_dockername:latest" \
+     --build-arg ARG_FROM="docker.io/$image" \
+     --build-arg INCLUDE_ESSENTIAL_PACKAGES="${INCLUDE_ESSENTIAL_PACKAGES}" \
+-    --build-arg ESSENTIAL="$essential" \
+-    --build-arg DOCS="$docs" \
+-    --build-arg DOCS_PDF="$docs_pdf" \
+-    --build-arg PIP3="${pip3:-}" \
+-    --file "$SCRIPT_DIR/$containerfile" \
+-    "$SH_DIR/"
++    --build-arg ESSENTIAL="host_packages_scripts/$essential" \
++    --build-arg DOCS="host_packages_scripts/$docs" \
++    --build-arg DOCS_PDF="host_packages_scripts/$docs_pdf" \
++    --build-arg PIP3="host_packages_scripts/${pip3:-}" \
++    --file "$SCRIPT_DIR/containerfiles/$containerfile" \
++    "$SCRIPT_DIR"
+ 
+   local -a args_run=(
+     --rm
+diff --git a/documentation/tools/Containerfile.almalinux b/documentation/tools/containerfiles/Containerfile.almalinux
+similarity index 100%
+rename from documentation/tools/Containerfile.almalinux
+rename to documentation/tools/containerfiles/Containerfile.almalinux
+diff --git a/documentation/tools/Containerfile.apt b/documentation/tools/containerfiles/Containerfile.apt
+similarity index 100%
+rename from documentation/tools/Containerfile.apt
+rename to documentation/tools/containerfiles/Containerfile.apt
+diff --git a/documentation/tools/Containerfile.debian b/documentation/tools/containerfiles/Containerfile.debian
+similarity index 100%
+rename from documentation/tools/Containerfile.debian
+rename to documentation/tools/containerfiles/Containerfile.debian
+diff --git a/documentation/tools/Containerfile.dnf b/documentation/tools/containerfiles/Containerfile.dnf
+similarity index 100%
+rename from documentation/tools/Containerfile.dnf
+rename to documentation/tools/containerfiles/Containerfile.dnf
+diff --git a/documentation/tools/Containerfile.fedora b/documentation/tools/containerfiles/Containerfile.fedora
+similarity index 100%
+rename from documentation/tools/Containerfile.fedora
+rename to documentation/tools/containerfiles/Containerfile.fedora
+diff --git a/documentation/tools/Containerfile.ubuntu b/documentation/tools/containerfiles/Containerfile.ubuntu
+similarity index 100%
+rename from documentation/tools/Containerfile.ubuntu
+rename to documentation/tools/containerfiles/Containerfile.ubuntu
+diff --git a/documentation/tools/Containerfile.zypper b/documentation/tools/containerfiles/Containerfile.zypper
+similarity index 100%
+rename from documentation/tools/Containerfile.zypper
+rename to documentation/tools/containerfiles/Containerfile.zypper
 
-*facepalm*
-I really should refrain from doing anything before my morning coffee...
-I totally missed that.
+-- 
+2.51.0
 
->>
->> There are no separate notifications for when patches are accepted, you
->> just need to check the upstream branches, either get the latest
->> commits with git locally, or look at the commit log in a browser.
->>
->> Alex
-
-
-
---=20
-Yoann Congal
-Smile ECS
 
