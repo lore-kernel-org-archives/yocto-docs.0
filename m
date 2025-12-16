@@ -2,42 +2,42 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EEC03D609C3
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DF126D609BF
 	for <webhook@archiver.kernel.org>; Tue, 16 Dec 2025 16:14:06 +0000 (UTC)
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.26746.1765901638223582460
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.26514.1765901637850413104
  for <docs@lists.yoctoproject.org>;
- Tue, 16 Dec 2025 08:13:59 -0800
+ Tue, 16 Dec 2025 08:13:58 -0800
 Authentication-Results: mx.groups.io;
- dkim=fail reason="dkim: body hash did not verify" header.i=@bootlin.com header.s=dkim header.b=oah/D8qC;
+ dkim=fail reason="dkim: body hash did not verify" header.i=@bootlin.com header.s=dkim header.b=dqUlG0cT;
  spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id B13B44E41C3B
-	for <docs@lists.yoctoproject.org>; Tue, 16 Dec 2025 16:13:56 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id D0F0E4E41C34
+	for <docs@lists.yoctoproject.org>; Tue, 16 Dec 2025 16:13:55 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 831F56071C
-	for <docs@lists.yoctoproject.org>; Tue, 16 Dec 2025 16:13:56 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 04D13119A8FB9;
-	Tue, 16 Dec 2025 17:13:55 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 93E626071C
+	for <docs@lists.yoctoproject.org>; Tue, 16 Dec 2025 16:13:55 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9EC2C119A8FA9;
+	Tue, 16 Dec 2025 17:13:54 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1765901636; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1765901635; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=3RWSgNxkZDvyEs5VnLXTdSrcurVv6mtCtCBTxa5WzT4=;
-	b=oah/D8qC0Y2bjKV8P1CDrYxLmf60NhVC5CC+hvL5oVFTX1NNpSgRk/G9ZTWNOxkdw21Exq
-	pB/6MYh+B78eJWqlkSFnioWG91p8qcrRmuUOtJNlm2TuL9gYmUKw6ViqAS/L255UijY80q
-	RVpMX6/mngc18mvnO2K3f1eXzFmpSgoa8rhfhYEksAKSaw0BZkgXzH1ZtvF/WzDFV9Gjmj
-	i/m5+P/iE8dRzaNhnV6oAPqYq571dbzQf0JrRDAWtyGn5XAdEAKApXzJwbHj0ZotkHzIMZ
-	xaCi4CJbue0maIrZgiRghHiUiGiuVxL1bzQxsdXjBA3RqZhHOm0kFDeNZLD70g==
+	bh=KuA3xbuHzxdCDsM4BzMLjg6j6K9P4zYP5LXj/7gSMsE=;
+	b=dqUlG0cTEHbhL+VTHH6mbFHZULv9HhQkjgwqvnDz2ONwT/Z7ycwJKEMZmRcqgGQF3po/+e
+	MtMs+4zy7pbPuJmfLiPngmStdArvxDiO1Iqb4sxpMxC0GH39zquxku8RqjYaknI2NR09R5
+	JxLnPljeqqyr5+4eLfNI5snghYye7MhNTnOG+2fbxa0zGftV3CJ2Svowc9nYCeWpfzdDrS
+	0ZfdGSEJc0QMj0h47DN57yfk7Xe1FtdRbk1oVNooANjHm+pv+VGhNbDF506DVI+eWbLPcD
+	ahBhlXKbZTxLLAaIEe6S7NeOydV26szjGb2dwOcNusmKhy2Yaa2w0yJ9pQ1wDg==
 From: Antonin Godard <antonin.godard@bootlin.com>
 To: docs@lists.yoctoproject.org,
 	Antonin Godard <antonin.godard@bootlin.com>
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH] contributor-guide/submit-changes.rst: remove mention of Upstream-Status
-Date: Tue, 16 Dec 2025 17:12:40 +0100
-Message-ID: <176590152202.120473.1041717757005403030.b4-ty@bootlin.com>
+Subject: Re: [PATCH 0/4] Various docs fixes
+Date: Tue, 16 Dec 2025 17:12:38 +0100
+Message-ID: <176590152186.120473.8442517407333798645.b4-ty@bootlin.com>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251202-remove-upstream-status-mention-v1-1-410d15493349@bootlin.com>
-References: <20251202-remove-upstream-status-mention-v1-1-410d15493349@bootlin.com>
+In-Reply-To: <20251201-fixes-v1-0-1cf15a5a4cbe@bootlin.com>
+References: <20251201-fixes-v1-0-1cf15a5a4cbe@bootlin.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Last-TLS-Session-Version: TLSv1.3
@@ -46,24 +46,25 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Tue, 16 Dec 2025 16:14:06 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8294
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8291
 
 
-On Tue, 02 Dec 2025 18:00:30 +0100, Antonin Godard wrote:
-> The Upstream-Status tag is not used for patches sent on mailing lists,
-> but for patches to be applied to recipes. To avoid confusion in this
-> Contributor Guide, remove the mention of this tag as part of the
-> Patchtest examples as it can be misinterpreted as something to include
-> in a regular patch.
+On Mon, 01 Dec 2025 10:55:18 +0100, Antonin Godard wrote:
+> Fix obsolete documentation in some places, after receiving reports on
+> the list.
 >=20
 >=20
-> [...]
 
 Applied, thanks!
 
-[1/1] contributor-guide/submit-changes.rst: remove mention of Upstream-St=
-atus
-      commit: 23098728b57520d1d8e417500009279226ce8080
+[1/4] ref-manual/variables.rst: NVD_DB_VERSION: fix default value
+      commit: 238c88a25b2fc0879cd549c1eaf00498dd4b86cc
+[2/4] dev-manual/temporary-source-code.rst: fix definition of WORKDIR
+      commit: 9cb0e8a94590563491e210b403519ccfbde866e9
+[3/4] overview-manual/yp-intro.rst: change removed ECOSYSTEM to ABOUT
+      commit: a8a8d810f0505529aaaa90678e03152c8ac0c00b
+[4/4] overview-manual/yp-intro.rst: link to YP members and participants
+      commit: 9d394db4f88b66500e4d5a2a518d25f08a0c9472
 
 Best regards,
 --=20
