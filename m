@@ -1,186 +1,179 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <chee.yang.lee@intel.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1BA75D5E36E
-	for <webhook@archiver.kernel.org>; Tue, 16 Dec 2025 13:59:36 +0000 (UTC)
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.23098.1765893570327984217
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3D13DD5E377
+	for <webhook@archiver.kernel.org>; Tue, 16 Dec 2025 14:34:06 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.24127.1765895637832318477
  for <docs@lists.yoctoproject.org>;
- Tue, 16 Dec 2025 05:59:31 -0800
+ Tue, 16 Dec 2025 06:33:58 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=yq8x8dIK;
- spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 6BC831A2234
-	for <docs@lists.yoctoproject.org>; Tue, 16 Dec 2025 13:59:28 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 3BFD56071C
-	for <docs@lists.yoctoproject.org>; Tue, 16 Dec 2025 13:59:28 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 06265119435F3;
-	Tue, 16 Dec 2025 14:59:23 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1765893565; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=T1/TDm8a4iJ1AFmxuHZexYUOyTc64xe1umWAmyuXrvE=;
-	b=yq8x8dIKXnaIGMsMgxMuWbcYEH/6lmnvkDou223fSSKaU7ZLH0vh+QqCD4hYf2EBrvpYzu
-	wtb56nnMsFy6prC8nDLcM4YC3aq/XbNCyH7fqRCfjIZix7/mUhpy4G2v2NllrAo+8ZQmkz
-	6r64C3YKs4ZLTCbPa/vbMKtnKMrw4voCNoVZTPvrYHcaO3GlQmEYj0TKvYEIekPRAlV11O
-	2qRzTIef1Ft6HwNdBlj3mwjon97kaUwkY/thnzqPn/xut25m2K6xrHVHLPVaCjW27sxYR/
-	EFytk8XtD1RqkOt9YBpxocVlHkohH9QcXiIgoiMkaL1NovH+QDpNkpZer3p7aQ==
-From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Tue, 16 Dec 2025 14:59:16 +0100
-Subject: [PATCH v2] ref-manual/classes.rst: document the image-container
- class
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251216-image-container-v2-1-630e5f91c0d9@bootlin.com>
-X-B4-Tracking: v=1; b=H4sIALNlQWkC/2WNQQ6CMBREr0L+2pq2hAKuvIdhAe2vfCOtaSvRE
- O5ugaXLN5l5s0DEQBjhUiwQcKZI3mWQpwL02Ls7MjKZQXJZCS5LRlOfQ+1d6slhYNZoZerWqlq
- 2kFevgJY+u/HWHRzfwwN12jRbY6SYfPjul7PYeoddCvlnnwXjzA6qapThqhHldfA+PcmdtZ+gW
- 9f1BwO3eDbCAAAA
-X-Change-ID: 20251023-image-container-fdc6d79f6729
+ dkim=pass header.i=@intel.com header.s=Intel header.b=R4Nv50nz;
+ spf=pass (domain: intel.com, ip: 192.198.163.11, mailfrom: chee.yang.lee@intel.com)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1765895637; x=1797431637;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=rPFcqZ4TUFP78r7UlNULsFDBOE+tX2o7IsOE87Aogs4=;
+  b=R4Nv50nzeLfc0u/4ti5z7KASTrhY8VOq5ID3ncMVeOTkdI8mqntdUUg+
+   3kOhPVGoWZXzYG2peBQx/y/bDvcbJWXFcjp9yNQlDmzXPO4KwcI8gIK30
+   jeOVOMTgeO3fiXBAAy2FWgKxJmJFwqMzlpbbFpcr6jfrcXPUPmJxEvhAo
+   UXNHyZNS0YSeGhf/0bNWo6F3KLnS2z1VLcqatWQiFZY2IdXBMVu2q04/L
+   oOYKifn9DKp0F3d8BWFmPnBPJjySO/bJPzkyuOcfLb/VIuzVcaAEs1kov
+   alFIKwizF2ZsAIs1ZcBRU7OjqDqjS27i5SCfdN9Pu6KUDgvPdRYOHviei
+   w==;
+X-CSE-ConnectionGUID: r8b24oJbSdimrt3AC0b2qQ==
+X-CSE-MsgGUID: z6ql5G/UQZe/suAB9bp4kA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11644"; a="78452336"
+X-IronPort-AV: E=Sophos;i="6.21,153,1763452800"; 
+   d="scan'208";a="78452336"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2025 06:33:57 -0800
+X-CSE-ConnectionGUID: 9j8/qLXkTyaqLoEXiN7VFg==
+X-CSE-MsgGUID: u9YAaqUUSmWrVhX/75zQFQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,153,1763452800"; 
+   d="scan'208";a="235429224"
+Received: from cheeyang-desk4.png.intel.com ([10.107.249.123])
+  by orviesa001.jf.intel.com with ESMTP; 16 Dec 2025 06:33:56 -0800
+From: chee.yang.lee@intel.com
 To: docs@lists.yoctoproject.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Antonin Godard <antonin.godard@bootlin.com>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5143;
- i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=bafz93LrblMKojBTA5A38bE8Y4UD7k88GF4qWUtxarw=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpQWW7IUYfTXrZudA31FDGN85g9rsda+xqrr/LB
- FoXkGmf6sOJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaUFluwAKCRDRgEFAKaOo
- Nnk7D/9y+VXoLHCk3pY9yMC1P9lXA/vjN8MwVxM4IpvvQS3omsQDpA5xn/bWWwOtYszCJh1CSgA
- OzvkV0X8uapGptRwrpfmfhJ3tY4RW7/ylqDwS/aBPDqOdjYRu+AoFhqh1zOv6ySQGM2faCWbS5j
- rKaqGyzPHELgwQOGYvQEFpDQkLWF0u1j6fvvZxptG+l4jzp5Oi5tpXvbnhJTc+SFcpZzxuTH2Pc
- 5X/RUnhrpPY5iQ1hoJ4kyGIJNh6qP879EOKf+EKj+8ht28moCJA+E+QqfKd34p0gmIpU2UMZ4vJ
- 1aETsN6ei53w4MmmL8Zh+2Nadgq/8LN4QHDFNDTBpRR208QSg0bZNCdG1O5I9xCwoXCA3LXR3MY
- MhFhGG908x9WhMARSruCQY6WDhcTjCDF2oZda6WxltSs2rhPdon/7GtICH/yUPinaZhECIUEnfg
- PkbtH3xSrNP4VJivmfHhAIn0Pbt1TeZcN6odwMzTGQ5N2KGT5n3THjcxOruOAY43vMWjEe3M42U
- rCpCqAmRaqImz6xc6xL+gjRj1o/O3086Xiu16YLCcOXzHKHV0G8LQqhLgPhyjliTBTm49C/WTDv
- aKH9vUeVuGr1a/+ZtDtI4up5wc7lgnMBoBTv5Js8+ZhuMAJAnmDWOgSGt01y5L75eBOzFiC8+9K
- +NfZY7QEuyz4ovw==
-X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
- fpr=8648725188DD401BB9A0D3FFD180414029A3A836
-X-Last-TLS-Session-Version: TLSv1.3
+Subject: [PATCH] migration-guide: update 5.3 release notes download section
+Date: Tue, 16 Dec 2025 22:33:27 +0800
+Message-ID: <20251216143327.759452-1-chee.yang.lee@intel.com>
+X-Mailer: git-send-email 2.43.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 16 Dec 2025 13:59:36 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8288
+ <docs@lists.yoctoproject.org>; Tue, 16 Dec 2025 14:34:06 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8289
 
-Add documentation for the image-container class, which is a simple class
-to generate an image suitable for creating a container.
+From: Lee Chee Yang <chee.yang.lee@intel.com>
 
-This answers in part to questions asked in [YOCTO #14368].
+also align some note with finalized release notes.
 
-It also adds documentation for IMAGE_CONTAINER_NO_DUMMY, which was added
-in OE-Core with commit f0645e172bb8 ("image-container.bbclass: Error if
-not using linux-dummy").
-
-Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
 ---
-Changes in v2:
-- Review from Quentin (thanks!)
-  - Merge patch 1 and 2.
-  - Rephrase class and variable to highlight that IMAGE_FSTYPES should
-    contain container, and that the class should not be inherited
-    directly.
-- Link to v1: https://patch.msgid.link/20251212-image-container-v1-0-fb6586d06813@bootlin.com
----
- documentation/ref-manual/classes.rst   | 48 ++++++++++++++++++++++++++++++++++
- documentation/ref-manual/variables.rst | 17 ++++++++++++
- 2 files changed, 65 insertions(+)
+ .../migration-guides/release-notes-5.3.rst    | 90 +++++++++++++++++--
+ 1 file changed, 83 insertions(+), 7 deletions(-)
 
-diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
-index a56a2f719..6781c5294 100644
---- a/documentation/ref-manual/classes.rst
-+++ b/documentation/ref-manual/classes.rst
-@@ -1258,6 +1258,54 @@ The :ref:`ref-classes-image_types` class also handles conversion and compression
-    :term:`IMAGE_FSTYPES`. This would also be similar for Virtual Box Virtual Disk
-    Image ("vdi") and QEMU Copy On Write Version 2 ("qcow2") images.
+diff --git a/documentation/migration-guides/release-notes-5.3.rst b/documentation/migration-guides/release-notes-5.3.rst
+index 536067d63..7e41bc862 100644
+--- a/documentation/migration-guides/release-notes-5.3.rst
++++ b/documentation/migration-guides/release-notes-5.3.rst
+@@ -8,6 +8,15 @@
+ Release notes for |yocto-ver| (|yocto-codename|)
+ ------------------------------------------------
  
-+.. _ref-classes-image-container:
++This release does have some significant changes which people need to be aware
++of. We have added bitbake-setup and have switched to this as the default way
++the project is presented to users (e.g. in our documentation and in our
++automated testing). Existing workflows with other tools such as kas or
++submodules, or individual repositories remain unchanged. We have stopped
++updating the poky repository and users will need to switch to the individual
++bitbake, openembedded-core, meta-yocto and yocto-docs repositories instead
++though. Please see :yocto_git:`README </poky/tree/README>` for more information.
 +
-+``image-container``
-+===================
-+
-+The :ref:`ref-classes-image-container` class is automatically inherited in
-+:doc:`image </ref-manual/images>` recipes that set the ``container`` image type
-+in :term:`IMAGE_FSTYPES`. It provides relevant settings to generate an image
-+ready for use with an :wikipedia:`OCI <Open_Container_Initiative>`-compliant
-+container management tool, such as :wikipedia:`Podman <Podman>` or
-+:wikipedia:`Docker <Docker_(software)>`.
-+
-+.. note::
-+
-+   This class neither builds nor installs container management tools on the
-+   target. Those tools are available in the :yocto_git:`meta-virtualization
-+   </meta-virtualization>` layer.
-+
-+You should set the :term:`PREFERRED_PROVIDER` for the Linux kernel to
-+``linux-dummy`` in a :term:`configuration file`::
-+
-+   PREFERRED_PROVIDER_virtual/kernel = "linux-dummy"
-+
-+Otherwise an error is triggered if this variable equals to another value. If
-+desired, the :term:`IMAGE_CONTAINER_NO_DUMMY` variable can be set to "1" to
-+skip this check.
-+
-+The ``linux-dummy`` recipes acts as a Linux kernel recipe but builds nothing. It
-+is relevant to use as the preferred Linux kernel provider in this case as a
-+container image does not need to include a Linux kernel. Selecting it as the
-+preferred provider for the kernel will also decrease build time.
-+
-+Using this class does not deploy anything specific in :term:`DEPLOY_DIR_IMAGE`,
-+except for an additional ``tar.bz2`` archive. This archive can be used
-+in a container file (a file typically named "Dockerfile" or "Containerfile").
-+For example, to be used with :wikipedia:`Podman <Podman>` or :wikipedia:`Docker
-+<Docker_(software)>`, the `container file
-+<https://docs.docker.com/reference/dockerfile/>`__ could contain the following
-+instructions:
-+
-+.. code-block:: dockerfile
-+
-+   FROM scratch
-+   ADD ./image-container-qemux86-64.rootfs.tar.bz2 /
-+   ENTRYPOINT /bin/sh
-+
-+This is suitable to build a container using our generated root filesystem image.
-+
- .. _ref-classes-image-live:
+ New Features / Enhancements in |yocto-ver|
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  
- ``image-live``
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index 71fe11b83..63fb7fa79 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -3955,6 +3955,23 @@ system and gives an overview of their function and contents.
-       variable, see the :ref:`ref-classes-image_types`
-       class file, which is ``meta/classes-recipe/image_types.bbclass``.
+@@ -511,13 +520,8 @@ New Features / Enhancements in |yocto-ver|
  
-+   :term:`IMAGE_CONTAINER_NO_DUMMY`
-+      When an image recipe has the ``container`` image type in
-+      :term:`IMAGE_FSTYPES`, it expects the :term:`PREFERRED_PROVIDER` for
-+      the Linux kernel (``virtual/kernel``) to be set to ``linux-dummy`` from a
-+      :term:`configuration file`. Otherwise, an error is triggered.
+ -  Rust changes:
+ 
+-   -  ``rust-llvm``:
+-
+-      -  Compile LLVM to use dynamic libraries. This reduces the
+-         size of ``llvm-rust`` to about a third.
+-
+-      -  Disable the following feature through configuration
+-         (:ref:`ref-tasks-configure`): libedit, benchmarks.
++   - The rust-llvm recipe has been removed, and the rust recipe now uses the
++     same llvm recipe as clang.
+ 
+    -  Add the ``has-thread-local`` option to the
+       :ref:`ref-classes-rust-target-config` class.
+@@ -2442,3 +2446,75 @@ Thanks to the following people who contributed to this release:
+ 
+ Repositories / Downloads for Yocto-|yocto-ver|
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 +
-+      The :term:`IMAGE_CONTAINER_NO_DUMMY` variable allows the
-+      :term:`PREFERRED_PROVIDER` variable to be set to another value, thus
-+      skipping the check and not triggering the build error.
++yocto-docs
 +
-+      This variable should be set from the image recipe using the ``container``
-+      image type.
++-  Repository Location: :yocto_git:`/yocto-docs`
++-  Branch: :yocto_git:`whinlatter </yocto-docs/log/?h=whinlatter>`
++-  Tag:  :yocto_git:`yocto-5.3 </yocto-docs/log/?h=yocto-5.3>`
++-  Git Revision: :yocto_git:`79cd33b06e87c04e4f873a5afd9d53714bc5047f </yocto-docs/commit/?id=79cd33b06e87c04e4f873a5afd9d53714bc5047f>`
++-  Release Artefact: yocto-docs-79cd33b06e87c04e4f873a5afd9d53714bc5047f
++-  sha: f2a353847243370d6924ea83542b055ee8098c51d4875b6a9b2cee79b98c0f29
++-  Download Locations:
 +
-+      See the documentation of the :ref:`ref-classes-image-container` class for
-+      more information on why setting the :term:`PREFERRED_PROVIDER` to
-+      ``linux-dummy`` is advised with this class.
++   https://downloads.yoctoproject.org/releases/yocto/yocto-5.3/yocto-docs-79cd33b06e87c04e4f873a5afd9d53714bc5047f.tar.bz2 
 +
-    :term:`IMAGE_DEVICE_TABLES`
-       Specifies one or more files that contain custom device tables that
-       are passed to the ``makedevs`` command as part of creating an image.
-
----
-base-commit: b7f5b8ee510eeec286f2b0daece2717245b5b177
-change-id: 20251023-image-container-fdc6d79f6729
++   https://mirrors.kernel.org/yocto/yocto/yocto-5.3/yocto-docs-79cd33b06e87c04e4f873a5afd9d53714bc5047f.tar.bz2
++
++openembedded-core
++
++-  Repository Location: :oe_git:`/openembedded-core`
++-  Branch: :oe_git:`whinlatter </openembedded-core/log/?h=whinlatter>`
++-  Tag:  :oe_git:`yocto-5.3 </openembedded-core/log/?h=yocto-5.3>`
++-  Git Revision: :oe_git:`8519978592483bb096ed5192fff7af6c887b799e </openembedded-core/commit/?id=8519978592483bb096ed5192fff7af6c887b799e>`
++-  Release Artefact: oecore-8519978592483bb096ed5192fff7af6c887b799e
++-  sha: 3b23d8a56a2f6e3872ec01272a76e3551ac1eab001f81c9abc680ce415aa888d
++-  Download Locations:
++
++   https://downloads.yoctoproject.org/releases/yocto/yocto-5.3/oecore-8519978592483bb096ed5192fff7af6c887b799e.tar.bz2
++
++   https://mirrors.kernel.org/yocto/yocto/yocto-5.3/oecore-8519978592483bb096ed5192fff7af6c887b799e.tar.bz2
++
++meta-yocto
++
++-  Repository Location: :yocto_git:`/meta-yocto`
++-  Branch: :yocto_git:`whinlatter </meta-yocto/log/?h=whinlatter>`
++-  Tag:  :yocto_git:`yocto-5.3 </meta-yocto/log/?h=yocto-5.3>`
++-  Git Revision: :yocto_git:`d02d3faaf4d6075ea03e9eb47654ec7639f929a0 </meta-yocto/commit/?id=d02d3faaf4d6075ea03e9eb47654ec7639f929a0>`
++-  Release Artefact: meta-yocto-d02d3faaf4d6075ea03e9eb47654ec7639f929a0
++-  sha: e2a69bf93466cd010fd14e4f1b2bb5f45da165b00eb1fbf7987541d7a9378d47
++-  Download Locations:
++
++   https://downloads.yoctoproject.org/releases/yocto/yocto-5.3/meta-yocto-d02d3faaf4d6075ea03e9eb47654ec7639f929a0.tar.bz2
++
++   https://mirrors.kernel.org/yocto/yocto/yocto-5.3/meta-yocto-d02d3faaf4d6075ea03e9eb47654ec7639f929a0.tar.bz2
++
++meta-mingw
++
++-  Repository Location: :yocto_git:`/meta-mingw`
++-  Branch: :yocto_git:`whinlatter </meta-mingw/log/?h=whinlatter>`
++-  Tag:  :yocto_git:`yocto-5.3 </meta-mingw/log/?h=yocto-5.3>`
++-  Git Revision: :yocto_git:`	 </meta-mingw/commit/?id=00323de97e397d4f6734ef2191806616989f5e10>`
++-  Release Artefact: meta-mingw-00323de97e397d4f6734ef2191806616989f5e10
++-  sha: c9a70539b12c0642596fde6a2766d4a6a8fec8b2a366453fb6473363127a1c77
++-  Download Locations:
++
++   https://downloads.yoctoproject.org/releases/yocto/yocto-5.3/meta-mingw-00323de97e397d4f6734ef2191806616989f5e10.tar.bz2
++
++   https://mirrors.kernel.org/yocto/yocto/yocto-5.3/meta-mingw-00323de97e397d4f6734ef2191806616989f5e10.tar.bz2
++
++bitbake
++
++-  Repository Location: :oe_git:`/bitbake`
++-  Branch: :oe_git:`2.14 </bitbake/log/?h=2.14>`
++-  Tag:  :oe_git:`yocto-5.3 </bitbake/log/?h=yocto-5.3>`
++-  Git Revision: :oe_git:`720df1a53452983c1c832f624490e255cf389204 </bitbake/commit/?id=720df1a53452983c1c832f624490e255cf389204>`
++-  Release Artefact: bitbake-720df1a53452983c1c832f624490e255cf389204
++-  sha: 08a5d8914b59e904a805fbf0e76058dfeddd49f4a022298a3c1485b98233db24
++-  Download Locations:
++
++   https://downloads.yoctoproject.org/releases/yocto/yocto-5.3/bitbake-720df1a53452983c1c832f624490e255cf389204.tar.bz2
++
++   https://mirrors.kernel.org/yocto/yocto/yocto-5.3/bitbake-720df1a53452983c1c832f624490e255cf389204.tar.bz2
++
++
+-- 
+2.43.0
 
 
