@@ -1,73 +1,188 @@
-Return-Path: <rpjday@crashcourse.ca>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6B99AD5B86E
-	for <webhook@archiver.kernel.org>; Mon, 15 Dec 2025 21:00:40 +0000 (UTC)
-Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.5283.1765832430438632913
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 36764D5CC8D
+	for <webhook@archiver.kernel.org>; Tue, 16 Dec 2025 09:10:04 +0000 (UTC)
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.18148.1765876197897402836
  for <docs@lists.yoctoproject.org>;
- Mon, 15 Dec 2025 13:00:30 -0800
+ Tue, 16 Dec 2025 01:09:58 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=K7Kn+i8T;
- spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
-	To:From:Date:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=DGjBPAPjQFsHG4AewpVn94UKW0RWh0z4NW5uVtQVcLc=; b=K7Kn+i8T36kbnXZH8tNps3PrES
-	TXCeTHyB16/fhB02MIUSL70kbUOrZvGyJgQPcdkDAe94J4IFO0oOMjvdIo7xbXZuC/Y/oQd/KUnm9
-	T4OG5HdmrLjJMdP0RtMWnocEiQebYrhxiZv2F+g5u2bWUAuuYb+MnNqvnUPt1m4ivtqwYJ9gbDkl9
-	O1hST5MuoGuY2QMo0oxtsfwXhkIy88kmJPGH935IbIJMeK/iT9d5DXRKk9pPyFaLxjTYJoWhbgB9T
-	F3AgZ0xs63Wr1A4J9r8MlllwsrVnZqG52N4WQWFFqDjljwG0LbPHbr915bs6hjgnmmcanQ7JxUST5
-	la8CoazA==;
-Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:34778 helo=rday)
-	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1vVFgC-00000004frl-3bPr
-	for docs@lists.yoctoproject.org;
-	Mon, 15 Dec 2025 16:00:29 -0500
-Date: Mon, 15 Dec 2025 16:02:21 -0500 (EST)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: is it time for a separate YP doc focusing on security/vulnerabilities/CVEs,
- etc?
-Message-ID: <2d09b577-b67c-74cf-658e-8b82f29ad17d@crashcourse.ca>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=10iOOf2+;
+ spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 96A144E41C28;
+	Tue, 16 Dec 2025 09:09:55 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 5A59B6072F;
+	Tue, 16 Dec 2025 09:09:55 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3EB6311942628;
+	Tue, 16 Dec 2025 10:09:52 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1765876194; h=from:subject:date:message-id:to:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=31cGePORtc7JuaRzS4uuIjl/f/ZyTQatjz9tsiZaX4U=;
+	b=10iOOf2+RIQjDphTBKhsp+2zPc3Lra/sbxvA7XUT927K0G1UZidwD4IIs6meSU5gPS797U
+	wiVYuRjaAWBXoUHy5cEy23so+B7N+Z9BjKJGHP184F07DtdP3gpwb/uIuuNrL9n0JEbZWz
+	91By0gN3Vg2NZLdOLFGvkeMG0CKfiIYDlR+IUWgQm1jenMoPylBgoy6KqEQnxr5DNR//HC
+	Lj7XvG9uH89ySEhV0hhu+zgsUW7iENtoxhjTiZFIHf6hD6uKu9MqXJi8Pn7ddSI/qgnZFh
+	BhdvtFjyfxF2GAz9n8rVCn8GgzVPMYjzblULSfK/PQTuBzZR09Yx9IQv0ERfIg==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 16 Dec 2025 10:09:52 +0100
+Message-Id: <DEZIV7OT5YSJ.2GQ6UQM0O1Y4O@bootlin.com>
+To: <quentin.schulz@cherry.de>, "Quentin Schulz" <foss+yocto@0leil.net>,
+ <docs@lists.yoctoproject.org>
+Subject: Re: [docs] [PATCH v2] convert SVGs to PDF and PNG using
+ sphinxcontrib.rsvgconverter plugin
+From: "Antonin Godard" <antonin.godard@bootlin.com>
+References: <20251202-fix-make-multi-target-v2-1-7eea1d64cf6b@cherry.de>
+ <b3fedc48-fb69-451d-ab52-f170be87d013@cherry.de>
+In-Reply-To: <b3fedc48-fb69-451d-ab52-f170be87d013@cherry.de>
+X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 15 Dec 2025 21:00:40 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8276
+ <docs@lists.yoctoproject.org>; Tue, 16 Dec 2025 09:10:04 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8277
 
+Hi,
 
-  i know i've mentioned this before but, to start with, the dev manual
-section "Making Images More Secure":
+On Mon Dec 15, 2025 at 11:58 AM CET, Quentin Schulz via lists.yoctoproject.=
+org wrote:
+> Hi Antonin,
+>
+> On 12/2/25 6:06 PM, Quentin Schulz wrote:
+>> From: Quentin Schulz <quentin.schulz@cherry.de>
+>>=20
+>> The sphinxcontrib.rsvgconverter plugin allows to generate a PDF or PNG
+>> from an SVG.
+>> This is what we already do manually via Make targets but it isn't good
+>> enough.
+>>=20
+>> Sphinx generates a cache upon first parsing and stores it in a doctrees
+>> directory. Sphinx claims that it can be shared between all builders[1].
+>> For glob patterns in image or figure directives, Sphinx will look for
+>> all possible matches in the source tree and store those in a
+>> "candidates" map for each file, along with the associated mimetype. When
+>> building, Sphinx will then look in this map to try to find a match in
+>> the current builder's supported_image_types. If none is found, the build
+>> will fail.
+>>=20
+>> The latexpdf (using the LaTeXBuilder) target does not support SVGs by
+>> default[2]. We used Make to generate PDFs from them before generating
+>> the doc PDF though (see PDFs variable and %.pdf in Makefile) and that
+>> type is supported by default[2].
+>>=20
+>> The epub (via the Epub3Builder) target does support SVGs by default[3]
+>> but we disabled their support in commit ff3876ca4910 ("conf.py: use PNG
+>> first in EPUB output"). We used Make to generate PNGs from them before
+>> generating the doc epub though (see PNGs variable and %.png in Makefile)
+>> and that type is supported (c.f. Epub3Builder.supported_image_types in
+>> our conf.py).
+>>=20
+>> The issue is that this is done transparently from Sphinx. When we
+>> generate the PDFs or PNGs variants of the SVGs, we put them in-tree
+>> directly along their source file. Then, when caching, Sphinx will find
+>> both the source file and the appropriate variant. However, the cache
+>> isn't updated if there are new files in the tree and the source rST
+>> files aren't modified. So, the cache will not have its map updated and
+>> we won't be able to find the new variant when building for a
+>> non-SVG-compatible builder. Take the following scenario:
+>>=20
+>> - start from a clean source file (fresh clone or git clean -ffdx)
+>> - build the html target (which supports SVGs by default[4])
+>> - sphinx will find all the files in the source tree matching the glob
+>>    pattern in ".. image:: test.*", in our case only an SVG since the PDF=
+s
+>>    and PNGs are only generated for the latexpdf and epub targets
+>>    respectively. The cache will only store the path to the SVG file
+>>    because it is the only source file that matches the glob,
+>> - attempt to build the epub target (which doesn't support SVGs, only
+>>    PNGs)
+>> - Sphinx checks for the file to include for '.. image:: test.*' and
+>>    finds an SVG in the cache map and then check the list of supported
+>>    image types for the Epub3Builder and find that it doesn't support
+>>    that. It cannot find anything satisfying the dependency and thus fail=
+s
+>>    to build.
+>>=20
+>> This scenario can easily be reproduced by running the `make all` command
+>> since the html builder will be used first, then epub and finally
+>> latexpdf.
+>>=20
+>> The `make publish` target works by chance, because the epub builder is
+>> built first and will cache SVG + PNG for each glob, then the latexpdf
+>> builder is built and supports PNGs so that's fine and then html, which
+>> supports SVG as well.
+>>=20
+>> To fix this issue, we could simply always generate PDFs and PNGs of all
+>> SVGs in the source tree, but this isn't ideal.
+>>=20
+>> Instead, let's use an ImageConverter from a Sphinx plugin. This allows
+>> to map a plugin as being able to generate a file of type Y from a file
+>> of type X. When Sphinx wants to build an image, it'll try to find the
+>> image with the type the current builder supports in the cache. If it
+>> cannot, it's going to try to find an ImageConverter plugin that is able
+>> to convert one of the image types in cache with one of the image types
+>> the current builder supports. Then Sphinx will call this plugin to
+>> generate the file and put it into the build directory (not in the
+>> source!).
+>>=20
+>> This allows to simplify the Makefile as well and is a much cleaner
+>> approach.
+>>=20
+>> The epub target is removed as the catch-all target contains the same
+>> instructions as the epub target we remove in this commit.
+>>=20
+>> sphinxcontrib.rsvgconverter is a plugin from
+>> sphinxcontrib-svg2pdfconverter python module. SVGs to PNGs is only
+>> supported since 2.0.0.
+>>=20
+>> [1] https://www.sphinx-doc.org/en/master/man/sphinx-build.html#cmdoption=
+-sphinx-build-d
+>> [2] https://www.sphinx-doc.org/en/master/usage/builders/index.html#sphin=
+x.builders.latex.LaTeXBuilder.supported_image_types
+>> [3] https://www.sphinx-doc.org/en/master/usage/builders/index.html#sphin=
+x.builders.epub3.Epub3Builder.supported_image_types
+>> [4] https://www.sphinx-doc.org/en/master/usage/builders/index.html#sphin=
+x.builders.html.StandaloneHTMLBuilder
+>>=20
+>> Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
+>> ---
+>> This depends on
+>> https://lore.kernel.org/openembedded-core/20251202-svg2pdf-v1-0-bf4bd322=
+e528@cherry.de/
+>> in OE-Core for still being able to build the docs with the
+>> buildtools-docs-tarball SDK.
+>
+> This has merged as far as I could tell, c.f.=20
+> https://git.openembedded.org/openembedded-core/commit/meta/recipes-core/m=
+eta/buildtools-docs-tarball.bb?id=3D056686eaf1a3a27f5e83537e5a1b7c837bc16fb=
+9=20
+> so this can now be freely reviewed and/or merged, thanks!
 
-  https://docs.yoctoproject.org/dev-manual/securing-images.html
+Sadly, I can't merge this until [1] is updated. I was waiting for 5.3 to re=
+lease
+to update this URL. The closest milestone that will include your new recipe=
+ is
+6.0M1. This will be available in https://downloads.yoctoproject.org/release=
+s/yocto/milestones/.
 
-opens with three links all of which are more than a decade old. and
-further down in that same manual, there are two sections related to
-vulnerabilities. given the importance of security in the embedded
-space, might it be time for a whole document devoted to the subject?
+So we'll have to delay this until this milestone, unless we manually hijack=
+ a
+custom built tarball before.
 
-  there were a number of talks related to this in the recent YP
-virtual summit, that seems like a decent place to start. surely there
-is easily enough content to justify a separate manual for this, no?
+[1]: https://git.yoctoproject.org/yocto-autobuilder-helper/tree/scripts/run=
+-docs-build?id=3D0c0c7b41dea1b4f2da06bdf4cf4f7771ca33bcf7#n29
 
-rday
+Antonin
+
+--=20
+Antonin Godard, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
 
