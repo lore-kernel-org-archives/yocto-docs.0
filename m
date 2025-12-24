@@ -2,139 +2,103 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4CB7FE7542C
-	for <webhook@archiver.kernel.org>; Wed, 24 Dec 2025 09:04:40 +0000 (UTC)
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.117209.1766567074739034819
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C7134E776C0
+	for <webhook@archiver.kernel.org>; Wed, 24 Dec 2025 16:24:52 +0000 (UTC)
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.123571.1766593486082073174
  for <docs@lists.yoctoproject.org>;
- Wed, 24 Dec 2025 01:04:35 -0800
+ Wed, 24 Dec 2025 08:24:46 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=LH0Tt0pe;
- spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=Fk7gfncD;
+ spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 89514C1A59E
-	for <docs@lists.yoctoproject.org>; Wed, 24 Dec 2025 09:04:07 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 90A521A23E5
+	for <docs@lists.yoctoproject.org>; Wed, 24 Dec 2025 16:24:44 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id ABF876073D;
-	Wed, 24 Dec 2025 09:04:32 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 06D3210AB1012;
-	Wed, 24 Dec 2025 10:04:31 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 68C676073D
+	for <docs@lists.yoctoproject.org>; Wed, 24 Dec 2025 16:24:44 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id AF77410AB1361;
+	Wed, 24 Dec 2025 17:24:43 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1766567072; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=Qi2efeZ0eAbsi6yIINBEXZ9FC9dGBMRHxfWegWiNIFM=;
-	b=LH0Tt0peyx52ojvJAul52yM9i8x+ZoGWBXGd8VOk0OFTPRUC5PuG6b3EGwe8xTX49KpRGT
-	p50aAaWnFETufj6KU4DBD/GRECO5nI5cwCSPkA7ASM1NllPaU/r4fMDrHY6U1cwLowSfgZ
-	asmLCnsnbAopwCQOW+ABcoASfpO0FxYCkzUIBE13TMJi4CydfH0mcL9kaMgjlAJU2bk+dI
-	bxFmEvwl/S674SSGkTJR083fNkb1Q1KLRFHzZXYEi4Wh0e4SzWIKUQyNGSP/ED7//pnMjH
-	MOrEl+IrMQ6yNa7KqLoOmnscYlgSntNZk8XuhK6fbB2JjMz8pf0KTqjatmPC4w==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 24 Dec 2025 10:04:31 +0100
-Message-Id: <DF6BRH5HNZDT.110EA2RAJNP80@bootlin.com>
-Subject: [master] Pull request
-Cc: <docs@lists.yoctoproject.org>
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: "Richard Purdie" <richard.purdie@linuxfoundation.org>
+	t=1766593484; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=mycUxQGR4nIueQ8liozywLuvHmCSjFFAXHZQZ3aELDo=;
+	b=Fk7gfncDR9OlV1Wxu47K3GIV+1f2XhJ3D936S7NBYhYPSd69olAcRx46h1arVvDU7wn56S
+	0A1YM2NkFIKUPtNkx8gleJvZcBMdfxzwtLCf5LJLq7888cuyrgtrgau26miZp+0yOSwScd
+	E4MMNVg6ypGt/pDGhvCaeT4xpMDsnM9zpu4YelAMli4TJKu8Uk9yeLfTi+FK/g25vbFL1F
+	dwxQYFMObOfizRK5nxZQlf67Ln5u2yzQEHlDycXCPQ0TPEVYLw1h3J3SdfPh7ozF9UsGQs
+	2lWmZoQ03zLwdHDmK2eMIDtH9E6tWRo+/nv8STY62XYp8LvtBgv4WDK3pyDYRQ==
+From: Antonin Godard <antonin.godard@bootlin.com>
+Date: Wed, 24 Dec 2025 17:24:19 +0100
+Subject: [PATCH 4/5] dev-manual/poky-manual-setup.rst: mention the Source
+ Directory
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251224-terms-refresh-v1-4-691329fd038f@bootlin.com>
+References: <20251224-terms-refresh-v1-0-691329fd038f@bootlin.com>
+In-Reply-To: <20251224-terms-refresh-v1-0-691329fd038f@bootlin.com>
+To: docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Antonin Godard <antonin.godard@bootlin.com>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1404;
+ i=antonin.godard@bootlin.com; h=from:subject:message-id;
+ bh=/NHLOlHpjd2FVObLdUgfTk2G4D/nw19z+cO6zo7jM6g=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpTBPIOy2ZmwYgLLOceD7luUt0IXduOe1ks0j28
+ p/b1ewuTGiJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaUwTyAAKCRDRgEFAKaOo
+ Nk5DD/wKXkoBUOowh+5pjgEFovBSHyXcO1TJeSVh4PT29I+26LZ5Yx1mGDDB+G1y3ESU3FpFT52
+ OXr/cC1BIgvmB+LWxEMC45GhXBaHOx365h4kSY8Mc0dCVCwCr4XWDH3o7W/0qGSxPXkTwQ58ILR
+ sPEYAappOR2jg0h84nkw7VZZ+GMnk9VcEtejHBf2YWgWEMSl5ff0iYWg2FlEn7jjcM3Tc2Mt5og
+ YFvGv/2PBFGueead/RCguwLbXwoEnnGUHD445VW8AWIjX6blOfUF5VXnJZXyU9h0wVCQhAzOSds
+ +QDdQBDnr2bLQkEKugfldpe4LmCMl6THJxP/kTrM5Lyn9qJruZj1h5jM6wgjs8qyd/cEPvxwAAD
+ EgbzDrNmaDk3Z4qoOrCycZ682RszAiC4E831jYFI1Lqx39fWHUjhAr+1X3tpiQc8TFDuet6iYi+
+ 7TgU/RJM6nrCJGPcyqohAzN2J5Di2d0WufO+zrKwGVJmujDYJ2K/jKOqR2/xzdmehrf+WfajbBL
+ erSg2nGNNoH80CnGoyUyIG9OMfeNXWyi0Fixs3Q9CDP8mMmfHRKjFt1dJQUIq9JxK7J3RDC+LGW
+ tljCi0rbUoX8j7KvgXJscRcPaCgs05S4hPLRSMl04AirU1j4wfABpnBP52fU03t1CnG893DwwSD
+ rfS435/zWB5ebzA==
+X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
+ fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 24 Dec 2025 09:04:40 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8322
+ <docs@lists.yoctoproject.org>; Wed, 24 Dec 2025 16:24:52 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8327
 
-The following changes since commit d84d916d4fc505e8386693306b6a90b0064c0518=
-:
+After switching to the new definition of "Source Directory", i.e. the
+base directory for your project (which used to be poky), mention it in
+this document on manually setting up the layers for a project. As stated
+in terms.rst, use "project" for the directory name.
 
-  brief-yoctoprojectqs/index.rst: fix improper code-block indentation (2025=
--12-16 15:04:45 +0000)
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+---
+ documentation/dev-manual/poky-manual-setup.rst | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-are available in the Git repository at:
+diff --git a/documentation/dev-manual/poky-manual-setup.rst b/documentation/dev-manual/poky-manual-setup.rst
+index bcda9d7e7..7ee084007 100644
+--- a/documentation/dev-manual/poky-manual-setup.rst
++++ b/documentation/dev-manual/poky-manual-setup.rst
+@@ -22,7 +22,15 @@ release or a Long Term Support release.
+ 
+ Once you complete the setup instructions for your machine (see the
+ :doc:`/ref-manual/system-requirements` section of the Yocto Project Reference
+-Manual), you need to get a copy of the different :term:`layers <Layer>` needed
++Manual), create a :term:`Source Directory`: the base directory for your project.
++We will name it ``project`` in the following sections:
++
++.. code-block:: console
++
++   $ mkdir project
++   $ cd project
++
++You need to get a copy of the different :term:`layers <Layer>` needed
+ to setup the :term:`Poky` reference distribution on your build host. Use the
+ following commands:
+ 
 
-  git@push.yoctoproject.org:yocto-docs master-next
+-- 
+2.51.0
 
-for you to fetch changes up to f9042e1da554017fe46460c1fd2bdf8c74b3fa18:
-
-  ref-manual: drop documentation for oelint class (2025-12-19 10:43:34 +010=
-0)
-
-----------------------------------------------------------------
-Antonin Godard (9):
-      ref-manual/classes.rst: document the image-container class
-      tools/build-docs-container: move container files in their own directo=
-ry
-      Makefile: fix rsvg-convert --format capitalization
-      tools/build-docs-container: add CentOS Stream 9 support
-      ref-manual/system-requirements.rst: fix AlmaLinux PDF build
-      ref-manual/system-requirements.rst: add RockyLinux install instructio=
-ns
-      migration-guides: add Wrynose release note templates
-      Add the sphinx-copybutton extension
-      ref-manual: drop documentation for oelint class
-
-Lee Chee Yang (1):
-      migration-guide: update 5.3 release notes download section
-
- documentation/Makefile                             |   4 +-
- documentation/Pipfile                              |   1 +
- documentation/conf.py                              |   4 +
- documentation/migration-guides/index.rst           |   1 +
- documentation/migration-guides/migration-6.0.rst   |  70 +++++++++++
- documentation/migration-guides/release-6.0.rst     |  10 ++
- .../migration-guides/release-notes-5.3.rst         |  84 +++++++++++--
- .../migration-guides/release-notes-6.0.rst         | 131 +++++++++++++++++=
-++++
- documentation/ref-manual/classes.rst               |  61 +++++++---
- documentation/ref-manual/system-requirements.rst   | 105 +++++++++++++++--
- documentation/ref-manual/variables.rst             |  18 +++
- documentation/tools/build-docs-container           |  55 ++++++---
- .../{ =3D> containerfiles}/Containerfile.almalinux   |   0
- .../tools/{ =3D> containerfiles}/Containerfile.apt   |   0
- .../{ =3D> containerfiles}/Containerfile.debian      |   0
- .../tools/{ =3D> containerfiles}/Containerfile.dnf   |   3 +
- .../{ =3D> containerfiles}/Containerfile.fedora      |   0
- .../tools/containerfiles/Containerfile.rocky       |   1 +
- .../tools/containerfiles/Containerfile.stream      |   1 +
- .../{ =3D> containerfiles}/Containerfile.ubuntu      |   0
- .../{ =3D> containerfiles}/Containerfile.zypper      |   0
- .../tools/host_packages_scripts/almalinux_docs.sh  |   2 +-
- .../host_packages_scripts/almalinux_docs_pdf.sh    |   1 -
- .../host_packages_scripts/almalinux_essential.sh   |   6 +-
- .../host_packages_scripts/centosstream_docs.sh     |   1 +
- .../centosstream_essential.sh                      |   1 +
- .../tools/host_packages_scripts/pip3_docs.sh       |   2 +-
- .../tools/host_packages_scripts/rockylinux_docs.sh |   1 +
- .../host_packages_scripts/rockylinux_essential.sh  |   1 +
- .../tools/host_packages_scripts/tlmgr_docs_pdf.sh  |   8 ++
- .../tools/host_packages_scripts/ubuntu_docs.sh     |   2 +-
- 31 files changed, 521 insertions(+), 53 deletions(-)
- create mode 100644 documentation/migration-guides/migration-6.0.rst
- create mode 100644 documentation/migration-guides/release-6.0.rst
- create mode 100644 documentation/migration-guides/release-notes-6.0.rst
- rename documentation/tools/{ =3D> containerfiles}/Containerfile.almalinux =
-(100%)
- rename documentation/tools/{ =3D> containerfiles}/Containerfile.apt (100%)
- rename documentation/tools/{ =3D> containerfiles}/Containerfile.debian (10=
-0%)
- rename documentation/tools/{ =3D> containerfiles}/Containerfile.dnf (91%)
- rename documentation/tools/{ =3D> containerfiles}/Containerfile.fedora (10=
-0%)
- create mode 120000 documentation/tools/containerfiles/Containerfile.rocky
- create mode 120000 documentation/tools/containerfiles/Containerfile.stream
- rename documentation/tools/{ =3D> containerfiles}/Containerfile.ubuntu (10=
-0%)
- rename documentation/tools/{ =3D> containerfiles}/Containerfile.zypper (10=
-0%)
- delete mode 100644 documentation/tools/host_packages_scripts/almalinux_doc=
-s_pdf.sh
- create mode 120000 documentation/tools/host_packages_scripts/centosstream_=
-docs.sh
- create mode 120000 documentation/tools/host_packages_scripts/centosstream_=
-essential.sh
- create mode 120000 documentation/tools/host_packages_scripts/rockylinux_do=
-cs.sh
- create mode 120000 documentation/tools/host_packages_scripts/rockylinux_es=
-sential.sh
- create mode 100644 documentation/tools/host_packages_scripts/tlmgr_docs_pd=
-f.sh
 
