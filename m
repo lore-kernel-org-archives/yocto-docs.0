@@ -2,61 +2,61 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D325CE776C5
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D9B0EE776C9
 	for <webhook@archiver.kernel.org>; Wed, 24 Dec 2025 16:24:52 +0000 (UTC)
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.123074.1766593487320622673
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.123070.1766593484926011857
  for <docs@lists.yoctoproject.org>;
- Wed, 24 Dec 2025 08:24:47 -0800
+ Wed, 24 Dec 2025 08:24:45 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=0/nWls4B;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=RU2UYowb;
  spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 24C9D1A23E6
-	for <docs@lists.yoctoproject.org>; Wed, 24 Dec 2025 16:24:45 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 6FF311A23E2
+	for <docs@lists.yoctoproject.org>; Wed, 24 Dec 2025 16:24:43 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id F17086073D
-	for <docs@lists.yoctoproject.org>; Wed, 24 Dec 2025 16:24:44 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 62ED310AB1362;
-	Wed, 24 Dec 2025 17:24:44 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 478FE6073D
+	for <docs@lists.yoctoproject.org>; Wed, 24 Dec 2025 16:24:43 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A4C3E10AB1359;
+	Wed, 24 Dec 2025 17:24:42 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1766593484; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1766593482; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=Y2Ed8/m/uZMw1hx7aH/9YMBJmA2IYx4EQXAj3D15/wI=;
-	b=0/nWls4BXD1H9Qb+gN+1GCFC+6awdEmsQYrzpM/ma8fXx6KaFpKiW8LZ9pVfm7p3qJNSk0
-	afGtMh3+Q7IOT0eXWYFue1VQ9RcEu6MIBP8JHG/qTtEVE3GEFzOVh7jWWH1yBmi3X2Qr6I
-	Z+OnGIyyP6snid86Gagj5gPXEG7VHTxC6HhSLEIZPGvLiBH1Y/soetLdQoI/vMCaippRJG
-	IaIkf1ImcJWk5dqvwX0NlcBmA4Rxqw4fLCAsnhfxgjAlsvCOufBcfglP0+IZuyd3EV6jvN
-	tMmQbEW6U4fymecdQGU7T+GdOcvCZ58f08pINuCorgRY9RBR0xczCYsx/scLDQ==
+	bh=bnBr8cqLEtWYHwaz0/sAObM/c9I1Lo7xPcTs3C0Thfk=;
+	b=RU2UYowbCYvn/5E84V7Lo9va6kQm9CW7tMvMtCOxO0/kHxKWVCwRgWQSaNAd4SIJUsj1tm
+	93f+EmYVKFcAvs8FyEUY9pTCKlBSxss6fXo3caSe1KztuHDZsgXQWDOUx/GAYBdN1+up2K
+	9ajJo3oJ7tW1nVrIsehPaetVJCriZSZ2oHKXyOwOZWq5SPyPzMcArOc1gdlU1O9+3ythOb
+	M6+aGTEttM2kBZFi63Hx2GqFg3gsMyi7RKZTG3qWDjVNbrYuEhu0oMVQ3AB9BUTjbSJce4
+	Cn+qRBvCzKHbPqzF4vgaxCDQDRYUsvvgHdgTf7zCZzOkaMy/63TgnFq83Yml+g==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Wed, 24 Dec 2025 17:24:20 +0100
-Subject: [PATCH 5/5] ref-manual/terms.rst: refresh the OpenEmbedded build
- system definition
+Date: Wed, 24 Dec 2025 17:24:17 +0100
+Subject: [PATCH 2/5] ref-manual/terms.rst: refresh the OpenEmbedded-Core
+ definition
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251224-terms-refresh-v1-5-691329fd038f@bootlin.com>
+Message-Id: <20251224-terms-refresh-v1-2-691329fd038f@bootlin.com>
 References: <20251224-terms-refresh-v1-0-691329fd038f@bootlin.com>
 In-Reply-To: <20251224-terms-refresh-v1-0-691329fd038f@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1018;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1000;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=etSqCmaPWhbWIIrU1ukekyJcBuMkQlVdxTfl0wz8WQo=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpTBPIYH6vmOp+iov9ai5W4SkyFe6BjJNSxhUX0
- H3Tp+kq9JOJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaUwTyAAKCRDRgEFAKaOo
- NgMOEACn78cxRs1xKC9NeJr6hxFUrcO/mtACoGLcnaNvwlzU/v1OwhdLjX8JbpNBvDLpzg6naKi
- ULhGp8ecqfgqGmDv6kQGjK0elcDAvWd5ld9PN8SkGJk+DVUfcvQbODGVJimrsgFhWeDs8T6jelT
- Lwgh4VHlPfN7wrmf4yLJbcFB1dkld8rLvNZkLVQ/9XMzU/H7Up0wfzfECebq7aJrOJqBa3r/1X7
- Zqk4OVfyGkIavPihiQCeZat/B+8mliYyOAIYM3gBgBXRpGA+gP1uUz7fP2Z+5UN4RPAlBq/8DSR
- lY216dDosHDVQJqjh83JMDSpRNn59Cgh3/6AnzCzvbuMfSVCC2pxoB6aIkEmgAc6djds/39eaqL
- cxLCml83jS7PsmHNqdzJuRLPk67TnlaXg1P3XlM6VefjhuzTMMz8klhWw31ODIx3od+kf61Q1ej
- YKuGlBiwRceNzEhyaU1LjyfdLLSnc6QZYaOYr/nNe7jXIxFqqc/urcuecebUej1ezG6xqpVCnqC
- 2L8hikuAUBR+uwd8hJ/57IJ+XdzyjYuXvGjovoM5J90hWAeX8PLbOedbM8OBRCce0LPWKo2+qEz
- 2SwMq8JvX93qZUEVPmeKzLzcgvdl+XDBIxZAbytJizPFiBA/dvsW7QtNAgIs3wshcSjdoyT5vaU
- CC+iuGWKaAqu5QQ==
+ bh=Mnx2v71iRlXjY29ZI2Y38rMM2M/0gPBopopm431VBvs=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpTBPHcDG496DRHEsrN2LxwxReQW6PuXAbaZSh/
+ EUDWObg4AuJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaUwTxwAKCRDRgEFAKaOo
+ Nq13EADDjIckeCkenmyTcMV2ciXDr2v8Gwv1LndffVCbebyrnmG5INqkZkXLSn8YsohFJTIFnUz
+ KqY3j0+n6Wb0fhkZtqYNk69KcAeIkp/NgxBNxSo+/oShitQ8Blmc4n7J84S+WEXUvTB5zx0P7pG
+ 9hFCqGn9PiEDTBbXvOrS0xNdrTOn47ZViI0FCIzwS8tKVwqJGkVW9wMwCS4Qj59A5mNbXQACWtC
+ 00i3Ppex2SHESKfiv5i3+6aTPoWPvoU1EkC0R05hXl6fkPF1lLwLyO/dFwx15Y/kN/YWGE4NIRB
+ hpQqm6SA5US7rdCS/e4lpozF+NUvOtJ++lQPzpXNdAlUokfDxFjQhoCrsPqhMY9C5sWHPx2J6YF
+ QmqjJ8ERvhAK3Pcn3CuLWBm0w0ersPzd/bhxsGL1JBUj5L7D21SUv71KGwDv3Ct1QLdIs7WUdeK
+ Y6Uz+uUL7X5+K6b/6btr2Lxwl/eClxNe/9nRvLEF0B4ZWNY63W0Cdn/Vw6Bdqe/PHVJU+3Yj+a9
+ tLxUtx41rsoSk5yi0K8A8ZFBKm/xPKQqqI3XaWM9qCJZbe+JSXudvTb5rRHk16auqh8uY+YG8w7
+ ts9OqqYXzDQh/S2kjE1PDv7RqJlaWoci+nj7YW3A10FE01qT4aJPJmghYS/4BccRzhb2XHaOpmH
+ muwhLjpxZxdkDjA==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
@@ -64,28 +64,31 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Wed, 24 Dec 2025 16:24:52 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8328
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8325
 
-Remove the mention of Poky containing BitBake, just mention BitBake.
+After the Poky repository obsolescence, refresh the OpenEmbedded-Core
+definition.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/ref-manual/terms.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ documentation/ref-manual/terms.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/documentation/ref-manual/terms.rst b/documentation/ref-manual/terms.rst
-index 21e30de96..ea674eff6 100644
+index 4b9b6ed88..b7a7679ae 100644
 --- a/documentation/ref-manual/terms.rst
 +++ b/documentation/ref-manual/terms.rst
-@@ -403,7 +403,7 @@ universal, the list includes them just in case:
-    :term:`OpenEmbedded Build System`
-       The build system specific to the Yocto
-       Project. The OpenEmbedded build system is based on another project
--      known as "Poky", which uses :term:`BitBake` as the task
-+      known as :term:`BitBake` which is the task
-       executor. Throughout the Yocto Project documentation set, the
-       OpenEmbedded build system is sometimes referred to simply as "the
-       build system". If other build systems, such as a host or target build
+@@ -424,8 +424,8 @@ universal, the list includes them just in case:
+       recipes. The result is a tightly controlled and an quality-assured
+       core set of recipes.
+ 
+-      You can see the Metadata in the ``meta`` directory of the Yocto
+-      Project :yocto_git:`Source Repositories </poky>`.
++      You can browse the source of :term:`OpenEmbedded-Core (OE-Core)` at
++      :oe_git:`openembedded-core </openembedded-core>`.
+ 
+    :term:`Package`
+       In the context of the Yocto Project, this term refers to a
 
 -- 
 2.51.0
