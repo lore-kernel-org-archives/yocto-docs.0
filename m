@@ -2,61 +2,61 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 73E32E78486
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7F2CDE78488
 	for <webhook@archiver.kernel.org>; Wed, 24 Dec 2025 16:32:24 +0000 (UTC)
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.123210.1766593936555394552
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.123745.1766593943925703645
  for <docs@lists.yoctoproject.org>;
- Wed, 24 Dec 2025 08:32:16 -0800
+ Wed, 24 Dec 2025 08:32:24 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=TB27LqAW;
- spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=xe5JFyGc;
+ spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 183E51A23E2
-	for <docs@lists.yoctoproject.org>; Wed, 24 Dec 2025 16:32:15 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 674304E41D90
+	for <docs@lists.yoctoproject.org>; Wed, 24 Dec 2025 16:32:22 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id E4B416073D
-	for <docs@lists.yoctoproject.org>; Wed, 24 Dec 2025 16:32:14 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3A0C910AB1372;
-	Wed, 24 Dec 2025 17:32:14 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 3DBA26073D
+	for <docs@lists.yoctoproject.org>; Wed, 24 Dec 2025 16:32:22 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9946B10AB1384;
+	Wed, 24 Dec 2025 17:32:21 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1766593934; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1766593941; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=wm5yK5G9iaR47BYXuZoiirQ5zbqRNKBaMmEtu4wLyuo=;
-	b=TB27LqAWimNu+hmZxhwHGAQq/EVrC27qbnrOZUlugcbTD15hmKHX7VC+aM/fHyAUS1I6mz
-	24Q822VGepTiOkz7Wk8fGdWE+ZSlu3Jvo3GTRhFoOtMuarNOfmwuFzKuIH32FzCIJTTj++
-	I2OClwNbNwBN9GKuDdpmeX6gxAMm2yz+yd5j4Iq1W8JQlcaBw/z5AqwIjc7TD7Mwe7X232
-	t8znJNFTmys2ImqDOQdX3y4a/TTBQXgTi8LOkRQJeWsEzh6DAOT3F91UgRxzaiHjJq32v/
-	t6xNQePQqVH2Hg3DTcoDJM/IIFVRqCAa502Kdn/yw4J3BWCEzTIKiGnP0CRYNA==
+	bh=gyNqx1JRkMKL0mkrm3lb2dFCBrEO8orMqmdPDd0ZUCg=;
+	b=xe5JFyGclvRaGZH40+tj57Dd5x9ZS2UhY4Wb7K6u5+WMAJ3M/rYGXbmojeX6m0QYgBH/q7
+	HwnGZTMJgzSQk+09oO62S5eoqR0mNlEBPic8sYTaCrhVmei5rR3DHk6Vx7Cx9go8Rx1WZn
+	2Tpo8WT7gI/qd7del/cJm8dscd/jFOlZye6GPuVDyzO7QbvLrUrurdmrMj9cLxwbKmjYMh
+	EP8+cklBAuTyJynhp6DmLcPoVNJWEPwnk/Vk+6EOaplOkgh39a6Chk80+0Teml02hBw4vo
+	zD23RLabsSkQN1EbaAgFiH3nU9PAVuwy6bt/XZ7hBsSIa7oP0frxY0pH/IMW0A==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Wed, 24 Dec 2025 17:32:04 +0100
-Subject: [PATCH 38/53] dev-manual/init-manager.rst: remove obsolete poky
- repo references
+Date: Wed, 24 Dec 2025 17:32:15 +0100
+Subject: [PATCH 49/53] ref-manual/system-requirements.rst: remove obsolete
+ poky repo references
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251224-remove-poky-references-v1-38-658a5f4dbde2@bootlin.com>
+Message-Id: <20251224-remove-poky-references-v1-49-658a5f4dbde2@bootlin.com>
 References: <20251224-remove-poky-references-v1-0-658a5f4dbde2@bootlin.com>
 In-Reply-To: <20251224-remove-poky-references-v1-0-658a5f4dbde2@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1312;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2257;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=kbovHoN1yoqGn9WkEW4GZKvw0fJ0boTr1zQv/a41PNM=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpTBVtk7MSoH29hgSwGeyiQIkzmxPbEdKZ26sJO
- +Lbv8fphTiJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaUwVbQAKCRDRgEFAKaOo
- NljeD/0QYHaccrXBnM0GudMdRVenauiQ1djXKnIXJyrJn+L69BZ7YVJDHv4/eYfxpxssBRGetHi
- VJFLRisuxvQYqClyUVKO5lUwvQo/ucw0snxFu2Q6yTJXZrugfvbdMxdrnnoXZrIYZ9Gq8O4EcKW
- pGMfOBV6/fq6+JHpPd9+b4p9+XfgWCMEUwpXxXcpngvHoU/hz4Tl9rbmuetW5ufwj3czrDKERP+
- 4SURSBSWQIKkLzaS3RCdNlJoZNdzuucdg6luErFQTJjkGu1Gb1/eVqH9XV1WlLhpirlQcRxIBbB
- t4w14PF7tsrfhK4eOEK/QFziPCbpsNCwMtz2bj05rxqUUwn1iy6R+fNL7A/8fh+PwOFD0QNPxLZ
- D3PvrNnHbbmXMtLOvOn3jWFGIxls4Ww4SmyoCiL+ZUiTovQ/UxjnxdYyFcRaTnehT4/RP6Q/8k3
- M+/yYMpI5Yr5eTnaHzFhDQ2+bHKv2E7WINslk7oAsVol4pJwHJH/bGoRSy90PvIzmb79iryROsX
- cI/058G4yryLXrLgwDjSr9NRLdPh6N9mWoImtIuSPkmnQ6e0vt7LtuPQzMTquAvXvf7X/wVjrs3
- Ko0x1AaSl1l/vXq90Dm0FZvVmscI0Q9ZRsd+cSnSRCdoEdbxIGE6u4vYfId8W2uwCDZcnhYb3We
- NOculXm8uEAzTCw==
+ bh=wweFFD6YCicxokDpT0Wh6UYsTmj6vQrmP0Ud7axlHpw=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpTBVvLgPxLGEGAAujLxfYWaR/lxaZ44guCAn06
+ MILsr6f7TOJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaUwVbwAKCRDRgEFAKaOo
+ NogtEACoJbGPT2kgck1rcYHkg1aun5JA7QpmJXBORol27Y8O6M1rYjLqbCtAtux+TiPFQWXr0OP
+ hRaTM1kPe4jHInzYOnEOgJxMf+1i0uHBpWmq+fACzDwinv/f1yN3jk3BUWAPB3b0pAzi3hBc/Fu
+ CxG3BEb/vWsDqPf6yJIQUo52Nmx6mFGcJq47aoCXODIj9/e8NwD3h3wFlNugkNZfYOXCjYwQYrv
+ 62Qh9gCq9xoAB5E4mO2XkjF0gQ0al331XWoPNbbRxLUrf53eR5Pc7uNxF4MYyFqdAlSIDqGNTDg
+ bdt2hHdKaPSfZ25qaQSykYQZznSZZbYF0M1dqtLJIZJCbXWEMKdhw0LvbiOKIrCAc15NM0BOBS+
+ MoyT1WJdMXEe5EJDzjC4XxjmtA7TUBD1/xvNi356ZpGXBcGaRpTCpmxwLM5iawV7/3MhD6BVJga
+ xQWOElcutkd4e2LhhIT1Z4H3J/1Kj8SSMqWwO7sHGaAI33qRvJcQIr+xgqxHUOMwnPBq3PhaQHc
+ BvfLz7WZjeJzFOO48p/68o1F+RnF3Lud0KSjukCTUwsJMyP/1U4JlVly44RVEte/gV4iMAwOY3Y
+ ustXo9xHrC/hCOSuMx8K1oX1+Ia+T0nFhNYfYI0wUqfXjUJ+kEp0ng1icHhILkCqOr1amD4VVNr
+ X3QO20cvX27rndQ==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
@@ -64,39 +64,61 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Wed, 24 Dec 2025 16:32:24 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8367
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8378
 
 Refresh the document now that the Poky repository is obsolete.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/dev-manual/init-manager.rst | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ documentation/ref-manual/system-requirements.rst | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/documentation/dev-manual/init-manager.rst b/documentation/dev-manual/init-manager.rst
-index d0fdfdf77..670810310 100644
---- a/documentation/dev-manual/init-manager.rst
-+++ b/documentation/dev-manual/init-manager.rst
-@@ -54,7 +54,7 @@ Using SysVinit with udev
- =========================
+diff --git a/documentation/ref-manual/system-requirements.rst b/documentation/ref-manual/system-requirements.rst
+index a56e683ca..e8d6830b1 100644
+--- a/documentation/ref-manual/system-requirements.rst
++++ b/documentation/ref-manual/system-requirements.rst
+@@ -405,8 +405,8 @@ installer and automatically installs the tools for you:
  
- SysVinit with the udev device manager corresponds to the
--default setting in Poky. This corresponds to setting::
-+default setting in :term:`Poky`. This corresponds to setting::
+ #. Execute the ``install-buildtools`` script. Here is an example::
  
-    INIT_MANAGER = "sysvinit"
+-      $ cd poky
+-      $ scripts/install-buildtools \
++      $ cd /path/to/project
++      $ ./layers/openembedded-core/scripts/install-buildtools \
+         --without-extended-buildtools \
+         --base-url &YOCTO_DL_URL;/releases/yocto \
+         --release yocto-&DISTRO; \
+@@ -420,26 +420,26 @@ installer and automatically installs the tools for you:
+    To avoid the need of ``sudo`` privileges, the ``install-buildtools``
+    script will by default tell the installer to install in::
  
-@@ -77,8 +77,8 @@ for more complex systems::
-    INIT_MANAGER = "systemd"
+-      /path/to/poky/buildtools
++      /path/to/project/buildtools
  
- This will enable systemd and remove sysvinit components from the image.
--See :yocto_git:`meta/conf/distro/include/init-manager-systemd.inc
--</poky/tree/meta/conf/distro/include/init-manager-systemd.inc>` for exact
-+See :oe_git:`meta/conf/distro/include/init-manager-systemd.inc
-+</openembedded-core/tree/meta/conf/distro/include/init-manager-systemd.inc>` for exact
- details on what this does.
+    If your host development system needs the additional tools provided
+    in the :term:`buildtools-extended` tarball, you can instead execute the
+    ``install-buildtools`` script with the default parameters::
  
- Controling systemd from the target command line
+-      $ cd poky
++      $ cd /path/to/project
+       $ scripts/install-buildtools
+ 
+    Alternatively if your host development system has a broken ``make``
+    version such that you only need a known good version of ``make``,
+    you can use the ``--make-only`` option::
+ 
+-      $ cd poky
++      $ cd /path/to/project
+       $ scripts/install-buildtools --make-only
+ 
+ #. Source the tools environment setup script by using a command like the
+    following::
+ 
+-      $ source /path/to/poky/buildtools/environment-setup-x86_64-pokysdk-linux
++      $ source /path/to/project/buildtools/environment-setup-x86_64-pokysdk-linux
+ 
+    After you have sourced the setup script, the tools are added to
+    ``PATH`` and any other environment variables required to run the
 
 -- 
 2.51.0
