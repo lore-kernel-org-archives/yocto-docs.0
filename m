@@ -2,61 +2,61 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 392F9E776D3
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 59BFFE776DE
 	for <webhook@archiver.kernel.org>; Wed, 24 Dec 2025 16:32:03 +0000 (UTC)
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.123194.1766593922325848218
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.123191.1766593918562805266
  for <docs@lists.yoctoproject.org>;
- Wed, 24 Dec 2025 08:32:02 -0800
+ Wed, 24 Dec 2025 08:31:58 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=THx04s/9;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=IBXtAyMo;
  spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id D12F01A23E1
-	for <docs@lists.yoctoproject.org>; Wed, 24 Dec 2025 16:32:00 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 19CE21A23E2
+	for <docs@lists.yoctoproject.org>; Wed, 24 Dec 2025 16:31:57 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id A233E6073D
-	for <docs@lists.yoctoproject.org>; Wed, 24 Dec 2025 16:32:00 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DFD8B10AB137E;
-	Wed, 24 Dec 2025 17:31:59 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id E4A726073D
+	for <docs@lists.yoctoproject.org>; Wed, 24 Dec 2025 16:31:56 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1E62E10AB1378;
+	Wed, 24 Dec 2025 17:31:56 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1766593920; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1766593916; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=G26rqxh6dAvLt01E6u/zxoI/I5XVCZOgGtgt1JtmFjc=;
-	b=THx04s/9MNgR1dlxtsGI+Bp2NhNYVYExqHPp79kKuogJiH74oCAhGUAQokOSBe2JuGkZRD
-	Uf5wycQZpA534B0874sc13tFswHXzjT4bOTlzbzlBjphP97yJ6vxTJ0nBiBVr8AwDRPLC5
-	a/OINvzFYdYHR2WUmcG5T9EecMVmfyt//wWzFMx82Q8Izax966o7C7tnuW8EVivbQr/NV9
-	2jtWbO2K2qCoJ8s2sNG1pUGt0889kyFYs3lxgNCD6xhLqrgRrsSJ9bMJ2kx/EIn9uc9EMq
-	xyBaGzPdGO9YJR9qtcpmxiicExuc8UuuGXR5BYi3ag7pWpuWV3s9a0aDyjzQzg==
+	bh=9rXbmi+pXbwoBsZf9sie/zVf3pxqpn3q0xT9aueXStw=;
+	b=IBXtAyMoVhq7cAT0xk30jw9oWrI7iCKAk6sQc0jYdLBX2qiVQ4Ujqa28v3NNa7Uzp83gak
+	IfgZvHuUYF+QOuoa5YYlPxgadz7QKlHhCZmUtDnFmrJspc6RIwfphhf5iMuGGWpYRWqD6e
+	0uPpW0KnITKgiecjMb/xC0Naa/vmvJlNwXBre3qNBaEcflklfgvvbaa0Mq0R7c593T5pxq
+	COAhrsXjsWkQrdrUze2cViNWjHYQOScqBwtJI97Z24MMla+5OfQ8nGil618TzMgLBr2uBE
+	AOGPeWvqGXfFUtw2vm3SmrB05xzbj79yIOX9HUNAcWmyMZIguXBvwMb2Z75Cpg==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Wed, 24 Dec 2025 17:31:45 +0100
-Subject: [PATCH 19/53] kernel-dev/common.rst: remove obsolete poky repo
+Date: Wed, 24 Dec 2025 17:31:40 +0100
+Subject: [PATCH 14/53] dev-manual/new-recipe.rst: remove obsolete poky repo
  references
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251224-remove-poky-references-v1-19-658a5f4dbde2@bootlin.com>
+Message-Id: <20251224-remove-poky-references-v1-14-658a5f4dbde2@bootlin.com>
 References: <20251224-remove-poky-references-v1-0-658a5f4dbde2@bootlin.com>
 In-Reply-To: <20251224-remove-poky-references-v1-0-658a5f4dbde2@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=14646;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2996;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=wBjyQ3+fhgpC95Vce4TxapVIqTmoaujY9J0ksXunMQ4=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpTBVqTPRm15CTXhnZtwUzaoCOe6gEuClZGF8Wn
- PbR72CyFFGJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaUwVagAKCRDRgEFAKaOo
- NugzD/9X+sQ7b8V2RESixiHVnwsGpHceOL1kXUijgjLZGk2zxSL9UOETSO7hhPu3nHhX6XtnE13
- BlVft9mmrbofFCDloSswZIBHadqNpSTKwI8AAzrn5qt7bR8hRrX9HLPvRj/IxUorW9utMS9aQkZ
- ua6s9y2AyW7z3E/nHnXxoMpBfg90UR+8NPxaYn275ydmKg/Ly8Cu8WHPhwyBlAcUfMxWipge1yA
- AyJBZ5CB53QwGoRsoH+sKKuPA2Y2seKJ5AQMhLwSOTNw5rsHhB+XOnx5M6XambfA1+9m+h/I2EP
- nbDmufVFLMScZ8/rrBKyASBxpkY1nncW0L1svzrxYlB0aT/0fDMarSdHivfdgNiuiMY2Bwex/Mf
- pwl7rfK/wz46gcG9ZHcia8AP1UQMXap5V0gKgUm7eMy7FgY79HA3u9KtFJyGF2WKJ5cVK0a0c28
- SOSlZN+iqm9H0lZxYQWSAyrQBMz26fIwQLn8S+2n1mTUNFZrqyvzew3HSlIXcFK8COfvYBSdbLq
- ktkXinkOxe3/tmy9jsMaGCmeWA94WsZBQ1cFABQgxCM6xlqLANmwbv+waDwZRrtGDoIRVQ4v3cE
- dE2nWW40B2L4zXnBZ1hUYu7AvI6UfbwNnifnsUAGOBKg1/4J30OW96lrDfqNQSGKWRBUboRN7vL
- Ysdwx0YpS82VXTg==
+ bh=Ez/DYSVz6JaaGbF1LP3kFPpnvBj8qaqVV6JWU1IkQLY=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpTBVpmUsgyScYk1PxoEYyiPviEv1iwRWEybueN
+ l6RSEV/rO6JAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaUwVaQAKCRDRgEFAKaOo
+ NsXCD/9iTG7PPKKvgOQTu8MqLyjEcv6hk2oXjRuc1wqAIjPQ6hn08KKCRDDeEp+hEQyZUXYcoMv
+ ESP3TEvpJ8PZvRJnKTop924qSAgJ8rVbjLbk8cXTOxG03evdxDR/VrDnjuD/GLxIK8qrnKym/m1
+ Bvq/p2oEhJ7wqX7tCo8hF/knQ8KEBszGHplqxO3es/MLA3X/kwUnidEsdD+vm6lx5Y6nUEkqAEZ
+ FuB+ept9R42vuDoob4TUjznaMxaBk6aCZWe4yrp5zq32xxlMbCOD9kOR/29ut45Y1L8WbxxqejC
+ rvemIlFQ2qn4fjQft9HetSnXW27/nLyZ7do9bA0XYOsVaYZJFo3AMFF0Y+nZ7apmhXqiuULkR5+
+ 9i878ljnttJEpieS4CByxE2aKiTIqjZiPQ4MnK5SGbfpwI7U/UaDksomrnA8IBd/MCkpV0izs4d
+ BiySx1yjBk/5so3emugv5PjcxdKCDGxM0w6tnG3cD+EysaGLrj/JScPln37VJFp/mmFT4g5+zbT
+ RtQQRCwiJJ8vv/8sOagpsWSqYlT1Rk9F2SVIP0UmPFRsckNDJBsOkE8h9UepIYPT4RjldHVu14v
+ l/xCAqQM6dr8OM9IS9a2TrP1TlxEEiaObHg195sTj3vpeVMch6cJMmJY+fZAwJUQlgg+xy9uTdR
+ 3BSyXCSfEMyQL4Q==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
@@ -64,315 +64,67 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Wed, 24 Dec 2025 16:32:03 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8348
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8343
 
 Remove references to the Poky repository, replace by OpenEmbedded-Core.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/kernel-dev/common.rst | 107 ++++++++++++++++--------------------
- 1 file changed, 46 insertions(+), 61 deletions(-)
+ documentation/dev-manual/new-recipe.rst | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/documentation/kernel-dev/common.rst b/documentation/kernel-dev/common.rst
-index 2142d31c0..ba3a09942 100644
---- a/documentation/kernel-dev/common.rst
-+++ b/documentation/kernel-dev/common.rst
-@@ -44,25 +44,15 @@ image and ready to make modifications as described in the
- ":ref:`kernel-dev/common:using \`\`devtool\`\` to patch the kernel`"
- section:
+diff --git a/documentation/dev-manual/new-recipe.rst b/documentation/dev-manual/new-recipe.rst
+index ee0f6aaf6..38485da7e 100644
+--- a/documentation/dev-manual/new-recipe.rst
++++ b/documentation/dev-manual/new-recipe.rst
+@@ -224,14 +224,14 @@ is to use the ``bitbake-getvar`` utility::
  
--#. *Initialize the BitBake Environment:*
--   you need to initialize the BitBake build environment by sourcing
--   the build environment script (i.e. :ref:`structure-core-script`)::
--
--      $ cd poky
--      $ source oe-init-build-env
--
--   .. note::
--
--      The previous commands assume the
--      :ref:`overview-manual/development-environment:yocto project source repositories`
--      (i.e. ``poky``) have been cloned using Git and the local repository is named
--      "poky".
-+#. *Initialize the Build Environment:* Follow the :doc:`/dev-manual/start`
-+   section of the Yocto Project Development Tasks Manual in order to have a
-+   ready-to-use shell that can execute ``devtool``.
+    $ bitbake-getvar -r basename WORKDIR
  
- #. *Prepare Your local.conf File:* By default, the :term:`MACHINE` variable
-    is set to "qemux86-64", which is fine if you are building for the QEMU
-    emulator in 64-bit mode. However, if you are not, you need to set the
-    :term:`MACHINE` variable appropriately in your ``conf/local.conf`` file
--   found in the :term:`Build Directory` (i.e.  ``poky/build`` in this example).
-+   found in the :term:`Build Directory` (i.e.  ``project/build`` in this example).
+-As an example, assume a Source Directory
+-top-level folder named ``poky``, a default :term:`Build Directory` at
+-``poky/build``, and a ``qemux86-poky-linux`` machine target system.
++As an example, assume a :term:`Source Directory`
++top-level folder named ``work``, a default :term:`Build Directory` at
++``project/build``, and a ``qemux86-poky-linux`` machine target system.
+ Furthermore, suppose your recipe is named ``foo_1.3.0.bb``. In this
+ case, the work directory the build system uses to build the package
+ would be as follows::
  
-    Also, since you are preparing to work on the kernel image, you need
-    to set the :term:`MACHINE_ESSENTIAL_EXTRA_RRECOMMENDS` variable to include
-@@ -79,7 +69,7 @@ section:
-    patches created for the kernel image. You can use the
-    ``bitbake-layers create-layer`` command as follows::
+-   poky/build/tmp/work/qemux86-poky-linux/foo/1.3.0-r0
++   project/build/tmp/work/qemux86-poky-linux/foo/1.3.0-r0
  
--      $ cd poky/build
-+      $ cd project/build
-       $ bitbake-layers create-layer ../../meta-mylayer
-       NOTE: Starting bitbake server...
-       Add your new layer with 'bitbake-layers add-layer ../../meta-mylayer'
-@@ -103,7 +93,7 @@ section:
-    :term:`BBLAYERS` variable in the
-    ``bblayers.conf`` file as follows::
- 
--      $ cd poky/build
-+      $ cd project/build
-       $ bitbake-layers add-layer ../../meta-mylayer
-       NOTE: Starting bitbake server...
-       $
-@@ -157,7 +147,7 @@ section:
-    set to "qemux86-64", which is fine if you are building for the QEMU emulator
-    in 64-bit mode. However, if you are not, you need to set the :term:`MACHINE`
-    variable appropriately in your ``conf/local.conf`` file found in the
--   :term:`Build Directory` (i.e.  ``poky/build`` in this example).
-+   :term:`Build Directory` (i.e.  ``project/build`` in this example).
- 
-    Also, since you are preparing to work on the kernel image, you need
-    to set the
-@@ -175,7 +165,7 @@ section:
-    patches created for the kernel image. You can use the
-    ``bitbake-layers create-layer`` command as follows::
- 
--      $ cd poky/build
-+      $ cd project/build
-       $ bitbake-layers create-layer ../../meta-mylayer
-       NOTE: Starting bitbake server...
-       Add your new layer with 'bitbake-layers add-layer ../../meta-mylayer'
-@@ -198,7 +188,7 @@ section:
-    :term:`BBLAYERS` variable in the
-    ``bblayers.conf`` file as follows::
- 
--      $ cd poky/build
-+      $ cd project/build
-       $ bitbake-layers add-layer ../../meta-mylayer
-       NOTE: Starting bitbake server ...
-       $
-@@ -210,8 +200,7 @@ section:
- 
-    For simplicity, it is recommended that you create your copy of the
-    kernel Git repository outside of the
--   :term:`Source Directory`, which is
--   usually named ``poky``. Also, be sure you are in the
-+   :term:`Source Directory`. Also, be sure you are in the
-    ``standard/base`` branch.
- 
-    The following commands show how to create a local copy of the
-@@ -237,8 +226,7 @@ section:
- #. *Create a Local Copy of the Kernel Cache Git Repository:* For
-    simplicity, it is recommended that you create your copy of the kernel
-    cache Git repository outside of the
--   :term:`Source Directory`, which is
--   usually named ``poky``. Also, for this example, be sure you are in
-+   :term:`Source Directory`. Also, for this example, be sure you are in
-    the ``yocto-4.12`` branch.
- 
-    The following commands show how to create a local copy of the
-@@ -334,8 +322,7 @@ Modifying an Existing Recipe
- In many cases, you can customize an existing linux-yocto recipe to meet
- the needs of your project. Each release of the Yocto Project provides a
- few Linux kernel recipes from which you can choose. These are located in
--the :term:`Source Directory` in
--``meta/recipes-kernel/linux``.
-+:term:`OpenEmbedded-Core (OE-Core)` in ``meta/recipes-kernel/linux``.
- 
- Modifying an existing recipe can consist of the following:
- 
-@@ -430,9 +417,8 @@ Although this particular example does not use it, the
- :term:`KERNEL_FEATURES`
- variable could be used to enable features specific to the kernel. The
- append file points to specific commits in the
--:term:`Source Directory` Git repository and
--the ``meta`` Git repository branches to identify the exact kernel needed
--to build the BSP.
-+:term:`OpenEmbedded-Core (OE-Core)` Git repository branches to identify the
-+exact kernel needed to build the BSP.
- 
- One thing missing in this particular BSP, which you will typically need
- when developing a BSP, is the kernel configuration file (``.config``)
-@@ -677,7 +663,7 @@ the ":ref:`kernel-dev/common:getting ready to develop using ``devtool```" Sectio
- 
-               ERROR: Taskhash mismatch 2c793438c2d9f8c3681fd5f7bc819efa versus
-                      be3a89ce7c47178880ba7bf6293d7404 for
--                     /path/to/esdk/layers/poky/meta/recipes-kernel/linux/linux-yocto_4.10.bb.do_unpack
-+                     /path/to/esdk/layers/openembedded-core/meta/recipes-kernel/linux/linux-yocto_4.10.bb.do_unpack
- 
- 
-       You can safely ignore these messages. The source code is correctly
-@@ -688,11 +674,11 @@ the ":ref:`kernel-dev/common:getting ready to develop using ``devtool```" Sectio
- 
-    #. *Change the working directory*: In the previous step, the output
-       noted where you can find the source files (e.g.
--      ``poky_sdk/workspace/sources/linux-yocto``). Change to where the
-+      ``build/workspace/sources/linux-yocto``). Change to where the
-       kernel source code is before making your edits to the
-       ``calibrate.c`` file::
- 
--         $ cd poky_sdk/workspace/sources/linux-yocto
-+         $ cd build/workspace/sources/linux-yocto
- 
-    #. *Edit the source file*: Edit the ``init/calibrate.c`` file to have
-       the following changes::
-@@ -758,7 +744,7 @@ the ":ref:`kernel-dev/common:getting ready to develop using ``devtool```" Sectio
-    your working directory to where you modified the ``calibrate.c`` file
-    and use these Git commands to stage and commit your changes::
- 
--      $ cd poky_sdk/workspace/sources/linux-yocto
-+      $ cd build/workspace/sources/linux-yocto
-       $ git status
-       $ git add init/calibrate.c
-       $ git commit -m "calibrate: Add printk example"
-@@ -784,7 +770,7 @@ the ":ref:`kernel-dev/common:getting ready to develop using ``devtool```" Sectio
-    command from your :term:`Build Directory` in the terminal
-    set up to run BitBake::
- 
--      $ cd poky/build
-+      $ cd project/build
-       $ bitbake core-image-minimal
- 
- Using Traditional Kernel Development to Patch the Kernel
-@@ -868,7 +854,7 @@ Section.
-    :term:`SRCREV` statements similar
-    to the following to your ``local.conf``::
- 
--      $ cd poky/build/conf
-+      $ cd project/build/conf
- 
-    Add the following to the ``local.conf``::
- 
-@@ -888,14 +874,14 @@ Section.
-    committed, and the ``local.conf`` file pointing to the kernel files,
-    you can now use BitBake to build the image::
- 
--      $ cd poky/build
-+      $ cd project/build
-       $ bitbake core-image-minimal
- 
- #. *Boot the image*: Boot the modified image in the QEMU emulator using
-    this command. When prompted to login to the QEMU console, use "root"
-    with no password::
- 
--      $ cd poky/build
-+      $ cd project/build
-       $ runqemu qemux86
- 
- #. *Look for Your Changes:* As QEMU booted, you might have seen your
-@@ -959,14 +945,14 @@ Section.
- 
-       To build ``core-image-minimal`` again and see the effects of your patch,
-       you can essentially eliminate the temporary source files saved in
--      ``poky/build/tmp/work/...`` and residual effects of the build by entering
-+      ``project/build/tmp/work/...`` and residual effects of the build by entering
-       the following sequence of commands::
- 
--              $ cd poky/build
--              $ bitbake -c cleanall linux-yocto
--              $ bitbake core-image-minimal -c cleanall
--              $ bitbake core-image-minimal
--              $ runqemu qemux86
-+         $ cd project/build
-+         $ bitbake -c cleanall linux-yocto
-+         $ bitbake core-image-minimal -c cleanall
-+         $ bitbake core-image-minimal
-+         $ runqemu qemux86
- 
- 
- Configuring the Kernel
-@@ -1013,10 +999,10 @@ environment, you must do the following:
- The following commands initialize the BitBake environment, run the
- :ref:`ref-tasks-kernel_configme`
- task, and launch ``menuconfig``. These commands assume the Source
--Directory's top-level folder is ``poky``::
-+Directory's top-level folder is ``work``::
- 
--   $ cd poky
--   $ source oe-init-build-env
-+   $ cd work
-+   $ source layers/openembedded-core/oe-init-build-env
-    $ bitbake linux-yocto -c kernel_configme -f
-    $ bitbake linux-yocto -c menuconfig
- 
-@@ -1063,7 +1049,7 @@ the ``.config`` file would be:
- 
- .. code-block:: none
- 
--   poky/build/tmp/work/qemux86-poky-linux/linux-yocto/4.12.12+gitAUTOINC+eda4d18...
-+   project/build/tmp/work/qemux86-poky-linux/linux-yocto/4.12.12+gitAUTOINC+eda4d18...
-    ...967-r0/linux-qemux86-standard-build/.config
- 
+ Inside this directory you can find sub-directories such as ``image``,
+ ``packages-split``, and ``temp``. After the build, you can examine these
+@@ -240,7 +240,7 @@ to determine how well the build went.
  .. note::
-@@ -1279,32 +1265,32 @@ Here is sample output from the :ref:`ref-tasks-kernel_configcheck` task:
  
-    ---------- CONFIG_X86_TSC -----------------
-    Config: CONFIG_X86_TSC
--   From: /home/scottrif/poky/build/tmp/work-shared/qemux86/kernel-source/.kernel-meta/configs/standard/bsp/common-pc/common-pc-cpu.cfg
-+   From: /home/scottrif/project/build/tmp/work-shared/qemux86/kernel-source/.kernel-meta/configs/standard/bsp/common-pc/common-pc-cpu.cfg
-    Requested value:  CONFIG_X86_TSC=y
-    Actual value:
+    You can find log files for each task in the recipe's ``temp``
+-   directory (e.g. ``poky/build/tmp/work/qemux86-poky-linux/foo/1.3.0-r0/temp``).
++   directory (e.g. ``project/build/tmp/work/qemux86-poky-linux/foo/1.3.0-r0/temp``).
+    Log files are named ``log.taskname`` (e.g. ``log.do_configure``,
+    ``log.do_fetch``, and ``log.do_compile``).
  
+@@ -830,7 +830,7 @@ different ways:
  
-    ---------- CONFIG_X86_BIGSMP -----------------
-    Config: CONFIG_X86_BIGSMP
--   From: /home/scottrif/poky/build/tmp/work-shared/qemux86/kernel-source/.kernel-meta/configs/standard/cfg/smp.cfg
--         /home/scottrif/poky/build/tmp/work-shared/qemux86/kernel-source/.kernel-meta/configs/standard/defconfig
-+   From: /home/scottrif/project/build/tmp/work-shared/qemux86/kernel-source/.kernel-meta/configs/standard/cfg/smp.cfg
-+         /home/scottrif/project/build/tmp/work-shared/qemux86/kernel-source/.kernel-meta/configs/standard/defconfig
-    Requested value:  # CONFIG_X86_BIGSMP is not set
-    Actual value:
+    To enable a service using systemd, your recipe needs to inherit the
+    :ref:`ref-classes-systemd` class. See the ``systemd.bbclass`` file
+-   located in your :term:`Source Directory` section for more information.
++   located in :term:`OpenEmbedded-Core (OE-Core)` section for more information.
  
- 
-    ---------- CONFIG_NR_CPUS -----------------
-    Config: CONFIG_NR_CPUS
--   From: /home/scottrif/poky/build/tmp/work-shared/qemux86/kernel-source/.kernel-meta/configs/standard/cfg/smp.cfg
--         /home/scottrif/poky/build/tmp/work-shared/qemux86/kernel-source/.kernel-meta/configs/standard/bsp/common-pc/common-pc.cfg
--         /home/scottrif/poky/build/tmp/work-shared/qemux86/kernel-source/.kernel-meta/configs/standard/defconfig
-+   From: /home/scottrif/project/build/tmp/work-shared/qemux86/kernel-source/.kernel-meta/configs/standard/cfg/smp.cfg
-+         /home/scottrif/project/build/tmp/work-shared/qemux86/kernel-source/.kernel-meta/configs/standard/bsp/common-pc/common-pc.cfg
-+         /home/scottrif/project/build/tmp/work-shared/qemux86/kernel-source/.kernel-meta/configs/standard/defconfig
-    Requested value:  CONFIG_NR_CPUS=8
-    Actual value:     CONFIG_NR_CPUS=1
- 
- 
-    ---------- CONFIG_SCHED_SMT -----------------
-    Config: CONFIG_SCHED_SMT
--   From: /home/scottrif/poky/build/tmp/work-shared/qemux86/kernel-source/.kernel-meta/configs/standard/cfg/smp.cfg
--         /home/scottrif/poky/build/tmp/work-shared/qemux86/kernel-source/.kernel-meta/configs/standard/defconfig
-+   From: /home/scottrif/project/build/tmp/work-shared/qemux86/kernel-source/.kernel-meta/configs/standard/cfg/smp.cfg
-+         /home/scottrif/project/build/tmp/work-shared/qemux86/kernel-source/.kernel-meta/configs/standard/defconfig
-    Requested value:  CONFIG_SCHED_SMT=y
-    Actual value:
- 
-@@ -1461,9 +1447,9 @@ on a future, mutually-supported kernel version.
- To help you use your own sources, the Yocto Project provides a
- linux-yocto custom recipe that uses ``kernel.org`` sources and
- the Yocto Project Linux kernel tools for managing kernel Metadata.
--You can find this recipe in the ``poky`` Git repository:
--:yocto_git:`meta-skeleton/recipes-kernel/linux/linux-yocto-custom.bb
--</poky/tree/meta-skeleton/recipes-kernel/linux/linux-yocto-custom.bb>`.
-+You can find this recipe in :term:`OpenEmbedded-Core (OE-Core)`:
-+:oe_git:`meta-skeleton/recipes-kernel/linux/linux-yocto-custom.bb
-+</openembedded-core/tree/meta-skeleton/recipes-kernel/linux/linux-yocto-custom.bb>`.
- 
- Here are some basic steps you can use to work with your own sources:
- 
-@@ -1600,10 +1586,9 @@ Linux kernel sources, if you need an external kernel module, the
- ``hello-mod.bb`` recipe is available as a template from which you can
- create your own out-of-tree Linux kernel module recipe.
- 
--This template recipe is located in the ``poky`` Git repository of the
--Yocto Project:
--:yocto_git:`meta-skeleton/recipes-kernel/hello-mod/hello-mod_0.1.bb
--</poky/tree/meta-skeleton/recipes-kernel/hello-mod/hello-mod_0.1.bb>`.
-+This template recipe is located in :term:`OpenEmbedded-Core (OE-Core)`:
-+:oe_git:`meta-skeleton/recipes-kernel/hello-mod/hello-mod_0.1.bb
-+</openembedded-core/tree/meta-skeleton/recipes-kernel/hello-mod/hello-mod_0.1.bb>`.
- 
- To get started, copy this recipe to your layer and give it a meaningful
- name (e.g. ``mymodule_1.0.bb``). In the same directory, create a new
+ Packaging
+ =========
+@@ -974,8 +974,8 @@ being able to provide the ``virtual/kernel`` item.
+ Now comes the time to actually build an image and you need a kernel
+ recipe, but which one? You can configure your build to call out the
+ kernel recipe you want by using the :term:`PREFERRED_PROVIDER` variable. As
+-an example, consider the :yocto_git:`x86-base.inc
+-</poky/tree/meta/conf/machine/include/x86/x86-base.inc>` include file, which is a
++an example, consider the :oe_git:`x86-base.inc
++</openembedded-core/tree/meta/conf/machine/include/x86/x86-base.inc>` include file, which is a
+ machine (i.e. :term:`MACHINE`) configuration file. This include file is the
+ reason all x86-based machines use the ``linux-yocto`` kernel. Here are the
+ relevant lines from the include file::
 
 -- 
 2.51.0
