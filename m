@@ -2,104 +2,194 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9C898E776D8
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9C858E776D3
 	for <webhook@archiver.kernel.org>; Wed, 24 Dec 2025 16:32:13 +0000 (UTC)
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.123207.1766593933124592395
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.123196.1766593923739643526
  for <docs@lists.yoctoproject.org>;
- Wed, 24 Dec 2025 08:32:13 -0800
+ Wed, 24 Dec 2025 08:32:04 -0800
 Authentication-Results: mx.groups.io;
- dkim=fail reason="dkim: body hash did not verify" header.i=@bootlin.com header.s=dkim header.b=x96SUS+T;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=Brj13uB0;
  spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id A63481A23E2
-	for <docs@lists.yoctoproject.org>; Wed, 24 Dec 2025 16:32:11 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 380541A23E0
+	for <docs@lists.yoctoproject.org>; Wed, 24 Dec 2025 16:32:02 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 7D1706073D
-	for <docs@lists.yoctoproject.org>; Wed, 24 Dec 2025 16:32:11 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 43F8D102F0CD4;
-	Wed, 24 Dec 2025 17:32:10 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 08FF16073D
+	for <docs@lists.yoctoproject.org>; Wed, 24 Dec 2025 16:32:02 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 22BA710AB137D;
+	Wed, 24 Dec 2025 17:32:01 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1766593931; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1766593921; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=6f3v4mLInx1X/WGe58Xb8U80/YIH3XFvpTI7vXB+pt8=;
-	b=x96SUS+Tg31WIZuwnemnOxET71rvaeUm9LdIYkaw3O9b6Ztpe5X9XpXIbWdIbADzwhp1Yr
-	+Aw5HPfs1sfR1o70T2iUlE4WFY/92943WDxS10hJ8bW0+0XhyYWjCddowKIkBnH07q3TVQ
-	86TwxalP5/lQwrt7ShCzYUP+SzxlDW+V9a0JZyFeGmXj4jMHbhNXqUjghWgnxIfQkZL8Lx
-	75v9RtcpxbbSZ7qoB3IYySNjq6QifdlN+RFKWAvBWMyZrHKEJvP8K0iH3fmvm2mGxEy4H0
-	4BkVxO3SSbjopk3EiI1NQZaxEcQUBhDf/nocvNaGSyeg0LUmFO/WRV9fKq89Pw==
+	bh=1kduOd3sQSlCuQH3io/fZFv0GxMpftpI6/ieai7rRlU=;
+	b=Brj13uB0wmxvsE+sygUhdo9uUooPl959lRHWyK1Tt2DMQhn5Mre6cgbsabaw8UoAQUM4JI
+	tvXjXIQmVR/2ocQY7nv1lhiJJQBkrayxG8rwOn4HRZ0O+cWR0MhQ/kJkjWW4sp7Zgz80NF
+	om/ITeIsgfsOCeLf4AEiI/IlSRbIGCnYyez5xjxNIoq6gbkwS+vrOGbZypfkdjHAxujppw
+	0opnt93kpplOFrAbuL+2KzmsAIRaeQcFowmvrnc1P0/YTzOMkr9gcD4YzIqUNrvfWJeNZK
+	0JjmRw1Vn6nyiUq7qTereBlikP0Zco9pJoHAdBTGA9776pKlG9w0wg/XGdgHAg==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Wed, 24 Dec 2025 17:32:00 +0100
-Subject: [PATCH 34/53] contributor-guide/identify-component.rst: remove
- obsolete poky repo references
+Date: Wed, 24 Dec 2025 17:31:47 +0100
+Subject: [PATCH 21/53] overview-manual/concepts.rst: remove obsolete poky
+ repo references
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20251224-remove-poky-references-v1-34-658a5f4dbde2@bootlin.com>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251224-remove-poky-references-v1-21-658a5f4dbde2@bootlin.com>
 References: <20251224-remove-poky-references-v1-0-658a5f4dbde2@bootlin.com>
 In-Reply-To: <20251224-remove-poky-references-v1-0-658a5f4dbde2@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1322;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6437;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=oIB9K+6BA2oq3PaXV0DFPAWhJUfLobhT7/H7NPlBgaQ=;
- b=kA0DAAoB0YBBQCmjqDYByyZiAGlMFWyg6gyfZBB0AR3dpGqaXrvUDu+KbfTr6bND2X7kMjzQn
- 4kCMwQAAQoAHRYhBIZIclGI3UAbuaDT/9GAQUApo6g2BQJpTBVsAAoJENGAQUApo6g2rVIP/2jn
- KpthBcrV37WU0BQm6Jb9DHcxc5eTWO5zkVZNVZMKVh896S4spiXnwz1F84khbQbwD+QsBjEQG4G
- KMaN28YM0SfC5JVvCxoBLLUQtDALL+KfWFow9svTR9JRmp5CUbmL6/YIW/UH1iQ/GbnDScWuCnn
- cn4B+1EQV+YvBiuuvR6WyPftf+O3NWwb6mkgcmlpP8vnU+Yl2bLqRE3jMkXaCL3oEyDVmb5ap5A
- VCSOUKVoDLBmb7S0Metn+1P3i8yBS5LUYTet+vfVieLu4wnt1RCRNDuLGMITqAvzhMMnudCbS/J
- icXRe9IG6EvlB4jJuoRZmgMNNUXslQW0kDioet53hHHO9Cs//1xkzcSgb491DSa4rrjOOCrzfNH
- cxH01YUb/1fGpHCroYY3oNJ+z7AbiIubUWp+EFer4B4nGY+6XAh1tcE6Z46Zi6SQwbtGOcWCMPo
- 0eTvR9bB+bcHx+SKXI7JKUPWPfc8w74GsdVimEP2x8d9aWqrwjhqqrM9eYd0v3Z0usu7Gw15tEH
- uaKZuAIFuCNiDmD1AFKVY+5NkzSkn7DxSoRNUSzb4S7jDIEviB0mtMVnSVu8NnjcWcgbY9TxXq0
- J7hlUn+ArtYZHhyvBXAnZICX0kWid5W8fMfAuLWJrtBtja19Bpd2DCx+NtsVIcXw+faWmpSejry
- Fdk8j
+ bh=hIr24PLfSnEsZplsyjzBVuhC98/jlx7ZHgU6GXvP4zU=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpTBVqQgFzMk4iHHyz4ONu9dvyZFAa6LtA8Whtk
+ +aW936/3MyJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaUwVagAKCRDRgEFAKaOo
+ Nn59EAC119tzoh+jGBZzK886UUbN5OqvwZGluCeQYCO+mrBTsI9Zf2u7HZLP/epFIHxmEdY9Gea
+ eEPL33y59H6hIC8BQsY8i4dzZ7kTkIrddAvhGVTX3OzTS3Yf4eGlI56sU6CDiLjrp03zknn5afF
+ eqXlnLARDuzc/C2TaKiH9lKs3zuSRipA7AYnNxv5wuGR4KSHkg+fJImvKGoDFR9vOFhO3t3NZdm
+ RalsUN70zMCulJGRJ30780RuTK+HrxZYVDaK/RQPWjEYKkhn28of7rduAqyiioHLYLsljSB932v
+ p2VHo2AymHOfTaoyE5e05Qxlmh2XxDUDXX6reHwCoYgeH/5SnSWDvmWC5ltU2gDimmxFwXuoNYl
+ pJUG2URGRAKxX3OkFMwoV71PJEyEK2OXFNnzXt7TdjjHcYHRxHYikLtS42Bo9Dfd+cZcUXsPR8y
+ 95XoDgf5via2Yw5EijHcraeoBTXQrlrQxl2XU7fhuRmPx2aR0T7BYMGt5zun7H3MD4IACTlwTOg
+ Rjg47t5pmuQx2ENmSoPVLgrpZXQo6okM7GzDT1tWn3s09ZjTQLi+anbIz/cP2giDmaIIR8tXmNI
+ 3hg6EE+7fMpV0fDtZAJ36g6H4Mik9/oDxWPUCty9CwKLXGqqtMBbSZ9j/XPKcroWpE42WJlSFEq
+ Aj3z6S7osCZGF2g==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
-Content-Transfer-Encoding: quoted-printable
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Wed, 24 Dec 2025 16:32:13 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8363
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8350
 
-Refresh the document now that the Poky repository is obsolete.
+Remove references to the Poky repository, replace by OpenEmbedded-Core.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/contributor-guide/identify-component.rst | 9 ---------
- 1 file changed, 9 deletions(-)
+ documentation/overview-manual/concepts.rst | 75 +++++++++---------------------
+ 1 file changed, 21 insertions(+), 54 deletions(-)
 
-diff --git a/documentation/contributor-guide/identify-component.rst b/doc=
-umentation/contributor-guide/identify-component.rst
-index a28391a66a..6cf8ed9858 100644
---- a/documentation/contributor-guide/identify-component.rst
-+++ b/documentation/contributor-guide/identify-component.rst
-@@ -20,12 +20,3 @@ If the issue is in the core metadata layer (OpenEmbedd=
-ed-Core) or in BitBake,
- issues can be reported in the :yocto_bugs:`Yocto Project Bugzilla <>`. T=
-he
- :yocto_lists:`yocto </g/yocto>` mailing list is a general =E2=80=9Ccatch=
--all=E2=80=9D location
- where questions can be sent if you can=E2=80=99t work out where somethin=
-g should go.
+diff --git a/documentation/overview-manual/concepts.rst b/documentation/overview-manual/concepts.rst
+index 04a08b7db..ec56031c4 100644
+--- a/documentation/overview-manual/concepts.rst
++++ b/documentation/overview-manual/concepts.rst
+@@ -211,62 +211,29 @@ figure <overview-manual/concepts:openembedded build system concepts>`:
+ BitBake needs some basic configuration files in order to complete a
+ build. These files are ``*.conf`` files. The minimally necessary ones
+ reside as example files in the ``build/conf`` directory of the
+-:term:`Source Directory`. For simplicity,
+-this section refers to the Source Directory as the "Poky Directory."
++:term:`Build Directory`.
+ 
+-When you clone the :term:`Poky` Git repository
+-or you download and unpack a Yocto Project release, you can set up the
+-Source Directory to be named anything you want. For this discussion, the
+-cloned repository uses the default name ``poky``.
++When you :ref:`initialize the build environment <dev-manual/start:Initializing
++the Build Environment>`, you can set up the :term:`Source Directory` to be named
++anything you want. For this discussion, the cloned repository uses the default
++name ``work``.
+ 
+-.. note::
 -
--:term:`Poky` is a commonly used =E2=80=9Ccombination=E2=80=9D repository=
- where multiple
--components have been combined (:oe_git:`bitbake </bitbake>`,
--:oe_git:`openembedded-core </openembedded-core>`,
--:yocto_git:`meta-yocto </meta-yocto>` and
--:yocto_git:`yocto-docs </yocto-docs>`). Patches should be submitted agai=
-nst the
--appropriate individual component rather than :term:`Poky` itself as deta=
-iled in
--the appropriate ``README`` file.
+-   The Poky repository is primarily an aggregation of existing
+-   repositories. It is not a canonical upstream source.
 -
+-The ``meta-poky`` layer inside Poky contains a ``conf`` directory that
+-has example configuration files. These example files are used as a basis
+-for creating actual configuration files when you source
+-:ref:`structure-core-script`, which is the
+-build environment script.
+-
+-Sourcing the build environment script creates a :term:`Build Directory`
++Setting up the build environment creates a :term:`Build Directory`
+ if one does not already exist. BitBake uses the :term:`Build Directory`
+ for all its work during builds. The Build Directory has a ``conf`` directory
+ that contains default versions of your ``local.conf`` and ``bblayers.conf``
+-configuration files. These default configuration files are created only
+-if versions do not already exist in the :term:`Build Directory` at the time you
+-source the build environment setup script.
+-
+-Because the Poky repository is fundamentally an aggregation of existing
+-repositories, some users might be familiar with running the
+-:ref:`structure-core-script` script in the context of separate
+-:term:`OpenEmbedded-Core (OE-Core)` and BitBake
+-repositories rather than a single Poky repository. This discussion
+-assumes the script is executed from within a cloned or unpacked version
+-of Poky.
+-
+-Depending on where the script is sourced, different sub-scripts are
+-called to set up the :term:`Build Directory` (Yocto or OpenEmbedded).
+-Specifically, the script ``scripts/oe-setup-builddir`` inside the poky
+-directory sets up the :term:`Build Directory` and seeds the directory (if
+-necessary) with configuration files appropriate for the Yocto Project
+-development environment.
+-
+-.. note::
++configuration files. These default :term:`configuration files <Configuration
++File>` are created only if versions do not already exist in the :term:`Build
++Directory` at the time you source the build environment setup script.
+ 
+-   The
+-   ``scripts/oe-setup-builddir``
+-   script uses the
+-   ``$TEMPLATECONF``
+-   variable to determine which sample configuration files to locate.
++:term:`Configuration files <Configuration File>` provide many basic variables
++that define a build environment.  To see a list of possible variables to
++configure from :term:`configuration files <Configuration File>`, see the
++:yocto_git:`local.conf.sample
++</meta-yocto/tree/meta-poky/conf/templates/default/local.conf.sample>` in the
++``meta-poky`` layer:
+ 
+-The ``local.conf`` file provides many basic variables that define a
+-build environment. Here is a list of a few. To see the default
+-configurations in a ``local.conf`` file created by the build environment
+-script, see the
+-:yocto_git:`local.conf.sample </poky/tree/meta-poky/conf/templates/default/local.conf.sample>`
+-in the ``meta-poky`` layer:
++Here is a list of a few:
+ 
+ -  *Target Machine Selection:* Controlled by the
+    :term:`MACHINE` variable.
+@@ -371,18 +338,18 @@ figure <overview-manual/concepts:openembedded build system concepts>`:
+    configurations. This type of information is specific to a particular
+    target architecture. A good example of a BSP layer from the
+    :ref:`overview-manual/yp-intro:reference distribution (poky)` is the
+-   :yocto_git:`meta-yocto-bsp </poky/tree/meta-yocto-bsp>`
++   :yocto_git:`meta-yocto-bsp </meta-yocto/tree/meta-yocto-bsp>`
+    layer.
+ 
+ -  *Policy Configuration:* Distribution Layers (i.e. "Distro Layer" in
+    the following figure) providing top-level or general policies for the
+    images or SDKs being built for a particular distribution. For
+    example, in the Poky Reference Distribution the distro layer is the
+-   :yocto_git:`meta-poky </poky/tree/meta-poky>`
++   :yocto_git:`meta-poky </meta-yocto/tree/meta-poky>`
+    layer. Within the distro layer is a ``conf/distro`` directory that
+    contains distro configuration files (e.g.
+-   :yocto_git:`poky.conf </poky/tree/meta-poky/conf/distro/poky.conf>`
+-   that contain many policy configurations for the Poky distribution.
++   :yocto_git:`poky.conf </meta-yocto/tree/meta-poky/conf/distro/poky.conf>`
++   that contain many policy configurations for the :term:`Poky` distribution.
+ 
+ The following figure shows an expanded representation of these three
+ layers from the :ref:`general workflow figure
+@@ -840,7 +807,7 @@ This step in the build process consists of the following tasks:
+    :term:`PACKAGECONFIG_CONFARGS`
+    variables. For information on how this variable works within that
+    class, see the :ref:`ref-classes-autotools` class
+-   :yocto_git:`here </poky/tree/meta/classes-recipe/autotools.bbclass>`.
++   :oe_git:`here </openembedded-core/tree/meta/classes-recipe/autotools.bbclass>`.
+ 
+ -  *do_compile*: Once a configuration task has been satisfied,
+    BitBake compiles the source using the
 
---=20
+-- 
 2.51.0
 
 
