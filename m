@@ -2,61 +2,61 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 177A1E776F0
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 27F93E776F8
 	for <webhook@archiver.kernel.org>; Wed, 24 Dec 2025 16:32:24 +0000 (UTC)
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.123215.1766593942110174214
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.123214.1766593940626305063
  for <docs@lists.yoctoproject.org>;
- Wed, 24 Dec 2025 08:32:22 -0800
+ Wed, 24 Dec 2025 08:32:21 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=kiQLdx9f;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=YGUfw3qt;
  spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 8BD934E41D91
-	for <docs@lists.yoctoproject.org>; Wed, 24 Dec 2025 16:32:20 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 1D8C84E41D8F
+	for <docs@lists.yoctoproject.org>; Wed, 24 Dec 2025 16:32:19 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 63ACF6073D
-	for <docs@lists.yoctoproject.org>; Wed, 24 Dec 2025 16:32:20 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7432D10AB137D;
-	Wed, 24 Dec 2025 17:32:19 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id E8A396073D
+	for <docs@lists.yoctoproject.org>; Wed, 24 Dec 2025 16:32:18 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3A85110AB137B;
+	Wed, 24 Dec 2025 17:32:18 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1766593940; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1766593938; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=y7CA3V7uznE+fphFZ+WLkpoaTi/BmIfw9byjefTreg0=;
-	b=kiQLdx9fqJU1DFRGjMcrsa15aa2EnViwAql2ANrRTXZ6N3x6PKXp6MB7HEAx40XLHZN3Px
-	lnpKEQqRubc79P/YrNCYoPCvGhHrx2Dsdd1Ey621TfgpZifxXamK9OpBEaaC4IUaFBfDOr
-	XMscSidH676mrCqR4S+BwhEfyqRqREQpyaBJvg3LSoKY6LmH4RXqPJd17iK+H2EpuDwpm7
-	qegPG+cnJybqPBh2nXmHtzrWfN07/da45Zq4eT+jZOX1MTEZenj7oILmmb42FHtoXuUmiT
-	9hgouqigW95tcmF/MIruCgzT0vRnZNVM7oN072GUdR0JM9/iye6+FigQruzgPA==
+	bh=fetN6nSR+EXGCAVpSDdXqx6sakAT6hejOKHguroSrGg=;
+	b=YGUfw3qtBcDa9QTMEh/oyrD5fBSQck/P7P93ElcTgwaRQnFPgdczXdMjvFo3EDzi2u8GHg
+	wc9Pb4Eu7qC2mRXDCsjt9Nbdx2RG1RvWLc3AsYlkoXM2PEpZN7deWwAzGWh8EIcbj6A0BQ
+	j4GhHaLGNiHhAYB6fD4UubLUaPvXMHM96UweArt9ownM6+8ddvCeXunn43WDWhiA6wHzME
+	Myvrjwpc/RBYJntLymZuEMA9grm8GaP49vTAEoow3VnGb7Q48tMw54RlFu4psynLibw7vC
+	2smu7SSBRBeFjCWwmIEckmtdHyiSzv6PTtYvybEzHpSiso8VvBuMDcAefeYYhg==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Wed, 24 Dec 2025 17:32:12 +0100
-Subject: [PATCH 46/53] ref-manual/faq.rst: remove obsolete poky repo
- references
+Date: Wed, 24 Dec 2025 17:32:10 +0100
+Subject: [PATCH 44/53] dev-manual/vulnerabilities.rst: remove obsolete poky
+ repo references
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251224-remove-poky-references-v1-46-658a5f4dbde2@bootlin.com>
+Message-Id: <20251224-remove-poky-references-v1-44-658a5f4dbde2@bootlin.com>
 References: <20251224-remove-poky-references-v1-0-658a5f4dbde2@bootlin.com>
 In-Reply-To: <20251224-remove-poky-references-v1-0-658a5f4dbde2@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3877;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4454;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=lrsV/HgK4Z6z9JNo9fzZOF9sPtr2fn5IUsAmiEO8e10=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpTBVv43ZtQouLvT8fTiUFtTrrQnqGC/y1ELjwH
- LsbmRr6iRiJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaUwVbwAKCRDRgEFAKaOo
- NrapD/94LlTlvhxz7NilMy3Uafo6efZ647mQ1hQZEWaLDeuUX/2jg0KQKarC4H5g6suI1IF2yTP
- GAC50zxhYd92tPF3bprqJPGlb9uEZ3DMHuSMHSGVEOT4uJhcfhq981rIPAVpg5dJzbTIqbWzYw4
- L7NqRcPJQEDCZqiMbL1kOttzT9HYM/RLP/Ya161tjQqMZtayK1X67YDAlIMSOot+Iwu6r785S61
- bBrsRoRCNzufuZCCKbjJu7Ep2s5TNPLbwCwIkI1iy3Ydm2h//Yj59dkwubBgr/MW1zAD8/lxxfW
- e28CMECfzlWlttLBMIM2zotWPKSoRpNZ9tvLE2Yv3+PH9uji49jzD47xSe5vycj6y6jbBIAeaCm
- dx0EyFNH/svdrw4O2h26/hIV1oaBQm/QBDcussInpR2iGJIUaJU6RiSmgr0udLCzB/nA1ds4OoJ
- 1mDRQuPkHALnuphMY7kgQ626n4b2LKlGAklkNf1E2CxA4ENgiF/+aTTNK3fqePa4i/yYDgY9TNc
- BOOkskNh6JCLqYYG4CGM1OJMbeoV7LakisE8sBf+fncAvGbfxfDsVGeMG06TMAOXFMVstR9dSge
- lcM2WiBZ+na+3Tp/Z6twJwi71t+FmxXEy+tJp+lJWeqHMuONNjDdusqioN48vaOmc/uYzGgUbFY
- SRswi8IA6LPizZg==
+ bh=axMkZ/RIWW00HYRkvttZEweYrQJQJ2YYVciiilSrkgI=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpTBVujaR2jxPFhuw9VLEf8euczM17pfonVstly
+ o9MlkPWRuiJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaUwVbgAKCRDRgEFAKaOo
+ NnY0D/4+An8qTViC7V7DpFgEKWOwNzrN4O3GOEe/M27HVmou+5M/IpjEX/kKPQbFpRAjnfeJ3DW
+ +coRLqc0SA2//fvSBm36p0pJQjxjMrgSgOUvjuT1Jkx2PCYLm9w0SohaiwyZuyVlNOAXjBMEj0K
+ Zgi98PyHIXJRSbUNN0SOfPCF7YsM28f9qJ4FRhuOo3BzQ7SxHgHoLyycKTaFat12CWtmnFz8GVG
+ v+AxtJFIcldqdIsJszuoHi6/m/zDFheAbnWcNq2eIioxVyCJxMY88lT/72532Kb9GijPkKVzy5a
+ MlCsW2Tov1eo7J7q+L6jsmNdc69ef7pFARamfL8lbs1EmMsYApYF34GZ3lHwQ8K2+auN/YyAap/
+ hqUnyyvW+7tN1Pbp+nzsanEDax5cW9vKGN/Pk8XS89bPcUGmk4rbl0R1My8NSahMVCNBAhS8McW
+ 4Ny9BrJmbduiLcksKUYxofO7iLxTc5VBN9wBFFLwPjM+55MmeLap/4SQhxBpN+3Z5xesN4kfTkl
+ bmuPDomYATp0EBq3hteIgV84m8rXlJPWOHxglYmZCmd8H/tN5GZ8RoFS+meTG4wOKo0ibmx5gjb
+ NtZ98IcJe2grTWqvlEXv/T65FktR/fkv09KO4j+ybocw7SEwNc8rUscWmYf0nt4RV8kp1z6mulS
+ W1VRluPsgFTNM4w==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
@@ -64,86 +64,89 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Wed, 24 Dec 2025 16:32:24 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8375
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8373
 
-Refresh the document now that the Poky repository is obsolete.
-
-Rework the difference between Poky and OpenEmbedded. Copy the note from
-terms.rst regarding the now obsolete Poky repository.
+Refresh the document now that the Poky repository is obsolete. Mention
+that only vulnerabilities in OpenEmbedded-Core are tracked as that's
+where the packages are.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/ref-manual/faq.rst | 43 ++++++++++++++++++++++++++++++----------
- 1 file changed, 32 insertions(+), 11 deletions(-)
+ documentation/dev-manual/vulnerabilities.rst | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/documentation/ref-manual/faq.rst b/documentation/ref-manual/faq.rst
-index 406b2c388..cd4801baa 100644
---- a/documentation/ref-manual/faq.rst
-+++ b/documentation/ref-manual/faq.rst
-@@ -12,14 +12,35 @@ General questions
- How does Poky differ from OpenEmbedded?
- ---------------------------------------
+diff --git a/documentation/dev-manual/vulnerabilities.rst b/documentation/dev-manual/vulnerabilities.rst
+index 6eaf75758..e6135a525 100644
+--- a/documentation/dev-manual/vulnerabilities.rst
++++ b/documentation/dev-manual/vulnerabilities.rst
+@@ -3,8 +3,8 @@
+ Checking for Vulnerabilities
+ ****************************
  
--The term ``Poky`` refers to the specific reference build
--system that the Yocto Project provides. Poky is based on
--:term:`OpenEmbedded-Core (OE-Core)` and :term:`BitBake`. Thus, the
--generic term used here for the build system is the "OpenEmbedded build
--system." Development in the Yocto Project using Poky is closely tied to
--OpenEmbedded, with changes always being merged to OE-Core or BitBake
--first before being pulled back into Poky. This practice benefits both
--projects immediately.
-+The term :term:`Poky` refers to the reference distribution that the Yocto
-+Project provides, and a reference test configuration.
-+
-+The :term:`Poky` distribution is built using the :term:`OpenEmbedded Build
-+System` and :term:`BitBake`. The :term:`metadata` used involved to build the
-+:term:`Poky` reference distribution is:
-+
-+-  :term:`OpenEmbedded-Core (OE-Core)`, which is hosted at
-+   :oe_git:`/openembedded-core`.
-+
-+-  :yocto_git:`meta-poky <meta-yocto/tree/meta-poky>`, which defines the
-+   ``poky`` distro configuration file (:term:`DISTRO`).
-+
-+.. note::
-+
-+   Poky also used to be a repository containing the combination of
-+   :term:`BitBake`, :term:`OpenEmbedded-Core (OE-Core)`, the
-+   :yocto_git:`meta-yocto </meta-yocto>` repository and the Yocto Project
-+   documentation -- which were combined with the :yocto_git:`combo-layer
-+   </poky-config>` tool.
-+
-+   This repository is still hosted at :yocto_git:`/poky` and is still
-+   updated for maintained releases that are older than Whinlatter (5.3).
-+   Newer releases now use ``bitbake-setup`` to clone and setup the initial
-+   :term:`OpenEmbedded Build System` environment. For more information on
-+   how to use ``bitbake-setup``, see the :doc:`/brief-yoctoprojectqs/index`
-+   document. An alternative can be to setup the above repositories
-+   manually, by following the :doc:`/dev-manual/poky-manual-setup`
-+   section of the Yocto Project Development Tasks Manual.
+-Vulnerabilities in Poky and OE-Core
+-===================================
++Vulnerabilities in OpenEmbedded-Core (OE-Core)
++==============================================
  
- How can you claim Poky / OpenEmbedded-Core is stable?
- -----------------------------------------------------
-@@ -27,7 +48,7 @@ How can you claim Poky / OpenEmbedded-Core is stable?
- There are three areas that help with stability;
+ The Yocto Project has an infrastructure to track and address unfixed
+ known security vulnerabilities, as tracked by the public
+@@ -13,15 +13,15 @@ database.
  
- -  The Yocto Project team keeps :term:`OpenEmbedded-Core (OE-Core)` small and
--   focused, containing around 830 recipes as opposed to the thousands
-+   focused, containing around a thousand recipes as opposed to the thousands
-    available in other OpenEmbedded community layers. Keeping it small
-    makes it easy to test and maintain.
+ The Yocto Project maintains a `list of known vulnerabilities
+ <https://valkyrie.yocto.io/pub/non-release/patchmetrics/>`__
+-for packages in Poky and OE-Core, tracking the evolution of the number of
++for packages in :term:`OpenEmbedded-Core (OE-Core)`, tracking the evolution of the number of
+ unpatched CVEs and the status of patches. Such information is available for
+ the current development version and for each supported release.
  
-@@ -87,8 +108,8 @@ configurable. You can setup the build system to get source code in most
- environments if HTTP transport is available.
+ Security is a process, not a product, and thus at any time, a number of security
+-issues may be impacting Poky and OE-Core. It is up to the maintainers, users,
++issues may be impacting :term:`OpenEmbedded-Core (OE-Core)`. It is up to the maintainers, users,
+ contributors and anyone interested in the issues to investigate and possibly fix them by
+ updating software components to newer versions or by applying patches to address them.
+-It is recommended to work with Poky and OE-Core upstream maintainers and submit
++It is recommended to work with :term:`OpenEmbedded-Core (OE-Core)` upstream maintainers and submit
+ patches to fix them, see ":doc:`/contributor-guide/submit-changes`" for details.
  
- When the build system searches for source code, it first tries the local
--download directory. If that location fails, Poky tries
--:term:`PREMIRRORS`, the upstream source, and then
-+download directory. If that location fails, the :term:`OpenEmbedded Build
-+System` tries :term:`PREMIRRORS`, the upstream source, and then
- :term:`MIRRORS` in that order.
+ Vulnerability check at build time
+@@ -34,7 +34,7 @@ add the following setting to your configuration::
+    INHERIT += "cve-check"
  
- Assuming your distribution is "poky", the OpenEmbedded build system uses
+ The CVE database contains some old incomplete entries which have been
+-deemed not to impact Poky or OE-Core. These CVE entries can be excluded from the
++deemed not to impact :term:`OpenEmbedded-Core (OE-Core)`. These CVE entries can be excluded from the
+ check using build configuration::
+ 
+    include conf/distro/include/cve-extra-exclusions.inc
+@@ -167,7 +167,7 @@ the :term:`CVE_VERSION` variable.
+ 
+ Note that if the CVE entries in the NVD database contain bugs or have missing or incomplete
+ information, it is recommended to fix the information there directly instead of working
+-around the issues possibly for a long time in Poky and OE-Core side recipes. Feedback to
++around the issues possibly for a long time in :term:`OpenEmbedded-Core (OE-Core)` side recipes. Feedback to
+ NVD about CVE entries can be provided through the `NVD contact form <https://nvd.nist.gov/info/contact-form>`__.
+ 
+ Fixing vulnerabilities in recipes
+@@ -175,7 +175,7 @@ Fixing vulnerabilities in recipes
+ 
+ Suppose a CVE security issue impacts a software component. In that case, it can
+ be fixed by updating to a newer version, by applying a patch, or by marking it
+-as patched via :term:`CVE_STATUS` variable flag. For Poky and OE-Core master
++as patched via :term:`CVE_STATUS` variable flag. For OE-Core master
+ branches, updating to a more recent software component release with fixes is
+ the best option, but patches can be applied if releases are not yet available.
+ 
+@@ -276,8 +276,8 @@ The entry should have the format like::
+    CVE_STATUS[CVE-2016-10642] = "cpe-incorrect: This is specific to the npm package that installs cmake, so isn't relevant to OpenEmbedded"
+ 
+ As mentioned previously, if data in the CVE database is wrong, it is recommended
+-to fix those issues in the CVE database (NVD in the case of OE-core and Poky)
+-directly.
++to fix those issues in the CVE database (NVD in the case of
++:term:`OpenEmbedded-Core (OE-Core)`) directly.
+ 
+ Note that if there are many CVEs with the same status and reason, those can be
+ shared by using the :term:`CVE_STATUS_GROUPS` variable.
 
 -- 
 2.51.0
