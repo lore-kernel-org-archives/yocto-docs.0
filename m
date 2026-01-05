@@ -2,61 +2,61 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 18287C79FA3
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1DF73C79FA4
 	for <webhook@archiver.kernel.org>; Mon,  5 Jan 2026 16:03:12 +0000 (UTC)
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.67374.1767628984158703219
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.67371.1767628983508773729
  for <docs@lists.yoctoproject.org>;
- Mon, 05 Jan 2026 08:03:04 -0800
+ Mon, 05 Jan 2026 08:03:03 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=J3RHoaPa;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=lhP9KGbS;
  spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 7CF601A266B
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 05E2B1A266A
 	for <docs@lists.yoctoproject.org>; Mon,  5 Jan 2026 16:03:02 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 5333260726
-	for <docs@lists.yoctoproject.org>; Mon,  5 Jan 2026 16:03:02 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C7DB1103C8567;
+	by smtpout-01.galae.net (Postfix) with ESMTPS id CB86460726
+	for <docs@lists.yoctoproject.org>; Mon,  5 Jan 2026 16:03:01 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2B613103C858A;
 	Mon,  5 Jan 2026 17:03:01 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1767628982; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=oAErYyWjWBmN7eAGx2FzKN/ykjKCe4k9MOKmCee7hBI=;
-	b=J3RHoaPaPshNU+3jRQ3WGTLuBWoy7lYmYw3+k8NzB1LFq37qCRBsjPGt7KvLA5SRMYfxCd
-	jbd2IpgUNlPI2ZI94lIcb0oQkwRkcbFZLGkaeNMkqXGot20r+RKGIpQ3aSikOLONBzR3HK
-	GYNBMQE51MSa7IsRzR8h2veNiEaWNy/TpeeE61rpPmQkV8l/1QMBD4upnMzLknkxtVzyiY
-	i1es4o4Cn2S+6byVQcMMvMTmKUJWYRIA993Q+o/IrYQAzOsl/iYKv2Mf8f+I+XDhYEc6wB
-	JA6TcNT+T3rj/nmfEgkO05LL5pFbt6x5MaS8EDFOnQfWKERNxgMF3t/u1rHVyA==
+	t=1767628981; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=rwe/2hE+DNWjOlU5OLxYeSC2NDGCuVqSSt2W+wWtumk=;
+	b=lhP9KGbS6emk9O06Jgdk7q8fLCrH1tQI72sW4TIE+3W/lCczGAZm5Ap+I/DxzNv3HyU8MS
+	lPCigoj2Sn62jqZ/vjoMp5oUoyiwtnmkoplAEywUSUp5RGVKJuhA1Yag3sFcjuo7di86LS
+	sb69Aqo199SahUwMaPnlz2JRj8gOnHry0GEp1qA8gpQ4SUu/nolHO7Qh1zgdTpVEYQ0BNt
+	aegjrfSo+ZvAnvLH4NEyAZsmXahu4Y3twVAMTpcE09CGOsnAZVl/WRv9+Zr9Xb4QvO+pZD
+	ZyVwA8H+EG1ehRbDR6Vlim4LYIyennG/2yM6HJEHnzAsUy0fL+GzloXaWGCNvQ==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Mon, 05 Jan 2026 17:02:55 +0100
-Subject: [PATCH 1/3] overview-manual/yp-intro.rst: fix SDK type in bullet
- list
+Subject: [PATCH 0/3] Convert YP flow diagram to SVG
+Date: Mon, 05 Jan 2026 17:02:54 +0100
+Message-Id: <20260105-update-workflow-diagram-v1-0-fc1c6f402064@bootlin.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260105-update-workflow-diagram-v1-1-fc1c6f402064@bootlin.com>
-References: <20260105-update-workflow-diagram-v1-0-fc1c6f402064@bootlin.com>
-In-Reply-To: <20260105-update-workflow-diagram-v1-0-fc1c6f402064@bootlin.com>
+X-B4-Tracking: v=1; b=H4sIAK/gW2kC/yXMQQ6CQAyF4auQrm3CNJIQrmJclJkOFpUhHRATw
+ t0dNW/1Ld6/QxZTydBVO5i8NGuaCtypAn/jaRDUUAxUU+OIzrjOgRfBLdk9PtKGQXkwfqJ31Lu
+ yyE0L5T2bRH3/ypfr33ntR/HLNwfH8QEqWWqvewAAAA==
+X-Change-ID: 20251224-update-workflow-diagram-c12b1b1bfa58
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1101;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1072;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=EHSE1IPzTwa4Wfh8sgw/yvlzdPvbW4dWS6ftGWWnSWQ=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpW+C0u0uUIOerrsmVverTjcIxbWM4D/PyzFXjD
- CxfgKkaqquJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaVvgtAAKCRDRgEFAKaOo
- Nt4jD/4pHmc80VJ5WzkGvbyt+mxqCLrDwxJffDXxzbEy54LIi2qRHCWGhJWCiYHsN1tYuoNE0OU
- RBPSeV/z4+CXpGzhHdSpVmnwbJj84QPc2CzFsjAPI3NwvsWkBNl+jO1LOwkd+cB53WfkoaPkG0U
- MpD2+MU04JbIIGNI+edZPjGccJk3GKtWhBEJ0JIDmjhKqA1tDbaBcUsMhSKpDYCLDVZ+zSLhJt3
- UleFyojYaUuMBcozNKmqDg8487dR7TYruWP8vVF9dRwXb7zug66TBJ55G0QKz6EsEB4Swc3KAGN
- Je08gXJMuoSSSWWbpA7nCVgM09EBdkHueb3BCHXjxEbt4J8bSYpZ/44zUV2ax/98O0QeszZiY1v
- ZFwtFF4wB3zjHAmD6+qhTm75b6C2dL4RCBOya+FybfJOVQhL+L+nj0GEI9fTplAop85C7yeYOkf
- VZr/HRM4FupmVhefNYFW5BABZZyxkR+C6c3ywvbyXnbUuN8sHiA39C5ywRb0ECQYQoBHPnTvsDt
- Rv4qCpeXFhDa7bcAL1VnS5dlgOzHUZi9LH1UuWLJ8N4kYiHCbsZ7wx89VMg+Ep68K9X10oSMzcc
- ErLg033VYZEJ34zQegNB0Q724LvCS7FZ+KZYu5yhj/V0UTRbGjml+ZCi4NxXU1r81g2l/4HTyGG
- U+rCv+8OEu1GlTw==
+ bh=JZRCIhDo82ZdCJB98k3MW0El3+p441bYr2a0IqSg3kI=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpW+C0qQWmEKREHiaWRFYAaVAJWwbvOCVvcARxo
+ UGUF2JgWmeJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaVvgtAAKCRDRgEFAKaOo
+ NodTD/9Cb1nBm+x8p8hL0/E1ktyfhcBZQzjTR8WF++0saUCx+DwvweLnLGN1D3WBdtoBHgxo0MP
+ 5813FD/IuN0kVC6CfGFJJbPf1NimbyS4JLstBQmf/qXLgWlfGt1du63e8Zs3Qnyj846+1ULrk+n
+ A/xRqXo6ZAhG4aIB5j+rzKP88Fcis/duLmFggyInRZ6GjhmQhIYzhzKVDODgd1r5JjxJtgscaHD
+ VgG+ZQFF77Fw91M+TOZE0LKVpkjOfzHZ0Bx4JYRdnYGTKKyY85ym541iGW4uu+wQh+/p8ZctJ3H
+ xIuF9QBoPP+I/GgFU+LPciqgoyjL64lsCXxPdKiXAjguQA1mNad0Xad2+0QoXxFv4q1TwT6y8+o
+ MSB6v19+6nduUqYNtYLEstGI8FWzhdY68umcP8rN9+Lkf9pDq9yF6P8tcLab4ePngyv4NzS910Q
+ tbQApF4p34VF1Kwnfh/9ysMlbPxQMfqTG1N1lHylYvoc1hxk2HYZbTYY6O71w1AXRtCmsI+l6m5
+ axJieovyX+R1m04O9/790wGOvGJArQmxbVgxQ27nWLgSOuXZKFdtUTvC3XKIWPbQmLGXmY5jO6g
+ sEfGlrwH7ssRbcu/DKKipj86CZAIjP2L0yF4Iwp4+f55zdu5pnwr4lfWO/f3SMytq1z4qZVKIq2
+ 58I9BVlmALDoibQ==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
@@ -64,33 +64,27 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Mon, 05 Jan 2026 16:03:12 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8391
-
-The YP generates an SDK by default, which can be meta-toolchain, an
-image-specific one, or an extensible SDK (eSDK). Don't be specific in
-this bullet list.
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8390
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/overview-manual/yp-intro.rst | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Antonin Godard (3):
+      overview-manual/yp-intro.rst: fix SDK type in bullet list
+      overview-manual: convert YP-flow-diagram.png to SVG
+      Remove diagrams directory
 
-diff --git a/documentation/overview-manual/yp-intro.rst b/documentation/overview-manual/yp-intro.rst
-index dc4d5125d..5cc39b31b 100644
---- a/documentation/overview-manual/yp-intro.rst
-+++ b/documentation/overview-manual/yp-intro.rst
-@@ -762,7 +762,8 @@ Here is a brief summary of the "workflow":
-    package feed that is used to create the final root file image.
- 
- #. The build system generates the file system image and a customized
--   Extensible SDK (eSDK) for application development in parallel.
-+   :doc:`SDK </sdk-manual/index>` (Software Development Kit) for application
-+   development in parallel.
- 
- For a very detailed look at this workflow, see the
- ":ref:`overview-manual/concepts:openembedded build system concepts`" section.
-
--- 
-2.52.0
+ diagrams/poky-buildprocess/Pokyarch_diag.jpg       |  Bin 285707 -> 0 bytes
+ diagrams/poky-buildprocess/Pokyarch_diag.svg       |  205 ---
+ diagrams/poky-buildprocess/Pokyarch_diag2.svg      | 1544 --------------------
+ diagrams/poky-buildprocess/pokyarch4.dia           |  Bin 3495 -> 0 bytes
+ diagrams/poky-buildprocess/pokyarch4.png           |  Bin 52531 -> 0 bytes
+ documentation/overview-manual/concepts.rst         |    2 +-
+ .../overview-manual/figures/YP-flow-diagram.png    |  Bin 190715 -> 0 bytes
+ .../overview-manual/svg/yp-flow-diagram.svg        |  950 ++++++++++++
+ documentation/overview-manual/yp-intro.rst         |    5 +-
+ 9 files changed, 954 insertions(+), 1752 deletions(-)
+---
+base-commit: f9042e1da554017fe46460c1fd2bdf8c74b3fa18
+change-id: 20251224-update-workflow-diagram-c12b1b1bfa58
 
 
