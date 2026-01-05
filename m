@@ -2,92 +2,64 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7E6ECE776F8
-	for <webhook@archiver.kernel.org>; Wed, 24 Dec 2025 16:32:34 +0000 (UTC)
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.123219.1766593945704536540
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6B04BC79F96
+	for <webhook@archiver.kernel.org>; Mon,  5 Jan 2026 13:53:11 +0000 (UTC)
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.64167.1767621183379776819
  for <docs@lists.yoctoproject.org>;
- Wed, 24 Dec 2025 08:32:26 -0800
+ Mon, 05 Jan 2026 05:53:04 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=n5rFhq5L;
- spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
+ dkim=fail reason="dkim: body hash did not verify" header.i=@bootlin.com header.s=dkim header.b=NG3H36aD;
+ spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 361414E41D8F
-	for <docs@lists.yoctoproject.org>; Wed, 24 Dec 2025 16:32:24 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 50F28C1E485
+	for <docs@lists.yoctoproject.org>; Mon,  5 Jan 2026 13:52:35 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 0DD9A6073D
-	for <docs@lists.yoctoproject.org>; Wed, 24 Dec 2025 16:32:24 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3F13F10AB1381;
-	Wed, 24 Dec 2025 17:32:23 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 4E98860726
+	for <docs@lists.yoctoproject.org>; Mon,  5 Jan 2026 13:53:01 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 838C5103C8549;
+	Mon,  5 Jan 2026 14:52:59 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1766593943; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1767621180; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=BkC+xXKgJW1swyzD+aPrb6evrjLJA1CTvQkYPXGR+Dc=;
-	b=n5rFhq5L/+F75januUWacCZKFNtMhDpjxc7UXC0eWGVw+jXjOjUt05Rod6wN0pMfSo1lgB
-	zaSLhauRFHt0Uu6PERORa9MEpQ/2VnMnve7F3bnqwuEt1fKJBNRMat9WreY/zXmGzK6FX6
-	afHj7jEchX4gj+MN3zYnYugnowQ7iM6lsybjO2IvFc0siJsonol4xup2pLc4U2+uu+Rss1
-	b5kPA4ERtfkxBVtdN0sa55YE380kslgAjpHZlyp/xI2Q21TL6wlvxXGxRoc67yJzJzf/o6
-	+hzPqXl1VhByTVTEaT1dmbPZ1qDGwG/kAV4QmZuDOd1iY6EdChqf+1l8gvjYyw==
+	bh=1JnIR04etmz6u4Kdb+coZlFE6OzcEQAdBtxkl0AbwOg=;
+	b=NG3H36aDK5nJUD+UxF2XjngnigLmr53t0lal7rQdrC34GtPaO8yf30upcqfZ7+aQvB2F43
+	oaImyfVfKzqcKUix4E7QLWI+KNaOK0Kr8gsBFmGsNFhG5sSrjtozodrS4xcsK7kjz3Qkhn
+	EUCTICpj32F0cTr8Tw5paOaHL9wDsv9DgvBSNi7BHW8T0Ct18UpKZ9oCuYwpJel3tQ37SP
+	JEccAzpCn345ADwbic0PYhLGLkYXw+DMSSB36INi3MEua98niFiUGy6YZT9mCIkqEdsMbL
+	JiWmHYbXBLrLCmJwx9lSK//auJnNyko1vo3vlowEHsEJZUwWi95k23bKeohOmw==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Wed, 24 Dec 2025 17:32:18 +0100
-Subject: [PATCH 52/53] test-manual/understand-autobuilder.rst: remove
- obsolete poky repo references
+To: docs@lists.yoctoproject.org,
+	Antonin Godard <antonin.godard@bootlin.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH] migration-guides: add Wrynose release note templates
+Date: Mon,  5 Jan 2026 14:52:27 +0100
+Message-ID: <176762113057.481362.18130887783926905101.b4-ty@bootlin.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20251218-release-notes-templates-6-0-v1-1-61690583cef2@bootlin.com>
+References: <20251218-release-notes-templates-6-0-v1-1-61690583cef2@bootlin.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251224-remove-poky-references-v1-52-658a5f4dbde2@bootlin.com>
-References: <20251224-remove-poky-references-v1-0-658a5f4dbde2@bootlin.com>
-In-Reply-To: <20251224-remove-poky-references-v1-0-658a5f4dbde2@bootlin.com>
-To: docs@lists.yoctoproject.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Antonin Godard <antonin.godard@bootlin.com>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1160;
- i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=A+gnKUTYRLxtYe232U7LRDmNgUR5nT0LBOPi0xSkT1Y=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpTBVwg87JAFVVoEpMnfRh0X9A2XHVsHQ+gIU42
- OLiRNXYsoeJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaUwVcAAKCRDRgEFAKaOo
- NnJ4D/wO/ps/hF9S2yGlcs0FZebunU5LD8ihSAGGROQuxMS6bShZ+RrxDqFWROy9gJ1x6OFoizo
- ueJgYba9kiH7FaxanZwU0yVoU73MtCYa64sZil6kAsHPVPNSDfxh+GhaUlZSpXe1brYfgOxn7m7
- poEkLiHgD5yX+cawaKKBDjET7Bqn7ipEaBlZN/zUPNFZeds87Y8KAgEBaKEclgqlsRkXwYkti9Y
- pli1L9KKgiyRdqcKPH+1mDVQcSnepKQSoP9yDI2r6lQ9hVHn6lJrkM74isYsvCKc9UfXB0jfcYe
- ENJsS2NjMd3zzGj4eGi6xFdJNHcPhO0U0mccnrLdMCnqzvIKeg5hq15cIShvc5LxoryFmaqbORe
- pxwBTQVkC/vvGaUYJZwNIyst3Yp6ssebzVwPfWhxCN5fmuFUYwHumU4v00X/FIaE5tAEs7p9h5E
- 7DofeRW3f7KFunY/sdZrdmc2bI7WN5/UGyNhwFGQVV08gmVwR0RlmDJxHq85rt6MueGpGhwQaxw
- eDFfK1tmINNN4D7g8YecjfDnD6MPi84xgdvQ8PFZBQgHqz0T1PJGy4inFuqjsYcKnPFd2EENOWL
- 7b4FdCL+j/UTwnTZw0rFaa1JLKSE/mLCWmAZp4912neMak27aoniUEXUmtG8SXIuI8M4i80OjIW
- vfQlNbeZ4gK7csA==
-X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
- fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: quoted-printable
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 24 Dec 2025 16:32:34 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8381
+ <docs@lists.yoctoproject.org>; Mon, 05 Jan 2026 13:53:11 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8383
 
-Refresh the document now that the Poky repository is obsolete.
 
-Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
----
- documentation/test-manual/understand-autobuilder.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Thu, 18 Dec 2025 10:40:05 +0100, Antonin Godard wrote:
+> Add templates for the next release, Wrynose, coming out in April 2026.
+>=20
+>=20
 
-diff --git a/documentation/test-manual/understand-autobuilder.rst b/documentation/test-manual/understand-autobuilder.rst
-index 23b3ef7d7..2b5eb144f 100644
---- a/documentation/test-manual/understand-autobuilder.rst
-+++ b/documentation/test-manual/understand-autobuilder.rst
-@@ -104,7 +104,7 @@ roughly consist of:
-    This is a call into the Helper scripts to set up a checkout of all
-    the pieces this build might need. It might clone the BitBake
-    repository and the OpenEmbedded-Core repository. It may clone the
--   Poky repository, as well as additional layers. It will use the data
-+   :term:`OpenEmbedded-Core (OE-Core)` repository, as well as additional layers. It will use the data
-    from the ``layerinfo.json`` file to help understand the
-    configuration. It will also use a local cache of repositories to
-    speed up the clone checkouts. For additional information, see
+Applied, thanks!
 
--- 
-2.51.0
+[1/1] migration-guides: add Wrynose release note templates
+      commit: 2cd203ea709f291150ece0819385e3d8237c007a
+
+Best regards,
+--=20
 
 
