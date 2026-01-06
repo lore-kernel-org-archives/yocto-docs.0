@@ -1,107 +1,73 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1420FCE9D61
-	for <webhook@archiver.kernel.org>; Tue,  6 Jan 2026 15:34:51 +0000 (UTC)
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.92475.1767713683901183274
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A7AA3CEFD05
+	for <webhook@archiver.kernel.org>; Tue,  6 Jan 2026 20:45:32 +0000 (UTC)
+Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.100196.1767732325450476819
  for <docs@lists.yoctoproject.org>;
- Tue, 06 Jan 2026 07:34:44 -0800
+ Tue, 06 Jan 2026 12:45:25 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=l9IgVmLd;
- spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 18F49C1E4BA
-	for <docs@lists.yoctoproject.org>; Tue,  6 Jan 2026 15:34:16 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 2C08F60739
-	for <docs@lists.yoctoproject.org>; Tue,  6 Jan 2026 15:34:42 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 83098103C86E0;
-	Tue,  6 Jan 2026 16:34:41 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1767713681; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=9r3MjcAU8tD3c/iKoT9UmsKkLv4yhK23N7UrS707y1k=;
-	b=l9IgVmLdUO3ul/3tvc8tjxyXSjGg+Ya5ftt0ZOBT7/WvtwPcWlH2HINMPH78ptXf9APzZd
-	HjHVk2haHITZK/mW7orVnkDHD1r9xnA6OIH9a3T9yMd0P8SsvZdxhSGVEDhAWOdO/E8k7t
-	2ltrR292K3s9XllR8LBsVLKEykF2yAWSqSzmzcAfxs4PSxJmGOtcG7SatpnXPgPCK6cqP+
-	I4SSoC8VsfhIZl6uyNMTCjc9JJK3yNEaX92yXSTaLwa7oa0Me7dIqwTE0PJ8rU9sncwnUf
-	i58P4MIHJP/00E58+20dFwMsdJO7nX+8CAWGFlYXJ2ZhNdUbPCJiyc5c7hoI0A==
-From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Tue, 06 Jan 2026 16:34:33 +0100
-Subject: [PATCH 3/3] security-manual/securing-images.rst: remove old links
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=d1niW9Qz;
+ spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
+	To:From:Date:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=iRS7vcWVnZ6dlcbCBeYkwNFhHVWpny3D+9/R04CzCG0=; b=d1niW9Qz8aDDU8XtEofJZiJSwj
+	TxztOwro2POEm9bNfONqzfyDrWfdUvI4yT12BEcmWOMxRTR8Q1Fr2vgFFZ6Am/C+BUQZAakI+ZUYg
+	64QI9imjWUVfBY4FkKp4QBs91WQL+fH3r6Ss+b/sFvJztTb8QLtwj3MAV8wfiAnKcucvhcllzhd7p
+	s3bCsqnn8ET7k9njAieGqtvZp0UJ+GPGoKQvIIqnOXQmQFCghHoQHUe9K3xZEmqkIjmidzwLHROCc
+	kCZuykEgd0YrDqY0HzHsZrqsbQFtb/3YuAisaZi3UrfU0GM4T+B0gyrLFX3X9yFkW7X9u6PBqvo7x
+	mIusk4wQ==;
+Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:53910 helo=rday)
+	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.99)
+	(envelope-from <rpjday@crashcourse.ca>)
+	id 1vdDvf-0000000CxwO-3ahf
+	for docs@lists.yoctoproject.org;
+	Tue, 06 Jan 2026 15:45:24 -0500
+Date: Tue, 6 Jan 2026 15:48:25 -0500 (EST)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+To: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: should YP docs host_packages_scripts have symlinks for debian?
+Message-ID: <64f61085-723b-70d5-a019-f11c02e8c8b2@crashcourse.ca>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260106-security-manual-v1-3-500fe611a4d0@bootlin.com>
-References: <20260106-security-manual-v1-0-500fe611a4d0@bootlin.com>
-In-Reply-To: <20260106-security-manual-v1-0-500fe611a4d0@bootlin.com>
-To: docs@lists.yoctoproject.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Antonin Godard <antonin.godard@bootlin.com>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1450;
- i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=vrKFdNW950+xj9R7rnMaVIBAUjN9C2K2Q2oYQJSzhDo=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpXSuPPANYapOAIy2XYLeXmbIOOxE9dR5hnGiv9
- fUmQhYWRdOJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaV0rjwAKCRDRgEFAKaOo
- Nrf6EACS4+cbLq20WTLxZUsjxJOriNndwXX/T9bN69P00mZcKIgv/7osTPJOdZfuv8AY1f0uZ6f
- z/Ryy+Jkbli9doTW30kGIkaVXyIXilByoH/fnloGMGLdfZJCIMyaFRVuXUlKZHu9vBV6bWdIyiE
- +FVku+EMcH1rMOlvlNrNdYZLP3q9oo5j+nriQojE5+dsNGQgkeIORWFuE6VFMwTeyKZL0QmKXhx
- nfE2kOLXzbJglR1rTv8uIilHCBERp4TI5wDPLBcnGOtMo5mxWMsKm92GJeV7EmAB/r2UPq+yk6r
- n1nd51YbsyKjGl4jI0HLnZIhIPxNccXat4RQe9MC0bOft0/ydfJX2swOV7A5LJLiAGyGqgNL5Xy
- O9jLa8l6NJdPvkDXDCbHkAehJvzRz0DKfIoWMyAEC6KBx7mT9/uG+3UxbQkNE7QpDZzO6/u2cdW
- 2A6ir7ZGMKwHAnHiBioc8HEXHP7m6StNuwmNUYgHkH/imQJNuIM13BBfcWuazXSxNA6qZhReEUc
- EQzcgaHNYdzVIVZwOEJcsJpLk4WXePXoC+6s/SyPU+txbxq+Tw8HmSXxJrlgILjam+zjoPhNHeb
- VIsW+GcGaBlaqmeXGZX43FC7wqJuc3EeaXk9fV+FMdYoHih2Y0GTb/WxYrtO4EjTxWGiSMXuMJ0
- uhU7uR21fayo3tg==
-X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
- fpr=8648725188DD401BB9A0D3FFD180414029A3A836
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=US-ASCII
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
+X-AntiAbuse: Original Domain - lists.yoctoproject.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - crashcourse.ca
+X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 06 Jan 2026 15:34:51 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8400
+ <docs@lists.yoctoproject.org>; Tue, 06 Jan 2026 20:45:32 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8401
 
-Remove links to the start of the securing-images section, as these are
-old now and not really related to the Yocto Project.
 
-Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
----
- documentation/security-manual/securing-images.rst | 16 ----------------
- 1 file changed, 16 deletions(-)
+  i noticed when updating my yocto-docs checkout and trying to build
+on debian 13 that i was missing the debian package
+python3-sphinx-copybutton. fair enough, but in the
+host_packages_scripts directory:
 
-diff --git a/documentation/security-manual/securing-images.rst b/documentation/security-manual/securing-images.rst
-index c66dde7f7..cc6f95003 100644
---- a/documentation/security-manual/securing-images.rst
-+++ b/documentation/security-manual/securing-images.rst
-@@ -3,22 +3,6 @@
- Making Images More Secure
- *************************
- 
--Security is of increasing concern for embedded devices. Consider the
--issues and problems discussed in just this sampling of work found across
--the Internet:
--
---  *"*\ `Security Risks of Embedded
--   Systems <https://www.schneier.com/blog/archives/2014/01/security_risks_9.html>`__\ *"*
--   by Bruce Schneier
--
---  *"*\ `Internet Census
--   2012 <http://census2012.sourceforge.net/paper.html>`__\ *"* by Carna
--   Botnet
--
---  *"*\ `Security Issues for Embedded
--   Devices <https://elinux.org/images/6/6f/Security-issues.pdf>`__\ *"*
--   by Jake Edge
--
- When securing your image is of concern, there are steps, tools, and
- variables that you can consider to help you reach the security goals you
- need for your particular device. Not all situations are identical when
+https://git.yoctoproject.org/yocto-docs/tree/documentation/tools/host_packages_scripts
 
--- 
-2.52.0
+there is no explicit debian_docs.sh script, while there are symlinks
+for other distros to cover the bases.
 
+  would it make sense for there to be actual debian-flavoured host
+package scripts, and symlinks for debian-derived distros? so the
+debian scripts would be the *actual* scripts, and the ubuntu versions
+would be symlinks? for consistency.
+
+rday
 
