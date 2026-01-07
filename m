@@ -2,14 +2,14 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 55D00CFD626
-	for <webhook@archiver.kernel.org>; Wed,  7 Jan 2026 12:51:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 61141CFD628
+	for <webhook@archiver.kernel.org>; Wed,  7 Jan 2026 13:05:45 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.4987.1767790261288834001
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.5229.1767791137188402962
  for <docs@lists.yoctoproject.org>;
- Wed, 07 Jan 2026 04:51:01 -0800
+ Wed, 07 Jan 2026 05:05:37 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=qs5ZiHNG;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=GkSufRiW;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
@@ -17,24 +17,25 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=jinq03CLMGpKw4GFgJRW8yxQ5N4aVbvQDiaKLievU30=; b=qs5ZiHNGbp5ubquH1jpokMnDaZ
-	HHZ1IB2Icdq1sxmtJVd5E/QXVb0ypa/L+tM5dc1fNJuBMwZAiCgeZpZVOTt6TsSYch5p5zaUGPou0
-	JFW7Snkyj0B29KYjl5dJHOknnjnjFhW6n4cdBTySQTS7FCneSckHZBJAIvK9uTh3NUeAogwcoWcF0
-	Tngap4YsPsoBGBUYC7hx3dVfidB8S+li+6jWlrgbYOvLroY567t5BAQyL3v2Wza9ODt4FTJfY1Bbt
-	FOffipePPZ2CiIe74BQ2YsfSjC329ceTtv6uHi3Vk/xP2XzMiNHOiDgsT1ySgM2JiQYtF5XzrvX9M
-	c9hfEqQA==;
-Received: from [147.129.179.166] (port=52212 helo=rday)
+	bh=vvBonmJPjeu6PCY+BbfUpgoXvMLxOhpbLB7etSLxis0=; b=GkSufRiW5amUOWv+WrcqlucRMh
+	wGET32yF3gug4jXAAX8tRYEzbgmyzcneiePQREaJn9TaGF+GVyfLoKDtsONAt9j3WvuNnpzw4qEGE
+	3JX2fKgv+LGDmsQohOGUM1QrNwZDtqD0J8/QHvvkViqlBJU5/rHaIhHHaeRRzQ1U1k2YD5v/1hzUh
+	aXLgJp4/Wqth17Ddqc/31ykxjNv1PEdFCwUTlHnUDL4d/3x8JHogXhoMNgGm+S04Dhiu0yzBxfB0O
+	FrqPzDw5fNmQwmX5Al9uVm7fLDlNfswkpAtq4UuDXTiLXeUlbkX347HUe/Gnr9aYTjB81V1OhVa5w
+	TuKf/bXg==;
+Received: from [147.129.179.166] (port=46258 helo=rday)
 	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.99.1)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1vdT07-0000000FIJ5-0xcT
+	id 1vdTED-0000000FKxW-1sXn
 	for docs@lists.yoctoproject.org;
-	Wed, 07 Jan 2026 07:50:59 -0500
-Date: Wed, 7 Jan 2026 07:54:05 -0500 (EST)
+	Wed, 07 Jan 2026 08:05:35 -0500
+Date: Wed, 7 Jan 2026 08:08:36 -0500 (EST)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: is a wildcarded bbappend file name valid without a "_"?
-Message-ID: <0a95bb97-ef68-5bb2-c4f6-319fc8f62e06@crashcourse.ca>
+Subject: should docs explain unversioned recipe files and unversioned append
+ files?
+Message-ID: <fbd1c18a-ea92-1a7b-14bb-2ccbf0400828@crashcourse.ca>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -50,38 +51,25 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 07 Jan 2026 12:51:05 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8402
+ <docs@lists.yoctoproject.org>; Wed, 07 Jan 2026 13:05:45 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8403
 
 
-  wasn't sure where to ask this but since i read it in the bitbake
-manual, i figured, let's ask docs.
+  one more pedantic observation about append files and corresponding
+recipe files. occasionally, one runs across an unversioned recipe file
+for which some other layer has an unversioned bbappend file, one
+example being the "mesa" recipe:
 
-  regarding using wildcarding in bbappend file names, the bitbake
-manual insists:
-
-"In the most general case, you could name the append file something as
-simple as busybox_%.bbappend to be entirely version independent."
-
-  ok, fair enough, that appears to imply that even in the most general
-form of wildcarding, you would have the underscore just before the "%"
-wildcard character.
-
-  but i've seen a number of examples where even the underscore is
-omitted, such as in this search under the meta-security layer, where
-the final line shows that the underscore is missing from the filename:
-
-$ find . -name "linux-yocto*bbappend"
-./recipes-kernel/linux/linux-yocto-rt_%.bbappend
-./recipes-kernel/linux/linux-yocto_%.bbappend
-./meta-tpm/recipes-kernel/linux/linux-yocto-rt_%.bbappend
-./meta-tpm/recipes-kernel/linux/linux-yocto_%.bbappend
-./meta-integrity/recipes-kernel/linux/linux-yocto%.bbappend
+$ find . -name "mesa.bb*"
+./meta-raspberrypi/recipes-graphics/mesa/mesa.bbappend
+./meta-freescale/recipes-graphics/mesa/mesa.bbappend
+./openembedded-core/meta/recipes-graphics/mesa/mesa.bb
 $
 
-  so this is clearly legal. should it be mentioned as being legal? or
-discouraged? the bitbake manual certainly doesn't explain that this is
-a valid form of wildcarding. should it?
+  so what is the rule here? if a recipe file is unversioned, then the
+append file for it must also be unversioned to match? what if the mesa
+recipe were suddenly to become versioned? would that append file still
+be applied? the docs don't seem to cover this possibility.
 
 rday
 
