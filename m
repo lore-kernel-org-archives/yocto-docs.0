@@ -1,120 +1,103 @@
-Return-Path: <richard.purdie@linuxfoundation.org>
+Return-Path: <pierre-loup.gosse@smile.fr>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9D0EFCF6BE1
-	for <webhook@archiver.kernel.org>; Wed,  7 Jan 2026 16:34:07 +0000 (UTC)
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.10245.1767803641567688362
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B3145D0D145
+	for <webhook@archiver.kernel.org>; Wed,  7 Jan 2026 17:02:27 +0000 (UTC)
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.11028.1767805343963498526
  for <docs@lists.yoctoproject.org>;
- Wed, 07 Jan 2026 08:34:01 -0800
+ Wed, 07 Jan 2026 09:02:24 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=apx0TDfM;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.128.45, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-477ba2c1ca2so24201995e9.2
-        for <docs@lists.yoctoproject.org>; Wed, 07 Jan 2026 08:34:01 -0800 (PST)
+ dkim=pass header.i=@smile.fr header.s=google header.b=AMf/oekL;
+ spf=pass (domain: smile.fr, ip: 209.85.221.53, mailfrom: pierre-loup.gosse@smile.fr)
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-42fbc544b09so1615488f8f.1
+        for <docs@lists.yoctoproject.org>; Wed, 07 Jan 2026 09:02:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1767803640; x=1768408440; darn=lists.yoctoproject.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:to:from:subject:message-id:from:to:cc:subject:date
+        d=smile.fr; s=google; t=1767805342; x=1768410142; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=RjUJZummFYoFZQWGvBjVNp24UtY9mLbrI2BN27zifk0=;
-        b=apx0TDfMXI0DQrcdDA7dRO8rfvJwVnSQ6CfKlY4xdFGlbO2HuEnJlu6OyLK3qCd6qz
-         y2kC4n/isOpn3T1iPocmxbcxOvjB1SBlqWriYiw2ux5LDSlXIoxjrafGeGhpK+Cl92fU
-         u1GK6Npn2mIFIR4sbkUxYB+zMBcSiw/YLDUUU=
+        bh=sflFbFkvdSDqkuIdRR0aSy6K8tp6/xe0PV+1Of15bjs=;
+        b=AMf/oekL/be/C0wQNWGMDlJIrkXXpWeKuVfJcDz/ZXEcuCLU5BgPHUWkVVg9+Odcdj
+         oIF7QNe3j/cvd726kMrKvXhbt/gU8WpXUizdtJ/phVcXpMTHqrW6s9Lp8EeMB8eiplZ1
+         a4I3OzgsAW0Kg7EgWR67JIhx6ARNfxwTGqhZ0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767803640; x=1768408440;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=RjUJZummFYoFZQWGvBjVNp24UtY9mLbrI2BN27zifk0=;
-        b=VvvSRraf0yH6MRCpgkkQ5fCgzYRNYzEBqwyO+xCh5UMWrn8PwP4goCzDxRA98wRH20
-         DkS2ZxxmNIPBk+4qQ9xixjS4s5lWEiu8Wnzu4qjNumSmMiAI2hjqqNTdkAqg5KmxGWxD
-         CSjEXz0BO0YSoKHFz6JUVRO2Gn1/I8QfKVR0XDmSjQHmOgdqn/CznL0vBYnfbIlyLvdq
-         AziAdVcL1Cci90hQPrKPhwMPNgUhqg1KheMoKB9ayEVfHQZKfdZeZ5CG6hkMZ9O9pUye
-         Mrj6mese0EQLgqjlgVebmPqGHGJuMAHi2ccZQs7tdAZh0ltvcuaWufkyfrNEEpU3qHsH
-         kb5Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXINIzU1idq6cT/vjanTuct4mN7wGTJgwDIxoVq3LqDtA3XGx/5qQJQHbjA+75iaeUsWKXT@lists.yoctoproject.org
-X-Gm-Message-State: AOJu0YwTNegKqo1N6FqUw3UT5fabH+lrANYnTRYyUA2xq3MoBJ7MxPw4
-	E/MX5kU8yJZ3YuexHB1YS9EL1DgRPOb/mEL2Jhr9s5wOcpVycD6vDQyaTPdlvaHXQYs=
-X-Gm-Gg: AY/fxX5eOqOeCH6LgWScYMKEEhNwICx661/VY/safgbUkf2o1D9CbqrDoIYDtIsIzi5
-	qzQ1E5+6wk69hBft5eHNI5bptvBGns1aWJH9erX3BYzM5z5eLJebqFkQbkgoJNOaZ83pYEj6ifB
-	TBj2rrA6sveQL2kdoDX/Q7RIwo2T2q/m+6rJtE0fD8Uj5Mp2XfrAsXr3H5ZdyLEc31wU8n7UpYH
-	JCWdfIjNovPgNyKOUGs6v9ryujfbn831uqBoth3YWlEncQId3XfYAluTpn1gwt5fryarDWY+7xg
-	Cz7LQJkaStXgfHXpoKbAGrT1pgdjpRyTS/LAnCk8GoEblUfeVkQ9pUoPE5ac4zTFN4cPCI6XKz9
-	iN3EsN9rMetKyjebWpIFmqn76W9MY7Ee2rCFvwfwcMSzEH6V6nlq9D5gZFcNARbj3ifBVB1jHLm
-	mPF1Z+Q/5esQ13p2tWWuxI46u0vy+B8cf2eMO21Y/L49MyYnIaQGkIuRIzCNtLs6DNlOrpBbfG
-X-Google-Smtp-Source: AGHT+IGuur/MrDYV+JYbxOsmvm5gfkxcVbhJOJ7oUrcpHP4OvZUjR7MsFPUWfcUzGhkyQeBsB4ohUg==
-X-Received: by 2002:a05:600c:3b05:b0:46e:761b:e7ff with SMTP id 5b1f17b1804b1-47d84b3865emr34847695e9.28.1767803639938;
-        Wed, 07 Jan 2026 08:33:59 -0800 (PST)
-Received: from ?IPv6:2001:8b0:aba:5f3c:97d2:bd66:800:7506? ([2001:8b0:aba:5f3c:97d2:bd66:800:7506])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d7f410c86sm108917795e9.3.2026.01.07.08.33.59
+        d=1e100.net; s=20230601; t=1767805342; x=1768410142;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=sflFbFkvdSDqkuIdRR0aSy6K8tp6/xe0PV+1Of15bjs=;
+        b=r8C+DggFrsvXT742fdWhp8xFyVu5e+POXcAwLCgk76aSRHBwkLMMn6vV71hJejguEp
+         fcjnYmK1wYE4Rlvdk7nFHm2g3FtJ9kqdIl4PyhTvdP4ZeLm1CaXgKw52rzBkT0Q7/4zy
+         QqPHFwN1gxyd/4pNYsiHi9AVg4iGaVqwKfJE1PgMVd8Nu6rug/CHOhnT1xjxVTnY3v0g
+         lBZRuustdoGinSqASpKCCmUdpOdnzhdZiI6YgDdN5jiQlV03Cbeqi2HV82KM+mUKqHZ0
+         m2BsyXZZSfXuHNq2WJj+Tyt0GuvDIomLg/DQTWSdfrecqud2nYKpFUzI5eYKHmihl2Qz
+         BKJw==
+X-Gm-Message-State: AOJu0YwBBcOsWVDoUf+2uOcgHvacfSo63pfoVKQBy6JxLn0Crd9izSxx
+	JMfxqJYx2tY62rj/MM3tYJte3u2U474v9rWg6Q5KITItrSWDSdnAKnPYDVF5kcnjsma948VJQwX
+	qD1kpVZE=
+X-Gm-Gg: AY/fxX4dV0Mb0047H5sB6R/bEUV285a1qJ+CU/zpVR5riWUfYtYKSqf4+HJzJ6baYo5
+	udz+kWjNAmcyUqw5UwfskQmpDxAUToHMm0QYURqqIWrrp8v6Y8NoWxP/ny2M9ZJRI4ZRHSeTkrG
+	DdjIj+zxfRgtK5+WEBYyKyyoLupjxk2vQ6t5zgrzP3I6cHkbmbCof3teuO22yzJyUHTf+8LTDOR
+	JmNHpt68yZPIfrIe6i4fRvyYweDTJ72QkdOS1gmkeVeDN32nEUr+5bmrGGW4Xyso7JtuYCC3rlF
+	d3UjeD/1DduxVUHafW6+9q4Xb0OALL7Fj/C2tsKd5/uln3ASodC/0SymDSk9JX5uVkBmowazQnO
+	O/ufq0YWx3fQ6GNtDvhDm7wX1g5JLbOdJWNzOzh3iXBUvxy++FsCXKKfbTUykTnCTpKoy2v/fKX
+	ZouJDHzykjQVmRyNjR39EdgcvTTEkhm6A6At6sjyAsk2+0qL/DdvFRFG2G033SsuqpPXylNL+SG
+	9YNGnss9MwoqjmVNUTV6qz/E3mpoapO0MBUe9L1njfxxIQHGdd+MmJ83PyoaWi5mAR1DqRMYxaA
+	PkpAzPRjQ9Np0A==
+X-Google-Smtp-Source: AGHT+IGxuGXkmnOiSZp2rj5WABH2ta2xUFchCO4bSdtK9Af/Px2rD7n9bTXpjNvgk+gWJtg4MCNprw==
+X-Received: by 2002:a05:600c:4fc3:b0:477:569c:34e9 with SMTP id 5b1f17b1804b1-47d84b3b9e6mr46342125e9.23.1767805342094;
+        Wed, 07 Jan 2026 09:02:22 -0800 (PST)
+Received: from FRSMI24-BLUE.example.com (2a01cb000301bd00d0605e902e807ddb.ipv6.abo.wanadoo.fr. [2a01:cb00:301:bd00:d060:5e90:2e80:7ddb])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d7f6f0e15sm103054015e9.10.2026.01.07.09.02.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Jan 2026 08:33:59 -0800 (PST)
-Message-ID: <e5913520e7d9e07ea0e21a9ad4ea7592531b8062.camel@linuxfoundation.org>
-Subject: Re: [docs] my opinion on why i think the docs need refactoring,
- with an example
-From: Richard Purdie <richard.purdie@linuxfoundation.org>
-To: rpjday@crashcourse.ca, YP docs mailing list <docs@lists.yoctoproject.org>
-Date: Wed, 07 Jan 2026 16:33:58 +0000
-In-Reply-To: <a7e2a0dc-1509-aeb7-cab6-ee9f3f1f0a22@crashcourse.ca>
-References: <a7e2a0dc-1509-aeb7-cab6-ee9f3f1f0a22@crashcourse.ca>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.0-1ubuntu0.1 
+        Wed, 07 Jan 2026 09:02:21 -0800 (PST)
+From: pierre-loup.gosse@smile.fr
+To: docs@lists.yoctoproject.org
+Cc: Pierre-Loup GOSSE <pierre-loup.gosse@smile.fr>
+Subject: [PATCH 2/2] migration-guides/release-notes-6.0.rst: add U-Boot initial env binary
+Date: Wed,  7 Jan 2026 18:01:53 +0100
+Message-Id: <20260107170153.760421-2-pierre-loup.gosse@smile.fr>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260107170153.760421-1-pierre-loup.gosse@smile.fr>
+References: <20260107170153.760421-1-pierre-loup.gosse@smile.fr>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 07 Jan 2026 16:34:07 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8412
+ <docs@lists.yoctoproject.org>; Wed, 07 Jan 2026 17:02:27 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8414
 
-On Wed, 2026-01-07 at 08:04 -0800, Robert P. J. Day via
-lists.yoctoproject.org wrote:
->=20
-> =C2=A0 One of the things that has bothered me about the general OE/YP doc=
-s
-> for a while is that, in things like glossaries and reference manuals,
-> there's too much explanatory content being stuffed into those
-> sections, rather than being fully explained in a single place in a
-> single manual somewhere.
->=20
-> =C2=A0 IMHO, any topic or feature should have an adequately complete
-> explanation in one manual somewhere, and references or glossaries
-> should have little more than a one- or two-sentence summary of any
-> concept, then should redirect the reader to the full explanation.
->=20
-> =C2=A0 Here's an example related to PROVIDES, where much of the same
-> content is duplicated in both the body of the BB manual, and in the
-> BB
-> variables glossary:
->=20
-> https://docs.yoctoproject.org/bitbake/bitbake-user-manual/bitbake-user-ma=
-nual-execution.html#providers
-> https://docs.yoctoproject.org/bitbake/bitbake-user-manual/bitbake-user-ma=
-nual-ref-variables.html#term-PROVIDES
->=20
-> =C2=A0 This seems inefficient and somewhat disorganized, since the poor
-> reader becomes unsure where to find the definitive explanation. There
-> should be a single location that fully and completely explains any
-> concept, and all else should do little more than link to that
-> explanation.
->=20
-> =C2=A0 This would make it easier for volunteers to offer to write
-> documentation, since the rule would be that they're expected to
-> explain some concept in sufficient detail, that would be added to the
-> appropriate manual or user guide, and everyone else would simply
-> point
-> at it. As it is, I think far too much explanatory content is being
-> placed in reference sections or glossaries.
->=20
-> =C2=A0 Thoughts?
+From: Pierre-Loup GOSSE <pierre-loup.gosse@smile.fr>
 
-We take incremental improvements to the docs and we can add these
-sections and do that. The barrier is people having time to do the work
-and write the patches.
+Added by commit cf11b14a4cfc ("u-boot: make initial environment binary
+image") in OE-Core.
 
-Cheers,
+Signed-off-by: Pierre-Loup GOSSE <pierre-loup.gosse@smile.fr>
+---
+ documentation/migration-guides/release-notes-6.0.rst | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-Richard
+diff --git a/documentation/migration-guides/release-notes-6.0.rst b/documentation/migration-guides/release-notes-6.0.rst
+index cfc51fc3a..13ce28b3b 100644
+--- a/documentation/migration-guides/release-notes-6.0.rst
++++ b/documentation/migration-guides/release-notes-6.0.rst
+@@ -71,6 +71,12 @@ New Features / Enhancements in |yocto-ver|
+ 
+ -  :ref:`ref-classes-sanity` class changes:
+ 
++-  U-boot related changes:
++
++   -  :ref:`ref-classes-uboot-config`: Add support for generating the U-Boot
++      initial environment in binary format using
++      :term:`UBOOT_INITIAL_ENV_BINARY`.
++
+ -  Miscellaneous changes:
+ 
+ Known Issues in |yocto-ver|
+-- 
+2.34.1
+
 
