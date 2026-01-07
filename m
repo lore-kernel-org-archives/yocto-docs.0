@@ -2,14 +2,14 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 913CBD0D16C
-	for <webhook@archiver.kernel.org>; Wed,  7 Jan 2026 19:17:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 12914D0D176
+	for <webhook@archiver.kernel.org>; Wed,  7 Jan 2026 21:09:09 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.14360.1767813423317789521
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.16882.1767820146556884488
  for <docs@lists.yoctoproject.org>;
- Wed, 07 Jan 2026 11:17:03 -0800
+ Wed, 07 Jan 2026 13:09:06 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=rXaczGk3;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=RrB9o4SQ;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:References:
@@ -17,26 +17,26 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
 	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=1XHyA+XsughfRhzoQhmrMwIKwf+RaUjB7CJq9gmfQ+4=; b=rXaczGk3LiNAknU24TdeZvq+ZV
-	h9u3TYW5cyDYdFx7/FvUa+vk9EZoXpYCwkvliR1xC3rvaF/M4AppmPGNxRblP3deZmcBOuqnQViBa
-	DrwU0iQDSR4wigOQ72wbl7o68/bF5go5BMVX9DCjHHIEjTKfIlB8YBKWeXZu1JiYade6KMKnJzBhW
-	Z71DtWfzFIVQNIksreH6n9Ijwux/OCz9C2E96rQuPxyybumv3yqpdCMpmqgqnY7NS4BAc7DFgcMeo
-	uoptsbw+/Vo7JqDT9kR3mq7mVAQ3aBLktox+eWZALm6NMdFlOF7lyraOq4eMC5CAKpb2alJhslCNm
-	sLjnQt7A==;
-Received: from [147.129.179.166] (port=42094 helo=rday)
+	bh=1zPmi6J2RyG1o1wMWjyo6TkZchYPY1PVK/CjhSAqOVk=; b=RrB9o4SQqPgCG6+rp22uKNMKbH
+	yPXlILP2GB9qKN3VTW9KsgZjC6RVLpCq+TmGNko6hy0k2apxnOStZWJW78/57mmxIg/r0JNzlpVLS
+	FfOYB1NEJXO08PCDie4i+im6G+4hcIuD0VbgVjMf8oWtczkkoWFQSMLVYyR+aeIqKXVK7Owlp4HkC
+	ti+s8KRQDOVbZYkfEJLdiKyPFZRH0R7ic2q8FuWEP09m+85Mx7n8YEHNyMTGOxBQziZ9gG+ui9s9i
+	epJGAhL/50+AQ6Hm+16kv6lD9FdkruOKVLggI6LHkcQmTe+cqsGuyfQHJ2UUtGrNzJGEMdGRMnI6/
+	hVJVcSug==;
+Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:33878 helo=rday)
 	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.99.1)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1vdZ1g-0000000GHOY-2dNW;
-	Wed, 07 Jan 2026 14:17:01 -0500
-Date: Wed, 7 Jan 2026 14:19:54 -0500 (EST)
+	id 1vdam8-0000000GZ2x-1848;
+	Wed, 07 Jan 2026 16:09:04 -0500
+Date: Wed, 7 Jan 2026 16:12:09 -0500 (EST)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: Quentin Schulz <quentin.schulz@cherry.de>
 cc: YP docs mailing list <docs@lists.yoctoproject.org>
 Subject: Re: [docs] questions about documenting conditional syntax
  (overrides)
 In-Reply-To: <236c2bac-d0e1-41fc-a0c9-2fb62d938a5c@cherry.de>
-Message-ID: <26042863-66d4-374a-a0e2-814cbb86b84c@crashcourse.ca>
+Message-ID: <e4979bdb-6276-e43d-5ab8-c06c8b0c2f48@crashcourse.ca>
 References: <a4d00d27-a3e5-4cf5-e9ef-22c52c1c2b39@crashcourse.ca> <236c2bac-d0e1-41fc-a0c9-2fb62d938a5c@cherry.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -53,8 +53,8 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 07 Jan 2026 19:17:08 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8417
+ <docs@lists.yoctoproject.org>; Wed, 07 Jan 2026 21:09:09 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8418
 
 On Wed, 7 Jan 2026, Quentin Schulz wrote:
 
@@ -83,58 +83,75 @@ On Wed, 7 Jan 2026, Quentin Schulz wrote:
 > Pfew. Someone needs to check that, OVERRIDES is *very* complex. It is not easy
 > to explain. We need to do something better with it in the docs I agree. The
 > same can be said for variable context. Also not an easy topic.
+>
+> If I remember correctly, if no other OVERRIDES is involved for the same
+> variable
+>
+> VALGRIND:libc-musl:powerpc64
+> and
+> VALGRIND:powerpc64:libc-musl
+>
+> result in the same outcome. Note that :append, :prepend and :remove are NOT
+> typical OVERRIDES and replacing e.g. powerpc64 with append in the above,
+> results in different behavior in some cases (you usually want
+> FOO:append:machine and not FOO:machine:append). We'll omit that for now.
+>
+> The question is when OVERRIDES A is "weaker" than OVERRIDES B (that is, it
+> appears on the left of B in the OVERRIDES variable), what happens for
+>
+> FOO1:A:B = "bar"
+> FOO1:A = "foo"
+>
+> FOO2:A = "foo"
+> FOO2:A:B = "bar"
+>
+> FOO3:A:B = "bar"
+> FOO3:B = "foo"
+>
+> FOO4:B = "foo"
+> FOO4:A:B = "bar"
+>
+> FOO5:B:A = "bar"
+> FOO5:A = "foo"
+>
+> FOO6:A = "foo"
+> FOO6:B:A = "bar"
+>
+> FOO7:B:A = "bar"
+> FOO7:B = "foo"
+>
+> FOO8:B = "foo"
+> FOO8:B:A = "bar"
+>
+> A simple bitbake check should help answering that question.
 
-  i remember first reading about overrides and being persistently
-confused about what was happening, especially trying to understand the
-difference between
+  as a simple (and realistic) example that follows the way i described
+things in my last email, consider the following (where, again, jaguar
+is more specific than rk3588 and should take precedence):
 
-  A:foo:append
-  A:append:foo
+RDAY:jaguar:rk3588 = "jaguar:rk3588"
+RDAY:rk3588:jaguar = "rk3588:jaguar"
 
-and just this morning as i was experimenting did i have an epiphany
-about how to look at this. i might be completely off-base, but here's
-what i came up with. (quentin will love this example).
+don't ask what the final value of RDAY will be; instead understand
+that there will be *five* variables related to this, all of which i
+can display with "bitbake-getvar":
 
-  consider my rockchip jaguar board, which has as two of the overrides
-"rk3588" and "jaguar", "jaguar" being the more specific so it should
-take priority over "rk3588".
+  RDAY:rk3588:jaguar="rk3588:jaguar"
+  RDAY:jaguar:rk3588="jaguar:rk3588"
 
-  now i add the following to my local.conf file for that build:
+  RDAY:rk3588="rk3588:jaguar"
+  RDAY:jaguar="jaguar:rk3588"
 
-RDAY = "rday"
-RDAY:jaguar = "jaguar"
-RDAY:rk3588 = "rk3588"
+  RDAY="rk3588:jaguar"
 
-now since "jaguar" is the more specific of the overrides, that should
-be the one chosen and, sure enough:
+i'm not sure if that has any more explanatory value, but it makes it
+easier for me to understand that all those override assignments are
+just assigning values to variables, and it's all processed finally at
+the end of parsing to determine the eventual value.
 
-$ bitbake-getvar RDAY
-RDAY="jaguar"
-$
+rday
 
-  now one might say that when that override assignment was
-encountered, it assigned the appropriate value to RDAY.
 
-  wrong.
 
-  what was happening is that, as bitbake was parsing everything,
-*three* different variables were being assigned values:
 
-RDAY = "rday"
-RDAY:jaguar = "jaguar"
-RDAY:rk3588 = "rk3588"
-
-  all of those variables exist and i can even display their values:
-
-$ bitbake-getvar RDAY:rk3588
-RDAY:rk3588="rk3588"
-$ bitbake-getvar RDAY:jaguar
-RDAY:jaguar="jaguar"
-$
-
-  so all of those override assignments are not doing anything with the
-base variable RDAY (yet); they're simply assigning to different
-variables and only at the very end of parsing(?) does bitbake decide
-which variable's value should be used to assign to RDAY. does that
-make sense?
 
