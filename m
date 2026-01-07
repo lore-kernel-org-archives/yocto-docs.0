@@ -2,14 +2,14 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A7AA3CEFD05
-	for <webhook@archiver.kernel.org>; Tue,  6 Jan 2026 20:45:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 55D00CFD626
+	for <webhook@archiver.kernel.org>; Wed,  7 Jan 2026 12:51:05 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.100196.1767732325450476819
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.4987.1767790261288834001
  for <docs@lists.yoctoproject.org>;
- Tue, 06 Jan 2026 12:45:25 -0800
+ Wed, 07 Jan 2026 04:51:01 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=d1niW9Qz;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=qs5ZiHNG;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
@@ -17,24 +17,24 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=iRS7vcWVnZ6dlcbCBeYkwNFhHVWpny3D+9/R04CzCG0=; b=d1niW9Qz8aDDU8XtEofJZiJSwj
-	TxztOwro2POEm9bNfONqzfyDrWfdUvI4yT12BEcmWOMxRTR8Q1Fr2vgFFZ6Am/C+BUQZAakI+ZUYg
-	64QI9imjWUVfBY4FkKp4QBs91WQL+fH3r6Ss+b/sFvJztTb8QLtwj3MAV8wfiAnKcucvhcllzhd7p
-	s3bCsqnn8ET7k9njAieGqtvZp0UJ+GPGoKQvIIqnOXQmQFCghHoQHUe9K3xZEmqkIjmidzwLHROCc
-	kCZuykEgd0YrDqY0HzHsZrqsbQFtb/3YuAisaZi3UrfU0GM4T+B0gyrLFX3X9yFkW7X9u6PBqvo7x
-	mIusk4wQ==;
-Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:53910 helo=rday)
+	bh=jinq03CLMGpKw4GFgJRW8yxQ5N4aVbvQDiaKLievU30=; b=qs5ZiHNGbp5ubquH1jpokMnDaZ
+	HHZ1IB2Icdq1sxmtJVd5E/QXVb0ypa/L+tM5dc1fNJuBMwZAiCgeZpZVOTt6TsSYch5p5zaUGPou0
+	JFW7Snkyj0B29KYjl5dJHOknnjnjFhW6n4cdBTySQTS7FCneSckHZBJAIvK9uTh3NUeAogwcoWcF0
+	Tngap4YsPsoBGBUYC7hx3dVfidB8S+li+6jWlrgbYOvLroY567t5BAQyL3v2Wza9ODt4FTJfY1Bbt
+	FOffipePPZ2CiIe74BQ2YsfSjC329ceTtv6uHi3Vk/xP2XzMiNHOiDgsT1ySgM2JiQYtF5XzrvX9M
+	c9hfEqQA==;
+Received: from [147.129.179.166] (port=52212 helo=rday)
 	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99)
+	(Exim 4.99.1)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1vdDvf-0000000CxwO-3ahf
+	id 1vdT07-0000000FIJ5-0xcT
 	for docs@lists.yoctoproject.org;
-	Tue, 06 Jan 2026 15:45:24 -0500
-Date: Tue, 6 Jan 2026 15:48:25 -0500 (EST)
+	Wed, 07 Jan 2026 07:50:59 -0500
+Date: Wed, 7 Jan 2026 07:54:05 -0500 (EST)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: should YP docs host_packages_scripts have symlinks for debian?
-Message-ID: <64f61085-723b-70d5-a019-f11c02e8c8b2@crashcourse.ca>
+Subject: is a wildcarded bbappend file name valid without a "_"?
+Message-ID: <0a95bb97-ef68-5bb2-c4f6-319fc8f62e06@crashcourse.ca>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -50,24 +50,38 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 06 Jan 2026 20:45:32 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8401
+ <docs@lists.yoctoproject.org>; Wed, 07 Jan 2026 12:51:05 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8402
 
 
-  i noticed when updating my yocto-docs checkout and trying to build
-on debian 13 that i was missing the debian package
-python3-sphinx-copybutton. fair enough, but in the
-host_packages_scripts directory:
+  wasn't sure where to ask this but since i read it in the bitbake
+manual, i figured, let's ask docs.
 
-https://git.yoctoproject.org/yocto-docs/tree/documentation/tools/host_packages_scripts
+  regarding using wildcarding in bbappend file names, the bitbake
+manual insists:
 
-there is no explicit debian_docs.sh script, while there are symlinks
-for other distros to cover the bases.
+"In the most general case, you could name the append file something as
+simple as busybox_%.bbappend to be entirely version independent."
 
-  would it make sense for there to be actual debian-flavoured host
-package scripts, and symlinks for debian-derived distros? so the
-debian scripts would be the *actual* scripts, and the ubuntu versions
-would be symlinks? for consistency.
+  ok, fair enough, that appears to imply that even in the most general
+form of wildcarding, you would have the underscore just before the "%"
+wildcard character.
+
+  but i've seen a number of examples where even the underscore is
+omitted, such as in this search under the meta-security layer, where
+the final line shows that the underscore is missing from the filename:
+
+$ find . -name "linux-yocto*bbappend"
+./recipes-kernel/linux/linux-yocto-rt_%.bbappend
+./recipes-kernel/linux/linux-yocto_%.bbappend
+./meta-tpm/recipes-kernel/linux/linux-yocto-rt_%.bbappend
+./meta-tpm/recipes-kernel/linux/linux-yocto_%.bbappend
+./meta-integrity/recipes-kernel/linux/linux-yocto%.bbappend
+$
+
+  so this is clearly legal. should it be mentioned as being legal? or
+discouraged? the bitbake manual certainly doesn't explain that this is
+a valid form of wildcarding. should it?
 
 rday
 
