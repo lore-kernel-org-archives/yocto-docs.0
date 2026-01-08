@@ -1,157 +1,130 @@
-Return-Path: <rpjday@crashcourse.ca>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 12914D0D176
-	for <webhook@archiver.kernel.org>; Wed,  7 Jan 2026 21:09:09 +0000 (UTC)
-Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.16882.1767820146556884488
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C429BCF6A83
+	for <webhook@archiver.kernel.org>; Thu,  8 Jan 2026 08:28:29 +0000 (UTC)
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.2314.1767860908198444063
  for <docs@lists.yoctoproject.org>;
- Wed, 07 Jan 2026 13:09:06 -0800
+ Thu, 08 Jan 2026 00:28:29 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=RrB9o4SQ;
- spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:References:
-	Message-ID:In-Reply-To:Subject:cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=1zPmi6J2RyG1o1wMWjyo6TkZchYPY1PVK/CjhSAqOVk=; b=RrB9o4SQqPgCG6+rp22uKNMKbH
-	yPXlILP2GB9qKN3VTW9KsgZjC6RVLpCq+TmGNko6hy0k2apxnOStZWJW78/57mmxIg/r0JNzlpVLS
-	FfOYB1NEJXO08PCDie4i+im6G+4hcIuD0VbgVjMf8oWtczkkoWFQSMLVYyR+aeIqKXVK7Owlp4HkC
-	ti+s8KRQDOVbZYkfEJLdiKyPFZRH0R7ic2q8FuWEP09m+85Mx7n8YEHNyMTGOxBQziZ9gG+ui9s9i
-	epJGAhL/50+AQ6Hm+16kv6lD9FdkruOKVLggI6LHkcQmTe+cqsGuyfQHJ2UUtGrNzJGEMdGRMnI6/
-	hVJVcSug==;
-Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:33878 helo=rday)
-	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.1)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1vdam8-0000000GZ2x-1848;
-	Wed, 07 Jan 2026 16:09:04 -0500
-Date: Wed, 7 Jan 2026 16:12:09 -0500 (EST)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: Quentin Schulz <quentin.schulz@cherry.de>
-cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: Re: [docs] questions about documenting conditional syntax
- (overrides)
-In-Reply-To: <236c2bac-d0e1-41fc-a0c9-2fb62d938a5c@cherry.de>
-Message-ID: <e4979bdb-6276-e43d-5ab8-c06c8b0c2f48@crashcourse.ca>
-References: <a4d00d27-a3e5-4cf5-e9ef-22c52c1c2b39@crashcourse.ca> <236c2bac-d0e1-41fc-a0c9-2fb62d938a5c@cherry.de>
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=JhzcUepw;
+ spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 1D5001A26FB
+	for <docs@lists.yoctoproject.org>; Thu,  8 Jan 2026 08:28:26 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id DC4CE606B6
+	for <docs@lists.yoctoproject.org>; Thu,  8 Jan 2026 08:28:25 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 787CB103C87DC;
+	Thu,  8 Jan 2026 09:28:24 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1767860905; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=NlUP3g5WlV4c8Mm+tVMK35X9fk+YP0UYcgsUnjv+O7A=;
+	b=JhzcUepwvYU55bQIDkzL+gHcHEMZC66qCOL0opvk+bnbc0VY/n81V5u/RVzKFVKaduMVE6
+	gl/z7ab8mM72bXHKqBCf//vxZT+DpkPMyijn0qmRSTrwsivsciOXaHpNNwqHUtCTmMz0Uu
+	LhnahiEJUnWr37EJDEJTcIudRONcQvgXOBfJ34mIaRM8nLtuADu1o1YQyTPkJ8GNKKiQ2k
+	An1F0D2R5eJWOS7aP7FeFfKASfoYznwET/hTO9cWf9J6Pl5shnhd2d5+e2uUvO5w4VQ8eW
+	ysDdWlRRIt25mZD1EZrcp1TTLvi4z6tbpFqjtfVRf3lIE8jMzLsmYLDy2VNCUg==
+From: Antonin Godard <antonin.godard@bootlin.com>
+Date: Thu, 08 Jan 2026 09:28:07 +0100
+Subject: [PATCH] set_versions.py: remove missing_tags array
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260108-update-missing-tags-v1-1-ff1986f73c73@bootlin.com>
+X-B4-Tracking: v=1; b=H4sIAJdqX2kC/x3MMQqAMAxA0atIZgM1KEWvIg7VxprBKo2KIN7d4
+ viG/x9QTsIKXfFA4ktUtphRlQVMi4uBUXw2kKG6MtTiuXt3MK6iKjHg4YIiWTtS08yj8x5yuSe
+ e5f6v/fC+Hy2HVhBlAAAA
+X-Change-ID: 20241029-update-missing-tags-277b255fbadd
+To: docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Antonin Godard <antonin.godard@bootlin.com>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2656;
+ i=antonin.godard@bootlin.com; h=from:subject:message-id;
+ bh=sIslYnM7hjxEmJcBA264D6psnKkFq2fX9u1jzBdtE4k=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpX2qoPwfJLizC7u/ewDQ7kR4wwCh8PSDN+mhmD
+ ZwuN5B9X++JAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaV9qqAAKCRDRgEFAKaOo
+ NsYoD/42lq268WH22fQm/QMbi8p2eLg2UZZreTecV+LJEqJgpQYGGRl9pcCwvBNmEaJTZAauFfX
+ WEnrQBcjUWVFhaXI2jWf8n32kS8oSScksRb9xjN4pqTYGdcSsfYwNVsn9bX+sGrVok1xMn/Dk0V
+ YkV3vZ/4iLA0DeOUjSQxVhC8s85GW05x5Lw9jFpI6a+Rc2omfO8MN40rp0aby8DshA/jOz1dQvM
+ jEAWKKxRuqRjj/xcvFDS4SNMRSUs5SdbRNFselxrj0k2ov+TDsja/aJTec0yF5qzy/wp/kEFOZB
+ B61iuJQn3Wfzl1qlSICjirR0x4/1GPGC0Z3oMpjsqN1H0I18Xq1O1sZStJ205Xwk6DrL/hFgtZk
+ LHIhbwefi+G+MzNAEgVNIysEG2SyNqjyQo0QcoszooC1GeQwZu/h7Er3jJwlJ4hka2xTlreKvT/
+ 8khksfafe83XaMTK845wscGRjGGdisZtokxm8Wa6ZvHlS2Iip1A0P8PvOJP5dCS9UGgShu05vfc
+ h+jhpVMSWJarV3Tofdmovn8CYuKhYs3fAEAkK2cZtNTV9frkYICmWe1DME/eVSMVNObgnAdc1Dh
+ tnEDPlp3IZaWI9m+cstk87l0dSj5q/3B5Xr0eQKenEog1MLadsSfOIL0xFjemHrhQKkn/2lQeTH
+ VXFi4CBa/SUhBLw==
+X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
+ fpr=8648725188DD401BB9A0D3FFD180414029A3A836
+X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 07 Jan 2026 21:09:09 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8418
+ <docs@lists.yoctoproject.org>; Thu, 08 Jan 2026 08:28:29 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8419
 
-On Wed, 7 Jan 2026, Quentin Schulz wrote:
+As we now have tagged the documentation with all the missing tags, we
+can remove the missing_tags array and also the sorting algorithm, since
+git already sorts them.
 
-> Hi Robert,
->
-> On 1/7/26 7:15 PM, Robert P. J. Day via lists.yoctoproject.org wrote:
-> >
-> >    i've never been crazy about how overrides are explained here:
-> >
-> > https://docs.yoctoproject.org/bitbake/bitbake-user-manual/bitbake-user-manual-metadata.html#conditional-syntax-overrides
-> >
-> > but it seems that there are advanced usages of overrides that are not
-> > mentioned.
-> >
-> >    first, there doesn't seem to be any mention of using multiple
-> > overrides; here's a sample snippet from meta-oe's rsyslog recipe:
-> >
-> >    # Disable for powerpc64 with musl
-> >    VALGRIND:libc-musl:powerpc64 = ''
-> >    VALGRIND:libc-musl:powerpc64le = ''
-> >
-> > that appears to incorporate two separate overrides. can there be an
-> > arbitrary number of overrides in an assignment? does order matter?
-> >
->
-> Pfew. Someone needs to check that, OVERRIDES is *very* complex. It is not easy
-> to explain. We need to do something better with it in the docs I agree. The
-> same can be said for variable context. Also not an easy topic.
->
-> If I remember correctly, if no other OVERRIDES is involved for the same
-> variable
->
-> VALGRIND:libc-musl:powerpc64
-> and
-> VALGRIND:powerpc64:libc-musl
->
-> result in the same outcome. Note that :append, :prepend and :remove are NOT
-> typical OVERRIDES and replacing e.g. powerpc64 with append in the above,
-> results in different behavior in some cases (you usually want
-> FOO:append:machine and not FOO:machine:append). We'll omit that for now.
->
-> The question is when OVERRIDES A is "weaker" than OVERRIDES B (that is, it
-> appears on the left of B in the OVERRIDES variable), what happens for
->
-> FOO1:A:B = "bar"
-> FOO1:A = "foo"
->
-> FOO2:A = "foo"
-> FOO2:A:B = "bar"
->
-> FOO3:A:B = "bar"
-> FOO3:B = "foo"
->
-> FOO4:B = "foo"
-> FOO4:A:B = "bar"
->
-> FOO5:B:A = "bar"
-> FOO5:A = "foo"
->
-> FOO6:A = "foo"
-> FOO6:B:A = "bar"
->
-> FOO7:B:A = "bar"
-> FOO7:B = "foo"
->
-> FOO8:B = "foo"
-> FOO8:B:A = "bar"
->
-> A simple bitbake check should help answering that question.
+One thing that should be noted: the yocto-1.4.5 docs page will be
+removed after this. In fact, 1.4.5 was never released for Poky[1], so
+there is no need to publish documentation for it.
 
-  as a simple (and realistic) example that follows the way i described
-things in my last email, consider the following (where, again, jaguar
-is more specific than rk3588 and should take precedence):
+[1]: https://lists.yoctoproject.org/g/yocto/topic/status_of_dylan_9_0_4/61295742
 
-RDAY:jaguar:rk3588 = "jaguar:rk3588"
-RDAY:rk3588:jaguar = "rk3588:jaguar"
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+---
+ documentation/set_versions.py | 30 +-----------------------------
+ 1 file changed, 1 insertion(+), 29 deletions(-)
 
-don't ask what the final value of RDAY will be; instead understand
-that there will be *five* variables related to this, all of which i
-can display with "bitbake-getvar":
+diff --git a/documentation/set_versions.py b/documentation/set_versions.py
+index 91aa2bdf2..5123019da 100755
+--- a/documentation/set_versions.py
++++ b/documentation/set_versions.py
+@@ -263,35 +263,7 @@ print("switchers.js generated from switchers.js.in")
+ 
+ # generate releases.rst
+ 
+-# list missing tags in yocto-docs
+-missing_tags = [
+-        'yocto-0.9',
+-        'yocto-1.0', 'yocto-1.0.1',
+-        'yocto-1.1', 'yocto-1.1.1',
+-        'yocto-1.2',
+-        'yocto-1.4.4', 'yocto-1.4.5',
+-        'yocto-1.5', 'yocto-1.5.2', 'yocto-1.5.3', 'yocto-1.5.4',
+-        'yocto-1.6', 'yocto-1.6.1', 'yocto-1.6.2',
+-        'yocto-1.7', 'yocto-1.7.1',
+-        'yocto-1.9',
+-        'yocto-2.5.3',
+-        'yocto-3.1', 'yocto-3.1.1', 'yocto-3.1.2', 'yocto-3.1.3',
+-        ]
+-
+-semver = re.compile(r'yocto-(\d+)\.(\d+)(?:\.)?(\d*)')
+-
+-# git is able to properly order semver versions but not python
+-# instead of adding a dependency on semver module, let's convert the version
+-# into a decimal number, e.g. 11.23.1 will be 112301 and 1.5 will be 010500 so
+-# it can be used as a key for the sorting algorithm.
+-# This can be removed once all the old tags are re-created.
+-def tag_to_semver_like(v):
+-    v_semver = semver.search(v)
+-    v_maj, v_min, v_patch = v_semver.groups('0')
+-    return int("{:0>2}{:0>2}{:0>2}".format(v_maj, v_min, v_patch), 10)
+-
+-yocto_tags = subprocess.run(["git", "tag", "--list", "--sort=version:refname", "yocto-*"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True).stdout
+-yocto_tags = sorted(yocto_tags.split() + missing_tags, key=tag_to_semver_like)
++yocto_tags = subprocess.run(["git", "tag", "--list", "--sort=version:refname", "yocto-*"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True).stdout.split()
+ tags = [tag[6:] for tag in yocto_tags]
+ 
+ with open('releases.rst', 'w') as f:
 
-  RDAY:rk3588:jaguar="rk3588:jaguar"
-  RDAY:jaguar:rk3588="jaguar:rk3588"
-
-  RDAY:rk3588="rk3588:jaguar"
-  RDAY:jaguar="jaguar:rk3588"
-
-  RDAY="rk3588:jaguar"
-
-i'm not sure if that has any more explanatory value, but it makes it
-easier for me to understand that all those override assignments are
-just assigning values to variables, and it's all processed finally at
-the end of parsing to determine the eventual value.
-
-rday
-
-
-
+---
+base-commit: f9042e1da554017fe46460c1fd2bdf8c74b3fa18
+change-id: 20241029-update-missing-tags-277b255fbadd
 
 
