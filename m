@@ -1,130 +1,231 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <yoann.congal@smile.fr>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C429BCF6A83
-	for <webhook@archiver.kernel.org>; Thu,  8 Jan 2026 08:28:29 +0000 (UTC)
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.2314.1767860908198444063
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 700D1D185D7
+	for <webhook@archiver.kernel.org>; Thu,  8 Jan 2026 11:29:01 +0000 (UTC)
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.4432.1767871729755834950
  for <docs@lists.yoctoproject.org>;
- Thu, 08 Jan 2026 00:28:29 -0800
+ Thu, 08 Jan 2026 03:28:50 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=JhzcUepw;
- spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 1D5001A26FB
-	for <docs@lists.yoctoproject.org>; Thu,  8 Jan 2026 08:28:26 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id DC4CE606B6
-	for <docs@lists.yoctoproject.org>; Thu,  8 Jan 2026 08:28:25 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 787CB103C87DC;
-	Thu,  8 Jan 2026 09:28:24 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1767860905; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=NlUP3g5WlV4c8Mm+tVMK35X9fk+YP0UYcgsUnjv+O7A=;
-	b=JhzcUepwvYU55bQIDkzL+gHcHEMZC66qCOL0opvk+bnbc0VY/n81V5u/RVzKFVKaduMVE6
-	gl/z7ab8mM72bXHKqBCf//vxZT+DpkPMyijn0qmRSTrwsivsciOXaHpNNwqHUtCTmMz0Uu
-	LhnahiEJUnWr37EJDEJTcIudRONcQvgXOBfJ34mIaRM8nLtuADu1o1YQyTPkJ8GNKKiQ2k
-	An1F0D2R5eJWOS7aP7FeFfKASfoYznwET/hTO9cWf9J6Pl5shnhd2d5+e2uUvO5w4VQ8eW
-	ysDdWlRRIt25mZD1EZrcp1TTLvi4z6tbpFqjtfVRf3lIE8jMzLsmYLDy2VNCUg==
-From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Thu, 08 Jan 2026 09:28:07 +0100
-Subject: [PATCH] set_versions.py: remove missing_tags array
+ dkim=pass header.i=@smile.fr header.s=google header.b=IN7d6Qu8;
+ spf=pass (domain: smile.fr, ip: 209.85.128.48, mailfrom: yoann.congal@smile.fr)
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-47a95efd2ceso27745785e9.2
+        for <docs@lists.yoctoproject.org>; Thu, 08 Jan 2026 03:28:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=smile.fr; s=google; t=1767871728; x=1768476528; darn=lists.yoctoproject.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=SXcg+3R74OZJBXFCa0WQUAimoSJnygg20VVFF+vcYK4=;
+        b=IN7d6Qu8xGIF4WhH27oZimBz5MPbdxLCqJlwD6lCTs+TJIyaAWrqG4WB5CI0g4ymDv
+         LGNOipCsoIvJY75v6wH9uSAJTyWvysXhNXvZio1SMbdSRGxhSCm2DfOFZm9o5C+S6wCD
+         Z3OiGSZVehLWzoEg2QQE1PSTjnk05CeASn6Yo=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767871728; x=1768476528;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SXcg+3R74OZJBXFCa0WQUAimoSJnygg20VVFF+vcYK4=;
+        b=nY9zITRNs/xIYtI9StofbGgOupTP06zUXVwycKR+vOb2lyg1E9w2yKFBz9qhlVyTCw
+         C6/EG1uks3smqDZJ7R1rgBM95gYy2WPyMVpH/xr5U0mpHF8rlKghxy1lBterehiBp6FO
+         Rq1Njy84xSiKWvHabd0PGXmsd4bzBlS8bgj87yEQKzM9GfJWLYHTHRRwsx9+T4iI/t7d
+         4PatC8KZiYcz7Ii4GGQBI/IgHW9kUZpFNyjxXqYtpy6QWU3hsmya8GRaUPKB7mDITDuJ
+         OJz063SGkMw994VRvA6D13dBLyFb1u8qRt37H5dw394iJ3cWWCt0MmHnEgtUTcTscyxU
+         GBgA==
+X-Forwarded-Encrypted: i=1; AJvYcCULxc5AGBdvDBQWa/DPLWHIpoL1YpWNjNxN0vREx0+nayYWIq0iemdbXqOiDNnRtJqS/lZn@lists.yoctoproject.org
+X-Gm-Message-State: AOJu0Yzrvyasd1mcmON5wa/0E5XWT0wJ3Xd1xAvR+eSp5Ykdb+9riS7d
+	H7G60Yw/1wo+cCxNhZOy3N/I+NUliGPmA6gv+GgWVI5Jq6WXq/YuePg6n9s4679E1VEuR9Kizog
+	jgLpoIt2uQDjR+sDDsAmG0QLmaxq8z1P2qLYBnrwn5Q==
+X-Gm-Gg: AY/fxX6jXlZB/DgxDoppoLotaNsNtVQ3y+x+DNEm8mi98PjMFc49gWjRR7+mNeqcsCD
+	3J3WKnccroU5c8VZlLM0m3Gk3pD7whvHb+ay9YzFEc3PqmxRCprChTytG5PrSVvraE5XXEGcfSm
+	QOopPB8SJCHEbv9G9L42e0iGDu+S1rebhz93IEudMLOQnZB1WckblBSZVwUuhcFFcx7aS/ZyKwF
+	6pPim6XB4ipOWa5UX8SEDuZqA3BjTqhLJXshRfG11fzEAuYM7RUGKpCPfsdTy+4bbJ5Zt0sNysD
+	Sp2A9E8JX0sVN/eyTnL+yesJBzLq
+X-Google-Smtp-Source: AGHT+IEQbg3UJgpumvCl3H6Z3LTzJmKGVpkwfDoR89383zvueTmwm386RrBEBfZdIxxpQ4l7eBQDRw2ZYKOcmDJffUA=
+X-Received: by 2002:a05:600c:8706:b0:47d:4047:f377 with SMTP id
+ 5b1f17b1804b1-47d84b407e4mr68811065e9.36.1767871728114; Thu, 08 Jan 2026
+ 03:28:48 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260108-update-missing-tags-v1-1-ff1986f73c73@bootlin.com>
-X-B4-Tracking: v=1; b=H4sIAJdqX2kC/x3MMQqAMAxA0atIZgM1KEWvIg7VxprBKo2KIN7d4
- viG/x9QTsIKXfFA4ktUtphRlQVMi4uBUXw2kKG6MtTiuXt3MK6iKjHg4YIiWTtS08yj8x5yuSe
- e5f6v/fC+Hy2HVhBlAAAA
-X-Change-ID: 20241029-update-missing-tags-277b255fbadd
-To: docs@lists.yoctoproject.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Antonin Godard <antonin.godard@bootlin.com>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2656;
- i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=sIslYnM7hjxEmJcBA264D6psnKkFq2fX9u1jzBdtE4k=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpX2qoPwfJLizC7u/ewDQ7kR4wwCh8PSDN+mhmD
- ZwuN5B9X++JAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaV9qqAAKCRDRgEFAKaOo
- NsYoD/42lq268WH22fQm/QMbi8p2eLg2UZZreTecV+LJEqJgpQYGGRl9pcCwvBNmEaJTZAauFfX
- WEnrQBcjUWVFhaXI2jWf8n32kS8oSScksRb9xjN4pqTYGdcSsfYwNVsn9bX+sGrVok1xMn/Dk0V
- YkV3vZ/4iLA0DeOUjSQxVhC8s85GW05x5Lw9jFpI6a+Rc2omfO8MN40rp0aby8DshA/jOz1dQvM
- jEAWKKxRuqRjj/xcvFDS4SNMRSUs5SdbRNFselxrj0k2ov+TDsja/aJTec0yF5qzy/wp/kEFOZB
- B61iuJQn3Wfzl1qlSICjirR0x4/1GPGC0Z3oMpjsqN1H0I18Xq1O1sZStJ205Xwk6DrL/hFgtZk
- LHIhbwefi+G+MzNAEgVNIysEG2SyNqjyQo0QcoszooC1GeQwZu/h7Er3jJwlJ4hka2xTlreKvT/
- 8khksfafe83XaMTK845wscGRjGGdisZtokxm8Wa6ZvHlS2Iip1A0P8PvOJP5dCS9UGgShu05vfc
- h+jhpVMSWJarV3Tofdmovn8CYuKhYs3fAEAkK2cZtNTV9frkYICmWe1DME/eVSMVNObgnAdc1Dh
- tnEDPlp3IZaWI9m+cstk87l0dSj5q/3B5Xr0eQKenEog1MLadsSfOIL0xFjemHrhQKkn/2lQeTH
- VXFi4CBa/SUhBLw==
-X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
- fpr=8648725188DD401BB9A0D3FFD180414029A3A836
-X-Last-TLS-Session-Version: TLSv1.3
+References: <20251219-update-releases-rst-v1-1-39fa5d19cb58@bootlin.com>
+In-Reply-To: <20251219-update-releases-rst-v1-1-39fa5d19cb58@bootlin.com>
+From: Yoann Congal <yoann.congal@smile.fr>
+Date: Thu, 8 Jan 2026 12:28:22 +0100
+X-Gm-Features: AQt7F2oVhQcHryhdo3gIuEhNF1ohTYEDw060gTIkkbQN_gRaFzPH7Vc6qRAm1vQ
+Message-ID: <CAMSfU+6OuTd2Gbk2D7q5SJhDohB9SbguYb10ckeQV6xtfLuPwg@mail.gmail.com>
+Subject: Re: [bitbake-devel] [PATCH] doc/releases.rst: add whinlatter, move
+ walnascar to EOL
+To: antonin.godard@bootlin.com
+Cc: bitbake-devel@lists.openembedded.org, 
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, docs@lists.yoctoproject.org
+Content-Type: multipart/alternative; boundary="0000000000005cee9b0647deb605"
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 08 Jan 2026 08:28:29 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8419
+ <docs@lists.yoctoproject.org>; Thu, 08 Jan 2026 11:29:01 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8420
 
-As we now have tagged the documentation with all the missing tags, we
-can remove the missing_tags array and also the sorting algorithm, since
-git already sorts them.
+--0000000000005cee9b0647deb605
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-One thing that should be noted: the yocto-1.4.5 docs page will be
-removed after this. In fact, 1.4.5 was never released for Poky[1], so
-there is no need to publish documentation for it.
+Hello,
 
-[1]: https://lists.yoctoproject.org/g/yocto/topic/status_of_dylan_9_0_4/61295742
+Le ven. 19 d=C3=A9c. 2025 =C3=A0 14:19, Antonin Godard via lists.openembedd=
+ed.org
+<antonin.godard=3Dbootlin.com@lists.openembedded.org> a =C3=A9crit :
 
-Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
----
- documentation/set_versions.py | 30 +-----------------------------
- 1 file changed, 1 insertion(+), 29 deletions(-)
+> Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+> ---
+>  doc/releases.rst | 14 ++++++++++----
+>  1 file changed, 10 insertions(+), 4 deletions(-)
+>
+> diff --git a/doc/releases.rst b/doc/releases.rst
+> index 676db66ec5..ed96650b7c 100644
+> --- a/doc/releases.rst
+> +++ b/doc/releases.rst
+> @@ -4,11 +4,11 @@
+>  BitBake Supported Release Manuals
+>  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>
+> -******************************
+> -Release Series 5.2 (walnascar)
+> -******************************
+> +*******************************
+> +Release Series 5.3 (whinlatter)
+> +*******************************
+>
+> -- :yocto_docs:`BitBake 2.12 User Manual </bitbake/2.12/>`
+> +- :yocto_docs:`BitBake 2.14 User Manual </bitbake/2.14/>`
+>
 
-diff --git a/documentation/set_versions.py b/documentation/set_versions.py
-index 91aa2bdf2..5123019da 100755
---- a/documentation/set_versions.py
-+++ b/documentation/set_versions.py
-@@ -263,35 +263,7 @@ print("switchers.js generated from switchers.js.in")
- 
- # generate releases.rst
- 
--# list missing tags in yocto-docs
--missing_tags = [
--        'yocto-0.9',
--        'yocto-1.0', 'yocto-1.0.1',
--        'yocto-1.1', 'yocto-1.1.1',
--        'yocto-1.2',
--        'yocto-1.4.4', 'yocto-1.4.5',
--        'yocto-1.5', 'yocto-1.5.2', 'yocto-1.5.3', 'yocto-1.5.4',
--        'yocto-1.6', 'yocto-1.6.1', 'yocto-1.6.2',
--        'yocto-1.7', 'yocto-1.7.1',
--        'yocto-1.9',
--        'yocto-2.5.3',
--        'yocto-3.1', 'yocto-3.1.1', 'yocto-3.1.2', 'yocto-3.1.3',
--        ]
--
--semver = re.compile(r'yocto-(\d+)\.(\d+)(?:\.)?(\d*)')
--
--# git is able to properly order semver versions but not python
--# instead of adding a dependency on semver module, let's convert the version
--# into a decimal number, e.g. 11.23.1 will be 112301 and 1.5 will be 010500 so
--# it can be used as a key for the sorting algorithm.
--# This can be removed once all the old tags are re-created.
--def tag_to_semver_like(v):
--    v_semver = semver.search(v)
--    v_maj, v_min, v_patch = v_semver.groups('0')
--    return int("{:0>2}{:0>2}{:0>2}".format(v_maj, v_min, v_patch), 10)
--
--yocto_tags = subprocess.run(["git", "tag", "--list", "--sort=version:refname", "yocto-*"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True).stdout
--yocto_tags = sorted(yocto_tags.split() + missing_tags, key=tag_to_semver_like)
-+yocto_tags = subprocess.run(["git", "tag", "--list", "--sort=version:refname", "yocto-*"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True).stdout.split()
- tags = [tag[6:] for tag in yocto_tags]
- 
- with open('releases.rst', 'w') as f:
+The correct bitbake version for whinlatter is 2.16 (not 2.14). See
+https://wiki.yoctoproject.org/wiki/Releases.
+Something happened and prevented the usual X.Y+2 jump, hence the X.Y+4 jump=
+.
 
----
-base-commit: f9042e1da554017fe46460c1fd2bdf8c74b3fa18
-change-id: 20241029-update-missing-tags-277b255fbadd
+ *******************************
+>  Release Series 5.0 (scarthgap)
+> @@ -26,6 +26,12 @@ Release Series 4.0 (kirkstone)
+>  BitBake Outdated Release Manuals
+>  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D
+>
+> +******************************
+> +Release Series 5.2 (walnascar)
+> +******************************
+> +
+> +- :yocto_docs:`BitBake 2.12 User Manual </bitbake/2.12/>`
+> +
+>  ****************************
+>  Release Series 5.1 (styhead)
+>  ****************************
+>
+> ---
+> base-commit: 6e511d035a3d1e4129dab7b0dfbf216bd8e99b47
+> change-id: 20251219-update-releases-rst-433a08815494
+>
+>
+> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
+> Links: You receive all messages sent to this group.
+> View/Reply Online (#18621):
+> https://lists.openembedded.org/g/bitbake-devel/message/18621
+> Mute This Topic: https://lists.openembedded.org/mt/116858773/4316185
+> Group Owner: bitbake-devel+owner@lists.openembedded.org
+> Unsubscribe: https://lists.openembedded.org/g/bitbake-devel/unsub [
+> yoann.congal@smile.fr]
+> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
+>
+>
 
+--=20
+Yoann Congal
+Smile ECS
+
+--0000000000005cee9b0647deb605
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>Hello,</div><br><div class=3D"gmail_quote gmail_quote=
+_container"><div dir=3D"ltr" class=3D"gmail_attr">Le=C2=A0ven. 19 d=C3=A9c.=
+ 2025 =C3=A0=C2=A014:19, Antonin Godard via <a href=3D"http://lists.openemb=
+edded.org">lists.openembedded.org</a> &lt;antonin.godard=3D<a href=3D"mailt=
+o:bootlin.com@lists.openembedded.org">bootlin.com@lists.openembedded.org</a=
+>&gt; a =C3=A9crit=C2=A0:<br></div><blockquote class=3D"gmail_quote" style=
+=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding=
+-left:1ex">Signed-off-by: Antonin Godard &lt;<a href=3D"mailto:antonin.goda=
+rd@bootlin.com" target=3D"_blank">antonin.godard@bootlin.com</a>&gt;<br>
+---<br>
+=C2=A0doc/releases.rst | 14 ++++++++++----<br>
+=C2=A01 file changed, 10 insertions(+), 4 deletions(-)<br>
+<br>
+diff --git a/doc/releases.rst b/doc/releases.rst<br>
+index 676db66ec5..ed96650b7c 100644<br>
+--- a/doc/releases.rst<br>
++++ b/doc/releases.rst<br>
+@@ -4,11 +4,11 @@<br>
+=C2=A0BitBake Supported Release Manuals<br>
+=C2=A0=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D<br>
+<br>
+-******************************<br>
+-Release Series 5.2 (walnascar)<br>
+-******************************<br>
++*******************************<br>
++Release Series 5.3 (whinlatter)<br>
++*******************************<br>
+<br>
+-- :yocto_docs:`BitBake 2.12 User Manual &lt;/bitbake/2.12/&gt;`<br>
++- :yocto_docs:`BitBake 2.14 User Manual &lt;/bitbake/2.14/&gt;`<br></block=
+quote><div><br></div><div>The correct bitbake version for whinlatter is 2.1=
+6 (not 2.14). See <a href=3D"https://wiki.yoctoproject.org/wiki/Releases">h=
+ttps://wiki.yoctoproject.org/wiki/Releases</a>.</div><div>Something happene=
+d and prevented the usual X.Y+2 jump, hence the X.Y+4 jump.</div><div><br><=
+/div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;bo=
+rder-left:1px solid rgb(204,204,204);padding-left:1ex">
+=C2=A0*******************************<br>
+=C2=A0Release Series 5.0 (scarthgap)<br>
+@@ -26,6 +26,12 @@ Release Series 4.0 (kirkstone)<br>
+=C2=A0BitBake Outdated Release Manuals<br>
+=C2=A0=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D<br>
+<br>
++******************************<br>
++Release Series 5.2 (walnascar)<br>
++******************************<br>
++<br>
++- :yocto_docs:`BitBake 2.12 User Manual &lt;/bitbake/2.12/&gt;`<br>
++<br>
+=C2=A0****************************<br>
+=C2=A0Release Series 5.1 (styhead)<br>
+=C2=A0****************************<br>
+<br>
+---<br>
+base-commit: 6e511d035a3d1e4129dab7b0dfbf216bd8e99b47<br>
+change-id: 20251219-update-releases-rst-433a08815494<br>
+<br>
+<br>
+-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-<br>
+Links: You receive all messages sent to this group.<br>
+View/Reply Online (#18621): <a href=3D"https://lists.openembedded.org/g/bit=
+bake-devel/message/18621" rel=3D"noreferrer" target=3D"_blank">https://list=
+s.openembedded.org/g/bitbake-devel/message/18621</a><br>
+Mute This Topic: <a href=3D"https://lists.openembedded.org/mt/116858773/431=
+6185" rel=3D"noreferrer" target=3D"_blank">https://lists.openembedded.org/m=
+t/116858773/4316185</a><br>
+Group Owner: <a href=3D"mailto:bitbake-devel%2Bowner@lists.openembedded.org=
+" target=3D"_blank">bitbake-devel+owner@lists.openembedded.org</a><br>
+Unsubscribe: <a href=3D"https://lists.openembedded.org/g/bitbake-devel/unsu=
+b" rel=3D"noreferrer" target=3D"_blank">https://lists.openembedded.org/g/bi=
+tbake-devel/unsub</a> [<a href=3D"mailto:yoann.congal@smile.fr" target=3D"_=
+blank">yoann.congal@smile.fr</a>]<br>
+-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-<br>
+<br>
+</blockquote></div><div><br clear=3D"all"></div><br><span class=3D"gmail_si=
+gnature_prefix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature"><d=
+iv dir=3D"ltr"><font face=3D"Raleway, regular">Yoann Congal</font><div><fon=
+t face=3D"Raleway, regular">Smile ECS</font></div></div></div></div>
+
+--0000000000005cee9b0647deb605--
 
