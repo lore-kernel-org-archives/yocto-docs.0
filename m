@@ -2,14 +2,14 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A1DCFD1D484
-	for <webhook@archiver.kernel.org>; Thu,  8 Jan 2026 17:29:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B02DBD1D495
+	for <webhook@archiver.kernel.org>; Thu,  8 Jan 2026 21:34:04 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.12135.1767893359599917420
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.17687.1767908036891717753
  for <docs@lists.yoctoproject.org>;
- Thu, 08 Jan 2026 09:29:20 -0800
+ Thu, 08 Jan 2026 13:33:57 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=ZSuD4Pdb;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=sZxErhOV;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
@@ -17,24 +17,24 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=mN6YRwCOjDJtQctYxafJ3PPXX3qbF9C5XTGqhsfqpqA=; b=ZSuD4PdbGOyml+xVdVpt8Z54s9
-	4Nz1XrGedb5Vr/SbeZYa9t4e4QKiu6IKj4lKGkAgV0gwSgxZTALLEZ7qEbF3JytZeVH6iLshuf8ak
-	Xnwh5o0oAC0RQheOAji30gdQPYnB3HA12skX84ZN9yauj+ohkMw3xVClS/WvH9UJkK81rUab/wfyI
-	CLXAt1hfWqnZRQWZQEJJQmPYEOLaEjkLfkTZohoDyYgNmDyHthSs/L+BDwXglrLY8N5QUGT/Q1ATb
-	WFH8ddCv97wdqCKDgV2RJ3RNatixgwVan7MwG+KIWXrcIu0w78xkVbd4oeaDx6mdJYuHYV0Od+IFu
-	MWrdw3CA==;
-Received: from [147.129.179.166] (port=51594 helo=rday)
+	bh=aQq10aOzd2pcVLrxcq9Y8gnOLOjss+PXP9405BE9as0=; b=sZxErhOVNaJM7hsNIsES3ignS7
+	kcsFdqylQ8g12gjoC+5MdnRVTY87Zi/RhPWbzGg4Ua59Y1ZII21RWWvyaU5mI8MNEyQDRvJH8MBO/
+	u/0G66+oeVsnNMMqckZzRc5YMadF4fcwdY6AhLlbBbAl9eNeWfKdo/Z/th9nUYfAhju6aL5hGlXdO
+	FqKCJ5T4vmatid3LvrCyZQht3TnPhb+qEIbDCOGfQVP+MFBZvIkpNbP1U5o9it9Eab/6ZH5ukxuc3
+	udI8FrMve0djflcFOcPVvhb9IxWoOrHQr/XrsQ4zKAOzmlCtaXRbZKCKF0exmspgmNS4FEe3oiwIL
+	/fCgpotw==;
+Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:50684 helo=rday)
 	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.99.1)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1vdtoy-00000002CxD-3Yqm
+	id 1vdxdi-00000002prV-1FdU
 	for docs@lists.yoctoproject.org;
-	Thu, 08 Jan 2026 12:29:17 -0500
-Date: Thu, 8 Jan 2026 12:32:22 -0500 (EST)
+	Thu, 08 Jan 2026 16:33:54 -0500
+Date: Thu, 8 Jan 2026 16:36:59 -0500 (EST)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: must BBFILE_COLLECTIONS use "+=" and not just "="?
-Message-ID: <824c542b-08cf-0ded-a1a3-732a363294ef@crashcourse.ca>
+Subject: is there any way to render content in italics in a code block?
+Message-ID: <5eef4c2b-95ae-cc22-b44c-a03e29982c79@crashcourse.ca>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -50,26 +50,27 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 08 Jan 2026 17:29:23 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8430
+ <docs@lists.yoctoproject.org>; Thu, 08 Jan 2026 21:34:04 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8431
 
+
+  one aspect of sphinx that gripes my wagger is that there does not
+seem to be any easy way to tag something in italics in a code block.
 
 here:
 
-https://docs.yoctoproject.org/bitbake/bitbake-user-manual/bitbake-user-manual-execution.html#locating-and-parsing-recipes
+https://docs.yoctoproject.org/bitbake/bitbake-user-manual/bitbake-user-manual-execution.html
 
-you can see a snippet from a layer.conf file:
+the code line:
 
-BBFILES = "/stuff/openembedded/*/*.bb /stuff/openembedded.modified/*/*.bb"
-BBFILE_COLLECTIONS = "upstream local"
-BBFILE_PATTERN_upstream = "^/stuff/openembedded/"
-BBFILE_PATTERN_local = "^/stuff/openembedded.modified/"
-BBFILE_PRIORITY_upstream = "5"
-BBFILE_PRIORITY_local = "10"
+ $ bitbake target
 
-am i correct in thinking that the assignment to BBFILE_COLLECTIONS is
-wrong, as it must use "+=" and not just "="? (that is, it doesn't have
-magic properties like PROVIDES where either operator works fine.)
+really needs the word "target" in italics to show that it's meant to
+be replaced. and, no, this isn't minor nitpicking -- the whole section
+on overrides desperately needs to be able to show what things a
+developer is meant to replace.
+
+  is there any way to do this?
 
 rday
 
