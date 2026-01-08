@@ -2,42 +2,39 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 437C1D1D480
-	for <webhook@archiver.kernel.org>; Thu,  8 Jan 2026 16:09:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 58DD1D1D482
+	for <webhook@archiver.kernel.org>; Thu,  8 Jan 2026 16:25:23 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.10063.1767888580006103917
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.10298.1767889521447865539
  for <docs@lists.yoctoproject.org>;
- Thu, 08 Jan 2026 08:09:40 -0800
+ Thu, 08 Jan 2026 08:25:21 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=q/5lUyGE;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=UsNLIu3Z;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:References:
-	Message-ID:In-Reply-To:Subject:cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=msz6j1Ms5sGV+nSXMNNBHWD1i2D7nP4vEVukNMHlqzY=; b=q/5lUyGEPXYOjI9n+n3gHXKKC+
-	LYg6609E3QfhVEnX28/ZP4AfB3olpgZS8G7kPi5z32QlBo/Ua4XUR8Bz8IEXoVHa18yGD8YkQ2dIj
-	Z6rBOsX2X7ES8hwiN0EQiAdqn1Y8CwX8rT45SwWKpdb7YoK4/E/GyFBGv/DpGLIk0/c63haXcrGe+
-	K1GPt9rz+4elFDU7Ef013GOyEJlU5zXzWjkkZzjboDglZ9c+7x0Ur5xkxhJ1jihEsXRYhkQFh9y1e
-	QbrqRg2SxFD36GOR6stas9XkkzZDfL0aboUasVd7fnq8/fmiihFjsxkbGktTTOHA2Z++GLmm/xOgR
-	HQTwq5Uw==;
-Received: from [147.129.179.166] (port=43920 helo=rday)
+	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
+	cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=EY6vQvKdyUZiivRkLLrulowXoXl87ITmU+0j+LoL5b8=; b=UsNLIu3Zy11LWSY1anoJGAURRS
+	9Bgs1NM7NdG5/6WYybSFpis9aVKby9bRZN6LrET+j8CGFKk/qL0Xgen54QgvYJq0YprzSjs/S9Eo0
+	9XKvwruG/ViGcnCFN92NXsqbjScrLEBN31+mi7KHyomLArzhXC/wPMaFflyrk9x/sXadaLkjB8gPg
+	Qhs0pJpeSBevK1Hemiy+4tdDs+p2hdc9Ikd1UsNgWC46qdrUsfbOS7olOwlCeqmZts24fKsAgUPgD
+	nIumTDVO1oqf38regKBbGlEnYi9J1oUCP9LoFpqoXhqS/xn/ok8PZeYHVCEOwtbG1pWpfIW85l3te
+	Df0lMfrw==;
+Received: from [147.129.179.166] (port=46840 helo=rday)
 	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.99.1)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1vdsZq-000000020eZ-363g;
-	Thu, 08 Jan 2026 11:09:38 -0500
-Date: Thu, 8 Jan 2026 11:12:32 -0500 (EST)
+	id 1vdsp5-0000000232P-2GS2;
+	Thu, 08 Jan 2026 11:25:19 -0500
+Date: Thu, 8 Jan 2026 11:28:26 -0500 (EST)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: Quentin Schulz <quentin.schulz@cherry.de>
-cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: Re: [docs] should docs explain unversioned recipe files and unversioned
- append files?
-In-Reply-To: <95d28d64-2db5-4281-b2e0-2a42159cd891@cherry.de>
-Message-ID: <974c63ef-16c3-0271-d4fd-7a92b39bd8ca@crashcourse.ca>
-References: <fbd1c18a-ea92-1a7b-14bb-2ccbf0400828@crashcourse.ca> <95d28d64-2db5-4281-b2e0-2a42159cd891@cherry.de>
+To: YP docs mailing list <docs@lists.yoctoproject.org>
+cc: BitBake developer list <bitbake-devel@lists.openembedded.org>
+Subject: [PATCH] doc: use monospaced font for visual clarity of options
+Message-ID: <569a2da6-6603-5c64-bf27-da55484a7966@crashcourse.ca>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -53,51 +50,49 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 08 Jan 2026 16:09:43 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8428
+ <docs@lists.yoctoproject.org>; Thu, 08 Jan 2026 16:25:23 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8429
 
-On Wed, 7 Jan 2026, Quentin Schulz wrote:
 
-> Hi Robert,
->
-> On 1/7/26 2:05 PM, Robert P. J. Day via lists.yoctoproject.org wrote:
-> >
-> >    one more pedantic observation about append files and corresponding
-> > recipe files. occasionally, one runs across an unversioned recipe file
-> > for which some other layer has an unversioned bbappend file, one
-> > example being the "mesa" recipe:
-> >
-> > $ find . -name "mesa.bb*"
-> > ./meta-raspberrypi/recipes-graphics/mesa/mesa.bbappend
-> > ./meta-freescale/recipes-graphics/mesa/mesa.bbappend
-> > ./openembedded-core/meta/recipes-graphics/mesa/mesa.bb
-> > $
-> >
-> >    so what is the rule here? if a recipe file is unversioned, then the
-> > append file for it must also be unversioned to match? what if the mesa
-> > recipe were suddenly to become versioned? would that append file still
-> > be applied? the docs don't seem to cover this possibility.
-> >
->
-> Can you try and report to us?
->
-> - does mesa_%.bbappend apply to mesa.bb
-> - does mesa.bbappend apply to mesa_git.bb
->
-> Considering mesa.bbappend applies to mesa.bb, we should update
-> https://docs.yoctoproject.org/dev-manual/layers.html#appending-other-layers-metadata-with-your-layer
-> to mention that recipes without a version in their name can also have their
-> own bbappend following the same naming scheme.
->
-> I know that u-boot%.bappend also applies to multiple u-boot recipes, see
-> https://git.yoctoproject.org/meta-rockchip/commit/?id=ebfc42663d52f2247b7de5d6267b353887cc2d91.
->
-> It'd be nice to check (and document) whether mesa%.bbappend applies to
-> mesa-foo.bb, mesa-foo_git.bb.
+Use monospaced font for command options, to make it clear when double
+dashes are being used.
 
-  i'll find some time this weekend to test the above, but is it
-reasonable to ask how this feature *should* behave with unversioned
-recipe and bbappend files?
+Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
 
-rday
+---
+
+  since i saw an example of this being done in the same chapter
+of the bitbake manual without quotes, i chose to do it that way.
+
+diff --git a/doc/bitbake-user-manual/bitbake-user-manual-intro.rst b/doc/bitbake-user-manual/bitbake-user-manual-intro.rst
+index 329b02829..4e70eaf9d 100644
+--- a/doc/bitbake-user-manual/bitbake-user-manual-intro.rst
++++ b/doc/bitbake-user-manual/bitbake-user-manual-intro.rst
+@@ -538,7 +538,7 @@ The following command runs the clean task on the ``foo.bb`` recipe file::
+
+ .. note::
+
+-   The "-b" option explicitly does not handle recipe dependencies. Other
++   The ``-b`` option explicitly does not handle recipe dependencies. Other
+    than for debugging purposes, it is instead recommended that you use
+    the syntax presented in the next section.
+
+@@ -553,7 +553,7 @@ dependencies, both for build-time and runtime. There must be a way for
+ you to express recipe preferences when multiple recipes provide the same
+ functionality, or when there are multiple versions of a recipe.
+
+-The ``bitbake`` command, when not using "--buildfile" or "-b" only
++The ``bitbake`` command, when not using ``--buildfile`` or ``-b`` only
+ accepts a "PROVIDES". You cannot provide anything else. By default, a
+ recipe file generally "PROVIDES" its "packagename" as shown in the
+ following example::
+@@ -561,7 +561,7 @@ following example::
+   $ bitbake foo
+
+ This next example "PROVIDES" the
+-package name and also uses the "-c" option to tell BitBake to just
++package name and also uses the ``-c`` option to tell BitBake to just
+ execute the ``do_clean`` task::
+
+   $ bitbake -c clean foo
 
