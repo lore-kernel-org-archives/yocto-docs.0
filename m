@@ -2,48 +2,48 @@ Return-Path: <paul@pbarker.dev>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A2D81D1D467
-	for <webhook@archiver.kernel.org>; Thu,  8 Jan 2026 14:48:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B3222D1D46C
+	for <webhook@archiver.kernel.org>; Thu,  8 Jan 2026 15:04:12 +0000 (UTC)
 Received: from fout-b1-smtp.messagingengine.com (fout-b1-smtp.messagingengine.com [202.12.124.144])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.7943.1767883687568804431
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.8383.1767884650621724859
  for <docs@lists.yoctoproject.org>;
- Thu, 08 Jan 2026 06:48:07 -0800
+ Thu, 08 Jan 2026 07:04:10 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@pbarker.dev header.s=fm3 header.b=ArbNZR40;
- dkim=pass header.i=@messagingengine.com header.s=fm2 header.b=Ba48gO1h;
+ dkim=pass header.i=@pbarker.dev header.s=fm3 header.b=zlA4/twX;
+ dkim=pass header.i=@messagingengine.com header.s=fm2 header.b=TLiWtm5Y;
  spf=pass (domain: pbarker.dev, ip: 202.12.124.144, mailfrom: paul@pbarker.dev)
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfout.stl.internal (Postfix) with ESMTP id DFCEB1D0011C;
-	Thu,  8 Jan 2026 09:48:06 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Thu, 08 Jan 2026 09:48:06 -0500
+Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
+	by mailfout.stl.internal (Postfix) with ESMTP id E22941D00127;
+	Thu,  8 Jan 2026 10:04:09 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-12.internal (MEProxy); Thu, 08 Jan 2026 10:04:10 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pbarker.dev; h=
 	cc:cc:content-type:content-type:date:date:from:from:in-reply-to
 	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm3; t=1767883686; x=1767970086; bh=k9GOcGURte
-	QrokH/doEzE+qeQyniHoHoh13nD3Zu2qA=; b=ArbNZR40HFYlFOq/hlTdqZJ4l7
-	ismkH4NaH0d4PMBJc0WLawFurIcMWHHkhBHjkLcy9brRnDaoQ0ngwOjVIl9wrw21
-	9OKc5h1hPA/5TKmEqj1H5gpqd/ZNK+/H5POU7loXyrFAvoVu7cwIQBEypnz3dV4l
-	/y6RXIlfIFhU7dME8vzgYJ1V5WlAgjLC1nL1pokutBldbxZYJI8PCo52je6+Oj0G
-	Oloizzs7SS6CkOeoExTumysMK0H/DouSJ7cE6Evr/TDo/pyTJ8b9Osk/Di3AH1Bu
-	xKWdZ/IP8GfK4vXJ/NdHc9F1LhgIrzx/SVEneIpJIQFpl0Q9O7e18ShYZ+vA==
+	:subject:to:to; s=fm3; t=1767884649; x=1767971049; bh=hjU3d6n7xP
+	uBC+ZYD+iuLL1vyeDHNbN3Qy4KgX9q6sk=; b=zlA4/twXJ5tJXgwFnG+4ARbqTb
+	/wEZKbvoDfArmBCJvUwwYnPpPPpFYUQJjGXcG6mf1V7fdQena1t+1IruqrsMCYNp
+	8UXsAgc7WuPANhF5iUUFyyKPep73xRdyNs0dTn92qD6w9H66FOwU4+MgoY913jFH
+	xlRUua3T1yumHyCLFjFfAiK23od1kDWwZXYAb3RExa31R54bKheBkhjasnrPM786
+	uanapwYXjngLqcFq7KTSMK+KjudKPL1rUlEFoeKwEz197fq1dnk8ezrEnUQBTg+H
+	OwqCwXkVCM0Ov2+by4iJE3uIJnV64txxFGScx2OLUO9Q2zEEC1jG575539FA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-type:content-type:date:date
 	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
 	:message-id:mime-version:references:reply-to:subject:subject:to
 	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1767883686; x=1767970086; bh=k9GOcGURteQrokH/doEzE+qeQyniHoHoh13
-	nD3Zu2qA=; b=Ba48gO1hs2mZUYPrRCl6U34opux7QK0hyMbOgDAxHXpUFd/R/KS
-	DDpWM59VdpgHxoaEWdcG48wgYVuSjeBc7+J/77aMMDb/Ks4T7xm24QTlJmAzBZEE
-	MJ9gO2Ni5w/eiES3JNrN8VZn1RCHZh9XEDrfPPI0Q6ApmYwjfhc47WH1jLewpJBb
-	7siSrtugkM1z3pS2IDVBsJnFXHBGSbveJJjLohjABLL09MwhlHL/3ruuHhebGBXH
-	NjL8MAawPG1IwSLmYOUj8L1RsNrRzPLv1Nr33qr2MnZ7d8luWdPml4yhlffRj1Ff
-	kyrflm+iL/khwMvx2ZGaXAIAURahLXzvpKw==
-X-ME-Sender: <xms:psNfaWoQje3K5GuRiNxSjSmsv3Xj9j0lV-MNVcJDsf-6F2ay_BCE3w>
-    <xme:psNfacEwWaEw95ISMyXg-O6ZtUfHEBfDZSlxg7u5NcBrsNe5v-cG1OUEmK2UBszzV
-    AJmiAde4QAVcUeOylnCmatdQIIu4s9q6eqlIeeKjEbbFz_C85KlPxI>
-X-ME-Received: <xmr:psNfaYkwMVnvXZgMWHKAe7JMh3ANHkMWZOzcNCVuBo3oI2RX7Ms59cyGUyUSX92q-EpEiwsmeDsTeD_jQgL_zMhxCN9tbXgrYhW7h_hn4gYE>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddutdeivdefucetufdoteggodetrf
+	1767884649; x=1767971049; bh=hjU3d6n7xPuBC+ZYD+iuLL1vyeDHNbN3Qy4
+	KgX9q6sk=; b=TLiWtm5YlT7icwWfIkMxMD3Nra/4zMFo5gg6BgoSIy+4bDWgW5v
+	2bLlc/NPdUTumdvIt5ar3UKCQ0WibGN5W7b19TJ/8F3HjYmz3s7TzG6HzzRBB0Fc
+	YK5VM8+QFVpOj0oElYC1Df30/XZBJxA50SgyAfPfOpSeXlVRTp8RPVJpJZU5RJzv
+	T4cgYgRAm0cbS1xP0IbOl7mieEl+SDXsu+6MvrmiCvu5HXwaepcPoG06zXXugdO6
+	u2yjKLSkqybUutoduKu30Ugr+FMrSC/1Dr9JiiLoGorEIxebBG2XxjAa/dDK2qPt
+	VOWHYlnuQSXn57mbRnFJ0hglnkUTJdx8Btw==
+X-ME-Sender: <xms:acdfaR_o8gDfyBKjcV76DnnlzApSabV4o2pSoDSD_wfn3Y-HKwAXRw>
+    <xme:acdfadKmXjRAs2AvUbftoxqHEM4V8i05Cd2uRvaRjllhWKlWze1_reVdUskEtSd6_
+    QzJiXJXgt4ZvVvAzVIUjzngaSFuL3_GtfgcVmj66fL9NsTZb4zIA5w>
+X-ME-Received: <xmr:acdfaca7Q3Ch_FYyc-AbDCko6Z4BIAgYcHaqg3WQxuc6LIQeHaOPusoQtT70UjtAf1h7xs68M50l5bSCfZeeSqs4rc4WclysvCikvGXRt7B1>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddutdeivdeiucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
     gurhepkffuhffvveffjghftggfggesghdtreertderjeenucfhrhhomheprfgruhhluceu
@@ -55,24 +55,24 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddutdeivdefucetufdote
     hnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhrtghpthhtohepugho
     tghssehlihhsthhsrdihohgtthhophhrohhjvggtthdrohhrghdprhgtphhtthhopehthh
     homhgrshdrphgvthgriiiiohhnihessghoohhtlhhinhdrtghomh
-X-ME-Proxy: <xmx:psNfaflDo6Cj7TQwXs5d85XjuSRoByvQjM0nJxE0neZO4iDvTkyrhA>
-    <xmx:psNfaZsigxY4cB8m7jUWH5huyk5JUPPOGb-x1xy8llHfNVQrWWVMxA>
-    <xmx:psNfaSl_YsKI5voN5izh60MbHGDo5JSo3N4UDPFpYv0pC_YpRDLvTw>
-    <xmx:psNfaUsEznfojkLfZ1ppNoMOZJ0zwkZBfPNO42mtHcsXMDHSsB1U3w>
-    <xmx:psNfaedoF1pAmEuFVHOqZIIpN7T6piwMX1lzLygCGxiWCTp2lVeDo4SS>
+X-ME-Proxy: <xmx:acdfafJa3V6PH9PWonmAFgmMaFWIBila5e8M896gvGOChliidfDYEw>
+    <xmx:acdfaaCgbmH5dqbgV6mnPjW2g0NNIn_wtWq49-Ra9fOpRWhBRsFGwg>
+    <xmx:acdfaUqle76tzZFSvuJoR3HC5UyPTXovrsEqklLg6zVN34JhNGjAeg>
+    <xmx:acdfaVjmMCtj7fzXm1wwPpR2OiiS0mVEOOgm_fA9A9cl3cp-uxrXeA>
+    <xmx:acdfaYgzS7DpOi2fXagnIuyCFtIj_M1WqhDkpgMHmj0MIUGgrZPbyttp>
 Feedback-ID: i51494658:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 8 Jan 2026 09:48:05 -0500 (EST)
-Message-ID: <76a20da7b564f312a1179d8fa955c6245f44ec98.camel@pbarker.dev>
-Subject: Re: [docs] [PATCH] contributor-guide/recipe-style-guide.rst:
- explain difference between layer and recipe license(s)
+ 8 Jan 2026 10:04:08 -0500 (EST)
+Message-ID: <42a421a406ba11170bc89a052dc28b9ed201ee7d.camel@pbarker.dev>
+Subject: Re: [docs] [PATCH 5/5] ref-manual/terms.rst: refresh the
+ OpenEmbedded build system definition
 From: Paul Barker <paul@pbarker.dev>
 To: antonin.godard@bootlin.com, docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Date: Thu, 08 Jan 2026 14:47:59 +0000
-In-Reply-To: <20260106-layer-license-clarification-v1-1-99c69ec1a878@bootlin.com>
-References: 
-	<20260106-layer-license-clarification-v1-1-99c69ec1a878@bootlin.com>
+Date: Thu, 08 Jan 2026 15:04:06 +0000
+In-Reply-To: <20251224-terms-refresh-v1-5-691329fd038f@bootlin.com>
+References: <20251224-terms-refresh-v1-0-691329fd038f@bootlin.com>
+	 <20251224-terms-refresh-v1-5-691329fd038f@bootlin.com>
 Autocrypt: addr=paul@pbarker.dev; prefer-encrypt=mutual;
  keydata=mQINBGC756sBEADXL6cawsZRrDvICz9Y1SG0/lW1me4xpq36obh7a0IGAzp3ywNRb/4MO
  DTqP4+DD0cIFuDY41/N17g0sNlp8z+/k/IIDmNPtYQOTVmAkrkdDU4BP8dD3Cp1PUw6nrbInfujAJ
@@ -118,80 +118,49 @@ Autocrypt: addr=paul@pbarker.dev; prefer-encrypt=mutual;
  OqpPZn7Ij1ga5IAOHNRi5MbyRFROYOeaOj7sz7S7roHQwdP3Q1qTwTOv30hlOSe6uz4PTBiEIKBQH
  ep0k17xg==
 Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-2h+kT3+wh6wMUR50z+KG"
+	protocol="application/pgp-signature"; boundary="=-evyuTTmSbAKh4zHKyeMW"
 User-Agent: Evolution 3.52.3-0ubuntu1.1 
 MIME-Version: 1.0
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 08 Jan 2026 14:48:12 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8423
+ <docs@lists.yoctoproject.org>; Thu, 08 Jan 2026 15:04:12 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8424
 
 
---=-2h+kT3+wh6wMUR50z+KG
+--=-evyuTTmSbAKh4zHKyeMW
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, 2026-01-06 at 16:30 +0100, Antonin Godard via
+On Wed, 2025-12-24 at 17:24 +0100, Antonin Godard via
 lists.yoctoproject.org wrote:
-> Explain that the LICENSE set in a recipe does not apply to the recipe
-> file itself, but to the underlying software. The license of the recipe
-> file is the license provided in the layer itself. Give OpenEmbedded-Core
-> as an example for this.
->=20
-> Fixes [YOCTO #14410]
+> Remove the mention of Poky containing BitBake, just mention BitBake.
 >=20
 > Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 > ---
->  documentation/contributor-guide/recipe-style-guide.rst | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
+>  documentation/ref-manual/terms.rst | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >=20
-> diff --git a/documentation/contributor-guide/recipe-style-guide.rst b/doc=
-umentation/contributor-guide/recipe-style-guide.rst
-> index 806bf2384..6a3e9043c 100644
-> --- a/documentation/contributor-guide/recipe-style-guide.rst
-> +++ b/documentation/contributor-guide/recipe-style-guide.rst
-> @@ -221,6 +221,18 @@ Recipes need to define both the :term:`LICENSE` and
->     ``meta/files/common-licenses/`` or the :term:`SPDXLICENSEMAP` flag na=
-mes
->     defined in ``meta/conf/licenses.conf``.
-> =20
-> +   .. note::
-> +
-> +      Setting a :term:`LICENSE` in a recipe does not apply to the recipe=
- file
-> +      itself. The license of recipes, configuration files or scripts is
-> +      specified by the license found in the :term:`layer` that holds the=
-se
-> +      files. These license files are usually found at the root of the la=
-yer.
-> +      Exceptions should be clearly stated in the layer README of LICENSE=
- file.
-> +
-> +      For example, the :term:`OpenEmbedded-Core (OE-Core)` layer provide=
-s both
-> +      the GPL-2.0-only and MIT license files, and a "LICENSE" file to ex=
-plain
-> +      how these two licenses are attributed to files found in the layer.
-> +
+> diff --git a/documentation/ref-manual/terms.rst b/documentation/ref-manua=
+l/terms.rst
+> index 21e30de96..ea674eff6 100644
+> --- a/documentation/ref-manual/terms.rst
+> +++ b/documentation/ref-manual/terms.rst
+> @@ -403,7 +403,7 @@ universal, the list includes them just in case:
+>     :term:`OpenEmbedded Build System`
+>        The build system specific to the Yocto
+>        Project. The OpenEmbedded build system is based on another project
+> -      known as "Poky", which uses :term:`BitBake` as the task
+> +      known as :term:`BitBake` which is the task
+>        executor. Throughout the Yocto Project documentation set, the
+>        OpenEmbedded build system is sometimes referred to simply as "the
+>        build system". If other build systems, such as a host or target bu=
+ild
 
-Other layers may want to handle metadata licenses in different ways, for
-example by including an SPDX-License-Identifier comment at the top of
-recipe files. So I think we should keep this note more generic.
+I think we should replace the first two sentences here with:
 
-  Setting a :term:`LICENSE` in a recipe applies to the software to be
-  built by this recipe, not to the recipe file itself. The license of
-  recipes, configuration files and scripts should also be clearly
-  specified, for example via comments or via a license found in the
-  :term:`layer` that holds these files. These license files are usually
-  found at the root of the layer. Exceptions should be clearly stated in
-  the layer README or LICENSE file.
-
-  For example, the :term:`OpenEmbedded-Core (OE-Core)` layer provides both
-  the GPL-2.0-only and MIT license files, and a "LICENSE" file to explain
-  how these two licenses are attributed to files found in the layer.
-
-How does that look?
+  The build system used by the Yocto Project, using :term:`Bitbake` as
+  the task executor.
 
 Best regards,
 
@@ -199,17 +168,17 @@ Best regards,
 Paul Barker
 
 
---=-2h+kT3+wh6wMUR50z+KG
+--=-evyuTTmSbAKh4zHKyeMW
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: This is a digitally signed message part
 
 -----BEGIN PGP SIGNATURE-----
 
-iIcEABYKAC8WIQSzjPXf5Y1BDWhU2iCrY1Tsnbr0bgUCaV/DnxEccGF1bEBwYmFy
-a2VyLmRldgAKCRCrY1Tsnbr0buvFAQC2lVsqDKd3mthK4V+/y8bv38xmdlw4/YXv
-p433xwHtJgEAu3OOxDgZiLd+XDUxpeVWu5P5Fs/zYJp8NgjPiF/2awE=
-=/43Z
+iIcEABYKAC8WIQSzjPXf5Y1BDWhU2iCrY1Tsnbr0bgUCaV/HZhEccGF1bEBwYmFy
+a2VyLmRldgAKCRCrY1Tsnbr0boZHAQC1u1WkYMMZ8Q/qYH7Icb8f0Tb+KIwcCuRG
+p+7ivzwRswEAzulyfhu1vVRE83LrlowGE7m0S2l7I93HGHGCfmfMPwU=
+=bCrZ
 -----END PGP SIGNATURE-----
 
---=-2h+kT3+wh6wMUR50z+KG--
+--=-evyuTTmSbAKh4zHKyeMW--
 
