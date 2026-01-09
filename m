@@ -1,229 +1,125 @@
-Return-Path: <yoann.congal@smile.fr>
+Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 40890D1680D
-	for <webhook@archiver.kernel.org>; Fri,  9 Jan 2026 10:52:57 +0000 (UTC)
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.7727.1767955975608195893
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4CDE6D16805
+	for <webhook@archiver.kernel.org>; Fri,  9 Jan 2026 11:01:37 +0000 (UTC)
+Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.7742.1767956486681056442
  for <docs@lists.yoctoproject.org>;
- Fri, 09 Jan 2026 02:52:55 -0800
+ Fri, 09 Jan 2026 03:01:27 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@smile.fr header.s=google header.b=qqDa/iVo;
- spf=pass (domain: smile.fr, ip: 209.85.221.51, mailfrom: yoann.congal@smile.fr)
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-432d2c96215so1218741f8f.3
-        for <docs@lists.yoctoproject.org>; Fri, 09 Jan 2026 02:52:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=smile.fr; s=google; t=1767955974; x=1768560774; darn=lists.yoctoproject.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=lOZl2SLEjS//NoGz4TeIcyTyNqjcCt6RQBMkukQIZyg=;
-        b=qqDa/iVoZJxRvF7+8K/525bK5rv2nO97Y8HmeYVQbfYQBeD33ERhzCw8am0zNc2Iq4
-         cxSjrhfCQxvz+ANAfSBGBkD+INaem00diBhX52O9VNoGISkwZ0L4+lheghwM/nV0qENZ
-         eSV0gTlsgRmIT4xQvqSJGcz5TbbjLqZbBGtT0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767955974; x=1768560774;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lOZl2SLEjS//NoGz4TeIcyTyNqjcCt6RQBMkukQIZyg=;
-        b=f3XtoMz+6bbdACLS4JL38FCiw/qYw8CfTsngCINwN93wcms6m5/tlVP/RIkWn4hz6e
-         736WZcIdh8f1D3IEWgjw9ZzV+dnc4ZE+RaAldrWQWk0njXG8fqOWOpYh5lTX6kWYiPJs
-         GVvyla+B98oD11yxctIEkkXJ0wcdCPp2vPXcAfzH+H7HbYGGNipRR/JvuFP40UgSGw2j
-         Euu+2h31wq7LNB7h4JDIrqWD2t9Z6hQkwJgc1VOFanGZWPKJG3wUBe8QRveuUMvEuTQe
-         eXhFeAalpiprk3KjaKZwsYZyJSsemRvLZZTxQAZXws9z7bPNXhLs+tX/4jD0TOwZBzT8
-         MVDA==
-X-Gm-Message-State: AOJu0YwvZmwVnuNafCmO0DOLAfstz2g3HfT3QMb8aPQX1Urw74Fu8ZGH
-	9THzpl6CGATDvUzlmM4bFrbUnR2w6DFP0hxed7Ze1EpoARZ4Dq2H6OmGh3192XE5eUIocGDNcHn
-	sSYNtY7HhBdAa0g1bRG4QOrHeZbEtkjFC1pC5x9iK6Q==
-X-Gm-Gg: AY/fxX4qftWm+bMOmHMFBnyJbox4GNhKQvooMAiz6iBs5GYRKTdoCWVT+RsJr8wA9nd
-	YASMqD6dbTLDmNmjMS0JzK+sfARbT3zi/ouVnSOqKtQGuTw9n4igoZRC4nGVECFIxiayOySWoO8
-	R+Nwr+BE4xsaK3gfI1VDeII06eCq4qmLgyUshG92YyZ/yH64mbwJgQ7Dja+nvdAGMnf8ueeLXmB
-	jZSGLhTWwb+/RWcRnyb2/aizg7c1y8WWjsqFnHhdDUE3HvNx2HG4xC/rxbp2/IfLxe4bdSSe8zT
-	RBoh8ekclI4xaYJrdtDuB52ol5zIKA==
-X-Google-Smtp-Source: AGHT+IHjS0GZq+3V8pM/Ab5OBHxFAHD4nsM6oP8LS6H9MBf8AEb34IHfEde4iODId+owN+fZDPKaLWTh2jO01KOVt4k=
-X-Received: by 2002:a05:6000:2dc2:b0:431:9dd:2cca with SMTP id
- ffacd0b85a97d-432c3789f76mr9557216f8f.7.1767955973979; Fri, 09 Jan 2026
- 02:52:53 -0800 (PST)
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=V9q7yKYz;
+ spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:References:
+	Message-ID:In-Reply-To:Subject:cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=KqPJAY8m7d9Ege8Uahn7cqydV+p2FeIr5o3Q8ouKmFE=; b=V9q7yKYzIin8+aNfMqSrmGXnZV
+	GWFfiJAUvqUUlwJyYlUhu8IapdnTospCK9kvBb7/0V9InioGrec3TC447smxqZzFz1tVGhzrPc2n4
+	5CxWZkb0LSB0bUWNYmFv1JAv3SxfQ+5O555EZXP4NbBK14wf4cF7QyekcAv4Dcv5nMfvS5dj1OIl+
+	7ospt5Ke4AaHZ8ZLg9LAqqW4sR0/E17HY4JpueTfW41QJste5W6+HgR/3T6u7fgj2cE0EKHwZvMk/
+	hcQbj/Ud4YsdRRafpevTx68YIwl+jMaLVPV+9LnzNUNdRf0pL8QEUNco3lG161zYunkTsmithWsAc
+	2AwiJRUg==;
+Received: from [147.129.179.166] (port=53816 helo=rday)
+	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.99.1)
+	(envelope-from <rpjday@crashcourse.ca>)
+	id 1veAF9-00000004r33-3yRp;
+	Fri, 09 Jan 2026 06:01:25 -0500
+Date: Fri, 9 Jan 2026 06:04:24 -0500 (EST)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+To: antonin.godard@bootlin.com
+cc: BitBake developer list <bitbake-devel@lists.openembedded.org>, 
+    YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: Re: [bitbake-devel] [docs] [PATCH] doc: bitbake ch 2: use example
+ of nginx to explain DEFAULT_PREFERENCE
+In-Reply-To: <DFJYMW8QAZ22.1GOY96LCY19VK@bootlin.com>
+Message-ID: <f2ade0a5-f600-b5a0-637d-128df8dcad59@crashcourse.ca>
+References: <5113f81f-1b33-a4ac-f71d-432caf8e709a@crashcourse.ca> <DFJYMW8QAZ22.1GOY96LCY19VK@bootlin.com>
 MIME-Version: 1.0
-References: <20260109-ptest-output-v1-1-29b1b2039c97@bootlin.com>
-In-Reply-To: <20260109-ptest-output-v1-1-29b1b2039c97@bootlin.com>
-From: Yoann Congal <yoann.congal@smile.fr>
-Date: Fri, 9 Jan 2026 11:52:28 +0100
-X-Gm-Features: AZwV_QgpYheGHwBZUSLdAkn6QetJnN3M2ys7LiZZalaY6fX0ZH9Tvss3gdu-1FE
-Message-ID: <CAMSfU+4hrCHXwC8BHS_VSO38b=N1r20NzfnWJU6TQkSGgA3DFg@mail.gmail.com>
-Subject: Re: [PATCH] test-manual/ptest.rst: detail the exit code and output requirements
-To: Antonin Godard <antonin.godard@bootlin.com>
-Cc: docs@lists.yoctoproject.org, 
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Content-Type: multipart/alternative; boundary="000000000000ced0000647f25305"
+Content-Type: text/plain; charset=US-ASCII
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
+X-AntiAbuse: Original Domain - lists.yoctoproject.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - crashcourse.ca
+X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 09 Jan 2026 10:52:57 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8448
+ <docs@lists.yoctoproject.org>; Fri, 09 Jan 2026 11:01:37 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8449
 
---000000000000ced0000647f25305
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On Fri, 9 Jan 2026, Antonin Godard via lists.openembedded.org wrote:
 
-Le ven. 9 janv. 2026 =C3=A0 11:45, Antonin Godard <antonin.godard@bootlin.c=
-om> a
-=C3=A9crit :
-
-> A ptest must emit at least one test result on the console, as this is
-> required by the testimage class (which ignores the exit code).
-> ptest-runner on the other hand, ignore the output and only cares about
-> the exit code.
+> Hi,
 >
-> Add these two items as requirements for a ptest to be valid.
+> On Thu Jan 8, 2026 at 11:08 PM CET, Robert P. J. Day wrote:
+> >
+> > At the moment, the section on explaining DEFAULT_PREFERENCE uses an
+> > example of busybox, which does not even use this feature anymore.
+> > Replace this with an example using "nginx", which does.
+> >
+> > Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+> >
+> > ---
+> >
+> > diff --git a/doc/bitbake-user-manual/bitbake-user-manual-execution.rst b/doc/bitbake-user-manual/bitbake-user-manual-execution.rst
+> > index d407f59c0..1638a8f5c 100644
+> > --- a/doc/bitbake-user-manual/bitbake-user-manual-execution.rst
+> > +++ b/doc/bitbake-user-manual/bitbake-user-manual-execution.rst
+> > @@ -337,21 +337,22 @@ file that BitBake parses, you can change that preference::
+> >
+> >  .. note::
+> >
+> > -   It is common for a recipe to provide two versions -- a stable,
+> > -   numbered (and preferred) version, and a version that is automatically
+> > -   checked out from a source code repository that is considered more
+> > -   "bleeding edge" but can be selected only explicitly.
+> > -
+> > -   For example, in the OpenEmbedded codebase, there is a standard,
+> > -   versioned recipe file for BusyBox, ``busybox_1.22.1.bb``, but there
+> > -   is also a Git-based version, ``busybox_git.bb``, which explicitly
+> > -   contains the line ::
+> > -
+> > -     DEFAULT_PREFERENCE = "-1"
+> > -
+> > -   to ensure that the
+> > -   numbered, stable version is always preferred unless the developer
+> > -   selects otherwise.
+> > +   It is not uncommon for a given recipe to provide more than one
+> > +   version -- a stable (and preferred) version that should be selected
+> > +   by default, and a newer, development or "bleeding edge" version that
+> > +   will be selected only explicitly by the developer.
+> > +
+> > +   For example, at the moment, in the OpenEmbedded codebase, there are
+> > +   two versions of the ``nginx`` webserver: a stable "1.28.0" version
+> > +   that would be selected by default, and a newer "1.29.1" development
+> > +   version that a developer would need to choose explicitly.
+> > +
+> > +   This can be seen based on this snippet from the ``nginx`` 1.29.1
+> > +   recipe file::
+> > +
+> > +      # 1.28.x branch is the current stable branch, the recommended default
+> > +      # 1.29.x is the current mainline branches containing all new features
+> > +      DEFAULT_PREFERENCE = "-1"
 >
-> Fixes [YOCTO #15832]
->
-> Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
->
+> We should consider dropping these kinds of phrasings in favor of generic
+> examples inspired from real life, e.g. "Consider the following example
+> recipe...". That way, no maintenance burden like this one.
 
-Thanks!
+  to *some* extent, i agree with you, but i also feel that it's
+valuable to demonstrate some explanations with examples ripped
+straight from the source code so that beginning developers can see
+those things in action. i agree that this is not the *best* example to
+use for this, though, but it will do for now.
 
-Looks good to me :)
-Reviewed-by: Yoann Congal <yoann.congal@smile.fr>
-
-
-> ---
->  documentation/test-manual/ptest.rst | 19 +++++++++++++++++++
->  1 file changed, 19 insertions(+)
->
-> diff --git a/documentation/test-manual/ptest.rst
-> b/documentation/test-manual/ptest.rst
-> index 4e6be35df..1c946f81d 100644
-> --- a/documentation/test-manual/ptest.rst
-> +++ b/documentation/test-manual/ptest.rst
-> @@ -91,6 +91,25 @@ test. Here is what you have to do for each recipe:
->        cd test
->        make -k runtest-TESTS
->
-> +-  *Return an appropriate exit code*: The ``run-ptest`` script must
-> return 0 on
-> +   success, 1 on failure. This is needed by ``ptest-runner`` to keep
-> track of
-> +   the successful and failed tests.
-> +
-> +-  *Make sure the test prints at least one test result*: The execution o=
-f
-> the
-> +   ``run-ptest`` script must result in at least one test result output o=
-n
-> the
-> +   console, with the following format::
-> +
-> +      result: testname
-> +
-> +   Where ``result`` can be one of ``PASS``, ``SKIP``, or ``FAIL``.
-> ``testname``
-> +   can be any name.
-> +
-> +   There can be as many test results as desired.
-> +
-> +   This information is read by the :ref:`ref-classes-testimage` class an=
-d
-> +   :oe_git:`logparser
-> </openembedded-core/tree/meta/lib/oeqa/utils/logparser.py>`
-> +   module.
-> +
->  -  *Ensure dependencies are met:* If the test adds build or runtime
->     dependencies that normally do not exist for the package (such as
->     requiring "make" to run the test suite), use the
->
-> ---
-> base-commit: f9042e1da554017fe46460c1fd2bdf8c74b3fa18
-> change-id: 20260109-ptest-output-29a943659c2e
->
->
-
---=20
-Yoann Congal
-Smile ECS
-
---000000000000ced0000647f25305
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote g=
-mail_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">Le=C2=A0ven. 9 =
-janv. 2026 =C3=A0=C2=A011:45, Antonin Godard &lt;<a href=3D"mailto:antonin.=
-godard@bootlin.com">antonin.godard@bootlin.com</a>&gt; a =C3=A9crit=C2=A0:<=
-br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8e=
-x;border-left:1px solid rgb(204,204,204);padding-left:1ex">A ptest must emi=
-t at least one test result on the console, as this is<br>
-required by the testimage class (which ignores the exit code).<br>
-ptest-runner on the other hand, ignore the output and only cares about<br>
-the exit code.<br>
-<br>
-Add these two items as requirements for a ptest to be valid.<br>
-<br>
-Fixes [YOCTO #15832]<br>
-<br>
-Signed-off-by: Antonin Godard &lt;<a href=3D"mailto:antonin.godard@bootlin.=
-com" target=3D"_blank">antonin.godard@bootlin.com</a>&gt;<br></blockquote><=
-div><br></div><div>Thanks!</div><div><br></div><div>Looks good to me :)</di=
-v><div>Reviewed-by: Yoann Congal &lt;<a href=3D"mailto:yoann.congal@smile.f=
-r">yoann.congal@smile.fr</a>&gt;</div><div>=C2=A0</div><blockquote class=3D=
-"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(2=
-04,204,204);padding-left:1ex">
----<br>
-=C2=A0documentation/test-manual/ptest.rst | 19 +++++++++++++++++++<br>
-=C2=A01 file changed, 19 insertions(+)<br>
-<br>
-diff --git a/documentation/test-manual/ptest.rst b/documentation/test-manua=
-l/ptest.rst<br>
-index 4e6be35df..1c946f81d 100644<br>
---- a/documentation/test-manual/ptest.rst<br>
-+++ b/documentation/test-manual/ptest.rst<br>
-@@ -91,6 +91,25 @@ test. Here is what you have to do for each recipe:<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0cd test<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0make -k runtest-TESTS<br>
-<br>
-+-=C2=A0 *Return an appropriate exit code*: The ``run-ptest`` script must r=
-eturn 0 on<br>
-+=C2=A0 =C2=A0success, 1 on failure. This is needed by ``ptest-runner`` to =
-keep track of<br>
-+=C2=A0 =C2=A0the successful and failed tests.<br>
-+<br>
-+-=C2=A0 *Make sure the test prints at least one test result*: The executio=
-n of the<br>
-+=C2=A0 =C2=A0``run-ptest`` script must result in at least one test result =
-output on the<br>
-+=C2=A0 =C2=A0console, with the following format::<br>
-+<br>
-+=C2=A0 =C2=A0 =C2=A0 result: testname<br>
-+<br>
-+=C2=A0 =C2=A0Where ``result`` can be one of ``PASS``, ``SKIP``, or ``FAIL`=
-`. ``testname``<br>
-+=C2=A0 =C2=A0can be any name.<br>
-+<br>
-+=C2=A0 =C2=A0There can be as many test results as desired.<br>
-+<br>
-+=C2=A0 =C2=A0This information is read by the :ref:`ref-classes-testimage` =
-class and<br>
-+=C2=A0 =C2=A0:oe_git:`logparser &lt;/openembedded-core/tree/meta/lib/oeqa/=
-utils/logparser.py&gt;`<br>
-+=C2=A0 =C2=A0module.<br>
-+<br>
-=C2=A0-=C2=A0 *Ensure dependencies are met:* If the test adds build or runt=
-ime<br>
-=C2=A0 =C2=A0 dependencies that normally do not exist for the package (such=
- as<br>
-=C2=A0 =C2=A0 requiring &quot;make&quot; to run the test suite), use the<br=
->
-<br>
----<br>
-base-commit: f9042e1da554017fe46460c1fd2bdf8c74b3fa18<br>
-change-id: 20260109-ptest-output-29a943659c2e<br>
-<br>
-</blockquote></div><div><br clear=3D"all"></div><br><span class=3D"gmail_si=
-gnature_prefix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature"><d=
-iv dir=3D"ltr"><font face=3D"Raleway, regular">Yoann Congal</font><div><fon=
-t face=3D"Raleway, regular">Smile ECS</font></div></div></div></div>
-
---000000000000ced0000647f25305--
+rday
 
