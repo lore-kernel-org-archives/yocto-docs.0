@@ -1,117 +1,92 @@
-Return-Path: <adrian.freihofer@siemens.com>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EFA49D232C3
-	for <webhook@archiver.kernel.org>; Thu,  8 Jan 2026 22:20:24 +0000 (UTC)
-Received: from mta-65-226.siemens.flowmailer.net (mta-65-226.siemens.flowmailer.net [185.136.65.226])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.18935.1767910819076427445
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7A2C1D232F1
+	for <webhook@archiver.kernel.org>; Fri,  9 Jan 2026 08:31:36 +0000 (UTC)
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.6183.1767947488734746519
  for <docs@lists.yoctoproject.org>;
- Thu, 08 Jan 2026 14:20:20 -0800
+ Fri, 09 Jan 2026 00:31:30 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=adrian.freihofer@siemens.com header.s=fm1 header.b=TqHAsmN5;
- spf=pass (domain: rts-flowmailer.siemens.com, ip: 185.136.65.226, mailfrom: fm-1329275-202601082220156dc2c7c46900020713-ou893j@rts-flowmailer.siemens.com)
-Received: by mta-65-226.siemens.flowmailer.net with ESMTPSA id 202601082220156dc2c7c46900020713
-        for <docs@lists.yoctoproject.org>;
-        Thu, 08 Jan 2026 23:20:16 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm1;
- d=siemens.com; i=adrian.freihofer@siemens.com;
- h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc;
- bh=hUmM/cJiYVbbw0HY9S523jy9IiTE0d/o5lsmBjhPBNA=;
- b=TqHAsmN5B2bI2U+fJj5QFDxHZ0dnFpVtjb+k4GHj0JWgRWlJQ6QkUx3c3L84PwM7i36U5z
- dnejoZh0qzbRsiOdYZDt9zdFsWw6jdKwSpPHkdAaPDJzgqGKGxvY1hPf6JxKJbQ4We2Eb7lX
- ekTjwk0PkEWowSx//m8KFh4NTH1NlEakRckxEXDGR3hITSgJ2w4Twv6sNtnjhKxZAN0XQEIj
- uBf8JYJxlKizwCJjkUKS3ryY62pK6UePNGNIeVZTFmrJ7Qm1vudknkO5WIgCUfmrF6knj1A8
- VYR6xVTx5Lu+oULThUWc6fwjXtqAVYA9MwpODMdYIL9IfBF8WO5aWoVg==;
-From: AdrianF <adrian.freihofer@siemens.com>
-To: docs@lists.yoctoproject.org
-Cc: Adrian Freihofer <adrian.freihofer@siemens.com>
-Subject: [PATCH] ref-manual/variables.rst: document new FIT image variables
-Date: Thu,  8 Jan 2026 23:20:11 +0100
-Message-ID: <20260108222011.2576150-1-adrian.freihofer@siemens.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Flowmailer-Platform: Siemens
-Feedback-ID: 519:519-1329275:519-21489:flowmailer
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=bfeiyZ8B;
+ spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id D33851A2739
+	for <docs@lists.yoctoproject.org>; Fri,  9 Jan 2026 08:31:26 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id A883460734;
+	Fri,  9 Jan 2026 08:31:26 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3C43F103C87CB;
+	Fri,  9 Jan 2026 09:31:25 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1767947486; h=from:subject:date:message-id:to:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=FV1Q6FAe3MWQ5ZRgz4FjZRJreSPbdvCp37A2rI8+jWI=;
+	b=bfeiyZ8BFYPwGOEczQiS5WdJQQ7DKLpBATi3+/5T9St7hbPmLI6eQiO4LNSFU4YFZNz8mB
+	IYKvMuSpzdbGhF2yfRLNNgLuQnb6FjxltQ46xLSymD8gJZ6txeixk2/5AWSgj/cki8eV9F
+	ebIC98srFU30b1TGpqfw43u8e0J7LWzefMOG6IixxrM8bVnNVol3Q4p/y8ubc+ZqktNxTB
+	2mqZE131cVrYwHrTvxLniEZ6LkyrjhCgsZCRo+R4C7XFifQ6tLMzmPahs7FfyCKuRZiqEL
+	u3LFPPfjijhdAJY5s7zprLWRlPgNIkJR751OlA0PP85c7KmkDyBt6bKK2vSFkQ==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 09 Jan 2026 09:31:23 +0100
+Message-Id: <DFJX2TSSDY5K.3J2WT11WWNF8K@bootlin.com>
+Subject: Re: [docs] [PATCH 2/2] migration-guides/release-notes-6.0.rst: add
+ U-Boot initial env binary
+From: "Antonin Godard" <antonin.godard@bootlin.com>
+To: <pierre-loup.gosse@smile.fr>, <docs@lists.yoctoproject.org>
+References: <20260107170153.760421-1-pierre-loup.gosse@smile.fr>
+ <20260107170153.760421-2-pierre-loup.gosse@smile.fr>
+In-Reply-To: <20260107170153.760421-2-pierre-loup.gosse@smile.fr>
+X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 08 Jan 2026 22:20:24 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8433
+ <docs@lists.yoctoproject.org>; Fri, 09 Jan 2026 08:31:36 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8435
 
-From: Adrian Freihofer <adrian.freihofer@siemens.com>
+On Wed Jan 7, 2026 at 6:01 PM CET, Pierre-loup GOSSE via lists.yoctoproject=
+.org wrote:
+> From: Pierre-Loup GOSSE <pierre-loup.gosse@smile.fr>
+>
+> Added by commit cf11b14a4cfc ("u-boot: make initial environment binary
+> image") in OE-Core.
+>
+> Signed-off-by: Pierre-Loup GOSSE <pierre-loup.gosse@smile.fr>
+> ---
+>  documentation/migration-guides/release-notes-6.0.rst | 6 ++++++
+>  1 file changed, 6 insertions(+)
+>
+> diff --git a/documentation/migration-guides/release-notes-6.0.rst b/docum=
+entation/migration-guides/release-notes-6.0.rst
+> index cfc51fc3a..13ce28b3b 100644
+> --- a/documentation/migration-guides/release-notes-6.0.rst
+> +++ b/documentation/migration-guides/release-notes-6.0.rst
+> @@ -71,6 +71,12 @@ New Features / Enhancements in |yocto-ver|
+> =20
+>  -  :ref:`ref-classes-sanity` class changes:
+> =20
+> +-  U-boot related changes:
+> +
+> +   -  :ref:`ref-classes-uboot-config`: Add support for generating the U-=
+Boot
+> +      initial environment in binary format using
+> +      :term:`UBOOT_INITIAL_ENV_BINARY`.
+> +
+>  -  Miscellaneous changes:
+> =20
+>  Known Issues in |yocto-ver|
 
-- FIT_MKIMAGE_EXTRA_OPTS: new variable to pass extra mkimage options
-- FIT_CONF_MAPPINGS for flexible DTB mappings
+Reviewed-by: Antonin Godard <antonin.godard@bootlin.com>
 
-Signed-off-by: Adrian Freihofer <adrian.freihofer@siemens.com>
----
- documentation/ref-manual/variables.rst | 44 ++++++++++++++++++++++++++
- 1 file changed, 44 insertions(+)
+Thanks,
+Antonin
 
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index ee776c110..734dfcbd4 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -3383,6 +3383,35 @@ system and gives an overview of their function and contents.
- 
-       This variable is used in the :ref:`ref-classes-kernel-fit-image` class.
- 
-+   :term:`FIT_CONF_MAPPINGS`
-+      Allows specifying mappings to rename configuration nodes or add extra
-+      configuration nodes for existing DTBs in FIT images. This provides
-+      flexibility when a 1-1 mapping between DTB names and configuration
-+      node names does not work.
-+
-+      The variable accepts a space-separated list of mapping commands:
-+
-+      - ``dtb-conf:DTB_NAME:NEW_NAME``
-+        Renames the configuration node for a specific DTB.
-+
-+      - ``dtb-extra-conf:DTB_NAME:EXTRA_NAME``
-+        Creates an additional configuration node for an existing DTB.
-+
-+      For example::
-+
-+         FIT_CONF_MAPPINGS = "\
-+             dtb-extra-conf:am335x-bonegreen:bonegreen \
-+             dtb-conf:am335x-boneblack:bbblack"
-+
-+      This generates three configuration nodes from two DTBs:
-+
-+      - ``am335x-bonegreen``: a standard configuration node for a DTB
-+      - ``bonegreen``: an extra configuration node for the same DTB
-+      - ``bbblack``: a renamed configuration node for the ``am335x-boneblack`` DTB
-+
-+      The :ref:`ref-classes-kernel-fit-image` class validates all mappings
-+      and ensures they match existing DTBs.
-+
-    :term:`FIT_CONF_PREFIX`
-       When using the :ref:`ref-classes-kernel-fit-image`, this is the prefix
-       used for creating FIT configuration nodes. Its default value is "conf-".
-@@ -3473,6 +3502,21 @@ system and gives an overview of their function and contents.
-       The default value is set to "x509" by the
-       :ref:`ref-classes-kernel-fit-image` class.
- 
-+   :term:`FIT_MKIMAGE_EXTRA_OPTS`
-+      This variable allows passing extra options to ``mkimage`` during FIT
-+      image generation, providing flexibility for platforms that require
-+      additional ``mkimage`` arguments beyond the defaults.
-+
-+      For example::
-+
-+         FIT_MKIMAGE_EXTRA_OPTS = "-B 8 -E"
-+
-+      This results in the ``mkimage`` command being invoked as::
-+
-+         mkimage -B 8 -E -f fit-image.its fitImage
-+
-+      The :ref:`ref-classes-kernel-fit-image` class uses this variable.
-+
-    :term:`FIT_PAD_ALG`
-       Specifies the padding algorithm used in creating the FIT Image.
-       The default value is set to "pkcs-1.5" by the
--- 
-2.52.0
+--=20
+Antonin Godard, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
