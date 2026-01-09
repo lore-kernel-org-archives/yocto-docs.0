@@ -1,117 +1,148 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <pierre-loup.gosse@smile.fr>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DEE48D167EA
-	for <webhook@archiver.kernel.org>; Fri,  9 Jan 2026 09:33:26 +0000 (UTC)
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.6747.1767951199881782365
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CD0F2D167EB
+	for <webhook@archiver.kernel.org>; Fri,  9 Jan 2026 09:33:36 +0000 (UTC)
+Received: from mail-wr1-f65.google.com (mail-wr1-f65.google.com [209.85.221.65])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.6813.1767951209034921004
  for <docs@lists.yoctoproject.org>;
- Fri, 09 Jan 2026 01:33:20 -0800
+ Fri, 09 Jan 2026 01:33:29 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=BO6p9rML;
- spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id BEE74C1F6D3;
-	Fri,  9 Jan 2026 09:32:51 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id D94C260734;
-	Fri,  9 Jan 2026 09:33:17 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 99242103C87CC;
-	Fri,  9 Jan 2026 10:33:16 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1767951197; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=auHeEGBg8Rp84MVKpCN4Nwgg2Gu8+RRghqWeVs9Bkrs=;
-	b=BO6p9rMLFDaymvSlpP5buIVzHkCISvzx1wzES56u2YAfTL4HeHhBbv9GKqHRvEb3CxiYKG
-	2DmR1kp0SDwxGz0dmY74Ro/bgL8sxYcRF/Ygo+C8vKslY39+ldgwbC5xUrCXTW7MxfcpU5
-	BozPrsiVNsojgPnjK0Nc/LHbiz4M+mEOeFwhk5ZMgkkvCxlh35FhLc/Jj8IS8mKYh1Np+d
-	3Zyw1Si16UzWFlgoTuoyC/7+6XPWBgQhLPU2QOcYNHcu7XHldaNY/tjr6yNJgrTZZ8U/tU
-	TDVnK9rPCsBrgJ5K+VY2/SVI13nx3YG5dfzQX7y+1KVbSC2SFeOly+AJTCjr0w==
-From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Fri, 09 Jan 2026 10:32:59 +0100
-Subject: [PATCH v2] contributor-guide/recipe-style-guide.rst: explain
- difference between layer and recipe license(s)
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260109-layer-license-clarification-v2-1-3b7f0682df97@bootlin.com>
-X-B4-Tracking: v=1; b=H4sIAEvLYGkC/42NQQ6CMBBFr2K6dkxbkwKuvIdhUYZBxtTWtJVIC
- He34AVcvuT99xeRKDIlcTksItLEiYMvoI8HgaP1dwLuCwsttZFKGnB2pgiOkXwiQGcjD4w2lx1
- UsuulPhs1VEaUwivSwJ+9fmt/nN7dgzBvyc0YOeUQ5/1+Upv339OkQEHToGkIla2r+tqFkB37E
- 4anaNd1/QJJSIYM2gAAAA==
-X-Change-ID: 20260106-layer-license-clarification-70bd02361f76
+ dkim=pass header.i=@smile.fr header.s=google header.b=wjqqS6Qe;
+ spf=pass (domain: smile.fr, ip: 209.85.221.65, mailfrom: pierre-loup.gosse@smile.fr)
+Received: by mail-wr1-f65.google.com with SMTP id ffacd0b85a97d-43284ed32a0so2056798f8f.3
+        for <docs@lists.yoctoproject.org>; Fri, 09 Jan 2026 01:33:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=smile.fr; s=google; t=1767951207; x=1768556007; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=uerVv05ujti0S/welIu43r8N5D+DqF2KzpaNiFEz6+M=;
+        b=wjqqS6Qe1TF0GjUSyPswZza1plxkPf1oaGsqsaX4lH2tYVHtUz+f14IyjPxMGoATfr
+         A5wskPJi1bLCnCPDcIQdcXKgMmS4qXvtkDOgRtDQmXSb/ccrJBRQLU1y8DYRAZ6do4yN
+         XlJu2ZLkCvnRysegkgIgO1tkRExhWaf8jaig0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767951207; x=1768556007;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uerVv05ujti0S/welIu43r8N5D+DqF2KzpaNiFEz6+M=;
+        b=cuiUC8Tmy5jLf+ZFIr0z9ETSL2B0Mbz3ZJhC0QFV9nKvtNC/CeZIojBz2UuBX1I4cb
+         h0USr+5Nn642gEPh3OJ9SXTL02YI32YMfae+yyESyMTsgKYGqGksFjqJu+ByXkY+o6ap
+         UWF+SotXyYHUleZBZmgaM/sqfRGi6A5yc+5AUZTmQiStNdxft/oLVtN2BroC0n+XeRRa
+         KI7zSQf56HeO2YTVv6Qfko+/vp4hLU7EpfNB6e+b57My/+jTEnTr9uTljudCFNiWaff5
+         Cl2vbwz7pesVsKmrs10X6W5OGM/0RugLquKXC+sDTPb2MBACTe7vw8AtnMss9TXNzRf/
+         oXaQ==
+X-Gm-Message-State: AOJu0YwHKoJhx+05HfwY3OlrlMyjT6r8oDDYUbqKNlOOxWvD4muI4Bng
+	inkWKgZ+6P9voUjXaEC81qXkwPSGDmc4nzHh2GLyKkfWHEeOhoZ8ruPS2mFS+KHzbXojLg9s5Z7
+	4lAVf431Mrw==
+X-Gm-Gg: AY/fxX6/96+RLFE+VSxuVEOIYr2DOsDCDd+5mwxWsHpFs9gSKjsxLcEqrerPSU/k+vY
+	lc/TmfWQsuw/Cm7p6RiPx4KEK3Msp700mOKBXZIdrLvUYsKhIOAlJx4nTrcoFba6ZFoNgGM6ZpN
+	ktw4LlU83y3PRyO1kfce6GE6h98Eenm8fli6gdb57BOU8TZhHGv4TfnugOVjb5e6lkZlK+sYRlb
+	9gAQVWPAtb6stPeuheXnJWgbU3toNsVVz7iZI0WiULPWQBjOxMol2CP4U2XowMxdwrK4WcU/Osy
+	SWASl16KlZr9JYrop1AFhedmSwUvkhH7WkPjEK8PFEy4FraMID/1WbewLdeem+Uj+0OMSXE4+GY
+	M/xVOUXyvGxJSeGLtaHtFxrJJdv2zuZBI01502XehU7Kkun4pQ+ndTLHqckOS6IMQ0VhZyXE4q+
+	MFMMt/ddqU5OT3258aRVvD0jXaumwyLF+2gy+iW46I/HUY4762HPuSxvw1JVP3izv7Cdc/TZJ0L
+	QG0q7jAncoTFbIv2StXQdZD2M5zBC7KgbMQKJS48544RUM3Mu2IF3i0sRod7u978FS4KwI1Ojrr
+	QMGOeP8rPe/B0hrAPeMvRK+a
+X-Google-Smtp-Source: AGHT+IEZC3y5DmQ1XQ2gP3Nz0rwOnqZGLz32OC9S0XexPmYP59mGGFMQIvJOSdnPJPYyMVimRYn4Xw==
+X-Received: by 2002:a5d:4b42:0:b0:432:ca6c:7b03 with SMTP id ffacd0b85a97d-432ca6c7ba1mr6380710f8f.26.1767951207359;
+        Fri, 09 Jan 2026 01:33:27 -0800 (PST)
+Received: from FRSMI24-BLUE.example.com (2a01cb000301bd00fac876ea81338aac.ipv6.abo.wanadoo.fr. [2a01:cb00:301:bd00:fac8:76ea:8133:8aac])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432bd5ee24esm21452920f8f.33.2026.01.09.01.33.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Jan 2026 01:33:27 -0800 (PST)
+From: pierre-loup.gosse@smile.fr
 To: docs@lists.yoctoproject.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Paul Barker <paul@pbarker.dev>, Antonin Godard <antonin.godard@bootlin.com>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2196;
- i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=QTkJ5yPYlVRdgemcMcJCtT/KXtv61vmTEg1m0dVwl+8=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpYMtclo4pspOBKvPRacion2XAuIg7cONuGIBJ6
- 9CW6Dd0dRCJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaWDLXAAKCRDRgEFAKaOo
- NlVDEACQaBPxxhyDN+nOIPecnChQutz8kcqxBws2UjzfxeuFWmwxjoFlYeb4xvl4FpaXEsbhbFG
- zBcNQZpZuC1OmwAmwJs8xr9/ogq8qXL3I47tPtiJu0zLiXh6N9YxX0eNCUWaMe8OP0LoAg6aC6W
- DLuY2nKAfwM1xYwRWhA95Uo0s80IxenJdz/Z+bMlSv0nK7XF23TngH3hWgipEuDbQZrcqomelPU
- rSBb/WrBPkqgX46khI+z6lyatYY83X1dESx9RrqANakxczkpLSwhavUpJZFwKD3aSs4CDtgKHUt
- Twl2PRw/4PZ4ga3YCA2tykDifD5z2VKPYuv/YfjOcrHwnXQczsSuemnr8xtyVGEXY3NkaRpXRUT
- Vsx6ZfWo94FArAsj+Zod/P8uj3I2SFp81j/1Lb6f4k1WbX56IDufbP4Uq9qX5umBJ/SEF+m7ilj
- fZLeHgpC+W+DiHZerb9ixDefdyqNYmYwG03DAnJAFSWQdaodCUGkP3WenlxvDpJ8jxrb1TXbKKH
- nOzDpXqqP8CcMY7iSmC1IsZ8ibKtl/3bHmaIyoTBUYLNLakoOvmu1RFbiSEydXqCGvu0rVNIb/G
- tVDEIplOn40r0/mJJNTXqbsu+zefUSFYRdlX/t/DRvdPfc4h7N/4ajKLhG0cWRnhCWjA4KsPFbE
- KokxsBNd2wsWePg==
-X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
- fpr=8648725188DD401BB9A0D3FFD180414029A3A836
-X-Last-TLS-Session-Version: TLSv1.3
+Cc: Pierre-Loup GOSSE <pierre-loup.gosse@smile.fr>,
+	Antonin Godard <antonin.godard@bootlin.com>
+Subject: [PATCH v2 1/2] ref-manual/variables.rst: document UBOOT_INITIAL_ENV_BINARY variables
+Date: Fri,  9 Jan 2026 10:33:04 +0100
+Message-Id: <20260109093305.1137281-1-pierre-loup.gosse@smile.fr>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 09 Jan 2026 09:33:26 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8439
+ <docs@lists.yoctoproject.org>; Fri, 09 Jan 2026 09:33:36 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8440
 
-Explain that the LICENSE set in a recipe does not apply to the recipe
-file itself, but to the underlying software. The license of the recipe
-file is the license provided in the layer itself. Give OpenEmbedded-Core
-as an example for this.
+From: Pierre-Loup GOSSE <pierre-loup.gosse@smile.fr>
 
-Fixes [YOCTO #14410]
+Added by commit cf11b14a4cfc ("u-boot: make initial environment binary
+image") in OE-Core.
 
-Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+Signed-off-by: Pierre-Loup GOSSE <pierre-loup.gosse@smile.fr>
+Cc: Antonin Godard <antonin.godard@bootlin.com>
 ---
 Changes in v2:
-- Apply suggestion from Paul, thanks!
-- Link to v1: https://patch.msgid.link/20260106-layer-license-clarification-v1-1-99c69ec1a878@bootlin.com
+- Rephrase UBOOT_INITIAL_ENV_BINARY
+- Add link to WIC doc
+- Rephrase UBOOT_INITIAL_ENV_BINARY_REDUND
+- Remove empty line
 ---
- documentation/contributor-guide/recipe-style-guide.rst | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ documentation/ref-manual/variables.rst | 46 ++++++++++++++++++++++++++
+ 1 file changed, 46 insertions(+)
 
-diff --git a/documentation/contributor-guide/recipe-style-guide.rst b/documentation/contributor-guide/recipe-style-guide.rst
-index 806bf2384..464895212 100644
---- a/documentation/contributor-guide/recipe-style-guide.rst
-+++ b/documentation/contributor-guide/recipe-style-guide.rst
-@@ -221,6 +221,20 @@ Recipes need to define both the :term:`LICENSE` and
-    ``meta/files/common-licenses/`` or the :term:`SPDXLICENSEMAP` flag names
-    defined in ``meta/conf/licenses.conf``.
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index ee776c110..b5d072983 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -10974,6 +10974,52 @@ system and gives an overview of their function and contents.
  
-+   .. note::
+       See the :ref:`ref-classes-uboot-sign` class for details.
+ 
++   :term:`UBOOT_INITIAL_ENV_BINARY`
++      This variable enables the generation of the U-Boot initial environment in
++      binary format.
 +
-+      Setting a :term:`LICENSE` in a recipe applies to the software to be built
-+      by this recipe, not to the recipe file itself. The license of recipes,
-+      configuration files and scripts should also be clearly specified, for
-+      example via comments or via a license found in the :term:`layer` that
-+      holds these files. These license files are usually found at the root of
-+      the layer. Exceptions should be clearly stated in the layer README or
-+      LICENSE file.
++      Its default value is "0", set it to "1" to enable this functionality::
 +
-+      For example, the :term:`OpenEmbedded-Core (OE-Core)` layer provides both
-+      the GPL-2.0-only and MIT license files, and a "LICENSE" file to explain
-+      how these two licenses are attributed to files found in the layer.
++         UBOOT_INITIAL_ENV_BINARY = "1"
 +
- -  :term:`LIC_FILES_CHKSUM`: The OpenEmbedded build system uses this
-    variable to make sure the license text has not changed. If it has,
-    the build produces an error and it affords you the chance to figure
-
----
-base-commit: f9042e1da554017fe46460c1fd2bdf8c74b3fa18
-change-id: 20260106-layer-license-clarification-70bd02361f76
++      If set to "1", you must also set the size of the environment with
++      :term:`UBOOT_INITIAL_ENV_BINARY_SIZE`.
++
++      This variable is used in the :ref:`ref-classes-uboot-config` class.
++
++      The resulting binary can be flashed using :doc:`WIC </dev-manual/wic>` or
++      any other flashing method at the environment offset, overriding any
++      existing environment if one is present. Below is an example of a WKS file
++      to flash the binary::
++
++         part --source rawcopy --sourceparams="file=u-boot-initial-env-sd.bin" --ondisk sda --no-table --offset 4096k
++
++      In this example, the U-Boot initial environment binary
++      `u-boot-initial-env-sd.bin` is flashed at offset 4096 kibibyte.
++
++   :term:`UBOOT_INITIAL_ENV_BINARY_REDUND`
++      If redundant environment support is enabled in U-boot's configuration,
++      this variable should to properly generate the redundant environment in the
++      output U-boot environment binary file.
++
++      Its default value is "0", set it to "1" to enable this functionality::
++
++         UBOOT_INITIAL_ENV_BINARY_REDUND = "1"
++
++      The :term:`UBOOT_INITIAL_ENV_BINARY` must also be set to "1" if
++      :term:`UBOOT_INITIAL_ENV_BINARY_REDUND` is enabled.
++
++      This variable is used in the :ref:`ref-classes-uboot-config` class.
++
++   :term:`UBOOT_INITIAL_ENV_BINARY_SIZE`
++      This variable sets the binary size (in bytes) of the U-Boot initial
++      environment. Both hexadecimal and decimal values are supported and can be
++      set as follows::
++
++         UBOOT_INITIAL_ENV_BINARY_SIZE = "0x4000"
++
++      This variable is used in the :ref:`ref-classes-uboot-config` class.
++
+    :term:`UBOOT_LOADADDRESS`
+       Specifies the load address for the U-Boot image. During U-Boot image
+       creation, the :term:`UBOOT_LOADADDRESS` variable is passed as a
+-- 
+2.34.1
 
 
