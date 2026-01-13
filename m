@@ -2,434 +2,232 @@ Return-Path: <quentin.schulz@cherry.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 24999D2D111
-	for <webhook@archiver.kernel.org>; Tue, 13 Jan 2026 14:41:53 +0000 (UTC)
-Received: from MRWPR03CU001.outbound.protection.outlook.com (MRWPR03CU001.outbound.protection.outlook.com [40.107.130.62])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.60257.1768315307349546634
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4F087D2D11A
+	for <webhook@archiver.kernel.org>; Tue, 13 Jan 2026 14:45:03 +0000 (UTC)
+Received: from PA4PR04CU001.outbound.protection.outlook.com (PA4PR04CU001.outbound.protection.outlook.com [40.107.162.66])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.60341.1768315493993408306
  for <docs@lists.yoctoproject.org>;
- Tue, 13 Jan 2026 06:41:47 -0800
+ Tue, 13 Jan 2026 06:44:54 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@cherry.de header.s=selector1 header.b=lWY6iY9I;
- spf=pass (domain: cherry.de, ip: 40.107.130.62, mailfrom: quentin.schulz@cherry.de)
+ dkim=pass header.i=@cherry.de header.s=selector1 header.b=GZT3Fhh5;
+ spf=pass (domain: cherry.de, ip: 40.107.162.66, mailfrom: quentin.schulz@cherry.de)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=kDyoZWGbM6qaS09gMXgeK94HLY8gVY+FO0g8qGwPi/l/3b45lVrFnmP7/UwpeM/4HWRaBMqowEU9E5PeHqgd2+tPLI3MxrD+Z9s5NIANiLUBgKS02Qwb1YYD7JHzrYLvIZBpbUfTAl2GXNQ3mWL+xMkQ0waE1tfniQQyA0kTSq13U7osU3hyKMjPWpjbdkK+57ioIcDtAQihGSQUpu0gOHIaC8cPB5T0Pk4Fl/eIGPX2UnptIHeKZ890vBEt3dzhgRLB04tJS8qV1aTyA7yO7kFydMyp+u5C4rUzUmPqa/53tTUuCrKY1Vo3rYSccQzvM/H5f+zq8Zo3oJZzDvHotQ==
+ b=S1sDndLPTu8XsE1qf8Dh5RaxSUppkxaIbv8P0dCUdgsoPA5nqdgrFCOiFo/jwdWuWgKQmjzO1vO1XVpYPHbOewGpJNETV3qZKEahzBMZlhfwipFMQ8XGMxIFXoJQq0r5gyOBZesSZ5tkq6BIauZD2wrNTPgDbhoZDaFS+EnJWlpcVON+TVX4YhW7AHzP0LBq6cK8Nky0TYCchEN1sqmUoCK/cilmku0FB35Xg/yZPS/P8MK4wfDnEyTR7Z6NuTiQOa8Yq4zP3GuKzIltSfGBJkfz+YRCxd0AWEDQGbG2rZxmX8POEDiVgMI+TpUrRNqsFsWNXLt3s4TeyL1fYNGKhw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BQUZRHOAPjeAbwAm3hDAeLciTVclw2OoiYamr8MsjqI=;
- b=S3HkxywN86Z9cRjIzRpz6sxSnZ8RnthnaC1GzI+FbhmDE2x3fENER7YjsnpcQ55aIgQBGj3QrenJb5EhMhpMNTxmztQRCDM25pnUXBq+TsRIp19JB7RrRIRSdxDCsP5JlI+TXbUAr9A5u+5UqYAYE19dYCeKBdK9UXGkiJH+k1BPBXtAZNsX1AHnA5E4oAKZMlfakD4vFGPK7GpiDhKeKCAP2ylXTVkp33ELK80mhhxtJKRpJwSO02k1dr7ou+gBb3w15COKTEbcB8axzaQbotU/LTT/aMm6ew7tyelTJoD3JlNtY4+EHrRSohUdiESEWuXF/Si9XwbzE/18SrCzVg==
+ bh=ZaProYRVusNjttr2sA7U9fiM+q/oGw8z4MJLKkxnCKg=;
+ b=Vb6u/5o1lGoN1eCA5ZdXKst7ZQlhDO3S5M9gpT7B70eFsOnSNnmviv2lZwTvYOvuyLMEg+wE/VIYiC4m1HhHXZp85fGx4gKj+zALWW9dpXOKi3he1S4y+cS3v9pHlrevuSZ6h99d2G+qEjMsKU+CB1u+Wj6BCtPZVjbf5TFOZfFx8CD+yATX2F71DGqHB1zwoOOCKGDdQmQ2xbFpqrqdSG70p7MaC0RbEg+JawfNBGPbnf8IiWumbcnJ7YjPjPCvSwDyeJBgz5sKS7OQUGWqkgfWgWZ7xZOt2EHxKGsfA+ihzTNWmYiNxF+bhGW0BzSa1VP8dQgC1lpvrt6BTrncRQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
  dkim=pass header.d=cherry.de; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BQUZRHOAPjeAbwAm3hDAeLciTVclw2OoiYamr8MsjqI=;
- b=lWY6iY9Iof4SYTYQqUEMofbyN/tuG2hmji2hqJfW2SqlpL0DDSjOQugpXZYHRHd6xFl2BS6KZ3vIqvwn2dX7qaWMIgkSYfG945v4b7RGCcKYZu82gPFa7Gos95Bsa6YGS8qemxowsJd0zAmTXc+6tVqDp6849SVGN55VbBBEgdE=
+ bh=ZaProYRVusNjttr2sA7U9fiM+q/oGw8z4MJLKkxnCKg=;
+ b=GZT3Fhh5/7HovU9hbQ4L23D1P3LgvgSUEitWT+zOPFoV5kJbE//3ZpaFL3Yzm6SdajGW0Z2cswGHUZC4tY6/qFA8W5UO0UUX/LQNHwlAuL0DzswvFis+JJ+Oc8mgoW6y7cjzXFxTLBMuVqs/lN+f4Aa/jUYY9ZM0zFuTm2ukXSE=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=cherry.de;
 Received: from GVXPR04MB12038.eurprd04.prod.outlook.com (2603:10a6:150:2be::5)
- by DBAPR04MB7302.eurprd04.prod.outlook.com (2603:10a6:10:1a5::14) with
+ by DBBPR04MB7818.eurprd04.prod.outlook.com (2603:10a6:10:1f2::23) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.7; Tue, 13 Jan
- 2026 14:41:43 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.4; Tue, 13 Jan
+ 2026 14:44:50 +0000
 Received: from GVXPR04MB12038.eurprd04.prod.outlook.com
  ([fe80::1033:5a9a:dc18:dad]) by GVXPR04MB12038.eurprd04.prod.outlook.com
  ([fe80::1033:5a9a:dc18:dad%4]) with mapi id 15.20.9499.005; Tue, 13 Jan 2026
- 14:41:43 +0000
-Message-ID: <c1558d5e-c1ed-49a0-b0d2-8761c47d3c25@cherry.de>
-Date: Tue, 13 Jan 2026 15:41:40 +0100
+ 14:44:49 +0000
+Message-ID: <11e8cf92-75a3-494f-98e1-7c038bace0cc@cherry.de>
+Date: Tue, 13 Jan 2026 15:44:32 +0100
 User-Agent: Mozilla Thunderbird
-Subject: Re: [docs] [PATCH 32/53] toaster-manual: remove obsolete poky repo
- references
+Subject: Re: [docs] [PATCH 33/53] README: remove obsolete poky repo references
 To: antonin.godard@bootlin.com, docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 References: <20251224-remove-poky-references-v1-0-658a5f4dbde2@bootlin.com>
- <20251224-remove-poky-references-v1-32-658a5f4dbde2@bootlin.com>
+ <20251224-remove-poky-references-v1-33-658a5f4dbde2@bootlin.com>
 Content-Language: en-US
 From: Quentin Schulz <quentin.schulz@cherry.de>
-In-Reply-To: <20251224-remove-poky-references-v1-32-658a5f4dbde2@bootlin.com>
+In-Reply-To: <20251224-remove-poky-references-v1-33-658a5f4dbde2@bootlin.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-X-ClientProxiedBy: FR0P281CA0268.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:b5::12) To GVXPR04MB12038.eurprd04.prod.outlook.com
+X-ClientProxiedBy: FR0P281CA0261.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:b5::15) To GVXPR04MB12038.eurprd04.prod.outlook.com
  (2603:10a6:150:2be::5)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GVXPR04MB12038:EE_|DBAPR04MB7302:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5bc02e19-112d-4a31-e1c0-08de52b1de78
+X-MS-TrafficTypeDiagnostic: GVXPR04MB12038:EE_|DBBPR04MB7818:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0a0d57ef-888f-4455-3d41-08de52b24df0
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: 
-	BCL:0;ARA:13230040|1800799024|376014|366016|7053199007|7142099003|13003099007;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024|7053199007;
 X-Microsoft-Antispam-Message-Info: 
-	=?utf-8?B?TVhjU2lMa1duNXlFbFhYZFo0M1ZmWU45bldlSVhHWXlpQmEyMGhBSlRvUGhm?=
- =?utf-8?B?TjRSRTloYk44ZDJsdGhvOHNOVGhVYnMzcG04R3dUeWNFdWFyVDRCelY1QmpK?=
- =?utf-8?B?cFVoajJvbDlBRXJNOUMzNGIyS0ZiSFJLNTRBWi9UcUtacjNZT3FGeG1WcWtw?=
- =?utf-8?B?bWxjRVdGOUZrZGMzaUZhKzVwUmI4NjZjOTVpT3RnYmdudG81VUNkQWg1TWI0?=
- =?utf-8?B?d2RJQXNDL2xpZU81aFI0L3pNcVdqNllkNmMxbWFoSi9xM21XL3JFL3hRK3Vn?=
- =?utf-8?B?RUhray9DaU5SbEhKdWhxOWFUVHVXeCsvQ2ZvZmNialpNTkNVU3l4alJzaHRo?=
- =?utf-8?B?aTRSMEpqWGJmTXNKbm43R0FHUGNYVVcwcXduMjdjejcvUzRpQmNrQldnaVZy?=
- =?utf-8?B?NmMzOHNxQ2Zua2tCQVRVY0hsWGh0SkVuTDEva3dXU2dNWUpxZWRwQUFLbGxw?=
- =?utf-8?B?enlxbHpoVVFQR1ZiSHBZTkgvS2NPSiszbUlwVHA4TzIrVU1oWDBPU2ZhT2d3?=
- =?utf-8?B?KzJBdkV6Y1dFZmt0K0cvQ3A5SFc1bDZhOVVTMFZySVN6YkF4Vi9nb3FKVEd0?=
- =?utf-8?B?ZGNQYzNXS1NHMnV0YTFQbU55a1pLMnJCaU5oVlBGMXVTQ09XNU1PY3BudHUw?=
- =?utf-8?B?OU15TnlHMFFlWXJQanJ1Vk9obVNKbUtheldXOHR6dlYxUVV1M01NdjROdGNP?=
- =?utf-8?B?TEsrWFBvSWVHalJQRXUyaG54UExqc00zNmFBa2hQVlpsMnR2Z2NIamY1NkNT?=
- =?utf-8?B?V2FvTmxYNTRtWG5udjVvaEcxS0VRdGZMSER1dmdQRnRSUFJUWEhXQkR5ajlU?=
- =?utf-8?B?cHZ0V25Cb2xmTHRQa2J1OG5VU2tIQjVDWGdGNG1ESk1rdmhPUGtpRW45aGcx?=
- =?utf-8?B?STBRWGtra1RyTFZJU1ppbHEzaDM5cTN1cTVTYng0YlA0NVRETmwvK2tPMUxO?=
- =?utf-8?B?WkRQVVV5N3AzYmFaNWtzYW5XWHZjblY3dm94VzJEWUtUUk9XbUZWTDJkbkVE?=
- =?utf-8?B?Z3htYmVnVXU1d0duYVdNTGViK3EzcExHRDdlRExZWWRZZDAxUkpXMzlvak5Z?=
- =?utf-8?B?ZlQ1M3k4YmpqekNRNFZqUGxFaThoSmFzWmFtVlZ4UktYVGhjUEsxNnQ0Ty9l?=
- =?utf-8?B?akU5UC9RRmx6aUJqZml6MXRyWHZPbW9hU2NFcG9FMDRHTEZuU0daR3Y3dnFM?=
- =?utf-8?B?S2dnRDM1SFovVE5OKzZhaDFsYWhWVmFWVXhtbnpYWDhGVGdvQWozbHBWRVIr?=
- =?utf-8?B?WXZQT1ZqSys2c0pHcmZVVUFRMGdVcnJDa0tVamlRZUEvNlJRK0FIUEdtL1VZ?=
- =?utf-8?B?L1dsTVEzZ3dpRllCMjE0S0d6bHV1a1ltTHgrYkY1bm5PSkdvQ21OYnp1dWEv?=
- =?utf-8?B?aVFkazd5TVgwQ2FmeVFVZWI2ajNCT0lhcmVVRjI5eUxHSCtUVjd3UUF3UU1D?=
- =?utf-8?B?MFg1Nm9vejZVTjEzQmZOUzJDWEtsaUZTY3dvaDZRRXFDK1QzUmFZazh4VENN?=
- =?utf-8?B?WmFaVVRUeUtwaGNuYytvUFpKdUMzMVpJMkxJaWFVZk43MG9oMk4zMkpkQTlB?=
- =?utf-8?B?Y0MyZ2YwMG9aT01Rei9zMnZadFRsUk9JVllvczY3MEtEQVRSR3liSHJ4cUl5?=
- =?utf-8?B?alVsdFdxdkk5eG1mTzZUOVM5VkIrTjRBN0YxUVFROFcvdHNiMFRuSlc2NmZr?=
- =?utf-8?B?dkFOR2xUdklsTnRTVFljWGZHeDJrN1F6R3p6M2pzS1N0ODl5ZGd5ZjluTy80?=
- =?utf-8?B?cC96ZSs0SmF5QkFsMVB3OVFDQ29wbHpZNXlocWtXM296UUpIQWhKV0ZPNVRF?=
- =?utf-8?B?RVpmYSs2eFVtbWV0Um9MUHVLaGZkQUhaeVo0MnBoYzhudjArNTRydXpNUndH?=
- =?utf-8?B?NU96NU9zY2taY29yZGtXWUhtbnQwNi82TEJ4Qnh0bkJVc0E9PQ==?=
+	=?utf-8?B?Z21zdGVrcWFJM3hIWjNVd3B0Y0U5VkF1UkpwZzhoQnJxNEUwM2FNeWJVY2Jo?=
+ =?utf-8?B?WTFQa01KeFBSQ2RnUFRISEhscHB3OWw2c0tzeU5UMGR5RVNjRVgyVzZwdzYx?=
+ =?utf-8?B?MXZPZWk0cWJXL1VjZlYwTXRaVWlOM1dwQmtvUUVRNG1lU21tVEpDZGFqTFBo?=
+ =?utf-8?B?dU84bUFQaDlFaGtXNGd2TlZyMDBIRHFWc2tzaFJyQVd3bVNXS1pmTTJiakJU?=
+ =?utf-8?B?ZjE1NC9BU3I2dVNrN0F3Q0xwQWltWTlxQnNpMFR0MzBtdWcyS21xZkdRSXVz?=
+ =?utf-8?B?VkxwQVFpd3UxUmpVV3dKNTAycXVNNXF0OS9LOTdxVEtxMkJFd0E5UExxbzhM?=
+ =?utf-8?B?MVQyejBKWm82RkNJdWJPTXdRZnNxVndTb0JJeWQvazJTNmdkcm1rb1JLbjJI?=
+ =?utf-8?B?VXRNL1VIVzdiTy9XYVZWdDdiTlh1aWgzbS8xQWVleWhYSFo2dkhtY0podFNP?=
+ =?utf-8?B?dnNzNk1leGFJNk1GUzl3UzJFV0lKbGZldE1uMUJBTlN1bzRxZ3FKY0llY1N3?=
+ =?utf-8?B?emU3KzNVUDRZUEhOZnVBTlFDTFBxd0hWZmNVTEkvazZYRmdwZDh4VzUvdVRZ?=
+ =?utf-8?B?SWtVSWcwZUZWUnVHcU54YmcxTHovVXFmQ0tkc3VqbzJ0czM2US96aXJvakNQ?=
+ =?utf-8?B?WGFMY1NIQ1Q3RmtBT1dxb0p3VTluZkdJMk80YUd0QUdCU1NnTjJ3UytBL2wz?=
+ =?utf-8?B?cnB5MG9lanlxWmptQ0kxdjR5OFJRV1Y5YVZPVW1pMVI0TVVoY04vOUV0dVho?=
+ =?utf-8?B?d2V2N25HV05oUlNWemZ5Uml6b0N1d3R4dGI3OWVYNlNvbnZWVDI2d3RaUmNB?=
+ =?utf-8?B?T0tzWWpQdWVhbkZPanpGYnRkVnBKVVlYc0I5V2pQSWxjUXRRY3ZJTDhyWThI?=
+ =?utf-8?B?a2E3N3hQMmErSEc4YTduS0RyeVR6bEtYbnNKUVU1ZnNCMnorM2tGUk5uY2pD?=
+ =?utf-8?B?d2xLaFFBME1xTGplaDZNMFpveDFjQUpnZ3EwYnJFT2Fldll6cFlxL29sUEhO?=
+ =?utf-8?B?cTc0bEVZUDF0NGs1dCtkZXdyQnNxWnc1ejNiNk8vRk9OOWdDT0lMZXBpWDZJ?=
+ =?utf-8?B?LzRmM0IwMlg5cWR2cmEwVlFRbDRxNFNRaE1vclFBMlJYS0U5MVUxS2JMazky?=
+ =?utf-8?B?UVdBSDNwQ1ZOR1ppWVRGVWtZZEQ2SW5CdURrWTdFcFdBZXdZUmw3a3ZZUHZm?=
+ =?utf-8?B?RU8xTERFNExjc0s1TEU3SFI5MSs0cWRIRGRrQWJWT01EUjgxMU43TVNnK1B0?=
+ =?utf-8?B?R2pMRzE5YmdLZEp2cEdkclBLYU1VOWU0NG00RE1Bek03NCtxakZQWnZDNHRV?=
+ =?utf-8?B?cEN5Y1ZTMllCZWNhNk9UaHhWSmdsaG16dFRtOFA5dkRHTk1WbktOalNITUhM?=
+ =?utf-8?B?ZE1SRE1EM3hsV2hmQzRsMXVJbitrUXVuNjU1cEJDV1FQZ2g2K1lHdlBWNkZ2?=
+ =?utf-8?B?b3BheTd3QXFjTHFyb1BwMjhzSURSa0VUYXp0cjBNMTZDbkRpS3ZMQ2hCTi9O?=
+ =?utf-8?B?cW9JekcyQytoVVRWeWkrSDRTKy9EbUlJd21MbDdVOXc3MjZSdlovMFR4RWk0?=
+ =?utf-8?B?dFNWTTB4aU9GUVJzTk5FbkUxRTExS2VzeldvRzdtVTIwSFBVV3JWeno4andm?=
+ =?utf-8?B?ZFpIdXErN2RVbmNRNmlGTitHUnQ2V1lwcUJrV1Nsak9vMWF4bkJ1VitPSk94?=
+ =?utf-8?B?TnR2dTNVYUNMcjF4NmNiQ0RrVmw4NW9sTUlUbzRuWXB5SUNnWXc4RUdlTC9i?=
+ =?utf-8?B?c3hUbkFUbjVNVjc1cWZLMWs1MmZTeVN4WjNVS2RwaE5rdDUzMTBhekl2VjJR?=
+ =?utf-8?B?eFpjRDF6TitPeHgvb1o2bEdDeTlTQzc0bkpBVGlLQUg4TGxIclozUWRwdG90?=
+ =?utf-8?B?aGNJWkRhSGM1RlBTTjZjUWNPNUNQeFk2cDF0QkJ2dVNsOWc9PQ==?=
 X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR04MB12038.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(7053199007)(7142099003)(13003099007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR04MB12038.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?utf-8?B?K2t1WFFHd0ttQ0l1R0lGcWNuY2ZwK21qcjdBZTlMT0tlVGVSeVJwV3RDRUU3?=
- =?utf-8?B?cm4rcVpsaThTVmFQSzl4VE4zM1ZrK3gxVmQ2NHk0azNOQlhOUUlYL3pvNDU0?=
- =?utf-8?B?UTB3VTBuVjI0RzFTTHl1QldsWTFrblVuM0NUTlVJNklRUlJaMUQvbVNicTgy?=
- =?utf-8?B?NzNhakU1aG1GZnBVMXdzRWxxTUU3ZUNBSHV4dnhvTXp3c3dsZDZ4TlI5Y3Vv?=
- =?utf-8?B?ck9NZytwUjhDNXVKMjhjaWkwa3pkSWhFbDloZGljZkJIUFJ6T1pOUXJXUTRl?=
- =?utf-8?B?MGtzMkFpeXFlNk1sc1RGdWdZMDl2K3Z0TmRvaWFsNGZHRWdONDBFMCtqS214?=
- =?utf-8?B?ZUNKMTBHdndORGhmZjRoMHpxUS82RWtNVW5WcTEwcFhqZy9jSDhFSlVrbUh3?=
- =?utf-8?B?a1NPNlNFbzJSb2pNaXNJRjlJeldUcFJhVUphM2R0U3RDM1RnTjlvOGhBd01X?=
- =?utf-8?B?ZnV4TlNIckEyMnUyZkhGZ3JMWFhVU0hhWlNTSVo0NDR2NU40K2FFQnJuZHNo?=
- =?utf-8?B?YjllVDZrS2tVa0dlKzRPR20vK3ZhN0F4NnJVTDA2Z3lwU3A3emZXRXhFN3RK?=
- =?utf-8?B?TUpLajJTQi9JWDVLWTFXd1I4VUdhek1jZjFPVjE4b2l4cXljTmJzcWovSnVI?=
- =?utf-8?B?S1JMZXFIMmF4eXZYUU9ybGRudVVyM1dWdlJZOCtYNXh0QklrdTV0VEhOU2Rh?=
- =?utf-8?B?cUljT1ZoZFZuTmNNMU5WS1Awb0RXSWdlMlcxVWNtZ0g3ZGxxN2JWS2FOdjFz?=
- =?utf-8?B?eUZVMUREdmNodGZkYmlPQU9nNGJ0MFpaUG15VGR2bWRwRjdHaElROWY0ajhz?=
- =?utf-8?B?c2lVR3ZuQjk2dU1uazdJdlg0eThtcDU0MFZYR0ExemZ3eXc5N25VREEwajA2?=
- =?utf-8?B?UUVVUlNoN0htVWhIbGNZYTJEeXNRa0RkY2plV2RJbTA4R1p5a2lETnR3WnlL?=
- =?utf-8?B?Z0g0bTM5dCtFZlFvQUhDWEh2aklibi9TellxRUg0OG5EQnF0TmZJYTJPZGlF?=
- =?utf-8?B?ak9GQVJxNmg0bDVQSTA4UWdqVXJWdGtwMGpWSnVlcUhpUThybzZydXpRMFFN?=
- =?utf-8?B?eG94Q1pObVVyVEdCQlBxZGJoUlVhajBVWFFRbldUQmlPQkZ3VEluOWJrSFRz?=
- =?utf-8?B?MjJoeGQ3dFBUN09zWGdiS2NuU0RkTFpBNDhkZXNBNW10UXpBWmlpeDFCcjZU?=
- =?utf-8?B?WVF2WXRYRHZuSlhjbWVEMU9adUVsVGVEY1Y2Z3RxcHY2bWVRbVFVaDhHWVRP?=
- =?utf-8?B?dEl5dDA4ZTR0Szc0akpRTXZJWlBIU3BXM2lKdng3N0I3TTRET3JESHdWVisv?=
- =?utf-8?B?OEJ4dlpSM2ljaUw5VnNxY3A2SmFRalJwajdPT1lsMytXL1JYVmMzRU83VzdH?=
- =?utf-8?B?SDM1QWJXNDBxMWxlWFJMMm5XbWtkeU9tSE1SNC96dHRmcTBQY3krbTUyanBx?=
- =?utf-8?B?RXN2L2JaWm9yM1RFYmpjSE9FY2FXdFFJUmhDQ09HMnlyQVdiSW1GMmxBZHRP?=
- =?utf-8?B?QWFuNlM5S3doS0hJQkhKVjR6UGIvNzhiU3RCZWJJd2IzZDFMUFREWDRVVk1w?=
- =?utf-8?B?elpFcWpDM3djZUtQZC9mSU91bFZqUTNkNlltZTBkWENBd3NUeWlQQUlpc1pC?=
- =?utf-8?B?K3B2TjJqMlNTMEViejJEWTNJbFBOOSthTVhxUURHdjdSVmhVVERidDFSUFdr?=
- =?utf-8?B?YzMrcFkxb2FPWDVHL0VQcEtuaU1iVURtTVpHaFo4R2dOeU16L1BYNVR3dXYv?=
- =?utf-8?B?d0pNY1hBZzJUeFdvbm1rUndMc2xYTit3ZThCWHd4VVB5M0RxOVhGaEtWTjFO?=
- =?utf-8?B?Q285MDNPdlZzT0htZnlZMTY1L1BrQUNpcUxwV1JOeENCQW9ueUFOMkNiVHIy?=
- =?utf-8?B?RUUzSjlxekIrdENpM2ZPdGI2ZTJLTTNQNU41SlVIS2MrdkNHQ242RU55Y1ZB?=
- =?utf-8?B?TWxGSlFCTXZSWUhlYVlqY0NzTU52QStOUUlMM2hLanY3R0VCWHczYjFLVGpa?=
- =?utf-8?B?MzIvWnNLYkQ0UEhZVmF1eHRBMDlJU3dHWTh1eUFoZkR4YnE0Y2RjanlVNFpV?=
- =?utf-8?B?SXlSN0dnYXU4OTFJV3J4R1hqUzA5WDE5OUdreUlnaEhUc0ZFUlVBVGs5L0x1?=
- =?utf-8?B?WjJuVkdCSXg3eExVdnlEdE1Mamp3R29lM0RIMDJWU3Era3hpVFdxUzJnenFJ?=
- =?utf-8?B?ZmxzaXFHQjVWYmlJWEFoR1U2SGtzVkhEc2tIOFgwMjRjR2g0cVRkR0F0Z1V2?=
- =?utf-8?B?T1NsUEtpcU0yR2pYMWVrMEl4SHdVN1M0RHBQV2hYQmw1RHkrbk43N09DZXRU?=
- =?utf-8?B?OTZ5Y2MvRXB6Vk11UzNoWVhma1htR2tiYzRSRHIzMHFlZ1pEbk1vZz09?=
+	=?utf-8?B?cWRJZW5zaVpSN0JHRis0eGc5d3ltUHJ3Sks5cWZCNndPeU0rMUlDQlNUa3p6?=
+ =?utf-8?B?c0pZM3MvSjdITDg2YUppK2RjOFpkRFNleUJaV1RjaTJiL0svK3RKZ0JEcFhH?=
+ =?utf-8?B?OVEzV0prMUZtdXcvTkhaYzBhSzBaZ3BYSVo0bzZJOXhqRi9OekxiRzBCSEc3?=
+ =?utf-8?B?UGFFaVpEclZBNjFLRjZ4V2tXYTZWbU02NDlQSFdhdFgrLzVRL0FMZDlmcW9k?=
+ =?utf-8?B?RHdTZTZuM0JsaGxicUQvZ3l3Y3J3UTA1T3FGcEhpUWhYTTVXYlh4RHI0REt6?=
+ =?utf-8?B?S2hhK0thMlh0SHdaTE84ZFBSL1ZsencyOTR0a1FCVlUxSTN2S01uTjFvV3BZ?=
+ =?utf-8?B?ZlQveUNhelg0MnBIUUVDcXI2dnlIMmw0NlFqTTA5QWQ0VFdiaUlSZkdGNGZH?=
+ =?utf-8?B?M3ZqWldnUjVOTkc5Y2l5b2ZpbS94UUkra1pYY2REM1QxWFpXZk9NZnNNV2tw?=
+ =?utf-8?B?YnpqZU1sbnIzYzE5L3I1T2NzUUdvQkZVc0tRdUU4akZlcXRoTEhuRjE2RFQx?=
+ =?utf-8?B?Y2d1ZVFnd1Qwa0NJTVVTdXZVZVV6VmJrZjNYb2I2ZVllOGZObmJTaG5aZEdX?=
+ =?utf-8?B?RDlqMEFOa0dpeHhGbStSUUg1dWVvOGJRYThDWGZrdzRwV01ZeFdhMjFhb1oz?=
+ =?utf-8?B?Z3VaVG9uOGg4UVBCSmtxb2Z0Y201TnFxSnJXRDBqRzFSNTZzajVYNkVSc0xi?=
+ =?utf-8?B?R01TOHZwVFNUV21zd2s1NjV6c2J1WEVSRU5HclZLWXc3SFVkVmNBdy9LMHly?=
+ =?utf-8?B?bEFITmZaZVd5THh0dFYrOTRtbEY3a0FKcGRNb0l4RENvUS9DU2dNQ3J1Q1k1?=
+ =?utf-8?B?cDRJaXFtYktmWmJSTHdDeUp2bXlrUUpyMENZdmJCVkdtMHJieUdUQ0JXcHBF?=
+ =?utf-8?B?di8xNzZwVE95WTQxc0FsZ2tOSHI4RjlEVVUwbERtM0xJVWFSMXc1azhlVVUz?=
+ =?utf-8?B?L1VhQWIzY05uWmlvNzQxd3ppc1pZMFd2SERtK3JaNFR0TnEwdE5lck53K09O?=
+ =?utf-8?B?MmtNQVJwWllPeklCYjZONmdad3Z4R252cGhyam5xZ0FSM0U5YTNiV3prUHNj?=
+ =?utf-8?B?SExxN0hQUTEya2V0bGlqR1NSWlhuNFN2UkFhZUltdXFtUjlETXRiaVBvTHFW?=
+ =?utf-8?B?VTZhWWY5Rm5aWjZZbnFhWHpFMjhrVTlzUHQ0RnhRVGkyZDNxVDhTT1RuSXlF?=
+ =?utf-8?B?WDNHOVFnSFpaOHZ0MFJhWFl0d0ZOZVN0bDBnVHdzNGI5MjlTeTR5clhZc2hu?=
+ =?utf-8?B?dVNDREZHRmFzS2JPWHNmZ3l5Z09nMzI5YXRDaURaQU5tNnhyUHB0aWtLK3Zh?=
+ =?utf-8?B?bWZYS0RpbENsSGtOSCtWeW9ON3lSQTB0YmNzMk8yNDdPbCtCdUtqRlN5NzVv?=
+ =?utf-8?B?S205cGE3TzFxelN1M1pKRWFIN3FZZUhkSitjckNTZ29mU0svM0lhL1B6UjJT?=
+ =?utf-8?B?S205dkxQVlVMSDViWmN4KzFUeXFwSU9CTnl6RVBNYUpTUUFmMkFHbTNiRVVJ?=
+ =?utf-8?B?Z0RLMExvSHFCbTF0WnJnQjZmQnR6YjBsbTZKb3JFK3hMOHQ0YnN5OWhERjND?=
+ =?utf-8?B?UnlQRHM5N0JNUHdPenI3c1Z0ZE1RQytkUjBndTNNQkNuV0Z2bXB1YjVmY2lr?=
+ =?utf-8?B?dXI4V1R2OG9rSk1DTXc3UmFpQjJaVzZJbUVMYUVLN1JwQmQ1YnA5bjlzSWtT?=
+ =?utf-8?B?Q05GSU1FYUdrc0VxTVY5ZXkyWG95VEQwMkduL0ZrY25GelNFUEZqQjJEdDk5?=
+ =?utf-8?B?TU5NekZyNkhsTGhRa1cxY0lxdTcxTWoycmxsOHFUc2p0bnFGODcyMk5UZG9Z?=
+ =?utf-8?B?Z0Vpdm5lbWNseEx6Z0VabTJkNXBKNlJjUllSUkV6NU02cmhIMWg4NnJLSndY?=
+ =?utf-8?B?aHVoQStWaTI1MGpGSndIb00xQkQwTjh4Zzh3Vmhyb0Z5OXJJQXpBNHZwbStT?=
+ =?utf-8?B?eEJCMmdWYi9yK0Rjd0VPZkFRdFJGTkZ4d29ZK00vWHlRVjN5V0gxUFNYRVgv?=
+ =?utf-8?B?bE1mZVBWSDBSV0h5Z1hXKzhVODZLSW5RaE5aekZ4SG10Zk9SaC9ORlF6c1Z0?=
+ =?utf-8?B?djdOenFobWZ1QUxQS2VoUTVrMy94VUk3d25rTHJyNi9NRGRlQXV5RFR0eHZI?=
+ =?utf-8?B?SlZSRzI1M0gxVUtVY29Kc1ZnZUtWNjNYV1RTZzNqeGNrQlR3WmIxalVyUkw1?=
+ =?utf-8?B?Ny9tbE9WVXBJOXNJeWNUYjdUMXNpSWdsL1FGcVJhdjNwSzJvSEhHN3pPbU1n?=
+ =?utf-8?B?WVZYS2RENzlybjJaREJJd085Q21BWjFhbFRGYWRib0J4eUFydnovMStTOUFN?=
+ =?utf-8?B?U2cyNk43bkQrbkdRaUpiTUhmcnFDWHBrOW4zTGlGYjRqVmNmaEZaUT09?=
 X-OriginatorOrg: cherry.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5bc02e19-112d-4a31-e1c0-08de52b1de78
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0a0d57ef-888f-4455-3d41-08de52b24df0
 X-MS-Exchange-CrossTenant-AuthSource: GVXPR04MB12038.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jan 2026 14:41:42.9234
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jan 2026 14:44:49.9181
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: SnStQf0gNghwbexT9UI9E1x33nOuyFXgdpz0UN9lLTYCOuKGbgQ2ATQC+/iVxOOYGV6tyzEvBXK1+vdT0NXdhkkDMbqYCv3TKLO5lxzGSzs=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR04MB7302
+X-MS-Exchange-CrossTenant-UserPrincipalName: HmaebfSidAOwtHeLX3H3ZIEb0IZC9r+hXG6FTjmBLzNswEvn8TLn27vUjBUI9dmdPgfR8TPcleK64r6msg2ShblynADfnmy4U2PMDq05xas=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7818
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 13 Jan 2026 14:41:53 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8521
+ <docs@lists.yoctoproject.org>; Tue, 13 Jan 2026 14:45:03 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8522
 
 Hi Antonin,
 
 On 12/24/25 5:31 PM, Antonin Godard via lists.yoctoproject.org wrote:
-> Adapt the Toaster documentation after the Poky became obsolete.
+> Refresh the document now that the Poky repository is obsolete.
 > 
 > Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 > ---
->   documentation/toaster-manual/reference.rst     | 12 +++---
->   documentation/toaster-manual/setup-and-use.rst | 56 ++++++++++++++------------
->   documentation/toaster-manual/start.rst         |  6 +--
->   3 files changed, 37 insertions(+), 37 deletions(-)
+>   documentation/README | 39 ++++++++++-----------------------------
+>   1 file changed, 10 insertions(+), 29 deletions(-)
 > 
-> diff --git a/documentation/toaster-manual/reference.rst b/documentation/toaster-manual/reference.rst
-> index 3050b5d0f5..4dbcda37ff 100644
-> --- a/documentation/toaster-manual/reference.rst
-> +++ b/documentation/toaster-manual/reference.rst
-> @@ -161,16 +161,15 @@ As shipped, Toaster is configured to work with the following releases:
->   -  *Yocto Project &DISTRO; "&DISTRO_NAME;" or OpenEmbedded "&DISTRO_NAME;":*
->      This release causes your Toaster projects to build against the head
->      of the &DISTRO_NAME_NO_CAP; branch at
-> -   :yocto_git:`/poky/log/?h=&DISTRO_NAME_NO_CAP;` or
->      :oe_git:`/openembedded-core/commit/?h=&DISTRO_NAME_NO_CAP;`.
+> diff --git a/documentation/README b/documentation/README
+> index 56eac7ca1..58b00ff5c 100644
+> --- a/documentation/README
+> +++ b/documentation/README
+> @@ -1,33 +1,14 @@
+>   documentation
+>   =============
 >   
->   -  *Yocto Project "Master" or OpenEmbedded "Master":* This release
->      causes your Toaster Projects to build against the head of the master
->      branch, which is where active development takes place, at
-> -   :yocto_git:`/poky/log/` or :oe_git:`/openembedded-core/log/`.
-> +   :oe_git:`/openembedded-core/log/`.
+> -This is the directory that contains the Yocto Project documentation.  The Yocto
+> -Project source repositories at https://git.yoctoproject.org/cgit.cgi have two
+> -instances of the "documentation" directory.  You should understand each of
+> -these instances.
+> -
+> -  poky/documentation - The directory within the poky Git repository containing
+> -                       the set of Yocto Project manuals.  When you clone the
+> -                       poky Git repository, the documentation directory
+> -                       contains the manuals.  The state of the manuals in this
+> -                       directory is guaranteed to reflect the latest Yocto
+> -                       Project release.  The manuals at the tip of this
+> -                       directory will also likely contain most manual
+> -                       development changes.
+> -
+> -  yocto-docs/documentation - The Git repository for the Yocto Project manuals.
+> -                             This repository is where manual development
+> -                             occurs.  If you plan on contributing back to the
+> -                             Yocto Project documentation, you should set up
+> -                             a local Git repository based on this upstream
+> -                             repository as follows:
+> -
+> -                               git clone git://git.yoctoproject.org/yocto-docs
+> -
+> -                             Changes and patches are first pushed to the
+> -                             yocto-docs Git repository.  Later, they make it
+> -                             into the poky Git repository found at
+> -                             git://git.yoctoproject.org/poky.
+> +This is the directory that contains the Yocto Project documentation. The Yocto
+> +Project documentation is hosted at https://git.yoctoproject.org/yocto-docs:
+> +
+> +This repository is where manual development occurs. If you plan on contributing
+> +back to the Yocto Project documentation, you should set up a local Git
+> +repository based on this upstream repository as follows:
+> +
+> +  git clone git://git.yoctoproject.org/yocto-docs
 >   
->   -  *Local Yocto Project or Local OpenEmbedded:* This release causes your
-> -   Toaster Projects to build against the head of the ``poky`` or
-> +   Toaster Projects to build against the head of the
->      ``openembedded-core`` clone you have local to the machine running
->      Toaster.
->   
-
-I've never used Toaster, but isn't that a selection? E.g. Yocto Project 
-is for setting up like how it used to be with poky, and OpenEmbedded 
-only with oe-core + bitbake?
-
-I'm not sure it's as simple as removing mentions to poky/rename them to 
-oe-core?
-
-> @@ -277,7 +276,7 @@ release selection:
->      <!-- Bitbake versions which correspond to the metadata release -->
->      <object model="orm.bitbakeversion" pk="1">
->         <field type="CharField" name="name">&DISTRO_NAME_NO_CAP;</field>
-> -      <field type="CharField" name="giturl">git://git.yoctoproject.org/poky</field>
-> +      <field type="CharField" name="giturl">git://git.openembedded.org/bitbake</field>
->         <field type="CharField" name="branch">&DISTRO_NAME_NO_CAP;</field>
->         <field type="CharField" name="dirpath">bitbake</field>
-
-Uuuuh... Is this correct? I would assume this is the way to find where 
-bitbake is. But that's how it used to be for poky (where bitbake was in 
-a bitbake/ subdir?), so not sure what there should be in dirpath for 
-example (or if this code-block is enough?).
-
->      </object>
-> @@ -513,8 +512,7 @@ at the
->   `Django <https://docs.djangoproject.com/en/2.2/topics/settings/>`__
->   site. However, several ``manage.py`` commands have been created that are
->   specific to Toaster and are used to control configuration and back-end
-> -tasks. You can locate these commands in the
-> -:term:`Source Directory` (e.g. ``poky``) at
-> +tasks. You can locate these commands in :term:`BitBake` at
->   ``bitbake/lib/manage.py``. This section documents those commands.
-
-I'm getting confused now as whether we should be prefixing the paths 
-with the name of the root directory or not. Here since we say in 
-BitBake, I would assume we should only need lib/manage.py?
-
->   
->   .. note::
-> @@ -551,7 +549,7 @@ example that assumes default repository and :term:`Build Directory` names:
->   
->   .. code-block:: shell
->   
-> -   $ cd poky/build
-> +   $ cd project/build
->      $ python ../bitbake/lib/toaster/manage.py buildslist
->   
->   If your Toaster database had only one build, the above
-> diff --git a/documentation/toaster-manual/setup-and-use.rst b/documentation/toaster-manual/setup-and-use.rst
-> index a0c27499ba..6ca5d252a3 100644
-> --- a/documentation/toaster-manual/setup-and-use.rst
-> +++ b/documentation/toaster-manual/setup-and-use.rst
-> @@ -15,15 +15,15 @@ Toaster`" chapter, you are ready to start
->   Toaster.
->   
->   Navigate to the root of your
-> -:term:`Source Directory` (e.g. ``poky``)::
-> +:term:`Source Directory` (e.g. ``project``)::
->   
-> -   $ cd poky
-> +   $ cd project
->   
->   Once in that directory, source the build environment script::
->   
-> -   $ source oe-init-build-env
-> +   $ source layers/openembedded-core/oe-init-build-env
->   
-> -Next, from the :term:`Build Directory` (e.g. ``poky/build``), start Toaster
-> +Next, from the :term:`Build Directory` (e.g. ``project/build``), start Toaster
->   using this command::
->   
->      $ source toaster start
-> @@ -112,8 +112,8 @@ This example binds to a specific IP address on the host's NIC::
->   The Directory for Cloning Layers
->   ================================
->   
-> -Toaster creates a ``_toaster_clones`` directory inside your Source
-> -Directory (i.e. ``poky``) to clone any layers needed for your builds.
-> +Toaster creates a ``_toaster_clones`` directory inside your :term:`Source
-> +Directory` to clone any layers needed for your builds.
->   
->   Alternatively, if you would like all of your Toaster related files and
->   directories to be in a particular location other than the default, you
-> @@ -124,8 +124,8 @@ causes Toaster to create and use ``$TOASTER_DIR./_toaster_clones``.
->   The Build Directory
+>   Manual Organization
 >   ===================
+> @@ -261,9 +242,9 @@ For example, the following .rst content will produce the 'expected'
+>   content:
 >   
-> -Toaster creates a :term:`Build Directory` within your Source Directory (e.g.
-> -``poky``) to execute the builds.
-> +Toaster creates a :term:`Build Directory` within your :term:`Source Directory`
-> +to execute the builds.
->   
->   Alternatively, if you would like all of your Toaster related files and
->   directories to be in a particular location, you can set the
-> @@ -155,8 +155,8 @@ superuser by following these steps:
->      is the :term:`Build Directory`, invoke the ``createsuperuser`` command from
->      ``manage.py``::
->   
-> -      $ cd poky/build
-> -      $ ../bitbake/lib/toaster/manage.py createsuperuser
-> +      $ cd project/build
-> +      $ ../layers/bitbake/lib/toaster/manage.py createsuperuser
->   
->   #. Django prompts you for the username, which you need to provide.
->   
-> @@ -233,17 +233,21 @@ Perform the following steps to install Toaster:
->         $ sudo /usr/sbin/useradd toaster -md /var/www/toaster -s /bin/false
->         $ sudo su - toaster -s /bin/bash
->   
-> -#.  Checkout a copy of ``poky`` into the web server directory. You will
-> +#.  Checkout a copy of :term:`BitBake` into the web server directory. You will
->       be using ``/var/www/toaster``::
->   
-> -      $ git clone git://git.yoctoproject.org/poky
-> -      $ git checkout &DISTRO_NAME_NO_CAP;
-> +      $ git clone git://git.openembedded.org/bitbake
-> +
-> +#.  Checkout a version of :term:`BitBake` matching the current Yocto Project
-> +    &DISTRO_NAME; release::
+>     .. code-block::
+> -      $ mkdir poky-&DISTRO;
+> +      $ mkdir project-&DISTRO;
+>         or
+> -      $ git clone &YOCTO_GIT_URL;/git/poky -b &DISTRO_NAME_NO_CAP;
+> +      $ git clone &YOCTO_GIT_URL;/git/yocto-docs -b &DISTRO_NAME_NO_CAP;
 
-Where do I find this information? **I** know I can get it from 
-https://wiki.yoctoproject.org/wiki/Releases but we don't usually 
-recommend going to the wiki because it may end up unmaintained/outdated 
-(though if there's one page that is rarely outdated for long it's this 
-one :) ).
+YOCTO_GIT_URL doesn't exist anymore, please send a follow-up patch to 
+fix that oversight.
 
-> +
-> +      $ git checkout &BITBAKE_SERIES;
->   
->   #.  Install Toaster dependencies using the ``--user`` flag which keeps the
->       Python packages isolated from your system-provided packages::
->   
->         $ cd /var/www/toaster/
-> -      $ pip3 install --user -r ./poky/bitbake/toaster-requirements.txt
-> +      $ pip3 install --user -r ./bitbake/toaster-requirements.txt
->         $ pip3 install --user mysqlclient
->   
->       .. note::
-> @@ -253,7 +257,7 @@ Perform the following steps to install Toaster:
->          manager to install the packages.
->   
->   #.  Configure Toaster by editing
-> -    ``/var/www/toaster/poky/bitbake/lib/toaster/toastermain/settings.py``
-> +    ``/var/www/toaster/bitbake/lib/toaster/toastermain/settings.py``
->       as follows:
->   
->       -  Edit the
-> @@ -298,9 +302,9 @@ Perform the following steps to install Toaster:
->   #.  Get Toaster to create the database schema, default data, and gather
->       the statically-served files::
->   
-> -      $ cd /var/www/toaster/poky/
-> +      $ cd /var/www/toaster/
->         $ ./bitbake/lib/toaster/manage.py migrate
-> -      $ TOASTER_DIR=`pwd\` TEMPLATECONF='poky' \
-> +      $ TOASTER_DIR=`pwd` TEMPLATECONF='poky' \
->            ./bitbake/lib/toaster/manage.py checksettings
->         $ ./bitbake/lib/toaster/manage.py collectstatic
->   
-> @@ -322,12 +326,12 @@ Perform the following steps to install Toaster:
->       directory is created on the file system. In the example above,
->       ``TOASTER_DIR`` is set as follows::
->   
-> -       /var/www/toaster/poky
-> +       /var/www/toaster/
->   
->   
->       This setting causes the Toaster :term:`Build Directory` to be::
->   
-> -       /var/www/toaster/poky/build
-> +       /var/www/toaster/build
->   
->       Finally, the ``collectstatic`` command is a Django framework command
->       that collects all the statically served files into a designated
-> @@ -380,14 +384,14 @@ Perform the following steps to install Toaster:
->            </IfModule>
->         </Directory>
->   
-> -      <Directory /var/www/toaster/poky/bitbake/lib/toaster/toastermain>
-> +      <Directory /var/www/toaster/bitbake/lib/toaster/toastermain>
->            <Files "wsgi.py">
->               Require all granted
->            </Files>
->         </Directory>
->   
-> -      WSGIDaemonProcess toaster_wsgi python-path=/var/www/toaster/poky/bitbake/lib/toaster:/var/www/toaster/.local/lib/python3.4/site-packages
-> -      WSGIScriptAlias / "/var/www/toaster/poky/bitbake/lib/toaster/toastermain/wsgi.py"
-> +      WSGIDaemonProcess toaster_wsgi python-path=/var/www/toaster/bitbake/lib/toaster:/var/www/toaster/.local/lib/python3.4/site-packages
-> +      WSGIScriptAlias / "/var/www/toaster/bitbake/lib/toaster/toastermain/wsgi.py"
->         <Location />
->            WSGIProcessGroup toaster_wsgi
->         </Location>
-> @@ -419,16 +423,16 @@ Perform the following steps to install Toaster:
->   
->         [Service]
->         Type=forking User=toaster
-> -      ExecStart=/usr/bin/screen -d -m -S runbuilds /var/www/toaster/poky/bitbake/lib/toaster/runbuilds-service.sh start
-> +      ExecStart=/usr/bin/screen -d -m -S runbuilds /var/www/toaster/bitbake/lib/toaster/runbuilds-service.sh start
->         ExecStop=/usr/bin/screen -S runbuilds -X quit
-> -      WorkingDirectory=/var/www/toaster/poky
-> +      WorkingDirectory=/var/www/toaster
->   
->         [Install]
->         WantedBy=multi-user.target
->   
->   
->       Prepare the ``runbuilds-service.sh`` script that you need to place in the
-> -    ``/var/www/toaster/poky/bitbake/lib/toaster/`` directory by setting
-> +    ``/var/www/toaster/bitbake/lib/toaster/`` directory by setting
->       up executable permissions::
->   
->         #!/bin/bash
-> @@ -436,7 +440,7 @@ Perform the following steps to install Toaster:
->         #export http_proxy=http://proxy.host.com:8080/
->         #export https_proxy=http://proxy.host.com:8080/
->         #export GIT_PROXY_COMMAND=$HOME/bin/gitproxy
-> -      cd poky/
-> +      cd /var/www/toaster/
->         source ./oe-init-build-env build
+Same for the nested variable, but you can replace with 
+YOCTO_RELEASE_DL_URL and YOCTO_DL_URL for example.
 
-Is this correct? I believe we need to cd into openembedded-core for this 
-to work no?
+These are unrelated to the patch, so
 
->         source ../bitbake/bin/toaster $1 noweb
->         [ "$1" == 'start' ] && /bin/bash
-> diff --git a/documentation/toaster-manual/start.rst b/documentation/toaster-manual/start.rst
-> index 2d6474852a..ed7b0e1644 100644
-> --- a/documentation/toaster-manual/start.rst
-> +++ b/documentation/toaster-manual/start.rst
-> @@ -25,10 +25,8 @@ Establishing Toaster System Dependencies
->   
->   Toaster requires extra Python dependencies in order to run. A Toaster
->   requirements file named ``toaster-requirements.txt`` defines the Python
-> -dependencies. The requirements file is located in the ``bitbake``
-> -directory, which is located in the root directory of the
-> -:term:`Source Directory` (e.g.
-> -``poky/bitbake/toaster-requirements.txt``). The dependencies appear in a
-> +dependencies. The requirements file is located in the :term:`BitBake`
-> +repository, (``bitbake/toaster-requirements.txt``). The dependencies appear in a
+Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
 
-"bitbake/" prefix or no prefix, that is the question.
-
-Cheers,
+Thanks!
 Quentin
 
