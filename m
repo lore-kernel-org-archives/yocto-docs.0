@@ -2,280 +2,590 @@ Return-Path: <quentin.schulz@cherry.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BA525D0C84A
-	for <webhook@archiver.kernel.org>; Tue, 13 Jan 2026 10:38:11 +0000 (UTC)
-Received: from AM0PR83CU005.outbound.protection.outlook.com (AM0PR83CU005.outbound.protection.outlook.com [52.101.69.44])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.56271.1768300682694494819
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EE356D0C84E
+	for <webhook@archiver.kernel.org>; Tue, 13 Jan 2026 10:47:51 +0000 (UTC)
+Received: from OSPPR02CU001.outbound.protection.outlook.com (OSPPR02CU001.outbound.protection.outlook.com [40.107.159.40])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.56165.1768301258807197572
  for <docs@lists.yoctoproject.org>;
- Tue, 13 Jan 2026 02:38:03 -0800
+ Tue, 13 Jan 2026 02:47:39 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@cherry.de header.s=selector1 header.b=EQ5+1GJg;
- spf=pass (domain: cherry.de, ip: 52.101.69.44, mailfrom: quentin.schulz@cherry.de)
+ dkim=pass header.i=@cherry.de header.s=selector1 header.b=iygEMLXY;
+ spf=pass (domain: cherry.de, ip: 40.107.159.40, mailfrom: quentin.schulz@cherry.de)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Zs8xxEtC1Ge4mVKc0L35IyErHSdUmGIv3CAn+eHIoDkrFNdtAhzBvA1wpXfUAaUM+/FHC2oxgK/viSJRNbPa2sqq2Ci0BkWhEJ6vsKgHaJIQZzNdqQdITPD9d/KDUq0W5f57+qx0kmZRLkNqFh9OoNTX1rd2esZxXaJdMWQkereSYMbma5mnI9IGsoXR7oWL7MSyZHdFfZL3Yho6Y6YANPvXUHkfdZue4SLwYoWpYE0DaPgZQUDFvs1jhDW+a10iHlc5SEDgPWd9R7mHvgIPGu+M4/MXACXsttxBO2eUJH3MGyWp3B2y97UE3zXJ9MAuUoVI1ncOJ0HNxOPC8Vvq0w==
+ b=TLfkSwjaVSTzX2HAkeMM6aGZsptIaFeaWHVPXhmiBrPZH+HojRtZtUCzNkT7MS2DrzMtRDgl0Dz6poYM83qSkLfoqk5sS0c0vAuAGUbPzCa5DT4wNrxZSZzKAsQ68yOpZoaKJ9U2miuvi4J1WaMi6HfO+qgIbPmYDGi/s86k//g8efuguspS2pQfAeoiMHZqhnxD25Hp8gDh23EHvx+X3f2Byv3soKjSk3EACav5C4nqxT9eu5e7JHWTEEX3YYamV3qoU5K7xml+4zPpq4jjgZQd5VK3YJQsBKhp21GWZec7ecaL/04mAcYhgfrBiVsNJP4BEy4KzkfdU2z3UI5iLg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nJbs6DJyxQxyu1xA2Vn2OYlHh949HcCTB/+iMa4P/D4=;
- b=Xlgv+JVNmZ4DBqnJPe312p56O13a/JBPG5sdkZncgAEgBeqbGXiNEQx9H4jRXbT1xaXMQ0EExnFGA4EKU7PpUzCSOa364fAqWxskdZthcX0sXxfwlRs8Amz6AnDGHpksmSa0t7aPAAkjZhv3dVa4UDm3fgYM4HRcXStkFUuDMglqmmZfX0tpshkPe1nR1Y0d9Tju7HbhyPCaG525vD7BaWXkKzWxMz56RHm/MbsIh13ZH8ajjCS19kWLwRW1ZnCwIA+CkwUvP2MNC11CBGdX+dPhaTfySRw7oHEiVMqolthiZ1M1ofd1O6EwPNigqbKHLsZZxjo1mNUF7PQNFEsdTw==
+ bh=7tGo1TOQ0vNqOyEZEj3oPz+pdBrt/zRUT323Um0TWPw=;
+ b=u+jcpvKnOHDEPB8lqKbrUpSd/3tC7DcuUKH/mgRfSsFpMJjVFC2FQQ5Rcu/GmdLB+ZExQ7NbbPXANyMxzbkotZWLHNhgo5gidF+qQJ5x4KJZOH0uzdp4cgVxm+ia81VpcuWNYHy9Gy15fgfoGCPZtXzZpnz1DalEUT+95ln2vPZDSt/51s8vhfHRyl94sNS1r7GqXU5JhM4Z23CsoLYUA7zK7QnErWnT6cBecyN91sHJQz5iLoRaB9/1IoCe9zSqkCdwRuQ22Grb92/NCt+OAuXF6tRhRF+FOcreQN9qELxrr7shucFweMqYXbjVC6XZYiF2/wieQeXNqm9ZwQmUQg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
  dkim=pass header.d=cherry.de; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nJbs6DJyxQxyu1xA2Vn2OYlHh949HcCTB/+iMa4P/D4=;
- b=EQ5+1GJgBh3BEDlb+qXEj1gL1EqOmmHzyGJwhWQqLPOMGJBtPF9vinS+MPjpfhr+yRzoywLTQ1OGR9Wkh6Vur3wb6El1bYqwF/VSJYVluXqjKwuqJJI+IVtxoYobHtmwkINjk8+LD7lzjhidJT5mGWOK0Jdp1IZfUJP2xyTwOrc=
+ bh=7tGo1TOQ0vNqOyEZEj3oPz+pdBrt/zRUT323Um0TWPw=;
+ b=iygEMLXYQaVwbfHG1nVs3byLArGrFEdKAr2ch6GQOx46uJo/bXo9Vn1vn5YaIYxqzyo+ITqkM9DIBOz1lvvMPu6tSh9LMsHWph7qK38YzipryvVrDmyEQPMxcg5jbVWnmFcblNdQ7kUDcIuadpTXwSaD8FJzknU7zCdgZEewlq4=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=cherry.de;
 Received: from GVXPR04MB12038.eurprd04.prod.outlook.com (2603:10a6:150:2be::5)
- by GV2PR04MB12216.eurprd04.prod.outlook.com (2603:10a6:150:336::16) with
+ by VE1PR04MB7488.eurprd04.prod.outlook.com (2603:10a6:800:1b0::24) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.7; Tue, 13 Jan
- 2026 10:37:57 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.4; Tue, 13 Jan
+ 2026 10:46:05 +0000
 Received: from GVXPR04MB12038.eurprd04.prod.outlook.com
  ([fe80::1033:5a9a:dc18:dad]) by GVXPR04MB12038.eurprd04.prod.outlook.com
  ([fe80::1033:5a9a:dc18:dad%4]) with mapi id 15.20.9499.005; Tue, 13 Jan 2026
- 10:37:57 +0000
-Message-ID: <ba31ea3b-08ea-4a6b-aeee-2f84bd97fbad@cherry.de>
-Date: Tue, 13 Jan 2026 11:37:37 +0100
+ 10:46:05 +0000
+Message-ID: <81723c84-aecc-4b04-8bf0-2f7828b66a9b@cherry.de>
+Date: Tue, 13 Jan 2026 11:46:03 +0100
 User-Agent: Mozilla Thunderbird
-Subject: Re: [docs] why is "configuration fragments" in monospaced font?
-To: Antonin Godard <antonin.godard@bootlin.com>,
- "Robert P. J. Day" <rpjday@crashcourse.ca>
-Cc: YP docs mailing list <docs@lists.yoctoproject.org>
-References: <7dbf2502-1403-3451-ea27-45aeae758032@crashcourse.ca>
- <4c7492bc-177f-4bb4-a8f4-cc19323fd242@cherry.de>
- <d59faeb3-8e61-7023-cc26-3918de5f0ab0@crashcourse.ca>
- <e118a38e-0e45-49f2-9010-01c1a4d7d1ad@cherry.de>
- <21105206-6e15-da26-2da0-de604fc4c905@crashcourse.ca>
- <f98abd3b-78da-4d20-886a-a08284d88641@cherry.de>
- <c72f1d20-7006-e705-8674-12133dfcd1db@crashcourse.ca>
- <DFNE3LZGWR7Z.296DD6XD8Y4ZK@bootlin.com>
+Subject: Re: [docs] [PATCH 02/53] dev-manual/start.rst: remove obsolete poky
+ repo references
+To: antonin.godard@bootlin.com, docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+References: <20251224-remove-poky-references-v1-0-658a5f4dbde2@bootlin.com>
+ <20251224-remove-poky-references-v1-2-658a5f4dbde2@bootlin.com>
 Content-Language: en-US
 From: Quentin Schulz <quentin.schulz@cherry.de>
-In-Reply-To: <DFNE3LZGWR7Z.296DD6XD8Y4ZK@bootlin.com>
+In-Reply-To: <20251224-remove-poky-references-v1-2-658a5f4dbde2@bootlin.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-X-ClientProxiedBy: FR3P281CA0167.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:a0::6) To GVXPR04MB12038.eurprd04.prod.outlook.com
+X-ClientProxiedBy: FR4P281CA0286.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:e7::13) To GVXPR04MB12038.eurprd04.prod.outlook.com
  (2603:10a6:150:2be::5)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GVXPR04MB12038:EE_|GV2PR04MB12216:EE_
-X-MS-Office365-Filtering-Correlation-Id: d54be0d8-cba4-4253-132e-08de528fd0f1
+X-MS-TrafficTypeDiagnostic: GVXPR04MB12038:EE_|VE1PR04MB7488:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5914c57a-c0f6-4781-6c32-08de5290f3de
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016|7053199007;
 X-Microsoft-Antispam-Message-Info: 
-	=?utf-8?B?czlpSzBpVmdubjJNdFNiWWR3UVRIZHh3aGZhTjhMVGJBQjA2ajhpU3UrN3B2?=
- =?utf-8?B?K21WQlVGZFIvK1g4ZHlIaEpoc2NIMU83Z21jWWZZNVB4SnFtTFlEZ29GS2V3?=
- =?utf-8?B?RDA0czF0VDVVYnA2OGl1OWpZZU00R3l2QWNIQjZVR0xia1RNdmRVdEgvOTZP?=
- =?utf-8?B?aEozVC9WZURGTDlBWDcwMW9EWlFET2ZiQXlWUk5kL2xKc1NaZThSWHVXd1Fk?=
- =?utf-8?B?c3p2WkZlWTZNWlFoODViY1RYZEJ5UmVCWThkWnFHL3FjZVd0YUFleHg4RDVP?=
- =?utf-8?B?Zk5QdWlXcmxXOG9qaFdtMGFOYk1KODRoVHptSEVxQ09JVXQ4SEFXdEo4SGRG?=
- =?utf-8?B?WUU1UXVhbzNNeDR6T0tpdlFXR3RwRGlDb1c0NVRXSXF6bWdqVFR5RUxjd05Z?=
- =?utf-8?B?d2MxVVM0RmJWVnMyaWE0M1g0N041emZjeHQvQkdhNUNaUUJMcUw4RmZHMnZq?=
- =?utf-8?B?NlMrb1FpLzRQUm9lQnFyMTFpVWRRZU9iL2djQVYvTkhZM0tLZG1PdVZlcDRx?=
- =?utf-8?B?OUp0NmdQdXFnd0pNNTNLYSswUUxVb2ZjS0E2SFBRbFo4MVpZckF4Zy9FeGhB?=
- =?utf-8?B?ZjdxazlyZzUyY25pWVVGckpmMTY5Ujc5WXViOVVCL04rTE15SXRqVVM3aTVl?=
- =?utf-8?B?YnJVbmt5ditDZ21mTXBSdi9zekV2bUxxRnB0a3lwTlovU1FwZ1RVYVh6eFRW?=
- =?utf-8?B?M0hjaCt3ZU55UGZRbXVRUEh0c1QzN01RY3I4TUphekdlS1plSXZCT2NpWFp2?=
- =?utf-8?B?L0dSR3RXTnFrSi9kMTJITFJUT2dDRUFONm50YTk0VjNJVk4yV0NocEdDOWRF?=
- =?utf-8?B?L1VjTTl6WW1nRUZ1MzBubVE4SWgvZE54N3Rpbnp2Uld3T3pmRnZIVVVQTHRN?=
- =?utf-8?B?UHpWNFljY2Rlcy91VU5BdVFpd3VpTjBOc2tjQ3VEMk9TbTE3Qi9sNDZEL2Nn?=
- =?utf-8?B?KzNhR1lwTURFTEJQc1lRK1JTeFRKUGpzamVlSHV4RkpTL3RYYTBpaWtUN3N3?=
- =?utf-8?B?YUlZQUVKVDhtY2k1c04vUGNpR0dldnJNZTlKZXNldXR5UFJEYlFGUjg5ajQz?=
- =?utf-8?B?N1dhUHVlQnpxTzdQdEdJa0dhMGhkZjkyVWVDZm9tVm9UQzE2ejJ6M2VYSnBY?=
- =?utf-8?B?aFlVMDJ2SGtZNTU1YkxqU25MVy9PVGU4VjJWMEFOcjlnMFAwYzlhbzhJWTZI?=
- =?utf-8?B?aXplQ2dNaTlmazlaWFpiOTBJTEd5MDJibGUydHh6YnNaTDlZRTY1R0E1dTh1?=
- =?utf-8?B?dUF3S1dyQVVBR21Hb0txZmphcWlqcnl0Q2RyVnYwUHp6TjBYcnRaalpKanJl?=
- =?utf-8?B?S2RoZWVSSUJKYlowVTZUMVRXZWEybUZIT3Q1TG4vQ01IQWxJOUxXTXN2dDlV?=
- =?utf-8?B?S0tDeUVycmt0NnZrLzFqemZsdmpvTUExK3VRVGo5MlZUb3h1WFhRVHd4U2lI?=
- =?utf-8?B?MXlZRUtjeTBGOHpCYzA0V1VjK0FLZ09kanhLM1BiUUpId01udzU0ZDYvYlAy?=
- =?utf-8?B?ekUwV2lJcGVSamFnMXEvemkwNm9oc3EyUWpDOWtVZUlGUi9QbGo2bXpKOWxn?=
- =?utf-8?B?ZWVNTmpuVEpndWtxR1p6WWFtRUFDNkVnRk5wMDAyekJUZ3YxOHhieGxtbmlW?=
- =?utf-8?B?YkVnR1FxSzVMeUVpNHB6OTZkbGdnMGYvSk42RFEwWlFSdkY4dXBBQ2Riek1Y?=
- =?utf-8?B?SU9WcStXaklJckgyeXhXTWQveW5MSEpjdkFqTk9rWklrS2ZCYk9RdWFxNDZq?=
- =?utf-8?B?TWpSSHVhcXRMNlM4VFRVQ1Y2Qi9IN2U0UWx4MXpHdlJ2TCtuc2ZVSWFKZFZ1?=
- =?utf-8?B?dFo1Zis5QWVUWGErSGYzVWsvbVA2Um5BUXluMmNqREx3MmhxcDloWnpRYXk2?=
- =?utf-8?B?NWNlYVpnOW42K3RZOGFZeTdrTVB1UmdoWjBIR3cvTFdaN3c9PQ==?=
+ =?utf-8?B?SStvam1EZDlrbG52d0NuSkRHaVZHNEVncVRpY2tMbTV5TkpMMFhrc1RVMC9O?=
+ =?utf-8?B?ZFBlMzBySGowSFhiN0dPYmU0N2JTRjB5R2lDN0U5T1FFT0RqOFl6Njl1ZE9n?=
+ =?utf-8?B?L0xNNW9KYlNHUGxVVGEvdU85WHZLRXByaHh4NE9FaFNvMlVGZFZpVVpHbGNV?=
+ =?utf-8?B?YVRLUThjWDU2VHpDRGdWWmY1NTVtUXE4OFpLWGMrUFpYVytjQ0FOUGlQdTFQ?=
+ =?utf-8?B?cU1YUDVRa3FSMFBMMkFDQVFXSVhPMmJaYWxMR2Z5RkpjUU5tNTZZQmpqWXJD?=
+ =?utf-8?B?aTBwLzQ3UVFHSHZqUGxsdVJWVVZSRGl3N2hsU3ZUTnBKOTBwNndBTkszWGVB?=
+ =?utf-8?B?UVNqZlY5dm9PZXRwdWZCNG9hSWVaT0o0b2swYjRHM3M1STdncW5oNjZMdFNq?=
+ =?utf-8?B?WXgzcGZpU216bWhrekVPazJiYTM1Z1pWL3BCRFJrc0hzNEZNTDJWOGlOdWV2?=
+ =?utf-8?B?ODluaDJQTWNwOVorNVVOdzgwYm5TK3d1ajU1djVLWVIwNmphVFNUWEVDTXda?=
+ =?utf-8?B?ekdxRmFNVElicEw2NWtYeWxDdjhnckhEaVJvS1VTUFhEZnIxakJTc3EvYUc3?=
+ =?utf-8?B?dVBPYVcxMjRQRVFvb2FieGN6cjczSk5XN2xJeG8yVURsYUNVeDN0d0xabEZa?=
+ =?utf-8?B?ejN1MWEwZGI4UWkzMUswZGFUamY1aHc3bExpVVpVa21kekQ4TjdCb2d0U2VJ?=
+ =?utf-8?B?azhnNEtJS2JtUGpPYVJlaWpXRGFSKy95blowUlBWVTdVWTlZL0YwOWdraVpO?=
+ =?utf-8?B?M01FMm5NM3RTeDBLcm5wWmZOTHBzWnVvb2ZWaUZhQWpkUFBmYklDRWtycDdq?=
+ =?utf-8?B?blJINUZUcjJxdWFJOXdUNXBocVpIQ1R5eUNMdnVkd3J2QlZJWDdrc05TVzhX?=
+ =?utf-8?B?anloU0NWQStWR2tHcjFoTEVrRWN5L3d1Y0htdEJYVVdpTDZ2a3RSZUQvcm1R?=
+ =?utf-8?B?dEdXS2o3aWhCTWhnSnlVUUpEZmxYZGFJR2QxcTNNRytHVENSWjhRSjJVcmVU?=
+ =?utf-8?B?Qkl2SVNRY2k2UUc3aGpOeDI2M2xJR0RoVmd5emY5SW5QQkdwYXM2Q0pVS2Z0?=
+ =?utf-8?B?elhWTi84TlB5aWhiaEcrQUdzUWt1Y2t1b2NTVkx6eWVsZzlnWFZtcEZtczgy?=
+ =?utf-8?B?MjJqalNTeTFRYlkwYkRvc2hJekMwUU1VMldDQTg3SnowcnFtcDVSeTZJRWh4?=
+ =?utf-8?B?UlUzV2d2eFozWlBRRjhRRFJvRmxlTURhK0dLcG9uS2RmYTBqWjkvV3Z2dmNH?=
+ =?utf-8?B?YlJmSWxWLzkvaXZtalU0OEdaYzVaSk10YzNlajlYTENaSXRFNTYrdWtMbmZQ?=
+ =?utf-8?B?YU5wckd0RVZpQjVnV2xEaWpiTjBPdVNNQWx4Qk83SUV5eWJDbWs3RjlkeVlX?=
+ =?utf-8?B?RFJXRXpHVXVBcHJVbVhhNmZSNS9ocUdYTXVKWHl2aEJ3SHByNDM5ZTgwbVZ6?=
+ =?utf-8?B?ekc5bGp6VTZJTEhUaVlzTk8rR25zUE5tRlQwNnpITnp1djFSSEZpVmlVczYy?=
+ =?utf-8?B?VjVLSThJYTVvOEpwTlpDZVNkdzdQZmNtR3MzR2F0QVdiNk9HQU5PL0tVK3A1?=
+ =?utf-8?B?bUxucEZUeDg2MjZmZFhITHdham92eis0Z1FNSm1EeTdpNjR5bS92L0htRml5?=
+ =?utf-8?B?ZlNRSWJsaTM0RCt0aGZ0Yytqelo2cng4a0I0VVUzSEQ5dTRnZDRuQ2h6aVlm?=
+ =?utf-8?B?UWNmcURHWGRVNU5kUnlIeDZPbkxqQ1VPOU53WmgvOFNTcW91RWRxbzh4Unp5?=
+ =?utf-8?B?STh6eGJ4RllSWkVUd0RNOEJpbThNeWZEM1NHclhzNjhuNVZFcjVzVUJyUkZF?=
+ =?utf-8?B?RW8zMy9QTkhLR2liMjQ2bS9BZDRHNW1LZWtlZ25XMFZLbDBLbGtYTEpjUlJT?=
+ =?utf-8?B?SW1OZm1sVzVVU0tRT090dzkvSVplRXlmbUJmT3ArL0xwRTluZVZUMUlCNE1i?=
+ =?utf-8?B?NXkxVFhTVEQrN0lRaEVkWjZOQ0QyaUJKeWdZNzlHNk9JQWpDL0IxMEMyMU9t?=
+ =?utf-8?B?TzkzUTZpeitnPT0=?=
 X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR04MB12038.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR04MB12038.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(7053199007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?utf-8?B?QlU3dFpWNEpmWWYxWWZ5ZlpVdDR3SUVha2E3a2RpNm44TW9FQ0JoaVkvb2xl?=
- =?utf-8?B?S01ZUVhLT3U5bEZDS3lmZlJnYzdGOEhQcmdBclkwOUlNQUlkNGdkSmEzSDA5?=
- =?utf-8?B?V2lkT0lRNE5jMnZOemJXVVNObGNLSkEray9oMWdTaWthVGJpclU4cExBZXBL?=
- =?utf-8?B?VE1kQktveU9TQTRpRnFYRTIzZXkzQnNuRW52Zm96Zk5xT0ZPMnN3TWpQcmN6?=
- =?utf-8?B?VmJsUnVMeURtV0tRZ1IzbXVjemdyR2kxdEtCRG94RzdqdlpGWTFoZVIxQmdO?=
- =?utf-8?B?a290WUttbkhvRERtbnh5a0dFQjZ5SGxiV3pET0ZqZFRSVVRJUnN6KzdxTW1F?=
- =?utf-8?B?Q1lmenJLQUMzRjJ5S1F6WE1ERWc0eUVBMVJjT3lNUFVzQzJDWDdxeE1QM0V0?=
- =?utf-8?B?MzlEdU1nNE1jRzlKa2xiVkwvZ0V0Z2lCbHFJaTlPN0NJTEN5ZHBMMnpjZXhT?=
- =?utf-8?B?dE93a2toajlFd3NxekVUcDFWUXBkUi9vazM5elBMSG1EeEpBaXlDeXhiT2c1?=
- =?utf-8?B?d0c4U2ZMTXRnaFNib1YzdnlTZUVRL0FudFpvOE0wQjY2WGl4aTgwUmFpUnZP?=
- =?utf-8?B?d0lxeU9DVi9JeHpLczhhajMxNmw2bGptMkZ5cHpPeVdCQmZlR0lmbnQ3YWRx?=
- =?utf-8?B?S1ZVSENxeGxBQlgvUEc3YTFjdThST2lUekFWeVN3UUtYdnpCQUpaWVJnWU1p?=
- =?utf-8?B?WUt1VHU0SE5NN0l5ZEYyUTBvWDUwck1wRGY1OEFoNC83VElMaDU4M1pId0wy?=
- =?utf-8?B?QytIcTIwMDN5WWxxSW1ISE9pUml5Z3JtbkJuUkxjc0RrOGdRV1Jwa09Iakl4?=
- =?utf-8?B?ZWJ3V0hDNCsvK0xhZmF0R2FjMTdZNXZQQ1ZzbEtyM04zNVg3UFpTakoyaEFV?=
- =?utf-8?B?YmUvc2FVeUJXMmt3Q0pqc0ljWEgrZlQzaWhIRFVGZ0tyYmN6azBkRzFMRVMy?=
- =?utf-8?B?dE50SmlyTTdYVlhMRHZBN0ZhRmlzSEJVcEhwQTVvWE1meWVJbVNydWw3V1BN?=
- =?utf-8?B?WlIyNlpUcGlLNStNUVd3TTUxWkxrc1NWb1RSYlJBZ2ZMOUJaVHlUZzUwSW5l?=
- =?utf-8?B?RUE0M3NTN0F4SnJWUHJ3YnI1WlBpL2FyWTlmdkFGZ3hFWERKcHFIWVpONHFS?=
- =?utf-8?B?bmllUkpVcUZjWnA3V1JObnorUUZYR05iS2l5YnVpOHg4WU51WWQvb09tOXZH?=
- =?utf-8?B?WHVsaHpBb1lBUFZqbnhmS3oxU3ZEZ0NwMnR6U3MvcGlJNSt1NkxWc1owTjJa?=
- =?utf-8?B?QjN5cStsaWNUOGI1YVVnaHhkbEViNnM0SG9NWERFbERVc0dkZjJoZU41dGIx?=
- =?utf-8?B?ays1ZXpxQ01pNnFTdDVVaityaXNUdHpILzRwZE9YRWEwQWFqZC9FdUxyc1Rs?=
- =?utf-8?B?VUh3djVKVyt0WEJQb3ZzOC9LYWd2b3pUYnBUOXZISUFjOHEzNU05dTRjRlN2?=
- =?utf-8?B?cnZHVWJtS1dIRmNEVGZPc2hoSXlVeWR4S1lzVFM1ZlZPK2NnbWdHMkxzaW9s?=
- =?utf-8?B?cHRrdlEyM1c5WmlZalloTTN2dEVSKzdDWE9vOG5YMk5rb3lyZkZBaXo3Z0do?=
- =?utf-8?B?anpaWTZOUVV1T1dyVXNiRVdVVHlSdHlBUE93ZE4xYXdaQUNNaldtWHl6TjMv?=
- =?utf-8?B?STQ1bkJTdXlvaGVaZVMzRlQxanYzRzlrUEFMY1Z4Nnp0RUlzdTdLOVJER053?=
- =?utf-8?B?RHQxNVd4YW8vbG1XUXlKbFBRcDhMRUJMT3RSeWFQTk1aNXZMaG5XU0xRcW5H?=
- =?utf-8?B?cVZLV21kRHA4dit0ekppM1hLM0liaHQzNm5jM3AzRmZYVS8wZEtJZkJpSzRI?=
- =?utf-8?B?NVczdFhjSHRkRnJNbXdnckJicTdwc2IxaHJ6ZVdTNzZTTE9jb3NGTUJ0RzlN?=
- =?utf-8?B?ZWQ0eDhQRy81ajV1RWdqSGlMYjRNbUVYQjA2aFhhSTJsREhrRDFEOTI0U0Z3?=
- =?utf-8?B?R2JIOU5QbUxSZGtoVWlRcUx1YTI5V3VUdy9aRXVPVEtieHYrRXJRMDUvK3Jh?=
- =?utf-8?B?SWtjT0NKVDdtMmhZTEJxTGEvd3FQSkVQaFBDS1FhcFhmS1RjN3VaMDZ4eXBT?=
- =?utf-8?B?R1V6dXBjMzB5UzlsaHpmY1IxdFVPTXRLbzFSM1JKRzNJNXJhUlY0elVabDBM?=
- =?utf-8?B?T0MwRWpLQkJnL21raXVYdHdWNytCbG5iK3JjZUNMajVSVlpwNVVRM0VHNmNv?=
- =?utf-8?B?Yi94eXUvMUgrSjhDQmZOU0p1WFdySDJNa1B3RGl2R3hrTk8rMkwrZXpTN3RG?=
- =?utf-8?B?Y0l2RU9CN1RLNkl4R3J5cVN3Y1dRSlNiQTgyYlYyUWtUS0x6ZUpZQnNqVlNO?=
- =?utf-8?B?VVd5RmdtRUxmUWI0Sm5DU0dxVkxWZjhBTkpUdUsxM0pIVDg3UXNXUT09?=
+ =?utf-8?B?MENocWh2VGh3NnNzLzZCcEJtTEF6Z2FGWVR0US9kV3RQWEZFb3NyQzI4WkRp?=
+ =?utf-8?B?QkI4b3N0ekNMMERYZlFuNU93MDBYRzE5a0dOWXI2aGtaTjhZQzl6WEhkVTF3?=
+ =?utf-8?B?U0YrOE02eCswMHkxRm1KY09OUDI5MCtIRWRKUE1adWdnM3dBVHVPb3QxZzFr?=
+ =?utf-8?B?V21jaTF2R3R6d1hiSjVUL09ta2ZIL2RScXBKcDR5OVVYSmxlU3ZUMFhqeFZx?=
+ =?utf-8?B?bjJHQzFHeXR6ZjJhNmkvb0lhZkJ1TEM0VDVMVjFyYmZLdHY1U0ZCOVY5eVF5?=
+ =?utf-8?B?M3VvTkxhK2VkWXRZQ08yU0Nvc1ZYTVRvaldNY3VEKy95UWdQdzVkWDJEdDF0?=
+ =?utf-8?B?Wm9GeTIxOFNkY1ZTTHhtNzVnVjM3S2hSRi9jY2dabStPRlNhL2lSMStBTVJO?=
+ =?utf-8?B?TTUwNUtRVFM4K3lZcEpHMFIzSHJWT1RiODlpTWl6aEVIaVV2Ry94WklBSHBX?=
+ =?utf-8?B?T2ltUjZOSG8zWUxsRU10dVNUelNhSGNndllSRjB4SHp4Mm82TGdPMzhpQk9Q?=
+ =?utf-8?B?U01qTU9sZ1FMVTQ3SnBnNDNCU2tiUmcrLzdaZkYycDdsQmVpdU0wdjlkMkJ6?=
+ =?utf-8?B?aFdSMzV3WEFHVkFya2M4YkZXTjlxbTBWMFlsWkFtbGcrMGNwVzRSSURuNDV3?=
+ =?utf-8?B?WW5zUDFUZ0JhSFdweHY2WFZxT0U5Wkk3V2lGNVU1NmZBTURXVER3Ykl6a0dC?=
+ =?utf-8?B?TytPeDNiWjBGaFpGSWZQVzZCdUZvd3JDR0pKK2hKeTB1cGJTY1lHRFp4UlhC?=
+ =?utf-8?B?K3hWNFFvMmFwSnh6STlKOHp5Vm1YZFg3eU1sSHcyTVQ2VWRzNnlTa1l3cllq?=
+ =?utf-8?B?b1NYR2VQeHBUc0ZJSmF2eEIxb1A3ekxUVU5Ld1c5RDVHTTd3bnBoTm5wWnVY?=
+ =?utf-8?B?bkdhNGlTbXh3cFA2bXB5bTZWd05pOU1yM0xxNXVDT1FSVjdXalpNMkFoYXdF?=
+ =?utf-8?B?OFM4bDYweDd2OHlsbUQxUGpoTkk4VG5BeTB5WDFlMHlDYTZJQ2FablBrN0dr?=
+ =?utf-8?B?R0k5T3RwSHNlNFBzTGVxZU5BUEg4KzRUUEtiVDNxakJLb0YvZC93MDBjVStx?=
+ =?utf-8?B?TlMvRnMzbnlpTUxqeTVKVHRuTHgvM2phenNNVzM1cDFnTkNLczBBNTNUODdv?=
+ =?utf-8?B?UnhrT1h6bFc3MGNEa3ZOMHorQS9WclZOcE5PWEZBZS9Wc2FxeEY4dnJCZW9q?=
+ =?utf-8?B?RWpXZDQ2SDZIdlVITU1QMnVLY0kvMS9OdTBNQWFybHFBQUlQNWJ3SWV2NC9R?=
+ =?utf-8?B?WEplaGdBalp6UStrSSt4Sm0rbHZoUHNhbTdJZW5nVE12d1Fka2g3TXdGYjRo?=
+ =?utf-8?B?MjhxMmJFSFZLR3poMHdVZE5VbnJSOGRTY08zZ094L1BvdHJtelF4cSs2ckpT?=
+ =?utf-8?B?dzVDQW4rYXV0WURUUGhGL3lYT2ZuOHIyYWZsdThPOE9YQmhjVmVHaTVqL3Nt?=
+ =?utf-8?B?L2NPMzNmblExZUEwdUZrZGprR0RlUXpxRllWUlJaalpBWXNZYzFzSmx2MlVr?=
+ =?utf-8?B?OFdialAxZmlBQmJ1OG1FSU02WjJ4VDlXV2Uxek40L2l4OEtVczZubWo4QXVk?=
+ =?utf-8?B?Ny9DNFlrSTNvcW4yUkRuUW1SK3lndVVwbStFSnV6Nm1kQ05ITkk5MW1RWjZC?=
+ =?utf-8?B?ZnplTG1KdndpaVdFNlc5UHpLNnVtRVhXZjczSXZNaExpbzBYUVZ0eDlNaUlt?=
+ =?utf-8?B?TXc4UFYwOGxNOWFXMDkxU2swUTlpRkVaeFVHMDNYSGlMV28vOVpRVUVyZ3la?=
+ =?utf-8?B?djhFS0xkMkU0Zmlvb3d1Y2lLQ0tvdDNMc0JEN0xlMFd5QVZWOG9wd3RVTjRO?=
+ =?utf-8?B?SGhwVkJoL0hPY3hvSWtsR20rdUVHYnpOQmJ2M0svYU00ZTRLNUdjRENFeUJw?=
+ =?utf-8?B?Ykp4azFCc0tVeHp3ZzhxSDJnYmJMcllZVkxsNmxNdkdsU0hMb1lYRUllSnFP?=
+ =?utf-8?B?Q2JzWktKY0JiUkZUQW9KcmZkNG42b1hmYlBLMkIxUGxxendvaGJjNzJDcnpt?=
+ =?utf-8?B?MG14WUJaWVlCdHFzT1ZtUUJLcHJnQmUyZnZsSUtYTjU4SzhzbUpKYWw2VHZp?=
+ =?utf-8?B?WmR2N2U2ckFHLzIvK24zRmJrZkdZam1oRDROdk1vOXpMVmlQR1JuWGh3aS8r?=
+ =?utf-8?B?Q2V0L0NudWR5dlBFTm9yMkt5MTZHQnU4NU5ZK2MyS0RWT29McFdvWkkvNEYy?=
+ =?utf-8?B?cWtRcWc2OVovSW14ajFnQ1lQR204R1VIb1F2b2p0akhFOHNKQVlib3poRFQ0?=
+ =?utf-8?B?RkUwY1VTM2V4N21hNzBMUGRYd0RsK3VlU212MWZ0bnJmTzcrTDdjQy9UVmd4?=
+ =?utf-8?B?N3pPejl2b2FLMjVjb0U2TGpqd1BsM1VVMXZidXVnRXdvc3YrcU1BZz09?=
 X-OriginatorOrg: cherry.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: d54be0d8-cba4-4253-132e-08de528fd0f1
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5914c57a-c0f6-4781-6c32-08de5290f3de
 X-MS-Exchange-CrossTenant-AuthSource: GVXPR04MB12038.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jan 2026 10:37:57.3550
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jan 2026 10:46:05.4336
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: WeeXl3+RsrY4qC8xcQv4CuafdTtko2lzgA0SNpwqB+Ave3apMHaBsexF7skPzqaGC1GlXjgOdJKdJe7Y9sCuzXYNH4OiutbKt5fkSg0NfsI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR04MB12216
+X-MS-Exchange-CrossTenant-UserPrincipalName: OaokiFfOUKsJzl7Zb3QUzPq/Gt/LNuw3ckRTb3CIpLAZTcgj7dvkb2gS9xTIt/ntVfqH4gk7bdYBe5acgdAiHr2Hu4glXF/lyLCoMLLW/ts=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB7488
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 13 Jan 2026 10:38:11 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8481
+ <docs@lists.yoctoproject.org>; Tue, 13 Jan 2026 10:47:51 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8482
 
 Hi Antonin,
 
-On 1/13/26 11:29 AM, Antonin Godard wrote:
-> Hi,
+On 12/24/25 5:31 PM, Antonin Godard via lists.yoctoproject.org wrote:
+> The Poky repository has stopped being updated in favor of bitbake-setup
+> or manual clones of the required repositories. Simplify the document by
+> making references to these guides as well as removing sections that
+> are covered in the references documents.
 > 
-> On Mon Jan 12, 2026 at 6:57 PM CET, Robert P. J. Day wrote:
->> On Mon, 12 Jan 2026, Quentin Schulz via lists.yoctoproject.org wrote:
->>
->>>
->>>
->>> On 1/12/26 6:21 PM, Robert P. J. Day wrote:
->>>> On Mon, 12 Jan 2026, Quentin Schulz via lists.yoctoproject.org wrote:
->>>>
->>>>> Hi Robert,
->>>>>
->>>>> On 1/12/26 5:50 PM, Robert P. J. Day wrote:
->>>>>> On Mon, 12 Jan 2026, Quentin Schulz wrote:
->>>>>>
->>>>>>> Hi Robert,
->>>>>>>
->>>>>>> On 1/9/26 12:45 PM, Robert P. J. Day via lists.yoctoproject.org wrote:
->>>>>>>>
->>>>>>>>       more nitpick ... here:
->>>>>>>>
->>>>>>>> https://docs.yoctoproject.org/bitbake/bitbake-user-manual/bitbake-user-manual-metadata.html#sharing-functionality
->>>>>>>>
->>>>>>>> last line in that opening section, why is the phrase "configuration
->>>>>>>> fragments" rendered in monospaced? is that meant to be an actual
->>>>>>>
->>>>>>> So it doesn't feel left out with addfragments right after being
->>>>>>> monospaced
->>>>>>> too? More seriously, I don't know, but I wager the intent was to make
->>>>>>> the
->>>>>>> text
->>>>>>> italic as to highlight that it's a two-word term?
->>>>>>>
->>>>>>> Would you mind sending a patch for it?
->>>>>>>
->>>>>>> While at it, I think it makes sense to modify the "``addfragments``
->>>>>>> directive"
->>>>>>> part with a link to the section in the docs. Maybe another patch to
->>>>>>> send?
->>>>>>>
->>>>>>> Also, this pertains to bitbake user manual, so I think it'd make sense
->>>>>>> to
->>>>>>> add
->>>>>>> the bitbake ML when asking about bitbake-specific docs (both BB and
->>>>>>> YP-docs ML
->>>>>>> that is).
->>>>>>
->>>>>>      I notice you just posted a set of patches to fix a bunch of the
->>>>>> references, but it also seems that there are different syntaxes being
->>>>>> used for some of those references. What is the blessed way to name and
->>>>>> set references across the YP docs, and the proper way to then access
->>>>>> them? There seems to be a lack of consistency.
->>>>>>
->>>>>
->>>>> Can you write down those inconsistencies so we can discuss them?
->>>>
->>>>     let me check if i didn't just misunderstand. it might be that i was
->>>> confusing how one refers to am implicit ref associated with any
->>>> section/subsection, and the longer form associated with an explicit
->>>> ref definition.
->>>>
->>>
->>> I guess you mean
->>>
->>> :ref:`inherit_defer
->>> <ref-bitbake-user-manual-metadata-inherit-defer>`
->>>
->>> versus
->>>
->>> :ref:`inherit_defer
->>> <bitbake-user-manual/bitbake-user-manual-metadata:\`\`inherit_defer\`\`
->>> Directive>`
->>>
->>> and why we have a mix sometimes for the same cross-reference, or for different
->>> directives.
->>
->>   yup, that is exactly what i was talking about.
->>
->>> The answer is likely "we forgot/didn't know we had autosectionlabel
->>> Sphinx plugin enabled and added labels by hand". I would be for
->>> getting rid of the manual labels in favor of the autosectionlabel
->>> wherever applicable and mentioning this in some README (I believe we
->>> have standards.md in yocto-docs that would be more appropriate?).
->>>
->>> Can I interest you in sending patches to make this consistent across
->>> both BB and YP docs? (Barring Antonin disagreeing of course :) ).
->>
->>    i'll take a shot at that, won't be today, though. and let's hear
->> what antonin has to say first.
+> Keep a "Initializing the Build Environment" as this task is common and
+> referenced in different places in the documentation.
 > 
-> The autosectionlabel plugin works until a certain section depth, IIRC, so
-
-https://www.sphinx-doc.org/en/master/usage/extensions/autosectionlabel.html#confval-autosectionlabel_maxdepth 
-indeed but if we don't set it (we don't) then it doesn't stop at a given 
-depth.
-
-> deeply nested sections won't be automatically labeled. In that case fallback to
-> custom references. And you can't really increase that level otherwise you get
-> the same label multiple times in some documents, making Sphinx unhappy.
+> Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+> ---
+>   documentation/bsp-guide/bsp.rst                    |   5 +-
+>   documentation/dev-manual/start.rst                 | 324 +++------------------
+>   documentation/kernel-dev/common.rst                |  36 +--
+>   .../overview-manual/development-environment.rst    |  21 +-
+>   documentation/ref-manual/structure.rst             |   5 -
+>   documentation/sdk-manual/appendix-obtain.rst       |  25 +-
+>   6 files changed, 48 insertions(+), 368 deletions(-)
 > 
+> diff --git a/documentation/bsp-guide/bsp.rst b/documentation/bsp-guide/bsp.rst
+> index a6444d9af..74912cdd6 100644
+> --- a/documentation/bsp-guide/bsp.rst
+> +++ b/documentation/bsp-guide/bsp.rst
+> @@ -204,10 +204,7 @@ section.
+>         .. note::
+>   
+>            To see the available branch names in a cloned repository, use the ``git
+> -         branch -a`` command. See the
+> -         ":ref:`dev-manual/start:checking out by branch in poky`"
+> -         section in the Yocto Project Development Tasks Manual for more
+> -         information.
+> +         branch -a`` command.
+>   
+>   #. *Optionally Set Up an Alternative BSP Layer:* If your hardware can be
+>      more closely leveraged to an existing BSP not within the
+> diff --git a/documentation/dev-manual/start.rst b/documentation/dev-manual/start.rst
+> index b21cd4f0f..ca6753c94 100644
+> --- a/documentation/dev-manual/start.rst
+> +++ b/documentation/dev-manual/start.rst
+> @@ -76,7 +76,7 @@ particular working environment and set of practices.
+>       :term:`Metadata` (i.e. recipes,
+>       configuration files, classes, and so forth) and any software you are
+>       developing under the control of an SCM system that is compatible
+> -    with the OpenEmbedded build system is advisable. Of all of the SCMs
+> +    with the :term:`OpenEmbedded build system` is advisable. Of all of the SCMs
+>       supported by BitBake, the Yocto Project team strongly recommends using
+>       :ref:`overview-manual/development-environment:git`.
+>       Git is a distributed system
+> @@ -218,7 +218,7 @@ particular working environment and set of practices.
+>          repositories. See the ":ref:`overview-manual/development-environment:yocto project source repositories`"
+>          section in the Yocto Project Overview and Concepts Manual for
+>          information on these repositories. See the
+> -       ":ref:`dev-manual/start:locating yocto project source files`"
+> +       ":doc:`/dev-manual/poky-manual-setup`"
+>          section for information on how to set up local Git repositories
+>          for related upstream Yocto Project Git repositories.
+>   
+> @@ -338,7 +338,7 @@ Project Build Host:
+>   Once you have completed the previous steps, you are ready to continue
+>   using a given development path on your native Linux machine. If you are
+>   going to use BitBake, see the
+> -":ref:`dev-manual/start:cloning the \`\`poky\`\` repository`"
+> +":ref:`dev-manual/start:preparing the poky reference distro`"
+>   section. If you are going
+>   to use the Extensible SDK, see the ":doc:`/sdk-manual/extensible`" Chapter in the Yocto
+>   Project Application Development and the Extensible Software Development
+> @@ -433,7 +433,7 @@ as your Yocto Project build host:
+>   Once you have a container set up, everything is in place to develop just
+>   as if you were running on a native Linux machine. If you are going to
+>   use the Poky container, see the
+> -":ref:`dev-manual/start:cloning the \`\`poky\`\` repository`"
+> +":ref:`dev-manual/start:preparing the Poky reference distro`"
+>   section. If you are going to use the Extensible SDK container, see the
+>   ":doc:`/sdk-manual/extensible`" Chapter in the Yocto
+>   Project Application Development and the Extensible Software Development
+> @@ -576,302 +576,60 @@ the `Yocto Project BitBake
+>   <https://marketplace.visualstudio.com/items?itemName=yocto-project.yocto-bitbake>`__
+>   extension accordingly.
+>   
+> -Locating Yocto Project Source Files
+> -===================================
+> +Preparing the Poky Reference Distro
+> +-----------------------------------
+>   
+> -This section shows you how to locate, fetch, unpack, patch and configure the source
+> -files you'll need to work with the Yocto Project.
+> +Now that the :term:`Build Host` has been prepared to build images, the next step
+> +can be to build the :term:`Poky` reference distro. There are two ways of setting
+> +up the :term:`Poky` reference distro:
+>   
+> -.. note::
+> -
+> -   -  For concepts and introductory information about Git as it is used
+> -      in the Yocto Project, see the ":ref:`overview-manual/development-environment:git`"
+> -      section in the Yocto Project Overview and Concepts Manual.
+> -
+> -   -  For concepts on Yocto Project source repositories, see the
+> -      ":ref:`overview-manual/development-environment:yocto project source repositories`"
+> -      section in the Yocto Project Overview and Concepts Manual."
+> -
+> -Accessing Source Repositories
+> ------------------------------
+> -
+> -Working from a copy of the upstream :ref:`dev-manual/start:accessing source repositories` is the
+> -preferred method for obtaining and using a Yocto Project release. You
+> -can view the Yocto Project Source Repositories at
+> -:yocto_git:`/`. In particular, you can find the ``poky``
+> -repository at :yocto_git:`/poky`.
+> -
+> -Use the following procedure to locate the latest upstream copy of the
+> -``poky`` Git repository:
+> -
+> -#. *Access Repositories:* Open a browser and go to
+> -   :yocto_git:`/` to access the GUI-based interface into the
+> -   Yocto Project source repositories.
+> +-  Using the ``bitbake-setup`` command-line utility from :term:`BitBake`.
+> +   Follow:
+>   
+> -#. *Select the Repository:* Click on the repository in which you are
+> -   interested (e.g. ``poky``).
+> +   :doc:`Setting Up The Environment With bitbake-setup <bitbake:bitbake-user-manual/bitbake-user-manual-environment-setup>`
+>   
+> -#. *Find the URL Used to Clone the Repository:* At the bottom of the
+> -   page, note the URL used to clone that repository
+> -   (e.g. :yocto_git:`/poky`).
+> +-  Manually cloning the required repositories. Follow:
+>   
+> -   .. note::
+> +   :doc:`/dev-manual/poky-manual-setup`
+>   
+> -      For information on cloning a repository, see the
+> -      ":ref:`dev-manual/start:cloning the \`\`poky\`\` repository`" section.
+> +.. note::
+>   
+> -Accessing Source Archives
+> --------------------------
+> +   The :term:`Poky` distro is only a point that can be used to try the Yocto
 
-How about using 
-https://www.sphinx-doc.org/en/master/usage/extensions/autosectionlabel.html#confval-autosectionlabel_prefix_document 
-as to avoid this issue then?
+I don't know what you wanted to convey with "a point" here, but I don't 
+think it works?
 
-> I personally prefer a mix of both. One one hand, high-level sections are nice to
-> have autolabeled. But on the other hand, a well chosen naming convention is also
-> very useful. For example: if I want to reference a class by its name, I know
-> I'll just have to write ":ref:`ref-classes-<name>`". Same goes for tasks and
-> fragments.
-> 
+What about something like
 
-OK, I think Robert's point was how to know when to use which one and 
-have it explained somewhere so contributors know which to use?
+"""
+The :term:`Poky` distro is a reference distro. It can be used to try the 
+Yocto Project but should not be used in a production environment.
+"""
+
+> +   Project. It should not be used in production environments! Instead, it is
+> +   recommended to create your own distro, see the
+> +   :doc:`/dev-manual/custom-distribution` section of the Yocto Project
+> +   Development Tasks Manual.
+>   
+> -The Yocto Project also provides source archives of its releases, which
+> -are available on :yocto_dl:`/releases/yocto/`. Then, choose the subdirectory
+> -containing the release you wish to use, for example
+> -:yocto_dl:`&DISTRO_REL_LATEST_TAG; </releases/yocto/&DISTRO_REL_LATEST_TAG;/>`.
+> +Initializing the Build Environment
+> +----------------------------------
+>   
+> -You will find there source archives of individual components (if you wish
+> -to use them individually), and of the corresponding Poky release bundling
+> -a selection of these components.
+> +Initializing the build environment is a common task, as it needs to be done for
+> +each new instance of the shell where the :term:`Poky` reference was set up:
+>   
+> -.. note::
+> +-  If ``bitbake-setup`` was used to setup the :term:`Poky` reference distro, you
+> +   need to source the ``init-build-env`` file of the :term:`bitbake:Setup`
+> +   directory that was created after the :ref:`bitbake:ref-bbsetup-command-init`
+> +   command execution:
+>   
+> -   The recommended method for accessing Yocto Project components is to
+> -   use Git to clone the upstream repository and work from within that
+> -   locally cloned repository.
+> -
+> -Using the Downloads Page
+> -------------------------
+> -
+> -The :yocto_home:`Yocto Project Website <>` uses a "RELEASES" page
+> -from which you can locate and download tarballs of any Yocto Project
+> -release. Rather than Git repositories, these files represent snapshot
+> -tarballs similar to the tarballs located in the Index of Releases
+> -described in the ":ref:`dev-manual/start:accessing source archives`" section.
+> -
+> -#. *Go to the Yocto Project Website:* Open The
+> -   :yocto_home:`Yocto Project Website <>` in your browser.
+> -
+> -#. *Get to the Downloads Area:* Select the "RELEASES" item from the
+> -   pull-down "DEVELOPMENT" tab menu near the top of the page.
+> -
+> -#. *Select a Yocto Project Release:* On the top of the "RELEASES" page, currently
+> -   supported releases are displayed; further down, past supported Yocto Project
+> -   releases are visible. The "Download" links in the rows of the table there
+> -   will lead to the download tarballs for the release.
+> -
+> -   .. note::
+> -
+> -      For a "map" of Yocto Project releases to version numbers, see the
+> -      :yocto_home:`Releases </development/releases/>` page.
+> -
+> -   You can use the "RELEASE ARCHIVE" link to reveal a menu of all Yocto
+> -   Project releases.
+> -
+> -#. *Download Tools or Board Support Packages (BSPs):* Next to the tarballs you
+> -   will find download tools or BSPs as well. Just select a Yocto Project
+> -   release and look for what you need.
+> -
+> -Cloning and Checking Out Branches
+> -=================================
+> -
+> -To use the Yocto Project for development, you need a release locally
+> -installed on your development system. This locally installed set of
+> -files is referred to as the :term:`Source Directory`
+> -in the Yocto Project documentation.
+> -
+> -The preferred method of creating your Source Directory is by using
+> -:ref:`overview-manual/development-environment:git` to clone a local copy of the upstream
+> -``poky`` repository. Working from a cloned copy of the upstream
+> -repository allows you to contribute back into the Yocto Project or to
+> -simply work with the latest software on a development branch. Because
+> -Git maintains and creates an upstream repository with a complete history
+> -of changes and you are working with a local clone of that repository,
+> -you have access to all the Yocto Project development branches and tag
+> -names used in the upstream repository.
+> -
+> -Cloning the ``poky`` Repository
+> --------------------------------
+> -
+> -Follow these steps to create a local version of the upstream
+> -:term:`Poky` Git repository.
+> -
+> -#. *Set Your Directory:* Change your working directory to where you want
+> -   to create your local copy of ``poky``.
+> -
+> -#. *Clone the Repository:* The following example command clones the
+> -   ``poky`` repository and uses the default name "poky" for your local
+> -   repository::
+> -
+> -      $ git clone git://git.yoctoproject.org/poky
+> -      Cloning into 'poky'...
+> -      remote: Counting objects: 432160, done.
+> -      remote: Compressing objects: 100% (102056/102056), done.
+> -      remote: Total 432160 (delta 323116), reused 432037 (delta 323000)
+> -      Receiving objects: 100% (432160/432160), 153.81 MiB | 8.54 MiB/s, done.
+> -      Resolving deltas: 100% (323116/323116), done.
+> -      Checking connectivity... done.
+> -
+> -   Unless you
+> -   specify a specific development branch or tag name, Git clones the
+> -   "master" branch, which results in a snapshot of the latest
+> -   development changes for "master". For information on how to check out
+> -   a specific development branch or on how to check out a local branch
+> -   based on a tag name, see the
+> -   ":ref:`dev-manual/start:checking out by branch in poky`" and
+> -   ":ref:`dev-manual/start:checking out by tag in poky`" sections, respectively.
+> -
+> -   Once the local repository is created, you can change to that
+> -   directory and check its status. The ``master`` branch is checked out
+> -   by default::
+> -
+> -      $ cd poky
+> -      $ git status
+> -      On branch master
+> -      Your branch is up-to-date with 'origin/master'.
+> -      nothing to commit, working directory clean
+> -      $ git branch
+> -      * master
+> -
+> -   Your local repository of poky is initially identical to the
+> -   upstream poky repository from which it was cloned. As you
+> -   work with the local branch, you can periodically use the
+> -   ``git pull`` command to be sure you stay up-to-date
+> -   with the upstream poky branch.
+> -
+> -Checking Out by Branch in Poky
+> -------------------------------
+> +   .. code-block:: console
+>   
+> -When you clone the upstream poky repository, you have access to all its
+> -development branches. Each development branch in a repository is unique
+> -as it forks off the "master" branch. To see and use the files of a
+> -particular development branch locally, you need to know the branch name
+> -and then specifically check out that development branch.
+> +      $ source <setup-dir>/build/init-build-env
+>   
+> -.. note::
+>   
+> -   Checking out an active development branch by branch name gives you a
+> -   snapshot of that particular branch at the time you check it out.
+> -   Further development on top of the branch that occurs after check it
+> -   out can occur.
+> -
+> -#. *Switch to the Poky Directory:* If you have a local poky Git
+> -   repository, switch to that directory. If you do not have the local
+> -   copy of poky, see the
+> -   ":ref:`dev-manual/start:cloning the \`\`poky\`\` repository`"
+> -   section.
+> -
+> -#. *Determine Existing Branch Names:*
+> -   ::
+> -
+> -      $ git branch -a
+> -      * master
+> -      remotes/origin/1.1_M1
+> -      remotes/origin/1.1_M2
+> -      remotes/origin/1.1_M3
+> -      remotes/origin/1.1_M4
+> -      remotes/origin/1.2_M1
+> -      remotes/origin/1.2_M2
+> -      remotes/origin/1.2_M3
+> -      . . .
+> -      remotes/origin/thud
+> -      remotes/origin/thud-next
+> -      remotes/origin/warrior
+> -      remotes/origin/warrior-next
+> -      remotes/origin/zeus
+> -      remotes/origin/zeus-next
+> -      ... and so on ...
+> -
+> -#. *Check out the Branch:* Check out the development branch in which you
+> -   want to work. For example, to access the files for the Yocto Project
+> -   &DISTRO; Release (&DISTRO_NAME;), use the following command::
+> -
+> -      $ git checkout -b &DISTRO_NAME_NO_CAP; origin/&DISTRO_NAME_NO_CAP;
+> -      Branch &DISTRO_NAME_NO_CAP; set up to track remote branch &DISTRO_NAME_NO_CAP; from origin.
+> -      Switched to a new branch '&DISTRO_NAME_NO_CAP;'
+> -
+> -   The previous command checks out the "&DISTRO_NAME_NO_CAP;" development
+> -   branch and reports that the branch is tracking the upstream
+> -   "origin/&DISTRO_NAME_NO_CAP;" branch.
+> -
+> -   The following command displays the branches that are now part of your
+> -   local poky repository. The asterisk character indicates the branch
+> -   that is currently checked out for work::
+> -
+> -      $ git branch
+> -        master
+> -        * &DISTRO_NAME_NO_CAP;
+> -
+> -Checking Out by Tag in Poky
+> ----------------------------
+> -
+> -Similar to branches, the upstream repository uses tags to mark specific
+> -commits associated with significant points in a development branch (i.e.
+> -a release point or stage of a release). You might want to set up a local
+> -branch based on one of those points in the repository. The process is
+> -similar to checking out by branch name except you use tag names.
+> +-  If the :term:`Poky` distro was setup using manual clones of the layers, you
+> +   need to source the ``oe-init-build-env`` script present in the
+> +   :term:`OpenEmbedded-Core (OE-Core)` layer:
+>   
+> -.. note::
+> +   .. code-block:: console
+>   
+> -   Checking out a branch based on a tag gives you a stable set of files
+> -   not affected by development on the branch above the tag.
+> -
+> -#. *Switch to the Poky Directory:* If you have a local poky Git
+> -   repository, switch to that directory. If you do not have the local
+> -   copy of poky, see the
+> -   ":ref:`dev-manual/start:cloning the \`\`poky\`\` repository`"
+> -   section.
+> -
+> -#. *Fetch the Tag Names:* To checkout the branch based on a tag name,
+> -   you need to fetch the upstream tags into your local repository::
+> -
+> -      $ git fetch --tags
+> -      $
+> -
+> -#. *List the Tag Names:* You can list the tag names now::
+> -
+> -      $ git tag
+> -      1.1_M1.final
+> -      1.1_M1.rc1
+> -      1.1_M1.rc2
+> -      1.1_M2.final
+> -      1.1_M2.rc1
+> -         .
+> -         .
+> -         .
+> -      yocto-2.5
+> -      yocto-2.5.1
+> -      yocto-2.5.2
+> -      yocto-2.5.3
+> -      yocto-2.6
+> -      yocto-2.6.1
+> -      yocto-2.6.2
+> -      yocto-2.7
+> -      yocto_1.5_M5.rc8
+> -
+> -
+> -#. *Check out the Branch:*
+> -   ::
+> -
+> -      $ git checkout tags/yocto-&DISTRO; -b my_yocto_&DISTRO;
+> -      Switched to a new branch 'my_yocto_&DISTRO;'
+> -      $ git branch
+> -        master
+> -      * my_yocto_&DISTRO;
+> -
+> -   The previous command creates and
+> -   checks out a local branch named "my_yocto_&DISTRO;", which is based on
+> -   the commit in the upstream poky repository that has the same tag. In
+> -   this example, the files you have available locally as a result of the
+> -   ``checkout`` command are a snapshot of the "&DISTRO_NAME_NO_CAP;"
+> -   development branch at the point where Yocto Project &DISTRO; was
+> -   released.
+> +      $ source openembedded-core/oe-init-build-env
+>   
+> -Initializing the Build Environment
+> -==================================
+> +This will setup you current shell and change its current working directory to
+
+s/you/your/
+
+s/its/the/
+
+> +the :term:`Build Directory`.
+>   
+> -Before you can use Yocto you need to setup the build environment.
+> -From within the ``poky`` directory, source the :ref:`ref-manual/structure:``oe-init-build-env``` environment
+> -setup script to define Yocto Project's build environment on your build host::
+> +Where To Go From There
+
+s/There/Here/ ?
+
+More generally, I'm confused as to why we are removing mentions to the 
+tarball setup as that still exists and is possible?
 
 Cheers,
 Quentin
