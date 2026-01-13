@@ -2,102 +2,96 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E2DEAD29DF7
-	for <webhook@archiver.kernel.org>; Tue, 13 Jan 2026 09:37:40 +0000 (UTC)
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.55559.1768297052314728614
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D0F91D29DFD
+	for <webhook@archiver.kernel.org>; Tue, 13 Jan 2026 09:54:10 +0000 (UTC)
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.55509.1768298049078131041
  for <docs@lists.yoctoproject.org>;
- Tue, 13 Jan 2026 01:37:33 -0800
+ Tue, 13 Jan 2026 01:54:09 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=DstegA/n;
- spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=AFjV5iR1;
+ spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 9B249C20878;
-	Tue, 13 Jan 2026 09:37:03 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 2F54B1A282F
+	for <docs@lists.yoctoproject.org>; Tue, 13 Jan 2026 09:54:07 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 269EA60732;
-	Tue, 13 Jan 2026 09:37:30 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 123C9103C92F2;
-	Tue, 13 Jan 2026 10:37:27 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id ED5B660732;
+	Tue, 13 Jan 2026 09:54:06 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5DBA9103C92D2;
+	Tue, 13 Jan 2026 10:54:05 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1768297049; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=WKDyASyE59m0+8gCsxGiVykTM7c/CqWoT6Ar3tskxfM=;
-	b=DstegA/n1ci2ny8CyHrmgKPu6piA1Q9JMTXW0fO+w6cJTQelaC80y0RX2yQMWZwoi5hUx5
-	U9bkXxnA5upa5IBlCK6iniSDTDpwBB4HOM/4Jyu+nTXSNA6MTTFZ22rN3cIYTIBvLzmhBK
-	54MZs/UvJf/FmYQfsA/xMbMiF8WE5X2BlExyEYIGtSuKvKayjgqRzFXfwyXmuI6e4P5NJO
-	s0sFwj1H4x4fzFYH+JyiVB1Ev0nAXZ7R6U8Zv1r6Q0xtW9Fj4/yohdD2W3Vg6Hu8iQGK/L
-	nIvfRvhcRkSVS4VXk7/PHzbDihpYj5M3FD0Cui7o/WK61mDVfDGJ4bKsm0AoCQ==
+	t=1768298046; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=hxXWFd5VPX3Go9pBGOehSGvZ37Gjo23OLSM0M0Lfw3g=;
+	b=AFjV5iR1BsnPiXfW52JaxpJFIC6y8QPlwo87eegJhlKZHsqU5vbuzaiDXqVKdGtehF1jLD
+	uE41OcYEhwjk/Juq1JQQ/5KrFJXcGbc+/TRYLtMGy9N7k20OPxb0eby8xvwtStTeaSHY87
+	XmWCYfkif8EwJALO9KWMNXlIWCbc0WeYflj13WUoj3jVXEvIcn6Qor8TuTuobP2/l4PCyj
+	F6tZAU9tbEB4V08i2/YcLH2+2MWUMjx0LBggWt9Vyklx6b85AghstD2ezncXCEgfizWCjH
+	suyOY69yRzMEJ/TcoRyI/kb4a7vjYyvYnpPd6psI+3XJHFwsSCzolwi9anrLvg==
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 13 Jan 2026 10:37:27 +0100
-Message-Id: <DFNCZL4DGO9X.1I4P89HIL9I30@bootlin.com>
-Cc: <docs@lists.yoctoproject.org>, "Quentin Schulz"
- <quentin.schulz@cherry.de>, "Robert P. J. Day" <rpjday@crashcourse.ca>
+Date: Tue, 13 Jan 2026 10:54:03 +0100
+Message-Id: <DFNDCAUD8PKL.1EKQD2WJTH0AI@bootlin.com>
+To: "Richard Purdie" <richard.purdie@linuxfoundation.org>
+Subject: [kirkstone] Pull request
+Cc: <docs@lists.yoctoproject.org>
 From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: "Quentin Schulz" <foss@0leil.net>,
- <bitbake-devel@lists.openembedded.org>
-Subject: Re: [bitbake-devel] [PATCH 0/8] doc: bitbake-user-manual-metadata:
- misc improvements on sharing functionality
-X-Mailer: aerc 0.21.0-63-gbde0bca3c3bc
-References: <20260112-doc-directives-v1-0-b23923cfce89@cherry.de>
-In-Reply-To: <20260112-doc-directives-v1-0-b23923cfce89@cherry.de>
 X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 13 Jan 2026 09:37:40 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8474
+ <docs@lists.yoctoproject.org>; Tue, 13 Jan 2026 09:54:10 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8475
 
-On Mon Jan 12, 2026 at 5:36 PM CET, Quentin Schulz wrote:
-> This expands on the include_all directive by providing an example and
-> highlighting the difference with the include directive.
->
-> It fixes some highlighting and cross-referencing inconsistencies as well
-> as the wrong path in the examples.
->
-> Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
-> ---
-> Quentin Schulz (8):
->       doc: bitbake-user-manual-metadata: list (in order) all sharing dire=
-ctives
->       doc: bitbake-user-manual-metadata: highlight configuration fragment=
- differently
->       doc: bitbake-user-manual-metadata: use a cross-reference for addfra=
-gments
->       doc: bitbake-user-manual-metadata: specify that current dir won't b=
-e searched for include_all
->       doc: bitbake-user-manual-metadata: add missing highlight for BBPATH=
- and PATH
->       doc: bitbake-user-manual-metadata: fix incorrect path in example fo=
-r locating files
->       doc: bitbake-user-manual-metadata: expand on search paths for inclu=
-de directive
->       doc: bitbake-user-manual-metadata: expand locating files example fo=
-r include_all directive
->
->  .../bitbake-user-manual-metadata.rst               | 65 ++++++++++++++++=
-++----
->  1 file changed, 54 insertions(+), 11 deletions(-)
-> ---
-> base-commit: f23e186a75e71ba885b9b53a1dfda99af29c67b0
-> change-id: 20260112-doc-directives-6e42bc047525
->
-> Best regards,
+The following changes since commit cebe8ff0508e0fc2de8378a1cf93eb8054e12699=
+:
 
-Great improvements over what I wrote a while back! I'm glad we have a detai=
-led
-explanation on all of these directives now.
+  ref-manual/classes.rst: document the image-container class (2025-12-24 09=
+:57:14 +0100)
 
-Reviewed-by: Antonin Godard <antonin.godard@bootlin.com>
+are available in the Git repository at:
 
-Thanks!
-Antonin
+  git@push.yoctoproject.org:yocto-docs kirkstone-next
 
---=20
-Antonin Godard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+for you to fetch changes up to 6799b1be5d48f4bf5dcd0b16c2dbc2e297d4ecd9:
 
+  contributor-guide/recipe-style-guide.rst: explain difference between laye=
+r and recipe license(s) (2026-01-13 09:59:23 +0100)
+
+----------------------------------------------------------------
+Antonin Godard (7):
+      test-manual/ptest.rst: detail the exit code and output requirements
+      ref-manual/release-process.rst: add a "Development Cycle" section
+      overview-manual/yp-intro.rst: fix SDK type in bullet list
+      overview-manual: convert YP-flow-diagram.png to SVG
+      Remove diagrams directory
+      ref-manual/variables.rst: document the CCACHE_TOP_DIR variable
+      contributor-guide/recipe-style-guide.rst: explain difference between =
+layer and recipe license(s)
+
+ diagrams/poky-buildprocess/Pokyarch_diag.jpg       |  Bin 285707 -> 0 byte=
+s
+ diagrams/poky-buildprocess/Pokyarch_diag.svg       |  205 ---
+ diagrams/poky-buildprocess/Pokyarch_diag2.svg      | 1544 ----------------=
+----
+ diagrams/poky-buildprocess/pokyarch4.dia           |  Bin 3495 -> 0 bytes
+ diagrams/poky-buildprocess/pokyarch4.png           |  Bin 52531 -> 0 bytes
+ .../contributor-guide/recipe-style-guide.rst       |   14 +
+ documentation/overview-manual/concepts.rst         |    2 +-
+ .../overview-manual/figures/YP-flow-diagram.png    |  Bin 190715 -> 0 byte=
+s
+ .../overview-manual/svg/yp-flow-diagram.svg        |  950 ++++++++++++
+ documentation/overview-manual/yp-intro.rst         |    5 +-
+ documentation/ref-manual/release-process.rst       |   39 +
+ documentation/ref-manual/variables.rst             |    6 +
+ documentation/test-manual/ptest.rst                |   19 +
+ 13 files changed, 1032 insertions(+), 1752 deletions(-)
+ delete mode 100644 diagrams/poky-buildprocess/Pokyarch_diag.jpg
+ delete mode 100644 diagrams/poky-buildprocess/Pokyarch_diag.svg
+ delete mode 100644 diagrams/poky-buildprocess/Pokyarch_diag2.svg
+ delete mode 100644 diagrams/poky-buildprocess/pokyarch4.dia
+ delete mode 100644 diagrams/poky-buildprocess/pokyarch4.png
+ delete mode 100644 documentation/overview-manual/figures/YP-flow-diagram.p=
+ng
+ create mode 100644 documentation/overview-manual/svg/yp-flow-diagram.svg
 
