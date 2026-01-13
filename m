@@ -2,42 +2,42 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 83E27D2D0F6
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 851FCD2D0F7
 	for <webhook@archiver.kernel.org>; Tue, 13 Jan 2026 13:10:22 +0000 (UTC)
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.58452.1768309820749649677
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.58451.1768309820674106660
  for <docs@lists.yoctoproject.org>;
  Tue, 13 Jan 2026 05:10:21 -0800
 Authentication-Results: mx.groups.io;
- dkim=fail reason="dkim: body hash did not verify" header.i=@bootlin.com header.s=dkim header.b=GKHXH3hv;
+ dkim=fail reason="dkim: body hash did not verify" header.i=@bootlin.com header.s=dkim header.b=sdiUge+f;
  spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 9BF304E420A7
-	for <docs@lists.yoctoproject.org>; Tue, 13 Jan 2026 13:10:18 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 0D5CF4E420AC
+	for <docs@lists.yoctoproject.org>; Tue, 13 Jan 2026 13:10:19 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 622D160701
+	by smtpout-01.galae.net (Postfix) with ESMTPS id D704D60701
 	for <docs@lists.yoctoproject.org>; Tue, 13 Jan 2026 13:10:18 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B8E41103C9270;
-	Tue, 13 Jan 2026 14:10:17 +0100 (CET)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4BA1A103C9331;
+	Tue, 13 Jan 2026 14:10:18 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
 	t=1768309818; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=sIMG/z2FsXsN0Pa+zXMYX8wRPtwhbqs5mtYJE6eA+j4=;
-	b=GKHXH3hvvHRkkbea4me1LbWVyiWb6Qfs9MouExj9tPKBaNlM45VCHlYVFGkuqKa02UbdF9
-	7TTNvqliud4FW5k9jjBEPnwNXm2wfYJH6j0OnWuiWCcXAuMRtUfdzPoq0NnzxaXRiAMpXj
-	ihbx03Gwd5ZWi4saIPDPARQGPq7JH1B9kIt3JHfbZjqKBLpKqnvtHGhrR7UC3wIuEwpGVG
-	lM/NSMpkRAQToZmbNu37WL4Kgg/0GFpe0k4K+iuWujJSj5OO33C3D7hfeDFuanno9Awefm
-	6jhLgaxiKUj8DKFAReOuBOv1IdAoEXF084FaO/o1j9/y+GBU41bWYMm21jO/3g==
+	bh=ZpBBQhe5S8iGSG68K7vdeHlBpZBFPI4ju3yEIL5AKxc=;
+	b=sdiUge+fE8AR7AazyBU/t2u02X5lEHqWK2gPelkzgYnR00Z1EJyh1A39xosSPJ0E9VZk8i
+	FDzn+LZu+SJ9H3q4m2oBzle9WdtZPYt3PpbYA3u47cgX9pRBgLqutlL8nCbseFyScVmrKF
+	1WH3IuLuHaZcCofr4g1ge1JLMX2oe8hbqiJ1sfs77JjghHv624UACkua+9dGNjuu8ZnUP6
+	Z9LjkElH4unRMMPkebh5iQrKLAydQtIwtC0gnNjaDq4WMbh3DkcMtezdsKiMBZDkGiJZ7g
+	ldvhqpnzwP8uNXBIn3TMpF4UiLIMfZPuZX1T1YaKneVx/KypXpNmzqE4wrKiCA==
 From: Antonin Godard <antonin.godard@bootlin.com>
 To: docs@lists.yoctoproject.org,
 	Antonin Godard <antonin.godard@bootlin.com>
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH 0/3] Add a security manual
-Date: Tue, 13 Jan 2026 14:09:51 +0100
-Message-ID: <176830971042.418327.9449106930312268030.b4-ty@bootlin.com>
+Subject: Re: [PATCH] dev-manual/qemu: add an example for the snapshot+nographic mode
+Date: Tue, 13 Jan 2026 14:09:52 +0100
+Message-ID: <176830971049.418327.12048257513360277315.b4-ty@bootlin.com>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260106-security-manual-v1-0-500fe611a4d0@bootlin.com>
-References: <20260106-security-manual-v1-0-500fe611a4d0@bootlin.com>
+In-Reply-To: <20260105-qemu-snapshot-v1-1-b598171f513f@bootlin.com>
+References: <20260105-qemu-snapshot-v1-1-b598171f513f@bootlin.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Last-TLS-Session-Version: TLSv1.3
@@ -46,28 +46,24 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Tue, 13 Jan 2026 13:10:22 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8497
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8498
 
 
-On Tue, 06 Jan 2026 16:34:30 +0100, Antonin Godard wrote:
-> As stated in the first patch, this section of the documentation can be
-> used to collect best practices with regards to security and the Yocto
-> Project.
+On Mon, 05 Jan 2026 17:06:07 +0100, Antonin Godard wrote:
+> The snapshot option was added by OE-Core commit 8fec4a5a004f
+> ("scripts/runqemu: Add snapshot support"). Along with nographic, this
+> execution mode is useful for temporary tests in an environment that doe=
+s
+> not have graphics support (like a remote server, or a container).
 >=20
-> Having a dedicated section also helps putting security to the front pag=
-e
-> of the documentation.
+> Add it as part of the listed examples.
 >=20
 > [...]
 
 Applied, thanks!
 
-[1/3] Add a security manual
-      commit: 3dc9307e429a0eca40b5e49dacffd04bff99222d
-[2/3] Move security related manuals to the security manual
-      commit: 38a324d2d3e171c26eeb2120383e3a04d70a9c99
-[3/3] security-manual/securing-images.rst: remove old links
-      commit: 68851e0256fade849feece3a359a5d4892ab4828
+[1/1] dev-manual/qemu: add an example for the snapshot+nographic mode
+      commit: 84a55c77a228319d224cde9bdff24025c7ccb0d6
 
 Best regards,
 --=20
