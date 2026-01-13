@@ -1,147 +1,103 @@
-Return-Path: <rpjday@crashcourse.ca>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 88AFCCF45BF
-	for <webhook@archiver.kernel.org>; Mon, 12 Jan 2026 17:57:45 +0000 (UTC)
-Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.39384.1768240659380501352
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E2DEAD29DF7
+	for <webhook@archiver.kernel.org>; Tue, 13 Jan 2026 09:37:40 +0000 (UTC)
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.55559.1768297052314728614
  for <docs@lists.yoctoproject.org>;
- Mon, 12 Jan 2026 09:57:39 -0800
+ Tue, 13 Jan 2026 01:37:33 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=cGueRZuV;
- spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:References:
-	Message-ID:In-Reply-To:Subject:cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Z365gEoJLx04/DrYlzpdWt1yb3o8gyPwem7Sdjtcd7w=; b=cGueRZuVN6FDbTkGbIGp4H1nMJ
-	Z+5sKaGGScFfUc6voHxEJfaYMHi8a/cOH1LS5EYICmmyNZ03g1XGe2n7FWHebm0Vb0ArMZe22k2O/
-	WIVkJ5H0mYdzfWvXFo8dUOdF5KRLZYkDznovvFy4C4EWK3VguL23nX/3SV5DUcQN9ft40eRhSZPfr
-	Cw0KmKFmR9ooivcs9Kn+wwmie3rKIOxYxbUFFebA4dDG/9f971xXusdHN6qqYIJTEVeGhIiL91pLg
-	iE5+aM+HsDvH3Ef9g/37cyAt814Qm2HYOOq4b/JLfxB/8YOeXv9u1qpgFq9wwyIZrwgtBUAzaJUJC
-	3vqLUpdw==;
-Received: from [147.129.179.166] (port=37558 helo=rday)
-	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.1)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1vfMAb-0000000Gjwj-1OfS;
-	Mon, 12 Jan 2026 12:57:37 -0500
-Date: Mon, 12 Jan 2026 13:00:44 -0500 (EST)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: quentin.schulz@cherry.de
-cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: Re: [docs] why is "configuration fragments" in monospaced font?
-In-Reply-To: <f98abd3b-78da-4d20-886a-a08284d88641@cherry.de>
-Message-ID: <c72f1d20-7006-e705-8674-12133dfcd1db@crashcourse.ca>
-References: <7dbf2502-1403-3451-ea27-45aeae758032@crashcourse.ca> <4c7492bc-177f-4bb4-a8f4-cc19323fd242@cherry.de> <d59faeb3-8e61-7023-cc26-3918de5f0ab0@crashcourse.ca> <e118a38e-0e45-49f2-9010-01c1a4d7d1ad@cherry.de> <21105206-6e15-da26-2da0-de604fc4c905@crashcourse.ca>
- <f98abd3b-78da-4d20-886a-a08284d88641@cherry.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=DstegA/n;
+ spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 9B249C20878;
+	Tue, 13 Jan 2026 09:37:03 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 269EA60732;
+	Tue, 13 Jan 2026 09:37:30 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 123C9103C92F2;
+	Tue, 13 Jan 2026 10:37:27 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1768297049; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=WKDyASyE59m0+8gCsxGiVykTM7c/CqWoT6Ar3tskxfM=;
+	b=DstegA/n1ci2ny8CyHrmgKPu6piA1Q9JMTXW0fO+w6cJTQelaC80y0RX2yQMWZwoi5hUx5
+	U9bkXxnA5upa5IBlCK6iniSDTDpwBB4HOM/4Jyu+nTXSNA6MTTFZ22rN3cIYTIBvLzmhBK
+	54MZs/UvJf/FmYQfsA/xMbMiF8WE5X2BlExyEYIGtSuKvKayjgqRzFXfwyXmuI6e4P5NJO
+	s0sFwj1H4x4fzFYH+JyiVB1Ev0nAXZ7R6U8Zv1r6Q0xtW9Fj4/yohdD2W3Vg6Hu8iQGK/L
+	nIvfRvhcRkSVS4VXk7/PHzbDihpYj5M3FD0Cui7o/WK61mDVfDGJ4bKsm0AoCQ==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 13 Jan 2026 10:37:27 +0100
+Message-Id: <DFNCZL4DGO9X.1I4P89HIL9I30@bootlin.com>
+Cc: <docs@lists.yoctoproject.org>, "Quentin Schulz"
+ <quentin.schulz@cherry.de>, "Robert P. J. Day" <rpjday@crashcourse.ca>
+From: "Antonin Godard" <antonin.godard@bootlin.com>
+To: "Quentin Schulz" <foss@0leil.net>,
+ <bitbake-devel@lists.openembedded.org>
+Subject: Re: [bitbake-devel] [PATCH 0/8] doc: bitbake-user-manual-metadata:
+ misc improvements on sharing functionality
+X-Mailer: aerc 0.21.0-63-gbde0bca3c3bc
+References: <20260112-doc-directives-v1-0-b23923cfce89@cherry.de>
+In-Reply-To: <20260112-doc-directives-v1-0-b23923cfce89@cherry.de>
+X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 12 Jan 2026 17:57:45 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8473
+ <docs@lists.yoctoproject.org>; Tue, 13 Jan 2026 09:37:40 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8474
 
-On Mon, 12 Jan 2026, Quentin Schulz via lists.yoctoproject.org wrote:
+On Mon Jan 12, 2026 at 5:36 PM CET, Quentin Schulz wrote:
+> This expands on the include_all directive by providing an example and
+> highlighting the difference with the include directive.
+>
+> It fixes some highlighting and cross-referencing inconsistencies as well
+> as the wrong path in the examples.
+>
+> Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
+> ---
+> Quentin Schulz (8):
+>       doc: bitbake-user-manual-metadata: list (in order) all sharing dire=
+ctives
+>       doc: bitbake-user-manual-metadata: highlight configuration fragment=
+ differently
+>       doc: bitbake-user-manual-metadata: use a cross-reference for addfra=
+gments
+>       doc: bitbake-user-manual-metadata: specify that current dir won't b=
+e searched for include_all
+>       doc: bitbake-user-manual-metadata: add missing highlight for BBPATH=
+ and PATH
+>       doc: bitbake-user-manual-metadata: fix incorrect path in example fo=
+r locating files
+>       doc: bitbake-user-manual-metadata: expand on search paths for inclu=
+de directive
+>       doc: bitbake-user-manual-metadata: expand locating files example fo=
+r include_all directive
+>
+>  .../bitbake-user-manual-metadata.rst               | 65 ++++++++++++++++=
+++----
+>  1 file changed, 54 insertions(+), 11 deletions(-)
+> ---
+> base-commit: f23e186a75e71ba885b9b53a1dfda99af29c67b0
+> change-id: 20260112-doc-directives-6e42bc047525
+>
+> Best regards,
 
->
->
-> On 1/12/26 6:21 PM, Robert P. J. Day wrote:
-> > On Mon, 12 Jan 2026, Quentin Schulz via lists.yoctoproject.org wrote:
-> >
-> > > Hi Robert,
-> > >
-> > > On 1/12/26 5:50 PM, Robert P. J. Day wrote:
-> > > > On Mon, 12 Jan 2026, Quentin Schulz wrote:
-> > > >
-> > > > > Hi Robert,
-> > > > >
-> > > > > On 1/9/26 12:45 PM, Robert P. J. Day via lists.yoctoproject.org wrote:
-> > > > > >
-> > > > > >      more nitpick ... here:
-> > > > > >
-> > > > > > https://docs.yoctoproject.org/bitbake/bitbake-user-manual/bitbake-user-manual-metadata.html#sharing-functionality
-> > > > > >
-> > > > > > last line in that opening section, why is the phrase "configuration
-> > > > > > fragments" rendered in monospaced? is that meant to be an actual
-> > > > >
-> > > > > So it doesn't feel left out with addfragments right after being
-> > > > > monospaced
-> > > > > too? More seriously, I don't know, but I wager the intent was to make
-> > > > > the
-> > > > > text
-> > > > > italic as to highlight that it's a two-word term?
-> > > > >
-> > > > > Would you mind sending a patch for it?
-> > > > >
-> > > > > While at it, I think it makes sense to modify the "``addfragments``
-> > > > > directive"
-> > > > > part with a link to the section in the docs. Maybe another patch to
-> > > > > send?
-> > > > >
-> > > > > Also, this pertains to bitbake user manual, so I think it'd make sense
-> > > > > to
-> > > > > add
-> > > > > the bitbake ML when asking about bitbake-specific docs (both BB and
-> > > > > YP-docs ML
-> > > > > that is).
-> > > >
-> > > >     I notice you just posted a set of patches to fix a bunch of the
-> > > > references, but it also seems that there are different syntaxes being
-> > > > used for some of those references. What is the blessed way to name and
-> > > > set references across the YP docs, and the proper way to then access
-> > > > them? There seems to be a lack of consistency.
-> > > >
-> > >
-> > > Can you write down those inconsistencies so we can discuss them?
-> >
-> >    let me check if i didn't just misunderstand. it might be that i was
-> > confusing how one refers to am implicit ref associated with any
-> > section/subsection, and the longer form associated with an explicit
-> > ref definition.
-> >
->
-> I guess you mean
->
-> :ref:`inherit_defer
-> <ref-bitbake-user-manual-metadata-inherit-defer>`
->
-> versus
->
-> :ref:`inherit_defer
-> <bitbake-user-manual/bitbake-user-manual-metadata:\`\`inherit_defer\`\`
-> Directive>`
->
-> and why we have a mix sometimes for the same cross-reference, or for different
-> directives.
+Great improvements over what I wrote a while back! I'm glad we have a detai=
+led
+explanation on all of these directives now.
 
- yup, that is exactly what i was talking about.
+Reviewed-by: Antonin Godard <antonin.godard@bootlin.com>
 
-> The answer is likely "we forgot/didn't know we had autosectionlabel
-> Sphinx plugin enabled and added labels by hand". I would be for
-> getting rid of the manual labels in favor of the autosectionlabel
-> wherever applicable and mentioning this in some README (I believe we
-> have standards.md in yocto-docs that would be more appropriate?).
->
-> Can I interest you in sending patches to make this consistent across
-> both BB and YP docs? (Barring Antonin disagreeing of course :) ).
+Thanks!
+Antonin
 
-  i'll take a shot at that, won't be today, though. and let's hear
-what antonin has to say first.
+--=20
+Antonin Godard, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
-rday
 
