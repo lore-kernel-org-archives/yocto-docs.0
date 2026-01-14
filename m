@@ -1,180 +1,185 @@
-Return-Path: <valentin.boudevin@gmail.com>
+Return-Path: <quentin.schulz@cherry.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C0FD5D2F32D
-	for <webhook@archiver.kernel.org>; Tue, 13 Jan 2026 19:25:04 +0000 (UTC)
-Received: from mail-qt1-f193.google.com (mail-qt1-f193.google.com [209.85.160.193])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.67745.1768332302116812071
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6FE79D31A3C
+	for <webhook@archiver.kernel.org>; Wed, 14 Jan 2026 10:01:33 +0000 (UTC)
+Received: from PA4PR04CU001.outbound.protection.outlook.com (PA4PR04CU001.outbound.protection.outlook.com [40.107.162.4])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.6934.1768384880494631543
  for <docs@lists.yoctoproject.org>;
- Tue, 13 Jan 2026 11:25:02 -0800
+ Wed, 14 Jan 2026 02:01:21 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=VOd++N0f;
- spf=pass (domain: gmail.com, ip: 209.85.160.193, mailfrom: valentin.boudevin@gmail.com)
-Received: by mail-qt1-f193.google.com with SMTP id d75a77b69052e-5014549c439so691491cf.2
-        for <docs@lists.yoctoproject.org>; Tue, 13 Jan 2026 11:25:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768332301; x=1768937101; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=pKmIjGXtpfTcaXG85KjqBkml6uOsM+1O5SWBgKCaOHU=;
-        b=VOd++N0fqX0i5bdl0x9kbDkUh3dqTqdN5Kisgfk1e98iv9tnudhEIjuTOYWYpwg7MI
-         gN/hq2uRZmjOGaGHzMEsgjH7+bZXZ1M9ghOWtAeT3m2++vQSAtBL1u451yX7qyKyPUbS
-         ho2rq7wDjjGWr7AxC7CV5UaEocehE3gsUk/ETV00olmxfi6a4ILXNYAtvuwRWzNuJH6h
-         TjIiVHE0ObrcHywILErELKE1cTddZCr5k0SvLeIFr1l0S6Vvfqf7edYmwtX3qbLoj4+i
-         08M/FqWm9xJOGqtdKP0brnnPinRmwy7W+yp194fKGFFKDoLXjWz+r3KSVfkTiecGHz35
-         fyXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768332301; x=1768937101;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pKmIjGXtpfTcaXG85KjqBkml6uOsM+1O5SWBgKCaOHU=;
-        b=eIwJuNPlDKaDvovNLSGzp8oN0UXRCrMKHOc1wcaLm35j9FST2XnE5RoIVubMDMLhBw
-         mU1Ray2OFOdu2wiavPivbnLeas8itlxMdr8DYo+XBWZt7jlAsVxfjoXCpIX50QTrdmmD
-         txt/4vyj96/OFrrXAZoICKepe1cqy1BFmG1A0oEYdEd74HzpUZ9lF7HykngB+ePQtIJx
-         UCXPlUOoFftsV9tgnYo9VaL1xCkEsw0S47lXIO5F57BdBUU+T+QHNVvNaBtVP7gYdQVq
-         GRpnpIcPGprxsIwzTEj9DqvL+svrLal4zWSy5mQ6+uDD3VHMDMMlPgEcCi5Gz2dPovI3
-         DbSA==
-X-Gm-Message-State: AOJu0YwWmdMrywItlpA2DY5uS0NdkBRDk0HAPfT5wnEF3e8rFUfnN1oK
-	o1PW48Bm/cd5f+7igskf7gWQ5I2sfBVuJRB6wgCjQQJkRdSAxCMkWdk5q1UECVgGuiMT+Q==
-X-Gm-Gg: AY/fxX66fJIhTU/B3F4goDU+P/bADohtP2hXK+l2QgFD1eeoyaw/P/4Oz9gG6oSjEVI
-	5Drt1e2IZENZ/2pbmfObfD2vdmtpy6tmMdXI1N5mQl5F5gTDKYNDlj/56jjkR8qrndzZyhf5MCG
-	pXeednXXL+u7JG7EerHBkl8Eu0X+itEziWhYIMuTl93HBGBk9+zScUDbMDpEdaXfW4E+wG+RGxv
-	/ujyyw++kV8j04lbKWFjYfVpClnbwU7O+4Bi4PlKmupV2WNYrIOCXTdHvHdJnGi1NcEC2hTKdrs
-	5h1GlTNPife3cub3LXnSLHwj4F4BNWBL2sPSXhuCS2X2rkP2ql3SJTB+lopFiJAOIJTiz8StNws
-	MGFRGeM+LfjX9g4+S1uQJ+NUffYEYVwzRRsS/oqzj8/GkwJLEM8SlBtbEuo7+ab0oFs2WoTkI7q
-	Sj74BXvdfsG4DpebkZ3/VwZBo8QZ2G9NV1/JcF8T2I1J0qGEeEgDFLVtM=
-X-Received: by 2002:a05:6214:4f06:b0:882:63cf:3970 with SMTP id 6a1803df08f44-89274323a1emr363476d6.1.1768332300808;
-        Tue, 13 Jan 2026 11:25:00 -0800 (PST)
-Received: from vboudevin-pc.mtl.sfl (mtl.savoirfairelinux.net. [208.88.110.46])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-890772681desm162790186d6.51.2026.01.13.11.25.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Jan 2026 11:25:00 -0800 (PST)
-From: ValentinBoudevin <valentin.boudevin@gmail.com>
-To: docs@lists.yoctoproject.org
-Cc: ValentinBoudevin <valentin.boudevin@gmail.com>
-Subject: [PATCH] vulnerabilities: add support for new bbclass
-Date: Tue, 13 Jan 2026 14:24:57 -0500
-Message-ID: <20260113192458.3478804-1-valentin.boudevin@gmail.com>
-X-Mailer: git-send-email 2.43.0
+ dkim=pass header.i=@cherry.de header.s=selector1 header.b=gPuTBRKR;
+ spf=pass (domain: cherry.de, ip: 40.107.162.4, mailfrom: quentin.schulz@cherry.de)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=wX3ndHTkcvcAs4VTHh5vbexFKIq5cV134Kb12ZSPyIsnDMyJYTIX5XDlmBW4fd+f0ImloPEdTSHbCG776mxfzilcqz2t8AhxK/YbogJW67qUBtQpr5jKqMFeTl/Uy/mx4Zsxwq3KFUlu3gAu1LI4qeMGdu7RUoRx/OzXg/7ueio4NkDbijMAmT/p1IlWXVpBmfCHX1YIk9i77auE8ILji5h1FecA4Nr7X0wTj3Rb0H1nGenX5l33HtQviaUyOFLlMDkkEfvmzPlM3wtq9HEN1nD2I0SSJYLZxgptWMIhg9AZ4Dfaxm+/h7eOD2jbhclQcouVI16BZBmK6CEmvkUMaA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=yV4m4aFiLPEhTzD7fooaN2qo37aCrCqPJIM6QQai0O8=;
+ b=NV3s8zjjABEDnpIyAERZm/VgG7QZgonbHckOjWBJ905vnJ+zUWP7PXc/hvkDuxVs3fffIxQtPQAOP3hnKWMAEbhSzfWnQWCfnDLdGAdwKnc/2gTZ3zlhFR30i97bFMjzl1J4hgtS/egkGjVnCQziyuX5vCkHdbYaIibfjpupZqI4TUpVp6G4BxlJ7xsZ8GQQ/ne0/yfGhPOvYE4rXVGqHXa2qTWTnIt/zepzdqSqKlWxEQgmZVu6mIpSXbDoS01dBR0Acs4RxVSVDCXozOfJEtT8TySsLcbtaQ1vn6F1T2ZoEKhPZ6eqy2tUfNQF+6hrbeJyMVjtek3WYXtOtDkOAg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
+ dkim=pass header.d=cherry.de; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=yV4m4aFiLPEhTzD7fooaN2qo37aCrCqPJIM6QQai0O8=;
+ b=gPuTBRKR5pfKih1ae3dYe5f2xtZgXSrEPGRE6HwNvoXPLivazLEFbfjdxQRzSVIeEbLpGq4+j+zigT7ryehyZoQHS6KFsxviLd/TwoiP9YnIWgmoe5nqzNueOoMM5VX8X/rJOsodMMNeYpzIz/sizAfZY7EKlKq4ul5a5B8blEE=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=cherry.de;
+Received: from DU4PR04MB12026.eurprd04.prod.outlook.com (2603:10a6:10:643::14)
+ by AS4PR04MB9412.eurprd04.prod.outlook.com (2603:10a6:20b:4eb::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9478.4; Wed, 14 Jan
+ 2026 10:01:14 +0000
+Received: from DU4PR04MB12026.eurprd04.prod.outlook.com
+ ([fe80::2c21:dc0b:a3c5:531b]) by DU4PR04MB12026.eurprd04.prod.outlook.com
+ ([fe80::2c21:dc0b:a3c5:531b%5]) with mapi id 15.20.9499.005; Wed, 14 Jan 2026
+ 10:01:14 +0000
+Message-ID: <6248e54e-d7c6-4658-8f99-e02188cf0aa8@cherry.de>
+Date: Wed, 14 Jan 2026 11:01:12 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [docs] [PATCH 1/3] overview-manual/yp-intro.rst: fix SDK type in
+ bullet list
+To: antonin.godard@bootlin.com, docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+References: <20260105-update-workflow-diagram-v1-0-fc1c6f402064@bootlin.com>
+ <20260105-update-workflow-diagram-v1-1-fc1c6f402064@bootlin.com>
+Content-Language: en-US
+From: Quentin Schulz <quentin.schulz@cherry.de>
+In-Reply-To: <20260105-update-workflow-diagram-v1-1-fc1c6f402064@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR4P281CA0260.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:e8::7) To DU4PR04MB12026.eurprd04.prod.outlook.com
+ (2603:10a6:10:643::14)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU4PR04MB12026:EE_|AS4PR04MB9412:EE_
+X-MS-Office365-Filtering-Correlation-Id: e4df7706-e1ff-481d-d0ef-08de5353da6c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info: 
+	=?utf-8?B?Z1lKOXVwOHMyYW5WUjVhQnZGMUpwdTNsRlFRUThPNmVzY1NMWTcxTnJ3MTFH?=
+ =?utf-8?B?ZWhyNjRZdDEyaUtoOFVmalNpam9lekhhUlNCSkEyd3llUytGTGExbWZIa0ZC?=
+ =?utf-8?B?L2QyMUZNQkFKZ1NqL1dGcEp3WjVHZ3VvOTRTNTVzM2xUQ2RvMFRJNE1PNkhN?=
+ =?utf-8?B?K2UvYUV2Ung0Y3FYMHpWbm1zZUV2U24yaUNrVnoxUkxrelJ1eUQrRWFLL2N2?=
+ =?utf-8?B?SWhFa1EzdHJQVkpPYm9nbUpvVU1YOGlFY05pWFpoZGVOY1NYT05zaWFjZ29I?=
+ =?utf-8?B?elV5bVJEVlhXcnR6MmRDZjNQS3VZN2ZrQXN5K2xOUkYwRWZGeVBJejFUbDd1?=
+ =?utf-8?B?cmpwVE9TdGF6anZaTU9yek45NUU2NEltVkVNc05aREZMc2lmWEJENnVRakQv?=
+ =?utf-8?B?NThPYklhK1U1SjZhZFpZeHcxaFVEekJqSDZyalJMY3RwVXV3OWNnUVNsK3dy?=
+ =?utf-8?B?dEl6bFhIeC83QjhXOElmUERTdDg0b01CWGZrVTJBdTJ3SUtsU3E3bGF1eHZj?=
+ =?utf-8?B?UDJwbUR2Y2NDVkI3am54YS9BdCtkUDFYR2JncG4zcXVna09tQVh0ZDNFNTBN?=
+ =?utf-8?B?SmRDYmxibFdHSUpzU1J0emNkc0JOM3h1a29zcGFSeEV3TDliT3FKem9BWkJO?=
+ =?utf-8?B?SlV1azgyQkhoUU9RLzl3RTQ2cUU4dGU5Y1NJLzJ4bFo4c2g4TjJMbFd0MDE0?=
+ =?utf-8?B?SlIzMWNMSTZubnlHVmRLcmRkSng0N1JLOGs0Uy8rTXFIOE5UWGJuMDJZQzhH?=
+ =?utf-8?B?dk00WFBCSkZ3WnQrZkhSRGpDZmtza0ZKMDR4YytqUGNwUlFzVFppcUV4aVFQ?=
+ =?utf-8?B?ZERSRzZKS3FUU2lydXAzUk91YndzTUVrRXkwdzhSelNEQUN1emdwTHdhdjZj?=
+ =?utf-8?B?bmFPRmkzdlFKK3ZncUNJbGdjeTZwbEJpanlFOTJwOGNiaExCQks0REo4a2Zn?=
+ =?utf-8?B?MndrbXVPRDVEVWxETVNmc053MjZidUhURnp3WDZpMlhick5McElJR21KeE9H?=
+ =?utf-8?B?ZDFGbTdSdU5rSS9ETGtJS0x5V014ZGVuMlk0MmJVZExPb3BiMEhtbFZyd0wz?=
+ =?utf-8?B?bUF1VWxnSkFtWTRvSzNXcFJ4bVFwVVNwQnBPOXNjYjJjdkl0RWtQRzJFU3pu?=
+ =?utf-8?B?aDdtbFY5dFJ2YS9NYjI4QklnQk1sVWJpeWVaTzB2d1FnNWlvRDBLa1lDK3Ny?=
+ =?utf-8?B?ZXVzaDBlL3Y2b1JJL1NmZ0U1Z3R1SlM2aVMyRDRxbGFzMWNuOFpGdEY3TWMy?=
+ =?utf-8?B?RWVVdUhqY0c2U05wVU91UFRMeVlzeWEzRkx2WFhXZVJ1OW5WWk9aeDRNZGFr?=
+ =?utf-8?B?L28wUHF1QWhvUHpESDZyYmo3OVdLNEpNeDB0UjJFQVJ5UGJVU3NsTWI0UG5y?=
+ =?utf-8?B?bzV1eGt5UzNtalNCRm9UTzVtZ3U2WVpMYUN6Zk5LMUtJc2FUYmViUFZEUC9K?=
+ =?utf-8?B?SkpYKzZkVGVWY3FWK3REbjBMdHB4dTQ2dGdmd05BYmFGRnZvbnU5aGY2Mmcx?=
+ =?utf-8?B?SHRHQnJnSkt1ZEpyb21yY2RBQlJZSEtUSFNDYVpseDgwMFoyQmZ4YmRZZEp3?=
+ =?utf-8?B?TmQ5cXlWU09yU2JreDhVTTduQUdnZHdIaEl5QjVsanRlazJ2bjR4QkVsQzVr?=
+ =?utf-8?B?Z1ZJdGFoZ0g1MkZvdVRPSUFlTDdQSHdEMDhaUERmTS9GMXVnZ1Eya3RWRTRs?=
+ =?utf-8?B?SkdrL1R1eGRvdGlja3BLWTVsTS9kM3BTVElwQnFpeDFYZk1RMk1pRThwcElk?=
+ =?utf-8?B?NnRFSzdsZVBJNk4yQkJMSG10OXFLNkxML2VqRG5EZGNwTFVxeDJZQVY1NExZ?=
+ =?utf-8?B?MjlxYkpaQ1ZHblNHbW1Pdys1dndYSklmU3VvcS9BSEIrTG9vWmpFSldoMFpY?=
+ =?utf-8?B?Z0NWcStsdXZHaUJzWlFuZXlKL3dvSmRFcnI4ck9NRENVeEE9PQ==?=
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU4PR04MB12026.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?utf-8?B?dFh2N2h0WFRtK0JnMlQ3MmdBQ25hVEhUb2FTY1NYNWx5S2V6SDBmZUNndTZJ?=
+ =?utf-8?B?QU1oV05PVWRydEw3RGpvaFlrNkR6ZW1FeDdPOVRjelo0a0Y0SDVPNXRxeXhH?=
+ =?utf-8?B?cisrN24ydUVYSzRQenRRTnU0Q2diM2t1aEVhaGhjUkt2QThTVmtMWWxFbGVZ?=
+ =?utf-8?B?cUpnUmk5TGR5SDFuTGVMUWRQNXlpcVFqNTYyaEVBZjcvWVE0czRLSkJnMjFD?=
+ =?utf-8?B?KzV5RzV0MC9EbGc4eWxVS2doa3JOSnpudXFJOWRkN25vTU5KYSs4M3h0OGVv?=
+ =?utf-8?B?TnJOZFltRmJrNlpkTUt1VXoyMDRTN3lOZGR0MzZ6QXM4cTlRTm1pZzdTVDdy?=
+ =?utf-8?B?VWhjMTVZb3Rwa1NlNmd2UnY0YmNuZklNb08vYnZqZ2NTeCtKSXgzbzVHdmd5?=
+ =?utf-8?B?RVV0SXNtWVpLS2ZxVFdZOUp2WGtoYW1KRFpqRSs2M3BvZEgrNGFKVkdZZlBx?=
+ =?utf-8?B?cWtnNVpZREUvOVJTRk9uVE5OTnM0QWpjNUJsRHQvZ1BtS3hldEM1MU15aENV?=
+ =?utf-8?B?UGZDSHViVDZ4OW8vckVySHhPcWZvTUZPYzhEOExiUWUvYXNtdSsxUExvM3JD?=
+ =?utf-8?B?eTJFN2cwd0Izb2lsNFpZSjZFL2phaDF0dUxGSTdOZmFIZ0ZXY0UwcndEM1M5?=
+ =?utf-8?B?NnBEUWIxNXRvVWhyTnh6c1YxUm5vS0dJSkNGcG9Sc1Q3R0pTRnJVejlRMkhz?=
+ =?utf-8?B?U2NCay9haHVuN1RCZ0FrTWRXemFSSTdSS3I4MmsxZlhQMXNiTlBSSzMvaUta?=
+ =?utf-8?B?WkpidUZuakhKR0NUYk9xWXNKcmNnRy9SaUt6TEpMT29KOUl4TWsyOHdsNEJz?=
+ =?utf-8?B?QXF3YUMyWUZPQlVuYXNrVHZyTjFlSjVHR3pmVm44UWh2ejNNbE5rMjFNenZU?=
+ =?utf-8?B?N1llc1JkSmlpVXNpYXVIWTRJNGtPSXQvZThNUktoc1d6NXdnNnAyVktaaUdR?=
+ =?utf-8?B?bVJQY2djNUhIMFpBa3R2ckx4RkhhVmF2b0pDTWVHZG5Lakx1eGJVRXNWRjQ5?=
+ =?utf-8?B?YnRKcDJyOTdPRFJERmQ4S3hGVmF4M2dVcWtSa1d1YVhaZjNkcTl1OVEzVm9X?=
+ =?utf-8?B?anFzSFFUWFVlS3hCeGIwbHZnSVJ6TXdkZ0ZmOHRCbHZxSjhJcTVoRFgxajhQ?=
+ =?utf-8?B?VmZzbkgwS1E5YzNRdFRnRkNzb3BlRkZkQy8wVVBTUFJ1TWMyTkh6TlZNSGxU?=
+ =?utf-8?B?MXNkemR0bWpyU0c1dzh5Qk52WVZORko4cnhJTTByZjBoK2V5Mm83cUFyVFNU?=
+ =?utf-8?B?cS9zY0FxZ0VBaXJocVY1bURWVDh2T1pPc1FXcmdnVmhVbkNuWDIrKzBRWDVl?=
+ =?utf-8?B?Q0EwZkpLM1J4UmViWkI3blE3WURMcWNOVFJ0ZnM5a0d1WCtHa1J3ZzlWNTd2?=
+ =?utf-8?B?ay9IL1NIdVMwOEhrdnM5WmlaenUyTzQyUzRuZGhaME4zdEVBeVpuWGFsZlht?=
+ =?utf-8?B?OFZUU2F3NTZ2SnY3bDExTnVyeUR2VXBIeW91aGJCYW0zNHVDa2lSOGNtc1lZ?=
+ =?utf-8?B?QStVNWM4L29JbFMreFdISEVXL3pmSE14S1YvcHZVYzFOOWRtZitQbmx5ZER6?=
+ =?utf-8?B?QldhMUxHbEZBbTJSUWVuazBvQlhzcHg1WHpUdE82SXhHL3BuRTZRb2RaU0hC?=
+ =?utf-8?B?YUN6U2k1N1hLTzdKRVkxRHZNSWU5RlZ3MWlpdkIvVmdQV0EwZEw3VlhETUFK?=
+ =?utf-8?B?NTV2eExNa0pmTE9IcFBpQ3hNZi9YdndTNElKZENRSEVxRk9oanlTK3UvK2k3?=
+ =?utf-8?B?UDh3Y3FJYTQzM3lFdWIzYTQvTE1NOS9tT3BwUG81T1lCamM1bndpZG9aaG5L?=
+ =?utf-8?B?cGlUSmgzZ3hpQ2xsZEZaeHp1TWE2L1JvZ0RMak1DQzZYclJXUGtxTUwwTjlX?=
+ =?utf-8?B?aHRUa3JXNjkwVjFydUk2Uk53TzhSMHRySEtoUmpLTSt4RWE5OGVFOHFxcndS?=
+ =?utf-8?B?b0RIZ1dLelBaVDJGd1JCWFMrTTlCdXVQV25IdnZzV0N0TE82bmY2VkE2TlRR?=
+ =?utf-8?B?YmlMZXVmcko0VGdTbzF2dXVNSDArS2lmanUrTDFadW0yWTd3S1hFSVNwYTZ2?=
+ =?utf-8?B?d0gwVGphRzIrWVN3VUNMeHV5ZWU2d2U1QkdUZGJ3cEcyUHJYK2g4NEJyME9I?=
+ =?utf-8?B?OCtJV1U0TVc5S2FnVURnQ250TDFocVlqMlBudzdSTkhYUHBzWGU5VVhjVUtL?=
+ =?utf-8?B?MW1ubGJJaHFqaFVvNTVneEFJVm5Nbkp0a3Z4R3dkVVpJTWVTMVZDYnFSQUha?=
+ =?utf-8?B?WW5BdFdHbWlMY1ZQeklZVm9pdHh4SlpYWHJzbWFzOEM2K3lpTVI4dndBaklN?=
+ =?utf-8?B?TVR5OENCc1ZtWnNGVmtKT1BOR3lzR1gwTW5MY085SEtURFQvOUxJQT09?=
+X-OriginatorOrg: cherry.de
+X-MS-Exchange-CrossTenant-Network-Message-Id: e4df7706-e1ff-481d-d0ef-08de5353da6c
+X-MS-Exchange-CrossTenant-AuthSource: DU4PR04MB12026.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jan 2026 10:01:14.6330
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: dDJ9e4ZcDAwSSrq/sYmpNnVTTa0ESbSXchyaEAGDV1V9qdLFcX9W1YmFxO16u3S48MYfXFrkA64yuMO3dWIeGxAA/mJWrJNGUXrbmtt3oaA=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR04MB9412
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 13 Jan 2026 19:25:04 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8544
+ <docs@lists.yoctoproject.org>; Wed, 14 Jan 2026 10:01:33 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8545
 
-Update the documentation to add the description for:
+Hi Antonin,
 
-*generate-cve-exclusions.bbclass
-*improve_kernel_cve_report.bbclass
+On 1/5/26 5:02 PM, Antonin Godard via lists.yoctoproject.org wrote:
+> The YP generates an SDK by default, which can be meta-toolchain, an
 
-This .bbclass haven't been merged yet in openembedded-core. This doesn't
-need to be merged until the two following PR are validated:
+What do you mean "by default"?
 
-*PR for generate-cve-exclusions.bbclass: https://lists.openembedded.org/g/openembedded-core/message/228924
-*PR for improve_kernel_cve_report.bbclass: https://lists.openembedded.org/g/openembedded-core/message/228932
+> image-specific one, or an extensible SDK (eSDK). Don't be specific in
+> this bullet list.
+> 
 
-Request to set the documentation up-to-date:
+Isn't "for application development in parallel" actually specific? I'm 
+assuming most people will not use a normal SDK but an eSDK for 
+developing software as the normal SDK is (as I understood it) a minimal 
+toolchain which won't contain most of what people would expect (headers 
+for packages found in an image for example).
 
-https://lists.openembedded.org/g/openembedded-core/message/229041
+When I bake an image, I don't get an SDK automatically no? According to 
+the docs, I need to run -c populate_sdk/populate_sdk_ext for this to 
+happen? c.f. 
+https://docs.yoctoproject.org/sdk-manual/appendix-obtain.html#building-an-sdk-installer
 
-Signed-off-by: ValentinBoudevin <valentin.boudevin@gmail.com>
----
- documentation/dev-manual/vulnerabilities.rst | 62 +++++++++++++++++---
- 1 file changed, 54 insertions(+), 8 deletions(-)
+The docs were also very confusing as that is explained **after** how to 
+use the SDK and in the sections we just say "run the script"... but 
+where do we generate the script, where do we get it from?
 
-diff --git a/documentation/dev-manual/vulnerabilities.rst b/documentation/dev-manual/vulnerabilities.rst
-index 6eaf75758..a1eb8105a 100644
---- a/documentation/dev-manual/vulnerabilities.rst
-+++ b/documentation/dev-manual/vulnerabilities.rst
-@@ -346,15 +346,47 @@ issues helps to reduce their workload.
- :term:`OpenEmbedded-Core (OE-Core)` has two scripts that help to characterize
- and filter CVEs affecting the Linux kernel:
- 
---  ``openembedded-core/meta/recipes-kernel/linux/generate-cve-exclusions.py``
-+-  ``openembedded-core/scripts/contrib/generate-cve-exclusions.py``
- -  ``openembedded-core/scripts/contrib/improve_kernel_cve_report.py``
- 
--``generate-cve-exclusions.py``
-+The usage of these scripts can be automated with ``.bbclass`` files:
-+
-+-  ``openembedded-core/meta/classes/generate-cve-exclusions.bbclass``
-+-  ``openembedded-core/meta/classes/improve_kernel_cve_report.bbclass``
-+
-+``generate-cve-exclusions``
- ------------------------------
- 
--When updating a kernel recipe, a helper script needs to be run manually to
--update the :term:`CVE_STATUS` for the kernel recipe. The script can be used
--for custom kernels.
-+The kernel recipe requires :term:`CVE_STATUS` variable.
-+
-+Two methods are available to generate the CVE exclusions for the kernel:
-+
-+- The class ``generate-cve-exclusions.bbclass`` can be inherited in the
-+  kernel recipe to automatically set the variable :term:`CVE_STATUS`
-+  during the build, based on ``https://github.com/CVEProject/cvelistV5``.
-+
-+First, modify your kernel recipe to inherit the class::
-+
-+   inherit generate-cve-exclusions
-+
-+Then, you can invoke the ``generate-cve-exclusions`` task to generate
-+the CVE exclusions for the kernel version being built.
-+
-+.. code-block:: shell
-+
-+   $ bitbake -c generate-cve-exclusions <linux-recipe>
-+
-+The task will create a new folder named ``cvelistV5`` under the kernel
-+working directory.
-+
-+This folder will contain an updated version of ``https://github.com/CVEProject/cvelistV5``.
-+
-+It will also store a ``.json`` file which contains the update for
-+:term:`CVE_STATUS` variable for the kernel version being built.
-+
-+- A script named ``generate-cve-exclusions.py`` that can be run manually
-+  to generate the CVE exclusions file that can be included in the kernel
-+  recipe:
- 
- First we need to get an updated version of the CVE information from the
- `CVE Project`. Run it as follows:
-@@ -391,7 +423,7 @@ Don't forget to update your kernel recipe with::
- Then the CVE information will automatically be added in the
- :ref:`ref-classes-cve-check` or :ref:`ref-classes-vex` report.
- 
--``improve_kernel_cve_report.py``
-+``improve_kernel_cve_report``
- --------------------------------
- 
- The ``openembedded-core/scripts/contrib/improve_kernel_cve_report.py`` script
-@@ -442,8 +474,22 @@ Finally, store either the ``recipe-linux-yocto.spdx.json`` or the
- The :term:`SPDX` file is under
- ``tmp/deploy/spdx/<spdx_version>/<MACHINE>/recipes/recipe-linux-yocto.spdx.json``
- 
--Once you have the input data, first you need to clone or fetch the latest CVE
--information from https://git.kernel.org:
-+Once you have the input data, you will have two options to run the script:
-+
-+- Use the ``.bbclass`` file ``improve_kernel_cve_report.bbclass`` to
-+  automatically run the script during the build. This class can be
-+  inherited in the image recipe as follows::
-+
-+     inherit improve_kernel_cve_report
-+
-+  The class will run the script after the ``cve-check`` task and
-+  generate a new version of it with a new entry in
-+  ``tmp/deploy/images/machine/`` finishing with
-+  ``.rootfs.scouted.json``.
-+
-+- Run manually the script ``improve_kernel_cve_report.py`` as follows:
-+
-+First, you need to clone or fetch the latest CVE information from https://git.kernel.org:
- 
- .. code-block:: shell
- 
+Cheers,
+Quentin
 
