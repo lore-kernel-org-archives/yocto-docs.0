@@ -1,131 +1,198 @@
-Return-Path: <rpjday@crashcourse.ca>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EE243D46628
-	for <webhook@archiver.kernel.org>; Thu, 15 Jan 2026 21:16:40 +0000 (UTC)
-Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.1001.1768511792963836063
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D2620C982D8
+	for <webhook@archiver.kernel.org>; Fri, 16 Jan 2026 15:49:25 +0000 (UTC)
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.56.1768578561429951332
  for <docs@lists.yoctoproject.org>;
- Thu, 15 Jan 2026 13:16:33 -0800
+ Fri, 16 Jan 2026 07:49:22 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=LqyWIpny;
- spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:References:
-	Message-ID:In-Reply-To:Subject:cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=C4agqSlkdg0PFoII4oY1kB5Q4AQU0uKTSiXmeJMYsso=; b=LqyWIpny1czTqSx5BQvT/XzP/a
-	cQcmFD7FzEug63W6TxGCIXN4Pn+Ua3OIAou1OxAZflv25aHpnh6bJ0alqA9a0Ho8nEM4U7U4xbPbw
-	kSMXJq0VtJpTwYnKT5SBUucUEAQypdC2UMq9eAYV1uWtnDg5EN8H2WnZNDr87Dvf4k8zO5Eb3/VX3
-	/lcgJYv9CspwCI1saAIlHtXbDtIHnfT2TMU5gTZxPP4QSLyoTnz2D3f0f06+BBEPVVwA+DU1zEw58
-	YIesEZgQsGc0jkLkJVtHanGXX5o6xUpBZNah/dKB9zLoZcDO7HqB0WckAaWJ9abEz057TG+vEkL/r
-	j7xu6pOQ==;
-Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:53768 helo=rday)
-	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.1)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1vgUhg-0000000AdPE-3468;
-	Thu, 15 Jan 2026 16:16:31 -0500
-Date: Thu, 15 Jan 2026 16:19:52 -0500 (EST)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: Quentin Schulz <quentin.schulz@cherry.de>
-cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: Re: [docs] is there any way to render content in italics in a code
- block?
-In-Reply-To: <4bcdc409-cbc5-4cc6-855f-42b48a0766df@cherry.de>
-Message-ID: <c2c59323-1832-0159-a5f3-0164e6c4bc2b@crashcourse.ca>
-References: <5eef4c2b-95ae-cc22-b44c-a03e29982c79@crashcourse.ca> <78dfab73-8d58-4cbd-b452-d34c1cc14ae4@cherry.de> <38b9c8b4-84d7-ad15-5bcd-ca16d06b5c20@crashcourse.ca> <4bcdc409-cbc5-4cc6-855f-42b48a0766df@cherry.de>
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=laAMomir;
+ spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 986D51A28C4
+	for <docs@lists.yoctoproject.org>; Fri, 16 Jan 2026 15:49:19 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 5754360732;
+	Fri, 16 Jan 2026 15:49:19 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2FA5B10B68B17;
+	Fri, 16 Jan 2026 16:49:18 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1768578558; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=G/7vlC8JdBpsm5C1Vqx8F3UfGoRpakg75pHjG8iBxJk=;
+	b=laAMomirZvKGcYndabRI4Ui0y4hns+pV23od1PDTB4sg6YYmV0dLzUrQCGWPlQhtY/dXyu
+	D1+RckaKrfZDkUutqZUEn46lIneR1Xa+FVSs7mkBKdV9Gu7v6TrsZfkuelP/gI4ikVE+qB
+	HVdAGf8POvoEAOOR7cXq5Pj4Uk0hq4Sy2zCb8e64RYXEpZ8j2GtcOZBGrnT/naxm8mqHzD
+	7U58PLmUytlzP2bng2ujLd+WQJtk2SOlA3oUeGnyBpoC++WpBl0ptMnsC0ua94xeuBGTAq
+	j05SRo24KV2ro8xvHB3kddLiz4zIU/KkMh1+k4K28/vbcsWb/v/nkKQq92qTeQ==
+From: Antonin Godard <antonin.godard@bootlin.com>
+Date: Fri, 16 Jan 2026 16:48:56 +0100
+Subject: [PATCH 1/2] bin/bitbake-setup: add descriptions for fragment
+ choices
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260116-bitbake-setup-choose-builtin-v1-1-8d66666a9efd@bootlin.com>
+References: <20260116-bitbake-setup-choose-builtin-v1-0-8d66666a9efd@bootlin.com>
+In-Reply-To: <20260116-bitbake-setup-choose-builtin-v1-0-8d66666a9efd@bootlin.com>
+To: bitbake-devel@lists.openembedded.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ docs@lists.yoctoproject.org, Antonin Godard <antonin.godard@bootlin.com>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7126;
+ i=antonin.godard@bootlin.com; h=from:subject:message-id;
+ bh=tlp6hip2p/9/3ZXhelbdnlyveJ0kI/VghE+L7eJgaWo=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpal36Ph+x09G1rgamXz3W+TKwum2xZkMcO9q9z
+ YLs3vNFmRyJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaWpd+gAKCRDRgEFAKaOo
+ Ns0SEADCHEZIFK/1449rxrw+iOKyczY16BDWdJzd3fLTmHfW/d284h8AfyNd3wNcBSpNQS+xrrm
+ b55qoeqQmZGdBmNbEET/0mSvxkJX7ZdqZL5HfwLRMCWyEIt7HW/za4fDiJMVxCfUsAXvAYxgRek
+ Yyt73i6WL3BW0wzGqK/sz/dZ8TUoDaZ4ecQYZtP4R26vSve/zKH7LPZcoT13ioBVeDiz0oBNcWf
+ CZlObSEVxYNiZB3LnVzsuMVDhXvTxfW6aAApOnILqgfWoFUyhpIwJ10odlF6QHBQzhswcKa5z34
+ 5JCzskqUjZN+xrn8oXio96dXahSmAX6Os41vWuAyI5vUGeapoD5rWtlO/YM4CHRvdHdTXXyyYLd
+ cnrcIfrEQXUYzfgdMgGw2O5ARSUhDooyUZxGgZVCFqT9sOinzGdG61uK0DMwEwJ3OWYMmHpe6Ex
+ grV6rFP4RpzBuCqabx7+DWuPqzoO2K5u/Knly2ANIV1C9a5w3WrdNqGYYlsd/vGVzwRTwNRM6xG
+ M0xcUOEbV3t0Pb5sdsEnwR+TpjR1ZoUQ7jHMEvJ/NT+JFTouPxLa6s176eWkhrTCpbv+xA5VN4n
+ EeStyMmthlMuXkK4VROF0r0worEdo3i5UteuoAtWVfELLWyIVEyKj7QyC1Pin8xg7cC6uMH47Ys
+ 6RuVtdNC0jjU9Tg==
+X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
+ fpr=8648725188DD401BB9A0D3FFD180414029A3A836
+X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 15 Jan 2026 21:16:40 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8580
+ <docs@lists.yoctoproject.org>; Fri, 16 Jan 2026 15:49:25 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8582
 
-On Thu, 15 Jan 2026, Quentin Schulz wrote:
+Make it possible to give fragments descriptions as it can help users
+determine which fragments to pick during bitbake-setup init.
 
-> Hi Robert,
->
-> On 1/15/26 4:55 PM, Robert P. J. Day via lists.yoctoproject.org wrote:
-> > On Thu, 15 Jan 2026, Quentin Schulz wrote:
-> >
-> > > Hi Robert,
-> > >
-> > > On 1/8/26 10:33 PM, Robert P. J. Day via lists.yoctoproject.org wrote:
-> > > >
-> > > >     one aspect of sphinx that gripes my wagger is that there does not
-> > > > seem to be any easy way to tag something in italics in a code block.
-> > > >
-> > > > here:
-> > > >
-> > > > https://docs.yoctoproject.org/bitbake/bitbake-user-manual/bitbake-user-manual-execution.html
-> > > >
-> > > > the code line:
-> > > >
-> > > >    $ bitbake target
-> > > >
-> > > > really needs the word "target" in italics to show that it's meant to
-> > > > be replaced. and, no, this isn't minor nitpicking -- the whole section
-> > > > on overrides desperately needs to be able to show what things a
-> > > > developer is meant to replace.
-> > > >
-> > > >     is there any way to do this?
-> > > >
-> > >
-> > > Not that I know of.
-> > >
-> > > Another option is to follow conventions from manpages for example or
-> > > something
-> > > people are most familiar with.
-> > >
-> > > bitbake [target]...
-> > >
-> > > maybe? I'm not versed in manpages.
-> > >
-> > > Also, you can simply specify after the code-block what must be changed by
-> > > the
-> > > user. It doesn't *have* to be a technical solution.
-> > >
-> > > code-blocks have :emphasize-lines: maybe there's room for adding
-> > > emphasize-columns or something like that such that we can specify what to
-> > > highlight in a line.
-> >
-> >    there is (sort of) a way to do this, it's with a "parsed-literal"
-> > block, not a "code-block"
-> >
-> > .. parsed-literal::
-> >     ... stuff ...
-> >
->
-> This could be an option but only for BitBake snippets where we cannot have
-> syntax highlighting anyway.
->
-> I *guess* we could afford this for shell/console snippets too, provided
-> there's no console output. How does this work with the copybutton if we have a
-> prompt in a parsed-literal? Maybe we'll need to get rid of prompts as well.
->
-> Also, maybe we want to have a look at how sphinxawesome-theme implemented
-> emphasize-text for code-blocks, maybe something we can implement on our side
-> as well (and have multiple entries for emphasize-text?). (MIT licensed, don't
-> know if it's compatible with what we have in yocto-docs). c.f.
-> https://sphinxawesome.xyz/demo/code-blocks/#highlight-placeholders-in-code-blocks
+It is still possible to provide a list (with no descriptions) for
+backwards-compatibility.
 
-  it's not a high priority, it would just have been handy if it were
-easy.
+Update the documentation accordingly.
 
-rday
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+---
+ bin/bitbake-setup                                  | 14 ++++++++-----
+ .../bitbake-user-manual-environment-setup.rst      | 21 ++++++++++++++++++--
+ setup-schema/bitbake-setup.schema.json             | 23 +++++++++++++++++-----
+ 3 files changed, 46 insertions(+), 12 deletions(-)
+
+diff --git a/bin/bitbake-setup b/bin/bitbake-setup
+index abe7614c832..bb0a579bbed 100755
+--- a/bin/bitbake-setup
++++ b/bin/bitbake-setup
+@@ -494,20 +494,24 @@ def choose_fragments(possibilities, parameters, non_interactive, skip_selection)
+         if skip_selection and k in skip_selection:
+             logger.info("Skipping a selection of {}, as requested on command line. The resulting bitbake configuration may require further manual adjustments.".format(k))
+             continue
+-        choice = [o for o in v["options"] if o in parameters]
++        options = v["options"]
++        choice = [o for o in options if o in parameters]
+         if len(choice) > 1:
+-            raise Exception("Options specified on command line do not allow a single selection from possibilities {}, please remove one or more from {}".format(v["options"], parameters))
++            raise Exception("Options specified on command line do not allow a single selection from possibilities {}, please remove one or more from {}".format(options, parameters))
+         if len(choice) == 1:
+             choices[k] = choice[0]
+             continue
+ 
+         if non_interactive:
+-            raise Exception("Unable to choose from options in non-interactive mode: {}".format(v["options"]))
++            raise Exception("Unable to choose from options in non-interactive mode: {}".format(options))
+ 
+         logger.plain("\n" + v["description"] + ":")
+-        options_enumerated = list(enumerate(v["options"], 1))
++        options_enumerated = list(enumerate(options, 1))
+         for n,o in options_enumerated:
+-            logger.plain("{}. {}".format(n, o))
++            opt_str = f"{n}. {o}"
++            if isinstance(options, dict):
++                opt_str += f"\t{options[o]}"
++            logger.plain(opt_str)
+         option_n = int_input([i[0] for i in options_enumerated],
+                              "\nPlease select one of the above options by its number: ") - 1
+         choices[k] = options_enumerated[option_n][1]
+diff --git a/doc/bitbake-user-manual/bitbake-user-manual-environment-setup.rst b/doc/bitbake-user-manual/bitbake-user-manual-environment-setup.rst
+index fcffab8123b..14d0f87aeb4 100644
+--- a/doc/bitbake-user-manual/bitbake-user-manual-environment-setup.rst
++++ b/doc/bitbake-user-manual/bitbake-user-manual-environment-setup.rst
+@@ -747,11 +747,21 @@ They contain the following sections:
+                 "oe-fragments-one-of": {
+                     "machine": {
+                         "description": "Target machines",
+-                        "options" : ["machine/qemux86-64", "machine/qemuarm64", "machine/qemuriscv64", "machine/genericarm64", "machine/genericx86-64"]
++                        "options" : {
++                            "machine/qemux86-64": "Machine configuration for running an x86-64 system on QEMU",
++                            "machine/qemuarm64": "Machine configuration for running an ARMv8 system on QEMU",
++                            "machine/qemuriscv64": "Machine configuration for running an RISC-V system on QEMU",
++                            "machine/genericarm64": "Machine configuration for Arm64 SystemReady IR/ES platforms",
++                            "machine/genericx86-64": "Machine configuration for generic x86_64 (64-bit) PCs and servers"
++                        }
+                     },
+                     "distro": {
+                         "description": "Distribution configuration variants",
+-                        "options" : ["distro/poky", "distro/poky-altcfg", "distro/poky-tiny"]
++                        "options" : {
++                            "distro/poky": "Distro configuration for Poky (Yocto Project Reference Distro)",
++                            "distro/poky-altcfg": "Distro configuration for Poky (systemd init manager)",
++                            "distro/poky-tiny": "Distro configuration for Poky (optimized for size)"
++                        }
+                     }
+                 },
+                 "configurations": [
+@@ -840,6 +850,13 @@ They contain the following sections:
+    -  ``oe-fragments-one-of`` (*optional*, OpenEmbedded specific): the OpenEmbedded
+       fragments to select as part of the build.
+ 
++      This can one of two formats:
++
++      -  A dictionary where keys are fragments names and values are descriptions
++         for these fragments (like in the example above).
++
++      -  A list of fragment names.
++
+       This will trigger choices to make during the
+       :ref:`ref-bbsetup-command-init` command execution.
+ 
+diff --git a/setup-schema/bitbake-setup.schema.json b/setup-schema/bitbake-setup.schema.json
+index e51fef3b97c..51035fbaa53 100644
+--- a/setup-schema/bitbake-setup.schema.json
++++ b/setup-schema/bitbake-setup.schema.json
+@@ -61,11 +61,24 @@
+                             },
+                             "oe-fragments": {
+                                 "$anchor": "oe-fragments",
+-                                "type": "array",
+-                                "description": "List of BitBake configuration fragments to enable",
+-                                "items": {
+-                                    "type": "string"
+-                                }
++                                "oneOf": [
++                                    {
++                                        "type": "array",
++                                        "description": "List of BitBake configuration fragments to enable",
++                                        "items": {
++                                            "type": "string"
++                                        }
++                                    },
++                                    {
++                                        "type": "object",
++                                        "description": "Dictionary of BitBake configuration fragments to enable (with description)",
++                                        "patternProperties": {
++                                            ".*": {
++                                                "type": "string"
++                                            }
++                                        }
++                                    }
++                                ]
+                             },
+                             "oe-fragments-one-of": {
+                                 "type": "object",
+
+-- 
+2.52.0
+
 
