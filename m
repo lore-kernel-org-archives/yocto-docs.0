@@ -2,64 +2,61 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 51B43D2ED17
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 62CFBD2ED1B
 	for <webhook@archiver.kernel.org>; Tue, 20 Jan 2026 15:17:17 +0000 (UTC)
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.8670.1768922232547430918
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.8792.1768922232876878230
  for <docs@lists.yoctoproject.org>;
- Tue, 20 Jan 2026 07:17:13 -0800
+ Tue, 20 Jan 2026 07:17:14 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=CbWbkxqC;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=ZI9k20Ts;
  spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id DFB7B4E421AD
-	for <docs@lists.yoctoproject.org>; Tue, 20 Jan 2026 15:17:10 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 5DD894E421AE
+	for <docs@lists.yoctoproject.org>; Tue, 20 Jan 2026 15:17:11 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id B5315606AB;
-	Tue, 20 Jan 2026 15:17:10 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C134610B6B39A;
-	Tue, 20 Jan 2026 16:17:09 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 338BB606AB
+	for <docs@lists.yoctoproject.org>; Tue, 20 Jan 2026 15:17:11 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9AF9110B6B4FB;
+	Tue, 20 Jan 2026 16:17:10 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
 	t=1768922230; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=7bE3ubEttBwPref94wnqtpKkPvVOV54GK0k3JKAkDcs=;
-	b=CbWbkxqCchBHmjA6Mn8DyUes4rwUnkb6QMzjlyARddVM98LFX8nkq7gCKSzlpH9I1Lty2g
-	2W6UOLZuLS9zGDmaBD97krDMXDwgmeAEfnHIyiMiaflTaIqGaPNYhFkbTGVyanuN34yrA3
-	YRJP/7x901aVZL/9jiUP/yzs7NWDaw9u5a/3FeqOyUo+Hmb0lOWG8EnxFvoIiTw3UTI3qh
-	o1ez1tSETwUGSH2HpXY+EutUMNx6IkQDWH7ai82QwB+EXCod/fXDq6aHeQ5jcuPT4Ey9Zb
-	F/Hi4FRD0Pm3/ogXBuIDCkgXccvDgWEdFjCQl8b80V/AiC4diNHiXWPYReCJ3w==
+	 content-transfer-encoding:in-reply-to:references;
+	bh=mJrqtodLdku80BaQYQ21y+mmP8ndksLtj8+KZGovCGo=;
+	b=ZI9k20Ts3MRoqDd0L8PSoYC/v3l79CWWvzIxz5FtbXDE0px7mim0yc1Lo4axZj0R37vnxy
+	in0DSffG3z4xd0JK1OY1vhu4kBVIJJxjQqRdXI3dZHxvK1G5B0aTtXJkofSTQT30r5FnXY
+	tVs51Yg5d2j2/7fAkTdfYz2DBoj4nKjH7OWyFhtu5QkJSMy9wq01Tc9K+ZmEGPA/K0d0KS
+	4WKgNa5ed5lNp20MJvo5+8VcWrT47bykvM5TP/VJY/uDCpKBlQZJhNEUclmrmBTQrgRgwc
+	UiWyPrS05sZksWxBjASAcXdQXaykMlT1TShda+67bHqA6amQG9B0Nv+QzGxz9A==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Subject: [PATCH v2 0/5] Redefine terms now that the Poky repository is
- obsolete
-Date: Tue, 20 Jan 2026 16:16:59 +0100
-Message-Id: <20260120-terms-refresh-v2-0-fa49d15b209f@bootlin.com>
+Date: Tue, 20 Jan 2026 16:17:00 +0100
+Subject: [PATCH v2 1/5] ref-manual/terms.rst: refresh the Build Directory
+ definition
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAGucb2kC/3WNwQ6CMBBEf4Xs2Zp2EQOe/A/DQdpF1gg13Uo0p
- P9uwbPHl5l5s4BQYBI4FQsEmlnYTxlwV4AdrtONFLvMgBorg3hQkcIoKlAfSAZlnXUVNkSVriF
- vnjng9+a7tD+WV3cnG1fJ2hhYog+f7XA2a++fezZKq2NjSmx6p8u6P3fexwdPe+tHaFNKX2i7s
- PC+AAAA
-X-Change-ID: 20251224-terms-refresh-cdcd529ee508
+Message-Id: <20260120-terms-refresh-v2-1-fa49d15b209f@bootlin.com>
+References: <20260120-terms-refresh-v2-0-fa49d15b209f@bootlin.com>
+In-Reply-To: <20260120-terms-refresh-v2-0-fa49d15b209f@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Antonin Godard <antonin.godard@bootlin.com>, 
- Quentin Schulz <quentin.schulz@cherry.de>
+ Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1206;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4509;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=eDG4BTyHNvHJHAk6pAR3lzfvaPEA6C21WkwxJWxL6ho=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpb5x0GqREeFQotGK4p1Vay5mjpHpeCIduC9us6
- udOuMm0J6qJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaW+cdAAKCRDRgEFAKaOo
- NrbtD/9JyoX15B1GiDmcFKri+JGJ1IyeOQ8h0WAKEGrlyQw8X/PXKZyNKEeN0qFCuu2afW2kSRv
- E7DMyyeVZ4DyiIMyAT53bV0bfhyiD18vK7eyo3Z7EapEmWHIW1YtlBYlB8luDIH4IVdqn4oyE8N
- VSlrrM7MikmT0MZFZQRA434AkNgIL1KO3P+g9iayWPhy4Z1/g5EwjLBkGYiY/xkDKUGLLspwYl0
- rs6N3WKcdFkmZm/mzAjGnEfQ7rUdrbuhn118+TRpR4nhLFXxmnQxsWFUCt4Ucy3tOnPkltDSZTt
- ZhGscsUaL5jEXWHIqmfVeONUPVxxzOS+GmAWhUzS6CJx64/eSyGWVE3WEMvXIfrGkqMTnkeQRbS
- WbtjDiw9nGiN+9ChgRxJ0/Ix7yYh/PlxzYpDLetwJOdUbt8YEU+Y+WJ8OUVOOEDnP+onoV+sNjf
- u7FNrO2cJZUM8xt3cAS3U8vz2X1X9dVHlpuoTSEMZOpLWIjv5+eNonU9UC4/Y8KBL8l3RNQYhyN
- TDO4mP3NS70VnHrSJRQN263voUv958neCJ4CQBgcihXdw7/7H1o6anFF5xYNYqujQPO2iX5qJOV
- VbZuZtayCAV9b9UW4ot+Qro5ikf5+15yQOKPFmX37ViyLYomeE16VCvzrp7omu6HUWgtIUSquZN
- JfBjNZqghQCm5BQ==
+ bh=sVktb6+iylFKBuUGcpgujo8T3WgjkeNMwxB5eFOaT9w=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpb5x0zLtjtn3Uz37z8Gxx/y4bRbDDzIxz25fbb
+ 2dHeLjUTpeJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaW+cdAAKCRDRgEFAKaOo
+ NpMWEADKNPgnjTmSU3BUv20VFC1cfLaUSFn3H6xPEcbvBV2VIOKtoT5G0R2ehzWKGD8Hd137qyz
+ YPPB8KQYdBXldzSu0ji2VS3/hiw+c8ryMuxUKLcj4QIynUWlVuwg0zb9maaZmGyB9jXFMKHjXi0
+ cf3M8D8oXjioVVeqlzqaHvgl9+VWdtcHfQGEWR1CDg2Fw6ejFifmdY9tImMf4xx4Cv3bp4XLbZB
+ XscrYxy2tSF5KapwTpihGM1oSYtr44+h2m+K8NMxRUg4LFOby5Vd+EprjXOugGjWE4RQQXEw04o
+ mwh6oDzFs2W6t6LdXJGVygUC0r2Jbrv/VAO+sQ5URt3XFxZ/KLyQXUpBn1i02MPTNRdhHa9Zz0y
+ f4IMySFgx9sfTUmYZqHTSqJDEA8NjuEmfEn2wmG2sxWx77hrYiPRPBYsWTm7rlL2YwS0rxrnzva
+ 7cmiPy3lq1RwLNNt+pllMJ5xyUKT9aq7xu3J0AtdhEG3ek8mke7bPqTLjNvEqBoJvbZUL40lShB
+ 9EkCKdnAyoU685wn8cVdvpCCfqwSO6xx8Ws06MjMeyKf+ZqNu8MbiN82X9pR+KQ4xwiGnwOZ1wk
+ l4113Lj9JeTWXhyMIhw+Hw5ALbhhspaGNbSO1LX6OOMW0NWms1itXItdirRV5xefFzrW1ojuhBp
+ 7/uQ1bsyXpmoNsg==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
@@ -67,34 +64,94 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Tue, 20 Jan 2026 15:17:17 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8593
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8594
 
-The Poky repository's master branch is no longer updated:
-https://git.yoctoproject.org/poky/tree/README
-
-Redefine the terms in ref-manual/terms.rst to adapt to the new
-intended way to set things up, that is: either using bitbake-setup or
-manually cloning the oe-core/bitbake/meta-yocto layers.
+After the Poky repository obsolescence, refresh the build directory
+definition. Fix the formatting and indenting issues while at it.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
-Changes in v2:
-- Apply suggestions from Quentin (thanks!)
-- Link to v1: https://patch.msgid.link/20251224-terms-refresh-v1-0-691329fd038f@bootlin.com
+ documentation/ref-manual/terms.rst | 46 +++++++++++++++++++++-----------------
+ 1 file changed, 25 insertions(+), 21 deletions(-)
 
----
-Antonin Godard (5):
-      ref-manual/terms.rst: refresh the Build Directory definition
-      ref-manual/terms.rst: refresh the OpenEmbedded-Core definition
-      ref-manual/terms.rst: simplify the Source Directory definition
-      dev-manual/poky-manual-setup.rst: mention the Source Directory
-      ref-manual/terms.rst: refresh the OpenEmbedded build system definition
+diff --git a/documentation/ref-manual/terms.rst b/documentation/ref-manual/terms.rst
+index 6a9f88061..93a2febc7 100644
+--- a/documentation/ref-manual/terms.rst
++++ b/documentation/ref-manual/terms.rst
+@@ -63,36 +63,39 @@ universal, the list includes them just in case:
+       This term refers to the area used by the OpenEmbedded build system for
+       builds. The area is created when you ``source`` the setup environment
+       script that is found in the Source Directory
+-      (i.e. :ref:`ref-manual/structure:``oe-init-build-env```). The
++      (i.e. :ref:`ref-manual/structure:``oe-init-build-env```, or
++      ``init-build-env`` when using :doc:`bitbake-setup
++      <bitbake:bitbake-user-manual/bitbake-user-manual-environment-setup>`). The
+       :term:`TOPDIR` variable points to the :term:`Build Directory`.
+ 
+-      You have a lot of flexibility when creating the :term:`Build Directory`.
++      When setting up the build manually (see :doc:`/dev-manual/poky-manual-setup`),
++      you have a lot of flexibility when creating the :term:`Build Directory`.
+       Here are some examples that show how to create the directory.  The
+-      examples assume your :term:`Source Directory` is named ``poky``:
++      examples assume your :term:`Source Directory` is named ``project``:
+ 
+-         -  Create the :term:`Build Directory` inside your Source Directory and let
+-            the name of the :term:`Build Directory` default to ``build``:
++      -  Create the :term:`Build Directory` inside your Source Directory and let
++         the name of the :term:`Build Directory` default to ``build``:
+ 
+-            .. code-block:: shell
++         .. code-block:: console
+ 
+-               $ cd poky
+-               $ source oe-init-build-env
++            $ cd project
++            $ source layers/openembedded-core/oe-init-build-env
+ 
+-         -  Create the :term:`Build Directory` inside your home directory and
+-            specifically name it ``test-builds``:
++      -  Or create the :term:`Build Directory` inside your current working
++         directory and specifically name it ``test-builds``:
+ 
+-            .. code-block:: shell
++         .. code-block:: console
+ 
+-               $ source poky/oe-init-build-env test-builds
++            $ source project/layers/openembedded-core/oe-init-build-env test-builds
+ 
+-         -  Provide a directory path and specifically name the
+-            :term:`Build Directory`. Any intermediate folders in the pathname
+-            must exist.  This next example creates a :term:`Build Directory`
+-            named ``YP-&DISTRO;`` within the existing directory ``mybuilds``:
++      -  Or provide a directory path and specifically name the
++         :term:`Build Directory`. Any intermediate folders in the pathname
++         must exist.  This next example creates a :term:`Build Directory`
++         named ``YP-&DISTRO;`` within the existing directory ``mybuilds``:
+ 
+-            .. code-block:: shell
++         .. code-block:: shell
+ 
+-               $ source poky/oe-init-build-env mybuilds/YP-&DISTRO;
++            $ source project/layers/openembedded-core/oe-init-build-env mybuilds/YP-&DISTRO;
+ 
+       .. note::
+ 
+@@ -100,9 +103,10 @@ universal, the list includes them just in case:
+          temporary directory the build system uses for its work. :term:`TMPDIR` cannot
+          be under NFS. Thus, by default, the :term:`Build Directory` cannot be under
+          NFS. However, if you need the :term:`Build Directory` to be under NFS, you can
+-         set this up by setting :term:`TMPDIR` in your ``local.conf`` file to use a local
+-         drive. Doing so effectively separates :term:`TMPDIR` from :term:`TOPDIR`, which is the
+-         :term:`Build Directory`.
++         set this up by setting :term:`TMPDIR` in your
++         :ref:`structure-build-conf-site.conf` file to use a local drive. Doing
++         so effectively separates :term:`TMPDIR` from :term:`TOPDIR`, which is
++         the :term:`Build Directory`.
+ 
+    :term:`Build Host`
+       The system used to build images in a Yocto Project Development
 
- documentation/dev-manual/poky-manual-setup.rst |  11 +-
- documentation/ref-manual/terms.rst             | 142 +++++++++++--------------
- 2 files changed, 73 insertions(+), 80 deletions(-)
----
-base-commit: b8a56b8b2e8c0417b2f7204f80c79b05d95e9ce4
-change-id: 20251224-terms-refresh-cdcd529ee508
+-- 
+2.52.0
 
 
