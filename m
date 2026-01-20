@@ -2,61 +2,61 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2DB19D2ED11
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3EFE5D2ED16
 	for <webhook@archiver.kernel.org>; Tue, 20 Jan 2026 08:57:53 +0000 (UTC)
 Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.2502.1768899464415993948
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.2465.1768899464213056502
  for <docs@lists.yoctoproject.org>;
  Tue, 20 Jan 2026 00:57:44 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=2xpoLgVV;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=06bqOl0q;
  spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id C7AE3C214ED;
-	Tue, 20 Jan 2026 08:57:15 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 30268C214EB
+	for <docs@lists.yoctoproject.org>; Tue, 20 Jan 2026 08:57:15 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id E2BD1606AB;
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 4A797606AB;
 	Tue, 20 Jan 2026 08:57:42 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2E2C410B6B31D;
-	Tue, 20 Jan 2026 09:57:42 +0100 (CET)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 790D110B6B319;
+	Tue, 20 Jan 2026 09:57:41 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1768899462; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1768899461; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=J/3sAPmcS9Yi+bB7UKrzmdWx2ZsEzLdntcg4V8OsVQQ=;
-	b=2xpoLgVV23phCNmfwrtnc/kdeAxVX3PkY+EjL5OcTrtJt8SOEupbEq+zRbThoD9acLH29y
-	rsloqsNjFlqOd8+vaAiXfzW0YDnVJtTU5zYf1eCggDRPvZn9XiaC6AAKynTiQKOtUe4Luq
-	3iSBTeF367Uj6QDalIS4XhUH3KQBusdDHmMa7F8zxDdql/H718I+5dxIp44pGsiYZv9Ac0
-	2i9mvrYEXoZu2YtdL2vQaG5POTlJQu8/JLW94jypcwFMuYGvqR9SyceYys4T5GMajoUaWh
-	CUij0/T4ilsG3HRs5f2Sqz0XIRqsxH1DeYLPlujBdV/RzWngkj0Hh43q9UWrNg==
+	bh=MUFNe2vjOWECCrA7YVpUksXTNdlGTlSwMP8YhE4miZ8=;
+	b=06bqOl0qD/nmkwVia4HMZKzrcr4Wcb1D8eJFerI17TrmjF3ahmlZpN2n689qF4kzz7yhlB
+	11cKYYO0BtP2XhbO2opHF3pisf8qPCBSeS0SwN01TwvkcxUM83onWd+6Vj573i3in61j+F
+	awkTFoUQX+ZCxfyzIk6ULuqp/lyed4mOG7K6khdMeF64AHpxRmGQMp60dmSnYjH2kIFZVQ
+	VSyroPgRPRIDwI9E/C8MPEO4YXU5lTqes8IXwlgys8/GTYACafclU68wbzmRysF966h7y5
+	b/Exs8GABBKn2+6lbFmuFYT2gkfSJxpqLyYojWyFcnu4XeekA9HGuVInOc0X5g==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Tue, 20 Jan 2026 09:57:34 +0100
-Subject: [PATCH v2 2/2] default-registry: update fragments choices with
- descriptions
+Date: Tue, 20 Jan 2026 09:57:33 +0100
+Subject: [PATCH v2 1/2] bin/bitbake-setup: add descriptions for fragment
+ choices
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260120-bitbake-setup-choose-builtin-v2-2-ade604ff2351@bootlin.com>
+Message-Id: <20260120-bitbake-setup-choose-builtin-v2-1-ade604ff2351@bootlin.com>
 References: <20260120-bitbake-setup-choose-builtin-v2-0-ade604ff2351@bootlin.com>
 In-Reply-To: <20260120-bitbake-setup-choose-builtin-v2-0-ade604ff2351@bootlin.com>
 To: bitbake-devel@lists.openembedded.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  docs@lists.yoctoproject.org, Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7018;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7955;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=yZpaC+AdPPZYMOczg1f1KJfIKAnmARj3zzGYIsqNxQM=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpb0OEWLGHb7R8nwWJzbNrejabFwbc8NXC2KYdU
- WPfDPZXHGGJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaW9DhAAKCRDRgEFAKaOo
- NuC+EACyo9RGQgJ9XSJjaW3h5d2UU+M8laEGAYoUL4OVOfcsFQZNYKA6CCCClBwbbqR9qbvJUCb
- WaB/tomdZAEsOCev+Ll1KU8bamkGoQGvOhex3dkWHgVgSgMIkhVVEnCwPH0hb1kMiAflYiUgs/a
- oBwXdPWJG+cMe8fuf2rIGn1OUJo5Q6YvhkuPt4qghv1xgPHvAa5nc4rL+l7Kk1ziK1a55YveReG
- AXAi/xHJVyPLtY83Un6TuY0PDbZaLwf8WhrPuu1KuCxTIRbL+8Z4FC5rmWgHUCVJ2sosU5PSWNP
- BNrcSPr0fXZHVD8S18LKFRVA1iNxxy9wiYA+ztCcY7dwvmyXuDyye5tEpzuNZNidd2cL9yKUoz8
- QPpMUPRt7lIcixWjAMkB3USpSgyXbE0+gAR2GaNcGTRTcUsdrX8zlSZ5vt8axMtrcnL6ZGgTBuk
- XBIQ2gnnmwx0SmJjrihc7iy4XTMF+YPrYOf7nZZSj/GLdKYHV91dbJMAhvGe+7b32U5ze8XTZBg
- cja2pr5xHX+hPYzE1fxUCQnmBy+U6R0w7dmR9lN1kTHqdQz0rTemdZ4/geYDHfJ5MC+Tsfjokdt
- ADre0Sdxdijn/MnKGRWcijgvb+x0CwbAsqf5BZZXWexeagREUFXc47Ut+6ZsF30I59vEd/DjAfN
- H77rWb1/kH0YKRw==
+ bh=JCmdP9dMv3w4onXKsdqpyra2lerrL/3sAf1rPeDQHjw=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpb0OE+M4vC52WReCPnnm0xplMp1L7QRWdr836B
+ SMbPMebrCmJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaW9DhAAKCRDRgEFAKaOo
+ NrmsD/9A2b9BjyLPFk9dfbfuFLK/oph0soCdKU1HUTh5Zm2GR5m3OQ8zpI0TiEwDnC2OBH6w4qH
+ iQcDq1KnL6xHUDI/60IkBXblxR2D9UbY1eE8dlt2FBI09tl1JAlr1PtB/V1ZQyc0+nNBxXfyXBS
+ WZSP2e1Q6s9A6zdF4F2iduIYmF/a2Yql4Xw0QC2gZoK9W15rPcM7h73nHp01ziA+SyqaTlE2sr7
+ Ej/lahMXgZ1l/Escyly8Ycc7HwKBU1Qfc7uriqRtLcCu3pVltoDxSP5SKw/U0zFNXdwC1hmXnpR
+ 2pZEU6PkfqSqQYHnLYavHs8bK0vdlEzMSPlz09CH+q15BUXf2XDSf6oWhSlY/FQsTZtN7glFT9C
+ Sssi/Iq+f81xTL/EhBkVZto8HZ3TW154CKKP4oGQZEKLIYdl3lzoYOXSBS+B4wLKD+tqrJfo/+x
+ TpwNRHN0ss8K5g4Dgowv9dTH6oD1vES7lGfZQ6nNnRqiiTux5XmoMFPSLm0zPSmeQJtyRHB9Bki
+ MufvpOCm1+ZHN+XYy/97EsgAnsJzS076NGwybAE2Q7LX+r43AII76l1TtcsnjSlEsK81IvbxPDL
+ v8bPOLjamaTlserTWq/R5Gu5KHbth/DYAKxuc078mh/TdDdiB/awYfFZvj7sPDTgmCr9n4WC7GO
+ X7yhibb2nyme8SA==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
@@ -64,111 +64,143 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Tue, 20 Jan 2026 08:57:53 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8588
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8587
 
-Give descriptions to the fragment choices to help the user know what to
-pick during 'bitbake-setup init'. These descriptions were based on the
-descriptions found in the corresponding configuration files in
-OE-Core/meta-yocto.
+Make it possible to give fragments descriptions as it can help users
+determine which fragments to pick during bitbake-setup init.
+
+It is still possible to provide a list (with no descriptions) for
+backwards-compatibility.
+
+Update the documentation accordingly.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- .../configurations/oe-nodistro-master.conf.json            |  6 +++++-
- .../configurations/oe-nodistro-whinlatter.conf.json        |  6 +++++-
- default-registry/configurations/poky-master.conf.json      | 14 ++++++++++++--
- default-registry/configurations/poky-whinlatter.conf.json  | 14 ++++++++++++--
- 4 files changed, 34 insertions(+), 6 deletions(-)
+ bin/bitbake-setup                                  | 21 ++++++++++++-----
+ .../bitbake-user-manual-environment-setup.rst      | 26 ++++++++++++++++++++--
+ setup-schema/bitbake-setup.schema.json             | 21 ++++++++++++++++-
+ 3 files changed, 60 insertions(+), 8 deletions(-)
 
-diff --git a/default-registry/configurations/oe-nodistro-master.conf.json b/default-registry/configurations/oe-nodistro-master.conf.json
-index 180d2008a72..00c4befb1ac 100644
---- a/default-registry/configurations/oe-nodistro-master.conf.json
-+++ b/default-registry/configurations/oe-nodistro-master.conf.json
-@@ -45,7 +45,11 @@
-             "oe-fragments-one-of": {
-                 "machine": {
-                     "description": "Target machines",
--                    "options" : ["machine/qemux86-64", "machine/qemuarm64", "machine/qemuriscv64"]
-+                    "options" : [
-+                        { "name": "machine/qemux86-64", "description": "Machine configuration for running an x86-64 system on QEMU" },
-+                        { "name": "machine/qemuarm64", "description": "Machine configuration for running an ARMv8 system on QEMU" },
-+                        { "name": "machine/qemuriscv64", "description": "Machine configuration for running an RISC-V system on QEMU" }
-+                    ]
-                 }
-             }
-         }
-diff --git a/default-registry/configurations/oe-nodistro-whinlatter.conf.json b/default-registry/configurations/oe-nodistro-whinlatter.conf.json
-index 7b183ae1c43..8d416015ab0 100644
---- a/default-registry/configurations/oe-nodistro-whinlatter.conf.json
-+++ b/default-registry/configurations/oe-nodistro-whinlatter.conf.json
-@@ -46,7 +46,11 @@
-             "oe-fragments-one-of": {
-                 "machine": {
-                     "description": "Target machines",
--                    "options" : ["machine/qemux86-64", "machine/qemuarm64", "machine/qemuriscv64"]
-+                    "options" : [
-+                        { "name": "machine/qemux86-64", "description": "Machine configuration for running an x86-64 system on QEMU" },
-+                        { "name": "machine/qemuarm64", "description": "Machine configuration for running an ARMv8 system on QEMU" },
-+                        { "name": "machine/qemuriscv64", "description": "Machine configuration for running an RISC-V system on QEMU" }
-+                    ]
-                 }
-             }
-         }
-diff --git a/default-registry/configurations/poky-master.conf.json b/default-registry/configurations/poky-master.conf.json
-index 1de038babe7..18657ece103 100644
---- a/default-registry/configurations/poky-master.conf.json
-+++ b/default-registry/configurations/poky-master.conf.json
-@@ -54,11 +54,21 @@
-             "oe-fragments-one-of": {
-                 "machine": {
-                     "description": "Target machines",
--                    "options" : ["machine/qemux86-64", "machine/qemuarm64", "machine/qemuriscv64", "machine/genericarm64", "machine/genericx86-64"]
-+                    "options" : [
-+                        { "name": "machine/qemux86-64", "description": "Machine configuration for running an x86-64 system on QEMU" },
-+                        { "name": "machine/qemuarm64", "description": "Machine configuration for running an ARMv8 system on QEMU" },
-+                        { "name": "machine/qemuriscv64", "description": "Machine configuration for running an RISC-V system on QEMU" },
-+                        { "name": "machine/genericarm64", "description": "Machine configuration for Arm64 SystemReady IR/ES platforms" },
-+                        { "name": "machine/genericx86-64", "description": "Machine configuration for generic x86_64 (64-bit) PCs and servers" }
-+                    ]
+diff --git a/bin/bitbake-setup b/bin/bitbake-setup
+index abe7614c832..8f28a1ef4d4 100755
+--- a/bin/bitbake-setup
++++ b/bin/bitbake-setup
+@@ -494,20 +494,31 @@ def choose_fragments(possibilities, parameters, non_interactive, skip_selection)
+         if skip_selection and k in skip_selection:
+             logger.info("Skipping a selection of {}, as requested on command line. The resulting bitbake configuration may require further manual adjustments.".format(k))
+             continue
+-        choice = [o for o in v["options"] if o in parameters]
++
++        # options can be a list of strings or a list of dicts
++        options = v["options"]
++        descriptions = []
++        if len(options) > 0 and isinstance(v["options"][0], dict):
++            descriptions = [o["description"] for o in options]
++            options = [o["name"] for o in options]
++
++        choice = [o for o in options if o in parameters]
+         if len(choice) > 1:
+-            raise Exception("Options specified on command line do not allow a single selection from possibilities {}, please remove one or more from {}".format(v["options"], parameters))
++            raise Exception("Options specified on command line do not allow a single selection from possibilities {}, please remove one or more from {}".format(options, parameters))
+         if len(choice) == 1:
+             choices[k] = choice[0]
+             continue
+ 
+         if non_interactive:
+-            raise Exception("Unable to choose from options in non-interactive mode: {}".format(v["options"]))
++            raise Exception("Unable to choose from options in non-interactive mode: {}".format(options))
+ 
+         logger.plain("\n" + v["description"] + ":")
+-        options_enumerated = list(enumerate(v["options"], 1))
++        options_enumerated = list(enumerate(options, 1))
+         for n,o in options_enumerated:
+-            logger.plain("{}. {}".format(n, o))
++            opt_str = f"{n}. {o}"
++            if descriptions:
++                opt_str += f"\t{descriptions[n - 1]}"
++            logger.plain(opt_str)
+         option_n = int_input([i[0] for i in options_enumerated],
+                              "\nPlease select one of the above options by its number: ") - 1
+         choices[k] = options_enumerated[option_n][1]
+diff --git a/doc/bitbake-user-manual/bitbake-user-manual-environment-setup.rst b/doc/bitbake-user-manual/bitbake-user-manual-environment-setup.rst
+index 57e799980c4..0376d77143d 100644
+--- a/doc/bitbake-user-manual/bitbake-user-manual-environment-setup.rst
++++ b/doc/bitbake-user-manual/bitbake-user-manual-environment-setup.rst
+@@ -759,11 +759,21 @@ They contain the following sections:
+                 "oe-fragments-one-of": {
+                     "machine": {
+                         "description": "Target machines",
+-                        "options" : ["machine/qemux86-64", "machine/qemuarm64", "machine/qemuriscv64", "machine/genericarm64", "machine/genericx86-64"]
++                        "options" : [
++                            { "name": "machine/qemux86-64", "description": "Machine configuration for running an x86-64 system on QEMU" },
++                            { "name": "machine/qemuarm64", "description": "Machine configuration for running an ARMv8 system on QEMU" },
++                            { "name": "machine/qemuriscv64", "description": "Machine configuration for running an RISC-V system on QEMU" },
++                            { "name": "machine/genericarm64", "description": "Machine configuration for Arm64 SystemReady IR/ES platforms" },
++                            { "name": "machine/genericx86-64", "description": "Machine configuration for generic x86_64 (64-bit) PCs and servers" }
++                        ]
+                     },
+                     "distro": {
+                         "description": "Distribution configuration variants",
+-                        "options" : ["distro/poky", "distro/poky-altcfg", "distro/poky-tiny"]
++                        "options" : [
++                            { "name": "distro/poky", "description": "Distro configuration for Poky (Yocto Project Reference Distro)" },
++                            { "name": "distro/poky-altcfg", "description": "Distro configuration for Poky (systemd init manager)" },
++                            { "name": "distro/poky-tiny", "description": "Distro configuration for Poky (optimized for size)" }
++                        ]
+                     }
                  },
-                 "distro": {
-                     "description": "Distribution configuration variants",
--                    "options" : ["distro/poky", "distro/poky-altcfg", "distro/poky-tiny"]
-+                    "options" : [
-+                        { "name": "distro/poky", "description": "Distro configuration for Poky (Yocto Project Reference Distro)" },
-+                        { "name": "distro/poky-altcfg", "description": "Distro configuration for Poky (systemd init manager)" },
-+                        { "name": "distro/poky-tiny", "description": "Distro configuration for Poky (optimized for size)" }
-+                    ]
-                 }
-             },
-             "configurations": [
-diff --git a/default-registry/configurations/poky-whinlatter.conf.json b/default-registry/configurations/poky-whinlatter.conf.json
-index bfa67426dbf..d9f75a8cd38 100644
---- a/default-registry/configurations/poky-whinlatter.conf.json
-+++ b/default-registry/configurations/poky-whinlatter.conf.json
-@@ -55,11 +55,21 @@
-             "oe-fragments-one-of": {
-                 "machine": {
-                     "description": "Target machines",
--                    "options" : ["machine/qemux86-64", "machine/qemuarm64", "machine/qemuriscv64", "machine/genericarm64", "machine/genericx86-64"]
-+                    "options" : [
-+                        { "name": "machine/qemux86-64", "description": "Machine configuration for running an x86-64 system on QEMU" },
-+                        { "name": "machine/qemuarm64", "description": "Machine configuration for running an ARMv8 system on QEMU" },
-+                        { "name": "machine/qemuriscv64", "description": "Machine configuration for running an RISC-V system on QEMU" },
-+                        { "name": "machine/genericarm64", "description": "Machine configuration for Arm64 SystemReady IR/ES platforms" },
-+                        { "name": "machine/genericx86-64", "description": "Machine configuration for generic x86_64 (64-bit) PCs and servers" }
-+                    ]
-                 },
-                 "distro": {
-                     "description": "Distribution configuration variants",
--                    "options" : ["distro/poky", "distro/poky-altcfg", "distro/poky-tiny"]
-+                    "options" : [
-+                        { "name": "distro/poky", "description": "Distro configuration for Poky (Yocto Project Reference Distro)" },
-+                        { "name": "distro/poky-altcfg", "description": "Distro configuration for Poky (systemd init manager)" },
-+                        { "name": "distro/poky-tiny", "description": "Distro configuration for Poky (optimized for size)" }
-+                    ]
-                 }
-             },
-             "configurations": [
+                 "configurations": [
+@@ -852,6 +862,18 @@ They contain the following sections:
+    -  ``oe-fragments-one-of`` (*optional*, OpenEmbedded specific): the OpenEmbedded
+       fragments to select as part of the build.
+ 
++      This can one of two formats:
++
++      -  A list of dictionaries with ``name`` and a ``description``,
++         corresponding to respectively the fragments names and fragment
++         descriptions (like in the example above).
++
++      -  A list of fragment names. For example:
++
++         .. code-block:: json
++
++            "options" : ["machine/qemux86-64", "machine/qemuarm64", "machine/qemuriscv64", "machine/genericarm64", "machine/genericx86-64"]
++
+       This will trigger choices to make during the
+       :ref:`ref-bbsetup-command-init` command execution.
+ 
+diff --git a/setup-schema/bitbake-setup.schema.json b/setup-schema/bitbake-setup.schema.json
+index e51fef3b97c..be8772db1b2 100644
+--- a/setup-schema/bitbake-setup.schema.json
++++ b/setup-schema/bitbake-setup.schema.json
+@@ -64,7 +64,26 @@
+                                 "type": "array",
+                                 "description": "List of BitBake configuration fragments to enable",
+                                 "items": {
+-                                    "type": "string"
++                                    "oneOf": [
++                                        {
++                                            "type": "string",
++                                            "description": "Configuration fragment name"
++                                        },
++                                        {
++                                            "type": "object",
++                                            "description": "Dictionary of BitBake configuration fragments to enable (with description)",
++                                            "properties": {
++                                                "name": {
++                                                    "type": "string",
++                                                    "description": "Configuration fragment name"
++                                                },
++                                                "description": {
++                                                    "type": "string",
++                                                    "description": "Human-readable description of the fragment"
++                                                }
++                                            }
++                                        }
++                                    ]
+                                 }
+                             },
+                             "oe-fragments-one-of": {
 
 -- 
 2.52.0
