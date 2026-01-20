@@ -1,208 +1,121 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <alex.kanavin@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3EFE5D2ED16
-	for <webhook@archiver.kernel.org>; Tue, 20 Jan 2026 08:57:53 +0000 (UTC)
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.2465.1768899464213056502
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9EE93D2ED0F
+	for <webhook@archiver.kernel.org>; Tue, 20 Jan 2026 12:30:15 +0000 (UTC)
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.5343.1768912213006705783
  for <docs@lists.yoctoproject.org>;
- Tue, 20 Jan 2026 00:57:44 -0800
+ Tue, 20 Jan 2026 04:30:13 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=06bqOl0q;
- spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 30268C214EB
-	for <docs@lists.yoctoproject.org>; Tue, 20 Jan 2026 08:57:15 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 4A797606AB;
-	Tue, 20 Jan 2026 08:57:42 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 790D110B6B319;
-	Tue, 20 Jan 2026 09:57:41 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1768899461; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=MUFNe2vjOWECCrA7YVpUksXTNdlGTlSwMP8YhE4miZ8=;
-	b=06bqOl0qD/nmkwVia4HMZKzrcr4Wcb1D8eJFerI17TrmjF3ahmlZpN2n689qF4kzz7yhlB
-	11cKYYO0BtP2XhbO2opHF3pisf8qPCBSeS0SwN01TwvkcxUM83onWd+6Vj573i3in61j+F
-	awkTFoUQX+ZCxfyzIk6ULuqp/lyed4mOG7K6khdMeF64AHpxRmGQMp60dmSnYjH2kIFZVQ
-	VSyroPgRPRIDwI9E/C8MPEO4YXU5lTqes8IXwlgys8/GTYACafclU68wbzmRysF966h7y5
-	b/Exs8GABBKn2+6lbFmuFYT2gkfSJxpqLyYojWyFcnu4XeekA9HGuVInOc0X5g==
-From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Tue, 20 Jan 2026 09:57:33 +0100
-Subject: [PATCH v2 1/2] bin/bitbake-setup: add descriptions for fragment
- choices
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=FSWNNa2V;
+ spf=pass (domain: gmail.com, ip: 209.85.160.169, mailfrom: alex.kanavin@gmail.com)
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-50146483bf9so68245951cf.3
+        for <docs@lists.yoctoproject.org>; Tue, 20 Jan 2026 04:30:12 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1768912212; cv=none;
+        d=google.com; s=arc-20240605;
+        b=g5oytvC0NdAGTX0hfhken8XDZESPOSIVlDKPrJrZv2eFDs5ruse/H3WG1oi+H/t80p
+         7dej6000h+T91G1cuhpX/y0PJbLCbbUM/4xXW5PtiCIrPFmzyG0enShzWxRDtZ4MQjJV
+         qNJcq1RX4EeEySuwL2pRTpQ/AsodjRaAqpEwqk+TvgAM3z2W1n2Bcu4mTjNM4nFfMjyE
+         ATFXlBJMQwS+AOKV+QfCRaWTgv9R06L6Yv2FCOFuxVW+ouTciQK/No21WtNvScYl472i
+         WMrU7ck0WBpeAwDyrTisZtr2oABdax/lkkG2iy1bTIlSnrPyeKwY5rs2c6fZCLI6yik8
+         d7TA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=PCJ5T7ag3jbSpx9QhjbrskqjHdUXn231fp7T6BGJR9M=;
+        fh=CMMrKxE/kC1GMe3YesidT7x81x4tNV040Ty0mYzf6NM=;
+        b=NMOeQxbujGUxN+FUAYMXhC+1SKbZBmQ6Lkn9CqGYyTxmwFh6kdmto8+uvKpGFqbbnn
+         pwLATeACXm2glidrVWqdyMmnsNM3Vvu89D86jiy1EL0zGelJonmsJGcCCvWtVVFKIuuL
+         Wvjx0VReP/IIpbsCGEaWZzzlUrKJm5KMaz+NEMC9PxGJb8m9BWOev3JmSJu4P/GQ995X
+         HiBRIxqOKwbdNCGROg0n8sETdMw66biD4yP2wRzRnis/3wckb3K8U5GOuA0G3gvX7tqb
+         AOvC4eOPb5WW7Li1uLNjjH9POlQxJaCM3fZfslTSYnwQDKw1C6GrCQSK3kIfYS+eTmK5
+         9lvg==;
+        darn=lists.yoctoproject.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768912212; x=1769517012; darn=lists.yoctoproject.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=PCJ5T7ag3jbSpx9QhjbrskqjHdUXn231fp7T6BGJR9M=;
+        b=FSWNNa2V1DcDkIid0tWar23L5FXwDqarx84dPjDk00wI3JYBKjgpq3YdxNfftJo9L+
+         0ICCt1W8Eq7wnCtW+x03PmYckGLLV4LojiawqtYvgzeFWQnaJL7cC/pOMQTpcZTUa+IM
+         msKXclsn9d4xMVmScyV3Du3Eax5jdKb93igZCb1IrtnUkSx9lx2cC4ziPjuThHpGYeuD
+         Jr/P7Z1pw600rYFYyOhMBKlMiGZb4gNsivGHNMVhC4u7Q/DlfwEnT9zete+8lz15NNlr
+         HnLxFAG3KO9D99jWQn6FUJec3TAFf+wflZaUfHSd16YK2fnj30327O4y60QCxWy3kufj
+         PXFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768912212; x=1769517012;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PCJ5T7ag3jbSpx9QhjbrskqjHdUXn231fp7T6BGJR9M=;
+        b=aa5ck4IRoR/oU/n0ajLJFWc6cJisxQQCcS9I/ZVIl6Ts8vFw71K28NoeUygILLCCXM
+         XvUAFhgVBtAPsJ4W9ES1PZGOFhJz5uvuMqrwS9KFSXQdjp34UERtWsqxtKYqf3nLi5yn
+         e/LdkjrzYIvYfh/qRV2OGmsJhBgh5CSB/MQdCSnCNnAtalnfSr7raINbUCDdc7N0mhkm
+         gqEUwwHsSaouU2RysJYoIlvQyl3X46RpwWoKt+UwJytf8jOTn8THJ0LXstcPQUyvXPIR
+         aVXYNYce/AtigEoRTK7HlpxfSGCmId8XslkU7mpefq0LJomwLwr8ztff270fE6pFZcKU
+         aKeQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWQBLDamzAOB68vuowMb9nXKllkNVvR9nlYHehVhPPxwp64Vs0cekGyPixbe8YVsBmx1LQ3@lists.yoctoproject.org
+X-Gm-Message-State: AOJu0YwxNWA3fhqM7HEGPTU1aSaJ4JTg8nw/37P43oNjmGyCiItHvfEb
+	Uk3wuDEySYGravwATNKvi62MwSfFnqWVtsos80tBCCK/CHX/76txRd8iQ1iOtqPhvZ4OJe6hsVe
+	3lWTu+C7wIKzqatIXU0D03h6ufIQpPd0=
+X-Gm-Gg: AY/fxX4erSbDZAxs1BqvQrqhj8PaGGi5xi14/n6rp4dQHpg9cVKuBzYO2FRJUyMSavV
+	Dpn7hAmgQGeDsx9jq+rEzK0uhyjnEJUyRTdjXm6U0RJlqELejB93VHbIDJCvZ1/eY6hpPTGTJup
+	Aa9VgfsNe+0crXQuxT3Z8fFzyW5d9psrx7Oy9zUaqZS7545pELBQdBEguV3jV/4daRsNg5Qh98c
+	Jgcwn8qEbMOomx1LVFPHBDhamR0x0f4Us6TWfu9BXvZMdu8ulw+PuKJvaVdHHTkoHQVMPHIT9yr
+	jdI6bzj9JO1OfzlkbRNPRFB11xjx6w==
+X-Received: by 2002:ac8:5f49:0:b0:502:a3b:f367 with SMTP id
+ d75a77b69052e-502a16b31f7mr204203831cf.51.1768912211918; Tue, 20 Jan 2026
+ 04:30:11 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260120-bitbake-setup-choose-builtin-v2-1-ade604ff2351@bootlin.com>
 References: <20260120-bitbake-setup-choose-builtin-v2-0-ade604ff2351@bootlin.com>
-In-Reply-To: <20260120-bitbake-setup-choose-builtin-v2-0-ade604ff2351@bootlin.com>
-To: bitbake-devel@lists.openembedded.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- docs@lists.yoctoproject.org, Antonin Godard <antonin.godard@bootlin.com>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7955;
- i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=JCmdP9dMv3w4onXKsdqpyra2lerrL/3sAf1rPeDQHjw=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpb0OE+M4vC52WReCPnnm0xplMp1L7QRWdr836B
- SMbPMebrCmJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaW9DhAAKCRDRgEFAKaOo
- NrmsD/9A2b9BjyLPFk9dfbfuFLK/oph0soCdKU1HUTh5Zm2GR5m3OQ8zpI0TiEwDnC2OBH6w4qH
- iQcDq1KnL6xHUDI/60IkBXblxR2D9UbY1eE8dlt2FBI09tl1JAlr1PtB/V1ZQyc0+nNBxXfyXBS
- WZSP2e1Q6s9A6zdF4F2iduIYmF/a2Yql4Xw0QC2gZoK9W15rPcM7h73nHp01ziA+SyqaTlE2sr7
- Ej/lahMXgZ1l/Escyly8Ycc7HwKBU1Qfc7uriqRtLcCu3pVltoDxSP5SKw/U0zFNXdwC1hmXnpR
- 2pZEU6PkfqSqQYHnLYavHs8bK0vdlEzMSPlz09CH+q15BUXf2XDSf6oWhSlY/FQsTZtN7glFT9C
- Sssi/Iq+f81xTL/EhBkVZto8HZ3TW154CKKP4oGQZEKLIYdl3lzoYOXSBS+B4wLKD+tqrJfo/+x
- TpwNRHN0ss8K5g4Dgowv9dTH6oD1vES7lGfZQ6nNnRqiiTux5XmoMFPSLm0zPSmeQJtyRHB9Bki
- MufvpOCm1+ZHN+XYy/97EsgAnsJzS076NGwybAE2Q7LX+r43AII76l1TtcsnjSlEsK81IvbxPDL
- v8bPOLjamaTlserTWq/R5Gu5KHbth/DYAKxuc078mh/TdDdiB/awYfFZvj7sPDTgmCr9n4WC7GO
- X7yhibb2nyme8SA==
-X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
- fpr=8648725188DD401BB9A0D3FFD180414029A3A836
-X-Last-TLS-Session-Version: TLSv1.3
+ <20260120-bitbake-setup-choose-builtin-v2-1-ade604ff2351@bootlin.com>
+In-Reply-To: <20260120-bitbake-setup-choose-builtin-v2-1-ade604ff2351@bootlin.com>
+From: Alexander Kanavin <alex.kanavin@gmail.com>
+Date: Tue, 20 Jan 2026 13:29:59 +0100
+X-Gm-Features: AZwV_QjPGyE57kOsd0jehxyog_-Y-324e5duPToIWVlyOP4S5MCZi9Pp1yL8oL4
+Message-ID: <CANNYZj_U61ArCom7N0+8ztW3gP5t+6MRHUyj7mV5PQ6VR0Vf8w@mail.gmail.com>
+Subject: Re: [bitbake-devel] [PATCH v2 1/2] bin/bitbake-setup: add
+ descriptions for fragment choices
+To: antonin.godard@bootlin.com
+Cc: bitbake-devel@lists.openembedded.org, 
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, docs@lists.yoctoproject.org
+Content-Type: text/plain; charset="UTF-8"
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 20 Jan 2026 08:57:53 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8587
+ <docs@lists.yoctoproject.org>; Tue, 20 Jan 2026 12:30:15 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8589
 
-Make it possible to give fragments descriptions as it can help users
-determine which fragments to pick during bitbake-setup init.
+On Tue, 20 Jan 2026 at 09:57, Antonin Godard via
+lists.openembedded.org
+<antonin.godard=bootlin.com@lists.openembedded.org> wrote:
+> -        choice = [o for o in v["options"] if o in parameters]
+> +
+> +        # options can be a list of strings or a list of dicts
+> +        options = v["options"]
+> +        descriptions = []
+> +        if len(options) > 0 and isinstance(v["options"][0], dict):
+> +            descriptions = [o["description"] for o in options]
+> +            options = [o["name"] for o in options]
 
-It is still possible to provide a list (with no descriptions) for
-backwards-compatibility.
+I think descriptions should not be a separate variable, just use list
+comprehension to build up a full structure with empty descriptions:
 
-Update the documentation accordingly.
+if len(options) > 0 and isinstance(v["options"][0], str):
+    options = [{'name':o, 'description':"" for o in v["options"]]
+else:
+    options = v["options"]
 
-Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
----
- bin/bitbake-setup                                  | 21 ++++++++++++-----
- .../bitbake-user-manual-environment-setup.rst      | 26 ++++++++++++++++++++--
- setup-schema/bitbake-setup.schema.json             | 21 ++++++++++++++++-
- 3 files changed, 60 insertions(+), 8 deletions(-)
+That requires tweaking the rest of the code that accesses options, but
+I think the result will be cleaner, e.g. adjust:
 
-diff --git a/bin/bitbake-setup b/bin/bitbake-setup
-index abe7614c832..8f28a1ef4d4 100755
---- a/bin/bitbake-setup
-+++ b/bin/bitbake-setup
-@@ -494,20 +494,31 @@ def choose_fragments(possibilities, parameters, non_interactive, skip_selection)
-         if skip_selection and k in skip_selection:
-             logger.info("Skipping a selection of {}, as requested on command line. The resulting bitbake configuration may require further manual adjustments.".format(k))
-             continue
--        choice = [o for o in v["options"] if o in parameters]
-+
-+        # options can be a list of strings or a list of dicts
-+        options = v["options"]
-+        descriptions = []
-+        if len(options) > 0 and isinstance(v["options"][0], dict):
-+            descriptions = [o["description"] for o in options]
-+            options = [o["name"] for o in options]
-+
-+        choice = [o for o in options if o in parameters]
-         if len(choice) > 1:
--            raise Exception("Options specified on command line do not allow a single selection from possibilities {}, please remove one or more from {}".format(v["options"], parameters))
-+            raise Exception("Options specified on command line do not allow a single selection from possibilities {}, please remove one or more from {}".format(options, parameters))
-         if len(choice) == 1:
-             choices[k] = choice[0]
-             continue
- 
-         if non_interactive:
--            raise Exception("Unable to choose from options in non-interactive mode: {}".format(v["options"]))
-+            raise Exception("Unable to choose from options in non-interactive mode: {}".format(options))
- 
-         logger.plain("\n" + v["description"] + ":")
--        options_enumerated = list(enumerate(v["options"], 1))
-+        options_enumerated = list(enumerate(options, 1))
-         for n,o in options_enumerated:
--            logger.plain("{}. {}".format(n, o))
-+            opt_str = f"{n}. {o}"
-+            if descriptions:
-+                opt_str += f"\t{descriptions[n - 1]}"
-+            logger.plain(opt_str)
-         option_n = int_input([i[0] for i in options_enumerated],
-                              "\nPlease select one of the above options by its number: ") - 1
-         choices[k] = options_enumerated[option_n][1]
-diff --git a/doc/bitbake-user-manual/bitbake-user-manual-environment-setup.rst b/doc/bitbake-user-manual/bitbake-user-manual-environment-setup.rst
-index 57e799980c4..0376d77143d 100644
---- a/doc/bitbake-user-manual/bitbake-user-manual-environment-setup.rst
-+++ b/doc/bitbake-user-manual/bitbake-user-manual-environment-setup.rst
-@@ -759,11 +759,21 @@ They contain the following sections:
-                 "oe-fragments-one-of": {
-                     "machine": {
-                         "description": "Target machines",
--                        "options" : ["machine/qemux86-64", "machine/qemuarm64", "machine/qemuriscv64", "machine/genericarm64", "machine/genericx86-64"]
-+                        "options" : [
-+                            { "name": "machine/qemux86-64", "description": "Machine configuration for running an x86-64 system on QEMU" },
-+                            { "name": "machine/qemuarm64", "description": "Machine configuration for running an ARMv8 system on QEMU" },
-+                            { "name": "machine/qemuriscv64", "description": "Machine configuration for running an RISC-V system on QEMU" },
-+                            { "name": "machine/genericarm64", "description": "Machine configuration for Arm64 SystemReady IR/ES platforms" },
-+                            { "name": "machine/genericx86-64", "description": "Machine configuration for generic x86_64 (64-bit) PCs and servers" }
-+                        ]
-                     },
-                     "distro": {
-                         "description": "Distribution configuration variants",
--                        "options" : ["distro/poky", "distro/poky-altcfg", "distro/poky-tiny"]
-+                        "options" : [
-+                            { "name": "distro/poky", "description": "Distro configuration for Poky (Yocto Project Reference Distro)" },
-+                            { "name": "distro/poky-altcfg", "description": "Distro configuration for Poky (systemd init manager)" },
-+                            { "name": "distro/poky-tiny", "description": "Distro configuration for Poky (optimized for size)" }
-+                        ]
-                     }
-                 },
-                 "configurations": [
-@@ -852,6 +862,18 @@ They contain the following sections:
-    -  ``oe-fragments-one-of`` (*optional*, OpenEmbedded specific): the OpenEmbedded
-       fragments to select as part of the build.
- 
-+      This can one of two formats:
-+
-+      -  A list of dictionaries with ``name`` and a ``description``,
-+         corresponding to respectively the fragments names and fragment
-+         descriptions (like in the example above).
-+
-+      -  A list of fragment names. For example:
-+
-+         .. code-block:: json
-+
-+            "options" : ["machine/qemux86-64", "machine/qemuarm64", "machine/qemuriscv64", "machine/genericarm64", "machine/genericx86-64"]
-+
-       This will trigger choices to make during the
-       :ref:`ref-bbsetup-command-init` command execution.
- 
-diff --git a/setup-schema/bitbake-setup.schema.json b/setup-schema/bitbake-setup.schema.json
-index e51fef3b97c..be8772db1b2 100644
---- a/setup-schema/bitbake-setup.schema.json
-+++ b/setup-schema/bitbake-setup.schema.json
-@@ -64,7 +64,26 @@
-                                 "type": "array",
-                                 "description": "List of BitBake configuration fragments to enable",
-                                 "items": {
--                                    "type": "string"
-+                                    "oneOf": [
-+                                        {
-+                                            "type": "string",
-+                                            "description": "Configuration fragment name"
-+                                        },
-+                                        {
-+                                            "type": "object",
-+                                            "description": "Dictionary of BitBake configuration fragments to enable (with description)",
-+                                            "properties": {
-+                                                "name": {
-+                                                    "type": "string",
-+                                                    "description": "Configuration fragment name"
-+                                                },
-+                                                "description": {
-+                                                    "type": "string",
-+                                                    "description": "Human-readable description of the fragment"
-+                                                }
-+                                            }
-+                                        }
-+                                    ]
-                                 }
-                             },
-                             "oe-fragments-one-of": {
+> +        choice = [o for o in options if o in parameters]
 
--- 
-2.52.0
+to
+choice = [o['name'] for o in options if o['name'] in parameters]
 
+Alex
 
