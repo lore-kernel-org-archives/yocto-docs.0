@@ -1,104 +1,146 @@
-Return-Path: <alex.kanavin@gmail.com>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AC7C6D2ECF7
-	for <webhook@archiver.kernel.org>; Tue, 20 Jan 2026 12:37:35 +0000 (UTC)
-Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.5476.1768912650217998467
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 321F0D2ECF7
+	for <webhook@archiver.kernel.org>; Tue, 20 Jan 2026 14:39:37 +0000 (UTC)
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.7848.1768919966485592670
  for <docs@lists.yoctoproject.org>;
- Tue, 20 Jan 2026 04:37:30 -0800
+ Tue, 20 Jan 2026 06:39:27 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=i5uKEdOI;
- spf=pass (domain: gmail.com, ip: 209.85.222.177, mailfrom: alex.kanavin@gmail.com)
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-8c5349ba802so493902885a.1
-        for <docs@lists.yoctoproject.org>; Tue, 20 Jan 2026 04:37:30 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768912649; cv=none;
-        d=google.com; s=arc-20240605;
-        b=IFH5V+WyiPF4SwJSj0cZQbYtDjd17iEgCCTZK8hBU8UcBWVgNyZZVrjHO8VxxNKRr7
-         pEZI/J7++DAiwQNjvOrWNbwDE7eeSFd0xOr2xspbNabj6tDUmOmtSVewWxXsimBiMUPq
-         hyL6RM6XqQ9E1PAfeV04a4YdvrO3WLVpED5ZaJ9N83q2C+W1nZ9fAFfctJCEMifsPoX0
-         itFA3dpLqj2slgoiZrdAFZQiTt/HLdxt6wrHiYXaXCEB8510qNJ6rkgnsWb8Xk2vYJG3
-         /EM6yy16syGJpTn36VGYiQoKbyxUrcfJhpXe1whkVlFV4Y/3A2oneDNKDFDMFggVtCXW
-         phpA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=v7k9KPYDs1mwiNIRnWB0md4RgBEDadW2oOhiWlRBrRI=;
-        fh=SJm7xgLG+FBHpcYmWUv3UQTJKgcJ0Zo60ufnwyTeYTQ=;
-        b=h9GWA9QGUgaJyBJx2I6dmHv8s234RMyn9YuuOv/XZ8JEEunxLy/R0fqaflYIVCfXKD
-         qmPnxXrA8iTBtzAbUEXjPjZN/Tn6ZvxxzFdONHbDhedtzc2l1ztdT25O2wq1AO15oW/H
-         esbmqeWqDkDFYWuEaiCiw8CkZ/UTQnqJYtvLwy1reM7xVQRhVHnCkv/Nsnf0SJWsUcP/
-         pIRfd5Q2+OxcyspghTkH7Bg9Fa0bpYsZVR+njWFMw8zE0Hl7KksZPLhchs6k9wXgxjvO
-         5WPjcc2xUH6agXZLEoijyHPOxT3I1jO3CHdMXDg05pguVWe8/4k7f4y1CuvLnZDNEPim
-         pekg==;
-        darn=lists.yoctoproject.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768912649; x=1769517449; darn=lists.yoctoproject.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=v7k9KPYDs1mwiNIRnWB0md4RgBEDadW2oOhiWlRBrRI=;
-        b=i5uKEdOInMC6OsgZ94ssnydXG+8rwMgsZu3NCVHLt2nYhACzq4i/sjxJe1X/Wf+6/A
-         a8/F3EuQz0gcv0Ooea5O95h/ioFEF7r8UYt1yVcEwqWigjd8WuiOizIxrGe5X+9spFOF
-         dFfyybEZHGpxK68rjjFrprQZbpGtL+UtFm8S2VTdTDdJjSkgNTlhSl/WPB3w1PgR27JA
-         bVwupdm/3LodK0Yjoq4BgQNbaikax872VXD86rRWXIDR+MQh7GC3/IJWGDqoHt5C2INM
-         XquH1onh1+8ruyL2EK+buLTGHxgmu+GfXAin69Jdk24+pAGRc5usIvLMyxWmMYxHfRmD
-         1O8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768912649; x=1769517449;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=v7k9KPYDs1mwiNIRnWB0md4RgBEDadW2oOhiWlRBrRI=;
-        b=QZG5uqW+pCXCXCjBnil84iJbPRrOVHwhEWV4hNnUUjci7HpXkaxNLYwO83MiHjqIXY
-         0gRK9EAHe0jQ4nlgTBuVLprj4mLR4WTWxiJcz6o9w6hfa0/YJekBA2n0fPO6zwZn9nmR
-         SnwJZQdb00aBq43rbHJR1Vzs5dU9Vr118AgXoDhCffIqlN6fXvneyQ7L3hc8FzT3XQoU
-         kGGMez41+TwBLp0/Oia5lPn1x3TLTswZ0o3VN/jO/EkivenPBYCw/RRwtuN+TyIi3fSo
-         dNUAgFmtziWnBm5PNqEEPaMc/IxGxw3GtH1JXg2vWrvWwMXZZ520wHYLANwAIw3HynsS
-         JxEA==
-X-Forwarded-Encrypted: i=1; AJvYcCUdsBx55T1KyUQAv1bMtYI5hhKHdZ7VuvUNrFNU3pqQ0KeYe8JjVLc02wPQ7CYlBNuaQAGr@lists.yoctoproject.org
-X-Gm-Message-State: AOJu0Yy1sqANwtZQ7/HOFvo5vmdIEESI8mwe34SO2dE00BRr1SfLweev
-	FX8qHx9scVAd+waHGlKFO1ht+Y9ZVNN6x862K4C8iVwwwEVsfLMkor0Nm5dMkUuHW+D11DnbXdY
-	L7NmAbMMqDFwRwBXyzcQAchGT7BvSfTY=
-X-Gm-Gg: AY/fxX7AYHmbng/hcsqO8fHeYrZBVf/dMpKfjSC+EawKjsG2EagBQmbSj0BBCRP86Az
-	KSEH5uJ5iFsm7jWSDilv36R1TknICCbznztXphb02cmXPWT5boIdhgPc/jXg7FTyhCFkdY4xZir
-	HSRWeSYHt04UofjXoxtUpkhGypEa1eqjwHQl/7kG0MsQN1B01ak2SVRKCzXLV9rrG/yACXazu6a
-	WYRqSxOeKdLaxfS8B2eoWMDVRQUrh3IXp/e3FoA7XD5sssrJAN8yEcydfAEdeRwL+o8RXX/APHU
-	tyKNiIiGUkWVNVfKSDkmjz3JgUoyBg==
-X-Received: by 2002:a05:620a:44c1:b0:89e:99b3:2eaa with SMTP id
- af79cd13be357-8c6a66d665amr1932590985a.8.1768912649091; Tue, 20 Jan 2026
- 04:37:29 -0800 (PST)
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=GFV3OUaL;
+ spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id CDC0E1A285C
+	for <docs@lists.yoctoproject.org>; Tue, 20 Jan 2026 14:39:24 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id A3C42606AB;
+	Tue, 20 Jan 2026 14:39:24 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 146DC10B6B310;
+	Tue, 20 Jan 2026 15:39:23 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1768919964; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=ekDEJl9gazMGktPrcgJqrRkexL4jqW3Y01CvAR27RFU=;
+	b=GFV3OUaLIDOV6+poZkff9zMIRfA3MklGYo6nSUlo5fdQ6GxMTi8P1JU4TEHvETeYa0Jwz2
+	uotSE5XUOJj/H2bas6CxQ7kcZ/43YmWlBwnsRxBtAVTYwU9eL5TSxevQZddTbCJ52BgJRB
+	iqL1T31eyIjHpH1NfYE8LFx/AtIJLeUWfAWMT/xTliehX+9D7FZTxVhEGQMhUStL/hqwN4
+	yz2U2uXluInORsP4w4hF/2/tbb5XHvnhbOhMgpcJST5Xdzp+YY/f/HUmTAX8QEfk8yApV4
+	RjJfR0Pf+uH0W4PvfVdqPkVIig77lIqUppi0fZsNHDxTebT/h1Y+6klhrP5V4g==
+From: Antonin Godard <antonin.godard@bootlin.com>
+Date: Tue, 20 Jan 2026 15:39:15 +0100
+Subject: [PATCH] dev-manual/packages.rst: pr server: fix and explain why
+ r0.X increment on srcrev change
 MIME-Version: 1.0
-References: <20260120-bitbake-setup-choose-builtin-v2-0-ade604ff2351@bootlin.com>
- <20260120-bitbake-setup-choose-builtin-v2-1-ade604ff2351@bootlin.com>
-In-Reply-To: <20260120-bitbake-setup-choose-builtin-v2-1-ade604ff2351@bootlin.com>
-From: Alexander Kanavin <alex.kanavin@gmail.com>
-Date: Tue, 20 Jan 2026 13:37:17 +0100
-X-Gm-Features: AZwV_QjobJh2RLsQbOakjU1gjp_0jDuzLaJTapbL9N783IfOQzUxADsUaXzCbrI
-Message-ID: <CANNYZj9pmrFRNoLt9od1yVfDiR=5xZafPrYSaXPe1bsDoayOJw@mail.gmail.com>
-Subject: Re: [bitbake-devel] [PATCH v2 1/2] bin/bitbake-setup: add
- descriptions for fragment choices
-To: antonin.godard@bootlin.com
-Cc: bitbake-devel@lists.openembedded.org, 
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, docs@lists.yoctoproject.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260120-pr-server-increment-details-v1-1-fa5d288def24@bootlin.com>
+X-B4-Tracking: v=1; b=H4sIAJKTb2kC/yXMQQrCQAxG4auUrA2kUyniVcTFOP2rER1LMi1C6
+ d0ddfkt3lvJYQqnY7OSYVHXV65odw2lW8xXsA7VFCT00gbhybgmC4w1J8MTufCAEvXh3MW4R5K
+ xl+5A9TAZRn3/7qfz3z5f7kjlu6Rt+wBL0rPbfwAAAA==
+X-Change-ID: 20260120-pr-server-increment-details-3aa4ec0f6038
+To: docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Robert Berger <pokylinux@reliableembeddedsystems.com>, 
+ Antonin Godard <antonin.godard@bootlin.com>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3281;
+ i=antonin.godard@bootlin.com; h=from:subject:message-id;
+ bh=wP7mcqwJOaosIYtzRF+TdJfSVYg+v6rzrhmI0+FHtlU=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpb5OadfP/nLBymQ5YWWDWINUEH8EGTCvDPiHSO
+ FNCTzPDqvaJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaW+TmgAKCRDRgEFAKaOo
+ NiOzD/0fSvrruindF0n229e6PllORs69rLhINXYRkQVjtVcQzo2R6u19XAVLMfBlcl8416q9711
+ UnXdUYzKxUISdozsmJWpjn5DXrpv+sdUChOkj/9o4Wt6jsj1ASn8XMNW92VsRxnDJqn+znLL42+
+ 4IX3Qk6cQkdx6K7HvVUlHTp/E0qxVKb3OiP7XqQU7F0eBicXnRalXmFCjS7yydDSxIL4OeKf2bW
+ wFar9SY+LiE4M7p7b9lHE+uoaCExpk9NExhu/yIT/mftCW9Zj7hxXzgAekU/OZRVLilrl3JFc19
+ XF3OhGeNBVxV/QBXv2Pur2Zhfk0zd2SSPGKZFlrNvMRNNRCWYrgwSUnIEgA7oHaklSfjZ/BR6Ov
+ GflW9kIpwJDO0USaxF2Kf2Ad62t53afmq2e1+y+BnZFwJFvYVlAaDhYh3Yst/oRaOG874uglX/f
+ sBn08qir9TnCc3ztEa1eNuO39MzuSHv6gEifESosXKVsxJdsaWbjkqUfpifu1DC8/kQDu6MG2Zu
+ cMEaEpdlNEDG+4PWbzXWansR1nND6I8QrLedosj2kEk2JXKD1ccCKdpBOQekaN05VJx/v17M5ke
+ YXLYvR6eC6xSWNme67IkbvDKO/RfrBbNPSw164nsp8QyMRtg1U8HEK47dJMPYr+nVJLdpJyeY0r
+ 793uuBzjR4k4MIg==
+X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
+ fpr=8648725188DD401BB9A0D3FFD180414029A3A836
+X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 20 Jan 2026 12:37:35 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8591
+ <docs@lists.yoctoproject.org>; Tue, 20 Jan 2026 14:39:37 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8592
 
-On Tue, 20 Jan 2026 at 09:57, Antonin Godard via
-lists.openembedded.org
-<antonin.godard=bootlin.com@lists.openembedded.org> wrote:
->  bin/bitbake-setup                                  | 21 ++++++++++++-----
->  .../bitbake-user-manual-environment-setup.rst      | 26 ++++++++++++++++++++--
->  setup-schema/bitbake-setup.schema.json             | 21 ++++++++++++++++-
+The current example of the SRCREV change triggering a gitX bump is
+wrong, as both gitX and r0.X get incremented.
 
-Oh, one more thing: adjust lib/bb/tests/setup.py to use the new
-format. Even better if you can tweak it to use both old and new in
-test configs. And it needs to pass of course :D
+Why this is happening is explained in bug 15729, which I copy here:
 
-Alex
+> +gitX+ is indeed related to changes in the source code.
+>
+> r0.X is bumped each time the checksum of the do_package task of the
+> simple-hello-world-git recipe changes. This happens here:
+> https://git.openembedded.org/openembedded-core/tree/meta/classes-global/package.bbclass?id=235e6d49e5888ad04416219e10b6df91a738661a#n306
+>
+> This line sets the value of PRAUTO and represents the number X found in
+> r0.X. It will in the end make it into EXTENDPRAUTO, which itself makes
+> to PKGR == r0.X.
+>
+> This line calls getPR(version, pkgarch, checksum). Between test case 5
+> and 6, only the checksum changes. This checksum is the checksum of the
+> do_package task (gotten from get_do_package_hash() above).
+>
+> Now, let's dump what changed with regards to this task between two
+> consecutive runs, using the sigdata file in build/tmp/stamps/:
+>
+> ```
+> [...]
+> Variable fetcher_hashes_dummyfunc value changed from '2650ad6714c3f3248abfe9d3daf1196f307ed494' to '4af682a50174f5deb0397847da97d7cdba4ad067'
+> ```
+>
+> The last line shows that the value of fetcher_hashes_dummyfunc changed
+> from '2650ad6714c3f3248abfe9d3daf1196f307ed494' to
+> '4af682a50174f5deb0397847da97d7cdba4ad067'. Those are the commit hashes
+> in the git history of the simple-hello-world-git repository.
+>
+> Now you can see why this 0.X gets bumped, is because of the SRCREV change.
+
+Fix the example, and detail what gets changed and why.
+
+[YOCTO #15729]
+
+Cc: Robert Berger <pokylinux@reliableembeddedsystems.com>
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+---
+ documentation/dev-manual/packages.rst | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
+
+diff --git a/documentation/dev-manual/packages.rst b/documentation/dev-manual/packages.rst
+index 8bd48c8e8..9c38bc39b 100644
+--- a/documentation/dev-manual/packages.rst
++++ b/documentation/dev-manual/packages.rst
+@@ -275,7 +275,20 @@ with a number. The number used depends on the state of the PR Service:
+    .. code-block:: none
+ 
+       hello-world-git_0.0+git0+b6558dd387-r0.0_armv7a-neon.ipk
+-      hello-world-git_0.0+git1+dd2f5c3565-r0.0_armv7a-neon.ipk
++      hello-world-git_0.0+git1+dd2f5c3565-r0.1_armv7a-neon.ipk
++
++   Two numbers got incremented here:
++
++   -  ``gitX`` changed from ``git0`` to ``git1``. This is because there was a
++      change in the source code (``SRCREV``).
++
++   -  ``r0.X`` changed from ``r0.0`` to ``r0.1``. This is because there was a
++      change in the recipe, which ultimately the hash of the
++      :ref:`ref-tasks-package` task (the variable ``SRCREV`` changed value).
++
++      Anytime a recipe change triggers a change of the :ref:`ref-tasks-package`
++      task hash, this value is incremented. This means this value can be
++      incremented independently of ``gitX``.
+ 
+ -  If PR Service is not enabled, the build system replaces the
+    ``AUTOINC`` placeholder with zero (i.e. "0"). This results in
+
+---
+base-commit: b8a56b8b2e8c0417b2f7204f80c79b05d95e9ce4
+change-id: 20260120-pr-server-increment-details-3aa4ec0f6038
+
 
