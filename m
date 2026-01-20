@@ -2,89 +2,94 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4127AD2ECF7
-	for <webhook@archiver.kernel.org>; Tue, 20 Jan 2026 08:57:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3A954D2ED17
+	for <webhook@archiver.kernel.org>; Tue, 20 Jan 2026 08:57:53 +0000 (UTC)
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.2498.1768899451373456111
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.2464.1768899463339552772
  for <docs@lists.yoctoproject.org>;
- Tue, 20 Jan 2026 00:57:32 -0800
+ Tue, 20 Jan 2026 00:57:44 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=mpMq+60h;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=olCE4D1I;
  spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id AF5A04E421A8
-	for <docs@lists.yoctoproject.org>; Tue, 20 Jan 2026 08:57:29 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id CDC624E421A8
+	for <docs@lists.yoctoproject.org>; Tue, 20 Jan 2026 08:57:41 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 7E7FD606AB;
-	Tue, 20 Jan 2026 08:57:29 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2441110B6B31A;
-	Tue, 20 Jan 2026 09:57:27 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 9E541606AB;
+	Tue, 20 Jan 2026 08:57:41 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9749010B6B31A;
+	Tue, 20 Jan 2026 09:57:40 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1768899449; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=xO+cDepZgS0o2SHJH3DN1ETT7qcFFdg15JP9n9il3+Y=;
-	b=mpMq+60hzvbyQ7qttPftJae+N9txp9OqOFwN1nTBvj/LacUiO2194cl/UQj7NgilMTsQU+
-	vTsl1g9gGUZCcB1wbSWM2F2a6rdxsomnOvUiqpnHMa+Yi4IAhH+66BgYoWEYg8EO0QtrGT
-	IckXu2/lKyRyWzprJuUSRAfK64Qp4sTT6qT9MwUfSOvjfSN5r/DY8ZJLrWOdBrqGWZVgdI
-	PVuFbZfSH0lIodOBbO1TBXliSYm069VI0r/tNwxCpUxDf7eo4KLmpGcE1Warb2MBGTRX+T
-	r3ANDGkrTGzzUdhDVGHmhDm+sKYU+J9ZwG+7dqqzGo3Dita8Fp+rI5Lly3yXEQ==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 20 Jan 2026 09:57:27 +0100
-Message-Id: <DFTAIRV9TAO0.L3XG0TA399R@bootlin.com>
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: "Alexander Kanavin" <alex.kanavin@gmail.com>
-Subject: Re: [docs] [PATCH 1/2] bin/bitbake-setup: add descriptions for
- fragment choices
-Cc: <bitbake-devel@lists.openembedded.org>, "Thomas Petazzoni"
- <thomas.petazzoni@bootlin.com>, <docs@lists.yoctoproject.org>
-References: <20260116-bitbake-setup-choose-builtin-v1-0-8d66666a9efd@bootlin.com> <20260116-bitbake-setup-choose-builtin-v1-1-8d66666a9efd@bootlin.com> <CANNYZj-Oh-WWLEhX=ZKpB2ddrR=oYseXBBgT-zQQ0CPUdA+HBg@mail.gmail.com>
-In-Reply-To: <CANNYZj-Oh-WWLEhX=ZKpB2ddrR=oYseXBBgT-zQQ0CPUdA+HBg@mail.gmail.com>
+	t=1768899461; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=VK89vZ7jd5XL3qfAWDoKroz4uG+jQ2YMN3pogP0wXEM=;
+	b=olCE4D1I9mg7V3EUHxCDa/27Q8G97AXG7K1hzJWcrveGjJEMsx/pqiL75DeZOnyIDIXdzU
+	zY4whOackN5PfrBUJc/Ri2L4Qk6cxrPvYf/rADL07RLPtSJqlOxSaYRd4fiu7wvu9N3pmb
+	H2yyQXd2b7yg0SAA3nQQBLgMTw6KABA43IH9Vbi0GgUOF6oeRcwjCxTTRfFPQv1SQlZLvV
+	EA1CZww+wrYNeuygjoQirbQWGCg73qomJF5vTIEaipk9bPpvKt4nd/tSyr72kEc6lJmes/
+	3/QZBf3/1yIMuinCGrk2nt1h7obGTmk//Xh4jfrD8mHKB4cRne+zUiJO05JLQg==
+From: Antonin Godard <antonin.godard@bootlin.com>
+Subject: [PATCH v2 0/2] bitbake-setup: add descriptions for fragment
+ choices
+Date: Tue, 20 Jan 2026 09:57:32 +0100
+Message-Id: <20260120-bitbake-setup-choose-builtin-v2-0-ade604ff2351@bootlin.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAHxDb2kC/42NQQ6CMBBFr0Jm7Zi2ESKuvIdhQcsgo9iSthAN6
+ d2leAH/7iU/760QyDMFuBQreFo4sLMbqEMBZmjtnZC7jUEJVQkpK9QcdfskDBTnCc3gXCDUM4+
+ RLfZa1rUoT8aoEjbF5Knn966/NT8Os36QidmZHwOH6Pxn7y8y//5MLRIFnrsqr62p767auTiyP
+ Rr3gial9AVVaRV43AAAAA==
+X-Change-ID: 20260116-bitbake-setup-choose-builtin-fb199054cc25
+To: bitbake-devel@lists.openembedded.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ docs@lists.yoctoproject.org, Antonin Godard <antonin.godard@bootlin.com>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1162;
+ i=antonin.godard@bootlin.com; h=from:subject:message-id;
+ bh=wWRJeaK++5MlwzIRIY+CwCKx6sayctNsiral3vwzS5g=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpb0ODbLsU2ob1+u0/J5IitW+3AFXSeg3tWsPJy
+ pF7z1Bq2ReJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaW9DgwAKCRDRgEFAKaOo
+ Nq0rEACqvIslAxFKvR4iuZz0kfbndPysKXwFRVQW6oy6K6NwOsGJPXaTiFH5kljxdIwNaA8w+1z
+ jd4BSSs4eujMxFZobi5Hr0XDmhMYmc6db0pM0C7VYVHQ45LoZfDbIDAGE80xi+9mMo97GP99np5
+ O8VJ03pU+8rVWAEYbNhsu5tvyq/zVuTmEN3DkAy+Jbh97xdJWWB4qqshmrSzZbbO7jDdTHcVg97
+ wGv/uVSnJNs2AeJtwNv7dkV2++oAwMMLM5GG9Wlw0YQqwGJzmxhH+X/E6ZbKzYVnyMXKlE29xtQ
+ udIZ8v820QoFHBzt3EJ2etwJMurRZqt0dfeH5DvTyF+ZzgzkOplUVkY8+E2KUgs6vQeAQTA1Wkk
+ 0Y74HUuasngRkfYHIpM9AvfJhq2fDgEDDRbb31oA60lQiR5sJUcw9m7ZeOMyMhNmeDfV5/vVsey
+ sZFvdVRFU+LBJBd/vJzsCHKxJ0vE0O6RqTjWRzgQf8BGlhrOUDRtAY641sdHR2ULPGGgpWAdai7
+ 3sS880hArt6aODM528J5A+oCSJxJ4jBz1thbiqtQKlnq2A0IaLI2NO3E2Ozw8KCGl5kecRLGF8u
+ jIWofJKUYL3djGzKmhPQ7bkXNINwmh+pUJkRCgTPzPTp4LP569oPtnX7pS50WmlM1aK9KZFegTo
+ bohgAk0mKwhNiTQ==
+X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
+ fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 20 Jan 2026 08:57:33 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8585
+ <docs@lists.yoctoproject.org>; Tue, 20 Jan 2026 08:57:53 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8586
 
-Hi,
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+---
+Changes in v2:
+- As suggested by Alex, change the new way of specifying fragments to
+  remain a dictionary so they can be extended in the future
+- Link to v1: https://patch.msgid.link/20260116-bitbake-setup-choose-builtin-v1-0-8d66666a9efd@bootlin.com
 
-On Fri Jan 16, 2026 at 7:23 PM CET, Alexander Kanavin wrote:
-> On Fri, 16 Jan 2026 at 16:49, Antonin Godard via
-> lists.yoctoproject.org
-> <antonin.godard=3Dbootlin.com@lists.yoctoproject.org> wrote:
->> -                        "options" : ["machine/qemux86-64", "machine/qem=
-uarm64", "machine/qemuriscv64", "machine/genericarm64", "machine/genericx86=
--64"]
->> +                        "options" : {
->> +                            "machine/qemux86-64": "Machine configuratio=
-n for running an x86-64 system on QEMU",
->> +                            "machine/qemuarm64": "Machine configuration=
- for running an ARMv8 system on QEMU",
->> +                            "machine/qemuriscv64": "Machine configurati=
-on for running an RISC-V system on QEMU",
->> +                            "machine/genericarm64": "Machine configurat=
-ion for Arm64 SystemReady IR/ES platforms",
->> +                            "machine/genericx86-64": "Machine configura=
-tion for generic x86_64 (64-bit) PCs and servers"
->
-> Let's make this properly extensible:
->
-> options: [ {"name":"machine/qemux86-64","description":"Machine
-> configuration for ..."}, {"name":...},...]
->
-> Basically "options" remains a list, but each item in that list can be
-> either a string, or a dictionary. That way more keys can be added to
-> the dictionary in the future if needed.
+---
+Antonin Godard (2):
+      bin/bitbake-setup: add descriptions for fragment choices
+      default-registry: update fragments choices with descriptions
 
-Makes total sense, I'm about to send a v2. Thanks :)
-
-Antonin
-
---=20
-Antonin Godard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+ bin/bitbake-setup                                  | 21 ++++++++++++-----
+ .../configurations/oe-nodistro-master.conf.json    |  6 ++++-
+ .../oe-nodistro-whinlatter.conf.json               |  6 ++++-
+ .../configurations/poky-master.conf.json           | 14 ++++++++++--
+ .../configurations/poky-whinlatter.conf.json       | 14 ++++++++++--
+ .../bitbake-user-manual-environment-setup.rst      | 26 ++++++++++++++++++++--
+ setup-schema/bitbake-setup.schema.json             | 21 ++++++++++++++++-
+ 7 files changed, 94 insertions(+), 14 deletions(-)
+---
+base-commit: d48c93e13d4c17a2c63a09335c97ea8630571201
+change-id: 20260116-bitbake-setup-choose-builtin-fb199054cc25
 
 
