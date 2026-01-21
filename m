@@ -2,27 +2,27 @@ Return-Path: <foss@0leil.net>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CA3F4C44532
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D2E3CC44525
 	for <webhook@archiver.kernel.org>; Wed, 21 Jan 2026 13:32:01 +0000 (UTC)
-Received: from smtp-1908.mail.infomaniak.ch (smtp-1908.mail.infomaniak.ch [185.125.25.8])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.11822.1769002317382272122
+Received: from smtp-bc0e.mail.infomaniak.ch (smtp-bc0e.mail.infomaniak.ch [45.157.188.14])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.11828.1769002319656770844
  for <docs@lists.yoctoproject.org>;
- Wed, 21 Jan 2026 05:31:58 -0800
+ Wed, 21 Jan 2026 05:31:59 -0800
 Authentication-Results: mx.groups.io;
- dkim=none (message not signed); spf=pass (domain: 0leil.net, ip: 185.125.25.8, mailfrom: foss+yocto@0leil.net)
-Received: from smtp-3-0000.mail.infomaniak.ch (unknown [IPv6:2001:1600:4:17::246b])
-	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4dx4qH4TkTz4Hh;
-	Wed, 21 Jan 2026 14:31:55 +0100 (CET)
-Received: from unknown by smtp-3-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4dx4qH1bXdzx9x;
-	Wed, 21 Jan 2026 14:31:55 +0100 (CET)
+ dkim=none (message not signed); spf=pass (domain: 0leil.net, ip: 45.157.188.14, mailfrom: foss+yocto@0leil.net)
+Received: from smtp-3-0000.mail.infomaniak.ch (smtp-3-0000.mail.infomaniak.ch [10.4.36.107])
+	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4dx4qL0RdRz3hd;
+	Wed, 21 Jan 2026 14:31:58 +0100 (CET)
+Received: from unknown by smtp-3-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4dx4qK3RqWzxKK;
+	Wed, 21 Jan 2026 14:31:57 +0100 (CET)
 From: Quentin Schulz <foss+yocto@0leil.net>
-Date: Wed, 21 Jan 2026 14:31:42 +0100
-Subject: [PATCH v2 01/12] sdk-manual: fix incorrect highlight language for
- text code-blocks
+Date: Wed, 21 Jan 2026 14:31:46 +0100
+Subject: [PATCH v2 05/12] sdk-manual: appending-customizing: use none lexer
+ for BitBake code blocks
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260121-code-block-misc-20260114-v2-1-fdd4bb5c2e68@cherry.de>
+Message-Id: <20260121-code-block-misc-20260114-v2-5-fdd4bb5c2e68@cherry.de>
 References: <20260121-code-block-misc-20260114-v2-0-fdd4bb5c2e68@cherry.de>
 In-Reply-To: <20260121-code-block-misc-20260114-v2-0-fdd4bb5c2e68@cherry.de>
 To: docs@lists.yoctoproject.org
@@ -33,102 +33,114 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Wed, 21 Jan 2026 13:32:01 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8613
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8617
 
 From: Quentin Schulz <quentin.schulz@cherry.de>
 
-When unspecified in conf.py via the highlight_language variable (and
-highlight variable for code-blocks), the lexer used for literal blocks
-is "default" which tries to highlight the block as Python code.
+No lexer exists for BitBake right now, so let's simply disable the lexer
+entirely by using the "none" lexer.
 
-These blocks aren't Python but either simply the console output or a
-file name (which we should probably just double tick-quote instead), so
-let's render those blocks with the "text" lexer.
+I'm using "none" instead of "text" to be able to "easily" replace none
+code blocks the day a BitBake lexer exists. I "reserve" "text" for
+actual text content (e.g. a filename, or the output of a command line
+without the command line).
 
 Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
 ---
- documentation/sdk-manual/appendix-obtain.rst | 12 +++++++++---
- documentation/sdk-manual/extensible.rst      |  4 +++-
- documentation/sdk-manual/using.rst           |  8 ++++++--
- 3 files changed, 18 insertions(+), 6 deletions(-)
+ documentation/sdk-manual/appendix-customizing.rst | 32 +++++++++++++++++------
+ 1 file changed, 24 insertions(+), 8 deletions(-)
 
-diff --git a/documentation/sdk-manual/appendix-obtain.rst b/documentation/sdk-manual/appendix-obtain.rst
-index a42cbc31b..94c5552e5 100644
---- a/documentation/sdk-manual/appendix-obtain.rst
-+++ b/documentation/sdk-manual/appendix-obtain.rst
-@@ -61,7 +61,9 @@ Follow these steps to locate and hand-install the toolchain:
- 
-    For example, if your build host is a 64-bit x86 system and you need
-    an extended SDK for a 64-bit core2 QEMU target, go into the ``x86_64``
--   folder and download the following installer::
-+   folder and download the following installer:
+diff --git a/documentation/sdk-manual/appendix-customizing.rst b/documentation/sdk-manual/appendix-customizing.rst
+index e984b86bd..467c5c10c 100644
+--- a/documentation/sdk-manual/appendix-customizing.rst
++++ b/documentation/sdk-manual/appendix-customizing.rst
+@@ -147,7 +147,9 @@ from the :term:`DISTRO` variable.
+ The
+ :ref:`populate_sdk_base <ref-classes-populate-sdk-*>`
+ class defines the default value of the :term:`SDK_TITLE` variable as
+-follows::
++follows:
 +
-+   .. code-block:: text
++.. code-block:: none
  
-       poky-glibc-x86_64-core-image-sato-core2-64-qemux86-64-toolchain-&DISTRO;.sh
+    SDK_TITLE ??= "${@d.getVar('DISTRO_NAME') or d.getVar('DISTRO')} SDK"
  
-@@ -130,7 +132,9 @@ build the SDK installer. Follow these steps:
-       :term:`SDKMACHINE` value must be set for the architecture of the
-       machine you are using to build the installer. If :term:`SDKMACHINE`
-       is not set appropriately, the build fails and provides an error
--      message similar to the following::
-+      message similar to the following:
+@@ -159,7 +161,9 @@ an example, assume you have your own layer for your distribution named
+ does the default "poky" distribution. If so, you could update the
+ :term:`SDK_TITLE` variable in the
+ ``~/meta-mydistro/conf/distro/mydistro.conf`` file using the following
+-form::
++form:
 +
-+      .. code-block:: text
++.. code-block:: none
  
-          The extensible SDK can currently only be built for the same
-          architecture as the machine being built on - SDK_ARCH
-@@ -224,7 +228,9 @@ Follow these steps to extract the root filesystem:
+    SDK_TITLE = "your_title"
  
-    For example, if you plan on using a BeagleBone device as your target
-    hardware and your image is a ``core-image-sato-sdk`` image, you can
--   download the following file::
-+   download the following file:
+@@ -214,7 +218,9 @@ installation directory for the SDK is based on the
+ :term:`SDKEXTPATH` variables from
+ within the
+ :ref:`populate_sdk_base <ref-classes-populate-sdk-*>`
+-class as follows::
++class as follows:
 +
-+   .. code-block:: text
++.. code-block:: none
  
-       core-image-sato-sdk-beaglebone-yocto.tar.bz2
+    SDKEXTPATH ??= "~/${@d.getVar('DISTRO')}_sdk"
  
-diff --git a/documentation/sdk-manual/extensible.rst b/documentation/sdk-manual/extensible.rst
-index e5e9e4a03..fe5e4cdd5 100644
---- a/documentation/sdk-manual/extensible.rst
-+++ b/documentation/sdk-manual/extensible.rst
-@@ -121,7 +121,9 @@ is the general form::
- 
- For example, the following SDK installer is for a 64-bit
- development host system and a i586-tuned target architecture based off
--the SDK for ``core-image-sato`` and using the current &DISTRO; snapshot::
-+the SDK for ``core-image-sato`` and using the current &DISTRO; snapshot:
+@@ -231,7 +237,9 @@ assume you have your own layer for your distribution named
+ does the default "poky" distribution. If so, you could update the
+ :term:`SDKEXTPATH` variable in the
+ ``~/meta-mydistro/conf/distro/mydistro.conf`` file using the following
+-form::
++form:
 +
-+.. code-block:: text
++.. code-block:: none
  
-    poky-glibc-x86_64-core-image-sato-i586-toolchain-ext-&DISTRO;.sh
+    SDKEXTPATH = "some_path_for_your_installed_sdk"
  
-diff --git a/documentation/sdk-manual/using.rst b/documentation/sdk-manual/using.rst
-index bfb306abf..eced4a5c5 100644
---- a/documentation/sdk-manual/using.rst
-+++ b/documentation/sdk-manual/using.rst
-@@ -52,7 +52,9 @@ libraries appropriate for developing against the corresponding image.
+@@ -265,7 +273,9 @@ source, you need to do a number of things:
  
- The names of the tarball installer scripts are such that a string
- representing the host system appears first in the filename and then is
--immediately followed by a string representing the target architecture::
-+immediately followed by a string representing the target architecture:
+ #. Set the appropriate configuration so that the produced SDK knows how
+    to find the configuration. The variable you need to set is
+-   :term:`SSTATE_MIRRORS`::
++   :term:`SSTATE_MIRRORS`:
 +
-+.. code-block:: text
++   .. code-block:: none
  
-    poky-glibc-host_system-image_type-arch-toolchain-release_version.sh
+       SSTATE_MIRRORS = "file://.* https://example.com/some_path/sstate-cache/PATH"
  
-@@ -75,7 +77,9 @@ immediately followed by a string representing the target architecture::
- 
- For example, the following SDK installer is for a 64-bit
- development host system and a i586-tuned target architecture based off
--the SDK for ``core-image-sato`` and using the current DISTRO snapshot::
-+the SDK for ``core-image-sato`` and using the current DISTRO snapshot:
+@@ -278,7 +288,9 @@ source, you need to do a number of things:
+       side, and its contents will not interfere with the build), then
+       you can set the variable in your ``local.conf`` or custom distro
+       configuration file. You can then pass the variable to the SDK by
+-      adding the following::
++      adding the following:
 +
-+.. code-block:: text
++      .. code-block:: none
  
-    poky-glibc-x86_64-core-image-sato-i586-toolchain-DISTRO.sh
+          ESDK_LOCALCONF_ALLOW = "SSTATE_MIRRORS"
+ 
+@@ -301,7 +313,9 @@ everything needed to reconstruct the image for which the SDK was built.
+ This bundling can lead to an SDK installer file that is a Gigabyte or
+ more in size. If the size of this file causes a problem, you can build
+ an SDK that has just enough in it to install and provide access to the
+-``devtool command`` by setting the following in your configuration::
++``devtool command`` by setting the following in your configuration:
++
++.. code-block:: none
+ 
+    SDK_EXT_TYPE = "minimal"
+ 
+@@ -323,7 +337,9 @@ information enables the ``devtool search`` command to return useful
+ results.
+ 
+ To facilitate this wider range of information, you would need to set the
+-following::
++following:
++
++.. code-block:: none
+ 
+    SDK_INCLUDE_PKGDATA = "1"
  
 
 -- 
