@@ -2,27 +2,27 @@ Return-Path: <foss@0leil.net>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 07EE2C4453B
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 07DF5C44538
 	for <webhook@archiver.kernel.org>; Wed, 21 Jan 2026 13:32:02 +0000 (UTC)
-Received: from smtp-bc0c.mail.infomaniak.ch (smtp-bc0c.mail.infomaniak.ch [45.157.188.12])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.11826.1769002318455377091
+Received: from smtp-42a8.mail.infomaniak.ch (smtp-42a8.mail.infomaniak.ch [84.16.66.168])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.11827.1769002319123291701
  for <docs@lists.yoctoproject.org>;
- Wed, 21 Jan 2026 05:31:58 -0800
+ Wed, 21 Jan 2026 05:31:59 -0800
 Authentication-Results: mx.groups.io;
- dkim=none (message not signed); spf=pass (domain: 0leil.net, ip: 45.157.188.12, mailfrom: foss+yocto@0leil.net)
+ dkim=none (message not signed); spf=pass (domain: 0leil.net, ip: 84.16.66.168, mailfrom: foss+yocto@0leil.net)
 Received: from smtp-3-0000.mail.infomaniak.ch (unknown [IPv6:2001:1600:4:17::246b])
-	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4dx4qJ67g1z4mJ;
-	Wed, 21 Jan 2026 14:31:56 +0100 (CET)
-Received: from unknown by smtp-3-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4dx4qJ1KwQzwV1;
+	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4dx4qK2gCKz4Qv;
+	Wed, 21 Jan 2026 14:31:57 +0100 (CET)
+Received: from unknown by smtp-3-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4dx4qJ6H6Gzw3d;
 	Wed, 21 Jan 2026 14:31:56 +0100 (CET)
 From: Quentin Schulz <foss+yocto@0leil.net>
-Date: Wed, 21 Jan 2026 14:31:44 +0100
-Subject: [PATCH v2 03/12] sdk-manual: fix improper indent of general form
- of tarball installer scripts
+Date: Wed, 21 Jan 2026 14:31:45 +0100
+Subject: [PATCH v2 04/12] sdk-manual: working-projects: properly highlight
+ code code-blocks
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260121-code-block-misc-20260114-v2-3-fdd4bb5c2e68@cherry.de>
+Message-Id: <20260121-code-block-misc-20260114-v2-4-fdd4bb5c2e68@cherry.de>
 References: <20260121-code-block-misc-20260114-v2-0-fdd4bb5c2e68@cherry.de>
 In-Reply-To: <20260121-code-block-misc-20260114-v2-0-fdd4bb5c2e68@cherry.de>
 To: docs@lists.yoctoproject.org
@@ -33,109 +33,102 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Wed, 21 Jan 2026 13:32:02 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8615
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8616
 
 From: Quentin Schulz <quentin.schulz@cherry.de>
 
-poky-glibc-host_system-image_type-arch-toolchain-ext-release_version.sh
-is in a code-block and thus requires to be indented (it is). Sphinx
-knows a block has ended when the indentation of the next line is smaller
-than in the block, otherwise it's all in the same block.
+There are some blocks containing C code so highlight them as C with the
+"c" lexer.
 
-The explanation of the replaceable parts in the tarball installer script
-filename should be text and not part of the block, so let's do that.
+For autotool'ed files, there's no lexer available so "none" will do just
+fine.
 
-While at it, reformat by putting each replaceable part in a bullet list,
-highlight the replaceable part or what it can replaced with as well as
-putting the replacement on the same line instead of making it a quote by
-having them indented in the bullet list.
-
-Finally, replace the literal block (::) with a parsed-literal block so
-we can highlight the placeholders appropriately.
+Finally, there's one Makefile code block so highlight it with the
+"makefile" lexer.
 
 Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
 ---
- documentation/sdk-manual/extensible.rst | 21 ++++++++-------------
- documentation/sdk-manual/using.rst      | 21 +++++++--------------
- 2 files changed, 15 insertions(+), 27 deletions(-)
+ documentation/sdk-manual/working-projects.rst | 28 ++++++++++++++++++++-------
+ 1 file changed, 21 insertions(+), 7 deletions(-)
 
-diff --git a/documentation/sdk-manual/extensible.rst b/documentation/sdk-manual/extensible.rst
-index 808e076e6..0eb9eda8d 100644
---- a/documentation/sdk-manual/extensible.rst
-+++ b/documentation/sdk-manual/extensible.rst
-@@ -100,26 +100,21 @@ The names of the tarball installer scripts are such that a string
- representing the host system appears first in the filename and then is
- immediately followed by a string representing the target architecture.
- An extensible SDK has the string "-ext" as part of the name. Following
--is the general form::
-+is the general form:
+diff --git a/documentation/sdk-manual/working-projects.rst b/documentation/sdk-manual/working-projects.rst
+index ceae1fedd..d64dae435 100644
+--- a/documentation/sdk-manual/working-projects.rst
++++ b/documentation/sdk-manual/working-projects.rst
+@@ -56,7 +56,9 @@ project:
+    Create the remaining
+    three files as follows:
  
--   poky-glibc-host_system-image_type-arch-toolchain-ext-release_version.sh
-+.. parsed-literal::
+-   -  ``hello.c``::
++   -  ``hello.c``:
++
++      .. code-block:: c
  
--   Where:
--       host_system is a string representing your development system:
-+   poky-glibc-*host_system*-*image_type*-*arch*-toolchain-ext-*release_version*.sh
+          #include <stdio.h>
  
--                  i686 or x86_64.
-+Where:
+@@ -66,7 +68,9 @@ project:
+                  return 0;
+              }
  
--       image_type is the image for which the SDK was built:
-+-  *host_system* is a string representing your development system: ``i686`` or ``x86_64``.
+-   -  ``configure.ac``::
++   -  ``configure.ac``:
++
++      .. code-block:: none
  
--                  core-image-sato or core-image-minimal
-+-  *image_type* is the image for which the SDK was built: ``core-image-sato`` or ``core-image-minimal``.
+          AC_INIT(hello,0.1)
+          AM_INIT_AUTOMAKE([foreign])
+@@ -74,7 +78,9 @@ project:
+          AC_CONFIG_FILES(Makefile)
+          AC_OUTPUT
  
--       arch is a string representing the tuned target architecture:
-+-  *arch* is a string representing the tuned target architecture: ``aarch64``, ``armv5e``, ``core2-64``, ``i586``, ``mips32r2``, ``mips64``, ``ppc7400``, or ``cortexa8hf-neon``.
+-   -  ``Makefile.am``::
++   -  ``Makefile.am``:
++
++      .. code-block:: none
  
--                  aarch64, armv5e, core2-64, i586, mips32r2, mips64, ppc7400, or cortexa8hf-neon
--
--       release_version is a string representing the release number of the Yocto Project:
--
--                  &DISTRO;, &DISTRO;+snapshot
-+-  *release_version* is a string representing the release number of the Yocto Project: ``&DISTRO;``, ``&DISTRO;+snapshot``.
+          bin_PROGRAMS = hello
+          hello_SOURCES = hello.c
+@@ -271,7 +277,9 @@ example:
  
- For example, the following SDK installer is for a 64-bit
- development host system and a i586-tuned target architecture based off
-diff --git a/documentation/sdk-manual/using.rst b/documentation/sdk-manual/using.rst
-index 28f9e33b0..792e159bf 100644
---- a/documentation/sdk-manual/using.rst
-+++ b/documentation/sdk-manual/using.rst
-@@ -54,26 +54,19 @@ The names of the tarball installer scripts are such that a string
- representing the host system appears first in the filename and then is
- immediately followed by a string representing the target architecture:
+    Create the three files as follows:
  
--.. code-block:: text
-+.. parsed-literal::
+-   -  ``main.c``::
++   -  ``main.c``:
++
++      .. code-block:: c
  
--   poky-glibc-host_system-image_type-arch-toolchain-release_version.sh
-+   poky-glibc-*host_system*-*image_type*-*arch*-toolchain-*release_version*.sh
+          #include "module.h"
+          void sample_func();
+@@ -281,12 +289,16 @@ example:
+              return 0;
+          }
  
--   Where:
--       host_system is a string representing your development system:
-+Where:
+-   -  ``module.h``::
++   -  ``module.h``:
++
++      .. code-block:: c
  
--                  i686 or x86_64.
-+-  *host_system* is a string representing your development system: ``i686`` or ``x86_64``.
+          #include <stdio.h>
+          void sample_func();
  
--       image_type is the image for which the SDK was built:
-+-  *image_type* is the image for which the SDK was built: ``core-image-minimal`` or ``core-image-sato``.
+-   -  ``module.c``::
++   -  ``module.c``:
++
++      .. code-block:: c
  
--                  core-image-minimal or core-image-sato.
-+-  *arch* is a string representing the tuned target architecture: ``aarch64``, ``armv5e``, ``core2-64``, ``i586``, ``mips32r2``, ``mips64``, ``ppc7400``, or ``cortexa8hf-neon``.
+          #include "module.h"
+          void sample_func()
+@@ -321,7 +333,9 @@ example:
+    two lines that can be used to set the :term:`CC` variable. One line is
+    identical to the value that is set when you run the SDK environment
+    setup script, and the other line sets :term:`CC` to "gcc", the default
+-   GNU compiler on the build host::
++   GNU compiler on the build host:
++
++   .. code-block:: Makefile
  
--       arch is a string representing the tuned target architecture:
--
--                  aarch64, armv5e, core2-64, i586, mips32r2, mips64, ppc7400, or cortexa8hf-neon.
--
--       release_version is a string representing the release number of the Yocto Project:
--
--                  &DISTRO;, &DISTRO;+snapshot
-+-  *release_version* is a string representing the release number of the Yocto Project: ``&DISTRO;``, ``&DISTRO;+snapshot``.
- 
- For example, the following SDK installer is for a 64-bit
- development host system and a i586-tuned target architecture based off
+       # CC=i586-poky-linux-gcc -m32 -march=i586 --sysroot=/opt/poky/2.5/sysroots/i586-poky-linux
+       # CC="gcc"
 
 -- 
 2.52.0
