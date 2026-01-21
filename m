@@ -2,29 +2,32 @@ Return-Path: <foss@0leil.net>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D2E3CC44525
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E8D6FC44537
 	for <webhook@archiver.kernel.org>; Wed, 21 Jan 2026 13:32:01 +0000 (UTC)
-Received: from smtp-bc0e.mail.infomaniak.ch (smtp-bc0e.mail.infomaniak.ch [45.157.188.14])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.11828.1769002319656770844
+Received: from smtp-190a.mail.infomaniak.ch (smtp-190a.mail.infomaniak.ch [185.125.25.10])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.11821.1769002317321461459
  for <docs@lists.yoctoproject.org>;
- Wed, 21 Jan 2026 05:31:59 -0800
+ Wed, 21 Jan 2026 05:31:58 -0800
 Authentication-Results: mx.groups.io;
- dkim=none (message not signed); spf=pass (domain: 0leil.net, ip: 45.157.188.14, mailfrom: foss+yocto@0leil.net)
+ dkim=none (message not signed); spf=pass (domain: 0leil.net, ip: 185.125.25.10, mailfrom: foss+yocto@0leil.net)
 Received: from smtp-3-0000.mail.infomaniak.ch (smtp-3-0000.mail.infomaniak.ch [10.4.36.107])
-	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4dx4qL0RdRz3hd;
-	Wed, 21 Jan 2026 14:31:58 +0100 (CET)
-Received: from unknown by smtp-3-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4dx4qK3RqWzxKK;
-	Wed, 21 Jan 2026 14:31:57 +0100 (CET)
+	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4dx4qH1KY5z3QW;
+	Wed, 21 Jan 2026 14:31:55 +0100 (CET)
+Received: from unknown by smtp-3-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4dx4qD72gMzxSV;
+	Wed, 21 Jan 2026 14:31:52 +0100 (CET)
 From: Quentin Schulz <foss+yocto@0leil.net>
-Date: Wed, 21 Jan 2026 14:31:46 +0100
-Subject: [PATCH v2 05/12] sdk-manual: appending-customizing: use none lexer
- for BitBake code blocks
+Subject: [PATCH v2 00/12] sdk-manual: fix code-blocks, migrate one PNG to
+ SVG, remove unused PNG
+Date: Wed, 21 Jan 2026 14:31:41 +0100
+Message-Id: <20260121-code-block-misc-20260114-v2-0-fdd4bb5c2e68@cherry.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260121-code-block-misc-20260114-v2-5-fdd4bb5c2e68@cherry.de>
-References: <20260121-code-block-misc-20260114-v2-0-fdd4bb5c2e68@cherry.de>
-In-Reply-To: <20260121-code-block-misc-20260114-v2-0-fdd4bb5c2e68@cherry.de>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/42NwQ6CMBBEf4Xs2TVtKTV68j8MB7pdZKNS0xoiI
+ fy7lYNnj28m82aBzEk4w6laIPEkWeJYwOwqoKEbr4wSCoNRximtLVIMjP4e6YYPyYS/wveqbtj
+ WzpCBMn8m7uW9qS9t4UHyK6Z5e5r0N/1DOmlUqA+2c9wE37njmQZOad4HhnZd1w8syqXtwAAAA
+ A==
+X-Change-ID: 20260114-code-block-misc-20260114-bf035e4362c2
 To: docs@lists.yoctoproject.org
 Cc: Quentin Schulz <quentin.schulz@cherry.de>
 X-Mailer: b4 0.14.3
@@ -33,117 +36,75 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Wed, 21 Jan 2026 13:32:01 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8617
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8614
 
-From: Quentin Schulz <quentin.schulz@cherry.de>
+This migrates literal and code blocks to an explicit lexer in
+sdk-manual.
 
-No lexer exists for BitBake right now, so let's simply disable the lexer
-entirely by using the "none" lexer.
+It also migrate one PNG to SVG (one that was "easy enough" for me to
+quickly do), as well as deleting an unused PNG.
 
-I'm using "none" instead of "text" to be able to "easily" replace none
-code blocks the day a BitBake lexer exists. I "reserve" "text" for
-actual text content (e.g. a filename, or the output of a command line
-without the command line).
+In addition, this removes two PNGs in favor of simple parsed literal
+blocks when listing the directory layout as it doesn't bring anything
+valuable and makes accessibility worse.
+
+Finally, it also fixes some improper indent that resulted in
+explanations unintentionally being part of a code-block.
 
 Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
 ---
- documentation/sdk-manual/appendix-customizing.rst | 32 +++++++++++++++++------
- 1 file changed, 24 insertions(+), 8 deletions(-)
+Changes in v2:
+- used parsed-literal blocks instead of code-blocks for directory
+  layout,
+- highlighted placeholders with the same mechanism as in parsed-literal
+  blocks (italicized),
+- highlighted possible values of placeholders with double-tick instead
+  of single-tick,
+- updated directory layout with output from 5.0.15 toolchains,
+- reorder alphabetically the directory layouts such that files and
+  directories are now mixed,
+- reworded text after the now-deleted figures as it still said "Within
+  the figure", and highlighted placeholders in the text the same way
+  as they appear in the parsed-literal block,
+- added patch to use parsed-literal block for the naming convention of
+  the install scripts,
+- added patch to fix SDK filename example,
+- added patch to fix default path for eSDK installer script,
+- Link to v1: https://patch.msgid.link/20260114-code-block-misc-20260114-v1-0-174a6e5dba69@cherry.de
 
-diff --git a/documentation/sdk-manual/appendix-customizing.rst b/documentation/sdk-manual/appendix-customizing.rst
-index e984b86bd..467c5c10c 100644
---- a/documentation/sdk-manual/appendix-customizing.rst
-+++ b/documentation/sdk-manual/appendix-customizing.rst
-@@ -147,7 +147,9 @@ from the :term:`DISTRO` variable.
- The
- :ref:`populate_sdk_base <ref-classes-populate-sdk-*>`
- class defines the default value of the :term:`SDK_TITLE` variable as
--follows::
-+follows:
-+
-+.. code-block:: none
- 
-    SDK_TITLE ??= "${@d.getVar('DISTRO_NAME') or d.getVar('DISTRO')} SDK"
- 
-@@ -159,7 +161,9 @@ an example, assume you have your own layer for your distribution named
- does the default "poky" distribution. If so, you could update the
- :term:`SDK_TITLE` variable in the
- ``~/meta-mydistro/conf/distro/mydistro.conf`` file using the following
--form::
-+form:
-+
-+.. code-block:: none
- 
-    SDK_TITLE = "your_title"
- 
-@@ -214,7 +218,9 @@ installation directory for the SDK is based on the
- :term:`SDKEXTPATH` variables from
- within the
- :ref:`populate_sdk_base <ref-classes-populate-sdk-*>`
--class as follows::
-+class as follows:
-+
-+.. code-block:: none
- 
-    SDKEXTPATH ??= "~/${@d.getVar('DISTRO')}_sdk"
- 
-@@ -231,7 +237,9 @@ assume you have your own layer for your distribution named
- does the default "poky" distribution. If so, you could update the
- :term:`SDKEXTPATH` variable in the
- ``~/meta-mydistro/conf/distro/mydistro.conf`` file using the following
--form::
-+form:
-+
-+.. code-block:: none
- 
-    SDKEXTPATH = "some_path_for_your_installed_sdk"
- 
-@@ -265,7 +273,9 @@ source, you need to do a number of things:
- 
- #. Set the appropriate configuration so that the produced SDK knows how
-    to find the configuration. The variable you need to set is
--   :term:`SSTATE_MIRRORS`::
-+   :term:`SSTATE_MIRRORS`:
-+
-+   .. code-block:: none
- 
-       SSTATE_MIRRORS = "file://.* https://example.com/some_path/sstate-cache/PATH"
- 
-@@ -278,7 +288,9 @@ source, you need to do a number of things:
-       side, and its contents will not interfere with the build), then
-       you can set the variable in your ``local.conf`` or custom distro
-       configuration file. You can then pass the variable to the SDK by
--      adding the following::
-+      adding the following:
-+
-+      .. code-block:: none
- 
-          ESDK_LOCALCONF_ALLOW = "SSTATE_MIRRORS"
- 
-@@ -301,7 +313,9 @@ everything needed to reconstruct the image for which the SDK was built.
- This bundling can lead to an SDK installer file that is a Gigabyte or
- more in size. If the size of this file causes a problem, you can build
- an SDK that has just enough in it to install and provide access to the
--``devtool command`` by setting the following in your configuration::
-+``devtool command`` by setting the following in your configuration:
-+
-+.. code-block:: none
- 
-    SDK_EXT_TYPE = "minimal"
- 
-@@ -323,7 +337,9 @@ information enables the ``devtool search`` command to return useful
- results.
- 
- To facilitate this wider range of information, you would need to set the
--following::
-+following:
-+
-+.. code-block:: none
- 
-    SDK_INCLUDE_PKGDATA = "1"
- 
+---
+Quentin Schulz (12):
+      sdk-manual: fix incorrect highlight language for text code-blocks
+      sdk-manual: fix incorrect highlight language for console code-blocks
+      sdk-manual: fix improper indent of general form of tarball installer scripts
+      sdk-manual: working-projects: properly highlight code code-blocks
+      sdk-manual: appending-customizing: use none lexer for BitBake code blocks
+      sdk-manual: appendix-obtain: replace directory structure PNG with a parsed-literal block
+      sdk-manual: appendix-obtain: replace eSDK directory structure PNG with a parsed-literal block
+      sdk-manual: replace sdk-environment PNG with SVG
+      sdk-manual: delete sdk-title PNG
+      sdk-manual: appendix-obtain: use parsed-literal block for naming convention of the installer scripts
+      sdk-manual: using: fix SDK filename example
+      sdk-manual: appendix-obtain: fix default path for eSDK installer script
 
+ documentation/sdk-manual/appendix-customizing.rst  |  36 +-
+ documentation/sdk-manual/appendix-obtain.rst       | 154 +++++--
+ documentation/sdk-manual/extensible.rst            |  63 +--
+ .../sdk-manual/figures/sdk-environment.png         | Bin 42098 -> 0 bytes
+ .../sdk-installed-extensible-sdk-directory.png     | Bin 66753 -> 0 bytes
+ .../sdk-installed-standard-sdk-directory.png       | Bin 39099 -> 0 bytes
+ documentation/sdk-manual/figures/sdk-title.png     | Bin 31039 -> 0 bytes
+ documentation/sdk-manual/intro.rst                 |   2 +-
+ documentation/sdk-manual/svg/sdk-environment.svg   | 463 +++++++++++++++++++++
+ documentation/sdk-manual/using.rst                 |  35 +-
+ documentation/sdk-manual/working-projects.rst      | 112 +++--
+ 11 files changed, 746 insertions(+), 119 deletions(-)
+---
+base-commit: b8a56b8b2e8c0417b2f7204f80c79b05d95e9ce4
+change-id: 20260114-code-block-misc-20260114-bf035e4362c2
+
+Best regards,
 -- 
-2.52.0
+Quentin Schulz <quentin.schulz@cherry.de>
 
 
