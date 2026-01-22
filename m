@@ -1,213 +1,126 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <alex.kanavin@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EBCBBD3EE81
-	for <webhook@archiver.kernel.org>; Thu, 22 Jan 2026 15:02:29 +0000 (UTC)
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.39446.1769094143954774584
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 77CAED3EE9F
+	for <webhook@archiver.kernel.org>; Thu, 22 Jan 2026 17:55:11 +0000 (UTC)
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.43213.1769104503038511620
  for <docs@lists.yoctoproject.org>;
- Thu, 22 Jan 2026 07:02:24 -0800
+ Thu, 22 Jan 2026 09:55:03 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=1d7hEdHW;
- spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 3F0EF1A2AB6;
-	Thu, 22 Jan 2026 15:02:22 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 1505D606B6;
-	Thu, 22 Jan 2026 15:02:22 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 289E8119B82C8;
-	Thu, 22 Jan 2026 16:02:21 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1769094141; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=2ZGEPt+4v/RyZV4sMzJbPe5hi+in9DOkXCMf+lyuY7Y=;
-	b=1d7hEdHWq8evc6+p4TBRp0Ox1+6pSPJfqiOY7bknhtWuTCAp7LDHsTX5Xu74ONOSb/5MDf
-	ZOkJNYXuWmHenHEUOrOLc/k7JXi3s5qZjIPwQRUgqbEnMWWScK93v5lqki1ffM8ibZ46XB
-	htxqEtnssdqqpFylh2SmheALm9FZDKkZbPcDsEZLp0Q0MkvxWQ5iWg9ug9rAJiooE+agAo
-	ydgtdofcLjcwdeKirkkYHal8cr+0VChHRISqWTAPThrKb7WP7pyFnIin3eDR24JzixZWht
-	z66kRURU2XhqL1WXqmHzymcdJkmUtUwyKTfx2OatMLemgm4j5/qpviQeHbeAxg==
-From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Thu, 22 Jan 2026 16:01:58 +0100
-Subject: [PATCH v3 1/3] bin/bitbake-setup: add descriptions for fragment
- choices
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=C2sMFWiR;
+ spf=pass (domain: gmail.com, ip: 209.85.160.175, mailfrom: alex.kanavin@gmail.com)
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-5014b671367so13094381cf.3
+        for <docs@lists.yoctoproject.org>; Thu, 22 Jan 2026 09:55:02 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769104502; cv=none;
+        d=google.com; s=arc-20240605;
+        b=ew/mlvSG3GfS0SmDq2OXl2hmaOhhh5mse+fM7ZzM3h7Ctty2rOPbzSwEtsh10l6wg0
+         OQsW+a4tTS/6NiX/yME6RHvtLDv2zcdU/ZqJgFnl6pgpIoTwMj6V4GaTTzlHyR78qjKL
+         m5Lab4xsnVIft0VBjxpj09wpuQPfvQlbAyQfpdWDgtiryuk7s5JBdLxywwcn6kVqasj0
+         qG41v7hOn6lGI0d4s7R7b/+bXZJlYCSXmPGPuCYf/ZqmgxIQhgQ93cmaomNpmR3YGImE
+         qz28gTRqxhM3KqP5SlTbd1loDEDVJgwpxHU3nVQjpF86ApFoPsozCI93IJz1eOTbkgxV
+         2Phw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=6nue6nmU5mXdC5K4QDrTfm9FnLMNFMqwdEXJ/cKPSv8=;
+        fh=nZhEklYLBz4e7ejrT5lK46ggJ1K0Z9H1zC9khG0/sps=;
+        b=MdS9WYFF01UBdhY9bH3q8miqkasb5hzMUZoMP7AecxRRgHIjpE5qzeP57HUGbmLvok
+         ZxDPjpD0uFIIKTxIx3Xyr6upstew5osbL03ubBuzpxYxyQO4uM4tRWlJeAbv9FbkI2Sx
+         YnHyEtPDhL4kOqXBPm4TcF/Jg+0JXcmKxCB1dNHpYhKGibJj+ml/opAuH/XN4ERczZRo
+         mn8viKRC9JVeGx+QcMZBfEli/qkBbRwYYFY+XnsPFrhAyxKEZN1ZzlXcgq1HY46t6V5b
+         dp8vQfZMEnyE08yWetf48ELV6ck2Gu4gwyMX6Adp+pgWjXnFlWJb6fUgZJDRVwvqGPXv
+         GF9A==;
+        darn=lists.yoctoproject.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769104502; x=1769709302; darn=lists.yoctoproject.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=6nue6nmU5mXdC5K4QDrTfm9FnLMNFMqwdEXJ/cKPSv8=;
+        b=C2sMFWiRuaIkZESu2eNzaUlb2g6HNIf4L2EMsCR3iXdkAXvl7sL2EGJmVMakswmlMZ
+         WKIpjMLOQ8+bjy2emKLJu2PJEsls1mLKpRdbbXL5Q1vjdsXSN9EfQ9N3GgNpx4jOWCbH
+         zqSEV+wcTaRlFPO4sYh9EEmrLcviG9t1rfceHSWLV7ucuzqIT9GxCViCWhnRFQHiAk9+
+         pz1NP+ZUDHRCnvt72EuhJ5HjYQr7zBsRIv+jkBeXDPXMUj3AIYviuBzXIziFgsGXx0Vb
+         vSX4h2yqEk6Tbe4w88XHqw187rGejHTOwyeaN81u3oD/+gCYTluDlXmmMu8lGYgG+x93
+         6ERQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769104502; x=1769709302;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6nue6nmU5mXdC5K4QDrTfm9FnLMNFMqwdEXJ/cKPSv8=;
+        b=RiFf481p/tQEU0Vn2dgX7ruT24ObhW5syZl3PuTF6xUpNZdxrnoAUsbtc1+nb5xNYa
+         4QA4zmAIYomcr/D0ybp//iSjw0EJJDJ+Jsc4gIals2jA4Nt3nJJIy8bMYb5b60fffgRM
+         bAY+FqL09XMj2FLODTNHikmRua84kIiFLdb38eSnN/bN11oigh8IvFfpabr/Wle7SoKw
+         0wibfQl/jbqacqASZjBhD5uGy5epUFtfxofEgrP/1LinJvXeue2dPCehOqCGfYAN2QEz
+         FXRzgIoJBK2NBabHXKLzZtxVS8bzVPGVL1VJur5eSf4nGEmqCO3DqxrO3NnIyhk8gp/O
+         NFaQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU/iqS6LKgs8hFLMCLY53vAql1Xv2EoWIT0Jlv3rj1ZvxFBtn4Z6dXI2t3goydIUkGTBrAe@lists.yoctoproject.org
+X-Gm-Message-State: AOJu0Yy9qaobQvcjdGz/IYqpuTtjDCCGEv9yXGBkmRlgHoul7u+tEMmt
+	zfwCz0s34tBkU3mXdzpF15lKd2Be2Zw51kzyuq1TQL1jDmSNwuI1RELyEjpXXc7G1akWw1araIE
+	N6tZPi2rPMjAmpbehrgiSkaRf+inDzdU=
+X-Gm-Gg: AZuq6aJIWm3/fMG7t/D1khKYjuh8NsAqB2ypR8M7dk+B+qnGhDWAsxK59+mhaymsHqJ
+	KARFYL8BdSZGNyXtWP0zbvuA9R+o9g2OHygcxveYcyCNdUr85pJDO98uizoTaeVfuoUXHXdrSm+
+	s9cdHXTzHZLk0iIjQxccp12FFPCgRH+P7oswVrSyK1n5FQeefG4iTky6szOOMuQ/2FKcmvqTLHc
+	F5RJ13MVTPvDW2vdcfZJOuGoeG0AYc58bQVSmezNtLM+U5Zt0rKadoNEK2S7Prq7l7KITmQVCu+
+	kAE/PPbyHAStWaJzW8bgrETpv33G/yNB4nLL7yNj
+X-Received: by 2002:a05:622a:44d:b0:4ee:1b0e:861a with SMTP id
+ d75a77b69052e-502f772500cmr6356921cf.13.1769104501970; Thu, 22 Jan 2026
+ 09:55:01 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260122-bitbake-setup-choose-builtin-v3-1-c55291acc1a7@bootlin.com>
 References: <20260122-bitbake-setup-choose-builtin-v3-0-c55291acc1a7@bootlin.com>
-In-Reply-To: <20260122-bitbake-setup-choose-builtin-v3-0-c55291acc1a7@bootlin.com>
-To: bitbake-devel@lists.openembedded.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Alexander Kanavin <alex.kanavin@gmail.com>, docs@lists.yoctoproject.org, 
- Antonin Godard <antonin.godard@bootlin.com>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=8159;
- i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=afytrESbCE7KTnmirGBuEgjb8HMwyH4hCj3g5uHb2Jo=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpcjv6eEMWViqzbc+rzHzRkuFZLxXxDTfae8d0b
- 4mUdcQCAiOJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaXI7+gAKCRDRgEFAKaOo
- Nj0cEACtD49NhzETKalLQD0Fy7d7sPhsjH4vDeyCDogjnGG91oJNE7lN+2mF+UezI3/qt/T0Wui
- G8D/h1gNYFEz/lrKmPKe0MS/+srLVqpKYlcuawLgkSZ1hG8+f81S0f9KbcCjybm/rAEo6y72izy
- FmCxlpofoDNVknp1vM6P99EEh2LBSH0ALwS2R1fs/EQBrpQzJTUrUorhEXZUtgNGgD9fG5ZM4jc
- C0FayzdZIvCNjYp6Gf1VyIuyZXKsykEJRDbmz5sgldo40MtpEalc0i1Y6DWifMO3zphE9ebWWv3
- nmC630oIbBUK6HxxPe45BggtbItwzuHuCzZ2oOxUCR2cM9FcvP9sFwPquFpxVNcn396CrDD8ZY0
- q2aJ2w21MP1Wx+n1tKJwnzEMwStsbgpfKPK6u1chfNiOnyjJ3APTyk38zafSZAC/P7Yhd8H/MtW
- go61a442LfR2D4qkKDYpGU9rEwIw3IcEoq2nI4SYDDTf8le96+3oJ8x8IWDhXEFcJMASe5fgvgd
- /yB5iHAHWhmbtPEj8hbX2ESryleWOKV3fb4hxK3yn7LZ8g9mBNYqDThyRi1t5cw4zw7GCAoyJRJ
- Fd6uob88KKtNMP/8oXp4BXvZMUXO04aAihUuXtB2ycP2Ft1YjpcQ4oZgr6Pr9E3oWPQTmig03wK
- pON7BZIpuO6dhvQ==
-X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
- fpr=8648725188DD401BB9A0D3FFD180414029A3A836
-X-Last-TLS-Session-Version: TLSv1.3
+ <20260122-bitbake-setup-choose-builtin-v3-3-c55291acc1a7@bootlin.com>
+In-Reply-To: <20260122-bitbake-setup-choose-builtin-v3-3-c55291acc1a7@bootlin.com>
+From: Alexander Kanavin <alex.kanavin@gmail.com>
+Date: Thu, 22 Jan 2026 18:54:50 +0100
+X-Gm-Features: AZwV_QjO-jYNQXari-fVIBaJhP-1xx7vE748q_nwOSbT8drWAnNQtjwT2e8z538
+Message-ID: <CANNYZj_SUcRFLWobRO9GHPzN+ZtG9koKVg4iZ-gzoKsSAUiMoQ@mail.gmail.com>
+Subject: Re: [PATCH v3 3/3] lib/bb/tests/setup.py: add tests for oe-fragments-one-of
+To: Antonin Godard <antonin.godard@bootlin.com>
+Cc: bitbake-devel@lists.openembedded.org, 
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, docs@lists.yoctoproject.org
+Content-Type: text/plain; charset="UTF-8"
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 22 Jan 2026 15:02:29 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8628
+ <docs@lists.yoctoproject.org>; Thu, 22 Jan 2026 17:55:11 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8631
 
-Make it possible to give fragments descriptions as it can help users
-determine which fragments to pick during bitbake-setup init.
+On Thu, 22 Jan 2026 at 16:02, Antonin Godard <antonin.godard@bootlin.com> wrote:
+> +            },
+> +            {
+> +                "name": "gizmo-fragments-one-of",
+> +                "description": "Gizmo configuration using oe-fragments-one-of, both formats",
+> +                "oe-template": "test-configuration-gizmo",
+> +                "oe-fragments-one-of": {
+> +                    "fragment-desc": {
+> +                        "description": "Test fragments (with description)",
+> +                        "options" : [
+> +                            { "name": "fragment-desc-1", "description": "fragment 1 desc" }
+> +                        ]
+> +                    },
+> +                    "fragment-nodesc": {
+> +                        "description": "Test fragments (no description)",
+> +                        "options" : [
+> +                            "fragment-nodesc-1"
+> +                        ]
+> +                    }
+> +                }
 
-It is still possible to provide a list (with no descriptions) for
-backwards-compatibility.
+To avoid multiplying test configs further (and making the tests
+slower), perhaps this can be added to gizmo-notemplate, and that
+renamed to gizmo-notemplate-fragments-one-of ?
 
-Update the documentation accordingly.
+> -                                                                 'gadget-notemplate','gizmo-notemplate')},
+> +                                                                 'gadget-notemplate',
+> +                                                                 'gizmo-notemplate',
+> +                                                                 'gizmo-fragments-one-of fragment-desc-1 fragment-nodesc-1')},
 
-Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
----
- bin/bitbake-setup                                  | 23 ++++++++++++++-----
- .../bitbake-user-manual-environment-setup.rst      | 26 ++++++++++++++++++++--
- setup-schema/bitbake-setup.schema.json             | 21 ++++++++++++++++-
- 3 files changed, 61 insertions(+), 9 deletions(-)
+As there's only one choice in each, bitbake-setup should pick that
+without asking, or having to specify them on command line. Let's test
+that too, and drop the fragment names from here.
 
-diff --git a/bin/bitbake-setup b/bin/bitbake-setup
-index abe7614c832..b0d14e7c1b8 100755
---- a/bin/bitbake-setup
-+++ b/bin/bitbake-setup
-@@ -494,23 +494,34 @@ def choose_fragments(possibilities, parameters, non_interactive, skip_selection)
-         if skip_selection and k in skip_selection:
-             logger.info("Skipping a selection of {}, as requested on command line. The resulting bitbake configuration may require further manual adjustments.".format(k))
-             continue
--        choice = [o for o in v["options"] if o in parameters]
-+
-+        # options can be a list of strings or a list of dicts
-+        options = v["options"]
-+        if len(options) > 0 and isinstance(v["options"][0], str):
-+            options = [{"name": o, "description": ""} for o in v["options"]]
-+
-+        choice = [o["name"] for o in options if o["name"] in parameters]
-         if len(choice) > 1:
--            raise Exception("Options specified on command line do not allow a single selection from possibilities {}, please remove one or more from {}".format(v["options"], parameters))
-+            raise Exception("Options specified on command line do not allow a single selection "
-+                            f"from possibilities {[o['name'] for o in options]}, please "
-+                            f"remove one or more from {parameters}")
-         if len(choice) == 1:
-             choices[k] = choice[0]
-             continue
- 
-         if non_interactive:
--            raise Exception("Unable to choose from options in non-interactive mode: {}".format(v["options"]))
-+            raise Exception(f"Unable to choose from options in non-interactive mode: {[o['name'] for o in options]}")
- 
-         logger.plain("\n" + v["description"] + ":")
--        options_enumerated = list(enumerate(v["options"], 1))
-+        options_enumerated = list(enumerate(options, 1))
-         for n,o in options_enumerated:
--            logger.plain("{}. {}".format(n, o))
-+            opt_str = f"{n}. {o['name']}"
-+            if o["description"]:
-+                opt_str += f"\t{o['description']}"
-+            logger.plain(opt_str)
-         option_n = int_input([i[0] for i in options_enumerated],
-                              "\nPlease select one of the above options by its number: ") - 1
--        choices[k] = options_enumerated[option_n][1]
-+        choices[k] = options_enumerated[option_n][1]["name"]
-     return choices
- 
- def obtain_config(top_dir, settings, args, source_overrides, d):
-diff --git a/doc/bitbake-user-manual/bitbake-user-manual-environment-setup.rst b/doc/bitbake-user-manual/bitbake-user-manual-environment-setup.rst
-index 3b6a73fd8d3..92fedd7d969 100644
---- a/doc/bitbake-user-manual/bitbake-user-manual-environment-setup.rst
-+++ b/doc/bitbake-user-manual/bitbake-user-manual-environment-setup.rst
-@@ -759,11 +759,21 @@ They contain the following sections:
-                 "oe-fragments-one-of": {
-                     "machine": {
-                         "description": "Target machines",
--                        "options" : ["machine/qemux86-64", "machine/qemuarm64", "machine/qemuriscv64", "machine/genericarm64", "machine/genericx86-64"]
-+                        "options" : [
-+                            { "name": "machine/qemux86-64", "description": "Machine configuration for running an x86-64 system on QEMU" },
-+                            { "name": "machine/qemuarm64", "description": "Machine configuration for running an ARMv8 system on QEMU" },
-+                            { "name": "machine/qemuriscv64", "description": "Machine configuration for running an RISC-V system on QEMU" },
-+                            { "name": "machine/genericarm64", "description": "Machine configuration for Arm64 SystemReady IR/ES platforms" },
-+                            { "name": "machine/genericx86-64", "description": "Machine configuration for generic x86_64 (64-bit) PCs and servers" }
-+                        ]
-                     },
-                     "distro": {
-                         "description": "Distribution configuration variants",
--                        "options" : ["distro/poky", "distro/poky-altcfg", "distro/poky-tiny"]
-+                        "options" : [
-+                            { "name": "distro/poky", "description": "Distro configuration for Poky (Yocto Project Reference Distro)" },
-+                            { "name": "distro/poky-altcfg", "description": "Distro configuration for Poky (systemd init manager)" },
-+                            { "name": "distro/poky-tiny", "description": "Distro configuration for Poky (optimized for size)" }
-+                        ]
-                     }
-                 },
-                 "configurations": [
-@@ -852,6 +862,18 @@ They contain the following sections:
-    -  ``oe-fragments-one-of`` (*optional*, OpenEmbedded specific): the OpenEmbedded
-       fragments to select as part of the build.
- 
-+      This can one of two formats:
-+
-+      -  A list of dictionaries with ``name`` and a ``description``,
-+         corresponding to respectively the fragments names and fragment
-+         descriptions (like in the example above).
-+
-+      -  A list of fragment names. For example:
-+
-+         .. code-block:: json
-+
-+            "options" : ["machine/qemux86-64", "machine/qemuarm64", "machine/qemuriscv64", "machine/genericarm64", "machine/genericx86-64"]
-+
-       This will trigger choices to make during the
-       :ref:`ref-bbsetup-command-init` command execution.
- 
-diff --git a/setup-schema/bitbake-setup.schema.json b/setup-schema/bitbake-setup.schema.json
-index e51fef3b97c..be8772db1b2 100644
---- a/setup-schema/bitbake-setup.schema.json
-+++ b/setup-schema/bitbake-setup.schema.json
-@@ -64,7 +64,26 @@
-                                 "type": "array",
-                                 "description": "List of BitBake configuration fragments to enable",
-                                 "items": {
--                                    "type": "string"
-+                                    "oneOf": [
-+                                        {
-+                                            "type": "string",
-+                                            "description": "Configuration fragment name"
-+                                        },
-+                                        {
-+                                            "type": "object",
-+                                            "description": "Dictionary of BitBake configuration fragments to enable (with description)",
-+                                            "properties": {
-+                                                "name": {
-+                                                    "type": "string",
-+                                                    "description": "Configuration fragment name"
-+                                                },
-+                                                "description": {
-+                                                    "type": "string",
-+                                                    "description": "Human-readable description of the fragment"
-+                                                }
-+                                            }
-+                                        }
-+                                    ]
-                                 }
-                             },
-                             "oe-fragments-one-of": {
-
--- 
-2.52.0
-
+Alex
 
