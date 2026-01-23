@@ -1,114 +1,109 @@
-Return-Path: <alex.kanavin@gmail.com>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E57AAD72376
-	for <webhook@archiver.kernel.org>; Fri, 23 Jan 2026 11:09:27 +0000 (UTC)
-Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.65407.1769166557752561477
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 781C3D74EC9
+	for <webhook@archiver.kernel.org>; Fri, 23 Jan 2026 13:24:28 +0000 (UTC)
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.67343.1769174658930935457
  for <docs@lists.yoctoproject.org>;
- Fri, 23 Jan 2026 03:09:17 -0800
+ Fri, 23 Jan 2026 05:24:19 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=bCyILHsY;
- spf=pass (domain: gmail.com, ip: 209.85.219.41, mailfrom: alex.kanavin@gmail.com)
-Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-89476eaaf16so23034006d6.1
-        for <docs@lists.yoctoproject.org>; Fri, 23 Jan 2026 03:09:17 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769166557; cv=none;
-        d=google.com; s=arc-20240605;
-        b=hshOBM+xV+EixB0Phnj7Xikk6idqgKpzcU2doEJDtDD2WRBUNkB7fjr0UUMSZhVsiE
-         KQi8Qpulp3JE8EpL/0Pn0ei49f/8T4XkbLb9zCZDAT/i1eItz5qxSJ7Cz6sOlJ922JBs
-         +xTQfneJxRFXakdHuzwRoWvHEomBDcQqP5CiZHX5Nq8O6zNilYvdgmE0sHkmLpF3BS+o
-         yrWE5Mm4MlKu1jpxsF6Xx1ijY1rO9zR5Yvcx9oskzOpbIFHr4jOO8VqXiSmo+myb1D9S
-         6OSccJrOUX0+CSkPl9TmJ/uQBBY3vg6PVoX1QovZobdsEvzrJrzrJrxXN1BUIacC/mkZ
-         77SA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=H9ypVLGqkEz5lVU/SbxCBdFL7hoTe8Jo+RnCSSr8R4E=;
-        fh=LW6+Sv/+Iwp0xxZ69KWDYw81LUbnkOJb88WMg8+anw4=;
-        b=UIe+mvrJ+AwOk/P9ztRqaC4PA6XAlAadlTNgjj2bYFexYcrGwW+RENULRi+KYxheSA
-         lz9bLqqXl62CGPkh/vj7K83nN6R6+CVq9PWnIPO+rGKe64lhhGTs1TIp7E0irRQMI4DD
-         +1xJYGGKx5Vlir2HOLuPKJsdOTF8OJOrzaYwVZlhC3VTomTNGQA06P5Qhb0rkb3vJecu
-         tejzCMD8PbgECh1vensjBHV3OFHZU4ys7GcRMnzmjKV+42UVNCOzY/nVZyhdIYj74l6Z
-         CUtAoKdimk+DxAAXvNrBZJtx7JGZ/zaktP9SDRPauXXw4cK8w96/7mnTrCRTGA3sneef
-         gR4g==;
-        darn=lists.yoctoproject.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769166557; x=1769771357; darn=lists.yoctoproject.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=H9ypVLGqkEz5lVU/SbxCBdFL7hoTe8Jo+RnCSSr8R4E=;
-        b=bCyILHsYB+fNEoxfI5Br80DKUGAW3bCdLMBzgL+QsGCiAxFTTD8JmsGcGBLjzQIic3
-         3t+0W7MBjRlT2Ig+jXHdPbJv/7pRFdvve/GU60YAvNHrOyfGPDgsSKQliZZuG61M7t1H
-         Z7S/LMSijD9zVRjhLIsA2NQ3BJZ497UGIRB4D/Az3NvF9Xf476FgJN2ILB+EiY0JSeuK
-         ffOAwSYj5wJyCDStuvYwLD5y4mRGillRJD6uMxLsRnDqICVqg8hxnxB8hRTYKCVnSKUh
-         6yTQ/oGJ4jDDSSpNEN1dQHP3yQ/wcWKxiXXYHsAhhfQiTJGTwFkq+turxWq5w7E7hGDy
-         vVtA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769166557; x=1769771357;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=H9ypVLGqkEz5lVU/SbxCBdFL7hoTe8Jo+RnCSSr8R4E=;
-        b=jt+NYry7yIxD0SKYxOUby+/ZN0xM3pXqyYjDR6BWabO37YWvcaVGL2Wj4Ma9s8v9I8
-         HBbDrHsUyPEKYqkhqtmVFBGKKG53oLuzzecRbrR+WaZyao9ZkOF7of8OnbDMBPFtg7I/
-         NWdoR0k9hauNfpNli0zOcQOc1hJS1DBm7clxLrZ7GzobJctYjdj0xb8ipArJvT30K+/t
-         ZZpSSHOL72ZK9E+1XxTVvO9cJG76DhTGWT0kIsvnU4xxOMHg88ddDgmNCnf6AhWvha6R
-         AdV0ikZVGf1hk3SLzPGp7ewUwacA8reaU5KLk4P6VihyFoCg1/GiF074VYCMIhNHLvpC
-         sszQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX7ToS8QQL1fjQDt+CnZA8V0jdpZJTJvI5HJm8CEtWTJx9gJtwolnheiPoY1xnJkw2RedjJ@lists.yoctoproject.org
-X-Gm-Message-State: AOJu0YzxTrHDlwV9IchS2YpINwOlYp2cP4RG+GWTArKLZrRwkIByu8+m
-	qI2f34v+dMo4xQ290M0J5ETIgiqePBEnEJ0ZRIvrzxia6WwJlKtIfkBwxRrDPirbFKoOH0lMbhd
-	0Tube8D3h7tbcorZiep7UdK/3KE17a50=
-X-Gm-Gg: AZuq6aKR32JDXnPag9yHug6FRWrXX5BYtJVozyRpPmUmWvgxKUWYtBf6ywbSRgRZHqp
-	aRfmfVPs2UuwsB8xgLOlXtkPPRf2XZv1GqYlrMCpLB4mGvOaIXGG6q5bvFvmi3vn5Ezv7FOPEaF
-	iE1v1zaumAXnD1nQDZ2WUmIbcp2c3HWhjhvrIegOaYznMwDMd3iwF5GzVhN2I6JTDrYdUJVhkaz
-	jZ47MHe0xWGt11l0N8daXouzUZeW50Utei7wzx0hbZGTcOc+DyfqcEGpn+qwJ2hKF/GhsjTgMxJ
-	BeB2r8+fyWTV0tKCJXJKOqM08VBFJg==
-X-Received: by 2002:a05:6214:c4b:b0:88a:2f46:8221 with SMTP id
- 6a1803df08f44-894901ade43mr34494216d6.8.1769166556578; Fri, 23 Jan 2026
- 03:09:16 -0800 (PST)
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=xyKuaW9F;
+ spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id D0BDC1A2ABC
+	for <docs@lists.yoctoproject.org>; Fri, 23 Jan 2026 13:24:16 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id A685F6070A;
+	Fri, 23 Jan 2026 13:24:16 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 18E28119A8547;
+	Fri, 23 Jan 2026 14:24:14 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1769174656; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=9bM5YhDkoGyIeRI0Mwnah6pNmMxAAYHiBWP4K+DnrLM=;
+	b=xyKuaW9FNyWRfQcJ+frwStQCalAsCGjXRpPue3QzOJObDAOrSYCKgSbcYsxQLvBYredsVG
+	VmMVfZl51nEG7XkzOMSaLi6IQbFjLbF47jQe3h1hYxqgKd4VpZmhkMW1xHuglHdRHeG+KH
+	r7RoxCT70g7CXA5on3s+2i4UtH4NKIlFTN6hGnteSukIba41vm/EjIX1fV+W4B4nBg3TLX
+	vIHZiY3lw05w+ERArGvFlG1IKG6098AnCiwfRKsV5PT0J3DwgiGZpwc+uADsl9iiQE1u8w
+	F89xvmixsEn9NawB6mm8qWYjx9YLq/9pRwDn34i8uCAquq79HKJxx/6e2eZmAw==
+From: Antonin Godard <antonin.godard@bootlin.com>
+Subject: [PATCH v4 0/3] bitbake-setup: add descriptions for fragment
+ choices
+Date: Fri, 23 Jan 2026 14:24:05 +0100
+Message-Id: <20260123-bitbake-setup-choose-builtin-v4-0-99361f2128f6@bootlin.com>
 MIME-Version: 1.0
-References: <20260122-bitbake-setup-choose-builtin-v3-0-c55291acc1a7@bootlin.com>
- <20260122-bitbake-setup-choose-builtin-v3-3-c55291acc1a7@bootlin.com>
- <CANNYZj_SUcRFLWobRO9GHPzN+ZtG9koKVg4iZ-gzoKsSAUiMoQ@mail.gmail.com> <DFVTWVIZ6ZUP.1YHMAPRNIEF5M@bootlin.com>
-In-Reply-To: <DFVTWVIZ6ZUP.1YHMAPRNIEF5M@bootlin.com>
-From: Alexander Kanavin <alex.kanavin@gmail.com>
-Date: Fri, 23 Jan 2026 12:09:05 +0100
-X-Gm-Features: AZwV_QgpbTRVHI8sFhzXe3ivtiCMKGIlCeNqC7lXn65xaVmb6i5xdiXtLkgN2Y0
-Message-ID: <CANNYZj_4Y=PaLX3Du+YhZxTY5NTp1RqeQhNOtaVrdmxh7zTXiQ@mail.gmail.com>
-Subject: Re: [docs] [PATCH v3 3/3] lib/bb/tests/setup.py: add tests for oe-fragments-one-of
-To: Antonin Godard <antonin.godard@bootlin.com>
-Cc: bitbake-devel@lists.openembedded.org, 
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, docs@lists.yoctoproject.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAHV2c2kC/43NwW7CMBAE0F9BPmNkb+K06an/UfVgb9ZkC8Qod
+ iIQyr9jwwXEgc5tpNGbi4g0MkXxtbqIkWaOHIZc6vVKYG+HLUnuchegoFFaN9JxcnZHMlKajhL
+ 7ECJJN/E+8SC9022rTI0IRmTiOJLn043/+b33OLk/wlTMsug5pjCeb/+zLrt/Xs1aKvnZNSW2J
+ d99uxDSnocNhoMoZzM8cKDecJA521Gjau+hMvqVqx45eMNVmUNjoNUWUduPZ25ZlitYyzCZegE
+ AAA==
+X-Change-ID: 20260116-bitbake-setup-choose-builtin-fb199054cc25
+To: bitbake-devel@lists.openembedded.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Alexander Kanavin <alex.kanavin@gmail.com>, docs@lists.yoctoproject.org, 
+ Antonin Godard <antonin.godard@bootlin.com>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1793;
+ i=antonin.godard@bootlin.com; h=from:subject:message-id;
+ bh=+zvISwPJyxrRMRIPYtMJGAwppezsmNcN/yxQ/WBcIvA=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpc3Z9Ztb4SmVwlA0/X4evR2WOaYkPvpttRYIzN
+ 74xCYwVV/mJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaXN2fQAKCRDRgEFAKaOo
+ NlcPD/0ZHWrdyBMOG7eoNINMCG0vfK+48Wn9JuUL5OHzd8DFiOjHAsZmGjMJ0uGicXc/YcUi3q1
+ a6fXU3i8RBUxmHX+c11TZwSTDup+EbvSg+1z/gBl1j94pU+6nB/GKBydLfvQj0/lYMw3/46LHOu
+ OfMvAtHtz1rkVWTUp4ZNtgvLZczC9NroS9MjBATS8u974xpSrJfMf5z9tKM6x68jfbQ3E8sZTS5
+ XY+KwiA93WAxIFISEzkc882Jasur6wgFzarJuzsJc/DJvmMvVjBBfwpZz1Zwn+ZmJLFl5ebUYtb
+ Kl4vws91kEA0cXyfYHqmJ8vop4xBMDXBs7ekZo/0rvrbolPgP/MG0IgOLHdsBkk0yba/gFJTUY2
+ W35SoTekq4jJcNlaNlHkswD+UidOAUVHvzYxQrt1mOFkwoqNkXd+OPHRjQcGKm/TQwY7JlDoIlC
+ 1ups82zHUQ6BDGIBSwaxGZkjtoBygXIL5UCffx7I5ut+hXaDNmYfxfA/Xirlg5C0WXn/QJD5Nqz
+ /X+GKXCLFxBv+stCAXONhLnuuT3fAPHkFL5Taor4viQhjwGGR0yfSWHnEw8GpvzJPRK/UaRTI1+
+ LmERaws/2Ax9NU5DflIe9DKU6JWFP3kTS2NMxbaKqfI2jRH4bKnOdhBM1ipYnUVCoomC95lMaEK
+ KYJIToGN7kvSpwA==
+X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
+ fpr=8648725188DD401BB9A0D3FFD180414029A3A836
+X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 23 Jan 2026 11:09:27 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8635
+ <docs@lists.yoctoproject.org>; Fri, 23 Jan 2026 13:24:28 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8636
 
-On Fri, 23 Jan 2026 at 09:34, Antonin Godard <antonin.godard@bootlin.com> wrote:
-> >> -                                                                 'gadget-notemplate','gizmo-notemplate')},
-> >> +                                                                 'gadget-notemplate',
-> >> +                                                                 'gizmo-notemplate',
-> >> +                                                                 'gizmo-fragments-one-of fragment-desc-1 fragment-nodesc-1')},
-> >
-> > As there's only one choice in each, bitbake-setup should pick that
-> > without asking, or having to specify them on command line. Let's test
-> > that too, and drop the fragment names from here.
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+---
+Changes in v4:
+- setup.py: move the fragments to gizmo-notemplate, add a second option
+  (that isn't used, but it doesn't make much sense otherwise)
+- rebase on top of https://lore.kernel.org/r/20260116095741.3654153-1-alex.kanavin@gmail.com
+- Link to v3: https://patch.msgid.link/20260122-bitbake-setup-choose-builtin-v3-0-c55291acc1a7@bootlin.com
 
-After reading your response, I retract this suggestion. The reason
-bitbake-setup is not automatically picking up a single choice is
-because such configuration doesn't make sense: if someone makes
-oe-fragments-one-of with a single choice, they should just add that
-choice to oe-fragments.
+Changes in v3:
+- Rework logic as suggested by Alex
+- Remove modifications of {oe-nodistro,poky}-whinlatter.conf.json
+- Add a test case for oe-fragments-one-of
+- Link to v2: https://patch.msgid.link/20260120-bitbake-setup-choose-builtin-v2-0-ade604ff2351@bootlin.com
 
-That said, we still need to test oe-fragments-one-of, so can you place
-two choices to each (old syntax, new syntax), and supply the
-selections on command line, as you've already done? The non-active
-fragment can be entirely bogus and non-existing.
+Changes in v2:
+- As suggested by Alex, change the new way of specifying fragments to
+  remain a dictionary so they can be extended in the future
+- Link to v1: https://patch.msgid.link/20260116-bitbake-setup-choose-builtin-v1-0-8d66666a9efd@bootlin.com
 
-Alex
+---
+Antonin Godard (3):
+      bin/bitbake-setup: add descriptions for fragment choices
+      default-registry: update fragments choices with descriptions
+      lib/bb/tests/setup.py: add tests for oe-fragments-one-of
+
+ bin/bitbake-setup                                  | 23 +++++++++++-----
+ .../configurations/oe-nodistro-master.conf.json    |  6 ++++-
+ .../configurations/poky-master.conf.json           | 14 ++++++++--
+ .../bitbake-user-manual-environment-setup.rst      | 26 ++++++++++++++++--
+ lib/bb/tests/setup.py                              | 31 +++++++++++++++++++---
+ setup-schema/bitbake-setup.schema.json             | 21 ++++++++++++++-
+ 6 files changed, 105 insertions(+), 16 deletions(-)
+---
+base-commit: f48cd5c7dc58aa95032f19d4d628acb31512d9d6
+change-id: 20260116-bitbake-setup-choose-builtin-fb199054cc25
+
 
