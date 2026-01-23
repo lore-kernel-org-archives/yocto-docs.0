@@ -2,143 +2,104 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id ECD14D74ED5
-	for <webhook@archiver.kernel.org>; Fri, 23 Jan 2026 13:24:28 +0000 (UTC)
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.67697.1769174661044154601
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7A787D74EE3
+	for <webhook@archiver.kernel.org>; Fri, 23 Jan 2026 14:58:29 +0000 (UTC)
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.69574.1769180307432056386
  for <docs@lists.yoctoproject.org>;
- Fri, 23 Jan 2026 05:24:21 -0800
+ Fri, 23 Jan 2026 06:58:27 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=pHy0MzRC;
- spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=Fl/BNRl1;
+ spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 763F6C20308
-	for <docs@lists.yoctoproject.org>; Fri, 23 Jan 2026 13:24:19 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id EF7191A2A37
+	for <docs@lists.yoctoproject.org>; Fri, 23 Jan 2026 14:58:25 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 390396070A;
-	Fri, 23 Jan 2026 13:24:19 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2838D119A879C;
-	Fri, 23 Jan 2026 14:24:18 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id C67306070A;
+	Fri, 23 Jan 2026 14:58:25 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DCE7F119A87BC;
+	Fri, 23 Jan 2026 15:58:24 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1769174658; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1769180305; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=g2koIJSmJjswh6P8PjjE4ZEWlWyNrD5iZxRgYd1r9ZY=;
-	b=pHy0MzRCzw+Nigi3TSb4hC8K2XYOBn4gfE8C2Tos9MnAByP13jj6/bvpBi/Z3laRFW/RjZ
-	kPhMyPb5zSdO+et0B1sZYBMmED8Bp+C5UOqL1Kal201es+S9/QeITStE9qiXBgEEyfTz98
-	mu0DOBUcV38E9Xwx01Dn2dw3YOpZhgb4n4vACS4I/fr/lbWM8A/I/T8cNp5AcoXnMaHFNK
-	+QD0WSYAeLMAPQiN79nwJ3V3bPEqAz3KLMvo5op65hMzp1p0zWKOVKkiB2aGsjjs6cqWEM
-	KqOqGUS2UmGRF55wI6gDV2F8C6SPxOkqKwVbd0XEaUJol1F/KVl5I7JTMBsuKA==
+	bh=9pif0IfN9QpMiKlAVSdS2NNlTe9rlrwEPQ7pWL32SSo=;
+	b=Fl/BNRl1rNW+mUZLc4SJzFbfMf6mN8i1N6G4fNgNGUv5mOVThknA1CMcRuGzBcwl52AaIv
+	k5AswqZxjoVoZUCFrt9Kk7FUrp9qY60m9UeKtTvA3xN3/sXZ6LWRNXBf2cYnKdKtTp6rae
+	qCsWmlbrlwG8oNX1MGpxG5R/xuapbkoqJ/GBEOWrSCgTuiah1Y1pQz5zmO55BqGpaZdDjA
+	snZBCvoQQKRf5nZNnTqI313q8b2QeynK1WD5vjeV2XI+QVSjeLosOrzfxiU0G86uBrMfXa
+	xvovIfWVrDalnlLlnWlXZS7uf0tvebTPbX0T13MRHLBIr6l6JzTN7fiSLdOUeA==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Fri, 23 Jan 2026 14:24:08 +0100
-Subject: [PATCH v4 3/3] lib/bb/tests/setup.py: add tests for
- oe-fragments-one-of
+Date: Fri, 23 Jan 2026 15:58:14 +0100
+Subject: [PATCH v3 4/5] dev-manual/poky-manual-setup.rst: mention the
+ Source Directory
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260123-bitbake-setup-choose-builtin-v4-3-99361f2128f6@bootlin.com>
-References: <20260123-bitbake-setup-choose-builtin-v4-0-99361f2128f6@bootlin.com>
-In-Reply-To: <20260123-bitbake-setup-choose-builtin-v4-0-99361f2128f6@bootlin.com>
-To: bitbake-devel@lists.openembedded.org
+Message-Id: <20260123-terms-refresh-v3-4-41c35f0a6a13@bootlin.com>
+References: <20260123-terms-refresh-v3-0-41c35f0a6a13@bootlin.com>
+In-Reply-To: <20260123-terms-refresh-v3-0-41c35f0a6a13@bootlin.com>
+To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Alexander Kanavin <alex.kanavin@gmail.com>, docs@lists.yoctoproject.org, 
- Antonin Godard <antonin.godard@bootlin.com>
+ Antonin Godard <antonin.godard@bootlin.com>, 
+ Quentin Schulz <quentin.schulz@cherry.de>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3627;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1554;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=UCnMFPZz7Di0N5U7Oen8QNvdvN3re6ulXQivsjIYkmE=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpc3Z+Pk7NmjiHrtQcz6XHzeCLdPRext/iZc7qF
- 7ujF8yQ4QOJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaXN2fgAKCRDRgEFAKaOo
- NlW2EACfPAoE/DKMh+hQB4q1II8gF2BnWwu5PFVGI1TkjFWLiD5qHgZ+fO6P0ltB7irZh9JW59p
- WQN+H0EHrTDdCEbj2sJN1fQ8Viy0pyIpD9KmkXXTSo9SemSEadkUUEX+tecgOOxLBCubFaPzBMT
- qjDW5kYnEW9DjnXYvUJGBicMhRJHpHuP+QcIohFys2YxiR+nF4YyKlKJFbSOZLpwbvuAYqHz1CY
- oW3A/SrYDn0nE2+EmXZ1RIB5CpstDk9rVXp7+/+MmSe2f0LflrqmowFCld+Nd1JiBcFlCZ164Qb
- 78UllCsa74C9lABiaVVi33BpwvzOFHjIDH+bYh/GQzkTiPCHcQNBEsQ/lsEtfvM1a+iGQKriJWm
- pBuwfr6ZZhR26BrL/iKT6qVXmUqNkd225CTto9OepaFrm3XnhNJQ3ncD7+f1ezegNClsS2oK9YF
- 8lX1nc10zL0/4f64PJinh/do8QQCFZgLYada3qj1mvDQHiBn91Wb2eNs8GbDu0o4rBPjcssnaCF
- 0JPxA9fW/qcEUXg+OWmz9UuLlODmztGe92F4DPQ8hiBvudI7j7NveuSfs2CUMoTcP/3jvAFnFY+
- VG/fkCBcls2Eh6Zu9ZjGY6kwrYYKP33PdVEbV1dhOeENG9NOFKXFVNm6JDK8vZlrnsALFYGdgeh
- YyWPe2DdFLdP+Uw==
+ bh=xZ6P3pz27eY22XlriTdrCFyYnXYE4aDCs4F/JmCiWR8=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpc4yMFjNh01Ppq8sR1ASqUF+VtSdfm3CLb60eV
+ 8L0F+qeo2OJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaXOMjAAKCRDRgEFAKaOo
+ NvOYD/4t+/1AUPDLnIJH0S93FKbWo4/iIPUzA62kCsRXEjMsYKs0gUihZTbsZQsOlZ7cX3yNgwS
+ iI7Hu/N85mRatKB/TZ+J5daV4f9c0ZvPr7ME9RQ1SPOY2qD0TU3eiqQ7wzp9M6+XtrpQxEeglyG
+ BacarRywfjzh+967KLtbIstiMYPbEbidiBKdXI5z/fF+5LDlxABHEjso6H6KQePaApPjJFRg80n
+ m6rPdHc/GNmg0UvofGw/besqJhokZOhgUKwh20+XSo7w0ob3Bt3njcq53nKn5PBKm1tzw5QovzU
+ J9Ia6TbSqy5dvkl8wJYE4TjmfL7h9+jv4IYOA2mWvqsn4ZSw94iS+QAC+na6fsqGBWlOKxerMZQ
+ okUGryIGuYK6tQiR+oF804Y/SrDIiLpQx53YlwPTG0TotLuRT2XjQ+I59PWbCQ3qj2Rg5mHRXs7
+ E2P975OEC6UVkHaT7rmqxO/y7BsDmILv/5itqx0jpvH47oKwQgyqmnwpszfBB1K5Jf5suCXUdrF
+ yyhrK2F3Lg1cQ7orVfPs11k4xdb6a/h0tSI+6lRzHc6ybych/dayO3gMLEkrvYsvuaLiiStTTws
+ ivVT1+RZkvK0fj3DiIkybnmDve4LHZpDOKI0nIh4bEPz7ryahLlaUbRg2wxV9EVOdR4NU+RtVPv
+ U94y7lHsmnpa5MA==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 23 Jan 2026 13:24:28 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8639
+ <docs@lists.yoctoproject.org>; Fri, 23 Jan 2026 14:58:29 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8644
 
-There were no tests of oe-fragments-one-of so modify gizmo-notemplate to
-gizmo-notemplate-fragments-one-of, and test both formats for the options
-(with or without a description).
+After switching to the new definition of "Source Directory", i.e. the
+base directory for your project (which used to be poky), mention it in
+this document on manually setting up the layers for a project. As stated
+in terms.rst, use "project" for the directory name.
 
-In get_setup_path(), if the configuration specified on the command-line
-contains fragments, join everything with "-" as this is what will be the
-final directory name of the setup. This does not affect other current
-variants.
-
+Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- lib/bb/tests/setup.py | 31 +++++++++++++++++++++++++++----
- 1 file changed, 27 insertions(+), 4 deletions(-)
+ documentation/dev-manual/poky-manual-setup.rst | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/lib/bb/tests/setup.py b/lib/bb/tests/setup.py
-index 8b6046c049a..744dfe903ed 100644
---- a/lib/bb/tests/setup.py
-+++ b/lib/bb/tests/setup.py
-@@ -136,10 +136,26 @@ print("BBPATH is {{}}".format(os.environ["BBPATH"]))
-                 "oe-fragments": ["test-fragment-1"]
-             },
-             {
--                "name": "gizmo-notemplate",
-+                "name": "gizmo-notemplate-fragments-one-of",
-                 "description": "Gizmo notemplate configuration",
-                 "bb-layers": ["layerC","layerD/meta-layer"],
--                "oe-fragments": ["test-fragment-2"]
-+                "oe-fragments": ["test-fragment-2"],
-+                "oe-fragments-one-of": {
-+                    "fragment-desc": {
-+                        "description": "Test fragments (with description)",
-+                        "options" : [
-+                            { "name": "fragment-desc-1", "description": "fragment 1 desc" },
-+                            { "name": "fragment-desc-2", "description": "fragment 2 desc" }
-+                        ]
-+                    },
-+                    "fragment-nodesc": {
-+                        "description": "Test fragments (no description)",
-+                        "options" : [
-+                            "fragment-nodesc-1",
-+                            "fragment-nodesc-2"
-+                        ]
-+                    }
-+                }
-             },
-             {
-                 "name": "gizmo-notemplate-with-filerelative-layers",
-@@ -259,7 +275,7 @@ print("BBPATH is {{}}".format(os.environ["BBPATH"]))
-     def get_setup_path(self, cf, c):
-         if c == 'gizmo':
-             return os.path.join(self.tempdir, 'bitbake-builds', 'this-is-a-custom-gizmo-build')
--        return os.path.join(self.tempdir, 'bitbake-builds', '{}-{}'.format(cf, c))
-+        return os.path.join(self.tempdir, 'bitbake-builds', '{}-{}'.format(cf, "-".join(c.split())))
+diff --git a/documentation/dev-manual/poky-manual-setup.rst b/documentation/dev-manual/poky-manual-setup.rst
+index bcda9d7e7..4bc9b97b6 100644
+--- a/documentation/dev-manual/poky-manual-setup.rst
++++ b/documentation/dev-manual/poky-manual-setup.rst
+@@ -22,7 +22,16 @@ release or a Long Term Support release.
  
-     def test_setup(self):
-         # unset BBPATH to ensure tests run in isolation from the existing bitbake environment
-@@ -327,7 +343,14 @@ print("BBPATH is {{}}".format(os.environ["BBPATH"]))
-         # test-config-1 is tested as a registry config and over http, test-config-2 as a local file
-         server = HTTPService(self.registrypath, host="127.0.0.1")
-         server.start()
--        variants = ('gadget','gizmo','gizmo-env-passthrough','gizmo-no-fragment','gadget-notemplate','gizmo-notemplate')
-+        variants = (
-+            'gadget',
-+            'gizmo',
-+            'gizmo-env-passthrough',
-+            'gizmo-no-fragment',
-+            'gadget-notemplate',
-+            'gizmo-notemplate-fragments-one-of fragment-desc-1 fragment-nodesc-1',
-+        )
-         variants_local = variants + ('gizmo-notemplate-with-filerelative-layers',)
-         test_configurations = ({'name':'test-config-1','cmdline': 'test-config-1',
-                                                  'buildconfigs': variants},
+ Once you complete the setup instructions for your machine (see the
+ :doc:`/ref-manual/system-requirements` section of the Yocto Project Reference
+-Manual), you need to get a copy of the different :term:`layers <Layer>` needed
++Manual), create a :term:`Source Directory`: the base directory for your project.
++Throughout the documentation, we will use ``bitbake-builds`` as the name of the
++:term:`Source Directory`. Here's how to create it:
++
++.. code-block:: console
++
++   $ mkdir bitbake-builds
++   $ cd bitbake-builds
++
++You need to get a copy of the different :term:`layers <Layer>` needed
+ to setup the :term:`Poky` reference distribution on your build host. Use the
+ following commands:
+ 
 
 -- 
 2.52.0
