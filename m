@@ -1,128 +1,206 @@
-Return-Path: <alex.kanavin@gmail.com>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 57DECD6261A
-	for <webhook@archiver.kernel.org>; Thu, 22 Jan 2026 17:57:41 +0000 (UTC)
-Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.43726.1769104653704165244
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D8737D72345
+	for <webhook@archiver.kernel.org>; Fri, 23 Jan 2026 08:34:46 +0000 (UTC)
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.63381.1769157278806243320
  for <docs@lists.yoctoproject.org>;
- Thu, 22 Jan 2026 09:57:33 -0800
+ Fri, 23 Jan 2026 00:34:40 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=ATrTMNDS;
- spf=pass (domain: gmail.com, ip: 209.85.222.172, mailfrom: alex.kanavin@gmail.com)
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-8c5349ba802so122168085a.1
-        for <docs@lists.yoctoproject.org>; Thu, 22 Jan 2026 09:57:33 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769104653; cv=none;
-        d=google.com; s=arc-20240605;
-        b=MQXM+13QqrkNMGKyGFj+JcXC1W6oAIpTAhiRSk0Ib7wcbD6roPzUmir0opnKAEa/G/
-         uHnsd/k8sz9JivTOd2m+Cuyf706gzfypOFrqAoH1vZ2JK9uu4aApZdRG36nS3rfuVALL
-         CMh6II2avXoofel+dX6Ftd/qKQOo4cFJ26wit2xBmZxQn6HtJ7XYeUPELwoyqIZs7l30
-         JvKzkbBanlpyne7JnE3sD7MR//7/LJAV0EZxZ6JXrXb/qL1539oMCBKivoZRsDiwa/J6
-         s4yUAFQuwFuPc4/hmp5++K3wLW92XqvBMFX2FN6lIkxr5lWU4gAfH+tHQSxNkpppINZV
-         EZQA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=9waowehkHPqlgBYVtsjblRMZ+AO7rarj5nCE9t788lI=;
-        fh=EW+et82PLiLc1YRMGWpU/TmvpZt1w8wVcU8HEesCMeQ=;
-        b=PKTHPkwXWin6svE4/XX2/mzafrUsb40D3Po6N9TJYgtBHmN5c6yh823asx+OtUP8oK
-         Yv+SrGXpQBDnBZ+tzFgi7zVWi8mm7DZtvk1c0zyR13cBZOa4HyiWATXUUrSXCQcWAcTv
-         IPb1SmL2jrPwSNKtNbLVY4U7uBrGE3IArcPLVK7CfsH7BkMLJ2LcJLbqB1KmTQMXsbTX
-         5CbnbSNYwK25Wf5R62fvORhcqsrADxd9gQ/VsYLYaBBJmzXWNtEOaqsdpF49CiHpthki
-         kz0it0IsMZQQGO9mG6NVHoQjCgAubU67dTT3IkMzJO5yd4LtXKEXRgPyLCZj2k4CmsLE
-         tGsA==;
-        darn=lists.yoctoproject.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769104653; x=1769709453; darn=lists.yoctoproject.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=9waowehkHPqlgBYVtsjblRMZ+AO7rarj5nCE9t788lI=;
-        b=ATrTMNDSvYV0jhbShwYMOa6KEBJ34spbB+s8gMNXUxZjswUjXci6CB0Jq9pfHpgKIZ
-         QQlkXtz6r0RgGzngjwTKN2YAkcMEP0dF3wVpcZNmaDq9mytIU6aWFoK/cbKSNrl3ouQO
-         te0IPy7Hp1utn+rvT2UISMMGn8z8IS1YephFaGvGs/tPPupx+Mh/Fgr5jrdyt2Fjp1nB
-         xOA7nLOg37y+ZgtFpcizc73iG5ugpdS0YqQrbqt5/QWmvhC1noqsYYC5/ITwQlsZMa/g
-         wKp5Sj+/Zvc4RGllXgIs7KT9WYC/beXNU0c3QTAqQ90rBq/ktfUSCZqrLf2pLsI5QpEd
-         fvsg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769104653; x=1769709453;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9waowehkHPqlgBYVtsjblRMZ+AO7rarj5nCE9t788lI=;
-        b=HQDw8PkMhexGoTsZldHguFwQv2o7CegL0FTAnuLJpt4epjfBk8C7G9bxc3u0g9weWg
-         +YV9CbtW5BXptFIDim/lMnTlY/CP7KcyEZHdSHhDj3axwuJ0VvzEegOcupezfLnLJZ19
-         VNaScNr5FuN3XpMC4E6/tZsj6XitUlAtaLTWmJvqg0UhWh46m9bMahizltelvIcriqoo
-         ohRbqB/GKXgCPKBYKmwLSKw/Tshlf18174e6SgEt2qQU3QVg5+0iqpiBaf9L/FhidIHv
-         8sJiaNjDl0rqqdw6bV0ecOrbYDyFTMN2mh8Oz+YOwtkdYXBKdEl4oTILTZXOMRZxqh4e
-         Taog==
-X-Forwarded-Encrypted: i=1; AJvYcCVaW2NP85/JKV/a0BIUJExorWgybGBdVZ1amuSyCcLf3KekIKuRKA/a+SNuR8rKBJRe4HfM@lists.yoctoproject.org
-X-Gm-Message-State: AOJu0Yz07/Cmg7XwSFr37bd+xMCmA4luFC3/FnniL9/EcU/U5qs8qPXc
-	4H+m5rn/M8FgcT1SOuZhEAiSO3aHHUGY28h3n3NgWMU+uEB7WVqUMXBM65CygtKH9/7Fdjg2zDb
-	XIr8LMdfnH9RXf2A78n/zfI3pzsmp0jY=
-X-Gm-Gg: AZuq6aJJsZmXm/cDDXUnoyXcGZuivr++DzUEBSCMlUS2gThML5ZiOdwEGYmXc64jjnC
-	7z75Rr1JUWY+HtfygdviQPj+9tH7ak0nacxnTohF+Vc72d1zGoX0WJ6MUi9ldXP8w8mCrIgYCM+
-	k5JL66cryi9XOzYK+JpA22EjO0aynt+U8y7lM4xfI6yXC3t9QE0N29MuDbseDLCllUJxH/nnBjE
-	2RpKOP/RtF2XL0Ol0Dw6bkRI0w/5mgdU21knn6PFd6kfGG6nAlRcuOJMvo+vjAp9bn1L3f5nbbW
-	uKPGabhZkbD4ZrVXn+/lnhgK+/pwelIdI6Wdmd0D
-X-Received: by 2002:a05:620a:4494:b0:8c5:2e5a:5c80 with SMTP id
- af79cd13be357-8c6e2e3e95bmr32879985a.65.1769104652500; Thu, 22 Jan 2026
- 09:57:32 -0800 (PST)
-MIME-Version: 1.0
-References: <20260122-bitbake-setup-choose-builtin-v3-0-c55291acc1a7@bootlin.com>
-In-Reply-To: <20260122-bitbake-setup-choose-builtin-v3-0-c55291acc1a7@bootlin.com>
-From: Alexander Kanavin <alex.kanavin@gmail.com>
-Date: Thu, 22 Jan 2026 18:57:21 +0100
-X-Gm-Features: AZwV_QgE6-4n7fuhSOLmZhQnJS07jXX7CuRcW9GqTPoMYUqWjbMG0Apu4A5dPj0
-Message-ID: <CANNYZj_FHvrXGk-=Q1pFd9Vo5b=puY41EERTQdivXikdbd_LmA@mail.gmail.com>
-Subject: Re: [PATCH v3 0/3] bitbake-setup: add descriptions for fragment choices
-To: Antonin Godard <antonin.godard@bootlin.com>
-Cc: bitbake-devel@lists.openembedded.org, 
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, docs@lists.yoctoproject.org
-Content-Type: text/plain; charset="UTF-8"
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=nSpoHzbi;
+ spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id B92274E421F1;
+	Fri, 23 Jan 2026 08:34:36 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 8E55B6070A;
+	Fri, 23 Jan 2026 08:34:36 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 84899119A85ED;
+	Fri, 23 Jan 2026 09:34:34 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1769157275; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=weNGAXRRBx6Fk/t99gv7VrgixOJICsEhaP8mOvF905o=;
+	b=nSpoHzbipQD+1fPObqlcJ9vb3DPbFVwdvcWnzf7IzpMhf+X3AJBQXRV1hrM5nkaszr8erS
+	a5LWD8v4KnSjQCZ506IPDgoW0KWIIkLamn4WfFEwaVKaxkUbRTxcNl/6VvBufh8w/xbzvq
+	R121mzgwpXTdB0pTDpvGnHnqQw1uancNqpgSbsEOqoIlAmO2W7aP+ZI178f0FWcPOquRSo
+	hy29rAROadzPAPQiy4AUqDoLWrxAzgIzABMkS7e1OPe+hqKVGJuE0/ytrnr/VYhfaJuodD
+	hELKR6i+NK1Pw7FZmKVQ5O44BMxtPQ1IMAiPAasIQS8ZBhmFDPPTrE4YuBCZAA==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 23 Jan 2026 09:34:33 +0100
+Message-Id: <DFVTWVIZ6ZUP.1YHMAPRNIEF5M@bootlin.com>
+Subject: Re: [docs] [PATCH v3 3/3] lib/bb/tests/setup.py: add tests for
+ oe-fragments-one-of
+Cc: <bitbake-devel@lists.openembedded.org>, "Thomas Petazzoni"
+ <thomas.petazzoni@bootlin.com>, <docs@lists.yoctoproject.org>
+From: "Antonin Godard" <antonin.godard@bootlin.com>
+To: <alex.kanavin@gmail.com>
+References: <20260122-bitbake-setup-choose-builtin-v3-0-c55291acc1a7@bootlin.com> <20260122-bitbake-setup-choose-builtin-v3-3-c55291acc1a7@bootlin.com> <CANNYZj_SUcRFLWobRO9GHPzN+ZtG9koKVg4iZ-gzoKsSAUiMoQ@mail.gmail.com>
+In-Reply-To: <CANNYZj_SUcRFLWobRO9GHPzN+ZtG9koKVg4iZ-gzoKsSAUiMoQ@mail.gmail.com>
+X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 22 Jan 2026 17:57:41 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8632
+ <docs@lists.yoctoproject.org>; Fri, 23 Jan 2026 08:34:46 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8633
 
-Thanks, other than the suggested test tweaks, lgtm. There might be a
-merge conflict with the tests, as I've also tweaked them, but it
-should not be hard to resolve.
+Hi,
 
-Alex
+On Thu Jan 22, 2026 at 6:54 PM CET, Alexander Kanavin via lists.yoctoprojec=
+t.org wrote:
+> On Thu, 22 Jan 2026 at 16:02, Antonin Godard <antonin.godard@bootlin.com>=
+ wrote:
+>> +            },
+>> +            {
+>> +                "name": "gizmo-fragments-one-of",
+>> +                "description": "Gizmo configuration using oe-fragments-=
+one-of, both formats",
+>> +                "oe-template": "test-configuration-gizmo",
+>> +                "oe-fragments-one-of": {
+>> +                    "fragment-desc": {
+>> +                        "description": "Test fragments (with descriptio=
+n)",
+>> +                        "options" : [
+>> +                            { "name": "fragment-desc-1", "description":=
+ "fragment 1 desc" }
+>> +                        ]
+>> +                    },
+>> +                    "fragment-nodesc": {
+>> +                        "description": "Test fragments (no description)=
+",
+>> +                        "options" : [
+>> +                            "fragment-nodesc-1"
+>> +                        ]
+>> +                    }
+>> +                }
+>
+> To avoid multiplying test configs further (and making the tests
+> slower), perhaps this can be added to gizmo-notemplate, and that
+> renamed to gizmo-notemplate-fragments-one-of ?
 
-On Thu, 22 Jan 2026 at 16:02, Antonin Godard <antonin.godard@bootlin.com> wrote:
+Sure
+
+>> -                                                                 'gadge=
+t-notemplate','gizmo-notemplate')},
+>> +                                                                 'gadge=
+t-notemplate',
+>> +                                                                 'gizmo=
+-notemplate',
+>> +                                                                 'gizmo=
+-fragments-one-of fragment-desc-1 fragment-nodesc-1')},
 >
-> Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
-> ---
-> Changes in v3:
-> - Rework logic as suggested by Alex
-> - Remove modifications of {oe-nodistro,poky}-whinlatter.conf.json
-> - Add a test case for oe-fragments-one-of
-> - Link to v2: https://patch.msgid.link/20260120-bitbake-setup-choose-builtin-v2-0-ade604ff2351@bootlin.com
->
-> Changes in v2:
-> - As suggested by Alex, change the new way of specifying fragments to
->   remain a dictionary so they can be extended in the future
-> - Link to v1: https://patch.msgid.link/20260116-bitbake-setup-choose-builtin-v1-0-8d66666a9efd@bootlin.com
->
-> ---
-> Antonin Godard (3):
->       bin/bitbake-setup: add descriptions for fragment choices
->       default-registry: update fragments choices with descriptions
->       lib/bb/tests/setup.py: add tests for oe-fragments-one-of
->
->  bin/bitbake-setup                                  | 23 ++++++++++++++-----
->  .../configurations/oe-nodistro-master.conf.json    |  6 ++++-
->  .../configurations/poky-master.conf.json           | 14 ++++++++++--
->  .../bitbake-user-manual-environment-setup.rst      | 26 ++++++++++++++++++++--
->  lib/bb/tests/setup.py                              | 25 +++++++++++++++++++--
->  setup-schema/bitbake-setup.schema.json             | 21 ++++++++++++++++-
->  6 files changed, 101 insertions(+), 14 deletions(-)
-> ---
-> base-commit: 5127faf986d8543bb88e73cf3dccb407d80c9a25
-> change-id: 20260116-bitbake-setup-choose-builtin-fb199054cc25
->
+> As there's only one choice in each, bitbake-setup should pick that
+> without asking, or having to specify them on command line. Let's test
+> that too, and drop the fragment names from here.
+
+I tried that with the following modified configuration:
+
+{
+    "name": "gizmo-notemplate-fragments-one-of",
+    "description": "Gizmo notemplate configuration",
+    "bb-layers": ["layerC","layerD/meta-layer"],
+    "oe-fragments": ["test-fragment-2"],
+    "oe-fragments-one-of": {
+        "fragment-desc": {
+            "description": "Test fragments (with description)",
+            "options" : [
+                { "name": "fragment-desc-1", "description": "fragment 1 des=
+c" }
+            ]
+        },
+        "fragment-nodesc": {
+            "description": "Test fragments (no description)",
+            "options" : [
+                "fragment-nodesc-1"
+            ]
+        }
+    }
+},
+
+But I'm hitting:
+
+bb.process.ExecutionError: Execution of '/bitbake/bin/bitbake-setup --globa=
+l-settings /tmp/bitbake-fetch-q1wqa8zi/global-config init --non-interactive=
+ test-config-1 gizmo-notemplate-fragments-one-of' failed with exit code 1:
+Traceback (most recent call last):
+  File "/bitbake/bin/bitbake-setup", line 1320, in <module>
+    main()
+  File "/bitbake/bin/bitbake-setup", line 1310, in main
+    init_config(top_dir, all_settings, args)
+  File "/bitbake/bin/bitbake-setup", line 767, in init_config
+    upstream_config =3D obtain_config(top_dir, settings["default"]["registr=
+y"], args, source_overrides, d)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^=
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/bitbake/bin/bitbake-setup", line 586, in obtain_config
+    upstream_config['bitbake-config']['oe-fragment-choices'] =3D choose_fra=
+gments(upstream_config['bitbake-config'].get('oe-fragments-one-of',{}), con=
+fig_parameters[1:], args.non_interactive, args.skip_selection)
+                                                               ^^^^^^^^^^^^=
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^=
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/bitbake/bin/bitbake-setup", line 534, in choose_fragments
+    raise Exception(f"Unable to choose from options in non-interactive mode=
+: {[o['name'] for o in options]}")
+Exception: Unable to choose from options in non-interactive mode: ['fragmen=
+t-desc-1']
+
+So just after:
+
+        # options can be a list of strings or a list of dicts
+        options =3D v["options"]
+        if len(options) > 0 and isinstance(v["options"][0], str):
+            options =3D [{"name": o, "description": ""} for o in v["options=
+"]]
+
+I added:
+
+        if len(options) =3D=3D 1:
+            choices[k] =3D options[0]["name"]
+            continue
+
+which seems to accomplish what you had in mind.
+
+However this makes the setup dir name "non-predictable" and I hit the follo=
+wing
+next error:
+
+Traceback (most recent call last):
+  File "/bitbake/lib/bb/tests/setup.py", line 357, in test_setup
+    self.check_setupdir_files(setuppath, test_file_content)
+  File "/bitbake/lib/bb/tests/setup.py", line 224, in check_setupdir_files
+    with open(os.path.join(setuppath, 'config', "config-upstream.json")) as=
+ f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/bitbake-fetch=
+-9d85c0us/bitbake-builds/test-config-1-gizmo-notemplate-fragments-one-of/co=
+nfig/config-upstream.json'
+
+which is due to the setup directory name containing the fragment choices (e=
+ven
+if none were passed on the command-line).
+
+$ ls -l /tmp/bitbake-fetch-atck07q2/bitbake-builds
+...
+drwxr-xr-x    - builder 23 Jan 08:22 test-config-1-gizmo-notemplate-fragmen=
+ts-one-of-fragment-desc-1-fragment-nodesc-1
+
+So I added:
+
+                "setup-dir-name": "gizmo-notemplate-fragments-one-of",
+
+To make sure we get a fixed name for this configuration. Sounds good to you=
+?
+
+Antonin
+
+--=20
+Antonin Godard, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
 
