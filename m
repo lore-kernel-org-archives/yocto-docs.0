@@ -2,139 +2,94 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 63B69D13C07
-	for <webhook@archiver.kernel.org>; Mon, 26 Jan 2026 13:08:17 +0000 (UTC)
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.19533.1769432886413425628
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C0F72D13C2D
+	for <webhook@archiver.kernel.org>; Mon, 26 Jan 2026 14:57:27 +0000 (UTC)
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.21309.1769439437762187894
  for <docs@lists.yoctoproject.org>;
- Mon, 26 Jan 2026 05:08:07 -0800
+ Mon, 26 Jan 2026 06:57:19 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=ZeLzWSJ7;
- spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=oUeoImyE;
+ spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 48DE71A2995;
-	Mon, 26 Jan 2026 13:08:04 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 9D52B4E422A8;
+	Mon, 26 Jan 2026 14:57:15 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 1F0C860717;
-	Mon, 26 Jan 2026 13:08:04 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id CA1F1119A80E2;
-	Mon, 26 Jan 2026 14:08:02 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 7406960717;
+	Mon, 26 Jan 2026 14:57:15 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 41064119A863F;
+	Mon, 26 Jan 2026 15:57:14 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1769432883; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1769439435; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=n5U3jaRatjt9dlapFcYVijfwW8kGu5VLfIoDF+Xp5Ls=;
-	b=ZeLzWSJ7MtyqH2uYonF1z/4DbeUw8jM5V+kNoXTWgXj1WnXVwqjz8yjc0ocE9rxD7vJxVH
-	S/WGcb6AnK3Z9lNL6qG3GKsnQse71S3zliFZOzXTO9vp+U1/FOFzorMdlFygwt9cvntma6
-	8LsfRjcCxmrYWzucsdctR9JeREJO8vbrvTqT3qenAxCvQ/4D0dYgxYwPS6PaNQdNMMQiia
-	D0g/i8HRlh4bIfFW+XEkEYf+BgOTAfJpI3ue6mEPf0u6HOrkfkWE9n9pQ5bIg6zV6F5HsU
-	YdAPBjYP9UUaYtTa78vZt9qr5dHyb36m2hx8VfjNfhsE+Efg1dSO8ojh6aULHA==
+	bh=wy6G6tuchwbi0dAOty6CawGxdC3k7ufUX+yUeqJL7Fc=;
+	b=oUeoImyEebIbOJKmq4lcyS75wvLSDvyyhHqXCuykYUcRmBB309j6kMYzirZmWXz7N1BEp/
+	5AEzf7PMWM7U/boE7FtMm4rau+hQLRP6Jf3Lcxk7XZdDJ6VGVQ21hDjt9cFz5Ph7c9tTqQ
+	IA1Ko/o3LMntrzpm++pm+EHQuS6C+bC28t4zJCjR81L4IgMqUqQA5kUnkY5xaP3A8ok+zN
+	czEV+C114xm7LnpmWwuBsTReCWZAlhceo+FeNmNmYVmbTwRnzFUK4U1XmVers7U+tdECid
+	cjLJTQUMl3Fsblcrau/wfw+nK1tCBgQNpPGe4l1Ooel6pKf0uL9+K2rYnkrK7w==
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 26 Jan 2026 14:08:02 +0100
-Message-Id: <DFYJLWBVD6BX.2BUOP228CD4H7@bootlin.com>
+Date: Mon, 26 Jan 2026 15:57:13 +0100
+Message-Id: <DFYLXI28FQVB.2K36J5CKAU4ML@bootlin.com>
+Subject: Re: [docs] [PATCH 22/53]
+ overview-manual/development-environment.rst: remove obsolete poky repo
+ references
 Cc: "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>
 From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: <quentin.schulz@cherry.de>, <docs@lists.yoctoproject.org>
-Subject: Re: [docs] [PATCH 07/53] dev-manual/building.rst: remove obsolete
- poky repo references
+To: "Quentin Schulz" <quentin.schulz@cherry.de>,
+ <docs@lists.yoctoproject.org>
 References: <20251224-remove-poky-references-v1-0-658a5f4dbde2@bootlin.com>
- <20251224-remove-poky-references-v1-7-658a5f4dbde2@bootlin.com>
- <d2516cf3-669d-4b82-97a1-7fb2674e6f9e@cherry.de>
-In-Reply-To: <d2516cf3-669d-4b82-97a1-7fb2674e6f9e@cherry.de>
+ <20251224-remove-poky-references-v1-22-658a5f4dbde2@bootlin.com>
+ <064b4d3d-0695-4ffe-8ae0-cd53ab2d281d@cherry.de>
+In-Reply-To: <064b4d3d-0695-4ffe-8ae0-cd53ab2d281d@cherry.de>
 X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 26 Jan 2026 13:08:17 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8648
+ <docs@lists.yoctoproject.org>; Mon, 26 Jan 2026 14:57:27 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8649
 
 Hi,
 
-On Tue Jan 13, 2026 at 12:30 PM CET, Quentin Schulz via lists.yoctoproject.=
-org wrote:
-> Hi Antonin,
+On Tue Jan 13, 2026 at 2:49 PM CET, Quentin Schulz wrote:
+[...]
+>> +      :term:`BitBake` repositories. For example, if you have checked ou=
+t the "&DISTRO_NAME_NO_CAP;"
 >
-> On 12/24/25 5:31 PM, Antonin Godard via lists.yoctoproject.org wrote:
->> Remove references to the Poky repository, replace by OpenEmbedded-Core
->> in most cases.
->>=20
->> Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
->> ---
->>   documentation/dev-manual/building.rst  | 40 +++++++-------------------=
---------
->>   documentation/ref-manual/fragments.rst |  2 ++
->>   2 files changed, 10 insertions(+), 32 deletions(-)
->>=20
->> diff --git a/documentation/dev-manual/building.rst b/documentation/dev-m=
-anual/building.rst
->> index 60ad11f52..c153eb9de 100644
->> --- a/documentation/dev-manual/building.rst
->> +++ b/documentation/dev-manual/building.rst
->> @@ -51,32 +51,9 @@ The following figure and list overviews the build pro=
-cess:
->>      Yocto Project*: See the ":doc:`/dev-manual/start`" section for opti=
-ons on how to get a
->>      build host ready to use the Yocto Project.
->>  =20
->> -#. *Initialize the Build Environment:* Initialize the build environment
->> -   by sourcing the build environment script (i.e.
->> -   :ref:`structure-core-script`)::
->> -
->> -      $ source oe-init-build-env [build_dir]
->> -
->> -   When you use the initialization script, the OpenEmbedded build syste=
-m
->> -   uses ``build`` as the default :term:`Build Directory` in your curren=
-t work
->> -   directory. You can use a `build_dir` argument with the script to
->> -   specify a different :term:`Build Directory`.
->> -
->> -   .. note::
->> -
->> -      A common practice is to use a different :term:`Build Directory` f=
-or
->> -      different targets; for example, ``~/build/x86`` for a ``qemux86``
->> -      target, and ``~/build/arm`` for a ``qemuarm`` target. In any
->> -      event, it's typically cleaner to locate the :term:`Build Director=
-y`
->> -      somewhere outside of your source directory.
->> -
->> -#. *Make Sure Your* ``local.conf`` *File is Correct*: Ensure the
->> -   ``conf/local.conf`` configuration file, which is found in the
->> -   :term:`Build Directory`, is set up how you want it. This file define=
-s many
->> -   aspects of the build environment including the target machine archit=
-ecture
->> -   through the :term:`MACHINE` variable, the packaging format used duri=
-ng
->> -   the build (:term:`PACKAGE_CLASSES`), and a centralized tarball downl=
-oad
->> -   directory through the :term:`DL_DIR` variable.
->> +#. *Make Sure Your Configuration is Correct*: Use :ref:`bitbake-config-=
-build <ref-bitbake-config-build-qf>` to
->> +   define the :term:`MACHINE` or :term:`DISTRO`, and open your
+> Do not use this branch as it will never exist as it points to the name=20
+> of the not-yet-released version. You want to use=20
+> DISTRO_NAME_NO_CAP_MINUS_ONE likely (or DISTRO_NAME_NO_CAP_LTS).
+
+No? This is true for the dev version of the docs, but once the docs are
+released, this equals to the current version of the docs you are reading.
+
+[...]
+>>   It is important to understand that Git tracks content change and not
+>>   files. Git uses "branches" to organize different development efforts.
+>> -For example, the ``poky`` repository has several branches that include
+>> +For example, the :yocto_git:`yocto-docs </yocto-docs>` repository has s=
+everal branches that include
+>>   the current "&DISTRO_NAME_NO_CAP;" branch, the "master" branch, and ma=
+ny
 >
-> Unrelated to this, but I'm very confused as to why we enforce a MACHINE=
+> DISTRO_NAME_NO_CAP is wrong here, it's the not-yet-released version. We=
 =20
-> when one is set with the fragments (which is the default). I don't think=
+> shouldn't be using that (or set_versions.py doesn't work right now). Or=
 =20
-> there's a reason for that and it makes it "painful" for me to build=20
-> multiple machines within the same setup. Let me pass MACHINE=3D on the=20
-> command line? We don't even tell users they can simply remove the=20
-> machine fragment to then pass MACHINE from the CLI, which I believe ends=
+> is it just wrong for the "master" branch of the docs maybe? Still,=20
+> people will likely reach the official docs through the master branch?=20
+> Should we show a warning on the docs for the master branch stating this=
 =20
-> up encouraging users to have completely separate setups when the only=20
-> thing that changes is MACHINE.
+> applies only to unreleased software?
 
-I agree and think this is a regression compared to what was possible before=
-. I
-would suggest bringing this up in the bitbake mailing list to open the
-discussion.
-
-I usually end up removing the fragment definition entirely and use local.co=
-nf to
-set my MACHINE.
+No, docs.yoctoproject.org shows the latest released version of the docs, wh=
+ich
+is the tip of the whinlatter branch right now. The master version of the do=
+cs is
+docs.yoctoproject.org/dev, and the master-next version of the docs is
+docs.yoctoproject.org/next.
 
 Antonin
 
