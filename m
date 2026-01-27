@@ -2,40 +2,39 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 899C8CA6CA1
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B4DFDCA6CA9
 	for <webhook@archiver.kernel.org>; Tue, 27 Jan 2026 08:19:46 +0000 (UTC)
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.6053.1769501976767665894
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.6059.1769501986192419592
  for <docs@lists.yoctoproject.org>;
- Tue, 27 Jan 2026 00:19:37 -0800
+ Tue, 27 Jan 2026 00:19:46 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=LXdV99ea;
- spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=UhyBenvr;
+ spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 3F8864E422CA;
-	Tue, 27 Jan 2026 08:19:35 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 8E698C211CD
+	for <docs@lists.yoctoproject.org>; Tue, 27 Jan 2026 08:19:46 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 167ED606F5;
-	Tue, 27 Jan 2026 08:19:35 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5867C119A868C;
-	Tue, 27 Jan 2026 09:19:34 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 95FC2606F5;
+	Tue, 27 Jan 2026 08:19:44 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9FC42119A869D;
+	Tue, 27 Jan 2026 09:19:43 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1769501974; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1769501984; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=+2xjNaC9b/ELtYqlQzSPG+Jc5NL5biO7pMHI15uRHP4=;
-	b=LXdV99eatVHs+bBqww+FY2r1q60kQj6TWzk5dyKjqNyniaD/JxPlkFJ74FUzph+eguiEwC
-	oX87WV84r1CvGYQVS1cpCdyTKsMe5k90Xcv5W+ghkkz414N8v4lhDf6m7axDR370C85S9y
-	439hIczGTLQ5McSo/W9bC6joF/RQ939ZPmyvII/ojqm11tr0v4uuFnINiPSclx9E0zO74f
-	jutzTfX+sU998Mv7X2cN26y2hYiclAmZWOZfF0I84d7rV8vMccKQ3j0994kFb6PnApKEjQ
-	FtK+e1yhqDfDwXoodm7XfxNSX/8CnfHGKxKVGRTfevTrXIxSUmfJmI4kQF6a0Q==
+	bh=NCqCo/b1MZa4OC5vrY9VUA8rSKR0GZNy/OoKZ7ZGSD4=;
+	b=UhyBenvrZ1UAvzN4dRs/HR6F+D4bWNTutva1YOv8A0cVYU/Kbp43WNy5BSWkGGOmNMxybm
+	qxLU0cAX5F1SQbvvfD8AEiYKNsRjUdhTfs/kcgvnv2CC9uPxK0eQGzUJVvsyuXIrSXWQtt
+	dM5S7spAn/K5M0FUGjiTbj4x8msgNsf6BlOUCYE8rj6U72cfANbrQ3/qXlOtVLmn3kWx2v
+	RSvd2l1N/aB0f0EVZPIKLGqZGje+r1TlMDCf2wOcjKpllPiB+uEuO/HUNigHqUP15fRVIt
+	RZMgGMpxBhulqTF8ny8FTBVxd6/FPw10SjywrGLcEaNzaPSogtSFE/6+uyagVQ==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Tue, 27 Jan 2026 09:19:15 +0100
-Subject: [PATCH v2 20/56] migration-guides/migration-1.4.rst: remove
- obsolete poky repo references
+Date: Tue, 27 Jan 2026 09:19:28 +0100
+Subject: [PATCH v2 33/56] README: replace obsolete substitution variables
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260127-remove-poky-references-v2-20-74bf80cc4e5a@bootlin.com>
+Message-Id: <20260127-remove-poky-references-v2-33-74bf80cc4e5a@bootlin.com>
 References: <20260127-remove-poky-references-v2-0-74bf80cc4e5a@bootlin.com>
 In-Reply-To: <20260127-remove-poky-references-v2-0-74bf80cc4e5a@bootlin.com>
 To: docs@lists.yoctoproject.org
@@ -43,21 +42,21 @@ Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
  Antonin Godard <antonin.godard@bootlin.com>, 
  Quentin Schulz <quentin.schulz@cherry.de>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1133;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=971;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=b8WI5BuZdIqh8ndEv21J3B59uLjRO27TWlFHwLrS+Tw=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpeHUBnEJqMjluJuS4ss5TRUEVBifRBVSjk23mC
- x2WGFyxSLaJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaXh1AQAKCRDRgEFAKaOo
- NmBLD/4yBIqmzCUTAS68gTf/7lGTG3usG+HRtxf70IgGfNureFqQ1x79JRCAfHE9rTa27LrWBLO
- fegdmFqJ3svfRbIjor9hRscO3PKoDKpBQEgIoIbdL43lYgnr5PdLP/b+Mgy5K71RffFbs/yPiUQ
- o4pXapbQEEVGGJdUu+FAagW22myHstr+8e84jZyvn6nlDbm70Ft3Y4IPEtNR8gqi/x+LCgz9opv
- bsAleADIFbcdZL10R4JFiualxO8X9XN8tWV/q7OD+iYn79Q0itV+r6uO7BMTPiylnw6LFNs31Mt
- iN474O2NgSbeemoKKrwisuSlDU8lhdxcR/yuYBi2q3/ydW632qSeF6oBSlx3TX6vyC2bL4SLRkb
- /THridV/RbhwpwQRaHJMjYjZmxWAcWFHMRg9erDX97XTdqwkvaXsPvdfAOX9p2LS0aGsSrcEVoz
- O5y6eJ8VyJCXXdsOtZuFuS59lo7QNelQsyM5V96C6UYvg1yVgvsLiGzmXpKIYEclT1duciFP/eN
- RrJUZihLeGanlOcQjdjriZJ4jFHJuE0+b9Q++Q/1dKmaFzGXKabHL1ps95DVMT498481Vi+4cPM
- Bmqv6tEY4k6JpVQrD/DN8QAjrW1gqv3JFHWKjy8/ZH1riOYVj1z628hAYDIz9sLmcwarBdsbkgv
- ZjOiuFRpYbbqqOQ==
+ bh=SSk4gs0Wl+3OcvDgNod04W5CxW+0WvJBuqTPOPWE7TM=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpeHUDmzcr/D+YaibhmG4B/TWNONZiz+HprDH6M
+ v/uKKAbskaJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaXh1AwAKCRDRgEFAKaOo
+ NlV8D/9McnwvUATzkaRwt7CmgpUdVlCv/e8hFLiYZl+JTL60W8IUvsZmrPufAH+FSMSUpNBldFZ
+ VTuTwzto8jMZFKJMmGZMri8e7k/sNdO215uJ41YYCFkDG2wtJjAnxJCpoiXuLZyaVBwT2B0K3W6
+ T/HvbCVh/xoU/0P2/aypEAqar24QrCY6Qud3Zss7rCewUdhWGRnwraCUwiJTYGt+1WhaTu8G1BL
+ S+tRmLtcH87UKVE8Sj0mXhTkZJZEeb5aVb+k+XSHctKeRkSSWwCsWGVPIyS7+OHnqE2vKPDE1+Z
+ LpuaAewoVB16d+smIDqb9DOofxuk4NnICOTDUp2Jk8sYg+RD8+e1LzrDXj/h04cy+GT2vdmzl9Q
+ c62bIFHnNBqpwglgiXJIh+hSdQCXh53XBsh00HfDfQ6KuHEqAnhvk4OKAwx9ass4+4pgG7FITCn
+ fFtzzw1TnDv9Fg0DXAM/N/UO5idLGhIhqwODq+iEmfd8nmQdEM9yvqOsDL6ztbbFoJBJu2PeMwp
+ m2i+gBznHVLBtNNlThCf+xOdMKeDRm6EE0Mid4T/nD3e8asDjcrn/RE2PeFPlog3pUWoKqP8wK9
+ 7cXVfpPL8G9PTVml74WPDgG47tBsbrS6foYod6F16zfMuPQAnPXE0//VEeXSRljbcHY4QviaSfQ
+ iURiZ3v7P+/lV6Q==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
@@ -65,29 +64,37 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Tue, 27 Jan 2026 08:19:46 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8681
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8694
 
-Remove references to the Poky repository, replace by OpenEmbedded-Core.
+Replace obsolete substitution variables by current ones from
+poky.yaml.in.
 
-Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
+Suggested-by: Quentin Schulz <quentin.schulz@cherry.de>
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/migration-guides/migration-1.4.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ documentation/README | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/documentation/migration-guides/migration-1.4.rst b/documentation/migration-guides/migration-1.4.rst
-index 6db2a035b8..5d8d0ffde8 100644
---- a/documentation/migration-guides/migration-1.4.rst
-+++ b/documentation/migration-guides/migration-1.4.rst
-@@ -82,7 +82,7 @@ Custom Interfaces File (netbase change)
- If you have created your own custom ``etc/network/interfaces`` file by
- creating an append file for the ``netbase`` recipe, you now need to
- create an append file for the ``init-ifupdown`` recipe instead, which
--you can find in the :term:`Source Directory` at
-+you can find in :term:`OpenEmbedded-Core (OE-Core)` at
- ``meta/recipes-core/init-ifupdown``. For information on how to use
- append files, see the
- ":ref:`dev-manual/layers:appending other layers metadata with your layer`"
+diff --git a/documentation/README b/documentation/README
+index 5516d71a6..7c4472c73 100644
+--- a/documentation/README
++++ b/documentation/README
+@@ -244,12 +244,12 @@ content:
+   .. code-block::
+       $ mkdir bitbake-builds-&DISTRO;
+       or
+-      $ git clone &YOCTO_GIT_URL;/git/yocto-docs -b &DISTRO_NAME_NO_CAP;
++      $ git clone https://git.yoctoproject.org/yocto-docs -b &DISTRO_NAME_NO_CAP;
+ 
+ Variables can be nested, like it was the case for DocBook:
+ 
+-  YOCTO_HOME_URL : "https://www.yoctoproject.org"
+-  YOCTO_DOCS_URL : "&YOCTO_HOME_URL;/docs"
++  DISTRO : "5.2"
++  DISTRO_REL_TAG : "yocto-$DISTRO;"
+ 
+ Note directive
+ ==============
 
 -- 
 2.52.0
