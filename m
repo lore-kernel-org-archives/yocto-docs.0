@@ -2,505 +2,536 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 771EDCA6C9A
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5DB87CA6C99
 	for <webhook@archiver.kernel.org>; Tue, 27 Jan 2026 08:19:46 +0000 (UTC)
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.6057.1769501980931976013
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.5811.1769501982674049786
  for <docs@lists.yoctoproject.org>;
- Tue, 27 Jan 2026 00:19:41 -0800
+ Tue, 27 Jan 2026 00:19:43 -0800
 Authentication-Results: mx.groups.io;
- dkim=fail reason="dkim: body hash did not verify" header.i=@bootlin.com header.s=dkim header.b=yL01k95A;
- spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=h6Jz4ihZ;
+ spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 5F9774E422CB
-	for <docs@lists.yoctoproject.org>; Tue, 27 Jan 2026 08:19:39 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 064E91A2A6B
+	for <docs@lists.yoctoproject.org>; Tue, 27 Jan 2026 08:19:41 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 37FF5606F5
-	for <docs@lists.yoctoproject.org>; Tue, 27 Jan 2026 08:19:39 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 89012119A8693;
-	Tue, 27 Jan 2026 09:19:38 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id D21F1606F5
+	for <docs@lists.yoctoproject.org>; Tue, 27 Jan 2026 08:19:40 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0B8D2119A8696;
+	Tue, 27 Jan 2026 09:19:39 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1769501978; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1769501980; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=ZoF1sPPHHwRFe6EoL9wucp23JWNhVAsDGE7NY1M4qPA=;
-	b=yL01k95Ari6+k33wq+T6QzptNaVPYaMObojRgk9WLshS0/vTB1aRy4WdBO+Gpkbd7gagQs
-	n44eUHu7WAlDc6iLqN72x5Jc9meGVteUboJIhfOh28U9qoQmYi66Nmi1+gzWH4JOA1OiI+
-	t9Wp17N2jO4sYujpggSuHZeqBDKCtbJuKwu5+VIKh0RMpD7iFS4SfJRQd5pL7GKfyqumOS
-	jB1bmNN6B9fgJBU46sr7sbIius6XzpLFxBWN8ogMKzBx6uvTDdn59UL8KoYXyc1zI94kq+
-	odshUNV2C9OMLWFLWS+M64AJr+X5KfGOvrGCuni0K8o7wOC76LSO+xqf1TZnZQ==
+	bh=uxd08NKrJixDGzkppdDyhLRkShIDtsBAHhCaMKKSvcQ=;
+	b=h6Jz4ihZie+CxAteouF1SRc//YjcY5b3pH0geWW6aNPZRtEWEL7wtYiduTktFuNSU3NrP1
+	iyT8QD3fPf3/V3J72qgh0u9MSTVID8NUn7oMn4rm+ea0MCSWcLAhK+Dn5+hSG72yiYGEQA
+	q9eFjD28qnpvwY9cMJYsXnJ3QJZ7Q6QavlJKTIj0CZopiaT6AjsjlliszMeNKf2yjBCRAf
+	mVt7zF8i4pLigFN8TuuzCS+NzGMYa8MsJs4htm42LI1G4xHANB2iR9wJ7BYJ8rFRfoNM1O
+	pEP60hhZF85/uZYs2L//91D5PnElAvNMtQHlPlfUn6k+xuDy+ol+OUOR2KezhA==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Tue, 27 Jan 2026 09:19:21 +0100
-Subject: [PATCH v2 26/56] ref-manual/structure.rst: remove obsolete poky
+Date: Tue, 27 Jan 2026 09:19:23 +0100
+Subject: [PATCH v2 28/56] ref-manual/variables.rst: remove obsolete poky
  repo references
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20260127-remove-poky-references-v2-26-74bf80cc4e5a@bootlin.com>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260127-remove-poky-references-v2-28-74bf80cc4e5a@bootlin.com>
 References: <20260127-remove-poky-references-v2-0-74bf80cc4e5a@bootlin.com>
 In-Reply-To: <20260127-remove-poky-references-v2-0-74bf80cc4e5a@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=16251;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=24746;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=Vzw4kCBx53zjuXaBr/EgWCDsQCNyh3rI8Z5Yl+phl7Q=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpeHUCkJd3wMKrz92BUiyIFgeZUIt3iKZVuITfp
- 4C9VSER0UaJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaXh1AgAKCRDRgEFAKaOo
- NhoID/0ZRJPmhpn8I7JxPD+s2iERDnbz3HH84FuvndkSWEZB7TvgRxJZk2vk4tWs/m0OiDXSWkJ
- 73YNfgsJ3L8wBy9Ha2gl0xTZPvjdInoTDFQtynCJ35ql4BycmOo2l8WFnccKPnCEXDa7cdFAwKF
- GPZX+hAAwv1pYcORQR+ujcS9GI7T6yha2c/anpgVTIzfI1/beyMW9lxLZYKsLurB08h/4iGRwtU
- /MbRzapHHrwQmFZ4sREGhLLvneemXfStYySp2pv43rXY3dzMuPs+zfqhhx4oO00zdx4df33/fEq
- O3gcefZ8IDv6JHrBvlqrl2DSv86y9nkE8xlZh/6GbeS4NBIfah/bqSmgZdalZ26Lfb9w9UApByY
- SZAKePNjs1+51Kj/2GoLGLPpvGHdOxLmYI+5kg85sGVqGv9MSKaaje1oP1XppYWjPNpVfZMdNoh
- N0mVFeaJ2HDJrCpDRJZXDWleZ+smliGnNMxmMmTj9iCeg8MPoQqufDYI+rFAjDbNn9pvEF4Hbsk
- ebAiIaAupGQkvsyBHnaIjdCFsgEr5JdL60n2Z3qxN2Lf5RxIQx0x1Le2SU3iZw10+rbzUotfpv3
- FLvUEfsMFLgevh89VdDUYmiPPrTmvWZ7O/CcekUxFA1kVZVBgMj1AZuabXo8vpefSod4sUWdCVj
- JUMot4yOlcCWMjg==
+ bh=Z1MFMcXkUYYRCJCnCGSE2aW+SY5XPMNWf7Qxmf2edw0=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpeHUCdwPlh4Y6udZ6005uWm59JjaJ7O+eibzFc
+ uYsEIWD50SJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaXh1AgAKCRDRgEFAKaOo
+ NnDWD/9eflO6+Ibj0is/lL1SA75sRnBptOsoWa0o9FK3xGjrF0JS07sOExTfQACosB+D9PKhuNB
+ S0cMQR3dBMD34cKJy2kgnup7yLniuFjzmbOSupwMjQHFnfRWNYVHicQ+bsnl0rtQI+kZDME1onW
+ isWNuRXg++mPrwDPwV6A2QPfOGHvV40LH6zf/8h2kAuD7c3tjaxOipybX5RNTzt24BywZm8VjOy
+ 85Po/lC38QaJiB7jSY+u0jEVrlRdzCA/mHPANPu4TOCNxkZWhhSehxYctxs863kb0pjg6/LzUp7
+ i8dM6Lr5xt92J3weUGC9RF0DT0ZXfdRjsta77mjK+3v++AI94FY6XsDl0JV8MDVOmOUPgXCNbKN
+ DySMGs9jh9viz4Ds6hf9TfTYSXkVj7WfmYqbQc+u4L2DRqEWf09hF7WblrZIxqTFW2VPhzOxa33
+ 9KfEYYrKFR9Rukr19T0n+tQdvUDZjG9ljNcMuuXcAvflbgZZpl70YijUuoHABQReyLDimmyQHVQ
+ HvgQjqw14GSELw1+h7ovl2LL32fH7QRrTn8dx0wWzyzmiFxh6gI90VEOYQ29XKsVHabgyG8axrv
+ 3DSv6TrnowjeQP7utMKE+vwBxYGQtDcG89L0fZQsxM+A1QlcYBDHzeXvm9rtx6I2dkbOpV6L0YM
+ sCJIsIt/E3M4ztg==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
-Content-Transfer-Encoding: quoted-printable
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Tue, 27 Jan 2026 08:19:46 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8687
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8689
 
 Remove references to the Poky repository, replace by OpenEmbedded-Core
 in most cases.
 
-Add a introductory directory layout at the top that is reflected in the
-following section. This document no longer uses Poky as its source
-directory, so all paths are explicitly mentioned, to highlight the
-separation between core components. This lead to some re-organization of
-some sections.
-
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/bsp-guide/bsp.rst        |   4 +-
- documentation/ref-manual/structure.rst | 169 ++++++++++++++++++++-------=
-------
- documentation/ref-manual/terms.rst     |   2 +-
- 3 files changed, 105 insertions(+), 70 deletions(-)
+ documentation/ref-manual/variables.rst | 149 ++++++++++++++++-----------------
+ 1 file changed, 73 insertions(+), 76 deletions(-)
 
-diff --git a/documentation/bsp-guide/bsp.rst b/documentation/bsp-guide/bs=
-p.rst
-index 4c0939ab0..67f61b7b2 100644
---- a/documentation/bsp-guide/bsp.rst
-+++ b/documentation/bsp-guide/bsp.rst
-@@ -81,7 +81,7 @@ directory of that Layer. This directory is what you add=
- to the
- ``conf/bblayers.conf`` file found in your
- :term:`Build Directory`, which is
- established after you run the OpenEmbedded build environment setup
--script (i.e. :ref:`ref-manual/structure:``oe-init-build-env```).
-+script (i.e. :ref:`structure-core-script`).
- Adding the root directory allows the :term:`OpenEmbedded Build System`
- to recognize the BSP
- layer and from it build an image. Here is an example::
-@@ -221,7 +221,7 @@ section.
-       Checking connectivity... done.
-=20
- #. *Initialize the Build Environment:* While in the :term:`Source Direct=
-ory`,
--run the :ref:`ref-manual/structure:``oe-init-build-env``` environment se=
-tup
-+run the :ref:`structure-core-script` environment setup
- script located in :term:`OpenEmbedded-Core (OE-Core)` to define the Open=
-Embedded
- build environment on your build host. ::
-=20
-diff --git a/documentation/ref-manual/structure.rst b/documentation/ref-m=
-anual/structure.rst
-index d567cade0..86f3109e1 100644
---- a/documentation/ref-manual/structure.rst
-+++ b/documentation/ref-manual/structure.rst
-@@ -16,6 +16,19 @@ and directories.
-    names that contain spaces. Be sure that the Source Directory you use
-    does not contain these types of names.
-=20
-+For the following sections, we assume the core components of the :term:`=
-Source
-+Directory` are organized as follows:
-+
-+.. code-block:: text
-+
-+   =E2=94=9C=E2=94=80=E2=94=80 build/
-+   =E2=94=82=C2=A0=C2=A0 =E2=94=94=E2=94=80=E2=94=80 ...
-+   =E2=94=94=E2=94=80=E2=94=80 layers/
-+       =E2=94=9C=E2=94=80=E2=94=80 bitbake/
-+       =E2=94=9C=E2=94=80=E2=94=80 meta-yocto/
-+       =E2=94=9C=E2=94=80=E2=94=80 openembedded-core/
-+       =E2=94=94=E2=94=80=E2=94=80 yocto-docs/
-+
- .. _structure-core:
-=20
- Top-Level Core Components
-@@ -67,8 +80,8 @@ about the contents of the :term:`Build Directory`.
-=20
- .. _handbook:
-=20
--``documentation/``
--------------------
-+``layers/yocto-docs/``
-+----------------------
-=20
- This directory holds the source for the Yocto Project documentation as
- well as templates and tools that allow you to generate PDF and HTML
-@@ -76,37 +89,28 @@ versions of the manuals. Each manual is contained in =
-its own sub-folder;
- for example, the files for this reference manual reside in the
- ``ref-manual/`` directory.
-=20
-+This directory is not mandatory for building with :term:`BitBake`.
-+
-+``layers/openembedded-core/``
-+-----------------------------
-+
-+The :term:`OpenEmbedded-Core (OE-Core)` repository is hosted at
-+:oe_git:`/openembedded-core`.
-+
- .. _structure-core-meta:
-=20
--``meta/``
-----------
-+``layers/openembedded-core/meta/``
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-=20
- This directory contains the minimal, underlying OpenEmbedded-Core
- metadata. The directory holds recipes, common classes, and machine
- configuration for strictly emulated targets (``qemux86``, ``qemuarm``,
- and so forth.)
-=20
--.. _structure-core-meta-poky:
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index 4d8a35473..8eece1bb7 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -168,7 +168,8 @@ system and gives an overview of their function and contents.
+          ARCHIVER_MODE[srpm] = "1"                         # Uses RPM package files.
+ 
+       For information on how the variable works, see the
+-      ``meta/classes/archiver.bbclass`` file in the :term:`Source Directory`.
++      ``meta/classes/archiver.bbclass`` file in :term:`OpenEmbedded-Core
++      (OE-Core)`.
+ 
+    :term:`AS`
+       Minimal command and arguments needed to run the :manpage:`assembler
+@@ -343,7 +344,7 @@ system and gives an overview of their function and contents.
+       on Multilib.
+ 
+       The :term:`BASE_LIB` variable is defined in the machine include files in
+-      the :term:`Source Directory`. If Multilib is not
++      :term:`OpenEmbedded-Core (OE-Core)`. If Multilib is not
+       being used, the value defaults to "lib".
+ 
+    :term:`BASE_WORKDIR`
+@@ -889,10 +890,10 @@ system and gives an overview of their function and contents.
+       Here is an example::
+ 
+          BBLAYERS = " \
+-             /home/scottrif/poky/meta \
+-             /home/scottrif/poky/meta-poky \
+-             /home/scottrif/poky/meta-yocto-bsp \
+-             /home/scottrif/poky/meta-mykernel \
++             /home/scottrif/bitbake-builds/layers/meta \
++             /home/scottrif/bitbake-builds/layers/meta-poky \
++             /home/scottrif/bitbake-builds/layers/meta-yocto-bsp \
++             /home/scottrif/bitbake-builds/layers/meta-mykernel \
+              "
+ 
+       This example enables four layers, one of which is a custom,
+@@ -1007,8 +1008,8 @@ system and gives an overview of their function and contents.
+          and `glob <https://docs.python.org/3/library/glob.html>`__.
+ 
+       For more information on how this variable works, see
+-      ``meta/classes-recipe/binconfig.bbclass`` in the :term:`Source Directory`.
+-      You can also find general
++      ``meta/classes-recipe/binconfig.bbclass`` in :term:`OpenEmbedded-Core
++      (OE-Core)`. You can also find general
+       information on the class in the
+       ":ref:`ref-classes-binconfig`" section.
+ 
+@@ -1617,8 +1618,8 @@ system and gives an overview of their function and contents.
+       Bluetooth but you do not ever intend to use it.
+ 
+    :term:`COMMERCIAL_AUDIO_PLUGINS`
+-      This variable is specific to the :yocto_git:`GStreamer recipes
+-      </poky/tree/meta/recipes-multimedia/gstreamer/gstreamer1.0-meta-base.bb>`.
++      This variable is specific to the :oe_git:`GStreamer recipes
++      </openembedded-core/tree/meta/recipes-multimedia/gstreamer/>`.
+       It allows to build the GStreamer `"ugly"
+       <https://github.com/GStreamer/gst-plugins-ugly>`__ and
+       `"bad" <https://github.com/GStreamer/gst-plugins-bad>`__ audio plugins.
+@@ -1627,8 +1628,8 @@ system and gives an overview of their function and contents.
+       section for usage details.
+ 
+    :term:`COMMERCIAL_VIDEO_PLUGINS`
+-      This variable is specific to the :yocto_git:`GStreamer recipes
+-      </poky/tree/meta/recipes-multimedia/gstreamer/gstreamer1.0-meta-base.bb>`.
++      This variable is specific to the :oe_git:`GStreamer recipes
++      </openembedded-core/tree/meta/recipes-multimedia/gstreamer/>`.
+       It allows to build the GStreamer `"ugly"
+       <https://github.com/GStreamer/gst-plugins-ugly>`__ and
+       `"bad" <https://github.com/GStreamer/gst-plugins-bad>`__ video plugins.
+@@ -1637,8 +1638,8 @@ system and gives an overview of their function and contents.
+       section for usage details.
+ 
+    :term:`COMMON_LICENSE_DIR`
+-      Points to ``meta/files/common-licenses`` in the
+-      :term:`Source Directory`, which is where generic license
++      Points to ``meta/files/common-licenses`` in
++      :term:`OpenEmbedded-Core (OE-Core)`, which is where generic license
+       files reside.
+ 
+    :term:`COMPATIBLE_HOST`
+@@ -1763,8 +1764,8 @@ system and gives an overview of their function and contents.
+          good practice to use appropriate path variables.
+          For example, ``${sysconfdir}`` rather than ``/etc`` or ``${bindir}``
+          rather than ``/usr/bin``. You can find a list of these variables at
+-         the top of the ``meta/conf/bitbake.conf`` file in the
+-         :term:`Source Directory`.
++         the top of the ``meta/conf/bitbake.conf`` file in
++         :term:`OpenEmbedded-Core (OE-Core)`.
+ 
+    :term:`CONFIG_INITRAMFS_SOURCE`
+       Identifies the initial RAM filesystem (:term:`Initramfs`) source files. The
+@@ -1934,15 +1935,8 @@ system and gives an overview of their function and contents.
+       supported.
+ 
+    :term:`COREBASE`
+-      Specifies the parent directory of the OpenEmbedded-Core Metadata
+-      layer (i.e. ``meta``).
 -
--``meta-poky/``
----------------
--
--Designed above the ``meta/`` content, this directory adds just enough
--metadata to define the Poky reference distribution.
--
--.. _structure-core-meta-yocto-bsp:
--
--``meta-yocto-bsp/``
---------------------
--
--This directory contains the Yocto Project reference hardware Board
--Support Packages (BSPs). For more information on BSPs, see the
--:doc:`/bsp-guide/index`.
--
- .. _structure-meta-selftest:
-=20
--``meta-selftest/``
--------------------
-+``layers/openembedded-core/meta-selftest/``
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-=20
- This directory adds additional recipes and append files used by the
- OpenEmbedded selftests to verify the behavior of the build system. You
-@@ -115,15 +119,15 @@ want to run the selftests.
-=20
- .. _structure-meta-skeleton:
-=20
--``meta-skeleton/``
--------------------
-+``layers/openembedded-core/meta-skeleton/``
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-=20
- This directory contains template recipes for BSP and kernel development.
-=20
- .. _structure-core-scripts:
-=20
--``scripts/``
--------------
-+``layers/openembedded-core/scripts/``
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-=20
- This directory contains various integration scripts that implement extra
- functionality in the Yocto Project environment (e.g. QEMU scripts). The
-@@ -136,8 +140,8 @@ back to the Yocto Project, such as ``create-pull-requ=
-est`` and
-=20
- .. _structure-core-script:
-=20
--``oe-init-build-env``
-----------------------
-+``layers/openembedded-core/oe-init-build-env``
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-=20
- This script sets up the OpenEmbedded build environment. Running this
- script with the ``source`` command in a shell makes changes to ``PATH``
-@@ -166,16 +170,27 @@ targets to build. Here is an example::
-=20
-    You can also run generated QEMU images with a command like 'runqemu q=
-emux86-64'
-=20
-+.. note::
-+
-+   When using :doc:`bitbake-setup <bitbake:bitbake-user-manual/bitbake-u=
-ser-manual-environment-setup>`,
-+   this script is indirectly sourced when sourcing the ``init-build-env`=
-`
-+   located in the :term:`bitbake:Setup`'s build directory. However, comp=
-ared to
-+   ``oe-init-build-env``, the bitbake-setup ``init-build-env`` does not =
-take any
-+   argument, as it is already located in a :term:`Build Directory`.
-+
-+   See :doc:`bitbake:bitbake-user-manual/bitbake-user-manual-environment=
--setup`
-+   for more information.
-+
- The default output of the ``oe-init-build-env`` script is from the
--``conf-summary.txt`` and ``conf-notes.txt`` files, which are found in th=
-e ``meta-poky`` directory
--within the :term:`Source Directory`. If you design a
--custom distribution, you can include your own versions of these
--configuration files where you can provide a brief summary and detailed u=
-sage
--notes, such as a list of the targets defined by your distribution.
--See the
--":ref:`dev-manual/custom-template-configuration-directory:creating a cus=
-tom template configuration directory`"
--section in the Yocto Project Development Tasks Manual for more
--information.
-+``conf-summary.txt`` and ``conf-notes.txt`` files, which are found in th=
-e
-+``meta/conf/templates/default`` directory of :term:`OpenEmbedded-Core
-+(OE-Core)`. If you design a custom distribution, you can include your ow=
-n
-+versions of these configuration files where you can provide a brief summ=
-ary and
-+detailed usage notes, such as a list of the targets defined by your
-+distribution. See the
-+":ref:`dev-manual/custom-template-configuration-directory:creating a cus=
-tom
-+template configuration directory`" section in the Yocto Project Developm=
-ent
-+Tasks Manual for more information.
-=20
- By default, running this script without a :term:`Build Directory` argume=
-nt
- creates the ``build/`` directory in your current working directory. If
-@@ -188,8 +203,8 @@ your choice. For example, the following command creat=
-es a
-    $ source oe-init-build-env ~/mybuilds
-=20
- The OpenEmbedded build system uses the template configuration files, whi=
-ch
--are found by default in the ``meta-poky/conf/templates/default`` directo=
-ry in the Source
--Directory. See the
-+are found by default in the ``meta/conf/templates/default`` directory in
-+:term:`OpenEmbedded-Core (OE-Core)`. See the
- ":ref:`dev-manual/custom-template-configuration-directory:creating a cus=
-tom template configuration directory`"
- section in the Yocto Project Development Tasks Manual for more
- information.
-@@ -198,17 +213,35 @@ information.
-=20
-    The OpenEmbedded build system does not support file or directory
-    names that contain spaces. If you attempt to run the ``oe-init-build-=
-env``
--   script from a Source Directory that contains spaces in either the
-+   script from a :term:`Source Directory` that contains spaces in either=
- the
-    filenames or directory names, the script returns an error indicating
--   no such file or directory. Be sure to use a Source Directory free of
-+   no such file or directory. Be sure to use a :term:`Source Directory` =
-free of
-    names containing spaces.
-=20
--.. _structure-basic-top-level:
-+``layers/meta-yocto/``
-+----------------------
-+
-+The ``meta-yocto`` repository is hosted at :yocto_git:`/meta-yocto`.
-+
-+.. _structure-core-meta-poky:
-+
-+``layers/meta-yocto/meta-poky/``
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+Dependent on the :term:`OpenEmbedded-Core (OE-Core)` metadata, this dire=
-ctory
-+adds just enough metadata to define the Poky reference distribution.
-=20
--``LICENSE, README, and README.hardware``
------------------------------------------
-+Namely, it contains the distro :term:`configuration file` for Poky:
-+``conf/distro/poky.conf``.
-=20
--These files are standard top-level files.
-+.. _structure-core-meta-yocto-bsp:
-+
-+``layers/meta-yocto/meta-yocto-bsp/``
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+This directory contains the Yocto Project reference hardware Board
-+Support Packages (BSPs). For more information on BSPs, see the
-+:doc:`/bsp-guide/index`.
-=20
- .. _structure-build:
-=20
-@@ -257,7 +290,7 @@ This directory should not be shared between builds.
-    you need to share the :ref:`overview-manual/concepts:Hash Equivalence=
-`
-    database, don't share this file and instead refer to the
-    :doc:`/dev-manual/hashequivserver` document of the Yocto Project Deve=
-lopment
--   Tasks Manual to setup Hash Equivalence server.
-+   Tasks Manual to setup a Hash Equivalence server.
-=20
- .. _structure-build-conf-local.conf:
-=20
-@@ -275,14 +308,14 @@ file, it is recommended to put them into a distro :=
-term:`configuration file`, or
- to create layer :term:`configuration fragments <Configuration Fragment>`=
- from
- changes made here.
-=20
--The :term:`OpenEmbedded Build System` can create it from a ``local.conf.=
-sample``
--file when you ``source`` the top-level build environment setup script
--:ref:`structure-core-script`.
-+The :term:`OpenEmbedded Build System` can create the ``local.conf`` file=
- from a
-+``local.conf.sample`` file when you ``source`` the top-level build envir=
-onment
-+setup script :ref:`structure-core-script`.
-=20
- The source ``local.conf.sample`` file used depends on the
--:term:`TEMPLATECONF` script variable, which defaults to ``meta-poky/conf=
-/templates/default``
-+:term:`TEMPLATECONF` script variable, which defaults to ``layers/meta-yo=
-cto/meta-poky/conf/templates/default``
- when you are building from the Yocto Project development environment,
--and to ``meta/conf/templates/default`` when you are building from the Op=
-enEmbedded-Core
-+and to ``layers/openembedded-core/meta/conf/templates/default`` when you=
- are building from the OpenEmbedded-Core
- environment. Because the script variable points to the source of the
- ``local.conf.sample`` file, this implies that you can configure your
- build environment from any layer by setting the variable in the
-@@ -298,9 +331,9 @@ file, it uses ``sed`` to substitute final
- .. note::
-=20
-    You can see how the :term:`TEMPLATECONF` variable is used by looking =
-at the
--   ``scripts/oe-setup-builddir`` script in the :term:`Source Directory`.
--   You can find the Yocto Project version of the ``local.conf.sample`` f=
-ile in
--   the ``meta-poky/conf/templates/default`` directory.
-+   ``layers/openembedded-core/scripts/oe-setup-builddir`` script in :ter=
-m:`OpenEmbedded-Core (OE-Core)`.
-+   You can find the :term:`Poky` version of the ``local.conf.sample`` fi=
-le in
-+   the ``layers/meta-yocto/meta-poky/conf/templates/default`` directory.
-=20
- .. _structure-build-conf-bblayers.conf:
-=20
-@@ -319,9 +352,9 @@ when you ``source`` the top-level build environment s=
-etup script (i.e.
-=20
- As with the :ref:`structure-build-conf-local.conf` file, the source ``bb=
-layers.conf.sample``
- file used depends on the :term:`TEMPLATECONF` script variable, which
--defaults to ``meta-poky/conf/templates/default`` when you are building f=
-rom the Yocto
--Project development environment, and to ``meta/conf/templates/default`` =
-when you are
--building from the OpenEmbedded-Core environment. Because the script
-+defaults to ``meta-poky/conf/templates/default`` when you are building u=
-sing the
-+:term:`Poky` reference distro, and to ``meta/conf/templates/default`` wh=
-en you are
-+building from the OpenEmbedded-Core environment (default). Because the s=
-cript
- variable points to the source of the ``bblayers.conf.sample`` file, this
- implies that you can base your build from any layer by setting the
- variable in the top-level build environment setup script as follows::
-@@ -329,13 +362,13 @@ variable in the top-level build environment setup s=
-cript as follows::
-    TEMPLATECONF=3Dyour_layer/conf/templates/your_template_name
-=20
- Once the build process gets the sample file, it uses ``sed`` to substitu=
-te final
--``${``\ :term:`OEROOT`\ ``}`` values for all ``##OEROOT##`` values.
-+``${``\ :term:`OEROOT`\ ``}`` values for all ``##OEROOT##`` occurrences.
-=20
- .. note::
-=20
-    You can see how the :term:`TEMPLATECONF` variable is defined by the `=
-`scripts/oe-setup-builddir``
--   script in the :term:`Source Directory`. You can find the Yocto Projec=
-t
--   version of the ``bblayers.conf.sample`` file in the ``meta-poky/conf/=
-templates/default``
-+   script in :term:`OpenEmbedded-Core (OE-Core)`. You can find the :term=
-:`Poky`
-+   version of the ``bblayers.conf.sample`` file in the ``layers/meta-yoc=
-to/meta-poky/conf/templates/default``
-    directory.
-=20
- .. _structure-build-conf-site.conf:
-@@ -351,8 +384,9 @@ You could for example edit this file to limit the num=
-ber of threads used by
- want to access downloaded files (:term:`DL_DIR`).
-=20
- This file can be shared for multiple build directories. For example,
--``bitbake-setup`` makes the :ref:`structure-build-conf-site.conf` file a
--symbolic link to a common ``site.conf`` file::
-+:doc:`bitbake-setup <bitbake:bitbake-user-manual/bitbake-user-manual-env=
-ironment-setup>`
-+makes the :ref:`structure-build-conf-site.conf` file a symbolic link to =
-a common
-+``site.conf`` file::
-=20
-    =E2=94=9C=E2=94=80=E2=94=80 poky-master-poky-distro_poky-machine_qemu=
-x86-64/
-    =E2=94=82=C2=A0=C2=A0 =E2=94=94=E2=94=80=E2=94=80 build/
-@@ -757,11 +791,12 @@ space if they were to be shared with the standard :=
-term:`Sysroot` mechanism.
-=20
- .. _structure-meta:
-=20
--The Metadata --- ``meta/``
--=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D
-+The OpenEmbedded-Core (OE-Core) Metadata --- ``meta/``
-+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-=20
--As mentioned previously, :term:`Metadata` is the core of the
--Yocto Project. Metadata has several important subdivisions:
-+As mentioned previously, the :term:`OpenEmbedded-Core (OE-Core)`
-+:term:`metadata` is the core of the Yocto Project. This metadata has sev=
-eral
-+important subdivisions:
-=20
- .. _structure-meta-classes:
-=20
-diff --git a/documentation/ref-manual/terms.rst b/documentation/ref-manua=
-l/terms.rst
-index 22f2c4f79..cbe7c88e6 100644
---- a/documentation/ref-manual/terms.rst
-+++ b/documentation/ref-manual/terms.rst
-@@ -63,7 +63,7 @@ universal, the list includes them just in case:
-       This term refers to the area used by the OpenEmbedded build system=
- for
-       builds. The area is created when you ``source`` the setup environm=
-ent
-       script that is found in the Source Directory
--      (i.e. :ref:`ref-manual/structure:``oe-init-build-env```, or
-+      (i.e. :ref:`structure-core-script`, or
-       ``init-build-env`` when using :doc:`bitbake-setup
-       <bitbake:bitbake-user-manual/bitbake-user-manual-environment-setup=
->`). The
-       :term:`TOPDIR` variable points to the :term:`Build Directory`.
+-      It is an important distinction that :term:`COREBASE` points to the parent
+-      of this layer and not the layer itself. Consider an example where you
+-      have cloned the Poky Git repository and retained the ``poky`` name
+-      for your local copy of the repository. In this case, :term:`COREBASE`
+-      points to the ``poky`` folder because it is the parent directory of
+-      the ``poky/meta`` layer.
++      Specifies the parent directory of the :term:`OpenEmbedded-Core (OE-Core)`
++      metadata layer (i.e. ``meta``).
+ 
+    :term:`COREBASE_FILES`
+       Lists files from the :term:`COREBASE` directory that
+@@ -2431,8 +2425,8 @@ system and gives an overview of their function and contents.
+       file whose root name is the same as the variable's argument and whose
+       filename extension is ``.conf``. For example, the distribution
+       configuration file for the Poky distribution is named ``poky.conf``
+-      and resides in the ``meta-poky/conf/distro`` directory of the
+-      :term:`Source Directory`.
++      and resides in the ``meta-poky/conf/distro`` directory of
++      :yocto_git:`meta-poky </meta-yocto/tree/meta-poky>`.
+ 
+       Within that ``poky.conf`` file, the :term:`DISTRO` variable is set as
+       follows::
+@@ -2448,7 +2442,8 @@ system and gives an overview of their function and contents.
+ 
+          If the :term:`DISTRO` variable is blank, a set of default configurations
+          are used, which are specified within
+-         ``meta/conf/distro/defaultsetup.conf`` also in the Source Directory.
++         ``meta/conf/distro/defaultsetup.conf`` also in :term:`OpenEmbedded-Core
++         (OE-Core)`.
+ 
+    :term:`DISTRO_CODENAME`
+       Specifies a codename for the distribution being built.
+@@ -2567,7 +2562,7 @@ system and gives an overview of their function and contents.
+       argument and whose filename extension is ``.conf``. For example, the
+       distribution configuration file for the Poky distribution is named
+       ``poky.conf`` and resides in the ``meta-poky/conf/distro`` directory
+-      of the :term:`Source Directory`.
++      of :yocto_git:`meta-poky </meta-yocto/tree/meta-poky>`.
+ 
+       Within that ``poky.conf`` file, the :term:`DISTRO_NAME` variable is set
+       as follows::
+@@ -2582,7 +2577,8 @@ system and gives an overview of their function and contents.
+ 
+          If the :term:`DISTRO_NAME` variable is blank, a set of default
+          configurations are used, which are specified within
+-         ``meta/conf/distro/defaultsetup.conf`` also in the Source Directory.
++         ``meta/conf/distro/defaultsetup.conf`` also in :term:`OpenEmbedded-Core
++         (OE-Core)`.
+ 
+    :term:`DISTRO_VERSION`
+       The version of the distribution.
+@@ -2600,7 +2596,7 @@ system and gives an overview of their function and contents.
+       :term:`OVERRIDES`.
+ 
+       Here is an example from :yocto_git:`meta-poky/conf/distro/poky-tiny.conf
+-      </poky/tree/meta-poky/conf/distro/poky-tiny.conf>`::
++      </meta-yocto/tree/meta-poky/conf/distro/poky-tiny.conf>`::
+ 
+          DISTROOVERRIDES = "poky:poky-tiny"
+ 
+@@ -3162,7 +3158,7 @@ system and gives an overview of their function and contents.
+             use ``${sysconfdir}`` rather than ``/etc``, or ``${bindir}``
+             rather than ``/usr/bin``. You can find a list of these
+             variables at the top of the ``meta/conf/bitbake.conf`` file in
+-            the :term:`Source Directory`. You will also
++            :term:`OpenEmbedded-Core (OE-Core)`. You will also
+             find the default values of the various ``FILES:*`` variables in
+             this file.
+ 
+@@ -3279,8 +3275,8 @@ system and gives an overview of their function and contents.
+       :term:`SRC_URI` statements.
+ 
+       The default value for the :term:`FILESPATH` variable is defined in the
+-      :ref:`ref-classes-base` class found in ``meta/classes-global`` in the
+-      :term:`Source Directory`::
++      :ref:`ref-classes-base` class found in ``meta/classes-global`` in
++      :term:`OpenEmbedded-Core (OE-Core)`::
+ 
+          FILESPATH = "${@base_set_filespath(["${FILE_DIRNAME}/${BP}", \
+              "${FILE_DIRNAME}/${BPN}", "${FILE_DIRNAME}/files"], d)}"
+@@ -3335,7 +3331,7 @@ system and gives an overview of their function and contents.
+ 
+       By default, the OpenEmbedded build system uses the ``fs-perms.txt``,
+       ``fs-perms-volatile-log.txt`` and ``fs-perms-volatile-tmp.txt`` which are
+-      located in the ``meta/files`` folder in the :term:`Source Directory`. If
++      located in the ``meta/files`` folder in :term:`OpenEmbedded-Core (OE-Core)`. If
+       you create your own permission setting table files, you should place
+       those in your layer.
+ 
+@@ -3638,7 +3634,7 @@ system and gives an overview of their function and contents.
+       Other Go programs importing this package will use this path.
+ 
+       Here is an example setting from the
+-      :yocto_git:`go-helloworld_0.1.bb </poky/tree/meta/recipes-extended/go-examples/go-helloworld_0.1.bb>`
++      :oe_git:`go-helloworld_0.1.bb </openembedded-core/tree/meta/recipes-extended/go-examples/go-helloworld_0.1.bb>`
+       recipe::
+ 
+           GO_IMPORT = "golang.org/x/example"
+@@ -4500,7 +4496,8 @@ system and gives an overview of their function and contents.
+       - wic.zst
+ 
+       For more information about these types of images, see
+-      ``meta/classes-recipe/image_types*.bbclass`` in the :term:`Source Directory`.
++      ``meta/classes-recipe/image_types*.bbclass`` in :term:`OpenEmbedded-Core
++      (OE-Core)`.
+ 
+    :term:`IMAGE_VERSION_SUFFIX`
+       Version suffix that is part of the default :term:`IMAGE_NAME` and
+@@ -4718,7 +4715,7 @@ system and gives an overview of their function and contents.
+ 
+       With ``sysvinit``, the init manager is set to
+       :wikipedia:`SysVinit <Init#SysV-style>`, the traditional UNIX init
+-      system. This is the default choice in the Poky distribution, together with
++      system. This is the default choice in the :term:`Poky` distribution, together with
+       the Udev device manager (see the ":ref:`device-manager`" section).
+ 
+       With ``systemd``, the init manager becomes :wikipedia:`systemd <Systemd>`,
+@@ -4732,7 +4729,7 @@ system and gives an overview of their function and contents.
+       More concretely, this is used to include
+       ``conf/distro/include/init-manager-${INIT_MANAGER}.inc`` into the global
+       configuration. You can have a look at the
+-      :yocto_git:`meta/conf/distro/include/init-manager-*.inc </poky/tree/meta/conf/distro/include>`
++      :oe_git:`meta/conf/distro/include/init-manager-*.inc </openembedded-core/tree/meta/conf/distro/include>`
+       files for more information, and also the ":ref:`init-manager`"
+       section in the Yocto Project Development Tasks Manual.
+ 
+@@ -4751,8 +4748,8 @@ system and gives an overview of their function and contents.
+       :term:`IMAGE_FSTYPES` variable.
+ 
+       The default value of this variable, which is set in the
+-      ``meta/conf/bitbake.conf`` configuration file in the
+-      :term:`Source Directory`, is "cpio.gz". The Linux kernel's
++      ``meta/conf/bitbake.conf`` configuration file in
++      :term:`OpenEmbedded-Core (OE-Core)`, is "cpio.gz". The Linux kernel's
+       :term:`Initramfs` mechanism, as opposed to the initial RAM filesystem
+       :wikipedia:`initrd <Initrd>` mechanism, expects
+       an optionally compressed cpio archive.
+@@ -4774,14 +4771,14 @@ system and gives an overview of their function and contents.
+       .. note::
+ 
+          See the ``meta/recipes-core/images/core-image-minimal-initramfs.bb``
+-         recipe in the :term:`Source Directory`
++         recipe in :term:`OpenEmbedded-Core (OE-Core)`
+          for an example :term:`Initramfs` recipe. To select this sample recipe as
+          the one built to provide the :term:`Initramfs` image, set :term:`INITRAMFS_IMAGE`
+          to "core-image-minimal-initramfs".
+ 
+       You can also find more information by referencing the
+-      ``meta-poky/conf/templates/default/local.conf.sample.extended``
+-      configuration file in the Source Directory, the :ref:`ref-classes-image`
++      ``conf/templates/default/local.conf.sample.extended``
++      configuration file in :yocto_git:`meta-poky <meta-yocto/tree/meta-poky>`, the :ref:`ref-classes-image`
+       class, and the :ref:`ref-classes-kernel` class to see how to use the
+       :term:`INITRAMFS_IMAGE` variable.
+ 
+@@ -4841,7 +4838,7 @@ system and gives an overview of their function and contents.
+          configuration file. You cannot set the variable in a recipe file.
+ 
+       See the
+-      :yocto_git:`local.conf.sample.extended </poky/tree/meta-poky/conf/templates/default/local.conf.sample.extended>`
++      :yocto_git:`local.conf.sample.extended </meta-yocto/tree/meta-poky/conf/templates/default/local.conf.sample.extended>`
+       file for additional information. Also, for information on creating an
+       :term:`Initramfs`, see the ":ref:`dev-manual/building:building an initial ram filesystem (Initramfs) image`" section
+       in the Yocto Project Development Tasks Manual.
+@@ -5855,7 +5852,7 @@ system and gives an overview of their function and contents.
+       name, through which machine-specific configurations are set. Thus,
+       when :term:`MACHINE` is set to "qemux86", the corresponding
+       ``qemux86.conf`` machine configuration file can be found in
+-      the :term:`Source Directory` in
++      :term:`OpenEmbedded-Core (OE-Core)` in
+       ``meta/conf/machine``.
+ 
+       The list of machines supported by the Yocto Project as shipped
+@@ -6369,8 +6366,8 @@ system and gives an overview of their function and contents.
+       ``sysroots/`` directory so that all builds that use the script will
+       use the correct directories for the cross compiling layout.
+ 
+-      See the ``meta/classes-recipe/binconfig.bbclass`` in the
+-      :term:`Source Directory` for details on how this class
++      See the ``meta/classes-recipe/binconfig.bbclass`` in
++      :term:`OpenEmbedded-Core (OE-Core)` for details on how this class
+       applies these additional sed command arguments.
+ 
+    :term:`OE_FRAGMENTS`
+@@ -6449,7 +6446,7 @@ system and gives an overview of their function and contents.
+ 
+    :term:`OEQA_REPRODUCIBLE_TEST_PACKAGE`
+       Set the package manager(s) for build reproducibility testing.
+-      See :yocto_git:`reproducible.py </poky/tree/meta/lib/oeqa/selftest/cases/reproducible.py>`
++      See :oe_git:`reproducible.py </openembedded-core/tree/meta/lib/oeqa/selftest/cases/reproducible.py>`
+       and :doc:`/test-manual/reproducible-builds`.
+ 
+    :term:`OEQA_REPRODUCIBLE_TEST_SSTATE_TARGETS`
+@@ -6719,7 +6716,7 @@ system and gives an overview of their function and contents.
+          ``*-dbg`` package as with the ``.debug`` value, while source is
+          placed in a separate ``*-src`` package, which can be installed
+          independently.  This is the default setting for this variable,
+-         as defined in Poky's ``bitbake.conf`` file.
++         as defined in :term:`OE-Core <OpenEmbedded-Core (OE-Core)>`'s ``bitbake.conf`` file.
+ 
+       -  "``debug-without-src``": The same behavior as with the ``.debug``
+          setting, but no source is packaged at all.
+@@ -7677,8 +7674,8 @@ system and gives an overview of their function and contents.
+       The network based :term:`PR` service host and port.
+ 
+       The ``conf/templates/default/local.conf.sample.extended`` configuration
+-      file in the :term:`Source Directory` shows how the :term:`PRSERV_HOST`
+-      variable is set::
++      file in :yocto_git:`meta-poky </meta-yocto/tree/meta-poky>` shows how the
++      :term:`PRSERV_HOST` variable is set::
+ 
+          PRSERV_HOST = "localhost:0"
+ 
+@@ -8324,11 +8321,11 @@ system and gives an overview of their function and contents.
+       to find the unpacked source.
+ 
+       As an example, assume a :term:`Source Directory`
+-      top-level folder named ``poky`` and a default :term:`Build Directory` at
+-      ``poky/build``. In this case, the work directory the build system
++      top-level folder named ``bitbake-builds`` and a default :term:`Build Directory` at
++      ``bitbake-builds/build``. In this case, the work directory the build system
+       uses to keep the unpacked recipe for ``db`` is the following::
+ 
+-         poky/build/tmp/work/qemux86-poky-linux/db/5.1.19-r3/sources/db-5.1.19
++         bitbake-builds/build/tmp/work/qemux86-poky-linux/db/5.1.19-r3/sources/db-5.1.19
+ 
+       The unpacked source code resides in the ``db-5.1.19`` folder.
+ 
+@@ -8580,7 +8577,7 @@ system and gives an overview of their function and contents.
+ 
+          SDK_TITLE ??= "${@d.getVar('DISTRO_NAME') or d.getVar('DISTRO')} SDK"
+ 
+-      For the default distribution "poky",
++      For the :term:`poky` reference distribution,
+       :term:`SDK_TITLE` is set to "Poky (Yocto Project Reference Distro)".
+ 
+       For information on how to change this default title, see the
+@@ -8626,7 +8623,7 @@ system and gives an overview of their function and contents.
+          SDKEXTPATH ??= "~/${@d.getVar('DISTRO')}_sdk"
+ 
+       For the
+-      default distribution "poky", the :term:`SDKEXTPATH` is set to "poky_sdk".
++      :term:`Poky` reference distro, the :term:`SDKEXTPATH` is set to "poky_sdk".
+ 
+       For information on how to change this default directory, see the
+       ":ref:`sdk-manual/appendix-customizing:changing the default sdk installation directory`"
+@@ -9300,8 +9297,8 @@ system and gives an overview of their function and contents.
+       .. note::
+ 
+          The :term:`SRCPV` variable used to be defined in the
+-         ``meta/conf/bitbake.conf`` configuration file in the :term:`Source
+-         Directory` as follows::
++         ``meta/conf/bitbake.conf`` configuration file in
++         :term:`OpenEmbedded-Core (OE-Core)` as follows::
+ 
+             SRCPV = "${@bb.fetch2.get_srcrev(d)}"
+ 
+@@ -10006,8 +10003,8 @@ system and gives an overview of their function and contents.
+       compatible with the kernel compilation. The :term:`TARGET_CC_KERNEL_ARCH`
+       variable allows the kernel (and associated modules) to use a
+       different configuration. See the
+-      ``meta/conf/machine/include/arm/feature-arm-thumb.inc`` file in the
+-      :term:`Source Directory` for an example.
++      ``meta/conf/machine/include/arm/feature-arm-thumb.inc`` file in
++      :term:`OpenEmbedded-Core (OE-Core)` for an example.
+ 
+    :term:`TARGET_CFLAGS`
+       Specifies the flags to pass to the C compiler when building for the
+@@ -10408,10 +10405,10 @@ system and gives an overview of their function and contents.
+       ``tmp`` within the :term:`Build Directory`.
+ 
+       If you want to establish this directory in a location other than the
+-      default, you can uncomment and edit the following statement in the
+-      ``conf/local.conf`` file in the :term:`Source Directory`::
++      default, you can set it to another value in your
++      :ref:`structure-build-conf-site.conf` configuration file::
+ 
+-         #TMPDIR = "${TOPDIR}/tmp"
++         TMPDIR = "/another/location"
+ 
+       An example use for this scenario is to set :term:`TMPDIR` to a local disk,
+       which does not use NFS, while having the :term:`Build Directory` use NFS.
+@@ -10542,8 +10539,8 @@ system and gives an overview of their function and contents.
+       definitions can be a single static definition, or can be dynamically
+       adjusted. You can see details for a given CPU family by looking at
+       the architecture's ``README`` file. For example, the
+-      ``meta/conf/machine/include/mips/README`` file in the
+-      :term:`Source Directory` provides information for
++      ``meta/conf/machine/include/mips/README`` file in
++      :term:`OpenEmbedded-Core (OE-Core)` provides information for
+       :term:`TUNE_ARCH` specific to the ``mips`` architecture.
+ 
+       :term:`TUNE_ARCH` is tied closely to
+@@ -10645,7 +10642,7 @@ system and gives an overview of their function and contents.
+       that conflict with feature.
+ 
+       Known tuning conflicts are specified in the machine include files in
+-      the :term:`Source Directory`. Here is an example from
++      :term:`OpenEmbedded-Core (OE-Core)`. Here is an example from
+       the ``meta/conf/machine/include/mips/arch-mips.inc`` include file
+       that lists the "o32" and "n64" features as conflicting with the "n32"
+       feature::
+@@ -10661,7 +10658,7 @@ system and gives an overview of their function and contents.
+ 
+          TUNEVALID[bigendian] = "Enable big-endian mode."
+ 
+-      See the machine include files in the :term:`Source Directory`
++      See the machine include files in :term:`OpenEmbedded-Core (OE-Core)`
+       for these features.
+ 
+    :term:`UBOOT_BINARY`
+@@ -11350,8 +11347,8 @@ system and gives an overview of their function and contents.
+          USER_CLASSES ?= "buildstats"
+ 
+       For more information, see
+-      ``meta-poky/conf/templates/default/local.conf.sample`` in the
+-      :term:`Source Directory`.
++      ``conf/templates/default/local.conf.sample`` in
++      :yocto_git:`meta-poky <meta-yocto/tree/meta-poky>`.
+ 
+    :term:`USERADD_DEPENDS`
+       Specifies a list of recipes that create users / groups (via
+@@ -11500,13 +11497,13 @@ system and gives an overview of their function and contents.
+          VIRTUAL-RUNTIME_base-utils = "packagegroup-core-base-utils"
+ 
+       Here are two examples using this virtual runtime package. The
+-      first one is in :yocto_git:`initramfs-framework_1.0.bb
+-      </poky/tree/meta/recipes-core/initrdscripts/initramfs-framework_1.0.bb?h=scarthgap>`::
++      first one is in :oe_git:`initramfs-framework_1.0.bb
++      </openembedded-core/tree/meta/recipes-core/initrdscripts/initramfs-framework_1.0.bb>`::
+ 
+          RDEPENDS:${PN} += "${VIRTUAL-RUNTIME_base-utils}"
+ 
+-      The second example is in the :yocto_git:`core-image-initramfs-boot
+-      </poky/tree/meta/recipes-core/images/core-image-initramfs-boot.bb?h=scarthgap>`
++      The second example is in the :oe_git:`core-image-initramfs-boot
++      </openembedded-core/tree/meta/recipes-core/images/core-image-initramfs-boot.bb>`
+       image definition::
+ 
+          PACKAGE_INSTALL = "${INITRAMFS_SCRIPTS} ${VIRTUAL-RUNTIME_base-utils} base-passwd"
+@@ -11632,13 +11629,13 @@ system and gives an overview of their function and contents.
+       -  :term:`PR`: The recipe revision
+ 
+       As an example, assume a Source Directory top-level folder name
+-      ``poky``, a default :term:`Build Directory` at ``poky/build``, and a
++      ``bitbake-builds``, a default :term:`Build Directory` at ``bitbake-builds/build``, and a
+       ``qemux86-poky-linux`` machine target system. Furthermore, suppose
+       your recipe is named ``foo_1.3.0-r0.bb``. In this case, the work
+       directory the build system uses to build the package would be as
+       follows::
+ 
+-         poky/build/tmp/work/qemux86-poky-linux/foo/1.3.0-r0
++         bitbake-builds/build/tmp/work/qemux86-poky-linux/foo/1.3.0-r0
+ 
+    :term:`XSERVER`
+       Specifies the packages that should be installed to provide an X
 
---=20
+-- 
 2.52.0
 
 
