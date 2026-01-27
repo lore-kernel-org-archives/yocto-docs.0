@@ -2,82 +2,82 @@ Return-Path: <alex.kanavin@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BA91FD2D8F7
-	for <webhook@archiver.kernel.org>; Tue, 27 Jan 2026 10:46:48 +0000 (UTC)
-Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.7703.1769510801599830574
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DED9ED2D8FA
+	for <webhook@archiver.kernel.org>; Tue, 27 Jan 2026 10:50:18 +0000 (UTC)
+Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.7746.1769511017903287958
  for <docs@lists.yoctoproject.org>;
- Tue, 27 Jan 2026 02:46:41 -0800
+ Tue, 27 Jan 2026 02:50:18 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=VgHXmanE;
- spf=pass (domain: gmail.com, ip: 209.85.219.47, mailfrom: alex.kanavin@gmail.com)
-Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-89461ccc46eso97928106d6.2
-        for <docs@lists.yoctoproject.org>; Tue, 27 Jan 2026 02:46:41 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769510800; cv=none;
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=g7nTZ7Kb;
+ spf=pass (domain: gmail.com, ip: 209.85.219.43, mailfrom: alex.kanavin@gmail.com)
+Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-894774491deso87362916d6.2
+        for <docs@lists.yoctoproject.org>; Tue, 27 Jan 2026 02:50:17 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769511017; cv=none;
         d=google.com; s=arc-20240605;
-        b=UgDUp44I8nw/VZ8QzKD+eSlnqk+/ZZ+KGsl9c8bEt+IVtWhg102PGiggPbXQCV6LYm
-         AX7r5z9uek9g/wvtHO1w7tUt/GvrhTfMU/hp7nUP/0tGIiBZDrDSYZ/lGDhLkVoOiVTo
-         ZgY0eHU15oIAkX6cZ6Z+6wX0VRiVlmRZprSwatFAAy186ltWHQcGDf8sx60bc3SGZIHJ
-         8TUAqXMr+odpytCMp8yghAyJqx4ger8272Ro+hBIyb7YwA4NW441/G2mYexjFoJWSYuP
-         tgHQDXq0geJUlP5Le/4mwv32BiThVt8suub0uLMZqYJvCoyqTqx04sgUpxaphB7XeOhH
-         u2Sw==
+        b=dCIhDAJmXhDWjcYnt1aJwwz4SS8GDA4KGndRvehSUSFA6VhquVASlnNDFztThaWgmx
+         GDJsgT/oLT527eliJECIDc9VoBiCEGu92lMkPauDCpDLXCYBKn/eZsHiUwEUbP87m96K
+         T9bHgtkMROYL2z15re1qtUOy6vGNdziE35ilZo/Vqd5s8kszmxR5qo5ERT2AOAkomJMu
+         Hx4HvplwaBpzHg5QiYx8w5R72k0kceAXHCYDnGQrG5thW4DfEZ5P/KoyHi+ffeDgQOzK
+         hmdn7vZLyUmBP4qXlva8N1bQnVIW+5tCp9izoQA3cEFV9ujL7D9CQI9KIangL9MbKU1i
+         l3Wg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:dkim-signature;
-        bh=GDtJqARYL5tTnhAZzQ/M7tcj0QG/dlz2RJEyUE30480=;
-        fh=qk5tuIia7DAuK96E+uqn/Ipud//lSpWUaTFvvPIcKBc=;
-        b=LEbsiwL5L/75aPtWY5QwfwNLd1tkeCMioyTfvjUGGxsxWDzC7pJumrCb39eAZEvMj+
-         oSl+9tIOeF63QOjD7PIYs2lgw/iCszoGzih6xL3zj1KkUqc0gne+Xz7qSunVx+2uqF0C
-         It7A5/7X+Gp9UxyjnclrFKIkPXuLTQ7HaDNk8ezDacutEwgBEmm+lX3/tcrhi3GXxP5E
-         KSYRppjBn2AcfWaFuio6zyk9cqPjF3bIXByWCDu3H2e41bM9Umfa+EsiY++UriyJllq3
-         2VyN6ioJHJmfymEwpRhjBmXQlUY5n9S2Q4tJilXVxd+RQETnshpGeslF3g95yeUbdaEj
-         TyWw==;
+        bh=IO2wfGzQCjUd+XEsY9JwDYHRPGLkCN0Yc45qk4bQrTo=;
+        fh=36D3yXw7DiYrAtJqIuUnQoXzzhiSGApXOVOZfxOj9/A=;
+        b=j85yGrj1L7BLkvl+FvFk7fAsJkND106K8Z5cHEQw9lr5El8pqyOE5Q/md/TJX58+JP
+         FAsPUNQgyMTgGJ+pqfQ0aJL+eI/WaNhvhQkzq6sM3bWSy8VLI9zNYcmOh2H8mGKMZiv4
+         dhH0Yx4h144lk1a0ZqJBkRlUaEJttUbdZPxdb7Wrz5XqNvDodZEBZWo0eYNDb1tKQP/g
+         brAozyhwNzqSqOEGt2Dr+t6MccezkQhtOzRn6xwRk6Gq7p9AJq7yz3hy4LfEo0cF47Jt
+         pPBwpte9jR5mFisRMXUGGgpZBOzrRfUsDEHuPZJGWKt5m9UAkr6JkXPEUWcr+IOQzn1O
+         +8aQ==;
         darn=lists.yoctoproject.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769510800; x=1770115600; darn=lists.yoctoproject.org;
+        d=gmail.com; s=20230601; t=1769511017; x=1770115817; darn=lists.yoctoproject.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=GDtJqARYL5tTnhAZzQ/M7tcj0QG/dlz2RJEyUE30480=;
-        b=VgHXmanEqmYzPxLFyGTchRb3IujPevjVf10xhH4idzlolbjIwctW8AnxqLvDcAvsk0
-         JtWCSXE4uRqU5ZgNGefASNfVKextV4A5gKOtNl0ETWqY9kmsRxLPobzLiLejcFT5LEa8
-         yaakC0jHx9+lB9jrY4oV7RNOtXoy8cIR11TXM0JuIgoIJc1YFzasbw+dUkHPi0mIYp5J
-         nx1TZXZ6F+DEpXPiAdGZfC+pF7N6YVz61sWkUcNrVEsyY5wEuIb5sRS65xCPs7WUj2xa
-         NupjmzkUj0oW5qKoh2QK4VTKKW1VGgE/1j9HXFXXYQ3y7dTmwjcnE7iNap+qK6OcWsF1
-         njnA==
+        bh=IO2wfGzQCjUd+XEsY9JwDYHRPGLkCN0Yc45qk4bQrTo=;
+        b=g7nTZ7Kb03prbUu8W5SJcsfAUWOSqMRUa1ORHNjvm8K292FGKroeTNMaL+YMEPw9p0
+         yimJ/JQSUqfxy5ePv81StC1ahKd4UB9FHc3Pw2WvWPkwtAFmCgWLsgIwQogUa7upuDJw
+         hXhuWyaTSkqinqsV0YgAUNAEsrBXl4hnrLXRQZwTalhe106a0kPa29uPbi42++RogAHb
+         BzrSimqQqNi7fp0Sa1TvkAAnBJb4n1ILKDeozZnvP919G2BI6OOwpZaerqz+ZwLxOCLZ
+         s7AqR0h/GAiWDD7fDqhag4cTR3q9lcTSTTKvdTLqmbY/bFoOF01FPaCpWUL8Pw7p/ebA
+         gV0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769510800; x=1770115600;
+        d=1e100.net; s=20230601; t=1769511017; x=1770115817;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=GDtJqARYL5tTnhAZzQ/M7tcj0QG/dlz2RJEyUE30480=;
-        b=OnTwjUmMl9qOro/NeGWqVph3U1ot/A+cHVp3Q4tXsbWIZF4Z2c3D0PnEF+asi4iYXD
-         0nbus2uhnUyql+eArmMbW83OJ4f7JjaLWnBlKU+UKXd28yXcZJ1iYpPJRIqKvu4FmSCc
-         0H9eibxivvH3+VEXEGP7UHCd1xbbV9EGF6zl6eMNs8KdmmWpf2jDGlIhDkCO7GHuKaV7
-         Sv0hzWxRTOSKZ8iwhjhmSIgNNMTKbjJpPS1uLGOQ6wh+xN125IcjYMdAtEBZtwyOpHeK
-         HO56b1RCggeKDksXRlAmxVY8IwxEeZT94Xb4+/ubMzZqK9ATOBswr7bVDohPWnK4CryX
-         8/pQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVIWGw+5aRezkHyYCHuBaRApFcjOUy7n9s+/tiLyUHf7tB1HQu6JMZIhlcpdwfG8PYi/gpA@lists.yoctoproject.org
-X-Gm-Message-State: AOJu0YyKdqiDHarBk5uCw0OF+z++R6OmIF/FYJcP/JoumGRqxHJTUcqI
-	doszQCfUUkpGxm6/WrpuBB6ox3VaMZWjfi80rvlTqUsTvR6A1Yl2t+m8aegYNBCsyw0mH3CzmGc
-	Xaxpz7XDLitk4CV/shvoGkPVCiK+AosdWAQ==
-X-Gm-Gg: AZuq6aJKSbs0wm4WYscdnn5BIAIrujIu7qOullELKC25o7c2g3UpST9lirW+dGcJDbL
-	d1U6MVApsQTQiI5TtiA7/bf8tRSLPtqJ46Uy2+Elbrge8gg+mpIr4kzeSYFzDcpKiIh3BgmrSzr
-	YmNnqS+5IojwIbWp1MoONAMK8xYyUKXXlpweS9L5mofwTAPZiJN1lXCOAmVN1hHhQrT6imb+/7L
-	WQ1ayb3u+DbNKJwBcbXA3RfvoG572+JEGPx/bmIO21HdYlOO51OOBQALNWdqTtogEH9yxn9q5XK
-	LMdUCsQh+j1IWGn2DRt3/if9FdZyIDT8JESaS5ec
-X-Received: by 2002:ad4:5cad:0:b0:87d:622d:dd7b with SMTP id
- 6a1803df08f44-894cc7cfd68mr16207596d6.1.1769510800625; Tue, 27 Jan 2026
- 02:46:40 -0800 (PST)
+        bh=IO2wfGzQCjUd+XEsY9JwDYHRPGLkCN0Yc45qk4bQrTo=;
+        b=Rj+RLTX2BVkvGhfpVtwfMbKNnmOpFetQok3lH9TgIaKzOGZ9W9eQBuQYFbi6FJUpgS
+         W1gkcoGQgizVp8maH5EWlc09Lsy/6W8q1scfFpdz4vrf4+lTnF4lEte2zzcY2gCc5CFr
+         L2mumm5ZW7pcg488D+Ate8mun+FVjrVRq5awB28mn1xWN5N9IFfyGDNsh888kot9bua7
+         TvVk/wgqlmeH9TcGF8PxSGZTEz8jmF8sb5q35l9SM/+RwspKC/E4F7UOw77TSGJphpna
+         JbypKNfEN2ifzBp8Vjy9hgDeNI/93cQhqYvC/+Ew0xeO/rHNamxFWwu3hbUXG3ZlWOsk
+         C4tA==
+X-Forwarded-Encrypted: i=1; AJvYcCVWiel9ml3Sr1RRGmHKaWK0QQMrgBzhybsEJCmU4LQ+vN1rl991epyySRiYrHxj7Xo1yBJe@lists.yoctoproject.org
+X-Gm-Message-State: AOJu0YzXQxcMbtf6f8Kjh9N3IYJxrBUd26p80NFYfAZGJjIrp8iQvjFc
+	l3TNkb78IUE0CYUVLf+MnpHsUFRbEY4KhWjQm82aZUz3VF0U/c6LpU8LK824eA9dqrsf4vQ1Bqh
+	MiLVQYRAdllxzeaDWY6Xo1ZEnnhRWHiw=
+X-Gm-Gg: AZuq6aJS6mJzss+1sDGpovAuPrIpBVVwrhSgdbWH/jZMd57fEZxeprau/q/AvjGIScd
+	+YoQpNdfXxOaVQy6a5rSiKJEubmtNwNE2iz7PyKfsr7blteHBtAW/OT6LcOrqzk6ZnvviHQbq11
+	WIoIfOYjarp45KPPdZHXpYkJex2DLDSPNevfyyTQlzHPL6SzuJzji3++6b3QfhR/1ox5VCmM2ZM
+	GPkSs1bcKIrNHyhS3XjR5vpd8eFcW+9BoVyH8vPGgtob4EbiaR7YDU5EViPNlJGJAjGJRECNKjX
+	cVufCLpJ+W8RCHv5lSE/DQg2OuFmpg==
+X-Received: by 2002:a05:6214:23cd:b0:894:3cb5:2ed9 with SMTP id
+ 6a1803df08f44-894cc7b9cf8mr14829916d6.14.1769511016825; Tue, 27 Jan 2026
+ 02:50:16 -0800 (PST)
 MIME-Version: 1.0
 References: <20260126222743.411405-1-daiane.angolini@foundries.io>
- <20260126222743.411405-4-daiane.angolini@foundries.io> <DFZAUMTS82AH.ZQEHCQSFT7EU@bootlin.com>
-In-Reply-To: <DFZAUMTS82AH.ZQEHCQSFT7EU@bootlin.com>
+ <20260126222743.411405-5-daiane.angolini@foundries.io> <DFZAULAJWR0S.1RQ0LXOE4BSUR@bootlin.com>
+In-Reply-To: <DFZAULAJWR0S.1RQ0LXOE4BSUR@bootlin.com>
 From: Alexander Kanavin <alex.kanavin@gmail.com>
-Date: Tue, 27 Jan 2026 11:46:29 +0100
-X-Gm-Features: AZwV_QgfoL3oLNCWBPlsaVhO_gtzI-noCLrmkYF5KwLMxqXek0ElS53XGsJYSyo
-Message-ID: <CANNYZj9qjZ-3YV21-i0dcMeQDTKjwOvPNzVjC9mUtPuVCbvMhg@mail.gmail.com>
-Subject: Re: [docs][PATCH 4/5] doc: Add the term Variant
+Date: Tue, 27 Jan 2026 11:50:06 +0100
+X-Gm-Features: AZwV_Qjrte7R68dz6zv2IKQ0Bb3tjZBb04BwVQu6m76ZrxkhBd11e1etTVZvFks
+Message-ID: <CANNYZj_Y1JiRoXK3iW2mwe1Cvga95icXtx3FzByfBzRs4upMuQ@mail.gmail.com>
+Subject: Re: [bitbake-devel] [docs][PATCH 5/5] docs: Fix sources as required
 To: antonin.godard@bootlin.com
 Cc: daiane.angolini@foundries.io, bitbake-devel@lists.openembedded.org, 
 	docs@lists.yoctoproject.org
@@ -85,22 +85,19 @@ Content-Type: text/plain; charset="UTF-8"
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 27 Jan 2026 10:46:48 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8727
+ <docs@lists.yoctoproject.org>; Tue, 27 Jan 2026 10:50:18 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8728
 
-On Tue, 27 Jan 2026 at 11:29, Antonin Godard via
+On Tue, 27 Jan 2026 at 11:28, Antonin Godard via
 lists.yoctoproject.org
 <antonin.godard=bootlin.com@lists.yoctoproject.org> wrote:
-> I think multiple variants could contains different set of layers too
-> (bb-layers). So it's not limited to fragments?
-> Also bb-env-passthrough-additions, etc.
+> > +   under ``layers/`` directory of a :term:`Setup`. Although the list of sources
+> > +   can be very flexible, at least BitBake should be cloned to generate a
+> > +   :term:`Setup`.
 
-TBH, I think we should drop 'variants' altogether, and just refer to
-'bitbake configurations'. We can explain that a list of bitbake
-configurations is formed by flattening the configurations template,
-and when a user selects from that list, and further selects from
-fragment choices, that selection (together with the layer spec)
-becomes a *configuration instance*.
+Not necessarily. It's an esoteric example, but one could write a list
+of sources without bitbake in it, and leave 'configurations' empty. In
+this case bitbake-setup will clone/unpack the sources and stop there.
 
 Alex
 
