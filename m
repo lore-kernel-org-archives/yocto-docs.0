@@ -2,463 +2,128 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 897C3D2595F
-	for <webhook@archiver.kernel.org>; Tue, 27 Jan 2026 08:11:55 +0000 (UTC)
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.5958.1769501509250250365
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8BEB1C88E4F
+	for <webhook@archiver.kernel.org>; Tue, 27 Jan 2026 08:19:25 +0000 (UTC)
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.5797.1769501962979373907
  for <docs@lists.yoctoproject.org>;
- Tue, 27 Jan 2026 00:11:50 -0800
+ Tue, 27 Jan 2026 00:19:23 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=ziE7yB/S;
- spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=nsnKAXJr;
+ spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 21A9C1A2A69
-	for <docs@lists.yoctoproject.org>; Tue, 27 Jan 2026 08:11:47 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 6FFA74E422CB
+	for <docs@lists.yoctoproject.org>; Tue, 27 Jan 2026 08:19:21 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id E8F86606F5;
-	Tue, 27 Jan 2026 08:11:46 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 47767119A8684;
-	Tue, 27 Jan 2026 09:11:44 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 477A8606F5;
+	Tue, 27 Jan 2026 08:19:21 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6432F119A867D;
+	Tue, 27 Jan 2026 09:19:20 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1769501506; h=from:subject:date:message-id:to:mime-version:content-type:
+	t=1769501960; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=ytWpIJgYmIi8qCbHSg+uiXVWKag9+hEqvqjYQpI/6OQ=;
-	b=ziE7yB/SDIES1oJYEVuA5jKEXI7cCM4L6q3NyKeDRT/GXl3eyE7cY7FCk+sJe55nw5Tk7X
-	9qcUmkTCBxoBYwP8Z8C0Y1G+Ap4e3AgcBe4ZnV16qtC88ibD7K1hORUbkyNaVXySqc11Qo
-	baGfOJ7JgV0q5bn/gmchLd00VQyAI9BLWFQ9mohSKg2qA1K0kN6RhIGMwqJUwIFl+MQ7tq
-	gNaYzzlXiqyxTKP70hYJsogGOpkFvKiD5ulgRyCtbyQE96nGHZulkKOe6C1Cx+ETIZYhR6
-	zyDJg/ahSlOLOMd+M9rU37x2Je8N7TKKvuYtLToI0e4g5RYi3sqCLXxNYTrNyw==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 27 Jan 2026 09:11:43 +0100
-Message-Id: <DFZ7XKO85CS6.3ERH3Z96W1AHF@bootlin.com>
-To: <reatmon@ti.com>, <docs@lists.yoctoproject.org>
-Subject: Re: [docs] [PATCH] ref-manual: Document updated UBOOT_CONFIG flow
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-References: <20260120192159.2226262-1-reatmon@ti.com>
-In-Reply-To: <20260120192159.2226262-1-reatmon@ti.com>
+	bh=wjl4d53mc6wCO/qGfxZ93rzrOZHOvIp3vm+zpMsjDDE=;
+	b=nsnKAXJrjrKc0Ud5mzF80BNUxH1XFJKAvns2Y9oFAyPmZNKK9AvQSOzJjK2i2Ep3HsWFJV
+	f3rDy1dWE4PegrXUafDL+gmfEBEWPu7uJ0o3kUpD6IuhemEfzSguC1WuAOzK9H2zmEcx3I
+	8zn8cPz34VI5eTZnRcfLKldgC7yc2j5khTTEREa4sGWXNKsSjcEHCaJWr8cxFTCQWhNLzv
+	WxOPSQrjPRzJRHEx9o7S+XuUjbjCABViejap/dyTHELRVGEu1llelm33Wrn/N+62x+iiBz
+	Ke2HhETOSs3dOI+w5AR6l23aY8wmknhdQK8vi22H9ROMvqqMIw7uevHTFJQh+w==
+From: Antonin Godard <antonin.godard@bootlin.com>
+Date: Tue, 27 Jan 2026 09:18:56 +0100
+Subject: [PATCH v2 01/56] transitioning-to-a-custom-environment.rst: remove
+ obsolete poky repo references
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260127-remove-poky-references-v2-1-74bf80cc4e5a@bootlin.com>
+References: <20260127-remove-poky-references-v2-0-74bf80cc4e5a@bootlin.com>
+In-Reply-To: <20260127-remove-poky-references-v2-0-74bf80cc4e5a@bootlin.com>
+To: docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Antonin Godard <antonin.godard@bootlin.com>, 
+ Quentin Schulz <quentin.schulz@cherry.de>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3401;
+ i=antonin.godard@bootlin.com; h=from:subject:message-id;
+ bh=0F4IHnBzDvWpK8t8LkLBteRlMMQt3d8H4EbekxMvrKY=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpeHT+I/siF6BPOn3VtCdtUaAKD89KFsqp+QE7C
+ /+FNiuAIweJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaXh0/gAKCRDRgEFAKaOo
+ Nh4TEADApzvzqQA6SziqYGAmiwLwNXJ+MSGEAVZXND5+2hhgebNZeDHbmnTxGVPzzE1HE+YylLM
+ Bo7zkgqnYEpT0gtbYhPZ83b9HNi9SwYAexpKxVlKCfD0GCpWupcIa50qgxh6t8lJKO3/1wM1WBi
+ JosZrHTE4BvspKEerpgLgkpcFB5ctCuZit0/ckjc1WGbA3UtVf9/iPJoRWIVuv94ZYCCW9lat+i
+ eFxcVdrwTue559a0jy0rFsJErYCqJKnQ4ifTPaYSP0aTvxT+HCeQ09yeyuq2AtohKZpY2KYzX4h
+ 6QrbW8HLbm3nDdfSJWjPLKZi+Yz8sQJ8h9lZvWJGNVxxNS5JX9dTrUq/bltHqBeD5WXuuklgANe
+ ZNMEzhJ90OYVH5rqu3b6mavGb2xlswMdsU2k3hTkh6PEIxuffy5HKVAbVXdtrYyHQJu+zJd6dDk
+ XzLjrodRU1L9XSeyAgYPoxXcH4K1/QniNuXIWUbWLEsyuNT5z/toGHtRtuGOTZDm2LoQ7WKh5lo
+ HoVs9t0Hq+fen6zFaebZ4R4pqmaEG/STGcdpm+rUyE3LDGJSj5P0vhpGySCtODKjjF3DVyIitus
+ Gmwvhx6RyPSPuT+LyIEg7Jism5vAY8vrhheE77PcymjI3isOFtvg1WDCloamObsFih9OhAYAntP
+ Ya37E38fw9dPoYQ==
+X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
+ fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 27 Jan 2026 08:11:55 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8660
+ <docs@lists.yoctoproject.org>; Tue, 27 Jan 2026 08:19:25 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8661
 
-Hi,
+- Use :term: for Poky.
+- Mention use of fragments instead of local.conf.
+- Remove Yocto < 2.4 reference.
 
-On Tue Jan 20, 2026 at 8:21 PM CET, Ryan Eatmon via lists.yoctoproject.org =
-wrote:
-> The UBOOT_CONFIG flow was updated in oe-core [1].  Document all of the
-> new variables and preferred method of specifying the various controls
-> for each config.
->
-> [1] xxx
->
-> Signed-off-by: Ryan Eatmon <reatmon@ti.com>
-> ---
->  documentation/ref-manual/classes.rst   |  96 +++++++++++++++++++----
->  documentation/ref-manual/variables.rst | 101 +++++++++++++++++++++++--
->  2 files changed, 176 insertions(+), 21 deletions(-)
->
-> diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-man=
-ual/classes.rst
-> index 2e219a59c..4eb811387 100644
-> --- a/documentation/ref-manual/classes.rst
-> +++ b/documentation/ref-manual/classes.rst
-> @@ -3269,13 +3269,89 @@ variable using the "type" varflag. Here is an exa=
-mple::
->  The :ref:`ref-classes-uboot-config` class provides support for configuri=
-ng one
->  or more U-Boot build configurations.
-> =20
-> -There are two ways to configure the recipe for your machine:
-> +There are three ways to configure the recipe for your machine:
-> =20
-> --  Using :term:`UBOOT_CONFIG` variable. For example::
-> +-  Using the :term:`UBOOT_MACHINE` variable (and its companion variable
-> +   :term:`UBOOT_BINARY`). For example::
-> +
-> +      UBOOT_MACHINE =3D "config"
-> +      UBOOT_BINARY =3D "u-boot.bin"
-> +
-> +-  Using :term:`UBOOT_CONFIG` variables. For example::
-> +
-> +      UBOOT_CONFIG ??=3D "foo bar"
-> +      UBOOT_CONFIG[foo] =3D "config"
-> +      UBOOT_CONFIG[bar] =3D "config2"
-> +
-> +      UBOOT_CONFIG_IMAGE_FSTYPES[bar] =3D "fstype"
-> +
-> +      UBOOT_CONFIG_BINARY[foo] =3D "binary"
-> +
-> +      UBOOT_CONFIG_MAKE_OPTS[foo] =3D "FOO=3D1"
-> +      UBOOT_CONFIG_MAKE_OPTS[bar] =3D "BAR=3D1"
-> +
-> +      UBOOT_CONFIG_FRAGMENTS[foo] =3D "foo.fragment"
-> +
-> +   In this example, all possible configurations are selected (``foo`` an=
-d
-> +   ``bar``), but it is also possible to build only ``foo`` or ``bar`` by
-> +   changing the value of :term:`UBOOT_CONFIG` to include either one or t=
-he
-> +   other.
+Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+---
+ .../transitioning-to-a-custom-environment.rst          | 18 ++++++++----------
+ 1 file changed, 8 insertions(+), 10 deletions(-)
 
-For clarity, add:
+diff --git a/documentation/transitioning-to-a-custom-environment.rst b/documentation/transitioning-to-a-custom-environment.rst
+index a5f55c567..e292399f4 100644
+--- a/documentation/transitioning-to-a-custom-environment.rst
++++ b/documentation/transitioning-to-a-custom-environment.rst
+@@ -39,7 +39,7 @@ Transitioning to a custom environment for systems development
+    that you've downloaded. Be aware that some BSPs may not be immediately
+    supported on the very latest release, but they will be eventually.
+ 
+-   You might want to start with the build specification that Poky provides
++   You might want to start with the build specification that :term:`Poky` provides
+    (which is reference embedded distribution) and then add your newly chosen
+    layers to that. Here is the information :ref:`about adding layers
+    <dev-manual/layers:Understanding and Creating Layers>`.
+@@ -48,16 +48,14 @@ Transitioning to a custom environment for systems development
+    configuration**.
+    For instance, you've chosen a machine type and added in the corresponding BSP
+    layer. You'll then need to change the value of the :term:`MACHINE` variable in your
+-   configuration file (build/local.conf) to point to that same machine
+-   type. There could be other layer-specific settings you need to change as
+-   well. Each layer has a ``README`` document that you can look at for this type of
+-   usage information.
++   configuration (using the :ref:`ref-fragments-builtin-core-machine`
++   fragment) to point to that same machine type. There could be other
++   layer-specific settings you need to change as well. Each layer has a
++   ``README`` document that you can look at for this type of usage information.
+ 
+ #. **Add a new layer for any custom recipes and metadata you create**.
+-   Use the ``bitbake-layers create-layer`` tool for Yocto Project 2.4+
+-   releases. If you are using a Yocto Project release earlier than 2.4, use the
+-   ``yocto-layer create`` tool. The ``bitbake-layers`` tool also provides a number
+-   of other useful layer-related commands. See
++   Use the ``bitbake-layers create-layer`` command. The ``bitbake-layers`` tool
++   also provides a number of other useful layer-related commands. See
+    :ref:`dev-manual/layers:creating a general layer using the
+    \`\`bitbake-layers\`\` script` section.
+ 
+@@ -99,7 +97,7 @@ Transitioning to a custom environment for systems development
+ 
+    Distribution settings define the packaging back-end (e.g. rpm or other) as
+    well as the package feed and possibly the update solution. You would create
+-   your own distribution in a new layer inheriting from Poky but overriding what
++   your own distribution in a new layer inheriting from :term:`Poky` but overriding what
+    needs to change for your distribution. If you find yourself adding a lot of
+    configuration to your local.conf file aside from paths and other typical
+    local settings, it's time to :ref:`consider creating your own distribution
 
-"""
-For example::
-
-   UBOOT_CONFIG =3D "foo"
-"""
-
-> +
-> +   Each build configuration is associated to a variable flag definition =
-of
-> +   :term:`UBOOT_CONFIG`, and associated changes for each config as defin=
-ed
-> +   in the various UBOOT_CONFIG_* variables.
-> +
-> +   -  UBOOT_CONFIG[config]: defconfig file selected for this build confi=
-guration.
-
-I'm afraid this will render oddly, enclose with `` ``:
-
-"""
--  ``UBOOT_CONFIG[config]``: ...
-"""
-
-To keep an hyperlink to the variable definition, I would end each bullet po=
-int
-in the list here with:
-
-"""
-   See the documentation of :term:`UBOOT_CONFIG*` for more information.
-"""
-
-> +      These files are found in the source tree's ``configs`` folder of U=
--Boot.
-> +
-> +      *This option is mandatory.*
-> +
-> +   -  :term:`UBOOT_CONFIG_IMAGE_FSTYPES` [config]: image types to append=
- to the
-> +      :term:`IMAGE_FSTYPES` variable for image generation for this build
-> +      configuration.
-> +
-> +      This can allow building an extra image format that uses the binary
-> +      generated by this build configuration.
-> +
-> +      This option is not mandatory and can be left unspecified if not ne=
-eded.
-> +
-> +   -  :term:`UBOOT_CONFIG_BINARY` [config]: binary to select as the one =
-to deploy in
-> +      :term:`DEPLOY_DIR_IMAGE`. The output of a U-Boot build may be more=
- than
-> +      one binary, for example::
-> +
-> +         u-boot.bin
-> +         u-boot-with-spl.bin
-> +
-> +      Setting the ``binary`` value to ``u-boot-with-spl.bin`` will make =
-this
-> +      binary the one deployed in :term:`DEPLOY_DIR_IMAGE`. It is renamed=
- to
-> +      include the build configuration name in the process (``foo`` or ``=
-bar`` in
-> +      the above example).
-> +
-> +      This option defaults to :term:`UBOOT_BINARY` if not specified.
-> +
-> +   -  :term:`UBOOT_CONFIG_MAKE_OPTS` [config]: additional options passed=
- to
-> +      ``make`` when configuring and compiling U-Boot for this configurat=
-ion
-> +      entry. The options in this entry are added before the options in
-> +      :term:`UBOOT_MAKE_OPTS`.
-> +
-> +      This option is not mandatory and adds nothing if not specified.  I=
-f
-> +      you do not have a make option for a given config, you can simply n=
-ot
-> +      set the flag for that config.
-> +
-> +   -  :term:`UBOOT_CONFIG_FRAGMENTS` [config]: additional config fragmen=
-t(s)
-> +      from the source tree that is used during ``do_configure()`` to set=
-up the
-> +      build.  The options in this entry are added before the fragments i=
-n
-> +      :term:`UBOOT_FRAGMENTS`.
-> +
-> +      This option is not mandatory and adds nothing if not specified.  I=
-f
-> +      you do not have a fragment a given config, you can simply not set =
-the
-> +      flag for that config.
-> +
-> +-  Or, a legacy method using the :term:`UBOOT_CONFIG` variable by itself=
-. For example::
-> =20
->        UBOOT_CONFIG ??=3D "foo bar"
-> -      UBOOT_CONFIG[foo] =3D "config,images,binary,makeopts"
-> -      UBOOT_CONFIG[bar] =3D "config2,images2,binary2,makeopts2"
-> +      UBOOT_CONFIG[foo] =3D "config,images,binary"
-> +      UBOOT_CONFIG[bar] =3D "config2,images2,binary2"
-> =20
->     In this example, all possible configurations are selected (``foo`` an=
-d
->     ``bar``), but it is also possible to build only ``foo`` or ``bar`` by
-> @@ -3313,15 +3389,9 @@ There are two ways to configure the recipe for you=
-r machine:
-> =20
->        This option defaults to :term:`UBOOT_BINARY` if unset.
-> =20
-> -   -  ``makeopts``: the additional options passed to ``make`` when confi=
-guring
-> -      and compiling U-Boot for this configuration entry. The options in =
-this
-> -      entry are added before the options in :term:`UBOOT_MAKE_OPTS`.
-> -
-> --  Or, using the :term:`UBOOT_MACHINE` variable (and its companion varia=
-ble
-> -   :term:`UBOOT_BINARY`). For example::
-> -
-> -      UBOOT_MACHINE =3D "config"
-> -      UBOOT_BINARY =3D "u-boot.bin"
-> +.. note::
-
-Missing a newline between .. note:: and the text here
-
-> +   It is recommended to not use this legacy flow as any future extension=
-s
-> +   to the control knobs will be not added to this methodology.
-> =20
->  Using :term:`UBOOT_MACHINE` and :term:`UBOOT_CONFIG` at the same time is=
- not
->  possible.
-> diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-m=
-anual/variables.rst
-> index 4d8a35473..dec260a3f 100644
-> --- a/documentation/ref-manual/variables.rst
-> +++ b/documentation/ref-manual/variables.rst
-> @@ -10669,29 +10669,108 @@ system and gives an overview of their function=
- and contents.
-> =20
->     :term:`UBOOT_CONFIG`
->        Configures one or more U-Boot configurations to build. Each
-> -      configuration can define the :term:`UBOOT_MACHINE` and optionally =
-the
-> -      :term:`IMAGE_FSTYPES` and the :term:`UBOOT_BINARY`.
-> +      configuration must define the :term:`UBOOT_MACHINE`.  Additional c=
-ontrol
-
-"the term:`UBOOT_MACHINE` variable."
-
-> +      variables can found at: :term:`UBOOT_CONFIG_BINARY`,
-
-s/can found at:/are:/
-
-> +      :term:`UBOOT_CONFIG_FRAGMENTS`, :term:`UBOOT_CONFIG_IMAGE_FSTYPES`=
-, and
-> +      :term:`UBOOT_CONFIG_MAKE_OPTS`.=20
-> =20
-> -      Here is an example from the ``meta-freescale`` layer. ::
-> +      Here is an updated example from the ``meta-freescale`` layer. ::
-> =20
->           UBOOT_CONFIG ??=3D "sdcard-ifc-secure-boot sdcard-ifc sdcard-qs=
-pi lpuart qspi secure-boot nor"
-> +
->           UBOOT_CONFIG[nor] =3D "ls1021atwr_nor_defconfig"
-> -         UBOOT_CONFIG[sdcard-ifc] =3D "ls1021atwr_sdcard_ifc_defconfig,,=
-u-boot-with-spl-pbl.bin"
-> -         UBOOT_CONFIG[sdcard-qspi] =3D "ls1021atwr_sdcard_qspi_defconfig=
-,,u-boot-with-spl-pbl.bin"
-> +         UBOOT_CONFIG[sdcard-ifc] =3D "ls1021atwr_sdcard_ifc_defconfig"
-> +         UBOOT_CONFIG[sdcard-qspi] =3D "ls1021atwr_sdcard_qspi_defconfig=
-"
->           UBOOT_CONFIG[lpuart] =3D "ls1021atwr_nor_lpuart_defconfig"
->           UBOOT_CONFIG[qspi] =3D "ls1021atwr_qspi_defconfig"
->           UBOOT_CONFIG[secure-boot] =3D "ls1021atwr_nor_SECURE_BOOT_defco=
-nfig"
-> -         UBOOT_CONFIG[sdcard-ifc-secure-boot] =3D "ls1021atwr_sdcard_ifc=
-_SECURE_BOOT_defconfig,,u-boot-with-spl-pbl.bin"
-> +         UBOOT_CONFIG[sdcard-ifc-secure-boot] =3D "ls1021atwr_sdcard_ifc=
-_SECURE_BOOT_defconfig"
-> +
-> +         UBOOT_CONFIG_BINARY[sdcard-ifc] =3D "u-boot-with-spl-pbl.bin"
-> +         UBOOT_CONFIG_BINARY[sdcard-qspi] =3D "u-boot-with-spl-pbl.bin"
-> +         UBOOT_CONFIG_BINARY[sdcard-ifc-secure-boot] =3D "u-boot-with-sp=
-l-pbl.bin"
-> =20
->        In this example, all possible seven configurations are selected. E=
-ach
->        configuration specifies "..._defconfig" as :term:`UBOOT_MACHINE`, =
-and
->        the "sd..." configurations define an individual name for
-> -      :term:`UBOOT_BINARY`. No configuration defines a second parameter =
-for
-> -      :term:`IMAGE_FSTYPES` to use for the U-Boot image.
-> +      :term:`UBOOT_CONFIG_BINARY`.
-> =20
->        For more information on how the :term:`UBOOT_CONFIG` is handled, s=
-ee the
->        :ref:`ref-classes-uboot-config` class.
-> =20
-> +   :term:`UBOOT_CONFIG_BINARY`
-> +      This variable cannot be set to a value in a config, it is a placeh=
-older
-> +      for configuring the :term:`UBOOT_CONFIG` flow via flags::
-> +
-> +         UBOOT_CONFIG_BINARY[foo] =3D "binary1"
-> +         UBOOT_CONFIG_BINARY[bar] =3D "binary2"
-> +
-> +      Specify the binary to select as the one to deploy in :term:`DEPLOY=
-_DIR_IMAGE`.
-s/Specify/It specifies/
-
-
-> +      The output of a U-Boot build may be more than one binary, for exam=
-ple::
-> +
-> +         u-boot.bin
-> +         u-boot-with-spl.bin
-> +
-> +      Setting the ``binary`` value to ``u-boot-with-spl.bin`` will make =
-this
-> +      binary the one deployed in :term:`DEPLOY_DIR_IMAGE`. It is renamed=
- to
-> +      include the build configuration name in the process (``foo`` or ``=
-bar`` in
-> +      the above example).
-> +
-> +      This option defaults to :term:`UBOOT_BINARY` if not specified.
-> +
-> +      For more information on how the :term:`UBOOT_CONFIG_BINARY` is han=
-dled, see the
-
-"the :term:`UBOOT_CONFIG_BINARY` variable"
-
-> +      :ref:`ref-classes-uboot-config` class.
-> +
-> +   :term:`UBOOT_CONFIG_FRAGMENTS`
-> +      This variable cannot be set to a value in a config, it is a placeh=
-older
-> +      for configuring the :term:`UBOOT_CONFIG` flow via flags::
-> +
-> +         UBOOT_CONFIG_FRAGMENTS[foo] =3D "frag1 frag2"
-> +         UBOOT_CONFIG_FRAGMENTS[bar] =3D "frag3"
-
-> +
-> +      Specify a list of fragments from the source tree that should be co=
-mbined
-
-s/Specify/It specifies/
-
-> +      with the defconfig from :term:`UBOOT_CONFIG` that are used during =
-``do_configure()``
-> +      to configure the build.
-
-Can we specify from what these fragments paths are relative to? ${S}?
-
-> +
-> +      This option is not required and you only need to specify flag sett=
-ings for
-
-s/to specify flag settings/to specify it/ ?
-
-> +      configs that need them.
-> +
-> +      For more information on how the :term:`UBOOT_CONFIG_FRAGMENTS` is =
-handled, see the
-> +      :ref:`ref-classes-uboot-config` class.
-> +
-> +   :term:`UBOOT_CONFIG_IMAGE_FSTYPES`
-> +      This variable cannot be set to a value in a config, it is a placeh=
-older
-> +      for configuring the :term:`UBOOT_CONFIG` flow via flags::
-> +
-> +         UBOOT_CONFIG_IMAGE_FSTYPES[foo] =3D "fstype1"
-> +         UBOOT_CONFIG_IMAGE_FSTYPES[bar] =3D "fstype2"
-> +
-> +      Append additional image types to the :term:`IMAGE_FSTYPES` variabl=
-e for
-> +      image generation for this build configuration.  This can allow bui=
-lding an
-> +      extra image format that uses the binary generated by this build co=
-nfiguration.
-> +
-> +      This option is not required and you only need to specify flag sett=
-ings for
-> +      configs that need them.
-> +
-> +      For more information on how the :term:`UBOOT_CONFIG_IMAGE_FSTYPES`=
- is handled, see the
-> +      :ref:`ref-classes-uboot-config` class.
-> +
-> +   :term:`UBOOT_CONFIG_MAKE_OPTS`
-> +      This variable cannot be set to a value in a config, it is a placeh=
-older
-> +      for configuring the :term:`UBOOT_CONFIG` flow via flags::
-> +
-> +         UBOOT_CONFIG_MAKE_OPTS[foo] =3D "OPT1=3Dfoo OPT2=3D2"
-> +         UBOOT_CONFIG_MAKE_OPTS[bar] =3D "OPT1=3Dbar"
-> +
-> +      Specify a list of make command line options that are passed to the=
- ``make`` command
-
-s/Specify/It specifies/
-
-> +      during ``do_compile()``.
-> +
-> +      This option is not required and you only need to specify flag sett=
-ings for
-> +      configs that need them.
-> +
-> +      For more information on how the :term:`UBOOT_CONFIG_MAKE_OPTS` is =
-handled, see the
-> +      :ref:`ref-classes-uboot-config` class.
-> +
->     :term:`UBOOT_DTB_LOADADDRESS`
->        Specifies the load address for the dtb image used by U-Boot. Durin=
-g FIT
->        image creation, the :term:`UBOOT_DTB_LOADADDRESS` variable is used=
- in
-> @@ -10980,6 +11059,12 @@ system and gives an overview of their function a=
-nd contents.
-> =20
->        See the :ref:`ref-classes-uboot-sign` class for details.
-> =20
-> +   :term:`UBOOT_FRAGMENTS`
-> +      The :term:`UBOOT_FRAGMENTS` variable can be used to pass extra con=
-fig
-> +      fragments from the source tree to ``make`` when U-Boot is configur=
-ed.
-
-Once again we should specify from what the paths here are relative to, and =
-maybe
-provide an example. Maybe somewhat of a realistic example, maybe with a pat=
-h
-leading to some configuration name. Any existing fragment in mainline U-boo=
-t
-maybe?
-
-> +
-> +      See the :ref:`ref-classes-uboot-config` class for more information=
-.
-> +
->     :term:`UBOOT_INITIAL_ENV_BINARY`
->        This variable enables the generation of the U-Boot initial environ=
-ment in
->        binary format.
-
-Thanks a lot for the patch!
-Antonin
-
---=20
-Antonin Godard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+-- 
+2.52.0
 
 
