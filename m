@@ -2,61 +2,62 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D06EBCA6C89
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EA486CA6C91
 	for <webhook@archiver.kernel.org>; Tue, 27 Jan 2026 08:19:35 +0000 (UTC)
 Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.6048.1769501970553621088
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.6045.1769501968344162106
  for <docs@lists.yoctoproject.org>;
- Tue, 27 Jan 2026 00:19:30 -0800
+ Tue, 27 Jan 2026 00:19:28 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=SsPsL8pQ;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=IE86zHI3;
  spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 0CEFFC211CE
-	for <docs@lists.yoctoproject.org>; Tue, 27 Jan 2026 08:19:31 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id C5D16C211CE
+	for <docs@lists.yoctoproject.org>; Tue, 27 Jan 2026 08:19:28 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 1484F606F5
-	for <docs@lists.yoctoproject.org>; Tue, 27 Jan 2026 08:19:29 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6255C119A8689;
-	Tue, 27 Jan 2026 09:19:28 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id CB334606F5;
+	Tue, 27 Jan 2026 08:19:26 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D8C27119A8684;
+	Tue, 27 Jan 2026 09:19:25 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1769501968; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1769501966; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=8P7/HXxrqqJIzc0mRWEQN0+WhKyAmUPJJkdj7JUDoLA=;
-	b=SsPsL8pQD7z0GQ+wVhZk/ALDgPgxtZgr5iF63IKCQKdtYFWJ9WSil4yTK/4UZnkVs8sOFv
-	xLeLYS9xI6LG6dXHJcF1XGpPu0myeZPFNIwW2YBEBO6zMwOWJn+0nVQtpX970HtD1VbUh1
-	y6UnnwgYWgCS4QRYOfqFgy4DjJ1d+CsWCAd+7FbO9KU1kQauhNE07DiMOMSI2Bi6tVXjDY
-	+0brAVvWg18l6Ny3mwRfQ/F96TXTAqsHzd2k2HL8Cb77xp3yCIMKNYeiSJWjToXSaMo+Dv
-	F+QaJJP4HSabj6QVPXW3BLrCXFkB/3hWKBflrKeYhGUjzgJHL4XiiWrk9vzjyg==
+	bh=RcoZAVkC2xd1vdNzm9mBNhC9lv+3H3WZEMwCWoDNULs=;
+	b=IE86zHI3rjq5byMRVA3WItjFP1ubpPDMrSghnDURbr7bty+kMSlp4vp5uBx6uQptTyBMfZ
+	vaHDasdIbnihbN8X2NzjJJRAC5Hz/cBx9zlW/9HpCgGcgg5g5+0Dm68FlLsTCHe1BSZvVV
+	aO6IgMaGnb45OouwdKzUYBoJsyYB6nF2B1FR6LiqwwyjU47IPhzGg3MMKbk/WDs+3oyvJE
+	waz3OCrhvt/PXgJuhlvUnq7r0nIFzCv5H32d/5B3bZ7AcfY5kLgou9ZAXpWQvFATHJSy51
+	5e3YpyWijEAkfCCW+r7pcf8y4jSvKbL4lWQ+D5Yv67QcVoDtDuuGNlm6KloAcA==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Tue, 27 Jan 2026 09:19:07 +0100
-Subject: [PATCH v2 12/56] dev-manual/layers.rst: remove obsolete poky repo
- references
+Date: Tue, 27 Jan 2026 09:19:04 +0100
+Subject: [PATCH v2 09/56] dev-manual/error-reporting-tool.rst: remove
+ obsolete poky repo references
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260127-remove-poky-references-v2-12-74bf80cc4e5a@bootlin.com>
+Message-Id: <20260127-remove-poky-references-v2-9-74bf80cc4e5a@bootlin.com>
 References: <20260127-remove-poky-references-v2-0-74bf80cc4e5a@bootlin.com>
 In-Reply-To: <20260127-remove-poky-references-v2-0-74bf80cc4e5a@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Antonin Godard <antonin.godard@bootlin.com>
+ Antonin Godard <antonin.godard@bootlin.com>, 
+ Quentin Schulz <quentin.schulz@cherry.de>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4285;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1172;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=0O0z3xXUK3PBdiJz/RdxKWh1GNAHX5NoolfAYEKMWmg=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpeHUA59Txspm9+LX7jORxqRd+vcQG5SMuSbEuM
- +MTNLHnPs6JAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaXh1AAAKCRDRgEFAKaOo
- NtibEAC/lqTwi6S7WkPjw6mXi24Mag3CccgqrkOH70406F6eJOiKuCn6r4POH6zqlXCvAmuNvYf
- 3hkfO+pxJbhgPz1MsVs2B/59B2TF9m3rxUo4HNfA5vRUrNPCs2rxpkzTe4oRUIvofkcTVpaQrpp
- 1kFrcwquWArSGwChHaSw5xRyN4zQvNQQhvoCBPmw3DI/RARrfLxv748qgwCFtMmoGd2fHQ800M5
- kc8NSP5iR7sB2BGZAiz/AjUDntOTqzcgsmcDP/XoWSc66Ua/zEedf6KBlarOU9Lh7WFgWl0M8Kf
- v/4c0on/l1zgurHmmy325LAKDR/IvkAUqm+ZqkMiNf7Js6/cgZPVaH3Zto3rGpi5EOB7yprzLpF
- Hwbh79UK6L8BbHrw1SfvaONJlRRlxYWrh+O35o8gW1srSUMcnPIVEMoGzD6514KIsJOKagAHynY
- ihOqwVcku5Ub0RcpE5Ls9NnxJDEb4cwNKiZyF7q3t0ixP0F626RbkmtRzfZx+Z9SJ6xczCLcqKX
- bEA7ke83bHFONrnezAA3b5cLkhBLsLoFVxEuDEPiTASZGI3nLE8X/Gv91kxmK8MluY5t2jRmUld
- az5epZ+mCjfBviot/KnojyER1eeh0/GrFW83rEyNNOZj2Jz9PET7ai8kgxo6CcdIubq8CzfxQb7
- zrvzKp9CWCghVYQ==
+ bh=0eU4EKBkNs9mm4UTEc+aHxZz+sIAnPFWJKRuUrBg6N8=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpeHT/NYCQW/HGwEg7EYApi9xNj1NtlqYPWjgBD
+ g+hWQ2mhhuJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaXh0/wAKCRDRgEFAKaOo
+ Now0D/4qAbpPEETa6fTV8V6YltruhtfK4smNWjN9hTfsZihAX6xx9SFgtFb9DbP9DUcyzorqFZM
+ gDGcRMeM3LqmeOc8/SAnKuNlyw5CMGnrhbWVsr9rUSVZcIlRk7gfgduT3iQmP2Vs8QPGCfE8/Du
+ L4vtGvQXGwDS7/PcLUhGKSnNHBZMvuUZD1eSzCjntMJHz0gHt7KKjt/LZv2RI/pTJHAl3oyP2Dx
+ LStMS/LijeNENLLrgvTM7WvvWA0NRl57EmSz8HGPlPS2lx6RTDugp+D4pQvXo7chfzdEcltkr+D
+ oXK/e6TTQupG+Oie5NTzj0tzQuiN4TVM2mPLB5pzhuXP7WPci4SXBm09iydt7oi3ZdwlJDdUboE
+ jbIPkMkUuh0z2Yq8IYc55Q8oMXpkH6FcypfxudqxwRqfk0vH+Q2cOB6v/BaauNlxl34G4SPvVAv
+ DAU1F+VCplrSTW7VquI1v4pjpz+IO2SRGRi+9DOAGd/v6nuJE7qATgjSBzEx2TDAZBuZOYhwb8/
+ jflj/itJkbhYDA/Y1zNXICuW8CC/eEd8fmptF409C7mGxU1KycUgTDletkMhnUE+TQES6cVAubc
+ USW6HVwlrdOg/+Y+9epUwcI/47gxHqbmkJIwAgkKiUj43eOxYhHE9DjplmxmxHGpHpuXh5D4j+k
+ o3uc4g4HWF+bA8w==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
@@ -64,86 +65,31 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Tue, 27 Jan 2026 08:19:35 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8673
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8670
 
-Remove references to the Poky repository, replace by OpenEmbedded-Core.
+Remove the single poky repository reference in this document, after the
+poky repository was obsoleted.
 
+Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/dev-manual/layers.rst | 31 ++++++++++++++++---------------
- 1 file changed, 16 insertions(+), 15 deletions(-)
+ documentation/dev-manual/error-reporting-tool.rst | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/documentation/dev-manual/layers.rst b/documentation/dev-manual/layers.rst
-index 456e72f4f..ab5c258f1 100644
---- a/documentation/dev-manual/layers.rst
-+++ b/documentation/dev-manual/layers.rst
-@@ -290,7 +290,7 @@ following list:
-    repository that use the ``meta-layer_name`` format.
+diff --git a/documentation/dev-manual/error-reporting-tool.rst b/documentation/dev-manual/error-reporting-tool.rst
+index 84f3d9cd1e..30d1ce2b31 100644
+--- a/documentation/dev-manual/error-reporting-tool.rst
++++ b/documentation/dev-manual/error-reporting-tool.rst
+@@ -7,8 +7,7 @@ The error reporting tool allows you to submit errors encountered during
+ builds to a central database. Outside of the build environment, you can
+ use a web interface to browse errors, view statistics, and query for
+ errors. The tool works using a client-server system where the client
+-portion is integrated with the installed Yocto Project
+-:term:`Source Directory` (e.g. ``poky``).
++portion is integrated in :term:`OpenEmbedded-Core (OE-Core)`.
+ The server receives the information collected and saves it in a
+ database.
  
- -  *Group Your Layers Locally:* Clone your repository alongside other
--   cloned ``meta`` directories from the :term:`Source Directory`.
-+   layers in your :term:`Source Directory`.
- 
- Making Sure Your Layer is Compatible With Yocto Project
- =======================================================
-@@ -529,10 +529,10 @@ possible.
- Overlaying a File Using Your Layer
- ----------------------------------
- 
--As an example, consider the main formfactor recipe and a corresponding
--formfactor append file both from the :term:`Source Directory`.
-+As an example, consider the main ``formfactor`` recipe and a corresponding
-+``formfactor`` append file both from :term:`OpenEmbedded-Core (OE-Core)`.
- Here is the main
--formfactor recipe, which is named ``formfactor_0.0.bb`` and located in
-+``formfactor`` recipe, which is named ``formfactor_0.0.bb`` and located in
- the "meta" layer at ``meta/recipes-bsp/formfactor``::
- 
-    SUMMARY = "Device formfactor information"
-@@ -609,8 +609,8 @@ Installing Additional Files Using Your Layer
- --------------------------------------------
- 
- As another example, consider the main ``xserver-xf86-config`` recipe and a
--corresponding ``xserver-xf86-config`` append file both from the :term:`Source
--Directory`.  Here is the main ``xserver-xf86-config`` recipe, which is named
-+corresponding ``xserver-xf86-config`` append file both from
-+:term:`OpenEmbedded-Core (OE-Core)`.  Here is the main ``xserver-xf86-config`` recipe, which is named
- ``xserver-xf86-config_0.1.bb`` and located in the "meta" layer at
- ``meta/recipes-graphics/xorg-xserver``::
- 
-@@ -897,7 +897,9 @@ Add your layer by using the ``bitbake-layers add-layer`` command::
- Here is an example that adds a
- layer named ``meta-scottrif`` to the configuration file. Following the
- command that adds the layer is another ``bitbake-layers`` command that
--shows the layers that are in your ``bblayers.conf`` file::
-+shows the layers that are in your ``bblayers.conf`` file:
-+
-+.. code-block:: console
- 
-    $ bitbake-layers add-layer meta-scottrif
-    NOTE: Starting bitbake server...
-@@ -905,14 +907,13 @@ shows the layers that are in your ``bblayers.conf`` file::
-    Parsing of 1441 .bb files complete (0 cached, 1441 parsed). 2055 targets, 56 skipped, 0 masked, 0 errors.
-    $ bitbake-layers show-layers
-    NOTE: Starting bitbake server...
--   layer                 path                                      priority
--   ==========================================================================
--   meta                  /home/scottrif/poky/meta                  5
--   meta-poky             /home/scottrif/poky/meta-poky             5
--   meta-yocto-bsp        /home/scottrif/poky/meta-yocto-bsp        5
--   workspace             /home/scottrif/poky/build/workspace       99
--   meta-scottrif         /home/scottrif/poky/build/meta-scottrif   6
--
-+   layer                 path                                                            priority
-+   ==============================================================================================
-+   meta                  /home/scottrif/bitbake-builds/layers/openembedded-core/meta           5
-+   meta-poky             /home/scottrif/bitbake-builds/layers/meta-yocto/meta-poky             5
-+   meta-yocto-bsp        /home/scottrif/bitbake-builds/layers/meta-yocto/meta-yocto-bsp        5
-+   workspace             /home/scottrif/bitbake-builds/build/workspace                         99
-+   meta-scottrif         /home/scottrif/bitbake-builds/build/meta-scottrif                     6
- 
- Adding the layer to this file
- enables the build system to locate the layer during the build.
 
 -- 
 2.52.0
