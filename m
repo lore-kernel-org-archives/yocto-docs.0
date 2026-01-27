@@ -2,61 +2,62 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 19E05CA6C95
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 30840CA6C97
 	for <webhook@archiver.kernel.org>; Tue, 27 Jan 2026 08:19:36 +0000 (UTC)
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.6043.1769501966422730209
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.5807.1769501975418578803
  for <docs@lists.yoctoproject.org>;
- Tue, 27 Jan 2026 00:19:26 -0800
+ Tue, 27 Jan 2026 00:19:35 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=egKZ2m6Q;
- spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=DgEP4mTk;
+ spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id D39D74E422CB
-	for <docs@lists.yoctoproject.org>; Tue, 27 Jan 2026 08:19:24 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id E8BA01A2A6B
+	for <docs@lists.yoctoproject.org>; Tue, 27 Jan 2026 08:19:33 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id A9215606F5
-	for <docs@lists.yoctoproject.org>; Tue, 27 Jan 2026 08:19:24 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D8DEA119A867D;
-	Tue, 27 Jan 2026 09:19:23 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id BF8F4606F5;
+	Tue, 27 Jan 2026 08:19:33 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C8943119A868B;
+	Tue, 27 Jan 2026 09:19:32 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1769501964; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1769501973; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=Xb/KqyYu1ExfKY3vJItZ6N6ZJAxYNUVj9wTw/x+Le+Y=;
-	b=egKZ2m6QggWUjIAQrI4LsMTfF0B9E2ryGSUgE42x0H3kTBL6GHPLg6ZJc5wPE3shf2R9/5
-	I9NjWcdiozG/8cGoKTH5kAAHHXLFq2/5xyw/pSvdghFbkHBzzbWBrqTnd1ZqRanzdwfTlr
-	x80H09eSF6qviZSxgWIE6uCcJPoVegjF8ekv+ulwIwZUPISaG9BVW5iZ4XKGiLqBGQuud8
-	+QOZJ6PfEZPmp1ZfvBQ9IY+iYcgqN/Fs+VaILgjDbRAabwObJ3plMfNussg4O1vFaWNtrb
-	jAU+ZA2+bad4kgcTkW19ZVpKxSgGYhXYP7pOBydZDnONG+DW1Bisu3EA63qIaA==
+	bh=19qBEwJxk89ZRVMrPmHizEc+7MxuLKke5SehpzMSZUc=;
+	b=DgEP4mTkHGT5NhkJzKxnjKL/iIHMmqolpm2we2PRHWLuARUtfMw44b94lq+gagvYyiuEWK
+	7TQ7HILjm5UWPy7eNgTBxsLfE5aMPCIYvjUWG4rFkUiF6uLCQmc5FmJbg8zGogcnLunhGK
+	GKnO63/7OT8Opx9LX2A6lF8fZmSYkJyT1NLfS8+jp+oAiSUAzNVQnOreDY68aBNy61GC63
+	XsEjB+KVxs6mUJDDtDhkiXWC0Tnl08gzPjYKeAjj86yltrWAfw1eVV9oa479fD2kiArRVd
+	BeSOYp3OtRizBHzXTKz8TiVBBkBRS2msBjenQT9IIEcywHuqmvsY8ISnRCVkJA==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Tue, 27 Jan 2026 09:19:01 +0100
-Subject: [PATCH v2 06/56] contributor-guide/submit-changes.rst: remove
- obsolete poky repo references
+Date: Tue, 27 Jan 2026 09:19:13 +0100
+Subject: [PATCH v2 18/56] dev-manual/wic.rst: remove obsolete poky repo
+ references
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260127-remove-poky-references-v2-6-74bf80cc4e5a@bootlin.com>
+Message-Id: <20260127-remove-poky-references-v2-18-74bf80cc4e5a@bootlin.com>
 References: <20260127-remove-poky-references-v2-0-74bf80cc4e5a@bootlin.com>
 In-Reply-To: <20260127-remove-poky-references-v2-0-74bf80cc4e5a@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Antonin Godard <antonin.godard@bootlin.com>
+ Antonin Godard <antonin.godard@bootlin.com>, 
+ Quentin Schulz <quentin.schulz@cherry.de>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6180;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4399;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=aicEIiy9GfDZkO1Sop+H2C1lBMphjpLrdsO0zVXUGtw=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpeHT/qXrBY7GllsZZvADFJCAYsdpE+xrfo0GjU
- 2bVtqNeTWqJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaXh0/wAKCRDRgEFAKaOo
- NuA0D/9J07T4T740H3l+ZOkBqpt5YdxwwkcSdo12wvhWTp2XB6p9X5YcSwCH8l69/tFlVd2zXv6
- oKNnUtJNn/ORBRrVooR+3sXyFH2oXGBLIZ38Cb4f3L5Bnd6RiLIsPdi69105Pj34KDpf1Nh7Cri
- ZAlJsyKU8OaT5Ob0t6OivRyZIwk83QgmeJSRs+T+bTgCDqedl+XIcB8c+W3iWxn2eTgFGiosSju
- LgWFox7JPyJ2PQIFEictnzaF4i9MhkDmRAZk8O6E+q+/Jb6BTVJzcQLF7UvZ2II8FIgDqE1IoWv
- yJGGtsx4ZPkHU2KmQU9pvC3juj/Wb4tdjJw/TwpkazaDzWellHvCK7XlFhx+cr/Dc/mQgBhnOHg
- M2FO7vlNrbOk/NQngZELh3JKIq9iwZYw+rgruw+WKIY/O5oH8PjYvki7ivuOjp5Ji9SHfhPyICK
- CwBLbIh+Ws978FQCOlmof2AsEQ4nB4oa8D0igSf21yG+wr5gMEl9nJXTMALrkYY2fMKu5KQMNmR
- 79V+GNPBSI070+aELfllM+59gaTmooCu6ddcVHTPJs9ls9EDBMeSmlO9rLQLy5XNachzDsnSixm
- i1/iET0VLmhOnvdXsF9DSIfym1vxfmZNfM6zB4sV9f6JnI3SUUPAgRDRpXHMVENy8jD6Hee1wKj
- aw2HGJny0k7Y+tA==
+ bh=0HXfjkZBpeoRpsEn1kLrGsCnWKSz7Xh9Z1x3TBL2RC0=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpeHUBpBCIKMWykP7BDyHcK5luuZDLlM4wfMA5k
+ rgH1OIxI2yJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaXh1AQAKCRDRgEFAKaOo
+ NsApD/93DTNkYlRv6gb42Jh2FiwdRK/8nLI66Al0lEaccolwpsHXA47GGiDWUlDZEdnYxiMKNcm
+ miKVLpdW8CaHW/sWhO+UBadfpz+VmcXfswZQuCV4F4ijc1VeZ6UuhozWgqNSmzMvwXR4x3HxGbD
+ Ap1L4gc9HWcvPVef/7zYGX0Y1FsdLOgaViRpyX5nsrPMkHgF2/DhFwQ3oF+7TVDLSGCKWgMiisZ
+ ZRrajc7TaAW7/gzAPLlai1dRYm9BEJRav2hptm3Tv1hnHUg1/DSW9DveKLJsIXXXNdireHYgxo9
+ Sj/ol5XKGaz2RHWX8quvmw0vZgnKrNmn4Vt/5o4YobJ1/0YlCAtSa4GEhIYIeeBpKNp4yaOhqgf
+ DOGbRveRVvy44L130GIMfi307/12Q0P5nyR3iJn2IkN16m/Ji2zj/JVFh3sOzvWp9llScQ81ys+
+ TlGkd8BEZzqXAmCSewCWmuBnQpG/VM9fbVbT0RepfV2JFRIdwWxjbg3d8fkdiffR+bS2+00iwIw
+ eiO5IMwKFeGGL7ZffuVF+3LMi5t+cInMklqIRRnCp+mRmCPS6yWcT4PptJWovG85n0uAMmNMVdW
+ IBauQeyCnrFrc3Pr8IP2GM8W8Ikp1s8lnkuQHiXZ05mU4UfKR0NPodxJD3ypYyWrMI0VbStPfyW
+ nXzLKD2R+45GbRA==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
@@ -64,130 +65,86 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Tue, 27 Jan 2026 08:19:36 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8667
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8679
 
-Remove references to the Poky repository, replace by OpenEmbedded-Core
-in most cases.
+Remove references to the Poky repository, replace by OpenEmbedded-Core.
 
+Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/contributor-guide/submit-changes.rst | 57 ++++++----------------
- 1 file changed, 14 insertions(+), 43 deletions(-)
+ documentation/dev-manual/wic.rst | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/documentation/contributor-guide/submit-changes.rst b/documentation/contributor-guide/submit-changes.rst
-index 07989d7b6..4a4c60b41 100644
---- a/documentation/contributor-guide/submit-changes.rst
-+++ b/documentation/contributor-guide/submit-changes.rst
-@@ -429,37 +429,6 @@ and then based on successful testing, merges them.
- In general, each component (e.g. layer) should have a ``README`` file
- that indicates where to send the changes and which process to follow.
+diff --git a/documentation/dev-manual/wic.rst b/documentation/dev-manual/wic.rst
+index 07170537b..60b08f834 100644
+--- a/documentation/dev-manual/wic.rst
++++ b/documentation/dev-manual/wic.rst
+@@ -276,8 +276,8 @@ existing file provided by the Wic installation. As shipped, kickstart
+ files can be found in the :ref:`overview-manual/development-environment:yocto project source repositories` in the
+ following two locations::
  
--The "poky" repository, which is the Yocto Project's reference build
--environment, is a hybrid repository that contains several individual
--pieces (e.g. BitBake, Metadata, documentation, and so forth) built using
--the combo-layer tool. The upstream location used for submitting changes
--varies by component:
--
---  *Core Metadata:* Send your patches to the
--   :oe_lists:`openembedded-core </g/openembedded-core>`
--   mailing list. For example, a change to anything under the ``meta`` or
--   ``scripts`` directories should be sent to this mailing list.
--
---  *BitBake:* For changes to BitBake (i.e. anything under the
--   ``bitbake`` directory), send your patches to the
--   :oe_lists:`bitbake-devel </g/bitbake-devel>`
--   mailing list.
--
---  *meta-poky* and *meta-yocto-bsp* trees: These trees contain Metadata. Use the
--   :yocto_lists:`poky </g/poky>` mailing list.
--
---  *Documentation*: For changes to the Yocto Project documentation, use the
--   :yocto_lists:`docs </g/docs>` mailing list.
--
--For changes to other layers and tools hosted in the Yocto Project source
--repositories (i.e. :yocto_git:`git.yoctoproject.org <>`), use the
--:yocto_lists:`yocto-patches </g/yocto-patches/>` general mailing list.
--
--For changes to other layers hosted in the OpenEmbedded source
--repositories (i.e. :oe_git:`git.openembedded.org <>`), use
--the :oe_lists:`openembedded-devel </g/openembedded-devel>`
--mailing list, unless specified otherwise in the layer's ``README`` file.
--
- If you intend to submit a new recipe that neither fits into the core Metadata,
- nor into :oe_git:`meta-openembedded </meta-openembedded/>`, you should
- look for a suitable layer in https://layers.openembedded.org. If similar
-@@ -620,7 +589,7 @@ have been followed:
-    methods to find out:
+-   poky/meta-yocto-bsp/wic
+-   poky/scripts/lib/wic/canned-wks
++   meta-yocto/meta-yocto-bsp/wic
++   openembedded-core/scripts/lib/wic/canned-wks
  
-    -  *Maintenance File:* Examine the ``maintainers.inc`` file, which is
--      located in the :term:`Source Directory` at
-+      located in :term:`OpenEmbedded-Core (OE-Core)` at
-       ``meta/conf/distro/include``, to see who is responsible for code.
+ Use the following command to list the available kickstart files::
  
-    -  *Search by File:* Using :ref:`overview-manual/development-environment:git`, you can
-@@ -645,9 +614,8 @@ have been followed:
-    The Yocto Project provides two scripts that conveniently let you
-    generate and send pull requests to the Yocto Project. These scripts
-    are ``create-pull-request`` and ``send-pull-request``. You can find
--   these scripts in the ``scripts`` directory within the
--   :term:`Source Directory` (e.g.
--   ``poky/scripts``).
-+   these scripts in the ``scripts`` directory within
-+   :term:`OpenEmbedded-Core (OE-Core)`.
+@@ -342,12 +342,12 @@ partition.
+ Source plugins are subclasses defined in plugin files. As shipped, the
+ Yocto Project provides several plugin files. You can see the source
+ plugin files that ship with the Yocto Project
+-:yocto_git:`here </poky/tree/scripts/lib/wic/plugins/source>`.
++:oe_git:`here </openembedded-core/tree/scripts/lib/wic/plugins/source>`.
+ Each of these plugin files contains source plugins that are designed to
+ populate a specific Wic image partition.
  
-    Using these scripts correctly formats the requests without
-    introducing any whitespace or HTML formatting. The maintainer that
-@@ -660,7 +628,7 @@ have been followed:
-    directory into which you pushed the change, and provides a subject
-    line in the created patch files::
+ Source plugins are subclasses of the ``SourcePlugin`` class, which is
+-defined in the ``poky/scripts/lib/wic/pluginbase.py`` file. For example,
++defined in the ``openembedded-core/scripts/lib/wic/pluginbase.py`` file. For example,
+ the ``BootimgEFIPlugin`` source plugin found in the ``bootimg_efi.py``
+ file is a subclass of the ``SourcePlugin`` class, which is found in the
+ ``pluginbase.py`` file.
+@@ -527,8 +527,8 @@ This next example demonstrates that through modification of the
+ As mentioned earlier, you can use the command ``wic list images`` to
+ show the list of existing kickstart files. The directory in which the
+ ``directdisk-gpt.wks`` file resides is
+-``scripts/lib/image/canned-wks/``, which is located in the
+-:term:`Source Directory` (e.g. ``poky``).
++``scripts/lib/image/canned-wks/``, which is located in
++:term:`OpenEmbedded-Core (OE-Core)`.
+ Because available files reside in this directory, you can create and add
+ your own custom files to the directory. Subsequent use of the
+ ``wic list images`` command would then include your kickstart files.
+@@ -542,8 +542,8 @@ The example begins by making a copy of the ``directdisk-gpt.wks`` file
+ in the ``scripts/lib/image/canned-wks`` directory and then by changing
+ the lines that specify the target disk from which to boot::
  
--      $ poky/scripts/create-pull-request -u meta-intel-contrib -s "Updated Manual Section Reference in README"
-+      $ ./scripts/create-pull-request -u meta-intel-contrib -s "Updated Manual Section Reference in README"
+-   $ cp /home/stephano/yocto/poky/scripts/lib/wic/canned-wks/directdisk-gpt.wks \
+-        /home/stephano/yocto/poky/scripts/lib/wic/canned-wks/directdisksdb-gpt.wks
++   $ cp /home/stephano/yocto/openembedded-core/scripts/lib/wic/canned-wks/directdisk-gpt.wks \
++        /home/stephano/yocto/openembedded-core/scripts/lib/wic/canned-wks/directdisksdb-gpt.wks
  
-    Running this script forms ``*.patch`` files in a folder named
-    ``pull-``\ `PID` in the current directory. One of the patch files is a
-@@ -673,7 +641,7 @@ have been followed:
-    and email address. In this example, the email address is a mailing
-    list::
+ Next, the example modifies the ``directdisksdb-gpt.wks`` file and
+ changes all instances of "``--ondisk sda``" to "``--ondisk sdb``". The
+@@ -580,7 +580,7 @@ Computing (nuc) :term:`MACHINE` the
+      NATIVE_SYSROOT:               /home/stephano/yocto/build/tmp-glibc/work/i586-oe-linux/wic-tools/1.0-r0/recipe-sysroot-native
  
--      $ poky/scripts/send-pull-request -p ~/meta-intel/pull-10565 -t meta-intel@lists.yoctoproject.org
-+      $ ./scripts/send-pull-request -p ~/meta-intel/pull-10565 -t meta-intel@lists.yoctoproject.org
+    INFO: The image(s) were created using OE kickstart file:
+-     /home/stephano/yocto/poky/scripts/lib/wic/canned-wks/directdisksdb-gpt.wks
++     /home/stephano/yocto/openembedded-core/scripts/lib/wic/canned-wks/directdisksdb-gpt.wks
  
-    You need to follow the prompts as the script is interactive.
+ Continuing with the example, you can now directly ``dd`` the image to a
+ USB stick, or whatever media for which you built your image, and boot
+@@ -717,7 +717,7 @@ the existing kernel, and then inserts a new kernel:
+    kernel::
  
-@@ -682,8 +650,8 @@ have been followed:
-       For help on using these scripts, simply provide the ``-h``
-       argument as follows::
+       $ wic cp poky_sdk/tmp/work/qemux86-poky-linux/linux-yocto/4.12.12+git999-r0/linux-yocto-4.12.12+git999/arch/x86/boot/bzImage \
+-               poky/build/tmp/deploy/images/qemux86/core-image-minimal-qemux86.wic:1/vmlinuz
++               build/tmp/deploy/images/qemux86/core-image-minimal-qemux86.wic:1/vmlinuz
  
--              $ poky/scripts/create-pull-request -h
--              $ poky/scripts/send-pull-request -h
-+              $ ./scripts/create-pull-request -h
-+              $ ./scripts/send-pull-request -h
- 
- Submitting Changes to Stable Release Branches
- =============================================
-@@ -857,14 +825,17 @@ used testing branches for OpenEmbedded-Core are as follows:
-    :oe_git:`openembedded-core </openembedded-core/>` repository and contains
-    proposed changes to the core metadata.
- 
---  *poky "master-next" branch:* This branch is part of the
--   :yocto_git:`poky </poky/>` repository and combines proposed
--   changes to BitBake, the core metadata and the poky distro.
-+- *bitbake "master-next" branch:* This branch is part of the :oe_git:`bitbake
-+  </bitbake/>` repository and contains changes to :term:`BitBake`.
-+
-+-  *meta-yocto "master-next" branch:* This branch is part of the
-+   :yocto_git:`meta-yocto </meta-yocto/>` repository and contains proposed
-+   changes to meta-yocto.
- 
- Similarly, stable branches maintained by the project may have corresponding
- ``-next`` branches which collect proposed changes. For example,
- ``&DISTRO_NAME_NO_CAP;-next`` and ``&DISTRO_NAME_NO_CAP_MINUS_ONE;-next``
--branches in both the "openembdedded-core" and "poky" repositories.
-+branches in both the "openembedded-core" and "meta-yocto" repositories.
- 
- Other layers may have similar testing branches but there is no formal
- requirement or standard for these so please check the documentation for the
+    Once the new kernel is added back into the image, you can use the
+    ``dd`` command or :ref:`bmaptool
 
 -- 
 2.52.0
