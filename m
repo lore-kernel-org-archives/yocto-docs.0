@@ -1,126 +1,107 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <alex.kanavin@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 79D8ACA6CB8
-	for <webhook@archiver.kernel.org>; Tue, 27 Jan 2026 08:20:07 +0000 (UTC)
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.5828.1769501998925661170
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 77FDFD2D8E6
+	for <webhook@archiver.kernel.org>; Tue, 27 Jan 2026 10:19:08 +0000 (UTC)
+Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.7622.1769509140966587271
  for <docs@lists.yoctoproject.org>;
- Tue, 27 Jan 2026 00:19:59 -0800
+ Tue, 27 Jan 2026 02:19:01 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=OhVYgJDT;
- spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 6B4DCC211CD
-	for <docs@lists.yoctoproject.org>; Tue, 27 Jan 2026 08:19:59 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 735C7606F5
-	for <docs@lists.yoctoproject.org>; Tue, 27 Jan 2026 08:19:57 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id AEE2A119A868D;
-	Tue, 27 Jan 2026 09:19:56 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1769501997; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=T9jmZ4xTrvaDONoh+2ttyhTAw9st8sDCNvIswmAHGnA=;
-	b=OhVYgJDTVVeL2JZoiS+XEd7t7lxf8E0q6qjzOdWFKXAzz9MiXH4OymcA122RZJ7Khu7uOh
-	ZVW+SKYEFvvxKEjjFGkxtmXBiF+RRSM7tFZ+GUkr9H868U10S8P2G3TkjNFHIjH0vLexoO
-	qXsIS7PkPPJJJU+7ze6IX2bAUI6USZ2HYLw6jpVddv3WNrBavQa0gEFDrGYUleuGBKtnU0
-	xrn93qmd7CEkIGGJh36sJEB1IWaAofAmK4fIYE15BhgTDIROqXaW/YKawMTa26PIdEMXqI
-	Q1FAznPul+vin07Y5MNZ1/Go08VEOUsGcdL40PA+iW0fIqlqE+WN41tiL4GBfQ==
-From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Tue, 27 Jan 2026 09:19:46 +0100
-Subject: [PATCH v2 51/56] ref-manual/system-requirements.rst: remove
- obsolete poky repo references
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=DAAP/WbN;
+ spf=pass (domain: gmail.com, ip: 209.85.222.182, mailfrom: alex.kanavin@gmail.com)
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-8c5386f1c9fso785089985a.1
+        for <docs@lists.yoctoproject.org>; Tue, 27 Jan 2026 02:19:00 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769509140; cv=none;
+        d=google.com; s=arc-20240605;
+        b=eUE2U3E2IHHAPN8m4qhgkJyCMI07TIvhrQqg3RZSzPzi0TLm7fHSKvGSHTPWhPZZHy
+         +zcRkXC0Ccm6JwgbMRyo7Gg/3KsRVbx+ZzeD/FbVpHyKtdEs+NR6rCLewYMG3kIF4t7I
+         FOPDOby4jKeq9xI1IESB3krfgWcA5wLR/HsSVmkRYZYumMqbJVKdBBlePkMrW6I0hOT8
+         xwmZsMqKoInmtp9KZarVHFXWHUReWoRpjCOpdUHr2VL9GVARABNPtryvw+0X7W2viwc4
+         OKhBvFjdVkJG5cSuhUF1V8pisg+O9UXsBNWefrmEXCZuKrj2GpIinZZXZciTct9O2oc1
+         Hteg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=7uwuUyCiDsaB+YMKwFWZX+6GIb3Jhr1HsPuzDrGDRH8=;
+        fh=W4Rw0ZQ06f8Kwxuc5Byo3KI51uuxOmPqUWpTiPLUNPI=;
+        b=Q7umoHnHdwVMcFEE9oPh7ZBcW0iE8AD8wMbgwJ/jk9Hj0/UOdGn6Xt5eb3lFQb7L8X
+         zCGWD2gTzEHgSov2OHvQQCD3CXQ3ettuute97t5aqxwlt/So7xZghnvRTiXMgcXa9NSO
+         tvlxe4pg8oX6JxObbDyZ14zrDUBQl5T56M4jVtq4cyRmGLrjWO/b7rwZydwUVcvG/vrJ
+         ZoBmb/Nz6vWB4effBlnxIrDVegufUHsmRl/wDHRCXp0kfWFu4DTz0peS7idSAgR3tD0a
+         llaXq20QlwnBBgL1AdBn2pFeQHnziBoHMGgJGQrm+QJ5r58pC3Km0a9r/i5LW5yaK48B
+         UKUA==;
+        darn=lists.yoctoproject.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769509140; x=1770113940; darn=lists.yoctoproject.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=7uwuUyCiDsaB+YMKwFWZX+6GIb3Jhr1HsPuzDrGDRH8=;
+        b=DAAP/WbN0Txj5wi7EsGmw8beJiIIbdNY0YkniHGctYnmcqywpU/Xhz1j0lNrCZfB4m
+         Ur02c4kudOFlnJbzOfyXyhrfUPtvNZWdSAF7Q6dMAabOoE8kECf2GJtR6q947EAcxkON
+         vmh2A7wFoIVwivg3vq1vGvQv7l5fcROCE5bYBjwGLSIc5lQm202ZOk3TjlAD+1xkrEQk
+         Nu4ydvbTbUJXXcS7WbV0VqBSdLPaAdfaOIMvazvU8/oZLX9mFTslgjzjvNG+nTU1XsCE
+         9t3929nraRc82gZQPweeEuHoLrxH5QIwsBirLhbGg4iUxXdMHgwSFlVdE1VdGtuBjNtV
+         xGsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769509140; x=1770113940;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7uwuUyCiDsaB+YMKwFWZX+6GIb3Jhr1HsPuzDrGDRH8=;
+        b=Be9kzl5mEXfe3AJvQZZZ+ZWyEa0NgqMfS+y5URDDnu46R+Z/w+lromeubBpLKUnXic
+         kuP+fSeIfnkNSxstnp6xfYC6+/k83a9B0xNM0QTxAO/vZ5rIF2DYqiYUDemAWg8BX/qM
+         iZW0zJC2O0tPb/83e40q297yY+hUoqyDdmJhwHjuzE4+NbmfdncGWMUTSmbYuSd4Inj5
+         nZXbmt92u6DrF/6r73+KcbCQz2BTxZIF4Acr9QVdotugKX7DzM6Z1+FNzUXibgt7mcyg
+         1l/DtZcamz6UdljdGmHmJkq/ZoRnu7gR9HwSWNf9C/eZEAv8H+c++znIyllaRtfDtqew
+         xHvA==
+X-Forwarded-Encrypted: i=1; AJvYcCXEZubccYYzNMlcV1hNnUrbmvI253rD3GgpDt/WhaB2RKECdWIhnokJEZSmhxLGEErXvPn6@lists.yoctoproject.org
+X-Gm-Message-State: AOJu0Yz2GJyBcHCCnVj3gs/ZvqyYNCDjUAY5hwvEdBi3+0LHJ1vPO61Z
+	7fJzd54TsDDm7JMajB4I5UAf0riydP4MAWlDfuPZfMmDhR0rpnLYjJ6dE15Cepwo8b4CAKtDS+y
+	KZEoA+oMg0dbuPNfd7m2RNxcFqh9o7oQ=
+X-Gm-Gg: AZuq6aLDpM4tofX6+H7s4bLNAymr8QQ2/zJjUxNu7w2M8EElOfjZShiyCIfcg5BmU19
+	8U8Ax3HCXj53hevCxEw0tRFG9Uz8zVUbhSVFs4zyt7heNnQ/NHoS+SeuBsioNKrCHf8V8r7wFmr
+	7+FSRQg7zLBtDeiirmbfPg7Fpanhlpn6fL1Kv78E8iw2ebeuLRyFrI+du1weJLPMoiLXWNzbxPf
+	ljl3ynSS76/RsYrk7CHgGzSrS+o4WXsV5DNCqlIhbfaawH73gZZ1VgqzOrb1ea9zItoMGZQ1RUV
+	+ZG7dqKmx+L+3Af3O72Ti25Xf7wlqw==
+X-Received: by 2002:a05:620a:3190:b0:8c6:a8a6:e164 with SMTP id
+ af79cd13be357-8c70b8fb2aamr137486385a.45.1769509139968; Tue, 27 Jan 2026
+ 02:18:59 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260127-remove-poky-references-v2-51-74bf80cc4e5a@bootlin.com>
-References: <20260127-remove-poky-references-v2-0-74bf80cc4e5a@bootlin.com>
-In-Reply-To: <20260127-remove-poky-references-v2-0-74bf80cc4e5a@bootlin.com>
-To: docs@lists.yoctoproject.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Antonin Godard <antonin.godard@bootlin.com>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2292;
- i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=RuGuem8CoQ014zvS1Lnnz/oHgoyKrwfCi/dEqiEtPEk=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpeHUGF18c6gGxWyqx0PKzjh+0aEpY900pVI3iB
- zPkAYwc3v2JAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaXh1BgAKCRDRgEFAKaOo
- Nrq3D/9lPQu8TvWpVexBySotBmHJQKImn0/YRz3tJVUUzHc5BqHCOa4kndHDP+wojayTbGLtGed
- 5uZ1PpJbfV0CPNl6HMuGf7GlECYl5i5T4erVln/U0Ii4SWr8I84YFkpm2hqNBfN8YNl8wfcvPFF
- wDRaKTkHmmPpq9s6Zh7PtABlz6823oriFQMlpvMccW9tmDXuSsQZOwpPqRhx07eSQMR3DKQxMaf
- n1lBcIIYYOqJofGS0bq4LR6Q8Th70qVPWQERqjFvlMPAc7CDJDLOTLVyhMcwK9JPc8R7IiBz2Gp
- nR7brnHE74l91d4Yc+d311D+P+6U5QWVE+supkNX3E4uYc6zLkW3ekua9V00qKpVjTVfO7DXswA
- v4Oy3zICSUnHVdXRAwjenrwAMYfL87EkFkcTbQI749wby8Jytoz9NqV+nG5i+O0Ej0Qxamgrug6
- DImOUfL3nw7XcEPJu2h6WcIiEpl7/XWHzDjuJvN5FIJRj3Tpv/XfK6YFR1qEkZuGmgtwhiq359Z
- EfH2nz3CGLN9tgiNYNncWQ5kDFSoMYlUrcbtBunz0dPHDyPikWmCrgO3+CzKaS3+tk7IzyWLQIi
- 5aPawU9n+8DTO5uItFxBJw+kRZkpmllWDAGThylJs9G3ZrA0ejcTsYmfJfhp03grOAEkoShdBRR
- ZRVL60pEd30PdcA==
-X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
- fpr=8648725188DD401BB9A0D3FFD180414029A3A836
-X-Last-TLS-Session-Version: TLSv1.3
+References: <20260126222743.411405-1-daiane.angolini@foundries.io>
+In-Reply-To: <20260126222743.411405-1-daiane.angolini@foundries.io>
+From: Alexander Kanavin <alex.kanavin@gmail.com>
+Date: Tue, 27 Jan 2026 11:18:48 +0100
+X-Gm-Features: AZwV_QgbHdMcPvIK5m7YPWGvCET2ogpIJGLKoWWiYCORslr8EsRG2D_CcYCJFgc
+Message-ID: <CANNYZj_mFfO-cw9KO9u4wkC4qUrEgAP-kA1YEYLeabuZ=mg5oQ@mail.gmail.com>
+Subject: Re: [docs][PATCH 1/5] doc: change some terminology around bitbake-setup
+To: daiane.angolini@foundries.io
+Cc: bitbake-devel@lists.openembedded.org, docs@lists.yoctoproject.org
+Content-Type: text/plain; charset="UTF-8"
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 27 Jan 2026 08:20:07 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8712
+ <docs@lists.yoctoproject.org>; Tue, 27 Jan 2026 10:19:08 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8718
 
-Refresh the document now that the Poky repository is obsolete.
+On Mon, 26 Jan 2026 at 23:28, Daiane Angolini via
+lists.yoctoproject.org
+<daiane.angolini=foundries.io@lists.yoctoproject.org> wrote:
+> Change some terms to use more specific wording:
+>
+>   Generic Configuration  -> BitBake Setup Template
+>   Specific Configuration -> BitBake Setup Instance
 
-Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
----
- documentation/ref-manual/system-requirements.rst | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+I believe the consensus was to retain the word 'configuration'. E.g
 
-diff --git a/documentation/ref-manual/system-requirements.rst b/documentation/ref-manual/system-requirements.rst
-index a56e683ca..9b681290e 100644
---- a/documentation/ref-manual/system-requirements.rst
-+++ b/documentation/ref-manual/system-requirements.rst
-@@ -405,8 +405,8 @@ installer and automatically installs the tools for you:
- 
- #. Execute the ``install-buildtools`` script. Here is an example::
- 
--      $ cd poky
--      $ scripts/install-buildtools \
-+      $ cd /path/to/bitbake-builds
-+      $ ./layers/openembedded-core/scripts/install-buildtools \
-         --without-extended-buildtools \
-         --base-url &YOCTO_DL_URL;/releases/yocto \
-         --release yocto-&DISTRO; \
-@@ -420,26 +420,26 @@ installer and automatically installs the tools for you:
-    To avoid the need of ``sudo`` privileges, the ``install-buildtools``
-    script will by default tell the installer to install in::
- 
--      /path/to/poky/buildtools
-+      /path/to/bitbake-builds/buildtools
- 
-    If your host development system needs the additional tools provided
-    in the :term:`buildtools-extended` tarball, you can instead execute the
-    ``install-buildtools`` script with the default parameters::
- 
--      $ cd poky
-+      $ cd /path/to/bitbake-builds
-       $ scripts/install-buildtools
- 
-    Alternatively if your host development system has a broken ``make``
-    version such that you only need a known good version of ``make``,
-    you can use the ``--make-only`` option::
- 
--      $ cd poky
-+      $ cd /path/to/bitbake-builds
-       $ scripts/install-buildtools --make-only
- 
- #. Source the tools environment setup script by using a command like the
-    following::
- 
--      $ source /path/to/poky/buildtools/environment-setup-x86_64-pokysdk-linux
-+      $ source /path/to/bitbake-builds/buildtools/environment-setup-x86_64-pokysdk-linux
- 
-    After you have sourced the setup script, the tools are added to
-    ``PATH`` and any other environment variables required to run the
+'generic configuration' -> 'configuration template'
+'specific configuration' -> 'configuration instance'
 
--- 
-2.52.0
+From the context (bitbake-setup docs, bitbake-setup output) it should
+be obvious that it's bitbake-setup configurations, so I guess it
+doesn't need to be prefixed.
 
+Alex
 
