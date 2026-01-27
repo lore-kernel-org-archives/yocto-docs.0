@@ -2,61 +2,61 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E0AFCCA6CAC
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DCD7CCA6CAA
 	for <webhook@archiver.kernel.org>; Tue, 27 Jan 2026 08:19:56 +0000 (UTC)
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.5822.1769501993364638573
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.5823.1769501994205221099
  for <docs@lists.yoctoproject.org>;
- Tue, 27 Jan 2026 00:19:53 -0800
+ Tue, 27 Jan 2026 00:19:54 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=lv8KSoXy;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=KQ9iF0kY;
  spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id D8BA34E422CD
-	for <docs@lists.yoctoproject.org>; Tue, 27 Jan 2026 08:19:51 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id AA4D94E422CA
+	for <docs@lists.yoctoproject.org>; Tue, 27 Jan 2026 08:19:52 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id B0056606F5
-	for <docs@lists.yoctoproject.org>; Tue, 27 Jan 2026 08:19:51 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1FC77119A8686;
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 82003606F5
+	for <docs@lists.yoctoproject.org>; Tue, 27 Jan 2026 08:19:52 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 94664119A8687;
 	Tue, 27 Jan 2026 09:19:51 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1769501991; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1769501992; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=yo83wQacKCZeEuudTJd4SsKFItaXQv/N1qRVjspbC4I=;
-	b=lv8KSoXykaS2asCJ4chwlz1Uc3OPLH4rOiHlbk3RdyDX2FtX2F6r9ap2nHduqwOJYeTKKe
-	TGbKM9Td451bQYkSfBZTmEfvQ7Ys4PTY3TUIqV54rIHWfZiscTOHiwFZclGaxSM8f0LCL6
-	WarFptsQms+SinxdosgAbnYLbRD9eU8tU3abEXAiE1YnyPauJMJASP+IvS8p9BlG51H/Lz
-	B63krV2pYssaoUowtaYbVPE3LjRXtxmWXhZbUXr4v7/xi+P7lZKsmbVZwMylKVV09mKn9Z
-	MFkbj7sZPvTek1Go/43cYQOXNvtFn/qoxJ1/Js53pINOYMaRpv1RXqI/NvBhrg==
+	bh=0+tFm9Gu1XW8SeqW3KOxWFmk7sMMH3zr9I9/Zki6aGQ=;
+	b=KQ9iF0kYF/liwcI1aJbSWgJNtV/7lrJLgqJDzDyuDXz+jNU8Zrp9CK31WYBP/UiDNtdt6t
+	0776dJorpTuQdjzACnPW7+kIz9JG3o8Rg/j7/OvnCKdtCN+Zg9EjJjwU7BzIzFP9qBjQOh
+	D38BvJUjgqLm3xASZQHHXTWx4HkRe6Bq9ZewIXamRKWXR63LPZLyG8G4NiU1Tq97OedmZz
+	LxbqJsKw2lnl16EKf89/UowFRnjPcWOEEOTOcEwVe0XT3TuurSnrhoHrBvfUHoc2pRWq/i
+	qByxraIQbnuiZa/DpnfvpzrNp8jj4sfzuVH0+UmGU6M1PIMWe0vkVf+66bD8bw==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Tue, 27 Jan 2026 09:19:38 +0100
-Subject: [PATCH v2 43/56] dev-manual/qemu.rst: remove obsolete poky repo
- references
+Date: Tue, 27 Jan 2026 09:19:39 +0100
+Subject: [PATCH v2 44/56] dev-manual/upgrading-recipes.rst: remove obsolete
+ poky repo references
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260127-remove-poky-references-v2-43-74bf80cc4e5a@bootlin.com>
+Message-Id: <20260127-remove-poky-references-v2-44-74bf80cc4e5a@bootlin.com>
 References: <20260127-remove-poky-references-v2-0-74bf80cc4e5a@bootlin.com>
 In-Reply-To: <20260127-remove-poky-references-v2-0-74bf80cc4e5a@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1324;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4928;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=XuTnRqelezwL/g+cykSRvm5yAQygV+npZg7w6+FeFbw=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpeHUF+3xufA6SWLG5jRCPYAsbrfc96459y3Szo
- 4rrkE5j/f2JAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaXh1BQAKCRDRgEFAKaOo
- Nu6xD/wP26qHSGrbVNucRbGP10ZvjJBrVjJFWmRqhgg0BuuMepyWIdJuuIKy3P4IU9vLzpjv17p
- Yp3cft8SZKMvwcx5XzFDS9iCHwgjpas81pwzDuTZF0A0Q/D9UFZXZfaW6hbEkLdKUoDPnWLY8Ep
- IyN8mENh4pzP4WckKxg00RE+uzO2bKbYsMmnrNlwBi770KRZ3DaNHJiH+wkMstgsfSRX8lAybBy
- pZLeJu2NhNQEv4YNrVxHhReGpicHmjWQgEAV7qOdAEy+L2cbE8QxJrj9OVu0vtJT70wmDAcY2d/
- /mwzrs+IAff7DtzIfaRje6rXukwoYodYto6tO3zm9DBYkSf/6IoKDkfL4ubq/gwCy06h7dOQgb9
- n/xynp0AoPd57trUzEO+hK4u+Q0vqKUdkCTQfoOdpSyWgl5q0q4mijafUEZL00/i4ib9xRu2mwd
- zCH8zGolwtFkSgoM3HLkxj5/+SF2pcJaIf0c77vk/rS8ZTwcbGuO7J6LEJhJakBANeCcaYhS3/9
- xUktdGZtwtxN+dFpOFZP3d2rNGf9c9DJh6cjhvKyr6LLG7PCZbQKofIhwwlb1sgbYT/BxrgmIxl
- r6ez3fUy2cgolIb7NxJyZnvjf3No+mtsOg427TB6xwnFKTdGKHTC3wAu2ZjUDURnAM+siCSFuqh
- cCmPodPPg7np59A==
+ bh=BQVc/Vj/Z58qV0jzjSvi5UTviY9zAPjJOXLYgpb6ULE=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpeHUFcjhvs7FxOIzcHnLn3CrtN54TsO5jazt7F
+ /Hi+leC9xyJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaXh1BQAKCRDRgEFAKaOo
+ NiU6D/0YhPnCx/H/8xLCyRQHKa1UAj7Q9LvIiV4jVrd/ecGbZfw/PPsaiOOLgq0dfCA/sOVPldp
+ tRpdjVIwJx1ojTLydD3Te/MBFeqV6HJ0yya/R6XshF3ZFhAgmawQ8t3680GktWVFlxqoAyzVOCy
+ CK4HHfzoW4kQFX+Vyo515HL8Dq1StIo9EkRzFv7yuaHSAoBkhbHRDtxyrJjfwWrPf+NVJJDvwVO
+ D13Uxg+rFFjuCn7hXMNINvxhYQag+K6GSQhDDnl1Q5bv6stWkqI2yhVNakoUOYcseIgQqHZTp/N
+ pSPx7Uit1YMBpnCklrJV0sNyRBtvd1DumjbwIBNPruVKzSSGTNRRTHrj1E8mxo+u80wdHH6TPwV
+ U3PfEggdw8IaNlAtxBMefooRnnEyvCMpLKCHcpuNRE6/c1flAY0aUawI9qjkR0cCtyd7HQm4JKd
+ 1tWzzI4WanWkzkavPCmdjyZB/oCvs1Q5WMMhsBrOyljSRahw3IOIie9t2uoxjia6mgWjqURoOFW
+ jHVx/09J3bIECIG/00oE+OQ4+8YtFTg0+zsICMeA6JRdZUJH3vVbkAjoOyz4/PgM5d4IecU79du
+ 3ZFpD5SGTdtX4YdaCGe9r9cwGHMJtQnP6aHsNHnttHVdYxe4t/xjr0conSDSUzmNz8GFXwo6bQX
+ tnHDCfv0Lz5DEqQ==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
@@ -64,38 +64,93 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Tue, 27 Jan 2026 08:19:56 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8704
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8705
 
 Refresh the document now that the Poky repository is obsolete.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/dev-manual/qemu.rst | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ documentation/dev-manual/upgrading-recipes.rst | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/documentation/dev-manual/qemu.rst b/documentation/dev-manual/qemu.rst
-index 442fdced3..e40660a96 100644
---- a/documentation/dev-manual/qemu.rst
-+++ b/documentation/dev-manual/qemu.rst
-@@ -53,12 +53,13 @@ available. Follow these general steps to run QEMU:
- #. *Setting Up the Environment:* How you set up the QEMU environment
-    depends on how you installed QEMU:
+diff --git a/documentation/dev-manual/upgrading-recipes.rst b/documentation/dev-manual/upgrading-recipes.rst
+index 2e6567867..c4199d160 100644
+--- a/documentation/dev-manual/upgrading-recipes.rst
++++ b/documentation/dev-manual/upgrading-recipes.rst
+@@ -84,12 +84,12 @@ The following steps describe how to set up the AUH utility:
+    AUH is not part of the :term:`OpenEmbedded-Core (OE-Core)` or
+    :term:`Poky` repositories.
  
--   -  If you cloned the ``poky`` repository or you downloaded and
--      unpacked a Yocto Project release tarball, you can source the build
--      environment script (i.e. :ref:`structure-core-script`)::
-+   -  If you followed :doc:`/dev-manual/start`, either use ``bitbake-setup`` or source
-+      the environment setup script manually::
+-#. *Create a Dedicated Build Directory:* Run the :ref:`structure-core-script`
++#. *Create a Dedicated Build Directory:* Create a new :term:`bitbake:Setup` with
++   ``bitbake-setup`` or manually run the :ref:`structure-core-script`
+    script to create a fresh :term:`Build Directory` that you use exclusively
+    for running the AUH utility::
  
--         $ cd poky
--         $ source oe-init-build-env
-+      .. code-block:: console
-+
-+         $ cd bitbake-builds
-+         $ source layers/openembedded-core/oe-init-build-env
+-      $ cd poky
+-      $ source oe-init-build-env your_AUH_build_directory
++      $ source layers/openembedded-core/oe-init-build-env your_AUH_build_directory
  
-    -  If you installed a cross-toolchain, you can run the script that
-       initializes the toolchain. For example, the following commands run
+    Re-using an existing :term:`Build Directory` and its configurations is not
+    recommended as existing settings could cause AUH to fail or behave
+@@ -121,7 +121,7 @@ The following steps describe how to set up the AUH utility:
+ 
+       .. note::
+ 
+-         If your distro does not enable by default ptest, which Poky
++         If your distro does not enable by default ptest, which :term:`Poky`
+          does, you need the following in your ``local.conf`` file::
+ 
+                  DISTRO_FEATURES:append = " ptest"
+@@ -143,7 +143,7 @@ The following steps describe how to set up the AUH utility:
+    described earlier, you must enable it in ``upgrade-helper.conf``.
+ 
+    Also, if you are using the default ``maintainers.inc`` file supplied
+-   with Poky and located in ``meta-yocto`` and you do not set a
++   in :term:`OpenEmbedded-Core (OE-Core)` and you do not set a
+    "maintainers_whitelist" or "global_maintainer_override" in the
+    ``upgrade-helper.conf`` configuration, and you specify "-e all" on
+    the AUH command-line, the utility automatically sends out emails to
+@@ -263,7 +263,7 @@ directory automatically upgrades the recipe for you::
+ 
+    $ devtool upgrade nano -V 2.9.3
+    NOTE: Starting bitbake server...
+-   NOTE: Creating workspace layer in /home/scottrif/poky/build/workspace
++   NOTE: Creating workspace layer in /home/scottrif/bitbake-builds/build/workspace
+    Parsing recipes: 100% |##########################################| Time: 0:00:46
+    Parsing of 1431 .bb files complete (0 cached, 1431 parsed). 2040 targets, 56 skipped, 0 masked, 0 errors.
+    NOTE: Extracting current version source...
+@@ -275,8 +275,8 @@ directory automatically upgrades the recipe for you::
+    NOTE: Executing RunQueue Tasks
+    NOTE: Tasks Summary: Attempted 74 tasks of which 72 didn't need to be rerun and all succeeded.
+    Adding changed files: 100% |#####################################| Time: 0:00:00
+-   NOTE: Upgraded source extracted to /home/scottrif/poky/build/workspace/sources/nano
+-   NOTE: New recipe is /home/scottrif/poky/build/workspace/recipes/nano/nano_2.9.3.bb
++   NOTE: Upgraded source extracted to /home/scottrif/bitbake-builds/build/workspace/sources/nano
++   NOTE: New recipe is /home/scottrif/bitbake-builds/build/workspace/recipes/nano/nano_2.9.3.bb
+ 
+ .. note::
+ 
+@@ -298,7 +298,7 @@ newly upgraded recipe::
+           .
+    NOTE: Executing SetScene Tasks
+    NOTE: Executing RunQueue Tasks
+-   NOTE: nano: compiling from external source tree /home/scottrif/poky/build/workspace/sources/nano
++   NOTE: nano: compiling from external source tree /home/scottrif/bitbake-builds/build/workspace/sources/nano
+    NOTE: Tasks Summary: Attempted 520 tasks of which 304 didn't need to be rerun and all succeeded.
+ 
+ Within the ``devtool upgrade`` workflow, you can
+@@ -320,8 +320,8 @@ directory::
+    NOTE: Adding new patch 0001-nano.bb-Stuff-I-changed-when-upgrading-nano.bb.patch
+    NOTE: Updating recipe nano_2.9.3.bb
+    NOTE: Removing file /home/scottrif/meta-openembedded/meta-oe/recipes-support/nano/nano_2.7.4.bb
+-   NOTE: Moving recipe file to /home/scottrif/meta-openembedded/meta-oe/recipes-support/nano
+-   NOTE: Leaving source tree /home/scottrif/poky/build/workspace/sources/nano as-is; if you no longer need it then please delete it manually
++   NOTE: Moving recipe file to /home/scottrif/layers/meta-openembedded/meta-oe/recipes-support/nano
++   NOTE: Leaving source tree /home/scottrif/bitbake-builds/build/workspace/sources/nano as-is; if you no longer need it then please delete it manually
+ 
+ 
+ Using the ``devtool finish`` command cleans up the workspace and creates a patch
 
 -- 
 2.52.0
