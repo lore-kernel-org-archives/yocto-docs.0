@@ -2,61 +2,62 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BFF3BCA6C87
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BCDCBCA6C80
 	for <webhook@archiver.kernel.org>; Tue, 27 Jan 2026 08:19:35 +0000 (UTC)
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.6050.1769501972511763707
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.5805.1769501973860785626
  for <docs@lists.yoctoproject.org>;
- Tue, 27 Jan 2026 00:19:32 -0800
+ Tue, 27 Jan 2026 00:19:34 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=uktTYGNz;
- spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=yqTrE8if;
+ spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 0390A4E422CB
-	for <docs@lists.yoctoproject.org>; Tue, 27 Jan 2026 08:19:31 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 4CC5FC211CD
+	for <docs@lists.yoctoproject.org>; Tue, 27 Jan 2026 08:19:34 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id CF2F3606F5
-	for <docs@lists.yoctoproject.org>; Tue, 27 Jan 2026 08:19:30 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9E4D8119A8687;
-	Tue, 27 Jan 2026 09:19:29 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 5513C606F5;
+	Tue, 27 Jan 2026 08:19:32 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 375C7119A868A;
+	Tue, 27 Jan 2026 09:19:31 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1769501970; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1769501971; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=6shhbQbB1+358YB1pgfEFgbL+hjsQFGh+hut2dO4yDc=;
-	b=uktTYGNzZ6ILeX9O6Qud3Wiv7efEGvRCMuJWQgV6TNpnAth+3IsqS7V0rLSaTfUzqViI39
-	O9NgW2i/MVcKzYjST2+jVkBV78gVFo2HHTK+yjEvEzwA9SS/zGFX/ZKRwBlZueF72bFHdB
-	M+cebf+tiNaQV6kjSkKk11KKNKI+hLOt04pkHn/9YNg3muSvODoGJX2xnnsdioGkTbJCc4
-	8jwFCdhCS5GFFuH9QssHb+69FY17ylYGBUBWkhyK2mpW2ZFLuutDQM3Yyh9SIp9KwXlcss
-	x+V/GyFlVT1XdPQmsS5GqEpDUJlZ2pH+wlJOemcFwQpa+n53l5Ehi8vOlPuEGw==
+	bh=+KIRsq1o9ehnryYo0s19dvtHfW+cKglzZKCzGbR6OmI=;
+	b=yqTrE8ifncsx9oxze4eZokMn4/m4GYq3wo/KSA/7L7CG1pNlE52FxvueqVW9o4dZDlIqvV
+	ovvhNL3+aRdf99twvgB9nFYPpXDK7yytBtUMI6pbxaDN74FbPqutUvXSkb1wLQ1rpzToMj
+	qUmxAMCTjVGby9sJlzugRxzqy9pDc9Y9MqhAN9dVu0wykhVVbpz/+uKBRx8P0daedaiuZB
+	9MurCWqkjMCFTEj5KAVvesfZlTdzuOy2gPj+bIzg8+WdbkQhGe8nG0i5NanBxeTCTtVNbs
+	u2V0WYqZgyeh8lLuEa9svaF66q+XUoD9gQU6cKz2Ph+IcW/5QORP88eETCleeg==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Tue, 27 Jan 2026 09:19:09 +0100
-Subject: [PATCH v2 14/56] dev-manual/new-recipe.rst: remove obsolete poky
- repo references
+Date: Tue, 27 Jan 2026 09:19:11 +0100
+Subject: [PATCH v2 16/56] dev-manual/temporary-source-code.rst: remove
+ obsolete poky repo references
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260127-remove-poky-references-v2-14-74bf80cc4e5a@bootlin.com>
+Message-Id: <20260127-remove-poky-references-v2-16-74bf80cc4e5a@bootlin.com>
 References: <20260127-remove-poky-references-v2-0-74bf80cc4e5a@bootlin.com>
 In-Reply-To: <20260127-remove-poky-references-v2-0-74bf80cc4e5a@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Antonin Godard <antonin.godard@bootlin.com>
+ Antonin Godard <antonin.godard@bootlin.com>, 
+ Quentin Schulz <quentin.schulz@cherry.de>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3372;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1121;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=AOAMbnF92uOJnCejUugbDX63bCa7X2wVQ+k9LZ4I97U=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpeHUApgt+qDEKuhFqvG9Y9xBZRPrsblGlBCNMl
- q49Y6re516JAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaXh1AAAKCRDRgEFAKaOo
- Ni0ID/97qVO2UNiM9MDXFNf7stmtDWDkpsP9+7/ljYezsxcfcvpJxNHun2kjAUdQs6BXoLL2fUX
- 8IN9zJs8ri57Eo2Cn1zOUNFaEhoVeJE4bbPcCikiH9Qapvrx6aZxaOt34ieIxm29n9cSYDVUitt
- Kh+g8s2pzFmajVwOYkriNRYTM+yBiaKFtIWawypjwTNr/q73W7mU5Qdo+A2lRSX1L+0wuRMZLsN
- 5RLqZ2B3n++JWDhmjLn/kbqZZOj+UKSIAqN5yTzw7tbspUWFr6xHKdaZxipzQSgM7w1TqbVibJZ
- YnHg+VsKw/90hzzGtU8i2Kxw6hCPWtTOgfgCFA1s4V7yKgNezCug8dvdVZdowiVkfcGoATut6Dr
- RS0akCoj/+09wN6GrT+pjluD82q1N96GTf1KvX50tqfLJ5nFM/mXFGGSPQK1Mzs1mtapxbnknlM
- wuVSpfQNyWW07lDIqMjx1UTJzDVKS63CxFOFs3OhSrujREgmneRMgsw9PusMa3syDDy35yztI+8
- 4JrnkoWstxaablqmRlU6BkHw/OCfHZnGwQMSVdGkvU0LUp3lWGVG+8dyOSUJfzQq+iUrwP1TN6U
- C5W8COSwb4o6hb31Q1KCs3nWL3wV0Az2IAA3zkbCwn5EBwB5n5FucM/xYfT31xmnucp4p9so6FP
- d2gfbzGXjF1H9XQ==
+ bh=KU6p3i5kc7OoFw7iccMBphxTP/RQQ9j8k8kmC5PySoY=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpeHUAe9gs1P5hpUMGutpl+NnnilVMrFs9B+ETk
+ rTuGokGgEuJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaXh1AAAKCRDRgEFAKaOo
+ NqGED/938yqr2DzJbuTZIpS21L7zYvq/rmZ+lopzmuU7WxfQVik8OfalsksEt3O6mT3UNgw7MD/
+ zP2EsL/QX6fg5HClyj4FDWGnsQoBXgW3qys3Tu2mE/GJ9bYyqEvw0L3otxzP6R0pwjJpvy00WF1
+ FkhImJZ4cWgl21mBd3cpOvjpu/7tSGXSmF9KPYWPkF9pu+KdUX2ATG5vcsQDx9HCsNmu3o1PeQ1
+ 2UpnD7fMPJ6OCx4j3sTelvqPkWnLCu6hLEBbtpzNmd34cWcdvg+H+0t9SQXZ1w0SgY8IyFPI8Ne
+ CKN/aJYOag63kUy7qNnAWiDWPLqszOTTmabnQXO5kSLncCQ/dsFjKzLlt60tLcktIfrj51P520j
+ 6ZXgxl0u3Q8aBLHd5VWWUz67lt7P/Muta78JQHRt5o4SDacnT1v8VEzeEVWCS3vwLGjuIWXkrrY
+ EhksJlbRWAxLQ4s6omobI3vHLGaaTAk7s2E3lXvew+3DalqIAO+emhVwAFpHBwzIdacSiy0a9FF
+ kI9BMRj7qpK7b6x849C7whPN00V+mtk5sf4SibCA1aaLESGrzbM4NdtAx+blgv3cFBrd19bW/Rs
+ xVMw97PMYDB1bXwzVsvdGri9V5uBWF3L6K/VYFLwhkC1lrH/55XQxeRfYOZF5nR5V2LYO+l9lY1
+ eBhU1EmhoIQ9e+w==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
@@ -64,76 +65,31 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Tue, 27 Jan 2026 08:19:35 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8675
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8677
 
 Remove references to the Poky repository, replace by OpenEmbedded-Core.
 
+Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/dev-manual/new-recipe.rst | 25 +++++++++++++++++--------
- 1 file changed, 17 insertions(+), 8 deletions(-)
+ documentation/dev-manual/temporary-source-code.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/documentation/dev-manual/new-recipe.rst b/documentation/dev-manual/new-recipe.rst
-index ee0f6aaf6..5e9498afc 100644
---- a/documentation/dev-manual/new-recipe.rst
-+++ b/documentation/dev-manual/new-recipe.rst
-@@ -224,14 +224,23 @@ is to use the ``bitbake-getvar`` utility::
+diff --git a/documentation/dev-manual/temporary-source-code.rst b/documentation/dev-manual/temporary-source-code.rst
+index 977edbc3f..aecd34099 100644
+--- a/documentation/dev-manual/temporary-source-code.rst
++++ b/documentation/dev-manual/temporary-source-code.rst
+@@ -15,8 +15,8 @@ your changes in the form of patches.
+ During a build, the unpacked temporary source code used by recipes to
+ build packages is available in the :term:`Build Directory` as defined by the
+ :term:`S` variable. Below is the default value for the :term:`S` variable as
+-defined in the ``meta/conf/bitbake.conf`` configuration file in the
+-:term:`Source Directory`::
++defined in the ``meta/conf/bitbake.conf`` configuration file in
++:term:`OpenEmbedded-Core (OE-Core)`::
  
-    $ bitbake-getvar -r basename WORKDIR
+    S = "${UNPACKDIR}/${BP}"
  
--As an example, assume a Source Directory
--top-level folder named ``poky``, a default :term:`Build Directory` at
--``poky/build``, and a ``qemux86-poky-linux`` machine target system.
-+As an example, assume a :term:`Source Directory`
-+top-level folder named ``bitbake-builds``, a default :term:`Build Directory` at
-+``bitbake-builds/build``, a ``cortexa57`` :term:`PACKAGE_ARCH`, ``poky``
-+:term:`DISTRO` and ``linux`` as :term:`TARGET_OS`.
-+
- Furthermore, suppose your recipe is named ``foo_1.3.0.bb``. In this
- case, the work directory the build system uses to build the package
- would be as follows::
- 
--   poky/build/tmp/work/qemux86-poky-linux/foo/1.3.0-r0
-+   bitbake-builds/build/tmp/work/cortexa57-poky-linux/foo/1.3.0
-+
-+.. note::
-+
-+   This covers the case when the :term:`PACKAGE_ARCH` variable is set to its
-+   default value, :term:`TUNE_PKGARCH`. This variable is sometimes set to
-+   :term:`MACHINE_ARCH`. See the documentation of the :term:`PACKAGE_ARCH`
-+   variable for more information.
- 
- Inside this directory you can find sub-directories such as ``image``,
- ``packages-split``, and ``temp``. After the build, you can examine these
-@@ -240,7 +249,7 @@ to determine how well the build went.
- .. note::
- 
-    You can find log files for each task in the recipe's ``temp``
--   directory (e.g. ``poky/build/tmp/work/qemux86-poky-linux/foo/1.3.0-r0/temp``).
-+   directory (e.g. ``bitbake-builds/build/tmp/work/cortexa57-poky-linux/foo/1.3.0/temp``).
-    Log files are named ``log.taskname`` (e.g. ``log.do_configure``,
-    ``log.do_fetch``, and ``log.do_compile``).
- 
-@@ -830,7 +839,7 @@ different ways:
- 
-    To enable a service using systemd, your recipe needs to inherit the
-    :ref:`ref-classes-systemd` class. See the ``systemd.bbclass`` file
--   located in your :term:`Source Directory` section for more information.
-+   located in :term:`OpenEmbedded-Core (OE-Core)` section for more information.
- 
- Packaging
- =========
-@@ -974,8 +983,8 @@ being able to provide the ``virtual/kernel`` item.
- Now comes the time to actually build an image and you need a kernel
- recipe, but which one? You can configure your build to call out the
- kernel recipe you want by using the :term:`PREFERRED_PROVIDER` variable. As
--an example, consider the :yocto_git:`x86-base.inc
--</poky/tree/meta/conf/machine/include/x86/x86-base.inc>` include file, which is a
-+an example, consider the :oe_git:`x86-base.inc
-+</openembedded-core/tree/meta/conf/machine/include/x86/x86-base.inc>` include file, which is a
- machine (i.e. :term:`MACHINE`) configuration file. This include file is the
- reason all x86-based machines use the ``linux-yocto`` kernel. Here are the
- relevant lines from the include file::
 
 -- 
 2.52.0
