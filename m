@@ -2,61 +2,63 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E647BD2F024
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E9344D2F01B
 	for <webhook@archiver.kernel.org>; Tue, 27 Jan 2026 13:06:59 +0000 (UTC)
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.10276.1769519218599443405
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.10606.1769519217947468393
  for <docs@lists.yoctoproject.org>;
  Tue, 27 Jan 2026 05:06:59 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=wRGXKxUn;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=tmdR2QXf;
  spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 1B4691A2A86
-	for <docs@lists.yoctoproject.org>; Tue, 27 Jan 2026 13:06:57 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id E5EF91A2A85
+	for <docs@lists.yoctoproject.org>; Tue, 27 Jan 2026 13:06:55 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id E5FF5606F5
-	for <docs@lists.yoctoproject.org>; Tue, 27 Jan 2026 13:06:56 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6195F119A864D;
-	Tue, 27 Jan 2026 14:06:56 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id B55F8606F5;
+	Tue, 27 Jan 2026 13:06:55 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8F27D119A8647;
+	Tue, 27 Jan 2026 14:06:53 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1769519216; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=shPBMgJBw0S68TuZ2yGQTiNp0MN+sAx+H+DKx8AJmyQ=;
-	b=wRGXKxUnNxMrBSsAfyjNNTX7Czo6MAn8yOsMtoy2yv86QwMcQLHT6N1uYa6VIF/FBoM03Q
-	9UDz+N8KOeXb5QL/jYj5JZ8GvIJucCP7jwvmIReB4c3Dp0+fdd1ZQ2uFOIiTAe50jgxDWm
-	n30kTQ09iLrUiyqKnN9550dwsqM2fX/BfQKAgZ8qDpDWCdQl88qY4N9CxXm3VacVsdrbdF
-	Ynb4luxKwM7JOCuXT0ZNIzhU1Ep+mfG/VCayjwBwtv2w/a4q9EfS/2COuP/RSeUaXYnco6
-	x5nmGhwksA/4lXsj7ZPtsVrJ0QKClk1zR0LDzCjPyPS6pwR+i956G/SHxqWQ0Q==
+	t=1769519215; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=Tut3eRasdTqXy/wMJ35hGUltbmOi0YiGVHR8sz2v74w=;
+	b=tmdR2QXfEXiYPEEqj9vozaT0k4X+29bXLOgJ1vfOARmNWNXriLZUo6fIEFB39P/jn9mhjP
+	W0abbxxoreS+UVPL24uaZOzmQGzYus34dBajls4+kdzoajie38YA4K8fGJo12P/hBg9l/a
+	SzD3QAV1vwde+5FVHL/QAraVFnHTFLQll0fzF6bxmi1uvPMFyT9cnuxSWM2Exc5FXEf50f
+	xVtGZlGoIA5/40DjGSTey7lkWPsDdfqFw77Z54zOsMRibhgPAD8KJahiYHxIyvC7SKpPJs
+	xNvY3Birllh5lWQx6P6Q/rul7sXiYh6Y2KCCd/eEH70j967XZXqP0CVHka6aSg==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Tue, 27 Jan 2026 14:06:45 +0100
-Subject: [PATCH v2 2/3] dev-manual/packages.rst: rename r0.0 to r0 when PR
- server is not enabled
+Subject: [PATCH v2 0/3] dev-manual/packages.rst: pr server fixes
+Date: Tue, 27 Jan 2026 14:06:43 +0100
+Message-Id: <20260127-pr-server-increment-details-v2-0-b46f91df002b@bootlin.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260127-pr-server-increment-details-v2-2-b46f91df002b@bootlin.com>
-References: <20260127-pr-server-increment-details-v2-0-b46f91df002b@bootlin.com>
-In-Reply-To: <20260127-pr-server-increment-details-v2-0-b46f91df002b@bootlin.com>
+X-B4-Tracking: v=1; b=H4sIAGO4eGkC/42NQQ6DIBBFr2JYdxpAa0xXvUfjAmGo0ygYoKSN8
+ e5Fe4EuX/L++yuLGAgju1YrC5gpkncF5KlielTugUCmMJNctlxIDkuAMskYgJwOOKNLYDApmiL
+ USjWouW153bFSWAJaeh/1e//j+BqeqNOe3I2RYvLhc9xnsXv/PWUBAqy6GNl1Bq1sboP3aSJ31
+ n5m/bZtXxsHTcnaAAAA
+X-Change-ID: 20260120-pr-server-increment-details-3aa4ec0f6038
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Antonin Godard <antonin.godard@bootlin.com>
+ Antonin Godard <antonin.godard@bootlin.com>, 
+ Robert Berger <pokylinux@reliableembeddedsystems.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1057;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=735;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=fNRLqgUKEsOhuA6eYNBRRC6g0CxY0qgztDov+MEPb0g=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpeLhtQeYjWZp4DqR8jb4BFR84kNS1ZR0hHtOs+
- cEeRXCQ/puJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaXi4bQAKCRDRgEFAKaOo
- Nj7AD/4yL3XER6LzBYyOH9iGYiY4msDxPlp+SRxvcRd4p3TH4sQGgnVvtFi4wq4xQOIc4uVjaxS
- sQcre1ZFeZKytKgeGMHBdGRZ9MX3cQcdkfoPmrgjBt77u5+yrm1tM7TSLEew1E/WU2oqlvE4lMj
- H3I9M4ItDzt8ffv267wUFXHRTrF2l1NwZQRxAayr57ksS0nnDgq1w+IEnOBaUEGoEizJHNbsGIF
- 99qmtQZrv3HTM48se7LjZKbSFCoAaz5E5wo6Jd8ok6Lmyvjd7zaGxHA6XaKuKBH6K0ZIoIBe/ay
- j6lFfwLZZS/w8fNNBFaxj4e5CRskOeuR2OQ15zQlnizvLtwXjLrufh9ikmKuHdihNxNw080egbw
- 9w2t9TZuUz5yj+9+goO2HJNYlCoP/um24LCJNBDB8s1Cpf7z+wsxI85fkaCQfP2HQ94gOmvOCsg
- ejHwp80WhseNic5q3f671MTKursClpR9no0sF7fPFpu+DLZKSsGa90pexUMMz0mdzB+MSWhHDCe
- aRz1aoO8Pq+SCjFfzh/DqJIZP3ylD8TVjS+aP0Pu68SwCQbu1C1oWTJKHp3aYrlyjCY8v5lbHp+
- RMf2iftivhepKFTxdf8qfFXpwDa6nWuHeEHUg7ODHJlg+XsBgXh8UAoaDykjmZBAY+K7azoc6dE
- vVhy+RYSKtdv4GQ==
+ bh=HBOPUZTMpV0EHEH4mh2ePM7bWilbTkpJZqBMwMLDY6o=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpeLhtl+i0AMoInJm4iOhTJyd9VxXgz2gAoAzdE
+ 9WulqfR966JAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaXi4bQAKCRDRgEFAKaOo
+ NuDNEAC94qdQjP9iaZmTmqXs5UrEFR2XcjrV4pEMLjObZPzZnAfAb0L3o5wODp2CFt2e+Wyv8Ta
+ JMzWJ82bM5/yjODWMMR3QuTiN2SKGOJZWP8Q65jqCX/2GOmWtI77uoT9NM5XVfWVd8lo5bYjQKC
+ YObo2RuBS+McGkuYALIOKXD2ufk0gp7kE87p81u+Cg0t0ikZthoC61LnWmWoDp1fe/QpHQCAokH
+ YDTVbGyYJygLepe+IxE6ekw26Ut0bu+z7H0yDJ3ZhMc9r2Re1R2R/q09W18QaVo7JWOm9PdAK0e
+ aHP9O9XxN8tmrmfF+Sk6vy14qAZorwh7FS02pnzT/mGEtsqdzd5u3RK2sijbTyN9LHRFRoV875z
+ AUcRvr/iXXLgIHK4WnjnNDZOX9g8hGhwjxrBnJiz48a0qTiDA/L0QgjmkJLlRyMGsngvu3moyKW
+ 3dqeskdM6yeBCtDyRkitcR0St9AqG6kQhNG3UKw3wp64hao8xtZCuukJDMWghx9RDbHbj+zZU1G
+ w1vIq3lXuFOfAfhFrNVB5q7yBwNlk9qvLm0gjoFFkVDMLu+6kbPbLsubBmOHN/FZMGgP2u2V9zM
+ MfgM0FB3LRpIlAGrUco84+MIPZ8IJ66s/Pf3pH87IR9o8LWduEVK0yQLGPtOpmG1fEN2uAdICl6
+ YReKkH2eI4OZMmg==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
@@ -64,33 +66,24 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Tue, 27 Jan 2026 13:06:59 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8734
-
-When we don't have a PR server enabled, we don't have leading ".0" to
-the PKGR variable, as this is added by the PR server.
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8732
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/dev-manual/packages.rst | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Changes in v2:
+- Add two patches to fix the examples.
+- Link to v1: https://patch.msgid.link/20260120-pr-server-increment-details-v1-1-fa5d288def24@bootlin.com
 
-diff --git a/documentation/dev-manual/packages.rst b/documentation/dev-manual/packages.rst
-index 86a569b67..383c93131 100644
---- a/documentation/dev-manual/packages.rst
-+++ b/documentation/dev-manual/packages.rst
-@@ -300,8 +300,8 @@ with a number. The number used depends on the state of the PR Service:
- 
-    .. code-block:: none
- 
--      hello-world-git_0.0+git0+b6558dd387-r0.0_armv7a-neon.ipk
--      hello-world-git_0.0+git0+dd2f5c3565-r0.0_armv7a-neon.ipk
-+      hello-world-git_0.0+git0+b6558dd387-r0_armv7a-neon.ipk
-+      hello-world-git_0.0+git0+dd2f5c3565-r0_armv7a-neon.ipk
- 
- In summary, the OpenEmbedded build system does not track the history of
- binary package versions for this purpose. ``AUTOINC``, in this case, is
+---
+Antonin Godard (3):
+      dev-manual/packages.rst: pr server: fix and explain why r0.X increments on SRCREV change
+      dev-manual/packages.rst: rename r0.0 to r0 when PR server is not enabled
+      dev-manual/packages.rst: fix example recipe version
 
--- 
-2.52.0
+ documentation/dev-manual/packages.rst | 23 +++++++++++++++++++----
+ 1 file changed, 19 insertions(+), 4 deletions(-)
+---
+base-commit: b8a56b8b2e8c0417b2f7204f80c79b05d95e9ce4
+change-id: 20260120-pr-server-increment-details-3aa4ec0f6038
 
 
