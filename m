@@ -1,499 +1,277 @@
-Return-Path: <reatmon@ti.com>
+Return-Path: <quentin.schulz@cherry.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 34330D2FEF9
-	for <webhook@archiver.kernel.org>; Tue, 27 Jan 2026 22:57:28 +0000 (UTC)
-Received: from PH7PR06CU001.outbound.protection.outlook.com (PH7PR06CU001.outbound.protection.outlook.com [52.101.201.12])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.425.1769554646447013095
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 141CDD25B42
+	for <webhook@archiver.kernel.org>; Wed, 28 Jan 2026 11:12:32 +0000 (UTC)
+Received: from DUZPR83CU001.outbound.protection.outlook.com (DUZPR83CU001.outbound.protection.outlook.com [52.101.66.17])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.10696.1769598745095866968
  for <docs@lists.yoctoproject.org>;
- Tue, 27 Jan 2026 14:57:26 -0800
+ Wed, 28 Jan 2026 03:12:25 -0800
 Authentication-Results: mx.groups.io;
- dkim=fail reason="dkim: body hash did not verify" header.i=@ti.com header.s=selector1 header.b=iV++tO9l;
- spf=permerror, err=parse error for token &{10 18 spf.protection.outlook.com}: limit exceeded (domain: ti.com, ip: 52.101.201.12, mailfrom: reatmon@ti.com)
+ dkim=pass header.i=@cherry.de header.s=selector1 header.b=KAC0tEU6;
+ spf=pass (domain: cherry.de, ip: 52.101.66.17, mailfrom: quentin.schulz@cherry.de)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=O0v0bnDybQVu6qKaMzXhVBGM7rmf11KVLolWFdtXAWMlSWwTbe7UJYikbCmiikxbOpIKv0cDhyDmehiwmvuQGRw1+KEsYQuDbdIwkKY2BkzSwNKgSI4jFEecJL7G7eB4fbWJWXHT7oEHwgDtQXJW5iQbsQLXAPXeja5wtYNzSdjMiS9of616eBP55XrtGWghc7uy8l3J8WUd4CQ6nD8gK9C+Jl9tW1z9f2B/ihR25mjY2oaFzNr0UhGuZaxb2JpB+6ll8FnBEOM66N+80gBrRIlmROwNxZE/jcQGCFplVEeyI5FnKUfP3H/6vYeX+X6J674SDae+OZzurGp9Zfv9Zg==
+ b=hup/uW/Lr7GvmB1mIyIp0kvm7ZMZ9a9vDWkfpv49ueo/reJm+DT3P7h97ikQitv0bAPJzn8SRNSMbTwpBEWxEi6Mwlf379yXMob47KPOVBc5ylFHEOr4XToFaHg9O/Ll7Ts5WKI51CLSUCAp/CesxQOjbsZX97ltWzafQQiDbHYSpPdCg6AOpqoEU8BIe2p3FbnIuzpxFUvgKcncIgUrg0/8nJu/U/ezJx0NHFglqK28p79daOclUDZJfCOg5wiGkWoMj/hLfCaHX4v9k8yGHpY+lIK/Zskw+1nqV3O2kuoXQ36Won0jDDcUIEcim3RYLLLKSBAEaHstctiV73QKjQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XFaoOV9QfVaXFJCY3o7C+vct3thEaUoAwJARHHkZeP4=;
- b=cP8icn6TkBDjTS+GyN6bXLddXnMoilEd7y9XOR9XyB+KL9FwnMLME4ETVa4zwFvH8Cw6oODx3ctaTCHUUbWb+NPIBhn0jRmqp7SNfAv8I7VDqmln08Nj5jBsAW8vYwwr7dcvjW2qc7yAvOZ8KVGa7LIMrQQ/zsgGZSzM6pPHc266NnNVGvMKLEny8dTiOVdiEhs66CxlqW5/+jhebnBKq4pa1qp6Ws+MHOlAD65DweXJr6uiteeGkU84I3HM0JNkj4Xca9fBzpTxGPJ8bWV0AkNpl+/e0t3pQoG9KhDw+ZNU/K8d5umYOThcmcGtqev+kxBZfa1JJYlEq9rJX9AAVQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 198.47.21.194) smtp.rcpttodomain=lists.yoctoproject.org smtp.mailfrom=ti.com;
- dmarc=pass (p=quarantine sp=none pct=100) action=none header.from=ti.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; s=selector1;
+ bh=yaS+DfYx/ITsJBwbJd8GLcd0greVLqWOUML+xKLc7zw=;
+ b=yBkWsssslvrexrDaxOuuemaHgJPSjOt4+qlsVvMHHYUCqYxma7xtK2+3bjA64GQQx2x+tPjHff6BwiHXuPXAxRqRU+6A15v4A3O2gnOMF5qn2jHOZ6xON0WVfJbrC/wfg5lTRgY7KYB5APgkoF7DX15FwboiR+NhEEYugDR0qH2RBC+szkP/RimGHY6L4KGBnMc9Fq6LbAVr8itwFlltc3rKsDW4AWAC8QFtSoOqK4cwckm9+T1O4Iyq1cHAoaJ5tWW2DIJ6XUsD9QXWCVNIg0FqyUDatFuQksYLXPeUKiQFBGngdFsvLVrJF7WM6+mdGKIe6gffR3hlL6sv4iGVww==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
+ dkim=pass header.d=cherry.de; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
+ s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XFaoOV9QfVaXFJCY3o7C+vct3thEaUoAwJARHHkZeP4=;
- b=iV++tO9logybf8sWghavFDEWQwED6XCqgJqUvqR1e+/pcngJf8HGHd4/4oBz5gCzl/Lw2gG0ti7Kj8xvs+JfnSkGtWY3Zw4Rn4DxpdNMmHGlEi1/k5Ea9kSEzhTeLssEtbCqkujc8/HoGCpJ+342YbOPqaPABDUliMi0jl3olbg=
-Received: from SJ0PR13CA0091.namprd13.prod.outlook.com (2603:10b6:a03:2c5::6)
- by MW4PR10MB6321.namprd10.prod.outlook.com (2603:10b6:303:1e1::7) with
+ bh=yaS+DfYx/ITsJBwbJd8GLcd0greVLqWOUML+xKLc7zw=;
+ b=KAC0tEU6yXSEVxP2pY85p/9vbCAdY8mL5WvAl6mw1jFXqcV5HxhTk2s+7kxrESo5AJoKjhtFeUJCmn7mT12AR7zX6eow58FW6bNkDzi9Q2PCgZCLblFEe066VMps5VlzaVHwn12XChXJXu91+kJ1SpcNpOt3Gx+QSHKg6RhKr/Y=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=cherry.de;
+Received: from GVXPR04MB12038.eurprd04.prod.outlook.com (2603:10a6:150:2be::5)
+ by GV1PR04MB10193.eurprd04.prod.outlook.com (2603:10a6:150:1a4::9) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.15; Tue, 27 Jan
- 2026 22:57:23 +0000
-Received: from SJ1PEPF00001CEA.namprd03.prod.outlook.com
- (2603:10b6:a03:2c5:cafe::3a) by SJ0PR13CA0091.outlook.office365.com
- (2603:10b6:a03:2c5::6) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9564.7 via Frontend Transport; Tue,
- 27 Jan 2026 22:57:16 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.21.194)
- smtp.mailfrom=ti.com; dkim=none (message not signed) header.d=none;dmarc=pass
- action=none header.from=ti.com;
-Received-SPF: Pass (protection.outlook.com: domain of ti.com designates
- 198.47.21.194 as permitted sender) receiver=protection.outlook.com;
- client-ip=198.47.21.194; helo=flwvzet200.ext.ti.com; pr=C
-Received: from flwvzet200.ext.ti.com (198.47.21.194) by
- SJ1PEPF00001CEA.mail.protection.outlook.com (10.167.242.26) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9564.3 via Frontend Transport; Tue, 27 Jan 2026 22:57:22 +0000
-Received: from DFLE207.ent.ti.com (10.64.6.65) by flwvzet200.ext.ti.com
- (10.248.192.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 27 Jan
- 2026 16:57:06 -0600
-Received: from DFLE210.ent.ti.com (10.64.6.68) by DFLE207.ent.ti.com
- (10.64.6.65) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 27 Jan
- 2026 16:57:06 -0600
-Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DFLE210.ent.ti.com
- (10.64.6.68) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
- Transport; Tue, 27 Jan 2026 16:57:06 -0600
-Received: from grumpy (grumpy.dhcp.ti.com [128.247.81.229])
-	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 60RMv6Pc1289671
-	for <docs@lists.yoctoproject.org>; Tue, 27 Jan 2026 16:57:06 -0600
-Received: from reatmon by grumpy with local (Exim 4.97)
-	(envelope-from <reatmon@ti.com>)
-	id 1vkrze-000000006Xs-1h4F
-	for docs@lists.yoctoproject.org;
-	Tue, 27 Jan 2026 16:57:06 -0600
-From: Ryan Eatmon <reatmon@ti.com>
-To: <docs@lists.yoctoproject.org>
-Subject: [PATCH v2] ref-manual: Document updated UBOOT_CONFIG flow
-Date: Tue, 27 Jan 2026 16:57:06 -0600
-Message-ID: <20260127225706.25153-1-reatmon@ti.com>
-X-Mailer: git-send-email 2.43.0
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.14; Wed, 28 Jan
+ 2026 11:12:19 +0000
+Received: from GVXPR04MB12038.eurprd04.prod.outlook.com
+ ([fe80::6c04:8947:f2f0:5e78]) by GVXPR04MB12038.eurprd04.prod.outlook.com
+ ([fe80::6c04:8947:f2f0:5e78%6]) with mapi id 15.20.9564.006; Wed, 28 Jan 2026
+ 11:12:19 +0000
+Message-ID: <a16f5edc-d51a-4efb-a7b7-3d81092df3fc@cherry.de>
+Date: Wed, 28 Jan 2026 12:11:16 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [docs] [PATCH v2 22/56]
+ overview-manual/development-environment.rst: remove obsolete poky repo
+ references
+To: antonin.godard@bootlin.com, docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+References: <20260127-remove-poky-references-v2-0-74bf80cc4e5a@bootlin.com>
+ <20260127-remove-poky-references-v2-22-74bf80cc4e5a@bootlin.com>
+Content-Language: en-US
+From: Quentin Schulz <quentin.schulz@cherry.de>
+In-Reply-To: <20260127-remove-poky-references-v2-22-74bf80cc4e5a@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR0P281CA0057.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:49::14) To GVXPR04MB12038.eurprd04.prod.outlook.com
+ (2603:10a6:150:2be::5)
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF00001CEA:EE_|MW4PR10MB6321:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6f50e05b-0628-4c66-b09d-08de5df76e75
+X-MS-TrafficTypeDiagnostic: GVXPR04MB12038:EE_|GV1PR04MB10193:EE_
+X-MS-Office365-Filtering-Correlation-Id: e87e66d4-6c66-484d-36b4-08de5e5e1a62
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: 
-	BCL:0;ARA:13230040|36860700013|1800799024|376014|82310400026;
+	BCL:0;ARA:13230040|10070799003|366016|376014|1800799024|7053199007;
 X-Microsoft-Antispam-Message-Info: 
-	=?us-ascii?Q?LLGubdnMQ22xQngbhIOR2zRE0NlgBP/wJvHmpX8K0AxC6hq86qEFm2P6X6cq?=
- =?us-ascii?Q?1VkGtMZUyow2ebk35/DbSQhh1EGUiAUInwnJEIpzZc/Xd2DaiadpdciWtOuC?=
- =?us-ascii?Q?ND4tpdAibFf+Vnd07Fwa8qKyqBfAFR11GJtHGuP+srjZJBTxqcmfqr2nNlwL?=
- =?us-ascii?Q?1c10mr4Zb3/ROzVJyIFYGnyCN0TVPhxcjzAl7giG2h0SzjM4Vos1XECTWFVR?=
- =?us-ascii?Q?0oQDz3gYlEJKENSdMk9xNxtWuatttMzIe+DCKupagQLY2FhouQYE9pEjMIt/?=
- =?us-ascii?Q?x4DHDsSHfjccBV2IckmjHM4dIy0DZiFTalurOXWv9+qWPTqQBc3a9mrHm87I?=
- =?us-ascii?Q?xNYVkq4iQmIkt8HcEd/fOrrT+Z/KbpFHzYV8febNzsKH3G0p85SMSXgC4BYl?=
- =?us-ascii?Q?A68JS/bm5NHXLVcOy//LXn6w1KAFDA2YcbVwVTTOpQ7XibfGOV7J/sPUktys?=
- =?us-ascii?Q?+OuM7Fdi55KN2zLvG5bue/m/i007weySRRyUK660lh3Y0C8+uFeiTrDG/NEI?=
- =?us-ascii?Q?Bihxu/28fPLeHsETeYqUL/Cwt296dSDHIe+ucDbe0+8dlErqsGn9WaBIrgN/?=
- =?us-ascii?Q?zkJeoP3UW65Sdb/f/3FHvt/ch2a0zP0pSFXO6DO87aMpE7r1eVfWbK9OhrNZ?=
- =?us-ascii?Q?P6JVI0RjM7gNARyE2CCLskJltYFDHE9u2xIarXtd+xchTTcr0k5CBmJDqFla?=
- =?us-ascii?Q?Qo4/x6lrI3vgR8L+agUVCOyVmMqzzDFhM/VDOivGIlYAqvtMdBpCVzEQtNFQ?=
- =?us-ascii?Q?lv2eVctNVUe3ZKF9bF34aFcI9wwZyv12O7K0+BCg4QHiZ9XUDABSyPVjxnWU?=
- =?us-ascii?Q?x/B5p7B5CEf5Av023Cg++2MkfkTqDklScL19uz04OX0VporhzpXemD97R7AH?=
- =?us-ascii?Q?tFTQqYRoyDM6qfpF4iUVXs8Q1vLt7RkXGF5BAWpDzBHYuGUGre44J1xF90gZ?=
- =?us-ascii?Q?F39Lx7YjK1Yzy213HoY03VggmBQx0SBXuPDwMTDn+1s2jcJuYpg6STpIOE4V?=
- =?us-ascii?Q?Mq6TPBuvttonK6QFg+hrZDtZWMjDrh+kEl+D0ygOXiJWmL6GOW55hjO2qHa/?=
- =?us-ascii?Q?B0+CoMGSG0lZjm0CAWJlbeNiqlbJFzTzxZAb+DGy/kDKjueI0E1nj3MqJKog?=
- =?us-ascii?Q?2c/9nNTZU2i5uhgVgDIqd5zvlwwGsQrJOWMhZ0Pux7iSFnWqYN4W5qPvvth7?=
- =?us-ascii?Q?8ryLay7JIgLu8VHzJ7PG4NeBw0Zi82or4mrNGsv5R6LU3PZacylO9Xvg5yGZ?=
- =?us-ascii?Q?qbiJcS2g9b1f4QyksdQOPDzp70LEjhYwVrhvBOw9tDRcObJ+npzf+7JoUEZc?=
- =?us-ascii?Q?e1TmE7FDVrs0K/kSTUuz95e7+LcRjQSGY2s6RasL1M+o8ccrTOzGmPh2T5Xd?=
- =?us-ascii?Q?r7azDuYmNXqZ/jvVjGhjq2C7V7FWs70SCOtaUPK5vLUlof1KENmp4Hi7RgP5?=
- =?us-ascii?Q?sKVwtAZg6TDZHvsxOz1Q/CbOZj7bXIcg97Grs+OpIiBh9H28wgZrg2ehal0G?=
- =?us-ascii?Q?qrVgsVGuxgHXphCQ55WhspiCaXUnKwzCqaMqGRTZSlDh8xAkOJ5EupuTe2FB?=
- =?us-ascii?Q?LlgGmvEfN/US+50gJ9l29XIjOkCHydGYqWWPwUiDpY+yfVY3xBw7v69jSFAn?=
- =?us-ascii?Q?ZbRe7mkb1NWzjwQORNmpSKJQLtR6bT4PvGXR8xiRgX2JsidiVy4W/ZoU43Qh?=
- =?us-ascii?Q?WkEJJQ=3D=3D?=
+	=?utf-8?B?eUNYQWhtNVhiUHBiV1d5WDNOdDlNZTFpUzI3VDhOeWp3aEJreVpRQXJrU1FK?=
+ =?utf-8?B?ZDl1S1p6dXJQa21IditCUmQvUEl6Y2RiTnN2bHN2bzZLbmtuY1laWUFtdVdy?=
+ =?utf-8?B?Q3g4UGNlanFnMVJiK0FEQWtubmJ6MWxiaGp2V3VQMWdSRGZ6YkFHL1lxMktS?=
+ =?utf-8?B?Vm9KN2E3U29iVVVJL3RDbkJRUzFjQ2lvNXZoaXRDcVRoTm5lZ2tJNHpFWVNL?=
+ =?utf-8?B?RHZLUGJDdUlKUVNOdloxVXRlelh1bDhHVzZUKzhrU21FRWdsYUI1Q3luY0Zk?=
+ =?utf-8?B?blk0YU5ZYTZieXJGNXByS2QwbHhFNlFGTnY2L1hOVDEwZXdpWndOQlU2STg5?=
+ =?utf-8?B?QjJSV2d4UGNIUVV6SlhadGFqRFlNSkZyMklsclZWQlBTRmxyL0RVMDMvcm5a?=
+ =?utf-8?B?TkZxQlRCcktaRGIycXFLelljeVRGZ0s2Z0wzRi96RHdpK0lqSFBYSS85cjJX?=
+ =?utf-8?B?eHBZczZTaDZTZHpkMWZNTXBlemV2VWN2WGh6aDE0MHJrLy84Y3c1cWQvY1Rm?=
+ =?utf-8?B?TEFReDB6M1R3dmljd3hWTXZPVmZVaHgzQU9nQzdEUFhPWnJEOEpJYmo0NExG?=
+ =?utf-8?B?aTdvVCtXdG94L1JBWG93cWZpdFgvZ3FGNGl2dktSVmUrN2lrWmRONWJuVW5i?=
+ =?utf-8?B?aUdMTGgzVmlHZFgvVit2Yi9jL1ROUzhFK0xCSzdqbDU3OVBjYlBwMlFuemxK?=
+ =?utf-8?B?bE14Uk9lTTRIYmRLK3VEVjM5aE1CTmVEK2JSTlhnS0YzcTUwY25qZjA4UDkw?=
+ =?utf-8?B?SmdZVmJqbGwycEhsS2VhQkR3aXhwRWlUc0lQSnZvMVArM3JvODZDRXlEeTdS?=
+ =?utf-8?B?aTB0b0IzRXVJbXdLN2tSWS94N1plTStZby9EZGFDRE5kMnQvVzVvYjJjaWdn?=
+ =?utf-8?B?K1lkYnlhUXFDaDAxdmtHTU82OWdRZGlBeDE1aFIwTGVoNFZWOUxjeFV2MFVG?=
+ =?utf-8?B?T2Jkc1JBdkUrMWVBWFZHeDhVeXNpN1FVUFpjRXdZOTV0UXJKYkJBQ01vR2NQ?=
+ =?utf-8?B?QW9IWlZjZ0tyZXlEQ3BpR25FeG9vYjRBUFhFU0MyM2Y5eG9LK2YxdWJBR3ll?=
+ =?utf-8?B?b2picDV6YUVmM0tpWk5LMWRRcFpXQXN0c1NpWUVDemZ6M2RWYVNraHRZa3F5?=
+ =?utf-8?B?UzNLUVRQUnVTd1Y5NHN6MzlZQytQSXFoT0JJMXdLSFZHQXJma2U0ZDVrYXBo?=
+ =?utf-8?B?MjhxRm5tVnRvUWF1bEFPRkppQ3dYaHpnQnhVYmdGc1ZqekhJeGhRcG1rTUxC?=
+ =?utf-8?B?dk9ockpJNXAzaFNTYmduK2x2UzBLMXAzWW5udVJvdjVIRkVJdHZBa0p5dGlG?=
+ =?utf-8?B?WTZQWGNtOWI4WnRwZmNKbXJHVkpvcmNSSnhpZENIOUhFd3FHTjZsaDcrcUNx?=
+ =?utf-8?B?TndEUFVNb3ppQ0haM0FyTUpyejJmemZHb0RrYzI3RktJUXdXM0ZWS1ZUaWkw?=
+ =?utf-8?B?RUpCaHRNTzhwRGFtY2hldTU1MDYxbEVldUhUSXZXWEt5eG1nVmY3dHFWSFE2?=
+ =?utf-8?B?Qjd3N2g5enNaRDVCWHMrbzhhUWZHVVFMK2dCWUVISTMxOXlrbzR6c1BoRkl1?=
+ =?utf-8?B?SStUbHNCNUY0d2lHZW1Ca3ZOQTIzYS9jcW85NjZUbXlZZnVEdDZZckUrTDNo?=
+ =?utf-8?B?bElNZDN1a2tVZ051OE03dVZNZ1hKcHBvSTExNzJ3K3NiRml0Qm14SzNKTjRw?=
+ =?utf-8?B?QlZkL2dZSWdnTDMyazBsaCtYZDRReHo4RkdsOGN2ZmZpdDI4Z0hWQ1FIV0Vm?=
+ =?utf-8?B?SUthMVUyNTdCNk0rbXlRd1lQYXJ4eW5uYkdyQUx6YTI4ZUhRUkIrRWQ3OGVa?=
+ =?utf-8?B?YStDbVJyL3p3MzBsczZFdGVodFc2UHlhRXZpT3lIN1N0cmh1TU9MTUdwVzVD?=
+ =?utf-8?B?UHZMZnNQOFk1bHV6V3MvVzdCWXpHdEtHdDhLZkw3cGZFZm1QWVlENnZ2N2dy?=
+ =?utf-8?B?ODZ5K3hNS2Q3cjQ0VE5xN3A3Y2cxeW5OVU5DY21oNWVxeGFQeVFVdE5IYTE3?=
+ =?utf-8?B?eU9NR0dmZFlVN1cvYVNlbFBOVFFHLy91ZXlIS2RvMkg0RXNTRkhTbFN4MHZH?=
+ =?utf-8?B?L012Wnh6ck5zTnVzU1NUeEt6QWdqZVd1bzVCNElLcFJxV2I4aHVFRlpqb3dz?=
+ =?utf-8?Q?SRW8=3D?=
 X-Forefront-Antispam-Report: 
-	CIP:198.47.21.194;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:flwvzet200.ext.ti.com;PTR:ErrorRetry;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(376014)(82310400026);DIR:OUT;SFP:1101;
-X-OriginatorOrg: ti.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jan 2026 22:57:22.3907
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR04MB12038.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?utf-8?B?em1Mbk00V0xLanpqa3AzNUFjVGd0WS9NQmhReCttMjJqODdjZ0xDOFNsd2sz?=
+ =?utf-8?B?OWFYbkM1YjlWbk1IeFJYMHFjanlqbXZSaVZqMEFZalhSb29YZ2xhOFlocDI1?=
+ =?utf-8?B?TEN3WGNmbFRDemZBUWdkS3hJVEcwYXNraDM4MkVuZDNRZ1p3ZUdidTRzMHBa?=
+ =?utf-8?B?U3lHNU9vNUtEUCtqK0dCRUhocUlhYnliVGJ0aG5IbjJ0TklURDB2QXM0a1Vv?=
+ =?utf-8?B?UWl5UGxPTTNxekN4cFhaQVoyaWNtUUtZczdEQ1FqQXl2aEdyVktEanlKSXFn?=
+ =?utf-8?B?ZUpqODdFTTlxWk1DZEFRMFVyQ3loRTZKSXd6Z2tqSzQ5dGdMK0E1bmNkS1BD?=
+ =?utf-8?B?cWo4YzFmNktCaUl6S0o2MHVqd2lSUkRncTdEVk9hVHJuc1gvaXh2QUhDdklD?=
+ =?utf-8?B?ZG9RM3FNTmhqenFmOFA0NzhxOHg3UzBNc2ZpcjBIWGx3c0NHZFV4WC9VdkpU?=
+ =?utf-8?B?ODVZTHFib1VOeW9XTmdKQ1VZeHdMV0lWTUdGMVlsSkIzdzlPU29oTVhRQm9T?=
+ =?utf-8?B?K3o3b1dqaFZxL1RIQ1JFc29PU0pnMi9XOTNFbjNRR3p2NmlhRUhzdWlrYmpp?=
+ =?utf-8?B?UHJ2aUI0ZXRNSngyR1g3ZUpYTjVNK3NPdEpxbGMvM0t1MVlvQ2Q4TkhqdmIz?=
+ =?utf-8?B?Qm8veC9kM0I2dGpsK1NDTUIvWUV4cWRqK1lwYVZpOEgxREp1d3BPSHNrbE84?=
+ =?utf-8?B?MEZPK0l3RVBoY3ZaWUpsRjZXbWNqTGtWUytnNEVORWhZdWNEVjY0aHQya2dQ?=
+ =?utf-8?B?NHpnVW9kL0kzV1FUeWVpa0FSMUNzQm54V0plMzdEcjVrdURZNFErSzJ5YUpw?=
+ =?utf-8?B?MjA3ODVUZjFPQVBENjNLTy95RXRWVkpCQ1lWL00zVlExVWxMUE8wbDd3aTZ0?=
+ =?utf-8?B?N2pzT0tSUFoxeWxLTEhpaGJ2eDZ3T1llSzg3ZUV2Njg1V0huWktzSWdoc1RR?=
+ =?utf-8?B?SUtsN1llQlQxa1Q2MGMzemE4TnlSazlDRjFhSElISWkxQ3IwdEpnbnpheXF4?=
+ =?utf-8?B?MmVCbWRHZzl0YmJuVmhTc3FRMThXN3B3Z1ZVVFpCVGlGUk1MRWN4L0hRd3ZK?=
+ =?utf-8?B?YkxVVlpLZVFEdGFJbFFnYndGWndyVTZmN0hMM1htUktic1Y2TVdFVk94QVJZ?=
+ =?utf-8?B?NmM1eGhyRXJRcnNydDRseEpOWVE4Q1ZCeGJleHdCYUNya3VxcldnZHM0NFRE?=
+ =?utf-8?B?TXpSeWljZFpyVUd4bHFuSktUNGxnUE9nV0JOQWhvUXpmdml5aXk3RjBESVlq?=
+ =?utf-8?B?a1lSVEJMMmo3RGVYUnkzcnEzRWhEbUl0eXFxaFQxb09oOU14aGF3MDl5Zkhr?=
+ =?utf-8?B?eWpHbGNOR0lFZERGM1hKLzEzUkZkWXlTdTEwMERnMEt2a0l6Y2dUN0R3QStt?=
+ =?utf-8?B?VmdBMzkxSE9OeS9aOXp4RkpDR0JRbUg1b0tqTHNzYWdabVBFSk1QYXlCWURv?=
+ =?utf-8?B?Q2R2cWlYY3U1RmZOZjBBZ0R3VkZtaGZNeXlYQlhzMjR0YzhoWE5RYndDMDVC?=
+ =?utf-8?B?eHNmV1N3NnRma2hzZ3Znd0I4OTRIMGFwTCtsNTlobi9pUzV0SHN1YS9FMTRy?=
+ =?utf-8?B?Ky9TQXAvajhPUmFNeE9SaXNvNkc1RlJBRTBrMEhDREc2NVdPNzlzV2psSWd3?=
+ =?utf-8?B?WVJrRnhJRlRzSVV6bHp2N29RckhlTklJYlJsM0pVVkFVazV0eGg0aXdjcHZO?=
+ =?utf-8?B?TWl1eUVtR2ZGR2dIS2pkQ081bHdJMUNyWkRBUmQvdWRMMFA1UHN6ODlmd3Zl?=
+ =?utf-8?B?OHpOY0QzMEdRSjVZdFRKOW90UVRIRjkxMnpMN21Wc1E0L0IzR2p6QnhiRkpM?=
+ =?utf-8?B?UVhkSjUxTTUvZkRxaStoUFZya0laeUw4ZUxRa2VkT3F6TFdnK2dqTlNmaHEy?=
+ =?utf-8?B?dHlNVCtORWgzY0xMVXVmbkY1YXMvWlYrK1drNjFnVE9XSW5ZUTZLYm5McWhw?=
+ =?utf-8?B?OWpDMHAyWExaNis3RzRJRksweHZXU004VS9UUnNBSWpEd1ZvRDFDa0tGZTAz?=
+ =?utf-8?B?dkUzWmxPckpTMlNKaVJteTdmT2xWYjRKZXAxcmtHVmhMaUljVnNpRlFVVnRt?=
+ =?utf-8?B?WjFWTGtzLys2dWZnMXhXRGdSZkVodTlENUwzcEVMYVg0aWRyK1lmcVBCcnpJ?=
+ =?utf-8?B?ZHZReVJsa002L3lVU3d0OEZJakVCTEhtNHVzaU5MdENBN1Uzd3FhUTh2dDBY?=
+ =?utf-8?B?cEVSNDg5TkFjZENaSlovWkFxdVBFZ2pybXdZdXZHNXQ3aDAxdXFEalNZelpo?=
+ =?utf-8?B?SERwaUM2MW4vWUg4R3pHSGpTSTZzZEhhVStHZnZzRms1WDdjRTIxRVZEVmVU?=
+ =?utf-8?B?YUU3aXFUd3ZoOUNITjBTanhqNnFCdEg5SVlRY0YvM2oxc1c0cWptUTdxN01N?=
+ =?utf-8?Q?wcC4dQKNwD/Dd42uvstaXaRPV+EMdCvH7uuYV?=
+X-OriginatorOrg: cherry.de
+X-MS-Exchange-CrossTenant-Network-Message-Id: e87e66d4-6c66-484d-36b4-08de5e5e1a62
+X-MS-Exchange-CrossTenant-AuthSource: GVXPR04MB12038.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jan 2026 11:12:19.6756
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6f50e05b-0628-4c66-b09d-08de5df76e75
-X-MS-Exchange-CrossTenant-Id: e5b49634-450b-4709-8abb-1e2b19b982b7
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.21.194];Helo=[flwvzet200.ext.ti.com]
-X-MS-Exchange-CrossTenant-AuthSource: 
-	SJ1PEPF00001CEA.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR10MB6321
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: O/kqzshiS3PP0VC1+DBb1wFNq3zz7qbYB92xTPk3hBSNuEEV7RXXT0qjn76BgwQvUEuv98zGvqvr/x8VRH6sSzK1HUcx3PzcqjaqFxyIRCM=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10193
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 27 Jan 2026 22:57:28 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8755
+ <docs@lists.yoctoproject.org>; Wed, 28 Jan 2026 11:12:32 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8756
 
-The UBOOT_CONFIG flow was updated in oe-core [1].  Document all of the
-new variables and preferred method of specifying the various controls
-for each config.
+Hi Antonin,
 
-[1] https://git.openembedded.org/openembedded-core/commit/?id=3Dcd9e7304481=
-b24b27df61c03ad73496d18e4d47c
+On 1/27/26 9:19 AM, Antonin Godard via lists.yoctoproject.org wrote:
+> Remove references to the Poky repository, replace by OpenEmbedded-Core.
+> Replace the poky examples for the Git section by yocto-docs.
+> 
+> Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+> ---
+>   .../overview-manual/development-environment.rst    | 83 +++++++++++-----------
+>   1 file changed, 41 insertions(+), 42 deletions(-)
+> 
+> diff --git a/documentation/overview-manual/development-environment.rst b/documentation/overview-manual/development-environment.rst
+> index ab9bd084c..0402e3456 100644
+> --- a/documentation/overview-manual/development-environment.rst
+> +++ b/documentation/overview-manual/development-environment.rst
+> @@ -148,44 +148,42 @@ code browser is organized into categories by function such as IDE
+>   Plugins, Matchbox, Poky, Yocto Linux Kernel, and so forth. From the
+>   interface, you can click on any particular item in the "Name" column and
+>   see the URL at the bottom of the page that you need to clone a Git
+> -repository for that particular item. Having a local Git repository of
+> -the :term:`Source Directory`, which
+> -is usually named "poky", allows you to make changes, contribute to the
+> +repository for that particular item. Having a local Git clone of
+> +these repositories allows you to make changes, contribute to the
+>   history, and ultimately enhance the Yocto Project's tools, Board Support
+>   Packages, and so forth.
+>   
+>   For any supported release of Yocto Project, you can also go to the
+> -:yocto_home:`Yocto Project Website <>` and select the "DOWNLOADS"
+> -item from the "SOFTWARE" menu and get a released tarball of the ``poky``
+> -repository, any supported BSP tarball, or Yocto Project tools. Unpacking
+> +:yocto_home:`Yocto Project Website <>` and select the "RELEASES"
+> +item from the "DEVELOPMENT" menu and get a released tarball of the
 
-Signed-off-by: Ryan Eatmon <reatmon@ti.com>
----
-v2: - Added missing commit URL.
-    - Applied feedback from Antonin Godard.
+Why making it harder to maintain by telling the user where to click 
+instead of just providing a direct link which we can check with 
+linkcheck if we want to?
 
- documentation/ref-manual/classes.rst   | 112 ++++++++++++++++++++++---
- documentation/ref-manual/variables.rst | 109 ++++++++++++++++++++++--
- 2 files changed, 201 insertions(+), 20 deletions(-)
+s/RELEASES/Releases/
 
-diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manua=
-l/classes.rst
-index 2e219a59c..0e36c6c0d 100644
---- a/documentation/ref-manual/classes.rst
-+++ b/documentation/ref-manual/classes.rst
-@@ -3269,13 +3269,104 @@ variable using the "type" varflag. Here is an exam=
-ple::
- The :ref:`ref-classes-uboot-config` class provides support for configuring=
- one
- or more U-Boot build configurations.
-=20
--There are two ways to configure the recipe for your machine:
-+There are three ways to configure the recipe for your machine:
-=20
---  Using :term:`UBOOT_CONFIG` variable. For example::
-+-  Using the :term:`UBOOT_MACHINE` variable (and its companion variable
-+   :term:`UBOOT_BINARY`). For example::
-+
-+      UBOOT_MACHINE =3D "config"
-+      UBOOT_BINARY =3D "u-boot.bin"
-+
-+-  Using :term:`UBOOT_CONFIG` variables. For example::
-+
-+      UBOOT_CONFIG ??=3D "foo bar"
-+      UBOOT_CONFIG[foo] =3D "config"
-+      UBOOT_CONFIG[bar] =3D "config2"
-+
-+      UBOOT_CONFIG_IMAGE_FSTYPES[bar] =3D "fstype"
-+
-+      UBOOT_CONFIG_BINARY[foo] =3D "binary"
-+
-+      UBOOT_CONFIG_MAKE_OPTS[foo] =3D "FOO=3D1"
-+      UBOOT_CONFIG_MAKE_OPTS[bar] =3D "BAR=3D1"
-+
-+      UBOOT_CONFIG_FRAGMENTS[foo] =3D "foo.fragment"
-+
-+   In this example, all possible configurations are selected (``foo`` and
-+   ``bar``), but it is also possible to build only ``foo`` or ``bar`` by
-+   changing the value of :term:`UBOOT_CONFIG` to include either one or the
-+   other.  For exmaple::
-+
-+      UBOOT_CONFIG =3D "foo"
-+      UBOOT_CONFIG[foo] =3D "config"
-+      UBOOT_CONFIG[bar] =3D "config2"
-+
-+   Each build configuration is associated to a variable flag definition of
-+   :term:`UBOOT_CONFIG`, and associated changes for each config as defined
-+   in the various UBOOT_CONFIG_* variables.
-+
-+   -  ``UBOOT_CONFIG[config]``: defconfig file selected for this build con=
-figuration.
-+      These files are found in the source tree's ``configs`` folder of U-B=
-oot.
-+
-+      *This option is mandatory.*
-+
-+      See the documentation of :term:`UBOOT_CONFIG` for more information.
-+
-+   -  ``UBOOT_CONFIG_IMAGE_FSTYPES[config]``: image types to append to the
-+      :term:`IMAGE_FSTYPES` variable for image generation for this build
-+      configuration.
-+
-+      This can allow building an extra image format that uses the binary
-+      generated by this build configuration.
-+
-+      This option is not mandatory and can be left unspecified if not need=
-ed.
-+
-+      See the documentation of :term:`UBOOT_CONFIG_IMAGE_FSTYPES` for more=
- information.
-+
-+   -  ``UBOOT_CONFIG_BINARY[config]``: binary to select as the one to depl=
-oy in
-+      :term:`DEPLOY_DIR_IMAGE`. The output of a U-Boot build may be more t=
-han
-+      one binary, for example::
-+
-+         u-boot.bin
-+         u-boot-with-spl.bin
-+
-+      Setting the ``binary`` value to ``u-boot-with-spl.bin`` will make th=
-is
-+      binary the one deployed in :term:`DEPLOY_DIR_IMAGE`. It is renamed t=
-o
-+      include the build configuration name in the process (``foo`` or ``ba=
-r`` in
-+      the above example).
-+
-+      This option defaults to :term:`UBOOT_BINARY` if not specified.
-+
-+      See the documentation of :term:`UBOOT_CONFIG_BINARY` for more inform=
-ation.
-+
-+   -  ``UBOOT_CONFIG_MAKE_OPTS[config]``: additional options passed to
-+      ``make`` when configuring and compiling U-Boot for this configuratio=
-n
-+      entry. The options in this entry are added before the options in
-+      :term:`UBOOT_MAKE_OPTS`.
-+
-+      This option is not mandatory and adds nothing if not specified.  If
-+      you do not have a make option for a given config, you can simply not
-+      set the flag for that config.
-+
-+      See the documentation of :term:`UBOOT_CONFIG_MAKE_OPTS` for more inf=
-ormation.
-+
-+   -  ``UBOOT_CONFIG_FRAGMENTS[config]``: additional config fragment(s)
-+      from the source tree that is used during ``do_configure()`` to setup=
- the
-+      build.  The options in this entry are added before the fragments in
-+      :term:`UBOOT_FRAGMENTS`.
-+
-+      This option is not mandatory and adds nothing if not specified.  If
-+      you do not have a fragment a given config, you can simply not set th=
-e
-+      flag for that config.
-+
-+      See the documentation of :term:`UBOOT_CONFIG_FRAGMENTS` for more inf=
-ormation.
-+
-+-  Or, a legacy method using the :term:`UBOOT_CONFIG` variable by itself.
-+   *This method is being deprecated, see note below.*  For example::
-=20
-       UBOOT_CONFIG ??=3D "foo bar"
--      UBOOT_CONFIG[foo] =3D "config,images,binary,makeopts"
--      UBOOT_CONFIG[bar] =3D "config2,images2,binary2,makeopts2"
-+      UBOOT_CONFIG[foo] =3D "config,images,binary"
-+      UBOOT_CONFIG[bar] =3D "config2,images2,binary2"
-=20
-    In this example, all possible configurations are selected (``foo`` and
-    ``bar``), but it is also possible to build only ``foo`` or ``bar`` by
-@@ -3313,15 +3404,12 @@ There are two ways to configure the recipe for your=
- machine:
-=20
-       This option defaults to :term:`UBOOT_BINARY` if unset.
-=20
--   -  ``makeopts``: the additional options passed to ``make`` when configu=
-ring
--      and compiling U-Boot for this configuration entry. The options in th=
-is
--      entry are added before the options in :term:`UBOOT_MAKE_OPTS`.
--
---  Or, using the :term:`UBOOT_MACHINE` variable (and its companion variabl=
-e
--   :term:`UBOOT_BINARY`). For example::
-+.. note::
-=20
--      UBOOT_MACHINE =3D "config"
--      UBOOT_BINARY =3D "u-boot.bin"
-+   The legacy flow has been deprecated.  It is recommended to not use this
-+   legacy flow as any future extensions to the control knobs will be not a=
-dded
-+   to this methodology.  This functionality will be removed after the wryn=
-ose
-+   LTS release.
-=20
- Using :term:`UBOOT_MACHINE` and :term:`UBOOT_CONFIG` at the same time is n=
-ot
- possible.
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-man=
-ual/variables.rst
-index 4d8a35473..cdf0111a2 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -10669,29 +10669,109 @@ system and gives an overview of their function a=
-nd contents.
-=20
-    :term:`UBOOT_CONFIG`
-       Configures one or more U-Boot configurations to build. Each
--      configuration can define the :term:`UBOOT_MACHINE` and optionally th=
-e
--      :term:`IMAGE_FSTYPES` and the :term:`UBOOT_BINARY`.
-+      configuration must define the :term:`UBOOT_MACHINE` variable.
-+      Additional control variables are: :term:`UBOOT_CONFIG_BINARY`,
-+      :term:`UBOOT_CONFIG_FRAGMENTS`, :term:`UBOOT_CONFIG_IMAGE_FSTYPES`, =
-and
-+      :term:`UBOOT_CONFIG_MAKE_OPTS`.=20
-=20
--      Here is an example from the ``meta-freescale`` layer. ::
-+      Here is an updated example from the ``meta-freescale`` layer. ::
-=20
-          UBOOT_CONFIG ??=3D "sdcard-ifc-secure-boot sdcard-ifc sdcard-qspi=
- lpuart qspi secure-boot nor"
-+
-          UBOOT_CONFIG[nor] =3D "ls1021atwr_nor_defconfig"
--         UBOOT_CONFIG[sdcard-ifc] =3D "ls1021atwr_sdcard_ifc_defconfig,,u-=
-boot-with-spl-pbl.bin"
--         UBOOT_CONFIG[sdcard-qspi] =3D "ls1021atwr_sdcard_qspi_defconfig,,=
-u-boot-with-spl-pbl.bin"
-+         UBOOT_CONFIG[sdcard-ifc] =3D "ls1021atwr_sdcard_ifc_defconfig"
-+         UBOOT_CONFIG[sdcard-qspi] =3D "ls1021atwr_sdcard_qspi_defconfig"
-          UBOOT_CONFIG[lpuart] =3D "ls1021atwr_nor_lpuart_defconfig"
-          UBOOT_CONFIG[qspi] =3D "ls1021atwr_qspi_defconfig"
-          UBOOT_CONFIG[secure-boot] =3D "ls1021atwr_nor_SECURE_BOOT_defconf=
-ig"
--         UBOOT_CONFIG[sdcard-ifc-secure-boot] =3D "ls1021atwr_sdcard_ifc_S=
-ECURE_BOOT_defconfig,,u-boot-with-spl-pbl.bin"
-+         UBOOT_CONFIG[sdcard-ifc-secure-boot] =3D "ls1021atwr_sdcard_ifc_S=
-ECURE_BOOT_defconfig"
-+
-+         UBOOT_CONFIG_BINARY[sdcard-ifc] =3D "u-boot-with-spl-pbl.bin"
-+         UBOOT_CONFIG_BINARY[sdcard-qspi] =3D "u-boot-with-spl-pbl.bin"
-+         UBOOT_CONFIG_BINARY[sdcard-ifc-secure-boot] =3D "u-boot-with-spl-=
-pbl.bin"
-=20
-       In this example, all possible seven configurations are selected. Eac=
-h
-       configuration specifies "..._defconfig" as :term:`UBOOT_MACHINE`, an=
-d
-       the "sd..." configurations define an individual name for
--      :term:`UBOOT_BINARY`. No configuration defines a second parameter fo=
-r
--      :term:`IMAGE_FSTYPES` to use for the U-Boot image.
-+      :term:`UBOOT_CONFIG_BINARY`.
-=20
-       For more information on how the :term:`UBOOT_CONFIG` is handled, see=
- the
-       :ref:`ref-classes-uboot-config` class.
-=20
-+   :term:`UBOOT_CONFIG_BINARY`
-+      This variable cannot be set to a value in a config, it is a placehol=
-der
-+      for configuring the :term:`UBOOT_CONFIG` flow via flags::
-+
-+         UBOOT_CONFIG_BINARY[foo] =3D "binary1"
-+         UBOOT_CONFIG_BINARY[bar] =3D "binary2"
-+
-+      It specifies the binary to select as the one to deploy in :term:`DEP=
-LOY_DIR_IMAGE`.
-+      The output of a U-Boot build may be more than one binary, for exampl=
-e::
-+
-+         u-boot.bin
-+         u-boot-with-spl.bin
-+
-+      Setting the ``binary`` value to ``u-boot-with-spl.bin`` will make th=
-is
-+      binary the one deployed in :term:`DEPLOY_DIR_IMAGE`. It is renamed t=
-o
-+      include the build configuration name in the process (``foo`` or ``ba=
-r`` in
-+      the above example).
-+
-+      This option defaults to :term:`UBOOT_BINARY` if not specified.
-+
-+      For more information on how the :term:`UBOOT_CONFIG_BINARY` variable=
- is
-+      handled, see the :ref:`ref-classes-uboot-config` class.
-+
-+   :term:`UBOOT_CONFIG_FRAGMENTS`
-+      This variable cannot be set to a value in a config, it is a placehol=
-der
-+      for configuring the :term:`UBOOT_CONFIG` flow via flags::
-+
-+         UBOOT_CONFIG_FRAGMENTS[foo] =3D "frag1 frag2"
-+         UBOOT_CONFIG_FRAGMENTS[bar] =3D "frag3"
-+
-+      Specify a list of fragments from the source tree that should be comb=
-ined
-+      with the defconfig from :term:`UBOOT_CONFIG` that are used during ``=
-do_configure()``
-+      to configure the build.  These fragments are located in same=20
-+      ``${S}/configs/`` directory as the defconfig.
-+
-+      This option is not required and you only need to specify it for
-+      configs that need them.
-+
-+      For more information on how the :term:`UBOOT_CONFIG_FRAGMENTS` is ha=
-ndled, see the
-+      :ref:`ref-classes-uboot-config` class.
-+
-+   :term:`UBOOT_CONFIG_IMAGE_FSTYPES`
-+      This variable cannot be set to a value in a config, it is a placehol=
-der
-+      for configuring the :term:`UBOOT_CONFIG` flow via flags::
-+
-+         UBOOT_CONFIG_IMAGE_FSTYPES[foo] =3D "fstype1"
-+         UBOOT_CONFIG_IMAGE_FSTYPES[bar] =3D "fstype2"
-+
-+      Append additional image types to the :term:`IMAGE_FSTYPES` variable =
-for
-+      image generation for this build configuration.  This can allow build=
-ing an
-+      extra image format that uses the binary generated by this build conf=
-iguration.
-+
-+      This option is not required and you only need to specify flag settin=
-gs for
-+      configs that need them.
-+
-+      For more information on how the :term:`UBOOT_CONFIG_IMAGE_FSTYPES` i=
-s handled, see the
-+      :ref:`ref-classes-uboot-config` class.
-+
-+   :term:`UBOOT_CONFIG_MAKE_OPTS`
-+      This variable cannot be set to a value in a config, it is a placehol=
-der
-+      for configuring the :term:`UBOOT_CONFIG` flow via flags::
-+
-+         UBOOT_CONFIG_MAKE_OPTS[foo] =3D "OPT1=3Dfoo OPT2=3D2"
-+         UBOOT_CONFIG_MAKE_OPTS[bar] =3D "OPT1=3Dbar"
-+
-+      It specifies a list of make command line options that are passed to =
-the ``make`` command
-+      during ``do_compile()``.
-+
-+      This option is not required and you only need to specify flag settin=
-gs for
-+      configs that need them.
-+
-+      For more information on how the :term:`UBOOT_CONFIG_MAKE_OPTS` is ha=
-ndled, see the
-+      :ref:`ref-classes-uboot-config` class.
-+
-    :term:`UBOOT_DTB_LOADADDRESS`
-       Specifies the load address for the dtb image used by U-Boot. During =
-FIT
-       image creation, the :term:`UBOOT_DTB_LOADADDRESS` variable is used i=
-n
-@@ -10980,6 +11060,19 @@ system and gives an overview of their function and=
- contents.
-=20
-       See the :ref:`ref-classes-uboot-sign` class for details.
-=20
-+   :term:`UBOOT_FRAGMENTS`
-+      The :term:`UBOOT_FRAGMENTS` variable can be used to pass extra confi=
-g
-+      fragments from the source tree to ``make`` when U-Boot is configured=
-.
-+      These fragments are located in same ``${S}/configs/`` directory as t=
-he
-+      defconfig.
-+
-+      For example::
-+
-+          UBOOT_MACHINE =3D "am62x_evm_r5_defconfig"
-+          UBOOT_FRAGMENTS =3D "am62x_r5_usbdfu.config"
-+
-+      See the :ref:`ref-classes-uboot-config` class for more information.
-+
-    :term:`UBOOT_INITIAL_ENV_BINARY`
-       This variable enables the generation of the U-Boot initial environme=
-nt in
-       binary format.
---=20
-2.43.0
+s/DEVELOPMENT/Development/
 
+[...]
+
+> --  :yocto_home:`DOWNLOADS page </software-overview/downloads/>`:
+> -   The :yocto_home:`Yocto Project website <>` includes a "DOWNLOADS" page accessible
+> +-  :yocto_home:`RELEASES page </development/releases/>`:
+> +   The :yocto_home:`Yocto Project website <>` includes a "RELEASES" page accessible
+>      through the "SOFTWARE" menu that allows you to download any Yocto
+
+through the "Development" menu.
+
+Also, they all are capitalized but not uppercase, i.e. Releases and not 
+RELEASES.
+
+>      Project release, tool, and Board Support Package (BSP) in tarball
+>      form. The hyperlinks point to the tarballs under
+> @@ -230,11 +228,11 @@ and so forth.
+>      ":doc:`/contributor-guide/identify-component`"
+>      section of the Yocto Project and OpenEmbedded Contributor Guide.
+>   
+> -The Yocto Project ``poky`` Git repository also has an upstream
+> -contribution Git repository named ``poky-contrib``. You can see all the
+> +The Yocto Project Git repositories may also have upstream
+> +contribution Git repositories suffixed with ``-contrib``. You can see all the
+>   branches in this repository using the web interface of the
+
+Reported in v1:
+
+You mention there can be multiple repositories but here you say "this
+repository" which is confusing. Maybe use one of the contrib git repos
+as example.
+
+[...]
+
+> @@ -449,19 +446,19 @@ The most common use is to checkout a working branch that matches a
+>   specific Yocto Project release. Here is an example::
+>   
+>      $ cd ~
+> -   $ git clone git://git.yoctoproject.org/poky
+> -   $ cd poky
+> +   $ git clone git://git.yoctoproject.org/yocto-docs
+> +   $ cd yocto-docs
+>      $ git fetch --tags
+> -   $ git checkout tags/rocko-18.0.0 -b my_rocko-18.0.0
+> +   $ git checkout tags/&DISTRO_NAME_NO_CAP;-&DISTRO; -b my_&DISTRO_NAME_NO_CAP;-&DISTRO;
+>   
+>   In this example, the name
+>   of the top-level directory of your local Yocto Project repository is
+> -``poky``. After moving to the ``poky`` directory, the ``git fetch``
+> +``yocto-docs``. After moving to the ``yocto-docs`` directory, the ``git fetch``
+>   command makes all the upstream tags available locally in your
+>   repository. Finally, the ``git checkout`` command creates and checks out
+> -a branch named "my-rocko-18.0.0" that is based on the upstream branch
+> +a branch named "my_&DISTRO_NAME_NO_CAP;-&DISTRO;" that is based on the upstream branch
+>   whose "HEAD" matches the commit in the repository associated with the
+> -"rocko-18.0.0" tag. The files in your repository now exactly match that
+> +"&DISTRO_NAME_NO_CAP;-&DISTRO;" tag. The files in your repository now exactly match that
+
+Technicality but I believe this is incorrect in git. The only thing that 
+matters is you check out a tag. The tag may not necessarily be on a 
+branch (it is for us, but it doesn't *have* to be). Also, HEAD of 
+whinlatter may not be the latest release tag so that is actually incorrect.
+
+I guess we could make this a bit more palatable (and proper) by 
+rewording to:
+
+that is based on the upstream tag in the repository.
+
+Maybe? Separate patch/series though, not a blocker here.
+
+Cheers,
+Quentin
 
