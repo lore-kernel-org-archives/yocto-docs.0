@@ -2,279 +2,504 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2D99DD6B062
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 62ACAD6B068
 	for <webhook@archiver.kernel.org>; Thu, 29 Jan 2026 15:24:29 +0000 (UTC)
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.17198.1769700259996853148
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.17202.1769700263441572566
  for <docs@lists.yoctoproject.org>;
- Thu, 29 Jan 2026 07:24:20 -0800
+ Thu, 29 Jan 2026 07:24:23 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=LD4HxvRF;
- spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
+ dkim=fail reason="dkim: body hash did not verify" header.i=@bootlin.com header.s=dkim header.b=e4bxEAzD;
+ spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 784A9C22F4C
+	by smtpout-03.galae.net (Postfix) with ESMTPS id DDDA04E42325
 	for <docs@lists.yoctoproject.org>; Thu, 29 Jan 2026 15:24:21 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 77434606FD
-	for <docs@lists.yoctoproject.org>; Thu, 29 Jan 2026 15:24:18 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D575D119A8860;
-	Thu, 29 Jan 2026 16:24:17 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id B3CE3606FD
+	for <docs@lists.yoctoproject.org>; Thu, 29 Jan 2026 15:24:21 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E8DF4119A886D;
+	Thu, 29 Jan 2026 16:24:20 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1769700258; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1769700261; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=lRJ1dKproiVYX5jbrtY4m4y/HA45997KLd+7u19TcGw=;
-	b=LD4HxvRFBxbxeCTHti3TFqW/9AIPCHPkTwfC2oLhRbIG3KVfo1TIAv6vsRxD+JKTzwunOB
-	VjPdAij1eelQNuIEfmxTwzOiy0KSzdWv9+24/x884bVi+Nn6CbQsUMfkCjOCv+rduTrxAh
-	+a9eUZclXTslkUayK1khvkqF12avX8XYrB47NmkPUMhwCf2hPWLVnhvbgviZ40Qb9T/rew
-	seEzOIFLnTvsBjTQwyZcyQSh3KkSUpsnF3/JGx0pUt7paTY/txTTLihSDQCwc3L131WiYe
-	SIYCrMHAGT+iQ7de9J70eeD40g9KO8ch3zpVircril/OhBCdQ5Q5wO94ywVRIw==
+	bh=TFvQLQs+MC8uMNVx/wBlAujV+BfiJckgBuxWIBoWOus=;
+	b=e4bxEAzDnWYMaRewX3LEI/iL4V1xTaCeHOvCBGXjUPjx0+wjH5q4Z71JZxIoDwaqseXC6p
+	MovTGf4/dm01oZbDANpW+1zSaSLS/SIETrMi0Zd2R3+6Aq+l2OR4nlmSTh3MPws3XPa+LM
+	AEuN5Tbum06CNvps76bEA3Sjx7h6gafrzcgo8XI/hukf9TSqwQnK/ohIE8+1S9LQnSPMW7
+	IQt+66OzyiB2wbWujdhyfaiuHlFKMW7uJsJHrXdLEur87g7A33koeBiL2Ae1bbsIjNIb0f
+	IA7b9zPt+7TTiEHORAa7EddqzdwmVZAwxK+KkPfuzSC8HUGEiq8i1Oxl43rPJQ==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Thu, 29 Jan 2026 16:23:13 +0100
-Subject: [PATCH v3 22/57] overview-manual/development-environment.rst:
- remove obsolete poky repo references
+Date: Thu, 29 Jan 2026 16:23:17 +0100
+Subject: [PATCH v3 26/57] ref-manual/structure.rst: remove obsolete poky
+ repo references
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260129-remove-poky-references-v3-22-804acc3d9b7a@bootlin.com>
+Message-Id: <20260129-remove-poky-references-v3-26-804acc3d9b7a@bootlin.com>
 References: <20260129-remove-poky-references-v3-0-804acc3d9b7a@bootlin.com>
 In-Reply-To: <20260129-remove-poky-references-v3-0-804acc3d9b7a@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=11845;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=16077;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=Uwf/Ve7ZsX7/9Z8x/I4w9QopCFlWlEBx+ra3Sc+uPt8=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpe3uMujrw+xivNlkerzyJtSkoFItYpV/TKFNxn
- 9AA1mJjc0+JAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaXt7jAAKCRDRgEFAKaOo
- NoDOEADNNyW/a0sdT2NMPVblzIYTdBAtZLzqsEwsAJX92HINolcpQhXjABF1e8G6BI/PdtWICwU
- +RKwE6vLZetO0QjdAgpYeazWAGXadgBBVjEqSZ3hV9FJz+CYIwxm96oQQnpN/RPPAVBGLyPqv3C
- zbCp+IgK3y+MGbV3pRg9oz9XOVOwrKcwfyR/zZb2A9PcjqSW5lpeGJFIKPM3oTGz1Vm7e+++RSf
- 1e6rqQBxvAqM8bVSXAlXZ6YTjAI/JFw0LchpVIEWeAMT4bekdC3iDVr6bVIbgKRRyu7C5FbQY9n
- ZbzMqGscbS1yq3bdawlTm4l1RRp+VZQnFTCe21CO4LccApQP3ed5M7KLQoz2Qdbr8qdBffhNN+x
- TKHqya0WYyAvCic4D2ki6eqpGO1APfIF5vgoKeja/nNdR0lYIzEOl3cBMWEQXKueKuJtCenvI5U
- ZW6BdRKwy0JhkWYexNF6/SQFYsE3BQHK+Y4ipMmZHOC8QTHmRdnMjRkGQPyOE7vHOB4Y1waVTB6
- tnNUFKyGWcw+2gnzcUBwzsDAarz+fkTkCaI10xC/9Xx/sOWgfT6lPP9vPo0P1h756If6LO1UaPt
- j83iwkA6DcUBc9bcU7zE2wYNHwv0eHhvmWI++j66/Pg8hLubBM11K6WoyUkEP2FsLD5mS8eDLMY
- bAZzVkrSnwuYHtg==
+ bh=CRBdkl2WAy920g5OtRoJP9/E9+MeRbI8Dj9NcW/ZpVE=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpe3uN1NwiDgSiQL7Di2e7fHtQDks5Cis1huZJx
+ sUVRFLuofCJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaXt7jQAKCRDRgEFAKaOo
+ NqmHD/0Rc3pabcwxd5xF1r4ESxA6oXc9o2nfgr2cG7Vp4r2oosVkymW3et9MqHLP4WTxm5MS08/
+ JqCBBfdHEyFP1aALqhFL0JngUl+R5Jckb9pPePXNB7RtzFcJze7oatiwaac1lauO+5rsZnsSuNc
+ ykyGhH/ggmtzo4QVV1jtyRon8iYrUgXvMXXEzj/kXVkZTBc39TGaPLrkGzAhcHclOayWvOaaUy5
+ N4zZVbeCTT5uF62stgOCpjfZtxDGsu61Lb7zDTRuQv/I/Dc+MxkeTDnhlmswuDpQi+n3ItdXz+T
+ NBAByS1GADspRLdvAt4zTg4TZ5j8UfKIjKzlHPwh99UImY/1Hs2GtyhrEmN6wnavzIHThtL0wU0
+ 140Fl5C1DS1nBGLw2NSGSnxkXTGp2Pwi3Iuf76L/GThT7/BowADEkqPRlKLxkuha0ABSg0mPm3l
+ 13jFN/gyYRb54BYq+jYAfaTIj25Xu2xDEVPTWUtu0nM1xNT8JaL9iHZia6u/nQ2RS72KKWg+k1J
+ NfosxnImwziq1b0hxxnM6UxhhyhehqKJ/DEZoB6iFf61EiJIKhbV6tjUvfbrDpb7HrcX/yzvJSk
+ U8vUKcE+GLKjL2J7M5NTU5cFwkyvLeY9Ms1hDwNVtSKIYJ0DQZxce/TkZZLA2KSDzwFU+LGQa2L
+ +0APy5U2UKKZXLA==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: quoted-printable
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Thu, 29 Jan 2026 15:24:29 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8808
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8812
 
-Remove references to the Poky repository, replace by OpenEmbedded-Core.
-Replace the poky examples for the Git section by yocto-docs.
+Remove references to the Poky repository, replace by OpenEmbedded-Core
+in most cases.
+
+Add a introductory directory layout at the top that is reflected in the
+following section. This document no longer uses Poky as its source
+directory, so all paths are explicitly mentioned, to highlight the
+separation between core components. This lead to some re-organization of
+some sections.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- .../overview-manual/development-environment.rst    | 87 +++++++++++-----------
- 1 file changed, 43 insertions(+), 44 deletions(-)
+ documentation/bsp-guide/bsp.rst        |   4 +-
+ documentation/ref-manual/structure.rst | 165 ++++++++++++++++++++-------=
+------
+ documentation/ref-manual/terms.rst     |   2 +-
+ 3 files changed, 104 insertions(+), 67 deletions(-)
 
-diff --git a/documentation/overview-manual/development-environment.rst b/documentation/overview-manual/development-environment.rst
-index ab9bd084c..7408a4c62 100644
---- a/documentation/overview-manual/development-environment.rst
-+++ b/documentation/overview-manual/development-environment.rst
-@@ -148,45 +148,43 @@ code browser is organized into categories by function such as IDE
- Plugins, Matchbox, Poky, Yocto Linux Kernel, and so forth. From the
- interface, you can click on any particular item in the "Name" column and
- see the URL at the bottom of the page that you need to clone a Git
--repository for that particular item. Having a local Git repository of
--the :term:`Source Directory`, which
--is usually named "poky", allows you to make changes, contribute to the
-+repository for that particular item. Having a local Git clone of
-+these repositories allows you to make changes, contribute to the
- history, and ultimately enhance the Yocto Project's tools, Board Support
- Packages, and so forth.
- 
- For any supported release of Yocto Project, you can also go to the
--:yocto_home:`Yocto Project Website <>` and select the "DOWNLOADS"
--item from the "SOFTWARE" menu and get a released tarball of the ``poky``
--repository, any supported BSP tarball, or Yocto Project tools. Unpacking
-+:yocto_home:`Yocto Project Website <>` and select the "Releases"
-+item from the "Development" menu and get a released tarball of the
-+repositories, any supported BSP tarball, or Yocto Project tools. Unpacking
- these tarballs gives you a snapshot of the released files.
- 
+diff --git a/documentation/bsp-guide/bsp.rst b/documentation/bsp-guide/bs=
+p.rst
+index 4a89d691a..a3b57d29f 100644
+--- a/documentation/bsp-guide/bsp.rst
++++ b/documentation/bsp-guide/bsp.rst
+@@ -81,7 +81,7 @@ directory of that Layer. This directory is what you add=
+ to the
+ ``conf/bblayers.conf`` file found in your
+ :term:`Build Directory`, which is
+ established after you run the OpenEmbedded build environment setup
+-script (i.e. :ref:`ref-manual/structure:``oe-init-build-env```).
++script (i.e. :ref:`structure-core-script`).
+ Adding the root directory allows the :term:`OpenEmbedded Build System`
+ to recognize the BSP
+ layer and from it build an image. Here is an example::
+@@ -221,7 +221,7 @@ section.
+       Checking connectivity... done.
+=20
+ #. *Initialize the Build Environment:* While in the :term:`Source Direct=
+ory`,
+-   run the :ref:`ref-manual/structure:``oe-init-build-env``` environment=
+ setup
++   run the :ref:`structure-core-script` environment setup
+    script located in :term:`OpenEmbedded-Core (OE-Core)` to define the O=
+penEmbedded
+    build environment on your build host. ::
+=20
+diff --git a/documentation/ref-manual/structure.rst b/documentation/ref-m=
+anual/structure.rst
+index d567cade0..06cd2b770 100644
+--- a/documentation/ref-manual/structure.rst
++++ b/documentation/ref-manual/structure.rst
+@@ -16,6 +16,19 @@ and directories.
+    names that contain spaces. Be sure that the Source Directory you use
+    does not contain these types of names.
+=20
++For the following sections, we assume the core components of the :term:`=
+Source
++Directory` are organized as follows:
++
++.. code-block:: text
++
++   =E2=94=9C=E2=94=80=E2=94=80 build/
++   =E2=94=82=C2=A0=C2=A0 =E2=94=94=E2=94=80=E2=94=80 ...
++   =E2=94=94=E2=94=80=E2=94=80 layers/
++       =E2=94=9C=E2=94=80=E2=94=80 bitbake/
++       =E2=94=9C=E2=94=80=E2=94=80 meta-yocto/
++       =E2=94=9C=E2=94=80=E2=94=80 openembedded-core/
++       =E2=94=94=E2=94=80=E2=94=80 yocto-docs/
++
+ .. _structure-core:
+=20
+ Top-Level Core Components
+@@ -67,8 +80,10 @@ about the contents of the :term:`Build Directory`.
+=20
+ .. _handbook:
+=20
+-``documentation/``
+-------------------
++``layers/yocto-docs/``
++----------------------
++
++The Yocto documentation repository is hosted at :yocto_git:`/yocto-docs`=
+.
+=20
+ This directory holds the source for the Yocto Project documentation as
+ well as templates and tools that allow you to generate PDF and HTML
+@@ -76,37 +91,28 @@ versions of the manuals. Each manual is contained in =
+its own sub-folder;
+ for example, the files for this reference manual reside in the
+ ``ref-manual/`` directory.
+=20
++This directory is not mandatory for building with :term:`BitBake`.
++
++``layers/openembedded-core/``
++-----------------------------
++
++The :term:`OpenEmbedded-Core (OE-Core)` repository is hosted at
++:oe_git:`/openembedded-core`.
++
+ .. _structure-core-meta:
+=20
+ ``meta/``
+----------
++~~~~~~~~~
+=20
+-This directory contains the minimal, underlying OpenEmbedded-Core
+-metadata. The directory holds recipes, common classes, and machine
++This directory contains the minimal, underlying :term:`OpenEmbedded-Core
++(OE-Core)` metadata. The directory holds recipes, common classes, and ma=
+chine
+ configuration for strictly emulated targets (``qemux86``, ``qemuarm``,
+ and so forth.)
+=20
+-.. _structure-core-meta-poky:
+-
+-``meta-poky/``
+---------------
+-
+-Designed above the ``meta/`` content, this directory adds just enough
+-metadata to define the Poky reference distribution.
+-
+-.. _structure-core-meta-yocto-bsp:
+-
+-``meta-yocto-bsp/``
+--------------------
+-
+-This directory contains the Yocto Project reference hardware Board
+-Support Packages (BSPs). For more information on BSPs, see the
+-:doc:`/bsp-guide/index`.
+-
+ .. _structure-meta-selftest:
+=20
+ ``meta-selftest/``
+-------------------
++~~~~~~~~~~~~~~~~~~
+=20
+ This directory adds additional recipes and append files used by the
+ OpenEmbedded selftests to verify the behavior of the build system. You
+@@ -116,14 +122,14 @@ want to run the selftests.
+ .. _structure-meta-skeleton:
+=20
+ ``meta-skeleton/``
+-------------------
++~~~~~~~~~~~~~~~~~~
+=20
+ This directory contains template recipes for BSP and kernel development.
+=20
+ .. _structure-core-scripts:
+=20
+ ``scripts/``
+-------------
++~~~~~~~~~~~~
+=20
+ This directory contains various integration scripts that implement extra
+ functionality in the Yocto Project environment (e.g. QEMU scripts). The
+@@ -137,7 +143,7 @@ back to the Yocto Project, such as ``create-pull-requ=
+est`` and
+ .. _structure-core-script:
+=20
+ ``oe-init-build-env``
+----------------------
++~~~~~~~~~~~~~~~~~~~~~
+=20
+ This script sets up the OpenEmbedded build environment. Running this
+ script with the ``source`` command in a shell makes changes to ``PATH``
+@@ -166,16 +172,27 @@ targets to build. Here is an example::
+=20
+    You can also run generated QEMU images with a command like 'runqemu q=
+emux86-64'
+=20
++.. note::
++
++   When using :doc:`bitbake-setup <bitbake:bitbake-user-manual/bitbake-u=
+ser-manual-environment-setup>`,
++   this script is indirectly sourced when sourcing the ``init-build-env`=
+`
++   located in the :term:`bitbake:Setup`'s build directory. However, comp=
+ared to
++   ``oe-init-build-env``, the bitbake-setup ``init-build-env`` does not =
+take any
++   argument, as it is already located in a :term:`Build Directory`.
++
++   See :doc:`bitbake:bitbake-user-manual/bitbake-user-manual-environment=
+-setup`
++   for more information.
++
+ The default output of the ``oe-init-build-env`` script is from the
+-``conf-summary.txt`` and ``conf-notes.txt`` files, which are found in th=
+e ``meta-poky`` directory
+-within the :term:`Source Directory`. If you design a
+-custom distribution, you can include your own versions of these
+-configuration files where you can provide a brief summary and detailed u=
+sage
+-notes, such as a list of the targets defined by your distribution.
+-See the
+-":ref:`dev-manual/custom-template-configuration-directory:creating a cus=
+tom template configuration directory`"
+-section in the Yocto Project Development Tasks Manual for more
+-information.
++``conf-summary.txt`` and ``conf-notes.txt`` files, which are found in th=
+e
++``meta/conf/templates/default`` directory of :term:`OpenEmbedded-Core
++(OE-Core)`. If you design a custom distribution, you can include your ow=
+n
++versions of these configuration files where you can provide a brief summ=
+ary and
++detailed usage notes, such as a list of the targets defined by your
++distribution. See the
++":ref:`dev-manual/custom-template-configuration-directory:creating a cus=
+tom
++template configuration directory`" section in the Yocto Project Developm=
+ent
++Tasks Manual for more information.
+=20
+ By default, running this script without a :term:`Build Directory` argume=
+nt
+ creates the ``build/`` directory in your current working directory. If
+@@ -188,8 +205,8 @@ your choice. For example, the following command creat=
+es a
+    $ source oe-init-build-env ~/mybuilds
+=20
+ The OpenEmbedded build system uses the template configuration files, whi=
+ch
+-are found by default in the ``meta-poky/conf/templates/default`` directo=
+ry in the Source
+-Directory. See the
++are found by default in the ``meta/conf/templates/default`` directory in
++:term:`OpenEmbedded-Core (OE-Core)`. See the
+ ":ref:`dev-manual/custom-template-configuration-directory:creating a cus=
+tom template configuration directory`"
+ section in the Yocto Project Development Tasks Manual for more
+ information.
+@@ -198,17 +215,35 @@ information.
+=20
+    The OpenEmbedded build system does not support file or directory
+    names that contain spaces. If you attempt to run the ``oe-init-build-=
+env``
+-   script from a Source Directory that contains spaces in either the
++   script from a :term:`Source Directory` that contains spaces in either=
+ the
+    filenames or directory names, the script returns an error indicating
+-   no such file or directory. Be sure to use a Source Directory free of
++   no such file or directory. Be sure to use a :term:`Source Directory` =
+free of
+    names containing spaces.
+=20
+-.. _structure-basic-top-level:
++``layers/meta-yocto/``
++----------------------
++
++The ``meta-yocto`` repository is hosted at :yocto_git:`/meta-yocto`.
+=20
+-``LICENSE, README, and README.hardware``
+-----------------------------------------
++.. _structure-core-meta-poky:
++
++``meta-poky/``
++~~~~~~~~~~~~~~
++
++Dependent on the :term:`OpenEmbedded-Core (OE-Core)` metadata, this dire=
+ctory
++adds just enough metadata to define the Poky reference distribution.
++
++Namely, it contains the distro :term:`configuration file` for Poky:
++``conf/distro/poky.conf``.
++
++.. _structure-core-meta-yocto-bsp:
+=20
+-These files are standard top-level files.
++``meta-yocto-bsp/``
++~~~~~~~~~~~~~~~~~~~
++
++This directory contains the Yocto Project reference hardware Board
++Support Packages (BSPs). For more information on BSPs, see the
++:doc:`/bsp-guide/index`.
+=20
+ .. _structure-build:
+=20
+@@ -257,7 +292,7 @@ This directory should not be shared between builds.
+    you need to share the :ref:`overview-manual/concepts:Hash Equivalence=
+`
+    database, don't share this file and instead refer to the
+    :doc:`/dev-manual/hashequivserver` document of the Yocto Project Deve=
+lopment
+-   Tasks Manual to setup Hash Equivalence server.
++   Tasks Manual to setup a Hash Equivalence server.
+=20
+ .. _structure-build-conf-local.conf:
+=20
+@@ -275,14 +310,14 @@ file, it is recommended to put them into a distro :=
+term:`configuration file`, or
+ to create layer :term:`configuration fragments <Configuration Fragment>`=
+ from
+ changes made here.
+=20
+-The :term:`OpenEmbedded Build System` can create it from a ``local.conf.=
+sample``
+-file when you ``source`` the top-level build environment setup script
+-:ref:`structure-core-script`.
++The :term:`OpenEmbedded Build System` can create the ``local.conf`` file=
+ from a
++``local.conf.sample`` file when you ``source`` the top-level build envir=
+onment
++setup script :ref:`structure-core-script`.
+=20
+ The source ``local.conf.sample`` file used depends on the
+-:term:`TEMPLATECONF` script variable, which defaults to ``meta-poky/conf=
+/templates/default``
++:term:`TEMPLATECONF` script variable, which defaults to ``layers/meta-yo=
+cto/meta-poky/conf/templates/default``
+ when you are building from the Yocto Project development environment,
+-and to ``meta/conf/templates/default`` when you are building from the Op=
+enEmbedded-Core
++and to ``layers/openembedded-core/meta/conf/templates/default`` when you=
+ are building from the OpenEmbedded-Core
+ environment. Because the script variable points to the source of the
+ ``local.conf.sample`` file, this implies that you can configure your
+ build environment from any layer by setting the variable in the
+@@ -298,9 +333,9 @@ file, it uses ``sed`` to substitute final
  .. note::
- 
-    -  The recommended method for setting up the Yocto Project
--      :term:`Source Directory` and the files
--      for supported BSPs (e.g., ``meta-intel``) is to use
--      :ref:`overview-manual/development-environment:git`
-+      is to use :ref:`overview-manual/development-environment:git`
-       to create a local copy of the upstream repositories.
- 
-    -  Be sure to always work in matching branches for both the selected
--      BSP repository and the Source Directory (i.e. ``poky``)
--      repository. For example, if you have checked out the "&DISTRO_NAME_NO_CAP;"
--      branch of ``poky`` and you are going to use ``meta-intel``, be
-+      BSP repository, the :term:`OpenEmbedded-Core (OE-Core)` and
-+      :term:`BitBake` repositories. For example, if you have checked out the "&DISTRO_NAME_NO_CAP;"
-+      branch of :term:`OpenEmbedded-Core (OE-Core)` and you are going to use ``meta-intel``, be
-       sure to checkout the "&DISTRO_NAME_NO_CAP;" branch of ``meta-intel``.
- 
- In summary, here is where you can get the project files needed for
- development:
- 
---  :yocto_git:`Source Repositories: <>` This area contains Poky, Yocto
--   documentation, metadata layers, and Linux kernel. You can create local
--   copies of Git repositories for each of these areas.
-+-  :yocto_git:`Source Repositories: <>` This area contains :term:`BitBake`,
-+   :term:`OpenEmbedded-Core (OE-Core)`, Yocto documentation and other metadata
-+   layers. You can create local copies of Git repositories for each of these
-+   areas.
- 
-    .. image:: figures/source-repos.png
-       :width: 100%
- 
---  :yocto_home:`DOWNLOADS page </software-overview/downloads/>`:
--   The :yocto_home:`Yocto Project website <>` includes a "DOWNLOADS" page accessible
--   through the "SOFTWARE" menu that allows you to download any Yocto
-+-  :yocto_home:`Releases page </development/releases/>`:
-+   The :yocto_home:`Yocto Project website <>` includes a "Releases" page accessible
-+   through the "Development" menu that allows you to download any Yocto
-    Project release, tool, and Board Support Package (BSP) in tarball
-    form. The hyperlinks point to the tarballs under
-    :yocto_dl:`/releases/yocto/`.
-@@ -230,11 +228,11 @@ and so forth.
-    ":doc:`/contributor-guide/identify-component`"
-    section of the Yocto Project and OpenEmbedded Contributor Guide.
- 
--The Yocto Project ``poky`` Git repository also has an upstream
--contribution Git repository named ``poky-contrib``. You can see all the
--branches in this repository using the web interface of the
--:yocto_git:`Source Repositories <>` organized within the "Poky Support"
--area. These branches hold changes (commits) to the project that have
-+The Yocto Project Git repositories may also have upstream
-+contribution Git repositories suffixed with ``-contrib``. You can see all the
-+branches of these repositories using the web interface of the
-+:yocto_git:`Source Repositories <>`.
-+These branches hold changes (commits) to the project that have
- been submitted or committed by the Yocto Project development team and by
- community members who contribute to the project. The maintainer
- determines if the changes are qualified to be moved from the "contrib"
-@@ -323,7 +321,7 @@ Book <https://book.git-scm.com>`__.
-    software on which to develop. The Yocto Project has two scripts named
-    ``create-pull-request`` and ``send-pull-request`` that ship with the
-    release to facilitate this workflow. You can find these scripts in
--   the ``scripts`` folder of the :term:`Source Directory`. For information
-+   the ``scripts`` folder of :term:`OpenEmbedded-Core (OE-Core)`. For information
-    on how to use these scripts, see the
-    ":ref:`contributor-guide/submit-changes:using scripts to push a change upstream and request a pull`"
-    section in the Yocto Project and OpenEmbedded Contributor Guide.
-@@ -377,7 +375,7 @@ local experimentation on projects as you develop changes or new
- features.
- 
- A Git repository represents all development efforts for a given project.
--For example, the Git repository ``poky`` contains all changes and
-+For example, the Git repository :yocto_git:`yocto-docs </yocto-docs>` contains all changes and
- developments for that repository over the course of its entire life.
- That means that all changes that make up all releases are captured. The
- repository maintains a complete history of changes.
-@@ -390,10 +388,10 @@ locally.
- 
- It is important to understand that Git tracks content change and not
- files. Git uses "branches" to organize different development efforts.
--For example, the ``poky`` repository has several branches that include
-+For example, the :yocto_git:`yocto-docs </yocto-docs>` repository has several branches that include
- the current "&DISTRO_NAME_NO_CAP;" branch, the "master" branch, and many
- branches for past Yocto Project releases. You can see all the branches
--by going to :yocto_git:`/poky/` and clicking on the
-+by going to :yocto_git:`yocto-docs </yocto-docs/>` and clicking on the
- ``[...]`` link beneath the "Branch" heading.
- 
- Each of these branches represents a specific area of development. The
-@@ -409,15 +407,15 @@ development branch in the repository. To help illustrate, consider the
- following example Git commands::
- 
-    $ cd ~
--   $ git clone git://git.yoctoproject.org/poky -b &DISTRO_NAME_NO_CAP;
-+   $ git clone git://git.yoctoproject.org/yocto-docs -b &DISTRO_NAME_NO_CAP;
- 
- In the previous example
- after moving to the home directory, the ``git clone`` command creates a
--local copy of the upstream ``poky`` Git repository and checks out a
-+local copy of the upstream ``yocto-docs`` Git repository and checks out a
- local branch named "&DISTRO_NAME_NO_CAP;", which tracks the upstream
- "origin/&DISTRO_NAME_NO_CAP;" branch. Changes you make while in this
- branch would ultimately affect the upstream "&DISTRO_NAME_NO_CAP;" branch
--of the ``poky`` repository.
-+of the ``yocto-docs`` repository.
- 
- It is important to understand that when you create and checkout a local
- working branch based on a branch name, your local environment matches
-@@ -432,13 +430,12 @@ Yocto Project Release.
- Git uses "tags" to mark specific changes in a repository branch
- structure. Typically, a tag is used to mark a special point such as the
- final change (or commit) before a project is released. You can see the
--tags used with the ``poky`` Git repository by going to :yocto_git:`/poky/`
-+tags used with the ``yocto-docs`` Git repository by going to :yocto_git:`/yocto-docs/`
- and clicking on the ``[...]`` link beneath the "Tag" heading.
- 
--Some key tags for the ``poky`` repository are ``jethro-14.0.3``,
--``morty-16.0.1``, ``pyro-17.0.0``, and
--``&DISTRO_NAME_NO_CAP;-&DISTRO;``. These tags represent Yocto Project
--releases.
-+Some key tags for the ``yocto-docs`` repository are ``kirkstone-4.0.30``,
-+``scarthgap-5.0.1``, and ``&DISTRO_NAME_NO_CAP;-&DISTRO;``. These tags represent
-+Yocto Project releases.
- 
- When you create a local copy of the Git repository, you also have access
- to all the tags in the upstream repository. Similar to branches, you can
-@@ -449,19 +446,19 @@ The most common use is to checkout a working branch that matches a
- specific Yocto Project release. Here is an example::
- 
-    $ cd ~
--   $ git clone git://git.yoctoproject.org/poky
--   $ cd poky
-+   $ git clone git://git.yoctoproject.org/yocto-docs
-+   $ cd yocto-docs
-    $ git fetch --tags
--   $ git checkout tags/rocko-18.0.0 -b my_rocko-18.0.0
-+   $ git checkout tags/&DISTRO_NAME_NO_CAP;-&DISTRO; -b my_&DISTRO_NAME_NO_CAP;-&DISTRO;
- 
- In this example, the name
- of the top-level directory of your local Yocto Project repository is
--``poky``. After moving to the ``poky`` directory, the ``git fetch``
-+``yocto-docs``. After moving to the ``yocto-docs`` directory, the ``git fetch``
- command makes all the upstream tags available locally in your
- repository. Finally, the ``git checkout`` command creates and checks out
--a branch named "my-rocko-18.0.0" that is based on the upstream branch
-+a branch named "my_&DISTRO_NAME_NO_CAP;-&DISTRO;" that is based on the upstream branch
- whose "HEAD" matches the commit in the repository associated with the
--"rocko-18.0.0" tag. The files in your repository now exactly match that
-+"&DISTRO_NAME_NO_CAP;-&DISTRO;" tag. The files in your repository now exactly match that
- particular Yocto Project release as it is tagged in the upstream Git
- repository. It is important to understand that when you create and
- checkout a local working branch based on a tag, your environment matches
-@@ -596,7 +593,8 @@ MIT license :wikipedia:`here <MIT_License>`.
- 
- When you build an image using the Yocto Project, the build process uses
- a known list of licenses to ensure compliance. You can find this list in
--the :term:`Source Directory` at ``meta/files/common-licenses``. Once the
-+:term:`OpenEmbedded-Core (OE-Core)` at :oe_git:`meta/files/common-licenses
-+</openembedded-core/tree/meta/files/common-licenses>`. Once the
- build completes, the list of all licenses found and used during that build
- are kept in the :term:`Build Directory` at ``tmp/deploy/licenses``.
- 
-@@ -617,8 +615,9 @@ Source Definition and the effort for reviewing and approving licenses
- that conform to the Open Source Definition (OSD).
- 
- You can find a list of the combined SPDX and OSI licenses that the Yocto
--Project uses in the ``meta/files/common-licenses`` directory in your
--:term:`Source Directory`.
-+Project uses in the :oe_git:`meta/files/common-licenses
-+</openembedded-core/tree/meta/files/common-licenses>` directory in
-+:term:`OpenEmbedded-Core (OE-Core)`.
- 
- For information that can help you maintain compliance with various open
- source licensing during the lifecycle of a product created using the
+=20
+    You can see how the :term:`TEMPLATECONF` variable is used by looking =
+at the
+-   ``scripts/oe-setup-builddir`` script in the :term:`Source Directory`.
+-   You can find the Yocto Project version of the ``local.conf.sample`` f=
+ile in
+-   the ``meta-poky/conf/templates/default`` directory.
++   ``layers/openembedded-core/scripts/oe-setup-builddir`` script in :ter=
+m:`OpenEmbedded-Core (OE-Core)`.
++   You can find the :term:`Poky` version of the ``local.conf.sample`` fi=
+le in
++   the ``layers/meta-yocto/meta-poky/conf/templates/default`` directory.
+=20
+ .. _structure-build-conf-bblayers.conf:
+=20
+@@ -319,9 +354,9 @@ when you ``source`` the top-level build environment s=
+etup script (i.e.
+=20
+ As with the :ref:`structure-build-conf-local.conf` file, the source ``bb=
+layers.conf.sample``
+ file used depends on the :term:`TEMPLATECONF` script variable, which
+-defaults to ``meta-poky/conf/templates/default`` when you are building f=
+rom the Yocto
+-Project development environment, and to ``meta/conf/templates/default`` =
+when you are
+-building from the OpenEmbedded-Core environment. Because the script
++defaults to ``meta-poky/conf/templates/default`` when you are building u=
+sing the
++:term:`Poky` reference distro, and to ``meta/conf/templates/default`` wh=
+en you are
++building from the OpenEmbedded-Core environment (default). Because the s=
+cript
+ variable points to the source of the ``bblayers.conf.sample`` file, this
+ implies that you can base your build from any layer by setting the
+ variable in the top-level build environment setup script as follows::
+@@ -329,13 +364,13 @@ variable in the top-level build environment setup s=
+cript as follows::
+    TEMPLATECONF=3Dyour_layer/conf/templates/your_template_name
+=20
+ Once the build process gets the sample file, it uses ``sed`` to substitu=
+te final
+-``${``\ :term:`OEROOT`\ ``}`` values for all ``##OEROOT##`` values.
++``${``\ :term:`OEROOT`\ ``}`` values for all ``##OEROOT##`` occurrences.
+=20
+ .. note::
+=20
+    You can see how the :term:`TEMPLATECONF` variable is defined by the `=
+`scripts/oe-setup-builddir``
+-   script in the :term:`Source Directory`. You can find the Yocto Projec=
+t
+-   version of the ``bblayers.conf.sample`` file in the ``meta-poky/conf/=
+templates/default``
++   script in :term:`OpenEmbedded-Core (OE-Core)`. You can find the :term=
+:`Poky`
++   version of the ``bblayers.conf.sample`` file in the ``layers/meta-yoc=
+to/meta-poky/conf/templates/default``
+    directory.
+=20
+ .. _structure-build-conf-site.conf:
+@@ -351,8 +386,9 @@ You could for example edit this file to limit the num=
+ber of threads used by
+ want to access downloaded files (:term:`DL_DIR`).
+=20
+ This file can be shared for multiple build directories. For example,
+-``bitbake-setup`` makes the :ref:`structure-build-conf-site.conf` file a
+-symbolic link to a common ``site.conf`` file::
++:doc:`bitbake-setup <bitbake:bitbake-user-manual/bitbake-user-manual-env=
+ironment-setup>`
++makes the :ref:`structure-build-conf-site.conf` file a symbolic link to =
+a common
++``site.conf`` file::
+=20
+    =E2=94=9C=E2=94=80=E2=94=80 poky-master-poky-distro_poky-machine_qemu=
+x86-64/
+    =E2=94=82=C2=A0=C2=A0 =E2=94=94=E2=94=80=E2=94=80 build/
+@@ -757,11 +793,12 @@ space if they were to be shared with the standard :=
+term:`Sysroot` mechanism.
+=20
+ .. _structure-meta:
+=20
+-The Metadata --- ``meta/``
+-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D
++The OpenEmbedded-Core (OE-Core) Metadata --- ``meta/``
++=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+=20
+-As mentioned previously, :term:`Metadata` is the core of the
+-Yocto Project. Metadata has several important subdivisions:
++As mentioned previously, the :term:`OpenEmbedded-Core (OE-Core)`
++:term:`metadata` is the core of the Yocto Project. This metadata has sev=
+eral
++important subdivisions:
+=20
+ .. _structure-meta-classes:
+=20
+diff --git a/documentation/ref-manual/terms.rst b/documentation/ref-manua=
+l/terms.rst
+index 22f2c4f79..cbe7c88e6 100644
+--- a/documentation/ref-manual/terms.rst
++++ b/documentation/ref-manual/terms.rst
+@@ -63,7 +63,7 @@ universal, the list includes them just in case:
+       This term refers to the area used by the OpenEmbedded build system=
+ for
+       builds. The area is created when you ``source`` the setup environm=
+ent
+       script that is found in the Source Directory
+-      (i.e. :ref:`ref-manual/structure:``oe-init-build-env```, or
++      (i.e. :ref:`structure-core-script`, or
+       ``init-build-env`` when using :doc:`bitbake-setup
+       <bitbake:bitbake-user-manual/bitbake-user-manual-environment-setup=
+>`). The
+       :term:`TOPDIR` variable points to the :term:`Build Directory`.
 
--- 
+--=20
 2.52.0
 
 
