@@ -2,61 +2,62 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 94985D61033
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 965F4D61031
 	for <webhook@archiver.kernel.org>; Thu, 29 Jan 2026 15:24:18 +0000 (UTC)
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.17088.1769700249233564193
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.17192.1769700256620781555
  for <docs@lists.yoctoproject.org>;
- Thu, 29 Jan 2026 07:24:09 -0800
+ Thu, 29 Jan 2026 07:24:16 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=LK6eFv7P;
- spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=zFSDv/rz;
+ spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 9AC8AC22F47
-	for <docs@lists.yoctoproject.org>; Thu, 29 Jan 2026 15:24:10 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 19D824E42324;
+	Thu, 29 Jan 2026 15:24:15 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 96BF0606FD
-	for <docs@lists.yoctoproject.org>; Thu, 29 Jan 2026 15:24:07 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id F2331119A8853;
-	Thu, 29 Jan 2026 16:24:06 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id DEF34606FD;
+	Thu, 29 Jan 2026 15:24:14 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 42D46119A885C;
+	Thu, 29 Jan 2026 16:24:14 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1769700247; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1769700254; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=aalmdJwSS4yLbioFayyEDwxcGdCJZrwXg3DlXqPK1lk=;
-	b=LK6eFv7PTasawSGPvUnM95flWAmDqx/oFdy6/zqeokb1SXxdIO540ycKe7YPnNCDVI+onk
-	Eg7tzpaXLzlgaDps4cH6H8gEZDIEu8XiuQfcXwiqiAKYczc7xiZSMy+XlOL/5IEzRrFDGr
-	VztyQ7cGawBLmbwa1mtJkXLzH3c0n1RfxTfxTntf210ebcsljDmpIpn2J4FDItyko4PMPP
-	PpiekuM3+vroWTMJw1uhiwNGlrJYmN5qp3gc0H+LnbR4mAWVa4T6zP7+4pwO5LqoUx99gN
-	Dvkz16maErp0EL6Zo6qvDhqv+Gv1rXayjGrMEflUTEPIhhLcDia3Ra87pl8ecg==
+	bh=+KIRsq1o9ehnryYo0s19dvtHfW+cKglzZKCzGbR6OmI=;
+	b=zFSDv/rzUVLSzRNbIKX+Kl6ZkolE/HaZpjqraUQpzPEP2IZ00mVlQE/58tO8q7FJrDK3jX
+	EtKzSX9MNJNqR/RRe5YjMIiwPq7qwTpzbzrasBUNdx8vmGAHcq5wcZ6jctIYAlXLayCg+k
+	jdn1Nub7nK2MWOTHY5LM92WNCr4njWtyTRkU+/CCC+yA2homtGgNnnCCb1l6t3CRMjdeP7
+	icBAFAnVO2tr9/lR6fbKUsbJRFWwWP71wFbvIWZvo7T939RMl+sRGn7lKtU8JeNXZTVnHw
+	SH7AdfDX6zlWmpPIz4hJqqU7xaESL6Jr+92LRwMeyZNjFwwqrsE8lD2YOx0aOw==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Thu, 29 Jan 2026 16:22:57 +0100
-Subject: [PATCH v3 06/57] contributor-guide/submit-changes.rst: remove
+Date: Thu, 29 Jan 2026 16:23:07 +0100
+Subject: [PATCH v3 16/57] dev-manual/temporary-source-code.rst: remove
  obsolete poky repo references
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260129-remove-poky-references-v3-6-804acc3d9b7a@bootlin.com>
+Message-Id: <20260129-remove-poky-references-v3-16-804acc3d9b7a@bootlin.com>
 References: <20260129-remove-poky-references-v3-0-804acc3d9b7a@bootlin.com>
 In-Reply-To: <20260129-remove-poky-references-v3-0-804acc3d9b7a@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Antonin Godard <antonin.godard@bootlin.com>
+ Antonin Godard <antonin.godard@bootlin.com>, 
+ Quentin Schulz <quentin.schulz@cherry.de>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6375;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1121;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=TNQdQZokhHUSO7oHJ757hNlJdO6WEQn6epJXAkrREPk=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpe3uKCAwfbYYahnu4jrFeeEcZwiL6albPYmy79
- Kwt6XzhX0+JAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaXt7igAKCRDRgEFAKaOo
- Nu5xD/0W4AwXm5Q+zrXY0WM+HPc5wMomBT18j8AhDdLm8V0FluHmzQCNGUWFwPzzFocpVRR5HMb
- OZwjUjmy39pOL6+Y/aD1WU52rVMsgTn/sat113oHCQCa9C3HCtLgKKQT7/rB0C4n96eX+vByZLb
- zsKX/9lGTYhfN3/tkgDtb8l0eeRR0c/x7A/4uUdgk3UDTxeJrtgZP5ipoYOq+3CUwgm1GK3FpaD
- WA6TWqZOrEvz8Nfx3mvczZvvhfdsXHtTG7uSAjXDYR2DbEg87s983LYEKm73aJSbXCucb5obzS8
- CK6I1vR7oR9hxiMXKhiX4sT+/gGsWmg4XGDk2aju4aXP2L1ywYHoqQXT2T2TBv28Q/ZcFL5JBe2
- UYomLP8J94n5PHAnQnQIyllEsurNTWFsn18Tb/wc4CAsDSskt781EbAevDdoniVndJJe3l2PRBG
- S66LInsONQeBB0KI7h0qNj5Z0SJq+yQ4OPZTUzx8mLHXDhphfUdnrENUgolw3tcEo1SAxNwATv7
- YFevQskhfKmjFfL7Jbjt0VNpZwh2aqudPwtJcpib/ZhPjxaXHDJbqmfFk/3NkqhZEp7CVrheLVL
- k2fBE3tztGCzY9Tt5fzXGakkJ7gVpRJXI6PqFMHzDZZuVr4Te9vQ6pxkFT4xYsBTiFphWj3awQp
- Jhlu85RE24XVhzw==
+ bh=KU6p3i5kc7OoFw7iccMBphxTP/RQQ9j8k8kmC5PySoY=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpe3uLVv/dFujbywthHd70P4Aup2BNiCYlV1Bti
+ jvxPf6MLOOJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaXt7iwAKCRDRgEFAKaOo
+ NlquEACet91dYvhSmjMf7ahp7ApKtXfe/V7tmQAP4BKaMfPVpwMXNeSNXzzbGFLthLYEituewvK
+ UJiXjbFPMmcbyVshLssO66hyPBroF3VPy9zB2gmbFTznchpJoBsVefJFxzxpBJlZerHG5pU2viK
+ P7djD94CvinUmoip+6VJWUZ1i0y+l2ox0cIHmexa/KJMmhAduER5hYmLaTupsflrDiVa+T27ORU
+ 0jQeTX/CrICEGyunFdwyIUllhPluTe7mosAp/AHz8RyrM2oMZtIgpxVP0j2ZVATuRLo7k7ELyT3
+ jnWkrf/1hP9vXiZbBXOFO2mb7+XLzRH972j+HdhlG96PjodpmZ9zdxyImAvMNMiqRTNvSWf7ZG4
+ AqnLg6FgHJnBteqw5BchMN6kP3ocF6NE4iLM/cT0nWfKJAM3xGDRhMmmww/FBUuII60I10q1mzX
+ uvAiVWGKHxeGtH1XPJ2UXuJjmETgeALO9bbRVogyBdDBnEfJFgyYg6N+FIOsRG2cpBALQWduKgB
+ bY/3bm1uyePmATSS887dY2W8LTyE1COL0lXLFpbaSxnfdDPkTPRRaRJCBykbnvlaWUi4S/Uw+DB
+ IzOwIG0hsX9b/qdgZIVbprondk5EhnwHhXhx0KsZsZXFF9L7AmL4iO0qFg9XCyjchJqF2umqys6
+ hXkLYyOyPbbIERQ==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
@@ -64,133 +65,31 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Thu, 29 Jan 2026 15:24:18 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8792
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8802
 
-Remove references to the Poky repository, replace by OpenEmbedded-Core
-in most cases.
+Remove references to the Poky repository, replace by OpenEmbedded-Core.
 
+Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/contributor-guide/submit-changes.rst | 60 ++++++----------------
- 1 file changed, 16 insertions(+), 44 deletions(-)
+ documentation/dev-manual/temporary-source-code.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/documentation/contributor-guide/submit-changes.rst b/documentation/contributor-guide/submit-changes.rst
-index 07989d7b6..089fec02a 100644
---- a/documentation/contributor-guide/submit-changes.rst
-+++ b/documentation/contributor-guide/submit-changes.rst
-@@ -429,38 +429,8 @@ and then based on successful testing, merges them.
- In general, each component (e.g. layer) should have a ``README`` file
- that indicates where to send the changes and which process to follow.
+diff --git a/documentation/dev-manual/temporary-source-code.rst b/documentation/dev-manual/temporary-source-code.rst
+index 977edbc3f..aecd34099 100644
+--- a/documentation/dev-manual/temporary-source-code.rst
++++ b/documentation/dev-manual/temporary-source-code.rst
+@@ -15,8 +15,8 @@ your changes in the form of patches.
+ During a build, the unpacked temporary source code used by recipes to
+ build packages is available in the :term:`Build Directory` as defined by the
+ :term:`S` variable. Below is the default value for the :term:`S` variable as
+-defined in the ``meta/conf/bitbake.conf`` configuration file in the
+-:term:`Source Directory`::
++defined in the ``meta/conf/bitbake.conf`` configuration file in
++:term:`OpenEmbedded-Core (OE-Core)`::
  
--The "poky" repository, which is the Yocto Project's reference build
--environment, is a hybrid repository that contains several individual
--pieces (e.g. BitBake, Metadata, documentation, and so forth) built using
--the combo-layer tool. The upstream location used for submitting changes
--varies by component:
--
---  *Core Metadata:* Send your patches to the
--   :oe_lists:`openembedded-core </g/openembedded-core>`
--   mailing list. For example, a change to anything under the ``meta`` or
--   ``scripts`` directories should be sent to this mailing list.
--
---  *BitBake:* For changes to BitBake (i.e. anything under the
--   ``bitbake`` directory), send your patches to the
--   :oe_lists:`bitbake-devel </g/bitbake-devel>`
--   mailing list.
--
---  *meta-poky* and *meta-yocto-bsp* trees: These trees contain Metadata. Use the
--   :yocto_lists:`poky </g/poky>` mailing list.
--
---  *Documentation*: For changes to the Yocto Project documentation, use the
--   :yocto_lists:`docs </g/docs>` mailing list.
--
--For changes to other layers and tools hosted in the Yocto Project source
--repositories (i.e. :yocto_git:`git.yoctoproject.org <>`), use the
--:yocto_lists:`yocto-patches </g/yocto-patches/>` general mailing list.
--
--For changes to other layers hosted in the OpenEmbedded source
--repositories (i.e. :oe_git:`git.openembedded.org <>`), use
--the :oe_lists:`openembedded-devel </g/openembedded-devel>`
--mailing list, unless specified otherwise in the layer's ``README`` file.
--
--If you intend to submit a new recipe that neither fits into the core Metadata,
-+If you intend to submit a new recipe that neither fits in
-+:term:`OpenEmbedded-Core (OE-Core)`,
- nor into :oe_git:`meta-openembedded </meta-openembedded/>`, you should
- look for a suitable layer in https://layers.openembedded.org. If similar
- recipes can be expected, you may consider :ref:`dev-manual/layers:creating your own layer`.
-@@ -620,7 +590,7 @@ have been followed:
-    methods to find out:
+    S = "${UNPACKDIR}/${BP}"
  
-    -  *Maintenance File:* Examine the ``maintainers.inc`` file, which is
--      located in the :term:`Source Directory` at
-+      located in :term:`OpenEmbedded-Core (OE-Core)` at
-       ``meta/conf/distro/include``, to see who is responsible for code.
- 
-    -  *Search by File:* Using :ref:`overview-manual/development-environment:git`, you can
-@@ -645,9 +615,8 @@ have been followed:
-    The Yocto Project provides two scripts that conveniently let you
-    generate and send pull requests to the Yocto Project. These scripts
-    are ``create-pull-request`` and ``send-pull-request``. You can find
--   these scripts in the ``scripts`` directory within the
--   :term:`Source Directory` (e.g.
--   ``poky/scripts``).
-+   these scripts in the ``scripts`` directory within
-+   :term:`OpenEmbedded-Core (OE-Core)`.
- 
-    Using these scripts correctly formats the requests without
-    introducing any whitespace or HTML formatting. The maintainer that
-@@ -660,7 +629,7 @@ have been followed:
-    directory into which you pushed the change, and provides a subject
-    line in the created patch files::
- 
--      $ poky/scripts/create-pull-request -u meta-intel-contrib -s "Updated Manual Section Reference in README"
-+      $ ./scripts/create-pull-request -u meta-intel-contrib -s "Updated Manual Section Reference in README"
- 
-    Running this script forms ``*.patch`` files in a folder named
-    ``pull-``\ `PID` in the current directory. One of the patch files is a
-@@ -673,7 +642,7 @@ have been followed:
-    and email address. In this example, the email address is a mailing
-    list::
- 
--      $ poky/scripts/send-pull-request -p ~/meta-intel/pull-10565 -t meta-intel@lists.yoctoproject.org
-+      $ ./scripts/send-pull-request -p ~/meta-intel/pull-10565 -t meta-intel@lists.yoctoproject.org
- 
-    You need to follow the prompts as the script is interactive.
- 
-@@ -682,8 +651,8 @@ have been followed:
-       For help on using these scripts, simply provide the ``-h``
-       argument as follows::
- 
--              $ poky/scripts/create-pull-request -h
--              $ poky/scripts/send-pull-request -h
-+              $ ./scripts/create-pull-request -h
-+              $ ./scripts/send-pull-request -h
- 
- Submitting Changes to Stable Release Branches
- =============================================
-@@ -857,14 +826,17 @@ used testing branches for OpenEmbedded-Core are as follows:
-    :oe_git:`openembedded-core </openembedded-core/>` repository and contains
-    proposed changes to the core metadata.
- 
---  *poky "master-next" branch:* This branch is part of the
--   :yocto_git:`poky </poky/>` repository and combines proposed
--   changes to BitBake, the core metadata and the poky distro.
-+-  *bitbake "master-next" branch:* This branch is part of the :oe_git:`bitbake
-+   </bitbake/>` repository and contains changes to :term:`BitBake`.
-+
-+-  *meta-yocto "master-next" branch:* This branch is part of the
-+   :yocto_git:`meta-yocto </meta-yocto/>` repository and contains proposed
-+   changes to meta-yocto.
- 
- Similarly, stable branches maintained by the project may have corresponding
- ``-next`` branches which collect proposed changes. For example,
- ``&DISTRO_NAME_NO_CAP;-next`` and ``&DISTRO_NAME_NO_CAP_MINUS_ONE;-next``
--branches in both the "openembdedded-core" and "poky" repositories.
-+branches in both the "openembedded-core" and "meta-yocto" repositories.
- 
- Other layers may have similar testing branches but there is no formal
- requirement or standard for these so please check the documentation for the
 
 -- 
 2.52.0
