@@ -2,62 +2,61 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 48B94D6B067
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1BCF7D358F7
 	for <webhook@archiver.kernel.org>; Thu, 29 Jan 2026 15:24:29 +0000 (UTC)
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.17200.1769700262249523716
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.17100.1769700259543474988
  for <docs@lists.yoctoproject.org>;
- Thu, 29 Jan 2026 07:24:22 -0800
+ Thu, 29 Jan 2026 07:24:19 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=uoYjzpbV;
- spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=g4xfxJJp;
+ spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id B3A264E42322;
-	Thu, 29 Jan 2026 15:24:20 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 01189C22F4B
+	for <docs@lists.yoctoproject.org>; Thu, 29 Jan 2026 15:24:21 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 8BC4E606FD;
-	Thu, 29 Jan 2026 15:24:20 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6C0D9119A886E;
-	Thu, 29 Jan 2026 16:24:19 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 00473606FD
+	for <docs@lists.yoctoproject.org>; Thu, 29 Jan 2026 15:24:18 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5CD5F119A8863;
+	Thu, 29 Jan 2026 16:24:17 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1769700260; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1769700257; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=NJRoEhvXUcXqe4SBxQDow6KNXUmkJjx3x5ek92NyWic=;
-	b=uoYjzpbV/dtPUbKKMF8ehzKPT6lF2+hnVSyRfn8kkAdVmgQ1ePn8XFg0KOgspzPqa1tPD5
-	SDbyoMjI33ppziVsfHicbwvbLyThHxNYMwTNdE6eqEZ7Ojz7bUKmxHFZeZ0KSixZq6GCKa
-	+F4TkYqghsAntJTMTZ630cOX2zDciYxEtF+h7holVDscHE91j+kgfSBGWllB5eyTCZky6C
-	zmc76oU7MVOCn+zU0Gg5po2NFfbczmjcl77b1SpzVZbwkofI9WEsvMnAK9m4EyhE1d8/O3
-	mFEySLOzMvQ5KF/DNycqUs/Cs8PU+LP2F9DXA+ab2rI4iX9vzfCd+I+VQUdyDQ==
+	bh=zw5z362SCS2MmxOGx0lZNJkIyC7inkCtimJ+kByb/hQ=;
+	b=g4xfxJJpYqyetzahW8YSMkwA1xoy7n3SVIMm3Aj6Vxa2CFMW8zysYb5V2muhYtoGVTmHvN
+	CkNLjaXdhMMHrXv2LunxaBZyCbFOAihTw41z5efE+SUgBCN/hykCqqknAe6PDqWpc98TPn
+	6/AGjcy7ZNsLa+NCQAnWy4P/goPhFLGzTd79H+bw8kD+rr93uekBPRoWAxN1PDLuh4rB1k
+	WQTbRqXEL5YI/c2fkCLZEdWlQQlRyK72qGjjoZD+1DCcqjgG5M3SniSk6zTj5PnVWzdCfX
+	uFOdBuVJXeAuFIUdWz8Zo8ckg1uMwWV66pvLZJfVFhvgwmKJCLQR1t5S3bVoWQ==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Thu, 29 Jan 2026 16:23:15 +0100
-Subject: [PATCH v3 24/57] ref-manual/classes.rst: remove obsolete poky repo
- references
+Date: Thu, 29 Jan 2026 16:23:12 +0100
+Subject: [PATCH v3 21/57] overview-manual/concepts.rst: remove obsolete
+ poky repo references
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260129-remove-poky-references-v3-24-804acc3d9b7a@bootlin.com>
+Message-Id: <20260129-remove-poky-references-v3-21-804acc3d9b7a@bootlin.com>
 References: <20260129-remove-poky-references-v3-0-804acc3d9b7a@bootlin.com>
 In-Reply-To: <20260129-remove-poky-references-v3-0-804acc3d9b7a@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Antonin Godard <antonin.godard@bootlin.com>, 
- Quentin Schulz <quentin.schulz@cherry.de>
+ Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6248;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6357;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=nY8TXckqhUv8F6yLaHugu/ItnyI/YLncG19SeUfwYW4=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpe3uM9JBzGuz4gLzE7dphLd4kU+eKSiuPWrkAZ
- op4vzlqoPuJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaXt7jAAKCRDRgEFAKaOo
- NkcSD/9EZ5HtYWA9fTee8TDB6+7qlv0mrMspVr2AlBx5XRrBl9h5l+hbVQ4339t4jZyOktM5L7e
- FaqKzGqdZtc+qPNP6Aa8ssMK4itVSIOVWTmGw57gtwNIEOKxpGEYYf8fnowmhuVZwqkaGswmrDW
- nBOJtsCZSNd6WVrmCifBMOhCAXHCdDazBY5RSDg27vPfmyv0Tw9XN1NDzmFsGK1Sb1Z//TbsGYN
- jIUCkldVq8PsajntDP1Ueec9Gh/pHXK9Wr0mav8sybOKpsRnOT2lIOuYCtIjXTpDSdlA5G5W1sG
- nxOeJk3uffw6GH4G9bDfseor1DfdOzjsi/OxsEVvb81I/9tzeZMdUZLrrDO2Q7MH54BLIaT5S/+
- sUH/BTBgQfPSauurD7h2XAr31bzz+RoCCduCklsXIyR4ta71lAMjKnRHsNOI72mVj8MS7GzIs+F
- +pK/f1uf5ZF8jmx+YLUVcmgDKrS01TR3j5/SCDAeX8fToPHWyHEftkymjjnnERDibyVFUYIgkTq
- EC8Vpg/5np66It6kZb1nYNAKHWDGyiuffiEuvqrD/Cdr9re2jQ5S4OkmyW5dbm/VH/Dr/IP7nMB
- zIxpF8HNtZomoFWvRzTS9xR4PypSVWQzb5WFDX+8E44AZEOkOlViIzfD5V2ap4o8Xy1QzFWZGFf
- c3MFxii19Vgrf4w==
+ bh=5/GzBQr3nvDQh0NwXKMW1M5/hzStC5XgGYpE4kRVnKA=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpe3uMMf3obHQs1gYR8OjCd5ZpgfXhNCPjrU9BD
+ nuWA3YXuH6JAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaXt7jAAKCRDRgEFAKaOo
+ NlWyD/9d0XOXdtq8TlJANLSOwcQ9jdFL/PWJX4JJq6VbWW2G8B+TPkSm3nXwp49PlqBHk+v3l4e
+ 75CqKDs1RSDcGcVztwsa/SK+d3Z5s/hS9puBDkqqrYe5QgGvNMAcvYutDALvIpKgQbXHJ2yrQ+Q
+ aRe9wc53b7QZn0rRN8EnFyMmARkpuYWvAyjQuT/CYz5z/VPxuySOoLBOJfI5QO40VGXW5/jiw2H
+ zSShFbjpaD/6dc08Dce+BoifGaQ1HIfmEzXMLrDQqE+o2oNPuKr0B4Ttn63oAKzuCQNSxIvdY32
+ feZEOWtv/skAVwtOXoWo0YsVfKtGptXss2KNH5SApyDv7qW65COtqI+p0t86dkehxg329mhjMVy
+ 11i5U7g8NGxYe3fQ/9GeFsgt6Ct/CYwHc9IoSfc7Q7XwBy71dxX+cIbkfli0DsMqHyr7D8BpCuV
+ 2kZ0hfemzTp1II9GaaiprV7t3Eir2x4xTWHtxLlWtkw/9cXjdoA0zZpPuY2RQfihthm464mzfg4
+ sRHjjjlrxzLO5wDl6jMoFwLSrYjbZULYNBH5q9iFzL2zZbzipiM2UJqXvnm+8UfB9lhvd6X4Nb7
+ fzCeaDBtxFSUpssgF2Pyygqc8k0RpRC7Wx+b3u9b/MPH8bZM4LkblbDYt4NOzLfzci5Jh/orenp
+ BBUZnhj9mJkfVmA==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
@@ -65,122 +64,129 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Thu, 29 Jan 2026 15:24:29 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8810
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8807
 
 Remove references to the Poky repository, replace by OpenEmbedded-Core.
 
-Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/ref-manual/classes.rst | 34 ++++++++++++++++++----------------
- 1 file changed, 18 insertions(+), 16 deletions(-)
+ documentation/overview-manual/concepts.rst | 74 ++++++++----------------------
+ 1 file changed, 20 insertions(+), 54 deletions(-)
 
-diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
-index 2e219a59c..ef05372f0 100644
---- a/documentation/ref-manual/classes.rst
-+++ b/documentation/ref-manual/classes.rst
-@@ -9,12 +9,13 @@ amongst multiple recipe (``.bb``) files. To use a class file, you simply
- make sure the recipe inherits the class. In most cases, when a recipe
- inherits a class it is enough to enable its features. There are cases,
- however, where in the recipe you might need to set variables or override
--some default behavior.
-+some default behavior. A class can also be inherited globally (in every recipe)
-+with the :term:`INHERIT` variable.
+diff --git a/documentation/overview-manual/concepts.rst b/documentation/overview-manual/concepts.rst
+index 9ca188960..fc67295cf 100644
+--- a/documentation/overview-manual/concepts.rst
++++ b/documentation/overview-manual/concepts.rst
+@@ -211,62 +211,28 @@ figure <overview-manual/concepts:openembedded build system concepts>`:
+ BitBake needs some basic configuration files in order to complete a
+ build. These files are ``*.conf`` files. The minimally necessary ones
+ reside as example files in the ``build/conf`` directory of the
+-:term:`Source Directory`. For simplicity,
+-this section refers to the Source Directory as the "Poky Directory."
++:term:`Build Directory`.
  
- Any :term:`Metadata` usually found in a recipe can also be
- placed in a class file. Class files are identified by the extension
--``.bbclass`` and are usually placed in one of a set of subdirectories
--beneath the ``meta*/`` directory found in the :term:`Source Directory`:
-+``.bbclass`` and are usually placed in one of the following subdirectories
-+of a :term:`layer`:
+-When you clone the :term:`Poky` Git repository
+-or you download and unpack a Yocto Project release, you can set up the
+-Source Directory to be named anything you want. For this discussion, the
+-cloned repository uses the default name ``poky``.
++When you :ref:`initialize the build environment <dev-manual/start:Initializing
++the Build Environment>`, you can specify which directory will be the
++:term:`Source Directory`.
  
-   - ``classes-recipe/`` - classes intended to be inherited by recipes
-     individually
-@@ -28,9 +29,9 @@ in :term:`BBPATH` using the same method by which ``.conf``
- files are searched.
+-.. note::
+-
+-   The Poky repository is primarily an aggregation of existing
+-   repositories. It is not a canonical upstream source.
+-
+-The ``meta-poky`` layer inside Poky contains a ``conf`` directory that
+-has example configuration files. These example files are used as a basis
+-for creating actual configuration files when you source
+-:ref:`structure-core-script`, which is the
+-build environment script.
+-
+-Sourcing the build environment script creates a :term:`Build Directory`
++Setting up the build environment creates a :term:`Build Directory`
+ if one does not already exist. BitBake uses the :term:`Build Directory`
+ for all its work during builds. The Build Directory has a ``conf`` directory
+ that contains default versions of your ``local.conf`` and ``bblayers.conf``
+-configuration files. These default configuration files are created only
+-if versions do not already exist in the :term:`Build Directory` at the time you
+-source the build environment setup script.
+-
+-Because the Poky repository is fundamentally an aggregation of existing
+-repositories, some users might be familiar with running the
+-:ref:`structure-core-script` script in the context of separate
+-:term:`OpenEmbedded-Core (OE-Core)` and BitBake
+-repositories rather than a single Poky repository. This discussion
+-assumes the script is executed from within a cloned or unpacked version
+-of Poky.
+-
+-Depending on where the script is sourced, different sub-scripts are
+-called to set up the :term:`Build Directory` (Yocto or OpenEmbedded).
+-Specifically, the script ``scripts/oe-setup-builddir`` inside the poky
+-directory sets up the :term:`Build Directory` and seeds the directory (if
+-necessary) with configuration files appropriate for the Yocto Project
+-development environment.
+-
+-.. note::
++configuration files. These default :term:`configuration files <Configuration
++File>` are created only if they do not already exist in the :term:`Build
++Directory` at the time you source the build environment setup script.
  
- This chapter discusses only the most useful and important classes. Other
--classes do exist within the ``meta/classes*`` directories in the Source
--Directory. You can reference the ``.bbclass`` files directly for more
--information.
-+classes do exist within the ``meta/classes*`` directories of
-+:term:`OpenEmbedded-Core (OE-Core)`. You can refer to the ``.bbclass`` files
-+directly for more information.
+-   The
+-   ``scripts/oe-setup-builddir``
+-   script uses the
+-   ``$TEMPLATECONF``
+-   variable to determine which sample configuration files to locate.
++:term:`Configuration files <Configuration File>` provide many basic variables
++that define a build environment. To show a list of possible variables to
++configure from :term:`configuration files <Configuration File>`, see the
++:yocto_git:`local.conf.sample
++</meta-yocto/tree/meta-poky/conf/templates/default/local.conf.sample>` in the
++``meta-poky`` layer:
  
- .. _ref-classes-allarch:
+-The ``local.conf`` file provides many basic variables that define a
+-build environment. Here is a list of a few. To see the default
+-configurations in a ``local.conf`` file created by the build environment
+-script, see the
+-:yocto_git:`local.conf.sample </poky/tree/meta-poky/conf/templates/default/local.conf.sample>`
+-in the ``meta-poky`` layer:
++Here is a non-exhaustive list:
  
-@@ -338,8 +339,8 @@ The :ref:`ref-classes-cargo_c` class can be inherited by a recipe to generate
- a Rust library that can be called by C/C++ code. The recipe which inherits this
- class has to only replace ``inherit cargo`` by ``inherit cargo_c``.
+ -  *Target Machine Selection:* Controlled by the
+    :term:`MACHINE` variable.
+@@ -371,18 +337,18 @@ figure <overview-manual/concepts:openembedded build system concepts>`:
+    configurations. This type of information is specific to a particular
+    target architecture. A good example of a BSP layer from the
+    :ref:`overview-manual/yp-intro:reference distribution (poky)` is the
+-   :yocto_git:`meta-yocto-bsp </poky/tree/meta-yocto-bsp>`
++   :yocto_git:`meta-yocto-bsp </meta-yocto/tree/meta-yocto-bsp>`
+    layer.
  
--See the :yocto_git:`rust-c-lib-example_git.bb
--</poky/tree/meta-selftest/recipes-devtools/rust/rust-c-lib-example_git.bb>`
-+See the :oe_git:`rust-c-lib-example_git.bb
-+</openembedded-core/tree/meta-selftest/recipes-devtools/rust/rust-c-lib-example_git.bb>`
- example recipe.
+ -  *Policy Configuration:* Distribution Layers (i.e. "Distro Layer" in
+    the following figure) providing top-level or general policies for the
+    images or SDKs being built for a particular distribution. For
+    example, in the Poky Reference Distribution the distro layer is the
+-   :yocto_git:`meta-poky </poky/tree/meta-poky>`
++   :yocto_git:`meta-poky </meta-yocto/tree/meta-poky>`
+    layer. Within the distro layer is a ``conf/distro`` directory that
+    contains distro configuration files (e.g.
+-   :yocto_git:`poky.conf </poky/tree/meta-poky/conf/distro/poky.conf>`
+-   that contain many policy configurations for the Poky distribution.
++   :yocto_git:`poky.conf </meta-yocto/tree/meta-poky/conf/distro/poky.conf>`
++   that contain many policy configurations for the :term:`Poky` distribution.
  
- .. _ref-classes-cargo_common:
-@@ -602,8 +603,9 @@ inherited globally from a configuration file::
+ The following figure shows an expanded representation of these three
+ layers from the :ref:`general workflow figure
+@@ -840,7 +806,7 @@ This step in the build process consists of the following tasks:
+    :term:`PACKAGECONFIG_CONFARGS`
+    variables. For information on how this variable works within that
+    class, see the :ref:`ref-classes-autotools` class
+-   :yocto_git:`here </poky/tree/meta/classes-recipe/autotools.bbclass>`.
++   :oe_git:`here </openembedded-core/tree/meta/classes-recipe/autotools.bbclass>`.
  
-    INHERIT += "cve-check"
- 
--To filter out obsolete CVE database entries which are known not to impact software from Poky and OE-Core,
--add following line to the build configuration file::
-+To filter out obsolete CVE database entries which are known not to impact
-+software from :term:`OpenEmbedded-Core (OE-Core)`, add the following line to the
-+build configuration file::
- 
-    include cve-extra-exclusions.inc
- 
-@@ -827,7 +829,7 @@ See these variables for more information:
- :term:`PV`,
- 
- For more information on the :ref:`ref-classes-externalsrc` class, see the comments in
--``meta/classes/externalsrc.bbclass`` in the :term:`Source Directory`.
-+``meta/classes/externalsrc.bbclass`` in :term:`OpenEmbedded-Core (OE-Core)`.
- For information on how to use the :ref:`ref-classes-externalsrc` class, see the
- ":ref:`dev-manual/building:building software from an external source`"
- section in the Yocto Project Development Tasks Manual.
-@@ -1009,7 +1011,7 @@ this class is controlled by the mandatory :term:`GO_IMPORT` variable, and
- by the optional :term:`GO_INSTALL` and :term:`GO_INSTALL_FILTEROUT` ones.
- 
- To build a Go program with the Yocto Project, you can use the
--:yocto_git:`go-helloworld_0.1.bb </poky/tree/meta/recipes-extended/go-examples/go-helloworld_0.1.bb>`
-+:oe_git:`go-helloworld_0.1.bb </openembedded-core/tree/meta/recipes-extended/go-examples/go-helloworld_0.1.bb>`
- recipe as an example.
- 
- .. _ref-classes-go-mod:
-@@ -3471,10 +3473,10 @@ is one reason we don't use static linking for our :ref:`ref-classes-native`
- binaries.
- 
- With this class enabled, a tarball containing a pre-built C library is
--downloaded at the start of the build. In the Poky reference distribution this is
-+downloaded at the start of the build. In :term:`OpenEmbedded-Core (OE-Core)` this is
- enabled by default through :oe_git:`meta/conf/distro/include/yocto-uninative.inc
- </openembedded-core/tree/meta/conf/distro/include/yocto-uninative.inc>`. Other distributions that do
--not derive from Poky can also "``require conf/distro/include/yocto-uninative.inc``"
-+not derive from :term:`Poky` can also "``require conf/distro/include/yocto-uninative.inc``"
- to use this. Alternatively if you prefer, you can build the uninative-tarball
- recipe yourself, publish the resulting tarball (e.g. via HTTP) and set
- :term:`UNINATIVE_URL` and :term:`UNINATIVE_CHECKSUM` appropriately. For an
-@@ -3516,7 +3518,7 @@ To use this class, you need to define a number of variables:
- These variables list alternative commands needed by a package, provide
- pathnames for links, default links for targets, and so forth. For
- details on how to use this class, see the comments in the
--:yocto_git:`update-alternatives.bbclass </poky/tree/meta/classes-recipe/update-alternatives.bbclass>`
-+:oe_git:`update-alternatives.bbclass </openembedded-core/tree/meta/classes-recipe/update-alternatives.bbclass>`
- file.
- 
- .. note::
-@@ -3549,7 +3551,7 @@ that contain system services that should be run under their own user or
- group, you can use these classes to enable creation of the user or
- group. The :oe_git:`meta-skeleton/recipes-skeleton/useradd/useradd-example.bb
- </openembedded-core/tree/meta-skeleton/recipes-skeleton/useradd/useradd-example.bb>`
--recipe in the :term:`Source Directory` provides a simple
-+recipe in :term:`OpenEmbedded-Core (OE-Core)` provides a simple
- example that shows how to add three users and groups to two packages.
- 
- The :ref:`useradd_base <ref-classes-useradd>` class provides basic functionality for user or
+ -  *do_compile*: Once a configuration task has been satisfied,
+    BitBake compiles the source using the
 
 -- 
 2.52.0
