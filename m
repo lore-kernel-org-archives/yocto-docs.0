@@ -2,40 +2,40 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 56443D61028
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5204BD61027
 	for <webhook@archiver.kernel.org>; Thu, 29 Jan 2026 15:24:18 +0000 (UTC)
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.17087.1769700248671086678
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.17186.1769700248454475575
  for <docs@lists.yoctoproject.org>;
  Thu, 29 Jan 2026 07:24:08 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=zCrx5502;
- spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=nkBdLZIV;
+ spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 24DD0C22F4B
-	for <docs@lists.yoctoproject.org>; Thu, 29 Jan 2026 15:24:10 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id C16DD1A2B09
+	for <docs@lists.yoctoproject.org>; Thu, 29 Jan 2026 15:24:06 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 235D3606FD;
-	Thu, 29 Jan 2026 15:24:07 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7C8E1119A868D;
-	Thu, 29 Jan 2026 16:24:06 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 99872606FD;
+	Thu, 29 Jan 2026 15:24:06 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C28DE119A8857;
+	Thu, 29 Jan 2026 16:24:05 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
 	t=1769700246; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=abAe3RVDM4u1zBAhm+yCiLQo8DnpUmlIiY2+RJuU0Kw=;
-	b=zCrx5502Z4I7P/QolPWYzFRGo6Xx1U4+G23lbfvZ7kKLLPdtk5IMhvRMzvoO+sdEJS9Cat
-	ibkTTjgpOuXwheMpgU73PNwYq/BqVnmueWFiscC5gRMMWX5AnbbO2xqcU2BRaWLl2FKwL1
-	Q3E1OCGxd68FsHY/MiyRfuTRgOFLdE7Ehpd0qBRSfBhI/aGGOJIBBaqPUrbk9+ObcVL30I
-	3/3glsvgBGasZOBDG88IPQ9ERvFZWfMR5cCD9GzcTBjh+KCMLYxemUAbYLUlWaH1d1b/js
-	SaHRIhOc7mZs1XHLzjzr6uVIywPAl61el22oneHF084lWILZOYWpmm/jNiWM5g==
+	bh=XI9UKCAGFh/EbMqvZeGpICyxkOTlKQL9zRNZcyPmj9Q=;
+	b=nkBdLZIVAAR4SmPAkOF8LEEOn+x4lr1rFEW09XF17rLDSYvfgSWNsk5k69fnHqRQec3mgw
+	dxLywFUqm5NB5jvIr8v4/IfebnJuliUYAUSgQxVVigwR8z6zZvQ0l9dwqo0pSUr8L67V+A
+	sNb8Fvr6KkuFQ7M/sQKe/3E3CCpBplVr9SQVDyJe2QwUG6Kp1nA3yr7+N1ZjCrfjIJEtue
+	+f5hl+7QOXJL4AKjqU3rKG9eBNlF72kYWNwffqjrjfIbpLpWRq4BlWyH8TGAN34nH33YpD
+	P28uhHxH8tK+zRIOzFjb/DV6qgEdmNc6Xv62RFk05R5nb7QFyIp7fH6AcW7eiw==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Thu, 29 Jan 2026 16:22:56 +0100
-Subject: [PATCH v3 05/57] kernel-dev/advanced.rst: remove obsolete poky
- repo references
+Date: Thu, 29 Jan 2026 16:22:55 +0100
+Subject: [PATCH v3 04/57] bsp-guide/bsp.rst: remove obsolete poky repo
+ references
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260129-remove-poky-references-v3-5-804acc3d9b7a@bootlin.com>
+Message-Id: <20260129-remove-poky-references-v3-4-804acc3d9b7a@bootlin.com>
 References: <20260129-remove-poky-references-v3-0-804acc3d9b7a@bootlin.com>
 In-Reply-To: <20260129-remove-poky-references-v3-0-804acc3d9b7a@bootlin.com>
 To: docs@lists.yoctoproject.org
@@ -43,21 +43,21 @@ Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
  Antonin Godard <antonin.godard@bootlin.com>, 
  Quentin Schulz <quentin.schulz@cherry.de>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2577;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=14116;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=9IN9YDb7FgzPwAYsZUikwKnVDh18xUzKCbZcA155HBI=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpe3uJZetvAEILHdaqnvUvXRniYVAr2orLtnoWv
- yeSdXGkxmGJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaXt7iQAKCRDRgEFAKaOo
- NoNiD/4mLU0zMo/9lSu7jMYHTB6U/wer4s4wzrlLZ5mXowN6Bb/aTbiBZn2H8WlWqn8qY262KW4
- WXPQU0pHiU8MMpZyQUy2YMtV2GXfErPrZs3O2Gokuy93b3g1iDzcgeiN0GlKUVjD+x7201EhGNj
- X2mSFsBb9f4fSplqOK3TjJ2S2EXsM0ExdzTQKc+OpWUpFXIWnTO2iBbBCIR+XiCKf1C0FKG4xg0
- W7y85RimADHRNgPeYKjp7lqv2dZkB9/zC45bd3DK+c478ePhBv1PvL40RWxXBQIaWP8j2vp4yuE
- undmeDX8eQw9kvNrFUUtIvxNjM1TpDJLG4ewpSxThRasH5CSLEhiWk348Y9VBOOh90DmsLU3hfy
- Xi2HZYeFeZxiUypDYhmgkm4Zxjdn72HRBrSbLyU9RRcAPzSofNWacLb1ZrxYJXEyA73XwWUz2GO
- Kqf0i4V6U0BQbucWniaj/rzTxlm5PLn6PwbptWq+gVnyXQUT6HNJpJ3Kq3gKUezkBF64376ySQe
- aFPdH6GyECJkeG2Vrj94B+09uwcbj23nUQJ+a1svtE03lbjVnHFmKgxeWwNdZgvyu9N3txxQm4X
- yeXxqV3ihLp53WFdKWRNM3XkFRFPW1nThHVQf5PtqQQ7LaKezVOp1CyHmn6XcDwLwNGQ5RYVLPs
- tLwSPpAZM6oYRNQ==
+ bh=bELrHa49FMRd88qyNGyFnTBsZbqBzlbW2fKmGZJz7ug=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpe3uJQ7OdBI6oQL6/CO39UUHZPxqQ+5pIM3HOF
+ XnLIVnJRN+JAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaXt7iQAKCRDRgEFAKaOo
+ NlmvD/46hFnsD+tnf+VS1JJqHVnKMCzcRzYnedkCOqaq+vpg7vPL5m/X5piqQHVRf1T2eNt/4VP
+ Bvn/f5Zrlaf7OmTU/Kx1EgbMqV39dd6ECS//tzo5X/Bg1D1QJ6rQhvcYzpzk1jjxtq8DjMfZqRX
+ 2/8aZ319Kf/CBqJeG9LJw1D+3rqJVhD4fIoH1v4RUfAwzE7eNQZcRlA+sqPSpGO3NMzimE82U6e
+ 5Nvl62h3yAdVVCgROijG9ghmiCtaZVmmfvfcGU/4Mxh4OpxplDtTCqO53wqy5E5ibOgFo34pvaQ
+ WCpXsjmc6aGme+F5RXnyYaegAP4crKfekZz6OmSosi4CsgKwkW6Kf6AUcdj3ugJE3A6YDBEiZOj
+ 9BeoH3RgNhN6qHP90J+4r/iEyorrs4R528qsTr3vb62qz6HzVFQMePnnUQyy/Pps3cjVYfAnfrb
+ b0ZubBTK8wAaXfd7goS5Gn+kPjjHuc3/bQfbBDtU0Wq5wNQKCma66SRAExviXKFU4Yl0eRjZraC
+ VpDOq90jedbfpK493pZ7mTdCqb1qx/qo3slJMqx8Sw2AN1TZI7m2LrerDVOcp7eE04yNK5JFOdN
+ 1dzyaiDaWU7rTUEnEp5hNU6W0Cvtu0vZBilTsz/ES1ecC1QZ/8rs/cpVXiqSG7K/aV3G7R4UGRh
+ iiG+1ae9FjswKkQ==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
@@ -65,7 +65,7 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Thu, 29 Jan 2026 15:24:18 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8791
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8790
 
 Remove references to the Poky repository, replace by OpenEmbedded-Core
 in most cases, and refer to bitbake-setup or the manual setup in the
@@ -74,46 +74,297 @@ intro.
 Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/kernel-dev/advanced.rst | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ documentation/bsp-guide/bsp.rst | 154 +++++++++++++---------------------------
+ 1 file changed, 50 insertions(+), 104 deletions(-)
 
-diff --git a/documentation/kernel-dev/advanced.rst b/documentation/kernel-dev/advanced.rst
-index 4c463503f6..97cb663222 100644
---- a/documentation/kernel-dev/advanced.rst
-+++ b/documentation/kernel-dev/advanced.rst
-@@ -24,9 +24,8 @@ grouped under the "Yocto Linux Kernel" heading in the
- Kernel development tools ("kern-tools") are also available in the Yocto Project
- Source Repositories under the "Yocto Linux Kernel" heading in the
- ``yocto-kernel-tools`` Git repository. The recipe that builds these
--tools is ``meta/recipes-kernel/kern-tools/kern-tools-native_git.bb`` in
--the :term:`Source Directory` (e.g.
--``poky``).
-+tools is ``recipes-kernel/kern-tools/kern-tools-native_git.bb`` in
-+:term:`OpenEmbedded-Core (OE-Core)`.
+diff --git a/documentation/bsp-guide/bsp.rst b/documentation/bsp-guide/bsp.rst
+index 056f69249..343b2753c 100644
+--- a/documentation/bsp-guide/bsp.rst
++++ b/documentation/bsp-guide/bsp.rst
+@@ -62,8 +62,8 @@ Here is an example that clones the Raspberry Pi BSP layer::
  
- Using Kernel Metadata in a Recipe
- =================================
-@@ -357,9 +356,9 @@ kernel of a specific type (e.g. a real-time kernel). Syntactically, kernel
- types are no different than features as described in the
- ":ref:`kernel-dev/advanced:features`" section. The :term:`LINUX_KERNEL_TYPE`
- variable in the kernel recipe selects the kernel type. For example, in the
--``linux-yocto_4.12.bb`` kernel recipe found in ``poky/meta/recipes-kernel/linux``, a
-+``linux-yocto_4.12.bb`` kernel recipe found in ``meta/recipes-kernel/linux``, a
- :ref:`require <bitbake-user-manual/bitbake-user-manual-metadata:\`\`require\`\` directive>`
--directive includes the ``poky/meta/recipes-kernel/linux/linux-yocto.inc`` file,
-+directive includes the ``meta/recipes-kernel/linux/linux-yocto.inc`` file,
- which has the following statement that defines the default kernel type::
+    $ git clone git://git.yoctoproject.org/meta-raspberrypi
  
-    LINUX_KERNEL_TYPE ??= "standard"
-@@ -373,8 +372,7 @@ type as follows::
- .. note::
+-In addition to BSP layers, the ``meta-yocto-bsp`` layer is part of the
+-shipped ``poky`` repository. The ``meta-yocto-bsp`` layer maintains
++In addition to BSP layers, the ``meta-yocto-bsp`` layer is part of
++:yocto_git:`meta-yocto </meta-yocto>`. The ``meta-yocto-bsp`` layer maintains
+ several "reference" BSPs including the ARM-based Beaglebone and generic
+ versions of both 32-bit and 64-bit IA machines.
  
-    You can find kernel recipes in the ``meta/recipes-kernel/linux`` directory
--   of the :ref:`overview-manual/development-environment:yocto project source repositories`
--   (e.g. ``poky/meta/recipes-kernel/linux/linux-yocto_4.12.bb``). See the
-+   of the :ref:`overview-manual/development-environment:yocto project source repositories`. See the
-    ":ref:`kernel-dev/advanced:using kernel metadata in a recipe`"
-    section for more information.
+@@ -150,24 +150,23 @@ section.
+    to get a build host ready that is either a native Linux machine or a machine
+    that uses CROPS.
+ 
+-#. *Clone the poky Repository:* You need to have a local copy of the
+-   Yocto Project :term:`Source Directory` (i.e. a local
+-   ``poky`` repository). See the
+-   ":ref:`dev-manual/start:cloning the \`\`poky\`\` repository`" and
+-   possibly the
+-   ":ref:`dev-manual/start:checking out by branch in poky`" or
+-   ":ref:`dev-manual/start:checking out by tag in poky`"
+-   sections
+-   all in the Yocto Project Development Tasks Manual for information on
+-   how to clone the ``poky`` repository and check out the appropriate
+-   branch for your work.
++#. *Prepare the Source Repositories*:
++
++   There are two ways of setting up the :term:`Poky` reference distro:
++
++   -  Using the ``bitbake-setup`` command-line utility from :term:`BitBake`.
++      Follow:
++
++      :doc:`Setting Up The Environment With bitbake-setup <bitbake:bitbake-user-manual/bitbake-user-manual-environment-setup>`
++
++   -  Manually cloning the required repositories. Follow:
++
++      :doc:`/dev-manual/poky-manual-setup`
+ 
+ #. *Determine the BSP Layer You Want:* The Yocto Project supports many
+    BSPs, which are maintained in their own layers or in layers designed
+-   to contain several BSPs. To get an idea of machine support through
+-   BSP layers, you can look at the
+-   :yocto_dl:`index of machines </releases/yocto/&DISTRO_REL_LATEST_TAG;/machines>`
+-   for the release.
++   to contain several BSPs. The :oe_layerindex:`Layer Index <>` can help finding
++   BSP layers to use.
+ 
+ #. *Optionally Clone the meta-intel BSP Layer:* If your hardware is
+    based on current Intel CPUs and devices, you can leverage this BSP
+@@ -175,10 +174,7 @@ section.
+    :yocto_git:`README </meta-intel/tree/README.md>` file.
+ 
+    #. *Navigate to Your Source Directory:* Typically, you set up the
+-      ``meta-intel`` Git repository inside the :term:`Source Directory` (e.g.
+-      ``poky``). ::
+-
+-         $ cd /home/you/poky
++      ``meta-intel`` Git repository next to the other layers in your build.
+ 
+    #. *Clone the Layer:* ::
+ 
+@@ -224,18 +220,21 @@ section.
+       Resolving deltas: 100% (2447/2447), done.
+       Checking connectivity... done.
+ 
+-#. *Initialize the Build Environment:* While in the root directory of
+-   the Source Directory (i.e. ``poky``), run the
+-   :ref:`ref-manual/structure:``oe-init-build-env``` environment
+-   setup script to define the OpenEmbedded build environment on your
+-   build host. ::
++#. *Initialize the Build Environment:* While in the :term:`Source Directory`,
++   run the :ref:`ref-manual/structure:``oe-init-build-env``` environment setup
++   script located in :term:`OpenEmbedded-Core (OE-Core)` to define the OpenEmbedded
++   build environment on your build host. ::
+ 
+-      $ source oe-init-build-env
++      $ source layers/openembedded-core/oe-init-build-env
+ 
+    Among other things, the script creates the :term:`Build Directory`, which is
+-   ``build`` in this case and is located in the :term:`Source Directory`.  After
+-   the script runs, your current working directory is set to the ``build``
+-   directory.
++   "build". After the script runs, your current working directory is set to
++   the :term:`Build Directory`.
++
++   .. note::
++
++      Alternatively, you can source the ``init-build-env`` file provided by
++      :doc:`bitbake-setup <bitbake:bitbake-user-manual/bitbake-user-manual-environment-setup>` 
+ 
+ Example Filesystem Layout
+ =========================
+@@ -597,10 +596,10 @@ optimization flags, which are carefully chosen to give best performance
+ on a given processor.
+ 
+ Tuning files are found in the ``meta/conf/machine/include`` directory
+-within the :term:`Source Directory`.
++within :term:`OpenEmbedded-Core (OE-Core)`.
+ For example, many ``tune-*`` files (e.g. ``tune-arm1136jf-s.inc``,
+ ``tune-1586-nlp.inc``, and so forth) reside in the
+-``poky/meta/conf/machine/include`` directory.
++``meta/conf/machine/include`` directory.
+ 
+ To use an include file, you simply include them in the machine
+ configuration file. For example, the Raspberry Pi BSP
+@@ -636,7 +635,7 @@ directory. Here is the ``machconfig`` file for the Raspberry Pi BSP::
+    according to the formfactor configuration file that is installed by
+    the main formfactor recipe
+    ``meta/recipes-bsp/formfactor/formfactor_0.0.bb``, which is found in
+-   the :term:`Source Directory`.
++   :term:`OpenEmbedded-Core (OE-Core)`.
+ 
+ Display Support Files
+ ---------------------
+@@ -664,7 +663,7 @@ types of files although, in practice, it is likely that you would have
+ one or the other.
+ 
+ For your BSP, you typically want to use an existing Yocto Project kernel
+-recipe found in the :term:`Source Directory`
++recipe found in :term:`OpenEmbedded-Core (OE-Core)`
+ at
+ ``meta/recipes-kernel/linux``. You can append machine-specific changes
+ to the kernel recipe by using a similarly named append file, which is
+@@ -766,20 +765,23 @@ workflow.
+ 
+    .. note::
+ 
+-      -  There are three hardware reference BSPs in the Yocto
+-         Project release, located in the ``poky/meta-yocto-bsp``
++      -  There are four hardware reference BSPs in the Yocto
++         Project release, located in the :yocto_git:`meta-yocto-bsp
++         </meta-yocto/tree/meta-yocto-bsp>`
+          BSP layer:
+ 
+          -  Texas Instruments Beaglebone (``beaglebone-yocto``)
+ 
+          -  Two generic IA platforms (``genericx86`` and ``genericx86-64``)
+ 
++         -  A generic ARM 64 platform (``genericarm64``)
++
+    When you set up a layer for a new BSP, you should follow a standard
+    layout. This layout is described in the ":ref:`bsp-guide/bsp:example filesystem layout`"
+    section. In the standard layout, notice
+    the suggested structure for recipes and configuration information.
+    You can see the standard layout for a BSP by examining any supported
+-   BSP found in the ``meta-intel`` layer inside the Source Directory.
++   BSP found in the :yocto_git:`meta-intel </meta-intel>` layer.
+ 
+ #. *Make Configuration Changes to Your New BSP Layer:* The standard BSP
+    layer structure organizes the files you need to edit in ``conf`` and
+@@ -861,9 +863,8 @@ The requirements for a released BSP that conform to the Yocto Project are:
+ 
+ -  *File System Layout:* When possible, use the same directory names in
+    your BSP layer as listed in the ``recipes.txt`` file, which is found
+-   in ``poky/meta`` directory of the :term:`Source Directory`
+-   or in the OpenEmbedded-Core Layer (``openembedded-core``) at
+-   :oe_git:`/openembedded-core/tree/meta`.
++   in :oe_git:`meta </openembedded-core/tree/meta>` directory of
++   :term:`OpenEmbedded-Core (OE-Core)`.
+ 
+    You should place recipes (``*.bb`` files) and recipe modifications
+    (``*.bbappend`` files) into ``recipes-*`` subdirectories by
+@@ -872,8 +873,8 @@ The requirements for a released BSP that conform to the Yocto Project are:
+    up your own ``recipes-*`` subdirectory.
+ 
+    Within any particular ``recipes-*`` category, the layout should match
+-   what is found in the OpenEmbedded-Core Git repository
+-   (``openembedded-core``) or the Source Directory (``poky``). In other
++   what is found in the :term:`OpenEmbedded-Core (OE-Core)` Git repository.
++   In other
+    words, make sure you place related files in appropriately-related
+    ``recipes-*`` subdirectories specific to the recipe's function, or
+    within a subdirectory containing a set of closely-related recipes.
+@@ -1169,7 +1170,7 @@ Use these steps to create a BSP layer:
+ 
+ -  *Create a Machine Configuration File:* Create a
+    ``conf/machine/bsp_root_name.conf`` file. See
+-   :yocto_git:`meta-yocto-bsp/conf/machine </poky/tree/meta-yocto-bsp/conf/machine>`
++   :yocto_git:`meta-yocto-bsp/conf/machine </meta-yocto/tree/meta-yocto-bsp/conf/machine>`
+    for sample ``bsp_root_name.conf`` files. There are other samples such as
+    :yocto_git:`meta-ti </meta-ti/tree/meta-ti-bsp/conf/machine>`
+    and
+@@ -1187,7 +1188,7 @@ Use these steps to create a BSP layer:
+ 
+ The remainder of this section provides a description of the Yocto
+ Project reference BSP for Beaglebone, which resides in the
+-:yocto_git:`meta-yocto-bsp </poky/tree/meta-yocto-bsp>`
++:yocto_git:`meta-yocto-bsp </meta-yocto/tree/meta-yocto-bsp>`
+ layer.
+ 
+ BSP Layer Configuration Example
+@@ -1235,63 +1236,8 @@ There are one or more machine configuration files in the
+ 
+ For example, the machine configuration file for the `BeagleBone and
+ BeagleBone Black development boards <https://beagleboard.org/bone>`__ is
+-located in :yocto_git:`poky/meta-yocto-bsp/conf/machine/beaglebone-yocto.conf
+-</poky/tree/meta-yocto-bsp/conf/machine/beaglebone-yocto.conf>`::
+-
+-   #@TYPE: Machine
+-   #@NAME: Beaglebone-yocto machine
+-   #@DESCRIPTION: Reference machine configuration for http://beagleboard.org/bone and http://beagleboard.org/black boards
+-
+-   PREFERRED_PROVIDER_virtual/xserver ?= "xserver-xorg"
+-
+-   MACHINE_EXTRA_RRECOMMENDS = "kernel-modules"
+-
+-   EXTRA_IMAGEDEPENDS += "virtual/bootloader"
+-
+-   DEFAULTTUNE ?= "cortexa8hf-neon"
+-   include conf/machine/include/arm/armv7a/tune-cortexa8.inc
+-
+-   IMAGE_FSTYPES += "tar.bz2 jffs2 wic wic.bmap"
+-   EXTRA_IMAGECMD:jffs2 = "-lnp "
+-   WKS_FILE ?= "beaglebone-yocto.wks"
+-   MACHINE_ESSENTIAL_EXTRA_RDEPENDS += "kernel-image kernel-devicetree"
+-   do_image_wic[depends] += "mtools-native:do_populate_sysroot dosfstools-native:do_populate_sysroot virtual/bootloader:do_deploy"
+-
+-   SERIAL_CONSOLES ?= "115200;ttyS0 115200;ttyO0 115200;ttyAMA0"
+-
+-   PREFERRED_PROVIDER_virtual/kernel ?= "linux-yocto"
+-   PREFERRED_VERSION_linux-yocto ?= "6.12%"
+-
+-   KERNEL_IMAGETYPE = "zImage"
+-   DTB_FILES = "am335x-bone.dtb am335x-boneblack.dtb am335x-bonegreen.dtb"
+-   KERNEL_DEVICETREE = '${@' '.join('ti/omap/%s' % d for d in '${DTB_FILES}'.split())}'
+-
+-   PREFERRED_PROVIDER_virtual/bootloader ?= "u-boot"
+-
+-   SPL_BINARY = "MLO"
+-   UBOOT_SUFFIX = "img"
+-   UBOOT_MACHINE = "am335x_evm_defconfig"
+-
+-   MACHINE_FEATURES = "usbgadget usbhost vfat alsa"
+-
+-   IMAGE_BOOT_FILES ?= "u-boot.${UBOOT_SUFFIX} ${SPL_BINARY} ${KERNEL_IMAGETYPE} ${DTB_FILES}"
+-
+-   # support runqemu
+-   EXTRA_IMAGEDEPENDS += "qemu-native qemu-helper-native"
+-   IMAGE_CLASSES += "qemuboot"
+-   QB_DEFAULT_FSTYPE = "wic"
+-   QB_FSINFO = "wic:no-kernel-in-fs"
+-   QB_KERNEL_ROOT = "/dev/vda2"
+-   QB_SYSTEM_NAME = "qemu-system-arm"
+-   QB_MACHINE = "-machine virt"
+-   QB_CPU = "-cpu cortex-a15"
+-   QB_KERNEL_CMDLINE_APPEND = "console=ttyAMA0 systemd.mask=systemd-networkd"
+-   QB_OPT_APPEND = "-device virtio-rng-device"
+-   QB_TAP_OPT = "-netdev tap,id=net0,ifname=@TAP@,script=no,downscript=no"
+-   QB_NETWORK_DEVICE = "-device virtio-net-device,netdev=net0,mac=@MAC@"
+-   QB_ROOTFS_OPT = "-drive id=disk0,file=@ROOTFS@,if=none,format=raw -device virtio-blk-device,drive=disk0"
+-   QB_SERIAL_OPT = ""
+-   QB_TCPSERIAL_OPT = "-device virtio-serial-device -chardev socket,id=virtcon,port=@PORT@,host=127.0.0.1 -device virtconsole,chardev=virtcon"
++located in :yocto_git:`/meta-yocto/tree/meta-yocto-bsp/conf/machine/beaglebone-yocto.conf
++</meta-yocto/tree/meta-yocto-bsp/conf/machine/beaglebone-yocto.conf>`.
+ 
+ The variables used to configure the machine define machine-specific properties; for
+ example, machine-dependent packages, machine tunings, the type of kernel
+@@ -1309,7 +1255,7 @@ Project Reference Manual.
+    The recipe that provides "virtual/xserver" when more than one
+    provider is found. In this case, the recipe that provides
+    "virtual/xserver" is "xserver-xorg", available in
+-   ``poky/meta/recipes-graphics/xorg-xserver``.
++   ``meta/recipes-graphics/xorg-xserver`` in :term:`OpenEmbedded-Core (OE-Core)`.
+ 
+ -  :term:`MACHINE_EXTRA_RRECOMMENDS`:
+    A list of machine-dependent packages not essential for booting the
+@@ -1400,7 +1346,7 @@ Project Reference Manual.
+    .. note::
+ 
+       For more information on how the SPL variables are used, see the
+-      :yocto_git:`u-boot.inc </poky/tree/meta/recipes-bsp/u-boot/u-boot.inc>`
++      :oe_git:`u-boot.inc </openembedded-core/tree/meta/recipes-bsp/u-boot/u-boot.inc>`
+       include file.
+ 
+ -  :term:`UBOOT_* <UBOOT_ENTRYPOINT>`: Defines
+@@ -1438,7 +1384,7 @@ The ``meta-yocto-bsp/recipes-kernel/linux`` directory in the layer contains
+ metadata used to build the kernel. In this case, a kernel append file
+ (i.e. ``linux-yocto_6.1.bbappend``) is used to override an established
+ kernel recipe (i.e. ``linux-yocto_6.1.bb``), which is located in
+-:yocto_git:`/poky/tree/meta/recipes-kernel/linux`.
++:oe_git:`/openembedded-core/tree/meta/recipes-kernel/linux`.
+ 
+ The contents of the append file are::
  
 
 -- 
