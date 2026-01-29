@@ -2,39 +2,40 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2C23AE63C8C
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 54032D6B066
 	for <webhook@archiver.kernel.org>; Thu, 29 Jan 2026 15:24:29 +0000 (UTC)
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.17106.1769700267338992601
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.17201.1769700262812687351
  for <docs@lists.yoctoproject.org>;
- Thu, 29 Jan 2026 07:24:27 -0800
+ Thu, 29 Jan 2026 07:24:23 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=NH22+QbT;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=wzTBGtpH;
  spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id C715D4E42322;
-	Thu, 29 Jan 2026 15:24:25 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 492DC4E42324;
+	Thu, 29 Jan 2026 15:24:21 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 9F643606FD;
-	Thu, 29 Jan 2026 15:24:25 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id CBE28119A8874;
-	Thu, 29 Jan 2026 16:24:24 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 1A8F4606FD;
+	Thu, 29 Jan 2026 15:24:21 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6EDD7119A8865;
+	Thu, 29 Jan 2026 16:24:20 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1769700265; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1769700260; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=j857tcLTZc6siJgypydhpXa5LtI35vwCsiBiU3//hp4=;
-	b=NH22+QbTP/OSjfGvwGpXXQ2/jhaZ6r43A49nob0oGn4vCrVJ1r8SRHnTl68/tOz4Ua63M1
-	5XenUK64Jcswgk7kAK74GaPNy59A1tPeX1efQOuYK14MnrZdHsI++DBrvYE19UGLm48DxE
-	qIup1M+PO/NtcsHaJsbmCJBOntKLZWJeqdrkh4NfgLwnKgZ8FENKwrpHavkrl3mD6pbPcc
-	3tnXUjF+S4xqMoCSSdsKRJhlgdrhUHHUbRGSQBUEmCnHh7hArFvwzcnmy3PfeI5GUj7Pi9
-	oklVFw/E9Msd07uiWQPLwk8Ot/Qzfn7NXo9oUMsZX1n3aY4EWJeef3LTuiOtLg==
+	bh=nwZAw1fI/cU7zhrCsIvB3YieEQIhPoU9tsyVTd7R/Bs=;
+	b=wzTBGtpHuHEhb1lt9XjAHIsOd56CUXr63Y4d5Lxajuem8gaTMYRu/yGu0PDuAI8PYCsgKo
+	hBHmsaNr7EudK8WTGBOSlQPx3UnE7CP/ptVkJGi7/DWpaqIK7zNMuwC8Nv7S9+mNB3M1f0
+	Hol4yB20u9a6JyEuPAiZlV6HsUBhaSWf+KsWjvjRsuuMRaJ9aK7KKRisUrJBI0fcodMczA
+	tE0ItRPvq1e/SEySqy30ketpiUfs+awSvLQHZHPVl4MQfk62E8nGZ93Einxnygim+Pp6n/
+	rs5efV5I2lizMeS8ti7dlrTXHoc8yoU1qfV5j7HreKvkuR3sXlBwvEZUpbdGVQ==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Thu, 29 Jan 2026 16:23:23 +0100
-Subject: [PATCH v3 32/57] README: remove obsolete poky repo references
+Date: Thu, 29 Jan 2026 16:23:16 +0100
+Subject: [PATCH v3 25/57] ref-manual/images.rst: remove obsolete poky repo
+ references
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260129-remove-poky-references-v3-32-804acc3d9b7a@bootlin.com>
+Message-Id: <20260129-remove-poky-references-v3-25-804acc3d9b7a@bootlin.com>
 References: <20260129-remove-poky-references-v3-0-804acc3d9b7a@bootlin.com>
 In-Reply-To: <20260129-remove-poky-references-v3-0-804acc3d9b7a@bootlin.com>
 To: docs@lists.yoctoproject.org
@@ -42,21 +43,21 @@ Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
  Antonin Godard <antonin.godard@bootlin.com>, 
  Quentin Schulz <quentin.schulz@cherry.de>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3087;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1037;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=909HxdaXT2V2+jX4ONFms7vGwlPWFwf0ai4DHMrdhN4=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpe3uOux84w9zzg9VitckIeQnKik7Y39AbdEJlU
- RdfvMLN8AGJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaXt7jgAKCRDRgEFAKaOo
- NthDEACWbEES8WmZLto+uoLUYhN33xmpwG1Xljy1VzneRGj6jwBzmEe92rMsPycZLKFNKm5cptE
- JUINeGtvnhj9bQ2iOW3SRS9+M4DlzMz+YL6ECXRut/ll3Y7bha2qE12m3Ay0pVtwCJ9qssXDdJ5
- hR3hKxaxi7PfPxLLAuBtNr0NSnLtJLVnGnVwrpwpUMMIpCnHYrYJz01QNXyGsND2HDKoXvAo9dh
- rsN7zLnBuH5mzr9x3N0EyO3Nbof9SUXKSAjkVo2qof/4HO5dvhh81SU28stXZMnK8gEMJsvw/xr
- gyS8I+rt6dS8Iz5jkC+E6bn7Qm6U2wUMWMZYukj1Z01Tsd1bAivlUhjXl/ULnYJwlFxo9cx9nZI
- xrFSoy5bMv+Up9vFxCFF3ZR5Aw8vzCmhEp/sTfTSTNJArjaypCZcGxYnzg8NR7CEPZn30Fqwguf
- LFReG7YFd1WWKYvVXsQO5iQueDTN1qjyO7eL/YbOXD5p3k6Zfn9r9/35tyzNZJFYyHsD8zsvfBy
- EGbF7jujf04BLB468dxwU1TvWtfszNcGegqLpmM+5+YZgMtd7Wj5asasBX417PV7ZA+2fG3/BHJ
- 6TkjAN5WdKNQVICRRg2I4/80Ibxc/VHq0yQcGJEmcoW4tq3SEMRq6QIac6cKHw2lWzTZF9Vm+be
- M5atr3tRjfevfCQ==
+ bh=yhKBxzRJ4I7sjT2yEEavNGBnCJ11sdwGukEhWYN31Xc=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpe3uNcIzdP250vMF22Df21VHyvIXAgg7etb49H
+ FwRcCPAyVOJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaXt7jQAKCRDRgEFAKaOo
+ Nh2HD/9bfUUWTsy8juv3KoG11BrZVqYJ9/3z0AVhqmvjFmFRA6qo0N64QNnP8KKFJoJgKBjQc5P
+ PdX06mUNUFIlcGBWXARlVCGZzMGI14A08DjngFL/AbO2W54PX6Q/e70aGN0T+AqnuJU3jMa0mmN
+ PNA0ZvmzZfwolZ5b7LmKtLuXifFKSDsKypaw8yppqNJQoGmE8SSFYCL+pDlEJkfY+JwU/eKCoIo
+ y1vcKWb99iW5ciG+hwxPVUKPteDcTzV4XscS3FOzezeXyr1KOW7nHtY2O22YKIJWvhSji0ZxLEr
+ W+pdzu7Hvw/8+2HOIW1GzkuGy4JBEutQamBenmquC2NdmhHS9KXNDjXaODk3y+e+e7TKN5GDJJu
+ J92dzsk7xtg/TGgoQjqjdOD5+6OrThIW17rva0nAOz0NP0n7P53jeg2AxYWtgu1HkPUUDphxxTn
+ NON0fScWJDtSHi0ZpVyf+4P0l2QTRa3TmgUo7SLTSyX6tsDiNdC9dJlUWpTuavaPw13lXZBqbtB
+ r+Ad3xYi9n5d+PUYJcOXs3ucjLd5iEI7sIrl0axtwfgUqsXBGksqLlv9bK3Us/wtISEZMJrwLQr
+ CrfWes3miZO/aU15dWF0YMG7XRAWsCd5jDRfxu7oUH9TZVbw6xGo/kAHmHrPnInJRcKcVajODJs
+ +PhTjn+HacQJrKg==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
@@ -64,73 +65,31 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Thu, 29 Jan 2026 15:24:29 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8818
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8811
 
-Refresh the document now that the Poky repository is obsolete.
+Remove references to the Poky repository, replace by OpenEmbedded-Core.
 
 Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/README | 39 ++++++++++-----------------------------
- 1 file changed, 10 insertions(+), 29 deletions(-)
+ documentation/ref-manual/images.rst | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/documentation/README b/documentation/README
-index 56eac7ca1..5516d71a6 100644
---- a/documentation/README
-+++ b/documentation/README
-@@ -1,33 +1,14 @@
- documentation
- =============
+diff --git a/documentation/ref-manual/images.rst b/documentation/ref-manual/images.rst
+index c9d898926..94e412de3 100644
+--- a/documentation/ref-manual/images.rst
++++ b/documentation/ref-manual/images.rst
+@@ -26,9 +26,8 @@ image you want.
  
--This is the directory that contains the Yocto Project documentation.  The Yocto
--Project source repositories at https://git.yoctoproject.org/cgit.cgi have two
--instances of the "documentation" directory.  You should understand each of
--these instances.
--
--  poky/documentation - The directory within the poky Git repository containing
--                       the set of Yocto Project manuals.  When you clone the
--                       poky Git repository, the documentation directory
--                       contains the manuals.  The state of the manuals in this
--                       directory is guaranteed to reflect the latest Yocto
--                       Project release.  The manuals at the tip of this
--                       directory will also likely contain most manual
--                       development changes.
--
--  yocto-docs/documentation - The Git repository for the Yocto Project manuals.
--                             This repository is where manual development
--                             occurs.  If you plan on contributing back to the
--                             Yocto Project documentation, you should set up
--                             a local Git repository based on this upstream
--                             repository as follows:
--
--                               git clone git://git.yoctoproject.org/yocto-docs
--
--                             Changes and patches are first pushed to the
--                             yocto-docs Git repository.  Later, they make it
--                             into the poky Git repository found at
--                             git://git.yoctoproject.org/poky.
-+This is the directory that contains the Yocto Project documentation. The Yocto
-+Project documentation is hosted at https://git.yoctoproject.org/yocto-docs:
-+
-+This repository is where manual development occurs. If you plan on contributing
-+back to the Yocto Project documentation, you should set up a local Git
-+repository based on this upstream repository as follows:
-+
-+  git clone git://git.yoctoproject.org/yocto-docs
+        INCOMPATIBLE_LICENSE:pn-your-image-name = "GPL-3.0* LGPL-3.0*"
  
- Manual Organization
- ===================
-@@ -261,9 +242,9 @@ For example, the following .rst content will produce the 'expected'
- content:
+-From within the ``poky`` Git repository, you can use the following
+-command to display the list of directories within the :term:`Source Directory`
+-that contain image recipe files::
++From within the :term:`OpenEmbedded-Core (OE-Core)` Git repository, you can use the following
++command to display the list of directories that contain image recipe files::
  
-   .. code-block::
--      $ mkdir poky-&DISTRO;
-+      $ mkdir bitbake-builds-&DISTRO;
-       or
--      $ git clone &YOCTO_GIT_URL;/git/poky -b &DISTRO_NAME_NO_CAP;
-+      $ git clone &YOCTO_GIT_URL;/git/yocto-docs -b &DISTRO_NAME_NO_CAP;
- 
- Variables can be nested, like it was the case for DocBook:
+    $ ls meta*/recipes*/images/*.bb
  
 
 -- 
