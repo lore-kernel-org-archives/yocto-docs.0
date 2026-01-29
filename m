@@ -2,40 +2,40 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 92F96D6B070
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B5ED3D6B076
 	for <webhook@archiver.kernel.org>; Thu, 29 Jan 2026 15:24:39 +0000 (UTC)
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.17214.1769700276531006050
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.17118.1769700277591879057
  for <docs@lists.yoctoproject.org>;
- Thu, 29 Jan 2026 07:24:36 -0800
+ Thu, 29 Jan 2026 07:24:37 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=GhrRg3Ro;
- spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=Lsiy6N9o;
+ spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id C375E4E42324
-	for <docs@lists.yoctoproject.org>; Thu, 29 Jan 2026 15:24:34 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id F40A3C22F48
+	for <docs@lists.yoctoproject.org>; Thu, 29 Jan 2026 15:24:38 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 99B40606FD;
-	Thu, 29 Jan 2026 15:24:34 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E9E4D119A8859;
-	Thu, 29 Jan 2026 16:24:33 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id F366A606FD;
+	Thu, 29 Jan 2026 15:24:35 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 322C7119A868D;
+	Thu, 29 Jan 2026 16:24:35 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1769700274; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1769700275; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=51hlssbdk6z4aDjQITX+mr52V7HdyGRhoNWHuosCwVM=;
-	b=GhrRg3RorKZtZv+fSTHl7HzedtR7wOZi7LCok7E+4NKFTdDmTt/ou3lkhc3aDxaw8yMcNl
-	CAEuWwbffXJjGyO30067WSosGS9TAdyQefd1KnH2M4YGhlgHtx+lBkt5ySR/JFaKxSWaEc
-	UgID65B+Kgo7mNh9ajrkQNYVCymMny6pL4UOMS/X82uLfuLO19UkfRfbiez1orLZQzxVCI
-	GbZ2YbW2489vtEz7d0PvbixN3NTVaNNE4dyDkzSk0P0sKdcTk3xX+/o3J/CimiTRshytDW
-	ZTabTkwGILAHROZ+/HLVkOxjHhFXpZ/B6q62/D+YZKM1wFTKb6bRvO6gdGulEg==
+	bh=hKE6HB7aYaQaJ2IAafNrZUmTeBp03N16vkYYMxNa2TE=;
+	b=Lsiy6N9oNpYaVvqf4pErslna3giKQYsA1Itz43Mc+8Xz7LpunpZZbCSHi7DRXnU80jTDgE
+	9zRBkU/RQ5/mYL4gtX7M5Avy3abfMrECq1yM1Z7Nb0HMAQ6ut13wjXwAUpXxQ+Gby58BWy
+	i5f1m2Brc8DVIVhcoq3QapUmCcle/JahprbeWAljPpvvAu+JIhJ5HfSW6JzWPg3ctLJzpZ
+	5qE8oYLEAYMvGOh9jPAEV1zsQRIdcncggo2VlAubvK3LHUqLKnfFE+dBzJXLpxGjx4TPzk
+	PIa9avgk5AuJLRb8PgtDYykd+pkefjQAInbeibekKaPq0ZyeT+dAwTy1UG0+5A==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Thu, 29 Jan 2026 16:23:36 +0100
-Subject: [PATCH v3 45/57] dev-manual/upgrading-recipes.rst: move
- meta-openembedded to bitbake-builds/layers
+Date: Thu, 29 Jan 2026 16:23:38 +0100
+Subject: [PATCH v3 47/57] ref-manual/devtool-reference.rst: remove obsolete
+ poky repo references
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260129-remove-poky-references-v3-45-804acc3d9b7a@bootlin.com>
+Message-Id: <20260129-remove-poky-references-v3-47-804acc3d9b7a@bootlin.com>
 References: <20260129-remove-poky-references-v3-0-804acc3d9b7a@bootlin.com>
 In-Reply-To: <20260129-remove-poky-references-v3-0-804acc3d9b7a@bootlin.com>
 To: docs@lists.yoctoproject.org
@@ -43,21 +43,21 @@ Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
  Antonin Godard <antonin.godard@bootlin.com>, 
  Quentin Schulz <quentin.schulz@cherry.de>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2330;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2733;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=dbjj41ktIjBQKPmhJl4Bhakgn4vVZ3r2fteBBZYFCVg=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpe3uQnkFBh/ATBWz38+ESve2Fcwj8gDQNQAQQA
- lYs1Dvw+pmJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaXt7kAAKCRDRgEFAKaOo
- NpIBD/0VTo/rbwsKxOeMmEyOZQkcbuY0hZ9/RSd9LrdE3zxQUtO4crwqiS9k5lvVUp4024m0EX3
- +JSQNul9S5Zeh3anhvvLfUxFej1CeC1J79+jT6d2O3zmJC5jtHKeHi1X3l/n1Jti3u33cuyE2S0
- S3TjfJddIkuZGziSFPgGmN1OueYLqoAmwtnzskeHjDOLYfdKlI3SOnxX0vlfcwEXbuSY9LwISMa
- tm3GC5RK4Jg0803gp12tYz20/ubY11tPgpL4zwNbVFTwsobazyL6McvZx69pp0jDEQ0gCznMDkQ
- TJ6sOHpVP9swiWjbcrBu/oJRgUDjwtMqWZyh8/XoiHp61LSEftcsFlxJ4sUfZ1GJXs5dtcPVN3y
- FQP+shjY7e6IaTrPOS3CIYHGjtSyS2ksnWibdTQvwnjazXPH8OIVARBPAW2yoaCc3k0hnhfzSB4
- Q/dXRKeqnLl8ejmZCH/mw8IzzHuJHtU41c3Dcuj5a2L0gqra+A06eFnJv1xutZhtLn+yygkVetx
- 0M8VmbXyVb8MC8EM37CTc2RTup5BiWJKkwe5FVNPyNHhz8JVeQqi0b8uluwGjMQvPhDrZlO+bpI
- dKBWWcjcbMq7nM78bQuTJJ+GokTKOs+4C50rp5DUwZ9GdDw8HtCo6Dhm/rzTsmqd1HRKYBpJsNy
- Z/png6AVxyK3OLw==
+ bh=O1d1vrrLrjx45L1rC17Pkv8av6MfKUXVpV2snsBEALk=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpe3uQJPBm+hZF2XvI8/3ZFo+LXl8OvBUPxQ7uT
+ ffDy+MumIGJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaXt7kAAKCRDRgEFAKaOo
+ Nj5JD/9wAmWUYILJ0UF4P7zajJF/NeyfFTDwWH/sbJysSGxcEaRJSwSfnDkeb7ncNenvK9B8ROa
+ /4H0Sztq/yOuALr7eX2vlAvDFm6bn1nQOFcm06TZWsIAH3Dl2rufa1IJ4IKnwFbbo9zGWHLHaoV
+ UI2xrBuGHN5+VjKQa5S2qoYKY9HKjjcqjtPXF1gFLuYPtCTH+vTmatYGwpszMx/vWW8uXbqwtGl
+ e8rr27knswlrky0jOT65WRpnIPYsWOl1N+jjL6MjWta/OFYABI/df/ksbvHXjrkku8POalIgfRT
+ c8+HLNCap5zGhsCY7wAH7P+Y4F3UVZuPpr03LtfTfWGLoO4t3h1BTiTMaeuTCRMddqKfTtPqb4y
+ 4AjA1hXOzf2pRREuxTk3dSqJP2kB1E5ZqajuayhgpwGcaG7JjGhRwYVSv5nk5REQ/EBI0nwz6S6
+ Knl2u0maj0QAhWAQ9dMb+XTksJ9YkvQnIhB3g96ubPe4PUWrXU7NheCz+EwIrvOY4ZdiXOlAqPT
+ hqjtW4n9P9PKkWzEvo1/tar9KZQOko1j559rwW6/aks+76cDqPwLtlCxY8PCfs3okmtVjK91Zho
+ tPAGKG5fY9GTDTim4Ged6Hcyrc+iMefG87V6HbcGb0iJCVYTfIZyBv4m5sx+XWLTFdKk8QsswIu
+ UENXQUZyD0V5s9Q==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
@@ -65,46 +65,58 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Thu, 29 Jan 2026 15:24:39 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8831
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8833
 
-It makes more sense as we expect the layout to be that way.
+Refresh the document now that the Poky repository is obsolete.
 
-Suggested-by: Quentin Schulz <quentin.schulz@cherry.de>
+Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/dev-manual/upgrading-recipes.rst | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ documentation/ref-manual/devtool-reference.rst | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/documentation/dev-manual/upgrading-recipes.rst b/documentation/dev-manual/upgrading-recipes.rst
-index c4199d160..01fd12d86 100644
---- a/documentation/dev-manual/upgrading-recipes.rst
-+++ b/documentation/dev-manual/upgrading-recipes.rst
-@@ -242,12 +242,12 @@ script. For example, suppose you use the ``nano.bb`` recipe from the
- ``meta-oe`` layer in the ``meta-openembedded`` repository. For this
- example, assume that the layer has been cloned into following area::
+diff --git a/documentation/ref-manual/devtool-reference.rst b/documentation/ref-manual/devtool-reference.rst
+index 5ac567591..863825b06 100644
+--- a/documentation/ref-manual/devtool-reference.rst
++++ b/documentation/ref-manual/devtool-reference.rst
+@@ -346,7 +346,7 @@ variables in package recipes.
+       mechanisms cannot find the new upstream versions.
  
--   /home/scottrif/meta-openembedded
-+   /home/scottrif/bitbake-builds/layers/meta-openembedded
+    -  For the ``oe-core`` layer, recipe maintainers come from the
+-      :yocto_git:`maintainers.inc </poky/tree/meta/conf/distro/include/maintainers.inc>`
++      :oe_git:`maintainers.inc </openembedded-core/tree/meta/conf/distro/include/maintainers.inc>`
+       file.
  
- The following command from your :term:`Build Directory` adds the layer to
- your build configuration (i.e. ``${BUILDDIR}/conf/bblayers.conf``)::
+    -  If the recipe is using the :ref:`bitbake-user-manual/bitbake-user-manual-fetching:git fetcher (\`\`git://\`\`)`
+@@ -390,8 +390,8 @@ In this example, while a new version is available upstream, you do not
+ want to use it because the dependency on ``cdebconf`` is not easily
+ satisfied. Maintainers can explicit the reason that is shown by adding
+ the :term:`RECIPE_NO_UPDATE_REASON` variable to the corresponding recipe.
+-See :yocto_git:`base-passwd.bb </poky/tree/meta/recipes-core/base-passwd/base-passwd_3.5.29.bb?h=kirkstone>`
+-for an example::
++See the :oe_git:`base-passwd_*.bb </openembedded-core/tree/meta/recipes-core/base-passwd/>`
++recipe for an example::
  
--   $ bitbake-layers add-layer /home/scottrif/meta-openembedded/meta-oe
-+   $ bitbake-layers add-layer /home/scottrif/bitbake-builds/layers/meta-openembedded/meta-oe
-    NOTE: Starting bitbake server...
-    Parsing recipes: 100% |##########################################| Time: 0:00:55
-    Parsing of 1431 .bb files complete (0 cached, 1431 parsed). 2040 targets, 56 skipped, 0 masked, 0 errors.
-@@ -319,8 +319,8 @@ directory::
-    Parsing of 1432 .bb files complete (1431 cached, 1 parsed). 2041 targets, 56 skipped, 0 masked, 0 errors.
-    NOTE: Adding new patch 0001-nano.bb-Stuff-I-changed-when-upgrading-nano.bb.patch
-    NOTE: Updating recipe nano_2.9.3.bb
--   NOTE: Removing file /home/scottrif/meta-openembedded/meta-oe/recipes-support/nano/nano_2.7.4.bb
--   NOTE: Moving recipe file to /home/scottrif/layers/meta-openembedded/meta-oe/recipes-support/nano
-+   NOTE: Removing file /home/scottrif/bitbake-builds/layers/meta-openembedded/meta-oe/recipes-support/nano/nano_2.7.4.bb
-+   NOTE: Moving recipe file to /home/scottrif/bitbake-builds/layers/meta-openembedded/meta-oe/recipes-support/nano
-    NOTE: Leaving source tree /home/scottrif/bitbake-builds/build/workspace/sources/nano as-is; if you no longer need it then please delete it manually
+    RECIPE_NO_UPDATE_REASON = "Version 3.5.38 requires cdebconf for update-passwd utility"
  
+@@ -460,7 +460,7 @@ Here is an example that resets the workspace directory that contains the
  
+    $ devtool reset mtr
+    NOTE: Cleaning sysroot for recipe mtr...
+-   NOTE: Leaving source tree /home/scottrif/poky/build/workspace/sources/mtr as-is; if you no longer need it then please delete it manually
++   NOTE: Leaving source tree /home/scottrif/bitbake-builds/build/workspace/sources/mtr as-is; if you no longer need it then please delete it manually
+    $
+ 
+ .. _devtool-finish-working-on-a-recipe:
+@@ -633,7 +633,7 @@ Here is sample output after using
+ to create and add the ``mtr_0.86.bb`` recipe to the ``workspace`` directory::
+ 
+    $ devtool status
+-   mtr:/home/scottrif/poky/build/workspace/sources/mtr (/home/scottrif/poky/build/workspace/recipes/mtr/mtr_0.86.bb)
++   mtr:/home/scottrif/bitbake-builds/build/workspace/sources/mtr (/home/scottrif/bitbake-builds/build/workspace/recipes/mtr/mtr_0.86.bb)
+    $
+ 
+ .. _devtool-search-for-available-target-recipes:
 
 -- 
 2.52.0
