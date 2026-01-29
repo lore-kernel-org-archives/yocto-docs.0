@@ -2,62 +2,64 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2ECFED61022
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3BFB4D6101A
 	for <webhook@archiver.kernel.org>; Thu, 29 Jan 2026 15:24:08 +0000 (UTC)
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.17184.1769700246763857554
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.17183.1769700246202053410
  for <docs@lists.yoctoproject.org>;
  Thu, 29 Jan 2026 07:24:07 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=aTjePA69;
- spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=pvzA3kbO;
+ spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 993DFC22F47;
-	Thu, 29 Jan 2026 15:24:07 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 2025D4E4231D
+	for <docs@lists.yoctoproject.org>; Thu, 29 Jan 2026 15:24:04 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 80403606FD;
-	Thu, 29 Jan 2026 15:24:04 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C687B119A868D;
-	Thu, 29 Jan 2026 16:24:03 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id E0430606FD;
+	Thu, 29 Jan 2026 15:24:03 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5BDE4119A868E;
+	Thu, 29 Jan 2026 16:24:02 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1769700244; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=wjl4d53mc6wCO/qGfxZ93rzrOZHOvIp3vm+zpMsjDDE=;
-	b=aTjePA69fCKTEdr2KI+oEbUEP6cVrFmVjxUeFJA0oVzwGHH5DH3ytUB1qaFyK6WMSyCh1O
-	lOE/HnYm6Ll8xq/XMsxSIbkv9ZK0KwBkBygVIcQnLDbMN7KjQ5BCxwywLMY1qpm5KQdqOK
-	womRomISPBfmHlSxLYi/3W3MEuoaghequHpzDZ7qol7hFvzxkoR5/9JnTPSggVemlPhQjD
-	ZAKaCTDP0j7CYBGAJr6AlvCnU6k4MebZnE7cVuMYaGJ+l1NxlSDQaxR5XUKicL3VFdNTqc
-	IWMm07KFUtveLKBjvx4ge+OAuJFK1dfbyKEdaflooCs/P9b9g/xcEaMg2B5uSg==
+	t=1769700243; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=Os/j8aRt+uiqCvV5FkG2kjNpDT0i4rOsImE3uYAZ+Ak=;
+	b=pvzA3kbOACzlyCZeNnyOZYQJe1G8U/UyKsINxyZKQ3tkOu1dmmipmzjyzOAs6kVG7cyhOF
+	Xmmd4u0Emh4XC+kNktfwIV/StrDTxmrTURM7Htv5SzEny7KoiGh0Y2OZjcAU60esc0AlhP
+	uw5a0LnrbJepb53u0xmTOx7j5z1Ty53kNTaC0+4PcqmZHr9JCoAO9WuugJXSm6Yitp1eG2
+	Zr4J1TkSr/bWj/rjCRIyg0TY+fW4WxvTM/9lW+v6OLt9MufS9oSHW16TtUgGjq1td84GUb
+	lizKPtSJ1Ty9vFw6J9Ipn2SP5zTktDChn+y4Yc8QSlc2rMzWGqqK/Ww60qO2kA==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Thu, 29 Jan 2026 16:22:52 +0100
-Subject: [PATCH v3 01/57] transitioning-to-a-custom-environment.rst: remove
- obsolete poky repo references
+Subject: [PATCH v3 00/57] Remove obsolete poky repo references
+Date: Thu, 29 Jan 2026 16:22:51 +0100
+Message-Id: <20260129-remove-poky-references-v3-0-804acc3d9b7a@bootlin.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260129-remove-poky-references-v3-1-804acc3d9b7a@bootlin.com>
-References: <20260129-remove-poky-references-v3-0-804acc3d9b7a@bootlin.com>
-In-Reply-To: <20260129-remove-poky-references-v3-0-804acc3d9b7a@bootlin.com>
+X-B4-Tracking: v=1; b=H4sIAEt7e2kC/4WPzW7DIBCEX8XiXCpYwBCf8h5VDwbWNW1tUnBQo
+ 8jvXuz0Rz1Uve1oZ7+ZvZKMKWAmXXMlCUvIIc5ViLuGuLGfn5AGXzUBBooDSJpwigXpKb5c6jx
+ gwtlhpoK3cJBWKKUHUo9PdRfed/DD403ns31Gt2y0T0fCt3NNXG62n8Cu+Y5bME15C6r3I3Xee
+ QUHRMVMV8SGsX1G6uI0haVrBimslcBBHMBww71uB8MdE1KgQ61177gUnpGt0hjyEtNlf73wvcF
+ /XxZOGW2V6dUgvfUIRxvj8hrm+9pghxb4ArWMg/4TBBWkpR0Mc06i6n+D1nX9AE6rwSCaAQAA
+X-Change-ID: 20251224-remove-poky-references-316294b3557f
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Antonin Godard <antonin.godard@bootlin.com>, 
  Quentin Schulz <quentin.schulz@cherry.de>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3401;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=9810;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=0F4IHnBzDvWpK8t8LkLBteRlMMQt3d8H4EbekxMvrKY=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpe3uJ6tLEFTYtwXoLkDEYAEMNTICRg+rh9DiXk
- YD+BdBM0AeJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaXt7iQAKCRDRgEFAKaOo
- Np2FD/4hlKWYY8XpPxthWiW838RM1h/kxuyLgMNq7KCeZCuSwBYQnRa/eaN8eVQoetMv6PXbTS5
- 1IhQSHzoiTp8nAl2bRaopizhB9h6rsTxhovQtjr6UBM3A/pOFjrpOUUZ35NqP1vPpB7yuzkvnDd
- f1E0BmFcRgJDYAoNFXEohSaT5lg3rkW4e72Zeyxm8l2Xe3ou9x/MtVfF+xrMffIzJ9x1HFoC6w/
- 48ZyRLpn7Yn6iPBZc0iMKm5iQgfq0TZYiRo6EiakBO9giJCLaMySI3C0yaevF7brrUSc3cOO77l
- ptSCPt/IJ3yxCW+q6/noqZ05Q77hQbrcaL25wxn9XVOoCatfSpQD0cHJIGW80fFK0eYU+pHNotV
- P37d1ZQ9PONojH+1a1Zoj0Z+Ohrxy5fzlJ71zzOLuGVxBkIpZkNrQ+++dSURREwTSfLSMLY7jy6
- WkwEaLJt8MerBIVEnTf3grBjsT1CskYgJv8uzrVIcEPCOszU4Wz/9KW44sdzm3bAbuImezU7p3E
- k/rZLhTX+HjLvso3FFd1UQnGw3HjJL7o7bbqiBVlVC9Wi66cAq+u8xgJFGtEUywevMsXEEtWGat
- a33fijmzQLTQWOXM07mihvnCYkHGCFUJ1kdysrx8krk6yDM1pNJG6RH3hFVnUnUzE7E1kPOQj1s
- FbQ8hgdPZx9PDNg==
+ bh=AGt8dCe82cQcUJ19JNbkhb6Lbp/ldP/MiW9wwqxK+us=;
+ b=kA0DAAoB0YBBQCmjqDYByyZiAGl7e4miggv1SR3VpLquOHcJWlBvC9FP7f8BxtVM2c08QSVW8
+ YkCMwQAAQoAHRYhBIZIclGI3UAbuaDT/9GAQUApo6g2BQJpe3uJAAoJENGAQUApo6g2TJ0P/2Qp
+ 5Yxuy+/arYj3IGRTYAdKxZonikv11x5qZZ+WrGC/1J2qBQFoq0OKPUi1M6L64vRvA06Bu/B37yR
+ 0cMTmxh7aqYhNw6ZP1u0jDWj4U5N7a9OFZR09B3X4EdAsksIpOOjA7mF34Q0Wrvg2vvT7LQ/YWB
+ g6K/QMN73hA00lrsnlkpxXPKIu0F4Stp31RpcGC5zK+PFrC3fHWqno5SW/X2O3g03GSs10UUvmd
+ QBwaGlLXbfM/4c6Vrf8sqjyMX/wKj6MnghlWSmuoGBBaSWuBCQVjXvInfNuJGXwTizg3g05rBZG
+ Byc/iyu51D48Y6AzqRdjqK9ELeo0BL73uEpXD2OwkvpJQO4JxHfIBgBD989/bgTr8A2iSg9ryTF
+ Pyipyuv07bAveoq05TdpOUfJl3iLaUSWS+Vt5n3QjvuTgQiER8E+FKJQ16w/tP+udvox+RoOF2H
+ iPN4ms3mv4QIq1F55INkmpdWzE375MaiDM09Ry38jwaSchQj2RyOG6AVOl8vrGCgCt5f/HpoO8e
+ aU8D03XWrouZqnkK50SZnGdBovxJTgMTB4HJJoQrnvpWklwbNgfIQZwUos0F1mXcVw71BoWZM+k
+ 2/qlKwBGD9wWWUb9oJ0q/N+qW+Zr4rQ+yh1/X2PVniaep17y6C0vDJzegoWxInMI0q5olb9ybdg
+ UwQAZ
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
@@ -65,65 +67,168 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Thu, 29 Jan 2026 15:24:08 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8786
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8787
 
-- Use :term: for Poky.
-- Mention use of fragments instead of local.conf.
-- Remove Yocto < 2.4 reference.
+The Poky repository's master branch is no longer updated:
+https://git.yoctoproject.org/poky/tree/README
 
-Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
+Many places in the documentation were still making references to Poky as
+in the repository. Migrate the documentation in two steps:
+
+Check all occurrences of "poky" or "source directory"
+(case-insensitive/multiline match), and reformulate/adapt.
+
+Most of the occurrences will usually be a path in Poky that can be
+replaced by OE-Core/meta-yocto.
+
+Some others are more tricky, and needed some re-organization / rework.
+For that reason, patch were split by files, to make reviewing/merging
+easier and incremental.
+
+This series depends on the "Redefine terms now that the Poky repository is
+obsolete" series which redefines terms used to replaces occurrences
+here.
+
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- .../transitioning-to-a-custom-environment.rst          | 18 ++++++++----------
- 1 file changed, 8 insertions(+), 10 deletions(-)
+Changes in v3:
+- Address Quentin's comments (thanks!).
+- Link to v2: https://patch.msgid.link/20260127-remove-poky-references-v2-0-74bf80cc4e5a@bootlin.com
 
-diff --git a/documentation/transitioning-to-a-custom-environment.rst b/documentation/transitioning-to-a-custom-environment.rst
-index a5f55c567..e292399f4 100644
---- a/documentation/transitioning-to-a-custom-environment.rst
-+++ b/documentation/transitioning-to-a-custom-environment.rst
-@@ -39,7 +39,7 @@ Transitioning to a custom environment for systems development
-    that you've downloaded. Be aware that some BSPs may not be immediately
-    supported on the very latest release, but they will be eventually.
- 
--   You might want to start with the build specification that Poky provides
-+   You might want to start with the build specification that :term:`Poky` provides
-    (which is reference embedded distribution) and then add your newly chosen
-    layers to that. Here is the information :ref:`about adding layers
-    <dev-manual/layers:Understanding and Creating Layers>`.
-@@ -48,16 +48,14 @@ Transitioning to a custom environment for systems development
-    configuration**.
-    For instance, you've chosen a machine type and added in the corresponding BSP
-    layer. You'll then need to change the value of the :term:`MACHINE` variable in your
--   configuration file (build/local.conf) to point to that same machine
--   type. There could be other layer-specific settings you need to change as
--   well. Each layer has a ``README`` document that you can look at for this type of
--   usage information.
-+   configuration (using the :ref:`ref-fragments-builtin-core-machine`
-+   fragment) to point to that same machine type. There could be other
-+   layer-specific settings you need to change as well. Each layer has a
-+   ``README`` document that you can look at for this type of usage information.
- 
- #. **Add a new layer for any custom recipes and metadata you create**.
--   Use the ``bitbake-layers create-layer`` tool for Yocto Project 2.4+
--   releases. If you are using a Yocto Project release earlier than 2.4, use the
--   ``yocto-layer create`` tool. The ``bitbake-layers`` tool also provides a number
--   of other useful layer-related commands. See
-+   Use the ``bitbake-layers create-layer`` command. The ``bitbake-layers`` tool
-+   also provides a number of other useful layer-related commands. See
-    :ref:`dev-manual/layers:creating a general layer using the
-    \`\`bitbake-layers\`\` script` section.
- 
-@@ -99,7 +97,7 @@ Transitioning to a custom environment for systems development
- 
-    Distribution settings define the packaging back-end (e.g. rpm or other) as
-    well as the package feed and possibly the update solution. You would create
--   your own distribution in a new layer inheriting from Poky but overriding what
-+   your own distribution in a new layer inheriting from :term:`Poky` but overriding what
-    needs to change for your distribution. If you find yourself adding a lot of
-    configuration to your local.conf file aside from paths and other typical
-    local settings, it's time to :ref:`consider creating your own distribution
+Changes in v2:
+- Rename "project" to "bitbake-builds" across the whole series, to match
+  the default naming of bitbake-setup.
+- Apply Reviewed-by trailers from Quentin on patches with no
+  modifications. Reviewed-by trailers on modified patches were not
+  applied.
+- Apply the suggestions from Quentin on the v1. Thanks a lot Quentin for
+  the thorough review.
+- Link to v1: https://patch.msgid.link/20251224-remove-poky-references-v1-0-658a5f4dbde2@bootlin.com
 
--- 
-2.52.0
+---
+Antonin Godard (57):
+      transitioning-to-a-custom-environment.rst: remove obsolete poky repo references
+      dev-manual/poky-manual-setup.rst: remove obsolete poky repo references
+      dev-manual/start.rst: remove obsolete poky repo references
+      bsp-guide/bsp.rst: remove obsolete poky repo references
+      kernel-dev/advanced.rst: remove obsolete poky repo references
+      contributor-guide/submit-changes.rst: remove obsolete poky repo references
+      dev-manual/building.rst: remove obsolete poky repo references
+      dev-manual/debugging.rst: remove obsolete poky repo references
+      dev-manual/error-reporting-tool.rst: remove obsolete poky repo references
+      dev-manual/external-toolchain.rst: remove obsolete poky repo references
+      dev-manual/layers.rst: re-organize the document
+      dev-manual/layers.rst: remove obsolete poky repo references
+      dev-manual/libraries.rst: remove obsolete poky repo references
+      dev-manual/new-recipe.rst: remove obsolete poky repo references
+      dev-manual/securing-images.rst: remove obsolete poky repo references
+      dev-manual/temporary-source-code.rst: remove obsolete poky repo references
+      dev-manual/wayland.rst: remove obsolete poky repo references
+      dev-manual/wic.rst: remove obsolete poky repo references
+      kernel-dev/common.rst: remove obsolete poky repo references
+      migration-guides/migration-1.4.rst: remove obsolete poky repo references
+      overview-manual/concepts.rst: remove obsolete poky repo references
+      overview-manual/development-environment.rst: remove obsolete poky repo references
+      overview-manual/yp-intro.rst: remove obsolete poky repo references
+      ref-manual/classes.rst: remove obsolete poky repo references
+      ref-manual/images.rst: remove obsolete poky repo references
+      ref-manual/structure.rst: remove obsolete poky repo references
+      ref-manual/tasks.rst: remove obsolete poky repo references
+      ref-manual/variables.rst: remove obsolete poky repo references
+      sdk-manual/appendix-obtain.rst: remove obsolete poky repo references
+      sdk-manual/intro.rst: remove obsolete poky repo references
+      test-manual/runtime-testing.rst: remove obsolete poky repo references
+      README: remove obsolete poky repo references
+      README: replace obsolete substitution variables
+      contributor-guide/identify-component.rst: remove obsolete poky repo references
+      dev-manual/build-quality.rst: remove obsolete poky repo references
+      dev-manual/custom-distribution.rst: remove obsolete poky repo references
+      dev-manual/custom-template-configuration-directory.rst: remove obsolete poky repo references
+      dev-manual/init-manager.rst: remove obsolete poky repo references
+      dev-manual/licenses.rst: remove obsolete poky repo references
+      dev-manual/licenses.rst: instruct to use git-archive instead of removing .git
+      dev-manual/packages.rst: remove obsolete poky repo references
+      dev-manual/python-development-shell.rst: remove obsolete poky repo references
+      dev-manual/qemu.rst: remove obsolete poky repo references
+      dev-manual/upgrading-recipes.rst: remove obsolete poky repo references
+      dev-manual/upgrading-recipes.rst: move meta-openembedded to bitbake-builds/layers
+      dev-manual/vulnerabilities.rst: remove obsolete poky repo references
+      ref-manual/devtool-reference.rst: remove obsolete poky repo references
+      ref-manual/faq.rst: remove obsolete poky repo references
+      ref-manual/features.rst: remove obsolete poky repo references
+      ref-manual/release-process.rst: remove obsolete poky repo references
+      ref-manual/release-process.rst: remove repeated "in the"
+      ref-manual/system-requirements.rst: remove obsolete poky repo references
+      ref-manual/system-requirements.rst: fix wrong path to install-buildtools
+      ref-manual/yocto-project-supported-features.rst: remove obsolete poky repo reference
+      test-manual/reproducible-builds.rst: remove obsolete poky repo references
+      test-manual/understand-autobuilder.rst: remove obsolete poky repo references
+      what-i-wish-id-known.rst: remove obsolete poky repo references
+
+ documentation/README                               |  43 +--
+ documentation/brief-yoctoprojectqs/index.rst       |   2 +-
+ documentation/bsp-guide/bsp.rst                    | 165 ++++-------
+ .../contributor-guide/identify-component.rst       |   9 -
+ documentation/contributor-guide/submit-changes.rst |  60 +---
+ documentation/dev-manual/build-quality.rst         |   2 +-
+ documentation/dev-manual/building.rst              |  40 +--
+ documentation/dev-manual/custom-distribution.rst   |   8 +-
+ .../custom-template-configuration-directory.rst    |   8 +-
+ documentation/dev-manual/debugging.rst             |  16 +-
+ documentation/dev-manual/error-reporting-tool.rst  |   3 +-
+ documentation/dev-manual/external-toolchain.rst    |   2 +-
+ documentation/dev-manual/init-manager.rst          |   6 +-
+ documentation/dev-manual/layers.rst                | 308 ++++++++------------
+ documentation/dev-manual/libraries.rst             |   8 +-
+ documentation/dev-manual/licenses.rst              |  32 +-
+ documentation/dev-manual/new-recipe.rst            |  25 +-
+ documentation/dev-manual/packages.rst              |  11 +-
+ documentation/dev-manual/poky-manual-setup.rst     |  29 +-
+ .../dev-manual/python-development-shell.rst        |   2 +-
+ documentation/dev-manual/qemu.rst                  |  11 +-
+ documentation/dev-manual/start.rst                 | 324 +++------------------
+ documentation/dev-manual/temporary-source-code.rst |   4 +-
+ documentation/dev-manual/upgrading-recipes.rst     |  28 +-
+ documentation/dev-manual/wayland.rst               |   2 +-
+ documentation/dev-manual/wic.rst                   |  20 +-
+ documentation/kernel-dev/advanced.rst              |  12 +-
+ documentation/kernel-dev/common.rst                | 158 ++++------
+ documentation/migration-guides/migration-1.4.rst   |   2 +-
+ documentation/overview-manual/concepts.rst         |  76 ++---
+ .../overview-manual/development-environment.rst    | 108 +++----
+ .../figures/poky-reference-distribution.png        | Bin 23784 -> 0 bytes
+ documentation/overview-manual/yp-intro.rst         | 155 ++--------
+ documentation/ref-manual/classes.rst               |  34 ++-
+ documentation/ref-manual/devtool-reference.rst     |  10 +-
+ documentation/ref-manual/faq.rst                   |  45 ++-
+ documentation/ref-manual/features.rst              |   2 +-
+ documentation/ref-manual/fragments.rst             |   2 +
+ documentation/ref-manual/images.rst                |   5 +-
+ documentation/ref-manual/release-process.rst       |   8 +-
+ documentation/ref-manual/structure.rst             | 170 ++++++-----
+ documentation/ref-manual/system-requirements.rst   |  16 +-
+ documentation/ref-manual/tasks.rst                 |  10 +-
+ documentation/ref-manual/terms.rst                 |   2 +-
+ documentation/ref-manual/variables.rst             | 149 +++++-----
+ .../yocto-project-supported-features.rst           |   2 +-
+ documentation/sdk-manual/appendix-obtain.rst       |  29 +-
+ documentation/sdk-manual/intro.rst                 |   8 +-
+ documentation/security-manual/securing-images.rst  |   9 +-
+ documentation/security-manual/vulnerabilities.rst  |  20 +-
+ documentation/test-manual/reproducible-builds.rst  |   8 +-
+ documentation/test-manual/runtime-testing.rst      |   4 +-
+ .../test-manual/understand-autobuilder.rst         |   6 +-
+ .../transitioning-to-a-custom-environment.rst      |  21 +-
+ documentation/what-i-wish-id-known.rst             |   5 +-
+ 55 files changed, 816 insertions(+), 1428 deletions(-)
+---
+base-commit: f43bb42123928181d76f81c0343ece777ac143d0
+change-id: 20251224-remove-poky-references-316294b3557f
+prerequisite-change-id: 20251224-terms-refresh-cdcd529ee508:v3
+prerequisite-patch-id: 28a8d58b852a13391a97f6488bc59721f5efda86
+prerequisite-patch-id: 39e885d60801727fff2c835f0c1904287a8223ad
+prerequisite-patch-id: 60b57a0baefe0536612ed8c9dff680234c52eed6
+prerequisite-patch-id: ef2fccb1181fd736f5713197040c52667c4b469e
+prerequisite-patch-id: d641f824c2d4e7ff9506f9007102ebf3b112564f
 
 
