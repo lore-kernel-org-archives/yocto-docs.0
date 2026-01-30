@@ -2,61 +2,61 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E4353D49C90
-	for <webhook@archiver.kernel.org>; Fri, 30 Jan 2026 09:35:28 +0000 (UTC)
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.6992.1769765720854701118
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 04F8CD49C93
+	for <webhook@archiver.kernel.org>; Fri, 30 Jan 2026 09:35:29 +0000 (UTC)
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.6893.1769765722377967282
  for <docs@lists.yoctoproject.org>;
- Fri, 30 Jan 2026 01:35:22 -0800
+ Fri, 30 Jan 2026 01:35:23 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=JPTXPM/B;
- spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=RKAfX5EP;
+ spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 563981A2B24
-	for <docs@lists.yoctoproject.org>; Fri, 30 Jan 2026 09:35:19 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 611C3C22F5B
+	for <docs@lists.yoctoproject.org>; Fri, 30 Jan 2026 09:35:23 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 2C1066075A;
-	Fri, 30 Jan 2026 09:35:19 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9EAF3119A885C;
-	Fri, 30 Jan 2026 10:35:18 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 0CE646075A;
+	Fri, 30 Jan 2026 09:35:20 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7E36E119A885C;
+	Fri, 30 Jan 2026 10:35:19 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1769765718; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=Kk7GC91e5bPzoA9Jxafcsu2PxUPuehnlOopgJ3Ayids=;
-	b=JPTXPM/BM/YukhQUq/276RRxZ5hATEThfKB+KcZtl8QxWrb9QdH7dd8qQvPKV8g+sF3lsQ
-	IyAPcnOZriZVTeSk/KOozKtvEq3ts6Rh2q6ogNVg1k3fO9k4begl8pIq5pndrkJ6lFEKAr
-	p013uqIScCpXUptZomwDFmXBt1YeA8qO7YZ/rTdegYKHetHOe6vWHGLtT+x3xgwdLvpmrN
-	/yD4X5yYu0osXGp3sGK6MjvliwKdzAcQHLxjue3reHS4iIm+8DiLAInAfXCQj4oAq18n76
-	OSnzNQzyTkxmeqMRLdm8jOdPFDWTy9f8fMMRVPDb6jOwwz26MukQmvvKE/QBHQ==
+	t=1769765719; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=wavKwwmWbXB5UR0obT3Ap5ukXMOumKfIaKzDCmxX2eM=;
+	b=RKAfX5EPrDjGs8MxxJwoDODTe2e/iME4glwcABfqxcuauqNPiyIl2t217YaRnerKqZckGE
+	w0Nrujoe8XJSOq4FEYyvoD3OJnSgu3aSoXb9UxtDXwQsq407bnsIU5sk9QDm6oYatn+X1r
+	FlC+Ty6vWh8HF+5daqXjlwgucxVg+8ifhgSO0zJ8+Wskutbt+i2hHad8ciq5nw+TVU8JcA
+	IhhBnQSHPSNbGzShgFlTKJIemwjKSQzzT/YiLHZiWWdJ+wac7ebkM8rtY0bTL9AJvgtpyF
+	HMCp/iPp1zD5G0yGiDk4pDpLCb2wfNX7FxMSbQFfuRoXbR0CJNuFHE9bXjjqaA==
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 30 Jan 2026 10:35:18 +0100
-Message-Id: <DG1TL75U90CW.21N3OPUR6OJGK@bootlin.com>
-Subject: [whinlatter] Pull request
+Date: Fri, 30 Jan 2026 10:35:19 +0100
+Message-Id: <DG1TL7JHS3TG.1BTXC3MP9KBEX@bootlin.com>
 Cc: <docs@lists.yoctoproject.org>
 From: "Antonin Godard" <antonin.godard@bootlin.com>
 To: "Richard Purdie" <richard.purdie@linuxfoundation.org>
+Subject: [master] Pull request
 X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 30 Jan 2026 09:35:28 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8846
+ <docs@lists.yoctoproject.org>; Fri, 30 Jan 2026 09:35:29 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8847
 
-The following changes since commit ea0501a135043aefc7c6049be811f4c1277f1f8b=
+The following changes since commit b8a56b8b2e8c0417b2f7204f80c79b05d95e9ce4=
 :
 
   contributor-guide/recipe-style-guide.rst: explain difference between laye=
-r and recipe license(s) (2026-01-13 09:59:23 +0100)
+r and recipe license(s) (2026-01-13 09:47:57 +0100)
 
 are available in the Git repository at:
 
-  git@push.yoctoproject.org:yocto-docs whinlatter-next
+  git@push.yoctoproject.org:yocto-docs master-next
 
-for you to fetch changes up to 3ea1c74cc56bb271f8460ab851f6b2983b83358f:
+for you to fetch changes up to 3ec23e9fb7ddc294bac6f68300591239c9cedf4b:
 
   what-i-wish-id-known.rst: remove obsolete poky repo references (2026-01-2=
-9 16:28:34 +0100)
+9 16:17:23 +0100)
 
 ----------------------------------------------------------------
 Antonin Godard (62):
@@ -145,8 +145,7 @@ nces
 erences
       what-i-wish-id-known.rst: remove obsolete poky repo references
 
-Lee Chee Yang (2):
-      migration-guides: add release notes for 5.0.14
+Lee Chee Yang (1):
       migration-guides: add release notes for 5.0.15
 
 Quentin Schulz (13):
@@ -202,8 +201,7 @@ pt
  documentation/kernel-dev/common.rst                | 158 +++----
  .../kernel-dev/figures/kernel-dev-title.png        | Bin 13453 -> 0 bytes
  documentation/migration-guides/migration-1.4.rst   |   2 +-
- documentation/migration-guides/release-5.0.rst     |   2 +
- .../migration-guides/release-notes-5.0.14.rst      | 211 ++++++++++
+ documentation/migration-guides/release-5.0.rst     |   1 +
  .../migration-guides/release-notes-5.0.15.rst      | 219 ++++++++++
  documentation/overview-manual/concepts.rst         |  76 +---
  .../overview-manual/development-environment.rst    | 108 ++---
@@ -246,11 +244,10 @@ pt
  .../toaster-manual/figures/toaster-title.png       | Bin 9277 -> 0 bytes
  .../transitioning-to-a-custom-environment.rst      |  21 +-
  documentation/what-i-wish-id-known.rst             |   5 +-
- 75 files changed, 2067 insertions(+), 1625 deletions(-)
+ 74 files changed, 1855 insertions(+), 1625 deletions(-)
  delete mode 100644 documentation/bsp-guide/figures/bsp-title.png
  delete mode 100644 documentation/dev-manual/figures/dev-title.png
  delete mode 100644 documentation/kernel-dev/figures/kernel-dev-title.png
- create mode 100644 documentation/migration-guides/release-notes-5.0.14.rst
  create mode 100644 documentation/migration-guides/release-notes-5.0.15.rst
  delete mode 100644 documentation/overview-manual/figures/overview-manual-t=
 itle.png
