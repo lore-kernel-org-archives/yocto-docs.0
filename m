@@ -1,293 +1,815 @@
-Return-Path: <quentin.schulz@cherry.de>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7444EEC1EBF
-	for <webhook@archiver.kernel.org>; Thu,  5 Feb 2026 14:01:01 +0000 (UTC)
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (DB3PR0202CU003.outbound.protection.outlook.com [52.101.84.57])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.21241.1770300052048673505
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C87F1E9129F
+	for <webhook@archiver.kernel.org>; Thu,  5 Feb 2026 15:26:01 +0000 (UTC)
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.23214.1770305153585531918
  for <docs@lists.yoctoproject.org>;
- Thu, 05 Feb 2026 06:00:52 -0800
+ Thu, 05 Feb 2026 07:25:55 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@cherry.de header.s=selector1 header.b=A/LOwNlJ;
- spf=pass (domain: cherry.de, ip: 52.101.84.57, mailfrom: quentin.schulz@cherry.de)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GWxWngsAPPvWbJs+xAmIP4WVcGXARJ2z7IQTorvMHR+hGGeEXs+7BsWxowlgavLJeZ3UNnhIgBI66mF95IXZjC/H/odt0m64LdMfrpPl4V4M08Bs/HYRAxPnknOawtczyEQZVPLZQIfi5Ve81TvfbNfmVSVEwR1Y3iBWjn7zA/XStO83a0nUQi1Ye7BIr7Ir4VrkIPA1siOLqsnroDr3Wttyt3pr+SaW/yTz7vWBCD4uYNwWFw/zHBbpPPHx/XX2RVRLjTdtIqE7oBUYDUvSy+5m+beZBpUQcWaGUSgbXQANlfzxaTnCXxszCzMZFduLMnWiYYtoIXH6XtvMOaZ3MA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=f02Sw5xkTXA81JZ1/9dUgdvQ1qZK3RmxHSvaJWCzwNc=;
- b=RekrhFKA/Jlagv8hc5ds7gsKVumv7fcYkAVOF6mOcJRsv1imRgCukmrwS/P/TPMDp3UWGcf5STtCqkV9aSmVa63I5IyibbWD+2wtHwCvXeqAWFhDLT4ngUel2cLe1H04fdnjaWa4xemfD+9WC6ICdGHB4oxKmc/Bwmr+JplSgPg5zufQ/yIr7wAGLYqEc2vOq1aROExPki2BHOGHza5PPCaCn7uanIPDZ5GAndxWq/stePJMw4RCWDnxActbC0n+62Vadpgswz5PwOpGh1IYJ0O6j3nHezTs2EdaGGryPnWhkNnnQiuk5X+hQhOPEhQXpwLFt0dvsCrg5tUz1sVajQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
- dkim=pass header.d=cherry.de; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=f02Sw5xkTXA81JZ1/9dUgdvQ1qZK3RmxHSvaJWCzwNc=;
- b=A/LOwNlJkgl5knMbS3nAMYw92rIFwDu1Q45dRJFElbVcEsNd25+oz/GeSJyDrN0u3hh1zoybX8I5d4lmRC91MdnbbW/Wgj9zvuVBH9AgbaBoXavPtYfkqzaiqxU1dqZYY6bBDAKSYrC1rCmNwFlNXPxNZjXB2cYLmJkCvYvu9Ng=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=cherry.de;
-Received: from GVXPR04MB12038.eurprd04.prod.outlook.com (2603:10a6:150:2be::5)
- by AM8PR04MB7939.eurprd04.prod.outlook.com (2603:10a6:20b:241::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.12; Thu, 5 Feb
- 2026 14:00:48 +0000
-Received: from GVXPR04MB12038.eurprd04.prod.outlook.com
- ([fe80::6c04:8947:f2f0:5e78]) by GVXPR04MB12038.eurprd04.prod.outlook.com
- ([fe80::6c04:8947:f2f0:5e78%6]) with mapi id 15.20.9587.013; Thu, 5 Feb 2026
- 14:00:48 +0000
-Message-ID: <2d8f6ca6-591e-4ee8-bfc7-f7f83d10ff38@cherry.de>
-Date: Thu, 5 Feb 2026 15:00:47 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [docs] [PATCH v2] doc: fix the switchers menu
-To: Antonin Godard <antonin.godard@bootlin.com>,
- bitbake-devel@lists.openembedded.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- docs@lists.yoctoproject.org
-References: <20260204-fix-switchers-js-v2-1-ea80107eff85@bootlin.com>
- <f9a1db09-bf8d-4f29-b2a7-567f97ce0532@cherry.de>
- <DG6ZW1HMRGQY.2QNTJC8SOYOCP@bootlin.com>
- <a6c85602-e566-419b-8a76-0dec0085b92b@cherry.de>
- <DG72K1JSFLI9.935906R7H60Z@bootlin.com>
-Content-Language: en-US
-From: Quentin Schulz <quentin.schulz@cherry.de>
-In-Reply-To: <DG72K1JSFLI9.935906R7H60Z@bootlin.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-X-ClientProxiedBy: DU2PR04CA0262.eurprd04.prod.outlook.com
- (2603:10a6:10:28e::27) To GVXPR04MB12038.eurprd04.prod.outlook.com
- (2603:10a6:150:2be::5)
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=2Ni9xh5G;
+ spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id A61171A2C21;
+	Thu,  5 Feb 2026 15:25:51 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 6D2BA606FD;
+	Thu,  5 Feb 2026 15:25:51 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 21B54119A865B;
+	Thu,  5 Feb 2026 16:25:49 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1770305150; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=gs8MhqaJFSGnBFzjxY25/NbdXlFIV/+/lueVJX+ZG10=;
+	b=2Ni9xh5G4CPtL6U0CAs2E6LdFd1VatI9TQj+TA6mKpL1F4W6CcJYdNrWl7arqFRx//qxmW
+	gK2gweYOvK1upjKAiZjj8jmj7oW7YoXS6It5hW1W29TCrT+7aIzggWiZxNRWyLJ/fIz6x0
+	+sXCSjJFmqN/CGTJ19a4Tf0qxfrfvEgOzKwWQlo4OXNyAoJ/CR2QvicmoIXC6HSHcSAx0L
+	XH6fYrfTwBeEiGIyWRYZEfnrzUrTOyDXERyR0ZJevAp87gUv5ExFfc/89ufyJME72qCvO2
+	EjWoi0rSertkVfyUQo4iGudzhloS0VoRYXE/dXSMZjwZQrWQ3NxxKJvMXx02Bg==
+From: Antonin Godard <antonin.godard@bootlin.com>
+Date: Thu, 05 Feb 2026 16:25:45 +0100
+Subject: [PATCH v3] doc: fix the switchers menu
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GVXPR04MB12038:EE_|AM8PR04MB7939:EE_
-X-MS-Office365-Filtering-Correlation-Id: 17d8d04d-ca5b-44fd-f7e1-08de64bef6d2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|7142099003;
-X-Microsoft-Antispam-Message-Info: 
-	=?utf-8?B?aENTa3o5QndPNkltN3E0Ry9uT0hXbHFoR0tydE1ITkl5U3ZLZ3RyMzVzdzIr?=
- =?utf-8?B?SWl5RERBMGh0eTZSbC8zUmkzaTNnaHFhVGR5QkpQd3ZPOU9WREpUbkIyMCtZ?=
- =?utf-8?B?ckY4MVFrdFAvUDN2aXVMbVZ3S0xjMTlVMnJ2WVllQlpteFRDbU1kRTdycVZj?=
- =?utf-8?B?RGtNZHlHc2FPWXpycHRBYVU4NzNnWFVzVlZYdk1mQWRLWE9EajVGQ2NXYndQ?=
- =?utf-8?B?M1dsU251K2dXSDJuSUl0MVJ3TmRpM1d6MjZkejdrZWtOaHFTdjl2Y2V0Wk9M?=
- =?utf-8?B?bVZReTB5UzZMVHpaRUUrL25oSCtCZkxVVXVrbkxKTVc3ZGU2QUZCNWxnWjQ3?=
- =?utf-8?B?TG92dzUyci91cnJGUzJXTDRsbUtmQXBhQ0NVVW5XaU0ybXVIa2h2cXFTVzJ1?=
- =?utf-8?B?anR6OUpMeDlnNmdVaHNwaVVlUVhJRkJId3VaL0tDT1pPZTZqczlta01uT1dC?=
- =?utf-8?B?YWppeEdwcWM1VWM1OVZyWXpFWG5HQngxVTBOb1VxaU5BdGRub0xLLzJEbml4?=
- =?utf-8?B?T2trZnV3N2l2MUdOODVlR1VNT2NNRXlySjJmdWlQOW5VV25jeGIwa2VObUt2?=
- =?utf-8?B?a0VRa3pCbnkyRVB4bTV2Q1RXSlJ2UG9jcVlqWlB3d3hpZSs0cVdvSDZnQ2VX?=
- =?utf-8?B?V2RBMlI1UmpDS2xJanhQWTNqeVgzVUZxNWVhR1R0Mk5aZUZsSmhaUWd2c2FH?=
- =?utf-8?B?Y0xJWlhmUC96UnprOG1IaXU3enVWNnZiWFJCODYyZi8zbFhZYlFHMzg4QUdO?=
- =?utf-8?B?UXRIWUJuaTIwanJMZXVoeFBESWQ5aGhsVUd0bmJ4QlppZjdJZVY4dldhZCtw?=
- =?utf-8?B?aXRPUTNNUldKa0Jra0ZLbTRrNk1la2hKd1o4cUlZcHlYNXVIOUg2VmdDMXFz?=
- =?utf-8?B?c1B1V2lqcmwzams0YWlMUW10UDQwMVV2QzViRGN4WWM4MFIzTHA1NUFuV05k?=
- =?utf-8?B?SFJ4eS9OZUZLVnZLL1dzb1dSUnA0RW9wZ1NIZDJQR0ZrRHpzeG5qTEJWeHVv?=
- =?utf-8?B?MmpoSzR6V3p3TjhoZk5jTVpEMk1URno1azEvZkRVKzVueUVUVCtjdUtmS3R4?=
- =?utf-8?B?VU9sR1MzaGlKZnZSdTlJNEtrekE0a3JFdjcwYkxJUVE5UVp1VGFmMk9VSzFX?=
- =?utf-8?B?RmZsemFodTROUXlxdnJOK2pIeFpxeWNQK2VqR1RiZGZldTl6elNqQmpFV3Vt?=
- =?utf-8?B?bUYyWkp2cUg2eUVXNW5vbXl2OHcvaTlPL29PSitZeGhPMElmM0NIRkxINGxL?=
- =?utf-8?B?QXp5WEFBN1l0SWVaSktJQUhlL3YvMnlMcUprbDVvTnFQck5BOGw4aEY1SFpa?=
- =?utf-8?B?WjRsRVFvVk1vSjdVWXB4RHBGbmxVOEYzcWdxTmRPd05vUGNBb2E2K3hHQS93?=
- =?utf-8?B?TG1qK0ErMis3TkRKQnVCNHRITDJ2b0xMS1F1cnFSL2xUQ3VNWlVreFgrODVI?=
- =?utf-8?B?TTJaZGhmeTdSWTVTNnZUd0w5ZEdLeXZNaWFURUVJYmJVbUxKRE1PdnNNNkJU?=
- =?utf-8?B?bm5HMXlPMHBmMUkyQ2psNk52Ykg2TWQwSzVjcVRxb2JqWVV2ZkdIZFc1UnRI?=
- =?utf-8?B?czBHMW5qWHlucEplREZGVVltdlZGVUNyR1JtcnV3U0txWlNLbVVNMXV2YkJT?=
- =?utf-8?B?WHc3dStpdmVtUHE1Q1NzRVArMDgyWktKTkhVNDN1andEMm5DeW1zZG5Nampz?=
- =?utf-8?B?Tm42bFVXWlFBeGVwdjdDK2xwUkNUTEJ6WlpPNlk2RFJVdzdJazExclg1d0lp?=
- =?utf-8?B?dzU3Ui91NkZEUFJZUlh0YndZK0lETVRIanNsUy9kVFh5SWxCSHJuYVRJQUcz?=
- =?utf-8?B?RXQxN2lMbThDUmdpWGNOb3dJbTdOb0FTYTVZajVRNjYwcERkTVkxSG1KT0gx?=
- =?utf-8?B?dDg4S2FSaitvekNSQW9ucWl4MnVERGh0TDVDT2hhbHdtcEVlTlBmR3FXK1Vq?=
- =?utf-8?B?QWU1dTFETG95UVNPUEZGVDhjWkI5N3k3emxYNUZLZUgza2NzMVpVUFlteHNn?=
- =?utf-8?B?YjZVME1GRXhPekpWU0xZTVdrN01La0d0V1BSVkFGYUlIelMwU3Z4NE9oSEtN?=
- =?utf-8?Q?/qjAXb?=
-X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR04MB12038.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(7142099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?utf-8?B?eGVjOVE2NHZVRmJ0aVE4aXh1WFdORXYxZ2NhK1pXUHRmQUtWbHlJRXMySE1F?=
- =?utf-8?B?OGV3ekZ2QlI5T05wUEl1dmZFK1pyMG9WOTNORmlKc3V4bENCRVFpazQrTlJX?=
- =?utf-8?B?aGpqRUYrQUJCNUc5QSs1d2NJZGllbTEzeHZ1TE5Ud1ptRVA1NURWc1g3NzRI?=
- =?utf-8?B?YUpONHhZTUxwYmZKb1FLcE5wMnUwenFMcjBOSFR2VFltZmptb056SUpiRlQr?=
- =?utf-8?B?a054MkZsS1c2M0o1N3VSNyszemo4alFmUVlZNERPNitVUUxlLzhNQk5vNHJB?=
- =?utf-8?B?bmlRM0wwK2VlQnNXU2NEWFdTaDZMNnNoeUlKdzFNMm5xSFQ0Rm4ybUR2bUEz?=
- =?utf-8?B?RWt3SHBFM0JhNWFCNC9RbGUrVFY3cTBYRzNLcjJhS1A1ZExDbXFFczhhMHgx?=
- =?utf-8?B?dTlHRGQ4QWdxODZKdVNDQjlTZGhwcFZXOW1ETUNzSWNoNXgzNW9hKzZvWGtr?=
- =?utf-8?B?VUxyMVBnTklWVU0zU3QyY3VBY1JNcUliM00zSU1WdEVNMTQ2RHFiamdvZTBp?=
- =?utf-8?B?UzFxN01BUWlJa092SlJLVURxdGdjK3JPOG14c3packh4N3JoZXlBajJnYnZs?=
- =?utf-8?B?bFhTZng0VnVaN3U3Q1F6b1BvNWFtWnNCRDNIZDFUZExFekJxL2dXK1VJRy9F?=
- =?utf-8?B?Y1hPblFJNE5WdkFtb1lIU2ZDSDZJNE53L0x5MW5YMFc5WEpBUkdERkpNeHEv?=
- =?utf-8?B?cWxremZQMzZPY3FSVytENTBqbEtaV041THMzU0d4MG9JNGkzcXQ2TXptcVlp?=
- =?utf-8?B?QitFdGxId01MQzh1WjlJZTZzb0N0aEJvT2puQUlJR0RoSXI1bHg1bFNTVEJl?=
- =?utf-8?B?VVhVWnBQY0hvczhyblhQTVpmZWlRR1lIeXd5STFZc05ZbGFLQ09vMTd4MTJs?=
- =?utf-8?B?anV6ZVVRaEtOVC9nU0RxUkNMRklGTTVnQU5OMnNDYXZuRGI3YzhnaEw2S3pG?=
- =?utf-8?B?dHJSYWovSWZhUmxzMEdhM1Bhd1FRM3l4and2aHZqbnZ0ZlZGR0hYaDZaVmFv?=
- =?utf-8?B?bmRtUHcxQkU4QUV3cklva3N4WDhnOEhwTDBKRy9UaHBuaVJFbDVsdWloQ1ZC?=
- =?utf-8?B?OW5Ob1Q2R011Ukh2SEFpSGpIL2ZVUXZoYUEwUXhGWWhsdkJjSHB6dXZxU3RU?=
- =?utf-8?B?cnMxZ0VBYnBydUwxays0WEFmd0RLZDByRnJMWmVza1dNQjFLSERIb0dCcGZ0?=
- =?utf-8?B?anR2UjVzKzAxZXh1S3JiZ0cwR2FiQmlnbjY3R0FvYXFwZ2d6NDFwTDZDMnpO?=
- =?utf-8?B?NE55Q1l5QTRmQTNVT0JRRDVyUjI3RlZOblovY0YzN0FNZmdGV1U1L1dxbEtQ?=
- =?utf-8?B?ZVV6R0gyYlI4NXZnTmo1WFhKTEo4TzFNa0NQRnVuUlRuMUFBV2Vqa1UrYzFX?=
- =?utf-8?B?OWlDeFQwQVlocFJQRStubUxVZyswbGl2WGg0ZjZXY21PYWt2b1U3UVZOdk1V?=
- =?utf-8?B?akY3Tjk1ZWxVeDFPbGJGQkt2SUdnZ1RYZEhrWFJDNXM2QVd1Yytoc3VXVGJ5?=
- =?utf-8?B?NjdKZmxJTDB5VEU4OWJpQjd5UTRsN1NhUWFKUWFQVmovdFlwb0lybEZoL3Vl?=
- =?utf-8?B?SUFLa3kyVlJBY3VlMEpTTVVsaGtHUWttU2dRREwyck56ek9FVHR5Q3ZSekZK?=
- =?utf-8?B?VC85NzNSV2FXNDFJVHl6TGVZQnlHMVVzQVh1dGhYSVZBQzRieUM1U3I2MkZG?=
- =?utf-8?B?RXJkOGRKU2NhMklaTlVWSC9GTjF6dFE3SlFmSTVIbk9OWCsrRHJ5N01Na2tr?=
- =?utf-8?B?ZldwWXdPV3dsc1lwSGIvSDgyK05Xem5pREMzYlZJYXJwQkZpWDNvdUhWQUp1?=
- =?utf-8?B?N21TT0RCVkFQK3ZqVDJQc1BteURrNnVyV1MvaGt3SkY2cDFBNVFHZDl6bERB?=
- =?utf-8?B?MjM0R3l0T0RFT0Rrcy9wRjBnbURUYlBPTDNRbUtQVEhONy9FY0hOY3ZOd2l2?=
- =?utf-8?B?QmlvRU9sSVJkZWNJUXNWNnRWQ09WSG9kSmNuQStxeWNQUmxqMHRzMnhhT1Av?=
- =?utf-8?B?ZnJsSisyS2RUc2ZpY1ZJV0c3ZUxjc0xHUmhkZ2ZZbFN4WlZqeGhPU3BBMEoy?=
- =?utf-8?B?WkxkdzBORmpvZkpCNjNSckZoN2VJbHk3aTBMa2xhWk9DV2lZUzEzUG5FdlVG?=
- =?utf-8?B?OER5Y1J2TTExTnJEeXkzZHdtc0lIZHF5bWlPcmJPWnljY094L2dHK3ZBQjVY?=
- =?utf-8?B?Y0lCdEExQXZmdjdiY2NPU2NyRUdwSmMvcXRGWXZ0UjhoVVNlMnNGQVdSVHRW?=
- =?utf-8?B?dk9ab1VYa2JHL2NhWC9PelE3WW81b2trSlhXTG9nUVNmNFdaOExoRU4xQ0xv?=
- =?utf-8?B?Z3dYbjUySFkraUpBSml6WktxTFdjY0hXL0RSYi9hNTNyN005Y1JKQT09?=
-X-OriginatorOrg: cherry.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: 17d8d04d-ca5b-44fd-f7e1-08de64bef6d2
-X-MS-Exchange-CrossTenant-AuthSource: GVXPR04MB12038.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Feb 2026 14:00:48.1586
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /i6gI8+elutJjthMNe7ROnCdn/lu+iiixb8P6Fm1KHufGraVnVDzJ3o2ph5FxaEyemYVGG3bDDNHxK0Mg7JJiBT3GvqHVhUqoTINy891V28=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7939
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260205-fix-switchers-js-v3-1-61b4401adfdf@bootlin.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/23NwQ6CMAyA4VchO1vTFQbDk+9hPAB2MqPMbGRqC
+ O/uIPFg9Pg37ddJBPaWg9hlk/AcbbBuSJFvMtH1zXBmsKfUgpAKSVSBsU8IDzt2PfsAlwC6M0W
+ hSoltXYl0dvecdlbycEzd2zA6/1o/RLlMF0xhLdUvFiUgKMrZqNywRtq3zo1XO2w7dxMLF+lDl
+ EhY/CEIJHCjUWLFxmj1Tczz/AbsrEgG9QAAAA==
+X-Change-ID: 20241227-fix-switchers-js-8cf445610b97
+To: bitbake-devel@lists.openembedded.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ docs@lists.yoctoproject.org, Antonin Godard <antonin.godard@bootlin.com>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=25583;
+ i=antonin.godard@bootlin.com; h=from:subject:message-id;
+ bh=DqPfzctErl0vjVUkNXQN4TJhAiqQRfukEGbTVfEpb+Y=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBphLZ9ME2hNhKBPHtypmdoxk74cDwO62IeC2fEj
+ xSkQftRj5eJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaYS2fQAKCRDRgEFAKaOo
+ Ns+/EADECUgWMzZVJEwkqo+hUP5qtiEobqQiy8CkVzRyedXNQSyUJ3FkzJbtMDbFcKDEGhWWbhO
+ 4YVDUXwuUR/tos9b0xxpP1LWfZFYDhvpKZ/Xi6RbEQ9KjKA69llIjOSA1hv0qX72layC0iLmtEI
+ y17D1j9i+A+GeCwiCVZFPk4q7NMrvz0UfIEmmZ28G7zVQNczBWwMrgW0cBRmHjIX3q3hm1EQZpC
+ 3E8dtMQv7CDV0nJgj45ifAGnRXbgEOnS7644uvbSn+pCgqFtmnN5lwMnPRPUTAnxqCkIMAkaRTj
+ cq5L8omSFGeEm+Sgbm+yH0UFlKjSRZxlPgl+TzQep/QzqggWKmKEqowawqKtGisM9zQClI+GvFg
+ x3kcwfaRQzlT3/7EA2/8dPmbkC0TiiTs6OUqLVELTQcWwfd5miQisOXZLzsIebbB295+cIc64NP
+ NlYOVcNUzNufj7K2MuOELhl1VUUl9Re11dfhug8zlrHYSdQJC0Kpm6lY//sBLbyVqOjPcNyiwBJ
+ pqoQS1TscpfehAg5Q5nT9HWXDDLm91W65m507kvZhfSXYQWIbsz9auDsB3O/EwuF8ID2BhmCq3K
+ mTtkJBWG0OTrWvXlAo/JkbhQsT+xdw225Pl0lsKzud1o1DDQteEYzOtxC2ud07xQRCBcCcWRTua
+ 3rLMpZFdxAZzbhw==
+X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
+ fpr=8648725188DD401BB9A0D3FFD180414029A3A836
+X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 05 Feb 2026 14:01:01 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8868
+ <docs@lists.yoctoproject.org>; Thu, 05 Feb 2026 15:26:01 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8869
 
-Hi Antonin,
+Fix the switchers.js script of Bitbake to show what are the supported
+versions and be able to switch between them.
 
-On 2/5/26 2:40 PM, Antonin Godard wrote:
-> Hi,
-> 
-> On Thu Feb 5, 2026 at 2:08 PM CET, Quentin Schulz via lists.yoctoproject.org wrote:
->> Hi Antonin,
->>
->> On 2/5/26 12:34 PM, Antonin Godard wrote:
->>> Hi,
->>>
->>> On Wed Feb 4, 2026 at 4:01 PM CET, Quentin Schulz via lists.yoctoproject.org wrote:
->>> [...]
->>>>> +with open("sphinx-static/switchers.js.in", "r") as r, \
->>>>> +     open("sphinx-static/switchers.js", "w") as w:
->>>>> +    lines = r.readlines()
->>>>> +    for line in lines:
->>>>> +        if "VERSIONS_PLACEHOLDER" in line:
->>>>> +            if ourversion != "dev":
->>>>> +                w.write(f"    'dev': 'Unstable (dev)',\n")
->>>>> +            for series in activereleases:
->>>>> +                w.write(f"    '{series}': '{series} ({yocto_mapping[series]})',\n")
->>>>
->>>> Why is this different from yp-docs? We don't handle showing the current
->>>> series (ourseries)/version (ourversion) if it's outdated anymore?
->>>
->>> We do, but from switchers.js, where in build_version_select we push the current
->>> version of the document last:
->>>
->>>       buf.push(
->>>         '<option value="' +
->>>           current_version +
->>>           '" selected="selected">' +
->>>           current_title +
->>>           "</option>",
->>>       );
->>>
->>> So the version from our branch gets displayed.
->>>
->>> (trust me, I've had a hard time locating and understanding how all of this
->>> worked :))
->>>
->>
->> Yeah set_versions.py and the switchers aren't the nicest things to dig
->> into :/
->>
->> Is the above mechanism something we could migrate yp-docs switcher to to
->> simplify it a bit?
-> 
-> Yes, I think I'd like to port these simplifications to yocto-docs soon after,
-> while memory is still fresh
-> 
->>> However, you made me realize that due to our branch the abbrev hash, it would
->>> always appear as outdated. I fixed that for v2.
->>>
->>>> To answer Richard on the other thread, we use YAML because JSON doesn't
->>>> allow comments. Also, because we used to want multiline variables (see
->>>> https://yaml-multiline.info/) which aren't supported in JSON, but those
->>>> are gone since 8d993022c2ae ("docs: use literalinclude for system
->>>> requirements"). Not sure we can get rid of it for yp-docs as we only
->>>> override *some* variables in this file by set_versions.py so the
->>>> autobuilder won't replace poky.yaml.in, and the YAML is consumed by
->>>> sphinx/yocto-vars.py.
->>>>
->>>> If we don't plan on having comments in this file *ever*, then the YAML
->>>> dependency isn't necessary.
->>>>
->>>> Another option is INI and use configparser, c.f.
->>>> https://docs.python.org/3/library/configparser.html
->>>>
->>>> It seems that INI supports the ':' as key-value delimiter as well as
->>>> multiline strings (but not the way we used it for YAML!), so it could be
->>>> a drop-in replacement. We could even simply write to the file with
->>>> configparser.write() (though that will drop the in-file comments).
->>>
->>> If we directly write the ini file with configparser.write(), maybe we can just
->>> maintain the list of variable as Python instead, instead of a separate ".in"
->>> file?
->>>
->>
->> The benefit of having a .in file is that it's explicit what the user can
->> use in the docs (if we have yocto-vars.py! which we don't (yet?) in
->> BitBake).
->>
->> What's the usecase for DOCCONF_VERSION BTW? We only use it for setting
->> the current version (always "dev") but we never override it? Either in
->> release branches, in the autobuilder, only from set_versions.py do we
->> read it and override it. But then it's nowhere to be found in the docs
->> either so we don't use. Do we actually need this for BitBake?
-> 
-> We use it in doc/conf.py:
-> 
-> current_version = 'dev'
-> 
-> with open("bitbake.yaml") as data:
->      buff = data.read()
->      subst_vars = yaml.safe_load(buff)
->      current_version = subst_vars["DOCCONF_VERSION"]
-> 
-> So basically we just need a way to pass this information from set_versions.py to
-> the sphinx-build command.
-> 
+The default landing page is the stable branch and shows the BitBake
+version along with the corresponding Yocto Project codename. This
+hopefully makes it easier to remember the correspondance between the
+BitBake version and the Yocto Project version.
 
-DOCCONF_VERSION is always "dev". current_version defaults to "dev" too. 
-So what is this *actually* used for?
+This works thanks to a setversions.py script, imported and executed in
+conf.py, which is largely inspired from the one in yocto-docs. It reads
+the tags from the repository and tries to guess the currently checked
+out version of BitBake on which we are.
 
->> We could push this even further if we wanted to and have a bitbake.py
->> instead? In some internal Sphinx project, we provide a skeleton with
->> options to provide (Python) variables through another file we then include:
->>
->> exec(open('variables.py').read())
->>
->> is what we use. This would support f-strings (can easily reference a
->> variable from another one), multiline strings, etc. No need to parse
->> anything, it just needs to be valid Python variable assignment.
-> 
-> So basically, you'd write a variables.py file from set_versions.py and read it
-> from conf.py?
-> 
-> I'm starting to wonder if it just wouldn't be better do move all of this logic
-> into doc/conf.py, actually.
-> 
+The "obsolete" warning is now also shown when browsing outdated manuals,
+meaning any version not part of activereleases in setversions.py and
+"dev"/"next".
 
-Is DOCCONF_VERSION supposed to be used from the docs? Is DOCCONF_VERSION 
-supposed to be set externally such that it makes it to conf.py which 
-does something with it? If no is the answer to both, then there's no 
-reason for this mechanism to exist in the first place.
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+---
+Note: This will be accompanied by a patch to adapt the Autobuilder to
+generate this file for each release.
+---
+Changes in v3:
+- Drop the bitbake.yaml file entirely. Right now we don't need this kind
+  of file in the BitBake documentation, and so computing the version
+  from conf.py is much easier. We do want to keep a separate file though
+  as this is backported automatically by the Autobuilder.
+- Rename set_versions.py to setversions.py as this is more name format
+  for modules.
+- Drop the ourseries variable as it wasn't used anywhere.
+- Apply suggestions from Quentin.
+- Link to v2: https://patch.msgid.link/20260204-fix-switchers-js-v2-1-ea80107eff85@bootlin.com
 
-Cheers,
-Quentin
+Changes in v2:
+- Remove environment information grabbing mechanism, making this fully
+  standalone.
+- Link to v1: https://lore.kernel.org/r/20250915-fix-switchers-js-v1-0-523ef53fe802@bootlin.com
+---
+ doc/.gitignore                    |   1 +
+ doc/Makefile                      |   2 +-
+ doc/conf.py                       |  20 +--
+ doc/setversions.py                | 132 ++++++++++++++++++++
+ doc/sphinx-static/switchers.js    | 233 -----------------------------------
+ doc/sphinx-static/switchers.js.in | 249 ++++++++++++++++++++++++++++++++++++++
+ 6 files changed, 393 insertions(+), 244 deletions(-)
+
+diff --git a/doc/.gitignore b/doc/.gitignore
+index 69fa449dd96..dee9494dcaf 100644
+--- a/doc/.gitignore
++++ b/doc/.gitignore
+@@ -1 +1,2 @@
+ _build/
++sphinx-static/switchers.js
+diff --git a/doc/Makefile b/doc/Makefile
+index 996f01b7d5c..5e1632314c5 100644
+--- a/doc/Makefile
++++ b/doc/Makefile
+@@ -27,7 +27,7 @@ publish: Makefile html singlehtml
+ 	sed -i -e 's@index.html#@singleindex.html#@g' $(BUILDDIR)/$(DESTDIR)/singleindex.html
+ 
+ clean:
+-	@rm -rf $(BUILDDIR)
++	@rm -rf $(BUILDDIR) sphinx-static/switchers.js
+ 
+ # Catch-all target: route all unknown targets to Sphinx using the new
+ # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
+diff --git a/doc/conf.py b/doc/conf.py
+index bce386624e2..9318358731c 100644
+--- a/doc/conf.py
++++ b/doc/conf.py
+@@ -6,20 +6,16 @@
+ 
+ # -- Path setup --------------------------------------------------------------
+ 
+-# If extensions (or modules to document with autodoc) are in another directory,
+-# add these directories to sys.path here. If the directory is relative to the
+-# documentation root, use os.path.abspath to make it absolute, like shown here.
+-#
+-# import os
+-# import sys
+-# sys.path.insert(0, os.path.abspath('.'))
+-
+-import sys
+ import datetime
++import os
++import sys
+ 
+ from pathlib import Path
+ 
+-current_version = "dev"
++sys.path.insert(0, os.path.abspath('.'))
++import setversions
++
++current_version = setversions.get_current_version()
+ 
+ # String used in sidebar
+ version = 'Version: ' + current_version
+@@ -28,6 +24,10 @@ if current_version == 'dev':
+ # Version seen in documentation_options.js and hence in js switchers code
+ release = current_version
+ 
++setversions.write_switchers_js("sphinx-static/switchers.js.in",
++                               "sphinx-static/switchers.js",
++                               current_version)
++
+ # -- Project information -----------------------------------------------------
+ 
+ project = 'Bitbake'
+diff --git a/doc/setversions.py b/doc/setversions.py
+new file mode 100755
+index 00000000000..9e4138025ac
+--- /dev/null
++++ b/doc/setversions.py
+@@ -0,0 +1,132 @@
++#!/usr/bin/env python3
++#
++# This file defines is used in doc/conf.py to setup the version information for
++# the documentation:
++# - get_current_version() used in doc/conf.py computes the current version by
++#   trying to guess the approximate versions we're at using git tags and
++#   branches from the repository.
++# - write_switchers_js() write the switchers.js file used for switching between
++#   versions of the documentation.
++#
++# Copyright (c) 2026 Antonin Godard <antonin.godard@bootlin.com>
++#
++# SPDX-License-Identifier: MIT
++#
++
++import itertools
++import re
++import subprocess
++import sys
++
++DEVBRANCH = "2.18"
++LTSSERIES = ["2.8", "2.0"]
++ACTIVERELEASES = ["2.16"] + LTSSERIES
++
++YOCTO_MAPPING = {
++    "2.18": "wrynose",
++    "2.16": "whinlatter",
++    "2.12": "walnascar",
++    "2.10": "styhead",
++    "2.8": "scarthgap",
++    "2.6": "nanbield",
++    "2.4": "mickledore",
++    "2.2": "langdale",
++    "2.0": "kirkstone",
++    "1.52": "honister",
++    "1.50": "hardknott",
++    "1.48": "gatesgarth",
++    "1.46": "dunfell",
++}
++
++BB_RELEASE_TAG_RE = re.compile(r"^[0-9]+\.[0-9]+\.[0-9]+$")
++
++def get_current_version():
++    ourversion = None
++
++    # Test that we are building from a Git repository
++    try:
++        subprocess.run(["git", "rev-parse", "--is-inside-work-tree"],
++                       stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
++    except subprocess.CalledProcessError:
++        sys.exit("Building bitbake's documentation must be done from its Git repository.\n"
++                 "Clone the repository with the following command:\n"
++                 "git clone https://git.openembedded.org/bitbake ")
++
++    # Test tags exist and inform the user to fetch if not
++    try:
++        subprocess.run(["git", "show", f"{LTSSERIES[0]}.0"],
++                       stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
++    except subprocess.CalledProcessError:
++        sys.exit("Please run 'git fetch --tags' before building the documentation")
++
++
++    # Try and figure out what we are
++    tags = subprocess.run(["git", "tag", "--points-at", "HEAD"],
++                          stdout=subprocess.PIPE, stderr=subprocess.PIPE,
++                          universal_newlines=True).stdout
++    for t in tags.split():
++        if re.match(BB_RELEASE_TAG_RE, t):
++            ourversion = t
++            break
++
++    if ourversion:
++        # We're a tagged release
++        components = ourversion.split(".")
++    else:
++        # We're floating on a branch
++        branch = subprocess.run(["git", "branch", "--show-current"],
++                                stdout=subprocess.PIPE, stderr=subprocess.PIPE,
++                                universal_newlines=True).stdout.strip()
++
++        if branch == "" or branch not in list(YOCTO_MAPPING.keys()) + ["master", "master-next"]:
++            # We're not on a known release branch so we have to guess. Compare the
++            # numbers of commits from each release branch and assume the smallest
++            # number of commits is the one we're based off
++            possible_branch = None
++            branch_count = 0
++            for b in itertools.chain(YOCTO_MAPPING.keys(), ["master"]):
++                result = subprocess.run(["git", "log", "--format=oneline", "HEAD..origin/" + b],
++                                        stdout=subprocess.PIPE, stderr=subprocess.PIPE,
++                                        universal_newlines=True)
++                if result.returncode == 0:
++                    count = result.stdout.count('\n')
++                    if not possible_branch or count < branch_count:
++                        print("Branch %s has count %s" % (b, count))
++                        possible_branch = b
++                        branch_count = count
++            if possible_branch:
++                branch = possible_branch
++            else:
++                branch = "master"
++            print("Nearest release branch estimated to be %s" % branch)
++
++        if branch == "master":
++            ourversion = "dev"
++        elif branch == "master-next":
++            ourversion = "next"
++        else:
++            ourversion = branch
++            head_commit = subprocess.run(["git", "rev-parse", "--short", "HEAD"],
++                                         stdout=subprocess.PIPE, stderr=subprocess.PIPE,
++                                         universal_newlines=True).stdout.strip()
++            branch_commit = subprocess.run(["git", "rev-parse", "--short", branch],
++                                            stdout=subprocess.PIPE, stderr=subprocess.PIPE,
++                                            universal_newlines=True).stdout.strip()
++            if head_commit != branch_commit:
++                ourversion += f" ({head_commit})"
++
++    print("Version calculated to be %s" % ourversion)
++    return ourversion
++
++def write_switchers_js(js_in, js_out, current_version):
++    with open(js_in, "r") as r, open(js_out, "w") as w:
++        lines = r.readlines()
++        for line in lines:
++            if "VERSIONS_PLACEHOLDER" in line:
++                if current_version != "dev":
++                    w.write(f"    'dev': 'Unstable (dev)',\n")
++                for series in ACTIVERELEASES:
++                    w.write(f"    '{series}': '{series} ({YOCTO_MAPPING[series]})',\n")
++            else:
++                w.write(line)
++        print("switchers.js generated from switchers.js.in")
+diff --git a/doc/sphinx-static/switchers.js b/doc/sphinx-static/switchers.js
+deleted file mode 100644
+index 32113cfa960..00000000000
+--- a/doc/sphinx-static/switchers.js
++++ /dev/null
+@@ -1,233 +0,0 @@
+-(function() {
+-  'use strict';
+-
+-  var all_versions = {
+-    'dev': 'dev (3.2)',
+-    '3.1.2': '3.1.2',
+-    '3.0.3': '3.0.3',
+-    '2.7.4': '2.7.4',
+-  };
+-
+-  var all_doctypes = {
+-      'single': 'Individual Webpages',
+-      'mega': "All-in-one 'Mega' Manual",
+-  };
+-
+-  // Simple version comparision
+-  // Return 1 if a > b
+-  // Return -1 if a < b
+-  // Return 0 if a == b
+-  function ver_compare(a, b) {
+-    if (a == "dev") {
+-       return 1;
+-    }
+-
+-    if (a === b) {
+-       return 0;
+-    }
+-
+-    var a_components = a.split(".");
+-    var b_components = b.split(".");
+-
+-    var len = Math.min(a_components.length, b_components.length);
+-
+-    // loop while the components are equal
+-    for (var i = 0; i < len; i++) {
+-        // A bigger than B
+-        if (parseInt(a_components[i]) > parseInt(b_components[i])) {
+-            return 1;
+-        }
+-
+-        // B bigger than A
+-        if (parseInt(a_components[i]) < parseInt(b_components[i])) {
+-            return -1;
+-        }
+-    }
+-
+-    // If one's a prefix of the other, the longer one is greater.
+-    if (a_components.length > b_components.length) {
+-        return 1;
+-    }
+-
+-    if (a_components.length < b_components.length) {
+-        return -1;
+-    }
+-
+-    // Otherwise they are the same.
+-    return 0;
+-  }
+-
+-  function build_version_select(current_series, current_version) {
+-    var buf = ['<select>'];
+-
+-    $.each(all_versions, function(version, title) {
+-      var series = version.substr(0, 3);
+-      if (series == current_series) {
+-        if (version == current_version)
+-            buf.push('<option value="' + version + '" selected="selected">' + title + '</option>');
+-        else
+-            buf.push('<option value="' + version + '">' + title + '</option>');
+-
+-        if (version != current_version)
+-            buf.push('<option value="' + current_version + '" selected="selected">' + current_version + '</option>');
+-      } else {
+-        buf.push('<option value="' + version + '">' + title + '</option>');
+-      }
+-    });
+-
+-    buf.push('</select>');
+-    return buf.join('');
+-  }
+-
+-  function build_doctype_select(current_doctype) {
+-    var buf = ['<select>'];
+-
+-    $.each(all_doctypes, function(doctype, title) {
+-      if (doctype == current_doctype)
+-        buf.push('<option value="' + doctype + '" selected="selected">' +
+-                 all_doctypes[current_doctype] + '</option>');
+-      else
+-        buf.push('<option value="' + doctype + '">' + title + '</option>');
+-    });
+-    if (!(current_doctype in all_doctypes)) {
+-        // In case we're browsing a doctype that is not yet in all_doctypes.
+-        buf.push('<option value="' + current_doctype + '" selected="selected">' +
+-                 current_doctype + '</option>');
+-        all_doctypes[current_doctype] = current_doctype;
+-    }
+-    buf.push('</select>');
+-    return buf.join('');
+-  }
+-
+-  function navigate_to_first_existing(urls) {
+-    // Navigate to the first existing URL in urls.
+-    var url = urls.shift();
+-
+-    // Web browsers won't redirect file:// urls to file urls using ajax but
+-    // its useful for local testing
+-    if (url.startsWith("file://")) {
+-      window.location.href = url;
+-      return;
+-    }
+-
+-    if (urls.length == 0) {
+-      window.location.href = url;
+-      return;
+-    }
+-    $.ajax({
+-      url: url,
+-      success: function() {
+-        window.location.href = url;
+-      },
+-      error: function() {
+-        navigate_to_first_existing(urls);
+-      }
+-    });
+-  }
+-
+-  function get_docroot_url() {
+-    var url = window.location.href;
+-    var root = DOCUMENTATION_OPTIONS.URL_ROOT;
+-
+-    var urlarray = url.split('/');
+-    // Trim off anything after '/'
+-    urlarray.pop();
+-    var depth = (root.match(/\.\.\//g) || []).length;
+-    for (var i = 0; i < depth; i++) {
+-      urlarray.pop();
+-    }
+-
+-    return urlarray.join('/') + '/';
+-  }
+-
+-  function on_version_switch() {
+-    var selected_version = $(this).children('option:selected').attr('value');
+-    var url = window.location.href;
+-    var current_version = DOCUMENTATION_OPTIONS.VERSION;
+-    var docroot = get_docroot_url()
+-
+-    var new_versionpath = selected_version + '/';
+-    if (selected_version == "dev")
+-        new_versionpath = '';
+-
+-    // dev versions have no version prefix
+-    if (current_version == "dev") {
+-        var new_url = docroot + new_versionpath + url.replace(docroot, "");
+-        var fallback_url = docroot + new_versionpath;
+-    } else {
+-        var new_url = url.replace('/' + current_version + '/', '/' + new_versionpath);
+-        var fallback_url = new_url.replace(url.replace(docroot, ""), "");
+-    }
+-
+-    console.log(get_docroot_url())
+-    console.log(url + " to url " + new_url);
+-    console.log(url + " to fallback " + fallback_url);
+-
+-    if (new_url != url) {
+-      navigate_to_first_existing([
+-        new_url,
+-        fallback_url,
+-        'https://www.yoctoproject.org/docs/',
+-      ]);
+-    }
+-  }
+-
+-  function on_doctype_switch() {
+-    var selected_doctype = $(this).children('option:selected').attr('value');
+-    var url = window.location.href;
+-    if (selected_doctype == 'mega') {
+-      var docroot = get_docroot_url()
+-      var current_version = DOCUMENTATION_OPTIONS.VERSION;
+-      // Assume manuals before 3.2 are using old docbook mega-manual
+-      if (ver_compare(current_version, "3.2") < 0) {
+-        var new_url = docroot + "mega-manual/mega-manual.html";
+-      } else {
+-        var new_url = docroot + "singleindex.html";
+-      }
+-    } else {
+-      var new_url = url.replace("singleindex.html", "index.html")
+-    }
+-
+-    if (new_url != url) {
+-      navigate_to_first_existing([
+-        new_url,
+-        'https://www.yoctoproject.org/docs/',
+-      ]);
+-    }
+-  }
+-
+-  // Returns the current doctype based upon the url
+-  function doctype_segment_from_url(url) {
+-    if (url.includes("singleindex") || url.includes("mega-manual"))
+-      return "mega";
+-    return "single";
+-  }
+-
+-  $(document).ready(function() {
+-    var release = DOCUMENTATION_OPTIONS.VERSION;
+-    var current_doctype = doctype_segment_from_url(window.location.href);
+-    var current_series = release.substr(0, 3);
+-    var version_select = build_version_select(current_series, release);
+-
+-    $('.version_switcher_placeholder').html(version_select);
+-    $('.version_switcher_placeholder select').bind('change', on_version_switch);
+-
+-    var doctype_select = build_doctype_select(current_doctype);
+-
+-    $('.doctype_switcher_placeholder').html(doctype_select);
+-    $('.doctype_switcher_placeholder select').bind('change', on_doctype_switch);
+-
+-    if (ver_compare(release, "3.1") < 0) {
+-      $('#outdated-warning').html('Version ' + release + ' of the project is now considered obsolete, please select and use a more recent version');
+-      $('#outdated-warning').css('padding', '.5em');
+-    } else if (release != "dev") {
+-      $.each(all_versions, function(version, title) {
+-        var series = version.substr(0, 3);
+-        if (series == current_series && version != release) {
+-          $('#outdated-warning').html('This document is for outdated version ' + release + ', you should select the latest release version in this series, ' + version + '.');
+-          $('#outdated-warning').css('padding', '.5em');
+-        }
+-      });
+-    }
+-  });
+-})();
+diff --git a/doc/sphinx-static/switchers.js.in b/doc/sphinx-static/switchers.js.in
+new file mode 100644
+index 00000000000..0b209e959da
+--- /dev/null
++++ b/doc/sphinx-static/switchers.js.in
+@@ -0,0 +1,249 @@
++// SPDX-License-Identifier: MIT
++(function () {
++  "use strict";
++
++  var all_versions = {
++    VERSIONS_PLACEHOLDER,
++  };
++
++  var all_doctypes = {
++    single: "Individual Webpages",
++    mega: "All-in-one 'Mega' Manual",
++  };
++
++  // Simple version comparision
++  // Return 1 if a > b
++  // Return -1 if a < b
++  // Return 0 if a == b
++  function ver_compare(a, b) {
++    if (a == "dev") {
++      return 1;
++    }
++
++    if (a === b) {
++      return 0;
++    }
++
++    var a_components = a.split(".");
++    var b_components = b.split(".");
++
++    var len = Math.min(a_components.length, b_components.length);
++
++    // loop while the components are equal
++    for (var i = 0; i < len; i++) {
++      // A bigger than B
++      if (parseInt(a_components[i]) > parseInt(b_components[i])) {
++        return 1;
++      }
++
++      // B bigger than A
++      if (parseInt(a_components[i]) < parseInt(b_components[i])) {
++        return -1;
++      }
++    }
++
++    // If one's a prefix of the other, the longer one is greater.
++    if (a_components.length > b_components.length) {
++      return 1;
++    }
++
++    if (a_components.length < b_components.length) {
++      return -1;
++    }
++
++    // Otherwise they are the same.
++    return 0;
++  }
++
++  function build_version_select(current_version) {
++    var buf = ["<select>"];
++
++    $.each(all_versions, function (version, title) {
++      if (current_version != version) {
++        buf.push(
++          '<option value="' +
++          version +
++          '" selected="selected">' +
++          title +
++          "</option>",
++        );
++      }
++    });
++
++    var current_title = current_version;
++    if (current_version in all_versions) {
++      current_title = all_versions[current_version];
++    }
++    buf.push(
++      '<option value="' +
++        current_version +
++        '" selected="selected">' +
++        current_title +
++        "</option>",
++    );
++
++    buf.push("</select>");
++    return buf.join("");
++  }
++
++  function build_doctype_select(current_doctype) {
++    var buf = ["<select>"];
++
++    $.each(all_doctypes, function (doctype, title) {
++      if (doctype == current_doctype)
++        buf.push(
++          '<option value="' +
++            doctype +
++            '" selected="selected">' +
++            all_doctypes[current_doctype] +
++            "</option>",
++        );
++      else buf.push('<option value="' + doctype + '">' + title + "</option>");
++    });
++    if (!(current_doctype in all_doctypes)) {
++      // In case we're browsing a doctype that is not yet in all_doctypes.
++      buf.push(
++        '<option value="' +
++          current_doctype +
++          '" selected="selected">' +
++          current_doctype +
++          "</option>",
++      );
++      all_doctypes[current_doctype] = current_doctype;
++    }
++    buf.push("</select>");
++    return buf.join("");
++  }
++
++  function navigate_to_first_existing(urls) {
++    // Navigate to the first existing URL in urls.
++    var url = urls.shift();
++
++    // Web browsers won't redirect file:// urls to file urls using ajax but
++    // its useful for local testing
++    if (url.startsWith("file://")) {
++      window.location.href = url;
++      return;
++    }
++
++    if (urls.length == 0) {
++      window.location.href = url;
++      return;
++    }
++    $.ajax({
++      url: url,
++      success: function () {
++        window.location.href = url;
++      },
++      error: function () {
++        navigate_to_first_existing(urls);
++      },
++    });
++  }
++
++  function get_docroot_url() {
++    var url = window.location.href;
++    // Try to get the variable from documentation_options.js
++    var root = DOCUMENTATION_OPTIONS.URL_ROOT;
++    if (root == null) {
++      // In recent versions of Sphinx, URL_ROOT was removed from
++      // documentation_options.js, so get it like searchtools.js does.
++      root = document.documentElement.dataset.content_root;
++    }
++
++    var urlarray = url.split("/");
++    // Trim off anything after '/'
++    urlarray.pop();
++    var depth = (root.match(/\.\.\//g) || []).length;
++    for (var i = 0; i < depth; i++) {
++      urlarray.pop();
++    }
++
++    return urlarray.join("/") + "/";
++  }
++
++  function on_version_switch() {
++    var selected_version = $(this).children("option:selected").attr("value");
++    var url = window.location.href;
++    var current_version = DOCUMENTATION_OPTIONS.VERSION;
++    var docroot = get_docroot_url();
++
++    var new_versionpath = selected_version + "/";
++
++    // latest tag is also the default page (without version information)
++    if (docroot.endsWith("dev/")) {
++      var new_url = url.replace("/dev/", "/" + new_versionpath);
++      var fallback_url = new_url.replace(url.replace(docroot, ""), "");
++    } else if (docroot.endsWith(current_version + "/") == false) {
++      var new_url = docroot + new_versionpath + url.replace(docroot, "");
++      var fallback_url = docroot + new_versionpath;
++    } else {
++      var new_url = url.replace(
++        "/" + current_version + "/",
++        "/" + new_versionpath,
++      );
++      var fallback_url = new_url.replace(url.replace(docroot, ""), "");
++    }
++
++    console.log(url + " to url " + new_url);
++    console.log(url + " to fallback " + fallback_url);
++
++    if (new_url != url) {
++      navigate_to_first_existing([
++        new_url,
++        fallback_url,
++        "https://www.yoctoproject.org/bitbake/",
++      ]);
++    }
++  }
++
++  function on_doctype_switch() {
++    var selected_doctype = $(this).children("option:selected").attr("value");
++    var url = window.location.href;
++    if (selected_doctype == "mega") {
++      var docroot = get_docroot_url();
++      var current_version = DOCUMENTATION_OPTIONS.VERSION;
++      var new_url = docroot + "singleindex.html";
++    } else {
++      var new_url = url.replace("singleindex.html", "index.html");
++    }
++
++    if (new_url != url) {
++      navigate_to_first_existing([
++        new_url,
++        "https://www.yoctoproject.org/docs/",
++      ]);
++    }
++  }
++
++  // Returns the current doctype based upon the url
++  function doctype_segment_from_url(url) {
++    if (url.includes("singleindex") || url.includes("mega-manual"))
++      return "mega";
++    return "single";
++  }
++
++  $(document).ready(function () {
++    var release = DOCUMENTATION_OPTIONS.VERSION;
++    var current_doctype = doctype_segment_from_url(window.location.href);
++    var current_series = release.substr(0, 3);
++    var version_select = build_version_select(release);
++
++    $(".version_switcher_placeholder").html(version_select);
++    $(".version_switcher_placeholder select").bind("change", on_version_switch);
++
++    var doctype_select = build_doctype_select(current_doctype);
++
++    $(".doctype_switcher_placeholder").html(doctype_select);
++    $(".doctype_switcher_placeholder select").bind("change", on_doctype_switch);
++
++    // if release = "X.Y (<abbrev hash>)", remove the "(<abbrev hash>)" so that only X.Y is compared
++    release = release.split(" ")[0];
++    if (!(["dev", "next"].includes(release)) && !(release in all_versions)) {
++      $("#outdated-warning").html(
++        "Version " + release + " of the project is now considered obsolete, please select and use a more recent version",
++      );
++      $("#outdated-warning").css("padding", ".5em");
++    }
++  });
++})();
+
+---
+base-commit: cdd79c1768ac396a9c6577e38098da4331507f24
+change-id: 20241227-fix-switchers-js-8cf445610b97
+
 
