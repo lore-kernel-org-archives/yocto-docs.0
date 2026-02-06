@@ -1,134 +1,278 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <chee.yang.lee@intel.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2650CEB28FB
-	for <webhook@archiver.kernel.org>; Fri,  6 Feb 2026 08:40:51 +0000 (UTC)
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.7122.1770367244009893352
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 988F0EB28FE
+	for <webhook@archiver.kernel.org>; Fri,  6 Feb 2026 09:42:41 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.8040.1770370954342566121
  for <docs@lists.yoctoproject.org>;
- Fri, 06 Feb 2026 00:40:44 -0800
+ Fri, 06 Feb 2026 01:42:34 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=SeE/0O8t;
- spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id CD62DC22F40
-	for <docs@lists.yoctoproject.org>; Fri,  6 Feb 2026 08:40:47 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 61C8660729;
-	Fri,  6 Feb 2026 08:40:41 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7B378119D1A08;
-	Fri,  6 Feb 2026 09:40:40 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1770367240; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=AR/yECErx+o8NMv5Mj5TZ1Os650x216lBgwBd8QhDXo=;
-	b=SeE/0O8tZkLK1D/xLcbXm0g3lVe5ZHBBN5kFFKUlecSSPBZyQsUxkuqMiIqcPaQKne+5J7
-	7FVtBXmuK7Eu82J/gpsuoIkMLDBAlqH/TXYtRi5eruMtfUHbJJ9xZiZwYeeDHABPFEqHR3
-	2+gdQ0KSWyNr3ISXb+QRhWvBElUeCnY/axSiy+HZCBbHQvmjoUvYmNP7N8FiuakEJjwK+G
-	ouUs7q2hDmSOENam7Z1A4jTFQ48EU5vQVPhtEyYLI8iMIMq5+QJET6sOFQLMu49dHoB+jL
-	ao6Mz+4Y3QRIm/AZM21pqCyhFwF5sXiSFK8g262NZ/Vc+1HOT2tX0bETBJgWaQ==
-From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Fri, 06 Feb 2026 09:40:17 +0100
-Subject: [PATCH v5 1/2] default-registry: update fragments choices with
- descriptions
+ dkim=pass header.i=@intel.com header.s=Intel header.b=YeZNWDwN;
+ spf=pass (domain: intel.com, ip: 192.198.163.10, mailfrom: chee.yang.lee@intel.com)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770370954; x=1801906954;
+  h=from:to:subject:date:message-id:in-reply-to:references:
+   mime-version:content-transfer-encoding;
+  bh=Rb5CfYz8ADORjlrJrQGJLELV/JcUrZUJb5fcB4oEKtI=;
+  b=YeZNWDwNASHbwU14eQ7At68KLl6gi24qTSvNb7FqsVegzranzZ+orRos
+   h3ZPFXG6yrigpguOQCah/+hMrz4CxUMrXvi4iCXxdweJ24w59FubqA4r+
+   P6pS6476f+uPbMC9lEb+OovzOiD9yAaGNdrwmCxhXPKYRJ96/FyVTzHqp
+   wX6m5866WZ5GSKGy+w7tMvxtEUWgiIiLzPjgfFWu+/rTN+kWoozFc1gXZ
+   FKJY8YwgUCE0w5sLkm6on56zB1ccT/21+gGw1P25bmNVVtSQQ1B+KbufY
+   HNKJKqlx/PUISI/wACLhSzp6uGV3hl45P2Rf3WEb+6sRhj7BcoZcsjatU
+   Q==;
+X-CSE-ConnectionGUID: Bs1altuARfWr7tIj4GNQhA==
+X-CSE-MsgGUID: AGUV3n0pRHuxQzYlI0UNQg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11692"; a="82946771"
+X-IronPort-AV: E=Sophos;i="6.21,276,1763452800"; 
+   d="scan'208";a="82946771"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2026 01:42:30 -0800
+X-CSE-ConnectionGUID: DuxJqCKhSLaRJJesOx7nhQ==
+X-CSE-MsgGUID: FNp+bHxXT7y2wWS+DbJI5g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,276,1763452800"; 
+   d="scan'208";a="210723681"
+Received: from cheeyang-desk4.png.intel.com ([10.107.249.123])
+  by fmviesa008.fm.intel.com with ESMTP; 06 Feb 2026 01:42:27 -0800
+From: chee.yang.lee@intel.com
+To: docs@lists.yoctoproject.org
+Subject: [PATCH 2/2] migration-guides: add release notes for 4.0.32
+Date: Fri,  6 Feb 2026 17:41:46 +0800
+Message-ID: <20260206094146.61584-2-chee.yang.lee@intel.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260206094146.61584-1-chee.yang.lee@intel.com>
+References: <20260206094146.61584-1-chee.yang.lee@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260206-bitbake-setup-choose-builtin-v5-1-3038da12dd2f@bootlin.com>
-References: <20260206-bitbake-setup-choose-builtin-v5-0-3038da12dd2f@bootlin.com>
-In-Reply-To: <20260206-bitbake-setup-choose-builtin-v5-0-3038da12dd2f@bootlin.com>
-To: bitbake-devel@lists.openembedded.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Alexander Kanavin <alex.kanavin@gmail.com>, docs@lists.yoctoproject.org, 
- Antonin Godard <antonin.godard@bootlin.com>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3498;
- i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=vjrkEwDDnD0pL5zPXqYCr/waf44pvH0vmuXAYYacLq0=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBphakGM+uiMhAbDUJI8PdnHlqcQQPt6lv03pqz0
- 95Zr/YBppyJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaYWpBgAKCRDRgEFAKaOo
- NrumEADIRHcS9OA+whFr4zsZE2aMYb0SzSmEVFKIF6jBwtALknBgntYvrSO9zQqowx6Lio28o2r
- EB9XV2HQpEUB9CG+3HX5o5OxS8Iuku/PxmSl3/oDTNrWvgfoFsC+QmQvb7PmSrGqUvswFtoB04Y
- k9/ERWj8z/a4aepmQuAWExJXnH293iQTuBoilVSc3azq8h+sobNSN7G9S3vUY5t2ya0r6/7GsFE
- bSFIRIdgorjfVvdMB6oVOwNsB1motwO87K6kuoWQgyJsIFftMU7ygKs2pjYHZC5IRWm/xC5QjmZ
- Qf4fpRpB9+Tc45hD5jEZYgd/9lfjttFEm59X4K9SCjVKi/gKjvWgFCvJQQc3xLciofMboyob53C
- HhiWclMFIg0baAAoTKtO+IEGS0x+RoGHWrXlA7k1gogRlgEuvZGZ5SppjQWPPSsIwUUu4fz5quo
- V21mwACYgMeBp9LVWEy5GNr8sXAsmshKGl39ehkGod0amqV+i4Qg3EATrEMtMOh1K5Lgwz5vuFZ
- zyrkR+BHLFH6+IxU/ogc8xwRUrVQCNB9N5cEextSK2znC6TaAypxhfEfOprfWSye3LHD/iVMAgB
- cc43kYlR+QxCWLHFxUsS1BGaiAI+OcdTp616ge/N1y1JuWOhkLG7AFsU4mqW/03ODfVIuE+wNKn
- mYn8aK/Heh/ledA==
-X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
- fpr=8648725188DD401BB9A0D3FFD180414029A3A836
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 06 Feb 2026 08:40:51 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8873
+ <docs@lists.yoctoproject.org>; Fri, 06 Feb 2026 09:42:41 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8875
 
-Give descriptions to the fragment choices to help the user know what to
-pick during 'bitbake-setup init'. These descriptions were based on the
-descriptions found in the corresponding configuration files in
-OE-Core/meta-yocto.
+From: Lee Chee Yang <chee.yang.lee@intel.com>
 
-Also while we're at it, s/Distributions/distributions/ as "machines" is
-lowercase in "Target machines" above.
-
-Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
 ---
- .../configurations/oe-nodistro-master.conf.json          |  6 +++++-
- default-registry/configurations/poky-master.conf.json    | 16 +++++++++++++---
- 2 files changed, 18 insertions(+), 4 deletions(-)
+ .../migration-guides/release-4.0.rst          |   1 +
+ .../migration-guides/release-notes-4.0.32.rst | 194 ++++++++++++++++++
+ 2 files changed, 195 insertions(+)
+ create mode 100644 documentation/migration-guides/release-notes-4.0.32.rst
 
-diff --git a/default-registry/configurations/oe-nodistro-master.conf.json b/default-registry/configurations/oe-nodistro-master.conf.json
-index e4e842177e7..5aa148d4217 100644
---- a/default-registry/configurations/oe-nodistro-master.conf.json
-+++ b/default-registry/configurations/oe-nodistro-master.conf.json
-@@ -33,7 +33,11 @@
-             "oe-fragments-one-of": {
-                 "machine": {
-                     "description": "Target machines",
--                    "options" : ["machine/qemux86-64", "machine/qemuarm64", "machine/qemuriscv64"]
-+                    "options" : [
-+                        { "name": "machine/qemux86-64", "description": "x86-64 system on QEMU" },
-+                        { "name": "machine/qemuarm64", "description": "ARMv8 system on QEMU" },
-+                        { "name": "machine/qemuriscv64", "description": "RISC-V system on QEMU" }
-+                    ]
-                 }
-             }
-         }
-diff --git a/default-registry/configurations/poky-master.conf.json b/default-registry/configurations/poky-master.conf.json
-index 0cabce95294..58d379648a3 100644
---- a/default-registry/configurations/poky-master.conf.json
-+++ b/default-registry/configurations/poky-master.conf.json
-@@ -38,11 +38,21 @@
-             "oe-fragments-one-of": {
-                 "machine": {
-                     "description": "Target machines",
--                    "options" : ["machine/qemux86-64", "machine/qemuarm64", "machine/qemuriscv64", "machine/genericarm64", "machine/genericx86-64"]
-+                    "options" : [
-+                        { "name": "machine/qemux86-64", "description": "x86-64 system on QEMU" },
-+                        { "name": "machine/qemuarm64", "description": "ARMv8 system on QEMU" },
-+                        { "name": "machine/qemuriscv64", "description": "RISC-V system on QEMU" },
-+                        { "name": "machine/genericarm64", "description": "Arm64 SystemReady IR/ES platforms" },
-+                        { "name": "machine/genericx86-64", "description": "x86_64 (64-bit) PCs and servers" }
-+                    ]
-                 },
-                 "distro": {
--                    "description": "Target Distributions",
--                    "options" : ["distro/poky", "distro/poky-altcfg", "distro/poky-tiny"]
-+                    "description": "Target distributions",
-+                    "options" : [
-+                        { "name": "distro/poky", "description": "Yocto Project Reference Distro" },
-+                        { "name": "distro/poky-altcfg", "description": "Poky alternative with systemd as init manager" },
-+                        { "name": "distro/poky-tiny", "description": "Poky alternative optimized for size" }
-+                    ]
-                 }
-             },
-             "configurations": [
-
+diff --git a/documentation/migration-guides/release-4.0.rst b/documentation/migration-guides/release-4.0.rst
+index b143a8595..9b0cc01a1 100644
+--- a/documentation/migration-guides/release-4.0.rst
++++ b/documentation/migration-guides/release-4.0.rst
+@@ -38,3 +38,4 @@ Release 4.0 (kirkstone)
+    release-notes-4.0.29
+    release-notes-4.0.30
+    release-notes-4.0.31
++   release-notes-4.0.32
+diff --git a/documentation/migration-guides/release-notes-4.0.32.rst b/documentation/migration-guides/release-notes-4.0.32.rst
+new file mode 100644
+index 000000000..652b17eed
+--- /dev/null
++++ b/documentation/migration-guides/release-notes-4.0.32.rst
+@@ -0,0 +1,194 @@
++Release notes for Yocto-4.0.32 (Kirkstone)
++------------------------------------------
++
++Security Fixes in Yocto-4.0.32
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++-  bind: Fix :cve_nist:`2025-8677`, :cve_nist:`2025-40778` and :cve_nist:`2025-40780`
++-  binutils: Fix :cve_nist:`2025-11412` and :cve_nist:`2025-11413`
++-  curl: Ignore :cve_nist:`2025-10966`
++-  elfutils: Fix :cve_nist:`2025-1376` and :cve_nist:`2025-1377`
++-  gnutls: Fix :cve_nist:`2025-9820`
++-  go: Fix :cve_nist:`2024-24783`, :cve_nist:`2025-58187`, :cve_nist:`2025-58189`,
++   :cve_nist:`2025-61723` and :cve_nist:`2025-61724`
++-  libarchive: Fix :cve_nist:`2025-60753`
++-  libarchive: Fix 2 security issue (https://github.com/libarchive/libarchive/pull/2753 and
++   https://github.com/libarchive/libarchive/pull/2768)
++-  libpng: Fix :cve_nist:`2025-64505`, :cve_nist:`2025-64506`, :cve_nist:`2025-64720`,
++   :cve_nist:`2025-65018` and :cve_nist:`2025-66293`
++-  libxml2: Fix :cve_nist:`2025-7425`
++-  musl: Fix :cve_nist:`2025-26519`
++-  openssh: Fix :cve_nist:`2025-61984` and :cve_nist:`2025-61985`
++-  python3-idna: Fix :cve_nist:`2024-3651`
++-  python3-urllib3: Fix :cve_nist:`2024-37891`
++-  python3: fix :cve_nist:`2025-6075`
++-  ruby: Fix :cve_nist:`2024-35176`, :cve_nist:`2024-39908` and :cve_nist:`2024-41123`
++-  rust-cross-canadian: Ignore :cve_nist:`2024-43402`
++-  u-boot: Fix :cve_nist:`2024-42040`
++-  wpa-supplicant: Fix :cve_nist:`2025-24912`
++-  xserver-xorg: Fix :cve_nist:`2025-62229`, :cve_nist:`2025-62230` and :cve_nist:`2025-62231`
++-  xwayland: Fix :cve_nist:`2025-62229`, :cve_nist:`2025-62230` and :cve_nist:`2025-62231`
++
++
++Fixes in Yocto-4.0.32
++~~~~~~~~~~~~~~~~~~~~~
++
++-  babeltrace2: fetch with https protocol
++-  bind: upgrade to 9.18.41
++-  build-appliance-image: Update to kirkstone head revision
++-  dev-manual/layers.rst: document "bitbake-layers show-machines"
++-  dev-manual/new-recipe.rst: replace 'bitbake -e' with 'bitbake-getvar'
++-  dev-manual/new-recipe.rst: typo, "whith" -> "which"
++-  dev-manual/new-recipe.rst: update "recipetool -h" output
++-  dev-manual: debugging: use bitbake-getvar in Viewing Variable Values section
++-  documentation: link to the Releases page on yoctoproject.org instead of wiki
++-  efibootmgr: update :term:`SRC_URI` branch
++-  flac: patch seeking bug
++-  goarch.bbclass: do not leak :term:`TUNE_FEATURES` into crosssdk task signatures
++-  kernel-dev: add disable config example
++-  kernel-dev: common: migrate bitbake -e to bitbake-getvar
++-  libmicrohttpd: disable experimental code by default
++-  migration-guides: add release notes for 4.0.31
++-  oe-build-perf-report: relax metadata matching rules
++-  overview-manual: migrate to SVG + fix typo
++-  poky.conf: bump version for 4.0.32
++-  python3-urllib3: upgrade to 1.26.20
++-  recipes: Don't use ftp.gnome.org
++-  ref-manual: variables: migrate the :term:`OVERRIDES` note to bitbake-getvar
++-  systemd-bootchart: update :term:`SRC_URI` branch
++-  xf86-video-intel: correct :term:`SRC_URI` as freedesktop anongit is down
++
++
++Known Issues in Yocto-4.0.32
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++- N/A
++
++
++Contributors to Yocto-4.0.32
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++Thanks to the following people who contributed to this release:
++
++-  Alexander Kanavin
++-  Archana Polampalli
++-  Divya Chellam
++-  Gyorgy Sarvari
++-  Hitendra Prajapati
++-  Hongxu Jia
++-  Jason Schonberg
++-  Lee Chee Yang
++-  Peter Marko
++-  Praveen Kumar
++-  Quentin Schulz
++-  Richard Purdie
++-  Robert P. J. Day
++-  Ross Burton
++-  Saquib Iltaf
++-  Soumya Sambu
++-  Steve Sakoman
++-  Vijay Anusuri
++-  Walter Werner SCHNEIDER
++
++
++Repositories / Downloads for Yocto-4.0.32
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++yocto-docs
++
++-  Repository Location: :yocto_git:`/yocto-docs`
++-  Branch: :yocto_git:`kirkstone </yocto-docs/log/?h=kirkstone>`
++-  Tag:  :yocto_git:`yocto-4.0.32 </yocto-docs/log/?h=yocto-4.0.32>`
++-  Git Revision: :yocto_git:`4b9df539fa06fb19ed8b51ef2d46e5c56779de81 </yocto-docs/commit/?id=4b9df539fa06fb19ed8b51ef2d46e5c56779de81>`
++-  Release Artefact: yocto-docs-4b9df539fa06fb19ed8b51ef2d46e5c56779de81
++-  sha: 70ee2caf576683c5f31ac5a592cde1c0650ece25cfcd5ff3cc7eedf531575611
++-  Download Locations:
++
++   https://downloads.yoctoproject.org/releases/yocto/yocto-4.0.32/yocto-docs-4b9df539fa06fb19ed8b51ef2d46e5c56779de81.tar.bz2
++
++   https://mirrors.edge.kernel.org/yocto/yocto/yocto-4.0.32/yocto-docs-4b9df539fa06fb19ed8b51ef2d46e5c56779de81.tar.bz2
++
++poky
++
++-  Repository Location: :yocto_git:`/poky`
++-  Branch: :yocto_git:`kirkstone </poky/log/?h=kirkstone>`
++-  Tag:  :yocto_git:`yocto-4.0.32 </poky/log/?h=yocto-4.0.32>`
++-  Git Revision: :yocto_git:`2c05660b21c7cc1082aeac8b75d8a2d82e249f63 </poky/commit/?id=2c05660b21c7cc1082aeac8b75d8a2d82e249f63>`
++-  Release Artefact: poky-2c05660b21c7cc1082aeac8b75d8a2d82e249f63
++-  sha: d7a55a18a597a7b140a81586b7ca6379c208ebbb3285de36c48fde10882947d8
++-  Download Locations:
++
++   https://downloads.yoctoproject.org/releases/yocto/yocto-4.0.32/poky-2c05660b21c7cc1082aeac8b75d8a2d82e249f63.tar.bz2
++
++   https://mirrors.edge.kernel.org/yocto/yocto/yocto-4.0.32/poky-2c05660b21c7cc1082aeac8b75d8a2d82e249f63.tar.bz2
++
++openembedded-core
++
++-  Repository Location: :oe_git:`/openembedded-core`
++-  Branch: :oe_git:`kirkstone </openembedded-core/log/?h=kirkstone>`
++-  Tag:  :oe_git:`yocto-4.0.32 </openembedded-core/log/?h=yocto-4.0.32>`
++-  Git Revision: :oe_git:`2ed3f8b938579dbbb804e04c45a968cc57761db7 </openembedded-core/commit/?id=2ed3f8b938579dbbb804e04c45a968cc57761db7>`
++-  Release Artefact: oecore-2ed3f8b938579dbbb804e04c45a968cc57761db7
++-  sha: 11b9632586dfbf3f0ef69eca2014a8002f25ca8d53cfe9424e27361ba3a20831
++-  Download Locations:
++
++   https://downloads.yoctoproject.org/releases/yocto/yocto-4.0.32/oecore-2ed3f8b938579dbbb804e04c45a968cc57761db7.tar.bz2
++
++   https://mirrors.edge.kernel.org/yocto/yocto/yocto-4.0.32/oecore-2ed3f8b938579dbbb804e04c45a968cc57761db7.tar.bz2
++
++meta-yocto
++
++-  Repository Location: :yocto_git:`/meta-yocto`
++-  Branch: :yocto_git:`kirkstone </meta-yocto/log/?h=kirkstone>`
++-  Tag:  :yocto_git:`yocto-4.0.32 </meta-yocto/log/?h=yocto-4.0.32>`
++-  Git Revision: :yocto_git:`77b40877c179ea3ce5c37c7ba1831e9c0e289266 </meta-yocto/commit/?id=77b40877c179ea3ce5c37c7ba1831e9c0e289266>`
++-  Release Artefact: meta-yocto-77b40877c179ea3ce5c37c7ba1831e9c0e289266
++-  sha: e908d42690881cd6e07b9ca18a21eb8761a0ec72d940b12905622e75ba913974
++-  Download Locations:
++
++   https://downloads.yoctoproject.org/releases/yocto/yocto-4.0.32/meta-yocto-77b40877c179ea3ce5c37c7ba1831e9c0e289266.tar.bz2
++
++   https://mirrors.edge.kernel.org/yocto/yocto/yocto-4.0.32/meta-yocto-77b40877c179ea3ce5c37c7ba1831e9c0e289266.tar.bz2
++
++meta-mingw
++
++-  Repository Location: :yocto_git:`/meta-mingw`
++-  Branch: :yocto_git:`kirkstone </meta-mingw/log/?h=kirkstone>`
++-  Tag:  :yocto_git:`yocto-4.0.32 </meta-mingw/log/?h=yocto-4.0.32>`
++-  Git Revision: :yocto_git:`87c22abb1f11be430caf4372e6b833dc7d77564e </meta-mingw/commit/?id=87c22abb1f11be430caf4372e6b833dc7d77564e>`
++-  Release Artefact: meta-mingw-87c22abb1f11be430caf4372e6b833dc7d77564e
++-  sha: f0bc4873e2e0319fb9d6d6ab9b98eb3f89664d4339a167d2db6a787dd12bc1a8
++-  Download Locations:
++
++   https://downloads.yoctoproject.org/releases/yocto/yocto-4.0.32/meta-mingw-87c22abb1f11be430caf4372e6b833dc7d77564e.tar.bz2
++
++   https://mirrors.edge.kernel.org/yocto/yocto/yocto-4.0.32/meta-mingw-87c22abb1f11be430caf4372e6b833dc7d77564e.tar.bz2
++
++meta-gplv2
++
++-  Repository Location: :yocto_git:`/meta-gplv2`
++-  Branch: :yocto_git:`kirkstone </meta-gplv2/log/?h=kirkstone>`
++-  Tag:  :yocto_git:`yocto-4.0.32 </meta-gplv2/log/?h=yocto-4.0.32>`
++-  Git Revision: :yocto_git:`d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a </meta-gplv2/commit/?id=d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a>`
++-  Release Artefact: meta-gplv2-d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a
++-  sha: c386f59f8a672747dc3d0be1d4234b6039273d0e57933eb87caa20f56b9cca6d
++-  Download Locations:
++
++   https://downloads.yoctoproject.org/releases/yocto/yocto-4.0.32/meta-gplv2-d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a.tar.bz2
++
++   https://mirrors.edge.kernel.org/yocto/yocto/yocto-4.0.32/meta-gplv2-d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a.tar.bz2
++
++bitbake
++
++-  Repository Location: :oe_git:`/bitbake`
++-  Branch: :oe_git:`2.0 </bitbake/log/?h=2.0>`
++-  Tag:  :oe_git:`yocto-4.0.32 </bitbake/log/?h=yocto-4.0.32>`
++-  Git Revision: :oe_git:`8e2d1f8de055549b2101614d85454fcd1d0f94b2 </bitbake/commit/?id=8e2d1f8de055549b2101614d85454fcd1d0f94b2>`
++-  Release Artefact: bitbake-8e2d1f8de055549b2101614d85454fcd1d0f94b2
++-  sha: fad4e7699bae62082118e89785324b031b0af0743064caee87c91ba28549afb0
++-  Download Locations:
++
++   https://downloads.yoctoproject.org/releases/yocto/yocto-4.0.32/bitbake-8e2d1f8de055549b2101614d85454fcd1d0f94b2.tar.bz2
++
++   https://mirrors.edge.kernel.org/yocto/yocto/yocto-4.0.32/bitbake-8e2d1f8de055549b2101614d85454fcd1d0f94b2.tar.bz2
++
 -- 
-2.52.0
+2.43.0
 
 
