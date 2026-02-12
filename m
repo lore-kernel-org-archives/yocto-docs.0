@@ -2,55 +2,95 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2A0B8ECD6FA
-	for <webhook@archiver.kernel.org>; Thu, 12 Feb 2026 08:40:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 48DC1EB48E8
+	for <webhook@archiver.kernel.org>; Thu, 12 Feb 2026 08:49:53 +0000 (UTC)
 Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.41275.1770885641629667816
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.41642.1770886190715906991
  for <docs@lists.yoctoproject.org>;
- Thu, 12 Feb 2026 00:40:41 -0800
+ Thu, 12 Feb 2026 00:49:51 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=BQ2vMeIt;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=0Vq1wZcU;
  spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 3D382C8F472
-	for <docs@lists.yoctoproject.org>; Thu, 12 Feb 2026 08:40:49 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 44B40C23D90
+	for <docs@lists.yoctoproject.org>; Thu, 12 Feb 2026 08:49:57 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 24691606CA
-	for <docs@lists.yoctoproject.org>; Thu, 12 Feb 2026 08:40:40 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 79DB8119714DC;
-	Thu, 12 Feb 2026 09:40:39 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 1BBB7606CA;
+	Thu, 12 Feb 2026 08:49:48 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 116BB119714E9;
+	Thu, 12 Feb 2026 09:49:45 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1770885639; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1770886187; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=YKMGro4rsHTNKIqmj/dxCkXMs2/el4XQHQk0OwAUb6o=;
-	b=BQ2vMeItN194p2isbIla7cc0ndeHvdWisJVUWgv2WFGMcw4FzmKppz9wioSovFEF3jtCc0
-	CfoOAfdUAIz63JXDwmE7ObfDC7s19p2zZc+lEj9Mvc1IRZFHUZl6aH5FRzMBlHHzhW9b4v
-	tnSazK0QWao+3LXRwFefr8rSdUw8CXueSf05yriIu7W/g+FjX9eviety+f1qIHfFa0HZZM
-	l+xyQLLWbKlweNJHPxgC2f4afl7/pa0iZTPy1EautL+awx9s6u5ryJaP0fPT36nAYKxQ/M
-	lmYa34REBhzbfvmcy+EBPLr+yih25No9fL6Pg94itXLzTh6FxH/g+gnxg2kJWw==
+	bh=BUua2cunn4P7bxLxTnUli0TClKXDNmt3virjB94rN1s=;
+	b=0Vq1wZcUzUCkkGCcHrFHXtHUfmf1dUPh7uOr5ZP4x5/BSluv8hhkmoIUpFdTxdJPXi0tz4
+	/hAJzg/bneOVyGWXqq4G4fh/4W2zNlH5+n9nZI8d+MeTMeis3l9QZVhFJoZkUhTWcUooV2
+	cdi6uvZfWZrQH6s9BMIUeTzh9myxb2wdERbPcqfLOKYf3cteMceAmpcdP2PdMzFCEuOd+B
+	UJDHGH88lx5lbTDFKbwANNx74ed+8zg0FJuAV+5dcZzeuGtdJffCl+nboIDfcnYwDset7n
+	kwePvEgXp67dyg2OxRx5hVjvjTMCs/yPHnDImrtrOuXHke6BawSTmVNWb+RW3w==
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 12 Feb 2026 09:40:39 +0100
-Message-Id: <DGCUKFOM89YT.3MGBCW3MYTE1U@bootlin.com>
-Subject: Re: [PATCH 0/3] Rework the logic of the switcher menu and improve
- it
-Cc: "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>, "Antonin Godard"
- <antonin.godard@bootlin.com>
+Date: Thu, 12 Feb 2026 09:49:45 +0100
+Message-Id: <DGCUREOACEVG.3QW902HRYGH28@bootlin.com>
 From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: <docs@lists.yoctoproject.org>
-References: <20260212-fix-switchers-js-v1-0-16d95c74c328@bootlin.com>
-In-Reply-To: <20260212-fix-switchers-js-v1-0-16d95c74c328@bootlin.com>
+To: <foss@0leil.net>, <bitbake-devel@lists.openembedded.org>
+Subject: Re: [docs] [PATCH 1/4] doc: bitbake-user-manual-ref-variables:
+ clarify BBMASK directory matching
+Cc: "Robert P. J. Day" <rpjday@crashcourse.ca>,
+ <docs@lists.yoctoproject.org>, "Quentin Schulz" <quentin.schulz@cherry.de>
+References: <20260211-bbmask-slashes-v1-0-b72161c647ef@cherry.de>
+ <20260211-bbmask-slashes-v1-1-b72161c647ef@cherry.de>
+In-Reply-To: <20260211-bbmask-slashes-v1-1-b72161c647ef@cherry.de>
 X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 12 Feb 2026 08:40:43 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8899
+ <docs@lists.yoctoproject.org>; Thu, 12 Feb 2026 08:49:53 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8900
 
-Needs to be merged in lockstep with:
-https://lore.kernel.org/r/20260212-fix-switchers-js-ydocs-v1-0-ab1113759747=
-@bootlin.com
+Hi,
+
+On Wed Feb 11, 2026 at 7:06 PM CET, Quentin Schulz via lists.yoctoproject.o=
+rg wrote:
+> From: Quentin Schulz <quentin.schulz@cherry.de>
+>
+> BBMASK matches files in the directories matching the regex, and also in
+> their respective subdirectories, so make that clear in the wording
+> leading to the example.
+>
+> Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
+> ---
+>  doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rs=
+t b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
+> index 4b3b10d46..18bbd638d 100644
+> --- a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
+> +++ b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
+> @@ -1051,8 +1051,8 @@ overview of their function and contents.
+>        documentation at http://docs.python.org/3/library/re.html.
+> =20
+>        The following example uses a complete regular expression to tell
+> -      BitBake to ignore all recipe and recipe append files in the
+> -      ``meta-ti/recipes-misc/`` directory::
+> +      BitBake to ignore all recipe and recipe append files in
+> +      ``meta-ti/recipes-misc/`` directories (and their subdirectories)::
+
+If I follow: this will mask multiple occurrences "meta-ti/recipes-misc/". H=
+ow
+could there be more than one in practice? How could this ever happen?
+
+Wouldn't:
+
+"""
+The following example uses a complete regular expression to tell
+BitBake to ignore all recipe and recipe append files in the
+``meta-ti/recipes-misc/`` directory and its subdirectories::
+"""
+
+be less confusing?
 
 Antonin
 
