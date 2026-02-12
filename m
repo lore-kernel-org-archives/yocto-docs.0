@@ -1,74 +1,83 @@
-Return-Path: <rpjday@crashcourse.ca>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0CF66ECD6EE
-	for <webhook@archiver.kernel.org>; Wed, 11 Feb 2026 20:43:49 +0000 (UTC)
-Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.29285.1770842627110766955
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 15039EDF05A
+	for <webhook@archiver.kernel.org>; Thu, 12 Feb 2026 08:37:53 +0000 (UTC)
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.41528.1770885470611219125
  for <docs@lists.yoctoproject.org>;
- Wed, 11 Feb 2026 12:43:47 -0800
+ Thu, 12 Feb 2026 00:37:50 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=UsqyvA+d;
- spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:References:
-	Message-ID:In-Reply-To:Subject:cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=DVQvFR77OaY8RU7ZLEt1qoQBlal/p2FK4a3e2XdXGvM=; b=UsqyvA+dYofjWCMMSqQWdn8AuJ
-	d5dSUg/Ejhmhw8mHsoUK8vt9ICQTGxP5304gXNlLcpNmGRydgVibbZLDnioaox5JsUi5Tm5OUnzJN
-	ixhaRWwByTbg2W9BgsGVEW2ArBGHwt1f1mTk6eQOF/XyMkJBHUILcDaKR3zjnKtEaL5v9ph+uIfdD
-	0bvY+5nOc33TC4yAV3RCyPdTmuq5SUVseZeorU4Wv8F/SxTM4Yoj4badWR7DGGmP63U0hUZnCKi/O
-	mGQJ/OEmwDzKD4UnK8H6fJJ5icU19hyyPnIfQnqsZwAbLYo462wCF3B6/C7YYs5v4FtDDcTNVIpHV
-	D0XPQ76Q==;
-Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:40884 helo=rday)
-	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.1)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1vqH3p-00000000m0K-1Fp3;
-	Wed, 11 Feb 2026 15:43:45 -0500
-Date: Wed, 11 Feb 2026 15:45:00 -0500 (EST)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: foss@0leil.net
-cc: bitbake-devel@lists.openembedded.org, docs@lists.yoctoproject.org, 
-    Quentin Schulz <quentin.schulz@cherry.de>
-Subject: Re: [docs] [PATCH 0/4] doc: bitbake-user-manual-ref-variables:
- clarify BBMASK examples
-In-Reply-To: <20260211-bbmask-slashes-v1-0-b72161c647ef@cherry.de>
-Message-ID: <d56ebe51-571e-b960-854c-34729ab18cb0@crashcourse.ca>
-References: <20260211-bbmask-slashes-v1-0-b72161c647ef@cherry.de>
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=aIIKZNXs;
+ spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 177731A0A06
+	for <docs@lists.yoctoproject.org>; Thu, 12 Feb 2026 08:37:48 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id E1279606CD
+	for <docs@lists.yoctoproject.org>; Thu, 12 Feb 2026 08:37:47 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id EF159119714C3;
+	Thu, 12 Feb 2026 09:37:46 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1770885467; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=ld0RLJlzGsy3PhZ65eOjvomo7C3EdyhN46Zs2Bn4a4E=;
+	b=aIIKZNXsVn3btejJP6xeA+mRwerqGYnRzic5I8zpLbMIIy1LklwyVEocSS1D3MnnC15aoq
+	phWJH5UbmF5IBXrxkibUn8U/ztOXHydOeEfDAHJEGJPC1h+h/c2I0nJpk69v+n5lzgF/c9
+	f6xJPv+Q4u07Vgp1n3DVyx6kQl5AwzlyV6jXE55kNW/xZ1CkQWuFg9Rd2hV1JfEI2hz6Bn
+	dZYO6BNPYJEeWgHvMkbyQKhC5Odx/+xRMqboUxPrO5sOY7bSdtLqbaKse/9emOha+rHKDB
+	tc/sFbyDfFRdJXr7A05jpUDEY/9uDwuwXBwRDSibf7QzNQiViLRGUQkGLlZHnw==
+From: Antonin Godard <antonin.godard@bootlin.com>
+Subject: [PATCH 0/3] Rework the logic of the switcher menu and improve it
+Date: Thu, 12 Feb 2026 09:37:36 +0100
+Message-Id: <20260212-fix-switchers-js-v1-0-16d95c74c328@bootlin.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMQQ6CMBCF4auQWTNJqaY2XMWwgHG000U1M6Akh
+ LtbdPkl7/0bGKuwQd9soPwWk2ep6NoGKI3lwSi3avDOB+ddwLusaB+ZKbEaZsMuBh/oMsbTmaD
+ eXsp180teh79tmTLTfHRg378RWdKXdAAAAA==
+X-Change-ID: 20260206-fix-switchers-js-18626c7a834c
+To: docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Antonin Godard <antonin.godard@bootlin.com>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=580;
+ i=antonin.godard@bootlin.com; h=from:subject:message-id;
+ bh=SXUvTKvOSLtVCvqLT8Tvn3rm4DBVhbtQ6vbu3GHUnpA=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpjZFaFnzQXgm5eAuYoazHHxWmXZLMFgYyKzNmN
+ SrYTXA1nreJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaY2RWgAKCRDRgEFAKaOo
+ NgoBD/9Hjg7tyRfFCfjlwHT49CCPMlUpRBwhCmvOiLAzIOaSgI3vx+ZSTpM1Si4LQkb0Dz5BFYr
+ a9EDDkvzpW/inlqWNSpyYOj17r7R3NWBL6YfaXqankUdmmfxK4PO5vyEWeK7725wODwqO520KYD
+ GqYLKxk/q8qyRltVn8Tgx6kCQnD7yLOaemE8yU93kVqN00RyfHKwaRgI+I7K/tUkpXAC16J6M5O
+ YIdplocqmPO9hdduMMCSpqUaTz5mfJFOG+MKLk1sLEPh7qWu1/uza1tCwKI+ahjdSVyuEatOIkf
+ CnW3RhOSaOP5T76kUPfZq9Y6bRH78YBx6lfy5e6GPM95h1rCf4oCGjgAJGusmvrtl/KmHLRxBHZ
+ 1+dx0217CjnozdA7bW5gd3gDGHPRSjY+qgK96xd8C0QSeiczzcPds5wGvJ70nQ3Q49j2hcDUNfc
+ oQpbpCYDQ7rlW1t0zH6bYNhFLykj7EgvwCizUnJymGhb5PCn22b4itjP9v/RNksrJo2uBNGQso4
+ 26xrTzKJfvzzLCKOwe81h7MdaDG4dzCdd/JrPcNeFPdpizY/snRxLXCZMbBV0oOwmJLZLkLFDOt
+ imFwKLYWhhE5jUmRx5U/Mz+4Kc7pgGgzbABTRzqF2M1inUR7gOTTYlwYSYRMFyEWuM4H4D2Uyip
+ 5pjLxqVys4wCJNQ==
+X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
+ fpr=8648725188DD401BB9A0D3FFD180414029A3A836
+X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 11 Feb 2026 20:43:49 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8894
+ <docs@lists.yoctoproject.org>; Thu, 12 Feb 2026 08:37:53 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8895
 
-On Wed, 11 Feb 2026, Quentin Schulz via lists.yoctoproject.org wrote:
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+---
+Antonin Godard (3):
+      set_versions.py: remove duplicate and unneeded logic
+      switchers.js: rework the logic and improve it
+      set_versions.py: set a more accurate DISTRO value
 
-> Robert reported being confused by the leading slash inconsistencies
-> in our BBMASK examples and wondered if it had any significance.
-> After reading the code and testing, it does, so this tries to
-> explain the difference and why you would want a leading slash in
-> most cases.
+ documentation/set_versions.py               | 167 +++++++++++++++++-----------
+ documentation/sphinx-static/switchers.js.in | 132 +++++++++++++++-------
+ 2 files changed, 189 insertions(+), 110 deletions(-)
+---
+base-commit: 3ec23e9fb7ddc294bac6f68300591239c9cedf4b
+change-id: 20260206-fix-switchers-js-18626c7a834c
 
-  thanks, quentin, for tolerating my relentless whining about stuff
-and proceeding to resolve it. i will try to get back to contributing
-some of my own stuff in the near future. i already have plenty of
-ideas for docs improvement.
-
-rday
 
