@@ -2,229 +2,268 @@ Return-Path: <quentin.schulz@cherry.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EB841EB4904
-	for <webhook@archiver.kernel.org>; Thu, 12 Feb 2026 11:12:23 +0000 (UTC)
-Received: from DUZPR83CU001.outbound.protection.outlook.com (DUZPR83CU001.outbound.protection.outlook.com [52.101.66.27])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.43199.1770894729988404039
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F10A3EB490D
+	for <webhook@archiver.kernel.org>; Thu, 12 Feb 2026 11:39:13 +0000 (UTC)
+Received: from DUZPR83CU001.outbound.protection.outlook.com (DUZPR83CU001.outbound.protection.outlook.com [52.101.66.54])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.43142.1770896346505088115
  for <docs@lists.yoctoproject.org>;
- Thu, 12 Feb 2026 03:12:11 -0800
+ Thu, 12 Feb 2026 03:39:06 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@cherry.de header.s=selector1 header.b=fiAYvxQP;
- spf=pass (domain: cherry.de, ip: 52.101.66.27, mailfrom: quentin.schulz@cherry.de)
+ dkim=pass header.i=@cherry.de header.s=selector1 header.b=X0AcaiNf;
+ spf=pass (domain: cherry.de, ip: 52.101.66.54, mailfrom: quentin.schulz@cherry.de)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UxEKuL+UepZROV53AT8Tt18Hd8sAlpjls54RmstHbfBHeU7aXPzEwKW0Slp/O7EfMHB4NbAkYw8CSNZlgZXDkqX8EMjlbRlfrDnw7i1+G97NU84AZElOledNV62COF/k5OKnzdd3NsCnWzf8IQkBSqbJTePbBgSjyH/wPg4M+1IfDnFXdDiNQLuFo24unPlHNiadk6VP3aiR9KK6zsVquY4qrRwVybPcwDYR5UD2xj2Nia9aa1PboD/caEADkQfsPBj6Dl8oeKqHmwJUBJPLlSuzvBrNJy+QMJLXXEF+wfh1A8QKjGfEtVSxzZ23G6sZT2K5dbV7/DAxhcXDILedqg==
+ b=JM29cJUL2m0uNb66H/dsd2xeV5JHnPQ6TJUoNXgr5vSGLUfSNlU7DSZXUW0Ep/c4YzaF8uM5B70RWulYZ5V1uKhJN+GlyCqj1rV1bzDgCutfIN6kOj7Dnx8uIgwbHPW18kAF/OlZuLCxp2DLExoRUc5H3GzQnotQWWV0zDxJYIH3gWDa+hs5gQZUAVTtEdGW4+jsY+nnXMPAhS7u4K9N1eQSXUFZBwJOdoB9H6pna4xRaKUU2Q9e82/An37uB9dv9VW6XBgAfMWGHlZhOjt0PZ+F2jVQfI14Ghmyobs+Hs41+K5FtgSN9w41319ir4HjNZ6JeqEuTT70g1DKuBLzhQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WjR+AmRju1lId5V+gEjSazI3ZQe+XXOcic49KqfLVvE=;
- b=qyG+bY1uBXZC9ZlAmw45OQOm4c1Ni71XCTXPNNT3WJfP1xd2JbkAO4R+lCzuBUbdj91wshrwzBDtyiOH6FtISd7hnJRgKD+WQi5qnH48AAimPRe27o0anE6H+vNX6yzxM8upRVZLznqV/xZ1ypfMPwvX9xKHiU8ZkjXVCXNYWJgXY7EgQUtjDcVKB//LdV9BrVApQr9jG1bm9GGbFP/DGthYdzmr+3eDQ1JGfTOIbMQ7qTOxNmw0Pr2DRrw03Srm6ySq1kyuCdgVyB6F5e7sT9fX9yQ7m+XR4HXylziQAV2LXVDoc65JHCD02UuWQKCbmOMSaM6LNzd1IyjaHRU9Yg==
+ bh=x/vI6r42rB+s7rU0h8d1DSUQujgcIqlGShjfDyEh1HQ=;
+ b=xxcB4qO/u2gtf2bK07zocsSjM5ypoDBdS5Ze1THFxHubYQutTzgBcIOUdC8D95wZycQfv22NpK50qZhVH+0T21yAVGZW3cmVnFfZ3QpRxghCgn4bu5bOx68T9KKOWLGRLjPtuoJFZPSKywebwJVDjyRSJvTUt1UlyEcmTH/3mFBjHRX708AhMqlxN2+eJ7hhK0zedqBiD8252PK9EA5IXh1yAluuukrrkXZHHeQsRFEwjhxn1rJLBfsFFgB2K+m8Vf9b8na0ABdTOczMBBKZWMQk2Uj+8oYzzD3be1FBe8Ck9k7Llau17eh5wcNZnijRARskOii6K5Tz4hg2cfo0JA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
  dkim=pass header.d=cherry.de; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WjR+AmRju1lId5V+gEjSazI3ZQe+XXOcic49KqfLVvE=;
- b=fiAYvxQP9JAnY34xIKR61H/JNZUNxX0wRG9wWqvnV0ksCXnwGj+PxZm+OT5oNRtwRcZv7StzYQ7E4yRBAPjfHm3Oz/xIeApgsmp26m3LgoSioSVySfbavh6ovrYIpz+0uRvxsAdW4f/50B4/3M/iBKtCZiZc1vI+Bcc+7xWvjaQ=
+ bh=x/vI6r42rB+s7rU0h8d1DSUQujgcIqlGShjfDyEh1HQ=;
+ b=X0AcaiNfUVhCcpQFjY3Yoe2c98F5TX2w+TuYj9CSfnnDdJDfAc6ICySg+DOTThIkOHrp38BiQYQDWjd6jW01VyPzfIlAET/ME8cdqcvDnF4RBBhJdsjhWH7nNpX8LAli107YRVZqeIjfdPmzxoRe71+ctXE8SdH6cXmfVTtiPQg=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=cherry.de;
 Received: from GVXPR04MB12038.eurprd04.prod.outlook.com (2603:10a6:150:2be::5)
- by VI2PR04MB10859.eurprd04.prod.outlook.com (2603:10a6:800:278::8) with
+ by DU0PR04MB9346.eurprd04.prod.outlook.com (2603:10a6:10:356::18) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9611.11; Thu, 12 Feb
- 2026 11:12:04 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9611.10; Thu, 12 Feb
+ 2026 11:39:00 +0000
 Received: from GVXPR04MB12038.eurprd04.prod.outlook.com
  ([fe80::6c04:8947:f2f0:5e78]) by GVXPR04MB12038.eurprd04.prod.outlook.com
  ([fe80::6c04:8947:f2f0:5e78%6]) with mapi id 15.20.9611.008; Thu, 12 Feb 2026
- 11:12:04 +0000
-Message-ID: <286bfe0e-160c-4b6e-8900-ab821592da86@cherry.de>
-Date: Thu, 12 Feb 2026 12:12:02 +0100
+ 11:39:00 +0000
+Message-ID: <f97528ec-917d-44d8-be42-ab0c48a1b2cc@cherry.de>
+Date: Thu, 12 Feb 2026 12:38:51 +0100
 User-Agent: Mozilla Thunderbird
-Subject: Re: [docs] [PATCH 1/4] doc: bitbake-user-manual-ref-variables:
- clarify BBMASK directory matching
+Subject: Re: [docs] [PATCH 3/4] doc: bitbake-user-manual-ref-variables:
+ clarify BBMASK matching patterns
 To: Antonin Godard <antonin.godard@bootlin.com>, foss@0leil.net,
  bitbake-devel@lists.openembedded.org
 Cc: "Robert P. J. Day" <rpjday@crashcourse.ca>, docs@lists.yoctoproject.org
 References: <20260211-bbmask-slashes-v1-0-b72161c647ef@cherry.de>
- <20260211-bbmask-slashes-v1-1-b72161c647ef@cherry.de>
- <DGCUREOACEVG.3QW902HRYGH28@bootlin.com>
+ <20260211-bbmask-slashes-v1-3-b72161c647ef@cherry.de>
+ <DGCUY7U4ZJZE.1Y4VMQEELJUO@bootlin.com>
 Content-Language: en-US
 From: Quentin Schulz <quentin.schulz@cherry.de>
-In-Reply-To: <DGCUREOACEVG.3QW902HRYGH28@bootlin.com>
+In-Reply-To: <DGCUY7U4ZJZE.1Y4VMQEELJUO@bootlin.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-X-ClientProxiedBy: FR0P281CA0186.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:ab::16) To GVXPR04MB12038.eurprd04.prod.outlook.com
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR3P281CA0015.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:1d::13) To GVXPR04MB12038.eurprd04.prod.outlook.com
  (2603:10a6:150:2be::5)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GVXPR04MB12038:EE_|VI2PR04MB10859:EE_
-X-MS-Office365-Filtering-Correlation-Id: 54ff1ec4-28e1-4a5b-fffb-08de6a278dab
+X-MS-TrafficTypeDiagnostic: GVXPR04MB12038:EE_|DU0PR04MB9346:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6cbf3fd8-4fad-40df-180e-08de6a2b5082
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|10070799003|366016|1800799024;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|10070799003|366016;
 X-Microsoft-Antispam-Message-Info: 
-	=?utf-8?B?Y2Z3MGVhQ2lxZ054b0xzR1ArY0FoNVBtWjAraXVFdTJjVWZjN1M5dGVvZExH?=
- =?utf-8?B?Zm9FZER1WHZKaVJvdW5QTlBBQUtCQ0V3VXd0WHdJWHlNTzR6MFJqSGI2UWJ6?=
- =?utf-8?B?ejZZZ2ZleXZSL0JjbVY3SVBhZXVYZk5aMlVEdW1PTXdEMlhxRDIzRXlBVURu?=
- =?utf-8?B?bEZQTmd1Q2phd214QS9MNkh0RnQ3WWk4cWU4ZkVVNEl2bitTUElHWTFodzc3?=
- =?utf-8?B?TlJUcnJvQllmeVhVQVRZK1QrLzJyZmI5OFpSdjZ0ZGhhd2g4RmtWR1JlMXZU?=
- =?utf-8?B?YmdPV0RUVC8xMEJlMUdDem5xbytFUWhQRk1KY0tmNk1Ga24rWkRKbUZuWm9u?=
- =?utf-8?B?eDF1M0VSdlkrWmRydGxOUHlTZExla2laL3hCQlpybXJ5V1J1d2lScWt2OXZQ?=
- =?utf-8?B?bEJXRW9jOWVSRVRQZWdZV081TGh6L0VOSkNCZWZoKzB3QUx6c2MvSkN5TzdP?=
- =?utf-8?B?SUJiaTJ3cFJKaE1IOFB3WE4rcmhmM0N2ZjQwZFB1RkdkdjYwMXhWUnNPdnBa?=
- =?utf-8?B?akJNbEJHYWJkOFdFZG1UM05MVDd5Z0VUYS9QK2l2enVONVUzQ2MrbXlOMm44?=
- =?utf-8?B?Ni9LTGdCM3F2TGErdmgxd3JHTlNUdm9IYVdDOTd5U3hTQnE2TldHTFJSV2w2?=
- =?utf-8?B?ZGR3UTkzT0FlcS9sd3RkYXRRU0FkbUhVUEVUa0ZpeWt5UWtQKzJnU3lwRTFn?=
- =?utf-8?B?clAveDhyWXAxUWU1WW5sTXc0NEw0Sk14dER4clVhUlZaQ3JmM29DZFBVM3la?=
- =?utf-8?B?ZkhNbjNaRUNXNnp4SzNUdFVXYXRCWTY0R2xWYlVUbkhHSWZyeklFT1dkOGNs?=
- =?utf-8?B?aUkrYWlpUjdwd2tqb1JYMlgzOWE2eW1FM1gwRnl6WTY1djUyWTZYb3FzSkx1?=
- =?utf-8?B?VndoREtqeHBnZmM1SHVWdktrTm5JT0xYdm5aQ1I5L1M0Q21hTldjNFp2WHg0?=
- =?utf-8?B?WDNpMUlsK29aai9XWlFuSTYzYzRpZWZaVkVBTWdBdjFCMXVQZmRvMW8yM0Nw?=
- =?utf-8?B?V0NVVUFnelo3TTFWd21Ga21CRWYwUkphT2xJd3VsZllnZGlaTkthUldkWVZM?=
- =?utf-8?B?dkRiTzRYYzRGWXU3blJUb0hYd1FIeHFGSHRBZndHdGp1cGY4dmx3akJiTk1t?=
- =?utf-8?B?ZkZVbWNFdGU4MFFpRjJEaGtHL3htbnZJTDZPbndEY09YeC93QTQzQmxEMlJQ?=
- =?utf-8?B?Z0crK2RFcVlkV2ZHdytPSzF2OG5JSyt6N3hvYWdHMVR4OS9zQWwvTkR0by9T?=
- =?utf-8?B?VzFPUEtBZUo3S2dtclQ1aks1YXprNG9sOEd2MlNpWi8wYW5NcGwvb28wM0My?=
- =?utf-8?B?TnROV3JjMjVQaVpjcjZSTmVDU2pKVnlVR1M3d2daUnNvOFFiYVArSXVmSjBI?=
- =?utf-8?B?K2crbEVibVdPUlhvRk5nL1pOUEdvdmNkaFNnNUM1WHIvd0JkOVZ3aURBOHI1?=
- =?utf-8?B?U2FkZHQ1NXltVkljN3gzVzlmekNxODNwNWFsUUFCaWNReW1GZVgxelJzbWtD?=
- =?utf-8?B?MHVRMDZmcDc3TStxbXFRMzIvTmx1VDJ3QjVSM2krOFBEZUVGQXZKb3ZGRDZr?=
- =?utf-8?B?Ri9IK3UzYjZWWlNGVHp4UWdseXZQNm5PRU0xY0hVQzJ6WVRlWXl5VEtraGpM?=
- =?utf-8?B?bXdmeU1WNkF1MkVwN2piOXRjWTJQaWRXazVVVy9uWXlaMmlma2laRFhYaVlx?=
- =?utf-8?B?b3laSk9wY05DUU9FV2hZVHlVNXozMjZrZFhxNnV4dHNmVFUzLzZ6QytFanRV?=
- =?utf-8?B?QkJ0dHBuZzhTS0NSeW9YSDYxamZzUlJIdnhHeGFDWm1XTnNqbE1PY1hzWmVy?=
- =?utf-8?B?all5TzlPdzNwa1NaWk9QMVZUZno4Z0tFczE4NmxMMHR5eU00YVVpSjhiTFhr?=
- =?utf-8?B?SS94dGJlbTNodGU5REdJSUxlR3JqVTZyd21nQkRKc3NWcTEyTHdRMzlVUFdv?=
- =?utf-8?B?S1llN2dlcWplMzhCeUkxMnUzUHFvd2gzZTFuTkRYdnc5Vkg3VkNmcmdCVU0x?=
- =?utf-8?B?YVVUYVB0dWE1MTdUTUFCU1JZNlhjUEs5THROTFlHTlRFdEk0YkpBbzNXckN6?=
- =?utf-8?B?VWp3VEkzeVFkb2c5ZVM2dkpGTG80NXNOaUZmSUhOOW9kUnNTejNhVzdYQWZH?=
- =?utf-8?Q?l4LM=3D?=
+	=?utf-8?B?S013STRqRWFoR0RPdlNOdU1TRW5qeTh3VHpmNktNQ3ZLUHhnTHRKTUhPaGNC?=
+ =?utf-8?B?NU5Lb1JnTVFQRmkvOUpqbUp4UFhCVFJENk8rRGh0WUJ2OXlUUDkyMElKSEdU?=
+ =?utf-8?B?QlpJbWEyMDdMUG9QbHVPaC9KZjFBSnE2VW9vMUFYWTUxT3JFeWRvdzNzemI4?=
+ =?utf-8?B?c0w5dHdHdXQ1U0l1SElNUGR2YzlORi82T3JPOC9jMkh6a29KbDVCbEpmeDZU?=
+ =?utf-8?B?eUUrSjZ4Wmx0L294cXpzQTgzNHhLcno1ajZGNXAxaWNpRTFlUVdVU0l5MVJ5?=
+ =?utf-8?B?bndBS0hoaVh5WmlBU1M5UnJFdDQvcTlxdzZ2bzVNVmxsa3pSTU14VnNHYVY4?=
+ =?utf-8?B?ZjdTTjlzYlpuNGtqVkozS1l6eVVUWFN0UFpjZVYvdjFyeFJNbUVielBDV2pW?=
+ =?utf-8?B?ODg3UERBQjVWSEZ5SFJRWnV6dnhtajVxUTh0cGoySys3Rmg5akpLeURvYXRR?=
+ =?utf-8?B?S0kxS1hXelZEaGhjd0JycEhSYXdUQlFDOW14MThOL1BmbGVwYUV5UU9LRGhU?=
+ =?utf-8?B?eVJKTElWYmFyVkdxeHFHTVRMTnBlQ1hmdmNnZTZSUkhEL21nMHpoaE5BVnAw?=
+ =?utf-8?B?QXh3eVMwaXB3WDF6ZEo5bEdud0lpL0pNRndMMEthODlMUWs2Rk0xSzdRU3Vy?=
+ =?utf-8?B?MDVRMlNadE95SnBtWmk5YUlSdFZZMGFNVzV2RGxLb255S3Yyd2FISnVhNFo0?=
+ =?utf-8?B?ajNrRys0WUNrLzdTcXlDNE44QmwyZ0hocVJWbTdBWEVwMnFSVnNvQVUrbGhp?=
+ =?utf-8?B?QXM4eldralNxMjI0cC9nUDJBV0FkRUh6aFhEajFyODd6aWYweGFjeDRTNm1E?=
+ =?utf-8?B?R2phVjhZaElISjBHV2g5Wnl4NU43d0Z6em5PUGY5ZTd6Y0NjWThRQi9jSDYw?=
+ =?utf-8?B?SmhvTnJkb1h2QVl3YVp4QWtNYlF2Q2FmV1FBK0l3Mk1PR0VzZktPWlNJaWVU?=
+ =?utf-8?B?d05LR3dnY3NMSmpRcUhyekRaMVd1bkpoQXRZMGxyM1RsVE5aaEl0azhQZGUw?=
+ =?utf-8?B?cXlYUGJoaEVFZk5iVG1PUi9EbENjL0xWRWdDOEJ3ZU1sRTRMdVdiRzhwR3Mx?=
+ =?utf-8?B?czVzNkVjdXFXSTdxa0RxaU92bzB4b1VzSEQyclcrVWw2NDdmR01uTlBYQXh0?=
+ =?utf-8?B?VDJMWHZTWkE3S01jQldibnlWS2FmWFBjYzhvdHZBdlZjcnFKdFdEM1NKKzVj?=
+ =?utf-8?B?b0xSS0UzbjUwQU9tRStnWFd0RkRhQTlKVjNYYklrSGxsckkwVkVrc3JTc1JO?=
+ =?utf-8?B?ZGtkNlRndjNhbHJZcDdNUU5YRDdjamVEbUw4YWtINHo4Sm5MNXFSY1JGdUI3?=
+ =?utf-8?B?OFRqd2Y3c1RRV241MEVyalR4Z2N3VURNYVpBemlISlBtUGNEYjFscnprdGd4?=
+ =?utf-8?B?VVdjbWFnZmdlVE1hWWhjNVN0aDRHRXNxM0dkcW95ZGpBVVNpZ3pVcVRCbHVz?=
+ =?utf-8?B?d1N0SFVBSkhzTjYzU1BvOVVLZVE2ekswQmVRMXU0OFFpOWdnTlcycUoxbDFs?=
+ =?utf-8?B?RUtWUG1WSWNZSFN1dlBsby9OVnNCRzE2ajcrUEI3U3owbDk4b1QvOVg1YmdZ?=
+ =?utf-8?B?VXErT2hoV08xVy9lOTlIL1ZQQjJqcHNSOUFFemxHMldIczhESkpDcW9iTGlI?=
+ =?utf-8?B?VmdXQ2oxRGNvNldSQ3VSbmxZVWNDV2NHK2NtT2lrZEd5Y3UvWWE5d2JGNnIy?=
+ =?utf-8?B?Vko4cnczbmxUYmw0RkMwQ0NQTnRwMWtoaTZoUmIyMXJtMWEvOG5IWDJFdmlw?=
+ =?utf-8?B?MTFDRmhmTzhDSnRpUlhLR1htU21BMVp0NnVwL05HV0Yycm0vcGpNc1FZbm5x?=
+ =?utf-8?B?QUtvZDhkeUVUYW5MdkRVaUdaR1pSdTVHV2YxZ0tzZzFGbk0yMjNiTm5RN0I1?=
+ =?utf-8?B?TUJBb2g5ZUlFMzZwTU1vaDNoeEJ0Q3RDa29VUllTYi9tK3hsbTYvUEwxUmc4?=
+ =?utf-8?B?SzZONVBFR3p4NGxRNUdVeVlYRmJQK29vT1FHTFJ3blhtTkl5VzdyaUNSNVBx?=
+ =?utf-8?B?NmEyTkxmek1yYkd0VUwzeEx3RGtxUUtWbGI2Y2pxUXNES0ppRlAxUjd5eS92?=
+ =?utf-8?B?YTdJSC9PT09xbmRRdFlGVlhqbnlhemZGaFhkZkxKSTUxSlJ4dXI1NXEzZmlG?=
+ =?utf-8?Q?+mFc=3D?=
 X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR04MB12038.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(10070799003)(366016)(1800799024);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR04MB12038.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(10070799003)(366016);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?utf-8?B?SmNaVGY1cUZ3QmEzZFFQWmJIS09WbnFGSTUxZEhNTldrSFA4OWUxTFo4SXVp?=
- =?utf-8?B?OGswakJpQjg0ZEFhaGNiMG11YnEveGR1ajBBejZLVHE2V0YwSkpQVURtV21U?=
- =?utf-8?B?bFUwRGhobVkrYjFQTW01eUJ4bzJGNnlsdUFqQXVIelgwYnZsS2VOYnV3WW9E?=
- =?utf-8?B?VHBOdnE4SGZCMitZbnpzZkQyeG5lVHY5c1pRQk5SS21Na1ZiKytOb25SaGdD?=
- =?utf-8?B?cGloaVJlMTRTMktzRXVnZW0rQ3pGczcrd0VqSzlvYzZCZ2ZLU0JQU1VaYWhM?=
- =?utf-8?B?bTZ5QTUwQkhvUWdEZjlGa0dCQXU5NUFiRmlnZkxIRE5rNmhLLzZwRG9SYTVT?=
- =?utf-8?B?Y3V5bm1nOGk2SFZyZkVGRnVqYi9UVk5EbUM5bG95RmR6bHlLTlVpS1gvMkE4?=
- =?utf-8?B?OUhTZXRBQk81MTZUZ3N4UE1TazlkUEZBMWlHcWRIZkxtZlZCRWQvNFVOTlRO?=
- =?utf-8?B?c3JoNENOZUtWRUNpNUM4Q3JycmF0WlRCNkhyL0NYTkxjVGwwM3ovS0pHK2lh?=
- =?utf-8?B?Q2gzM08rVFcwNmJ2V1BBL0VIcjRSTTNURVBDa1dqZXQ5NEFmanowL2hxZ2ZV?=
- =?utf-8?B?MHE5NlpRZ3JhU3J6Q1BQaXBzUFNoT1kyY3ZZS09jRytOenNsSTFFd3NnWXlU?=
- =?utf-8?B?S3NYVFFDd2xDYktRdXErVkwrRmt1d09YWTVNOEZER2JUUXBOU3R5ODh6TGo4?=
- =?utf-8?B?RXVnbmNWcEZvSVJleDcrSy9RTGtySnNnZVhnSWtOWUlRR0RLaTZwbDdSd0x0?=
- =?utf-8?B?enVoek1BU2MyZ0RSUGhiZVA2SWU5OFR1U2xyV1Y4WC9ZM092T3dtNFNRRzF1?=
- =?utf-8?B?SmVRL0RzSExjYkgzVTNnc2ZLZm53b3lsK2hZWVBjQmhaRURpcDdWUFhNWjkz?=
- =?utf-8?B?eFBzZFJwTmY3aFZCN0Jhajl6Ri9qUm1KbUpDSlNOWmNvK1BjWittL01iSk5s?=
- =?utf-8?B?SXRleGNCaFozbTJVZVA3dDlmVysxUFFFeEZTMEk0TXhndENNeWw5RTN5TnhS?=
- =?utf-8?B?SnpaZC9pUEdWMy9yRzgrOW0waE4yOUpIaUozSWFOMUtsaXVaKzZVZkFXa0Zl?=
- =?utf-8?B?NlYwMlM3Rmt4YVAzeHgvVnBtcWNHNmx4dzFpZVZCci9QRjQySmlPd0d5dUhr?=
- =?utf-8?B?YjNUbjFFVlUyVURhTHZkZUVxeitiMDJVMVBYR3FxNWpicmNNUW52UVJEclhh?=
- =?utf-8?B?OER2K3o2TkN2ODZENExXVkR4cTVxWXIweks1YitpcS9CZ3RZQ2sxSnY1TDRw?=
- =?utf-8?B?eHVaYS93Snl5VjlnZHk3QkZ2ZG9YclVYbHU3ZjJzTkxaU3BjaUoxQ3dIdy8w?=
- =?utf-8?B?b3d0R2FGdjdFbU5uaHBxdFhvdzd0V0piK2c0Q0ZhZlU4eExpeGYwT1VEVm1u?=
- =?utf-8?B?ZUptTmx4aWV1aHFCU3FRSEpvZ2tWUGpaTXAxcTNqSDQ4OXFSbVBMWHVaRXQx?=
- =?utf-8?B?aFBubDVBL2V0aUNFd1plUjNjZER1THJ3bWpTb2VKcGd1MlhCVXE1elJ5cHpv?=
- =?utf-8?B?TUJLeGFZM1FVTjgyM0hZSndmbS9KK0ZPNGs0S283dDNSdktGVnRXdkY3bHRk?=
- =?utf-8?B?d01QOVhoQ1pyc3JLYlI2SmlKWjh5Y0EzRkFRMHU5Z0RleXR4c25iRVQvZ3BZ?=
- =?utf-8?B?eThwcDB4UHRDMmRyZDcvK3BaYmxBRUNKUkp1Z2VsVVdQWjhhUlhQdEMvVE9Y?=
- =?utf-8?B?QmZZeE5GRlNlU2dvZ01TL2ZVQ2FxUXB1dGdRdGdHanJPaG5XT1ZCTDB1Zmhk?=
- =?utf-8?B?SVhBdmRiaHRudFpoaVhXRjFmeEV4SjhRbVVFdlBaa0o2bHYzLzM0ZDBjL1V3?=
- =?utf-8?B?NVUxcVBTK201U3l2K25GRFZtVnJxU2VpRFZtUmxHR2ZuMDE5NUgrdXFaVUhU?=
- =?utf-8?B?c1R1R0MrcjJZWTNjOW41bDB0U2l0VjlOcEVsU25hWEMrbTAzenp4anRZblNx?=
- =?utf-8?B?ejIxQlJsY3dQZTBLaUVSZGp4bTV0R0lsalVwaG5SSlJWUlpvSXpZY3UrdmY5?=
- =?utf-8?B?cklBaTdreVpYWjhkSGY2L0xNUnZYTGU0ZjRERGdDVFRkM3pERUxia0szd1FP?=
- =?utf-8?B?QXhDaUYray9OZlFNUFptUTZBMHI3YnRsRmhmd1duRFlNbDY5LzIzV05nbWFY?=
- =?utf-8?B?eEcvbGNSVktzb3FYUDhtTTRla015aGpwMWdhZ0Z2eG9ORFVMR2xic3A2Snd4?=
- =?utf-8?B?TTRjcmxtN3VzU21OekVwcGVseTV3cWdPb3h2SGN0MTZkYjNVRHEwNUhaaHYr?=
- =?utf-8?B?NWxHbnl0eFhhd0xWeWdGcWNHWDdwdnB5MHJwR3BUZUF1WU5HS0pLbjJ5eW95?=
- =?utf-8?B?bmtyelAzSXNqakpTVWlXTmpzSlV4cWR3WjRGQmttUTNwVWpRNFlELzAyYkhq?=
- =?utf-8?Q?PwmDHnciK7vDC+Xlx/i1zmQ0kMqDilpTnvkWu?=
+	=?utf-8?B?VnBjaytQRTJWZi9mcDBVN2dtdFBpRnNVZldQekU3ZjBUajVxeFhJUzdoRzVw?=
+ =?utf-8?B?QXBKMzhXQkwzOEt2dXNOaUFlYnNSL2Z2dnpaQjYwTlFXTERQSkdJU0FrN3kx?=
+ =?utf-8?B?M2R2cFVSODdreTVJMXZzK25xaHJHVlJpb1g3eW80YllkZ3ljOHVjVkFuejNX?=
+ =?utf-8?B?NGYwN2R2c1NKN2FGN3VOQTByU1kzZzhnckJNemNXQmU4SDFzdlEwZDZVV2xW?=
+ =?utf-8?B?TFd6OUNWYmFtVEZaNUFvc3VldmtWbUFsWDBXWHdBeUhkSVQvRkRLSDFndlBN?=
+ =?utf-8?B?MW1wNEtIT3ZZTnIraXlwSDU0NlJicTROb3FtcDlkTXJYMzJHRk5nZnJQRlg5?=
+ =?utf-8?B?RHBqSzdrb3YvU2NaRHQ1WUcyOXl6amhHOS9PMnNBdVM0OENnU3NQZnpWM1ZC?=
+ =?utf-8?B?SXFjT2RpdEtTVG1CZG1qbC9Ya2pGZGxPWlZ2ZDdsVWI0S0J0eXcrNmNNdEIy?=
+ =?utf-8?B?STN3MUNYSXBXalNVL2J3a3M2OUNpMmt3VVVpSkZsTzZGSGs1OEpSeVZxS0VN?=
+ =?utf-8?B?MGpnVHlNQVNpUm5uSUhCelVaM28xaDVVQTZUR3BTUEc0MllQTmkrYldWWXFS?=
+ =?utf-8?B?TDJ4TTUwTFBQSityVnZrYUVVVDNzR0h1K096WmdnR2JNT1ZXejRzNmV3V05S?=
+ =?utf-8?B?SDdKQkJDZHNYb2VTWFpSUGsvdEVud3lBRVg0V1dPUlo0VjRLQ1dXQWd2V3JL?=
+ =?utf-8?B?S1MyREFWenBlNStENWpKQWxiYXZOcVM1cEc3V0pidU5pM2Q4TjB5eVVjTVh2?=
+ =?utf-8?B?WUZBM0VLVlhWQmxNL0x4dHk2MHpxSFZGSjBCa2tHaW5ZTmE4YlpZNEpFOVhY?=
+ =?utf-8?B?bmJKOWpaTFVFeU96c0pwV1IyUm9ka0YvRW1uWUpObkhRSnMvbDJFNEM1Y3dt?=
+ =?utf-8?B?NmpSUHVjQW5zQjc4Q2lwYzlteG1CandyTkhxeVZoamp0L0paKzdwNHJrbWNF?=
+ =?utf-8?B?R0pPSTBLQ0VzV29KZjVhN21ZQ0tDUXNhaHYxTnhwZE82aUhGQWFWV21yUEJs?=
+ =?utf-8?B?VGtWRjhWMy9TYkRuVUVEZVhqa0pxM1lnYVJJNEhrU2VwMURrRVMwcEU1SHBS?=
+ =?utf-8?B?R3E3aGMyZDBaSFVMTWhiRzZDOTRLZDRPWVRramliUDVpdWpWcTJHbWpmRXNJ?=
+ =?utf-8?B?dHVpL0R2Y2Y5a1VKbDk0ZGVUR3RBK2l2anZlaWpvQkR3ejI5NVBXUE9KSmh2?=
+ =?utf-8?B?V3FmTlFIdXNKWGh2UThDdjBldUpBM3l3cnhPWWg5VTk1TVQ4SDNPQkp2SEp1?=
+ =?utf-8?B?bGlFZXlVVEJTT0hHbldWeExFdXgrbVhBb3ZlQ216R0QvRCs3eDg5SjY0U2dE?=
+ =?utf-8?B?MnJ0NnBWSlBQTmJNUHdCMHBEdTBqNXFCZTM5WGRkUmlWRjh1SldHRldjMUdv?=
+ =?utf-8?B?NHJIa0hYTCtubUhpVGFFYm1CQUh0V1BJM1RUWkdKbnl4MnE4TFBHQ3FJZzh4?=
+ =?utf-8?B?NUdjMEpLUm5abWdQRjBpOWxBSHlOWjB2aDhzTGxJcms3UStXa3lvTzNCdTVF?=
+ =?utf-8?B?cmhtSVFLSDV2SVErZ0d5YkE3WFZ4KzNodUltc3h6dXVCcUxJV3BMRzViWllB?=
+ =?utf-8?B?RlNZUzdmTmxzTzNxczdmL2dRSXdlVFdqdWVBOXB3YjZZN2lLSVg4eXpHTFkr?=
+ =?utf-8?B?SDBra1c4bFFtbVJ1RXMzMVBzWkxVMzBjK1h2OW1rYzUwb1hrd1B2NXFIYmU5?=
+ =?utf-8?B?QlZxcTZqWE93NWE4cWRoK3R6MzRVaUNpK04rS1prV1lSVm9STDFPdkI4QjYv?=
+ =?utf-8?B?UFhrVGtybGE4eEw1U2pvMVlzYnl2MFJYWS9KZjgvTTBwV1NGaWVvUjlMRFEy?=
+ =?utf-8?B?eEdDVnNoOG8xcWFxQVpUZ0djQ0xKK3h2djdReUtzMktyaytnR1FOQ3BtVU9D?=
+ =?utf-8?B?aGhXejBOTFNVOXlUbklYR2JXVkwrajNvbXNMaFNxSXJya1p1SFZyeVc0Q3R0?=
+ =?utf-8?B?OWVpcE9jcWEwbEt1dWJKSitZbzlMalRhUm9YWXFrN0QzUzFRemNhZU9yVnc4?=
+ =?utf-8?B?a1dFTVVwdlk3SFdWTXFvVm5YMTVZTlV6SFo4SnJHd20xcnZZcHgzU3pQQ2F1?=
+ =?utf-8?B?NjNIdUtsRTgzQm1Dem56TnRkRGVqT3JtbFRRaWRUVkR2MUZMYW5BY2dPOGFW?=
+ =?utf-8?B?QTNLSFlXQ1p6UXRLNytXWFdoNjF4dTV1ZG4wbk5EWXJMS3pLeEp5V3dnMVRU?=
+ =?utf-8?B?aDljMWt0WVNZaWpBL0EwZW5FWmNBMkw2MGpsVWhCdFUzb1lQdSt1bWQ4THV3?=
+ =?utf-8?B?TEVLNFZzQ0NvWmkrM1h3bENLcXhmbXZZMEFwYjVxamZkc3B2V0R2TDVtUGZy?=
+ =?utf-8?B?NFBqaWlaaEtiL0hWSTl0eUtjQ1FtbVZNeUo5YmUxQVJKN21HT05tODZYK3BF?=
+ =?utf-8?Q?sozbla5gPEMYhXx94inu6O73ftf8+8HdGeU1I?=
 X-OriginatorOrg: cherry.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: 54ff1ec4-28e1-4a5b-fffb-08de6a278dab
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6cbf3fd8-4fad-40df-180e-08de6a2b5082
 X-MS-Exchange-CrossTenant-AuthSource: GVXPR04MB12038.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Feb 2026 11:12:04.7826
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Feb 2026 11:39:00.0895
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: S8ptkrnYBDIwtJFMRb5dDxm3EEypaBQyNsQwSGIR/OEtR5M9anbZP1gq2R7+2MOGIPEIk9Naox2Bp6zmP9g3bz1OVKedXuTcVV7tRj+3yyg=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB10859
+X-MS-Exchange-CrossTenant-UserPrincipalName: O/wZ0IR2520q0y6wMjTvlZoMqWK1wJi57IcmAc9/MN8LDR9sLcUHm8PGl5GSikeKSSRX8z2M1D+lNkwolXOXkULGZBf2W0FVkjOhpHu3giY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR04MB9346
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 12 Feb 2026 11:12:23 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8906
+ <docs@lists.yoctoproject.org>; Thu, 12 Feb 2026 11:39:13 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8907
 
 Hi Antonin,
 
-On 2/12/26 9:49 AM, Antonin Godard wrote:
+On 2/12/26 9:58 AM, Antonin Godard wrote:
 > Hi,
 > 
 > On Wed Feb 11, 2026 at 7:06 PM CET, Quentin Schulz via lists.yoctoproject.org wrote:
 >> From: Quentin Schulz <quentin.schulz@cherry.de>
 >>
->> BBMASK matches files in the directories matching the regex, and also in
->> their respective subdirectories, so make that clear in the wording
->> leading to the example.
+>> The documentation doesn't explain the side-effect of putting a leading
+>> slash, only the trailing slash.
 >>
+>> The leading slash is not for making the regular expression match an
+>> absolute path, but to force the match on the directory or file that
+>> exactly starts (and ends if there is a trailing slash) with the
+>> specified string.
+>>
+>> Finally, this also explains that this still doesn't prevent more than
+>> the intended path to be caught up, specifically because it is NOT a
+>> regular expression matching an absolute path. For that though, the user
+>> can use BBFILE_PATTERN set for the layer they want to mask the recipe or
+>> append files to BitBake. This is typically a regex starting with
+>> ^${LAYERDIR}, making it an absolute path matching.
+>>
+>> Let's document those limitations.
+>>
+>> Reported-by: Robert P. J. Day <rpjday@crashcourse.ca>
 >> Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
 >> ---
->>   doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst | 4 ++--
->>   1 file changed, 2 insertions(+), 2 deletions(-)
+>>   .../bitbake-user-manual-ref-variables.rst          | 22 ++++++++++++++++++++++
+>>   1 file changed, 22 insertions(+)
 >>
 >> diff --git a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
->> index 4b3b10d46..18bbd638d 100644
+>> index f20a9012c..6612dcc03 100644
 >> --- a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
 >> +++ b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
->> @@ -1051,8 +1051,8 @@ overview of their function and contents.
->>         documentation at http://docs.python.org/3/library/re.html.
+>> @@ -1071,6 +1071,28 @@ overview of their function and contents.
+>>            When specifying a directory name, use the trailing slash character
+>>            to ensure you match just that directory name.
 >>   
->>         The following example uses a complete regular expression to tell
->> -      BitBake to ignore all recipe and recipe append files in the
->> -      ``meta-ti/recipes-misc/`` directory::
->> +      BitBake to ignore all recipe and recipe append files in
->> +      ``meta-ti/recipes-misc/`` directories (and their subdirectories)::
+>> +      .. note::
+>> +
+>> +         The leading slash in a regular expression in :term:`BBMASK` does not
+>> +         mean the path is absolute. It simply forces the directory to be named
+>> +         exactly that. Take::
+>> +
+>> +            BBMASK = "meta-ti/recipes-bsp/"
+>> +
+>> +        If you happen to have a directory ``my-meta-ti/recipes-bsp``, it will
+>> +        be matched.
+>> +
+>> +        Leading with a slash::
+>> +
+>> +           BBMASK = "/meta-ti/recipes-bsp/"
+>> +
+>> +        makes sure that doesn't happen. However, this doesn't prevent matching a
+>> +        directory ``meta-foo/meta-ti/recipes-bsp``. For that, use the
+>> +        appropriate :term:`BBFILE_PATTERN` to only match a directory from one
+>> +        specific layer::
+>> +
+>> +           BBMASK = "${BBFILE_PATTERN_meta-ti}/recipes-bsp/"
 > 
-> If I follow: this will mask multiple occurrences "meta-ti/recipes-misc/". How
-> could there be more than one in practice? How could this ever happen?
+> So this looks this is actually what most users want to do, right? Wouldn't it be
+> better to put this forward instead of in a note, say, at the beginning of the
+> definition?
+> 
+> For example, replacing the first example in the variable's definition by:
+> 
+> -The following example uses a complete regular expression to tell
+> -BitBake to ignore all recipe and recipe append files in the
+> -``meta-ti/recipes-misc/`` directory::
+> -
+> -   BBMASK = "meta-ti/recipes-misc/"
+> +The following example uses a complete regular expression to tell BitBake to
+> +ignore all recipe and recipe append files in the ``recipes-misc/`` directory
+> +and subdirectories of the ``meta-ti`` layer::
+> +
+> +   BBMASK = "${BBFILE_PATTERN_meta-ti}/recipes-bsp/"
 > 
 
-It's simply a path. There are no rules as to which layer can be named 
-something. It also doesn't have to match a layer if the directory has 
-meta in the name (meta-ti isn't a layer for example). There are no 
-naming rules for where to put your recipes. You could very much have 
-BBFILES with ${LAYERDIR}/appends-for-meta-ti/recipes-misc/*.bbappend for 
-example.
+Yeah I was conflicted... not sure what's best. This does also rely on 
+BBFILE_PATTERN_meta-ti starting with ^ otherwise we have another 
+potential name clash and we don't actually mention that in the 
+documentation of BBFILE_PATTERN (though it is set like that when 
+creating a layer with bitbake-layers create-layer).
 
-FYI, there are two meta-rockchip layers in the wild. One maintained by 
-Rockchip themselves, one maintained by Trevor. So it's not 
-**impossible** (both share the same BBFILE_COLLECTIONS so you won't be 
-able to have both included if I'm not mistaken, so that doesn't really 
-apply here).
+If for some reason you have:
 
-Also, I have written a meta-bsp layer in my vendor meta-cherry-es git 
-repo, I'm probably not the only one having done that. What matters is 
-that there's no BBFILE_COLLECTIONS name clash I think?
+/layers/meta-ti/recipes-bsp
+/downstream/my-layer/appends/layers/meta-ti/recipes-bsp
 
-I hope this is better explained starting patch 3?
+then both would be matched (I assume, I haven't checked). That is very 
+much a corner case.
 
-> Wouldn't:
-> 
-> """
-> The following example uses a complete regular expression to tell
-> BitBake to ignore all recipe and recipe append files in the
-> ``meta-ti/recipes-misc/`` directory and its subdirectories::
-> """
-> 
-> be less confusing?
+I'm also pretty sure nobody actually does that. The only layer I have in 
+my pool of cloned layers which uses BBMASK is meta-lts-mixins and then 
+doesn't even have the layer name in the paths so /me shrugs.
+
+> What do you think?
 > 
 
-It's factually incorrect.
+We could start with the BBFILE_PATTERN thingy, then explain there are 
+other less restrictive ways to match multiple recipes or directories 
+from different locations later on. Not sure what's best.
 
 Cheers,
 Quentin
