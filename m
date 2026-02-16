@@ -2,43 +2,40 @@ Return-Path: <foss@0leil.net>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3B7BFE7BD91
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3682DE7BD8C
 	for <webhook@archiver.kernel.org>; Mon, 16 Feb 2026 10:36:41 +0000 (UTC)
-Received: from smtp-8fac.mail.infomaniak.ch (smtp-8fac.mail.infomaniak.ch [83.166.143.172])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.17019.1771238198438259505
+Received: from smtp-190c.mail.infomaniak.ch (smtp-190c.mail.infomaniak.ch [185.125.25.12])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.17022.1771238200324880271
  for <docs@lists.yoctoproject.org>;
- Mon, 16 Feb 2026 02:36:39 -0800
+ Mon, 16 Feb 2026 02:36:40 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@0leil.net header.s=20231125 header.b=j30n8CB2;
- spf=pass (domain: 0leil.net, ip: 83.166.143.172, mailfrom: foss+yocto@0leil.net)
-Received: from smtp-3-0000.mail.infomaniak.ch (unknown [IPv6:2001:1600:4:17::246b])
-	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4fDzj00ckbzf6s;
-	Mon, 16 Feb 2026 11:36:36 +0100 (CET)
+ dkim=pass header.i=@0leil.net header.s=20231125 header.b=ZF6Qgalj;
+ spf=pass (domain: 0leil.net, ip: 185.125.25.12, mailfrom: foss+yocto@0leil.net)
+Received: from smtp-3-0000.mail.infomaniak.ch (smtp-3-0000.mail.infomaniak.ch [10.4.36.107])
+	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4fDzj2456wzhbP;
+	Mon, 16 Feb 2026 11:36:38 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=0leil.net;
-	s=20231125; t=1771238195;
-	bh=yIQJBCIRKTIZcL8e2n+pj8BDhpHIznwDY5fN05sgWHo=;
-	h=From:Subject:Date:To:Cc:From;
-	b=j30n8CB2XqMqQMUDMe9DzhBXicc3Z+yE9rbHXGsbsiSpRSM/FbrzX4z3+Vsr5G5yb
-	 K1arLZj1VVZRkn/7hhfbAQ5Y1yapUY878g/JYTJLfyPb3WrX/sG/gxjY7Fg4SlNWUJ
-	 raDUXnLZi17+tzr2L7y5pffj1ScvMTsU3sGPogc0tC3e0G1E63oT5X0qwtM8M2bkCM
-	 m0lLOWr+IEJ0HmeRjJkF16uSYv68PrjwK2EgB1pzqq8VB57CinBEoOb2x7g6vdXkm1
-	 S1iHGwU2BbGHgtS6RNQcwBqTC016Cof0z+tucLgGFWM101Me6gGZkt7I1mT6rfpdm5
-	 tzJIJQmcDlAqA==
-Received: from unknown by smtp-3-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4fDzhz0phhzMM8;
-	Mon, 16 Feb 2026 11:36:34 +0100 (CET)
+	s=20231125; t=1771238198;
+	bh=tufzQQJfZAPgBmUMCYWVrIr9hpp+NlpQyoTN50B4dt8=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=ZF6QgaljMCzvlwf1vY9kewQV2iKl4otg7M1SCtg5eTVNL+f15pyla5w21LotksPlw
+	 0HXNnnfbSov84xna56cQnQoPdK1ml3keN3UH8AQ/OE98uoCUNLIjqQuacthAJytkRX
+	 tzl0OaTVqSUwZGp2+HWAcLz0xI26msxqruBSFMrRjlOYkBy9W6rKZdJ/XfQGXu2DIb
+	 FqngMl/ZERES/qX5M7+j3waChnvj8Vdpg1Giyk0c/AOW6QiSs+h3hLb/n6OtfYiEjM
+	 XK/dCPpi1RqJE+HwY74Gu0nKsuSHiAZ9g3BxOS70hPqC7OOvV3ZQrx5b/bDluu1+ca
+	 I61dbt4gQhtbg==
+Received: from unknown by smtp-3-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4fDzj20QMHzPt7;
+	Mon, 16 Feb 2026 11:36:38 +0100 (CET)
 From: Quentin Schulz <foss+yocto@0leil.net>
-Subject: [PATCH v2 0/5] doc: bitbake-user-manual-ref-variables: clarify
- BBMASK examples
-Date: Mon, 16 Feb 2026 11:36:21 +0100
-Message-Id: <20260216-bbmask-slashes-v2-0-b9bb52f5fd3d@cherry.de>
+Date: Mon, 16 Feb 2026 11:36:25 +0100
+Subject: [PATCH v2 4/5] doc: bitbake-user-manual-ref-variables: update
+ BBMASK example with current meta-ti
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3WNyw7CIBBFf6WZtRjABqIr/8N0AXQQfLSGqcSm4
- d8tde3yJOeeuwBhikhwahZImCPFcVhB7hpwwQxXZLFfGSSXikshmLVPQ3dGD0MBiWk0R95arw6
- thnX0SujjZwteuh/T297QTbVSjRBpGtO8PWZRvb/xLBhnVkuhhFOtRn92AVOa9z1CV0r5Ajcp8
- W++AAAA
-X-Change-ID: 20260211-bbmask-slashes-7ea904bf6347
+Message-Id: <20260216-bbmask-slashes-v2-4-b9bb52f5fd3d@cherry.de>
+References: <20260216-bbmask-slashes-v2-0-b9bb52f5fd3d@cherry.de>
+In-Reply-To: <20260216-bbmask-slashes-v2-0-b9bb52f5fd3d@cherry.de>
 To: bitbake-devel@lists.openembedded.org
 Cc: "Robert P. J. Day" <rpjday@crashcourse.ca>, docs@lists.yoctoproject.org, 
  Quentin Schulz <quentin.schulz@cherry.de>
@@ -48,52 +45,100 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Mon, 16 Feb 2026 10:36:41 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8918
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8921
 
-Robert reported being confused by the leading slash inconsistencies in
-our BBMASK examples and wondered if it had any significance. Myself not
-being less confused, I went reading the code and testing, and it does
-have significance, so this tries to explain the difference and why you
-would want a leading slash in most cases.
+From: Quentin Schulz <quentin.schulz@cherry.de>
 
-It also explains that still with only a leading slash there could be
-involuntary matches, which one should be able to get rid of by using
-BBFILE_PATTERN from the layer they want to mask recipe or append files
-from.
-
-While at it, update the meta-ti example such that it matches what's
-currently in the repo (migrated in kirkstone from a single meta-ti git
-repo layer to a meta-ti git repo with multiple layers, such as
-meta-ti-bsp).
-
-This reorganizes examples such that the ones with BBFILE_PATTERN are the
-ones we provide as first examples as those are the ones users should
-typically be using such that the masks only apply to a specific layer.
+meta-ti git repo now has multiple layers in it since kirkstone, so let's
+update the examples to match the current state of meta-ti by using
+meta-ti-bsp.
 
 Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
 ---
-Changes in v2:
-- added patch 5,
-- completely reorganize patch 3 such that the examples with
-  BBFILE_PATTERN are the ones provided by default,
-- Link to v1: https://patch.msgid.link/20260211-bbmask-slashes-v1-0-b72161c647ef@cherry.de
+ .../bitbake-user-manual-ref-variables.rst          | 32 +++++++++++-----------
+ 1 file changed, 16 insertions(+), 16 deletions(-)
 
----
-Quentin Schulz (5):
-      doc: bitbake-user-manual-ref-variables: clarify BBMASK directory matching
-      doc: bitbake-user-manual-ref-variables: have directory examples be consistent
-      doc: bitbake-user-manual-ref-variables: expand and reorganize BBMASK explanations
-      doc: bitbake-user-manual-ref-variables: update BBMASK example with current meta-ti
-      doc: bitbake-user-manual-ref-variables: update Python re doc link to HTTPS
+diff --git a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
+index 06e1112b5..9daf8223d 100644
+--- a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
++++ b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
+@@ -1052,25 +1052,25 @@ overview of their function and contents.
+ 
+       The following example uses a complete regular expression to tell
+       BitBake to ignore all recipe and recipe append files in
+-      ``recipes-bsp`` directory (recursively) of ``meta-ti``::
++      ``recipes-bsp`` directory (recursively) of ``meta-ti-bsp``::
+ 
+-         BBMASK = "${BBFILE_PATTERN_meta-ti}/recipes-bsp/"
++         BBMASK = "${BBFILE_PATTERN_meta-ti-bsp}/recipes-bsp/"
+ 
+       If you want to mask out multiple directories or recipes, you can
+       specify multiple regular expression fragments. This next example
+       masks out multiple directories and individual recipes::
+ 
+-         BBMASK += "${BBFILE_PATTERN_meta-ti}/recipes-graphics/libgal/"
++         BBMASK += "${BBFILE_PATTERN_meta-ti-bsp}/recipes-graphics/libgal/"
+          BBMASK += "${BBFILE_PATTERN_openembedded-layer}/recipes-support/"
+          BBMASK += "${BBFILE_PATTERN_openembedded-layer}/.*/openldap"
+-         BBMASK += "${BBFILE_PATTERN_meta-ti}/.*/optee.*\.bbappend"
++         BBMASK += "${BBFILE_PATTERN_meta-ti-bsp}/.*/optee.*\.bbappend"
+ 
+-      This masks the ``recipes-graphics/libgal/`` from ``meta-ti``, everything
++      This masks the ``recipes-graphics/libgal/`` from ``meta-ti-bsp``, everything
+       under ``recipes-support`` in ``meta-oe``, every directory or file whose
+       name starts with ``openldap`` in ``meta-oe`` at any directory depth > 1
+       (e.g. in ``meta-oe``, ``recipes-foo/openldap-stuff/`` or
+       ``recipes-bar/baz/openldap_0.1.bb`` but not ``openldap/``), every append
+-      file in ``meta-ti`` at any directory depth > 1 (e.g.
++      file in ``meta-ti-bsp`` at any directory depth > 1 (e.g.
+       ``optee/optee-examples_%.bbappend`` and
+       ``recipes-security/optee/optee-client_%.bbappend``).
+ 
+@@ -1080,24 +1080,24 @@ overview of their function and contents.
+          directory and not a file, you must end the expression with a trailing
+          slash. That is::
+ 
+-            BBMASK += "${BBFILE_PATTERN_meta-ti}/recipes-graphics/libgal/"
++            BBMASK += "${BBFILE_PATTERN_meta-ti-bsp}/recipes-graphics/libgal/"
+ 
+          Will match anything under ``recipes-graphics/ligbal/`` directory of
+-         ``meta-ti``. And::
++         ``meta-ti-bsp``. And::
+ 
+-            BBMASK += "${BBFILE_PATTERN_meta-ti}/recipes-graphics/libgal"
++            BBMASK += "${BBFILE_PATTERN_meta-ti-bsp}/recipes-graphics/libgal"
+ 
+-         Will match in ``meta-ti`` any file prefixed with ``libgal`` in
++         Will match in ``meta-ti-bsp`` any file prefixed with ``libgal`` in
+          ``recipes-graphics/`` and any directory (recursively; and its
+          recipes and recipe append files regardless how they are named) prefixed
+          with ``libgal`` in ``recipes-graphics/``. That is, provided your layers
+          are available at ``/build/layers/``, it'll match::
+ 
+-            /builds/layers/meta-ti/recipes-graphics/libgal.bb
+-            /builds/layers/meta-ti/recipes-graphics/libgal_%.bbappend
+-            /builds/layers/meta-ti/recipes-graphics/libgal-foo/foo.bb
+-            /builds/layers/meta-ti/recipes-graphics/libgal-foo/foo/bz.bbappend
+-            /builds/layers/meta-ti/recipes-graphics/libgal/bar.bb
++            /builds/layers/meta-ti/meta-ti-bsp/recipes-graphics/libgal.bb
++            /builds/layers/meta-ti/meta-ti-bsp/recipes-graphics/libgal_%.bbappend
++            /builds/layers/meta-ti/meta-ti-bsp/recipes-graphics/libgal-foo/foo.bb
++            /builds/layers/meta-ti/meta-ti-bsp/recipes-graphics/libgal-foo/foo/bz.bbappend
++            /builds/layers/meta-ti/meta-ti-bsp/recipes-graphics/libgal/bar.bb
+ 
+       .. note::
+ 
+@@ -1112,7 +1112,7 @@ overview of their function and contents.
+          ``recipes-graphics/libgal/``, meaning (considering your layers are
+          available at ``/builds/layers/``)::
+ 
+-            /builds/layers/meta-ti/recipes-graphics/libgal/
++            /builds/layers/meta-ti/meta-ti-bsp/recipes-graphics/libgal/
+             /builds/layers/my-layer/foo-recipes-graphics/libgal/
+ 
+          will be both matched. This may be a more relaxed way of matching
 
- .../bitbake-user-manual-ref-variables.rst          | 91 +++++++++++++++++++---
- 1 file changed, 80 insertions(+), 11 deletions(-)
----
-base-commit: 8b635a400152bb40beaa0d7a47181febb43f5c84
-change-id: 20260211-bbmask-slashes-7ea904bf6347
-
-Best regards,
---  
-Quentin Schulz <quentin.schulz@cherry.de>
+-- 
+2.53.0
 
 
