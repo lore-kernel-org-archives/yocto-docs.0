@@ -1,112 +1,99 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <foss@0leil.net>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6C349E63F38
-	for <webhook@archiver.kernel.org>; Mon, 16 Feb 2026 08:03:10 +0000 (UTC)
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.15228.1771228984159604076
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3B7BFE7BD91
+	for <webhook@archiver.kernel.org>; Mon, 16 Feb 2026 10:36:41 +0000 (UTC)
+Received: from smtp-8fac.mail.infomaniak.ch (smtp-8fac.mail.infomaniak.ch [83.166.143.172])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.17019.1771238198438259505
  for <docs@lists.yoctoproject.org>;
- Mon, 16 Feb 2026 00:03:04 -0800
+ Mon, 16 Feb 2026 02:36:39 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=h/NBZHhh;
- spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 354134E40E59;
-	Mon, 16 Feb 2026 08:03:02 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 02AB3606CF;
-	Mon, 16 Feb 2026 08:03:02 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 23FFF10369080;
-	Mon, 16 Feb 2026 09:02:59 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1771228981; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=Df1VL9wxB84Xrn+YADaHFT+XXgIehVaPGVR5fPrYd34=;
-	b=h/NBZHhh6c+TyDPcjsQVotvROw20/RSk2LCpxxVSdaxTDfPEiqRD8m/n6Xbaj72zTMJglk
-	OqE0QBXkHloLkC2wMSuM8IEKTLdXq6f3suBqR7IMLSv1Xs4+l5E4GYsnx8n0R2E/MmMhsu
-	4lTBY8uHAV2R+lBmkztYCvHYS63dBgPYCPYnqVtM6z3aECVC/NHdEV69L0/xsdcuxteRyY
-	rpz+i/6Rs2MXdwT7k/9Gqsk2RLvo17Va4tffEdNUsoC2d+oRVjBAB5MGIiguei01J6v5dq
-	BBU6NKRbbvKdQHTbG0Rgy5Bd6N1ReXNs9oXGHZ0GPk0BsOd2QAhYatMu6g0MKw==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 16 Feb 2026 09:02:59 +0100
-Message-Id: <DGG89S39J5AT.3JD08TH092QC3@bootlin.com>
-Cc: "Robert P. J. Day" <rpjday@crashcourse.ca>,
- <docs@lists.yoctoproject.org>
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: <quentin.schulz@cherry.de>, <foss@0leil.net>,
- <bitbake-devel@lists.openembedded.org>
-Subject: Re: [docs] [PATCH 3/4] doc: bitbake-user-manual-ref-variables:
- clarify BBMASK matching patterns
-References: <20260211-bbmask-slashes-v1-0-b72161c647ef@cherry.de>
- <20260211-bbmask-slashes-v1-3-b72161c647ef@cherry.de>
- <DGCUY7U4ZJZE.1Y4VMQEELJUO@bootlin.com>
- <f97528ec-917d-44d8-be42-ab0c48a1b2cc@cherry.de>
-In-Reply-To: <f97528ec-917d-44d8-be42-ab0c48a1b2cc@cherry.de>
-X-Last-TLS-Session-Version: TLSv1.3
+ dkim=pass header.i=@0leil.net header.s=20231125 header.b=j30n8CB2;
+ spf=pass (domain: 0leil.net, ip: 83.166.143.172, mailfrom: foss+yocto@0leil.net)
+Received: from smtp-3-0000.mail.infomaniak.ch (unknown [IPv6:2001:1600:4:17::246b])
+	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4fDzj00ckbzf6s;
+	Mon, 16 Feb 2026 11:36:36 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=0leil.net;
+	s=20231125; t=1771238195;
+	bh=yIQJBCIRKTIZcL8e2n+pj8BDhpHIznwDY5fN05sgWHo=;
+	h=From:Subject:Date:To:Cc:From;
+	b=j30n8CB2XqMqQMUDMe9DzhBXicc3Z+yE9rbHXGsbsiSpRSM/FbrzX4z3+Vsr5G5yb
+	 K1arLZj1VVZRkn/7hhfbAQ5Y1yapUY878g/JYTJLfyPb3WrX/sG/gxjY7Fg4SlNWUJ
+	 raDUXnLZi17+tzr2L7y5pffj1ScvMTsU3sGPogc0tC3e0G1E63oT5X0qwtM8M2bkCM
+	 m0lLOWr+IEJ0HmeRjJkF16uSYv68PrjwK2EgB1pzqq8VB57CinBEoOb2x7g6vdXkm1
+	 S1iHGwU2BbGHgtS6RNQcwBqTC016Cof0z+tucLgGFWM101Me6gGZkt7I1mT6rfpdm5
+	 tzJIJQmcDlAqA==
+Received: from unknown by smtp-3-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4fDzhz0phhzMM8;
+	Mon, 16 Feb 2026 11:36:34 +0100 (CET)
+From: Quentin Schulz <foss+yocto@0leil.net>
+Subject: [PATCH v2 0/5] doc: bitbake-user-manual-ref-variables: clarify
+ BBMASK examples
+Date: Mon, 16 Feb 2026 11:36:21 +0100
+Message-Id: <20260216-bbmask-slashes-v2-0-b9bb52f5fd3d@cherry.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3WNyw7CIBBFf6WZtRjABqIr/8N0AXQQfLSGqcSm4
+ d8tde3yJOeeuwBhikhwahZImCPFcVhB7hpwwQxXZLFfGSSXikshmLVPQ3dGD0MBiWk0R95arw6
+ thnX0SujjZwteuh/T297QTbVSjRBpGtO8PWZRvb/xLBhnVkuhhFOtRn92AVOa9z1CV0r5Ajcp8
+ W++AAAA
+X-Change-ID: 20260211-bbmask-slashes-7ea904bf6347
+To: bitbake-devel@lists.openembedded.org
+Cc: "Robert P. J. Day" <rpjday@crashcourse.ca>, docs@lists.yoctoproject.org, 
+ Quentin Schulz <quentin.schulz@cherry.de>
+X-Mailer: b4 0.15-dev-47773
+X-Infomaniak-Routing: alpha
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 16 Feb 2026 08:03:10 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8916
+ <docs@lists.yoctoproject.org>; Mon, 16 Feb 2026 10:36:41 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8918
 
-Hi,
+Robert reported being confused by the leading slash inconsistencies in
+our BBMASK examples and wondered if it had any significance. Myself not
+being less confused, I went reading the code and testing, and it does
+have significance, so this tries to explain the difference and why you
+would want a leading slash in most cases.
 
-On Thu Feb 12, 2026 at 12:38 PM CET, Quentin Schulz via lists.yoctoproject.=
-org wrote:
-[...]
->> So this looks this is actually what most users want to do, right? Wouldn=
-'t it be
->> better to put this forward instead of in a note, say, at the beginning o=
-f the
->> definition?
->>=20
->> For example, replacing the first example in the variable's definition by=
-:
->>=20
->> -The following example uses a complete regular expression to tell
->> -BitBake to ignore all recipe and recipe append files in the
->> -``meta-ti/recipes-misc/`` directory::
->> -
->> -   BBMASK =3D "meta-ti/recipes-misc/"
->> +The following example uses a complete regular expression to tell BitBak=
-e to
->> +ignore all recipe and recipe append files in the ``recipes-misc/`` dire=
-ctory
->> +and subdirectories of the ``meta-ti`` layer::
->> +
->> +   BBMASK =3D "${BBFILE_PATTERN_meta-ti}/recipes-bsp/"
->>=20
->
-> Yeah I was conflicted... not sure what's best. This does also rely on=20
-> BBFILE_PATTERN_meta-ti starting with ^ otherwise we have another=20
-> potential name clash and we don't actually mention that in the=20
-> documentation of BBFILE_PATTERN (though it is set like that when=20
-> creating a layer with bitbake-layers create-layer).
->
-> If for some reason you have:
->
-> /layers/meta-ti/recipes-bsp
-> /downstream/my-layer/appends/layers/meta-ti/recipes-bsp
->
-> then both would be matched (I assume, I haven't checked). That is very=20
-> much a corner case.
->
-> I'm also pretty sure nobody actually does that. The only layer I have in=
-=20
-> my pool of cloned layers which uses BBMASK is meta-lts-mixins and then=20
-> doesn't even have the layer name in the paths so /me shrugs.
->
->> What do you think?
->>=20
->
-> We could start with the BBFILE_PATTERN thingy, then explain there are=20
-> other less restrictive ways to match multiple recipes or directories=20
-> from different locations later on.
+It also explains that still with only a leading slash there could be
+involuntary matches, which one should be able to get rid of by using
+BBFILE_PATTERN from the layer they want to mask recipe or append files
+from.
 
-Yes, I think we should do that
+While at it, update the meta-ti example such that it matches what's
+currently in the repo (migrated in kirkstone from a single meta-ti git
+repo layer to a meta-ti git repo with multiple layers, such as
+meta-ti-bsp).
 
-Antonin
+This reorganizes examples such that the ones with BBFILE_PATTERN are the
+ones we provide as first examples as those are the ones users should
+typically be using such that the masks only apply to a specific layer.
+
+Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
+---
+Changes in v2:
+- added patch 5,
+- completely reorganize patch 3 such that the examples with
+  BBFILE_PATTERN are the ones provided by default,
+- Link to v1: https://patch.msgid.link/20260211-bbmask-slashes-v1-0-b72161c647ef@cherry.de
+
+---
+Quentin Schulz (5):
+      doc: bitbake-user-manual-ref-variables: clarify BBMASK directory matching
+      doc: bitbake-user-manual-ref-variables: have directory examples be consistent
+      doc: bitbake-user-manual-ref-variables: expand and reorganize BBMASK explanations
+      doc: bitbake-user-manual-ref-variables: update BBMASK example with current meta-ti
+      doc: bitbake-user-manual-ref-variables: update Python re doc link to HTTPS
+
+ .../bitbake-user-manual-ref-variables.rst          | 91 +++++++++++++++++++---
+ 1 file changed, 80 insertions(+), 11 deletions(-)
+---
+base-commit: 8b635a400152bb40beaa0d7a47181febb43f5c84
+change-id: 20260211-bbmask-slashes-7ea904bf6347
+
+Best regards,
+--  
+Quentin Schulz <quentin.schulz@cherry.de>
+
 
