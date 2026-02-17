@@ -1,86 +1,58 @@
-Return-Path: <foss@0leil.net>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A3BF1E909A6
-	for <webhook@archiver.kernel.org>; Tue, 17 Feb 2026 13:36:46 +0000 (UTC)
-Received: from smtp-bc0f.mail.infomaniak.ch (smtp-bc0f.mail.infomaniak.ch [45.157.188.15])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.12072.1771335398734870591
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 52ADAE909BD
+	for <webhook@archiver.kernel.org>; Tue, 17 Feb 2026 14:41:07 +0000 (UTC)
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.13557.1771339260795809463
  for <docs@lists.yoctoproject.org>;
- Tue, 17 Feb 2026 05:36:40 -0800
+ Tue, 17 Feb 2026 06:41:01 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@0leil.net header.s=20231125 header.b=kUiXEaD3;
- spf=pass (domain: 0leil.net, ip: 45.157.188.15, mailfrom: foss+yocto@0leil.net)
-Received: from smtp-4-0001.mail.infomaniak.ch (smtp-4-0001.mail.infomaniak.ch [10.7.10.108])
-	by smtp-4-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4fFgfF0yfszl3;
-	Tue, 17 Feb 2026 14:36:37 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=0leil.net;
-	s=20231125; t=1771335397;
-	bh=WSXc47pUNY65BTpch+5vXCYfACEp0V2Dos511v5FpL0=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=kUiXEaD3GAeiJ7fv0Zd53+QMLZjzxByjP20tt2hEw9d6nZKQ+VUUpXJrqoy8Zle+S
-	 0ZuX7i36l+jgg+KBbSKZNQ14utW68/j4mL6VntiocfCFQbNxnkU+S4VGBwbPh9+E/S
-	 nJoexkSQ+xWjrxCTi9wbDqtpXQoO8/WUgiJgcM9x4GlJhilxtlXGMNp2po14w6YHd2
-	 AOXVPjQn1/O+fLKiuORECwR2FS6vbdgtxaPPY1YbhhzOEwolnAekVH/M0zHMTkd70v
-	 zvMBloXdvVFH4ehGE3oDoBW0TFgX1rhdNk6r1td0y5FAsYIR7UxGJcEr0ctSk/gxD/
-	 jJxD+hEPaOJfw==
-Received: from unknown by smtp-4-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4fFgfD51Y5zXc1;
-	Tue, 17 Feb 2026 14:36:36 +0100 (CET)
-From: Quentin Schulz <foss+yocto@0leil.net>
-Date: Tue, 17 Feb 2026 14:36:28 +0100
-Subject: [PATCH v3 2/5] doc: bitbake-user-manual-ref-variables: have
- directory examples be consistent
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260217-bbmask-slashes-v3-2-6a02cde9fdab@cherry.de>
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=ZoEzS/UQ;
+ spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id B413B1A101C;
+	Tue, 17 Feb 2026 14:40:58 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 78265606D1;
+	Tue, 17 Feb 2026 14:40:58 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2FC83103689C0;
+	Tue, 17 Feb 2026 15:40:55 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1771339257; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=LZwD5iHwTzj+hbrkj5JFiRSUwGypyDoWzFQlCPfEuuU=;
+	b=ZoEzS/UQfAldhTpLhBE120rA6nUrUIkry79OoGP/p4S515mA95ZX/KYOnW+PoyJKpaXETe
+	whvXsonlrHA+hPq5LDI6CcG6xtZsrpsrcTefeWPDpklwPqiKSCMBeq0s4Klq7C/4CsNZon
+	02TIaOrnrl4JSi7JSH6lh30bjPYVBscFif38wFi3Mmt6ybxJZfdXgB8EShbkAwUp6SC9EN
+	OOjZZmQ6vNkEent9c0b9AwbSO3WamI8oN2q3tkpyltiDUYhT2p2aaL4YjRoNAUyeqt3wDw
+	3vQ3tBvz9Bqe7CpykjkQucFDInGyXoPGkqlLxhW0gw2HuF+FuXTR+Unb8gsb9A==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 17 Feb 2026 15:40:55 +0100
+Message-Id: <DGHBD066AVRO.1CJM3E6IW1GIK@bootlin.com>
+To: <foss@0leil.net>, <bitbake-devel@lists.openembedded.org>
+Subject: Re: [docs] [PATCH v3 0/5] doc: bitbake-user-manual-ref-variables:
+ clarify BBMASK examples
+Cc: "Robert P. J. Day" <rpjday@crashcourse.ca>,
+ <docs@lists.yoctoproject.org>, "Quentin Schulz" <quentin.schulz@cherry.de>
+From: "Antonin Godard" <antonin.godard@bootlin.com>
+X-Mailer: aerc 0.21.0-108-g19019ffa8554
 References: <20260217-bbmask-slashes-v3-0-6a02cde9fdab@cherry.de>
 In-Reply-To: <20260217-bbmask-slashes-v3-0-6a02cde9fdab@cherry.de>
-To: bitbake-devel@lists.openembedded.org
-Cc: "Robert P. J. Day" <rpjday@crashcourse.ca>, docs@lists.yoctoproject.org, 
- Quentin Schulz <quentin.schulz@cherry.de>
-X-Mailer: b4 0.15-dev-47773
-X-Infomaniak-Routing: alpha
+X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 17 Feb 2026 13:36:46 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8938
+ <docs@lists.yoctoproject.org>; Tue, 17 Feb 2026 14:41:07 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8943
 
-From: Quentin Schulz <quentin.schulz@cherry.de>
+For the series:
 
-It's a bit confusing to have a mix of paths with and without a leading
-slash. The behavior is actually different. The next commit will explain
-when/why to add a leading slash.
+Reviewed-by: Antonin Godard <antonin.godard@bootlin.com>
 
-Reported-by: Robert P. J. Day <rpjday@crashcourse.ca>
-Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
----
- doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
-index 18bbd638d..f20a9012c 100644
---- a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
-+++ b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
-@@ -1054,13 +1054,13 @@ overview of their function and contents.
-       BitBake to ignore all recipe and recipe append files in
-       ``meta-ti/recipes-misc/`` directories (and their subdirectories)::
- 
--         BBMASK = "meta-ti/recipes-misc/"
-+         BBMASK = "/meta-ti/recipes-misc/"
- 
-       If you want to mask out multiple directories or recipes, you can
-       specify multiple regular expression fragments. This next example
-       masks out multiple directories and individual recipes::
- 
--         BBMASK += "/meta-ti/recipes-misc/ meta-ti/recipes-ti/packagegroup/"
-+         BBMASK += "/meta-ti/recipes-ti/packagegroup/"
-          BBMASK += "/meta-oe/recipes-support/"
-          BBMASK += "/meta-foo/.*/openldap"
-          BBMASK += "opencv.*\.bbappend"
-
--- 
-2.53.0
-
+Thanks!
+Antonin
 
