@@ -1,98 +1,69 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DA96BE9A04C
-	for <webhook@archiver.kernel.org>; Thu, 19 Feb 2026 13:02:54 +0000 (UTC)
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.13212.1771506167075561581
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 00D9FC636C2
+	for <webhook@archiver.kernel.org>; Sun, 22 Feb 2026 21:45:01 +0000 (UTC)
+Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.22618.1771796693917479967
  for <docs@lists.yoctoproject.org>;
- Thu, 19 Feb 2026 05:02:48 -0800
+ Sun, 22 Feb 2026 13:44:54 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=ecxuIncm;
- spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 230091A072B
-	for <docs@lists.yoctoproject.org>; Thu, 19 Feb 2026 13:02:45 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id EED395FB45
-	for <docs@lists.yoctoproject.org>; Thu, 19 Feb 2026 13:02:44 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6BAE4102F18FC;
-	Thu, 19 Feb 2026 14:02:42 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1771506163; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=FF4kQpNNtCjgZzFv6bcMLvfTaFKmN28ndCxAeXyJX6U=;
-	b=ecxuIncmvDUcRWmpGnQwy9nTZkk3uMe/V3PKfcQqEFmHSsJIeRRCsik+on2f1Pisw0tIGq
-	YcUxWsE55sGF9ddWThVK6bMk+0lwSK3G/7TnB8eTMEF3+OM6OYWptTGyGGt26TgL6OQAJa
-	Ysz7W8h4ji4Ub2nqKOdRqWsNb6eqA7MZ7MlJXJl6DFwL+5ifdo7WSBu1JzKxZpALoDZ6Cv
-	3ZBLL7xDw6OywBPvM5UehZVZBvc442EvC52p+uu1zebW9BwGg258cVxLzJ7y4MmmAgzgQw
-	EvK5GZEdrXA3Df6dEAhhLfh7YT6p8h8WeI05SHflUu3L8kEA/pv0FGtOQu7fkw==
-From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Thu, 19 Feb 2026 14:02:33 +0100
-Subject: [PATCH] Makefile: pass -silent to latexmk
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=ADYHwnrn;
+ spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
+	To:From:Date:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=K7zqFLXw+osJx5X3sw2JY1DVfXY3ufOGg5FxvvDHCQo=; b=ADYHwnrnqIg9vcL/Fb5BMCzYEs
+	mXjXclFMn2srymHsqeKMZh+Gpy6fNhcMGHJ8/mxQne9kG76DYtzdHjpxzI1WuUYYd7y1pPdieAfnW
+	nU4nGjrLZlHzyea8LrIYSD51wXfDxXz+T9Rf1eGdL9twnzoHyxSxpuJqMv/IudZMer1mUFHYFGzcR
+	X5HZhsiIWBmvvyB+rf185s/yScF9mxPBpp0roByDscgBP1zDYC+aTrLT/+5qdacgYHQ+zECObYGrm
+	0u7tY4NU1LdxcTy+UhVoMso41qLd98gwocx1p36AzvojUPW/dfzNzhThGmQcyOP0TeNUVmtsISRQK
+	bUs+4Asg==;
+Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:41022 helo=rday)
+	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.99.1)
+	(envelope-from <rpjday@crashcourse.ca>)
+	id 1vuHFz-00000002XdZ-2icP
+	for docs@lists.yoctoproject.org;
+	Sun, 22 Feb 2026 16:44:52 -0500
+Date: Sun, 22 Feb 2026 16:47:02 -0500 (EST)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+To: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: difference between RRECOMMENDS and RSUGGESTS?
+Message-ID: <5196619c-a6b5-a5a6-42fd-eb78308e8ffc@crashcourse.ca>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260219-latexmk-quiet-v1-1-acc137bc88b9@bootlin.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDI0NL3ZzEktSK3GzdwtLM1BJdc+PE1DRLS7OkNDNzJaCegqLUtMwKsHn
- RsRB+cWlSVmpyCcgQpdpaAJyCO7dxAAAA
-X-Change-ID: 20260219-latexmk-quiet-73aef996bf67
-To: docs@lists.yoctoproject.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Antonin Godard <antonin.godard@bootlin.com>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1072;
- i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=ZyYbHbV1fJkxN1ELC6RUJuf1/xpFjDHV1wM7kzxVRUo=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBplwny416MWuMTcNNRq8waR/Ho4YjgkQia5AbuQ
- ezDE6WK/YyJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaZcJ8gAKCRDRgEFAKaOo
- NoZ+D/4vfiHWbMFq2Yf1dFcQi4jNk9+hw5+H42zaXOtfQaEgIu8eI+MwrIGaUMwy7WaW330cst0
- qlxREYiRZPwwcu2iwu9mC92S1b5AKHYA5wMQ+dmk5Fz5H2werZsaftPgzbExBiPuXgIkyPk8Fhg
- v8Jutx15yG7u1dvIfMp6AjuyDT8qWO3ml/pOOPuzewlZC+waFEwIEIB9kXmO5uobjk3fpL8iz3u
- +5/lseNiztBR6oz9jdsaGtnEw4k3dXYzfnPTKSaxZF6RexGMuCPbvxD6jGVtQq6EFQDgfDocJ98
- kywYe9ixvQDOhAUKs1yDTEbvuKm88XZ+oS/DZ0o7PrdyalWwHblCXkvKnanP46Lzna4mZRT90Vw
- HWPIPz7WMSIaaGjlIZWupeB2mEIMTf4hPA761GcV29B5aLgSakjEqiTJ8mfimLwyeOVMXf/mPcp
- TRZFH5j1nu0QuOnBQ02wqEyVpuv7nMattAySfkMmmu3DPbOCpL0/9CgBK2K/KYJ/h1XMf32yEa3
- iGXMdwg7Ari+ZQw5apLZj7QzFrwVInJKSovtc/hcecesBgww7+yItMeQX954rgagpZZrrBiWUTR
- onWsHYtyDqVzAnNNv5hASH4Fjl2W1EdiyojTSdkxItoEnRmEg/0FwJPIOViKTMMn5tB1VYY0xnA
- dq3bFynPMYcHX9A==
-X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
- fpr=8648725188DD401BB9A0D3FFD180414029A3A836
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=US-ASCII
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
+X-AntiAbuse: Original Domain - lists.yoctoproject.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - crashcourse.ca
+X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 19 Feb 2026 13:02:54 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8948
+ <docs@lists.yoctoproject.org>; Sun, 22 Feb 2026 21:45:00 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8949
 
-This should drastically decrease the number of lines in the
-docs build logs, which currently can go up to 1700000 lines on the
-Autobuilder[1].
 
-[1]: https://autobuilder.yoctoproject.org/valkyrie/#/builders/34/builds/400/steps/6/logs/stdio
+  the explanation for RSUGGESTS:
 
-Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
----
- documentation/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+https://docs.yoctoproject.org/ref-manual/variables.html#term-RSUGGESTS
 
-diff --git a/documentation/Makefile b/documentation/Makefile
-index e144a50b4..3910c41e6 100644
---- a/documentation/Makefile
-+++ b/documentation/Makefile
-@@ -71,7 +71,7 @@ epub: $(PNGs)
- #   Unable to read an entire line---bufsize=200000. Please increase buf_size in texmf.cnf.
- latexpdf: $(PDFs)
- 	$(SOURCEDIR)/set_versions.py
--	buf_size=10000000 $(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
-+	buf_size=10000000 LATEXMKOPTS="-silent" $(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
- 
- all: html epub latexpdf
- 
+does not seem to explain how it differs from RRECOMMENDS:
 
----
-base-commit: 599e73c6d925562b7c4fea0429ba0281d14ad4d0
-change-id: 20260219-latexmk-quiet-73aef996bf67
+https://docs.yoctoproject.org/ref-manual/variables.html#term-RRECOMMENDS
+
+  what is the distinction between suggesting and recommending?
+
+rday
 
 
