@@ -1,137 +1,231 @@
-Return-Path: <alex.kiernan@gmail.com>
+Return-Path: <quentin.schulz@cherry.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BF56FEC1103
-	for <webhook@archiver.kernel.org>; Mon, 23 Feb 2026 16:15:56 +0000 (UTC)
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.38927.1771863346626004616
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 50DB5EC1113
+	for <webhook@archiver.kernel.org>; Mon, 23 Feb 2026 17:35:23 +0000 (UTC)
+Received: from AM0PR83CU005.outbound.protection.outlook.com (AM0PR83CU005.outbound.protection.outlook.com [52.101.69.46])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.128.1771868118079842745
  for <docs@lists.yoctoproject.org>;
- Mon, 23 Feb 2026 08:15:46 -0800
+ Mon, 23 Feb 2026 09:35:19 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=mYgKopOh;
- spf=pass (domain: gmail.com, ip: 209.85.208.177, mailfrom: alex.kiernan@gmail.com)
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-3878de20527so38589311fa.3
-        for <docs@lists.yoctoproject.org>; Mon, 23 Feb 2026 08:15:46 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771863344; cv=none;
-        d=google.com; s=arc-20240605;
-        b=R/c8hGFIi2FRalSj2cLXdSYZbGa2QSd4VUXBl9rG9zBQOqeL1Ga1wXG9eeV6/dgRdL
-         5zSYucYtx8iszgEDGNssvyDbXohxk1sMZzhQX7KWx9RTG8mRN7NWwbLWxkyHrQCX6tCT
-         HJBTDpF2jHRF5mpCkRKXyH1GpGyKggp1OCUsV2rI+bSYOUKtzRmFqdgeJUSmTii9Fo5B
-         2Kamc19jBJXFR7fRAX3ppa2xICrO/t0l+uE+QBPHT7DqZk+nKNU43iIHOg/UG2LYvbyv
-         jWZUZ3nofBrcDtsmr2CFDtTjMYr6HhBfNHHfQt8uY72aADvyhkKgu4dzh7J0ImMF9xRU
-         xQVg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=DQ/PRMTqkkUtv+jMvK3VTUxkJTv2DwvaLD1kz1kYkE4=;
-        fh=w4udndNa3z3dS987rpA732l9rCEUCMDw7O6T9DWWVD0=;
-        b=DivI0KiCMdzMDP7k+zXmh+NbMqtNc2/YBQaozQLeVEVHsWQTGhOuO2GfyDG+YQ181M
-         cmI3v60QIL/0mK1IRiN9NyRDn7e64aoRrVx7Jl7h2317AFsNS+Kk0SMPHaUZflCBh0cL
-         muVncoC0WHV3N1jazBVm1kY39qDtTK2eCjtuoMPfczEbVghItcnZzlCBOG0Ar0E5OreC
-         bfsvVbS/qiY2VOYOdwWFRh10IKhRyG0P+aJy6q4GdRRjKdWYnLq+Wo3YpHHLajCpnT66
-         ANMCd0UWcAv/rO/e8f8+rHumnFL8M7ufJ+su+u56cDPoaI78rLvez+2mM8jkBEymKWT2
-         1QsQ==;
-        darn=lists.yoctoproject.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771863344; x=1772468144; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DQ/PRMTqkkUtv+jMvK3VTUxkJTv2DwvaLD1kz1kYkE4=;
-        b=mYgKopOhFocVYejkFI5CyjSxKGIszzxva8u7astoRyb/zUv+eYGedI3o/nenQMC/I2
-         J5OzU6/94bKS/mAiJM4Oh9bLYVcvkTpyancW56yzENhsnjjFxP6tOoNy+y70HhaYxC+g
-         mb7tfO1VyXtjJ1xTZkAo5SgV+gfMUMpAI75g5ypG9JwRD3ZhosGrm9ch++GT6LVjognv
-         LnDkr0rFZVDXa5E/9rdJ2lOCswlCbb5Ny4Qeiegj5sNJnue2YXobhfar7PJYdq89v+OP
-         34FdKnU/UHvlkMZ2bgi6jAz0CHUFZ7eai/aIr4d/pQXt84IQ8LrAZqcPB8RP3Y9+pkuF
-         rDXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771863344; x=1772468144;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=DQ/PRMTqkkUtv+jMvK3VTUxkJTv2DwvaLD1kz1kYkE4=;
-        b=cYHImbcNpwnByUAL8XpmCJYbdLCJYepU2KpNABalGE1eepZr0lyO1GTuJHmeU0dO8x
-         hNL+ld4qrOSozHCuPz/IzB35a3aiJ1kl/aifFlWv1yVucPpQ0uQF1y6VV7M6L0wHUcgB
-         oy2j0g/0Co5/pTa9f0Xx/F2xjpDIqNYH2hrDik3XXXWP1QbPnkuIVsO1pETmzb5w/3Jb
-         VAQqwDFP1IfDPUuSSx6iPckP0Td4FmehBsXR6dQerCfd6RP9zKnS+t1ikMNnddjMlZIb
-         Vm+37waIbixjCm45ELNqkZqGozwAugt8+Pbyq/et8rzWQkYCyeZ0t+K14C2n6tSMoFKM
-         tOog==
-X-Gm-Message-State: AOJu0YzfKgn5f6DnFAOAxSvT/Zh6p1s8NMWxNBdsu8lT/iTVrvC0B8s8
-	AZVFfWfRYTNPu83bEzCP0mV2DI1FskyqK82KNTQ/LCLWSIQWDHA6rRBwbquR37vmdhMom85A9ZO
-	FFqJRNQzX2pgOZlZ3pPvWMA79eb1zfukW47u1
-X-Gm-Gg: ATEYQzwpOzd2IJJsEDdTb++fbE+QzFZLgISBYJ8y6NpULwD2p1JItqVXv8U4WkaQ4N7
-	QWkuNgLL8ERaV86KER3dUKRLHjoW6O/ChZZ7Yu/ArcTE497iLuEReOvfcEXlLNizML8cVqOLWyV
-	gN073TYMLp40cyVzsj+3EVaDHVaiuy2ulErnInX3t6ngAsYZ+rE9/NwtIJD8jiytnlFmqxq3NbN
-	5TdxUYLmxnoWGl20R1chQavJdbnFbFURqpy8BD4Sm2aeCK/dNi9xT1D9fRm6B0PoYjEZ6Th4MSX
-	gLFE4PGyEFY5wIJhtgu7zM1gg98YAcGBSqYgtzdEPGxStto=
-X-Received: by 2002:a2e:be1d:0:b0:387:1ca3:57d3 with SMTP id
- 38308e7fff4ca-389a5ca99b7mr30098371fa.8.1771863344131; Mon, 23 Feb 2026
- 08:15:44 -0800 (PST)
+ dkim=pass header.i=@cherry.de header.s=selector1 header.b=TYpZc7t6;
+ spf=pass (domain: cherry.de, ip: 52.101.69.46, mailfrom: quentin.schulz@cherry.de)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=YGsOR2WcQW0rnVFFsTv6MLhPX2/tcj2bw41Zt90ujsp3CiGU5fRceYLMyCkgFfT3YDPlanNTQsAoSAx1PuUY8ACNjvNECwcKNrhUMn0GI0ay4DXIecZ9c+QZaXpd7PnKx6IBV063f63gS+YlCEOuKA4UF+lllxiRyjeVhTj7RF4fQtGY6vwr+KAFWHpsm/G+/MUOJaBQIciHtDXt40NYtstbeG/75iL8+e85g+AWBSaIJmb+tE7pvbJdNfsyRK3kWtv6kwPYm8Nv0cyCEgp9hD5GIQC4SY5fC24R3FmfnXVgzM/aI7YZEvvg8v4Nzlzr9HmdsuBkXYufzrss/5/DTg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=DFlp9sMB9fUkIvGC1fA+/GzzQ4N7DvLdi+faCLcILcg=;
+ b=p04whM5oZwLHNI037QoSlwwxvKZiwJYAD98zv+GjinC2c6KcsgcBBkPjY+n3VPcMW1gQk9htarmOIHistijosKhS7B1D5ySvQmiL4RgrylSrZ89rvuPbHEyzYL+AvPEIKtDNP9OmRSR/clD4qWOimg9ZCLHQCDaYgXCYpN8Pys6cfweLHyRFVt7TTRD65t/S1ZQEBqGKkz4UYR1aPGQ4qotiVM9O2fkWHhyQVmB4ddkQP+Ra2WAmO4/G9gQmsU6MlptE9guwOJoaIKWRVp5KGvkkPMo7UBywB6PPbzbEbPOaZZrjyyF/ib4udVazG1oZ7FySWPiPty++mWhqAIcnIw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
+ dkim=pass header.d=cherry.de; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=DFlp9sMB9fUkIvGC1fA+/GzzQ4N7DvLdi+faCLcILcg=;
+ b=TYpZc7t6qocDQpKcdalT4L/2pz8hUr/lYNCNR5/c7fOExZaH6BLqolf1/I9oe760395GG88mc2Y2vQtlHi/xyh+z7wDAeTN3q8OMZdcgf0662Uw+m+B9HvXXfAd4JVwUESsynw8YZtQMeAvihkk2lt7NdzMTkfB45u6rv1gSfUE=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=cherry.de;
+Received: from GVXPR04MB12038.eurprd04.prod.outlook.com (2603:10a6:150:2be::5)
+ by PA4PR04MB9565.eurprd04.prod.outlook.com (2603:10a6:102:26b::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.21; Mon, 23 Feb
+ 2026 17:35:12 +0000
+Received: from GVXPR04MB12038.eurprd04.prod.outlook.com
+ ([fe80::6c04:8947:f2f0:5e78]) by GVXPR04MB12038.eurprd04.prod.outlook.com
+ ([fe80::6c04:8947:f2f0:5e78%6]) with mapi id 15.20.9632.017; Mon, 23 Feb 2026
+ 17:35:11 +0000
+Message-ID: <e41bdc41-be0f-4c85-bcbd-e00b10433336@cherry.de>
+Date: Mon, 23 Feb 2026 18:33:54 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [docs] [PATCH v4 1/3] use a venv for installing packages with pip
+To: Antonin Godard <antonin.godard@bootlin.com>, foss@0leil.net,
+ docs@lists.yoctoproject.org
+References: <20260216-fix-make-multi-target-v4-0-749e588cb7f5@cherry.de>
+ <20260216-fix-make-multi-target-v4-1-749e588cb7f5@cherry.de>
+ <DGHXUDE510VH.1JG9S6P90SNTG@bootlin.com>
+Content-Language: en-US
+From: Quentin Schulz <quentin.schulz@cherry.de>
+In-Reply-To: <DGHXUDE510VH.1JG9S6P90SNTG@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR3P281CA0148.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:95::7) To GVXPR04MB12038.eurprd04.prod.outlook.com
+ (2603:10a6:150:2be::5)
 MIME-Version: 1.0
-References: <5196619c-a6b5-a5a6-42fd-eb78308e8ffc@crashcourse.ca>
-In-Reply-To: <5196619c-a6b5-a5a6-42fd-eb78308e8ffc@crashcourse.ca>
-From: Alex Kiernan <alex.kiernan@gmail.com>
-Date: Mon, 23 Feb 2026 16:15:31 +0000
-X-Gm-Features: AaiRm50QM22dVqPGSZP4wCgJKlqoBmwBFo9uZDzBu1IqKu7SMQcg7YbiidDlLKY
-Message-ID: <CAO5Uq5SBWEtnW1svMNDokxUCwG7ft7dcyP87XYHtHTcVqKJLYw@mail.gmail.com>
-Subject: Re: [docs] difference between RRECOMMENDS and RSUGGESTS?
-To: rpjday@crashcourse.ca
-Cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GVXPR04MB12038:EE_|PA4PR04MB9565:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0e9ad59a-1c77-45f2-3cef-08de7301e590
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|10070799003|376014;
+X-Microsoft-Antispam-Message-Info: 
+	=?utf-8?B?U0VxOVdyNW1BNXExK0VvZVo5UnkvNSs4WHFhNUZ1U2YrZDFxWlVmWTZaNTlL?=
+ =?utf-8?B?QlNKY3dwZUh4dTQ2MDVlZnZBN0Q2cWFOYldKY0JLRGJwOFVXS1dGdGVqdnky?=
+ =?utf-8?B?dVV5TWxrcUhCUWQrbTVtYXRpVEc5YW0xMW0yeVZRalRIS0RFL3dDa2dZTVBo?=
+ =?utf-8?B?eEh6Yy9zL0lHbm5XNXRiODV0N1MyaW8xOCszcTE2Wlg4UmJnN1R5MmsxM3ZZ?=
+ =?utf-8?B?WmZXMy9aTFN6V0xhVmVaVkVOeDdSN2lEdXYzT2dWT3IzT1BkVExySDVscTFK?=
+ =?utf-8?B?YWNlK25va0llekZjQWN3WEJ6MnNFNTBxSkNBUlMySWI4cnJFSDE1NHp4eGN4?=
+ =?utf-8?B?NWVJMEV4YWJJU0VuTlVDMEdvVnZwUEQxZmpna3JEL3Z2USt0ZGNDd3RSS2tL?=
+ =?utf-8?B?WTMwWis4bTdSUHdja2Z4VmJkWkRjZ3pYNG9qUkhYd0hFSmFXOHpuZ0xDSzkv?=
+ =?utf-8?B?d3p2UTRUblkzWUNla3VjSk1BaU1qcWkzQzNFdWJGNis4QmlWN0d4bGJkREkz?=
+ =?utf-8?B?cTErRjRtUTNCN3ZwaXJiMk8rVGpwSEIvQmV6c1JkZXMrRXhTbTVLQlROOCs2?=
+ =?utf-8?B?blVYQytqY3VjZ1JlS2YzbjUrUkZlTlNMbXdTNU1DZmJOS3pGQ1h6dENySkhP?=
+ =?utf-8?B?NWorekZaQ3NMaUk4UkFsbDlMUHlSWEwxdTBvVVN0RTdnTXk4VnVZcnZ5ZHRH?=
+ =?utf-8?B?MVNvR0VGMTIxODRDYkRHWDhhTENDTlBFY1NQejdNdUtONnFucExXYjAvOUww?=
+ =?utf-8?B?ZVNxSFlnS21uK2dvSlF5TlJzTzUxSm1LUTgvcXRrZjlaNUUySDl3YnRHQVV2?=
+ =?utf-8?B?T1RiemN2SEtUN2IzeHM2WXY2dW40ZGw4VmNjUDYzRTNob3dyNjd4VWllNUVZ?=
+ =?utf-8?B?b0h5WlFzV1hRK3ZWSWhFejVvZXJId25WOTZQeGhFMkIxdklZRDVqRjljUGhS?=
+ =?utf-8?B?SHJvbDMxOURJT0NqcmhGaWNMQStweWN5VUxjU1k1cTZSMHBhK1ovTjViQVpo?=
+ =?utf-8?B?MUtuakh1UmFPbGZNREZZMmhFRmV5bTRuNHhJNXJFWW13bWxqRGovL3J1T2dx?=
+ =?utf-8?B?blNtWkxUY2tFSXZ1OVFHMkhQcEFab1lvd25OeFZVV2E2NkxpRU52UkhLbW5C?=
+ =?utf-8?B?Mm9sUVBHa0hiMUVSM3hlN3BRd0tReXZaMFZqcnMrcE9kcVQxcEFvRjlLalFE?=
+ =?utf-8?B?Vi9FcEphNWR1dWVCaHBSY0NpR0Y0dmpleGZPSUFqSVBJemp2ZVV4U2UxVEU0?=
+ =?utf-8?B?U1owRGhjV1hLSjB3TGxVb2dFRGd0WmVFVVNnekFtdFNTWTFJTTZiZzFVNFpo?=
+ =?utf-8?B?YXJaQ1NON2ppQnRqQW9EbzVONVZ5cUVoeW0wS0ptWVhjRk1Ha0ZUWnVTWVpr?=
+ =?utf-8?B?Vis0TWdqbktXSG9mT05VN2tKK1lVQjdxMTZUbjRWODU2T1l2QkYrQU5VVGtm?=
+ =?utf-8?B?VHhPVHlhc08rTzE0cWZYNTl3Qk9XVlBjekRKemZjNGROQzNoOWpVYnhBY2lS?=
+ =?utf-8?B?ZS9DdDBHM0ErOXBhYnJqeVZmOWlLMUFHeG8xTjVQSXZUbjhHeGNVMmtpN3Ft?=
+ =?utf-8?B?K2JTK1BMREs4dnkwblIzYm5WWXVVSlRsTzNDRmtsZWpNazNrQmFtRmU0SHND?=
+ =?utf-8?B?MHZwOUNid3RBb1lyRnorTnd4cmdHMWExQ2grdGtxbER5dFh1N29SSVJDY3Zh?=
+ =?utf-8?B?bUhFOEJ3Vzc2eUpDZVpRNEw4aU1OM2E1UWwxTkFTajd3VkdmajlBdmtWU2NP?=
+ =?utf-8?B?S1NUMXhFMlExVEN2b1FkelU1dUFPcE9aRUlnUU5WT3lCUlJScmVUMzkyUTY4?=
+ =?utf-8?B?TkttQmdnU1hvcURKVmRiaWNXWWNKZ2VJWFI0eTZEOGJDb3M5T0tpaThTWDNp?=
+ =?utf-8?B?NkFxUWJUSEFYZ1Z4SGV1UzRCQlQweHRBV2hXNWxuU3JXLzdaaytJRzhVK2J3?=
+ =?utf-8?B?M0hUZVJxd2k3UE5nNmNQeWJzYkxRa2wrbVBVK1Z1ZlpqWmFieTBPUUc2Y0h6?=
+ =?utf-8?B?YXZaN3I3R2RRVzB4QzdDdE5rVGd1OEFvVnAxUVNGaDdERU5nZytUN0hoNTlm?=
+ =?utf-8?B?ZmdxTWF6RnVjS3dnQkc0em53bnN2eVFuKytxVExhVFc0cGxCbzVUM3lNYm5I?=
+ =?utf-8?Q?4WMNJ4efpkHobo5XRUpY1Dnyu?=
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR04MB12038.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(10070799003)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?utf-8?B?VXdSL2VkcjVMS0p5cTdORlE5bTdBOE9YOENBTHE3aklUREc0RXdzeXZ2dC9l?=
+ =?utf-8?B?QjUrQkdtbnQ0R1RsZVlFUXdDb1kvRjU5S0JuNXJ0Vk5yQjVZaUtYUFJXOE1V?=
+ =?utf-8?B?dzZJSWF1Qm9YV2d5THlXejlvcWMySXFxOFVSeDh3ek9xZDFQcmxyaVZCSitm?=
+ =?utf-8?B?QmRkc3RQVGFxck5qWWEyVkw3SkZTL2tsa3RXODZHV2htUXVoRFpMV3JiNGtY?=
+ =?utf-8?B?L0FVd1hTL3RQRVF5VWROOXJLdVVlMGdOeHV6bW9XWHBVVkdPQUpVcG1EUG9N?=
+ =?utf-8?B?NUNsRWlXbGFDODRlclMrQlh1MnhRdWk1YVFtbnllbzVON3BQLzIxT1ppVGVN?=
+ =?utf-8?B?QklNbDdlbWQzUVFxSEdITHFWUUNybzZwek05Qi82Yk5GM0RsZURnUUtxMitL?=
+ =?utf-8?B?QTcrUXdrUVkrdTNpYlROcm85amdiTFNwY3M1cmVEVGxIL0FNelBqd0FkQ1p4?=
+ =?utf-8?B?ZS9GWGpBZnNpRmlsTmpjSUhuMTB1RzlEZWdGbThQMGhXakNLT2VtVi9zMTNK?=
+ =?utf-8?B?bjhFVzJhUzB5cHdvbHdNQU5FRTJnUVNJNm1aMHA2UlE4M0R3NzREQ3hFSHFX?=
+ =?utf-8?B?aHRnd3VTZFNpMFY3aEtoZjFZKzNtelhmMWROQ0czcWlldmsxMEZpVHNGNHNV?=
+ =?utf-8?B?Snl3UEcrazB1MkhxUTdrQ0ZmOVNUZStkOFEvcG5GbWN2S0lpQjlqczR2dUln?=
+ =?utf-8?B?eGlTTjR3VXNKU2s5bkRJUFNVS1JRMmZmM2hiNWp5TDdDcG1KOEU5UHpyMlND?=
+ =?utf-8?B?bysvei9EVjVJYlloNmNhVVYvZFlySGg5SFUyMGIyMERuYXIzYW43dDFaU2RW?=
+ =?utf-8?B?L2d0aUx5YzZTMnlLdU9lSElzNlJhbFl2MzZXQVZBNlM4em9KcG4rZFF0WTlV?=
+ =?utf-8?B?SXM3RmtFazdmdnVTR2ZSYngxcWhKTzhMOXBRdmgyZm5PcjBEZ1hFYzFTSHd0?=
+ =?utf-8?B?QjBaL1FvV0picUhSZWY2bW01Um9ucmdjQ1RrY0xKSlFsZDZKOFc2aThMTDZz?=
+ =?utf-8?B?QjdDMjU3cUlTU1Q5UFYrbmt1YUZQZXdWWlRDNnM0N0VGZ25mR01nTHNpKzM2?=
+ =?utf-8?B?ZWozRHFEYWdZUVd1THhXMWJYaVhoQ3V1em9DWXZGQnNYcHJTUTlEZ0Zzd3FI?=
+ =?utf-8?B?aXVvRGt1c3dkVUltaHgrTHBiNlRNTjVkalpiZzFENDhzd1hiRmp4RUsyTGd0?=
+ =?utf-8?B?NmtJS3pkZk1oNHZyWStaOWRmL3ZleFhJdFV2cGJoQ3hvRU43ZzRzMGdBYUdn?=
+ =?utf-8?B?aldWTGtrOUtwMzhzaEVqUUZPcWY4V0xOSjlzTGFjSndzWGs1STBUQS9ldGk3?=
+ =?utf-8?B?dzV0VktMRkk0ZjdVTjRJcDhabkxTZkUrRm5HcTB3RTlINk1FOXZXZkVqRFNi?=
+ =?utf-8?B?U3BOZU8wREhtWEg2NkdnTm9UUENnOWptbUs1ejFpKzRSVUptZ1pIVnBzOEJE?=
+ =?utf-8?B?YjlBY3lYMG4ySGtBZ3lXbGhXZzJnd2puc1MwRE9LeXk3eERtOG1BRWlYR2VY?=
+ =?utf-8?B?eGkzanhsdkYrMk96aTl6dkptMTMvVlozN0hPV3hRdlFjaVFMa2xDejhzbjh0?=
+ =?utf-8?B?Z2xqdVZmMlNaNW9kcWNIWkRxcmVwTktKQllpWHJua1dQZE45a0w5MGd2MGFL?=
+ =?utf-8?B?RzZHb2toeXltazF6dDZUZlpjL1FabzMvbDFFU0NQTytabkVvSVJ4S2hoRU1N?=
+ =?utf-8?B?bFZ1c3oyaU9ReEhyaFBGOVhxbjJuN2tiNDgyZFY4ZlRLU25MVDNkdmZWMHUz?=
+ =?utf-8?B?TG1vY0p5b0dhYTdCZFFNUG9BbC9sN0dPc1BkeWJ4djlWZGRDNnhjckM2bmx5?=
+ =?utf-8?B?bmF3WUFxV294aFUzblk0QXRiRjhrM00xOGxKOXhMZ0hhVi9RYmxlZmMzZmpI?=
+ =?utf-8?B?T3BVUDFONktHakVsbFEzQ3dmaFkvZWxWQWR4VXhCY25COTArRHlZVHNsMHRz?=
+ =?utf-8?B?a1pyOUZZTUx0bCtld3c4d2hxaWVOaHl3Ti9NRThGSXkxbkh3SUQ1MUdqa3JX?=
+ =?utf-8?B?R3VjRHJXdmN3MHgzc2xzQXU3VFJIdmJrT21Xem41aUFTc2xMSnJwQUE5RnFp?=
+ =?utf-8?B?ZUhrVVc1WnlyRS9PRGhsMHZLN1V0SmdkU3Eva0gyS2tqbGRrczBzMUJ0UzNZ?=
+ =?utf-8?B?Z0dPUlJRbG9tVzR4TjlvUU5hM1NmSjY2Y3RLek1YaEs5c1d2K2Y0bDNjYjQ4?=
+ =?utf-8?B?dWFLemlDZ2VxYkYvSmpsSTRPQXJ6WTJScnMyU0w0bk12Q1ZERzhSWWhCVUtn?=
+ =?utf-8?B?QTEvVHlTUUJuZ3FZTW0weDF2TU02N3dWbVFIR1VXV2lpU3BYNHRqakVhdys1?=
+ =?utf-8?B?VEtxcXd5a3E4Ry91N2tzRmk4L0N2V0VSVUVYVUR6RFIxWWFQalFWMmJ0bENy?=
+ =?utf-8?Q?GFUV4L5l+pKpXcp9B2/Xn2lQQzArHk2g+MGoD?=
+X-OriginatorOrg: cherry.de
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0e9ad59a-1c77-45f2-3cef-08de7301e590
+X-MS-Exchange-CrossTenant-AuthSource: GVXPR04MB12038.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Feb 2026 17:35:11.7803
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: OY1AI+79WgSIfBxkwqXxeXZc5EgwYIfDAq42E1ri8LWt0RQ6V+bWUjyeJRS2F1OKTTJPxdgoKUJzPGn7jl5gPfu9U8BQph9htFCq0d8a/I4=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB9565
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 23 Feb 2026 16:15:56 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8956
+ <docs@lists.yoctoproject.org>; Mon, 23 Feb 2026 17:35:23 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8957
 
-I'd guess (and I can't pretend to have checked extensively) that it's
-the same as Debian's:
+Hi Antonin,
 
-* Recommends: <package list>Lists packages that would be found
-together with this one in all but unusual installations. The package
-maintenance software will warn the user if they install a package
-without those listed in its Recommends field.
-* Suggests: <package list>Lists packages that are related to this one
-and can perhaps enhance its usefulness, but without which installing
-this package is perfectly reasonable.
+On 2/18/26 9:18 AM, Antonin Godard wrote:
+> Hi,
+> 
+> On Mon Feb 16, 2026 at 12:26 PM CET, Quentin Schulz via lists.yoctoproject.org wrote:
+> [...]
+>> diff --git a/documentation/tools/host_packages_scripts/pip3_docs.sh b/documentation/tools/host_packages_scripts/pip3_docs.sh
+>> index 907ecec55..9aa7f16fb 100644
+>> --- a/documentation/tools/host_packages_scripts/pip3_docs.sh
+>> +++ b/documentation/tools/host_packages_scripts/pip3_docs.sh
+>> @@ -1 +1,3 @@
+>> -sudo pip3 install sphinx sphinx_rtd_theme pyyaml sphinx-copybutton
+>> +python3 -m venv --clear --system-site-packages /tmp/yocto-venv
+> 
+> I find /tmp a bit odd for installing a virtual environment (at least, from a
+> user perspective, as I can understand why you did this for the container).
+> 
+> Maybe you can add a comment above this line saying:
+> 
+> # change "/tmp/yocto-venv" to "./yocto-venv" if you want a persistent virtual environment
+> 
+> ?
+> 
 
-The default is NO_RECOMMENDATIONS=3D"" so you get RRECOMMENDS, but not
-RSUGGESTS. If you have NO_RECOMMENDATIONS=3D"1" I suspect they're
-basically identical.
+I can do yet another sed in Containerfile to avoid telling the user to 
+do that and just have the path different in the container (see what we 
+do for zypper install commands). I tried mounting the volume 
+(yocto-docs) as an overlay within the container (:O in podman) but that 
+didn't work, so we have to have the venv outside of the mounting point.
 
-On Sun, Feb 22, 2026 at 9:44=E2=80=AFPM Robert P. J. Day via
-lists.yoctoproject.org <rpjday=3Dcrashcourse.ca@lists.yoctoproject.org>
-wrote:
->
->
->   the explanation for RSUGGESTS:
->
-> https://docs.yoctoproject.org/ref-manual/variables.html#term-RSUGGESTS
->
-> does not seem to explain how it differs from RRECOMMENDS:
->
-> https://docs.yoctoproject.org/ref-manual/variables.html#term-RRECOMMENDS
->
->   what is the distinction between suggesting and recommending?
->
-> rday
->
->
-> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
-> Links: You receive all messages sent to this group.
-> View/Reply Online (#8949): https://lists.yoctoproject.org/g/docs/message/=
-8949
-> Mute This Topic: https://lists.yoctoproject.org/mt/117947510/3618097
-> Group Owner: docs+owner@lists.yoctoproject.org
-> Unsubscribe: https://lists.yoctoproject.org/g/docs/unsub [alex.kiernan@gm=
-ail.com]
-> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
->
+> Also maybe, s/yocto-venv/yocto-docs-venv/?
+> 
 
+I was about to interject that because we use --system-site-packages, we 
+could still run bitbake from within the venv and thus renaming it is 
+unnecessary, but then I tried building the docs locally on my f43 system 
+and this series doesn't actually work.
 
---=20
-Alex Kiernan
+It complains about not being able to find sphinxcontrib.rsvgconverter 
+plugin while it definitely is installed!
+
+Then I remembered having a somewhat similar issue in my Python 
+pet-project when I had the same package installed twice, once 
+system-wide and once in a venv... Turns out that a package which 
+installs a command/script doesn't seem to work with venv (at least with 
+my sample pool of... 2). It would always use the system's when using the 
+command (and it'd be fine with python3 -m <package> as far as I remember).
+sphinx-build actually is a script, c.f. 
+https://github.com/sphinx-doc/sphinx/blob/master/pyproject.toml#L99. So 
+when our Makefile calls sphinx-build, it may very well be calling the 
+system package if there's one and not the command for the sphinx within 
+the venv. This results in not being able to find the modules installed 
+in the venv (that is, sphinxcontrib.rsvgconverter). But Quentin, you 
+would say, simply replace sphinx-build with python3 -m sphinx and all 
+shall be well! Now the sphinx Python module used is indeed the one from 
+the venv, but it cannot find the system modules anymore. If anyone has 
+any idea what's going on, let me know but I don't think I'll investigate 
+this further.
+
+Instead, I'll NOT pass --system-site-packages to venv such that we only 
+have packages from PyPI (which means, not being able to run BitBake from 
+that venv). Now... this still doesn't resolve the issue of sphinx-build 
+calling the module from the system if it exists... So I plan to change 
+sphinx-build to python3 -m sphinx in our Makefile to work-around that. 
+Any objection? Did I miss something or get something wrong maybe?
+
+Cheers,
+Quentin
 
