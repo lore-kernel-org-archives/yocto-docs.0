@@ -2,110 +2,206 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B9D05EFB810
-	for <webhook@archiver.kernel.org>; Tue, 24 Feb 2026 08:04:18 +0000 (UTC)
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.15839.1771920253652374686
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C2151EFB815
+	for <webhook@archiver.kernel.org>; Tue, 24 Feb 2026 08:28:58 +0000 (UTC)
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.15941.1771921731176661064
  for <docs@lists.yoctoproject.org>;
- Tue, 24 Feb 2026 00:04:14 -0800
+ Tue, 24 Feb 2026 00:28:51 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=ok72CqEK;
- spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=uwYweqkV;
+ spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 8AC391A11EE;
-	Tue, 24 Feb 2026 08:04:11 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 513FEC143E3
+	for <docs@lists.yoctoproject.org>; Tue, 24 Feb 2026 08:29:03 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 610135FD9D;
-	Tue, 24 Feb 2026 08:04:11 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E2F8C10368B84;
-	Tue, 24 Feb 2026 09:04:07 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id CC9FF5FD9D;
+	Tue, 24 Feb 2026 08:28:48 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A222B10368B4A;
+	Tue, 24 Feb 2026 09:28:47 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1771920250; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1771921728; h=from:subject:date:message-id:to:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=lSSF0z7vIWA9QxrScYzqvzsRViFwVzbzZXedM2eqS/E=;
-	b=ok72CqEKCPISbQr4u/dcj8jZbGzLljVRt/pVGdwWD2Wu9Al8xcZVTN4tpZpC3zJV3/x3pb
-	23sC7dOklQxLMEn4X2t6Re35kMz/BxpytOeH1X+hKs47LhC5774cAEMmoDf7XklESeGi8u
-	YKxcO85BpLa1rLlE1Jnlq/pF7uh4QudGdDreFG/LD5OCsKhWrBrke5uGrC1MLG4TOdGU0F
-	eSKvQE/yJEw+6Kfe/KwYNtAXmYW7TugWhEMmzv5mwBQ2qrFtFC1OYA+Q2/MH6KG1QrJ1pK
-	jgDTPTNyw7JV4zZaNSu90X+SyEC1uZqUXDZ3cpYSxT8RNSsAf9CS8MFnnzHb9A==
+	bh=9wTihPh5cyLZTQDCj99fjjTqB6Jno85HhATMteyjFTw=;
+	b=uwYweqkVjfxQU2b4XkoVq/2eVvmR5kTrD8oO+xGgp6/DcAyQpGeAjWp+aZ3Bq4xfpdNr3t
+	FGxKBqfI+8SsZMjV8jmcL0fiBrVh9YdjCMyGemPM5LruSd/E45gIVYSuHSuip9NnLtpuEo
+	zqRKXwckIT+kLikpKRFpNFZ9iTIIupwL3sxt9jWeiF6kbsDqAl+E0pyfo0/fMBbTIsq9gw
+	ouyig8yRKDmrgxhEft6e2o4fdxLA9hr7EPd6gSRVwV4xcR+dYhA9rTJLcojTAb6NMUuS3I
+	nF6Zm9ug4N+TC5idIUs4Zmy4MrptH3mA8iK4kOowmy2WbStxT3hkXRwAIrzkIA==
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 24 Feb 2026 09:04:06 +0100
-Message-Id: <DGN1AZTS0P6Q.2G1QBUYVST3ME@bootlin.com>
-Cc: <docs@lists.yoctoproject.org>, "Robert P. J. Day"
- <rpjday@crashcourse.ca>, "Richard Purdie"
- <richard.purdie@linuxfoundation.org>
+Date: Tue, 24 Feb 2026 09:28:47 +0100
+Message-Id: <DGN1TVXRNHW7.2TYSX3YXZYQB5@bootlin.com>
 From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: <quentin.schulz@cherry.de>, "Quentin Schulz" <foss+yocto@0leil.net>,
- <bitbake-devel@lists.openembedded.org>
-Subject: Re: [docs] [PATCH] doc: bitbake-user-manual-ref-variables:
- BB_ENV_PASSTHROUGH is not in default BB_ENV_PASSTHROUGH_ADDITIONS (anymore)
-X-Mailer: aerc 0.21.0-124-ga1ff16134ae6
-References: <20260114-env-passthru-v1-1-fd5ef76eab61@cherry.de>
- <a0b211c4-320f-46cb-80db-d4dcbd56ef04@cherry.de>
-In-Reply-To: <a0b211c4-320f-46cb-80db-d4dcbd56ef04@cherry.de>
+To: "Quentin Schulz" <quentin.schulz@cherry.de>, <foss@0leil.net>,
+ <docs@lists.yoctoproject.org>
+Subject: Re: [docs] [PATCH v4 1/3] use a venv for installing packages with
+ pip
+References: <20260216-fix-make-multi-target-v4-0-749e588cb7f5@cherry.de>
+ <20260216-fix-make-multi-target-v4-1-749e588cb7f5@cherry.de>
+ <DGHXUDE510VH.1JG9S6P90SNTG@bootlin.com>
+ <e41bdc41-be0f-4c85-bcbd-e00b10433336@cherry.de>
+In-Reply-To: <e41bdc41-be0f-4c85-bcbd-e00b10433336@cherry.de>
 X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 24 Feb 2026 08:04:18 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8963
+ <docs@lists.yoctoproject.org>; Tue, 24 Feb 2026 08:28:58 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8964
 
-On Mon Feb 23, 2026 at 7:03 PM CET, Quentin Schulz via lists.yoctoproject.o=
-rg wrote:
-> Hi all,
+Hi,
+
+On Mon Feb 23, 2026 at 6:33 PM CET, Quentin Schulz wrote:
+> Hi Antonin,
 >
-> I don't see this in master/master-next so gentle ping (feedback of=20
-> course welcome).
+> On 2/18/26 9:18 AM, Antonin Godard wrote:
+>> Hi,
+>>=20
+>> On Mon Feb 16, 2026 at 12:26 PM CET, Quentin Schulz via lists.yoctoproje=
+ct.org wrote:
+>> [...]
+>>> diff --git a/documentation/tools/host_packages_scripts/pip3_docs.sh b/d=
+ocumentation/tools/host_packages_scripts/pip3_docs.sh
+>>> index 907ecec55..9aa7f16fb 100644
+>>> --- a/documentation/tools/host_packages_scripts/pip3_docs.sh
+>>> +++ b/documentation/tools/host_packages_scripts/pip3_docs.sh
+>>> @@ -1 +1,3 @@
+>>> -sudo pip3 install sphinx sphinx_rtd_theme pyyaml sphinx-copybutton
+>>> +python3 -m venv --clear --system-site-packages /tmp/yocto-venv
+>>=20
+>> I find /tmp a bit odd for installing a virtual environment (at least, fr=
+om a
+>> user perspective, as I can understand why you did this for the container=
+).
+>>=20
+>> Maybe you can add a comment above this line saying:
+>>=20
+>> # change "/tmp/yocto-venv" to "./yocto-venv" if you want a persistent vi=
+rtual environment
+>>=20
+>> ?
+>>=20
 >
-> Cheers,
-> Quentin
+> I can do yet another sed in Containerfile to avoid telling the user to=20
+> do that and just have the path different in the container (see what we=20
+> do for zypper install commands). I tried mounting the volume=20
+> (yocto-docs) as an overlay within the container (:O in podman) but that=
+=20
+
+You mean yocto-venv?
+
+> didn't work, so we have to have the venv outside of the mounting point.
+
+Sure, I guess it's best if we can show the user the proper way of setting t=
+hings
+up while doing it our way.
+
+>> Also maybe, s/yocto-venv/yocto-docs-venv/?
+>>=20
 >
-> On 1/14/26 4:41 PM, Quentin Schulz wrote:
->> From: Quentin Schulz <quentin.schulz@cherry.de>
->>=20
->> BB_ENV_PASSTHROUGH_ADDITIONS variable doesn't contain BB_ENV_PASSTHROUGH
->> anymore since commit 0a33b560233b ("utils: remove BB_ENV_PASSTHROUGH
->> from preserved_envvars()") so let's fix this oversight.
->>=20
->> Reported-by: Robert P. J. Day <rpjday@crashcourse.ca>
->> Suggested-by: Richard Purdie <richard.purdie@linuxfoundation.org>
->> Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
->> ---
->>   doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst | 4 ++--
->>   1 file changed, 2 insertions(+), 2 deletions(-)
->>=20
->> diff --git a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.r=
-st b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
->> index af911f306..345da647e 100644
->> --- a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
->> +++ b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
->> @@ -286,8 +286,8 @@ overview of their function and contents.
->>         Specifies the internal list of variables to allow through from
->>         the external environment into BitBake's datastore. If the value =
-of
->>         this variable is not specified (which is the default), the follo=
-wing
->> -      list is used: :term:`BBPATH`, :term:`BB_PRESERVE_ENV`,
->> -      :term:`BB_ENV_PASSTHROUGH`, and :term:`BB_ENV_PASSTHROUGH_ADDITIO=
-NS`.
->> +      list is used: :term:`BBPATH`, :term:`BB_PRESERVE_ENV`, and
->> +      :term:`BB_ENV_PASSTHROUGH_ADDITIONS`.
->>  =20
->>         .. note::
->>  =20
->>=20
->> ---
->> base-commit: f23e186a75e71ba885b9b53a1dfda99af29c67b0
->> change-id: 20260114-env-passthru-456899fe5a83
->>=20
->> Best regards,
+> I was about to interject that because we use --system-site-packages, we=
+=20
+> could still run bitbake from within the venv and thus renaming it is=20
+> unnecessary, but then I tried building the docs locally on my f43 system=
+=20
+> and this series doesn't actually work.
+>
+> It complains about not being able to find sphinxcontrib.rsvgconverter=20
+> plugin while it definitely is installed!
+>
+> Then I remembered having a somewhat similar issue in my Python=20
+> pet-project when I had the same package installed twice, once=20
+> system-wide and once in a venv... Turns out that a package which=20
+> installs a command/script doesn't seem to work with venv (at least with=
+=20
+> my sample pool of... 2). It would always use the system's when using the=
+=20
+> command (and it'd be fine with python3 -m <package> as far as I remember)=
+.
+> sphinx-build actually is a script, c.f.=20
+> https://github.com/sphinx-doc/sphinx/blob/master/pyproject.toml#L99. So=
+=20
+> when our Makefile calls sphinx-build, it may very well be calling the=20
+> system package if there's one and not the command for the sphinx within=
+=20
+> the venv. This results in not being able to find the modules installed=20
+> in the venv (that is, sphinxcontrib.rsvgconverter). But Quentin, you=20
+> would say, simply replace sphinx-build with python3 -m sphinx and all=20
+> shall be well! Now the sphinx Python module used is indeed the one from=
+=20
+> the venv, but it cannot find the system modules anymore. If anyone has=20
+> any idea what's going on, let me know but I don't think I'll investigate=
+=20
+> this further.
+>
+> Instead, I'll NOT pass --system-site-packages to venv such that we only=
+=20
+> have packages from PyPI (which means, not being able to run BitBake from=
+=20
+> that venv). Now... this still doesn't resolve the issue of sphinx-build=
+=20
+> calling the module from the system if it exists...
 
-Looking good to me
+I did some tests:
 
-Reviewed-by: Antonin Godard <antonin.godard@bootlin.com>
+=E2=9E=9C  ~ mktemp -d
+/tmp/tmp.M4eSbciQhZ
+=E2=9E=9C  ~ cd /tmp/tmp.M4eSbciQhZ
+=E2=9E=9C  which sphinx-build
+/usr/bin/sphinx-build
+=E2=9E=9C  python -m venv .venv
+=E2=9E=9C  source .venv/bin/activate
+=E2=9E=9C  pip install sphinx >/dev/null
+=E2=9E=9C  which sphinx-build
+/usr/bin/sphinx-build
 
-Thanks!
+Maybe you're also hitting this. Now after running:
+
+=E2=9E=9C  rehash
+=E2=9E=9C  which sphinx-build
+/tmp/tmp.M4eSbciQhZ/.venv/bin/sphinx-build
+
+Looks like it's working now. rehash seems specific to zsh in my case, bash =
+does
+not know this command. But bash does not need to rehash, it works out of th=
+e box
+for me with bash.
+
+> So I plan to change sphinx-build to python3 -m sphinx in our Makefile to
+> work-around that. Any objection? Did I miss something or get something wr=
+ong
+> maybe?
+
+I thought of doing:
+
+diff --git a/documentation/tools/containerfiles/Containerfile.apt b/documen=
+tation/tools/containerfiles/Containerfile.apt
+index a573786f0..0861354fb 100644
+--- a/documentation/tools/containerfiles/Containerfile.apt
++++ b/documentation/tools/containerfiles/Containerfile.apt
+@@ -17,9 +17,9 @@ COPY --chmod=3D777 ${DOCS_PDF} /temp/host_packages_docs_p=
+df.sh
+ RUN ln -fs "/usr/share/zoneinfo/$TZ" /etc/localtime \
+  && apt-get update \
+  && apt-get install -y sudo \
+- && if [ "$INCLUDE_ESSENTIAL_PACKAGES" =3D "1" ]; then yes | /temp/host_pa=
+ckages_essential.sh; fi \
+- && yes | /temp/host_packages_docs.sh \
+- && yes | /temp/host_packages_docs_pdf.sh \
++ && if [ "$INCLUDE_ESSENTIAL_PACKAGES" =3D "1" ]; then yes | bash /temp/ho=
+st_packages_essential.sh; fi \
++ && yes | bash /temp/host_packages_docs.sh \
++ && yes | bash /temp/host_packages_docs_pdf.sh \
+  && apt-get --yes autoremove \
+  && apt-get clean \
+  && rm -rf /temp
+
+Or add a shebang to the snippets=E2=80=A6 but that makes them non "copy-pas=
+teable".
+
+So, yes, I vote for "python -m sphinx" too! Seems like a good solution to m=
+e :)
+
 Antonin
 
