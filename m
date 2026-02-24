@@ -1,170 +1,84 @@
-Return-Path: <foss@0leil.net>
+Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EA82FEEC2B5
-	for <webhook@archiver.kernel.org>; Tue, 24 Feb 2026 16:33:04 +0000 (UTC)
-Received: from smtp-bc09.mail.infomaniak.ch (smtp-bc09.mail.infomaniak.ch [45.157.188.9])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.24392.1771950778916101292
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 501DCF4BB65
+	for <webhook@archiver.kernel.org>; Tue, 24 Feb 2026 17:30:45 +0000 (UTC)
+Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.25852.1771954237039370833
  for <docs@lists.yoctoproject.org>;
- Tue, 24 Feb 2026 08:32:59 -0800
+ Tue, 24 Feb 2026 09:30:37 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@0leil.net header.s=20231125 header.b=WTl4gjY9;
- spf=pass (domain: 0leil.net, ip: 45.157.188.9, mailfrom: foss+yocto@0leil.net)
-Received: from smtp-4-0001.mail.infomaniak.ch (unknown [IPv6:2001:1600:7:10::a6c])
-	by smtp-4-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4fL3DT29Z0zfsJ;
-	Tue, 24 Feb 2026 17:32:57 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=0leil.net;
-	s=20231125; t=1771950777;
-	bh=6dNsCMOiJRiigo0ZKnmpc3wIHjKRuCY7d/l8YwVSxnM=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=WTl4gjY9a/Va32t1mB9P3kE2cku9Cj2uIbZmWH/Cpl1GZ1kAP/bolq4dshR35wL2I
-	 DH7sY2aAaCIig5T28Gn0C2u7TOC7w/FLudxYYcnZr+EQ2+mqXuX827iKMQNlNo++Y0
-	 womgJ0i0UijgxRe+qSau5c1v3Tyk1W20vgitaXY+NLkPHMQEsHLk3JPc9MsCrP/a9R
-	 g3ymTuUzz365Hpo+bxV3kNo0tiZByfgy422geqiUEEPFF9toMNfjDHdq53bHBZkxAH
-	 mrEQNaycjsH0aWbDapUMLv0LVnvpv/leSHxIqwXi/K0poA1D1NV65jeJ8cId4zsT0g
-	 3AvatAF/6iazQ==
-Received: from unknown by smtp-4-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4fL3DS5q7MzYMl;
-	Tue, 24 Feb 2026 17:32:56 +0100 (CET)
-From: Quentin Schulz <foss+yocto@0leil.net>
-Date: Tue, 24 Feb 2026 17:32:38 +0100
-Subject: [PATCH v5 3/4] consistently use pip packages for all distros
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=dJ2KjgOE;
+ spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
+	To:From:Date:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=jUiSpHhrIcmMwFdWI8Qq9q6CwHEYqifuPTYFpdt458s=; b=dJ2KjgOESecs66JaUDdmXe/8pZ
+	NWsVgMH1iXawFdUmmUMviSgebAXc0GsLTM1gd5zzG7wuhGzRUr75Iex5jJQ5u6u7eo4bQA/0vjDfg
+	nGn9gWTRRQ1vQ9rRMuzorrmPK+2kI161IT144jFega+RwX2xXoO01b+1c8tfI/wDnp+9e3+CW3mUD
+	vohdlZSaDpUM2Q6F0NsXGXnYl2k3Q2GNA1mQ1Qp5agSffWZEIhlIKhdv8etpCXm56lAZGjc9i46DX
+	cwLf7C11KvxK1aRxcMFX7zvu8cEduak8KHLKq4uzprfG2fXMNyB39Qi+fkeL3av3gxIzQ1ueF9yda
+	LgXy8jkA==;
+Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:56478 helo=rday)
+	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.99.1)
+	(envelope-from <rpjday@crashcourse.ca>)
+	id 1vuwF1-0000000054V-35Mu
+	for docs@lists.yoctoproject.org;
+	Tue, 24 Feb 2026 12:30:36 -0500
+Date: Tue, 24 Feb 2026 12:32:53 -0500 (EST)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+To: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: [PATCH] dev-manual: delete references to "tar" package format
+Message-ID: <a18346b3-9fc5-59c2-a016-bf57ad06048a@crashcourse.ca>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260224-fix-make-multi-target-v5-3-7ebf281618b4@cherry.de>
-References: <20260224-fix-make-multi-target-v5-0-7ebf281618b4@cherry.de>
-In-Reply-To: <20260224-fix-make-multi-target-v5-0-7ebf281618b4@cherry.de>
-To: docs@lists.yoctoproject.org
-Cc: Quentin Schulz <quentin.schulz@cherry.de>, 
- Antonin Godard <antonin.godard@bootlin.com>
-X-Mailer: b4 0.15-dev-47773
-X-Infomaniak-Routing: alpha
+Content-Type: text/plain; charset=US-ASCII
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
+X-AntiAbuse: Original Domain - lists.yoctoproject.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - crashcourse.ca
+X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 24 Feb 2026 16:33:04 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8980
+ <docs@lists.yoctoproject.org>; Tue, 24 Feb 2026 17:30:45 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8982
 
-From: Quentin Schulz <quentin.schulz@cherry.de>
 
-Until now, Debian and Ubuntu had special instructions for installing
-Python packages to build the docs. Specifically, the packages that all
-other distros are installing via pip were installed from the package
-feed (apt).
+There is no "tar" packaging format anymore, so delete these
+references.
 
-In the next commit, a new Python module will be required, which isn't
-available in the package feed. We thus have two options, have a pip3
-Debian/Ubuntu-specific set of instructions to install this one package,
-or migrate packages currently installed through the package manager to
-use pip like other distros. To lower maintenance burden and the
-possibility of missing to update both "generic" and "Debian/Ubuntu"
-variants of pip instructions, the latter was chosen.
+Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
 
-Suggested-by: Antonin Godard <antonin.godard@bootlin.com>
-Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
 ---
- documentation/ref-manual/system-requirements.rst         |  3 +++
- documentation/tools/build-docs-container                 |  4 +++-
- documentation/tools/containerfiles/Containerfile.apt     | 14 ++++++++++++++
- documentation/tools/host_packages_scripts/ubuntu_docs.sh |  2 +-
- 4 files changed, 21 insertions(+), 2 deletions(-)
 
-diff --git a/documentation/ref-manual/system-requirements.rst b/documentation/ref-manual/system-requirements.rst
-index f9f32f2a8..e7c1c3916 100644
---- a/documentation/ref-manual/system-requirements.rst
-+++ b/documentation/ref-manual/system-requirements.rst
-@@ -171,6 +171,9 @@ Here are the packages needed to build Project documentation manuals:
- .. literalinclude:: ../tools/host_packages_scripts/ubuntu_docs.sh
-    :language: shell
- 
-+.. literalinclude:: ../tools/host_packages_scripts/pip3_docs.sh
-+   :language: shell
-+
- In addition to the previous packages, here are the packages needed to build the
- documentation in PDF format:
- 
-diff --git a/documentation/tools/build-docs-container b/documentation/tools/build-docs-container
-index 23c3dfe33..f2f54044c 100755
---- a/documentation/tools/build-docs-container
-+++ b/documentation/tools/build-docs-container
-@@ -115,6 +115,7 @@ main ()
-       essential=ubuntu_essential.sh
-       docs=ubuntu_docs.sh
-       docs_pdf=ubuntu_docs_pdf.sh
-+      pip3=pip3_docs.sh
-       ;;
-     "fedora:39"*|\
-     "fedora:40"*|\
-@@ -151,6 +152,7 @@ main ()
-       essential=ubuntu_essential.sh
-       docs=ubuntu_docs.sh
-       docs_pdf=ubuntu_docs_pdf.sh
-+      pip3=pip3_docs.sh
-       ;;
-     *)
-       echo "$image not supported!"
-@@ -166,7 +168,7 @@ main ()
-     --build-arg ESSENTIAL="host_packages_scripts/$essential" \
-     --build-arg DOCS="host_packages_scripts/$docs" \
-     --build-arg DOCS_PDF="host_packages_scripts/$docs_pdf" \
--    --build-arg PIP3="host_packages_scripts/${pip3:-}" \
-+    --build-arg PIP3="host_packages_scripts/$pip3" \
-     --file "$SCRIPT_DIR/containerfiles/$containerfile" \
-     "$SCRIPT_DIR"
- 
-diff --git a/documentation/tools/containerfiles/Containerfile.apt b/documentation/tools/containerfiles/Containerfile.apt
-index a573786f0..7ee168be1 100644
---- a/documentation/tools/containerfiles/Containerfile.apt
-+++ b/documentation/tools/containerfiles/Containerfile.apt
-@@ -1,10 +1,22 @@
- ARG ARG_FROM=debian:12 # default value to avoid warning
- FROM $ARG_FROM
- 
-+# RUN . ./yocto-docs-venv/bin/activate doesn't work because env variables set
-+# in RUN don't persist, so set up the virtualenv manually ahead of time.
-+# Unsetting env variables in Containerfile is difficult, so we hope it works
-+# fine without doing that for PYTHONHOME (see activate script content).
-+# Note that the actual location depends on WORKDIR at this layer in the
-+# container, and it must match the pwd when pip3_docs.sh is run in a later
-+# layer. This *must* be outside of any mount point otherwise it won't be
-+# available within the container.
-+ENV VIRTUAL_ENV=$PWD/yocto-docs-venv
-+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
-+
- ARG INCLUDE_ESSENTIAL_PACKAGES=0
- ARG ESSENTIAL=ubuntu_essential.sh
- ARG DOCS=ubuntu_docs.sh
- ARG DOCS_PDF=ubuntu_docs_pdf.sh
-+ARG PIP3=pip3_docs.sh
- 
- ENV DEBIAN_FRONTEND=noninteractive
- ARG TZ=Europe/Vienna
-@@ -13,6 +25,7 @@ ARG TZ=Europe/Vienna
- COPY --chmod=777 ${ESSENTIAL} /temp/host_packages_essential.sh
- COPY --chmod=777 ${DOCS} /temp/host_packages_docs.sh
- COPY --chmod=777 ${DOCS_PDF} /temp/host_packages_docs_pdf.sh
-+COPY --chmod=777 ${PIP3} /temp/pip3_docs.sh
- 
- RUN ln -fs "/usr/share/zoneinfo/$TZ" /etc/localtime \
-  && apt-get update \
-@@ -20,6 +33,7 @@ RUN ln -fs "/usr/share/zoneinfo/$TZ" /etc/localtime \
-  && if [ "$INCLUDE_ESSENTIAL_PACKAGES" = "1" ]; then yes | /temp/host_packages_essential.sh; fi \
-  && yes | /temp/host_packages_docs.sh \
-  && yes | /temp/host_packages_docs_pdf.sh \
-+ && yes | /temp/pip3_docs.sh \
-  && apt-get --yes autoremove \
-  && apt-get clean \
-  && rm -rf /temp
-diff --git a/documentation/tools/host_packages_scripts/ubuntu_docs.sh b/documentation/tools/host_packages_scripts/ubuntu_docs.sh
-index c322b61e4..db0743021 100644
---- a/documentation/tools/host_packages_scripts/ubuntu_docs.sh
-+++ b/documentation/tools/host_packages_scripts/ubuntu_docs.sh
-@@ -1 +1 @@
--sudo apt install git librsvg2-bin locales make python3-saneyaml python3-sphinx-rtd-theme python3-sphinx-copybutton sphinx
-+sudo apt install git librsvg2-bin locales make python3-saneyaml python3-pip python3-venv
+diff --git a/documentation/dev-manual/packages.rst b/documentation/dev-manual/packages.rst
+index a7c95a16e..4c94ffd48 100644
+--- a/documentation/dev-manual/packages.rst
++++ b/documentation/dev-manual/packages.rst
+@@ -565,12 +565,12 @@ variable to specify the format:
 
--- 
-2.53.0
+       PACKAGE_CLASSES ?= "package_packageformat"
 
+-   where packageformat can be "ipk", "rpm",
+-   "deb", or "tar" which are the supported package formats.
++   where packageformat can be "ipk", "rpm", or
++   "deb" which are the supported package formats.
+
+    .. note::
+
+-      Because the Yocto Project supports four different package formats,
++      Because the Yocto Project supports three different package formats,
+       you can set the variable with more than one argument. However, the
+       OpenEmbedded build system only uses the first argument when
+       creating an image or Software Development Kit (SDK).
 
