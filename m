@@ -1,121 +1,203 @@
-Return-Path: <rpjday@crashcourse.ca>
+Return-Path: <quentin.schulz@cherry.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1222DE9B262
-	for <webhook@archiver.kernel.org>; Tue, 24 Feb 2026 12:56:00 +0000 (UTC)
-Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.19554.1771937753692841720
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 55A1AE9B267
+	for <webhook@archiver.kernel.org>; Tue, 24 Feb 2026 13:56:50 +0000 (UTC)
+Received: from AM0PR02CU008.outbound.protection.outlook.com (AM0PR02CU008.outbound.protection.outlook.com [52.101.72.2])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.20605.1771941404595537157
  for <docs@lists.yoctoproject.org>;
- Tue, 24 Feb 2026 04:55:54 -0800
+ Tue, 24 Feb 2026 05:56:46 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=v9r0FObE;
- spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:References:
-	Message-ID:In-Reply-To:Subject:cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=fBDdZ9yCWQMHHC81Z1iR+p2SG/7fckVf49ipawrHdrI=; b=v9r0FObEiJb1OovDgkSKMPoaeJ
-	kR978c5KRshZPviXxD6Er5yBn8O1RoF7NpoZ2XkmuNzd0O8ZWSHj3acxMemtDHndMxT1nD0kEbwVZ
-	bKcz/VavWtdYZBWP7la1Mch55KLfV0/YSaaBo//vjQ+9wgUuZZV6OBIrZeNYODfe5LZOjfLZLgpZv
-	8C/pDphIPzWgCzIz92PSH5e1XUOmVUTl6Jeb97D/EZxQXS34Jbd50CWWz5mOzT6R4dZ0ufRi+4gFV
-	cL52KlsS2PLB62pkc8wsqhg3eIHqwag5gSmncV5YaghtGL+yzW0y/TrcPs2VKmQ+FhQXXIns8jEjA
-	Z24yCsfA==;
-Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:39972 helo=rday)
-	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.1)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1vurx9-00000003Kx9-3lem;
-	Tue, 24 Feb 2026 07:55:52 -0500
-Date: Tue, 24 Feb 2026 07:58:07 -0500 (EST)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: antonin.godard@bootlin.com
-cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: Re: [docs] [PATCH] variables.rst: expand explanation of RSUGGESTS
-In-Reply-To: <DGN78E65FUWN.2BTR1KCHXV2VN@bootlin.com>
-Message-ID: <1b69d976-4159-354d-a283-bd06bedef3b7@crashcourse.ca>
-References: <1ee12fbd-a5c7-7b14-a558-cd6dda9e539e@crashcourse.ca> <DGN78E65FUWN.2BTR1KCHXV2VN@bootlin.com>
+ dkim=pass header.i=@cherry.de header.s=selector1 header.b=A+ZT7MMz;
+ spf=pass (domain: cherry.de, ip: 52.101.72.2, mailfrom: quentin.schulz@cherry.de)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=nSR1I05J+ZqEB2piQ83F2mjj8rX4xDRP8Eb+K36KsTe1X7cBLILov5hf1UWFBYuoipUYwDZ0xVum+rB0LJ5tYQHG4HWPARhVIQ75/X/AkZxhXv9Zo7dzLSMkh7XA/o3uV5PZrKIr527W5Ie0KDz/9jbfFMWDRwwwPHZXHG/rQX61LBz3XvS02RjfN1ckeUyhP3cNM6W3UL/QRZ5gRzguU1+bkbA2LZz33vaWnEH0FtPPba+QZJR5fwBiAFdp/r9/o9hAu8zRYwMtVl5WIpw0mpvzCso7KEAmDp2vGj/Y5IbNJrwW1S9DdkSulWgKS75UxlQS8zGbDZe/N4Id9ujh0w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jkzdvEb+F480YYFAdAgE6MVA7T3b/kaueVCTBYQ2oGE=;
+ b=s7IxxaMZg4NeT7LtYXPWdn5bsSDmZTp6XUBb1AKb151OV44x0i0iwHbSNkEDW8iKkb6iNrP7g9W5avAqDQaFDNBNPJdRkeg2QuElLPcztBTcLrNcK9ScN1YtE81pc0PGVa5EuszhUstPwVNK5OuKAr1z/RkLoVeOT6PX5Pvihd+gWRyuCfuE5aF7j08+UjslzZONoE04s9sPgQYS1dFlDhEnw5BM3i+rrdpyp5ful8rLJNc1V/pKMN5RQA7suq7oBZ/YItj0xVWlAfvBp57wtRrS1pqYjjXDcb6SJDDMUBYrfio/k3f0x9bpVsXhfdnbVmfWMX0ekFpO4xOzs0Ssmw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
+ dkim=pass header.d=cherry.de; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jkzdvEb+F480YYFAdAgE6MVA7T3b/kaueVCTBYQ2oGE=;
+ b=A+ZT7MMz5PNNw4wfiFwi+OEyl9VfRuDPsZE6I/5TWljUzrC29izKGbN+wqVlETocOYM9ltrpQVuK0hSRmD4vqlbqyj1K5XdqmwLd2IcOapiGpTiMh9n73Bm2Fk+emEVNIMlyqNsTAjDGKF7qanAjRucOsW+xZc3gpDjEiBbeYRU=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=cherry.de;
+Received: from GVXPR04MB12038.eurprd04.prod.outlook.com (2603:10a6:150:2be::5)
+ by PA6PR04MB11912.eurprd04.prod.outlook.com (2603:10a6:102:51a::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.22; Tue, 24 Feb
+ 2026 13:56:39 +0000
+Received: from GVXPR04MB12038.eurprd04.prod.outlook.com
+ ([fe80::6c04:8947:f2f0:5e78]) by GVXPR04MB12038.eurprd04.prod.outlook.com
+ ([fe80::6c04:8947:f2f0:5e78%6]) with mapi id 15.20.9632.017; Tue, 24 Feb 2026
+ 13:56:38 +0000
+Message-ID: <72be7e47-abc9-4c4b-8e4d-6604bf154f31@cherry.de>
+Date: Tue, 24 Feb 2026 14:55:16 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [docs] [PATCH v4 1/3] use a venv for installing packages with pip
+To: Antonin Godard <antonin.godard@bootlin.com>, foss@0leil.net,
+ docs@lists.yoctoproject.org
+References: <20260216-fix-make-multi-target-v4-0-749e588cb7f5@cherry.de>
+ <20260216-fix-make-multi-target-v4-1-749e588cb7f5@cherry.de>
+ <DGHXUDE510VH.1JG9S6P90SNTG@bootlin.com>
+ <e41bdc41-be0f-4c85-bcbd-e00b10433336@cherry.de>
+ <DGN1TVXRNHW7.2TYSX3YXZYQB5@bootlin.com>
+ <808a63f9-77c1-4d61-8856-87277af3b894@cherry.de>
+Content-Language: en-US
+From: Quentin Schulz <quentin.schulz@cherry.de>
+In-Reply-To: <808a63f9-77c1-4d61-8856-87277af3b894@cherry.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR4P281CA0236.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:e9::10) To GVXPR04MB12038.eurprd04.prod.outlook.com
+ (2603:10a6:150:2be::5)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GVXPR04MB12038:EE_|PA6PR04MB11912:EE_
+X-MS-Office365-Filtering-Correlation-Id: aad3dd9a-70a0-4970-1ec2-08de73ac87fe
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|10070799003|366016;
+X-Microsoft-Antispam-Message-Info: 
+	=?utf-8?B?SFBsN1hVUkhYdFZLSmxKdVhveFFEWFpEZmQ1WTI4bFRVd3VLUmhzYzYrL3FK?=
+ =?utf-8?B?WlNLSnZibUVSbmpCb3VjNnBBRFNzYjMrYnB1NTdTSkpIMmVEMWtsUVdqeGgz?=
+ =?utf-8?B?V1VoTjkxSld0eGtFTXkzdWhvY2V5cVdUdGExM0p0UzRKN3NTbDNlRFVQRDhn?=
+ =?utf-8?B?SzRBWG5tVENvQnNad0I0eUJmaE9zNm1pWmxPaVdKYXorR2dRb0N0bW9ibm1p?=
+ =?utf-8?B?Y21yRDFvQXVIWVdvUzBZc05hdEczcFVpNGxncStFaE11THRGeTlxYkEzYWZp?=
+ =?utf-8?B?UEYzeTdSWm40bExJSGd3MWVuQnhWcjRGeXJvVnZLQVBudWYwR293cjdZMzZB?=
+ =?utf-8?B?MEFnRCsydXRkbDludmltSFl3ZU5QRDR3MGNSa1F5SjYyQ0dlbXFkVUJ3TGg3?=
+ =?utf-8?B?dVJ4NFRHMDRmZWhvSnZhUFJ3K2t2UWsxd3VzV0RBQVNkQ1hEbGNscG96aWo1?=
+ =?utf-8?B?UG1NT04xbThyanludjNKUStnU2RtVDNKOGNTN0w4NERXOWVNSkpJUVBDZ3JI?=
+ =?utf-8?B?TDd3RWVWK3RJdlh5YzlhYnl5R0pwN3RIZ1pNQVJLbVVxNThaamtpNllRVEtE?=
+ =?utf-8?B?ajBNYUg3cTlTZ0lDWGFaWlB5d3JZOTRhd1p1TEdpS201WUNmUzc4OGd6QndJ?=
+ =?utf-8?B?aTVva0FOdCtNcWxJMHQ0QzlaNmNTTUJGSDJGbkZzcHlJOEEzMTRhME41K0lr?=
+ =?utf-8?B?c2o0dWc2NHhJS3ltd2liQkwvaEIwb1RabUVYTUN1TEFWTVpaSzJPU01wWGly?=
+ =?utf-8?B?ZG1iSDBmNThaZjJQNWhkUi9ZME9NbEZxTW5HZlppNlZ4WFM1enRtcnUxdWxa?=
+ =?utf-8?B?eXpEbEc2aWZSZmhUMTVlY0c2VWRRa1FyZkM4Tk5oK2J4ais1elM4czdZK3cw?=
+ =?utf-8?B?YVJNWGt4UlVKTC81eUZrNmFZS251aWYxK2JPOUp1TTI3QVdKVVpWOGlXZzdV?=
+ =?utf-8?B?VjhMYjlhMUl4WTBTM2FmZUJRcklpbnV5MWk0eWR4aDBpZjRLdDN3WFRFTkFQ?=
+ =?utf-8?B?SHN4eHJmcjVWclFMdlozTUkyUW9lRmRBdWlOeFExaENsVkpLM2lrS0t0bUtR?=
+ =?utf-8?B?MXlUT2pMVjNFeGVaUk85V1kwdUphNVdRVzdBMHJWaDJ5bkc2aHJRSys1NWFK?=
+ =?utf-8?B?dW1sVFVMQnNvdmFlSDV2Rm1yWSt2RVpia2hFL0hmc0c1Z1dTS24zWHNtMGhr?=
+ =?utf-8?B?L3hBZTJBeEVoVXUwL2t0TmFlMjhoK3FpKy9wdzRsSTVERVI3WEd0SUcwNHJK?=
+ =?utf-8?B?TVZGZjZGQktqcHdlckFOU2xpeHZzRkdmemJoNmtNcUh0RjR1aXBVbmUzd2s4?=
+ =?utf-8?B?ajYzSnZaUnkxdDBEb1J1Ukp6SzVMMHpQUFpCcEU2M3JnNmM3OG4zNnlnVUhx?=
+ =?utf-8?B?RmZXbkxMSlFmUi9ZUjNucmZkMW9ia00vR3pLZ0tlNHlsQXdNQkdPa1ZRcytS?=
+ =?utf-8?B?S0NLdHB0NU1uNGpoeUM5QzZET0YvbytCUjdPc3NGTzY5ZEx2bjh4WEhkVzFn?=
+ =?utf-8?B?RjIrTGpKTlZ3NzRJcU5rUEUrY2liaG9GZ1J6RStDWmZBa1B4MXd3THhjeCs3?=
+ =?utf-8?B?Q3kvWnFhQVN1Y0libkkzNmxLZEZVSUNJcXJHN1ltbzRlOXFGUCtOKzhCaTVR?=
+ =?utf-8?B?cDFsV3gwLytjSk51WXU5K0hiZnVnZlBiZzFLZHZJSGdvWGhIelVmTXErQmt3?=
+ =?utf-8?B?aTJ2ZDNSN2JhMzJnNjlPa1FGdjg0VVE4WHVjL2dvK3dMS3EwZ1VBUUhGaHFo?=
+ =?utf-8?B?ZUtoSUlOYVBJVTJaNnBXaDR6V2FycDJxWk9hYk5OcitjQXMyOVFQc3N0ZXBz?=
+ =?utf-8?B?MVJoNkY2TzQ4Ri8zU2U3Q2Rhd1phY2FjRVlDVDVGRW9GL3hLZGF6ejdoRUdE?=
+ =?utf-8?B?ZzVQaGdPMjYvYXErVE4xc1BxOG1VRmVMdGVpd3MwaVQxNWJzbmN4UzFqZE9F?=
+ =?utf-8?B?TUt0aTBtR25KcTdLWWJ6dFJnQjNSeGRZQ3J5NlNKNTY2enAvTnI1NG80Ukwy?=
+ =?utf-8?B?NGt0S1VIVEw2M2hoU0MzRlRNYjVwaWtHUm9NeFEvMEdSV1BWcmVhZ3RxTTFT?=
+ =?utf-8?B?NnNOZTZHUDU1OEhHMUlCakFvOXMxV0EvRUE4ald0L3BhVGNXWUxLREFJUThI?=
+ =?utf-8?Q?a0zY=3D?=
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR04MB12038.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(10070799003)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?utf-8?B?dzNjclRIR1pHbHpyK3dNT2ROcWwxYWlPVFZTSW1maDFsRWNVYVJSVHZ2Mkh5?=
+ =?utf-8?B?YU5lUEJIVllNazZKUnViSThmSUwvQ2NjeFdxN2ZEd1E1eWVyQ3ZINEp1YTFE?=
+ =?utf-8?B?eFA4RkFXcFk3MFYzbUl0aytaZHl4OXFCSDVBdC9SbFFOaTRQc1hudm13NEJp?=
+ =?utf-8?B?cnJITEFEaENjaFc4NWV1ajNFT2ZvVnRCSnlOQXBSRnRDb0dKbDkxdStJNWlG?=
+ =?utf-8?B?czBYSXlTUjlNcE0zbkNOSFA1RVRZci92dS94NXVnY1Z6eEdJZ0RzbUJJWml2?=
+ =?utf-8?B?ZjhQSENTNmNnVjdkRklPc3dwSzU0MGkza3JFQkx5WGppZmpwSXdudDFrenE3?=
+ =?utf-8?B?bks4S1p3bU1sY1ZBNEpsaFdya3RiNFBxMUpqTStZNWdiYWFORFJWSnF3Wkh5?=
+ =?utf-8?B?NnNMMGVhN2JhU21rbkc3d3ZXOC92WjVxeUUvLzNoVmoyZmZJd2FpZDhGN1ps?=
+ =?utf-8?B?NXo2Szk5VEl4L0orb0ltY2hnRlBHR0dvSUpEbFpibDlhY0pIa2F3aVVrMzQ2?=
+ =?utf-8?B?VE9CV3ZmUytuRktwTWtTaEd6UmdWWjNJK0Zyc2xuU0pLWnlJc3FiSHZxVWQ3?=
+ =?utf-8?B?WExnc2QzZVdvUmdrUTlHbFBZU2JTRXFTQVJ1ME0zR2wxQUkyVy9QbjBEQWJz?=
+ =?utf-8?B?MDJablRoclJqMStOZ3lKVEhjaEVsK3ZiaXYxU04zNHlrdmF3NTlIby9GZUZj?=
+ =?utf-8?B?cVBVNHJyUUx0aElUSUN3dUtVdzZOeXV5UCtjc3FGWVBmQ1ZJWWYvK0tibzYr?=
+ =?utf-8?B?WTF1RmdNRm5PUmtOUkdWQUFKNVFXeXlRZDZQUjBMc1NYMURGb1hXSDJXUlRj?=
+ =?utf-8?B?SDJpS08wTFBPSkR4UDM5VjdJUG45L3NZdC9YTFpVMmFlVncwSEp6bmFhV2VT?=
+ =?utf-8?B?bUxod3dMV3ZuM25aU0doZFNEK3pMejNZQzRuVjJVM0I2Ylp4MmVEZmJlczJw?=
+ =?utf-8?B?S1dlMVI5ZEgrQUxrWkxPdVpMVERpUXZLRmh2dDBLam5WZWo2TkVYRE9jNkNo?=
+ =?utf-8?B?SWVVUjVzcG5jV3B1RmRQaXRuWGZiTnMwdXhzbjFZSG43dGJPYk1TOHpYeGcr?=
+ =?utf-8?B?VzR5cWUrQkNSdmx3T283cU5YRC9kOTQzTmVkQUtmVStXSFNNTGVyMUJBcVBn?=
+ =?utf-8?B?UC9heURORkd3RmNwd1lSVnp5a00zL1dCOHFzQ0FxOE02QXJSbGY2LzZac2Ns?=
+ =?utf-8?B?aXpVVjEwOGRyZWdGRkJ5NmlMU0Q2NVNrQVpadzlpelRTZHFpdzhWR3UyUFhn?=
+ =?utf-8?B?dlZhNmYrOS9NV2dxUjhQWitHRWZNeDJCZ3lHNDJQZ0wvNE5Tb2FKbFAzWHZo?=
+ =?utf-8?B?OG1nNFBkMW8walZBSTMrZVdLSHRJM0g5VzByTVlTZmhyaE9xSHFYU2dvNWhF?=
+ =?utf-8?B?VGRkQkd5QXovTldKakVFSEVIcU5XWUhXdHJlSVdTc3NWOWF0VkFqaE0ycW9C?=
+ =?utf-8?B?WlQzYmR3cFBwOWhJVmZkR2NDNWdJNWdZL29ORDBGWHlINFpVbnlmK0ZLKzRi?=
+ =?utf-8?B?MXVrTEZzSmxKSnA3Rm5EUURYKy9tSWlyOWgvRFJoeTFSZHhidFJhWjAvZ3VL?=
+ =?utf-8?B?TnAyYnVUazBHblRJQjR6ODJTbVpIc0xaZ2lPNzRBUC80QmRTZmRWNmpwejM0?=
+ =?utf-8?B?VmYxTHFzY3VvQW5uNjZsYW5HME9mRHQyNnhwUU5BREwzVXR3MjlybXlxZDQv?=
+ =?utf-8?B?ei9POWFyalpnNG5pRjRmM2pQSXFkYlpjQzhmVkxmUEtETmRyenc5Sno2OTU5?=
+ =?utf-8?B?Ylp0ZFpNK3NXc2xvd3JlUkpPOVJDSHVmWXZVb0dXS1BpQ0dWZEtsYWJvS2I1?=
+ =?utf-8?B?V1F0eWtGOUdZbWJKd0JuTHE4NTcrcHR4cGc4MUYxbUdTQ1A4RE5kemN4ZE9H?=
+ =?utf-8?B?THd6TThMVzN2Y0h5aTQ3RzNkT1NZVXc2THpwdWFMVitZbm9jV1RGejNzdnJk?=
+ =?utf-8?B?UXFzMnIwdUpzVDNnWmFBamFQdlNLd2hETmR1VkpSM1RCY0xtVlJnMjA2TXY5?=
+ =?utf-8?B?RTNWVExZMkp5bmcwak1SRHVYajZQcVBEMEZKK0NjSHdPb21qM0RtT0JzZVVL?=
+ =?utf-8?B?UmN6SjhjcWI4SUg3RzhEL1hyOTZyaUN5ek56a0V3eDV3ZFhzUFhOQzFXTnBV?=
+ =?utf-8?B?ZCt5dlBsY1ZzNkNIemhHQmh3SDN3N1RUMTFtNmxQR3huZlZOcHRjR1E3MnMv?=
+ =?utf-8?B?Y2lPaWpRWFJhSGhmQ3FUbTdjWjhsUGhxNjdrczNYV0RYQkdRVzlHQlplWFdZ?=
+ =?utf-8?B?K3dTYzN3TlF1NzdvMTA2czl0VUxtczM1eHJLczVCMEk5QTFJYXpLbG9mS1Q1?=
+ =?utf-8?B?akNER2NaZFB4ajdkREh1TkhpQWVOOVBjZVNLODREQjJHRFBEWHJRanBCYit5?=
+ =?utf-8?Q?ztHn7+k3oeOIDjzaAEHrxKl9M38PUtYK9XJWJ?=
+X-OriginatorOrg: cherry.de
+X-MS-Exchange-CrossTenant-Network-Message-Id: aad3dd9a-70a0-4970-1ec2-08de73ac87fe
+X-MS-Exchange-CrossTenant-AuthSource: GVXPR04MB12038.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Feb 2026 13:56:38.7625
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: bF3+IUKWCXI/VY5NAPiQfIIoKcWr8cJ6jr23XvFr1qqLv/mnzqi+UagXJKdI0m/MeC9JvImvHdTk1fE8Ku9bQ7pdJI/1nySQEYfXQWXHCKY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA6PR04MB11912
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 24 Feb 2026 12:56:00 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8969
+ <docs@lists.yoctoproject.org>; Tue, 24 Feb 2026 13:56:50 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8970
 
-On Tue, 24 Feb 2026, Antonin Godard via lists.yoctoproject.org wrote:
+Hi Antonin,
 
-> Hi,
->
-> On Tue Feb 24, 2026 at 1:15 PM CET, Robert P. J. Day wrote:
-> >
-> > Add that the RSUGGESTS variable would be processed only by a
-> > supporting package manager when installing packages from a
-> > package feed.
-> >
-> > Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
-> >
-> > ---
-> >
-> > diff --git a/documentation/ref-manual/variables.rst
-> > b/documentation/ref-manual/variables.rst
-> > index 208b5e43d..92476d509 100644
-> > --- a/documentation/ref-manual/variables.rst
-> > +++ b/documentation/ref-manual/variables.rst
-> > @@ -8361,7 +8361,9 @@ system and gives an overview of their function and contents.
-> >     :term:`RSUGGESTS`
-> >        A list of additional packages that you can suggest for installation
-> >        by the package manager at the time a package is installed. Not all
-> > -      package managers support this functionality.
-> > +      package managers support this functionality. This feature takes effect
-> > +      only when the package manager is being used to install packages on
-> > +      the target system from a package feed.
->
-> Could you add a link to the section explaining how to enable this?
->
-> """
-> See the :ref:`dev-manual/packages:Using Runtime Package Management` section of
-> the Yocto Project Development Tasks Manual for more information on the
-> package management feature.
-> """
+On 2/24/26 1:52 PM, Quentin Schulz via lists.yoctoproject.org wrote:
+> Hi Antonin,
+> 
+> On 2/24/26 9:28 AM, Antonin Godard wrote:
+>> Hi,
+>>
+>> On Mon Feb 23, 2026 at 6:33 PM CET, Quentin Schulz wrote:
+>>> Hi Antonin,
+>>>
+>>> On 2/18/26 9:18 AM, Antonin Godard wrote:
+>>>> Hi,
+>>>>
+>>>> On Mon Feb 16, 2026 at 12:26 PM CET, Quentin Schulz via 
+>>>> lists.yoctoproject.org wrote:
 
-  oh, man, did this just open up a can of worms. if you check that
-section:
+[...]
 
-https://docs.yoctoproject.org/dev-manual/packages.html#using-runtime-package-management
+> So... I'll be working on fixing sphinxcontrib-svg2pdfconverter and 
+> hopefully we don't have to wait too long for a v2.0.1 (or whatever the 
+> next version will be). This means we'll be able to use --system-site- 
+> packages again, which I think is neat.
+> 
 
-it has no reference to RSUGGESTS, so sending readers there might be
-less than useful. so should some explanation of RSUGGESTS be added
-there to provide context?
+See 
+https://github.com/missinglinkelectronics/sphinxcontrib-svg2pdfconverter/pull/34
 
-  and when i scroll to the top of that chapter:
+Do we want to wait for this to be merged before having a look at this 
+series again? This prevents us from using --system-site-packages, but we 
+could decide to not have it and force all Python packages for building 
+the docs to be taken only from the venv (which is what happens when 
+--system-site-packages is *NOT* passed to venv at creation time).
 
-https://docs.yoctoproject.org/dev-manual/packages.html#
+What do you think?
 
-the first section, "Excluding Package from an Image", mentions
-PACKAGE_EXCLUDE, but does not mention using IMAGE_INSTALL:remove,
-which is definitely used in places i've run across. should that also
-be mentioned as a way to exclude packages?
-
-  and if so, then that operation should also be mentioned in the
-explanation for IMAGE_INSTALL:
-
-https://docs.yoctoproject.org/ref-manual/variables.html#term-IMAGE_INSTALL
-
-  thoughts?
-
-rday
-
+Cheers,
+Quentin
 
