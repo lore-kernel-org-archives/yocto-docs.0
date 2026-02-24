@@ -1,207 +1,125 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C2151EFB815
-	for <webhook@archiver.kernel.org>; Tue, 24 Feb 2026 08:28:58 +0000 (UTC)
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.15941.1771921731176661064
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EBFCBE9B250
+	for <webhook@archiver.kernel.org>; Tue, 24 Feb 2026 12:05:09 +0000 (UTC)
+Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.18987.1771934699311185227
  for <docs@lists.yoctoproject.org>;
- Tue, 24 Feb 2026 00:28:51 -0800
+ Tue, 24 Feb 2026 04:04:59 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=uwYweqkV;
- spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 513FEC143E3
-	for <docs@lists.yoctoproject.org>; Tue, 24 Feb 2026 08:29:03 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id CC9FF5FD9D;
-	Tue, 24 Feb 2026 08:28:48 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A222B10368B4A;
-	Tue, 24 Feb 2026 09:28:47 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1771921728; h=from:subject:date:message-id:to:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=9wTihPh5cyLZTQDCj99fjjTqB6Jno85HhATMteyjFTw=;
-	b=uwYweqkVjfxQU2b4XkoVq/2eVvmR5kTrD8oO+xGgp6/DcAyQpGeAjWp+aZ3Bq4xfpdNr3t
-	FGxKBqfI+8SsZMjV8jmcL0fiBrVh9YdjCMyGemPM5LruSd/E45gIVYSuHSuip9NnLtpuEo
-	zqRKXwckIT+kLikpKRFpNFZ9iTIIupwL3sxt9jWeiF6kbsDqAl+E0pyfo0/fMBbTIsq9gw
-	ouyig8yRKDmrgxhEft6e2o4fdxLA9hr7EPd6gSRVwV4xcR+dYhA9rTJLcojTAb6NMUuS3I
-	nF6Zm9ug4N+TC5idIUs4Zmy4MrptH3mA8iK4kOowmy2WbStxT3hkXRwAIrzkIA==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 24 Feb 2026 09:28:47 +0100
-Message-Id: <DGN1TVXRNHW7.2TYSX3YXZYQB5@bootlin.com>
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: "Quentin Schulz" <quentin.schulz@cherry.de>, <foss@0leil.net>,
- <docs@lists.yoctoproject.org>
-Subject: Re: [docs] [PATCH v4 1/3] use a venv for installing packages with
- pip
-References: <20260216-fix-make-multi-target-v4-0-749e588cb7f5@cherry.de>
- <20260216-fix-make-multi-target-v4-1-749e588cb7f5@cherry.de>
- <DGHXUDE510VH.1JG9S6P90SNTG@bootlin.com>
- <e41bdc41-be0f-4c85-bcbd-e00b10433336@cherry.de>
-In-Reply-To: <e41bdc41-be0f-4c85-bcbd-e00b10433336@cherry.de>
-X-Last-TLS-Session-Version: TLSv1.3
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=aHbcmsqG;
+ spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:References:
+	Message-ID:In-Reply-To:Subject:cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=3ousFW1YZTQSFWvsuc2qBofBPTo2+kNIJ0JpJgJ+FVo=; b=aHbcmsqGKCAqBAReaSYpUgk9iW
+	JeMtFkeVPCXa/QEC2Xif6UE/M6nWFWwoxLj0wPfy+7t+2CcOrPgMVbRfDM0YPLx3dn3JpO9BCaP+r
+	e0KYGVw4kdGeOhnQj58oWmyvAZQnlLgo0oD948+AtH92Y9RvBbmcPuWkjk1ZO2y/8Qe3Off/Lo0T/
+	TTfq/aN5VdOhfDD0Ds9sZUKx+KqdkTeTpC+knwggzbj+/6jt9GsMfS0SDuOh3Pe+bXhCmHOhynqiI
+	NgjooxV+HeOZc+g8jumEq+KjEtvBgcizDL5ofXztApyWBvHLTZcTRCaeBDXs5U8b0HcTKSGCbBXSy
+	kmixQKOA==;
+Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:35116 helo=rday)
+	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.99.1)
+	(envelope-from <rpjday@crashcourse.ca>)
+	id 1vur9t-00000003CB8-3Uyn;
+	Tue, 24 Feb 2026 07:04:58 -0500
+Date: Tue, 24 Feb 2026 07:07:13 -0500 (EST)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+To: Richard Purdie <richard.purdie@linuxfoundation.org>
+cc: Alex Kiernan <alex.kiernan@gmail.com>, 
+    YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: Re: [docs] difference between RRECOMMENDS and RSUGGESTS?
+In-Reply-To: <ff39746bdf0eaac7cf872d98338ed29f7dfa3832.camel@linuxfoundation.org>
+Message-ID: <7ff8ebbb-4d27-4da3-f045-20c9e9795882@crashcourse.ca>
+References: <5196619c-a6b5-a5a6-42fd-eb78308e8ffc@crashcourse.ca>   <CAO5Uq5SBWEtnW1svMNDokxUCwG7ft7dcyP87XYHtHTcVqKJLYw@mail.gmail.com>   <22c37f16-7352-9f81-22fa-030a265c3b2e@crashcourse.ca>  <579e881ff1fd2cd2a3b7221aa0a22cc19fb13a3c.camel@linuxfoundation.org>
+  <991f2abb-0cea-6fb3-7203-e81c5641c9f6@crashcourse.ca> <ff39746bdf0eaac7cf872d98338ed29f7dfa3832.camel@linuxfoundation.org>
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="8323329-2003198723-1771934837=:2956956"
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
+X-AntiAbuse: Original Domain - lists.yoctoproject.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - crashcourse.ca
+X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 24 Feb 2026 08:28:58 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8964
+ <docs@lists.yoctoproject.org>; Tue, 24 Feb 2026 12:05:09 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8965
 
-Hi,
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-On Mon Feb 23, 2026 at 6:33 PM CET, Quentin Schulz wrote:
-> Hi Antonin,
+--8323329-2003198723-1771934837=:2956956
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+
+On Mon, 23 Feb 2026, Richard Purdie wrote:
+
+> On Mon, 2026-02-23 at 18:51 -0500, Robert P. J. Day wrote:
+> > On Mon, 23 Feb 2026, Richard Purdie via lists.yoctoproject.org wrote:
+> >
+> > > On Mon, 2026-02-23 at 13:13 -0800, Robert P. J. Day via lists.yoctoproject.org wrote:
+> > > > On Mon, 23 Feb 2026, Alex Kiernan wrote:
+> > > >
+> > > > > I'd guess (and I can't pretend to have checked extensively) that it's
+> > > > > the same as Debian's:
+> > > > >
+> > > > > * Recommends: <package list>Lists packages that would be found
+> > > > > together with this one in all but unusual installations. The package
+> > > > > maintenance software will warn the user if they install a package
+> > > > > without those listed in its Recommends field.
+> > > > > * Suggests: <package list>Lists packages that are related to this one
+> > > > > and can perhaps enhance its usefulness, but without which installing
+> > > > > this package is perfectly reasonable.
+> > > > >
+> > > > > The default is NO_RECOMMENDATIONS="" so you get RRECOMMENDS, but not
+> > > > > RSUGGESTS. If you have NO_RECOMMENDATIONS="1" I suspect they're
+> > > > > basically identical.
+> > > > >
+> > > > > On Sun, Feb 22, 2026 at 9:44 PM Robert P. J. Day via
+> > > > > lists.yoctoproject.org <rpjday=crashcourse.ca@lists.yoctoproject.org>
+> > > > > wrote:
+> > > > > >
+> > > > > >
+> > > > > >   the explanation for RSUGGESTS:
+> > > > > >
+> > > > > > https://docs.yoctoproject.org/ref-manual/variables.html#term-RSUGGESTS
+> > > > > >
+> > > > > > does not seem to explain how it differs from RRECOMMENDS:
+> > > > > >
+> > > > > > https://docs.yoctoproject.org/ref-manual/variables.html#term-RRECOMMENDS
+> > > >
+> > > >   what's missing is how to take advantage of a recipe's RSUGGESTS
+> > > > setting. unlike with RRECOMMENDS (which is installed by default, and
+> > > > you have variables to identify what you *don't* want), how does one
+> > > > use a recipe's RSUGGESTS variable? would i do something like:
+> > > >
+> > > >   IMAGE_INSTALL:append = "${RSUGGESTS:fubar}"
+> > > >
+> > > > to get fubar's RUGGESTS? or am i missing something? that should be
+> > > > explained in the variable reference.
+> > >
+> > > RSUGGESTS would only come into play when you're using a package manager
+> > > to install packages on the target system from a package feed.
+> >
+> >   ah, that clears it up, thanks. perhaps that should be added to the
+> > variable explanation in the reference.
 >
-> On 2/18/26 9:18 AM, Antonin Godard wrote:
->> Hi,
->>=20
->> On Mon Feb 16, 2026 at 12:26 PM CET, Quentin Schulz via lists.yoctoproje=
-ct.org wrote:
->> [...]
->>> diff --git a/documentation/tools/host_packages_scripts/pip3_docs.sh b/d=
-ocumentation/tools/host_packages_scripts/pip3_docs.sh
->>> index 907ecec55..9aa7f16fb 100644
->>> --- a/documentation/tools/host_packages_scripts/pip3_docs.sh
->>> +++ b/documentation/tools/host_packages_scripts/pip3_docs.sh
->>> @@ -1 +1,3 @@
->>> -sudo pip3 install sphinx sphinx_rtd_theme pyyaml sphinx-copybutton
->>> +python3 -m venv --clear --system-site-packages /tmp/yocto-venv
->>=20
->> I find /tmp a bit odd for installing a virtual environment (at least, fr=
-om a
->> user perspective, as I can understand why you did this for the container=
-).
->>=20
->> Maybe you can add a comment above this line saying:
->>=20
->> # change "/tmp/yocto-venv" to "./yocto-venv" if you want a persistent vi=
-rtual environment
->>=20
->> ?
->>=20
->
-> I can do yet another sed in Containerfile to avoid telling the user to=20
-> do that and just have the path different in the container (see what we=20
-> do for zypper install commands). I tried mounting the volume=20
-> (yocto-docs) as an overlay within the container (:O in podman) but that=
-=20
+> Perhaps you could propose a patch?
 
-You mean yocto-venv?
+  sure, i'll basically just use the wordage of yours above.
 
-> didn't work, so we have to have the venv outside of the mounting point.
-
-Sure, I guess it's best if we can show the user the proper way of setting t=
-hings
-up while doing it our way.
-
->> Also maybe, s/yocto-venv/yocto-docs-venv/?
->>=20
->
-> I was about to interject that because we use --system-site-packages, we=
-=20
-> could still run bitbake from within the venv and thus renaming it is=20
-> unnecessary, but then I tried building the docs locally on my f43 system=
-=20
-> and this series doesn't actually work.
->
-> It complains about not being able to find sphinxcontrib.rsvgconverter=20
-> plugin while it definitely is installed!
->
-> Then I remembered having a somewhat similar issue in my Python=20
-> pet-project when I had the same package installed twice, once=20
-> system-wide and once in a venv... Turns out that a package which=20
-> installs a command/script doesn't seem to work with venv (at least with=
-=20
-> my sample pool of... 2). It would always use the system's when using the=
-=20
-> command (and it'd be fine with python3 -m <package> as far as I remember)=
-.
-> sphinx-build actually is a script, c.f.=20
-> https://github.com/sphinx-doc/sphinx/blob/master/pyproject.toml#L99. So=
-=20
-> when our Makefile calls sphinx-build, it may very well be calling the=20
-> system package if there's one and not the command for the sphinx within=
-=20
-> the venv. This results in not being able to find the modules installed=20
-> in the venv (that is, sphinxcontrib.rsvgconverter). But Quentin, you=20
-> would say, simply replace sphinx-build with python3 -m sphinx and all=20
-> shall be well! Now the sphinx Python module used is indeed the one from=
-=20
-> the venv, but it cannot find the system modules anymore. If anyone has=20
-> any idea what's going on, let me know but I don't think I'll investigate=
-=20
-> this further.
->
-> Instead, I'll NOT pass --system-site-packages to venv such that we only=
-=20
-> have packages from PyPI (which means, not being able to run BitBake from=
-=20
-> that venv). Now... this still doesn't resolve the issue of sphinx-build=
-=20
-> calling the module from the system if it exists...
-
-I did some tests:
-
-=E2=9E=9C  ~ mktemp -d
-/tmp/tmp.M4eSbciQhZ
-=E2=9E=9C  ~ cd /tmp/tmp.M4eSbciQhZ
-=E2=9E=9C  which sphinx-build
-/usr/bin/sphinx-build
-=E2=9E=9C  python -m venv .venv
-=E2=9E=9C  source .venv/bin/activate
-=E2=9E=9C  pip install sphinx >/dev/null
-=E2=9E=9C  which sphinx-build
-/usr/bin/sphinx-build
-
-Maybe you're also hitting this. Now after running:
-
-=E2=9E=9C  rehash
-=E2=9E=9C  which sphinx-build
-/tmp/tmp.M4eSbciQhZ/.venv/bin/sphinx-build
-
-Looks like it's working now. rehash seems specific to zsh in my case, bash =
-does
-not know this command. But bash does not need to rehash, it works out of th=
-e box
-for me with bash.
-
-> So I plan to change sphinx-build to python3 -m sphinx in our Makefile to
-> work-around that. Any objection? Did I miss something or get something wr=
-ong
-> maybe?
-
-I thought of doing:
-
-diff --git a/documentation/tools/containerfiles/Containerfile.apt b/documen=
-tation/tools/containerfiles/Containerfile.apt
-index a573786f0..0861354fb 100644
---- a/documentation/tools/containerfiles/Containerfile.apt
-+++ b/documentation/tools/containerfiles/Containerfile.apt
-@@ -17,9 +17,9 @@ COPY --chmod=3D777 ${DOCS_PDF} /temp/host_packages_docs_p=
-df.sh
- RUN ln -fs "/usr/share/zoneinfo/$TZ" /etc/localtime \
-  && apt-get update \
-  && apt-get install -y sudo \
-- && if [ "$INCLUDE_ESSENTIAL_PACKAGES" =3D "1" ]; then yes | /temp/host_pa=
-ckages_essential.sh; fi \
-- && yes | /temp/host_packages_docs.sh \
-- && yes | /temp/host_packages_docs_pdf.sh \
-+ && if [ "$INCLUDE_ESSENTIAL_PACKAGES" =3D "1" ]; then yes | bash /temp/ho=
-st_packages_essential.sh; fi \
-+ && yes | bash /temp/host_packages_docs.sh \
-+ && yes | bash /temp/host_packages_docs_pdf.sh \
-  && apt-get --yes autoremove \
-  && apt-get clean \
-  && rm -rf /temp
-
-Or add a shebang to the snippets=E2=80=A6 but that makes them non "copy-pas=
-teable".
-
-So, yes, I vote for "python -m sphinx" too! Seems like a good solution to m=
-e :)
-
-Antonin
+rday
+--8323329-2003198723-1771934837=:2956956--
 
