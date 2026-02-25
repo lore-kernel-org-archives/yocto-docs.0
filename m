@@ -1,143 +1,184 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <quentin.schulz@cherry.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3A8B4FCEE99
-	for <webhook@archiver.kernel.org>; Wed, 25 Feb 2026 12:06:12 +0000 (UTC)
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.43809.1772021170545364638
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 01258FD3760
+	for <webhook@archiver.kernel.org>; Wed, 25 Feb 2026 14:03:34 +0000 (UTC)
+Received: from AM0PR02CU008.outbound.protection.outlook.com (AM0PR02CU008.outbound.protection.outlook.com [52.101.72.56])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.45639.1772028211301383831
  for <docs@lists.yoctoproject.org>;
- Wed, 25 Feb 2026 04:06:11 -0800
+ Wed, 25 Feb 2026 06:03:32 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=W3Kjh30/;
- spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 110801A1350
-	for <docs@lists.yoctoproject.org>; Wed, 25 Feb 2026 12:06:09 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id CA6405FDE6
-	for <docs@lists.yoctoproject.org>; Wed, 25 Feb 2026 12:06:08 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2F20910369284;
-	Wed, 25 Feb 2026 13:06:08 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1772021168; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=J6vqAGIYdeuJXWhR/dIgfBzwYsjlN9lE/8lWurynkfc=;
-	b=W3Kjh30//6zUKVpPyb27Ygot18YYJyqwrxmyqvsvNvAbvX3WxU5gsGkxQFwUZjtuoHy/uM
-	T7ApwzRkBJSO203AKJLVsg/HMyLIkRWWO9Y0ebSWCIk+QtdBPlqGXFBB1RMIlm4a41eAtE
-	u6KT8Cp4/qA+H0Ev31ZszMTG2BJWm6uD0SmRzr01OWkQM8FTIwLF0yTF1rNQkHlzBeRbF0
-	Zf4yPwaOMZJ8Y3cm5ge4Wp170hq3srid5ptP40sNXgDpLh09RxMkVK/lwnqWXuyZHyR3xO
-	aGrA+X/XBBzzIkxnYayIq631jslls4ZcuAfhwuZkye84fIpwNWxLzDCiV/5mYw==
-From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Wed, 25 Feb 2026 13:06:00 +0100
-Subject: [PATCH 2/2] Makefile: add a releases.json target
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+ dkim=pass header.i=@cherry.de header.s=selector1 header.b=fc+xJ/mV;
+ spf=pass (domain: cherry.de, ip: 52.101.72.56, mailfrom: quentin.schulz@cherry.de)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=UoWfqogTlgGXT4qA7I0wiMSvZqepoTHZ1E5uiozAi5Su8GkSBAdcezwEQ8TF7ILBXLFU/2voX5dniiy4xMG1ZquTocSIbbSB2lwrPcijo11TLbApvYztc5GP7mSZoP/M6QMLdDqoCNtZkbH1AObE0+ewkmIzMeygZBs/Cr/jkcqcXFTseYuLKT72psijLaS6vgiFRD1/mKD4lOcyobub7qCXj8Ta4vl0FhwBy2nNKQ54wyXo79TohropEw7bjEoDRdNUOSzzVbi1vvFdZQMTo6KBcIK2gWjNd1ZSwhlkScjzatzQ+Mo0n7uB8t/PNiVOUP+f8Y/rVpjW9t2teoFt3g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=4aOll75M5G5gD+1LL8BmiuoTacqo1n7bt34TEULrGcY=;
+ b=YF+tPLFE1lTaCZtnchnbHuraWw+ArlSMWpkVL0TxCyKdIMJWUv53I0+sc021+es6cZaNYtWKjAUtwFuipQyXm23e9CVQg2w6XWrxSoWYOpuJ6as+FTVVtad8zMLjt6CWZxBmWz4OcGlo3QXd6SJIgpItkaPD9Ywl+vFjwBIxn61L+Tue1lePya6X761qjdzGAUmkuRrxKE9qVKWIk3cBLciHu1ECKs94iJQ8DE+60nrHvtZMdzDK4ly5RJjsQWXlbtzRmEiiQeDLko90+ANHtuHYGL9ZjkkgR6tbbUO0bjA7AXGHLyyEEFVWJ0TQQBcgiL5dIuXDyoFReamd9yseCw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
+ dkim=pass header.d=cherry.de; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=4aOll75M5G5gD+1LL8BmiuoTacqo1n7bt34TEULrGcY=;
+ b=fc+xJ/mVzng4S9gT/DjUHboWbLggWc3ZGCZB7rz04J9tYkixdylLOCEB2YMyEuJT3rjmrzSQjyZ28PxS1uIFvSP3lFeXb9cfzjKOwmJZ4mptC5kilVaupInHM3EOEIUudKpy2rl/Vzszps/x2YjgMO1Df+qPaiFYWlbujplL/U4=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=cherry.de;
+Received: from GVXPR04MB12038.eurprd04.prod.outlook.com (2603:10a6:150:2be::5)
+ by VI2PR04MB11148.eurprd04.prod.outlook.com (2603:10a6:800:293::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.22; Wed, 25 Feb
+ 2026 14:03:24 +0000
+Received: from GVXPR04MB12038.eurprd04.prod.outlook.com
+ ([fe80::6c04:8947:f2f0:5e78]) by GVXPR04MB12038.eurprd04.prod.outlook.com
+ ([fe80::6c04:8947:f2f0:5e78%6]) with mapi id 15.20.9632.017; Wed, 25 Feb 2026
+ 14:03:24 +0000
+Message-ID: <48e559ac-b449-41eb-8e57-4b4e6a169faf@cherry.de>
+Date: Wed, 25 Feb 2026 15:03:04 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [docs] [PATCH v5 2/4] use a venv for installing packages with pip
+To: Antonin Godard <antonin.godard@bootlin.com>, foss@0leil.net,
+ docs@lists.yoctoproject.org
+References: <20260224-fix-make-multi-target-v5-0-7ebf281618b4@cherry.de>
+ <20260224-fix-make-multi-target-v5-2-7ebf281618b4@cherry.de>
+ <DGNZH9VNHWMR.16IZNV6J43Y9O@bootlin.com>
+Content-Language: en-US
+From: Quentin Schulz <quentin.schulz@cherry.de>
+In-Reply-To: <DGNZH9VNHWMR.16IZNV6J43Y9O@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260225-releases-json-v1-2-fee3f01b9197@bootlin.com>
-References: <20260225-releases-json-v1-0-fee3f01b9197@bootlin.com>
-In-Reply-To: <20260225-releases-json-v1-0-fee3f01b9197@bootlin.com>
-To: docs@lists.yoctoproject.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Antonin Godard <antonin.godard@bootlin.com>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4009;
- i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=M2h/niq7PX9sZUPyrhEAvA4e8XJSzVr8DQohoElNBeE=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpnuWt3i3hl+rFPd2BAqc8sKfga2fHzT8mBNjKL
- TXv1Z03feWJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaZ7lrQAKCRDRgEFAKaOo
- NsteD/wO2ay4f7JUKo/kWHe9tDZuZQ45DuNHbsQO9MSX01kIDYf2ADSfVacQRT6b//Boy/8YKj6
- CqBnJszfClTuixhenpIOpEJOWvjy9qj5h4VyJLM7pfP9u62YqAbhyRyXI+1SyD/PDbs+o3SgPRF
- xABLWkU/ttroZERJqgxQ8LG3TpUzkHBQyzd+rcMEI9wS+2LMtzRs/ObgKl26744I9AkEPgcePaA
- 9/eimFLrfCaUb6CWyKGu/yQu3KGJ7RdGYOopdTLsCpqfC+Uq7ELY3n7xEZn/5TPGDrWCRkf3329
- FqbcyPMToSBVzI22Z35DswicGfrnvQLbORGaJu0mBTqMv7yGPe/aPZO778nGEcL/iEJTSZhLwKl
- PKFwXSggGGQVb058grT3qS+5O0hQToyssjLY4m9gojQXz+c4yIwAdBsvELwtm5Paxs8V6l00sga
- oMYkvMsGtooVoiMQnl2NQlUNg1r+tx2QbIrmxyy1c/Ee0gPncS+g5hkGVD5+U/4enunB8Y9OYFf
- b9gO6HPBI3F7U3k23LkCOvTbL4Wnl2IBbnS0PgcH11FKWGx10X/QY0K0MkzvR+gMUBB1CKKdAg3
- l85I79BHK8SGgOVwYKK/su1nBTT3iqfX1cm4eI3UM3BWKzG05GHK6CNIvnEIuwg8wF3CFGkhay6
- B98/82kPoo6Wrjw==
-X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
- fpr=8648725188DD401BB9A0D3FFD180414029A3A836
-X-Last-TLS-Session-Version: TLSv1.3
+X-ClientProxiedBy: FR4P281CA0188.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:ca::13) To GVXPR04MB12038.eurprd04.prod.outlook.com
+ (2603:10a6:150:2be::5)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GVXPR04MB12038:EE_|VI2PR04MB11148:EE_
+X-MS-Office365-Filtering-Correlation-Id: 39e3964e-bf71-423b-a0a6-08de7476a3f2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024|7142099003;
+X-Microsoft-Antispam-Message-Info: 
+	i9zKCc7lZ48ccFsmwHIixT1qhutMsa9hM3q40GHeqr7aa6qJkpdjpW34DKUxvbl44EYHyJBEQHE4vHTQXUb55IgguwPhXcKblY1VSY119t0k8c4ED+xhESYxdOjrph1595fUoZcDEHmcK3j/XsIoJoWd+j6ko4gIrlrEsdxrdivi6cBFKwrKo0WNs0JEdrakck7rPDeAMjM4KqtduI8E/SAINi7RBJQL2uJzLYh3o//lBPuvrk/A0vLxHmmgF/uZPXy1UJMalrPxEOSXksp5Pl/TAL/U0Hlf0qPJBFUIGOC86IM9/XUqPce0eb808EUWrHqdFqOwNSJ1Ss/iSUtgJEcs0M6tAIYF/4RozZHukt2PoBxOhwkGL7Jn6tqMwZLGN8NbXnpQYTRkJ22GC3lslZHOvPradX5m5/Mji6eyhWKe8r54a+LTq60NAUzgC7fFlVRLdc93IU1X6BX1cHZIbbfkL/SUwGtOGeur36JO9KcrOJSFPMkqp2XQD+rcFA0U/DNKNjbq67WvNpwNI2emAiYP9mXBJJzVIi1ZRkBP8/WnCuZvMYAhBAgmP4aGtoY34qUF7qrwhKpXhRqITjMf/c+3T67YAWDOtgzOwN+N25HKO9sRh/U/H9GS+Kmhiyaxj0IXH1B6SjZhsAlx9kRmNxiKkTIq+p+6CYSbfh1qZAQidC0gQNXrwEPv3guTbTFcq7Wg8d/KClyhMnphGTGU7Law7NyN62DxTVf0i0K1EWU=
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR04MB12038.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(7142099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?utf-8?B?VFFVKytqaVdaZ0ltYjNzSUNvUTFqRXRlZGRWZXJpNWo5NVRKdWh6TjE2Qy9y?=
+ =?utf-8?B?ZE94UW9zZHVWVE1iNS9nQkRmUzN1STZhOWFpb2VvT0IvbHBHRW03enNyUHN1?=
+ =?utf-8?B?YWhFU0RxaEl1emJQTXlYTUt2MW9XK3QvTFB2RWRkT2JnKzNJblhTa1ozcTB4?=
+ =?utf-8?B?UmFCcklEMmlUaGU2Z2hKUDZxTXd4MHM2SU9EWmF2L2RmazFiRzUwK3JwN3NK?=
+ =?utf-8?B?SHpodmt3T1JTR0NpdlhjZDJRYWZqZk5oWUh1dUFSbjIzOWNFbytDNlo4cTRX?=
+ =?utf-8?B?S2hDcEpzRmwyN3hhdExhOVc1L0pNM284MzQvN1VNTnNFS2pSbnlSZk90MG01?=
+ =?utf-8?B?SU9QQ0J1UE54VmRSUmVYV0tTbER0TElPWWM4emRnSjNBOWpPb3NiNDEzQk1K?=
+ =?utf-8?B?Z0V2U2F1MzQwMmlGSDJ1Zy9VS2ZOT3BscERsZUthc2NOU0ZlSjd5Umt5c3dl?=
+ =?utf-8?B?czZGcS9KUktKQ1BUaVVISVBpYjAxQ1luSzdGTGdwcng2R0hEWDY4OXVkZ2pk?=
+ =?utf-8?B?YUZobWxmbU83Y1BQUXhWcENweGlzZVhmNnlNcUMxekIwQ0MwYk9ENGhpMi9X?=
+ =?utf-8?B?TmNiVFBQS2hOMHBTcDFRUXVkVU03R3h5ZGZCYnJMUElLUFpUWmdHdmpCNS80?=
+ =?utf-8?B?OE5aVHBnQlBlMU40aUtZZEZxMGt3TkdwWmtndHNINmNFOThQcVV1dEhFNVYx?=
+ =?utf-8?B?NHgyYytJTm1iYXlSM2twVWNvMUpQQ2J1eGtBbSt3YmFGYzU2R3dGZnA1YWRr?=
+ =?utf-8?B?SkRwYjdVTkdibmRCNDFBZGg3WVl0SXRIZ3RwWHM2OTVZM1Zjcjl0UUJCVjYx?=
+ =?utf-8?B?eGlVYU5mTUx3QVFJczZOUEV4Rm01eXU5WHRLUWxJK0c0NDJzWCtmd0JTTUVx?=
+ =?utf-8?B?UEJSY0ZQWW94MFpPeGx0MDI2QU1jdkxVUldxUkV3ejhqWUdXTVF4Zk1ycUtk?=
+ =?utf-8?B?TDVBYWNVeW1ldWQ0WkJBVy9GdTNMaFRsK1BKM251Y1BQWE5mQkMza3laemVs?=
+ =?utf-8?B?MW52ZGRkdXdMYWEydXFiVEJKWlRZTHhRcmx2MVZ4aFJKSC9PcTgwQ2doNExt?=
+ =?utf-8?B?Y0RXMGRPWHNUc0taN1lJYXhIWlRiVlNoUEwwd3NSWE1VRldhOXhlR1lsRGE5?=
+ =?utf-8?B?bVZSSFc4SU1ncEF2b3VqQ3FGM3UxTEdGRHdnM2xMc1oxVDRIRHpkanBnTFZv?=
+ =?utf-8?B?TEtPRW5iWmk2T2M5Z0pmNkxTTDk5NDJ4dE9FbytkY2psT0xtNlZUelQ4Q0RQ?=
+ =?utf-8?B?NWQwVFdBODZvYlJKcDc1QzZ3UVZHd1B3NWgxV1VsV2NvS1VoSXBmVmxCNWxS?=
+ =?utf-8?B?WmdZUTZNYUZDQ0UzdFV0NENwVGlKMlpUeXlXb0o5MVlMQU54NVZJdUhHdnF1?=
+ =?utf-8?B?Qnd2Zk5pOHI1bStoNjN0NVlWMUtWSmtOQXVIQzMwd2FyUnJkZFlHbytuS0Iy?=
+ =?utf-8?B?WTg5R09Qd3RqY3Rjbk1ncDMyZVhmcFllbGFJenpWeHE2RG5TYnJqR1dqbENF?=
+ =?utf-8?B?eWR2bng3NHBWcGdFWmFlWTVNZnFJemdja1JRUmp0RCtSSHlscURzdE41Smw4?=
+ =?utf-8?B?UVVocC9OeC93UXB6bjloT20yeElrUzZjUlZnTTRuVWJTdkJRT1BUTmtQTU9O?=
+ =?utf-8?B?SFJQME55MkpzRkRWaUxzekN6RmcwR0w4R1JFdmtpUHA2VCtKeWlvN0lWa2x2?=
+ =?utf-8?B?N2RTWG9EZGRQVHg5MGNjcm9tM29IaXNzbEhkT2xBMFVMZkFnZXlkSWdONjli?=
+ =?utf-8?B?VHczdzhBTUhXZUNxa2VsaVlocE9GYXYrL0hFWnp1dkZFZ2VPQmlWNUdDdzZl?=
+ =?utf-8?B?aVM2d2tnaGVVNWF3S2xZZHlZZzg0QmNrMkZvamE3NUNPVGllOEl2WVE0am5q?=
+ =?utf-8?B?cFR2MWVZNmgxN2hZeDFTck80VkYvc3NSRGxrNDNhSEVENTRpaW9KRUpNMmhM?=
+ =?utf-8?B?eDZuZFB1M2piVUZSTnpTVWJoRVJCK25hMXVUQUdKS0lQdWI3OExFcHVJellM?=
+ =?utf-8?B?d0p1ZXpiR2Z4bUNmQzZYOEQ0M0QzL09WMGVtTEpRSktXU0lWRU5DRGhTdXdx?=
+ =?utf-8?B?QzRkY3NLVXM2Zi90eURWOGhUcXF0R1JLbnZUN2xCODBNdldtR0dQRFJETlU3?=
+ =?utf-8?B?and5YzJxekF5VnNXSFQ4dGVmQkhiRVpjSFkyUnNlRWFQcHFubFB3cXp5OEtw?=
+ =?utf-8?B?b24rSHNabmFxZGxoVVRSOHNJSGNBazhCOUtCYi9kRHQ0VTBrRHI0MzNQb2pS?=
+ =?utf-8?B?NnRsWGs2N3llS3lDeUppNFA2aFF4K200ZHd6NW91b0ZxM3hvaGh3VXk1Wk1q?=
+ =?utf-8?B?cVFHUWpMVmVPK1lxYWxMVVpCZDU1VWhmbVNqeUJZNlhuQkI2NGhDQT09?=
+X-OriginatorOrg: cherry.de
+X-MS-Exchange-CrossTenant-Network-Message-Id: 39e3964e-bf71-423b-a0a6-08de7476a3f2
+X-MS-Exchange-CrossTenant-AuthSource: GVXPR04MB12038.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Feb 2026 14:03:23.9806
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: lLcbrjijAuNZrrbb9mCFC4krpj54BUg2qGTWX5PVeTjJaR8aC0eHKVQLmOgjxxsevo/V6Tgq8FvS6zsOTXRy+RUKQwxzUVigIUzb431ReKM=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB11148
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 25 Feb 2026 12:06:12 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8986
+ <docs@lists.yoctoproject.org>; Wed, 25 Feb 2026 14:03:33 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/8988
 
-Add a new releases.json target which can be used to update the
-releases.json file manually. It is called from the publish target only
-(which is the one used on the Autobuilder).
+Hi Antonin,
 
-A warning is printed when the file is not up-to-date anymore.
+On 2/25/26 11:50 AM, Antonin Godard wrote:
+> On Tue Feb 24, 2026 at 5:32 PM CET, Quentin Schulz via lists.yoctoproject.org wrote:
+> [...]
+>> diff --git a/documentation/tools/containerfiles/Containerfile.dnf b/documentation/tools/containerfiles/Containerfile.dnf
+>> index fd47fde34..12d97ef6c 100644
+>> --- a/documentation/tools/containerfiles/Containerfile.dnf
+>> +++ b/documentation/tools/containerfiles/Containerfile.dnf
+>> @@ -1,6 +1,17 @@
+>>   ARG ARG_FROM=fedora:40 # default value to avoid warning
+>>   FROM $ARG_FROM
+>>   
+>> +# RUN . ./yocto-docs-venv/bin/activate doesn't work because env variables set
+>> +# in RUN don't persist, so set up the virtualenv manually ahead of time.
+>> +# Unsetting env variables in Containerfile is difficult, so we hope it works
+>> +# fine without doing that for PYTHONHOME (see activate script content).
+>> +# Note that the actual location depends on WORKDIR at this layer in the
+>> +# container, and it must match the pwd when pip3_docs.sh is run in a later
+>> +# layer. This *must* be outside of any mount point otherwise it won't be
+>> +# available within the container.
+>> +ENV VIRTUAL_ENV=$PWD/yocto-docs-venv
+> 
+> This produces a warning with docker:
+> 
+>   1 warning found (use docker --debug to expand):
+>   - UndefinedVar: Usage of undefined variable '$PWD' (line 12)
+> 
 
-Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
----
- documentation/Makefile                                      | 9 +++++++--
- documentation/tools/host_packages_scripts/almalinux_docs.sh | 2 +-
- documentation/tools/host_packages_scripts/fedora_docs.sh    | 2 +-
- documentation/tools/host_packages_scripts/opensuse_docs.sh  | 2 +-
- documentation/tools/host_packages_scripts/ubuntu_docs.sh    | 2 +-
- 5 files changed, 11 insertions(+), 6 deletions(-)
+Ugh.
 
-diff --git a/documentation/Makefile b/documentation/Makefile
-index e144a50b4..00c7d957d 100644
---- a/documentation/Makefile
-+++ b/documentation/Makefile
-@@ -24,9 +24,9 @@ endif
- help:
- 	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
- 
--.PHONY: all checks help Makefile clean stylecheck publish epub latexpdf
-+.PHONY: all checks help Makefile clean stylecheck publish epub latexpdf releases.json
- 
--publish: Makefile checks epub latexpdf html singlehtml
-+publish: releases.json Makefile checks epub latexpdf html singlehtml
- 	rm -rf $(BUILDDIR)/$(DESTDIR)/
- 	mkdir -p $(BUILDDIR)/$(DESTDIR)/
- 	cp -r $(BUILDDIR)/html/* $(BUILDDIR)/$(DESTDIR)/
-@@ -73,6 +73,11 @@ latexpdf: $(PDFs)
- 	$(SOURCEDIR)/set_versions.py
- 	buf_size=10000000 $(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
- 
-+releases.json:
-+	command -v curl jq || echo "curl and jq need to be installed for this target"
-+	curl https://dashboard.yoctoproject.org/releases.json | jq --indent 2 >$(SOURCEDIR)/releases.json
-+	git --no-pager diff --exit-code -- $(SOURCEDIR)/releases.json || echo "WARNING: releases.json needs to be updated"
-+
- all: html epub latexpdf
- 
- # Catch-all target: route all unknown targets to Sphinx using the new
-diff --git a/documentation/tools/host_packages_scripts/almalinux_docs.sh b/documentation/tools/host_packages_scripts/almalinux_docs.sh
-index 9202afc5b..e12198db3 100644
---- a/documentation/tools/host_packages_scripts/almalinux_docs.sh
-+++ b/documentation/tools/host_packages_scripts/almalinux_docs.sh
-@@ -1 +1 @@
--sudo dnf install -y git glibc-locale-source librsvg2-tools make python3-pip which
-+sudo dnf install -y curl git jq glibc-locale-source librsvg2-tools make python3-pip which
-diff --git a/documentation/tools/host_packages_scripts/fedora_docs.sh b/documentation/tools/host_packages_scripts/fedora_docs.sh
-index 8188d529a..f07139d04 100644
---- a/documentation/tools/host_packages_scripts/fedora_docs.sh
-+++ b/documentation/tools/host_packages_scripts/fedora_docs.sh
-@@ -1 +1 @@
--sudo dnf install git glibc-locale-source librsvg2-tools make python3-pip which
-+sudo dnf install curl git jq glibc-locale-source librsvg2-tools make python3-pip which
-diff --git a/documentation/tools/host_packages_scripts/opensuse_docs.sh b/documentation/tools/host_packages_scripts/opensuse_docs.sh
-index 7d36eb0f9..9d56fc2b8 100644
---- a/documentation/tools/host_packages_scripts/opensuse_docs.sh
-+++ b/documentation/tools/host_packages_scripts/opensuse_docs.sh
-@@ -1 +1 @@
--sudo zypper install git glibc-i18ndata make python3-pip rsvg-convert which
-+sudo zypper install curl git jq glibc-i18ndata make python3-pip rsvg-convert which
-diff --git a/documentation/tools/host_packages_scripts/ubuntu_docs.sh b/documentation/tools/host_packages_scripts/ubuntu_docs.sh
-index c322b61e4..1ddd24347 100644
---- a/documentation/tools/host_packages_scripts/ubuntu_docs.sh
-+++ b/documentation/tools/host_packages_scripts/ubuntu_docs.sh
-@@ -1 +1 @@
--sudo apt install git librsvg2-bin locales make python3-saneyaml python3-sphinx-rtd-theme python3-sphinx-copybutton sphinx
-+sudo apt install curl git jq librsvg2-bin locales make python3-saneyaml python3-sphinx-rtd-theme python3-sphinx-copybutton sphinx
+> Can be solved by adding:
+> 
+> ARG PWD
+> > above
+> 
+> ENV VIRTUAL_ENV=$PWD/yocto-docs-venv
+> 
+> Are you fine with that? I can add the bit manually if so
+> 
 
--- 
-2.52.0
+Nah, that doesn't seem right. PWD is a special shell variable, we 
+shouldn't allow the user to override it via a build-arg.
 
+But that does explain why it's been resolved to / (or rather, the empty 
+string and then have /yocto-docs-venv in the env).
+
+I would suggest to set
+
+WORKDIR /
+ENV VIRTUAL_ENV=/yocto-docs-venv
+
+instead, plus some comment in the Containerfile explaining the 
+restrictions. I'm in meetings til tomorrow and my brain cannot come up 
+with a comment right now.
+
+Cheers,
+Quentin
 
