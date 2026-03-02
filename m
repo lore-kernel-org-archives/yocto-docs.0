@@ -2,61 +2,60 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8CF35C624C2
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9F75DFD0054
 	for <webhook@archiver.kernel.org>; Mon,  2 Mar 2026 09:38:03 +0000 (UTC)
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.157025.1772444282015027846
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.157026.1772444282727112120
  for <docs@lists.yoctoproject.org>;
- Mon, 02 Mar 2026 01:38:02 -0800
+ Mon, 02 Mar 2026 01:38:03 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=nbide9cD;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=AJ4Rqfqo;
  spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 785DD4E424DA
-	for <docs@lists.yoctoproject.org>; Mon,  2 Mar 2026 09:38:00 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 2A7A84E424DB
+	for <docs@lists.yoctoproject.org>; Mon,  2 Mar 2026 09:38:01 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 468FE5FE89
-	for <docs@lists.yoctoproject.org>; Mon,  2 Mar 2026 09:38:00 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8123E10369511;
-	Mon,  2 Mar 2026 10:37:59 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 021215FE89
+	for <docs@lists.yoctoproject.org>; Mon,  2 Mar 2026 09:38:01 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1A36A10369531;
+	Mon,  2 Mar 2026 10:38:00 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1772444279; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1772444280; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=HAE4y66lDSnIOuhAe5qO+E36bdOJzdLqHheqKzZCC1U=;
-	b=nbide9cDobiuwwhlFNnxMkDz8HApcpqGJCknMb5CjWL/WiyATTEMjOsBweMyaDjM93N+xe
-	X/hWskfFdoDyozOX5zmI7NXgVzzwxqmgVWLeAMKHCgibZQTXVH479xP+g6Rvy95RtDkxJP
-	C/C1IXr85EkBL6bpXCtX8qivmGsTd3hu+DyCOh916+Z1IQWxZcSSf+9BAx3/RSyvdVeT8D
-	1dKrjarrR0/v9Xihy7lUiEVrHxItjCtbZFOvhDQ7KBvsDysBj9nLAI9h5sjwQZDgRUDXWl
-	d367RkDqfbT3RC5AStX4ckJv9xmSeVv926qU4bC7THEeOkWuhJwSBZXZl/APcQ==
+	bh=boSi9YS4bBSsunHCeIvKfpLhHEtUD1fxqWiPJioCLxQ=;
+	b=AJ4RqfqogpaE7VLIbN2qRSlEXQ3atHRNcB0347RVKs6puDkuPIJevCdvOdwZTG8N0Lw99c
+	Mteh/xOojbVzMzSkFxpB8lf2oQ91g7HWx5giN4uMda07c83+EK/jnXVIqCiYR06jJBfjuy
+	XArjWqXCTujulXgz7ElAgxTU7Ra98JRy+XJtnBHj/alZKTrvi4IqXYkG3yT6zXCrNmOQ3M
+	22vfvyyX5mJRP6q6VFRQpIGmLWVtKU9XvKeVo39zhxGGd7S57ZQ4TTFG9ZjIs26FLIQCrQ
+	bKJqDY1NboR7cs4sGAtW7/8v8TjWQ0TJmXGYcnxunVX8jma/Xy2VTVY975ZizQ==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Mon, 02 Mar 2026 10:37:48 +0100
-Subject: [PATCH 1/8] conf.py: define new {oecore,bitbake,meta_yocto}_rev
- roles
+Date: Mon, 02 Mar 2026 10:37:49 +0100
+Subject: [PATCH 2/8] ref-manual/variables.rst: document qemuboot variables
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260302-release-notes-6-0-v1-1-9662dee58591@bootlin.com>
+Message-Id: <20260302-release-notes-6-0-v1-2-9662dee58591@bootlin.com>
 References: <20260302-release-notes-6-0-v1-0-9662dee58591@bootlin.com>
 In-Reply-To: <20260302-release-notes-6-0-v1-0-9662dee58591@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2394;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5993;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=WARAdrNx78pCI7jH/XtLTcGeP3B/Fa8n7gq6x6ey61E=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBppVp1GI2T+BE3unEOzgrnw/TGHsVLFjbFCNfXr
- YYdbVah7POJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaaVadQAKCRDRgEFAKaOo
- NgxsEACYCYXMwc9mqA37LwbuZ+8KYQ35RJtg75A6nXRdkAV88rm6eGQB0lciHAJpiDt+JNQjENi
- nPq3Y3BMMyuNVkVfksjBDRPZFepxHsZ93WwyukXKT1MNJU/F+b/YKJwQt/hZYB7yBn6LqFTeL7+
- 5tjZIkCQ90xV1qEr1uZmvAvPQDXAKzTWWF/A/+Wc//kAM1XkdMrAZbPmUndG6zKwPGzyK2JPx1c
- h1ird3In9YrPnyxxsKdub8Ruthm/rZr503/zjKGYay5GDxX42rOa0rUGXvD383AXvnp8+0jGqpo
- jILGaPjCcK55lVkqY3hZ0R2JOAnML+nBy8kcPPk11zLMwEtJjHW1Nl6Z3jp0Zo59S1n7iEQt8Kl
- ZutmHO3BfXwWLa7oBK5Me07nCyuiRPuGDMf6V8Kr4d3pSZcwHG3IoeJXIPsK/eU+t7Hy+fd/BcW
- tk+CGp9i8OVLxVOStzn7YRe4swXrrW8FxVuKb3dBoAmPzRHqXRK1XqsObis6gy+2xbWKVxW+2zC
- RaL8Pghh+Hbrn36ehhO5yEOduQL1/478/fWSx0+95fmk5E0NlNOUKr+WY8eLvOkAUl/3ApFkrS6
- JutsUxLATrnEg+WgceJCbkNl7fqbIrpKJrePrBsHQGbb6IQYixIkD0WzjdWaxh5VyRJwucselkv
- 1186Sc/zSTN3s0Q==
+ bh=j6j1XpvdYXW3rtNXTFCbof5l/Yyb1zfPmZtZj1x6zjk=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBppVp1tUsDUbr3DJ6zxYmLqC4Txtpyd+QekPvAB
+ dq7beCaZd6JAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaaVadQAKCRDRgEFAKaOo
+ NobDEACdqLFKqRBQ572SfpOx9ejVevJ8Xhwx5HQ0WxTsx+umjAhba3/qpBAVkjuI/gDbLQRrMtV
+ iEnL0BdKj/pAwPCMBSEavfn5LEVIAcN5pHvKMFfP+uUJ4tCINkGbW4b0Xgvl95Lo3yFu2zFXRdF
+ tEJOsaRhjipU64PatBuV3r0zy0/AUq7m6BAgPD/6NSwiSpHh7SJNtjZOyQQF2fNgZ75E75akEHO
+ +P34PUBmB7w+Rwmayn6uz9EaucPHnL9ZFTrIqnKElyQBLWqWLTQ7mfqBhMSV9fPunmfu3+RbJzX
+ drdPgZdQj4gU1BygO/YqI2SehfOXZo0LcQ2UVqLoc9MyXbb7gaGEWcJUl4ekBsXg8h/DQkNmD5O
+ vvOnixqZDbnrBpQK5raioZ+QJN7qKVBnTEksaI8gTFI9iFbOm+1Wgqzeso0IbEfhORKhrvGHURb
+ NNpG+nu3qHYT3v37H/2bu6UG3vInhMhEMY9pt+0qpZ2aocamX/X+/VW6SLtIzKOMpRCWi2phZpX
+ G73uTROmaNGenB6S6xgqnSdqb/ez1yqn6hBQX0ABG00RWmFmcA3svAwiMoqXyu17LmmZfpElvIl
+ TON1G1j+fW3PIfc8DIlulEFREOcfZ1vSWzEPuMRj+WmId2SIrt4ZQFrJCU+60QjoixKv/9gKl2U
+ YtCKVN59tY9utIw==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
@@ -64,57 +63,174 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Mon, 02 Mar 2026 09:38:03 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9017
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9019
 
-Use the extlinks extension to create new roles to quickly reference a
-commit from openembedded-core, bitbake, or meta-yocto.
-
-For example, use as: :oecore_rev:`437e0419608e`.
+Document the variables in qemuboot.bbclass that allow customizing how
+the QEMU guest is instantiated.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/conf.py | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ documentation/ref-manual/variables.rst | 147 +++++++++++++++++++++++++++++++++
+ 1 file changed, 147 insertions(+)
 
-diff --git a/documentation/conf.py b/documentation/conf.py
-index 5a69977cf..f3234b241 100644
---- a/documentation/conf.py
-+++ b/documentation/conf.py
-@@ -91,9 +91,17 @@ rst_prolog = """
- .. |author| replace:: %s
- """ % (project, copyright, author)
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index 45073d8a0..bf13b05c5 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -7853,6 +7853,153 @@ system and gives an overview of their function and contents.
  
-+# base url definitions
-+oe_git_baseurl = "https://git.openembedded.org"
-+oecore_git_baseurl = f"{oe_git_baseurl}/openembedded-core"
-+bitbake_git_baseurl = f"{oe_git_baseurl}/bitbake"
-+yocto_git_baseurl = "https://git.openembedded.org"
-+meta_yocto_baseurl = f"{yocto_git_baseurl}/meta-yocto"
+          QA_EMPTY_DIRS_RECOMMENDATION:/dev = "but all devices must be created at runtime"
+ 
++   :term:`QB_CMDLINE_IP_SLIRP`
 +
- # external links and substitutions
- extlinks = {
--    'bitbake_git': ('https://git.openembedded.org/bitbake%s', None),
-+    'bitbake_git': (f'{bitbake_git_baseurl}%s', None),
-+    'bitbake_rev': (f'{bitbake_git_baseurl}/commit/?id=%s', '%s'),
-     'cve_mitre': ('https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-%s', 'CVE-%s'),
-     'cve_nist': ('https://nvd.nist.gov/vuln/detail/CVE-%s', 'CVE-%s'),
-     'yocto_home': ('https://www.yoctoproject.org%s', None),
-@@ -103,11 +111,13 @@ extlinks = {
-     'yocto_bugs': ('https://bugzilla.yoctoproject.org%s', None),
-     'yocto_ab': ('https://autobuilder.yoctoproject.org%s', None),
-     'yocto_docs': ('https://docs.yoctoproject.org%s', None),
--    'yocto_git': ('https://git.yoctoproject.org%s', None),
-+    'yocto_git': (f'{yocto_git_baseurl}%s', None),
-+    'meta_yocto_rev': (f'{meta_yocto_baseurl}/commit/?id=%s', '%s'),
-     'yocto_sstate': ('http://sstate.yoctoproject.org%s', None),
-     'oe_home': ('https://www.openembedded.org%s', None),
-     'oe_lists': ('https://lists.openembedded.org%s', None),
--    'oe_git': ('https://git.openembedded.org%s', None),
-+    'oe_git': (f'{oe_git_baseurl}%s', None),
-+    'oecore_rev': (f'{oecore_git_baseurl}/commit/?id=%s', '%s'),
-     'oe_wiki': ('https://www.openembedded.org/wiki%s', None),
-     'oe_layerindex': ('https://layers.openembedded.org%s', None),
-     'oe_layer': ('https://layers.openembedded.org/layerindex/branch/master/layer%s', None),
++      If :term:`QB_NETWORK_DEVICE` adds more than one network interface to QEMU,
++      usually the ``ip=`` Linux kernel command line argument needs to be changed
++      accordingly. The :term:`QB_CMDLINE_IP_SLIRP` variable allows controlling
++      this value. See the Linux kernel documentation for more details:
++      https://www.kernel.org/doc/Documentation/filesystems/nfs/nfsroot.txt.
++
++   :term:`QB_CMDLINE_IP_TAP`
++
++      This variable is similar to the :term:`QB_CMDLINE_IP_SLIRP` variable.
++
++      Use as follows::
++
++         QB_CMDLINE_IP_TAP = "ip=192.168.7.@CLIENT@::192.168.7.@GATEWAY@:255.255.255.0::eth0"
++
++      Since the tap interface requires static IP configuration, ``runqemu``
++      replaces the ``@CLIENT@`` and ``@GATEWAY@`` place holders by the IP and
++      the gateway address of the QEMU guest.
++
++   :term:`QB_DEFAULT_FSTYPE`
++
++      The :term:`QB_DEFAULT_FSTYPE` variable controls the default filesystem
++      type to boot. It is represented as the file extension of one of the root
++      filesystem image extension found in :term:`DEPLOY_DIR_IMAGE`. For example:
++      ``ext4.zst``.
++
++   :term:`QB_DEFAULT_KERNEL`
++
++      When using ``runqemu``, the :term:`QB_DEFAULT_KERNEL` variable controls
++      the default Linux kernel image to boot, found in :term:`DEPLOY_DIR_IMAGE`. For
++      example: ``bzImage``.
++
++   :term:`QB_DRIVE_TYPE`
++
++      When using ``runqemu``, the :term:`QB_DRIVE_TYPE` variable specifies the
++      type of drive to emulate when starting the emulated machine.
++      Valid values are:
++
++      -  ``/dev/hd``: emulates an IDE drive.
++      -  ``/dev/mmcblk``: emulates an SD Card.
++      -  ``/dev/sd``: emulates an SCSI drive.
++      -  ``/dev/vd``: emulates a VirtIO drive.
++      -  ``/dev/vdb``: emulates a block VirtIO drive.
++
++   :term:`QB_GRAPHICS`
++
++      When using ``runqemu``, the :term:`QB_GRAPHICS` variable controls the QEMU
++      video card type to emulate. For example: ``-vga std``.
++
++      This value is appended to the argument list when running ``qemu``.
++
++   :term:`QB_KERNEL_CMDLINE_APPEND`
++
++      The :term:`QB_KERNEL_CMDLINE_APPEND` variable controls the options passed
++      to the Linux kernel's ``-append`` QEMU options, which controls the Linux kernel
++      command-line.
++
++      For example::
++
++         QB_KERNEL_CMDLINE_APPEND = "console=ttyS0"
++
++   :term:`QB_MEM`
++
++      The :term:`QB_MEM` variable controls the amount of memory allocated to the
++      emulated machine. Specify as follows::
++
++         QB_MEM = "-m 512"
++
++   :term:`QB_NETWORK_DEVICE`
++
++      When using ``runqemu``, the :term:`QB_NETWORK_DEVICE` variable controls
++      the network device instantiated by QEMU. This value needs to be compatible
++      with the :term:`QB_TAP_OPT` variable.
++
++      Example::
++
++         QB_NETWORK_DEVICE = "-device virtio-net-pci,netdev=net0,mac=@MAC@"
++
++      ``runqemu`` replaces ``@MAC@`` with a predefined mac address.
++
++   :term:`QB_NFSROOTFS_EXTRA_OPT`
++
++      When using ``runqemu``, the :term:`QB_NFSROOTFS_EXTRA_OPT` variable
++      controls extra options to be appended to the NFS rootfs options in the
++      Linux kernel command-line.
++
++      For example::
++
++         QB_NFSROOTFS_EXTRA_OPT = "wsize=4096,rsize=4096"
++
++   :term:`QB_OPT_APPEND`
++
++      When using ``runqemu``, the :term:`QB_OPT_APPEND` variable controls
++      general options to append to QEMU when starting.
++
++   :term:`QB_RNG`
++
++      When using ``runqemu``, the :term:`QB_RNG` variable controls
++      pass-through for host random number generator, it can speedup boot
++      in system mode, where system is experiencing entropy starvation.
++
++      For example::
++
++         QB_RNG = "-object rng-random,filename=/dev/urandom,id=rng0 -device virtio-rng-pci,rng=rng0"
++
++   :term:`QB_ROOTFS_EXTRA_OPT`
++
++      When using ``runqemu``, the :term:`QB_ROOTFS_EXTRA_OPT` variable controls
++      extra options to be appended to the rootfs device options.
++
++   :term:`QB_SERIAL_OPT`
++
++      When using ``runqemu``, the :term:`QB_SERIAL_OPT` variable controls the
++      serial port option.
++
++      For example::
++
++         QB_SERIAL_OPT = "-serial mon:stdio"
++
++   :term:`QB_SMP`
++
++      When using ``runqemu``, the :term:`QB_SMP` variable controls
++      amount of CPU cores made availalble inside the QEMU guest, each mapped to
++      a thread on the host.
++
++      For example::
++
++         QB_SMP = "-smp 8".
++
++   :term:`QB_TAP_NAMESERVER`
++
++      When using ``runqemu``, the :term:`QB_TAP_NAMESERVER` variable controls
++      the default :wikipedia:`name server <Name_server>` used in the QEMU guest.
++
++   :term:`QB_TAP_OPT`
++
++      When using ``runqemu``, the :term:`QB_TAP_OPT` variable controls
++      the network option for "tap" mode.
++
++      For example::
++
++         QB_TAP_OPT = "-netdev tap,id=net0,ifname=@TAP@,script=no,downscript=no"
++
++      Note that ``runqemu`` will replace ``@TAP@`` with the tap interface in
++      use, such as ``tap0``, ``tap1``, etc.
++
+    :term:`RANLIB`
+       The minimal command and arguments to run :manpage:`ranlib <ranlib(1)>`.
+ 
 
 -- 
 2.52.0
