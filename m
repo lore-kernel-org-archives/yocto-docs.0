@@ -1,90 +1,94 @@
-Return-Path: <kichakarov0@gmail.com>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 640F7104891D
-	for <webhook@archiver.kernel.org>; Fri, 27 Feb 2026 21:49:45 +0000 (UTC)
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.107732.1772228980596513577
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8F486FD006E
+	for <webhook@archiver.kernel.org>; Mon,  2 Mar 2026 09:38:03 +0000 (UTC)
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.157024.1772444281744915393
  for <docs@lists.yoctoproject.org>;
- Fri, 27 Feb 2026 13:49:40 -0800
+ Mon, 02 Mar 2026 01:38:02 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=P5gMh432;
- spf=pass (domain: gmail.com, ip: 209.85.221.44, mailfrom: kichakarov0@gmail.com)
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-4398dd671daso2740587f8f.0
-        for <docs@lists.yoctoproject.org>; Fri, 27 Feb 2026 13:49:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772228979; x=1772833779; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=862J0+CPHGhNN0P4QxnqhqjtypGxdgbZOJXdQSea/6k=;
-        b=P5gMh432lgc/HCIFsG2roBkXzMZ7IZTIkl26cILOKijQJrLOA+7cEUH5MhN8FzySq3
-         NBGAEdP6LRi2oARj7FJHR+72sr1szPKtgnq4Bj3kxHkEnVu5n9Lh387Qw2PMU0ryUMUY
-         1ZqMKmiMCsMj3m3URIcm65eFTQlrCeRQuupdEZuItv/z/AcgYy3A12GUV4MkfwEaQc2B
-         n6F8wiueYk464DVUIQ4YgfWdjq+XbX9T68zGO8Zq8PVpPDAt8bA4Of8jwCVWBrIB4d96
-         6GOXNrz0LojA/s5pHqlhOIq5RjtDcqk2xj7ar5k2CU9bS/Fwtt2aI7foLS/eUnzirym+
-         lLsg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772228979; x=1772833779;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=862J0+CPHGhNN0P4QxnqhqjtypGxdgbZOJXdQSea/6k=;
-        b=U39nK0bG/gihBDeBhdyaneiXDRdep3yd+QmAQc/xP2sdG2D/SGn/t6ln7ExeMV7uqr
-         la3l97nf5jfp2Kvjf6FtXWD40z6vufMHwmfuGLU6PW1SAKhaRYgHyAJt5hX/fTr3YU/q
-         endE7qwxaau2VO6jxxaeMG05JeUwPOlKGreQdLDT1CXVzlRx+zFgNLPijcOr7wokFajS
-         GDKkS4l5kUGhCFGZ4OeMaHUDaUeuQ8fuG5YIjfL14dglQgu8bM+6bORcgCJxwYNZRvni
-         S9xZQdK5owoSHEAS0+r5vQ0VYv9VfwdYX7wRaMNGcVi0TtV/0WhoOQuacOj5s38spIkW
-         7hIA==
-X-Gm-Message-State: AOJu0YzcQMsa3SQDGRdsR8uApkv7WQhDfBh3HYL3LyW3fA0cEpxFuZwO
-	3oyZ2CR98KA2wXR/cFwW8hsfIn1TVxQLHTtCEou8Y+ZZNRM5Hb5Q8AWVsFgkqdzkFHQ=
-X-Gm-Gg: ATEYQzzDP4vDdqtkhqUiATPLTjs1+jJ58mCNtAWUHD9xdSbMF4ISnyCc6FamYuZRUJ3
-	gLNCyVhn1ChjA36ngcyx9DP92AchAI5QK3jn7hwkuGjzIEOBzJPIINX9a+Da+xVOeGucH56G4XC
-	0gZvNTNFxfLOSctsEFM24Zb5dQZSRt1U1VyB6I7JkWVvT/YqYZOjFCmpM2+Omz0tkNygKw1uunK
-	2VGIlgWRtgKYSqhmw/NBMr/xVlIdmyLCr6pDuXuZ26hDDRmRstCcVX+6I943Ti41LHsV64cItBC
-	hS1ith3KnYjJNL8vVvDya8u78YNNKm/KWNVaPcRyme2TFm3KY3Iqeehqc4WnSfL/KXaP8/E97ZX
-	s7yBFF0QqlqAP5R/51zDfwi+FgQBFurZ8zStEoXsi8fBQvX2O7uwlAe33pVBFrQsveqGjaYSWNM
-	AweRVd2Zm1Lj7qa4g8LAk48RonMnvKcc26SeICasVVBcMrOyaSu5pexg==
-X-Received: by 2002:a05:6000:24c3:b0:439:8ddd:90be with SMTP id ffacd0b85a97d-4399de14ff7mr7490105f8f.24.1772228978817;
-        Fri, 27 Feb 2026 13:49:38 -0800 (PST)
-Received: from localhost.localdomain (79-100-209-27.ip.btc-net.bg. [79.100.209.27])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4399c71b498sm9685533f8f.15.2026.02.27.13.49.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Feb 2026 13:49:38 -0800 (PST)
-From: Kristiyan Chakarov <kichakarov0@gmail.com>
-To: docs@lists.yoctoproject.org
-Cc: Kristiyan Chakarov <kichakarov0@gmail.com>
-Subject: [PATCH] overview-manual: escape wildcard in inline markup
-Date: Fri, 27 Feb 2026 23:49:35 +0200
-Message-Id: <20260227214935.15766-1-kichakarov0@gmail.com>
-X-Mailer: git-send-email 2.34.1
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=sIUo1oQA;
+ spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id D268C4E424D9
+	for <docs@lists.yoctoproject.org>; Mon,  2 Mar 2026 09:37:59 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id A3BF45FE89
+	for <docs@lists.yoctoproject.org>; Mon,  2 Mar 2026 09:37:59 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id AD6AB10369502;
+	Mon,  2 Mar 2026 10:37:58 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1772444279; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=zehH84A4vnO4S2iAUTw9H/J5pZXMyp8ELVoF4+S5Mko=;
+	b=sIUo1oQAglnYrga3IclsC7YwoRs7S51tGd/GnuNXdVmwIxaNrGEDIIKj5d+BcX8DfcC2PP
+	UuuO4fGhICAOTg5IkAw2iJIEaAKU4Bre6Wvg8hlCCemw6M2+xWZ0qwCv1LdtEWRO+QmHhi
+	pc+Pu3aVLMXYk03kj9BN+F4Tlj1vT1If2vL/60T8Veyde+M3iH0bMLa/rfasb88nTgMgON
+	hhT2+Nbh7RhV1RFmswTvQ4lHCINK8IXkKklMyEGEjLAuHlVjyM/n7wdyTBcYQrv+04fvHL
+	jvCDDuXY6ncE9+uzSDp4w/dqhS5WEFHa+0ZNNmGL39azoKG6WVB1jtIOvwKKZQ==
+From: Antonin Godard <antonin.godard@bootlin.com>
+Subject: [PATCH 0/8] Update the documentation for 6.0 (Wrynose)
+Date: Mon, 02 Mar 2026 10:37:47 +0100
+Message-Id: <20260302-release-notes-6-0-v1-0-9662dee58591@bootlin.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMywqDMBBG4VeRWTsQE0mlr1JcePltp0gsGRVBf
+ HdTXX6Lc3ZSRIHSM9spYhWVKSQUeUbdpwlvsPTJZI31xhaOI0Y0Cg7TDGXPhh/OtaWpvC/7gVL
+ 3ixhku56v+rYu7Rfd/B/RcZyPEgfedQAAAA==
+X-Change-ID: 20260213-release-notes-6-0-733b408664df
+To: docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Antonin Godard <antonin.godard@bootlin.com>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1287;
+ i=antonin.godard@bootlin.com; h=from:subject:message-id;
+ bh=VDNZi2cDpC24tHxGeghE3HaYAC2QYJN1xHtcW/n2ohU=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBppVp1AF0ph3nFg94lAISKTky2fTgVg73iZObyI
+ Ihxo8Phl8GJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaaVadQAKCRDRgEFAKaOo
+ NkX7EACHHRuJ0eNkxQl9ZX/GJ2VRXLqJGYguKalZ3s5teik9zTmPoWm1841xHlVXa82+OixGSae
+ QSY5v5CSRmINWjMfLzwlymzHi4Mf+e6/YtJZP1qJD2ewtvHN+/5z5ZBXFwUlEPGN28VIqhywmVp
+ Vaqa7qMdnCK46yMRjgUqivM7C9TCxR0skLWxqhFY85/paI3jc1Teofc56dN/CGHMB6o2CYlouQc
+ Gnx103Z5lka1sTb6UuAHodsv1qaQ8xXbVpFEoeZQEtscwtsaLPEDMGtLI4iXEmdDpr/Za3kTB/0
+ EBkfdGwPi/Vzy0UUjUQGXHub5QvAXDWzdHSgZE2zJ9FNMZO0g/XO+tN37mnG6Ao6SP76ToeqPfI
+ RFOAt2TApHHqbNP/6G+ObqWFfcs5QKvS21/VH55D6KLwt13Xp5Dmi19qPUNO4F9wpxaGH5bmfxg
+ b9ZJ5GVatjVY9iynFps40ck6olZBl2ZaPW3Dt2xbjSkBfxKSmu2PYjSz84j6UTaxE/qQo3KMGZ5
+ LCRJ7sEwShZdrTtKxnKa39fHoqyMj3lB6Y6vID1aO850o8gD8fYn8BrGQNOzhVuQaxTrCCZK9v1
+ YfMCC/Qf6Srk4Jocd8N1ZWO/LeAZz+5hkiNHbS3SkZYCw/gpEslAhK+vxYeA76of1ZaTzoV3CTv
+ ojypxVhjKmi6aXQ==
+X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
+ fpr=8648725188DD401BB9A0D3FFD180414029A3A836
+X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 27 Feb 2026 21:49:45 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9016
+ <docs@lists.yoctoproject.org>; Mon, 02 Mar 2026 09:38:03 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9018
 
-This change escapes the wildcard in 'recipes-*' to properly italicize
-the string
-
-Signed-off-by: Kristiyan Chakarov <kichakarov0@gmail.com>
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/overview-manual/concepts.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Antonin Godard (8):
+      conf.py: define new {oecore,bitbake,meta_yocto}_rev roles
+      ref-manual/variables.rst: document qemuboot variables
+      ref-manual/variables.rst: SPDX_PACKAGE_URL: add missing parenthesis
+      ref-manual/variables.rst: document the LTO variable
+      ref-manual/variables.rst: document the SPDX_CONCLUDED_LICENSE variable
+      migration-guides: update 6.0 (Wrynose) release notes
+      docs-wide: add warning on disabled NPM fetcher
+      ref-manual/faq.rst: remove the CVS proxy note
 
-diff --git a/documentation/overview-manual/concepts.rst b/documentation/overview-manual/concepts.rst
-index 2655b0d3a..cd3d09910 100644
---- a/documentation/overview-manual/concepts.rst
-+++ b/documentation/overview-manual/concepts.rst
-@@ -410,7 +410,7 @@ typically find in a distribution layer:
-    (``conf/distro/distro.conf``), and any distribution-wide include
-    files.
- 
---  *recipes-*:* Recipes and append files that affect common
-+-  *recipes-\*:* Recipes and append files that affect common
-    functionality across the distribution. This area could include
-    recipes and append files to add distribution-specific configuration,
-    initialization scripts, custom image recipes, and so forth. Examples
+ documentation/conf.py                              |  16 +-
+ documentation/dev-manual/devtool.rst               |   5 +
+ documentation/dev-manual/packages.rst              |  10 +-
+ documentation/migration-guides/migration-6.0.rst   | 193 +++++++++-
+ .../migration-guides/release-notes-6.0.rst         | 414 ++++++++++++++++++++-
+ documentation/ref-manual/classes.rst               |   5 +
+ documentation/ref-manual/faq.rst                   |   2 +-
+ documentation/ref-manual/variables.rst             | 172 ++++++++-
+ 8 files changed, 792 insertions(+), 25 deletions(-)
+---
+base-commit: d97cfeaa55ed42722998d3313c1857aa377f6881
+change-id: 20260213-release-notes-6-0-733b408664df
+
 
