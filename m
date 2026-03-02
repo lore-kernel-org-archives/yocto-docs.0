@@ -1,78 +1,74 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B57A0E9B36B
-	for <webhook@archiver.kernel.org>; Mon,  2 Mar 2026 11:05:04 +0000 (UTC)
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.157968.1772449501790026538
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F3620E9B370
+	for <webhook@archiver.kernel.org>; Mon,  2 Mar 2026 12:22:34 +0000 (UTC)
+Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.159096.1772454152186450420
  for <docs@lists.yoctoproject.org>;
- Mon, 02 Mar 2026 03:05:02 -0800
+ Mon, 02 Mar 2026 04:22:32 -0800
 Authentication-Results: mx.groups.io;
- dkim=fail reason="dkim: body hash did not verify" header.i=@bootlin.com header.s=dkim header.b=O54kSJ+5;
- spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 9FEEA4E424DC
-	for <docs@lists.yoctoproject.org>; Mon,  2 Mar 2026 11:04:59 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 70EA15FE89
-	for <docs@lists.yoctoproject.org>; Mon,  2 Mar 2026 11:04:59 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B614F10369333;
-	Mon,  2 Mar 2026 12:04:58 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1772449499; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding; bh=Eqr5GLF1F3o49a13vlIjQWWZwKvXDw4bCYsHri6GeFg=;
-	b=O54kSJ+5p+u1flZDoiL3ngh61RTo3R0YOqvkdAH1AdMCTS80a+skwDgPNMi9cYgPN+hr54
-	8ISJupvA0jvy/7EXRO1xhOfuaEXrU1Bb3jsd2QuWUFc0XnIwJBQvtWcLASHTEoH8pArUrQ
-	3esQjHPB2ZSX6fAiPjsLFIgPOR1aqCbq2MgV7lKeNtFuC/RA24sfvDlL0FMDSxjnFOUbW9
-	z3OOO0Kt8nMvI5wIeji8NYIIHl3tZqXoL9SHqgxA8R32EbXGKHDHgzQqR+W+HzFzx13QKw
-	wBwOgLyM6SBHnhB17lBVJYliVf+R4OM58teHzwzw4H5o9fhwoTWDNTSKY5NyAQ==
-From: Antonin Godard <antonin.godard@bootlin.com>
-To: docs@lists.yoctoproject.org
-Cc: Antonin Godard <antonin.godard@bootlin.com>
-Subject: [PATCH] ref-manual/system-requirements.rst: update supported distributions
-Date: Mon,  2 Mar 2026 12:04:30 +0100
-Message-ID: <20260302110446.132075-1-antonin.godard@bootlin.com>
-X-Mailer: git-send-email 2.52.0
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=HlC99uzw;
+ spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
+	To:From:Date:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=UN3/r/tQx8xUthZP5RDLniRgmuzduNNAnm9D4QLafQg=; b=HlC99uzwtXWjlXtztuig/vR1Kj
+	ktfnHIkQ16H2cZbsweGgLSWwOzkEsrsuL/XwlwRnISYutZUhC9hwlUvqSbfidj909ch49UKM6/0pL
+	xmQuf9r5urc+RQaOi6W2QA3wP42T+EktWNEX5cHf8LybuU0TiEftlFWEB8lFOYYf8ddJL4Xy1VM4d
+	0pmo4TyEayOMoWFyvgzkm2b8whiOSLGSys//2f+b/La+PGaUL3fjkissSrrgeSqGpNASt5XKyJFJL
+	GbupIhQDfFZNKBNMeRV4q0p+N2UAZruDXhSbS7CII67VufaNpteof9h1K5N75N7tnMgL/ccCKgDSF
+	06JlHqPA==;
+Received: from [147.129.179.166] (port=55394 helo=rday)
+	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.99.1)
+	(envelope-from <rpjday@crashcourse.ca>)
+	id 1vx2I9-0000000EiYY-1uBM
+	for docs@lists.yoctoproject.org;
+	Mon, 02 Mar 2026 07:22:30 -0500
+Date: Mon, 2 Mar 2026 07:21:55 -0500 (EST)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+To: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: should dynamic layers be documented other than as BBFILES_DYNAMIC?
+Message-ID: <16cf1ee4-14bc-061c-dac3-3d3ee539cd64@crashcourse.ca>
 MIME-Version: 1.0
-X-Last-TLS-Session-Version: TLSv1.3
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
+X-AntiAbuse: Original Domain - lists.yoctoproject.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - crashcourse.ca
+X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 02 Mar 2026 11:05:04 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9039
+ <docs@lists.yoctoproject.org>; Mon, 02 Mar 2026 12:22:34 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9040
 
-Update the supported distributions list based on the active workers on
-the Autobuilder. Also refresh the end-of-life list.
 
-Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
----
- documentation/ref-manual/system-requirements.rst | 3 +++
- 1 file changed, 3 insertions(+)
+  colleague asked about dynamic layers, went to point him at the
+relevant part of the docs only to notice that it is not documented
+anywhere in the main body of the docs, only via the BBFILES_DYNAMIC
+variable in the variables glossary:
 
-diff --git a/documentation/ref-manual/system-requirements.rst b/documenta=
-tion/ref-manual/system-requirements.rst
-index e7c1c3916..7b4f9136f 100644
---- a/documentation/ref-manual/system-requirements.rst
-+++ b/documentation/ref-manual/system-requirements.rst
-@@ -72,6 +72,7 @@ supported on the following distributions:
- -  Fedora 40
- -  Fedora 41
- -  Fedora 42
-+-  Fedora 43
- -  OpenSUSE Leap 15.5
- -  OpenSUSE Leap 15.6
- -  Rocky Linux 8
-@@ -91,7 +92,9 @@ organizations publishing them no longer make updates pu=
-blicly available:
-=20
- -  Fedora 39
- -  Fedora 40
-+-  Fedora 41
- -  OpenSUSE Leap 15.5
-+-  Ubuntu 25.04
-=20
- Note that the Yocto Project doesn't have access to private updates
- that some of these versions may have. Therefore, our testing has
+https://docs.yoctoproject.org/ref-manual/variables.html#term-BBFILES_DYNAMIC
+
+  i don't care for the idea of the documentation of some feature being
+restricted to a short entry in the reference material; IMNSHO, any
+"reference" content should be brief and refer the reader to the
+"official" explanation somewhere else in the documentation.
+
+  if there was a "proper" place in the YP docs to cover dynamic
+layers, where theoretically would that be?
+
+rday
+
 
