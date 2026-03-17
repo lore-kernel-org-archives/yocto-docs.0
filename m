@@ -2,61 +2,60 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4FB3DF506FF
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 63B88FB5E95
 	for <webhook@archiver.kernel.org>; Tue, 17 Mar 2026 10:08:59 +0000 (UTC)
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.72662.1773742128679929983
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.72663.1773742128757002338
  for <docs@lists.yoctoproject.org>;
  Tue, 17 Mar 2026 03:08:49 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=lzOEHYlZ;
- spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=aueYV5GB;
+ spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id A95851A2D59
-	for <docs@lists.yoctoproject.org>; Tue, 17 Mar 2026 10:08:46 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 3703D4E42639
+	for <docs@lists.yoctoproject.org>; Tue, 17 Mar 2026 10:08:47 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 6D2815FC9A;
-	Tue, 17 Mar 2026 10:08:46 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3C07B1045044A;
-	Tue, 17 Mar 2026 11:08:43 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 0DDCE5FC9A;
+	Tue, 17 Mar 2026 10:08:47 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 395F51045044E;
+	Tue, 17 Mar 2026 11:08:46 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1773742125; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=aIH9bTAYfZLosTHH6kxHSV7Wux9Sc27SbYw+i+GApkc=;
-	b=lzOEHYlZQrcBLLp9wQL21/UOhq9O4so5nnU3+jMNLTnBWl+m8GR40K4Ssj2KTA5Wj43uxP
-	45TlWIOaaFUd4P5bUrHDyxE9Dawkkx3qAZPgvNJZBOegcgLTFXfEEfUE7J1Jj7NZB7LxNV
-	emM9JB65Hv0sAfBM3hmNO47Y0INmRHfOFGntn3v+65EKG6eelN8BtYmNCTpRo8Y6NgrJot
-	gvFihjj1ggbiBhHXnIUrTo/gEWri8fMTpXjTu8kUY2If2iBJmCiLf20KnDSU87Y0+u4utC
-	CYYUdgbK6J5PG+YAJNsyMCoru1KTHcvyoHIp7uYA8x8jxbxIzxQnXSiJ8c+VMg==
+	t=1773742126; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=4bhjxJfYr/aYs0FwhIh33DLkeEokScSlFrQbI4IlKkU=;
+	b=aueYV5GBJ7WmZPGQa4dTap3SldH5GRG0TXZvC74Utgej/2fRnSEbon+6UHYIDOId1TOl55
+	J1xW6cCMzXpDlt/HvcF/CTrPZsSdMVAJrXdN4T/7iETSumFmboUmS4jsOpjcHrqNe05ZbU
+	rYKcQSnXDge23W/LUsvmBbpXAr+5vzdmFy4Hn8MaVQEpfXm1ac295Z1yyXbD3pCIyl6be2
+	nbhD1DZSBDkMGMMBWlSyDn2CdR5D+lUjcDH/EEsMKThSjBZ02w98kqP7cc0qVOhVMQVLxe
+	SWzAaG1dScEAIEhhObb/2imQD5MLJs6za0TLuHdZtMs4e7BeUpsfmRHTHHuJrA==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Subject: [PATCH 0/5] Docs build cleanup and automations
-Date: Tue, 17 Mar 2026 11:08:35 +0100
-Message-Id: <20260317-docs-releases-json-v1-0-492d0b256349@bootlin.com>
+Date: Tue, 17 Mar 2026 11:08:36 +0100
+Subject: [PATCH 1/5] doc: move the Git repo check to the conf.py file
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMQQ6CMBBG4auQWTvJCAbUqxgXpfyVIaY1HTUkh
- LtbcPkt3lvIkBVG12qhjK+aplhwPFTkRxcfYB2KqZa6lUZOPCRvnPGEMxhPliIHEe9Cc27RXai
- Er4yg8z693f+2Tz/Bv7cTresPEEnqlXYAAAA=
-X-Change-ID: 20260304-docs-releases-json-f00caf386e79
+Message-Id: <20260317-docs-releases-json-v1-1-492d0b256349@bootlin.com>
+References: <20260317-docs-releases-json-v1-0-492d0b256349@bootlin.com>
+In-Reply-To: <20260317-docs-releases-json-v1-0-492d0b256349@bootlin.com>
 To: bitbake-devel@lists.openembedded.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  docs@lists.yoctoproject.org, Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1343;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2054;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=2JegcHd+HUpKbk2NQ4lTnVL2+aYy5Lp2wYRfCgYCuYs=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpuSgqFyehRGlyRN8Tf3/3eG6stCEkTB8jwE7/A
- azu1MfrvMOJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCabkoKgAKCRDRgEFAKaOo
- NnunEACbskbR2Lm0aiIy3ZoPQAR1G1UEGh/h5pRmYQV2Dk7mzntrQcPgPiEOhpiEo4iU8JJOxGc
- 16JBUCWCp6San/YT4c/4dMtp1TV8qdtL5UtkN+A1tWC65ZQqE76aUNvltnwFAB25xMHlJ+CY68D
- PipVLpvEhdHItNp2zxjciQkxrALIEMQRvWGBLBAyir/7OIkB4bg3EACvqcyg2ledWYxCTPJ+cKm
- J4CBaM0NsGNZPXPgDrwyg1WEQC+bRjLVZ5Ixdlwj2t4CFpA/EJLWSmT4WfQXlWTNlqWgvNCFVf7
- yqBZ84kd9dLqXKrR4PYwwQFQS0KrAVSQ1w1b5KiAxLCa3fSzy7L4XoJcqepscNJXBQCheTMGOds
- fIwksymIEgOUZNA1zInSC2V2xBH0Ot/1OqpOHF2NmtFp/tofzwz7qBMmYcovH5mdlPXptaSFk5t
- Xt2fEkyIMNao8c/+0HF2tD+yVoZXue1kwaFnZFJGTK5PLIA7W/qTZWnkWdYkxTEUZwDI4885NUs
- 0ITArDe2xCU1iUVsJeqHLfbGadDWp5MiJz2wa1ge59bUmYBgEJ6tuYUKgRwN+jrvhc/mHTvNLQo
- i++EGUGMOta1QhcXySA6rG7BuuCwcbhNKGDGzLqT3X6SGKvQMVZJp/VKMJrkkRrT0SWIPiGczCp
- 12jP4jM71J3GYXw==
+ bh=FHYmFPUZgMCWrYhvzc9Onprgp/Dog47NjKb0itlRpQA=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpuSgqpOP5xwL/9aM3fkPbVl65niN6H3OKqXw6i
+ l/eDRs7bT+JAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCabkoKgAKCRDRgEFAKaOo
+ NgGFEACqR8bLn27z2bjcO+zcp/1CaY6YUUdtKW8PmUVs+Htdg5/DBqf1Ui07X8++QOs8oF7AnSo
+ ffDqauQExkDlBVzqqHVZCG/62z8tQVTt/UJm0FbquKpMn1gICl8Im5zmkzkyIyA2JBCa3q9VKxA
+ k4xvu9hkjmE6HU12uZGtrh5H+K6jPoU+3g4xnisD3MTg1z0oMZgxmjJha2WZ6ec0iH1rjq8Kixh
+ ngviwy8EjFmmsYv4f8vveQNbaQLdtqkOkIfxXOPmeDERUYBeaNLMVYKEQQvrhFgEgmNvH6gpJtW
+ NZ15Bo/iM9LJ2ZfhfMsDqnB4LGPwmj2jV8h+tZ0M4J+kPQQMs1FhRPtyGI7YiFCKntQnFCveyB0
+ kzr7+d/pbpj2wur+UoeneeHYbFhwBXxnZdzxUf2hEtITltADMy2F86IgjzRbCPd3en7yod5uYW8
+ dgkfXODXICien/WXCs5/fp9cQKze01ZFLRYYngvuGr7exV6V+UEuFT7obE21Aqu6mglA9fqqN0t
+ MiJ/3HRCUTb/mFWW2qEzCZcJm1o6FiaIkPiO4VRv+NHNUnGaXvemRIv1+OjwNAa5L6p4w7+T14m
+ uCIhqw/i5UjuwSH8c6iOW/sKwbz6gwtz1BPduotXfsxQKNDGcU+wDTJKOnuRzM/PnRcYp0wiyNW
+ 7VgM+k81vC85lUg==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
@@ -64,38 +63,64 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Tue, 17 Mar 2026 10:08:59 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9084
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9085
 
-This series aims at first simplifying some of the recent code
-surrounding the documentation build, and second at automatically
-fetching the supported/outdated versions of bitbake from the
-releases.json file[1] and outputting a releases.rst document from that.
-
-The remote releases.json file is downloaded once when launching a build,
-and re-used on subsequent builds. `make clean` will remove it.
-
-The output is unchanged compared to before. It will only change once the
-remote releases.json file gets updated.
-
-[1]: https://dashboard.yoctoproject.org/releases.json
+This check can be done earlier when building the documentation, and does
+not need any version information. Move it to the beginning of conf.py.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
-Antonin Godard (5):
-      doc: move the Git repo check to the conf.py file
-      doc/setversions.py: simplify the get_current_version() function
-      doc/setversions.py: fix an f-string without placeholders
-      doc: build using remote releases.json
-      doc: generate the releases.rst file
+ doc/conf.py        | 10 ++++++++++
+ doc/setversions.py |  9 ---------
+ 2 files changed, 10 insertions(+), 9 deletions(-)
 
- doc/.gitignore     |   2 +
- doc/Makefile       |   2 +-
- doc/conf.py        |  13 ++
- doc/releases.rst   | 199 ------------------------------
- doc/setversions.py | 355 ++++++++++++++++++++++++++++++++++++++++++-----------
- 5 files changed, 300 insertions(+), 271 deletions(-)
----
-base-commit: e8ace6e16c78ddbc2cfe985b88b66800d99282b3
-change-id: 20260304-docs-releases-json-f00caf386e79
+diff --git a/doc/conf.py b/doc/conf.py
+index 9318358731c..40a022eaa00 100644
+--- a/doc/conf.py
++++ b/doc/conf.py
+@@ -8,10 +8,20 @@
+ 
+ import datetime
+ import os
++import subprocess
+ import sys
+ 
+ from pathlib import Path
+ 
++# Test that we are building from a Git repository
++try:
++    subprocess.run(["git", "rev-parse", "--is-inside-work-tree"],
++                   stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
++except subprocess.CalledProcessError:
++    sys.exit("Building bitbake's documentation must be done from its Git repository.\n"
++             "Clone the repository with the following command:\n"
++             "git clone https://git.openembedded.org/bitbake ")
++
+ sys.path.insert(0, os.path.abspath('.'))
+ import setversions
+ 
+diff --git a/doc/setversions.py b/doc/setversions.py
+index 9e4138025ac..2ec68ac9945 100755
+--- a/doc/setversions.py
++++ b/doc/setversions.py
+@@ -43,15 +43,6 @@ BB_RELEASE_TAG_RE = re.compile(r"^[0-9]+\.[0-9]+\.[0-9]+$")
+ def get_current_version():
+     ourversion = None
+ 
+-    # Test that we are building from a Git repository
+-    try:
+-        subprocess.run(["git", "rev-parse", "--is-inside-work-tree"],
+-                       stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
+-    except subprocess.CalledProcessError:
+-        sys.exit("Building bitbake's documentation must be done from its Git repository.\n"
+-                 "Clone the repository with the following command:\n"
+-                 "git clone https://git.openembedded.org/bitbake ")
+-
+     # Test tags exist and inform the user to fetch if not
+     try:
+         subprocess.run(["git", "show", f"{LTSSERIES[0]}.0"],
+
+-- 
+2.53.0
 
 
