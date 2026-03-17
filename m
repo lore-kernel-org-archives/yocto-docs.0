@@ -2,214 +2,100 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 99D6DF3383F
-	for <webhook@archiver.kernel.org>; Tue, 17 Mar 2026 10:08:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4FB3DF506FF
+	for <webhook@archiver.kernel.org>; Tue, 17 Mar 2026 10:08:59 +0000 (UTC)
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.72664.1773742130033869095
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.72662.1773742128679929983
  for <docs@lists.yoctoproject.org>;
- Tue, 17 Mar 2026 03:08:50 -0700
+ Tue, 17 Mar 2026 03:08:49 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=ja4gbJBn;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=lzOEHYlZ;
  spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 8A7E11A2DE6
-	for <docs@lists.yoctoproject.org>; Tue, 17 Mar 2026 10:08:48 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id A95851A2D59
+	for <docs@lists.yoctoproject.org>; Tue, 17 Mar 2026 10:08:46 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 562DA60050;
-	Tue, 17 Mar 2026 10:08:48 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C988A10450450;
-	Tue, 17 Mar 2026 11:08:46 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 6D2815FC9A;
+	Tue, 17 Mar 2026 10:08:46 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3C07B1045044A;
+	Tue, 17 Mar 2026 11:08:43 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1773742127; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=QDdtqu20O4WqinqGWbwx8ikZqH+xw4msVCf8rItarbQ=;
-	b=ja4gbJBnmC9275x6SEtW72a99qxtDyIOX1spTvGaLdpwEi/53UUR62LuqRaxoS275hObZu
-	82udHMI/nlBmRPVNF/th+PJBtK7B4SBpfapB7S4PW/9+RoYEWWHgmRoTzsVcCzwbqodQpV
-	On5PvEyMjppms3MWtgguSuK/FU411YHCLsSOUcQnIZnLxEGZq1SKMVHoil4h4DtnqPXpFX
-	knWbKAiZxrWOkM4GRRgOXL7pBpGOq7BCJLu8zluvTzT1DRs22JCuUwAGRKkQ/dJvv2jZU/
-	+G6+d1w2vuTkU0eKMScKePpxuBW0Cd+CIzezkKzFuOxCQ9lBPAsqs7/jaPDPjA==
+	t=1773742125; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=aIH9bTAYfZLosTHH6kxHSV7Wux9Sc27SbYw+i+GApkc=;
+	b=lzOEHYlZQrcBLLp9wQL21/UOhq9O4so5nnU3+jMNLTnBWl+m8GR40K4Ssj2KTA5Wj43uxP
+	45TlWIOaaFUd4P5bUrHDyxE9Dawkkx3qAZPgvNJZBOegcgLTFXfEEfUE7J1Jj7NZB7LxNV
+	emM9JB65Hv0sAfBM3hmNO47Y0INmRHfOFGntn3v+65EKG6eelN8BtYmNCTpRo8Y6NgrJot
+	gvFihjj1ggbiBhHXnIUrTo/gEWri8fMTpXjTu8kUY2If2iBJmCiLf20KnDSU87Y0+u4utC
+	CYYUdgbK6J5PG+YAJNsyMCoru1KTHcvyoHIp7uYA8x8jxbxIzxQnXSiJ8c+VMg==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Tue, 17 Mar 2026 11:08:37 +0100
-Subject: [PATCH 2/5] doc/setversions.py: simplify the get_current_version()
- function
+Subject: [PATCH 0/5] Docs build cleanup and automations
+Date: Tue, 17 Mar 2026 11:08:35 +0100
+Message-Id: <20260317-docs-releases-json-v1-0-492d0b256349@bootlin.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260317-docs-releases-json-v1-2-492d0b256349@bootlin.com>
-References: <20260317-docs-releases-json-v1-0-492d0b256349@bootlin.com>
-In-Reply-To: <20260317-docs-releases-json-v1-0-492d0b256349@bootlin.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMQQ6CMBBG4auQWTvJCAbUqxgXpfyVIaY1HTUkh
+ LtbcPkt3lvIkBVG12qhjK+aplhwPFTkRxcfYB2KqZa6lUZOPCRvnPGEMxhPliIHEe9Cc27RXai
+ Er4yg8z693f+2Tz/Bv7cTresPEEnqlXYAAAA=
+X-Change-ID: 20260304-docs-releases-json-f00caf386e79
 To: bitbake-devel@lists.openembedded.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  docs@lists.yoctoproject.org, Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6618;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1343;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=BbwKzVuiJq6T2z7hybisISWhmCbokJGR5W/ACCpgeiQ=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpuSgr4E/ciHrYME0bAjaFRT2gnigtx1T2p0com
- /KU7U2MWhOJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCabkoKwAKCRDRgEFAKaOo
- NrS5EACTeTLaastEs2PTB7GnBLKRgJp4MwA8xIZEoreQJeGkVcpN9FpTW/dNkbt8YEiCH9sqC43
- peyuoyPuj7dZ/l6ZSRx0IHzCkysB0wbKDd7JfxoeC39Rc1/KXHdXzcwiBeeU3wP+J8OmapeSNwU
- t0cARHD9o0Z0azrcVSGiABMA31/RYwiEf1KX/DVjVT7mVQQ2JHrdhqqfP/2wn5fQ6X5YudsxEAi
- 9Eu1M50YqVWcDi3BZyxU/z901ogvoAjzNRwIwL4QkbHqLrRSya+PYK+B8mZnK2xAcn7PWvg8ecr
- x5GMwSxbgb3kt95GMDN46vS1WFmZTEC1AJgEL2zvg74ZBPUc648WgV0XlrtXhIkUe/aUE3UIY2p
- B55JbXYXqWijSvNZMzQmoX23ovEebc5ijdcbyo5yQF0wL6ygte706Tx5K/pxAaWMpfOdcnyra2I
- QTSlc2wg2PNJtKW+pHniIiHgRgxjblq6qbyMXydn/GuQGjlWbmBJ1rmEY/T1Gbfbxg9t8VVHr9O
- jNYK8y+p3iX+tfN/8Qe3Xs9wXWhtKw4lFblTS5S8aG/vNGdkXjGT4LF+gMFReOES5gJJO5cVjxR
- R39Ct++nLbwSFpvZcebHSMKE16stKWhnLwFef6V+L0Wmb1SFu8j6MdX3VA03HNABei3pkZXr3oV
- Hm3MPlOc1kze1lg==
+ bh=2JegcHd+HUpKbk2NQ4lTnVL2+aYy5Lp2wYRfCgYCuYs=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpuSgqFyehRGlyRN8Tf3/3eG6stCEkTB8jwE7/A
+ azu1MfrvMOJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCabkoKgAKCRDRgEFAKaOo
+ NnunEACbskbR2Lm0aiIy3ZoPQAR1G1UEGh/h5pRmYQV2Dk7mzntrQcPgPiEOhpiEo4iU8JJOxGc
+ 16JBUCWCp6San/YT4c/4dMtp1TV8qdtL5UtkN+A1tWC65ZQqE76aUNvltnwFAB25xMHlJ+CY68D
+ PipVLpvEhdHItNp2zxjciQkxrALIEMQRvWGBLBAyir/7OIkB4bg3EACvqcyg2ledWYxCTPJ+cKm
+ J4CBaM0NsGNZPXPgDrwyg1WEQC+bRjLVZ5Ixdlwj2t4CFpA/EJLWSmT4WfQXlWTNlqWgvNCFVf7
+ yqBZ84kd9dLqXKrR4PYwwQFQS0KrAVSQ1w1b5KiAxLCa3fSzy7L4XoJcqepscNJXBQCheTMGOds
+ fIwksymIEgOUZNA1zInSC2V2xBH0Ot/1OqpOHF2NmtFp/tofzwz7qBMmYcovH5mdlPXptaSFk5t
+ Xt2fEkyIMNao8c/+0HF2tD+yVoZXue1kwaFnZFJGTK5PLIA7W/qTZWnkWdYkxTEUZwDI4885NUs
+ 0ITArDe2xCU1iUVsJeqHLfbGadDWp5MiJz2wa1ge59bUmYBgEJ6tuYUKgRwN+jrvhc/mHTvNLQo
+ i++EGUGMOta1QhcXySA6rG7BuuCwcbhNKGDGzLqT3X6SGKvQMVZJp/VKMJrkkRrT0SWIPiGczCp
+ 12jP4jM71J3GYXw==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 17 Mar 2026 10:08:58 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9086
+ <docs@lists.yoctoproject.org>; Tue, 17 Mar 2026 10:08:59 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9084
 
-While this was inspired with yocto-docs' set_versions.py file[1], some
-of the logic here can be simplified with early returns.
+This series aims at first simplifying some of the recent code
+surrounding the documentation build, and second at automatically
+fetching the supported/outdated versions of bitbake from the
+releases.json file[1] and outputting a releases.rst document from that.
 
-As a consequence of these early returns, move the print() call showing
-the computed version to the conf.py file.
+The remote releases.json file is downloaded once when launching a build,
+and re-used on subsequent builds. `make clean` will remove it.
+
+The output is unchanged compared to before. It will only change once the
+remote releases.json file gets updated.
+
+[1]: https://dashboard.yoctoproject.org/releases.json
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- doc/conf.py        |  1 +
- doc/setversions.py | 90 +++++++++++++++++++++++++-----------------------------
- 2 files changed, 42 insertions(+), 49 deletions(-)
+Antonin Godard (5):
+      doc: move the Git repo check to the conf.py file
+      doc/setversions.py: simplify the get_current_version() function
+      doc/setversions.py: fix an f-string without placeholders
+      doc: build using remote releases.json
+      doc: generate the releases.rst file
 
-diff --git a/doc/conf.py b/doc/conf.py
-index 40a022eaa00..315fb7d06a7 100644
---- a/doc/conf.py
-+++ b/doc/conf.py
-@@ -26,6 +26,7 @@ sys.path.insert(0, os.path.abspath('.'))
- import setversions
- 
- current_version = setversions.get_current_version()
-+print(f"Version calculated to be {current_version}")
- 
- # String used in sidebar
- version = 'Version: ' + current_version
-diff --git a/doc/setversions.py b/doc/setversions.py
-index 2ec68ac9945..4130df67695 100755
---- a/doc/setversions.py
-+++ b/doc/setversions.py
-@@ -41,8 +41,6 @@ YOCTO_MAPPING = {
- BB_RELEASE_TAG_RE = re.compile(r"^[0-9]+\.[0-9]+\.[0-9]+$")
- 
- def get_current_version():
--    ourversion = None
--
-     # Test tags exist and inform the user to fetch if not
-     try:
-         subprocess.run(["git", "show", f"{LTSSERIES[0]}.0"],
-@@ -50,63 +48,57 @@ def get_current_version():
-     except subprocess.CalledProcessError:
-         sys.exit("Please run 'git fetch --tags' before building the documentation")
- 
--
-     # Try and figure out what we are
-     tags = subprocess.run(["git", "tag", "--points-at", "HEAD"],
-                           stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                           universal_newlines=True).stdout
-     for t in tags.split():
-         if re.match(BB_RELEASE_TAG_RE, t):
--            ourversion = t
--            break
-+            return t
- 
--    if ourversion:
--        # We're a tagged release
--        components = ourversion.split(".")
--    else:
--        # We're floating on a branch
--        branch = subprocess.run(["git", "branch", "--show-current"],
--                                stdout=subprocess.PIPE, stderr=subprocess.PIPE,
--                                universal_newlines=True).stdout.strip()
--
--        if branch == "" or branch not in list(YOCTO_MAPPING.keys()) + ["master", "master-next"]:
--            # We're not on a known release branch so we have to guess. Compare the
--            # numbers of commits from each release branch and assume the smallest
--            # number of commits is the one we're based off
--            possible_branch = None
--            branch_count = 0
--            for b in itertools.chain(YOCTO_MAPPING.keys(), ["master"]):
--                result = subprocess.run(["git", "log", "--format=oneline", "HEAD..origin/" + b],
--                                        stdout=subprocess.PIPE, stderr=subprocess.PIPE,
--                                        universal_newlines=True)
--                if result.returncode == 0:
--                    count = result.stdout.count('\n')
--                    if not possible_branch or count < branch_count:
--                        print("Branch %s has count %s" % (b, count))
--                        possible_branch = b
--                        branch_count = count
--            if possible_branch:
--                branch = possible_branch
--            else:
--                branch = "master"
--            print("Nearest release branch estimated to be %s" % branch)
-+    # We're floating on a branch
-+    branch = subprocess.run(["git", "branch", "--show-current"],
-+                            stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-+                            universal_newlines=True).stdout.strip()
- 
--        if branch == "master":
--            ourversion = "dev"
--        elif branch == "master-next":
--            ourversion = "next"
-+    if branch == "" or branch not in list(YOCTO_MAPPING.keys()) + ["master", "master-next"]:
-+        # We're not on a known release branch so we have to guess. Compare the
-+        # numbers of commits from each release branch and assume the smallest
-+        # number of commits is the one we're based off
-+        possible_branch = None
-+        branch_count = 0
-+        for b in itertools.chain(YOCTO_MAPPING.keys(), ["master"]):
-+            result = subprocess.run(["git", "log", "--format=oneline", "HEAD..origin/" + b],
-+                                    stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-+                                    universal_newlines=True)
-+            if result.returncode == 0:
-+                count = result.stdout.count('\n')
-+                if not possible_branch or count < branch_count:
-+                    print("Branch %s has count %s" % (b, count))
-+                    possible_branch = b
-+                    branch_count = count
-+        if possible_branch:
-+            branch = possible_branch
-         else:
--            ourversion = branch
--            head_commit = subprocess.run(["git", "rev-parse", "--short", "HEAD"],
--                                         stdout=subprocess.PIPE, stderr=subprocess.PIPE,
--                                         universal_newlines=True).stdout.strip()
--            branch_commit = subprocess.run(["git", "rev-parse", "--short", branch],
--                                            stdout=subprocess.PIPE, stderr=subprocess.PIPE,
--                                            universal_newlines=True).stdout.strip()
--            if head_commit != branch_commit:
--                ourversion += f" ({head_commit})"
-+            branch = "master"
-+        print("Nearest release branch estimated to be %s" % branch)
-+
-+    if branch == "master":
-+        return "dev"
-+
-+    if branch == "master-next":
-+        return "next"
-+
-+    ourversion = branch
-+    head_commit = subprocess.run(["git", "rev-parse", "--short", "HEAD"],
-+                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-+                                 universal_newlines=True).stdout.strip()
-+    branch_commit = subprocess.run(["git", "rev-parse", "--short", branch],
-+                                   stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-+                                   universal_newlines=True).stdout.strip()
-+    if head_commit != branch_commit:
-+        ourversion += f" ({head_commit})"
- 
--    print("Version calculated to be %s" % ourversion)
-     return ourversion
- 
- def write_switchers_js(js_in, js_out, current_version):
-
--- 
-2.53.0
+ doc/.gitignore     |   2 +
+ doc/Makefile       |   2 +-
+ doc/conf.py        |  13 ++
+ doc/releases.rst   | 199 ------------------------------
+ doc/setversions.py | 355 ++++++++++++++++++++++++++++++++++++++++++-----------
+ 5 files changed, 300 insertions(+), 271 deletions(-)
+---
+base-commit: e8ace6e16c78ddbc2cfe985b88b66800d99282b3
+change-id: 20260304-docs-releases-json-f00caf386e79
 
 
