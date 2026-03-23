@@ -2,63 +2,61 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8A1BBEC01AA
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B5364EC01B0
 	for <webhook@archiver.kernel.org>; Mon, 23 Mar 2026 08:50:34 +0000 (UTC)
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.12768.1774255823939486111
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.12663.1774255824796231342
  for <docs@lists.yoctoproject.org>;
- Mon, 23 Mar 2026 01:50:24 -0700
+ Mon, 23 Mar 2026 01:50:25 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=Pwvd6/xH;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=p3T1uR8E;
  spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id F2CEB4E427A7
-	for <docs@lists.yoctoproject.org>; Mon, 23 Mar 2026 08:50:21 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 38E724E427AE
+	for <docs@lists.yoctoproject.org>; Mon, 23 Mar 2026 08:50:23 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id C9AC45FEF6;
-	Mon, 23 Mar 2026 08:50:21 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id F318110371342;
-	Mon, 23 Mar 2026 09:50:19 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 10DE75FEF6
+	for <docs@lists.yoctoproject.org>; Mon, 23 Mar 2026 08:50:23 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5331D103713CA;
+	Mon, 23 Mar 2026 09:50:22 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1774255821; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=/HWaYiI5FPny6tkjo0RXEwy7AccJ9F+UhMC+ScyuokU=;
-	b=Pwvd6/xH7Sr6OIjTTjGYawUAZ++tLX+rPfuLGQy9PSIfqctbP0MRSuJB/QlFwUQWwEQ5n+
-	683lRgSJGvK/qP+7kJU+wUPKBxqe1ucysvPTH6ovEmL4XP1VxQxWQVgBvHv6SXCwPM5HjL
-	aiJbtu3BDaldUHcfPKr0zPLwSlUH6EqgEPx2iyB9ni1lg56Dm3HJXWfcvdjAqm9O7eqiSY
-	kSVgJ5FuMMnAlz/0b65/sFKPIY3bua1FbiB4ZXNGe0TyHvPaBBeWJYdmpsTUk0HzfDlFac
-	sEUp6yDRtZDGtqiZEN3j8VPTU43x51chVotZ9up5HctTbM2sCUgLCZdxTDGhtw==
+	t=1774255822; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=JN5wi8lfd4UMyRGQd0AaLr59NIRv3amy4Rw7lOBFCaA=;
+	b=p3T1uR8EH/6c85pxUZIlds7M98JK3HrPMh5iDb7f8yPFCq9taSFsDQtmIYdElF63Gbu5V3
+	P5est0tOYwlB/YCv4A+KSa4GF/7XoZcCU0kKnEPSDH612gDlX81ZigcJI7wwRHdJ+/K1y8
+	d3CH7bMQOthQF4g35+HlA5lbjYVq3dkhE943h1wkSK8YPZbGsVJER05I24xrFRqOqub5aM
+	vvzbA9HZUPPiAMOdwsDeqph1MsjE61iF/K+/Mtjx0L+joV5U/zhDhZIbU23zLCrSNO/Ssp
+	cSkxrKYjZNh6LfcZyzxYR7Y1YwKHbOoVwQ0S2v6AtB4HDZ+TFeiPNKlMFwjDQw==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Subject: [PATCH v3 0/8] Update the documentation for 6.0 (Wrynose)
-Date: Mon, 23 Mar 2026 09:49:51 +0100
-Message-Id: <20260323-release-notes-6-0-v3-0-844ec702f95b@bootlin.com>
+Date: Mon, 23 Mar 2026 09:49:53 +0100
+Subject: [PATCH v3 2/8] ref-manual/variables.rst: document qemuboot
+ variables
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/23NQQ7CIBAF0Ks0rMXA0GJ15T2Mi1KmFlPBQCWap
- ncX2o0m3fzkJ3/eTCSgNxjIqZiIx2iCcTYVsStI2zf2htTo1AkwkAy4oB4HbAJS60YMVFJGD0K
- oktVSlroj6e7psTPvxbxc1x5e6o7tmKG86E0Ynf8sTyPPu9UXDDb8yFMcpQSNWNXVkZ+Vc+Ng7
- L51D5I/RPgxgG0ZkIIrrTgqXkKD/8Y8z18c83F7CgEAAA==
-X-Change-ID: 20260213-release-notes-6-0-733b408664df
+Message-Id: <20260323-release-notes-6-0-v3-2-844ec702f95b@bootlin.com>
+References: <20260323-release-notes-6-0-v3-0-844ec702f95b@bootlin.com>
+In-Reply-To: <20260323-release-notes-6-0-v3-0-844ec702f95b@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Antonin Godard <antonin.godard@bootlin.com>, 
- Quentin Schulz <quentin.schulz@cherry.de>
+ Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1834;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5993;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=yVgSN5E0nZlROQzk3fYyb1sqCVdGUQpOH0temVwOCvM=;
- b=kA0DAAoB0YBBQCmjqDYByyZiAGnA/sqixQvZeGBJKqFssTjVO3RAj+GlRGBbths0DZ73gG07p
- YkCMwQAAQoAHRYhBIZIclGI3UAbuaDT/9GAQUApo6g2BQJpwP7KAAoJENGAQUApo6g2/qwP/2wz
- SWa7Tz04GNj/3eaeclhXfL1gIjkCMfBFxnoq7dr3TqeUooyyhzvH/xHWzjJ9bpaASWci0sUdyR3
- 5d8nZa4aagMaiwh0whhnbGj6A3EFpi45nhyzCJPatR0zDsmZdRKH2zNGuIiyEmhPkgvaT9oGIfW
- kB0OIh3pV+IKV8d4HRRu+lfwitmN9DUjo40DpI8Sp0jZ0jtkoaiHvCcTPHV86YmbR5Sb+Ia5tlt
- hXRwJ33f89Zuxsx4hWROqKyOMxbJi91CDBakYrLEdwsdPMscdrfcKo/lxqvEnK94hY1yjIc1Ymi
- UOYAbpxXb+xgBojHu0Z3lOgyjGBtqgzccdcqGLPHus0ojo/4mVe6mQ3TP2PE4GDvFAWCry0RNI7
- IY8sA6Il2iv13aMeQa80EmOxQWqTujz75zv6XBdyxQtptNfU6jBaadGm0H+mRCvM2e9xc2tegza
- 9uMwjK/Z1Aa4igcL8c4Chh2UxTnzGgkDxvF76YPoK7kIczc1fUqBeHIPw/FH4hS/WsMFUZvop7I
- rNNorx5+0nWBxY8k5qz96TD0V88KXl57muip0Be1vOJ/5ddeK60F5WKTPOH8tw2bzuX9MU0nZ46
- qWwWafNZDLGCLxod6vcpamQvH8UUz89zIPFXoEZIkL1+Ixw/nAR0fe8oMSv/TnmaKfUCh6hHo3z
- mbm7Q
+ bh=XPsuQ0KoNGzF2qNj1ddbHa1ktUAe4oFylRCKkBS7NGY=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpwP7KvkxV+dXXVv/hmUsKMWxCoWL6PaqelTjcX
+ hoSZ3bE8U+JAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCacD+ygAKCRDRgEFAKaOo
+ NmVXD/4he2N6u95myrSCATBdSC4Il2tloBsFrazwr0MPaPCYIY1ezmu8f08m3N2a0orAo+regA0
+ 2VpI0aopINiJrvEGDRg9bStDBu4kjwqQgXNwyuwtGcVoy0go/w+EYUuQvbzeClr+pK6Wma6cQzM
+ PXmXfHleCJ+jsl70uCLYc8bi62cgdvZGEB4cqYB+CY/T7fzUIf9yecY0ES7Ur3LZrc7WZisLCMU
+ yaMsD1EUcQMKx06OFXj3uaZBF+tWFiaNZgVrc6Ci89JcPAfqHzLaF70BtdbaQKdcP3MIWz25GLt
+ ed7abneRZHC3TD4Q0Qt1RNHbY4gKN6Uv6vrJTNKijeWjeqJKoW3l2ge40Tq5VUFE/L1pfpNT4tp
+ zzFnRgnNtN4A8IQzWUJ9/Zx9iv4HuZ/+92xIY56eUZlg5nq2hBehd5sQVuMKJmZKk/ienrfWBJs
+ ywndz1jFChf2S0o/HuE0La6fGM7SlksGA3ufXdafsUJAtKB8EWLCIjbrQl3PSClsPb1SutuZkBN
+ qII2qqLhxiTZl1+HAuWlZDvj/3Fldc389nI7XyAzGiQSuUS8Kc7hcdPwXyYQxV7DhMtHTQ0tn6u
+ XRqjQZUVDCjM+x3kjnDQI/FtGUUSQLAy9msj2lbkeFBqGGAXMv829pBg/PJA/fL2CMjmPrLi8IQ
+ o2JAY+cYKWp6GoQ==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
@@ -66,44 +64,176 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Mon, 23 Mar 2026 08:50:34 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9114
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9115
+
+Document the variables in qemuboot.bbclass that allow customizing how
+the QEMU guest is instantiated.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
-Changes in v3:
-- No release note content change, I only converted short shas to full
-  shas and set their display form to 7 characters. 7 characters seemed
-  like a good length to make it look like a commit without being too
-  distracting.
-  Thanks Quentin for the suggestion!
-- Link to v2: https://patch.msgid.link/20260320-release-notes-6-0-v2-0-1bdb1eb142ae@bootlin.com
+ documentation/ref-manual/variables.rst | 147 +++++++++++++++++++++++++++++++++
+ 1 file changed, 147 insertions(+)
 
-Changes in v2:
-- Apply suggestion of Quentin in v1 (thanks!)
-- Link to v1: https://patch.msgid.link/20260302-release-notes-6-0-v1-0-9662dee58591@bootlin.com
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index 9e0c5b083..e24c4bbf8 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -7850,6 +7850,153 @@ system and gives an overview of their function and contents.
+ 
+          QA_EMPTY_DIRS_RECOMMENDATION:/dev = "but all devices must be created at runtime"
+ 
++   :term:`QB_CMDLINE_IP_SLIRP`
++
++      If :term:`QB_NETWORK_DEVICE` adds more than one network interface to QEMU,
++      usually the ``ip=`` Linux kernel command line argument needs to be changed
++      accordingly. The :term:`QB_CMDLINE_IP_SLIRP` variable allows controlling
++      this value. See the Linux kernel documentation for more details:
++      https://www.kernel.org/doc/Documentation/filesystems/nfs/nfsroot.txt.
++
++   :term:`QB_CMDLINE_IP_TAP`
++
++      This variable is similar to the :term:`QB_CMDLINE_IP_SLIRP` variable.
++
++      Use as follows::
++
++         QB_CMDLINE_IP_TAP = "ip=192.168.7.@CLIENT@::192.168.7.@GATEWAY@:255.255.255.0::eth0"
++
++      Since the tap interface requires static IP configuration, ``runqemu``
++      replaces the ``@CLIENT@`` and ``@GATEWAY@`` place holders by the IP and
++      the gateway address of the QEMU guest.
++
++   :term:`QB_DEFAULT_FSTYPE`
++
++      The :term:`QB_DEFAULT_FSTYPE` variable controls the default filesystem
++      type to boot. It is represented as the file extension of one of the root
++      filesystem image extension found in :term:`DEPLOY_DIR_IMAGE`. For example:
++      ``ext4.zst``.
++
++   :term:`QB_DEFAULT_KERNEL`
++
++      When using ``runqemu``, the :term:`QB_DEFAULT_KERNEL` variable controls
++      the default Linux kernel image to boot, found in :term:`DEPLOY_DIR_IMAGE`. For
++      example: ``bzImage``.
++
++   :term:`QB_DRIVE_TYPE`
++
++      When using ``runqemu``, the :term:`QB_DRIVE_TYPE` variable specifies the
++      type of drive to emulate when starting the emulated machine.
++      Valid values are:
++
++      -  ``/dev/hd``: emulates an IDE drive.
++      -  ``/dev/mmcblk``: emulates an SD Card.
++      -  ``/dev/sd``: emulates an SCSI drive.
++      -  ``/dev/vd``: emulates a VirtIO drive.
++      -  ``/dev/vdb``: emulates a block VirtIO drive.
++
++   :term:`QB_GRAPHICS`
++
++      When using ``runqemu``, the :term:`QB_GRAPHICS` variable controls the QEMU
++      video card type to emulate. For example: ``-vga std``.
++
++      This value is appended to the argument list when running ``qemu``.
++
++   :term:`QB_KERNEL_CMDLINE_APPEND`
++
++      The :term:`QB_KERNEL_CMDLINE_APPEND` variable controls the options passed
++      to the Linux kernel's ``-append`` QEMU options, which controls the Linux kernel
++      command-line.
++
++      For example::
++
++         QB_KERNEL_CMDLINE_APPEND = "console=ttyS0"
++
++   :term:`QB_MEM`
++
++      The :term:`QB_MEM` variable controls the amount of memory allocated to the
++      emulated machine. Specify as follows::
++
++         QB_MEM = "-m 512"
++
++   :term:`QB_NETWORK_DEVICE`
++
++      When using ``runqemu``, the :term:`QB_NETWORK_DEVICE` variable controls
++      the network device instantiated by QEMU. This value needs to be compatible
++      with the :term:`QB_TAP_OPT` variable.
++
++      Example::
++
++         QB_NETWORK_DEVICE = "-device virtio-net-pci,netdev=net0,mac=@MAC@"
++
++      ``runqemu`` replaces ``@MAC@`` with a predefined mac address.
++
++   :term:`QB_NFSROOTFS_EXTRA_OPT`
++
++      When using ``runqemu``, the :term:`QB_NFSROOTFS_EXTRA_OPT` variable
++      controls extra options to be appended to the NFS rootfs options in the
++      Linux kernel command-line.
++
++      For example::
++
++         QB_NFSROOTFS_EXTRA_OPT = "wsize=4096,rsize=4096"
++
++   :term:`QB_OPT_APPEND`
++
++      When using ``runqemu``, the :term:`QB_OPT_APPEND` variable controls
++      general options to append to QEMU when starting.
++
++   :term:`QB_RNG`
++
++      When using ``runqemu``, the :term:`QB_RNG` variable controls
++      pass-through for host random number generator, it can speedup boot
++      in system mode, where system is experiencing entropy starvation.
++
++      For example::
++
++         QB_RNG = "-object rng-random,filename=/dev/urandom,id=rng0 -device virtio-rng-pci,rng=rng0"
++
++   :term:`QB_ROOTFS_EXTRA_OPT`
++
++      When using ``runqemu``, the :term:`QB_ROOTFS_EXTRA_OPT` variable controls
++      extra options to be appended to the rootfs device options.
++
++   :term:`QB_SERIAL_OPT`
++
++      When using ``runqemu``, the :term:`QB_SERIAL_OPT` variable controls the
++      serial port option.
++
++      For example::
++
++         QB_SERIAL_OPT = "-serial mon:stdio"
++
++   :term:`QB_SMP`
++
++      When using ``runqemu``, the :term:`QB_SMP` variable controls
++      amount of CPU cores made availalble inside the QEMU guest, each mapped to
++      a thread on the host.
++
++      For example::
++
++         QB_SMP = "-smp 8".
++
++   :term:`QB_TAP_NAMESERVER`
++
++      When using ``runqemu``, the :term:`QB_TAP_NAMESERVER` variable controls
++      the default :wikipedia:`name server <Name_server>` used in the QEMU guest.
++
++   :term:`QB_TAP_OPT`
++
++      When using ``runqemu``, the :term:`QB_TAP_OPT` variable controls
++      the network option for "tap" mode.
++
++      For example::
++
++         QB_TAP_OPT = "-netdev tap,id=net0,ifname=@TAP@,script=no,downscript=no"
++
++      Note that ``runqemu`` will replace ``@TAP@`` with the tap interface in
++      use, such as ``tap0``, ``tap1``, etc.
++
+    :term:`RANLIB`
+       The minimal command and arguments to run :manpage:`ranlib <ranlib(1)>`.
+ 
 
----
-Antonin Godard (8):
-      conf.py: define new {oecore,bitbake,meta_yocto}_rev roles
-      ref-manual/variables.rst: document qemuboot variables
-      ref-manual/variables.rst: SPDX_PACKAGE_URL: add missing parenthesis
-      ref-manual/variables.rst: document the LTO variable
-      ref-manual/variables.rst: document the SPDX_CONCLUDED_LICENSE variable
-      migration-guides: update 6.0 (Wrynose) release notes
-      docs-wide: add warning on disabled NPM fetcher
-      ref-manual/faq.rst: remove the CVS proxy note
-
- documentation/conf.py                              |  16 +-
- documentation/dev-manual/devtool.rst               |   5 +
- documentation/dev-manual/packages.rst              |  10 +-
- documentation/migration-guides/migration-6.0.rst   | 193 ++++++++-
- .../migration-guides/release-notes-6.0.rst         | 455 ++++++++++++++++++++-
- documentation/ref-manual/classes.rst               |   5 +
- documentation/ref-manual/faq.rst                   |   2 +-
- documentation/ref-manual/variables.rst             | 172 +++++++-
- 8 files changed, 831 insertions(+), 27 deletions(-)
----
-base-commit: ca057a6b477b72698409d7b6c6ec49100f73d05d
-change-id: 20260213-release-notes-6-0-733b408664df
+-- 
+2.53.0
 
 
