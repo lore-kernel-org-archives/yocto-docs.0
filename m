@@ -1,328 +1,353 @@
-Return-Path: <alex.kanavin@gmail.com>
+Return-Path: <richard.purdie@linuxfoundation.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BCA81E63FEB
-	for <webhook@archiver.kernel.org>; Sat,  4 Apr 2026 17:13:38 +0000 (UTC)
-Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.20383.1775322810685560884
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F317FFEEF34
+	for <webhook@archiver.kernel.org>; Tue,  7 Apr 2026 12:59:07 +0000 (UTC)
+Received: from delivery.antispam.mailspamprotection.com (delivery.antispam.mailspamprotection.com [185.56.87.3])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.19376.1774358696365720177
  for <docs@lists.yoctoproject.org>;
- Sat, 04 Apr 2026 10:13:30 -0700
+ Tue, 24 Mar 2026 06:24:57 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20251104 header.b=CN3m64Ag;
- spf=pass (domain: gmail.com, ip: 209.85.222.176, mailfrom: alex.kanavin@gmail.com)
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-8cfc795ca97so229273785a.0
-        for <docs@lists.yoctoproject.org>; Sat, 04 Apr 2026 10:13:30 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1775322810; cv=none;
-        d=google.com; s=arc-20240605;
-        b=bORNqajsoF/iHIc3q35IAMda5ZbM0jtOaIkrcjMagsZkqp5/WREnalk2rhrZplLIhQ
-         BxSTLq3/akyjJbM+iIO7zoZJVxdtuqhFmg5GHufcganPXERVF0hMGGaGlawEWS4bHYfo
-         ejSc+2jd6YmA2Pn8JIqG8Y4VQRALTppE/12jpRN0303LwqGDt3enELW/GfMRE/qEBdmG
-         dRxygyZ8T+mz/8vZ9HwN99EvU1+rPrPVMx+d6fKka7PyYX9n3YQUyOmSTWBVMyT+jeoF
-         ZIthDFN4DxKIPYsU9NIkXJvwQevgWr8pRnG1gpo4LKe20dm2M1I1yYTdrnoS/ZS5CGqY
-         CJAQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=NoZlGYrQl5i9hd+YMmZ51XO33n2aAja79V3pPTj8j48=;
-        fh=ooBG7VR6cIDtg3HW1+YXxQyRer0qVZLxYo+89tBG6hg=;
-        b=XjcLz8LUOPlxFaHlKp70lNvYfshdzXecSnVtptmNvvDtfy2HfAiLMalxGcZwu5adVB
-         Tjd+K98xGzQGhxzhANEYeePHzLh2+dcC5gqq29xIcAVf6VtwhsBc8URYAbe0p/OdnwKc
-         kCeBgLpgWlNwTEH4dOnwic3ETxiSBwQQHICPSWnqECNILK1jQjS97mFLWziTXmQcDDd2
-         owLu8NTdmLmLBF7zLNSDjFQl22xJRajfy9ddyR03JBV8hsZ8UEV7Y+GxKF2LunNXr4ki
-         JGnkUSO6Jp/MYnhUk05XbEzVfMA4RWKGv76Oa1BkcRTTPgB1yQGZi07zDXBmsGigbxY6
-         KO4w==;
-        darn=lists.yoctoproject.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775322810; x=1775927610; darn=lists.yoctoproject.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=NoZlGYrQl5i9hd+YMmZ51XO33n2aAja79V3pPTj8j48=;
-        b=CN3m64AgrOMJ4BH3Pg2LWGZB2azu7cAXb7H+VVWUO65xplekcgyay4SF3KcEeAF6uU
-         NIjvlPy2L80+vR5ejku8ExZO5VjNbD2KbmbSrjYn4pmKHvLAtXSciUxviS0Q2sWMdHvt
-         UbaCp1Eti9b+h0SnZadgtKCS2rArJPCf0IoWFfwaji8I+XBuZSwxV23spaAnEtyON7eC
-         rqXK0eJwyyyTZjRnDk3RQYhbuiUCfYh+MUxPFYgZ3/LNURIX0fGTA8CZhYI0h0QnMRET
-         JZMBFENYpGabkd+Grx+zEdNd5snK9YvaFEMirKFgWBkzkmy/leM5rHKTFqShZuqjyevB
-         t3DQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775322810; x=1775927610;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NoZlGYrQl5i9hd+YMmZ51XO33n2aAja79V3pPTj8j48=;
-        b=KdteXmEItQg6OWdplbojiXobx4HkRXAPJ+J3FmV6KHC6HpZxFIWm0fuCKdnHyvbqbf
-         UImMCQi0pUptuvWB+NWVaAcOh3RYSRgqahbIR6l6Eui+8bebcj0BFHzu/3sKD4lHGnsK
-         4eQfE8ypu1X8lWxW+BHJ7k1svUB/fcMCddZAVwQB+4vjWHuKzBS/czQTD34LuYSXYvvz
-         ELDkhIwV3ZCtr35oI+1Z3DOBNxoJHMdTRIHDTCcvrY77A6k6iH/TqTihUOsr3jpZ+0y9
-         wx7hUfbocK7CCpMDOiOoYLOi7yP9jH2BGnvoKoMlDykocwkWnF5P2C+8hHJiPoD+UH8y
-         IYSg==
-X-Gm-Message-State: AOJu0YyDdVC6iH4VYCGMB0zquPWyY/0ddPa6fUTXVoascCjgu/B0By79
-	9B906WOI3fMPz2Nsxyhe8qk4C0YGBFvA5MGeiMTcafly3rg+XjeQCq4QhBDU348X7VB5XHALBiZ
-	i7HtgUfKb+lDQsCuGj6k9PHdFb8x9H6M=
-X-Gm-Gg: AeBDieucVYoVORTJjKSycuhMEgGcmRnt7DZBDkSbXcM7hpB+8kQGG7LbtMwxctE4jqx
-	6axAU69HjcPLWhGF1CQ8JQgnP8onScppAmPYefd0HQOxFLZzSAVCKFa/zr8SlZt+ACdqAgGkZkG
-	bR4GFJO+D4mIJIldwklvXwQjnLzV/HVIlda0FPj/bCxrDH3MH0075D8NKR5WCC35FzWCIp4wAHz
-	h5yFxZsqO4HPElbkHDFKU1tPb+VmI3MMDM/oH0//Z6mknKNlqls4+UJnj1ZpcQZOD2l0TsA+FdQ
-	JSEtakIWg8f774tM4+GARAsdD6cGGEAfz0pc/N5T
-X-Received: by 2002:ad4:5aa4:0:b0:8a0:d08c:a721 with SMTP id
- 6a1803df08f44-8a70345e395mr126588086d6.22.1775322809556; Sat, 04 Apr 2026
- 10:13:29 -0700 (PDT)
+ dkim=pass header.i=@antispam.mailspamprotection.com header.s=default header.b=d70HNpyZ;
+ dkim=pass header.i=@valla.it header.s=default header.b=qFfc7qqO;
+ spf=pass (domain: valla.it, ip: 185.56.87.3, mailfrom: francesco@valla.it)
+ARC-Seal: i=1; cv=none; a=rsa-sha256; d=outgoing.instance-europe-west4-d2fs.prod.antispam.mailspamprotection.com; s=arckey; t=1774358696;
+	 b=tZyYrqoc7s91RCKxp/i06wO/cr894dsNkhf/+oknDikKVv6TJjmYmyfbyw0QibphjhSnZ1DoNW
+	  MxgygdP76A2nyQG6rp/ybaGrzOPvNt7qpkcrtLhoTtyvp+TvZ61RzckUe/Onwcc7ucM971Q2iP
+	  cM0oP+582hUKMrquvff0aCFhom4NxA1gFgBa2hWp3AaBvL2l06mUMIzP/13u+FTpNxOc+TUdIn
+	  8RYZ5vNRYzUnRRZPd69jHWwk8cANtpaAQS1Hfr3WmDb0u7dKcwaJmMCtUe1YhQsJaetQ6HSsG8
+	  LVzAmqkjWp0VVdwwdl8Cf2jo7TRtOqPD0XQEotSAw1slBg==;
+ARC-Authentication-Results: i=1; outgoing.instance-europe-west4-d2fs.prod.antispam.mailspamprotection.com; smtp.remote-ip=35.214.173.214;
+	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
+	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
+	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
+	arc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed; d=outgoing.instance-europe-west4-d2fs.prod.antispam.mailspamprotection.com; s=arckey; t=1774358696;
+	bh=bH3B8I73uCrf1jDvl+q86E9LN6Kqcv9PJDul8Csqqik=;
+	h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:Cc:To:From:
+	  DKIM-Signature:DKIM-Signature;
+	b=YBYjp8pIC5sV6O04jI97Z3J1/HWYw1fbnoheTzaxUCTQreKj0LSvLgZU8nmrXar8J4EVB9U14V
+	  ztCPc0Ak5oJrDiCXzYm67vBToKSi4Q5jtWA/g2TDrlR165jbo8oazTl9I09Fb6H7vMzaHZ/hxn
+	  RgHdJfFYgIRA9+gKA+NXtt7psoA51zVKIHEZ2w0ntUxtOikH2Ik+fTwgXtVyA7WuHrw48AjPan
+	  vhpx2I4gnNT2EfvhOgwg2MOhAvXK1BpzWKX6gfOZmUCzJtq83jG5W9cphIERM7NR3zj96Bqz7T
+	  ifSWSF4VJOmTvpQ+rf87wmcU3w6yYLR3NZPbr4o5UzEhSA==;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=antispam.mailspamprotection.com; s=default; h=CFBL-Feedback-ID:CFBL-Address
+	:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:List-Unsubscribe:Content-Type;
+	bh=vQVjMqjDkfoG1MmNlZMZz3yCMUtN+WndFeuHE4qIUTw=; b=d70HNpyZJz11x8LqH265u9HstZ
+	d0Z0fnVGCFLuV7TtyzjxXHnayLvPc4R8KFidm729E0/ELpDMUq5hEHCuf4BXFMKK2uxhLC5GxrPiB
+	c4SObPnYZkK8Y2PZRO0E9JrEB7wFGHtBo0rSZ3MV0hyE2pEZ5n1M2MCzcLp2mKFdvE3Q=;
+Received: from 214.173.214.35.bc.googleusercontent.com ([35.214.173.214] helo=esm19.siteground.biz)
+	by instance-europe-west4-d2fs.prod.antispam.mailspamprotection.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.98.1)
+	(envelope-from <francesco@valla.it>)
+	id 1w51kZ-00000008YuY-2re3
+	for docs@lists.yoctoproject.org;
+	Tue, 24 Mar 2026 13:24:54 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=valla.it;
+	s=default; h=Date:Subject:Cc:To:From:list-help:list-unsubscribe:
+	list-subscribe:list-post:list-owner:list-archive;
+	bh=vQVjMqjDkfoG1MmNlZMZz3yCMUtN+WndFeuHE4qIUTw=; b=qFfc7qqO2ita97rZzEmjCh1H32
+	mGYrPyZQiJnf3rOMpXla3zm4DX3cuBoUqpk9B2tdWJ4X+BJ/PGw+jj8J31H37lbZx80nnGtaMoX1X
+	G81CYrO3siUWU/szB10wbaE69qmJWOMdmh+GpT72ecHRlHo2uARVtkvhoxmjlSB4WGhA=;
+Received: from [95.248.129.24] (port=64432 helo=bywater.fritz.box)
+	by esm19.siteground.biz with essmtpa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.99.1)
+	(envelope-from <francesco@valla.it>)
+	id 1w51kS-000000000Kw-2rR8;
+	Tue, 24 Mar 2026 13:24:44 +0000
+From: "Francesco Valla" <francesco@valla.it>
+To: docs@lists.yoctoproject.org
+Cc: Adrian Freihofer <adrian.freihofer@siemens.com>,
+	Trevor Gamblin <tgamblin@baylibre.com>,
+	Francesco Valla <francesco@valla.it>
+Subject: [PATCH RESEND] ref-manual: document the usage of FIT_LOADABLES
+Date: Tue, 24 Mar 2026 14:21:26 +0100
+Message-ID: <20260324132125.310341-2-francesco@valla.it>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-References: <20260331-docs-fixes-v1-0-45ee34341e72@bootlin.com>
- <20260331-docs-fixes-v1-1-45ee34341e72@bootlin.com> <6f743774-fe4b-4e9e-ba99-6ffe1d76a51b@cherry.de>
- <57bb4e5300a4be34f4cfddcf41d9a21b5b7bc579.camel@linuxfoundation.org>
- <CANNYZj9U3BYUv-cvQvmu7d=8O82Gdg-2GSon6vNJ71BMi6bKsg@mail.gmail.com>
- <DHJD5ZA0XGWN.3LDDWNE9PDM1X@bootlin.com> <CANNYZj8=z7U5jpCN+NaAmTspYduH=pcMohMcbnqGp8mQvmHoiA@mail.gmail.com>
- <ea91cc2bf0fcaeee1a152e62f0ebfd367b58b2fa.camel@linuxfoundation.org>
- <275547.1775288047872145943@lists.yoctoproject.org> <CANNYZj9dkJ_Bz-a_DLHB4SW5_tJCkHHd1Y_QJOQ6_8eZrmnMvg@mail.gmail.com>
- <CAFAffzw-TXoYgc5Xw4Ds1Mop9RO7ofN1zp92t-Uh7FtEp8PboQ@mail.gmail.com>
- <18A333954F38AD11.657799@lists.yoctoproject.org> <CANNYZj-Oaun1Jx3GqZPtBO9uS2Rdt+NPhBdb8yzag9ziWa+5vg@mail.gmail.com>
- <CAFAffzyD+Kkx7TzC1QVe6LZVBv5Y+dur4WouAfsT9wcqjbLcaw@mail.gmail.com>
-In-Reply-To: <CAFAffzyD+Kkx7TzC1QVe6LZVBv5Y+dur4WouAfsT9wcqjbLcaw@mail.gmail.com>
-From: Alexander Kanavin <alex.kanavin@gmail.com>
-Date: Sat, 4 Apr 2026 19:13:18 +0200
-X-Gm-Features: AQROBzDX1CR2B7_OJDThfQvhB9os5a_-UYyjgFmIy964la5I38pZBwzXDMl5Lz0
-Message-ID: <CANNYZj8QK0XYUcy__Ov0122bRpCPYekQLhbtFuSJGDP8JBrCTA@mail.gmail.com>
-Subject: Re: [bitbake-devel] [docs] [PATCH 1/2] bitbake-setup: rename "abort"
- rebase conflict stragegy to "halt"
-To: Adam Blank <adam.blank.g@gmail.com>
-Cc: docs@lists.yoctoproject.org
-Content-Type: multipart/alternative; boundary="0000000000006ce219064ea58de2"
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - esm19.siteground.biz
+X-AntiAbuse: Original Domain - lists.yoctoproject.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - valla.it
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-SGantispam-id: 7cc824a307392aaa903ea77b3b7094e4
+X-AntiAbuse: ID - 7cc824a307392aaa903ea77b3b7094e4
+AntiSpam-DLS: false
+AntiSpam-DLSP: 
+AntiSpam-DLSRS: 
+AntiSpam-TS: 1.0
+CFBL-Address: feedback@antispam.mailspamprotection.com; report=arf
+CFBL-Feedback-ID: 1w51kZ-00000008YuY-2re3-feedback@antispam.mailspamprotection.com
+Authentication-Results: outgoing.instance-europe-west4-d2fs.prod.antispam.mailspamprotection.com;
+	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
+	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
+	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
+	arc=none
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Sat, 04 Apr 2026 17:13:38 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9184
+ <docs@lists.yoctoproject.org>; Tue, 07 Apr 2026 12:59:07 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9185
 
---0000000000006ce219064ea58de2
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Add documentation for the new logic and variables that can be used to
+add additional arbitrary loadables to a FIT image.
 
-Equally, bitbake-setup will not abandon anything or anyone. That word has a
-clear, negative connotation in all of its usages (unlike abort).
+Signed-off-by: Francesco Valla <francesco@valla.it>
+---
+ documentation/ref-manual/classes.rst   |  16 +-
+ documentation/ref-manual/variables.rst | 193 +++++++++++++++++++++++++
+ 2 files changed, 207 insertions(+), 2 deletions(-)
 
-Alex
+diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
+index a3a4df1dbfa4..b23c680cbde3 100644
+--- a/documentation/ref-manual/classes.rst
++++ b/documentation/ref-manual/classes.rst
+@@ -1420,12 +1420,13 @@ Its behavior is mainly controlled by the following variables:
+ ====================
+ 
+ The :ref:`ref-classes-kernel-fit-image` class provides support to pack a kernel image,
+-device trees, a U-boot script, and an :term:`Initramfs` into a single FIT image.
++device trees, a U-boot script, an :term:`Initramfs` and additional loadables into a
++single FIT image.
+ In theory, a FIT image can support any number of kernels, U-boot scripts,
+ :term:`Initramfs`, and device trees.
+ However, :ref:`ref-classes-kernel-fit-image` currently only supports
+ limited usecases: just one kernel image, an optional U-boot script,
+-an optional :term:`Initramfs`, and any number of device trees.
++an optional :term:`Initramfs`, and any number of device trees and loadables.
+ 
+ The FIT image is created by a recipe which inherits the
+ :ref:`ref-classes-kernel-fit-image` class.
+@@ -1535,6 +1536,17 @@ allow configuration:
+    At run-time, U-boot's boot command can be configured to load the boot script
+    from the FIT image and source it.
+ 
++-  Multiple additional loadables (e.g.: firmwares for auxiliary processors) can
++   be added to the FIT image created by :ref:`ref-classes-kernel-fit-image`.
++   The addition of loadables is optional. The loadables are specified using the
++   :term:`FIT_LOADABLES` variable; each of them can then be configured through
++   flags on the following variables: :term:`FIT_LOADABLE_ARCH`,
++   :term:`FIT_LOADABLE_COMPRESSION`, :term:`FIT_LOADABLE_DESCRIPTION`,
++   :term:`FIT_LOADABLE_ENTRYPOINT`, :term:`FIT_LOADABLE_FILENAME`,
++   :term:`FIT_LOADABLE_LOADADDRESS`, :term:`FIT_LOADABLE_OS` and
++   :term:`FIT_LOADABLE_TYPE`. All loadables specified in this way will be added
++   to all configurations present in the FIT image.
++
+ -  The FIT image generated by the :ref:`ref-classes-kernel-fit-image` class is signed when the
+    variables :term:`UBOOT_SIGN_ENABLE`, :term:`UBOOT_MKIMAGE_DTCOPTS`,
+    :term:`UBOOT_SIGN_KEYDIR` and :term:`UBOOT_SIGN_KEYNAME` are set
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index 03154a8667ef..67c1b0e989c9 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -3510,6 +3510,199 @@ system and gives an overview of their function and contents.
+       The default value is set to "x509" by the
+       :ref:`ref-classes-kernel-fit-image` class.
+ 
++   :term:`FIT_LOADABLE_ARCH`
++      Architecture the loadables defined in :term:`FIT_LOADABLES`; the value
++      will be used for the ``arch`` property of the loadable.
++      If no value is defined for a specific loadable, the kernel architecture
++      will be used.
++
++      This variable cannot be used directly, but only defining flags on it.
++
++      Example::
++
++         FIT_LOADABLES = "foo"
++         FIT_LOADABLE_ARCH[foo] = "arm"
++
++   :term:`FIT_LOADABLE_COMPRESSION`
++      Compresssion for the loadables defined in :term:`FIT_LOADABLES`; the
++      value will be used for the ``compression`` property of the loadable.
++      If no value is defined for a specific loadable, its ``compression``
++      property will be set to ``none``.
++
++      This variable cannot be used directly, but only defining flags on it.
++
++      Example::
++
++         FIT_LOADABLES = "foo"
++         FIT_LOADABLE_COMPRESSION[foo] = "gzip"
++
++      .. note::
++
++         The binary to be included will be considered as already compressed, no
++         operation will be performed on it.
++
++   :term:`FIT_LOADABLE_DESCRIPTION`
++      Description for the loadables defined in :term:`FIT_LOADABLES`; the value
++      will be used for the ``description`` property of the loadable.
++      If no value is defined for a specific loadable, its description will be
++      set to the loadable name followed by a space plus the string ``loadable``.
++
++      This variable cannot be used directly, but only defining flags on it.
++
++      Example::
++
++         FIT_LOADABLES = "foo"
++         FIT_LOADABLE_DESCRIPTION[foo] = "Foo firmware binary"
++
++   :term:`FIT_LOADABLE_ENTRYPOINT`
++      Entry point for the loadables defined in :term:`FIT_LOADABLES`; the value
++      will be used for the ``entry`` property of the loadable.
++      If no value is defined for a specific loadable, the ``entry`` property
++      will be omitted.
++
++      This variable cannot be used directly, but only defining flags on it.
++
++      Example::
++
++         FIT_LOADABLES = "foo"
++         FIT_LOADABLE_ENTRYPOINT[foo] = "0x80234000"
++
++   :term:`FIT_LOADABLE_FILENAME`
++      Filename (or relative path) for the loadables defined in
++      :term:`FIT_LOADABLES`; this will be used to search for the binary to
++      include and is therefore mandatory for each loadable. Binary files to be
++      included need to be located in :term:`DEPLOY_DIR_IMAGE`.
++
++      This variable cannot be used directly, but only defining flags on it.
++
++      Example::
++
++         FIT_LOADABLES = "foo"
++         FIT_LOADABLE_FILENAME[foo] = "foo-firmware.bin"
++
++   :term:`FIT_LOADABLE_LOADADDRESS`
++      Load address for the loadables defined in :term:`FIT_LOADABLES`; the
++      value will be used for the ``load`` property of the loadable.
++      This is mandatory for each loadable.
++
++      This variable cannot be used directly, but only defining flags on it.
++
++      Example::
++
++         FIT_LOADABLES = "foo"
++         FIT_LOADABLE_LOADADDRESS[foo] = "foo-firmware.bin"
++
++   :term:`FIT_LOADABLE_OS`
++      Operating system for the loadables defined in :term:`FIT_LOADABLES`; the
++      value will be used for the ``os`` property of the loadable.
++      If no value is defined for a specific loadable, the ``os`` property will
++      be set to ``linux``.
++
++      This variable cannot be used directly, but only defining flags on it.
++
++      Example::
++
++         FIT_LOADABLES = "foo"
++         FIT_LOADABLE_OS[foo] = "linux"
++
++   :term:`FIT_LOADABLE_TYPE`
++      Type for the loadables defined in :term:`FIT_LOADABLES`; the value will
++      be used for the ``type`` property of the loadable.
++      If no value is defined for a specific loadable, the ``type`` property
++      will be set to ``firmware``.
++
++      This variable cannot be used directly, but only defining flags on it.
++
++      Example::
++
++         FIT_LOADABLES = "foo"
++         FIT_LOADABLE_TYPE[foo] = "firmware"
++
++   :term:`FIT_LOADABLES`
++      Space-separated list of loadables to add to a FIT image in addition to
++      regular ones (kernel, initramfs, dtsb etc.).
++      Values specified here will be used as node names inside the FIT image;
++      all of them will be included in all configurations by using the
++      ``loadables`` property.
++
++      For each loadable specified in this variable, additional parameters can be
++      defined using :term:`FIT_LOADABLE_ARCH`, :term:`FIT_LOADABLE_COMPRESSION`,
++      :term:`FIT_LOADABLE_DESCRIPTION`, :term:`FIT_LOADABLE_ENTRYPOINT`,
++      :term:`FIT_LOADABLE_FILENAME`, :term:`FIT_LOADABLE_LOADADDRESS`,
++      :term:`FIT_LOADABLE_OS` and :term:`FIT_LOADABLE_TYPE`.
++
++      This variable is used by the :ref:`ref-classes-kernel-fit-image` class and
++      is empty by default.
++
++      For example, the following configuration adds as loadables a TF-A BL31
++      firmware and a (compressed) TEE firmware, to be loaded respectively at
++      0x204E0000 and 0x96000000::
++
++         FIT_LOADABLES = "atf tee"
++
++         FIT_LOADABLE_FILENAME[atf] = "bl31.bin"
++         FIT_LOADABLE_DESCRIPTION[atf] = "TF-A Firmware"
++         FIT_LOADABLE_TYPE[atf] = "tfa-bl31"
++         FIT_LOADABLE_ARCH[atf] = "arm64"
++         FIT_LOADABLE_OS[atf] = "arm-trusted-firmware"
++         FIT_LOADABLE_LOADADDRESS[atf] = "0x204E0000"
++         FIT_LOADABLE_ENTRYPOINT[atf] = "0x204E0000"
++
++         FIT_LOADABLE_FILENAME[tee] = "tee.bin.gz"
++         FIT_LOADABLE_COMPRESSSION[tee] = "gzip"
++         FIT_LOADABLE_TYPE[tee] = "tee"
++         FIT_LOADABLE_OS[tee] = "tee"
++         FIT_LOADABLE_LOADADDRESS[tee] = "0x96000000"
++
++      and will be converted to the following FIT source::
++
++         images {
++                 atf {
++                         description = "TF-A Firmware";
++                         type = "tfa-bl31";
++                         compression = "none";
++                         data = /incbin/("<DEPLOY_DIR_IMAGE>/bl31.bin");
++                         arch = "arm64";
++                         os = "arm-trusted-firmware";
++                         load = <0x204E0000>;
++                         entry = <0x204E0000>;
++                         hash-1 {
++                                 algo = "sha256";
++                         };
++                 };
++                 tee {
++                         description = "tee loadable";
++                         type = "tee";
++                         compression = "gzip";
++                         data = /incbin/("<DEPLOY_DIR_IMAGE>/tee.bin.gz");
++                         arch = "arm64";
++                         os = "tee";
++                         load = <0x96000000>;
++                         hash-1 {
++                                 algo = "sha256";
++                         };
++                 };
++         };
++
++         configurations {
++                 default = "<my-board>.dtb";
++                 <my-board>.dtb {
++                         description = "1 Linux kernel, FDT blob, loadables";
++                         kernel = "kernel-1";
++                         fdt = "<my-board>.dtb";
++                         loadables = "atf", "tee";
++                         hash-1 {
++                                 algo = "sha256";
++                         };
++                         signature-1 {
++                                 algo = "sha256,rsa2048";
++                                 key-name-hint = "temp";
++                                 padding = "pkcs-1.5";
++                                 sign-images = "kernel", "fdt", "loadables";
++                         };
++                 };
++         };
++
+    :term:`FIT_MKIMAGE_EXTRA_OPTS`
+       When inheriting the :ref:`ref-classes-kernel-fit-image`, the
+       :term:`FIT_MKIMAGE_EXTRA_OPTS` variable allows passing extra options to
+-- 
+2.53.0
 
-On Sat 4. Apr 2026 at 19.06, Adam Blank <adam.blank.g@gmail.com> wrote:
-
-> On Sat, 4 Apr 2026 at 18:29, Alexander Kanavin <alex.kanavin@gmail.com>
-> wrote:
->
->> Having read that, and the entry for =E2=80=98abandon=E2=80=99, there=E2=
-=80=99s a clear difference
->> between them.
->>
->> Abandoning is uncontrolled, dangerous and ungraceful. Abortion is the
->> opposite, and does go back to a previous, =E2=80=98safe=E2=80=99 state i=
-n examples, if not
->> in definition itself.
->>
->>
-> The trick with human languages is, that they are inherently subjective. I=
-t
-> is not possible to analytically compare two ways in which a given word
-> 'rings' to a human ear.
-> The whole topic was not about the exact, dictionary defined meaning of th=
-e
-> word 'abort', but rather about a human perception of it, and possibly
-> undesired connotations it might invoke in some humans.
-> I wanted to offer a helping hand, that all.
->
-> Adam
->
->
->> Alex
->>
->> On Sat 4. Apr 2026 at 18.16, Alexander Kanavin via lists.yoctoproject.or=
-g
->> <alex.kanavin=3Dgmail.com@lists.yoctoproject.org> wrote:
->>
->>> Please include a link to any citations. Because this is not what it say=
-s:
->>> https://www.merriam-webster.com/dictionary/abort
->>>
->>>
->>> Alex
->>>
->>> On Sat 4. Apr 2026 at 17.58, Adam Blank <adam.blank.g@gmail.com> wrote:
->>>
->>>> On Sat, 4 Apr 2026, 17:34 Alexander Kanavin, <alex.kanavin@gmail.com>
->>>> wrote:
->>>>
->>>>> =E2=80=98Abandon=E2=80=99 doesn=E2=80=99t revert the state to how it =
-was. It just leaves the
->>>>> mess as it is.
->>>>>
->>>>>
->>>> After Merriam-Webster:
->>>>
->>>> Abort means to stop, cancel, or terminate a process, project, or
->>>> mission before its completion. It is often used to describe abandoning=
- a
->>>> dangerous or flawed plan (e.g., "abort the mission") or ending a pregn=
-ancy
->>>> prematurely. It also refers to a technical stoppage in computing or
->>>> aerospace.
->>>>
->>>> Synonyms for Abort:
->>>> Terminate/Stop: Halt, end, cease, discontinue, break off.
->>>> Cancel/Abandon: Scrub, scrap, call off, abandon.
->>>>
->>>> 'Abort' carries no notion of reverting the mess either.
->>>>
->>>>
->>>>> Alex
->>>>>
->>>>> On Sat 4. Apr 2026 at 9.34, Adam Blank via lists.yoctoproject.org
->>>>> <adam.blank.g=3Dgmail.com@lists.yoctoproject.org> wrote:
->>>>>
->>>>>> Personally I don't have any specific preference, but as a hint for
->>>>>> you guys: for a non-native English speaker (of a Slavic origin at le=
-ast),
->>>>>> "abandon" would convey a practically identical sense to "abort" and =
-would
->>>>>> be some sort of a compromise.
->>>>>>
->>>>>> Thanks,
->>>>>> Adam
->>>>>>
->>>>>>
->>>>>>
->>>>>>
->>>>>>
->>> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
->>> Links: You receive all messages sent to this group.
->>> View/Reply Online (#9180):
->>> https://lists.yoctoproject.org/g/docs/message/9180
->>> Mute This Topic: https://lists.yoctoproject.org/mt/118594590/1686489
->>> Group Owner: docs+owner@lists.yoctoproject.org
->>> Unsubscribe: https://lists.yoctoproject.org/g/docs/unsub [
->>> alex.kanavin@gmail.com]
->>> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
->>>
->>>
-
---0000000000006ce219064ea58de2
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"auto">Equally, bitbake-setup will not abandon anything or anyon=
-e. That word has a clear, negative connotation in all of its usages (unlike=
- abort).</div><div dir=3D"auto"><br></div><div dir=3D"auto">Alex</div><div>=
-<br><div class=3D"gmail_quote gmail_quote_container"><div dir=3D"ltr" class=
-=3D"gmail_attr">On Sat 4. Apr 2026 at 19.06, Adam Blank &lt;<a href=3D"mail=
-to:adam.blank.g@gmail.com">adam.blank.g@gmail.com</a>&gt; wrote:<br></div><=
-blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-l=
-eft-width:1px;border-left-style:solid;padding-left:1ex;border-left-color:rg=
-b(204,204,204)"><div dir=3D"ltr"><div dir=3D"ltr"><div class=3D"gmail_defau=
-lt" style=3D"font-size:small">On Sat, 4 Apr 2026 at 18:29, Alexander Kanavi=
-n &lt;<a href=3D"mailto:alex.kanavin@gmail.com" target=3D"_blank">alex.kana=
-vin@gmail.com</a>&gt; wrote:</div></div><div class=3D"gmail_quote"><blockqu=
-ote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left-wid=
-th:1px;border-left-style:solid;padding-left:1ex;border-left-color:rgb(204,2=
-04,204)"><div dir=3D"auto">Having read that, and the entry for =E2=80=98aba=
-ndon=E2=80=99, there=E2=80=99s a clear difference between them.=C2=A0</div>=
-<div dir=3D"auto"><br></div><div dir=3D"auto">Abandoning is uncontrolled, d=
-angerous and ungraceful. Abortion is the opposite, and does go back to a pr=
-evious, =E2=80=98safe=E2=80=99 state in examples, if not in definition itse=
-lf.</div><div dir=3D"auto"><br></div></blockquote><div><br></div><div><div =
-class=3D"gmail_default" style=3D"font-size:small">The trick with human lang=
-uages is, that they are inherently subjective. It is not possible to analyt=
-ically compare two ways in which a given word &#39;rings&#39; to a human ea=
-r.</div><div class=3D"gmail_default" style=3D"font-size:small">The whole to=
-pic was not about the exact, dictionary defined meaning of the word &#39;ab=
-ort&#39;, but rather about a human perception of it, and possibly undesired=
- connotations it might invoke in some humans.</div><div class=3D"gmail_defa=
-ult" style=3D"font-size:small">I wanted to offer a helping hand, that all.<=
-/div></div></div></div><div dir=3D"ltr"><div class=3D"gmail_quote"><div><br=
-></div><div><div class=3D"gmail_default" style=3D"font-size:small">Adam</di=
-v></div><div>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:=
-0px 0px 0px 0.8ex;border-left-width:1px;border-left-style:solid;padding-lef=
-t:1ex;border-left-color:rgb(204,204,204)"><div dir=3D"auto"></div><div dir=
-=3D"auto">Alex</div><div><br><div class=3D"gmail_quote"><div dir=3D"ltr" cl=
-ass=3D"gmail_attr">On Sat 4. Apr 2026 at 18.16, Alexander Kanavin via <a hr=
-ef=3D"http://lists.yoctoproject.org" target=3D"_blank">lists.yoctoproject.o=
-rg</a> &lt;alex.kanavin=3D<a href=3D"mailto:gmail.com@lists.yoctoproject.or=
-g" target=3D"_blank">gmail.com@lists.yoctoproject.org</a>&gt; wrote:<br></d=
-iv><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;bord=
-er-left-width:1px;border-left-style:solid;padding-left:1ex;border-left-colo=
-r:rgb(204,204,204)"><div dir=3D"auto">Please include a link to any citation=
-s. Because this is not what it says:</div><div dir=3D"auto"><div style=3D"f=
-ont-size:inherit" dir=3D"auto"><a href=3D"https://www.merriam-webster.com/d=
-ictionary/abort" style=3D"font-size:inherit" target=3D"_blank">https://www.=
-merriam-webster.com/dictionary/abort</a></div><div style=3D"font-size:inher=
-it" dir=3D"auto"><br></div></div><div dir=3D"auto"><br></div><div dir=3D"au=
-to">Alex</div><div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D=
-"gmail_attr">On Sat 4. Apr 2026 at 17.58, Adam Blank &lt;<a href=3D"mailto:=
-adam.blank.g@gmail.com" target=3D"_blank">adam.blank.g@gmail.com</a>&gt; wr=
-ote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px=
- 0.8ex;border-left-width:1px;border-left-style:solid;padding-left:1ex;borde=
-r-left-color:rgb(204,204,204)"><div dir=3D"ltr"><div dir=3D"auto"><div clas=
-s=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Sat, 4 Apr 2026,=
- 17:34 Alexander Kanavin, &lt;<a href=3D"mailto:alex.kanavin@gmail.com" tar=
-get=3D"_blank">alex.kanavin@gmail.com</a>&gt; wrote:<br></div><blockquote c=
-lass=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left-width:1p=
-x;border-left-style:solid;padding-left:1ex;border-left-color:rgb(204,204,20=
-4)"><div dir=3D"auto">=E2=80=98Abandon=E2=80=99 doesn=E2=80=99t revert the =
-state to how it was. It just leaves the mess as it is.</div><div dir=3D"aut=
-o"><br></div></blockquote><div><br></div><div><div style=3D"font-size:small=
-">After Merriam-Webster:</div><div dir=3D"auto"><br></div><div dir=3D"auto"=
->Abort means to stop, cancel, or terminate a process, project, or mission b=
-efore its completion. It is often used to describe abandoning a dangerous o=
-r flawed plan (e.g., &quot;abort the mission&quot;) or ending a pregnancy p=
-rematurely. It also refers to a technical stoppage in computing or aerospac=
-e.=C2=A0</div><div dir=3D"auto"><br></div><div dir=3D"auto">Synonyms for Ab=
-ort:</div><div dir=3D"auto">Terminate/Stop: Halt, end, cease, discontinue, =
-break off.</div><div dir=3D"auto">Cancel/Abandon: Scrub, scrap, call off, a=
-bandon.</div><br></div><div><div style=3D"font-size:small">&#39;Abort&#39; =
-carries no notion of reverting the mess either.</div></div></div></div></di=
-v><div dir=3D"ltr"><div dir=3D"auto"><div class=3D"gmail_quote"><div>=C2=A0=
-</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;b=
-order-left-width:1px;border-left-style:solid;padding-left:1ex;border-left-c=
-olor:rgb(204,204,204)"><div dir=3D"auto"></div><div dir=3D"auto">Alex</div>=
-<div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">O=
-n Sat 4. Apr 2026 at 9.34, Adam Blank via <a href=3D"http://lists.yoctoproj=
-ect.org" rel=3D"noreferrer" target=3D"_blank">lists.yoctoproject.org</a> &l=
-t;adam.blank.g=3D<a href=3D"mailto:gmail.com@lists.yoctoproject.org" rel=3D=
-"noreferrer" target=3D"_blank">gmail.com@lists.yoctoproject.org</a>&gt; wro=
-te:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px =
-0.8ex;border-left-width:1px;border-left-style:solid;padding-left:1ex;border=
--left-color:rgb(204,204,204)"><div>Personally I don&#39;t have any specific=
- preference, but as a hint for you guys: for a non-native English speaker (=
-of a Slavic origin at least), &quot;abandon&quot; would convey a practicall=
-y identical sense to &quot;abort&quot; and would be some sort of a compromi=
-se.</div>
-<div>=C2=A0</div>
-<div>Thanks,</div>
-<div>Adam</div>
-<br>
-<br>
-<br><br>
-</blockquote></div></div>
-</blockquote></div></div>
-</div>
-</blockquote></div></div>
-<br>
--=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-<br>
-Links: You receive all messages sent to this group.<br>
-View/Reply Online (#9180): <a href=3D"https://lists.yoctoproject.org/g/docs=
-/message/9180" rel=3D"noreferrer" target=3D"_blank">https://lists.yoctoproj=
-ect.org/g/docs/message/9180</a><br>
-Mute This Topic: <a href=3D"https://lists.yoctoproject.org/mt/118594590/168=
-6489" rel=3D"noreferrer" target=3D"_blank">https://lists.yoctoproject.org/m=
-t/118594590/1686489</a><br>
-Group Owner: <a href=3D"mailto:docs%2Bowner@lists.yoctoproject.org" target=
-=3D"_blank">docs+owner@lists.yoctoproject.org</a><br>
-Unsubscribe: <a href=3D"https://lists.yoctoproject.org/g/docs/unsub" rel=3D=
-"noreferrer" target=3D"_blank">https://lists.yoctoproject.org/g/docs/unsub<=
-/a> [<a href=3D"mailto:alex.kanavin@gmail.com" target=3D"_blank">alex.kanav=
-in@gmail.com</a>]<br>
--=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-<br>
-<br>
-</blockquote></div></div>
-</blockquote></div></div>
-</blockquote></div></div>
-
---0000000000006ce219064ea58de2--
 
