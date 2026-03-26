@@ -2,38 +2,38 @@ Return-Path: <foss@0leil.net>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 081ED10AB810
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 540CB10AB814
 	for <webhook@archiver.kernel.org>; Thu, 26 Mar 2026 19:23:58 +0000 (UTC)
-Received: from smtp-8fae.mail.infomaniak.ch (smtp-8fae.mail.infomaniak.ch [83.166.143.174])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.56233.1774553030231849804
+Received: from smtp-190c.mail.infomaniak.ch (smtp-190c.mail.infomaniak.ch [185.125.25.12])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.57030.1774553029735832783
  for <docs@lists.yoctoproject.org>;
  Thu, 26 Mar 2026 12:23:50 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@0leil.net header.s=20231125 header.b=SKCSkJlQ;
- spf=pass (domain: 0leil.net, ip: 83.166.143.174, mailfrom: foss+yocto@0leil.net)
-Received: from smtp-3-0000.mail.infomaniak.ch (smtp-3-0000.mail.infomaniak.ch [10.4.36.107])
-	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4fhYbm3SQpzGHr;
-	Thu, 26 Mar 2026 20:23:48 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=0leil.net;
-	s=20231125; t=1774553028;
-	bh=07SGn0O4d4/7peMA7R3b/Ybjektv3nvxlO40CCP19NY=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=SKCSkJlQQU3+CNSLLwkOT/mgQaILBEWuZW3teoY+TtYo6n5vfu0WhNOnquDQcXTLo
-	 jnX0bplHzTl/CcmGOau2uqcu4VF/0uvLf5uZWsUxPbm5r2l9+VrXqzWIu7IWWed+kv
-	 iZ8s3rn8o6Fnc2j57FUcV4Y0bzqXxLkfMGr0OsGHdZIcDNb4Jb/32tbUpVXhOcTJdf
-	 Deh7eNvAoA4mC7AcSnljtv7R5RDns4xKFww0zcw1KffXOxp5G8AOWnV9YTHbdjRzBB
-	 wIvcyjnQAmHXhz6rN0eQX1CylAV1QHFt3XhCB2mgCJvzpB2qBhPcjatjaEatmkgzVE
-	 vufyP5f46XQUw==
-Received: from unknown by smtp-3-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4fhYbl6w6MzLjy;
+ dkim=pass header.i=@0leil.net header.s=20231125 header.b=BBuzvcgu;
+ spf=pass (domain: 0leil.net, ip: 185.125.25.12, mailfrom: foss+yocto@0leil.net)
+Received: from smtp-3-0000.mail.infomaniak.ch (unknown [IPv6:2001:1600:4:17::246b])
+	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4fhYbl6zsHzJBZ;
 	Thu, 26 Mar 2026 20:23:47 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=0leil.net;
+	s=20231125; t=1774553027;
+	bh=c3eKtAlZbcMTUtsrMKkKOCk55tYS9VfQsXZ7Ccdtguo=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=BBuzvcguXAmh5jSGXLUKnnjptTNOKVZBAkS50WYgZgS3hb/W9k+x6wT99mZvyTPv6
+	 kowjTVMoCnoGR85HBOGYXzqKMEDPwFCWgoq2wuvrFtd+jP32H5i/3ztDXbaDCT5kui
+	 zg7apodB5jNggWZ1IbcFNWPj3wzqZK9FCuUZmnZ6yYwp3/8YN7tOxMok5FQcoOX9es
+	 aWxpfA0EotaXAuYNly1mw9aUeGpIdm9wqIKIJBiu6pZEfg57iLSn9e72MVY+MOUKpk
+	 bbcBXqmj9PCBTxETTm2f4GocNZlKfIYVy/FG2D5MWkUbUdKIZO+e32LqWpYOWfd8h5
+	 9beH0OZInEshw==
+Received: from unknown by smtp-3-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4fhYbk3vKnzP3c;
+	Thu, 26 Mar 2026 20:23:46 +0100 (CET)
 From: Quentin Schulz <foss+yocto@0leil.net>
-Date: Thu, 26 Mar 2026 20:23:33 +0100
-Subject: [PATCH 3/3] doc: bitbake-user-manual-metadata: fix indentation
+Date: Thu, 26 Mar 2026 20:23:32 +0100
+Subject: [PATCH 2/3] doc: bitbake-user-manual-metadata: fix indentation
  consistency
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260326-metadata-code-blk-v1-3-051530f9a051@cherry.de>
+Message-Id: <20260326-metadata-code-blk-v1-2-051530f9a051@cherry.de>
 References: <20260326-metadata-code-blk-v1-0-051530f9a051@cherry.de>
 In-Reply-To: <20260326-metadata-code-blk-v1-0-051530f9a051@cherry.de>
 To: bitbake-devel@lists.openembedded.org
@@ -43,64 +43,40 @@ X-Infomaniak-Routing: alpha
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 26 Mar 2026 19:23:57 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9136
+ <docs@lists.yoctoproject.org>; Thu, 26 Mar 2026 19:23:58 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9135
 
 From: Quentin Schulz <quentin.schulz@cherry.de>
 
-We've decided bullet lists should be started by a dash followed by two
-whitespaces and the other lines in the bullet list should be indented
-at that level, that is with three whitespaces compared to the parent
-block. This only has two while the rest of the file has three, so let's
-add the missing whitespace. This is cosmetic in the sources only, it
-doesn't change the output.
+We've decided code-blocks should be indented by three whitespaces
+compared to the parent block and this only had two, so let's add the
+missing whitespace. This is cosmetic in the sources only, it doesn't
+change the output.
 
-Fixes: 6bc65e6402a7 ("documentation: bitbake: add file-checksums to varflags section")
+Fixes: 3b9d7bea915d ("parse/ast: add support for 'built-in' fragments")
 Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
 ---
- .../bitbake-user-manual-metadata.rst               | 26 +++++++++++-----------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+ doc/bitbake-user-manual/bitbake-user-manual-metadata.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst b/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
-index 4909b0d75..40cae6b05 100644
+index 56604e0dd..4909b0d75 100644
 --- a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
 +++ b/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
-@@ -1771,22 +1771,22 @@ functionality of the task:
-    directory listed is used as the current working directory for the
-    task.
+@@ -1054,11 +1054,11 @@ The variable containing a built-in fragment definitions could look like this::
+ and then if 'someprefix/somevalue' is added to the variable that holds the list
+ of enabled fragments::
  
--- ``[file-checksums]``: Controls the file dependencies for a task. The
--  baseline file list is the set of files associated with
--  :term:`SRC_URI`. May be used to set additional dependencies on
--  files not associated with :term:`SRC_URI`.
-+-  ``[file-checksums]``: Controls the file dependencies for a task. The
-+   baseline file list is the set of files associated with
-+   :term:`SRC_URI`. May be used to set additional dependencies on
-+   files not associated with :term:`SRC_URI`.
+-  OE_FRAGMENTS = "... someprefix/somevalue"
++   OE_FRAGMENTS = "... someprefix/somevalue"
  
--  The value set to the list is a file-boolean pair where the first
--  value is the file name and the second is whether or not it
--  physically exists on the filesystem. ::
-+   The value set to the list is a file-boolean pair where the first
-+   value is the file name and the second is whether or not it
-+   physically exists on the filesystem. ::
+ bitbake will treat that as direct value assignment in its configuration::
  
--    do_configure[file-checksums] += "${MY_DIRPATH}/my-file.txt:True"
-+      do_configure[file-checksums] += "${MY_DIRPATH}/my-file.txt:True"
+-  SOMEVARIABLE = "somevalue"
++   SOMEVARIABLE = "somevalue"
  
--  It is important to record any paths which the task looked at and
--  which didn't exist. This means that if these do exist at a later
--  time, the task can be rerun with the new additional files. The
--  "exists" True or False value after the path allows this to be
--  handled.
-+   It is important to record any paths which the task looked at and
-+   which didn't exist. This means that if these do exist at a later
-+   time, the task can be rerun with the new additional files. The
-+   "exists" True or False value after the path allows this to be
-+   handled.
- 
- -  ``[lockfiles]``: Specifies one or more lockfiles to lock while the
-    task executes. Only one task may hold a lockfile, and any task that
+ Locating Include Files
+ ----------------------
 
 -- 
 2.53.0
