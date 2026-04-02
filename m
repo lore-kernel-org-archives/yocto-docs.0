@@ -1,92 +1,81 @@
-Return-Path: <yanis.binard@smile.fr>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0AC6510F6FD7
-	for <webhook@archiver.kernel.org>; Wed,  1 Apr 2026 15:17:04 +0000 (UTC)
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.15695.1775056615241686959
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4E390CC6B27
+	for <webhook@archiver.kernel.org>; Thu,  2 Apr 2026 08:13:57 +0000 (UTC)
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.10990.1775117626041337913
  for <docs@lists.yoctoproject.org>;
- Wed, 01 Apr 2026 08:16:55 -0700
+ Thu, 02 Apr 2026 01:13:47 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@smile.fr header.s=google header.b=TeGmh5iq;
- spf=pass (domain: smile.fr, ip: 209.85.128.54, mailfrom: yanis.binard@smile.fr)
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-48557c8ad47so55602665e9.0
-        for <docs@lists.yoctoproject.org>; Wed, 01 Apr 2026 08:16:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=smile.fr; s=google; t=1775056613; x=1775661413; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=uQ488ni8D3fBBwAfedpzvii9rvMKwWZMtI1If4IYofw=;
-        b=TeGmh5iqTC/K7aC/EO+NUp9jcUONX8X6V7rniT+8XlNQaBz82nnvAUF65lEJwFkwaj
-         soAvG8lJmMPFfBw86YYa4jDmxvhl8uApDnPlJb2EGoWIsmjjlxOXRecNOQz4+Y2fieAw
-         ya3FNcUKGI8Z5Y+bu7aLrYuzVQm6Y3Y2eBMF0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775056613; x=1775661413;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uQ488ni8D3fBBwAfedpzvii9rvMKwWZMtI1If4IYofw=;
-        b=VhBHwPpLcJfyk6J1CxmlpTogE3gtn3kPwvakG/DMlDw8VyayJ8F5rIhW8kRZkZcjZn
-         tMTyp5rcQdWTAmWv+UX8NMMRSy4bH3CnHpgx/1huUWQS6EDFqEf+DJw3y12Xx/lRD9tA
-         qO6tO24abrOTd/gaee5VurWyYJRkrlFW4GZS0L/skAEfljN4Z6Ty2Nyv0k5mzQZeTKi5
-         wrB0j5QmT198lEQYdQIWBDL9kR8bJZa8CPx8yAG04U/nrRH7SzsYORyRQQAdghhAO3Vk
-         jDpGB1yoJQV2QFyI+DGm79F/T0gu7BaAEIThlPFAiXe2zKT/m0CIn9JwsaqK6uLcZ+iv
-         uaYw==
-X-Gm-Message-State: AOJu0Yw0+RHJzoB/xzQUClgGy34Vo5KeMR1c23vKoTW0M6/YkM6h2teC
-	YzLFir1v/h7ODyW6u3SjHw1zul/676RnXv8GMHyXOZBl+RhgYmcHxodCgxzGgMBQ35yZBPTwbVF
-	NGiCMlTTyEw==
-X-Gm-Gg: ATEYQzz65ukl7au/Pn5vLxJUsBUsY7rYG6lU5zITmHTI99inJr/viKVcAS9eleVipO7
-	aTgyNZMqK0cFDJi5jO4vZsyfuDEPTY0PFq6GjlfKrdOzVwAePYR73IymS2x2jbouhKV5iAgeNfJ
-	FSRMvD2kLvGDDzhUYoFwjex5wkqpnGvnDIExMHFnT7Efzmoqeoq/iRGMvT+rBtIMwxAJOL5+HN9
-	pc+xUgDwxcJHeHmqbA7q7J/aEFMeFqqsTiKUhIWi/zkdrXXHQIcvkpTe/53LusHebnp8UoyRqOg
-	DYjYE0HuKTZxZQBi91PDB9uwH2JWtKTbbxHobLWXesid4BR3GvhJ9s98PF+EqL86ppTmccdO1Lk
-	kNQjLYfza7fkCqxSOt4mCS/a4xQjEw6cvuXK495oYgOUsTb3JpMCvmgCtLEuIQRineWa03Jo252
-	zSymlhImPWBRPoDx/9fHl5u2V8V80qPoTU4GPF1lbVPZ7bGS2cn143dJffKs07nvTxMAHPwyOol
-	mC9UQTnpE9/4MhFZlmovenGOndQ248gFA==
-X-Received: by 2002:a05:600c:34d0:b0:485:3c66:e21d with SMTP id 5b1f17b1804b1-4888355e6d5mr75571105e9.2.1775056613377;
-        Wed, 01 Apr 2026 08:16:53 -0700 (PDT)
-Received: from P-ASN-MAGENTA.idf.intranet (static-css-ccs-204145.business.bouyguestelecom.com. [176.157.204.145])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d1e4d289asm548488f8f.19.2026.04.01.08.16.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Apr 2026 08:16:53 -0700 (PDT)
-From: yanis.binard@smile.fr
-To: docs@lists.yoctoproject.org
-Cc: Yanis BINARD <yanis.binard@smile.fr>
-Subject: [PATCH] contributor-guide/submit-changes.rst: Added missing word
-Date: Wed,  1 Apr 2026 17:14:42 +0200
-Message-ID: <20260401151441.275754-2-yanis.binard@smile.fr>
-X-Mailer: git-send-email 2.43.0
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=yrF6FmUz;
+ spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 029711A30E6
+	for <docs@lists.yoctoproject.org>; Thu,  2 Apr 2026 08:13:44 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id BC7845FDEB
+	for <docs@lists.yoctoproject.org>; Thu,  2 Apr 2026 08:13:43 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2E9031045033B;
+	Thu,  2 Apr 2026 10:13:40 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1775117621; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=dKG6gnRuepHegkOcEO9FsMPJFVuuvu8DZ2gaukVXa1c=;
+	b=yrF6FmUz3wtnKrWtGWhaeoOPQqeMdBztixENQrBV1BSz0Inay1i+aqcZwOdrwiw5g9iRs3
+	OAGobU0JXdNzWJyyJ+nv4WTyBKwy6IYNEUAGMQ+lACGbMP3HOtrSWwo2NtmagTiIH7kJYa
+	mGCO8r8uYjTXB3qW2F2QPurAsfeN13vN9XZUsFb5RzJkU5zvFEflScljAcBdXD48YEEqSw
+	D2pBFk10ubr6XN2uEX2gRJ7NPQEqDR1Yv+LoSEpQuOrjFtJ66I7aMuErewfa6mY9j2jAYx
+	YD0JT2Mn//XZCsBmDUNSEu0Ca3qHBKaalkaHr7ZdSbbnPvYXHfoBPD0KiSmz+A==
+From: Antonin Godard <antonin.godard@bootlin.com>
+Subject: [PATCH 0/2] set_versions.py fixes
+Date: Thu, 02 Apr 2026 10:13:26 +0200
+Message-Id: <20260402-set-versions-fixes-v1-0-0609a8747b96@bootlin.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMSwqDQBAFryK9tmFsf5CrBBc6vsR2YWRaB0G8e
+ 8ZkWdSrd5IhKIwe2UkBUU0/S4Iiz8hP/fIG65iYxEnjKids2Dgi3Dvjlx4w7ttqkBqj1KWnFK4
+ BP5G6Z/dn24cZfruf6Lq+caQC6HYAAAA=
+X-Change-ID: 20260402-set-versions-fixes-a74b25ed253c
+To: docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Antonin Godard <antonin.godard@bootlin.com>
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=425;
+ i=antonin.godard@bootlin.com; h=from:subject:message-id;
+ bh=KUUScG/AH54dx+jKuQOxnmkCaU1NlfVGxbGYzePgo1I=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpziUzYOOsEmEJ8hdyl4LbbHd4LxCOKwaBoxRYu
+ ZFZtoUSX3uJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCac4lMwAKCRDRgEFAKaOo
+ Nhl8EAC7JuY5trG+gtKENp1Io3KKW/yncfobrsihV2ilH/UwLng3jSeEUMc3Jd98dOr8eqZDyk4
+ ZtexY4lB3GUcqbzevO24RkfjydZ+11mW/C2PSoqWOpCYlwvz+L7I9fMq9ovtA004eUQuzJZ48AH
+ Hz+n/0nGILXeKP3S22Ow0qXv/4KWBaYS4WrRKN4PEnn65+ZV9MMx3vjinez3bJY5Ms7zKQXhJFv
+ HfWccJWGh/V3DwSOLZu6Dl/QfQWJaXVmadMN2LSL7hJY6kAnZuqYlGkbdiSZHL1yvPVcPGFhAVx
+ tGrR9kbhDY0fCu0tCrJkYcAs/qHIxjfuYo0kiV3kaiqweSFAuZUddS8D51pyFBhTWrlEN9GK7Vc
+ xiUNxDogwENdRwkRYrJg1N+S3SqWKYLnS4skjXrwCE0lHoydNOH8jqCLTndfQM5XtrT+O1Sc+hT
+ q/KMXXgZ1dSPqSgA28P4vHCKR1Etmn5QJUUqPySzzsGLPF5ihZDD8Gnw2WZ6WiUJtsn1qJsEey3
+ tSGlDrROIkY8YG6gB2zp+XH0X2aWAde0ptpgfwEpwIxISYZYohyXLvvU55WpHhKzA0+d26hGIH+
+ 2+NPZaBeuLiYLRxidY3BNVbSuihcuvxrNHL/tebKgITmbub1ACUCs023MyA4J56yZ/d9+/XseLi
+ y9U6YpHMdDvB7Aw==
+X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
+ fpr=8648725188DD401BB9A0D3FFD180414029A3A836
+X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 01 Apr 2026 15:17:04 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9156
+ <docs@lists.yoctoproject.org>; Thu, 02 Apr 2026 08:13:57 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9157
 
-From: Yanis BINARD <yanis.binard@smile.fr>
-
-From: Yanis BINARD <yanis.binard@smile.fr>
-
-Signed-off-by: Yanis BINARD <yanis.binard@smile.fr>
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
-The typo is present in documentation for Unstable, Whinlatter, Scarthgap and Kirkstone.
+Antonin Godard (2):
+      set_versions.py: skip laverne branch for closest branch
+      set_versions.py: fix get_latest_tag and milestone tags
 
- documentation/contributor-guide/submit-changes.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ documentation/set_versions.py | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
+---
+base-commit: dc1574b9f71532c469f355af2ff5ff5664083e48
+change-id: 20260402-set-versions-fixes-a74b25ed253c
 
-diff --git a/documentation/contributor-guide/submit-changes.rst b/documentation/contributor-guide/submit-changes.rst
-index 089fec02a..7cf23c945 100644
---- a/documentation/contributor-guide/submit-changes.rst
-+++ b/documentation/contributor-guide/submit-changes.rst
-@@ -721,7 +721,7 @@ Taking Patch Review into Account
- You may get feedback on your submitted patches from other community members
- or from the automated patchtest service. If issues are identified in your
- patches then it is usually necessary to address these before the patches are
--accepted into the project. In this case you should your commits according
-+accepted into the project. In this case you should revise your commits according
- to the feedback and submit an updated version to the relevant mailing list.
- 
- In any case, never fix reported issues by fixing them in new commits
 
