@@ -2,134 +2,103 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 81C5ACC6B2F
-	for <webhook@archiver.kernel.org>; Thu,  2 Apr 2026 08:22:27 +0000 (UTC)
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.11109.1775118143114016953
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9A06BCC6B32
+	for <webhook@archiver.kernel.org>; Thu,  2 Apr 2026 08:28:57 +0000 (UTC)
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.11158.1775118532318760613
  for <docs@lists.yoctoproject.org>;
- Thu, 02 Apr 2026 01:22:24 -0700
+ Thu, 02 Apr 2026 01:28:53 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=Nr4l1blu;
- spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=WOcrVWJQ;
+ spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 9F8481A30E9
-	for <docs@lists.yoctoproject.org>; Thu,  2 Apr 2026 08:22:21 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 312854E428AA;
+	Thu,  2 Apr 2026 08:28:50 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 707655FDEB
-	for <docs@lists.yoctoproject.org>; Thu,  2 Apr 2026 08:22:21 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 507A310450221;
-	Thu,  2 Apr 2026 10:22:20 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 007DF5FDEB;
+	Thu,  2 Apr 2026 08:28:50 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4DAAD104502A3;
+	Thu,  2 Apr 2026 10:28:48 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1775118140; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=FGmOL41CYUmVq1pg6B29pRoHbRQw+f0nKsoTEiXsHEo=;
-	b=Nr4l1bluVHLgcapfOyEFePmfEq/u5U+qdgWquePaVBpIegLjGw+dSigHppNj097MbIAkxy
-	xuX3YkVnutRLtD4yVRNNC4rFhKy3yMbxixRE1RG9E6DnkoHLCtKgSvM97pgTOGsApk8vE6
-	Wsb5zc6KA/9Ni9zhJKnT/soUxvMUXnoU3uA2CVsOUEmq/RR7F2bKs9VicAbR0vyKlK2pIB
-	puMOy/cEPYMa5/H4X+TAteJaHM/cw0RGApynh0mt3oRsImebOuxFJlR3DBNjR+GkbAMysZ
-	5p423GZRu38tK7HHhb8Ryfe+PkUTZGj/dJ3IUs9Gqd8aaMrCkuAMIqb/Sw6JxQ==
-From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Thu, 02 Apr 2026 10:21:59 +0200
-Subject: [PATCH] ref-manual/system-requirements: add buildtools note for
- Alma/CentOS/Rocky 9
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260402-alma-centos-rocky-builtools-v1-1-447c92372100@bootlin.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMOw7CMAwA0KtUnrGUhI8EV0EMqTFgCDGKU9Sq6
- t0JML7lzWBchA0O3QyF32KiucGvOqBbzFdGOTdDcGHnNi5gTM+IxLmqYVF6TNgPkqpqMlyHLXm
- mvY+BoA2vwhcZf/vx9LcN/Z2pfktYlg/cXoTKfwAAAA==
-X-Change-ID: 20260402-alma-centos-rocky-builtools-325c1ec91a2c
-To: docs@lists.yoctoproject.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Antonin Godard <antonin.godard@bootlin.com>
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2646;
- i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=iqR1kfFsKVsevZyn3hZj27ShPRPZVy7QabiCgF8lZ+8=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBpzic8CRpj1OWE6uHdjEA+gtcGYuz4c6kC3yS15
- KIb1V0E+ruJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCac4nPAAKCRDRgEFAKaOo
- NoGVEACpcOG0S9jcDtpXRx2t+AaaF4Whu579gD+XeceCmmrhxemNz1sdPgD8RSgBDTOqlf7dCrZ
- UzMqvZ8igeYYuqob/85lRqN/qc8DEDSCyNyf5w59k7G3OtoixszTGLMSCehlmOBQN+fuUaJBvwc
- Hv6a/y5M0id4eZu96TamscZmixtQS5+CTt2wyivqSEjpn7Cr0syA2wn/RMvNdjKF8Nc4H+l9vN3
- 3V0vAQiGUkXaVSpqCRdEKwKYmkVTi2VzKpwAPzZY/gTxxnxykE4yLljVBtN8+KufnTGeFkLDEiw
- ZCTAU54MQCgzLk57+ATuPKIln/DpUz5uoaVgehj/QM8Jkvh9cP6exR6edGWyhqXq+B5zEpP9bif
- +x+KzZF/ieKg9kH/mCkVmyxejSkdpk0+MX1WPVSrVI3x9EKNhDDcISC2SrUjePMERx/RYP7hLH3
- JJIYjHIgVUP1UPbzY88xI+xLXu57T8W87cLLkxD9JwvheIvDTBroKdt/A9WS8WTOHPWU/kv+FtA
- dWGku76p4cP9gLZyMQoE9H40S0dGH4T9vzirpG7lZIXV3oV/d+x6mglUdgtknF7Lzjjrcj7KZaZ
- X67HJZg9CGvsI8b+9mJ7oBKr3MDEPeY7PojzAkoLVWYsZsvoQTh9KWG9ngiqtii8aQ8L1WiE/Z3
- mSAxJLQY4pFzmFQ==
-X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
- fpr=8648725188DD401BB9A0D3FFD180414029A3A836
+	t=1775118529; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=5IqVwR+qqZbVRvJCMVunGAc7JLlwnZDXfUbVN0kdGiI=;
+	b=WOcrVWJQb7UGjbYFRDlxh3i30yZLtlw/pOadb8RtxUXJQPDX80vSIRiEoZW3xT807FPVOU
+	tWLn92AwrBaGnC9DaujDLAhFLBrZmjHw3WY31VkQK0pO6bSbrTsw7SwSxuscMBxDfi6Pwq
+	+fqkpL20/c5gB2LzFbsE/b/l5bellWTc2Tx9262iwGIn553LJmK9U9JZ+D86ZyPI51i5uo
+	fzS5CzVd2btbzY9yls11V/9U2sLhy0u9t51Y1PfWTzB08BDdiGgvbszD+mkJga1HGp07ob
+	Yp5r0tuuUe8GDoRJoJwWS9dD5gsBIYE54RH75mii1PKxZe1F5Xaf7T0dxbk6qw==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 02 Apr 2026 10:28:47 +0200
+Message-Id: <DHIJ01UHFNCM.3PGI9MA9GAFV2@bootlin.com>
+From: "Antonin Godard" <antonin.godard@bootlin.com>
+To: <quentin.schulz@cherry.de>, <docs@lists.yoctoproject.org>
+Subject: Re: [docs] [PATCH 1/2] set_versions.py: skip laverne branch for
+ closest branch
+Cc: "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>
+References: <20260402-set-versions-fixes-v1-0-0609a8747b96@bootlin.com>
+ <20260402-set-versions-fixes-v1-1-0609a8747b96@bootlin.com>
+ <9955c1bf-c6ea-4e6b-aa68-f0a6df16ac95@cherry.de>
+In-Reply-To: <9955c1bf-c6ea-4e6b-aa68-f0a6df16ac95@cherry.de>
 X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 02 Apr 2026 08:22:27 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9160
+ <docs@lists.yoctoproject.org>; Thu, 02 Apr 2026 08:28:57 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9162
 
-These distributions are affected by a bug with tar described in [1]. Add
-a note for installing buildtools for these distros as described in the
-bug comments.
+Hi,
 
-[1]: https://bugzilla.yoctoproject.org/show_bug.cgi?id=16143
+On Thu Apr 2, 2026 at 10:22 AM CEST, Quentin Schulz via lists.yoctoproject.=
+org wrote:
+> Hi Antonin,
+>
+> On 4/2/26 10:13 AM, Antonin Godard via lists.yoctoproject.org wrote:
+>> The laverne branch was created but never branched off, which breaks the
+>> algorithm trying to determine the closest branch as it always gets count
+>> 0. Skip this branch as it is old and we'll never branch off of it now.
+>>=20
+>> This fixes the following issue:
+>>=20
+>> Branch laverne has count 0
+>> Nearest release branch estimated to be laverne
+>> Traceback (most recent call last):
+>>    File "/data/yoctoproject/ws/repos/yocto-docs/documentation/./set_vers=
+ions.py", line 167, in <module>
+>>      bitbakeversion =3D bitbake_mapping[ourseries]
+>>                       ~~~~~~~~~~~~~~~^^^^^^^^^^^
+>> KeyError: 'laverne'
+>>=20
+>> Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+>> ---
+>>   documentation/set_versions.py | 5 +++++
+>>   1 file changed, 5 insertions(+)
+>>=20
+>> diff --git a/documentation/set_versions.py b/documentation/set_versions.=
+py
+>> index 29638b324..465204998 100755
+>> --- a/documentation/set_versions.py
+>> +++ b/documentation/set_versions.py
+>> @@ -142,6 +142,11 @@ if ourversion is None:
+>>               result =3D subprocess.run(["git", "log", "--format=3Doneli=
+ne", "HEAD..origin/" + b],
+>>                                       stdout=3Dsubprocess.PIPE, stderr=
+=3Dsubprocess.PIPE,
+>>                                       universal_newlines=3DTrue)
+>> +            # The laverne branch was created but never branched off, wh=
+ich
+>> +            # breaks this algorithm as this always gets count 0. Skip t=
+his
+>> +            # branch as it is old and we'll never branch off of it now.
+>> +            if b =3D=3D "laverne":
+>> +                continue
+>
+> Why run the command if we're gonna skip the loop regardless of the=20
+> result of the command? Just do the continue before the subprocess.run?
 
-Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
----
- documentation/ref-manual/buildtools-alma-centos-rocky-9.rst | 11 +++++++++++
- documentation/ref-manual/system-requirements.rst            |  6 ++++++
- 2 files changed, 17 insertions(+)
+An oversight, I'll move it above, thanks
 
-diff --git a/documentation/ref-manual/buildtools-alma-centos-rocky-9.rst b/documentation/ref-manual/buildtools-alma-centos-rocky-9.rst
-new file mode 100644
-index 000000000..713b729a0
---- /dev/null
-+++ b/documentation/ref-manual/buildtools-alma-centos-rocky-9.rst
-@@ -0,0 +1,11 @@
-+.. SPDX-License-Identifier: CC-BY-SA-2.0-UK
-+
-+You will also need to use a :term:`buildtools` tarball which provides a set of
-+basic host tools with fixed versions. Follow the :ref:`system-requirements-buildtools`
-+section below to learn how to download and install this tarball.
-+
-+.. note::
-+
-+   The AlmaLinux 9, CentOS 9 and RockyLinux 9 distributions are affected by a
-+   bug described in :yocto_bugs:`/show_bug.cgi?id=16143`, which is the reason why a
-+   :term:`buildtools` tarball is required.
-diff --git a/documentation/ref-manual/system-requirements.rst b/documentation/ref-manual/system-requirements.rst
-index b427e2c64..c4d8cb5e0 100644
---- a/documentation/ref-manual/system-requirements.rst
-+++ b/documentation/ref-manual/system-requirements.rst
-@@ -236,6 +236,8 @@ with a supported AlmaLinux distribution:
- .. literalinclude:: ../tools/host_packages_scripts/almalinux_essential.sh
-    :language: shell
- 
-+.. include:: buildtools-alma-centos-rocky-9.rst
-+
- .. note::
- 
-    -  Extra Packages for Enterprise Linux (i.e. ``epel-release``) is
-@@ -285,6 +287,8 @@ with a supported CentOS Stream distribution:
- .. literalinclude:: ../tools/host_packages_scripts/centosstream_essential.sh
-    :language: shell
- 
-+.. include:: buildtools-alma-centos-rocky-9.rst
-+
- Here are the packages needed to build Project documentation manuals:
- 
- .. literalinclude:: ../tools/host_packages_scripts/centosstream_docs.sh
-@@ -321,6 +325,8 @@ with a supported RockyLinux distribution:
- .. literalinclude:: ../tools/host_packages_scripts/rockylinux_essential.sh
-    :language: shell
- 
-+.. include:: buildtools-alma-centos-rocky-9.rst
-+
- .. note::
- 
-    -  Extra Packages for Enterprise Linux (i.e. ``epel-release``) is
-
----
-base-commit: c1c6eee66915b225a2efd5433fa1a9cf964f5abe
-change-id: 20260402-alma-centos-rocky-builtools-325c1ec91a2c
-
+Antonin
 
