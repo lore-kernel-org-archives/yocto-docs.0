@@ -2,256 +2,461 @@ Return-Path: <chee.yang.lee@intel.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id ED343D3940D
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D7AADD39409
 	for <webhook@archiver.kernel.org>; Thu,  2 Apr 2026 09:59:01 +0000 (UTC)
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
  by mx.groups.io with SMTP id smtpd.msgproc02-g2.12034.1775123937419192239
  for <docs@lists.yoctoproject.org>;
- Thu, 02 Apr 2026 02:58:58 -0700
+ Thu, 02 Apr 2026 02:58:57 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@intel.com header.s=Intel header.b=njjFQQy4;
+ dkim=pass header.i=@intel.com header.s=Intel header.b=Kq39ihlh;
  spf=pass (domain: intel.com, ip: 198.175.65.12, mailfrom: chee.yang.lee@intel.com)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1775123938; x=1806659938;
-  h=from:to:subject:date:message-id:in-reply-to:references:
-   mime-version:content-transfer-encoding;
-  bh=zWE6dswkp7Lgon3OBkilcgheZSKhhkqRsEU5n3TsjrY=;
-  b=njjFQQy41f/LdyLtHGplBZP+X3GVwa6KvttyKkxI5d5+CxNZED340elP
-   6ZOtP/J55ADsV7C66UYA8S5XeFcPL7XVmc1u05wWXgvtw1gaHoKiCz1cA
-   RlQ3yt2LT94/X55qJ3ecftSXkiPr/UT/r/ElMigjKkp219/MAHPnSL5TP
-   d7xRSFkMole6JfgL817xQGQKMY1a7CJ5mF2Y3nIK0eKQtb3HI079nlj7R
-   6Kb/oQMBySouFqTMidhpyMsGYSBSgaa4yZmHEn1aRu8MDiDxZqUuOp90T
-   qMul+C6hs+XwiygpjlDOJxtmd1Eq5YR7LEpgVPJkMGGoNwB++kwpG794d
-   g==;
-X-CSE-ConnectionGUID: pvCLwRkLTwCd7v96uiv+JA==
-X-CSE-MsgGUID: ereu++IxR+2G/w6OqWE0Lg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11746"; a="87638458"
+  t=1775123937; x=1806659937;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=3ThLTKwP9O0cQSR2VRUPWoqrhPXLSXInwcXkHPusfSI=;
+  b=Kq39ihlhe996fLZZDbvNfVVVhCtCo1cJoYFQLfqMFXQcqqeuBZEkuwMI
+   igyJixBKO6uBe7LmCXzE62IMUJzvOLFHEGh2cUlNl70t1j7ah2dR9nRmj
+   qRA7+mUJpEG0C+4Vs7awfM8/ddDt7ZumEE5iAyjrk8waL0z8U4duEYrZi
+   l34DKkfEutbBUAbdgPfl/7PsLfu7VIuMoiO8s1iuzWt8yWELp9JKiBUh7
+   smJ85LO4jHR5uC+r+h4X30mdUx28Bi53iga9rOriwDOhK1ave1a2lh1Cj
+   e0sTJqc+80jC/1Lp2446M7Po/yBSWK5Z16+tuhm7RVunJnkHNYQ7ha8vm
+   Q==;
+X-CSE-ConnectionGUID: 6ObZ/r9LQFSYs4i5gR4ldQ==
+X-CSE-MsgGUID: Ql/YiuK7TgKm41A3LXbPeg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11746"; a="87638455"
 X-IronPort-AV: E=Sophos;i="6.23,155,1770624000"; 
-   d="scan'208";a="87638458"
+   d="scan'208";a="87638455"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Apr 2026 02:58:58 -0700
-X-CSE-ConnectionGUID: PHmOEM33RnSsuhv5lGWaMw==
-X-CSE-MsgGUID: zbKcIAHsQSysps7rvbUuZw==
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Apr 2026 02:58:57 -0700
+X-CSE-ConnectionGUID: 0E/EO6s2Qsq3OSFV9DdMiA==
+X-CSE-MsgGUID: Cf3MubEUQq+/dungAw/aVA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,155,1770624000"; 
-   d="scan'208";a="231343364"
+   d="scan'208";a="231343363"
 Received: from cheeyang-desk4.png.intel.com ([10.107.249.123])
-  by orviesa004.jf.intel.com with ESMTP; 02 Apr 2026 02:58:57 -0700
+  by orviesa004.jf.intel.com with ESMTP; 02 Apr 2026 02:58:55 -0700
 From: chee.yang.lee@intel.com
 To: docs@lists.yoctoproject.org
-Subject: [PATCH 2/2] migration-guide: add release notes for 5.3.3
-Date: Thu,  2 Apr 2026 17:58:11 +0800
-Message-ID: <20260402095811.60426-2-chee.yang.lee@intel.com>
+Subject: [PATCH 1/2] migration-guide: add release notes for 4.0.33 4.0.34
+Date: Thu,  2 Apr 2026 17:58:10 +0800
+Message-ID: <20260402095811.60426-1-chee.yang.lee@intel.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260402095811.60426-1-chee.yang.lee@intel.com>
-References: <20260402095811.60426-1-chee.yang.lee@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Thu, 02 Apr 2026 09:59:01 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9165
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9164
 
 From: Lee Chee Yang <chee.yang.lee@intel.com>
 
 Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
 ---
- .../migration-guides/release-5.3.rst          |   1 +
- .../migration-guides/release-notes-5.3.3.rst  | 175 ++++++++++++++++++
- 2 files changed, 176 insertions(+)
- create mode 100644 documentation/migration-guides/release-notes-5.3.3.rst
+ .../migration-guides/release-4.0.rst          |   2 +
+ .../migration-guides/release-notes-4.0.33.rst | 182 +++++++++++++++++
+ .../migration-guides/release-notes-4.0.34.rst | 191 ++++++++++++++++++
+ 3 files changed, 375 insertions(+)
+ create mode 100644 documentation/migration-guides/release-notes-4.0.33.rst
+ create mode 100644 documentation/migration-guides/release-notes-4.0.34.rst
 
-diff --git a/documentation/migration-guides/release-5.3.rst b/documentation/migration-guides/release-5.3.rst
-index 61fc082c1..4c2770e19 100644
---- a/documentation/migration-guides/release-5.3.rst
-+++ b/documentation/migration-guides/release-5.3.rst
-@@ -9,3 +9,4 @@ Release 5.3 (whinlatter)
-    release-notes-5.3
-    release-notes-5.3.1
-    release-notes-5.3.2
-+   release-notes-5.3.3
-diff --git a/documentation/migration-guides/release-notes-5.3.3.rst b/documentation/migration-guides/release-notes-5.3.3.rst
+diff --git a/documentation/migration-guides/release-4.0.rst b/documentation/migration-guides/release-4.0.rst
+index 9b0cc01a1..daacd92ff 100644
+--- a/documentation/migration-guides/release-4.0.rst
++++ b/documentation/migration-guides/release-4.0.rst
+@@ -39,3 +39,5 @@ Release 4.0 (kirkstone)
+    release-notes-4.0.30
+    release-notes-4.0.31
+    release-notes-4.0.32
++   release-notes-4.0.33
++   release-notes-4.0.34
+diff --git a/documentation/migration-guides/release-notes-4.0.33.rst b/documentation/migration-guides/release-notes-4.0.33.rst
 new file mode 100644
-index 000000000..94913afc4
+index 000000000..d393b59c2
 --- /dev/null
-+++ b/documentation/migration-guides/release-notes-5.3.3.rst
-@@ -0,0 +1,175 @@
-+.. SPDX-License-Identifier: CC-BY-SA-2.0-UK
-+
-+Release notes for Yocto-5.3.3 (Whinlatter)
++++ b/documentation/migration-guides/release-notes-4.0.33.rst
+@@ -0,0 +1,182 @@
++Release notes for Yocto-4.0.33 (Kirkstone)
 +------------------------------------------
 +
-+Security Fixes in Yocto-5.3.3
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++Security Fixes in Yocto-4.0.33
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 +
-+-  alsa-lib: patch :cve_nist:`2026-25068`
-+-  busybox: Fix :cve_nist:`2025-60876`
-+-  ffmpeg: Ignore :cve_nist:`2025-12343`
-+-  freetype: Fix :cve_nist:`2026-23865`
-+-  gdk-pixbuf: Fix :cve_nist:`2025-6199`
-+-  glib-2.0: Fix :cve_nist:`2026-1484`, :cve_nist:`2026-1485` and :cve_nist:`2026-1489`
-+-  gnutls: Fix :cve_nist:`2025-14831`
-+-  go: Fix :cve_nist:`2026-25679`, :cve_nist:`2026-27137`, :cve_nist:`2026-27138`,
-+   :cve_nist:`2026-27139` and :cve_nist:`2026-27142`
-+-  harfbuzz: Fix :cve_nist:`2026-22693`
-+-  inetutils: Fix :cve_nist:`2026-28372`
-+-  libpam: Ignore :cve_nist:`2024-10041`
-+-  libpng: Fix :cve_nist:`2026-25646`
-+-  linux-yocto: Ignore :cve_nist:`2022-38096`, :cve_nist:`2023-6535`, :cve_nist:`2023-39176`,
-+   :cve_nist:`2023-39179` and :cve_nist:`2023-39180`
-+-  python3-pip: Fix :cve_nist:`2026-1703`
-+-  python3-urllib3: Fix :cve_nist:`2025-66471`
-+-  zlib: Fix :cve_nist:`2026-27171`
-+
-+
-+Fixes in Yocto-5.3.3
-+~~~~~~~~~~~~~~~~~~~~
-+
-+meta-yocto
-+^^^^^^^^^^
-+-  poky.conf: Bump version for 5.3.3 release
-+
-+openembedded-core
-+^^^^^^^^^^^^^^^^^
-+-  README: Add whinlatter subject-prefix to git-send-email suggestion
-+-  avahi: Remove a reference to the rejected :cve_nist:`2021-36217`
-+-  b4-config: add send-prefixes for whinlatter
-+-  build-appliance-image: Update to whinlatter head revisions
-+-  classes/buildhistory: Do not sign buildhistory commits
-+-  create-pull-request: Keep commit hash to be pulled in cover email
-+-  glib-2.0: upgrade to 2.86.4
-+-  gnutls: fix postinst script for ${PN}-fips for multilibs
-+-  gnutls: use libtool to install test binaries
-+-  go: upgrade to 1.25.8
-+-  libpng: upgrade to 1.6.55
-+-  linux-yocto: apply cve-exclusions also to rt and tiny recipe variants
-+-  lsb.py: strip ' from os-release file
-+-  lz4: Remove a reference to the rejected :cve_nist:`2025-62813`
-+-  pseudo: Update to include a fix for systems with kernel <5.6
-+-  python3: skip flaky test_default_timeout test
-+-  scripts/install-buildtools: Update to 5.3.2
-+-  wic/engine: error on old host debugfs for standalone directory copy
-+-  wireless-regdb: upgrade to 2026.02.04
-+
-+yocto-docs
-+^^^^^^^^^^
-+-  Makefile: pass -silent to latexmk
-+-  dev-manual: delete references to "tar" package format
-+-  overview-manual/concepts: list other possible class directories
-+-  overview-manual: escape wildcard in inline markup
-+-  qemu.rst: parsing of the code-block was not done
-+-  ref-manual/classes.rst: fix broken links to U-Boot documentation
-+-  tools/host_packages_scripts/tlmgr_docs_pdf.sh: install perl
-+-  what-i-wish-id-known.rst: replace figure by the new SVG
++-  binutils: Fix :cve_nist:`2025-1181`, :cve_nist:`2025-11494`, :cve_nist:`2025-11839` and
++   :cve_nist:`2025-11840`
++-  cups: Fix :cve_nist:`2025-58436` and :cve_nist:`2025-61915`
++-  curl: Fix :cve_nist:`2025-14017`, :cve_nist:`2025-15079` and :cve_nist:`2025-15224`
++-  dropbear: Fix :cve_nist:`2019-6111`
++-  glib-2.0: Fix :cve_nist:`2025-13601`, :cve_nist:`2025-14087` and :cve_nist:`2025-14512`
++-  gnupg: Fix :cve_nist:`2025-68973`
++-  go: Fix :cve_nist:`2023-39323`, :cve_nist:`2025-61727` and :cve_nist:`2025-61729`
++-  go: Fix :cve_nist:`2025-58187` (update patch)
++-  grub: Fix :cve_nist:`2025-61661`, :cve_nist:`2025-61662`, :cve_nist:`2025-61663` and
++   :cve_nist:`2025-61664`
++-  libarchive: Fix :cve_nist:`2025-60753` (update patch)
++-  libpcap: Fix :cve_nist:`2025-11961` and :cve_nist:`2025-11964`
++-  libsoup: fix :cve_nist:`2025-12105`
++-  libxslt: Fix :cve_nist:`2025-11731`
++-  python3: Fix :cve_nist:`2025-13836`
++-  python3-urllib3: Fix :cve_nist:`2025-66418`
++-  qemu: Fix :cve_nist:`2025-12464`
++-  qemu: Ignore :cve_nist:`2025-54566` and :cve_nist:`2025-54567`
++-  rsync: Fix :cve_nist:`2025-10158`
++-  util-linux: Fix :cve_nist:`2025-14104`
 +
 +
-+Known Issues in Yocto-5.3.3
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~
++Fixes in Yocto-4.0.33
++~~~~~~~~~~~~~~~~~~~~~
++
++-  build-appliance-image: Update to kirkstone head revision
++-  contributor-guide/recipe-style-guide.rst: explain difference between layer and recipe license(s)
++-  cross.bbclass: Propagate dependencies to outhash
++-  cups: allow unknown directives in conf files
++-  docs: Add a new "Security" section
++-  oeqa: Use 2.14 release of cpio instead of 2.13
++-  overview-manual/yp-intro.rst: change removed ECOSYSTEM to ABOUT
++-  overview-manual/yp-intro.rst: fix SDK type in bullet list
++-  overview-manual/yp-intro.rst: link to YP members and participants
++-  overview-manual: convert YP-flow-diagram.png to SVG
++-  poky.conf: Bump version for 4.0.33 release
++-  pseudo: Upgrade to 1.9.2+git125b020dd2
++-  ref-manual/classes.rst: document the image-container class
++-  ref-manual/release-process.rst: add a "Development Cycle" section
++-  ref-manual/svg/releases.svg: mark styhead and walnascar EOL
++-  ref-manual/svg/releases.svg: mark whinlatter as current release
++-  ref-manual/variables.rst: document the :term:`CCACHE_TOP_DIR` variable
++-  scripts/install-buildtools: Update to 4.0.31
++-  test-manual/ptest.rst: detail the exit code and output requirements
++
++
++Known Issues in Yocto-4.0.33
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 +
 +- N/A
 +
-+Contributors to Yocto-5.3.3
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 +
-+Thanks to the following people who contributed to this release:
++Contributors to Yocto-4.0.33
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 +
-+-  Adarsh Jagadish Kamini
-+-  Ankur Tyagi
++-  Aleksandar Nikolic
 +-  Antonin Godard
-+-  Benjamin Robin (Schneider Electric)
-+-  Daniel Dragomir
-+-  Fabio Berton
-+-  Hugo SIMELIERE
-+-  Jan Vermaete
-+-  Kristiyan Chakarov
-+-  Liu Yiding
-+-  Livin Sunny
++-  Changqing Li
++-  Deepesh Varatharajan
++-  Hitendra Prajapati
++-  Jiaying Song
++-  Kai Kang
++-  Khem Raj
++-  Libo Chen
++-  Liyin Zhang
 +-  Martin Jansa
-+-  Michael Opdenacker
++-  Mingli Yu
 +-  Paul Barker
 +-  Peter Marko
-+-  Quentin Schulz
 +-  Richard Purdie
-+-  Robert P. J. Day
-+-  Ross Burton
-+-  Shaik Moin
++-  Robert Yang
 +-  Vijay Anusuri
-+-  Yoann Congal
++-  Yash Shinde
 +
-+Repositories / Downloads for Yocto-5.3.3
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++Repositories / Downloads for Yocto-4.0.33
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 +
 +yocto-docs
 +
 +-  Repository Location: :yocto_git:`/yocto-docs`
-+-  Branch: :yocto_git:`whinlatter </yocto-docs/log/?h=whinlatter>`
-+-  Tag:  :yocto_git:`yocto-5.3.3 </yocto-docs/log/?h=yocto-5.3.3>`
-+-  Git Revision: :yocto_git:`82bd1a71e6e6a707d0009725969976cf2256af36 </yocto-docs/commit/?id=82bd1a71e6e6a707d0009725969976cf2256af36>`
-+-  Release Artefact: yocto-docs-82bd1a71e6e6a707d0009725969976cf2256af36
-+-  sha: fcf7020e34198f3b89077f9649cec579f4d23228f7f0a3a28a21c6b5b3649857
++-  Branch: :yocto_git:`kirkstone </yocto-docs/log/?h=kirkstone>`
++-  Tag:  :yocto_git:`yocto-4.0.33 </yocto-docs/log/?h=yocto-4.0.33>`
++-  Git Revision: :yocto_git:`6799b1be5d48f4bf5dcd0b16c2dbc2e297d4ecd9 </yocto-docs/commit/?id=6799b1be5d48f4bf5dcd0b16c2dbc2e297d4ecd9>`
++-  Release Artefact: yocto-docs-6799b1be5d48f4bf5dcd0b16c2dbc2e297d4ecd9
++-  sha: 42a0eb89c8f87a9a966aecb8265f463486d4383cb67d1e67382ddf9d4d7f88b5
 +-  Download Locations:
 +
-+   https://downloads.yoctoproject.org/releases/yocto/yocto-5.3.3/yocto-docs-82bd1a71e6e6a707d0009725969976cf2256af36.tar.bz2
++   https://downloads.yoctoproject.org/releases/yocto/yocto-4.0.33/yocto-docs-6799b1be5d48f4bf5dcd0b16c2dbc2e297d4ecd9.tar.bz2
 +
-+   https://mirrors.edge.kernel.org/yocto/yocto/yocto-5.3.3/yocto-docs-82bd1a71e6e6a707d0009725969976cf2256af36.tar.bz2
++   https://mirrors.edge.kernel.org/yocto/yocto/yocto-4.0.33/yocto-docs-6799b1be5d48f4bf5dcd0b16c2dbc2e297d4ecd9.tar.bz2
++
++poky
++
++-  Repository Location: :yocto_git:`/poky`
++-  Branch: :yocto_git:`kirkstone </poky/log/?h=kirkstone>`
++-  Tag:  :yocto_git:`yocto-4.0.33 </poky/log/?h=yocto-4.0.33>`
++-  Git Revision: :yocto_git:`ff118ede826a9ae45eb35025a5f7f612880fba01 </poky/commit/?id=ff118ede826a9ae45eb35025a5f7f612880fba01>`
++-  Release Artefact: poky-ff118ede826a9ae45eb35025a5f7f612880fba01
++-  sha: 2a8c24406fa96fc52728a96f25136a3fd7ee652eea6e12319a6b7c0457ccfdfd
++-  Download Locations:
++
++   https://downloads.yoctoproject.org/releases/yocto/yocto-4.0.33/poky-ff118ede826a9ae45eb35025a5f7f612880fba01.tar.bz2
++
++   https://mirrors.edge.kernel.org/yocto/yocto/yocto-4.0.33/poky-ff118ede826a9ae45eb35025a5f7f612880fba01.tar.bz2
 +
 +openembedded-core
 +
 +-  Repository Location: :oe_git:`/openembedded-core`
-+-  Branch: :oe_git:`whinlatter </openembedded-core/log/?h=whinlatter>`
-+-  Tag:  :oe_git:`yocto-5.3.3 </openembedded-core/log/?h=yocto-5.3.3>`
-+-  Git Revision: :oe_git:`ab57471acad7ce2a037480dc7b301104620f1ebf </openembedded-core/commit/?id=ab57471acad7ce2a037480dc7b301104620f1ebf>`
-+-  Release Artefact: oecore-ab57471acad7ce2a037480dc7b301104620f1ebf
-+-  sha: 63ed486722e186d517e333c204def0a7bf578ca78bdeb2ad982625c49e7ee833
++-  Branch: :oe_git:`kirkstone </openembedded-core/log/?h=kirkstone>`
++-  Tag:  :oe_git:`yocto-4.0.33 </openembedded-core/log/?h=yocto-4.0.33>`
++-  Git Revision: :oe_git:`036f76ea35c49a78d612093dcd8eb1fac7ded8d7 </openembedded-core/commit/?id=036f76ea35c49a78d612093dcd8eb1fac7ded8d7>`
++-  Release Artefact: oecore-036f76ea35c49a78d612093dcd8eb1fac7ded8d7
++-  sha: fc180ff224529fd73a7aec4a4cf5beb40fba17646ee694715cf603baba26610c
 +-  Download Locations:
 +
-+   https://downloads.yoctoproject.org/releases/yocto/yocto-5.3.3/oecore-ab57471acad7ce2a037480dc7b301104620f1ebf.tar.bz2
++   https://downloads.yoctoproject.org/releases/yocto/yocto-4.0.33/oecore-036f76ea35c49a78d612093dcd8eb1fac7ded8d7.tar.bz2
 +
-+   https://mirrors.edge.kernel.org/yocto/yocto/yocto-5.3.3/oecore-ab57471acad7ce2a037480dc7b301104620f1ebf.tar.bz2
++   https://mirrors.edge.kernel.org/yocto/yocto/yocto-4.0.33/oecore-036f76ea35c49a78d612093dcd8eb1fac7ded8d7.tar.bz2
 +
 +meta-yocto
 +
 +-  Repository Location: :yocto_git:`/meta-yocto`
-+-  Branch: :yocto_git:`whinlatter </meta-yocto/log/?h=whinlatter>`
-+-  Tag:  :yocto_git:`yocto-5.3.3 </meta-yocto/log/?h=yocto-5.3.3>`
-+-  Git Revision: :yocto_git:`9b98ec5e6cfb6c9dc74d3c2e6304eeb274f7c487 </meta-yocto/commit/?id=9b98ec5e6cfb6c9dc74d3c2e6304eeb274f7c487>`
-+-  Release Artefact: meta-yocto-9b98ec5e6cfb6c9dc74d3c2e6304eeb274f7c487
-+-  sha: fcb81c6835036c4157b16dfc9f6d8c5a7dd0ed7ac72f59be238e99b486b1f8fa
++-  Branch: :yocto_git:`kirkstone </meta-yocto/log/?h=kirkstone>`
++-  Tag:  :yocto_git:`yocto-4.0.33 </meta-yocto/log/?h=yocto-4.0.33>`
++-  Git Revision: :yocto_git:`677379f21941363d50f9d946963542b4ccb7e27c </meta-yocto/commit/?id=677379f21941363d50f9d946963542b4ccb7e27c>`
++-  Release Artefact: meta-yocto-677379f21941363d50f9d946963542b4ccb7e27c
++-  sha: 90f52c406f4e69748b8d73eee07b8a1247d19cc29f4893174f110a034b10415f
 +-  Download Locations:
 +
-+   https://downloads.yoctoproject.org/releases/yocto/yocto-5.3.3/meta-yocto-9b98ec5e6cfb6c9dc74d3c2e6304eeb274f7c487.tar.bz2
++   https://downloads.yoctoproject.org/releases/yocto/yocto-4.0.33/meta-yocto-677379f21941363d50f9d946963542b4ccb7e27c.tar.bz2
 +
-+   https://mirrors.edge.kernel.org/yocto/yocto/yocto-5.3.3/meta-yocto-9b98ec5e6cfb6c9dc74d3c2e6304eeb274f7c487.tar.bz2
++   https://mirrors.edge.kernel.org/yocto/yocto/yocto-4.0.33/meta-yocto-677379f21941363d50f9d946963542b4ccb7e27c.tar.bz2
 +
 +meta-mingw
 +
 +-  Repository Location: :yocto_git:`/meta-mingw`
-+-  Branch: :yocto_git:`whinlatter </meta-mingw/log/?h=whinlatter>`
-+-  Tag:  :yocto_git:`yocto-5.3.3 </meta-mingw/log/?h=yocto-5.3.3>`
-+-  Git Revision: :yocto_git:`00323de97e397d4f6734ef2191806616989f5e10 </meta-mingw/commit/?id=00323de97e397d4f6734ef2191806616989f5e10>`
-+-  Release Artefact: meta-mingw-00323de97e397d4f6734ef2191806616989f5e10
-+-  sha: c9a70539b12c0642596fde6a2766d4a6a8fec8b2a366453fb6473363127a1c77
++-  Branch: :yocto_git:`kirkstone </meta-mingw/log/?h=kirkstone>`
++-  Tag:  :yocto_git:`yocto-4.0.33 </meta-mingw/log/?h=yocto-4.0.33>`
++-  Git Revision: :yocto_git:`87c22abb1f11be430caf4372e6b833dc7d77564e </meta-mingw/commit/?id=87c22abb1f11be430caf4372e6b833dc7d77564e>`
++-  Release Artefact: meta-mingw-87c22abb1f11be430caf4372e6b833dc7d77564e
++-  sha: f0bc4873e2e0319fb9d6d6ab9b98eb3f89664d4339a167d2db6a787dd12bc1a8
 +-  Download Locations:
 +
-+   https://downloads.yoctoproject.org/releases/yocto/yocto-5.3.3/meta-mingw-00323de97e397d4f6734ef2191806616989f5e10.tar.bz2
++   https://downloads.yoctoproject.org/releases/yocto/yocto-4.0.33/meta-mingw-87c22abb1f11be430caf4372e6b833dc7d77564e.tar.bz2
 +
-+   https://mirrors.edge.kernel.org/yocto/yocto/yocto-5.3.3/meta-mingw-00323de97e397d4f6734ef2191806616989f5e10.tar.bz2
++   https://mirrors.edge.kernel.org/yocto/yocto/yocto-4.0.33/meta-mingw-87c22abb1f11be430caf4372e6b833dc7d77564e.tar.bz2
++
++meta-gplv2
++
++-  Repository Location: :yocto_git:`/meta-gplv2`
++-  Branch: :yocto_git:`kirkstone </meta-gplv2/log/?h=kirkstone>`
++-  Tag:  :yocto_git:`yocto-4.0.33 </meta-gplv2/log/?h=yocto-4.0.33>`
++-  Git Revision: :yocto_git:`d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a </meta-gplv2/commit/?id=d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a>`
++-  Release Artefact: meta-gplv2-d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a
++-  sha: c386f59f8a672747dc3d0be1d4234b6039273d0e57933eb87caa20f56b9cca6d
++-  Download Locations:
++
++   https://downloads.yoctoproject.org/releases/yocto/yocto-4.0.33/meta-gplv2-d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a.tar.bz2
++
++   https://mirrors.edge.kernel.org/yocto/yocto/yocto-4.0.33/meta-gplv2-d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a.tar.bz2
 +
 +bitbake
 +
 +-  Repository Location: :oe_git:`/bitbake`
-+-  Branch: :oe_git:`2.16 </bitbake/log/?h=2.16>`
-+-  Tag:  :oe_git:`yocto-5.3.3 </bitbake/log/?h=yocto-5.3.3>`
-+-  Git Revision: :oe_git:`7af7e04f3adc8ba144d9e2e6b37ed4ddb3b59df0 </bitbake/commit/?id=7af7e04f3adc8ba144d9e2e6b37ed4ddb3b59df0>`
-+-  Release Artefact: bitbake-7af7e04f3adc8ba144d9e2e6b37ed4ddb3b59df0
-+-  sha: 06dd68908a5ffafae46ff7616e93a80f8b73c016f541e9517cf63b05f52f15c7
++-  Branch: :oe_git:`2.0 </bitbake/log/?h=2.0>`
++-  Tag:  :oe_git:`yocto-4.0.33 </bitbake/log/?h=yocto-4.0.33>`
++-  Git Revision: :oe_git:`8e2d1f8de055549b2101614d85454fcd1d0f94b2 </bitbake/commit/?id=8e2d1f8de055549b2101614d85454fcd1d0f94b2>`
++-  Release Artefact: bitbake-8e2d1f8de055549b2101614d85454fcd1d0f94b2
++-  sha: fad4e7699bae62082118e89785324b031b0af0743064caee87c91ba28549afb0
 +-  Download Locations:
 +
-+   https://downloads.yoctoproject.org/releases/yocto/yocto-5.3.3/bitbake-7af7e04f3adc8ba144d9e2e6b37ed4ddb3b59df0.tar.bz2
++   https://downloads.yoctoproject.org/releases/yocto/yocto-4.0.33/bitbake-8e2d1f8de055549b2101614d85454fcd1d0f94b2.tar.bz2
 +
-+   https://mirrors.edge.kernel.org/yocto/yocto/yocto-5.3.3/bitbake-7af7e04f3adc8ba144d9e2e6b37ed4ddb3b59df0.tar.bz2
++   https://mirrors.edge.kernel.org/yocto/yocto/yocto-4.0.33/bitbake-8e2d1f8de055549b2101614d85454fcd1d0f94b2.tar.bz2
++
+diff --git a/documentation/migration-guides/release-notes-4.0.34.rst b/documentation/migration-guides/release-notes-4.0.34.rst
+new file mode 100644
+index 000000000..d2de165df
+--- /dev/null
++++ b/documentation/migration-guides/release-notes-4.0.34.rst
+@@ -0,0 +1,191 @@
++Release notes for Yocto-4.0.34 (Kirkstone)
++------------------------------------------
++
++Security Fixes in Yocto-4.0.34
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++-  avahi: Fix :cve_nist:`2026-24401`, :cve_nist:`2025-68276`, :cve_nist:`2025-68468` and
++   :cve_nist:`2025-68471`
++-  bind: Fix :cve_nist:`2025-13878`
++-  expat: Fix :cve_nist:`2026-24515` and :cve_nist:`2026-25210`
++-  ffmpeg: Ignore :cve_nist:`2025-25468` and :cve_nist:`2025-25469`
++-  glib-2.0: Fix :cve_nist:`2026-0988`, :cve_nist:`2026-1484`, :cve_nist:`2026-1485` and
++   :cve_nist:`2026-1489`
++-  glibc: Fix :cve_nist:`2025-15281`, :cve_nist:`2026-0861` and :cve_nist:`2026-0915`
++-  harfbuzz: Ignore :cve_nist:`2026-22693`
++-  inetutils: Fix :cve_nist:`2026-24061`
++-  libpng: Fix :cve_nist:`2026-22695`, :cve_nist:`2026-22801` and :cve_nist:`2026-25646`
++-  libtasn1: Fix :cve_nist:`2025-13151`
++-  libxml2: Fix :cve_nist:`2026-0990` and :cve_nist:`2026-0992`
++-  linux-yocto/5.15: Fix :cve_nist:`2022-49465`, :cve_nist:`2023-54207`, :cve_nist:`2025-22058`,
++   :cve_nist:`2025-40040`, :cve_nist:`2025-40149`, :cve_nist:`2025-40164`, :cve_nist:`2025-68211`,
++   :cve_nist:`2025-68340`, :cve_nist:`2025-68365`, :cve_nist:`2025-68725`, :cve_nist:`2025-68817`,
++   :cve_nist:`2025-71147`, :cve_nist:`2025-71154`, :cve_nist:`2025-71162`, :cve_nist:`2025-71163`,
++   :cve_nist:`2026-22976`, :cve_nist:`2026-22977`, :cve_nist:`2026-22978`, :cve_nist:`2026-22980`,
++   :cve_nist:`2026-22982`, :cve_nist:`2026-22984`, :cve_nist:`2026-22990`, :cve_nist:`2026-22991`,
++   :cve_nist:`2026-22992`, :cve_nist:`2026-22997`, :cve_nist:`2026-22998`, :cve_nist:`2026-22999`,
++   :cve_nist:`2026-23060`, :cve_nist:`2026-23061`, :cve_nist:`2026-23063`, :cve_nist:`2026-23064`,
++   :cve_nist:`2026-23076`, :cve_nist:`2026-23078`, :cve_nist:`2026-23080`, :cve_nist:`2026-23083`,
++   :cve_nist:`2026-23084`, :cve_nist:`2026-23085`, :cve_nist:`2026-23087`, :cve_nist:`2026-23089`,
++   :cve_nist:`2026-23090`, :cve_nist:`2026-23091`, :cve_nist:`2026-23093`, :cve_nist:`2026-23095`,
++   :cve_nist:`2026-23096`, :cve_nist:`2026-23097`, :cve_nist:`2026-23119`, :cve_nist:`2026-23120`,
++   :cve_nist:`2026-23121`, :cve_nist:`2026-23124`, :cve_nist:`2026-23125`, :cve_nist:`2026-23133`,
++   :cve_nist:`2026-23146`, :cve_nist:`2026-23150`, :cve_nist:`2026-23164`, :cve_nist:`2026-23167`
++   and :cve_nist:`2026-23170`
++-  openssl: Fix :cve_nist:`2025-15467`, :cve_nist:`2026-22795`, :cve_nist:`2026-22796`,
++   :cve_nist:`2025-68160`, :cve_nist:`2025-69418`, :cve_nist:`2025-69419`, :cve_nist:`2025-69420`
++   and :cve_nist:`2025-69421`
++-  python3: Fix :cve_nist:`2025-12084` and :cve_nist:`2025-13837`
++-  vim: Ignore :cve_nist:`2025-66476`
++-  zlib: Ignore :cve_nist:`2026-22184`
++
++
++Fixes in Yocto-4.0.34
++~~~~~~~~~~~~~~~~~~~~~
++
++-  bind: Upgrade to 9.18.44
++-  build-appliance-image: Update to kirkstone head revision
++-  classes/buildhistory: Do not sign buildhistory commits
++-  dev-manual/packages.rst: fix example recipe version
++-  dev-manual/packages.rst: pr server: fix and explain why r0.X increments on :term:`SRCREV` change
++-  dev-manual/packages.rst: rename r0.0 to r0 when :term:`PR` server is not enabled
++-  glibc: stable 2.35 branch updates
++-  linux-yocto/5.15: update to v5.15.199
++-  migration-guides: add release notes for 4.0.32
++-  openssl: upgrade to 3.0.19
++-  poky.conf: Bump version for 4.0.34 release
++-  poky.conf: add fedora-41, debian-12, rocky-8&9 to :term:`SANITY_TESTED_DISTROS`
++-  pseudo: Update to 1.9.3+git43cbd8fb49
++-  ref-manual/classes.rst: fix broken links to U-Boot documentation
++-  ref-manual/system-requirements.rst: update untested distros
++-  scripts/install-buildtools: Update to 4.0.32
++-  u-boot: move CVE patch out of u-boot-common.inc
++-  what-i-wish-id-known.rst: replace figure by the new SVG
++
++
++Known Issues in Yocto-4.0.34
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++- N/A
++
++
++Contributors to Yocto-4.0.34
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++-  Aleksandar Nikolic
++-  Amaury Couderc
++-  Ankur Tyagi
++-  Antonin Godard
++-  Bruce Ashfield
++-  Fabio Berton
++-  Hugo SIMELIERE
++-  Lee Chee Yang
++-  Michael Opdenacker
++-  Paul Barker
++-  Peter Marko
++-  Richard Purdie
++-  Scott Murray
++-  Vijay Anusuri
++-  Yoann Congal
++
++Repositories / Downloads for Yocto-4.0.34
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++yocto-docs
++
++-  Repository Location: :yocto_git:`/yocto-docs`
++-  Branch: :yocto_git:`kirkstone </yocto-docs/log/?h=kirkstone>`
++-  Tag:  :yocto_git:`yocto-4.0.34 </yocto-docs/log/?h=yocto-4.0.34>`
++-  Git Revision: :yocto_git:`7c348dd67cfd169b1a56bf969606b03dccb76c56 </yocto-docs/commit/?id=7c348dd67cfd169b1a56bf969606b03dccb76c56>`
++-  Release Artefact: yocto-docs-7c348dd67cfd169b1a56bf969606b03dccb76c56
++-  sha: 0677fc3aee3c936599f3bcffbe16792494058bd3506ca3ab1697ceac1822829b
++-  Download Locations:
++
++   https://downloads.yoctoproject.org/releases/yocto/yocto-4.0.34/yocto-docs-7c348dd67cfd169b1a56bf969606b03dccb76c56.tar.bz2
++
++   https://mirrors.edge.kernel.org/yocto/yocto/yocto-4.0.34/yocto-docs-7c348dd67cfd169b1a56bf969606b03dccb76c56.tar.bz2
++
++poky
++
++-  Repository Location: :yocto_git:`/poky`
++-  Branch: :yocto_git:`kirkstone </poky/log/?h=kirkstone>`
++-  Tag:  :yocto_git:`yocto-4.0.34 </poky/log/?h=yocto-4.0.34>`
++-  Git Revision: :yocto_git:`8334e82e1d85e50557bd3da64054fc9e3eafc495 </poky/commit/?id=8334e82e1d85e50557bd3da64054fc9e3eafc495>`
++-  Release Artefact: poky-8334e82e1d85e50557bd3da64054fc9e3eafc495
++-  sha: 74fcc57d1dd3bb0c6ef77bfaaeca7504f393e705a55149cf52d4b61981c9c387
++-  Download Locations:
++
++   https://downloads.yoctoproject.org/releases/yocto/yocto-4.0.34/poky-8334e82e1d85e50557bd3da64054fc9e3eafc495.tar.bz2
++
++   https://mirrors.edge.kernel.org/yocto/yocto/yocto-4.0.34/poky-8334e82e1d85e50557bd3da64054fc9e3eafc495.tar.bz2
++
++openembedded-core
++
++-  Repository Location: :oe_git:`/openembedded-core`
++-  Branch: :oe_git:`kirkstone </openembedded-core/log/?h=kirkstone>`
++-  Tag:  :oe_git:`yocto-4.0.34 </openembedded-core/log/?h=yocto-4.0.34>`
++-  Git Revision: :oe_git:`7b6c9faa301a6d058ca34e230586f6a81ffa3ffb </openembedded-core/commit/?id=7b6c9faa301a6d058ca34e230586f6a81ffa3ffb>`
++-  Release Artefact: oecore-7b6c9faa301a6d058ca34e230586f6a81ffa3ffb
++-  sha: 375a22e3e229064749e78c80c44cde95adcedd26df76045fccefa3a9d3fa14ad
++-  Download Locations:
++
++   https://downloads.yoctoproject.org/releases/yocto/yocto-4.0.34/oecore-7b6c9faa301a6d058ca34e230586f6a81ffa3ffb.tar.bz2
++
++   https://mirrors.edge.kernel.org/yocto/yocto/yocto-4.0.34/oecore-7b6c9faa301a6d058ca34e230586f6a81ffa3ffb.tar.bz2
++
++meta-yocto
++
++-  Repository Location: :yocto_git:`/meta-yocto`
++-  Branch: :yocto_git:`kirkstone </meta-yocto/log/?h=kirkstone>`
++-  Tag:  :yocto_git:`yocto-4.0.34 </meta-yocto/log/?h=yocto-4.0.34>`
++-  Git Revision: :yocto_git:`1d3874a383023a5e2433e0fcfd87ac5d1e6d341d </meta-yocto/commit/?id=1d3874a383023a5e2433e0fcfd87ac5d1e6d341d>`
++-  Release Artefact: meta-yocto-1d3874a383023a5e2433e0fcfd87ac5d1e6d341d
++-  sha: baf48bbe1f29686d502c0c6f311c7723b0a18f08e7efbf89c150589102285dbe
++-  Download Locations:
++
++   https://downloads.yoctoproject.org/releases/yocto/yocto-4.0.34/meta-yocto-1d3874a383023a5e2433e0fcfd87ac5d1e6d341d.tar.bz2
++
++   https://mirrors.edge.kernel.org/yocto/yocto/yocto-4.0.34/meta-yocto-1d3874a383023a5e2433e0fcfd87ac5d1e6d341d.tar.bz2
++
++meta-mingw
++
++-  Repository Location: :yocto_git:`/meta-mingw`
++-  Branch: :yocto_git:`kirkstone </meta-mingw/log/?h=kirkstone>`
++-  Tag:  :yocto_git:`yocto-4.0.34 </meta-mingw/log/?h=yocto-4.0.34>`
++-  Git Revision: :yocto_git:`87c22abb1f11be430caf4372e6b833dc7d77564e </meta-mingw/commit/?id=87c22abb1f11be430caf4372e6b833dc7d77564e>`
++-  Release Artefact: meta-mingw-87c22abb1f11be430caf4372e6b833dc7d77564e
++-  sha: f0bc4873e2e0319fb9d6d6ab9b98eb3f89664d4339a167d2db6a787dd12bc1a8
++-  Download Locations:
++
++   https://downloads.yoctoproject.org/releases/yocto/yocto-4.0.34/meta-mingw-87c22abb1f11be430caf4372e6b833dc7d77564e.tar.bz2
++
++   https://mirrors.edge.kernel.org/yocto/yocto/yocto-4.0.34/meta-mingw-87c22abb1f11be430caf4372e6b833dc7d77564e.tar.bz2
++
++meta-gplv2
++
++-  Repository Location: :yocto_git:`/meta-gplv2`
++-  Branch: :yocto_git:`kirkstone </meta-gplv2/log/?h=kirkstone>`
++-  Tag:  :yocto_git:`yocto-4.0.34 </meta-gplv2/log/?h=yocto-4.0.34>`
++-  Git Revision: :yocto_git:`d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a </meta-gplv2/commit/?id=d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a>`
++-  Release Artefact: meta-gplv2-d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a
++-  sha: c386f59f8a672747dc3d0be1d4234b6039273d0e57933eb87caa20f56b9cca6d
++-  Download Locations:
++
++   https://downloads.yoctoproject.org/releases/yocto/yocto-4.0.34/meta-gplv2-d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a.tar.bz2
++
++   https://mirrors.edge.kernel.org/yocto/yocto/yocto-4.0.34/meta-gplv2-d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a.tar.bz2
++
++bitbake
++
++-  Repository Location: :oe_git:`/bitbake`
++-  Branch: :oe_git:`2.0 </bitbake/log/?h=2.0>`
++-  Tag:  :oe_git:`yocto-4.0.34 </bitbake/log/?h=yocto-4.0.34>`
++-  Git Revision: :oe_git:`8e2d1f8de055549b2101614d85454fcd1d0f94b2 </bitbake/commit/?id=8e2d1f8de055549b2101614d85454fcd1d0f94b2>`
++-  Release Artefact: bitbake-8e2d1f8de055549b2101614d85454fcd1d0f94b2
++-  sha: fad4e7699bae62082118e89785324b031b0af0743064caee87c91ba28549afb0
++-  Download Locations:
++
++   https://downloads.yoctoproject.org/releases/yocto/yocto-4.0.34/bitbake-8e2d1f8de055549b2101614d85454fcd1d0f94b2.tar.bz2
++
++   https://mirrors.edge.kernel.org/yocto/yocto/yocto-4.0.34/bitbake-8e2d1f8de055549b2101614d85454fcd1d0f94b2.tar.bz2
 +
 -- 
 2.43.0
