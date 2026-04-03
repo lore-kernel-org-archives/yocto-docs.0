@@ -1,182 +1,259 @@
-Return-Path: <aurelien@hackers.camp>
+Return-Path: <alex.kanavin@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 806D0D6AAFC
-	for <webhook@archiver.kernel.org>; Fri,  3 Apr 2026 08:19:11 +0000 (UTC)
-Received: from mail-ua1-f41.google.com (mail-ua1-f41.google.com [209.85.222.41])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.7176.1775204348963578406
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 66746E7E362
+	for <webhook@archiver.kernel.org>; Fri,  3 Apr 2026 10:04:58 +0000 (UTC)
+Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.8675.1775210690198258800
  for <docs@lists.yoctoproject.org>;
- Fri, 03 Apr 2026 01:19:09 -0700
+ Fri, 03 Apr 2026 03:04:50 -0700
 Authentication-Results: mx.groups.io;
- dkim=none (message not signed); spf=pass (domain: gmail.com, ip: 209.85.222.41, mailfrom: aurelien.desbrieres@gmail.com)
-Received: by mail-ua1-f41.google.com with SMTP id a1e0cc1a2514c-953b54dba25so36146241.1
-        for <docs@lists.yoctoproject.org>; Fri, 03 Apr 2026 01:19:08 -0700 (PDT)
+ dkim=pass header.i=@gmail.com header.s=20251104 header.b=qFQhYfs5;
+ spf=pass (domain: gmail.com, ip: 209.85.219.51, mailfrom: alex.kanavin@gmail.com)
+Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-8a1e1817db6so18204636d6.2
+        for <docs@lists.yoctoproject.org>; Fri, 03 Apr 2026 03:04:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775210689; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Q0ayCO6BCj5ihu5Jjpb3zCmiyFGidGauCCcaP8Jh+eiyxf3hcv7C6kkeVk/bwJRl+Y
+         Ufgi8Lr2hA/AlMdoXB8pJzEB7OqmWwXKI3qbyHKdL9Zc/KSPqIowUZxK5FISsqL8gk43
+         NiP/YOntfGlBNTNpspApXkSWSnbi/TGRfqoCx0iK0rh3aQNmOL35pTOwkOsmZr6H/U7g
+         dzEl5bLAe7fDTvTU0pgACPTUvKnjBV1D/yBYWKW0Zg9iLOYC2Yi/pfuOpXxQZitoWJMY
+         abI9vu+lCU/jmpq1QPFbcgJ3ot9iiKiWUvxFuUrcouLuc6MuagN6aOQ89Y8Yy9UGZrSM
+         713Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=tDJEJ5Yh0YDgVRlqwy52BdYkAYZGXn6uxvUSshJz+Tc=;
+        fh=Is1nKXH2/v4gYbOplR/cffJJ5WvZueIZ5/3EcvhBcwU=;
+        b=c+48ee2MgVPUbwrbNAzSwf4RENvb4HcbuGeYNzOBeLZO+BZGidi7qsJUeCYZoLHiAF
+         OogmSyRlhuZMLhg0LqnqMpUpSkUFuCpZiBEV9uBG75LfBlJW9v96nV2h28zPCqXxalAB
+         CB/Z8WphOb92JTGwJQ/lO0FVXSBcIVusxpM1Z5BeLiZNqXll5CiCYOzt4CqtcaE5R/3F
+         yeEwqJiqB5oHaqONpGno3Jfk+Gm3veXKColntlOfh2u3lHq8qB/d0JX4XAp27WgfAnBJ
+         tfCHyyYdxgV402J6onawkA9qiRFIj04HBJepclnvzUrCRRLSATDbwRzbYheLP+/6MXOn
+         CXuQ==;
+        darn=lists.yoctoproject.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775210689; x=1775815489; darn=lists.yoctoproject.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=tDJEJ5Yh0YDgVRlqwy52BdYkAYZGXn6uxvUSshJz+Tc=;
+        b=qFQhYfs5v0GDDTrY4ZrOaZgNPpwxqi5p5uYP2xUUMqLJ2BmO8tFjyP3J/QXXpvbBUe
+         e7yA8l/GjXFDOIajh5ZebuGbntHXNxMIomq6+SCnWyBNCczIYwozVPkQeRbbR6y9l+jK
+         wfqRqKsq/42fxU6eIYhdqc4xFazT/juhuIKfYYghQyLDSy1OiZ34FxWDm4FudICghDEr
+         ON2+ujpmzYn6KzTDTs3Ozp39VT9+Jg1ty6ER623ioQvFyabI3LSJKta30mvaa5x830bN
+         J1EJKerXdnzD5+0s77v0vUDop5KWElkUwBpy+Icph9nypWyZqYSx6+DFbui4wpf7Pedq
+         kOFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775204348; x=1775809148;
+        d=1e100.net; s=20251104; t=1775210689; x=1775815489;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=wmegvmEY5EndwW2GbMQUG1npYR+WKUwYweywoRwizwQ=;
-        b=GK3VrPJON5+3RzQef/PP95rlYFnrNmHkrxEMAYBopWvZwTtIlaeg1FUAyRA+BdNRvg
-         o9I4GNbr0pcSa7s8bQqV9Gu3dAfqjvc1CkUuHasaS5GFHKupApyZksDgJBHjcRY7Jj5q
-         FUVcaXwjWlDvdeS1ScGQJigMLDgSD0l01QZGi9+wgICX8OeourPHdJlCxvyBGZw/NIn2
-         9OJ32bDJ8XzrnhXKoWVMhi/RwNTyHNqcB9g8jTLqohhbmpaGopKP1SADiTb6tXDDjqZX
-         ZfXs6MIwaOFqBTkEIP4mt/y3og77c2rCOREpQYOoyXVqkMrYL2D8WSLscOdPCLZXmU2N
-         Thvg==
-X-Gm-Message-State: AOJu0YzmiA8UL74ijSmV5C7G1oAi7WBZywhAjrSUZaFXrBdS0kfndviE
-	tzpULkxevBnYRqiqoLgx5sAXfsMm1lQdw8MwbMTJ6DUNNijXT9oPy5t1FXY6UyDT4/k=
-X-Gm-Gg: AeBDietFyzcpRDMtJpQJ8kT9ZNrWwd3uFHXSYY/0rTUKIY8eflCgf76ShIg5BlesNMq
-	EVzxjsRw/HLKye9VSN0QJBfutwR1JG3d4bsEUfJGpIUzJyEsxo7sPEMJbRbxf6DlpPNVqkOi1ci
-	apv6ddR1T75egtInh64d3A5k2fdsGdqcp4ycL5E3YIAAwjTY2elBvuImKxKIYYekOGMDNiwOA9C
-	902ijBcF9NVSDuyqxpW/P/ciJzINHsRFO23NjGvYykf7MeIerlEvtdxLB5bIn9K0Xu9eHKzyiaU
-	CjH6beoMVqc+PsSsgyEdMZZVAuNq+8HWMwUxgGTIrvxJriYhbgc8nHHyXsD0ae8DCefzsxKO0Gj
-	y0tFCz7iC69ZpwCI/3ftOycxC8TzppnlFKpuPGLhYdldhkVV6HW7ocG692PYui1jJ2157rgQgXY
-	lsEebGLUHQB16x01CK1kNWcya4KGx2mWr7/q1QAafWEwO11sRM4NHNkPwX3FRvbYUh9ru/jwxl8
-	eNnov6jHHatusrJorDMQw==
-X-Received: by 2002:a05:6102:3139:b0:605:5eec:cf0 with SMTP id ada2fe7eead31-605a4ffe4c0mr201459137.4.1775204347396;
-        Fri, 03 Apr 2026 01:19:07 -0700 (PDT)
-Received: from mail-vs1-f47.google.com (mail-vs1-f47.google.com. [209.85.217.47])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-60583093d14sm6541723137.11.2026.04.03.01.19.07
-        for <docs@lists.yoctoproject.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 03 Apr 2026 01:19:07 -0700 (PDT)
-Received: by mail-vs1-f47.google.com with SMTP id ada2fe7eead31-605afef5ca5so6648137.3
-        for <docs@lists.yoctoproject.org>; Fri, 03 Apr 2026 01:19:07 -0700 (PDT)
-X-Received: by 2002:a05:6102:358d:b0:605:53cd:302b with SMTP id
- ada2fe7eead31-605a5136da2mr344198137.8.1775204346978; Fri, 03 Apr 2026
- 01:19:06 -0700 (PDT)
+        bh=tDJEJ5Yh0YDgVRlqwy52BdYkAYZGXn6uxvUSshJz+Tc=;
+        b=J1zZ1QliiecwD8lAbbl+O/ubnI0GMJoGwmU7jlleCSQpgmczm4dUMLZmosLR5pM93p
+         7V80BZTXnLHuj+ENdbBfs79ijAFF8yZ0aQ1lXI9nIfcdcUz+f2v/gDwhDm7C9ILMVg5M
+         O5MtiCdbVbOE4d5N8hbbNS/oV26J9y3QvL+lRWwnCSsWLmZBHfBvWVk7W0+ip5z6yAhi
+         04mp9MfevSBT4ehiw3rp3tZfdnGIsEcybUaqSoYYrCiUMhBukna5BjKPnI9LkCv+E6hr
+         nNlf2eFrjUfOaNsIZaeHj6mzScz3DTYatZherf7O4gWZmquDNFq9A4bjcCUC8XDreVrJ
+         FJDA==
+X-Forwarded-Encrypted: i=1; AJvYcCU3ckwvpMJkYzFOWOgOnZhamsxCHedZrCNzPVCUfqXIGKdCiV0vbuCkQNLLU2q3UMXNYGA9@lists.yoctoproject.org
+X-Gm-Message-State: AOJu0Yzz1F2C018FgE5KiX/dAooJD62kk8CMhkEXhMzluUr8CEpmtCO6
+	VkpJCi5JpkpWC+IPu/PyoYuahawoRlidiDJ+4PbqHH+Ka3a/iFHsqvAecFiF0NE6DRFdGjdcKZ3
+	cilKzMMvcjbQoJ+6zXPUUFSH70/t9vBY=
+X-Gm-Gg: AeBDietbLO/PYnx7LthP0NwweVnRWIQjwYTqxnbnGsLoFkJBhTCXcN0RPZO5wG6jxQf
+	GXffe2ZPeKI8XDc0N77CU3dnw12QRIM+ZK4faY04kPoT/zINjWGQeqYWmPjbL29cFQ99f4noDHb
+	vMuthSe1ghRx7ES9eM7yx3+uE6y+J3Y0wlQnHFxUCujykINsY6aB14O9sq1ZFTPMxc3QRdaf+nL
+	fQK6uVGk45Ckhn/gcBSNz/xI+/XoCCwHsQ5NQcjnPHeG6RJSwj3zp3n2jUTJdjmLfKmJ1SbIINe
+	Y4oAE4LN+KSIcQ6ax1VcWHpxPHXNrdyB9FBp4zdh
+X-Received: by 2002:a05:6214:601b:b0:89e:df5c:19f6 with SMTP id
+ 6a1803df08f44-8a704caf6eamr34016616d6.42.1775210689065; Fri, 03 Apr 2026
+ 03:04:49 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260402164218.210974-1-aurelien@hackers.camp> <DHJD5FDDVNJB.PNZLGSKXTQIY@bootlin.com>
-In-Reply-To: <DHJD5FDDVNJB.PNZLGSKXTQIY@bootlin.com>
-From: Aurelien DESBRIERES <aurelien@hackers.camp>
-Date: Fri, 3 Apr 2026 12:18:29 +0200
-X-Gmail-Original-Message-ID: <CAM=40tX4d=bxm=d9fX+7wTi_PdmigJOA25A6DbJ-0diH8wOuqA@mail.gmail.com>
-X-Gm-Features: AQROBzBALn8FxwHnRq0GimnafQfrs7pMyB9iW5tOLPwYpFxVH7cux9dyltTJaQA
-Message-ID: <CAM=40tX4d=bxm=d9fX+7wTi_PdmigJOA25A6DbJ-0diH8wOuqA@mail.gmail.com>
-Subject: Re: [docs] [PATCH 0/1] ref-manual: add Gentoo package list for build
- host setup
-To: Antonin Godard <antonin.godard@bootlin.com>
-Cc: docs@lists.yoctoproject.org
-Content-Type: multipart/alternative; boundary="000000000000816642064e89f89e"
+References: <20260331-docs-fixes-v1-0-45ee34341e72@bootlin.com>
+ <20260331-docs-fixes-v1-1-45ee34341e72@bootlin.com> <6f743774-fe4b-4e9e-ba99-6ffe1d76a51b@cherry.de>
+ <57bb4e5300a4be34f4cfddcf41d9a21b5b7bc579.camel@linuxfoundation.org>
+ <CANNYZj9U3BYUv-cvQvmu7d=8O82Gdg-2GSon6vNJ71BMi6bKsg@mail.gmail.com> <DHJD5ZA0XGWN.3LDDWNE9PDM1X@bootlin.com>
+In-Reply-To: <DHJD5ZA0XGWN.3LDDWNE9PDM1X@bootlin.com>
+From: Alexander Kanavin <alex.kanavin@gmail.com>
+Date: Fri, 3 Apr 2026 12:04:37 +0200
+X-Gm-Features: AQROBzAg8EeBswbwQpI0NwDMZR35zhynx3vQ9-DmD9ePhBv67mlOJgbp_cPfvlI
+Message-ID: <CANNYZj8=z7U5jpCN+NaAmTspYduH=pcMohMcbnqGp8mQvmHoiA@mail.gmail.com>
+Subject: Re: [bitbake-devel] [docs] [PATCH 1/2] bitbake-setup: rename "abort"
+ rebase conflict stragegy to "halt"
+To: antonin.godard@bootlin.com
+Cc: richard.purdie@linuxfoundation.org, quentin.schulz@cherry.de, 
+	bitbake-devel@lists.openembedded.org, 
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, docs@lists.yoctoproject.org
+Content-Type: multipart/alternative; boundary="00000000000085f5d1064e8b72fa"
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 03 Apr 2026 08:19:11 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9174
+ <docs@lists.yoctoproject.org>; Fri, 03 Apr 2026 10:04:58 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9175
 
---000000000000816642064e89f89e
+--00000000000085f5d1064e8b72fa
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Antonin,
+The trouble with =E2=80=98reset=E2=80=99 is that it means resetting the who=
+le system to its
+initial state. =E2=80=98Abort=E2=80=99 is about a stopping a particular ope=
+ration such that
+the system is returned to the state before the operation started.
 
-Perfect, I will.
+I have no idea how INI has utterly failed to catch these nuances in its
+rationale you linked, and is even accusing the term of =E2=80=98lacking tec=
+hnical
+clarity=E2=80=99, but it certainly doesn=E2=80=99t help the cause.
 
-Thanks,
+Alex
 
-Aurelien
 
-Le ven. 3 avr. 2026 =C3=A0 10:06, Antonin Godard <antonin.godard@bootlin.co=
-m> a
-=C3=A9crit :
+On Fri 3. Apr 2026 at 10.07, Antonin Godard via lists.yoctoproject.org
+<antonin.godard=3Dbootlin.com@lists.yoctoproject.org> wrote:
 
-> Hi,
+> On Tue Mar 31, 2026 at 1:36 PM CEST, Alexander Kanavin wrote:
+> > There=E2=80=99s a simpler rationale too: this follows =E2=80=98git reba=
+se =E2=80=94abort=E2=80=99. If git
+> > upstream finds a better word, we will follow. And I agree that all of t=
+he
+> > proposed alternatives are less accurate.
 >
-> On Thu Apr 2, 2026 at 4:42 PM CEST, aurelien wrote:
-> > The documentation currently has no Gentoo section under 'Required
-> > Packages for the Build Host'. Third-party guides commonly reference
-> > incorrect Gentoo package atoms (dev-util/chrpath, app-text/chrpath,
-> > dev-util/cpio) which do not exist in the Portage tree, causing
-> > confusion for Gentoo users trying to set up a Yocto build host.
-> >
-> > This patch adds a Gentoo-specific section with verified package atoms
-> > and notes on the common naming mistakes, along with a reminder about
-> > Python version compatibility for Scarthgap/Nanbield.
-> >
-> > Verified on Gentoo Linux (OpenRC, amd64) against the Portage tree
-> > as of April 2026.
+> This goes against previous efforts to convert the documentation and other
+> components to not use these words :/
 >
-> The reason we don't list some popular distributions here is because they
-> are not
-> tested on our test infrastructure (our so called Autobuilder [1]). For th=
-at
-> reason, listing untested distributions here would come at risk of breakag=
+> https://lists.openembedded.org/g/openembedded-architecture/topic/inclusiv=
+e_language_summary/75821819
+>
+> [...]
+> >> > This is not what halt means. Maybe 'reset' would be a better choice?
+> Or
+> >> > if you really want to follow the recommendations from that website, =
+I
+> >> > guess "cancel"?
+> >>
+> >> The trouble is none of these alternatives really match what abort
+> >> means, reset and cancel do mean something different. "abandon" might b=
 e
-> for
-> people without us being able to support and properly test things on our
-> side.
+> >> closer but still isn't right. "attempt" maybe? If we get too creative
+> >> with this, users just won't understand what it means :(
 >
-> Also, adding new distributions here comes at a cost, as we need to
-> maintain the
-> package list over time for these distributions as well.
+> I had the impression, from the documentation, that bitbake-setup would
+> leave the
+> repository in the middle of a rebase, to let you deal with conflict, and
+> then
+> continue on the next bitbake-setup update call.
 >
-> I suggest you propose this change to the Wiki instead [2]?
+> It appears to use --abort instead, so a misunderstanding from my part.
 >
-> [1]: https://autobuilder.yoctoproject.org/valkyrie/
-> [2]: https://wiki.yoctoproject.org/wiki/Main_Page
+> Out of these options, I think "reset" might be the best one, I agree with
+> Quentin. But I'm not a native speaker, so I might not have an
+> understanding as
+> subtle as others.
 >
-> Thanks,
+> I'll let Richard decide on what to do here.
+>
 > Antonin
 >
+> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
+> Links: You receive all messages sent to this group.
+> View/Reply Online (#9173):
+> https://lists.yoctoproject.org/g/docs/message/9173
+> Mute This Topic: https://lists.yoctoproject.org/mt/118594590/1686489
+> Group Owner: docs+owner@lists.yoctoproject.org
+> Unsubscribe: https://lists.yoctoproject.org/g/docs/unsub [
+> alex.kanavin@gmail.com]
+> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
+>
+>
 
---000000000000816642064e89f89e
+--00000000000085f5d1064e8b72fa
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr"><div>Hi Antonin,</div><div><br></div><div>Perfect, I will.=
-</div><div><br></div><div>Thanks,</div><div><br></div><div>Aurelien</div></=
-div><br><div class=3D"gmail_quote gmail_quote_container"><div dir=3D"ltr" c=
-lass=3D"gmail_attr">Le=C2=A0ven. 3 avr. 2026 =C3=A0=C2=A010:06, Antonin God=
-ard &lt;<a href=3D"mailto:antonin.godard@bootlin.com">antonin.godard@bootli=
-n.com</a>&gt; a =C3=A9crit=C2=A0:<br></div><blockquote class=3D"gmail_quote=
-" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);=
-padding-left:1ex">Hi,<br>
+<div><div dir=3D"auto">The trouble with =E2=80=98reset=E2=80=99 is that it =
+means resetting the whole system to its initial state. =E2=80=98Abort=E2=80=
+=99 is about a stopping a particular operation such that the system is retu=
+rned to the state before the operation started.</div></div><div><div dir=3D=
+"auto"><br></div><div dir=3D"auto">I have no idea how INI has utterly faile=
+d to catch these nuances in its rationale you linked, and is even accusing =
+the term of =E2=80=98lacking technical clarity=E2=80=99, but it certainly d=
+oesn=E2=80=99t help the cause.</div><div dir=3D"auto"><br></div><div dir=3D=
+"auto">Alex</div><div dir=3D"auto"><br></div><div><br><div class=3D"gmail_q=
+uote"><div dir=3D"ltr" class=3D"gmail_attr">On Fri 3. Apr 2026 at 10.07, An=
+tonin Godard via <a href=3D"http://lists.yoctoproject.org" target=3D"_blank=
+">lists.yoctoproject.org</a> &lt;antonin.godard=3D<a href=3D"mailto:bootlin=
+.com@lists.yoctoproject.org" target=3D"_blank">bootlin.com@lists.yoctoproje=
+ct.org</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"m=
+argin:0px 0px 0px 0.8ex;border-left-width:1px;border-left-style:solid;paddi=
+ng-left:1ex;border-left-color:rgb(204,204,204)">On Tue Mar 31, 2026 at 1:36=
+ PM CEST, Alexander Kanavin wrote:<br>
+&gt; There=E2=80=99s a simpler rationale too: this follows =E2=80=98git reb=
+ase =E2=80=94abort=E2=80=99. If git<br>
+&gt; upstream finds a better word, we will follow. And I agree that all of =
+the<br>
+&gt; proposed alternatives are less accurate.<br>
 <br>
-On Thu Apr 2, 2026 at 4:42 PM CEST, aurelien wrote:<br>
-&gt; The documentation currently has no Gentoo section under &#39;Required<=
-br>
-&gt; Packages for the Build Host&#39;. Third-party guides commonly referenc=
-e<br>
-&gt; incorrect Gentoo package atoms (dev-util/chrpath, app-text/chrpath,<br=
->
-&gt; dev-util/cpio) which do not exist in the Portage tree, causing<br>
-&gt; confusion for Gentoo users trying to set up a Yocto build host.<br>
-&gt;<br>
-&gt; This patch adds a Gentoo-specific section with verified package atoms<=
-br>
-&gt; and notes on the common naming mistakes, along with a reminder about<b=
+This goes against previous efforts to convert the documentation and other<b=
 r>
-&gt; Python version compatibility for Scarthgap/Nanbield.<br>
-&gt;<br>
-&gt; Verified on Gentoo Linux (OpenRC, amd64) against the Portage tree<br>
-&gt; as of April 2026.<br>
+components to not use these words :/<br>
+<a href=3D"https://lists.openembedded.org/g/openembedded-architecture/topic=
+/inclusive_language_summary/75821819" rel=3D"noreferrer" target=3D"_blank">=
+https://lists.openembedded.org/g/openembedded-architecture/topic/inclusive_=
+language_summary/75821819</a><br>
 <br>
-The reason we don&#39;t list some popular distributions here is because the=
-y are not<br>
-tested on our test infrastructure (our so called Autobuilder [1]). For that=
+[...]<br>
+&gt;&gt; &gt; This is not what halt means. Maybe &#39;reset&#39; would be a=
+ better choice? Or<br>
+&gt;&gt; &gt; if you really want to follow the recommendations from that we=
+bsite, I<br>
+&gt;&gt; &gt; guess &quot;cancel&quot;?<br>
+&gt;&gt;<br>
+&gt;&gt; The trouble is none of these alternatives really match what abort<=
+br>
+&gt;&gt; means, reset and cancel do mean something different. &quot;abandon=
+&quot; might be<br>
+&gt;&gt; closer but still isn&#39;t right. &quot;attempt&quot; maybe? If we=
+ get too creative<br>
+&gt;&gt; with this, users just won&#39;t understand what it means :(<br>
 <br>
-reason, listing untested distributions here would come at risk of breakage =
-for<br>
-people without us being able to support and properly test things on our sid=
-e.<br>
+I had the impression, from the documentation, that bitbake-setup would leav=
+e the<br>
+repository in the middle of a rebase, to let you deal with conflict, and th=
+en<br>
+continue on the next bitbake-setup update call.<br>
 <br>
-Also, adding new distributions here comes at a cost, as we need to maintain=
- the<br>
-package list over time for these distributions as well.<br>
+It appears to use --abort instead, so a misunderstanding from my part.<br>
 <br>
-I suggest you propose this change to the Wiki instead [2]?<br>
+Out of these options, I think &quot;reset&quot; might be the best one, I ag=
+ree with<br>
+Quentin. But I&#39;m not a native speaker, so I might not have an understan=
+ding as<br>
+subtle as others.<br>
 <br>
-[1]: <a href=3D"https://autobuilder.yoctoproject.org/valkyrie/" rel=3D"nore=
-ferrer" target=3D"_blank">https://autobuilder.yoctoproject.org/valkyrie/</a=
-><br>
-[2]: <a href=3D"https://wiki.yoctoproject.org/wiki/Main_Page" rel=3D"norefe=
-rrer" target=3D"_blank">https://wiki.yoctoproject.org/wiki/Main_Page</a><br=
->
+I&#39;ll let Richard decide on what to do here.<br>
 <br>
-Thanks,<br>
 Antonin<br>
-</blockquote></div>
+<br>
+-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-<br>
+Links: You receive all messages sent to this group.<br>
+View/Reply Online (#9173): <a href=3D"https://lists.yoctoproject.org/g/docs=
+/message/9173" rel=3D"noreferrer" target=3D"_blank">https://lists.yoctoproj=
+ect.org/g/docs/message/9173</a><br>
+Mute This Topic: <a href=3D"https://lists.yoctoproject.org/mt/118594590/168=
+6489" rel=3D"noreferrer" target=3D"_blank">https://lists.yoctoproject.org/m=
+t/118594590/1686489</a><br>
+Group Owner: <a href=3D"mailto:docs%2Bowner@lists.yoctoproject.org" target=
+=3D"_blank">docs+owner@lists.yoctoproject.org</a><br>
+Unsubscribe: <a href=3D"https://lists.yoctoproject.org/g/docs/unsub" rel=3D=
+"noreferrer" target=3D"_blank">https://lists.yoctoproject.org/g/docs/unsub<=
+/a> [<a href=3D"mailto:alex.kanavin@gmail.com" target=3D"_blank">alex.kanav=
+in@gmail.com</a>]<br>
+-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-<br>
+<br>
+</blockquote></div></div>
+</div>
 
---000000000000816642064e89f89e--
+--00000000000085f5d1064e8b72fa--
 
