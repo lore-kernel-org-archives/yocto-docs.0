@@ -2,127 +2,116 @@ Return-Path: <adam.blank.g@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C3A5F1073CBC
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BCCA31073CB9
 	for <webhook@archiver.kernel.org>; Wed,  8 Apr 2026 13:05:48 +0000 (UTC)
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.105900.1775653541563313991
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.105730.1775653540523812923
  for <docs@lists.yoctoproject.org>;
- Wed, 08 Apr 2026 06:05:41 -0700
+ Wed, 08 Apr 2026 06:05:40 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20251104 header.b=grJv0kff;
- spf=pass (domain: gmail.com, ip: 209.85.218.44, mailfrom: adam.blank.g@gmail.com)
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-b982b0889d8so810182766b.2
-        for <docs@lists.yoctoproject.org>; Wed, 08 Apr 2026 06:05:41 -0700 (PDT)
+ dkim=pass header.i=@gmail.com header.s=20251104 header.b=VwzmPvK6;
+ spf=pass (domain: gmail.com, ip: 209.85.218.41, mailfrom: adam.blank.g@gmail.com)
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-b9825ba7e8dso805862166b.3
+        for <docs@lists.yoctoproject.org>; Wed, 08 Apr 2026 06:05:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775653540; x=1776258340; darn=lists.yoctoproject.org;
+        d=gmail.com; s=20251104; t=1775653539; x=1776258339; darn=lists.yoctoproject.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=VjB/A1ldI92O0P9/xq3i80cS7Pc1MHlxySpCSX8uTcQ=;
-        b=grJv0kffk1kMt0gepiSyBBiFV3utmRkQSpJwsMNu4bywjXD8VuFLRqvT+G/Kr9ZkY2
-         /qNQGyvXydlFDS/dQo+gFq+SQVFycJGRtdNigvKkz4Z3J+cucCnlQJ6wWM68oQUqJ2It
-         t3+c2xlfH7aJjQnGtYSQpkrkp5adqdFZyQpljNiyy/N+VHAPR1YW3bcG1YJokayBTAG2
-         qZMEVueKlTmPuwQitpB6HdeFeDPjr2lps72UHyH5s/5gmaQkSyqhSkdQsO8WSWidwSLp
-         EkwYR7guE/cERb3jt0k/GVKc3J9lwMo3JBI1IZ8vu5PKn2m8ybJ1ZhQ7FVzf/M6RXE56
-         ajPw==
+        bh=r0w3Cu0UbjgyhVJINPhXxLR1olerhXx9ixzO2gYpDr4=;
+        b=VwzmPvK6mdS+meebNlK2A4V243K8heWdey6UVjGlcpT1HFC1engRUHGzostRoa1npD
+         /ZG0i/YZF6IsXsqYidi3ZoJnuxspzTwwXPRAFnAC6QLekVLH/iTDjBDElQqjNsmWk7HC
+         99DwREQ9KrtYnboBrlVoA/649fnqmD61XkP7RmeatJPmPA+pP7USRfrW4WCITY9h/IEJ
+         ejT5kCvYmp2inesLbOr6JuzALfGRd6whLLlebwBorsswyXEgK3/VI7O0LcG85OiHJWic
+         Drl1u5Ya8jKWfKYByIGDkKF0SSSIuj40Yx7Ym0eSjFpk6vvnLfajC9XkQ/TXL+bwiqdU
+         kf7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775653540; x=1776258340;
+        d=1e100.net; s=20251104; t=1775653539; x=1776258339;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=VjB/A1ldI92O0P9/xq3i80cS7Pc1MHlxySpCSX8uTcQ=;
-        b=pju7dAEyTIHfY/sJsUIzmyxAnPV7A0IXVnx+DlG5/RDI+IyjT15o6sjci6EaLXt+Bb
-         DUdcZOSfoeDxK3i1QhSrBD+JykC7witX1D31rlaeCcOlhQHMliQRzstmNenfA+JUwpWh
-         VdiwR8WU0BLBlVd2zce5d+7Ywr8FlF5EQUnpYIffw4RHOF7N3kcYYvDB4sUGOLoEtDZI
-         5711dN2lsRRQMvxOIDp/3nSaYyIZVSd+tACwBD6pLg9rLPkrBb6IpxaVKEIaouE9GbUv
-         Waa+uc+Is7Zs9cur5Z3uLX3RpLmVP3p7Q8qsrMpRQGOitLuhsVn2s62Q8AHEKTspvAW4
-         hq9g==
-X-Gm-Message-State: AOJu0YwvwLuHK+NyqqeyAnH+ekJyFVe1wrvbQGi2zVbnsF3SWuF4pq/E
-	LIfFfh61VFsABLv+2oOwMKbzwsHVN/h7pZzuxL7oSoh1jrsLIca1qIiioFDNWg==
-X-Gm-Gg: AeBDies+FJLpSM3s/42xSdE3dnbZGqQAtOxPf60b0NkjbxAY+7NJ53DddUW3rdqSRNR
-	bCT/GljBAEvjyYLjSgEQZaKRLMYHmI7F5J8GfYFU7A4wqKZVo5uHNOFlRf0o5LGpC/NcMAnaZjM
-	IoM7N39I5so4EaCSPWkfaREwedJPmCd6DsJpOyRH2UF3dTsKkcVybdeXkkSJuwXhMi3SQYx0DZ2
-	jQ5OzDrZL8oKVllCqjlG+r/uWI0kX15N7I77cSHX6NlyqMetXh7q1nwfTRVdfg6yTl86O3QM8PH
-	AgQXQzFmlSbeU8RoKF6zI7NctVHGBj45kLNWNJh9RGr+AK+c0h+ZZbiT4S0BI4xLDjBHC9bBzYR
-	lavM764pPbMUFNd/nP5urAXEPkgyRlRPRHVc04SnmgxprwBUjebV3zufJ82x35g3SfSY5fjb77s
-	miJRJYHR3JD8yo3hwj4atJVK5pxnGSnKqLVPpBI+Q2
-X-Received: by 2002:a17:907:9c07:b0:b9d:1a1c:a667 with SMTP id a640c23a62f3a-b9d1a1d39d9mr299788066b.11.1775653539681;
-        Wed, 08 Apr 2026 06:05:39 -0700 (PDT)
+        bh=r0w3Cu0UbjgyhVJINPhXxLR1olerhXx9ixzO2gYpDr4=;
+        b=lr2jiU0IeRAcoBiqznnjj41UZjb97UEJFFB6NGAnVc978SdEZs8JUCI7Sb9mryIxG0
+         VOv94sRNWMAKDAC0CZwllkOuFPuqdFVlRdvH4MLMD882NhzTtjzyH3SleUQYr1eiJBMb
+         2IUue/A31BLgMojkrUESIhHvrIAEK3eHHNoHTX4dEazFtA0Y6xmmCUtlDUlhvCxeXwdI
+         EcBAU5RxA7IuWkAfB4vf4Ata8y8fn4jXW6nxokkgrKcTmEVYSmD+3JtIvGmTuONZSGpN
+         RohuAFDmTVuGJ+CPa1zpjpgkvl3wEZc884p8dqZu9+vbjV5h2UxDYTdF11dcS/aMPGU9
+         0V2Q==
+X-Gm-Message-State: AOJu0YyL7zi1Ik8I8HD81nn1Yqw60VUCuzYgqf+jI6xBe8G/qifOLawH
+	CTaWdtvd1Lu1SE6vZMZwwIVRsNkyAg3Iu41GTIo6PtC8YeR4lvVwcOhLV44lbA==
+X-Gm-Gg: AeBDievGISiiE/h8arD+J4gRtymnAkr+nuysyuNttbAkXSbwy0X+O3slakqDdFVHBhn
+	CUdwDH4FZc1+S+MdmkcQBpVEQiUnHVkRySKEjqDCSOhxAOZkPqsedxM6gRetifhattQC++qOPPX
+	ovs5dD37KIaNHG+fpiZjd1JOD3aGVDGSoaT29iorwJcuwx9YQiU51GpjVjqUwxOwNydw4zt9ub6
+	ilu1fPirB0zs6VVcZK3M/q4W26xqV7vDrWicuZ8foDC/pzCGCTM36JZd5RUJV4NeRrshOK1DL6Q
+	l0N91C0+65W1glgymkyzn5Tamoa00g7JdiWIv3cshh873dxuLst+hxR6A9htPv6Tmzh8AP6M5Kd
+	YwMeBilomIxhQdhMhJCW4Vz9MqovlXU5Q3a4ene2uz8Pmom5pyThYEuZoqe8p6WndaawirxGhiT
+	17rGIJb2ZrpLeW6nnBiy3uh0NDCd2Tcw==
+X-Received: by 2002:a17:907:704:b0:b97:1009:7536 with SMTP id a640c23a62f3a-b9c676ec3a9mr1095346066b.15.1775653538683;
+        Wed, 08 Apr 2026 06:05:38 -0700 (PDT)
 Received: from [127.0.1.1] ([2a02:a312:c8a8:7a00:dab4:c153:72eb:4100])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b9c3ca94715sm656643166b.21.2026.04.08.06.05.38
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b9c3ca94715sm656643166b.21.2026.04.08.06.05.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Apr 2026 06:05:39 -0700 (PDT)
+        Wed, 08 Apr 2026 06:05:38 -0700 (PDT)
 From: Adam Blank <adam.blank.g@gmail.com>
-Date: Wed, 08 Apr 2026 15:05:28 +0200
-Subject: [PATCH 4/6] ref-manual/variables.rst: update RECIPE_SYSROOT*
- descriptions
+Date: Wed, 08 Apr 2026 15:05:27 +0200
+Subject: [PATCH 3/6] ref-manual/variables.rst: update PKGDATA_DIR's
+ description
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260408-staging_and_packaging_vars-v1-4-387f482308e5@gmail.com>
+Message-Id: <20260408-staging_and_packaging_vars-v1-3-387f482308e5@gmail.com>
 References: <20260408-staging_and_packaging_vars-v1-0-387f482308e5@gmail.com>
 In-Reply-To: <20260408-staging_and_packaging_vars-v1-0-387f482308e5@gmail.com>
 To: docs@lists.yoctoproject.org
 Cc: Adam Blank <adam.blank.g@gmail.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1775653534; l=2284;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1775653534; l=1695;
  i=adam.blank.g@gmail.com; s=20251027; h=from:subject:message-id;
- bh=cQXQZuiLQhiLadE8K9imywyIkc8FhmVN2t1yelb87fk=;
- b=CoaTOLwBdy3uG6PqoYi/QchqVQbQHvoOoFjf4IVxgP1yPnEZX4V1K/2vwoCv7NgQxCN0sfRWN
- HeCRxdrybgHCzA5DBSlfDDltki9FnsmE13ZedLgldTQCw9ujK00/RDq
+ bh=MDEniKvTQ95sg24jGXC/WFue3Yd2yMjWwlByI0AkIP8=;
+ b=vTqdqqcH8GUG9puhxGXqSvGWMQxVSsyi3XLNxlMHBoUgPUBNF7fKeIvmLdqHvQJXHXuoSr+qb
+ B6htgSu/nlnBZR8LfEjMfODjrqSSJDUPYhyIWpn2eLgRx/q8kP7LgCD
 X-Developer-Key: i=adam.blank.g@gmail.com; a=ed25519;
  pk=5t8u8IPKPL1CUykIX2JYa+1iHdXRdN5MqI7ik/fbvEM=
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Wed, 08 Apr 2026 13:05:48 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9203
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9202
 
-Slightly reword to emphasise the order of steps during staging.
-Further clarify those variables' relation to STAGING_DIR* variables.
+Don't refer to it as temporary. Update the default value.
 
 Signed-off-by: Adam Blank <adam.blank.g@gmail.com>
 ---
- documentation/ref-manual/variables.rst | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ documentation/ref-manual/variables.rst | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
 diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index 7d3aa8ccf..aa142a701 100644
+index e11294c6b..7d3aa8ccf 100644
 --- a/documentation/ref-manual/variables.rst
 +++ b/documentation/ref-manual/variables.rst
-@@ -8345,13 +8345,13 @@ system and gives an overview of their function and contents.
-       section.
+@@ -7493,19 +7493,17 @@ system and gives an overview of their function and contents.
+       Points to a shared, global-state directory that holds data generated
+       during the packaging process. During the packaging process, the
+       :ref:`ref-tasks-packagedata` task packages data
+-      for each recipe and installs it into this temporary, shared area.
++      for each recipe and installs it into this shared area.
+       This directory defaults to the following, which you should not
+       change::
  
-    :term:`RECIPE_SYSROOT`
--      This variable points to the directory that holds all files populated from
-+      This variable points to the directory populated with all files provided by
-       recipes specified in :term:`DEPENDS`. As the name indicates,
--      think of this variable as a custom root (``/``) for the recipe that will be
-+      think of this variable as a custom root (``/``) for the recipe, that will be
-       used by the compiler in order to find headers and other files needed to complete
-       its job.
+-         ${STAGING_DIR_HOST}/pkgdata
++         ${TMPDIR}/pkgdata/${MACHINE}
  
--      This variable is related to :term:`STAGING_DIR_HOST` or :term:`STAGING_DIR_TARGET`
-+      This variable is used to define :term:`STAGING_DIR_HOST` or :term:`STAGING_DIR_TARGET`
-       according to the type of the recipe and the build target.
+       For examples of how this data is used, see the
+       ":ref:`overview-manual/concepts:automatically added runtime dependencies`"
+       section in the Yocto Project Overview and Concepts Manual and the
+       ":ref:`dev-manual/debugging:viewing package information with ``oe-pkgdata-util```"
+-      section in the Yocto Project Development Tasks Manual. For more
+-      information on the shared, global-state directory, see
+-      :term:`STAGING_DIR_HOST`.
++      section in the Yocto Project Development Tasks Manual.
  
-       To better understand this variable, consider the following examples:
-@@ -8365,11 +8365,11 @@ system and gives an overview of their function and contents.
-       Do not modify it.
- 
-    :term:`RECIPE_SYSROOT_NATIVE`
--      This is similar to :term:`RECIPE_SYSROOT` but the populated files are from
--      ``-native`` recipes. This allows a recipe built for the target machine to
--      use ``native`` tools.
-+      This is similar to :term:`RECIPE_SYSROOT` but files in it are provided by
-+      native recipes. This allows a recipe built for the target machine to
-+      use native tools.
- 
--      This variable is related to :term:`STAGING_DIR_NATIVE`.
-+      This variable is used to define :term:`STAGING_DIR_NATIVE`.
- 
-       The default value is ``"${WORKDIR}/recipe-sysroot-native"``.
-       Do not modify it.
+    :term:`PKGDEST`
+       Points to the parent directory for files to be packaged after they
 
 -- 
 2.43.0
