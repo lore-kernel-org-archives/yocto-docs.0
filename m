@@ -2,61 +2,61 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 62422F4487D
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 792F3F364CD
 	for <webhook@archiver.kernel.org>; Fri, 10 Apr 2026 14:43:55 +0000 (UTC)
 Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.157880.1775832229464135756
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.157874.1775832226505252720
  for <docs@lists.yoctoproject.org>;
- Fri, 10 Apr 2026 07:43:49 -0700
+ Fri, 10 Apr 2026 07:43:47 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=qkI6Z9mW;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=smWSLA1R;
  spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 0B966C5C1AF
-	for <docs@lists.yoctoproject.org>; Fri, 10 Apr 2026 14:44:20 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 75A16C5C1A8
+	for <docs@lists.yoctoproject.org>; Fri, 10 Apr 2026 14:44:19 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id D2371603F0
-	for <docs@lists.yoctoproject.org>; Fri, 10 Apr 2026 14:43:44 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 420FC10450025;
-	Fri, 10 Apr 2026 16:43:44 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 0614F60434
+	for <docs@lists.yoctoproject.org>; Fri, 10 Apr 2026 14:43:41 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6900210450072;
+	Fri, 10 Apr 2026 16:43:40 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1775832224; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1775832220; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=uouaJxUfqsaEFwDvjftO91aKvkT1sMnidGMxbiWUBPA=;
-	b=qkI6Z9mWubV5pSh3qckOHbuF1owSXdoEbZVNEUCxkStDmcN13MyNUwPqIgHU3EzRuGnHkT
-	AJGg0EPUllj1R7yphf4k7HAz1f+refdcSPuJTJtbS1Pd2zadCqr4YZMxy/1CHlBQRFG+tW
-	a8yqiMiTRyAYj95uglA2tY3T9c+yHm8BUJ2gh1ngPtihAKdZ13YtrFwqQoViNoHks/zGes
-	TOflm6mNuoLk7839jldz7/s9i1mL2bpwwZfjRhVD6JymBbz7VEcM9LtamPXvF6H3i8FvSU
-	WofQpnqcaOwsAx6/1KTePQE6284SL/69bZWLCwBX2TZ6oyJ4HVaEe5vhT0DOcQ==
+	bh=iIXXCB8Gif2+bAjWlVcWP80LjEo96Zvvb1qSGmYMAZc=;
+	b=smWSLA1RDjGrsVMgSNIpRlMInAcNoqNuchW8YFHyWIDPZOWWHPdaF1N0N8UH3jW5uv/K7T
+	tv7EcFU9cLWgJz1tNsm9sZIcV0F/eh9mrQME11lMznGQiEUKop9kwkLx/IFOfsM4SVYVit
+	Djd1Tz7d7rCgYTZxuOkhg+WoC/afEQ1W0VaAQc5fU8bA/i8zdNZU9crrye8xDoIIDCKZT4
+	TUEnZpXqccwGnnCmhpG1lxUI9XbNpONjcE9SMVyUBdc2FOKH2xKuPXEnLI8T6hIQF+Jm+U
+	2/mmz7suNpoHd7Hxdrz2Mdafigxw3Ymgsfk5nmj4BLUO3z9m14dgrEB4puOb+g==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Fri, 10 Apr 2026 16:43:35 +0200
-Subject: [PATCH 11/18] migration-guides/migration-6.0.rst: add note on
- WIC_SECTOR_SIZE
+Date: Fri, 10 Apr 2026 16:43:28 +0200
+Subject: [PATCH 04/18] ref-manual/classes.rst: document the
+ KCONFIG_CONFIG_ROOTDIR variable
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260410-second-release-notes-6-0-v1-11-40213436c3ca@bootlin.com>
+Message-Id: <20260410-second-release-notes-6-0-v1-4-40213436c3ca@bootlin.com>
 References: <20260410-second-release-notes-6-0-v1-0-40213436c3ca@bootlin.com>
 In-Reply-To: <20260410-second-release-notes-6-0-v1-0-40213436c3ca@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2770;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1878;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=dVGr8E7/8KR3G9aCg5KKWeAXGZf66GFz1LAGIE49Sos=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBp2QyYd0XPiiU9Vls1bktuz1YLvLDNL196M3kY8
- PsLIIT5tjGJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCadkMmAAKCRDRgEFAKaOo
- NpxeD/wL0ODtTASOxNEVvgNWd3X+mKHOs5vp1BjHm6tQY+Hps4i7bSpzttqci0BS/7Mdda7SOcF
- ACQ3y9zK+uBKAUvjcp6tv7Lmnf00Gc61Ke5kFwwM7ix7qzL/c3inWbN9hrZUVhsPbwZaPLTQE7G
- AYghkBqg/3RVT1ppJdb6QcCwmNj1J6V+TfK1yrB5xD1JxEemOwQFx9+G4dySGPHO2/j2PGT7aqd
- XylRBWUClUd8BvzW6NCiehsHwzGq8BbaErS/leXkX3qy4A3kGvXuxlC7+TXG9yVMKEZ1xQ0C3ih
- HsTXBR08RDMB7soVIyPEPSGGeSdOYQZYpZXkwZbe/+8uNYfLr9JBGtzn4fkKRH/Nz8eLXzcEnq2
- jkpWCMuyEydCI6dDbFlKUaefTYfgCEzC4wLHnCjnPkO64Zdqs/vF1lO3LGC1bOAUoNzD8M0h52X
- Wnmw6zG8wi+myqj0Ee77UDCnA1W4tVo8GKCFdWM3zCmPYwBh7of3fZyfoT05G9eFE5vSqdvZFJJ
- klh8ajEN6vIL/mqkabfpDjoN67dymON2fjX4Gxj2rmjdyTwrRALI3vz7IXjBcEYIgjprxJEyq4J
- yfiz16nnov6FLsE8005h7m3dUTJ0SgAJ77KLIFmNmwCh/b7yzPqUEgxTq/C/DBiuZTrQJ/V/Zxl
- amjtxBurrCJBgEQ==
+ bh=0c4OD3GB5pdVUTPXYYlU4Ok4fzdhmyo8ZsVwfenjldU=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBp2QyXYhD+M6KCXL3o2+ZwNoLfo0mDCHoREdVZ0
+ 39UNbOIo1iJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCadkMlwAKCRDRgEFAKaOo
+ NrlSD/wLNjtQ2kwlddL5qF3amYM0fUmGsYJShIWvK3dxdISPnijjZeaiUZE4kmZ5I+Dvxdx/GQT
+ GYS3gFDHJW/lFAFy/JdMeZTmpEAlo9MBvfjgLBZGShBNkaO5i+2RBJDAyF0wtewEnlJEDvEFKNs
+ /8/4RTCeTEhxmMVFTPKystmBeJmAmuWPd//WPm7kTGpzborZUa+L/3PA7Ot8LV7fseuwzj9I2NA
+ XkXmdi0dAZTTz/n1z8gAExCj2Ajqfh14HZKFtrIIPhBCyNNEYDaPhwq7VCaiESo4lrKDha0CzR/
+ OJEvNiV2C2KGfYSntN6SquL8qOI+1KrnPEzc/IFb/xn5shi/M47Ao6kHNex9TDRx/WeDyeWnXf9
+ MCp+WhGUE1wl8qCGlhs3Eqgszyob4Mlr3Zw60gqXOLEvrdv2ZtijIXsU1AjbgSf4RAlNnit1Ryc
+ eCg9ZM2ET5U10wAwjOGzncD1GBRpjPiKGLV+0s1cMtm3okCOuuZpsH+0nw8Uo5j1pCuQRQegYQ4
+ rt/UKg7yvrj4A05SwoY2fXsMUe5+s2c0/F977IP58CKrdp7/RGIcGox7+IC3WiOpdSWT3Smofqa
+ o7Jp1tKvqYY9P7GBizz2/iCi29V+lDklZ/+z+ADg99gzLQTzI7TZnLITIs1uO5e6jz+gFrOf1U6
+ LVAQo4Rawe5PLdw==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
@@ -64,76 +64,48 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Fri, 10 Apr 2026 14:43:55 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9238
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9234
 
-After b50d6debf7ba ("wic: re-implement sector-size support") in OE-Core,
-add a note on the WIC_SECTOR_SIZE variable.
+Added by commit f86282ad2c66 ("cml1: Add the option to choose the
+.config root dir") in OE-core.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/migration-guides/migration-6.0.rst | 30 ++++++++++++++++++++++++
- documentation/ref-manual/variables.rst           |  7 ++++++
- 2 files changed, 37 insertions(+)
+ documentation/ref-manual/classes.rst   | 4 ++++
+ documentation/ref-manual/variables.rst | 5 +++++
+ 2 files changed, 9 insertions(+)
 
-diff --git a/documentation/migration-guides/migration-6.0.rst b/documentation/migration-guides/migration-6.0.rst
-index 15dbd08a0..16046dad8 100644
---- a/documentation/migration-guides/migration-6.0.rst
-+++ b/documentation/migration-guides/migration-6.0.rst
-@@ -189,6 +189,36 @@ class, meaning recipes using these variables that not yet inheriting the
+diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
+index 2fa888e15..acdbe9935 100644
+--- a/documentation/ref-manual/classes.rst
++++ b/documentation/ref-manual/classes.rst
+@@ -476,6 +476,10 @@ build configuration system. "cml" stands for "Configuration Menu Language", whic
+ originates from the Linux kernel but is also used in other projects such as U-Boot
+ and BusyBox. It could have been called "kconfig" too.
  
- See commit :oecore_rev:`68d2d38483efada7bc2409e10508b03a7431caff` for more information.
++The CML configuration file location (``.config``) is by default expected to be
++in the build directory (:term:`B`). This can be overridden with the
++:term:`KCONFIG_CONFIG_ROOTDIR` variable.
++
+ .. _ref-classes-compress_doc:
  
-+
-+.. _ref-migration-6-0-wic-sector-size-change:
-+
-+:term:`WIC_SECTOR_SIZE` should be replaced by ``--sector-size``
-+---------------------------------------------------------------
-+
-+The :term:`WIC_SECTOR_SIZE` variable was previously used to define the sector
-+size of the partitions generated by the :doc:`WIC </dev-manual/wic>` tool. The
-+``wic`` command-line tool now supports a ``--sector-size`` argument that
-+replaces this variable.
-+
-+While this variable can still be used in recipes, a warning is now printed on
-+the console when used::
-+
-+   DEPRECATED: WIC_SECTOR_SIZE is deprecated, use the --sector-size command-line argument instead.
-+
-+Using the ``--sector-size`` command-line argument can be done through the
-+:term:`WIC_CREATE_EXTRA_ARGS` variable.
-+
-+For example, a previous assignment to :term:`WIC_SECTOR_SIZE`::
-+
-+   WIC_SECTOR_SIZE = "4096"
-+
-+Should be replaced by::
-+
-+   WIC_CREATE_EXTRA_ARGS += "--sector-size 4096"
-+
-+See commit :oecore_rev:`b50d6debf7baa555fbfb3521c4f952675bba2d37` for more
-+information.
-+
- Rust language changes
- ---------------------
- 
+ ``compress_doc``
 diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index 89a5e632b..b698e865f 100644
+index 60e608c0c..20e4893d6 100644
 --- a/documentation/ref-manual/variables.rst
 +++ b/documentation/ref-manual/variables.rst
-@@ -12261,6 +12261,13 @@ system and gives an overview of their function and contents.
-       Wic creation process.
+@@ -5337,6 +5337,11 @@ system and gives an overview of their function and contents.
+       :yocto_git:`symbol_why.py </yocto-kernel-tools/tree/tools/symbol_why.py>`
+       script in :yocto_git:`yocto-kernel-tools </yocto-kernel-tools>`.
  
-    :term:`WIC_SECTOR_SIZE`
++   :term:`KCONFIG_CONFIG_ROOTDIR`
++      The :term:`KCONFIG_CONFIG_ROOTDIR` variable allows overriding the default
++      location of the ``.config`` file for recipes using the
++      :ref:`ref-classes-cml1` class.
 +
-+      .. warning::
-+
-+         This variable is deprecated in favor of the ``--sector-size`` wic
-+         command-line argument. See :ref:`ref-migration-6-0-wic-sector-size-change`
-+         for more information.
-+
-       The variable :term:`WIC_SECTOR_SIZE` controls the sector size of Wic
-       images. In the background, this controls the value of the
-       ``PARTED_SECTOR_SIZE`` environment variable passed to the ``parted``
+    :term:`KCONFIG_MODE`
+       When used with the :ref:`ref-classes-kernel-yocto`
+       class, specifies the kernel configuration values to use for options
 
 -- 
 2.53.0
