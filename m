@@ -1,182 +1,108 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <adam.blank.g@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DCA8DF44845
-	for <webhook@archiver.kernel.org>; Fri, 10 Apr 2026 11:52:41 +0000 (UTC)
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.154648.1775821951931767117
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 11E7FF44847
+	for <webhook@archiver.kernel.org>; Fri, 10 Apr 2026 12:18:02 +0000 (UTC)
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.155081.1775823476555996611
  for <docs@lists.yoctoproject.org>;
- Fri, 10 Apr 2026 04:52:33 -0700
+ Fri, 10 Apr 2026 05:17:56 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=LuKePn0J;
- spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 4603E1A3259;
-	Fri, 10 Apr 2026 11:52:29 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 142C2603F0;
-	Fri, 10 Apr 2026 11:52:29 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D9A9810450017;
-	Fri, 10 Apr 2026 13:52:27 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1775821948; h=from:subject:date:message-id:to:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=Vp+flzhWOr2BotlovMBy5i57kl0W2ZsqqnQgU3155oc=;
-	b=LuKePn0J4BsB6zMfuONhCiT+0Viu0sS8AFU6je1IBQ3dqaysUJiofYKeXUjVZFhcqch68F
-	eX0U52e7FRzvTitsN1lc8eK2V6ZRBHur7tpuAxwuzZNKlcLT1XSKQfPSY6Dj5uyuw9i5tb
-	LHycNv7rcnjNSvsAluwBwOEnvkLkFZocOt+XH+cqSNlaBGMTDo2TibYFRqgqzTsP/rMQKa
-	7xchhXTlEkSTAOxiEfzlKvr6lOxuDIVeDRzE2Qwy+Seq7xqgi1VwCxDRwrKYYO1+oUML0i
-	NHthROT97x3nBMwwXVMdfGBnqIWak01F+HPXUysgoz+HCm2C1H/d1AnBhdhQ8Q==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 10 Apr 2026 13:52:27 +0200
-Message-Id: <DHPGCCAE5N7Z.SDEZOA3UK7BL@bootlin.com>
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: <adam.blank.g@gmail.com>, <docs@lists.yoctoproject.org>
-Subject: Re: [docs] [PATCH 5/6] ref-manual/variables.rst: update
- STAGING_DIR* descriptions
-References: <20260408-staging_and_packaging_vars-v1-0-387f482308e5@gmail.com> <20260408-staging_and_packaging_vars-v1-5-387f482308e5@gmail.com>
-In-Reply-To: <20260408-staging_and_packaging_vars-v1-5-387f482308e5@gmail.com>
-X-Last-TLS-Session-Version: TLSv1.3
+ dkim=pass header.i=@gmail.com header.s=20251104 header.b=YoziP/rJ;
+ spf=pass (domain: gmail.com, ip: 209.85.208.51, mailfrom: adam.blank.g@gmail.com)
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-66c24b42efbso2886442a12.2
+        for <docs@lists.yoctoproject.org>; Fri, 10 Apr 2026 05:17:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775823475; x=1776428275; darn=lists.yoctoproject.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Y6L0CD0rqjxKLPvTBGy4ZTY8/Q+q0fVfM6vRvARI3hk=;
+        b=YoziP/rJZxK+tEA/emk1foOvlpYTTjeKSaDkh3p9QplSjaqTc1XDN2k8wcmTYWXhfE
+         o8ODiJeQTMcK9i6wcS08UMOZVblArHJzzX5zn01erUii3ee/yxQwiwVB34X9O5WhDHVd
+         v3mMzLDhC30UPSoZl4e3Ej25CdFbmn27ky+Rd3yOzvLPj/O3xAC2VAM6rj9+IGk967KH
+         PG3n2DO50oDIlvcH8mVQaluB7Cy5k6pmhsTHVkRgbfkYFHCqjo+XNEmu8MT+zFq1U85r
+         m7Qpr1VBs93mciabJ5er+mfYUVNr47NI2Oc6iOAZBzddO5UyCTa3fH1ACcKCJko/tnQJ
+         vPpQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775823475; x=1776428275;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Y6L0CD0rqjxKLPvTBGy4ZTY8/Q+q0fVfM6vRvARI3hk=;
+        b=WfOiOLay3jCzG69Oap+37KYz44KHhKkZD5dz9FdXfe+SsmpPbb53aPmcDEKTJWd6gJ
+         CY2ENyrF6Z+Y5Ol3dvgvu1ClrjvtjywlkAw98/NJlWl66HWHZ5Ri4XmYSmqDxtMG4GsO
+         e0A/g4d6qACG36FNOvpfkTUdsLjgrTOtSqxP408fWjaVb5U+peg7R3rCvfRFs2GB7JVQ
+         Tc/8OIfiDUBuU6nMUO7l2Yi2P5bl+3LNlbXP/HwwL9BS2rBbfH7K8YWL0j29DeVYyknt
+         ZJO8nqpYroVae5MyPWv/HlCTB1WZOdgTYGJ02xc2Qn7REyjwakHCgaJBmEzkAlqgT4WL
+         GpPw==
+X-Gm-Message-State: AOJu0Yzj4tpe+NuhTcc1ETMKHTA+A+fhtnYFxswUs5lejWYM+r6XEsr9
+	di/HD35cQlCDO6FeYVwd0dAC4rYGrHxxvGlklr+ryhEfIEsFNMp49B9Q
+X-Gm-Gg: AeBDiev07BYLisR5VexlOCGvXGfBZcj/bktMlQjUkmDjP+LSqxE8It52LD2z6UrmYgG
+	CBfXf0MpripZwlT039+0t/3pHmWdhjqF6569DB29BH99el0SbQnRoWpUj1ExeBqvpJEuxqHfYyh
+	lr8TH29vTv+nrzuaxsX/pQxhPhgdSm+j7q0uOVQjGn4LAUYZlwxg48b/aittlH9MT/NxX76wa9C
+	0xEShjDtVb9VD2SBjsWfxQ9IOHYRND6KHKrDUD/pF2R28kCWj+oSHGNPQqLysV6y+SqCe8z11Qf
+	5Gj2KRBzeBH95dVxPilOsEoFoBtLyn0IXXbHDp2ZlEjM9xNmpsmRioJHTF/fjDzh3Z4lyLQ9QKK
+	esE9PLhqyMFT0NImt4d3ZhkcZLcdVCcyvYV9Lk2SWcDJfnbx2yiF5EUoe2Rn+AEXkpZ90MniYo/
+	j+yL2Rn79zDuKIhwDfoom+6urIPdj1hQ==
+X-Received: by 2002:a17:906:5184:20b0:b98:36cd:7e11 with SMTP id a640c23a62f3a-b9d7277c0c4mr139788666b.45.1775823474643;
+        Fri, 10 Apr 2026 05:17:54 -0700 (PDT)
+Received: from [127.0.1.1] ([2a02:a312:c8a8:7a00:5694:dea1:688f:6eee])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b9d6de8d69fsm74881666b.4.2026.04.10.05.17.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Apr 2026 05:17:54 -0700 (PDT)
+From: Adam Blank <adam.blank.g@gmail.com>
+Date: Fri, 10 Apr 2026 14:17:44 +0200
+Subject: [PATCH v2 1/6] ref-manual/variables.rst: update STAGING_DIR's
+ description
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260410-staging_and_packaging_vars-v2-1-211bce1349b1@gmail.com>
+References: <20260410-staging_and_packaging_vars-v2-0-211bce1349b1@gmail.com>
+In-Reply-To: <20260410-staging_and_packaging_vars-v2-0-211bce1349b1@gmail.com>
+To: docs@lists.yoctoproject.org
+Cc: Adam Blank <adam.blank.g@gmail.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1775823472; l=1015;
+ i=adam.blank.g@gmail.com; s=20251027; h=from:subject:message-id;
+ bh=MT/BfAKvz2rlUNxLC6mMQKXBEG8Bs5PDOc93u5ajsTs=;
+ b=/wHCf73qnrC0RZpIHE7MA1GpZjogrq7qgOujSy0/Fzs6+OW2rIGXuBW8JkjxbjWWsIynORQ+W
+ DTYMnQMpEn7BxW50jwjl2SVUm+y1TPXPrdxIX+SsooVZA/us1OyJhzg
+X-Developer-Key: i=adam.blank.g@gmail.com; a=ed25519;
+ pk=5t8u8IPKPL1CUykIX2JYa+1iHdXRdN5MqI7ik/fbvEM=
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 10 Apr 2026 11:52:41 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9222
+ <docs@lists.yoctoproject.org>; Fri, 10 Apr 2026 12:18:02 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9224
 
-Hi,
+STAGING_DIR is not in direct relation to recipe-sysroot*
+directries. Also it does not participate in packaging, but rather
+in staging and sharing files among recipes.
 
-On Wed Apr 8, 2026 at 3:05 PM CEST, Adam Blank via lists.yoctoproject.org w=
-rote:
-> Slightly reword to emphasize the sysroots' roles during the build.
-> Drop double back-quote from the uses of '-native' to make it a bit
-> easier on the eyes.
->
-> Signed-off-by: Adam Blank <adam.blank.g@gmail.com>
-> ---
->  documentation/ref-manual/variables.rst | 45 +++++++++++++++++-----------=
-------
->  1 file changed, 22 insertions(+), 23 deletions(-)
->
-> diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-m=
-anual/variables.rst
-> index aa142a701..67176917c 100644
-> --- a/documentation/ref-manual/variables.rst
-> +++ b/documentation/ref-manual/variables.rst
-> @@ -10178,31 +10178,31 @@ system and gives an overview of their function =
-and contents.
->           those files into the sysroot.
-> =20
->     :term:`STAGING_DIR_HOST`
-> -      Specifies the path to the sysroot directory for the system on whic=
-h
-> -      the component is built to run (the system that hosts the component=
-).
-> -      For most recipes, this sysroot is the one in which that recipe's
-> -      :ref:`ref-tasks-populate_sysroot` task copies
-> -      files. Exceptions include ``-native`` recipes, where the
-> -      :ref:`ref-tasks-populate_sysroot` task instead uses
-> -      :term:`STAGING_DIR_NATIVE`. Depending on
-> -      the type of recipe and the build target, :term:`STAGING_DIR_HOST` =
-can
-> -      have the following values:
-> +      Specifies the path to the recipe's input sysroot directory, popula=
-ted with files
-> +      for the system on which the component is built to run
-> +      (the system that hosts the component).
-> +      For most recipes, this sysroot is the one into which that recipe's=
- files from
-> +      :ref:`ref-tasks-populate_sysroot` task will be copied (when sharin=
-g files
-> +      between recipes).
+Signed-off-by: Adam Blank <adam.blank.g@gmail.com>
+---
+ documentation/ref-manual/variables.rst | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-I'd suggest the following phrasing which is more straightforward:
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index 60e608c0c..7f19723ed 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -10160,8 +10160,7 @@ system and gives an overview of their function and contents.
+       directory for the build host.
+ 
+    :term:`STAGING_DIR`
+-      Helps construct the ``recipe-sysroot*`` directories, which are used
+-      during packaging.
++      Used for constructing directory trees used during staging.
+ 
+       For information on how staging for recipe-specific sysroots occurs,
+       see the :ref:`ref-tasks-populate_sysroot`
 
-"""
-For most recipes, this sysroot is populated by their
-:ref:`ref-tasks-populate_sysroot` task (when sharing files between recipes)=
-.
-"""
+-- 
+2.43.0
 
-> +      Exceptions include native recipes, for which the files from
-> +      :ref:`ref-tasks-populate_sysroot` task are instead copied to
-> +      :term:`STAGING_DIR_NATIVE`. Depending on the type of recipe and th=
-e build target,
-> +      :term:`STAGING_DIR_HOST` can have the following values:
-> =20
->        -  For recipes building for the target machine, the value is
-> -         "${:term:`STAGING_DIR`}/${:term:`MACHINE`}".
-> +         ``"${RECIPE_SYSROOT}"``, check :term:`RECIPE_SYSROOT`.
-> =20
-> -      -  For native recipes building for the build host, the value is em=
-pty
-> +      -  For native recipes (building for the build host), the value is =
-empty
->           given the assumption that when building for the build host, the
->           build host's own directories should be used.
-> =20
->           .. note::
-> =20
-> -            ``-native`` recipes are not installed into host paths like s=
-uch
-> -            as ``/usr``. Rather, these recipes are installed into
-> -            :term:`STAGING_DIR_NATIVE`. When compiling ``-native`` recip=
-es,
-> +            Native recipes' files are not installed into host paths such
-
-s/Native recipes' files/Native recipe files/
-
-> +            as ``/usr``. Rather, such recipes' files are installed into
-
-s/such recipes' files/such files/
-
-> +            :term:`STAGING_DIR_NATIVE`. When compiling native recipes,
->              standard build environment variables such as
->              :term:`CPPFLAGS` and
-> -            :term:`CFLAGS` are set up so that both host paths
-> +            :term:`CFLAGS` are set up so that both build host's paths
->              and :term:`STAGING_DIR_NATIVE` are searched for libraries an=
-d
->              headers using, for example, GCC's ``-isystem`` option.
-> =20
-> @@ -10210,16 +10210,15 @@ system and gives an overview of their function =
-and contents.
->              should be viewed as input variables by tasks such as
->              :ref:`ref-tasks-configure`,
->              :ref:`ref-tasks-compile`, and
-> -            :ref:`ref-tasks-install`. Having the real system
-> -            root correspond to :term:`STAGING_DIR_HOST` makes conceptual=
- sense
-> -            for ``-native`` recipes, as they make use of host headers an=
-d
-> -            libraries.
-> -
-> -      Check :term:`RECIPE_SYSROOT` and :term:`RECIPE_SYSROOT_NATIVE`.
-> +            :ref:`ref-tasks-install`. Having the real system root
-> +            (the build host's root) play the role of :term:`STAGING_DIR_=
-HOST`
-> +            makes conceptual sense for native recipes, as they make use
-> +            of the build host's headers and libraries.
-> =20
->     :term:`STAGING_DIR_NATIVE`
-> -      Specifies the path to the sysroot directory used when building
-> -      components that run on the build host itself.
-> +      Specifies the path to the recipe's input sysroot directory, popula=
-ted with
-> +      files provided by native recipes (recipes building components that
-> +      run on the build host itself).
-
-s/build host/:term:`build host`/
-
-Can you make this replacement in the different places where it is used in y=
-our
-patches?
-
-The rest of the patches look good. Thanks for splitting the patches and for=
- the
-commit descriptions, it helped :)
-
-Antonin
 
