@@ -1,192 +1,175 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <martin.jansa@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CD223E99073
-	for <webhook@archiver.kernel.org>; Fri, 10 Apr 2026 09:48:20 +0000 (UTC)
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.152539.1775814496041112115
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BFEE6E9906B
+	for <webhook@archiver.kernel.org>; Fri, 10 Apr 2026 10:01:50 +0000 (UTC)
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.153012.1775815302939274700
  for <docs@lists.yoctoproject.org>;
- Fri, 10 Apr 2026 02:48:16 -0700
+ Fri, 10 Apr 2026 03:01:43 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=d8tQ3JwH;
- spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 97AFCC5C1A4
-	for <docs@lists.yoctoproject.org>; Fri, 10 Apr 2026 09:48:48 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 81264603F0
-	for <docs@lists.yoctoproject.org>; Fri, 10 Apr 2026 09:48:13 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C38CD104509AF;
-	Fri, 10 Apr 2026 11:48:12 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1775814493; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=vVTeW/iFNUXeqd2YKqNR3UpQY7MkgQ7+2lIrPAQusiI=;
-	b=d8tQ3JwH2bYomTco4ib2rsfoxQYzPUwga3OJ9ChNtkdQvAoTAk955EvocRhgQoeWEABSIj
-	/Nm8ln3q/Cmm3W/wXcLjHTGq5opKwjsr/PPj3xPKwrTyM8AI7WvViR2AQ+6JRpvJwfGC7/
-	OQ3wzjsISb84kKhLM2C7b7qFWVwCFbDPB9rnX/oo9q93CiXkfopBHlhYWG9FXTwFeIP4RK
-	AALoxptGwqIkGIJ+IvW8Nj7X3V++SMp7Q7CsEpC+PdBMPhuJ84/YHQ2PAEvy3Q8A38VsNu
-	5vaXmkcHilYL70XIGvy3BjNX9S/Xyl9Yghaz5tLpWLyAZbgKBqdf5cI1UNLBsQ==
-From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Fri, 10 Apr 2026 11:48:04 +0200
-Subject: [PATCH 5/5] ref-manual/system-requirements.rst: add section for
- openSUSE Leap 16.0
+ dkim=pass header.i=@gmail.com header.s=20251104 header.b=b3RgR32n;
+ spf=pass (domain: gmail.com, ip: 209.85.167.41, mailfrom: martin.jansa@gmail.com)
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5a2beae348eso2014000e87.0
+        for <docs@lists.yoctoproject.org>; Fri, 10 Apr 2026 03:01:42 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1775815301; cv=none;
+        d=google.com; s=arc-20240605;
+        b=J0nKOISSyxWrxD+ZcgQtFdyDa7Do3QbXWZDKoRmVFiyq0nWhkDw3hFQiJszQBPOcyf
+         ry9VwH6pqF2ES0YTMep64s0tarn21xIpoXs2LJbTXrjit7DZVUrVSMxJO29vtYxqppbW
+         fEfoeVTp58tyRt5eNwLSut93+n16lwwfM4colY+Nt4ElSCuaWIuHHgm3k7suWVUmpstd
+         GYoEHwFYeR/SESGYyKRVpgdvOT/m8OPfBSjJtCoBLbnZoSZ6/dMG1ph6GkpJ7h7Ia+Kv
+         gycdXjwG4K32lfTRIW4Q8gRuUkl3dSvZ8AfBvdtrGRlfJqgFQdKzobHGDCRYqvxgttwp
+         3j6Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=cxjqIHSR78btsry8xvTKnqunzqx4NqNaKLzfLyoPBRA=;
+        fh=LKFIMfZfa7BHkMgJqICNWhKmtY/ACxMpPVhzKWCUZCE=;
+        b=Q5aWy3j8OYHJyoHoH3ZuSOjm5rijBFx0RUeE3411yGzP53ypdUsBhdCDaag9aVrmfu
+         qb+BalxyWMOr1eKHLBn38NUUowzEmTC+daWPJ3lSmAthR8gElcnK/uLSagStCGHrPhZi
+         1oknQeNgtiuhU7eTTo4+6MbgVt42bxJ/V3VfOitBuc9bgfXXno1YxXck5legL6T9h92a
+         m1zuHYxLusN7NKO/66eChgwjOjcf39WRlLA9ddkQy6AU07wW8Z6YZ1whWE5biQiOQE/k
+         MPSdLPGWpuIlfvxJZz72Op2qSDtagYBkqt314bwJAjSoAuBC2ZKLSlxXVYMfoZmpIVL5
+         OTbQ==;
+        darn=lists.yoctoproject.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1775815301; x=1776420101; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cxjqIHSR78btsry8xvTKnqunzqx4NqNaKLzfLyoPBRA=;
+        b=b3RgR32nTNwoQDGNklP3OsStx7L5Nt0cJ66YytXKlH0mMwy93kHn7cYqKdh8fIyXml
+         erjszkdtFtQkOjPhUYBdjGpnVuSwPUwSUOzqIJhWN+qHSK4JKQ5r6bKNKu3cdhrCRXaR
+         PwEIbppqyHfOgBwIMWpG6og310pq117SmRxYsYm03djKF90ABH+SWAIEIEf2HpETxCos
+         iR6LecvnAtRdPdyu/zBoSoJ3DMTaPLACS1u5tXo+EDKRu84Y77ZEI79YUicrk2AHS/mF
+         hvxv06s11d+CcZW87CSaq4gX4ZR2rIKPiNCzYi192F0afQrlgHobXcP6pY7v3z/Bsdh4
+         oolA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1775815301; x=1776420101;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=cxjqIHSR78btsry8xvTKnqunzqx4NqNaKLzfLyoPBRA=;
+        b=JdxoXLxqECcOAL8kYf+AK8Z9Q2Ex3ADeMcoHk+FEakVTb3lYYzV8Fmu3cbxYMJ2kA/
+         G1o+mj5DRaNKmAIdnSWJLmZQZkEl1aFfWRkadZGygnFG5AP8dR2qpeVNSvcmF6/vQzBG
+         ZhDHNRBLAF50OIMkJi5IqlVUqNUJatDXhWWx0LzFCvmV+jrhbbrfFOA63xOhMbbXoeci
+         7Wik8o8NOinNJ7Gaf3vgBidu3t78ZetNX0p5OFSAoHRUiu6wm3r/WoV6EMpJG+uM0txV
+         2HYRre5J1pN2jeBJCEnkdtnoLGraTgr1xmaS9cKu668fqOOwYdGhOpwdNYWnzEkACYaT
+         DCZA==
+X-Gm-Message-State: AOJu0Yz9nv+69zxkdlRvk5GzEK0hn2BQQvZ7xQxLCuVwfytIeTSvBujQ
+	84Qx1X2F2plFqALda9w4F20/dEzObmeTyMfo5IJ7UhHjQdE9umHL6MqYIvR6MBlED1Nqq7g0Hcj
+	RQ9lhD3Sl8yXChk+6YTvNhqXP7t5b3E4=
+X-Gm-Gg: AeBDiev3lEoVJRSuu+/3mZKaWvySAVIZuaf2wn18hj2jxES8iAbOMyUe9fd8YSXHu2j
+	lz4Han37ZwtMESjGiyORtMp8gjpZFccV0l7URY5i3FiPKh/8Vp6h3sApQZpc3NXP2BsW8We7l7D
+	1DhfKdwra8LtRv84qbkiOhEjikuQ8SKNfuCG59VnGAUWcqR11/xm7YZY4UyPSJFQ9eK5YDaL/ty
+	Lil5noclw+h+GNdrtY4c1IfD0A1RnVDX1evlbfFvuUdy/N/uZqFXRr/PKVKOddgclJI/FhEOEIw
+	n+Ur6wz9B0bfWrJnrAjBSO3gi5MVPyZaPxwyGOjjx9+2CK0Bxa35NFVECuczQyuyOg==
+X-Received: by 2002:a05:6512:6d0:b0:5a2:a1d7:9cf5 with SMTP id
+ 2adb3069b0e04-5a3efb41b70mr1040164e87.14.1775815300603; Fri, 10 Apr 2026
+ 03:01:40 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260410-update-new-supported-releases-v1-5-fc53a1fbbdac@bootlin.com>
-References: <20260410-update-new-supported-releases-v1-0-fc53a1fbbdac@bootlin.com>
-In-Reply-To: <20260410-update-new-supported-releases-v1-0-fc53a1fbbdac@bootlin.com>
-To: docs@lists.yoctoproject.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Antonin Godard <antonin.godard@bootlin.com>
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4492;
- i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=wRGZf/ohKUA0koeIVQUA7n3EexFTQif7NJT8rbPq4jw=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBp2MdZFRdISExGkAVhideC2MchlKGDFifFsKscY
- 81NBKm08E2JAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCadjHWQAKCRDRgEFAKaOo
- NnOsD/9Kp5ery1SY639E9EWmbBag4WtgWIXOQzQmw9u9FUzx78rgoa4Be/60vOfFrw4N2OWGA1q
- vH6knOSKLajn2nd0nrCeFwnkQE2CrwrcF9Qefm7vi7ezwdv2eIxh6Buoht8y5hnmw/fedyM6+xT
- xQtS2b1aoSKnLcm5APwjh9XNn2BM3FJINeOnq6VQ2uU2o3Qn3WuMEALhqM7ia+hVWdAqSsx8wOu
- K+8NPDaB+PUsKBze+tIuePV2ijBMmV/kmmKYZ3UFN7Sa5olPSnrFeOJb2MP8qGJpTqnLpy7b84p
- cfFfj4spD5+DUAFnC0g0VbhVBzxxdPSecagS7u27ClQBorjNgwX7mdO+3sB8LkRwM7TGp9aU7RE
- u5MKFgNGp7YrwW96l9vAH9ArhMgZgcO/oUPuq4pCbfDkBQP1TAIL2VcmV2j+7PgRtS+P0cBj7cW
- vbuGIIDo/SnCulWBOOS2wiI0+bWM1zNPK+ea/3eHz9qFzC5c7AactXNh9FQX+S1HMl7//dUdNi8
- BLnzddXmEM97PIcDxrhkXdln+eRycSSMe5c/fYnjMw4GBsd1O9aeop/8UZOdqjjjceG0wrCJ0GT
- qV0w2+22rKVTJDhgiX9TY24dmCxomnY0UtWBOwshkDwxILPp3paKehbxFh2isKXEs1TbRvHlz0D
- y6fi9YoXENjRXRA==
-X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
- fpr=8648725188DD401BB9A0D3FFD180414029A3A836
-X-Last-TLS-Session-Version: TLSv1.3
+References: <20260410093916.3788848-1-martin.jansa@gmail.com> <060888d0-0274-4876-82e9-bb2a071d338e@cherry.de>
+In-Reply-To: <060888d0-0274-4876-82e9-bb2a071d338e@cherry.de>
+From: Martin Jansa <martin.jansa@gmail.com>
+Date: Fri, 10 Apr 2026 12:01:26 +0200
+X-Gm-Features: AQROBzAA5-deUGIOckboDN14tQtvVbAc6kMk4r5e6_iGpIvVUFdAIQEhrDjWUqU
+Message-ID: <CA+chaQcueymnjRoZiwCx2cxYRMsJc-e22+ys9DkqEvAw5PXbfQ@mail.gmail.com>
+Subject: Re: [docs] [PATCH] docs: ubuntu_essential.sh: explicitly add libcrypt-dev
+To: Quentin Schulz <quentin.schulz@cherry.de>
+Cc: docs@lists.yoctoproject.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 10 Apr 2026 09:48:20 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9219
+ <docs@lists.yoctoproject.org>; Fri, 10 Apr 2026 10:01:50 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9221
 
-Add a section for openSUSE Leap 16.0. Some packages for 15.6 do not
-exist for 16.0, so separate the install scripts for each.
+On Fri, Apr 10, 2026 at 11:48=E2=80=AFAM Quentin Schulz
+<quentin.schulz@cherry.de> wrote:
+>
+> Hi Martin,
+>
+> On 4/10/26 11:39 AM, Martin Jansa via lists.yoctoproject.org wrote:
+> > From: Martin Jansa <martin.jansa@gmail.com>
+> >
+> > In latest ubuntu-26.04 build-essential no longer installs libcrypt-dev
+> > But virtual/crypt-native is in ASSUME_PROVIDED and is expected to be
+> > usable for development.
+> >
+> > It used to be installed as build-essential -> libc6-dev -> libcrypt-dev=
+,b
+> > ut not anymore since 2.42-7:
+> >
+> > 25.10 questing with 2.42-0ubuntu3.1:
+> > https://packages.ubuntu.com/questing/libc6-dev
+>
+> Broken link.
 
-The diff between the essential packages for 15.6 and 16.0 is the
-following:
+That's probably temporarily broken as it often returns 500 Internal
+Server Error, but it was working link yesterday :).
 
---- a/opensuse_essential_15.6.sh
-+++ b/opensuse_essential_16.0.sh
-@@ -10,14 +10,13 @@ libacl1
- make
- makeinfo
- patch
--python
--python-curses
--python-xml
- python3
-+python3-GitPython
- python3-Jinja2
- python3-curses
- python3-pexpect
- python3-pip
-+python3-xml
- rpcgen
- socat
- tar
+> > 26.04 resolute with 2.43-2ubuntu1:
+> > https://packages.ubuntu.com/resolute/libc6-dev
+> >
+> > https://changelogs.ubuntu.com/changelogs/pool/main/g/glibc/glibc_2.43-2=
+ubuntu1/changelog:
+> > ...
+> > glibc (2.42-7) unstable; urgency=3Dmedium
+> >
+> >    [ Aurelien Jarno ]
+> >    * debian/control.in/libc, debian/rules.d/debhelper.mk: drop libcrypt=
+-dev
+> >      dependency from libc6-dev. Thanks to Helmut Grohne for proposing t=
+hat,
+> >      doing an archive rebuild and filling the bug reports.
+> >    * debian/control.in/main, debian/sysdeps/linux.mk: enable SystemTap =
+static
+> >      probes.
+> >    * debian/debhelper.in/libc-dev.NEWS: add a NEWS entry about the remo=
+val of
+> >      the obsolete termio interface.  Closes: #1124068.
+> >    * debian/rules.d/debhelper.mk: ensure that linker scripts work even =
+when
+> >      /usr is unmerged.  Closes: #1120508
+> >    * debian/debhelper.in/libc-dev{,-alt}.lintian-overrides,
+> >      source/lintian-overrides, rules.d/debhelper.mk, salsa-ci.yml: drop
+> >      unpack-message-for-{orig,source} overrides, fixed in lintian 2.128=
+.0.
+> >    * debian/control.in/main: drop Rules-Requires-Root: no, this is now =
+the
+> >      default.
+> >    * debian/libc6.symbols.i386, debian/libc6-i386.symbols.{amd64,x32}: =
+remove
+> >      the workaround for GLIBC_ABI_GNU_TLS.  Closes: #1122038.
+> >    * debian/control.in/{libc,i386}: ensure that libdpkg-perl is fixed w=
+rt
+> >      GLIBC_ABI_GNU_TLS.
+> >
+> >   -- Aurelien Jarno <aurel32@debian.org>  Sun, 04 Jan 2026 10:07:24 +01=
+00
+> > ...
+> >
+> > Without libcrypt-dev installed on host building shadow-native will
+> > fail with:
+> >    checking for crypt in -lcrypt... no
+> >    configure: error: crypt() not found
+> > and python3-native with:
+> >    The necessary bits to build these optional modules were not found:
+> >    _crypt
+> >    To find the necessary bits, look in configure.ac and config.log.
+> >
+>
+> Note that we share the Ubuntu instructions with Debian (and for many
+> different versions).
+>
+> On pkgs.org, libcrypt-dev exists for Debian Bullseye, Bookworm and Trixie=
+.
+> I manually installed the package on 22.04, 24.04, 25.04 and 25.10 and
+> they all exist.
 
-With the pip3 install command removed for GitPython, as we can now use
-the dedicated python3-GitPython package.
-
-The list for the docs and pdf build have not changed.
-
-Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
----
- documentation/ref-manual/system-requirements.rst   | 34 +++++++++++++++++++---
- documentation/tools/build-docs-container           | 10 ++++++-
- ...use_essential.sh => opensuse_essential_15.6.sh} |  0
- .../opensuse_essential_16.0.sh                     |  1 +
- 4 files changed, 40 insertions(+), 5 deletions(-)
-
-diff --git a/documentation/ref-manual/system-requirements.rst b/documentation/ref-manual/system-requirements.rst
-index e94825958..958ea72d6 100644
---- a/documentation/ref-manual/system-requirements.rst
-+++ b/documentation/ref-manual/system-requirements.rst
-@@ -203,13 +203,39 @@ documentation in PDF format:
- .. literalinclude:: ../tools/host_packages_scripts/fedora_docs_pdf.sh
-    :language: shell
- 
--openSUSE Packages
-------------------
-+openSUSE Leap Packages
-+----------------------
-+
-+openSUSE Leap 15.6 Packages
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+Here are the packages needed to build an image on a headless system
-+with a supported openSUSE Leap 15.6 distribution:
-+
-+.. literalinclude:: ../tools/host_packages_scripts/opensuse_essential_15.6.sh
-+   :language: shell
-+
-+Here are the packages needed to build Project documentation manuals:
-+
-+.. literalinclude:: ../tools/host_packages_scripts/opensuse_docs.sh
-+   :language: shell
-+
-+.. literalinclude:: ../tools/host_packages_scripts/pip3_docs.sh
-+   :language: shell
-+
-+In addition to the previous packages, here are the packages needed to build the
-+documentation in PDF format:
-+
-+.. literalinclude:: ../tools/host_packages_scripts/opensuse_docs_pdf.sh
-+   :language: shell
-+
-+openSUSE Leap 16.0 Packages
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~
- 
- Here are the packages needed to build an image on a headless system
--with a supported openSUSE distribution:
-+with a supported openSUSE Leap 16.0 distribution:
- 
--.. literalinclude:: ../tools/host_packages_scripts/opensuse_essential.sh
-+.. literalinclude:: ../tools/host_packages_scripts/opensuse_essential_16.0.sh
-    :language: shell
- 
- Here are the packages needed to build Project documentation manuals:
-diff --git a/documentation/tools/build-docs-container b/documentation/tools/build-docs-container
-index 4fe0cba63..a540e81ec 100755
---- a/documentation/tools/build-docs-container
-+++ b/documentation/tools/build-docs-container
-@@ -126,7 +126,15 @@ main ()
-     "leap:15.6"*)
-       image=opensuse/leap:$version
-       containerfile=Containerfile.zypper
--      essential=opensuse_essential.sh
-+      essential=opensuse_essential_15.6.sh
-+      docs=opensuse_docs.sh
-+      docs_pdf=opensuse_docs_pdf.sh
-+      pip3=pip3_docs.sh
-+      ;;
-+    "leap:16.0"*)
-+      image=opensuse/leap:$version
-+      containerfile=Containerfile.zypper
-+      essential=opensuse_essential_16.0.sh
-       docs=opensuse_docs.sh
-       docs_pdf=opensuse_docs_pdf.sh
-       pip3=pip3_docs.sh
-diff --git a/documentation/tools/host_packages_scripts/opensuse_essential.sh b/documentation/tools/host_packages_scripts/opensuse_essential_15.6.sh
-similarity index 100%
-rename from documentation/tools/host_packages_scripts/opensuse_essential.sh
-rename to documentation/tools/host_packages_scripts/opensuse_essential_15.6.sh
-diff --git a/documentation/tools/host_packages_scripts/opensuse_essential_16.0.sh b/documentation/tools/host_packages_scripts/opensuse_essential_16.0.sh
-new file mode 100644
-index 000000000..e557ae4fb
---- /dev/null
-+++ b/documentation/tools/host_packages_scripts/opensuse_essential_16.0.sh
-@@ -0,0 +1 @@
-+sudo zypper install bzip2 chrpath diffstat gcc gcc-c++ git gzip hostname libacl1 make makeinfo patch python3 python3-GitPython python3-Jinja2 python3-curses python3-pexpect python3-pip python3-xml rpcgen socat tar wget which xz zstd
-
--- 
-2.53.0
-
+Yes, the package exists and will probably exist for a long time, it's
+just not installed as build-essential dependency anymore.
 
