@@ -2,79 +2,74 @@ Return-Path: <elmehdi.younes@smile.fr>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 22AEDF8A14D
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1D77AF8A151
 	for <webhook@archiver.kernel.org>; Thu, 16 Apr 2026 09:25:22 +0000 (UTC)
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.9673.1776331519990667120
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.9672.1776331518527787888
  for <docs@lists.yoctoproject.org>;
- Thu, 16 Apr 2026 02:25:20 -0700
+ Thu, 16 Apr 2026 02:25:18 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@smile.fr header.s=google header.b=C3DTqc+5;
- spf=pass (domain: smile.fr, ip: 209.85.128.53, mailfrom: elmehdi.younes@smile.fr)
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4852b81c73aso72121425e9.3
-        for <docs@lists.yoctoproject.org>; Thu, 16 Apr 2026 02:25:19 -0700 (PDT)
+ dkim=pass header.i=@smile.fr header.s=google header.b=VWpyOCx3;
+ spf=pass (domain: smile.fr, ip: 209.85.128.50, mailfrom: elmehdi.younes@smile.fr)
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4838c15e3cbso72862685e9.3
+        for <docs@lists.yoctoproject.org>; Thu, 16 Apr 2026 02:25:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=smile.fr; s=google; t=1776331518; x=1776936318; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HT1iFazPB6LfjWobU6dETzS1t1HEKb0l+aX9CXf47vs=;
-        b=C3DTqc+5pC4kgGQb6fWhOGZpgh7ZkQKjgRSeA9soRSd3abX60b6SIaS/Vb9OuIZ9RY
-         ynxNzPgBvHfPOt90UgA2C207XzYTNQl+PoqgGCESqkzWjt/3q58+lRCOBKhyz11swbwQ
-         9RoLiDknW0Edj3E46hwIUjHIQclRmR6sGcL8k=
+        d=smile.fr; s=google; t=1776331517; x=1776936317; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=nvl2Df0x9MdzEv2qIEAXaySedLa7ukV4W6rIfQm/wvY=;
+        b=VWpyOCx3AJhSySwXQ7Og7HDS0n/22s56kGOD5G5gNMIIckx7PYI6jefEsj3fiHi7cS
+         5FS7nnzNxTvQELQgVDFpl0keUFE0qD1LTtXl+maAVPx0lIBDFomh8qDLbXcBPdLMZD8P
+         MQeCRCk/HnDQfF9BlfG7r5AIxyggR9UoqgBQs=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776331518; x=1776936318;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=HT1iFazPB6LfjWobU6dETzS1t1HEKb0l+aX9CXf47vs=;
-        b=O9iTfRp3qlrCDaeq3GNU1lrGliaWAZrBB/raAJTORj0IUo+wHv4eTOqoXyiq47s9wv
-         fjeaqRGQzJ1Dkq6EZw1Fs1tRALvKJdnFqW7QqeW1ghPy1ZLSzsWZheBj/dru5djbum7j
-         FUtLp1ZPd2ZFOotOFHK4rlY75XjLNINnt9BQCvPLNhZXit3Oh1u74jAvi59lH2mK5jnI
-         EUjumn+SAMBAz5MwhtLIKgMAs2YyHRHfCSsckmVFLZY0YDvEePlAW/B0uEDGdbqKYgOE
-         MQsvvPQUJ1BEpzBAJolQabE4VLxvtfCYJ0KXNF/BtY5+Q4SGr2Ju7xLPIJaqtiW96svB
-         j78g==
-X-Gm-Message-State: AOJu0Yzz9zUFprzAywJDoT3Np+OMAYM3+gmXl+aaGxmBxPVWo0+Jqen4
-	MovbCvp84y3JuBX/bzd0FIOYHbYwN2T/l4MbXTtRFL1QR2cHESwDE4oG8yHH7pkyJNY4RoDEkCd
-	0l2f6zxY=
-X-Gm-Gg: AeBDieuvE/MkOsmYYx6ySQL7/0OQJtDSA90LnCEFf6vwE8bda2ijZBaaucVvsNujiCT
-	WnLWhgN6tCkFDWDFgcwV8BcB0pgPSSc/HLsmaay1wUbAYtWru9uLUKUlztzbsDLlqo9lxFRcyZZ
-	A3xNCmlnX6wz5Q3WpN6qFxXBNrggVp42JxBPT1qxRodewJeAoQJkfaaoCwI9OlD60w0LcykonUj
-	CrOe0dXJwS/bFLhgWxbztn32IpBURB0nM/sXwI7QrMKVh7OBjJt8B7XQY8uKjTShJ+ZlZUrNZaM
-	VuCIoJw0jCTBfLQRhXsV0SNwAl5V8ibRBEC1oMlVn+xZz+8DKx+UuApFnOq57A9iifNMvmS32OP
-	Q/Ze7iAD+F8Tj9V1qvHi8uchzRXKRoFVKGPQPC7iDDOofeWtcQ3AvZwBmF8a76Zv2NIgIkwGVQy
-	pIOj7L35agezM90Vj8EvcFvXhLTBqd2MSR0WPHIZJRHuN7deoO3E5/g2F2zB/FXXiEpEPMJFZqp
-	SBlEnJKwajbC6OCg5OjaUd/gNckFSBW
-X-Received: by 2002:a05:600c:4504:b0:486:fbdb:b718 with SMTP id 5b1f17b1804b1-488d6868606mr335976045e9.25.1776331518219;
-        Thu, 16 Apr 2026 02:25:18 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1776331517; x=1776936317;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nvl2Df0x9MdzEv2qIEAXaySedLa7ukV4W6rIfQm/wvY=;
+        b=JzXzN/L0jY07FhkmEGbm8yIuITiHVZvzaMmxlKUe6R0DQ5x+OAG+gHSGLBtguIu7Sk
+         KjIOJipeOeqZc7HG4sNF1ch5qZgssg/IaFe0ShznP1MO/XZ+PGOZBaKlDd6j541yH1gH
+         +FkqJcnOgBGG+NTripHGx34DgvWgFVfIHAHCVYYwG1zjt11wMQTSDJMR5dGJP0mHh5un
+         4qHfLDZSHqyCsSDD6Ih7Y0kLPHU84e0q4IhR95Rt4O1eEBszFm84l3oEfcD1O7XbM3QV
+         a2N/PRTDZ1mLF0+RwZAVIeWAy/7v+RI41gZqhEGVfIQrzGJICPK6jXmn2t+VmzOhYOCW
+         twgQ==
+X-Gm-Message-State: AOJu0YyMO5xX3o9H7H4vHBSMugihKt/awYl9hociujNtivywvMc3lzXo
+	hzDwOBRgWLlqMO/Lgix13Hwspi2mw+o4lXtUflPFNCxcPhJbx6ePjd3oHBYAi9XteGYyf6pgbWf
+	jmsiaxIo=
+X-Gm-Gg: AeBDiesy2ZMkV9Z7GelXhZvjCaAlH9UE8CY0wpcVk3HpeIrgcmTveWGpEw3OKf2LETr
+	wGE/arqlu+C7zvaWXvqv8jBl4m9DTDSbDjsJG96BrFIyFh9EZZwRgwGiIMUoIDbisuEvxwr6vzx
+	jBuW2fpZnsDRHkptgBQTEVWC76e6tt6gD9rBRTLsZ9bCUX2Q5k8IhjIt5YsqxV2C0NKDjID9qU5
+	rcrs/gbLBj193F2rqJ0wklMhd4BU+mItiLdyrqQmUmVCpouBxxPH1Fz0mRW935++VNOE8WO+sxp
+	dUf4q2+exbrcA7+oUr48Ygx3TyCdkyUPdSB2Wx493gXmJ8ycJFAre2zyip8idw+jVrcGVtZOHDH
+	IxxBR3szwM1a5gyiRxuU4G6iq4fGoHcLZlIeao3KZz9EVDF2mpEe11Zc4ved+hmM/doUXKUsFiL
+	6AbM1sbFsIQpIDsU7Fm8ECKx13lSN7JrSpqlrtHqCxjFIP/Ml5+2PSWJrRnj4+djhDu4UnhyNQS
+	3Rc4df+4JNeibyN+Knfy/rQ4MrvuRe0
+X-Received: by 2002:a05:600c:19cd:b0:485:17a7:b9c7 with SMTP id 5b1f17b1804b1-488d67e3671mr345093735e9.10.1776331516634;
+        Thu, 16 Apr 2026 02:25:16 -0700 (PDT)
 Received: from FRSMI25-BOLET.. (static-css-ccs-204145.business.bouyguestelecom.com. [176.157.204.145])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488f0a62cbesm43631165e9.12.2026.04.16.02.25.17
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488f0a62cbesm43631165e9.12.2026.04.16.02.25.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Apr 2026 02:25:17 -0700 (PDT)
+        Thu, 16 Apr 2026 02:25:16 -0700 (PDT)
 From: El Mehdi YOUNES <elmehdi.younes@smile.fr>
 To: docs@lists.yoctoproject.org
 Cc: El Mehdi YOUNES <elmehdi.younes@smile.fr>
-Subject: [PATCH 2/2] brief-yoctoprojectqs: fix runqemu command
-Date: Thu, 16 Apr 2026 11:25:12 +0200
-Message-ID: <20260416092512.99054-2-elmehdi.younes@smile.fr>
+Subject: [PATCH 1/2] brief-yoctoprojectqs: fix the allow root login command
+Date: Thu, 16 Apr 2026 11:25:11 +0200
+Message-ID: <20260416092512.99054-1-elmehdi.younes@smile.fr>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260416092512.99054-1-elmehdi.younes@smile.fr>
-References: <20260416092512.99054-1-elmehdi.younes@smile.fr>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Thu, 16 Apr 2026 09:25:22 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9256
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9255
 
-'runqemu qemux86-64' throws a MACHINE assignment conflict because the
-machine is already set via the enabled fragment. Additionally, the
-default compressed '.zst' image requires the 'snapshot' mode to boot.
-Changed the command to 'runqemu snapshot'.
+The 'bitbake-config-build enable-fragment' command requires the full
+namespace ('core/yocto/root-login-with-empty-password'). Passing only
+'root-login-with-empty-password' fails.
 
-ERROR: A builtin fragment 'machine/qemux86-64' is used while MACHINE has already got an assignment.
-ERROR: .zst images are only supported with snapshot mode. You can either use the "snapshot" option or use an uncompressed image
+ERROR: Fragment root-login-with-empty-password does not exist; use 'list-fragments' to see the full list.
 
 Signed-off-by: El Mehdi YOUNES <elmehdi.younes@smile.fr>
 ---
@@ -82,16 +77,16 @@ Signed-off-by: El Mehdi YOUNES <elmehdi.younes@smile.fr>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/documentation/brief-yoctoprojectqs/index.rst b/documentation/brief-yoctoprojectqs/index.rst
-index 63ed583dc..7fbf92098 100644
+index e1fd9543f..63ed583dc 100644
 --- a/documentation/brief-yoctoprojectqs/index.rst
 +++ b/documentation/brief-yoctoprojectqs/index.rst
-@@ -333,7 +333,7 @@ an entire Linux distribution, including the toolchain, from source.
+@@ -289,7 +289,7 @@ an entire Linux distribution, including the toolchain, from source.
  
-    .. code-block:: console
+     .. code-block:: console
  
--      $ runqemu qemux86-64
-+      $ runqemu snapshot
+-       $ bitbake-config-build enable-fragment root-login-with-empty-password
++       $ bitbake-config-build enable-fragment core/yocto/root-login-with-empty-password
  
-    If you want to learn more about running QEMU, see the
-    :ref:`dev-manual/qemu:using the quick emulator (qemu)` chapter in
+     .. note::
+ 
 
