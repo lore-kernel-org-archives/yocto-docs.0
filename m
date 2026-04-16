@@ -2,99 +2,111 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C7F1FF8A16C
-	for <webhook@archiver.kernel.org>; Thu, 16 Apr 2026 12:29:53 +0000 (UTC)
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.12769.1776342587495027982
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E0A68F8A171
+	for <webhook@archiver.kernel.org>; Thu, 16 Apr 2026 12:41:53 +0000 (UTC)
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.13005.1776343308623875289
  for <docs@lists.yoctoproject.org>;
- Thu, 16 Apr 2026 05:29:48 -0700
+ Thu, 16 Apr 2026 05:41:49 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=uiycOCqG;
- spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=CpB0Zdd0;
+ spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 3B3B2C5C3C6
-	for <docs@lists.yoctoproject.org>; Thu, 16 Apr 2026 12:30:23 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 6FACB4E42A29
+	for <docs@lists.yoctoproject.org>; Thu, 16 Apr 2026 12:41:46 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 2F96A60495
-	for <docs@lists.yoctoproject.org>; Thu, 16 Apr 2026 12:29:45 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4404210460076;
-	Thu, 16 Apr 2026 14:29:43 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 263EE60498;
+	Thu, 16 Apr 2026 12:41:46 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6EF5C104607EE;
+	Thu, 16 Apr 2026 14:41:44 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1776342584; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=bDCwalznyeBgx9pQhMl5B2QZkpcXDnS5zaBtOKMopsw=;
-	b=uiycOCqGmxV4mrGPqvp7ozTqcsupKpqOjPd1EtjBNGXnTcEecnEyPp9kv9CRGmS2apTx6p
-	MclR8tbNoB+qjX7fC2G0zSR22/KNGO+20S0BTF1v848+1k37w2JzJWJdT58XRh8gxycRne
-	UaQfdJ7Da6sm3hJlx7/x+W3BAFLY7lQpN/LuDRE9qi/uezoBjjabxDwiXPPD2ozpCTQl1y
-	QHRYndAa+Z3+hzYcqkyVkeZa1XL6U5Nh2EMGBir5CP3+dFbOOBbLkaHps2EX3GHPEToyvl
-	KqSnYGuuKsDeC3QmAkLj1IUA2+VeqRecnvaCa7Jj2i2yIImlZO+1WWLuq1GDZw==
-From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Thu, 16 Apr 2026 14:29:31 +0200
-Subject: [PATCH] ref-manual/variables.rst: fix wording in
- COMPATIBLE_MACHINE note
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260416-fix-compatible-machine-v1-1-dee3c0d32431@bootlin.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMwQqDMBCE4VeRPbuQpNaDryIeknTULTVKoqUgv
- rupHj+Y+XdKiIJETbFTxFeSzCFDlwX50YYBLK9sMsrUqtI19/JjP0+LXcV9wJP1owSw0b12UHi
- a6kH5vETk5RVuu9tpc2/49V+j4zgBHwPoS3oAAAA=
-X-Change-ID: 20260416-fix-compatible-machine-21f1be0e5243
-To: docs@lists.yoctoproject.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Antonin Godard <antonin.godard@bootlin.com>
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1205;
- i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=SAQd4QE4gwc0PGJCDo+j9q83dQ5CkLgYRCvvy4xCsBM=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBp4NY34hjJ4Y8Y5HGcN09b6ojNsNt3VGPL8FSvc
- 7cLXX5dE/OJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaeDWNwAKCRDRgEFAKaOo
- NuabD/oDciGoWk3JW606OwkOh3q95xnOeUVNAsCnXY+sWOZphRwZ+Xwc7KS/K26gQB4TUA1e58t
- GW3usEKtwgKcZ1GyLGmfoGaIAa1uOLIAGcQM9gVGkcL8coAd0tgWH3EROXAskZJBd1rwMmoCGmO
- zsGVwRTxXAVtQx73IxORZyQslnyl9IljxGQLMORoguDYlFq/ZFf4sDmFWU+tKOqsXyTxv+n/a3z
- FuLxIIXdfmKDw8zsgEhIrj0c4Yp5ePl6cyRLOZuySFjn7FORTrHGgQqKcG7UgJW0K4XFdsT+O/c
- 3UZ/JVca4/BF0ZnnvZZJ/XsOlOBBzbFmXfh3FGNT9PP0xTYmCy5JvltQPvLXN8RRwE+1vHwGK8v
- 0BM0CFUHyVIfFAOKPZmDB6De0An2uHWnXpx/wtE06XQqdpx2Ch/F1C8nx8+2oe8tU7JF+RcLA2d
- 61qHGw4rXzI7RpYXE7aHEFlloiYtlKz8SUtpa4NSo+QmRnkzySrejEndlPVdNZ/EE7n+GjkBMju
- x6iv4DydTGJgz/r0nb153QP7w8jVfn/UkaowbPujmdx01FekNUwX0fFjIMUJxWf2t6BDUmYTS/T
- CRjUy80SyOy2TdcTLrj6K50jpTph/XR60OivTaLMgCcfSweKmKU2fUNeCyJnLkJvaReFlYLn5+q
- 37LGi8HZFsRfQPg==
-X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
- fpr=8648725188DD401BB9A0D3FFD180414029A3A836
+	t=1776343305; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=FBv9fbvzE+F/NIqoqCL/X9MBWgZ5sq8XD7ZBqjSo72w=;
+	b=CpB0Zdd08B/KJRXmajPNTz1vppOaTZO5hjxknaJHxI9gGZJYuloD+VF/xcFOCZ6gVRnA80
+	uXi4gNGn9PDcbwFi07+RABC3ve/tX9J9bcSdctf39eGWWLzHVQp62bZHFnvtVP5lPL5SoT
+	lk+H6X7bxQyr1AbY8UbOlf5dvkJ1Q558+VMLF39hcWJfJ7l+79ctGtu3/IXChSoXP4nQxT
+	JYqHrsoJD7F25J0c8R1omBIMkc4bs/CTsNTKhgEAxSm0PgQ5gfYH6Za3xNcyvRQT9ybbPO
+	Xjd3AImJW6x4DSNs11QWq3vPbAKZgQYBJUMC9hevYhHtaus3j10eqrrAsOn1Lw==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 16 Apr 2026 14:41:44 +0200
+Message-Id: <DHUL5CBNM5A6.2H7PK6ZZZ04BE@bootlin.com>
+Subject: [master] Pull request
+Cc: <docs@lists.yoctoproject.org>
+From: "Antonin Godard" <antonin.godard@bootlin.com>
+To: "Paul Barker" <paul@pbarker.dev>
 X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 16 Apr 2026 12:29:53 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9257
+ <docs@lists.yoctoproject.org>; Thu, 16 Apr 2026 12:41:53 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9259
 
-Fix a typo and a misuse of the word "inherit":
-"in a recipe inherits from native" -> "in a native recipe"
+The following changes since commit 560bc33c0c2ecd60d68ba06a2edff8c25b9a3f90=
+:
 
-And the next sentence also uses "native recipe" so this make more sense.
+  migration-guide: add release notes for 5.3.3 (2026-04-02 15:21:57 +0200)
 
-Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
----
- documentation/ref-manual/variables.rst | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+are available in the Git repository at:
 
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index 60e608c0c..c828a8d06 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -1679,8 +1679,8 @@ system and gives an overview of their function and contents.
- 
-       .. note::
- 
--         When :term:`COMPATIBLE_MACHINE` is set in a recipe inherits from
--         native, the recipe is always skipped. All native recipes must be
-+         When :term:`COMPATIBLE_MACHINE` is set in a native recipe,
-+         the recipe is always skipped. All native recipes must be
-          entirely target independent and should not rely on :term:`MACHINE`.
- 
-    :term:`COMPLEMENTARY_GLOB`
+  git@push.yoctoproject.org:yocto-docs master-next
 
----
-base-commit: 560bc33c0c2ecd60d68ba06a2edff8c25b9a3f90
-change-id: 20260416-fix-compatible-machine-21f1be0e5243
+for you to fetch changes up to 2c12ec7bf29aedeacf82970a9d2eb262fde4670e:
 
+  ref-manual/variables.rst: fix wording in COMPATIBLE_MACHINE note (2026-04=
+-16 14:31:11 +0200)
+
+----------------------------------------------------------------
+Adam Blank (6):
+      ref-manual/variables.rst: update STAGING_DIR's description
+      ref-manual/variables.rst: update COMPONENTS_DIR's description
+      ref-manual/variables.rst: update PKGDATA_DIR's description
+      ref-manual/variables.rst: update RECIPE_SYSROOT* descriptions
+      ref-manual/variables.rst: update STAGING_DIR* descriptions
+      ref-manual/variables.rst: correct a reference to STAGING_DIR*
+
+Antonin Godard (12):
+      ref-manual/system-requirements: add buildtools note for Alma/CentOS/R=
+ocky 9
+      ref-manual/system-requirements.rst: update supported releases
+      tools/build-docs-container: add ubuntu 26.04 support
+      tools/build-docs-container: update fedora distros
+      tools/build-docs-container: drop support for OpenSUSE Leap 15.5
+      ref-manual/system-requirements.rst: add section for openSUSE Leap 16.=
+0
+      set_versions.py: fix seriesversion for milestone tags
+      set_versions.py: use bitbake "dev" version when our series is devbran=
+ch
+      set_versions.py: change strategy for the default page
+      set_versions.py: make active releases unique
+      sphinx-static/switchers.js.in: add an "Outdated release manuals" entr=
+y
+      ref-manual/variables.rst: fix wording in COMPATIBLE_MACHINE note
+
+El Mehdi YOUNES (2):
+      brief-yoctoprojectqs: fix the allow root login command
+      brief-yoctoprojectqs: fix runqemu command
+
+Martin Jansa (1):
+      docs: ubuntu_essential.sh: explicitly add libcrypt-dev
+
+ documentation/brief-yoctoprojectqs/index.rst       |  4 +-
+ .../ref-manual/buildtools-alma-centos-rocky-9.rst  | 11 +++
+ documentation/ref-manual/system-requirements.rst   | 53 +++++++++++---
+ documentation/ref-manual/variables.rst             | 82 ++++++++++--------=
+----
+ documentation/set_versions.py                      | 26 +++++--
+ documentation/sphinx-static/switchers.js.in        | 32 ++++++---
+ documentation/tools/build-docs-container           | 26 ++++---
+ ...use_essential.sh =3D> opensuse_essential_15.6.sh} |  0
+ .../opensuse_essential_16.0.sh                     |  1 +
+ .../host_packages_scripts/ubuntu_essential.sh      |  2 +-
+ 10 files changed, 154 insertions(+), 83 deletions(-)
+ create mode 100644 documentation/ref-manual/buildtools-alma-centos-rocky-9=
+.rst
+ rename documentation/tools/host_packages_scripts/{opensuse_essential.sh =
+=3D> opensuse_essential_15.6.sh} (100%)
+ create mode 100644 documentation/tools/host_packages_scripts/opensuse_esse=
+ntial_16.0.sh
 
