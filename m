@@ -1,348 +1,463 @@
-Return-Path: <chee.yang.lee@intel.com>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 31214F43691
-	for <webhook@archiver.kernel.org>; Fri, 17 Apr 2026 11:07:30 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.42377.1776424048234774307
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 49C3DF436A3
+	for <webhook@archiver.kernel.org>; Fri, 17 Apr 2026 13:30:40 +0000 (UTC)
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.45052.1776432638709288331
  for <docs@lists.yoctoproject.org>;
- Fri, 17 Apr 2026 04:07:28 -0700
+ Fri, 17 Apr 2026 06:30:40 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@intel.com header.s=Intel header.b=jGuGD1fM;
- spf=pass (domain: intel.com, ip: 192.198.163.13, mailfrom: chee.yang.lee@intel.com)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776424048; x=1807960048;
-  h=from:to:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=udr/BLEnvkaxYLPa9tijLURRi+FcPlhVIheF5p8jdhI=;
-  b=jGuGD1fMl6AJBoyZSRyjNKpJqRwu2ascM4izlzDZzM/Eh+dyVCpnJSIm
-   HxRFDrwRg4yKFCNjN7vtF9BLDMWAI5D5+EjcsXnfFA2S/Yq0bkfQsekqd
-   z+dJ+jQ6ITsk3fzM0djx6SwHwfnEMrzqs3DQoAt1iwUPY6htflf3iuhIc
-   9x+9ehkUx3NeUaOEB5snypdEiTY+TehHUBg5gSKuCNa3L/mQbp0N0auBP
-   kBmppVFdus+pZl8QfndiEsok5D6UgNeHCNQ67bXm3e5paPY493jFioqCT
-   fESoDqMqUUQSpKEAeHmQ+/7OLhKZFMFYcM8y7yk73ZLfHE3eK5VueTvSi
-   A==;
-X-CSE-ConnectionGUID: 8mqTPWj4T6u8/sazsbWahQ==
-X-CSE-MsgGUID: S0vtcNzUTKaTOPYUZEwsag==
-X-IronPort-AV: E=McAfee;i="6800,10657,11761"; a="80026934"
-X-IronPort-AV: E=Sophos;i="6.23,184,1770624000"; 
-   d="scan'208";a="80026934"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2026 04:07:27 -0700
-X-CSE-ConnectionGUID: C8Qmasy1TOGvS8mmMeEyyw==
-X-CSE-MsgGUID: 4+UirR9IQMC0xLPRFvz5sw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,184,1770624000"; 
-   d="scan'208";a="230887036"
-Received: from cheeyang-desk4.png.intel.com ([10.107.249.123])
-  by orviesa009.jf.intel.com with ESMTP; 17 Apr 2026 04:07:26 -0700
-From: chee.yang.lee@intel.com
-To: docs@lists.yoctoproject.org
-Subject: [PATCH v2] migration-guide: add release notes for 5.0.17
-Date: Fri, 17 Apr 2026 19:04:33 +0800
-Message-ID: <20260417110647.559041-1-chee.yang.lee@intel.com>
-X-Mailer: git-send-email 2.43.0
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=XtUfMO6v;
+ spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 312DCC5C3C1
+	for <docs@lists.yoctoproject.org>; Fri, 17 Apr 2026 13:31:15 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id B519060497
+	for <docs@lists.yoctoproject.org>; Fri, 17 Apr 2026 13:30:36 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DDF64104609BE;
+	Fri, 17 Apr 2026 15:30:35 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1776432636; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=TLUvEVwM2R2errWDgjtfysBltoGcL1YE5zXbo1sg80o=;
+	b=XtUfMO6vUizqrPZvB9wP+wbJ1ob1KYl2nx9dxO3AhWKJnpQy/05mN+F56uMWtgEgZfzjbi
+	j10pdChz5JMpGWtahLt66Th2YmcDrZSK7v5GtuCIWxVD/dx19f1AcYJRKKoBTo2f22z+0Q
+	qKjvqfMnECjE3/Lctn9tOW6hAi1RadEbJ3WutBq0jp6bKUxLfXbh8S0gJhfe9zU8XTZ0q2
+	0LY/5fm4s3fxQUGK8UHcB4qLd6a2sgY8jB83NnZvjhVU/R6bitbtzpz074u0ZPA5hvW7nB
+	pF/gG9TE6I3l6feNbFLh9niNOieFmrTjUP63wkLM2/2AwDUcKh3/ycYCqtlOnw==
+From: Antonin Godard <antonin.godard@bootlin.com>
+Date: Fri, 17 Apr 2026 15:30:23 +0200
+Subject: [PATCH] Document shared state signing
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260417-sstate-signing-v1-1-5df11613249e@bootlin.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMQQ5AMBBA0avIrDVpBQ1XEQtqWmNR0imRiLsrl
+ m/x/wWMgZChzS4IeBDT6hNUnoGZB+9Q0JQMhSxqWSotmOMQUTA5T94J29RGVwZVozSkaAto6fy
+ GXf+b93FBE98L3PcDY6aiDnIAAAA=
+X-Change-ID: 20260417-sstate-signing-f96c75ce1917
+To: docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Antonin Godard <antonin.godard@bootlin.com>
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=16573;
+ i=antonin.godard@bootlin.com; h=from:subject:message-id;
+ bh=ELhGg9H0OFxl81CzC6eJxmsaTqSKZGuem9WQC3MmZ5A=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBp4jX7f6tZ8hr8Oa/nNHONdLj5wWDkC2UosZRqn
+ C8X4MT5RQGJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaeI1+wAKCRDRgEFAKaOo
+ NkHYD/9NzIZC5sDeaH93J3u/vD1U0jlAezo/w/2GUf7EaweDtbt7tucbe8RkgRKVJjLJbgorfuG
+ OK6UUK+NSfvepPao7xYxZpLf71N7rdWP9Wd+BcW6ZipN2SHAalQuXJY08W4OZYNkqfTS0PU5hJk
+ yDoiUIcxKbZmi9AHD9QsnMK8QDyu+h/3tjrDPp7cIK/Ng9yYC9FQDe8Qym+7XHE1sYz8dhoYGo2
+ +ceBjqRTDeWoqd+ZhI2bUMirrzDVjijSSCIjkPxrcMs1zWsI+9L/+3kyA/eqtzhGbRuAbBJ8AMu
+ iZ+A44XeXfx8sWQIz/qSUV+u89ds4pVw7nZaYViP+go/HmhmM7VHQbt1PCpCv2LajEv4VgdzBAl
+ rYWj2LlrhjlholkQvR/9/NfvccLqum72ZtS7xiWlpO1r+DEVwnJnCHw2zdXPvik56vlznYgTFJg
+ OMsuVq71mj69WJPn9kPZguRe3xlIVCBeTZohyYWxZqT0L41wuaiXZbKEUl54UAHsyRYxYKIykLi
+ ouD1C5mOrWuoBlTseyAeoHqgocMpoNqYzKExFypJ0O+Lgbe5N05UCcPAniQQuk689kbPGeszPbR
+ /fxnYFWSgEDxKYhWyZ9vTcLDz7nw0qHtEJnlPa7DBEuCZwREU0/iNLKfrU8EVSHKHMl1N1oDPxP
+ A4iOInD76TVhtVA==
+X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
+ fpr=8648725188DD401BB9A0D3FFD180414029A3A836
+X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 17 Apr 2026 11:07:30 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9275
+ <docs@lists.yoctoproject.org>; Fri, 17 Apr 2026 13:30:40 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9276
 
-From: Lee Chee Yang <chee.yang.lee@intel.com>
+Document the shared state signing feature. Add a new document in the
+Security manual, and definitions for the variables involved in this
+process in the variable glossary.
 
-Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
+[YOCTO #15217]
+
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
-v2: highlight openssl upgrade
+ documentation/overview-manual/concepts.rst       |   6 +
+ documentation/ref-manual/variables.rst           |  50 +++++
+ documentation/security-manual/index.rst          |   1 +
+ documentation/security-manual/sstate-signing.rst | 272 +++++++++++++++++++++++
+ 4 files changed, 329 insertions(+)
 
- .../migration-guides/release-5.0.rst          |   1 +
- .../migration-guides/release-notes-5.0.17.rst | 263 ++++++++++++++++++
- 2 files changed, 264 insertions(+)
- create mode 100644 documentation/migration-guides/release-notes-5.0.17.rst
-
-diff --git a/documentation/migration-guides/release-5.0.rst b/documentation/migration-guides/release-5.0.rst
-index b98e0141ca..76d8ae3b0b 100644
---- a/documentation/migration-guides/release-5.0.rst
-+++ b/documentation/migration-guides/release-5.0.rst
-@@ -23,3 +23,4 @@ Release 5.0 (scarthgap)
-    release-notes-5.0.14
-    release-notes-5.0.15
-    release-notes-5.0.16
-+   release-notes-5.0.17
-diff --git a/documentation/migration-guides/release-notes-5.0.17.rst b/documentation/migration-guides/release-notes-5.0.17.rst
+diff --git a/documentation/overview-manual/concepts.rst b/documentation/overview-manual/concepts.rst
+index ab723d7c3..f0b336226 100644
+--- a/documentation/overview-manual/concepts.rst
++++ b/documentation/overview-manual/concepts.rst
+@@ -1240,6 +1240,12 @@ variable is the function that determines whether a given dependency
+ needs to be followed, and whether for any given relationship the
+ function needs to be passed. The function returns a True or False value.
+ 
++.. note::
++
++   Is is possible to sign these artifacts with :wikipedia:`GPG
++   <GNU_Privacy_Guard>`. See :doc:`/security-manual/sstate-signing` in the Yocto
++   Project Security Manual for more information.
++
+ Images
+ ------
+ 
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index 317b75913..7387a5d25 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -10097,6 +10097,25 @@ system and gives an overview of their function and contents.
+ 
+       For details on the process, see the :ref:`ref-classes-staging` class.
+ 
++   :term:`SSTATE_SIG_KEY`
++      When signing :ref:`shared state <overview-manual/concepts:setscene tasks
++      and shared state>` artifacts (when :term:`SSTATE_VERIFY_SIG` is set to
++      "1"), the :term:`SSTATE_SIG_KEY` variable is the :wikipedia:`GPG
++      <GNU_Privacy_Guard>` key identifier used to sign them (with the private
++      key).
++
++      See :doc:`/security-manual/sstate-signing` in the Yocto Project Security
++      Manual for more information.
++
++   :term:`SSTATE_SIG_PASSPHRASE`
++      When signing :ref:`shared state <overview-manual/concepts:setscene tasks
++      and shared state>` artifacts (when :term:`SSTATE_VERIFY_SIG` is set to
++      "1"), the :term:`SSTATE_SIG_PASSPHRASE` variable is the passphrase used to
++      protect the private key signing the artifacts.
++
++      See :doc:`/security-manual/sstate-signing` in the Yocto Project Security
++      Manual for more information.
++
+    :term:`SSTATE_SKIP_CREATION`
+       The :term:`SSTATE_SKIP_CREATION` variable can be used to skip the
+       creation of :ref:`shared state <overview-manual/concepts:shared state cache>`
+@@ -10117,6 +10136,37 @@ system and gives an overview of their function and contents.
+ 
+          SSTATE_SKIP_CREATION = "1"
+ 
++   :term:`SSTATE_VALID_SIGS`
++      When verifying :ref:`shared state <overview-manual/concepts:setscene tasks
++      and shared state>` artifacts (when :term:`SSTATE_VERIFY_SIG` is set to
++      "1"), the :term:`SSTATE_VALID_SIGS` variable is a space-separated list of
++      :wikipedia:`GPG <GNU_Privacy_Guard>` key identifiers to use to verify their
++      signature.
++
++      It must contain the short form identifier of the key pair. For example,
++      when running the ``gpg --list-keys`` command:
++
++      .. parsed-literal::
++
++         pub   ed25519 2026-04-17 [SC]
++               \4049A47E3AAA99D0250966DC\ **5B97632FA7F4E942**
++         uid           [ultimate] Antonin Godard (SState Signing) <antonin.godard\@bootlin.com>
++         sub   cv25519 2026-04-17 [E]
++
++      The short form equals the last 16 characters of the identier. In the above
++      example: ``5B97632FA7F4E942``.
++
++      See :doc:`/security-manual/sstate-signing` in the Yocto Project Security
++      Manual for more information.
++
++   :term:`SSTATE_VERIFY_SIG`
++      The :term:`SSTATE_VERIFY_SIG` variable controls whether to enable of
++      disable the :ref:`shared state <overview-manual/concepts:setscene tasks
++      and shared state>` artifacts signing feature.
++
++      See :doc:`/security-manual/sstate-signing` in the Yocto Project Security
++      Manual for more information.
++
+    :term:`STAGING_BASE_LIBDIR_NATIVE`
+       Specifies the path to the ``/lib`` subdirectory of the sysroot
+       directory for the build host.
+diff --git a/documentation/security-manual/index.rst b/documentation/security-manual/index.rst
+index 3453940f5..a767cd9c6 100644
+--- a/documentation/security-manual/index.rst
++++ b/documentation/security-manual/index.rst
+@@ -14,6 +14,7 @@ Yocto Project Security Manual
+    securing-images
+    vulnerabilities
+    read-only-rootfs
++   sstate-signing
+ 
+ .. include:: /boilerplate.rst
+ 
+diff --git a/documentation/security-manual/sstate-signing.rst b/documentation/security-manual/sstate-signing.rst
 new file mode 100644
-index 0000000000..f9adfc8dce
+index 000000000..1845b890f
 --- /dev/null
-+++ b/documentation/migration-guides/release-notes-5.0.17.rst
-@@ -0,0 +1,263 @@
-+Release notes for Yocto-5.0.17 (Scarthgap)
-+------------------------------------------
++++ b/documentation/security-manual/sstate-signing.rst
+@@ -0,0 +1,272 @@
++.. SPDX-License-Identifier: CC-BY-SA-2.0-UK
 +
-+Openssl 3.2 has reached EOL. Some projects would like to use LTS version due to criticality and exposure of this component, so upgrade to 3.5 branch.
++Shared State Signing
++********************
 +
-+Security Fixes in Yocto-5.0.17
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++The :term:`OpenEmbedded Build System` build system has a built-in mechanism
++allowing to save execution time by re-using pre-built artifacts: the
++:ref:`shared state cache (sstate cache) <overview-manual/concepts:shared state
++cache>`. These artifacts are stored in a directory (:term:`SSTATE_DIR`) are not
++signed by default.
 +
-+-  alsa-lib: Fix :cve_nist:`2026-25068`
-+-  avahi: Fix :cve_nist:`2025-68276`, :cve_nist:`2025-68468`, :cve_nist:`2025-68471` and
-+   :cve_nist:`2026-24401`
-+-  bind: Fix :cve_nist:`2025-13878`
-+-  busybox: Fix :cve_nist:`2025-60876`
-+-  ffmpeg: ignore :cve_nist:`2025-1594`, :cve_nist:`2025-10256`, :cve_nist:`2025-12343` and
-+   :cve_nist:`2025-25468`
-+-  freetype: Fix :cve_nist:`2026-23865`
-+-  gdk-pixbuf: Fix :cve_nist:`2025-6199`
-+-  glib-2.0: Fix :cve_nist:`2026-1484`, :cve_nist:`2026-1485` and :cve_nist:`2026-1489`
-+-  gnupg: Fix :cve_nist:`2025-68973`
-+-  gnutls: Fix :cve_nist:`2025-14831`
-+-  go 1.22.12: Fix :cve_nist:`2025-61726`, :cve_nist:`2025-61728`, :cve_nist:`2025-61730`,
-+   :cve_nist:`2025-61731`, :cve_nist:`2025-61732`, :cve_nist:`2025-68119` and :cve_nist:`2025-68121`
-+-  harfbuzz: Fix :cve_nist:`2026-22693`
-+-  inetutils: Fix :cve_nist:`2026-28372` and :cve_nist:`2026-32746`
-+-  libpng: Fix :cve_nist:`2026-25646`
-+-  libsndfile1: Fix :cve_nist:`2025-56226`
-+-  libtheora: Ignore :cve_nist:`2024-56431`
-+-  linux-yocto/6.6: Fix :cve_nist:`2025-38593`, :cve_nist:`2025-38643`, :cve_nist:`2025-38678`,
-+   :cve_nist:`2025-40039`, :cve_nist:`2025-40040`, :cve_nist:`2025-40149`, :cve_nist:`2025-40164`,
-+   :cve_nist:`2025-40251`, :cve_nist:`2025-68211`, :cve_nist:`2025-68214`, :cve_nist:`2025-68223`,
-+   :cve_nist:`2025-68340`, :cve_nist:`2025-68365`, :cve_nist:`2025-68725`, :cve_nist:`2025-68817`,
-+   :cve_nist:`2025-71068`, :cve_nist:`2025-71071`, :cve_nist:`2025-71075`, :cve_nist:`2025-71077`,
-+   :cve_nist:`2025-71078`, :cve_nist:`2025-71079`, :cve_nist:`2025-71081`, :cve_nist:`2025-71082`,
-+   :cve_nist:`2025-71083`, :cve_nist:`2025-71084`, :cve_nist:`2025-71085`, :cve_nist:`2025-71086`,
-+   :cve_nist:`2025-71087`, :cve_nist:`2025-71088`, :cve_nist:`2025-71089`, :cve_nist:`2025-71091`,
-+   :cve_nist:`2025-71093`, :cve_nist:`2025-71094`, :cve_nist:`2025-71095`, :cve_nist:`2025-71096`,
-+   :cve_nist:`2025-71097`, :cve_nist:`2025-71098`, :cve_nist:`2025-71101`, :cve_nist:`2025-71102`,
-+   :cve_nist:`2025-71104`, :cve_nist:`2025-71105`, :cve_nist:`2025-71107`, :cve_nist:`2025-71108`,
-+   :cve_nist:`2025-71111`, :cve_nist:`2025-71112`, :cve_nist:`2025-71113`, :cve_nist:`2025-71114`,
-+   :cve_nist:`2025-71116`, :cve_nist:`2025-71118`, :cve_nist:`2025-71119`, :cve_nist:`2025-71120`,
-+   :cve_nist:`2025-71121`, :cve_nist:`2025-71122`, :cve_nist:`2025-71125`, :cve_nist:`2025-71126`,
-+   :cve_nist:`2025-71127`, :cve_nist:`2025-71129`, :cve_nist:`2025-71130`, :cve_nist:`2025-71131`,
-+   :cve_nist:`2025-71132`, :cve_nist:`2025-71133`, :cve_nist:`2025-71136`, :cve_nist:`2025-71137`,
-+   :cve_nist:`2025-71138`, :cve_nist:`2025-71141`, :cve_nist:`2025-71143`, :cve_nist:`2025-71147`,
-+   :cve_nist:`2025-71148`, :cve_nist:`2025-71149`, :cve_nist:`2025-71150`, :cve_nist:`2025-71151`,
-+   :cve_nist:`2025-71153`, :cve_nist:`2025-71154`, :cve_nist:`2025-71160`, :cve_nist:`2025-71162`,
-+   :cve_nist:`2025-71163`, :cve_nist:`2025-71180`, :cve_nist:`2025-71182`, :cve_nist:`2025-71183`,
-+   :cve_nist:`2025-71185`, :cve_nist:`2025-71186`, :cve_nist:`2025-71188`, :cve_nist:`2025-71189`,
-+   :cve_nist:`2025-71190`, :cve_nist:`2025-71191`, :cve_nist:`2025-71200`, :cve_nist:`2026-22976`,
-+   :cve_nist:`2026-22977`, :cve_nist:`2026-22978`, :cve_nist:`2026-22979`, :cve_nist:`2026-22980`,
-+   :cve_nist:`2026-22982`, :cve_nist:`2026-22984`, :cve_nist:`2026-22990`, :cve_nist:`2026-22991`,
-+   :cve_nist:`2026-22992`, :cve_nist:`2026-22994`, :cve_nist:`2026-22997`, :cve_nist:`2026-22998`,
-+   :cve_nist:`2026-22999`, :cve_nist:`2026-23001`, :cve_nist:`2026-23003`, :cve_nist:`2026-23005`,
-+   :cve_nist:`2026-23006`, :cve_nist:`2026-23010`, :cve_nist:`2026-23011`, :cve_nist:`2026-23019`,
-+   :cve_nist:`2026-23020`, :cve_nist:`2026-23021`, :cve_nist:`2026-23025`, :cve_nist:`2026-23026`,
-+   :cve_nist:`2026-23060`, :cve_nist:`2026-23061`, :cve_nist:`2026-23062`, :cve_nist:`2026-23063`,
-+   :cve_nist:`2026-23064`, :cve_nist:`2026-23068`, :cve_nist:`2026-23069`, :cve_nist:`2026-23071`,
-+   :cve_nist:`2026-23073`, :cve_nist:`2026-23074`, :cve_nist:`2026-23075`, :cve_nist:`2026-23076`,
-+   :cve_nist:`2026-23078`, :cve_nist:`2026-23080`, :cve_nist:`2026-23083`, :cve_nist:`2026-23084`,
-+   :cve_nist:`2026-23085`, :cve_nist:`2026-23086`, :cve_nist:`2026-23087`, :cve_nist:`2026-23088`,
-+   :cve_nist:`2026-23089`, :cve_nist:`2026-23090`, :cve_nist:`2026-23091`, :cve_nist:`2026-23093`,
-+   :cve_nist:`2026-23094`, :cve_nist:`2026-23095`, :cve_nist:`2026-23096`, :cve_nist:`2026-23097`,
-+   :cve_nist:`2026-23098`, :cve_nist:`2026-23099`, :cve_nist:`2026-23101`, :cve_nist:`2026-23102`,
-+   :cve_nist:`2026-23103`, :cve_nist:`2026-23105`, :cve_nist:`2026-23107`, :cve_nist:`2026-23108`,
-+   :cve_nist:`2026-23110`, :cve_nist:`2026-23113`, :cve_nist:`2026-23116`, :cve_nist:`2026-23119`,
-+   :cve_nist:`2026-23120`, :cve_nist:`2026-23121`, :cve_nist:`2026-23123`, :cve_nist:`2026-23124`,
-+   :cve_nist:`2026-23125`, :cve_nist:`2026-23126`, :cve_nist:`2026-23128`, :cve_nist:`2026-23131`,
-+   :cve_nist:`2026-23133`, :cve_nist:`2026-23135`, :cve_nist:`2026-23136`, :cve_nist:`2026-23139`,
-+   :cve_nist:`2026-23140`, :cve_nist:`2026-23141`, :cve_nist:`2026-23142`, :cve_nist:`2026-23144`,
-+   :cve_nist:`2026-23146`, :cve_nist:`2026-23150`, :cve_nist:`2026-23156`, :cve_nist:`2026-23160`,
-+   :cve_nist:`2026-23163`, :cve_nist:`2026-23164`, :cve_nist:`2026-23167`, :cve_nist:`2026-23168`,
-+   :cve_nist:`2026-23170`, :cve_nist:`2026-23172`, :cve_nist:`2026-23173` and :cve_nist:`2026-23212`
-+-  openssl: fix :cve_nist:`2025-15468` and :cve_nist:`2025-69419`
-+-  python3-cryptography: Fix :cve_nist:`2026-26007`
-+-  python3-pip: Fix :cve_nist:`2026-1703`
-+-  python3-pyopenssl: Fix :cve_nist:`2026-27448` and :cve_nist:`2026-27459`
-+-  tiff: ignore :cve_nist:`2025-61144` and :cve_nist:`2025-61145`
-+-  vim: ignore :cve_nist:`2025-66476`
-+-  zlib: Fix :cve_nist:`2026-27171`
++This document goes through the steps to enable shared state signing.
++This feature is fully dependent on :wikipedia:`GPG <GNU_Privacy_Guard>`, meaning
++examples shown in this document will use the ``gpg`` command-line tool.
 +
++Host Requirements
++=================
 +
-+Fixes in Yocto-5.0.17
-+~~~~~~~~~~~~~~~~~~~~~
++As :wikipedia:`GPG <GNU_Privacy_Guard>` is not part of the default :ref:`host
++requirements <ref-manual/system-requirements:Required Packages for the Build
++Host>`, you will need to install it on your host.
 +
-+-  README: Add scarthgap subject-prefix to git-send-email suggestion
-+-  bind: upgrade to 9.18.44
-+-  bitbake: COW: Fix hardcoded magic numbers and work with python 3.13
-+-  bitbake: fetch2: Fix LFS object checkout in submodules
-+-  bitbake: fetch2: Fix incorrect lfs parametrization for submodules
-+-  bitbake: fetch2: don't try to preserve all attributes when unpacking files
-+-  bitbake: gitsm: Add clean function
-+-  build-appliance-image: Update to scarthgap head revision
-+-  classes/buildhistory: Do not sign buildhistory commits
-+-  create-pull-request: Keep commit hash to be pulled in cover email
-+-  dev-manual: delete references to "tar" package format
-+-  docs: Makefile: pass -silent to latexmk
-+-  go-vendor: Fix absolute paths issue
-+-  improve_kernel_cve_report: add option to read debugsources.zstd
-+-  improve_kernel_cve_report: do not override backported-patch
-+-  improve_kernel_cve_report: do not use custom version
-+-  linux-yocto/6.6: upgrade to v6.6.123
-+-  lsb.py: strip ' from os-release file
-+-  migration-guides: add release notes for 5.0.16
-+-  mobile-broadband-provider-info: upgrade to 20251101
-+-  oe-setup-build: Fix typo
-+-  oeqa/selftest/wic: test recursive dir copy on ext partitions
-+-  openssl: upgrade to 3.5.5
-+-  overview-manual/concepts: list other possible class directories
-+-  overview-manual: escape wildcard in inline markup
-+-  poky.conf: Bump version for 5.0.17 release
-+-  poky.conf: add Centos Stream 9, fedora-41, rocky-8 to :term:`SANITY_TESTED_DISTROS`
-+-  pseudo: Update to include a fix for systems with kernel <5.6
-+-  python3-pip: drop unused Windows distlib launcher templates
-+-  python3-setuptools: drop Windows launcher executables on non-mingw builds
-+-  ref-manual/classes.rst: fix broken links to U-Boot documentation
-+-  ref-manual/system-requirements.rst: update supported, end-of-life and untested distros
-+-  scripts/install-buildtools: Update to 5.0.15
-+-  spdx30_tasks: Exclude 'doc' when exporting :term:`PACKAGECONFIG` to :term:`SPDX`
-+-  spdx: add option to include only compiled sources
-+-  systemd-systemctl: Fix instance name parsing with escapes or periods
-+-  tzdata,tzcode-native: upgrade to 2025c
-+-  u-boot: move CVE Fixes out of the common .inc file
-+-  uboot-config: Fix devtool modify
-+-  weston: fix a touch-calibrator issue
-+-  what-i-wish-id-known.rst: replace figure by the new SVG
-+-  wic/engine: error on old host debugfs for standalone directory copy
-+-  wic/engine: fix copying directories into wic image with ext* partition
-+-  wireless-regdb: upgrade to 2026.02.04
++For example, Debian based distributions provide it with the `gpg` package name.
++Install it as follows:
 +
++.. code-block:: console
 +
-+Known Issues in Yocto-5.0.17
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++   $ sudo apt install gpg
 +
-+- N/A
++Verify that your installation is successful by showing the version of GPG:
 +
-+Contributors to Yocto-5.0.17
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++.. code-block:: console
 +
-+-  Aleksandar Nikolic
-+-  Amaury Couderc
-+-  Ankur Tyagi
-+-  Antonin Godard
-+-  Benjamin Robin (Schneider Electric)
-+-  Bruce Ashfield
-+-  Daniel Dragomir
-+-  Daniel Turull
-+-  Deepak Rathore
-+-  Dragomir, Daniel
-+-  Eduardo Ferreira
-+-  Fabio Berton
-+-  Hitendra Prajapati
-+-  Hugo SIMELIERE
-+-  João Marcos Costa (Schneider Electric)
-+-  Kristiyan Chakarov
-+-  Krupal Ka Patel
-+-  Lee Chee Yang
-+-  Livin Sunny
-+-  Martin Jansa
-+-  Michael Opdenacker
-+-  Ming Liu
-+-  Nguyen Dat Tho
-+-  Paul Barker
-+-  Peter Marko
-+-  Philip Lorenz
-+-  Quentin Schulz
-+-  Richard Purdie
-+-  Robert P. J. Day
-+-  Robert Yang
-+-  Ross Burton
-+-  Ryan Eatmon
-+-  Shaik Moin
-+-  Tom Hochstein
-+-  Trent Piepho
-+-  Vijay Anusuri
-+-  Yoann Congal
++   $ gpg --version
 +
-+Repositories / Downloads for Yocto-5.0.17
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++Generating A Public And Private Key Pair With GPG
++=================================================
 +
-+yocto-docs
++.. note::
 +
-+-  Repository Location: :yocto_git:`/yocto-docs`
-+-  Branch: :yocto_git:`scarthgap </yocto-docs/log/?h=scarthgap>`
-+-  Tag:  :yocto_git:`yocto-5.0.17 </yocto-docs/log/?h=yocto-5.0.17>`
-+-  Git Revision: :yocto_git:`aa7226705451e6c1ef964d49963bbed29b267c27 </yocto-docs/commit/?id=aa7226705451e6c1ef964d49963bbed29b267c27>`
-+-  Release Artefact: yocto-docs-aa7226705451e6c1ef964d49963bbed29b267c27
-+-  sha: d429833609637657f213611317dfadbd70293fff2f9e22753d1f71ef8515a6c0
-+-  Download Locations:
++   This step is optional if you already have a pair of public and private keys.
 +
-+   https://downloads.yoctoproject.org/releases/yocto/yocto-5.0.17/yocto-docs-aa7226705451e6c1ef964d49963bbed29b267c27.tar.bz2
++We need a pair of public and private keys for two independent tasks:
 +
-+   https://mirrors.edge.kernel.org/yocto/yocto/yocto-5.0.17/yocto-docs-aa7226705451e6c1ef964d49963bbed29b267c27.tar.bz2
++-  Signing our sstate artifacts that the :term:`OpenEmbedded Build System`
++   generates with our **private key**.
 +
-+poky
++-  Verifying our sstate artifacts with our **public key** when re-using them.
 +
-+-  Repository Location: :yocto_git:`/poky`
-+-  Branch: :yocto_git:`scarthgap </poky/log/?h=scarthgap>`
-+-  Tag:  :yocto_git:`yocto-5.0.17 </poky/log/?h=yocto-5.0.17>`
-+-  Git Revision: :yocto_git:`1e8099846661571ede077f533eb1b6c86818ddce </poky/commit/?id=1e8099846661571ede077f533eb1b6c86818ddce>`
-+-  Release Artefact: poky-1e8099846661571ede077f533eb1b6c86818ddce
-+-  sha: b56890576f593cc881ea8e467562d842cfca248099ce653d28ca14d250f6219e
-+-  Download Locations:
++.. note::
 +
-+   https://downloads.yoctoproject.org/releases/yocto/yocto-5.0.17/poky-1e8099846661571ede077f533eb1b6c86818ddce.tar.bz2
++   For more information on public key cryptography, see
++   :wikipedia:`Public-key_cryptography`.
 +
-+   https://mirrors.edge.kernel.org/yocto/yocto/yocto-5.0.17/poky-1e8099846661571ede077f533eb1b6c86818ddce.tar.bz2
++With the ``gpg`` command-line tool, generate a new pair of public and private
++keys:
 +
-+openembedded-core
++.. code-block:: console
 +
-+-  Repository Location: :oe_git:`/openembedded-core`
-+-  Branch: :oe_git:`scarthgap </openembedded-core/log/?h=scarthgap>`
-+-  Tag:  :oe_git:`yocto-5.0.17 </openembedded-core/log/?h=yocto-5.0.17>`
-+-  Git Revision: :oe_git:`52380df998b3a8fe6a091f8547434a3231320a8e </openembedded-core/commit/?id=52380df998b3a8fe6a091f8547434a3231320a8e>`
-+-  Release Artefact: oecore-52380df998b3a8fe6a091f8547434a3231320a8e
-+-  sha: a948d75acf76a392d170129ce6eb6f5fe45082d95b4fd28045aac58b8373cb26
-+-  Download Locations:
++   $ gpg --full-generate-key
 +
-+   https://downloads.yoctoproject.org/releases/yocto/yocto-5.0.17/oecore-52380df998b3a8fe6a091f8547434a3231320a8e.tar.bz
++This will guide you through the steps of creating the key pair.
 +
-+   https://mirrors.edge.kernel.org/yocto/yocto/yocto-5.0.17/oecore-52380df998b3a8fe6a091f8547434a3231320a8e.tar.bz2
++Once done, you should be able to list your new key with the following command:
 +
-+meta-yocto
++.. code-block:: console
 +
-+-  Repository Location: :yocto_git:`/meta-yocto`
-+-  Branch: :yocto_git:`scarthgap </meta-yocto/log/?h=scarthgap>`
-+-  Tag:  :yocto_git:`yocto-5.0.17 </meta-yocto/log/?h=yocto-5.0.17>`
-+-  Git Revision: :yocto_git:`c7c38663a1cafb1fa8593c0b246811e51d3bbe20 </meta-yocto/commit/?id=c7c38663a1cafb1fa8593c0b246811e51d3bbe20>`
-+-  Release Artefact: meta-yocto-c7c38663a1cafb1fa8593c0b246811e51d3bbe20
-+-  sha: 5a2a9360249e639694cc2a75985e3907085512b3eb236e8491cb07f1e0cb0f19
-+-  Download Locations:
++   $ gpg --list-keys
++   pub   ed25519 2026-04-17 [SC]
++         4049A47E3AAA99D0250966DC5B97632FA7F4E942
++   uid           [ultimate] Antonin Godard (SState Signing) <antonin.godard@bootlin.com>
++   sub   cv25519 2026-04-17 [E]
 +
-+   https://downloads.yoctoproject.org/releases/yocto/yocto-5.0.17/meta-yocto-c7c38663a1cafb1fa8593c0b246811e51d3bbe20.tar.bz2
++In the above example, take note of the
++``4049A47E3AAA99D0250966DC5B97632FA7F4E942`` key identifier. This will be used
++to configure our build.
 +
-+   https://mirrors.edge.kernel.org/yocto/yocto/yocto-5.0.17/meta-yocto-c7c38663a1cafb1fa8593c0b246811e51d3bbe20.tar.bz2
++Configuring Our Build System To Sign Sstate Artifacts
++=====================================================
 +
-+meta-mingw
++Shared State Location
++---------------------
 +
-+-  Repository Location: :yocto_git:`/meta-mingw`
-+-  Branch: :yocto_git:`scarthgap </meta-mingw/log/?h=scarthgap>`
-+-  Tag:  :yocto_git:`yocto-5.0.17 </meta-mingw/log/?h=yocto-5.0.17>`
-+-  Git Revision: :yocto_git:`bd9fef71ec005be3c3a6d7f8b99d8116daf70c4f </meta-mingw/commit/?id=bd9fef71ec005be3c3a6d7f8b99d8116daf70c4f>`
-+-  Release Artefact: meta-mingw-bd9fef71ec005be3c3a6d7f8b99d8116daf70c4f
-+-  sha: ab073def6487f237ac125d239b3739bf02415270959546b6b287778664f0ae65
-+-  Download Locations:
++Our build system needs to be configured to sign new sstate artifacts when they
++are generated. The generation of new artifacts is done once a task has finished
++being executed.
 +
-+   https://downloads.yoctoproject.org/releases/yocto/yocto-5.0.17/meta-mingw-bd9fef71ec005be3c3a6d7f8b99d8116daf70c4f.tar.bz2
++For the following sections let's assume that our build system has the shared
++state directory location (:term:`SSTATE_DIR`) defined as follows::
 +
-+   https://mirrors.edge.kernel.org/yocto/yocto/yocto-5.0.17/meta-mingw-bd9fef71ec005be3c3a6d7f8b99d8116daf70c4f.tar.bz2
++   SSTATE_DIR = "${TOPDIR}/sstate-cache"
 +
-+bitbake
++Assuming this directory and our temporary directory (:term:`TMPDIR`) is empty,
++as an example throughout this document, let's run the ``create_recipe_spdx``
++task of the ``gettext-minimal-native`` recipe:
 +
-+-  Repository Location: :oe_git:`/bitbake`
-+-  Branch: :oe_git:`2.8 </bitbake/log/?h=2.8>`
-+-  Tag:  :oe_git:`yocto-5.0.17 </bitbake/log/?h=yocto-5.0.17>`
-+-  Git Revision: :oe_git:`d3b4c352dd33fca90cd31649eda054b884478739 </bitbake/commit/?id=d3b4c352dd33fca90cd31649eda054b884478739>`
-+-  Release Artefact: bitbake-d3b4c352dd33fca90cd31649eda054b884478739
-+-  sha: 1021fc412780e21b25ccb045b66368ebe3fc4e785a65066ac0cafb9bdd5492fa
-+-  Download Locations:
++.. code-block:: console
 +
-+   https://downloads.yoctoproject.org/releases/yocto/yocto-5.0.17/bitbake-d3b4c352dd33fca90cd31649eda054b884478739.tar.bz2
++   $ bitbake gettext-minimal-native -c create_recipe_spdx
 +
-+   https://mirrors.edge.kernel.org/yocto/yocto/yocto-5.0.17/bitbake-d3b4c352dd33fca90cd31649eda054b884478739.tar.bz2
++After execution, our shared state directory should be populated with new files:
 +
--- 
-2.43.0
++.. code-block:: console
++
++   $ find $BUILDDIR/sstate-cache/ -name "*gettext-minimal-native*create_recipe_spdx*"
++   sstate-cache/universal/a3/6e/sstate:gettext-minimal-native:x86_64-linux:1.0:r0:x86_64:14:a36ef66df6b8c0cb5a849bc70a99dcfd61e4bacd11cefe6bbaf4978b2b3b617a_create_recipe_spdx.tar.zst
++   sstate-cache/universal/a3/6e/sstate:gettext-minimal-native:x86_64-linux:1.0:r0:x86_64:14:a36ef66df6b8c0cb5a849bc70a99dcfd61e4bacd11cefe6bbaf4978b2b3b617a_create_recipe_spdx.tar.zst.siginfo
++
++These are the default shared state artifacts generated by the
++:term:`OpenEmbedded Build System`. They are not signed with GPG by default, so
++let's see how to add signing of these artifacts.
++
++.. note::
++
++   The `siginfo` file is not related to GPG signing.
++
++Enabling Shared State Signing
++-----------------------------
++
++Create a new :term:`configuration file` on your host **in a safe location** and
++add the two following statements::
++
++   SSTATE_VERIFY_SIG = "1"
++   SSTATE_SIG_KEY = "80613045069236143C2EE1A3C8855DA51F042B42"
++   SSTATE_SIG_PASSPHRASE = "3lvJGHo8HZIcaufWFRezFIYRFDMSDmmkxOiwQ67PeM8IZre90I"
++
++It is advised to put these statements in a separate file as those contain
++secrets and should not be shared. For this example, let's assume this file is
++``conf/sstate-sig-key.conf``.
++
++These statements define:
++
++-  :term:`SSTATE_VERIFY_SIG`: setting this variable to "1" enables the shared
++   state signing feature.
++
++-  :term:`SSTATE_SIG_KEY`: the GPG key identifier for signing shared state
++   artifacts with the private key.
++
++   In our example, this corresponds to the identifier printed with the ``gpg
++   --list-keys`` command :ref:`above <security-manual/sstate-signing:Generating
++   A Public And Private Key Pair With GPG>`.
++
++-  :term:`SSTATE_SIG_PASSPHRASE`: the passphrase used to protect your private
++   key when creating the key, chosen when creating the key pair.
++
++Let's test our configuration:
++
++#. Continuing with our ``gettext-minimal-native`` example, let's first clean the
++   existing shared state artifacts:
++
++   .. code-block:: console
++
++      $ bitbake gettext-minimal-native -c cleansstate
++
++#. Run the ``create_recipe_spdx`` task for ``gettext-minimal-native``, but this
++   time pass our new ``sstate-sig-key.conf`` file to :term:`BitBake`:
++
++   .. code-block:: console
++
++      $ bitbake -R conf/sstate-sig-key.conf gettext-minimal-native -c create_recipe_spdx
++
++List the files in the shared state directory again:
++
++.. code-block:: console
++
++   $ find sstate-cache/ -name "*gettext-minimal-native*create_recipe_spdx*"
++   sstate-cache/universal/a3/6e/sstate:gettext-minimal-native:x86_64-linux:1.0:r0:x86_64:14:a36ef66df6b8c0cb5a849bc70a99dcfd61e4bacd11cefe6bbaf4978b2b3b617a_create_recipe_spdx.tar.zst
++   sstate-cache/universal/a3/6e/sstate:gettext-minimal-native:x86_64-linux:1.0:r0:x86_64:14:a36ef66df6b8c0cb5a849bc70a99dcfd61e4bacd11cefe6bbaf4978b2b3b617a_create_recipe_spdx.tar.zst.sig
++   sstate-cache/universal/a3/6e/sstate:gettext-minimal-native:x86_64-linux:1.0:r0:x86_64:14:a36ef66df6b8c0cb5a849bc70a99dcfd61e4bacd11cefe6bbaf4978b2b3b617a_create_recipe_spdx.tar.zst.siginfo
++
++A new ``.sig`` file was created: this means our artifact was successfully
++signed, and the signature is stored in a separate ``.sig`` file.
++
++Verifying Signed Shared State Artifacts
++=======================================
++
++Now that we have setup our build to sign shared state artifacts, let's see how
++we can verify them with the public key counterpart of the private key.
++
++.. note::
++
++   Signature of shared state and its verification can happen on two different
++   hosts, meaning one host can be in charge of the signature while another only
++   verifies the artifacts. This is preferred as the private key should not be
++   shared spread on multiple hosts.
++
++From a :term:`configuration file` such as the :ref:`site configuration file
++<structure-build-conf-site.conf>`, include the following statements::
++
++   SSTATE_VERIFY_SIG = "1"
++   SSTATE_VALID_SIGS = "5B97632FA7F4E942"
++
++These statements define:
++
++-  :term:`SSTATE_VERIFY_SIG`: setting this variable to "1" enables the shared
++   state signing feature.
++
++-  :term:`SSTATE_VALID_SIGS`: a space-separated list of key identifiers for
++   which we can accept shared state artifacts.
++
++   This means that shared state will be reused **only if it was signed with the
++   private key corresponding to key identifier**.
++
++   You'll notice the short-form of the key identifier here, which are the last 16
++   characters of the long-form key identifier shown with ``gpg --list-keys``:
++
++   .. parsed-literal::
++
++      pub   ed25519 2026-04-17 [SC]
++            \4049A47E3AAA99D0250966DC\ **5B97632FA7F4E942**
++      uid           [ultimate] Antonin Godard (SState Signing) <antonin.godard\@bootlin.com>
++      sub   cv25519 2026-04-17 [E]
++
++Let's verify that signature verification works:
++
++#. First, remove temporary outputs (:term:`TMPDIR`) from the previous builds, to
++   make the :term:`OpenEmbedded Build System` use the shared state:
++
++   .. code-block:: console
++
++      $ rm -r $BUILDDIR/tmp/
++
++#. Then, run the task again:
++
++   .. code-block:: console
++
++      $ bitbake gettext-minimal-native -c create_recipe_spdx
++
++#. To make sure the shared state artifact was successfully used, look for the
++   :ref:`setscene <overview-manual/concepts:setscene tasks and shared state>` task
++   for ``create_recipe_spdx`` in the latest log file from :term:`BitBake`:
++
++   .. code-block:: console
++
++      $ grep create_recipe_spdx_setscene tmp/log/cooker/<machine>/console-latest.log
++      NOTE: Running setscene task 1 of 1 (../layers/openembedded-core/meta/recipes-core/gettext/gettext-minimal-native_1.0.bb:do_create_recipe_spdx_setscene)
++      NOTE: recipe gettext-minimal-native-1.0-r0: task do_create_recipe_spdx_setscene: Started
++      NOTE: recipe gettext-minimal-native-1.0-r0: task do_create_recipe_spdx_setscene: Succeeded
++
++   Our shared state was successfully verified and used!
++
++.. note::
++
++   To make sure shared state verification is working, you can set a "fake"
++   public key identifier in :term:`SSTATE_VALID_SIGS`::
++
++      SSTATE_VALID_SIGS = "CAFECAFECAFECAFE"
++
++   Remove the temporary outputs again:
++
++   .. code-block:: console
++
++      $ rm -r $BUILDDIR/tmp/
++
++   Now, try executing the task:
++
++   .. code-block:: console
++
++      $ bitbake gettext-minimal-native -c create_recipe_spdx
++
++   You should have warnings from :term:`BitBake`:
++
++   .. code-block:: text
++
++      WARNING: gettext-minimal-native-1.0-r0 do_create_recipe_spdx_setscene: No accepted signatures found. Good signatures found: 5B97632FA7F4E942.
++      WARNING: gettext-minimal-native-1.0-r0 do_create_recipe_spdx_setscene: Cannot verify signature on sstate package ../build/sstate-cache/universal/a3/6e/sstate:gettext-minimal-native:x86_64-linux:1.0:r0:x86_64:14:a36ef66df6b8c0cb5a849bc70a99dcfd61e4bacd11cefe6bbaf4978b2b3b617a_create_recipe_spdx.tar.zst, skipping acceleration...
++      WARNING: gettext-minimal-native-1.0-r0 do_create_recipe_spdx_setscene: No sstate archive obtainable, will run full task instead.
++      WARNING: Logfile for failed setscene task is ../build/tmp/work/x86_64-linux/gettext-minimal-native/1.0/temp/log.do_create_recipe_spdx_setscene.6994
++      WARNING: Setscene task (../layers/openembedded-core/meta/recipes-core/gettext/gettext-minimal-native_1.0.bb:do_create_recipe_spdx_setscene) failed with exit code '1' - real task will be run instead
++
++   As you can see, this does not prevent :term:`BitBake` from continuing, but
++   the the real task is executed instead of re-using the shared state.
+
+---
+base-commit: 2c12ec7bf29aedeacf82970a9d2eb262fde4670e
+change-id: 20260417-sstate-signing-f96c75ce1917
 
 
