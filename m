@@ -2,82 +2,95 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6A9F7F36C5C
-	for <webhook@archiver.kernel.org>; Mon, 20 Apr 2026 12:14:20 +0000 (UTC)
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.17747.1776687258154291708
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 63016F99C9C
+	for <webhook@archiver.kernel.org>; Mon, 20 Apr 2026 12:15:30 +0000 (UTC)
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.18173.1776687326728896984
  for <docs@lists.yoctoproject.org>;
- Mon, 20 Apr 2026 05:14:19 -0700
+ Mon, 20 Apr 2026 05:15:27 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=bwOlUDeB;
- spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=CeuXcyft;
+ spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id F0C361A3371
-	for <docs@lists.yoctoproject.org>; Mon, 20 Apr 2026 12:14:15 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 90818C5C997
+	for <docs@lists.yoctoproject.org>; Mon, 20 Apr 2026 12:16:04 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id C7BA85FFA5
-	for <docs@lists.yoctoproject.org>; Mon, 20 Apr 2026 12:14:15 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 72BF710460869;
-	Mon, 20 Apr 2026 14:14:13 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id B8CFE5FFA5
+	for <docs@lists.yoctoproject.org>; Mon, 20 Apr 2026 12:15:24 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B0FA710460867;
+	Mon, 20 Apr 2026 14:15:23 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1776687254; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=O0hddIdIxDBHow2F+qbd8Jt8+ubFUNuV0Dynd/N8Cxw=;
-	b=bwOlUDeBQAglPJFmTjO2HmQNPd4D5xK/uytFtdwtmb14dQLh2Bb777NEqrHKVdyV54m78x
-	iqsUcpOw0z+Yl+Wa8wqM2q4KKXpm3aCXX9tHnev0qsSjJ2I8oiePfKnN6YHAaFXv1xB/lH
-	n9kAzuG30yj8iFT8RDm6mujy9v/lfp5e9qEiB9F9mrBxKWOkRfoKD1bDZX2iiSIyg2zLJU
-	bmU/iMZgOL4Xx/34l/RrFQsZlYJscJ9jpJwVLmac4BpnVQSZcIUHUr3Wrg3g20oAVqXDcu
-	83RavWY+Dyrt8sLDzMI74AWi7y4kFTdELsxYzcHL1YghfPwwGJvadtjBxJLQMA==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 20 Apr 2026 14:14:13 +0200
-Message-Id: <DHXZ2GGKEOL2.3HHYILCUSYA9N@bootlin.com>
-To: <docs@lists.yoctoproject.org>
-Subject: Re: [PATCH RFC] sphinx-static/theme_overrides.css: switch to a
- fixed width documentation
-Cc: "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>, "Antonin Godard"
- <antonin.godard@bootlin.com>
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-References: <20260202-fixed-width-html-v1-1-e987deb9926d@bootlin.com>
-In-Reply-To: <20260202-fixed-width-html-v1-1-e987deb9926d@bootlin.com>
+	t=1776687324; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=lih1V2HV9L0tveFIkbq8b9gbqnd55dKORQM4NBzGzz0=;
+	b=CeuXcyftJWu6OV7GaajI3Vrve/B36dNA3qTSjKxqINFJ1zsDGwTO2OAfGg7G/XR0n8H3pL
+	JRTT1jfIJnAEXLryMLuw0V6nGh0VtZpJH6nQvBN/HiZYp0zUuVhijFHtJZCWXLhU+YfQFv
+	Fbp/1kBWmNFETMgQEI3JE/FJqAd8WzGLASiwx004vT5g9/EHD0aBQk/foQD+2f5p/DX1dt
+	CahKyW5l/ViiKurPrT45zz9gEB5TU/YSuFqHT1zDDtouDnqrzDNN7G8ZIY/0xTCqVxRNie
+	eBRMUz6/8lE5Icl9/QeA1CfVDgbSb5BbakQLKfh65+Bg7BDLWAvuc7iOhB5x9g==
+From: Antonin Godard <antonin.godard@bootlin.com>
+Subject: [PATCH v3 0/2] Updates to host requirements
+Date: Mon, 20 Apr 2026 14:15:15 +0200
+Message-Id: <20260420-python3-websockets-requirement-v3-0-22bfa3f411cc@bootlin.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/5WOyw6CMBBFf8V07ZgylIeu/A/jAspU6qPVtlQJ4
+ d8FXLnT5UluzrkD8+Q0ebZbDcxR1F5bM0G6XjHZVuZEoJuJGXLMuUAO9z601qTwpNpbeaHgwdG
+ j045uZAKIbCtExlXZbJFNkrsjpV9L4HD8sO/qM8kwW+dFq32wrl8exGTe/RyLCSSApRRKEqoiz
+ /e1teGqzUbaG5tzEf8TInCosEgrnlS5EuJbOI7jGziJMGYxAQAA
+X-Change-ID: 20260420-python3-websockets-requirement-4594450f8d92
+To: docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Antonin Godard <antonin.godard@bootlin.com>
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1138;
+ i=antonin.godard@bootlin.com; h=from:subject:message-id;
+ bh=jir5T2kFFevZhjSEN3Q2g1XaxBrghEKTn+YqTC6LRAQ=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBp5hjbKUSCebFHUFPm4Xwx0oaZ1VIsNtSEUykkI
+ xXUnyy8o1SJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaeYY2wAKCRDRgEFAKaOo
+ NiPpEACmPn7rPqe6b+qgXv5sYH+5DLEUwS4P1LD/ygDQ+/fCg3YC93bgjBCj50MfzEK4QCeum6j
+ kccZAI3hzDcmKQTZMHqDgEfIrlqHexOXg8ea2W3G2ykNFxe9xxQE+UNRiLv2dmsp+RflPex9Mhv
+ ypaivecJm2fLEOzNOXOwyOjauukczPvxA0oQL4w9a8UPL/qWzmgZw6EYWp8uQzrc/7HJZfPZf5h
+ XiP5qoH+++P6X+Yw+xj7G7PAv0LJehZ6PRuU1Tg9ydAPASMHY0C0+EoX+mhR6v2vQuwyUuawq1P
+ aZa08scKyxjFZHJcALuduUy+A40SPO3TkITUY7Lvykmdokaq4hxZG2NoD8MbGAUeUIn5NzetOoc
+ Mr38xsSj6WJd3Lhg8g/6swG2WJZlBp8FSyAiqf4/IIdKM7LiRlhkJtdiZWwQgL0Z/EgLtmOt3j8
+ xOHIFeobaYYgnsBOWm7B5VQQcdlcxjPqYDIxlF4+u4YtKKh6q3MOJkqUd0hfgSH4+gy0NWdEULM
+ 22XDAOs+U65+/rfYb7L0gkkRI60amJWKozruZq/X/1fpNtS967SR8FRYdfQudU6pAeguMU51RCu
+ aJAolsYxZxw9JyJI9UWeOM14ybpi94mMjCtjgyHCDoaOhz7uH9h28xRAaYpsWd23cU1Qq5NI9gZ
+ KdPPtIHgRAPVhRA==
+X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
+ fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 20 Apr 2026 12:14:20 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9290
+ <docs@lists.yoctoproject.org>; Mon, 20 Apr 2026 12:15:30 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9292
 
-On Mon Feb 2, 2026 at 11:47 AM CET, Antonin Godard wrote:
-> Change the css rules of our theme to have a fixed-width documentation
-> instead of it taking the full width of the page. I believe this makes it
-> much more readable compared to having long lines with few line returns,
-> especially on high-resolution displays. Set the width to 1000px instead
-> of the previous 800px, which felt slightly too thin.
->
-> I think the removed comment here does not make that much sense for us.
-> It was added by commit 0c1e108bc6c4 ("sphinx: add CSS theme override"),
-> and I believe is a simply copy and paste of what was is set in the Linux
-> kernel, added by commit 9abaf979abb2 ("doc-rst: customize RTD theme,
-> table & full width") [1].
->
-> [1]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/c=
-ommit/?id=3D9abaf979abb2
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+---
+Changes in v3:
+- Apply suggestions by Quentin (thanks!).
+- Link to v2: https://patch.msgid.link/20260420-python3-websockets-requirement-v2-0-a273a01a6f44@bootlin.com
 
-A preview of this patch can be seen at
-https://docs.yoctoproject.org/next/index.html.
+Changes in v2:
+- Rework this websockets addition, as it proved to be tricky to provide
+  on older Ubuntu/Debian distros.
+- Add a patch to document the buildtools requirement on openSUSE Leap
+  15.6.
+- Link to v1: https://patch.msgid.link/20260420-python3-websockets-requirement-v1-1-28c4fce2f766@bootlin.com
 
-Any feedback appreciated! I think the docs are more readable like this.
+---
+Antonin Godard (2):
+      ref-manual/system-requirements.rst: make python3-websockets a default host requirement
+      ref-manual/system-requirements.rst: instruct to install a buildtools tarball
 
-The only drawbacks I would see are:
+ documentation/ref-manual/system-requirements.rst   | 36 ++++++++++++++++++++++
+ .../host_packages_scripts/fedora_essential.sh      |  2 +-
+ .../opensuse_essential_16.0.sh                     |  2 +-
+ 3 files changed, 38 insertions(+), 2 deletions(-)
+---
+base-commit: 5cc3b6690acf0c209514eae68006b1f24735302b
+change-id: 20260420-python3-websockets-requirement-4594450f8d92
 
-- Large tables are a bit less readable (but we only have a few: in the rele=
-ase
-  notes and on the list of supported features, IIRC).
-
-- Detailed images are not as readable (but can be clicked to be seen fully)=
-.
-
-Thanks,
-Antonin
 
