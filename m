@@ -2,74 +2,74 @@ Return-Path: <paul@pbarker.dev>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 10CF7F9B5FD
-	for <webhook@archiver.kernel.org>; Wed, 22 Apr 2026 09:37:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1281AF9B5FE
+	for <webhook@archiver.kernel.org>; Wed, 22 Apr 2026 09:37:34 +0000 (UTC)
 Received: from fhigh-b8-smtp.messagingengine.com (fhigh-b8-smtp.messagingengine.com [202.12.124.159])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.78556.1776850624842703314
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.78391.1776850646097460546
  for <docs@lists.yoctoproject.org>;
- Wed, 22 Apr 2026 02:37:04 -0700
+ Wed, 22 Apr 2026 02:37:26 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@pbarker.dev header.s=fm1 header.b=Ks3AO/CG;
- dkim=pass header.i=@messagingengine.com header.s=fm2 header.b=lpXgVtSp;
+ dkim=pass header.i=@pbarker.dev header.s=fm1 header.b=OUEr6wWE;
+ dkim=pass header.i=@messagingengine.com header.s=fm2 header.b=ksYDP31+;
  spf=pass (domain: pbarker.dev, ip: 202.12.124.159, mailfrom: paul@pbarker.dev)
 Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 4789B7A01E1;
-	Wed, 22 Apr 2026 05:37:04 -0400 (EDT)
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 8F8667A0060;
+	Wed, 22 Apr 2026 05:37:25 -0400 (EDT)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Wed, 22 Apr 2026 05:37:04 -0400
+  by phl-compute-05.internal (MEProxy); Wed, 22 Apr 2026 05:37:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pbarker.dev; h=
 	cc:cc:content-type:content-type:date:date:from:from:in-reply-to
 	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm1; t=1776850624; x=1776937024; bh=iprcxCf+2J
-	M8sWT5LUJkmis/T5fNwI8xfFKAbDZqnX4=; b=Ks3AO/CG9rYJY8n1rUvlxY2bEs
-	WGdk0d+C7ngCYiRA2Czsz+rY+w8XD6R2Oa11pRclDNKRVpcoXkZcFQrh7XPI2nlA
-	Q5wu4NEsAYnfPMuuxWxVCQGk+unnDAOqBVO+joCdMULfRK+ZbMxP8dnYwTVPs6cj
-	6/oOhGbyXSB3dXgNyHpeV/S0lwX6NElJX/O1WAdA8EdBJ757Dv6efqZYFqDUaFfG
-	DLTSk+rvy1247J8KfPPrqvQBk20nNM7kfvF9csdyM6asKKjhrq3TNuQM2pNH3J3F
-	SKRSdpUkrSm4COSZsgihhQ0b0pExkDnJaeYd+/tsA6Ru8vMnL1OMftchu4ww==
+	:subject:to:to; s=fm1; t=1776850645; x=1776937045; bh=6dJoQWrb1O
+	Z3iV462QBicnGXpcMZfyaBGLmB64H3MwA=; b=OUEr6wWEIY7BajmXmVSu8PPnTR
+	PuXMnYn5zU1j9Hl7MUsTBsJAipElsZPJp2dqy5zi5gc08rowSOG6ZNF5RzCEUbxA
+	8U/iCJ+yuoN9V8QgIKDQGolMIwnO7fVTMdOpmF+bXAXha1vwRgnYRRqEdP2nrefR
+	UMPyLOvIbRvOTUwlsnw11lMc2xVsm9EIIkq9QDBQRQnN5dYUCvJGggg4ndpNXMIf
+	+5EYyBNn+gswQcbbffeOSvDQVRjgQWNPr6dNLnKxWbs1Hf0ykn4Ct1r2wKKqabZC
+	fFSRTC4ReBwoIRcxxmcDEFy4s+i6Ul2bHop95knmaK/fMzwwCrLXv7ZiaWPQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-type:content-type:date:date
 	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
 	:message-id:mime-version:references:reply-to:subject:subject:to
 	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1776850624; x=1776937024; bh=iprcxCf+2JM8sWT5LUJkmis/T5fNwI8xfFK
-	AbDZqnX4=; b=lpXgVtSpq+iY7FmusQzkOzmZFuWiyWbjTrK1pZAaSHpCz4xFvE7
-	nX+Mu9lnCgTwpkqPkGsrtOU3fDaZ5TiSLYBhCGAkIcXsROWt7kmKmIUd+g1m7OZN
-	ykCKDq3Cqs39f+zMbHbsdW/oG3zOSc4aoqMSKOiV3V4/GLNlljNg99jabV9vu29+
-	QR7DoWVFnBQdzlQ3rD1Zh6aSAwYOmoM1jn/aX8uPljxx3ysrk0m8T1ODefkGWNVG
-	P2oIU74Mtg1kGXAJBQerL97ZhwIiUAq/JZi+SwQtj5ggkxU5R6b/m6Au0Q4wKMCw
-	Czjj923E7OxnqGZyTC0pHnY8Dx/zC6Oy0fw==
-X-ME-Sender: <xms:wJboaf6fHitgUzE4gBlFAO9bNO5da_igt5Q2zZP--WP9ENrgNdvWaQ>
-    <xme:wJboacVKwlNEMBFSY4L49hyPsIeGxFPw-6P1uF2IxbmpEJtSMGMw3hZlgNMliIb2t
-    KqdOgIoQbMPI1uaL4uvYsouVfFuwTUwpTWxp42h-25pP1GDRNWvz6M>
-X-ME-Received: <xmr:wJboaT3cADEyPnD3xvf65ntZKX8-Lx-RPkuWdt67ytz8zxo-IzIzvYSwZ5YpeRAHjAMhWabXsyS1fTFTk6qW9s89q9_SDUmzxVVoB0FmNepf>
+	1776850645; x=1776937045; bh=6dJoQWrb1OZ3iV462QBicnGXpcMZfyaBGLm
+	B64H3MwA=; b=ksYDP31+Tyz8fJL4nf+SdbVqsPw41ff7VQh4fNSXdF66PwfFgsu
+	hjWH3J2TRz8iFUDu6jqzK2eWDk4kooEgPJpbEzM1tu8VLj9Oyo5vIMUcp9+xf+WE
+	qykE/IUYz03G3x9qj0VkQdo2yWaksu2ImWnjFHqhfADP2m5RWA3WUiQNFcUg2dv6
+	Kqt9DBZXmfUjSAheH3Bs3k2uYhhQ9b1ZvECx3Gf02LJAGCM3VailelZJQ6OBuf8B
+	7wMj0UaGiVUYYxakF6gfhVimR5CVsmtbtg4nxYnqEHAhQt5vcfi/9ydTxYW/UQ0C
+	9F0W5ZPTocUwcbwXiiBvnUUSe2REDIHRL4A==
+X-ME-Sender: <xms:1Zboab2SPsf0_9_57yQog-cFWF5VhBqz_bYERgGtyacfqMf3p0hVOw>
+    <xme:1ZboaRhAiOtyPwZlO7ACObLJi1wGVda9sCjsjZaV3PYsxPURH1-YlYqw5Oz0Qjkjy
+    941Mwo5eXwrwgQcDTQmj32XaDGSSA1BCWkq1cMWR8wNRCeSr-xZtgM>
+X-ME-Received: <xmr:1ZboaZTiNs3FPYsJtjpyRuOebdmTxWF3Xn7xqRYtpKmOzHhmf-LqxHzInQ8G15I7ZJf_nPtmH4dJXqrTd6jDisBeDDh2ZB0UMTF6IsbY6Nty>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdeifeelfecutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
     ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
     hrpefkuffhvfevffgjfhgtfgggsehgtderredtreejnecuhfhrohhmpefrrghulhcuuegr
     rhhkvghruceophgruhhlsehpsggrrhhkvghrrdguvghvqeenucggtffrrghtthgvrhhnpe
     efffdvfeegveekudfhteeuhefhieekvdeiueefveeiffeukedtledutdfggeevheenucev
-    lhhushhtvghrufhiiigvpedunecurfgrrhgrmhepmhgrihhlfhhrohhmpehprghulhesph
+    lhhushhtvghrufhiiigvpedvnecurfgrrhgrmhepmhgrihhlfhhrohhmpehprghulhesph
     gsrghrkhgvrhdruggvvhdpnhgspghrtghpthhtohepfedpmhhouggvpehsmhhtphhouhht
     pdhrtghpthhtoheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpd
     hrtghpthhtohepughotghssehlihhsthhsrdihohgtthhophhrohhjvggtthdrohhrghdp
     rhgtphhtthhopeihohgrnhhnrdgtohhnghgrlhesshhmihhlvgdrfhhr
-X-ME-Proxy: <xmx:wJboaZ0XQ3qacjAsU304p7g9Gtl0jCyqLKVIQPO0mDKWMg2VoA2D5g>
-    <xmx:wJboaW-X5ar6KrD3z6cFjlcEGRcH0WNPnc4Id982d8dRVyNP6P-eGQ>
-    <xmx:wJboaW21tPBhkHtavKg84TfziiIyLIiccAK7Ua-7UidjvvxdBBAmEA>
-    <xmx:wJboaT83QAxiRYWXpGplPqHMBUkRyClZkEOgL20JKaKGmdCrV_dJkA>
-    <xmx:wJboaUcKYdzpbxHGQ0SreF2A_uopsoGRT4NcM6KMgD72efVvk8_WZEUz>
+X-ME-Proxy: <xmx:1Zboaaj0KdH-R53NJUkQWZ2aBs2VrS2puMwb0GurkQG5sYOMO3oX6w>
+    <xmx:1ZboaR6X7WXQvgmi7Ok-0x1s6jQnM1HF6Un9TQc6SY0NDKw3go-XGA>
+    <xmx:1ZboafDMJzoU7LUfDH-WV7VUP7a9H49eZMkjpQW9uf8ch-71CJoXTA>
+    <xmx:1ZboaQbsJADsaTRjKyb2IRYfwIiFG8AR0hIgdsqCnh9W8EjBxb-0oA>
+    <xmx:1ZboaUpalX-8rIZi7NQSGLpXObgfc1b1w3wv960tacKPwjQtf5XgR63H>
 Feedback-ID: i51494658:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 22 Apr 2026 05:37:03 -0400 (EDT)
-Message-ID: <fb0ad706f03b02eb2b9f5a75be3cdbbf0aa5b4be.camel@pbarker.dev>
-Subject: Re: [scarthgap] Pull request
+ 22 Apr 2026 05:37:24 -0400 (EDT)
+Message-ID: <0abef749652c1c4814eebac1d77a189296312caa.camel@pbarker.dev>
+Subject: Re: [kirkstone] Pull request
 From: Paul Barker <paul@pbarker.dev>
 To: Antonin Godard <antonin.godard@bootlin.com>
 Cc: docs@lists.yoctoproject.org, Yoann Congal <yoann.congal@smile.fr>
-Date: Wed, 22 Apr 2026 10:37:01 +0100
-In-Reply-To: <DHYVMDVLY9WW.AV2EUZCNM0IE@bootlin.com>
-References: <DHYVMDVLY9WW.AV2EUZCNM0IE@bootlin.com>
+Date: Wed, 22 Apr 2026 10:37:22 +0100
+In-Reply-To: <DHYVMDM4WS52.FC176SXHUK7L@bootlin.com>
+References: <DHYVMDM4WS52.FC176SXHUK7L@bootlin.com>
 Autocrypt: addr=paul@pbarker.dev; prefer-encrypt=mutual;
  keydata=mQINBGC756sBEADXL6cawsZRrDvICz9Y1SG0/lW1me4xpq36obh7a0IGAzp3ywNRb/4MO
  DTqP4+DD0cIFuDY41/N17g0sNlp8z+/k/IIDmNPtYQOTVmAkrkdDU4BP8dD3Cp1PUw6nrbInfujAJ
@@ -115,35 +115,35 @@ Autocrypt: addr=paul@pbarker.dev; prefer-encrypt=mutual;
  ChZPI3NMLnKZPJC8ZQZ4S8yb5oA3rqTA2DMODvsrEVlaB2cQ6IWHSa/mvBwA8Ias3771cp4fZS7W7
  LUewj8JVy0aJsGTwI4invl
 Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-9xW6cXQJxFAPDffY6d0g"
+	protocol="application/pgp-signature"; boundary="=-aIm0mLGMGaiRURHdQtWG"
 User-Agent: Evolution 3.52.3-0ubuntu1.1 
 MIME-Version: 1.0
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 22 Apr 2026 09:37:14 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9307
+ <docs@lists.yoctoproject.org>; Wed, 22 Apr 2026 09:37:34 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9308
 
 
---=-9xW6cXQJxFAPDffY6d0g
+--=-aIm0mLGMGaiRURHdQtWG
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 On Tue, 2026-04-21 at 15:44 +0200, Antonin Godard wrote:
-> The following changes since commit 48d15a62ed7c004fd6e1dced03923bac529c43=
-5e:
+> The following changes since commit ce6734c68649739c635675a133fa77edb98650=
+28:
 >=20
->   ref-manual/variables.rst: correct a reference to STAGING_DIR* (2026-04-=
-16 14:34:21 +0200)
+>   migration-guide: add release notes for 4.0.33 4.0.34 (2026-04-02 15:22:=
+08 +0200)
 >=20
 > are available in the Git repository at:
 >=20
->   git@push.yoctoproject.org:yocto-docs scarthgap-next
+>   git@push.yoctoproject.org:yocto-docs kirkstone-next
 >=20
-> for you to fetch changes up to 2c80b891d85e0a7d9b70fc7b4a9c032325b56eca:
+> for you to fetch changes up to 192be45726500cf875db6fad377116b48f7aabaf:
 >=20
->   variables.rst: expand explanation of RSUGGESTS (2026-04-21 15:17:53 +02=
-00)
+>   sphinx-static/theme_overrides.css: switch to a fixed width documentatio=
+n (2026-04-21 15:18:31 +0200)
 
 Merged, thanks!
 
@@ -151,17 +151,17 @@ Merged, thanks!
 Paul Barker
 
 
---=-9xW6cXQJxFAPDffY6d0g
+--=-aIm0mLGMGaiRURHdQtWG
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: This is a digitally signed message part
 
 -----BEGIN PGP SIGNATURE-----
 
-iIcEABYKAC8WIQSzjPXf5Y1BDWhU2iCrY1Tsnbr0bgUCaeiWvREccGF1bEBwYmFy
-a2VyLmRldgAKCRCrY1Tsnbr0bgBCAQCAyePZgWPVmu/CGAf6iIJAdcFR/l8bqdra
-vOB68Z4mhgD+L55CZislIE9TwH0978ibo4x5uPVmZZ7JNpFVJBCqcg8=
-=PI0X
+iIcEABYKAC8WIQSzjPXf5Y1BDWhU2iCrY1Tsnbr0bgUCaeiW0hEccGF1bEBwYmFy
+a2VyLmRldgAKCRCrY1Tsnbr0brXvAP9hLVKPEB75DIWmsvAniwy+KPQ2WWKZ526s
+tbPdcem+XwD/SZ+/GW5oA1hX4g72W3PSYUBas+jVoyILlkanVkX3dQ0=
+=gd2/
 -----END PGP SIGNATURE-----
 
---=-9xW6cXQJxFAPDffY6d0g--
+--=-aIm0mLGMGaiRURHdQtWG--
 
