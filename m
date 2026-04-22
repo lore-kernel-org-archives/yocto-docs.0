@@ -1,104 +1,108 @@
-Return-Path: <twoerner@gmail.com>
+Return-Path: <bijak.dawid@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5A8A2FA1FD9
-	for <webhook@archiver.kernel.org>; Wed, 22 Apr 2026 17:15:44 +0000 (UTC)
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.88009.1776878140502803906
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9A770FA1FE7
+	for <webhook@archiver.kernel.org>; Wed, 22 Apr 2026 18:54:24 +0000 (UTC)
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.90118.1776884056367845459
  for <docs@lists.yoctoproject.org>;
- Wed, 22 Apr 2026 10:15:40 -0700
+ Wed, 22 Apr 2026 11:54:16 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20251104 header.b=YDE72P7f;
- spf=pass (domain: gmail.com, ip: 209.85.222.169, mailfrom: twoerner@gmail.com)
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-8ed4dd182efso196605185a.3
-        for <docs@lists.yoctoproject.org>; Wed, 22 Apr 2026 10:15:40 -0700 (PDT)
+ dkim=pass header.i=@gmail.com header.s=20251104 header.b=quvdOueI;
+ spf=pass (domain: gmail.com, ip: 209.85.128.42, mailfrom: bijak.dawid@gmail.com)
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-488ab2db91aso76033785e9.3
+        for <docs@lists.yoctoproject.org>; Wed, 22 Apr 2026 11:54:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776878139; x=1777482939; darn=lists.yoctoproject.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=6W2T5l5hmg4GA2qf4KFp7ySc4JjKhdqWTBqjdIcl4O8=;
-        b=YDE72P7f1kWgR4/ZYBPqN1/b/FArgT0Uex7uGw6SmM2y8R3hdglLjvaICmJIeMZgKD
-         yQFKvvmA4rU6CEw/txqVM0DRKV50yoBfhn25oT0PHewiuz09KCZFQwNd2nLhD5NhwV8m
-         QYP4QcyQfa6wLI0/uggxWGa5YgZeEjTKKddBl7r0jG+JA4Hz+OOPIeYSnS4p7y/TeN/7
-         M2oynp1nvHe/CesgwfU6xZl/Lal8hPezNNmWDLNKP9Wsy0AyVuHM2iP5JuGV0k44NoL1
-         5WxjRa6MtxpxFCHFF60kV5SBqYmOmgpSba1xlbb9tmhajJsS7Lm5skze/BuRkKJ8ehBT
-         0y5w==
+        d=gmail.com; s=20251104; t=1776884054; x=1777488854; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=7f1YJsiSAiSndHDMbhngTPAqdPKg+Bsj/kCSX8qgcW4=;
+        b=quvdOueIZZArsKe93Bx2gxMT5Tv0+/Ls1GwnCHZoyqjSpj/P8BUVl2jiHwxNRXab8L
+         6rCKHxCkj4/s1NDVB7FE9XVJaAEAS+3p5nxcqQZ9TzhOQ3uqa+E43fjcmVVTANNT1M3R
+         on1qPZN6aJfNMO4R+MJvokAOQ/F/xfN5bkVaybrMKu6B9Qi+pO2pdRq6LIh/Nzc2Ax5D
+         XiLdzddCQyFyjrR7CmjqzWpFKBawunXdCmbANRJ3hHp+NBroUetsIGeI8hp2jaQ6pDNF
+         4o1ZsgGU0ImZ+Km+Zrjt3qAk/zTLxlS6zyTPZWv9JXJRjqIAcF+X29VkEPRSBngkoK3h
+         87xg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776878139; x=1777482939;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6W2T5l5hmg4GA2qf4KFp7ySc4JjKhdqWTBqjdIcl4O8=;
-        b=Y3hfZsZfdJC1Od/G5OFZhDl32HyUw9P6TstdRmXHrH9yYvt/TEr3nDiooELJwI/V0K
-         rulFX2dZJNwxQWu7vSKnqMf/KJBZmeaU3lCekKi+q+5i8xhS0W6RbXY4a4rolbTfkdhD
-         SCHpk58/yJ0lgbazHxB5Q+whIPcjfrmnYyFgILukksQfLnp1n1okVZFdpSnrr+CeuTWa
-         x6QPT1TJDscLFRihfe7eBVUEZ5t8Hirs3TXBnHcAOHMD/T1kEY4kx7xKnINa2DJm/2Ys
-         bWYRE8jDlrxNx9AZpe6KM+bRBLT9VgENdK/xRO2yLd0Z7Ku+Ag6hMHydo+mSpyEtN5YF
-         oQRg==
-X-Gm-Message-State: AOJu0Yy+7PA8VJGItQX3PPobeSsgsrfIEYxtcLNtHxzw9pQjfpRAVpt9
-	QSzz0perKn6E42sa/k4PbKQfiuY9kTkPtHCw2XR5ItuA8kbZnJI3yGIo
-X-Gm-Gg: AeBDieumYxcXMC3YFKk4nx3tRoN3K7xn2CCMhCBKUhfNe+jmfnV4mTCfCDf8Nl6GLxV
-	RSwUaHNeA2YF8cUKuvW9FqsTS/ztAaweuImTIC1X4XMt8AhjgDGksVgRpanC5iEPyzc7wbA/ys0
-	i4kzCIoCpzno6zB9PVtUmE0bdFdb/6pSbzRKDh550XsPLAAikNbgIfp6iG2u39FqRha67NgsQco
-	F9n5aE0W4IYDcwejBosWNSswnFzVvydsywXy/8wInAopuGpqN+lOxoHppZMoOaTqKRlGiNcU5Av
-	wRKMtjn6g06T4O9Z0z32uEfJo33Y1A+FW5l9WIw3ALxZLP29iTn3VikTJElVZitqJqUJugqoJJV
-	7RUM8TsQi6Sq63/ejw9rlg5cVKPGRR5CNvcp1oxQbKulVhLFlPxbVXxuDYye/KYnGhBlDBbkTFH
-	0AHBaiNTEmnTXHPp/a2mWUfs40mKJN6c7l3nvC5OHtUjcv5gCRMBzG4ewXIbiaWeu76tpQRMxgj
-	8iO
-X-Received: by 2002:a05:620a:29c3:b0:8cf:cfdf:733e with SMTP id af79cd13be357-8e7918a1473mr3156176885a.32.1776878127510;
-        Wed, 22 Apr 2026 10:15:27 -0700 (PDT)
-Received: from localhost.localdomain (pppoe-209-91-167-254.vianet.ca. [209.91.167.254])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8e7d8edc2b9sm1464705085a.23.2026.04.22.10.15.26
+        d=1e100.net; s=20251104; t=1776884054; x=1777488854;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7f1YJsiSAiSndHDMbhngTPAqdPKg+Bsj/kCSX8qgcW4=;
+        b=ITy7UdlIBDA7bMhi96wJCyRLQumJcD/fQSHRDk+59hWRDmtaKP8V0zBP6niqdQhDWh
+         BEDI0ZyH4MB+ynATu8YSH0ms2SdC6agltAerbWSp71MJfu4chVEUOsuhOKyYN90CM2Vm
+         4WppFTTERTQYs0nQ1oej+vNBrpVi71JI97jmwNrGSh/86kSfuBKhOJunJzIuWjWQPtaN
+         eRXcWfpl6pqbg9iFIsIe58h28lNVwjilGelaatck30p8j4Ku6RlVGE6Aqau3jVeNK9Yq
+         I0DyDsZ0r0mYtzE5p7JJcFKbrH64muE0/KBkcjboCa410ADXUhNbsPtxRQKDMhA+qKNm
+         QDMg==
+X-Gm-Message-State: AOJu0Ywn2ji07G42Udg3PsgtaaTXAadQriVTgQAyCQKFy7ur+M6B302a
+	CdlQPvl8JEO71D1HzP6qG87C756rwFK5A3guecVK76qvO3XbR5kRFTOGpcYcvMMz
+X-Gm-Gg: AeBDievozbQnnEHtc4cVdB4VM9fwu9hK9mUOX2WnjSLdmBSewq1/zye9bAaVYqSNb7J
+	Blmvs4mhThUo3tPpScho70F+aYHThodS01f8hEp/ZG9V0+LYjFAexcapxrTf2Co5PfoSu3E7FP6
+	K8xqA0WFHn5NzWq28XHrtFBEY3R4BzKUxqsV/fZSpYAyKwrQtaQ7dOVVvpVyZXaxj1rPJSwYox2
+	5RNtBNAmnbL8++cRl9XygDMXZjLk7TumREbuiXKTCDuLp0y3quPfR1WSbh7cWAdm8sk47FVbpLz
+	GGOPNfPd21XTu+UH70XMuJOb6oSuzcNYcO4lP7CxNrc2FcWNA8uxYzrEptjC7B/D0us4Zc3OUka
+	iP4CcIDKHELQHDqSCxRWVGGvg8AadnJeKAuRdk7J0sXek4wGSZLLdgYtDk8nICBgiNWaDsIZ1Qq
+	7TLnVBVWiaufRowJ8tzsbCoudCUsOpZXCsXLHi06z2Ivh5u7otjyYfmYMvIjlWO20lW7OPdwsPY
+	1Y9N6zJgJRwCx/H9hAyFHto8oAEVRbYkdqsCWOesQz+D9EK2OvRZxT0A6SPOhua
+X-Received: by 2002:adf:f2c7:0:b0:43f:e44a:f276 with SMTP id ffacd0b85a97d-43fe44b01a5mr26672429f8f.3.1776884054165;
+        Wed, 22 Apr 2026 11:54:14 -0700 (PDT)
+Received: from thinkpad.fritz.box ([2a02:8070:d188:380:be87:d3d1:1570:9b73])
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-43fe4e59f97sm52686494f8f.37.2026.04.22.11.54.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Apr 2026 10:15:26 -0700 (PDT)
-Date: Wed, 22 Apr 2026 13:15:24 -0400
-From: Trevor Woerner <twoerner@gmail.com>
-To: Antonin Godard <antonin.godard@bootlin.com>
-Cc: docs@lists.yoctoproject.org, Trevor Woerner <trevor.woerner@amd.com>
-Subject: Re: [docs] [RFC PATCH 1/2] add a "bitbake" pygments lexer
-Message-ID: <aekCLM6QTkN_VPqC@localhost.localdomain>
-References: <20260421172416.1801567-1-twoerner@gmail.com>
- <20260421172416.1801567-2-twoerner@gmail.com>
- <DHZHJMU79QRA.QGWLX7MEM1TL@bootlin.com>
+        Wed, 22 Apr 2026 11:54:13 -0700 (PDT)
+From: Dawid Bijak <bijak.dawid@gmail.com>
+To: docs@lists.yoctoproject.org
+Cc: Dawid Bijak <bijak.dawid@gmail.com>
+Subject: [PATCH] overview-manual/concepts.rst: fix do_prepare_recipe_sysroot task description
+Date: Wed, 22 Apr 2026 20:54:04 +0200
+Message-ID: <20260422185404.14111-1-bijak.dawid@gmail.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <DHZHJMU79QRA.QGWLX7MEM1TL@bootlin.com>
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 22 Apr 2026 17:15:44 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9327
+ <docs@lists.yoctoproject.org>; Wed, 22 Apr 2026 18:54:24 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9328
 
-On Wed 2026-04-22 @ 08:55:39 AM, Antonin Godard wrote:
-> Hi,
-> 
-> On Tue Apr 21, 2026 at 7:24 PM CEST, Trevor Woerner via lists.yoctoproject.org wrote:
-> [...]
-> > +# Pygments does not ship a BitBake lexer, so this Sphinx extension provides
-> > +# one.
-> 
-> Have you considered contributing this lexer to Pygments instead? I would rather
-> have it there than having to maintain it here.
+The description incorrectly stated that the sysroots are set up for
+use during the packaging phase. In fact, do_prepare_recipe_sysroot
+runs before do_configure, and the sysroots are consumed by
+do_configure and do_compile.
 
-All development on Pygments occurs on github: https://github.com/pygments/pygments
-Currently there are 143 open pull requests: https://github.com/pygments/pygments/pulls
-(some going back to 2019)
-However, the latest release was 3 weeks ago: https://github.com/pygments/pygments/releases
+Reword to refer to subsequent tasks in the recipe and call out
+do_configure and do_compile explicitly.
 
-I will create a pull request for this feature and see where it goes. The
-contributor information for the Pygments project is very clear that they
-are not interested in adding/maintaining lexers for "pet" languages.
+Signed-off-by: Dawid Bijak <bijak.dawid@gmail.com>
+---
+ documentation/overview-manual/concepts.rst | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-https://pygments.org/docs/contributing/
+diff --git a/documentation/overview-manual/concepts.rst b/documentation/overview-manual/concepts.rst
+index 1faa790f3..e4a8c60f7 100644
+--- a/documentation/overview-manual/concepts.rst
++++ b/documentation/overview-manual/concepts.rst
+@@ -782,12 +782,12 @@ This step in the build process consists of the following tasks:
+    This task sets up the two sysroots in
+    ``${``\ :term:`WORKDIR`\ ``}``
+    (i.e. ``recipe-sysroot`` and ``recipe-sysroot-native``) so that
+-   during the packaging phase the sysroots can contain the contents of
+-   the
++   subsequent tasks in the recipe (notably :ref:`ref-tasks-configure`
++   and :ref:`ref-tasks-compile`) can access the contents of the
+    :ref:`ref-tasks-populate_sysroot`
+-   tasks of the recipes on which the recipe containing the tasks
+-   depends. A sysroot exists for both the target and for the native
+-   binaries, which run on the host system.
++   tasks of the recipes on which the recipe depends. A sysroot
++   exists for both the target and for the native binaries, which
++   run on the host system.
+ 
+ -  *do_configure*: This task configures the source by enabling and
+    disabling any build-time and configuration options for the software
+-- 
+2.48.1
 
-Of course *we* are all aware of how big the community is that uses
-bitbake, but will we be able to convince them? bitbake's usage is large,
-but compared to, say, something like c or python... All I can do is
-submit and see. Realistically maintaining it ourselves is a likely
-possibility if we're interested in this feature.
-
-It was interesting to me to discover that our own documentation does not
-know how to handle bitbake syntax.
 
