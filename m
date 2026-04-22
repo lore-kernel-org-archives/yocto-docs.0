@@ -2,47 +2,47 @@ Return-Path: <paul@pbarker.dev>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 30612F9B5FA
-	for <webhook@archiver.kernel.org>; Wed, 22 Apr 2026 09:35:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0F445F9B5FB
+	for <webhook@archiver.kernel.org>; Wed, 22 Apr 2026 09:36:34 +0000 (UTC)
 Received: from fhigh-b8-smtp.messagingengine.com (fhigh-b8-smtp.messagingengine.com [202.12.124.159])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.78538.1776850549084779413
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.78383.1776850584814959467
  for <docs@lists.yoctoproject.org>;
- Wed, 22 Apr 2026 02:35:49 -0700
+ Wed, 22 Apr 2026 02:36:24 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@pbarker.dev header.s=fm1 header.b=E2yon/5M;
- dkim=pass header.i=@messagingengine.com header.s=fm2 header.b=Qy8yf+m2;
+ dkim=pass header.i=@pbarker.dev header.s=fm1 header.b=I+Oh4aXD;
+ dkim=pass header.i=@messagingengine.com header.s=fm2 header.b=OQFqeb9E;
  spf=pass (domain: pbarker.dev, ip: 202.12.124.159, mailfrom: paul@pbarker.dev)
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 5F2FE7A01C2;
-	Wed, 22 Apr 2026 05:35:48 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Wed, 22 Apr 2026 05:35:48 -0400
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 197097A01D3;
+	Wed, 22 Apr 2026 05:36:24 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Wed, 22 Apr 2026 05:36:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pbarker.dev; h=
 	cc:cc:content-type:content-type:date:date:from:from:in-reply-to
 	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm1; t=1776850548; x=1776936948; bh=0QvwrRut0e
-	6vMkWnl0UlthwAY/wLLeXvgVzdesAuS98=; b=E2yon/5MLGeITxOp80W32dcah8
-	trlUizmH+Snpd+3DNpT3zRNXTlI5UCuIhFypY+afpYtOeuwFvpjW9V5EzBdcw1cy
-	MmQ7kK3HXqn9n24VcMJCLYoK84cXZNu3UjZcbNOT0evq0bFOeLgRUUUQrk/JciCf
-	KArkLb3XSNSjZQ2MKmRBO4MIGEJGl4VV4rEy7/0eeCZ0k+1XwH2afK8Gmp3F5MDc
-	c/axhDKCdEUtJCHoJsbA+y4MGN4eYK6VPNKEr2Q8GA7nJySWDI10NAClD1wiPOhk
-	sKUQIPlzfcyttRpDIvRs7GneUwKPQz8P2VmC+GoSHEobv46eO28yh3o4PMfQ==
+	:subject:to:to; s=fm1; t=1776850583; x=1776936983; bh=y0axi6kD0g
+	3gpyWusiuP1GmbMQtOyDjZMWRRsa3K/zA=; b=I+Oh4aXDdCG6vAvlac6EGPWxEd
+	jTeVS9ViQJURt5m8U1RK1RbGZZx3A3Yebd4E6CAe6lZZjxJOWfJjFfWrG2oW+dZe
+	b6ryDS1LKc66X+8QXoA0bsxssha4LQC5jsdcIsAwcrB1f9NqGuod9vrz6cfP1jX0
+	M0x96DARG/BN7qjXPuVMIVa9ljQuSdzX11lvnlmDbI/AWY2F7NV9jCfq/Y3tGvpQ
+	vAXpX9+QbEs3zxIiWwsmJLkqDDqEVSRrHlOPqFsBF+Zp796oSOsiqktdo5yciYrS
+	1Ogsou6FthCu3Ydrb4UwVwrPhIXpS+VJbpeBHJ+gDsKdBezdc4ryk21SgqVA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-type:content-type:date:date
 	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
 	:message-id:mime-version:references:reply-to:subject:subject:to
 	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1776850548; x=1776936948; bh=0QvwrRut0e6vMkWnl0UlthwAY/wLLeXvgVz
-	desAuS98=; b=Qy8yf+m2wUAqN6EX03Dit4JceqqKLhvVNs9GFLRUprrvzpyNjpB
-	NM42hD9owZB5/277b5cAib/JzmEXc0XkwusDhY27/wP5/r9snmyTt3vrDDQ1pMw/
-	kX8fsxHOZAQDbbEwXz1tMOiH/jHoDvSJhg08qFWe7Lm0toZcXIOKTT88nLhmF3IX
-	burhWTwIkNQ8cDHmMuuksjpO5dj+za6elvzMoN8NTeUGtF2MR/4bZx6JDpmeBTkI
-	+EHqKnJqw53IJXdgY51ER7tzx1wj9eOiOTy+/+IAyYLMii82xAiON7zPfI904JOy
-	zafDi4MVu58u8LJtD4nFcVwe21Amv+ynUGw==
-X-ME-Sender: <xms:c5boabbo8PVaFKUtXCueG6KLJiER7JAscNF6plUcrHDM30rvlzEIow>
-    <xme:c5boaR2RQDZ4S1gX7I5YO7nUFlKP8PBoOgxY-1MtOeD_wmKYnnT3guza-HY_MaHqz
-    H4y8B5EoyIKe4Tg4fhrLjXWuigBii-EMBqySC6tIcBuiwPJOQGYl1g>
-X-ME-Received: <xmr:c5boabXfFz16-GTl7ElIUe5H7glTgL8ZXBu5Ag3YPxCVERYd3ahM5VQSWVzq6qMDEJ8i-TejXnSVWwy0v2xlxCkOcXk7X8xgnhYmt1Ku8nhK>
+	1776850583; x=1776936983; bh=y0axi6kD0g3gpyWusiuP1GmbMQtOyDjZMWR
+	Rsa3K/zA=; b=OQFqeb9EHieZZm1KeQ86mnquqsx2qVJZwT/fB6ec3NQuL7JChqp
+	U8UGQX/QgrqJ8CH/Bf90+nH5oBkuICHbON5hcffbPz1HQR0yAdQMStIlVuPiub8p
+	PFQpsGcsIQYWEjsMWQ+/QGJVOAVdL9RNwgW2j6RL9Sm6nbsDPbYMK+AEb8lL1/Yb
+	FW1m2HC1l2e61asKbOVMk1NTLfAN9xec/tyrJvCncM29/ZRlh3VlidDvfIxBQ9MZ
+	h5Faa6+mGpOzfSXM9+n+LcQPIytq7xMul8dUPPAK5iokbSoiQ0LJaEbWDMq5iLFa
+	iNkDgvzhaxMVo7AvCh7Jx8FdlgJCp1tfnuw==
+X-ME-Sender: <xms:l5boaZUMeZdvhD6wd_uKd4zxDOP9YUmHhBLJSJ3uc8rndc0BPUVVxA>
+    <xme:l5boaRAxBsGnro7VBlzqZIwsXEobSW2VV2SjiEObbbL_ThqUbH9PZCvxgfaUPsNAC
+    HOV91l6KF5yDjTW8ujdhB-eO6_25gwuOa1EsvBNRlGoDhtHRWIoeHej>
+X-ME-Received: <xmr:l5boaSxM9Q6xcFfyXvxsuV5drCuz3Jl8Em5-FQvaJ9UbfbqD9Ia9Mxqr1SdpA1myQuQ-66XZQzoJUg5XKIa5QTVT1R3TEwG6aNFLfB8YDeqe>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdeifeelfecutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
     ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
@@ -54,22 +54,22 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdeifeelfecutefuodetgg
     pdhrtghpthhtoheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpd
     hrtghpthhtohepughotghssehlihhsthhsrdihohgtthhophhrohhjvggtthdrohhrghdp
     rhgtphhtthhopeihohgrnhhnrdgtohhnghgrlhesshhmihhlvgdrfhhr
-X-ME-Proxy: <xmx:c5boabVhzY_TWT3ZD5Dfn5cAIIrvy06ZCNBREI5zWY4ZlnbydMgSGw>
-    <xmx:c5boaaezeDPcOevht3ERirDlffbVg67q4xeMhKOnfeowNeWc6r_gvg>
-    <xmx:c5boaUUJUtb_CQHDOvwk_lQ6FoxqEcnXpuInkfu77UeuoHcJF0_Gkw>
-    <xmx:c5boaTf6sMRgA9sLKBMcsrRU6_oYOIQIQ36U48zIpiSbpwfebxzgVQ>
-    <xmx:dJboaR_CjG_il16ErTtQt4U2DsB4fBl6Wf6MKj_zfR9xxAFj4g6_KXOl>
+X-ME-Proxy: <xmx:l5boaWB6Owpm7uZoNUDSZ0f_UIvB97NB7U5lg-fNOOMQo8uU20ulpA>
+    <xmx:l5boaXbWJkYC7jI0INnvhS5i5u4w0NeB6Vc7s8AwgyPGg1HLAxafzQ>
+    <xmx:l5boaWjVkNY8p-jem1vBLE1NKXseGDJQRvrRXG--K2_MdmjY8ILPkw>
+    <xmx:l5boaR5XGdWnDC-SCvHgaKTBzWAXDDpdMQ6D8GZosZ7ovqb9lVIIAw>
+    <xmx:l5boaSumXCn2JHlhAMZPr1nRjuaM5yPugx3ytqRmTdFqv0Nj46RFNC7R>
 Feedback-ID: i51494658:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 22 Apr 2026 05:35:47 -0400 (EDT)
-Message-ID: <202238e07c48a383fd6e17460436f00fb76384d4.camel@pbarker.dev>
-Subject: Re: [master] Pull request
+ 22 Apr 2026 05:36:23 -0400 (EDT)
+Message-ID: <4fedf1f0bd264095c2aa627193af481bf265cee5.camel@pbarker.dev>
+Subject: Re: [whinlatter] Pull request
 From: Paul Barker <paul@pbarker.dev>
 To: Antonin Godard <antonin.godard@bootlin.com>
 Cc: docs@lists.yoctoproject.org, Yoann Congal <yoann.congal@smile.fr>
-Date: Wed, 22 Apr 2026 10:35:44 +0100
-In-Reply-To: <DHYVMAQR7ULJ.35X1W6KVSNQOU@bootlin.com>
-References: <DHYVMAQR7ULJ.35X1W6KVSNQOU@bootlin.com>
+Date: Wed, 22 Apr 2026 10:36:20 +0100
+In-Reply-To: <DHYVME7JZ0Z3.5SQMYFN5Z4DK@bootlin.com>
+References: <DHYVME7JZ0Z3.5SQMYFN5Z4DK@bootlin.com>
 Autocrypt: addr=paul@pbarker.dev; prefer-encrypt=mutual;
  keydata=mQINBGC756sBEADXL6cawsZRrDvICz9Y1SG0/lW1me4xpq36obh7a0IGAzp3ywNRb/4MO
  DTqP4+DD0cIFuDY41/N17g0sNlp8z+/k/IIDmNPtYQOTVmAkrkdDU4BP8dD3Cp1PUw6nrbInfujAJ
@@ -115,57 +115,35 @@ Autocrypt: addr=paul@pbarker.dev; prefer-encrypt=mutual;
  ChZPI3NMLnKZPJC8ZQZ4S8yb5oA3rqTA2DMODvsrEVlaB2cQ6IWHSa/mvBwA8Ias3771cp4fZS7W7
  LUewj8JVy0aJsGTwI4invl
 Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-r1BMRKma7SkfFdfTlsRv"
+	protocol="application/pgp-signature"; boundary="=-nmwx3s3W0t9t/gcppER7"
 User-Agent: Evolution 3.52.3-0ubuntu1.1 
 MIME-Version: 1.0
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 22 Apr 2026 09:35:54 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9305
+ <docs@lists.yoctoproject.org>; Wed, 22 Apr 2026 09:36:34 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9306
 
 
---=-r1BMRKma7SkfFdfTlsRv
+--=-nmwx3s3W0t9t/gcppER7
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 On Tue, 2026-04-21 at 15:44 +0200, Antonin Godard wrote:
-> Hi Paul,
+> The following changes since commit b3966fa5ab7ee4653124badba3d2c54f0e5797=
+aa:
 >=20
-> Here is a pull request that includes a first batch of docs updates for th=
-e
-> coming Wrynose release.
->=20
-> Alongside, we've got a patch that switches the documentation website to b=
-e
-> fixed-width. This patch was also backported to whinlatter, scarthgap, and
-> kirkstone to be consistent across all releases that we currently display =
-on the
-> website. This is why I'm also sending PRs for whinlatter and kirkstone (C=
-C'ed
-> Yoann to this email too for context).
->=20
-> Please do not block the Whinlatter build because of these changes, as any=
-way the
-> docs website displays the branch tip, not the latest tag.
->=20
-> Thanks,
-> Antonin
->=20
-> The following changes since commit 2c12ec7bf29aedeacf82970a9d2eb262fde467=
-0e:
->=20
->   ref-manual/variables.rst: fix wording in COMPATIBLE_MACHINE note (2026-=
-04-16 14:31:11 +0200)
+>   migration-guide: add release notes for 5.3.3 (2026-04-02 15:22:19 +0200=
+)
 >=20
 > are available in the Git repository at:
 >=20
->   git@push.yoctoproject.org:yocto-docs master-next
+>   git@push.yoctoproject.org:yocto-docs whinlatter-next
 >=20
-> for you to fetch changes up to eb74fdfd9e5e579a65e8872d1a73b51e77b14f63:
+> for you to fetch changes up to 10818445a22c524de0934901547cf676256c2b9d:
 >=20
->   ref-manual/system-requirements.rst: instruct to install a buildtools ta=
-rball for leap 15.6 (2026-04-21 15:25:47 +0200)
+>   dev-manual/new-recipe.rst: rework Unpacking Code section (2026-04-21 15=
+:19:46 +0200)
 
 Merged, thanks!
 
@@ -173,17 +151,17 @@ Merged, thanks!
 Paul Barker
 
 
---=-r1BMRKma7SkfFdfTlsRv
+--=-nmwx3s3W0t9t/gcppER7
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: This is a digitally signed message part
 
 -----BEGIN PGP SIGNATURE-----
 
-iIcEABYKAC8WIQSzjPXf5Y1BDWhU2iCrY1Tsnbr0bgUCaeiWcBEccGF1bEBwYmFy
-a2VyLmRldgAKCRCrY1Tsnbr0btcwAQDBMzsPeNnAJP7A0xt6gJBTC8kQFq8WQ7Gx
-J5l7Breh3gEA+68eXVTnDAydDG2FUlLCiNgSEZNiuNUKfUqESWr6IAQ=
-=MSH9
+iIcEABYKAC8WIQSzjPXf5Y1BDWhU2iCrY1Tsnbr0bgUCaeiWlBEccGF1bEBwYmFy
+a2VyLmRldgAKCRCrY1Tsnbr0bmwpAP9j++Ex2SYtqBZnVoVbiteusRgrHmX5qjD1
+C5Qef/s7jAD/fZw8wPZac8Puo8r0OWuAJIAoR/tE9cpubFuhG/YDcgw=
+=L+OF
 -----END PGP SIGNATURE-----
 
---=-r1BMRKma7SkfFdfTlsRv--
+--=-nmwx3s3W0t9t/gcppER7--
 
