@@ -2,1231 +2,432 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 043DEFB44D6
-	for <webhook@archiver.kernel.org>; Fri, 24 Apr 2026 08:29:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E9F5AFB44D3
+	for <webhook@archiver.kernel.org>; Fri, 24 Apr 2026 08:29:09 +0000 (UTC)
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.16372.1777019347362259120
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.16693.1777019339813452498
  for <docs@lists.yoctoproject.org>;
- Fri, 24 Apr 2026 01:29:07 -0700
+ Fri, 24 Apr 2026 01:29:00 -0700
 Authentication-Results: mx.groups.io;
- dkim=fail reason="dkim: body hash did not verify" header.i=@bootlin.com header.s=dkim header.b=1CbEqops;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=sL8foCFX;
  spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id C09944E42AE9
-	for <docs@lists.yoctoproject.org>; Fri, 24 Apr 2026 08:29:05 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 308164E42AE6
+	for <docs@lists.yoctoproject.org>; Fri, 24 Apr 2026 08:28:58 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 98812604EB
-	for <docs@lists.yoctoproject.org>; Fri, 24 Apr 2026 08:29:05 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D643C10720743;
-	Fri, 24 Apr 2026 10:29:03 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 08161604EB
+	for <docs@lists.yoctoproject.org>; Fri, 24 Apr 2026 08:28:58 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id F36081072073D;
+	Fri, 24 Apr 2026 10:28:55 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1777019344; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1777019336; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=6hewb+qZ01hJxJm/kHFp3N9hRt8TdJgiLwjnT6n+xws=;
-	b=1CbEqopsw1qqablQae+MuYU1yJ+C9/OWTcCm/3viFbOjmSbuWi4TwH5Fz45WLNAJG9tVJx
-	FrlkboyAWqbR2qMn/HPWWTkm35QVFEUKw2NvEBK1jL0O/b3hFVxJRuUBDE0vI54FQtKrB1
-	ErETMKy+DDkkI05e6xDtRd5P7Y/dJrvn2mYumuyhnAEzgLvTuq+1ykxBvQrxjMYJlPVYlV
-	x+aiIpDtz5JkTiJGN16rxqlHy9buL+1/KH+uS86eeB8YLFNpiyU0NUdXGIkJ8fBiKnZ4gE
-	kn3w5n450rD+aaflM2kKri0OvaewmsMDkcb7qzSfArzIDqJ6TFVcY9pPUYhWzw==
+	bh=UpqsunhzzkP1oWNuT5tkVDDNIT2LT5lqETAbWil2J2Q=;
+	b=sL8foCFXeIFy0f0VtLzF90P2y35f5v5/9c1XKIQ+GRAn/OaJAEDMCf+rx9WYwDKtfOE+Qw
+	v/BZ1Nc0d1+AGQwZKEDm2IRI/0Vq3X2V5g9CE63atxjO5Ddsflk2CmLNFBKxnSd8m+P+Yk
+	lHRPcb1hjrvqIqm2FJTBYPnsAyoIWl4k104JAbNWvTrzMr7QLD/SdDCv8vjklY4vbRV0Mh
+	V7IersUUHxGZ9GXqvEwxJdDuSrHST9tcqFbIhmndvovzoUVOaZdBV0AWljhSF6B6IjRuUI
+	pLehH6pua+d0O4jC2srOIB7vjwk33ew4LkQSmCZKbEO6630aQFQBU2f8AjTqcQ==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Fri, 24 Apr 2026 10:28:43 +0200
-Subject: [PATCH v2 15/18] migration-guides/release-notes-6.0.rst: add
- recipe version changes
+Date: Fri, 24 Apr 2026 10:28:38 +0200
+Subject: [PATCH v2 10/18] security-manual/vulnerabilities.rst: refresh the
+ document after cve-check removal
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20260424-third-release-notes-6-0-v2-15-4feacf138e13@bootlin.com>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260424-third-release-notes-6-0-v2-10-4feacf138e13@bootlin.com>
 References: <20260424-third-release-notes-6-0-v2-0-4feacf138e13@bootlin.com>
 In-Reply-To: <20260424-third-release-notes-6-0-v2-0-4feacf138e13@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=22656;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=19743;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=zKkAwPA9uee3v1ahkiO8nCQ4mXwF+4o6GdSw1W4MX8U=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBp6ym/5z8haP3q0NZEKQvblfp3EOwH2j6ToLjMy
- a/ngd3UghaJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaespvwAKCRDRgEFAKaOo
- NsI5EAC+RIM7qWWanHL2p2DD18eYmHPa17xHAZAM5eAqifgNVw72oV3+CAdXBKvKtd5A8xoek16
- Xt19mGOls25iEjPbjGx3APGwOugFABXpDvx3gtSvA6yoc9cre6maNSwlqSYFbZxAKzxk9pvocXl
- aFbP7FYGvz356FFeMWNH0EPEo0PtZuBxwsGVY87znVooyWeNIEIVNJp95EdlyOSjCcDPMlNaFqR
- RvSbuiKLQw95132bAUux14mBh3Fat/4V7M7LolTBsVkn5oCCrDsoTeZqH9L08V9ertO2oqcmd2o
- v0JudgYHIhaGVlYeuBAi2Gk5XM5saxCSooLgCkVx4qLkr8q3pJ/Iz2Fyy/LmtlC4bu+dGiDYYmn
- 930VJMw+Kk4wkKiFGUB7ehFLtPHKw2pF3K8i85FHH672PgdGBSdoJ/gPAyqqRUeyvllWZZ/P4MA
- zqAYOObB+w/x+rOIi0eq5JJkg9RXkBONX3AdsQQc9q01e/yU2E4Sk/ShdIagS1l8jGLZ8vcl7Uf
- uCMME7xmc4iyXquH7t2rN90gxjhLV9GB+tN/yusZA8wFGa3d58WI0ZGnkVCdHXz/Vnua9+PL7Mo
- 4rz6fB1bQg+two7RJFnov+TKRcObt653+f8L18rJ4FPVddQzbX4J0ZpU8Ejj3SMOGjA6KaLnxoX
- slhjwllj2x3T/dQ==
+ bh=PaKgJSnMJ6h+O76C+o73eXlWwjV10/mB6bFXVv3qLs8=;
+ b=kA0DAAoB0YBBQCmjqDYByyZiAGnrKb6iUf+yxLxG7M2FtWzsgEuwbazMjoo74uJegA8C+qy1c
+ YkCMwQAAQoAHRYhBIZIclGI3UAbuaDT/9GAQUApo6g2BQJp6ym+AAoJENGAQUApo6g2qxAQAIwe
+ pslRgy0vaPTD7l1wnaI/G8ygKvVtSiepfAhT9rdhFpYrJKXYFthpathAQsajYSjDEYYGsA+Xy91
+ OcZpzdGoGXyPHTPUaidDWZxnXZK+LkTZd4xfDH7CuwOXpDchuUF5DeVopgkPJa/+jxpxeIqxJl/
+ 6nLAul73ztarS4a5FHnhYG+kaeiT8NCfhvagiyx3pKohXAwjkbXpbJ8uUohrcTM1NXgbQgdFc2J
+ iNDNVJE+QxToHs8B+QvLBGCXg7Qk8RaOClW4dP0qOsb4DDz3Tj5ciA6TFmzxztOvutA6xzbaLr/
+ ecwbSPuJswVutQzTb9D5FCZAJ1dvsYsOSAR/gy1e+/2lZq6YueMs70YsXot5rtKEFapL6IsNjrF
+ CQ5x/V8LmNU5Jn1a3JR815X197O6dG+FB5KH2/trJ8y+1CX7bFV/GhtLAAdo+MG2l9gPcpJWEOp
+ VbxxMHM1V099wjxjezZkCYJXc4O6y5VYYAacgrRqMgyAcoajtkSRyNqDCdxlVmgwhvncoN6dML6
+ bsDic+rB42BHruZRKGLeLvKas2NFnzGxyhlXwKrke2kG8ooBhiyAvmUyCW96+rmicvUq/9UDT+7
+ gr9dJIdC7A8XWyy2+q8Lo8w/QDVdfFtQmEKkO0xIbnF74DadPBPwhjCV47UVC79c/WX8U1ECojl
+ Af0Eg
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
-Content-Transfer-Encoding: quoted-printable
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 24 Apr 2026 08:29:10 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9353
+ <docs@lists.yoctoproject.org>; Fri, 24 Apr 2026 08:29:09 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9348
+
+The cve-check class was removed with 00de455f8d3a ("classes/cve-check:
+remove class") in OE-Core. The sbom-cve-check class replaces it. And
+while it can generate the same report (with the same format), the
+vulnerabilities document needed an update to reflect the changes.
+
+Notable differences:
+
+- The output report has a different name (but same format)
+- There is also an enriched SPDX report containing the vulnerabilities.
+  We do not go in details about this one as this is tied to the SPDX
+  specification, and much more complicated.
+- The sbom-cve-check does not produce warnings when Unpatched CVEs are
+  found.
+- The implementation details is removed as this is part of the
+  sbom-cve-check documentation (add a link to it instead).
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- .../migration-guides/release-notes-6.0.rst         | 1133 ++++++++++++++=
-+++++-
- 1 file changed, 1128 insertions(+), 5 deletions(-)
+ documentation/security-manual/vulnerabilities.rst | 219 ++++++++++------------
+ 1 file changed, 100 insertions(+), 119 deletions(-)
 
-diff --git a/documentation/migration-guides/release-notes-6.0.rst b/docum=
-entation/migration-guides/release-notes-6.0.rst
-index c447292fe..8f09223d0 100644
---- a/documentation/migration-guides/release-notes-6.0.rst
-+++ b/documentation/migration-guides/release-notes-6.0.rst
-@@ -881,6 +881,10 @@ The following CVEs have been fixed:
- Recipe Upgrades in |yocto-ver|
- ------------------------------
-=20
-+..
-+   Generated with https://layers.openembedded.org/layerindex/branch_comp=
-arison
-+   With "rST" output selected
+diff --git a/documentation/security-manual/vulnerabilities.rst b/documentation/security-manual/vulnerabilities.rst
+index 6121d4d7d..38fbd2c7e 100644
+--- a/documentation/security-manual/vulnerabilities.rst
++++ b/documentation/security-manual/vulnerabilities.rst
+@@ -27,125 +27,137 @@ patches to fix them, see ":doc:`/contributor-guide/submit-changes`" for details.
+ Vulnerability check at build time
+ =================================
+ 
+-To enable a check for CVE security vulnerabilities using
+-``cve-check`` in the specific image or target you are building,
+-add the following setting to your configuration::
++To enable a check for CVE security vulnerabilities in the specific image or
++target you are building, run the following command from your :term:`Build
++Directory`:
+ 
+-   INHERIT += "cve-check"
++.. code-block:: console
+ 
+-The CVE database contains some old incomplete entries which have been
+-deemed not to impact :term:`OpenEmbedded-Core (OE-Core)`. These CVE entries can be excluded from the
+-check using build configuration::
++   $ bitbake-config-build enable-fragment core/yocto/sbom-cve-check
 +
- The following recipes have been upgraded:
-=20
- .. list-table::
-@@ -888,11 +892,1130 @@ The following recipes have been upgraded:
-    :header-rows: 1
-=20
-    * - Recipe
--     - Previous version
--     - New version
--   * - ``recipe name``
--     - Previous version
--     - New version
-+     - Previous version(s)
-+     - New version(s)
-+   * - ``acpica``
-+     - 20250807
-+     - 20251212
-+   * - ``adwaita-icon-theme``
-+     - 48.0
-+     - 49.0
-+   * - ``alsa-lib``
-+     - 1.2.14
-+     - 1.2.15.3
-+   * - ``alsa-tools``
-+     - 1.2.14
-+     - 1.2.15
-+   * - ``alsa-ucm-conf``
-+     - 1.2.14
-+     - 1.2.15.3
-+   * - ``alsa-utils``
-+     - 1.2.14
-+     - 1.2.15.2
-+   * - ``appstream``
-+     - 1.0.6
-+     - 1.1.2
-+   * - ``aspell``
-+     - 0.60.8.1
-+     - 0.60.8.2
-+   * - ``at-spi2-core``
-+     - 2.56.4
-+     - 2.60.0
-+   * - ``autoconf``
-+     - 2.72
-+     - 2.73
-+   * - ``barebox``
-+     - 2025.09.3
-+     - 2026.04.0
-+   * - ``barebox-tools``
-+     - 2025.09.3
-+     - 2026.04.0
-+   * - ``base-passwd``
-+     - 3.6.7
-+     - 3.6.8
-+   * - ``bash-completion``
-+     - 2.16.0
-+     - 2.17.0
-+   * - ``bind``
-+     - 9.20.15
-+     - 9.20.22
-+   * - ``binutils``
-+     - 2.45.1+git
-+     - 2.46
-+   * - ``binutils-cross``
-+     - 2.45.1+git
-+     - 2.46
-+   * - ``binutils-cross-canadian``
-+     - 2.45.1+git
-+     - 2.46
-+   * - ``binutils-crosssdk``
-+     - 2.45.1+git
-+     - 2.46
-+   * - ``binutils-testsuite``
-+     - 2.45.1+git
-+     - 2.46
-+   * - ``bluez5``
-+     - 5.84
-+     - 5.86
-+   * - ``boost``
-+     - 1.89.0
-+     - 1.90.0
-+   * - ``boost-build-native``
-+     - 1.89.0
-+     - 1.90.0
-+   * - ``btrfs-tools``
-+     - 6.16
-+     - 6.19.1
-+   * - ``cargo``
-+     - 1.90.0
-+     - 1.94.1
-+   * - ``cargo-c``
-+     - 0.10.16+cargo-0.91.0
-+     - 0.10.21+cargo-0.95.0
-+   * - ``ccache``
-+     - 4.12.3
-+     - 4.13.2
-+   * - ``clang``
-+     - 21.1.7
-+     - 22.1.3
-+   * - ``cmake``
-+     - 4.1.2
-+     - 4.3.1
-+   * - ``cmake-native``
-+     - 4.1.2
-+     - 4.3.1
-+   * - ``compiler-rt``
-+     - 21.1.7
-+     - 22.1.3
-+   * - ``compiler-rt-sanitizers``
-+     - 21.1.7
-+     - 22.1.3
-+   * - ``connman``
-+     - 1.45
-+     - 2.0
-+   * - ``coreutils``
-+     - 9.7
-+     - 9.10
-+   * - ``createrepo-c``
-+     - 1.2.1
-+     - 1.2.3
-+   * - ``cross-localedef-native``
-+     - 2.42+git
-+     - 2.43+git
-+   * - ``cryptodev-linux``
-+     - 1.14 (135cbff90af2=E2=80=A6)
-+     - 1.14 (08644db02d43=E2=80=A6)
-+   * - ``cryptodev-module``
-+     - 1.14 (135cbff90af2=E2=80=A6)
-+     - 1.14 (08644db02d43=E2=80=A6)
-+   * - ``cryptodev-tests``
-+     - 1.14 (135cbff90af2=E2=80=A6)
-+     - 1.14 (08644db02d43=E2=80=A6)
-+   * - ``cups``
-+     - 2.4.15
-+     - 2.4.16
-+   * - ``curl``
-+     - 8.17.0
-+     - 8.19.0
-+   * - ``dhcpcd``
-+     - 10.2.4
-+     - 10.3.0
-+   * - ``diffoscope``
-+     - 306
-+     - 314
-+   * - ``dmidecode``
-+     - 3.6
-+     - 3.7
-+   * - ``dnf``
-+     - 4.23.0
-+     - 4.24.0
-+   * - ``dos2unix``
-+     - 7.5.2
-+     - 7.5.4
-+   * - ``dpkg``
-+     - 1.22.21
-+     - 1.23.7
-+   * - ``dropbear``
-+     - 2025.88
-+     - 2025.89
-+   * - ``e2fsprogs``
-+     - 1.47.3
-+     - 1.47.4
-+   * - ``ed``
-+     - 1.22.2
-+     - 1.22.5
-+   * - ``elfutils``
-+     - 0.193
-+     - 0.194
-+   * - ``ell``
-+     - 0.80
-+     - 0.83
-+   * - ``enchant2``
-+     - 2.8.14
-+     - 2.8.15
-+   * - ``epiphany``
-+     - 48.5
-+     - 49.7
-+   * - ``erofs-utils``
-+     - 1.8.10
-+     - 1.9.1
-+   * - ``ethtool``
-+     - 6.15
-+     - 6.19
-+   * - ``expat``
-+     - 2.7.4
-+     - 2.7.5
-+   * - ``fastfloat``
-+     - 8.0.2
-+     - 8.2.4
-+   * - ``ffmpeg``
-+     - 8.0
-+     - 8.0.1
-+   * - ``file``
-+     - 5.46
-+     - 5.47
-+   * - ``fmt``
-+     - 11.2.0
-+     - 12.1.0
-+   * - ``font-alias``
-+     - 1.0.5
-+     - 1.0.6
-+   * - ``freetype``
-+     - 2.13.3
-+     - 2.14.3
-+   * - ``gawk``
-+     - 5.3.2
-+     - 5.4.0
-+   * - ``gdb``
-+     - 16.3
-+     - 17.1
-+   * - ``gdb-cross``
-+     - 16.3
-+     - 17.1
-+   * - ``gdb-cross-canadian``
-+     - 16.3
-+     - 17.1
-+   * - ``gdk-pixbuf``
-+     - 2.42.12
-+     - 2.44.5
-+   * - ``gettext``
-+     - 0.26
-+     - 1.0
-+   * - ``gettext-minimal-native``
-+     - 0.26
-+     - 1.0
-+   * - ``gi-docgen``
-+     - 2025.4
-+     - 2026.1
-+   * - ``git``
-+     - 2.51.0
-+     - 2.53.0
-+   * - ``glew``
-+     - 2.2.0
-+     - 2.3.1
-+   * - ``glib-2.0``
-+     - 2.86.4
-+     - 2.88.0
-+   * - ``glib-2.0-initial``
-+     - 2.86.4
-+     - 2.88.0
-+   * - ``glibc``
-+     - 2.42+git
-+     - 2.43+git
-+   * - ``glibc-locale``
-+     - 2.42+git
-+     - 2.43+git
-+   * - ``glibc-mtrace``
-+     - 2.42+git
-+     - 2.43+git
-+   * - ``glibc-scripts``
-+     - 2.42+git
-+     - 2.43+git
-+   * - ``glibc-testsuite``
-+     - 2.42+git
-+     - 2.43+git
-+   * - ``glslang``
-+     - 1.4.328.1
-+     - 1.4.341.0
-+   * - ``gn``
-+     - 0+git (81b24e01531e=E2=80=A6)
-+     - 0+git (9d19a7870add=E2=80=A6)
-+   * - ``gnu-efi``
-+     - 4.0.2
-+     - 4.0.4
-+   * - ``gnupg``
-+     - 2.5.11
-+     - 2.5.17
-+   * - ``gnutls``
-+     - 3.8.10
-+     - 3.8.12
-+   * - ``go``
-+     - 1.25.9
-+     - 1.26.2
-+   * - ``go-binary-native``
-+     - 1.25.9
-+     - 1.26.2
-+   * - ``go-cross-canadian``
-+     - 1.25.9
-+     - 1.26.2
-+   * - ``go-cross-core2-32``
-+     - 1.25.9
-+     - 1.26.2
-+   * - ``go-crosssdk``
-+     - 1.25.9
-+     - 1.26.2
-+   * - ``go-helloworld``
-+     - 0.1 (8b405629c4a5=E2=80=A6)
-+     - 0.1 (7f05d217867b=E2=80=A6)
-+   * - ``go-runtime``
-+     - 1.25.9
-+     - 1.26.2
-+   * - ``gobject-introspection``
-+     - 1.84.0
-+     - 1.86.0
-+   * - ``groff``
-+     - 1.23.0
-+     - 1.24.0
-+   * - ``grub``
-+     - 2.12
-+     - 2.14
-+   * - ``grub-efi``
-+     - 2.12
-+     - 2.14
-+   * - ``gsettings-desktop-schemas``
-+     - 48.0
-+     - 50.0
-+   * - ``gst-devtools``
-+     - 1.26.7
-+     - 1.28.2
-+   * - ``gst-examples``
-+     - 1.26.7
-+     - 1.28.2
-+   * - ``gstreamer1.0``
-+     - 1.26.7
-+     - 1.28.2
-+   * - ``gstreamer1.0-libav``
-+     - 1.26.7
-+     - 1.28.2
-+   * - ``gstreamer1.0-plugins-bad``
-+     - 1.26.7
-+     - 1.28.2
-+   * - ``gstreamer1.0-plugins-base``
-+     - 1.26.7
-+     - 1.28.2
-+   * - ``gstreamer1.0-plugins-good``
-+     - 1.26.7
-+     - 1.28.2
-+   * - ``gstreamer1.0-plugins-ugly``
-+     - 1.26.7
-+     - 1.28.2
-+   * - ``gstreamer1.0-python``
-+     - 1.26.7
-+     - 1.28.2
-+   * - ``gstreamer1.0-rtsp-server``
-+     - 1.26.7
-+     - 1.28.2
-+   * - ``gtk-doc``
-+     - 1.34.0
-+     - 1.35.1
-+   * - ``gtk4``
-+     - 4.18.6
-+     - 4.22.1
-+   * - ``harfbuzz``
-+     - 11.4.5
-+     - 12.3.2
-+   * - ``hwdata``
-+     - 0.399
-+     - 0.405
-+   * - ``hwlatdetect``
-+     - 2.9
-+     - 2.10
-+   * - ``icu``
-+     - 77-1
-+     - 78.3
-+   * - ``ifupdown``
-+     - 0.8.44
-+     - 0.8.45
-+   * - ``igt-gpu-tools``
-+     - 2.1
-+     - 2.3
-+   * - ``inetutils``
-+     - 2.6
-+     - 2.7
-+   * - ``iproute2``
-+     - 6.16.0
-+     - 6.19.0
-+   * - ``iptables``
-+     - 1.8.11
-+     - 1.8.13
-+   * - ``iso-codes``
-+     - 4.18.0
-+     - 4.20.1
-+   * - ``kbd``
-+     - 2.8.0
-+     - 2.9.0
-+   * - ``kea``
-+     - 3.0.1
-+     - 3.0.3
-+   * - ``kern-tools-native``
-+     - 0.3+git (f589e1df2325=E2=80=A6)
-+     - 0.3+git (a4a362d9f4f0=E2=80=A6)
-+   * - ``kexec-tools``
-+     - 2.0.31
-+     - 2.0.32
-+   * - ``kmscube``
-+     - 0.0.1+git (2c1f2646c5e5=E2=80=A6)
-+     - 0.0.1+git (f60e50e887d3=E2=80=A6)
-+   * - ``less``
-+     - 679
-+     - 692
-+   * - ``libadwaita``
-+     - 1.7.6
-+     - 1.8.4
-+   * - ``libarchive``
-+     - 3.8.6
-+     - 3.8.7
-+   * - ``libatomic-ops``
-+     - 7.8.4
-+     - 7.10.0
-+   * - ``libcap``
-+     - 2.76
-+     - 2.77
-+   * - ``libcap-ng``
-+     - 0.8.5
-+     - 0.9.1
-+   * - ``libcap-ng-python``
-+     - 0.8.5
-+     - 0.9.1
-+   * - ``libclc``
-+     - 21.1.7
-+     - 22.1.3
-+   * - ``libcomps``
-+     - 0.1.22
-+     - 0.1.24
-+   * - ``libcxx``
-+     - 21.1.7
-+     - 22.1.3
-+   * - ``libdisplay-info``
-+     - 0.2.0
-+     - 0.3.0
-+   * - ``libdnf``
-+     - 0.74.0
-+     - 0.75.0
-+   * - ``libdrm``
-+     - 2.4.125
-+     - 2.4.131
-+   * - ``libedit``
-+     - 20250104-3.1
-+     - 20251016-3.1
-+   * - ``libevdev``
-+     - 1.13.5
-+     - 1.13.6
-+   * - ``libexif``
-+     - 0.6.25
-+     - 0.6.26
-+   * - ``libfontenc``
-+     - 1.1.8
-+     - 1.1.9
-+   * - ``libgcrypt``
-+     - 1.11.2
-+     - 1.12.1
-+   * - ``libgit2``
-+     - 1.9.1
-+     - 1.9.2
-+   * - ``libgloss``
-+     - 4.5.0+git
-+     - 4.6.0+git
-+   * - ``libgpg-error``
-+     - 1.56
-+     - 1.59
-+   * - ``libinput``
-+     - 1.29.1
-+     - 1.30.2
-+   * - ``libjpeg-turbo``
-+     - 3.1.2
-+     - 3.1.3
-+   * - ``libksba``
-+     - 1.6.7
-+     - 1.6.8
-+   * - ``libnl``
-+     - 3.11.0
-+     - 3.12.0
-+   * - ``libnotify``
-+     - 0.8.6
-+     - 0.8.8
-+   * - ``libpam``
-+     - 1.7.1
-+     - 1.7.2
-+   * - ``libpciaccess``
-+     - 0.18.1
-+     - 0.19
-+   * - ``libpcre2``
-+     - 10.46
-+     - 10.47
-+   * - ``libproxy``
-+     - 0.5.10
-+     - 0.5.12
-+   * - ``librsvg``
-+     - 2.61.0
-+     - 2.61.3
-+   * - ``libsolv``
-+     - 0.7.35
-+     - 0.7.36
-+   * - ``libstd-rs``
-+     - 1.90.0
-+     - 1.94.1
-+   * - ``libtasn1``
-+     - 4.20.0
-+     - 4.21.0
-+   * - ``libtest-fatal-perl``
-+     - 0.017
-+     - 0.018
-+   * - ``libtirpc``
-+     - 1.3.6
-+     - 1.3.7
-+   * - ``libtraceevent``
-+     - 1.8.4
-+     - 1.9.0
-+   * - ``libubootenv``
-+     - 0.3.6
-+     - 0.3.7
-+   * - ``libunistring``
-+     - 1.3
-+     - 1.4.2
-+   * - ``liburcu``
-+     - 0.15.3
-+     - 0.15.6
-+   * - ``libuv``
-+     - 1.51.0
-+     - 1.52.1
-+   * - ``libva``
-+     - 2.22.0
-+     - 2.23.0
-+   * - ``libva-initial``
-+     - 2.22.0
-+     - 2.23.0
-+   * - ``libva-utils``
-+     - 2.22.0
-+     - 2.23.0
-+   * - ``libx11``
-+     - 1.8.12
-+     - 1.8.13
-+   * - ``libx11-compose-data``
-+     - 1.8.4
-+     - 1.8.12
-+   * - ``libxcomposite``
-+     - 0.4.6
-+     - 0.4.7
-+   * - ``libxcrypt``
-+     - 4.4.38
-+     - 4.5.2
-+   * - ``libxcrypt-compat``
-+     - 4.4.38
-+     - 4.5.2
-+   * - ``libxdamage``
-+     - 1.1.6
-+     - 1.1.7
-+   * - ``libxext``
-+     - 1.3.6
-+     - 1.3.7
-+   * - ``libxinerama``
-+     - 1.1.5
-+     - 1.1.6
-+   * - ``libxkbcommon``
-+     - 1.11.0
-+     - 1.13.1
-+   * - ``libxkbfile``
-+     - 1.1.3
-+     - 1.2.0
-+   * - ``libxml2``
-+     - 2.14.6
-+     - 2.15.2
-+   * - ``libxmu``
-+     - 1.2.1
-+     - 1.3.1
-+   * - ``libxpm``
-+     - 3.5.17
-+     - 3.5.18
-+   * - ``libxrandr``
-+     - 1.5.4
-+     - 1.5.5
-+   * - ``libxslt``
-+     - 1.1.43
-+     - 1.1.45
-+   * - ``libxvmc``
-+     - 1.0.14
-+     - 1.0.15
-+   * - ``libxxf86vm``
-+     - 1.1.6
-+     - 1.1.7
-+   * - ``lighttpd``
-+     - 1.4.81
-+     - 1.4.82
-+   * - ``linux-firmware``
-+     - 20251111
-+     - 20260410
-+   * - ``linux-libc-headers``
-+     - 6.17
-+     - 6.18
-+   * - ``linux-yocto``
-+     - 6.12.69+git, 6.16.11+git
-+     - 6.18.24+git
-+   * - ``linux-yocto-dev``
-+     - 6.18+git
-+     - 7.0+git
-+   * - ``linux-yocto-rt``
-+     - 6.12.69+git, 6.16.11+git
-+     - 6.18.24+git
-+   * - ``linux-yocto-tiny``
-+     - 6.12.69+git, 6.16.11+git
-+     - 6.18.24+git
-+   * - ``lld``
-+     - 21.1.7
-+     - 22.1.3
-+   * - ``lldb``
-+     - 21.1.7
-+     - 22.1.3
-+   * - ``llvm``
-+     - 21.1.7
-+     - 22.1.3
-+   * - ``llvm-tblgen-native``
-+     - 21.1.7
-+     - 22.1.3
-+   * - ``lsof``
-+     - 4.99.5
-+     - 4.99.6
-+   * - ``ltp``
-+     - 20250930
-+     - 20260130
-+   * - ``lttng-modules``
-+     - 2.14.3
-+     - 2.14.4
-+   * - ``lttng-tools``
-+     - 2.14.0
-+     - 2.14.1
-+   * - ``lua``
-+     - 5.4.8
-+     - 5.5.0
-+   * - ``lzlib``
-+     - 1.15
-+     - 1.16
-+   * - ``m4``
-+     - 1.4.20
-+     - 1.4.21
-+   * - ``m4-native``
-+     - 1.4.20
-+     - 1.4.21
-+   * - ``makedumpfile``
-+     - 1.7.7
-+     - 1.7.8
-+   * - ``man-pages``
-+     - 6.15
-+     - 6.17
-+   * - ``mdadm``
-+     - 4.4
-+     - 4.6
-+   * - ``mesa``
-+     - 25.2.8
-+     - 26.0.5
-+   * - ``mesa-gl``
-+     - 25.2.8
-+     - 26.0.5
-+   * - ``meson``
-+     - 1.9.1
-+     - 1.10.2
-+   * - ``mpg123``
-+     - 1.33.2
-+     - 1.33.4
-+   * - ``msmtp``
-+     - 1.8.31
-+     - 1.8.32
-+   * - ``mtd-utils``
-+     - 2.3.0
-+     - 2.3.1
-+   * - ``musl``
-+     - 1.2.5+git
-+     - 1.2.6+git
-+   * - ``nasm``
-+     - 2.16.03
-+     - 3.01
-+   * - ``ncurses``
-+     - 6.5
-+     - 6.6
-+   * - ``newlib``
-+     - 4.5.0+git
-+     - 4.6.0+git
-+   * - ``nfs-utils``
-+     - 2.8.4
-+     - 2.8.7
-+   * - ``nghttp2``
-+     - 1.66.0
-+     - 1.68.1
-+   * - ``ninja``
-+     - 1.13.1
-+     - 1.13.2
-+   * - ``ofono``
-+     - 2.18
-+     - 2.19
-+   * - ``openmp``
-+     - 21.1.7
-+     - 22.1.3
-+   * - ``opensbi``
-+     - 1.7
-+     - 1.8.1
-+   * - ``openssh``
-+     - 10.2p1
-+     - 10.3p1
-+   * - ``opkg``
-+     - 0.8.0
-+     - 0.9.0
-+   * - ``orc``
-+     - 0.4.41
-+     - 0.4.42
-+   * - ``ovmf``
-+     - edk2-stable202508
-+     - edk2-stable202511
-+   * - ``p11-kit``
-+     - 0.25.5
-+     - 0.26.2
-+   * - ``perl``
-+     - 5.40.2
-+     - 5.42.0
-+   * - ``perlcross``
-+     - 1.6.2
-+     - 1.6.4
-+   * - ``picolibc``
-+     - 1.8.6+git
-+     - 1.8.11+git
-+   * - ``picolibc-helloworld``
-+     - 1.8.6+git
-+     - 1.8.11+git
-+   * - ``procps``
-+     - 4.0.5
-+     - 4.0.6
-+   * - ``pseudo``
-+     - 1.9.3+git
-+     - 1.9.5
-+   * - ``puzzles``
-+     - 0.0+git (a7c7826bce5c=E2=80=A6)
-+     - 0.0+git (ecb576fb2a0a=E2=80=A6)
-+   * - ``python3``
-+     - 3.13.12
-+     - 3.14.4
-+   * - ``python3-attrs``
-+     - 25.3.0
-+     - 25.4.0
-+   * - ``python3-babel``
-+     - 2.17.0
-+     - 2.18.0
-+   * - ``python3-bcrypt``
-+     - 4.3.0
-+     - 5.0.0
-+   * - ``python3-beartype``
-+     - 0.21.0
-+     - 0.22.9
-+   * - ``python3-build``
-+     - 1.3.0
-+     - 1.4.0
-+   * - ``python3-calver``
-+     - 2025.04.17
-+     - 2025.10.20
-+   * - ``python3-certifi``
-+     - 2025.8.3
-+     - 2026.2.25
-+   * - ``python3-cffi``
-+     - 1.17.1
-+     - 2.0.0
-+   * - ``python3-chardet``
-+     - 5.2.0
-+     - 6.0.0.post1
-+   * - ``python3-click``
-+     - 8.2.2
-+     - 8.3.1
-+   * - ``python3-cryptography``
-+     - 45.0.7
-+     - 46.0.5
-+   * - ``python3-cryptography-vectors``
-+     - 45.0.7
-+     - 46.0.5
-+   * - ``python3-cython``
-+     - 3.1.3
-+     - 3.2.4
-+   * - ``python3-dbusmock``
-+     - 0.37.0
-+     - 0.38.1
-+   * - ``python3-docutils``
-+     - 0.22
-+     - 0.22.4
-+   * - ``python3-dtschema``
-+     - 2025.8
-+     - 2025.12
-+   * - ``python3-hatchling``
-+     - 1.27.0
-+     - 1.29.0
-+   * - ``python3-hypothesis``
-+     - 6.142.2
-+     - 6.151.9
-+   * - ``python3-imagesize``
-+     - 1.4.1
-+     - 2.0.0
-+   * - ``python3-iniconfig``
-+     - 2.1.0
-+     - 2.3.0
-+   * - ``python3-jsonschema``
-+     - 4.25.1
-+     - 4.26.0
-+   * - ``python3-markdown``
-+     - 3.9
-+     - 3.10.2
-+   * - ``python3-markupsafe``
-+     - 3.0.2
-+     - 3.0.3
-+   * - ``python3-maturin``
-+     - 1.9.4
-+     - 1.12.4
-+   * - ``python3-meson-python``
-+     - 0.18.0
-+     - 0.19.0
-+   * - ``python3-numpy``
-+     - 2.3.4
-+     - 2.4.3
-+   * - ``python3-packaging``
-+     - 25.0
-+     - 26.0
-+   * - ``python3-pathspec``
-+     - 0.12.1
-+     - 1.0.4
-+   * - ``python3-pbr``
-+     - 7.0.1
-+     - 7.0.3
-+   * - ``python3-pdm``
-+     - 2.25.9
-+     - 2.26.6
-+   * - ``python3-pdm-backend``
-+     - 2.4.5
-+     - 2.4.7
-+   * - ``python3-pdm-build-locked``
-+     - 0.3.5
-+     - 0.3.7
-+   * - ``python3-pip``
-+     - 25.2
-+     - 26.0.1
-+   * - ``python3-poetry-core``
-+     - 2.1.3
-+     - 2.3.1
-+   * - ``python3-psutil``
-+     - 7.0.0
-+     - 7.2.2
-+   * - ``python3-pyasn1``
-+     - 0.6.1
-+     - 0.6.2
-+   * - ``python3-pycairo``
-+     - 1.28.0
-+     - 1.29.0
-+   * - ``python3-pycparser``
-+     - 2.22
-+     - 3.0
-+   * - ``python3-pygobject``
-+     - 3.52.3
-+     - 3.56.1
-+   * - ``python3-pyopenssl``
-+     - 25.1.0
-+     - 26.0.0
-+   * - ``python3-pyparsing``
-+     - 3.2.4
-+     - 3.3.2
-+   * - ``python3-pyproject-metadata``
-+     - 0.9.1
-+     - 0.11.0
-+   * - ``python3-pytest``
-+     - 8.4.2
-+     - 9.0.2
-+   * - ``python3-pytest-subtests``
-+     - 0.14.2
-+     - 0.15.0
-+   * - ``python3-pytz``
-+     - 2025.2
-+     - 2026.1
-+   * - ``python3-pyyaml``
-+     - 6.0.2
-+     - 6.0.3
-+   * - ``python3-rdflib``
-+     - 7.1.4
-+     - 7.6.0
-+   * - ``python3-rpds-py``
-+     - 0.27.1
-+     - 0.30.0
-+   * - ``python3-ruamel-yaml``
-+     - 0.18.15
-+     - 0.19.1
-+   * - ``python3-scons``
-+     - 4.9.1
-+     - 4.10.1
-+   * - ``python3-setuptools``
-+     - 80.9.0
-+     - 82.0.1
-+   * - ``python3-setuptools-scm``
-+     - 8.3.1
-+     - 9.2.2
-+   * - ``python3-sphinx``
-+     - 8.2.1
-+     - 9.1.0
-+   * - ``python3-sphinx-rtd-theme``
-+     - 3.0.2
-+     - 3.1.0
-+   * - ``python3-testtools``
-+     - 2.7.2
-+     - 2.8.7
-+   * - ``python3-trove-classifiers``
-+     - 2025.9.11.17
-+     - 2026.1.14.14
-+   * - ``python3-unittest-automake-output``
-+     - 0.3
-+     - 0.4
-+   * - ``python3-uritools``
-+     - 5.0.0
-+     - 6.0.1
-+   * - ``python3-urllib3``
-+     - 2.5.0
-+     - 2.6.3
-+   * - ``python3-wcwidth``
-+     - 0.2.13
-+     - 0.6.0
-+   * - ``python3-webcolors``
-+     - 24.11.1
-+     - 25.10.0
-+   * - ``python3-websockets``
-+     - 15.0.1
-+     - 16.0
-+   * - ``python3-wheel``
-+     - 0.46.1
-+     - 0.46.3
-+   * - ``python3-xmltodict``
-+     - 0.15.1
-+     - 1.0.4
-+   * - ``python3-yamllint``
-+     - 1.37.1
-+     - 1.38.0
-+   * - ``qemu``
-+     - 10.0.6
-+     - 10.2.0
-+   * - ``qemu-native``
-+     - 10.0.6
-+     - 10.2.0
-+   * - ``qemu-system-native``
-+     - 10.0.6
-+     - 10.2.0
-+   * - ``quota``
-+     - 4.10
-+     - 4.11
-+   * - ``re2c``
-+     - 4.3
-+     - 4.4
-+   * - ``repo``
-+     - 2.58
-+     - 2.61.1
-+   * - ``resolvconf``
-+     - 1.93
-+     - 1.94
-+   * - ``rgb``
-+     - 1.1.0
-+     - 1.1.1
-+   * - ``rpm-sequoia``
-+     - 1.9.0
-+     - 1.10.1
-+   * - ``rpm-sequoia-crypto-policy``
-+     - git (ae1df75b1155=E2=80=A6)
-+     - git (f3f5fa454345=E2=80=A6)
-+   * - ``rt-tests``
-+     - 2.9
-+     - 2.10
-+   * - ``ruby``
-+     - 3.4.5
-+     - 4.0.2
-+   * - ``rust``
-+     - 1.90.0
-+     - 1.94.1
-+   * - ``rust-cross-canadian``
-+     - 1.90.0
-+     - 1.94.1
-+   * - ``sbc``
-+     - 2.1
-+     - 2.2
-+   * - ``scdoc``
-+     - 1.11.3
-+     - 1.11.4
-+   * - ``seatd``
-+     - 0.9.1
-+     - 0.9.3
-+   * - ``shaderc``
-+     - 2025.3
-+     - 2026.1
-+   * - ``shadow``
-+     - 4.18.0
-+     - 4.19.4
-+   * - ``socat``
-+     - 1.8.0.3
-+     - 1.8.1.1
-+   * - ``spirv-headers``
-+     - 1.4.328.1
-+     - 1.4.341.0
-+   * - ``spirv-llvm-translator``
-+     - 21.1.1
-+     - 22.1.1
-+   * - ``spirv-tools``
-+     - 1.4.328.1
-+     - 1.4.341.0
-+   * - ``sqlite3``
-+     - 3.48.0
-+     - 3.51.3
-+   * - ``squashfs-tools``
-+     - 4.7.2
-+     - 4.7.5
-+   * - ``strace``
-+     - 6.16
-+     - 6.19
-+   * - ``stress-ng``
-+     - 0.19.04
-+     - 0.20.01
-+   * - ``swig``
-+     - 4.3.1
-+     - 4.4.1
-+   * - ``sysstat``
-+     - 12.7.8
-+     - 12.7.9
-+   * - ``systemd``
-+     - 257.8
-+     - 259.5
-+   * - ``systemd-boot``
-+     - 257.8
-+     - 259.5
-+   * - ``systemd-boot-native``
-+     - 257.8
-+     - 259.5
-+   * - ``systemd-systemctl-native``
-+     - 257.8
-+     - 259.5
-+   * - ``systemtap``
-+     - 5.3
-+     - 5.4
-+   * - ``systemtap-native``
-+     - 5.3
-+     - 5.4
-+   * - ``taglib``
-+     - 2.1.1
-+     - 2.2.1
-+   * - ``tcl``
-+     - 9.0.2
-+     - 9.0.3
-+   * - ``texinfo``
-+     - 7.2
-+     - 7.3
-+   * - ``ttyrun``
-+     - 2.38.0
-+     - 2.41.0
-+   * - ``u-boot``
-+     - 2025.10
-+     - 2026.01
-+   * - ``u-boot-tools``
-+     - 2025.10
-+     - 2026.01
-+   * - ``usbutils``
-+     - 018
-+     - 019
-+   * - ``utfcpp``
-+     - 4.0.6
-+     - 4.0.9
-+   * - ``util-linux``
-+     - 2.41.1
-+     - 2.41.3
-+   * - ``util-linux-libuuid``
-+     - 2.41.1
-+     - 2.41.3
-+   * - ``valgrind``
-+     - 3.25.1
-+     - 3.26.0
-+   * - ``vim``
-+     - 9.1.1683
-+     - 9.2.0340
-+   * - ``vim-tiny``
-+     - 9.1.1683
-+     - 9.2.0340
-+   * - ``virglrenderer``
-+     - 1.1.1
-+     - 1.2.0
-+   * - ``vte``
-+     - 0.82.1
-+     - 0.82.2
-+   * - ``vulkan-headers``
-+     - 1.4.328.1
-+     - 1.4.341.0
-+   * - ``vulkan-loader``
-+     - 1.4.328.1
-+     - 1.4.341.0
-+   * - ``vulkan-samples``
-+     - git (d27205d14d01=E2=80=A6)
-+     - git (fa2cf45adde0=E2=80=A6)
-+   * - ``vulkan-tools``
-+     - 1.4.328.1
-+     - 1.4.341.0
-+   * - ``vulkan-utility-libraries``
-+     - 1.4.328.1
-+     - 1.4.341.0
-+   * - ``vulkan-validation-layers``
-+     - 1.4.328.1
-+     - 1.4.341.0
-+   * - ``vulkan-volk``
-+     - 1.4.328.1
-+     - 1.4.341.0
-+   * - ``wayland-protocols``
-+     - 1.45
-+     - 1.47
-+   * - ``wayland-utils``
-+     - 1.2.0
-+     - 1.3.0
-+   * - ``webkitgtk``
-+     - 2.50.4
-+     - 2.50.6
-+   * - ``weston``
-+     - 14.0.2
-+     - 15.0.0
-+   * - ``wpebackend-fdo``
-+     - 1.16.0
-+     - 1.16.1
-+   * - ``x264``
-+     - r3039+git (31e19f92f00c=E2=80=A6)
-+     - r3039+git (0480cb05fa18=E2=80=A6)
-+   * - ``xauth``
-+     - 1.1.4
-+     - 1.1.5
-+   * - ``xcb-util-cursor``
-+     - 0.1.5
-+     - 0.1.6
-+   * - ``xeyes``
-+     - 1.3.0
-+     - 1.3.1
-+   * - ``xkbcomp``
-+     - 1.4.7
-+     - 1.5.0
-+   * - ``xkeyboard-config``
-+     - 2.45
-+     - 2.47
-+   * - ``xorgproto``
-+     - 2024.1
-+     - 2025.1
-+   * - ``xserver-xorg``
-+     - 21.1.18
-+     - 21.1.21
-+   * - ``xwayland``
-+     - 24.1.8
-+     - 24.1.9
-+   * - ``xz``
-+     - 5.8.1
-+     - 5.8.2
-+   * - ``zlib``
-+     - 1.3.1
-+     - 1.3.2
-=20
- Contributors to |yocto-ver|
- ---------------------------
++Or add the following statement to a :term:`configuration file`::
++
++   OE_FRAGMENTS += "core/yocto/sbom-cve-check"
++
++This will enable the :ref:`ref-classes-sbom-cve-check` class and set the
++recommended settings to use it.
++
++The CVE database contains some old incomplete entries which have been deemed not
++to impact :term:`OpenEmbedded-Core (OE-Core)`. These CVE entries can be excluded
++from the check by adding the following statement::
+ 
+    include conf/distro/include/cve-extra-exclusions.inc
+ 
+-With this CVE check enabled, BitBake build will try to map each compiled software component
+-recipe name and version information to the CVE database and generate recipe and
+-image specific reports. These reports will contain:
++With the :ref:`ref-fragments-core-yocto-sbom-cve-check` fragment enabled, the
++:term:`BitBake` build of an image will try to map each compiled software
++component recipe name and version information to the CVE database and generate
++reports in the deployment directory (:term:`DEPLOY_DIR_IMAGE`), one of which
++being: ``tmp/deploy/images/<machine>/<image-name>-<machine>.rootfs.sbom-cve-check.yocto.json``,
++a report containing:
+ 
+--  metadata about the software component like names and versions
++   -  Metadata about the software component like names and versions
++   -  Metadata about the CVE issue such as description and NVD link
++   -  For each software component, a list of CVEs which are possibly impacting this version
++   -  Status of each CVE: ``Patched``, ``Unpatched`` or ``Ignored``
+ 
+--  metadata about the CVE issue such as description and NVD link
++.. note::
+ 
+--  for each software component, a list of CVEs which are possibly impacting this version
++   Another report named ``<image-name>-<machine>.rootfs.sbom-cve-check.spdx.json``
++   is also generated: this is the enriched :term:`SPDX` file of the image
++   containing the same information contained in the previous point, and a lot
++   more metadata information on the packages included in the image. For more
++   information on :term:`SPDX`, see the :doc:`/dev-manual/sbom` section of the
++   Yocto Project Development Tasks Manual.
+ 
+--  status of each CVE: ``Patched``, ``Unpatched`` or ``Ignored``
++Each item in the ``"package"`` list corresponds to a package installed on the
++built image. Each of these packages contain a number of CVE entries under the
++``"issue"`` sub-list. These CVE can have the following statuses:
+ 
+-The status ``Patched`` means that a patch file to address the security issue has been
+-applied. ``Unpatched`` status means that no patches to address the issue have been
+-applied and that the issue needs to be investigated. ``Ignored`` means that after
+-analysis, it has been deemed to ignore the issue as it for example affects
+-the software component on a different operating system platform.
++-  ``Patched`` means that a patch file to address the security issue
++   has been applied.
+ 
+-By default, no NVD API key is used to retrieve data from the CVE database, which
+-results in larger delays between NVD API requests. See the ``NVDCVE_API_KEY``
+-documentation on how to request and set a NVD API key.
++-  ``Unpatched`` means that no patches to address the issue have been
++   applied and that the issue needs to be investigated.
+ 
+-After a build with CVE check enabled, reports for each compiled source recipe will be
+-found in ``build/tmp/deploy/cve``.
++-  ``Ignored`` means that after analysis, it has been deemed to ignore the issue
++   as it for example affects the software component on a different operating
++   system platform.
+ 
+-For example the CVE check report for the ``flex-native`` recipe looks like::
++For example, the report for the ``glibc`` package looks like this (simplified):
++
++.. code-block:: json
+ 
+-   $ cat ./tmp/deploy/cve/flex-native_cve.json
+    {
+      "version": "1",
+      "package": [
+        {
+-         "name": "flex-native",
+-         "layer": "meta",
+-         "version": "2.6.4",
++         "name": "glibc",
++         "layer": "core",
++         "version": "2.43+git",
+          "products": [
+            {
+-             "product": "flex",
+-             "cvesInRecord": "No"
+-           },
+-           {
+-             "product": "flex",
++             "product": "glibc",
+              "cvesInRecord": "Yes"
+            }
+          ],
+          "issue": [
+            {
+-             "id": "CVE-2006-0459",
+-             "status": "Patched",
+-             "link": "https://nvd.nist.gov/vuln/detail/CVE-2006-0459",
+-             "summary": "flex.skl in Will Estes and John Millaway Fast Lexical Analyzer Generator (flex) before 2.5.33 does not allocate enough memory for grammars containing (1) REJECT statements or (2) trailing context rules, which causes flex to generate code that contains a buffer overflow that might allow context-dependent attackers to execute arbitrary code.",
+-             "scorev2": "7.5",
++             "id": "CVE-2010-4756",
++             "status": "Unpatched",
++             "link": "https://nvd.nist.gov/vuln/detail/CVE-2010-4756",
++             "summary": "The glob implementation in the GNU C Library (aka glibc or libc6) allows remote authenticated users to cause a denial of service (CPU and memory consumption) via crafted glob expressions that do not match any pathnames, as demonstrated by glob expressions in STAT commands to an FTP daemon, a different vulnerability than CVE-2010-2632.",
++             "scorev2": "4.0",
+              "scorev3": "0.0",
+              "scorev4": "0.0",
+-             "modified": "2024-11-21T00:06Z",
++             "modified": "2025-11-03T22:15:41.000",
+              "vector": "NETWORK",
+-             "vectorString": "AV:N/AC:L/Au:N/C:P/I:P/A:P",
+-             "detail": "version-not-in-range"
++             "vectorString": "AV:N/AC:L/Au:S/C:N/I:N/A:P",
++             "detail": "no-version-ranges",
++             "description": "Check package version"
+            },
+            {
+-             "id": "CVE-2016-6354",
++             "id": "CVE-2018-6551",
+              "status": "Patched",
+-             "link": "https://nvd.nist.gov/vuln/detail/CVE-2016-6354",
+-             "summary": "Heap-based buffer overflow in the yy_get_next_buffer function in Flex before 2.6.1 might allow context-dependent attackers to cause a denial of service or possibly execute arbitrary code via vectors involving num_to_read.",
++             "link": "https://nvd.nist.gov/vuln/detail/CVE-2018-6551",
++             "summary": "The malloc implementation in the GNU C Library (aka glibc or libc6), from version 2.24 to 2.26 on powerpc, and only in version 2.26 on i386, did not properly handle malloc calls with arguments close to SIZE_MAX and could return a pointer to a heap region that is smaller than requested, eventually leading to heap corruption.",
+              "scorev2": "7.5",
+              "scorev3": "9.8",
+              "scorev4": "0.0",
+-             "modified": "2024-11-21T02:55Z",
++             "modified": "2024-11-21T04:10:53.000",
+              "vector": "NETWORK",
+-             "vectorString": "AV:N/AC:L/Au:N/C:P/I:P/A:P",
++             "vectorString": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "detail": "version-not-in-range"
+            },
+            {
+-             "id": "CVE-2019-6293",
++             "id": "CVE-2019-1010022",
+              "status": "Ignored",
+-             "link": "https://nvd.nist.gov/vuln/detail/CVE-2019-6293",
+-             "summary": "An issue was discovered in the function mark_beginning_as_normal in nfa.c in flex 2.6.4. There is a stack exhaustion problem caused by the mark_beginning_as_normal function making recursive calls to itself in certain scenarios involving lots of '*' characters. Remote attackers could leverage this vulnerability to cause a denial-of-service.",
+-             "scorev2": "4.3",
+-             "scorev3": "5.5",
++             "link": "https://nvd.nist.gov/vuln/detail/CVE-2019-1010022",
++             "summary": "GNU Libc current is affected by: Mitigation bypass. The impact is: Attacker may bypass stack guard protection. The component is: nptl. The attack vector is: Exploit stack buffer overflow vulnerability and use this bypass vulnerability to bypass stack guard. NOTE: Upstream comments indicate \"this is being treated as a non-security bug and no real threat.",
++             "scorev2": "7.5",
++             "scorev3": "9.8",
+              "scorev4": "0.0",
+-             "modified": "2024-11-21T04:46Z",
++             "modified": "2024-11-21T04:17:55.000",
+              "vector": "NETWORK",
+-             "vectorString": "AV:N/AC:M/Au:N/C:N/I:N/A:P",
+-             "detail": "upstream-wontfix",
+-             "description": "there is stack exhaustion but no bug and it is building the parser, not running it, effectively similar to a compiler ICE. Upstream no plans to address this."
++             "vectorString": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
++             "description": "Upstream glibc maintainers dispute there is any issue and have no plans to address it further. this is being treated as a non-security bug and no real threat."
+            }
+-         ]
++         ],
++         "cpes": ["cpe:2.3:*:*:glibc:2.43:*:*:*:*:*:*:*"]
+        }
+      ]
+    }
+ 
+-For images, a summary of all recipes included in the image and their CVEs is also
+-generated in the JSON format. These ``.json`` reports can be found
+-in the ``tmp/deploy/images`` directory for each compiled image.
+-
+-At build time CVE check will also throw warnings about ``Unpatched`` CVEs::
++At build time the :ref:`ref-classes-sbom-cve-check` class will also throw warnings about
++``Unpatched`` CVEs (when :term:`SBOM_CVE_CHECK_SHOW_WARNINGS` is set to "1"):
+ 
+-   WARNING: qemu-native-9.2.0-r0 do_cve_check: Found unpatched CVE (CVE-2023-1386)
++.. code-block:: text
+ 
+-It is also possible to check the CVE status of individual packages as follows::
+-
+-   bitbake -c cve_check flex libarchive
++   WARNING: core-image-minimal-1.0-r0 do_sbom_cve_check: glibc-2.43+git: Found unpatched CVEs: CVE-2010-4756
+ 
+ Fixing CVE product name and version mappings
+ ============================================
+ 
+-By default, ``cve-check`` uses the recipe name :term:`BPN` as CVE
++By default, :ref:`ref-classes-sbom-cve-check` uses the recipe name :term:`BPN` as CVE
+ product name when querying the CVE database. If this mapping contains false positives, e.g.
+ some reported CVEs are not for the software component in question, or false negatives like
+ some CVEs are not found to impact the recipe when they should, then the problems can be
+@@ -175,7 +187,7 @@ Fixing vulnerabilities in recipes
+ 
+ Suppose a CVE security issue impacts a software component. In that case, it can
+ be fixed by updating to a newer version, by applying a patch, or by marking it
+-as patched via :term:`CVE_STATUS` variable flag. For OE-Core master
++as patched via :term:`CVE_STATUS` variable flag. For :term:`OpenEmbedded-Core (OE-Core)` master
+ branches, updating to a more recent software component release with fixes is
+ the best option, but patches can be applied if releases are not yet available.
+ 
+@@ -228,7 +240,7 @@ is::
+     1 file changed, 12 insertions(+), 4 deletions(-)
+ 
+ 
+-For the correct operations of the ``cve-check``, it requires the CVE
++For the correct operations of :ref:`ref-classes-sbom-cve-check`, it requires the CVE
+ identification in a ``CVE:`` tag of the patch file commit message using
+ the format::
+ 
+@@ -265,8 +277,8 @@ With the additional information, the header of the patch file in OE-core becomes
+ A good practice is to include the CVE identifier in the patch file name, the patch file
+ commit message and optionally in the recipe commit message.
+ 
+-CVE checker will then capture this information and change the CVE status to ``Patched``
+-in the generated reports.
++:ref:`ref-classes-sbom-cve-check` will then capture this information and change the CVE
++status to ``Patched`` in the generated reports.
+ 
+ If analysis shows that the CVE issue does not impact the recipe due to configuration, platform,
+ version or other reasons, the CVE can be marked as ``Ignored`` by using
+@@ -282,44 +294,6 @@ to fix those issues in the CVE database (NVD in the case of
+ Note that if there are many CVEs with the same status and reason, those can be
+ shared by using the :term:`CVE_STATUS_GROUPS` variable.
+ 
+-Recipes can be completely skipped by CVE check by including the recipe name in
+-the :term:`CVE_CHECK_SKIP_RECIPE` variable.
+-
+-Implementation details
+-======================
+-
+-Here's what the ``cve-check`` class does to find unpatched CVE IDs.
+-
+-First the code goes through each patch file provided by a recipe. If a valid CVE ID
+-is found in the name of the file, the corresponding CVE is considered as patched.
+-Don't forget that if multiple CVE IDs are found in the filename, only the last
+-one is considered. Then, the code looks for ``CVE: CVE-ID`` lines in the patch
+-file. The found CVE IDs are also considered as patched.
+-Additionally ``CVE_STATUS`` variable flags are parsed for reasons mapped to ``Patched``
+-and these are also considered as patched.
+-
+-Then, the code looks up all the CVE IDs in the NIST database for all the
+-products defined in :term:`CVE_PRODUCT`. Then, for each found CVE:
+-
+--  If the package name (:term:`PN`) is part of
+-   :term:`CVE_CHECK_SKIP_RECIPE`, it is considered as ``Patched``.
+-
+--  If the CVE ID has status ``CVE_STATUS[<CVE ID>] = "ignored"`` or if it's set to
+-   any reason which is mapped to status ``Ignored`` via ``CVE_CHECK_STATUSMAP``,
+-   it is  set as ``Ignored``.
+-
+--  If the CVE ID is part of the patched CVE for the recipe, it is
+-   already considered as ``Patched``.
+-
+--  Otherwise, the code checks whether the recipe version (:term:`PV`)
+-   is within the range of versions impacted by the CVE. If so, the CVE
+-   is considered as ``Unpatched``.
+-
+-The CVE database is stored in :term:`DL_DIR` and can be inspected using
+-``sqlite3`` command as follows::
+-
+-   sqlite3 downloads/CVE_CHECK2/nvd*.db .dump | grep CVE-2021-37462
+-
+ When analyzing CVEs, it is recommended to:
+ 
+ -  study the latest information in `CVE database <https://nvd.nist.gov/vuln/search>`__.
+@@ -335,6 +309,12 @@ When analyzing CVEs, it is recommended to:
+ -  follow public `open source security mailing lists <https://oss-security.openwall.org/wiki/mailing-lists>`__ for
+    discussions and advance notifications of CVE bugs and software releases with fixes.
+ 
++Implementation details
++======================
++
++As :ref:`ref-classes-sbom-cve-check` is an external tool, its implementation is detailed on
++the official documentation: https://sbom-cve-check.readthedocs.io/en/latest/index.html
++
+ Linux kernel vulnerabilities
+ ============================
+ 
+@@ -396,15 +376,16 @@ Then the CVE information will automatically be added in the
+ 
+ The ``openembedded-core/scripts/contrib/improve_kernel_cve_report.py`` script
+ leverages CVE kernel metadata and the :term:`SPDX_INCLUDE_COMPILED_SOURCES`
+-variable to update a ``cve-summary.json`` file. It reduces CVE false
+-positives by 70%-80% and provide detailed responses for all kernel-related
+-CVEs by analyzing the files used to build the kernel. The script is decoupled from
+-the build and can be run outside of the :term:`BitBake` environment.
++variable to update an output ``.sbom-cve-check.yocto.json`` report file (see
++section :ref:`security-manual/vulnerabilities:Vulnerability check at build time`
++for details on these report files). It reduces CVE false positives by 70%-80%
++and provide detailed responses for all kernel-related CVEs by analyzing the
++files used to build the kernel. The script is decoupled from the build and
++can be run outside of the :term:`BitBake` environment.
+ 
+-The script uses the output from the :ref:`ref-classes-vex` or
+-``cve-check`` class as input, together with CVE information from
+-the Linux kernel CNA to enrich the ``cve-summary.json`` file with updated CVE
+-information.
++The script uses the output from the :ref:`ref-classes-vex` as input, together
++with CVE information from the Linux kernel CNA to enrich the
++report file with updated CVE information.
+ 
+ The file name can be specified as argument. Optionally, it can also use the
+ list of compiled files from the kernel :term:`SPDX` to ignore CVEs that are
+@@ -465,7 +446,7 @@ the first two examples, using the old cve-summary.json.
+       $ python3 openembedded-core/scripts/contrib/improve_kernel_cve_report.py \
+          --spdx tmp/deploy/spdx/3.0.1/qemux86_64/recipes/recipe-linux-yocto.spdx.json \
+          --datadir ~/vulns \
+-         --old-cve-report build/tmp/log/cve/cve-summary.json
++         --old-cve-report build/tmp/deploy/images/<machine>/<image-name>-<machine>.rootfs.sbom-cve-check.yocto.json
+ 
+ -  Example using ``--debug-sources`` file instead of SPDX kernel file:
+ 
+@@ -474,7 +455,7 @@ the first two examples, using the old cve-summary.json.
+       $ python3 openembedded-core/scripts/contrib/improve_kernel_cve_report.py \
+          --debug-sources tmp/pkgdata/qemux86_64/debugsources/linux-yocto-debugsources.json.zstd \
+          --datadir ~/vulns \
+-         --old-cve-report build/tmp/log/cve/cve-summary.json
++         --old-cve-report build/tmp/deploy/images/<machine>/<image-name>-<machine>.rootfs.sbom-cve-check.yocto.json
+ 
+ -  Example using the ``--kernel-version``:
+ 
 
---=20
+-- 
 2.53.0
 
 
