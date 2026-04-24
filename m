@@ -2,429 +2,177 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E9F5AFB44D3
-	for <webhook@archiver.kernel.org>; Fri, 24 Apr 2026 08:29:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 30D68F589DF
+	for <webhook@archiver.kernel.org>; Fri, 24 Apr 2026 08:29:10 +0000 (UTC)
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.16693.1777019339813452498
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.16369.1777019342908725577
  for <docs@lists.yoctoproject.org>;
- Fri, 24 Apr 2026 01:29:00 -0700
+ Fri, 24 Apr 2026 01:29:03 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=sL8foCFX;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=XKGHqaog;
  spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 308164E42AE6
-	for <docs@lists.yoctoproject.org>; Fri, 24 Apr 2026 08:28:58 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 555DA4E42AE6
+	for <docs@lists.yoctoproject.org>; Fri, 24 Apr 2026 08:29:01 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 08161604EB
-	for <docs@lists.yoctoproject.org>; Fri, 24 Apr 2026 08:28:58 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id F36081072073D;
-	Fri, 24 Apr 2026 10:28:55 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 2D5A3604EB
+	for <docs@lists.yoctoproject.org>; Fri, 24 Apr 2026 08:29:01 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 55D111072073E;
+	Fri, 24 Apr 2026 10:28:59 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1777019336; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1777019340; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=UpqsunhzzkP1oWNuT5tkVDDNIT2LT5lqETAbWil2J2Q=;
-	b=sL8foCFXeIFy0f0VtLzF90P2y35f5v5/9c1XKIQ+GRAn/OaJAEDMCf+rx9WYwDKtfOE+Qw
-	v/BZ1Nc0d1+AGQwZKEDm2IRI/0Vq3X2V5g9CE63atxjO5Ddsflk2CmLNFBKxnSd8m+P+Yk
-	lHRPcb1hjrvqIqm2FJTBYPnsAyoIWl4k104JAbNWvTrzMr7QLD/SdDCv8vjklY4vbRV0Mh
-	V7IersUUHxGZ9GXqvEwxJdDuSrHST9tcqFbIhmndvovzoUVOaZdBV0AWljhSF6B6IjRuUI
-	pLehH6pua+d0O4jC2srOIB7vjwk33ew4LkQSmCZKbEO6630aQFQBU2f8AjTqcQ==
+	bh=Fj0FZTcwhtsqvOmGWUszQVHksS1jCyoj3bjZfPG9QPI=;
+	b=XKGHqaogpgQSgjW6ZPf5gWoeuHuSoO2HoI8/4NvXbKECPWgovviAimy8BF+Y0U4Dfmi3mC
+	WbQfFcsE+sO9HLD0Dk2nSLg2zYmFIpJ5lUsk5mOwSEeDVLcYI/TLFFy2GERaltvJkus8Fk
+	pp5VdaVNV/pmloKBGO+/Cby0NmZXhafTEgMUhb+RK6s7RR2/vcF4ETdo4Pd3/3cWkcAngr
+	usaUQg3uIiOYwx7kU6vKajG50bjMWSlwIBSBQwqpSfq5Ymh2h7WB6bJP72eZrwSewjD3fG
+	AWhleGYE5aLE6G80bqzDmIZ+plqRXPJNEuWvcjkYLVu+QXelyIsbOimqiZbiqQ==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Fri, 24 Apr 2026 10:28:38 +0200
-Subject: [PATCH v2 10/18] security-manual/vulnerabilities.rst: refresh the
- document after cve-check removal
+Date: Fri, 24 Apr 2026 10:28:40 +0200
+Subject: [PATCH v2 12/18] migration-guides/release-notes-6.0.rst: cover
+ recent changes
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260424-third-release-notes-6-0-v2-10-4feacf138e13@bootlin.com>
+Message-Id: <20260424-third-release-notes-6-0-v2-12-4feacf138e13@bootlin.com>
 References: <20260424-third-release-notes-6-0-v2-0-4feacf138e13@bootlin.com>
 In-Reply-To: <20260424-third-release-notes-6-0-v2-0-4feacf138e13@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=19743;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4642;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=PaKgJSnMJ6h+O76C+o73eXlWwjV10/mB6bFXVv3qLs8=;
- b=kA0DAAoB0YBBQCmjqDYByyZiAGnrKb6iUf+yxLxG7M2FtWzsgEuwbazMjoo74uJegA8C+qy1c
- YkCMwQAAQoAHRYhBIZIclGI3UAbuaDT/9GAQUApo6g2BQJp6ym+AAoJENGAQUApo6g2qxAQAIwe
- pslRgy0vaPTD7l1wnaI/G8ygKvVtSiepfAhT9rdhFpYrJKXYFthpathAQsajYSjDEYYGsA+Xy91
- OcZpzdGoGXyPHTPUaidDWZxnXZK+LkTZd4xfDH7CuwOXpDchuUF5DeVopgkPJa/+jxpxeIqxJl/
- 6nLAul73ztarS4a5FHnhYG+kaeiT8NCfhvagiyx3pKohXAwjkbXpbJ8uUohrcTM1NXgbQgdFc2J
- iNDNVJE+QxToHs8B+QvLBGCXg7Qk8RaOClW4dP0qOsb4DDz3Tj5ciA6TFmzxztOvutA6xzbaLr/
- ecwbSPuJswVutQzTb9D5FCZAJ1dvsYsOSAR/gy1e+/2lZq6YueMs70YsXot5rtKEFapL6IsNjrF
- CQ5x/V8LmNU5Jn1a3JR815X197O6dG+FB5KH2/trJ8y+1CX7bFV/GhtLAAdo+MG2l9gPcpJWEOp
- VbxxMHM1V099wjxjezZkCYJXc4O6y5VYYAacgrRqMgyAcoajtkSRyNqDCdxlVmgwhvncoN6dML6
- bsDic+rB42BHruZRKGLeLvKas2NFnzGxyhlXwKrke2kG8ooBhiyAvmUyCW96+rmicvUq/9UDT+7
- gr9dJIdC7A8XWyy2+q8Lo8w/QDVdfFtQmEKkO0xIbnF74DadPBPwhjCV47UVC79c/WX8U1ECojl
- Af0Eg
+ bh=CDabcsLWsozj1it/B3S7xIOTKAvJDoy6PED1ra+QdbM=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBp6ym/Uey3CkJNxABa62bNPrBxIJpcRDjtkQpBn
+ aTXDdtWrLmJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaespvwAKCRDRgEFAKaOo
+ NlVQEADKwuJ4DacnCvPoZkbGqvdN4GHJbLC1nCFg72M0qWXLOq1jA4Zq+j2w1FwyAGvOUJ51CwG
+ EQ3A75CqvLOYPUo4Bla66rVtN310nGZQL1zp7Kx71unwK1OxXggXe+u2nYs4y5lfXb4VgcnECIB
+ PktlFQ1AhgBmguzPUdRvIB/59meLQ4h1cLuHgaCvMgaux/+C3MXzkZSyaGbgc6/FSvJ//8begB5
+ JkSz1ZoEOaUmBYxi7nT3zyCwuQyKBSz1bfjIVwcdfJUvQFHMTlOsJ84u2VgZZeWDxxL9SlUlqVG
+ yC6dozGL6b0fRA8U4Uu1jSZMKxwiK5Yy8uN32UW5GSHsZPhnZY4Ro9F8GXwE4A5CH08HogFjaCY
+ Fu6nEHK34rXFrcOg18EMiltcg9kwqC6Wmokj8tBm4+kgpJ7ChRpjcuIz0Gkbmm16zE12P3BRz5W
+ 55iYFJqcS2g3C7bPxGX8GuNpc2FX8473RAVfdCy2B1NyUwYm0Jy6sjCbpxgD05KlCz4UU3wmH3g
+ WCxKWE80rJhjR4Wk/1H+WM5GYRy5AX4eUXSqQbOUy32H2ScqIcR+oTEsjuHFFheKSRGcvsW4Yre
+ qVdtUPo14uC0d3cCj+182Y7nwO/QIB/GqFJoZiTDtgDlky+erYghNpOMmjYUiZncMXvJ86CRV80
+ xoY2boYoCrLdzkA==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 24 Apr 2026 08:29:09 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9348
+ <docs@lists.yoctoproject.org>; Fri, 24 Apr 2026 08:29:10 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9350
 
-The cve-check class was removed with 00de455f8d3a ("classes/cve-check:
-remove class") in OE-Core. The sbom-cve-check class replaces it. And
-while it can generate the same report (with the same format), the
-vulnerabilities document needed an update to reflect the changes.
-
-Notable differences:
-
-- The output report has a different name (but same format)
-- There is also an enriched SPDX report containing the vulnerabilities.
-  We do not go in details about this one as this is tied to the SPDX
-  specification, and much more complicated.
-- The sbom-cve-check does not produce warnings when Unpatched CVEs are
-  found.
-- The implementation details is removed as this is part of the
-  sbom-cve-check documentation (add a link to it instead).
+Cover changes between 00de455f8d3a ("classes/cve-check: remove class")
+and 9a83f0878b6b ("busybox: fix for CVE-2026-26157, CVE-2026-26158") in
+OE-Core. There were no changes to BitBake and meta-yocto since the last
+update of these release notes.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/security-manual/vulnerabilities.rst | 219 ++++++++++------------
- 1 file changed, 100 insertions(+), 119 deletions(-)
+ .../migration-guides/release-notes-6.0.rst         | 31 ++++++++++++++++++----
+ 1 file changed, 26 insertions(+), 5 deletions(-)
 
-diff --git a/documentation/security-manual/vulnerabilities.rst b/documentation/security-manual/vulnerabilities.rst
-index 6121d4d7d..38fbd2c7e 100644
---- a/documentation/security-manual/vulnerabilities.rst
-+++ b/documentation/security-manual/vulnerabilities.rst
-@@ -27,125 +27,137 @@ patches to fix them, see ":doc:`/contributor-guide/submit-changes`" for details.
- Vulnerability check at build time
- =================================
+diff --git a/documentation/migration-guides/release-notes-6.0.rst b/documentation/migration-guides/release-notes-6.0.rst
+index 9d611d70a..524a1a199 100644
+--- a/documentation/migration-guides/release-notes-6.0.rst
++++ b/documentation/migration-guides/release-notes-6.0.rst
+@@ -237,8 +237,6 @@ New Features / Enhancements in |yocto-ver|
+       in the default distro setup (appearing as ``nodistro`` :term:`DISTRO`)
+       (:oecore_rev:`175fcf9fad699dd122680d3f6961af9bf8487046`)
  
--To enable a check for CVE security vulnerabilities using
--``cve-check`` in the specific image or target you are building,
--add the following setting to your configuration::
-+To enable a check for CVE security vulnerabilities in the specific image or
-+target you are building, run the following command from your :term:`Build
-+Directory`:
+--  Architecture-specific changes:
+-
+ -  QEMU / ``runqemu`` changes:
  
--   INHERIT += "cve-check"
-+.. code-block:: console
+    -  ``qemuboot```: Make the tap interface nameserver configurable through
+@@ -289,6 +287,9 @@ New Features / Enhancements in |yocto-ver|
+    -  Enable dynamic LLVM linking by default
+       (:oecore_rev:`d0671c3dad87a063b3a41dd07cde89b5684e692c`)
  
--The CVE database contains some old incomplete entries which have been
--deemed not to impact :term:`OpenEmbedded-Core (OE-Core)`. These CVE entries can be excluded from the
--check using build configuration::
-+   $ bitbake-config-build enable-fragment core/yocto/sbom-cve-check
++   -  Enable fully static linking when :term:`TCLIBC` is set to ``musl``
++      (:oecore_rev:`75409c60e9e63fdcbb9d4f54130052991362ec08`)
 +
-+Or add the following statement to a :term:`configuration file`::
+ -  Wic Image Creator changes:
+ 
+    -  ``wic/engine``: Fix copying directories into wic image with ``ext*``
+@@ -297,7 +298,13 @@ New Features / Enhancements in |yocto-ver|
+    -  Re-implement sector-size support
+       (:oecore_rev:`b50d6debf7baa555fbfb3521c4f952675bba2d37`)
+ 
+--  SDK-related changes:
++   -  The Wic tool is now maintained in a separate project, no longer part of
++      :term:`OpenEmbedded-Core (OE-Core)`: :yocto_git:`/wic/`
 +
-+   OE_FRAGMENTS += "core/yocto/sbom-cve-check"
++   -  A new ``wicenv`` type can be added to :term:`IMAGE_FSTYPES` to place the
++      ``.env`` file generate by Wic in the deployment directory
++      (:term:`DEPLOY_DIR_IMAGE`)
++      (:oecore_rev:`e4d49702f21fb75444d58f419432649a04e351c9`)
+ 
+ -  Testing-related changes:
+ 
+@@ -374,6 +381,9 @@ New Features / Enhancements in |yocto-ver|
+       -  Update data if CVE exists (:oecore_rev:`9ea6d9209b95f8d31975d71315fb52343e6aa729`)
+       -  Validate that cve details field exists (:oecore_rev:`80ff4903ea1b839f9cd9393b314c3adfbb80b765`)
+ 
++   -  ``oe-pkgdata-util``: improve the ``lookup-pkg`` error message for
++      :term:`RPROVIDES` packages
++      (:oecore_rev:`46ff3a8d2c18fcba87c711bb23dbdabae20eef84`)
+ 
+ -  BitBake changes:
+ 
+@@ -463,7 +473,9 @@ New Features / Enhancements in |yocto-ver|
+       configuration options when fetching Git repositories
+       (:bitbake_rev:`4c378445969853d6aff4694d937b9af47c7f7300`)
+ 
+--  Packaging changes:
++   -  When using the ``subpath`` parameter with the Git fetcher in an
++      :term:`SRC_URI`, properly make the ``HEAD`` point to the value specified
++      in :term:`SRCREV`.
+ 
+ -  Clang/LLVM related changes:
+ 
+@@ -517,7 +529,6 @@ New Features / Enhancements in |yocto-ver|
+       :term:`SPDX_INCLUDE_VEX` variable
+       (:oecore_rev:`d999ac407c86b462134008818d5863ecb577f3c6`)
+ 
+-
+ -  ``devtool`` changes:
+ 
+    -  ``ide-sdk``:
+@@ -580,6 +591,7 @@ New Features / Enhancements in |yocto-ver|
+ -  New :term:`PACKAGECONFIG` options for individual recipes:
+ 
+    -  ``curl``: ``schannel``
++   -  ``gstreamer1.0-plugins-bad``: ``fdkaac``
+    -  ``gstreamer1.0-plugins-good``: ``qt6``
+    -  ``libinput``: ``lua``, ``libwacom``, ``mtdev``
+    -  ``librepo``: ``sequoia``
+@@ -590,6 +602,8 @@ New Features / Enhancements in |yocto-ver|
+    -  ``python3``: ``freethreading`` (experimental, see
+       :oecore_rev:`c56990178b31b893fbf695eaf6b67de501e9d2e9`)
+    -  ``python3-cryptography``: ``legacy-openssl``
++   -  ``systemd``: ``osc-context``
++   -  ``systemtap``: ``readline``
+ 
+ -  systemd related changes:
+ 
+@@ -733,6 +747,13 @@ New Features / Enhancements in |yocto-ver|
+    -  :ref:`ref-classes-archiver`: Don't try to preserve all attributes when
+       copying files (:oecore_rev:`6e8313688fa994c82e4c846993ed8da0d1f4db0e`)
+ 
++   -  :ref:`ref-classes-useradd`: allow inheriting the class with only
++      :term:`USERADD_DEPENDS` set, when a recipe only depends on users/groups
++      created by another (:oecore_rev:`09a901b9874f76e665fb4ba9e537703a792011e3`)
 +
-+This will enable the :ref:`ref-classes-sbom-cve-check` class and set the
-+recommended settings to use it.
++   -  ``vim``: disable `GTK+3` UI by default
++      (:oecore_rev:`a07763f03d4faacca4470e4f1f80f766ed068296`)
 +
-+The CVE database contains some old incomplete entries which have been deemed not
-+to impact :term:`OpenEmbedded-Core (OE-Core)`. These CVE entries can be excluded
-+from the check by adding the following statement::
- 
-    include conf/distro/include/cve-extra-exclusions.inc
- 
--With this CVE check enabled, BitBake build will try to map each compiled software component
--recipe name and version information to the CVE database and generate recipe and
--image specific reports. These reports will contain:
-+With the :ref:`ref-fragments-core-yocto-sbom-cve-check` fragment enabled, the
-+:term:`BitBake` build of an image will try to map each compiled software
-+component recipe name and version information to the CVE database and generate
-+reports in the deployment directory (:term:`DEPLOY_DIR_IMAGE`), one of which
-+being: ``tmp/deploy/images/<machine>/<image-name>-<machine>.rootfs.sbom-cve-check.yocto.json``,
-+a report containing:
- 
---  metadata about the software component like names and versions
-+   -  Metadata about the software component like names and versions
-+   -  Metadata about the CVE issue such as description and NVD link
-+   -  For each software component, a list of CVEs which are possibly impacting this version
-+   -  Status of each CVE: ``Patched``, ``Unpatched`` or ``Ignored``
- 
---  metadata about the CVE issue such as description and NVD link
-+.. note::
- 
---  for each software component, a list of CVEs which are possibly impacting this version
-+   Another report named ``<image-name>-<machine>.rootfs.sbom-cve-check.spdx.json``
-+   is also generated: this is the enriched :term:`SPDX` file of the image
-+   containing the same information contained in the previous point, and a lot
-+   more metadata information on the packages included in the image. For more
-+   information on :term:`SPDX`, see the :doc:`/dev-manual/sbom` section of the
-+   Yocto Project Development Tasks Manual.
- 
---  status of each CVE: ``Patched``, ``Unpatched`` or ``Ignored``
-+Each item in the ``"package"`` list corresponds to a package installed on the
-+built image. Each of these packages contain a number of CVE entries under the
-+``"issue"`` sub-list. These CVE can have the following statuses:
- 
--The status ``Patched`` means that a patch file to address the security issue has been
--applied. ``Unpatched`` status means that no patches to address the issue have been
--applied and that the issue needs to be investigated. ``Ignored`` means that after
--analysis, it has been deemed to ignore the issue as it for example affects
--the software component on a different operating system platform.
-+-  ``Patched`` means that a patch file to address the security issue
-+   has been applied.
- 
--By default, no NVD API key is used to retrieve data from the CVE database, which
--results in larger delays between NVD API requests. See the ``NVDCVE_API_KEY``
--documentation on how to request and set a NVD API key.
-+-  ``Unpatched`` means that no patches to address the issue have been
-+   applied and that the issue needs to be investigated.
- 
--After a build with CVE check enabled, reports for each compiled source recipe will be
--found in ``build/tmp/deploy/cve``.
-+-  ``Ignored`` means that after analysis, it has been deemed to ignore the issue
-+   as it for example affects the software component on a different operating
-+   system platform.
- 
--For example the CVE check report for the ``flex-native`` recipe looks like::
-+For example, the report for the ``glibc`` package looks like this (simplified):
-+
-+.. code-block:: json
- 
--   $ cat ./tmp/deploy/cve/flex-native_cve.json
-    {
-      "version": "1",
-      "package": [
-        {
--         "name": "flex-native",
--         "layer": "meta",
--         "version": "2.6.4",
-+         "name": "glibc",
-+         "layer": "core",
-+         "version": "2.43+git",
-          "products": [
-            {
--             "product": "flex",
--             "cvesInRecord": "No"
--           },
--           {
--             "product": "flex",
-+             "product": "glibc",
-              "cvesInRecord": "Yes"
-            }
-          ],
-          "issue": [
-            {
--             "id": "CVE-2006-0459",
--             "status": "Patched",
--             "link": "https://nvd.nist.gov/vuln/detail/CVE-2006-0459",
--             "summary": "flex.skl in Will Estes and John Millaway Fast Lexical Analyzer Generator (flex) before 2.5.33 does not allocate enough memory for grammars containing (1) REJECT statements or (2) trailing context rules, which causes flex to generate code that contains a buffer overflow that might allow context-dependent attackers to execute arbitrary code.",
--             "scorev2": "7.5",
-+             "id": "CVE-2010-4756",
-+             "status": "Unpatched",
-+             "link": "https://nvd.nist.gov/vuln/detail/CVE-2010-4756",
-+             "summary": "The glob implementation in the GNU C Library (aka glibc or libc6) allows remote authenticated users to cause a denial of service (CPU and memory consumption) via crafted glob expressions that do not match any pathnames, as demonstrated by glob expressions in STAT commands to an FTP daemon, a different vulnerability than CVE-2010-2632.",
-+             "scorev2": "4.0",
-              "scorev3": "0.0",
-              "scorev4": "0.0",
--             "modified": "2024-11-21T00:06Z",
-+             "modified": "2025-11-03T22:15:41.000",
-              "vector": "NETWORK",
--             "vectorString": "AV:N/AC:L/Au:N/C:P/I:P/A:P",
--             "detail": "version-not-in-range"
-+             "vectorString": "AV:N/AC:L/Au:S/C:N/I:N/A:P",
-+             "detail": "no-version-ranges",
-+             "description": "Check package version"
-            },
-            {
--             "id": "CVE-2016-6354",
-+             "id": "CVE-2018-6551",
-              "status": "Patched",
--             "link": "https://nvd.nist.gov/vuln/detail/CVE-2016-6354",
--             "summary": "Heap-based buffer overflow in the yy_get_next_buffer function in Flex before 2.6.1 might allow context-dependent attackers to cause a denial of service or possibly execute arbitrary code via vectors involving num_to_read.",
-+             "link": "https://nvd.nist.gov/vuln/detail/CVE-2018-6551",
-+             "summary": "The malloc implementation in the GNU C Library (aka glibc or libc6), from version 2.24 to 2.26 on powerpc, and only in version 2.26 on i386, did not properly handle malloc calls with arguments close to SIZE_MAX and could return a pointer to a heap region that is smaller than requested, eventually leading to heap corruption.",
-              "scorev2": "7.5",
-              "scorev3": "9.8",
-              "scorev4": "0.0",
--             "modified": "2024-11-21T02:55Z",
-+             "modified": "2024-11-21T04:10:53.000",
-              "vector": "NETWORK",
--             "vectorString": "AV:N/AC:L/Au:N/C:P/I:P/A:P",
-+             "vectorString": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
-              "detail": "version-not-in-range"
-            },
-            {
--             "id": "CVE-2019-6293",
-+             "id": "CVE-2019-1010022",
-              "status": "Ignored",
--             "link": "https://nvd.nist.gov/vuln/detail/CVE-2019-6293",
--             "summary": "An issue was discovered in the function mark_beginning_as_normal in nfa.c in flex 2.6.4. There is a stack exhaustion problem caused by the mark_beginning_as_normal function making recursive calls to itself in certain scenarios involving lots of '*' characters. Remote attackers could leverage this vulnerability to cause a denial-of-service.",
--             "scorev2": "4.3",
--             "scorev3": "5.5",
-+             "link": "https://nvd.nist.gov/vuln/detail/CVE-2019-1010022",
-+             "summary": "GNU Libc current is affected by: Mitigation bypass. The impact is: Attacker may bypass stack guard protection. The component is: nptl. The attack vector is: Exploit stack buffer overflow vulnerability and use this bypass vulnerability to bypass stack guard. NOTE: Upstream comments indicate \"this is being treated as a non-security bug and no real threat.",
-+             "scorev2": "7.5",
-+             "scorev3": "9.8",
-              "scorev4": "0.0",
--             "modified": "2024-11-21T04:46Z",
-+             "modified": "2024-11-21T04:17:55.000",
-              "vector": "NETWORK",
--             "vectorString": "AV:N/AC:M/Au:N/C:N/I:N/A:P",
--             "detail": "upstream-wontfix",
--             "description": "there is stack exhaustion but no bug and it is building the parser, not running it, effectively similar to a compiler ICE. Upstream no plans to address this."
-+             "vectorString": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
-+             "description": "Upstream glibc maintainers dispute there is any issue and have no plans to address it further. this is being treated as a non-security bug and no real threat."
-            }
--         ]
-+         ],
-+         "cpes": ["cpe:2.3:*:*:glibc:2.43:*:*:*:*:*:*:*"]
-        }
-      ]
-    }
- 
--For images, a summary of all recipes included in the image and their CVEs is also
--generated in the JSON format. These ``.json`` reports can be found
--in the ``tmp/deploy/images`` directory for each compiled image.
--
--At build time CVE check will also throw warnings about ``Unpatched`` CVEs::
-+At build time the :ref:`ref-classes-sbom-cve-check` class will also throw warnings about
-+``Unpatched`` CVEs (when :term:`SBOM_CVE_CHECK_SHOW_WARNINGS` is set to "1"):
- 
--   WARNING: qemu-native-9.2.0-r0 do_cve_check: Found unpatched CVE (CVE-2023-1386)
-+.. code-block:: text
- 
--It is also possible to check the CVE status of individual packages as follows::
--
--   bitbake -c cve_check flex libarchive
-+   WARNING: core-image-minimal-1.0-r0 do_sbom_cve_check: glibc-2.43+git: Found unpatched CVEs: CVE-2010-4756
- 
- Fixing CVE product name and version mappings
- ============================================
- 
--By default, ``cve-check`` uses the recipe name :term:`BPN` as CVE
-+By default, :ref:`ref-classes-sbom-cve-check` uses the recipe name :term:`BPN` as CVE
- product name when querying the CVE database. If this mapping contains false positives, e.g.
- some reported CVEs are not for the software component in question, or false negatives like
- some CVEs are not found to impact the recipe when they should, then the problems can be
-@@ -175,7 +187,7 @@ Fixing vulnerabilities in recipes
- 
- Suppose a CVE security issue impacts a software component. In that case, it can
- be fixed by updating to a newer version, by applying a patch, or by marking it
--as patched via :term:`CVE_STATUS` variable flag. For OE-Core master
-+as patched via :term:`CVE_STATUS` variable flag. For :term:`OpenEmbedded-Core (OE-Core)` master
- branches, updating to a more recent software component release with fixes is
- the best option, but patches can be applied if releases are not yet available.
- 
-@@ -228,7 +240,7 @@ is::
-     1 file changed, 12 insertions(+), 4 deletions(-)
- 
- 
--For the correct operations of the ``cve-check``, it requires the CVE
-+For the correct operations of :ref:`ref-classes-sbom-cve-check`, it requires the CVE
- identification in a ``CVE:`` tag of the patch file commit message using
- the format::
- 
-@@ -265,8 +277,8 @@ With the additional information, the header of the patch file in OE-core becomes
- A good practice is to include the CVE identifier in the patch file name, the patch file
- commit message and optionally in the recipe commit message.
- 
--CVE checker will then capture this information and change the CVE status to ``Patched``
--in the generated reports.
-+:ref:`ref-classes-sbom-cve-check` will then capture this information and change the CVE
-+status to ``Patched`` in the generated reports.
- 
- If analysis shows that the CVE issue does not impact the recipe due to configuration, platform,
- version or other reasons, the CVE can be marked as ``Ignored`` by using
-@@ -282,44 +294,6 @@ to fix those issues in the CVE database (NVD in the case of
- Note that if there are many CVEs with the same status and reason, those can be
- shared by using the :term:`CVE_STATUS_GROUPS` variable.
- 
--Recipes can be completely skipped by CVE check by including the recipe name in
--the :term:`CVE_CHECK_SKIP_RECIPE` variable.
--
--Implementation details
--======================
--
--Here's what the ``cve-check`` class does to find unpatched CVE IDs.
--
--First the code goes through each patch file provided by a recipe. If a valid CVE ID
--is found in the name of the file, the corresponding CVE is considered as patched.
--Don't forget that if multiple CVE IDs are found in the filename, only the last
--one is considered. Then, the code looks for ``CVE: CVE-ID`` lines in the patch
--file. The found CVE IDs are also considered as patched.
--Additionally ``CVE_STATUS`` variable flags are parsed for reasons mapped to ``Patched``
--and these are also considered as patched.
--
--Then, the code looks up all the CVE IDs in the NIST database for all the
--products defined in :term:`CVE_PRODUCT`. Then, for each found CVE:
--
---  If the package name (:term:`PN`) is part of
--   :term:`CVE_CHECK_SKIP_RECIPE`, it is considered as ``Patched``.
--
---  If the CVE ID has status ``CVE_STATUS[<CVE ID>] = "ignored"`` or if it's set to
--   any reason which is mapped to status ``Ignored`` via ``CVE_CHECK_STATUSMAP``,
--   it is  set as ``Ignored``.
--
---  If the CVE ID is part of the patched CVE for the recipe, it is
--   already considered as ``Patched``.
--
---  Otherwise, the code checks whether the recipe version (:term:`PV`)
--   is within the range of versions impacted by the CVE. If so, the CVE
--   is considered as ``Unpatched``.
--
--The CVE database is stored in :term:`DL_DIR` and can be inspected using
--``sqlite3`` command as follows::
--
--   sqlite3 downloads/CVE_CHECK2/nvd*.db .dump | grep CVE-2021-37462
--
- When analyzing CVEs, it is recommended to:
- 
- -  study the latest information in `CVE database <https://nvd.nist.gov/vuln/search>`__.
-@@ -335,6 +309,12 @@ When analyzing CVEs, it is recommended to:
- -  follow public `open source security mailing lists <https://oss-security.openwall.org/wiki/mailing-lists>`__ for
-    discussions and advance notifications of CVE bugs and software releases with fixes.
- 
-+Implementation details
-+======================
-+
-+As :ref:`ref-classes-sbom-cve-check` is an external tool, its implementation is detailed on
-+the official documentation: https://sbom-cve-check.readthedocs.io/en/latest/index.html
-+
- Linux kernel vulnerabilities
- ============================
- 
-@@ -396,15 +376,16 @@ Then the CVE information will automatically be added in the
- 
- The ``openembedded-core/scripts/contrib/improve_kernel_cve_report.py`` script
- leverages CVE kernel metadata and the :term:`SPDX_INCLUDE_COMPILED_SOURCES`
--variable to update a ``cve-summary.json`` file. It reduces CVE false
--positives by 70%-80% and provide detailed responses for all kernel-related
--CVEs by analyzing the files used to build the kernel. The script is decoupled from
--the build and can be run outside of the :term:`BitBake` environment.
-+variable to update an output ``.sbom-cve-check.yocto.json`` report file (see
-+section :ref:`security-manual/vulnerabilities:Vulnerability check at build time`
-+for details on these report files). It reduces CVE false positives by 70%-80%
-+and provide detailed responses for all kernel-related CVEs by analyzing the
-+files used to build the kernel. The script is decoupled from the build and
-+can be run outside of the :term:`BitBake` environment.
- 
--The script uses the output from the :ref:`ref-classes-vex` or
--``cve-check`` class as input, together with CVE information from
--the Linux kernel CNA to enrich the ``cve-summary.json`` file with updated CVE
--information.
-+The script uses the output from the :ref:`ref-classes-vex` as input, together
-+with CVE information from the Linux kernel CNA to enrich the
-+report file with updated CVE information.
- 
- The file name can be specified as argument. Optionally, it can also use the
- list of compiled files from the kernel :term:`SPDX` to ignore CVEs that are
-@@ -465,7 +446,7 @@ the first two examples, using the old cve-summary.json.
-       $ python3 openembedded-core/scripts/contrib/improve_kernel_cve_report.py \
-          --spdx tmp/deploy/spdx/3.0.1/qemux86_64/recipes/recipe-linux-yocto.spdx.json \
-          --datadir ~/vulns \
--         --old-cve-report build/tmp/log/cve/cve-summary.json
-+         --old-cve-report build/tmp/deploy/images/<machine>/<image-name>-<machine>.rootfs.sbom-cve-check.yocto.json
- 
- -  Example using ``--debug-sources`` file instead of SPDX kernel file:
- 
-@@ -474,7 +455,7 @@ the first two examples, using the old cve-summary.json.
-       $ python3 openembedded-core/scripts/contrib/improve_kernel_cve_report.py \
-          --debug-sources tmp/pkgdata/qemux86_64/debugsources/linux-yocto-debugsources.json.zstd \
-          --datadir ~/vulns \
--         --old-cve-report build/tmp/log/cve/cve-summary.json
-+         --old-cve-report build/tmp/deploy/images/<machine>/<image-name>-<machine>.rootfs.sbom-cve-check.yocto.json
- 
- -  Example using the ``--kernel-version``:
+ Known Issues in |yocto-ver|
+ ---------------------------
  
 
 -- 
