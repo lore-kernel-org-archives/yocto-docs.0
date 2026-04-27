@@ -1,266 +1,717 @@
-Return-Path: <quentin.schulz@cherry.de>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F293FFF885E
-	for <webhook@archiver.kernel.org>; Mon, 27 Apr 2026 12:47:53 +0000 (UTC)
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (DB3PR0202CU003.outbound.protection.outlook.com [52.101.84.44])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.44411.1777294063034677438
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E96C0FF8868
+	for <webhook@archiver.kernel.org>; Mon, 27 Apr 2026 14:43:46 +0000 (UTC)
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.46963.1777301022433110606
  for <docs@lists.yoctoproject.org>;
- Mon, 27 Apr 2026 05:47:43 -0700
+ Mon, 27 Apr 2026 07:43:43 -0700
 Authentication-Results: mx.groups.io;
- dkim=fail reason="dkim: body hash did not verify" header.i=@cherry.de header.s=selector1 header.b=EIFScYfm;
- spf=pass (domain: cherry.de, ip: 52.101.84.44, mailfrom: quentin.schulz@cherry.de)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wMs1fy1One2ahEHDX3XY09+RrTFyCFYLtYcf8aFSCwYEngpqjRqVU0s+tWoARA4nSta+QRGjDrOPMwLl063ODtWWzUU4qlbAPTkaiNc4BBlxop1IP60U9YMfmcW3nxNthkh0PCtGfHu/eYOPlErXjQK+VKTEnMbArbMVNi5Wpct3qELU8EIFrdFLKtkOulHFJrcr7FJrMOq+rA0PK5cJmlS2GyN1ti5Ps5Zx6T0eSJSaIARhGwtpeYDYvFk3mKTOCfd8OVAgYbBjU4jHUVusnRjV0OFYLSXd+4YGh6Nl6MIm4k7p86ZXpk5sCWUDvYb7tAgkuuB7+hSbxe1VjCHXqA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jzwqF/hEd9+wcXp8jHUqO5y2JIobGz+4XL+JJmaiXLY=;
- b=Xh3B+6Z3Yi82p11+FYm4vnF1GusxH8wcxYnLh8eLbpq0AT+GCVG2qsR//qb4Kr0AseNYme3ZPYIE5kJnomLwYUgKx7uqUgR8llfAxtWzWop76aBYHAvurrRQXvdvmjd9PIpGdq9zaPZptPRobsaOHn2eFW825Y2yh+oaDdpoXRsxOCOfvmf494i6x9kNBBiUsAjmQeo1KCVkEkB9oGIw6L96lFrx7YgRTlqNSfsg3GpPAnjd4gFeoYnxvmmArS3FC2lQdyDEZRKBM1FyV7KEepADjG3eHWUIa5e+lET8x/zUGAT/DH8puSCN7mkYc0wefDftneAkEz4Vtmmp0ZwVkQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
- dkim=pass header.d=cherry.de; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jzwqF/hEd9+wcXp8jHUqO5y2JIobGz+4XL+JJmaiXLY=;
- b=EIFScYfm5Ad0TiQe5oSfOm/oqg2wUMViOTda5UFAQ6kA4CQmZdSQ8CeH9AgeXizgTDnGR8XJknreDmf44Yz0U8VyQfkWplo9mRlBGAVrx0gdbQsL5cFSTMfNl7R8s4hrN+/y1q7BsunZ2DEAa15Ccwi752i1Irsab3yByxEfQ8o=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=cherry.de;
-Received: from PA4PR04MB7743.eurprd04.prod.outlook.com (2603:10a6:102:b8::20)
- by VI0PR04MB12662.eurprd04.prod.outlook.com (2603:10a6:800:343::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.26; Mon, 27 Apr
- 2026 12:47:38 +0000
-Received: from PA4PR04MB7743.eurprd04.prod.outlook.com
- ([fe80::9a4e:252f:2fd:97b7]) by PA4PR04MB7743.eurprd04.prod.outlook.com
- ([fe80::9a4e:252f:2fd:97b7%6]) with mapi id 15.20.9846.016; Mon, 27 Apr 2026
- 12:47:38 +0000
-Message-ID: <9720d93e-15c4-4deb-9fa5-1182d83b2e83@cherry.de>
-Date: Mon, 27 Apr 2026 14:47:36 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [docs] [PATCH 1/1] doc: bitbake-user-manual-metadata: fix
- inherit_defer documentation
-From: Quentin Schulz <quentin.schulz@cherry.de>
-To: bijak.dawid@gmail.com, bitbake-devel@lists.openembedded.org
-CC: docs@lists.yoctoproject.org
-References: <20260424062327.820993-1-bijak.dawid@gmail.com>
- <20260424062327.820993-2-bijak.dawid@gmail.com>
- <c25e0e9a-8809-4ac6-90ee-3687972e03af@cherry.de>
-Content-Language: en-US
-In-Reply-To: <c25e0e9a-8809-4ac6-90ee-3687972e03af@cherry.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=HEC9GkN6;
+ spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 9EAACC5CD4A
+	for <docs@lists.yoctoproject.org>; Mon, 27 Apr 2026 14:44:23 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 6EDE9600D1;
+	Mon, 27 Apr 2026 14:43:40 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id EAD0E10728201;
+	Mon, 27 Apr 2026 16:43:38 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1777301020; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=0ra9mtGU3+tWTHWljAPY8jDFAPJOwO3ei0pH0k37rB0=;
+	b=HEC9GkN6tb9+lenvdAxUlTDq4kW/LYs7MvVacpdfwq97UcJrwOHESc4sRasiN4GZMGb0IG
+	lj5B8KCXTk7Q3efuEPpcAa6CYeRS0r5BE4wYqOG4mG7ZNf7U2ss9gDJnI4bcGa85bzm7db
+	0+uBGALY8SYH39v0Pacu1BEYw8iBUmDpIVhzOyXE/rrCYUWgDSwJgFS2P1qb6xT9Gpuncf
+	L0+tVq5AWHtSeFbu/jXL9OlFX5bVHriSmBMphPm6S0vndOasa8QjU7WWmk7SjYSiYyVlYu
+	Y7wJPIgmeSM2qYZCDtgyjDnv+udenTsiQ3pb3Amwuv0Nufq8t5e9eZ7Nt9/x5w==
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: FR4P281CA0403.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:cf::9) To PA4PR04MB7743.eurprd04.prod.outlook.com
- (2603:10a6:102:b8::20)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA4PR04MB7743:EE_|VI0PR04MB12662:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4d2a8aaf-ab4e-4fd5-04ec-08dea45b2983
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: 
-	BCL:0;ARA:13230040|10070799003|376014|366016|1800799024|22082099003|18002099003|56012099003;
-X-Microsoft-Antispam-Message-Info: 
-	z/cdhyoi6k1efJz1/09EgM8EIGjUx2GpUqGHZR7UNGVBcZBjOo/d8umgDNjMZQZNFspu5e8VmZlYcNRwkf4Tg0l5qTf1Xw4yLhM6NmzxvPEcAAZkmZaSa0D/QmonkimIY+beqWAtUSNSBAI4opjBH9p58ydwvl5PxT6krBouuCXOvsxDqIkJhmnNOTsuM7D3rdyJbiaT3SU0kAS+LyD6z/nzAQDxGcHIRrLL98lh41PMKqt6M8QpZHqe76a0LL5n1lF7k9xPnRmjgh5Y9m4PknJW1dYWs+DPkG1U+2DEFH3kux0X1xKY5aPloPEl6GyAT4MOWTdNdUagoPGZ/KcvDmo4QnsyLzqhKJgM21L/mF8zYPhcW34ndVxhYuTI5oB0ueYB+LgV8ZjTaz2BKhoIwRdY0ztYUeDy36sD7BTtgsU5Hqwm2OY7AnNlVAB+VR4hEJKu0QR/eY7CMX9MM8cZJwnZm/Lkp/0VChDiPupOJepwQKyVvTR1gfSZwESCBFQ/xEuqm7eZfRc6h7Ba9RppZ3l8QhgiJpcJYI9N3pA+WUvPEK04rwRpDfBVQYhKI92rrkZQVYC/+7Zktr4wBA3xVGOo6wTd/B2+UfwXZijrzjAE7Qk2NXoNJrqIGHvCxs1DQavb5IALDNzoKr7yNcPE86/16rmW/ckj4Fhoxl3Nt7Icf32mAuKQk16JyS1L3V4WkSjn9wPPk26t26vGGqBK0WkdW5mT96/rmZExOMEm4iU=
-X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB7743.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(376014)(366016)(1800799024)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?us-ascii?Q?LL9E1zq8UpMPRKtW5bJ8kyukhCSZZWgrYPXehW0GVSBLpjqw0vcqa0RV4ha0?=
- =?us-ascii?Q?OWxOc82Bdfeo6hPSnkd8avrGeJ+qKcEQ4dEC3l05srRVFD5I52H970AcXog9?=
- =?us-ascii?Q?PL92r9gH2kwPbyyH0jq6w7zLKU8myiNWtrscKg0G7TzOEwUug/AiS4LwOewr?=
- =?us-ascii?Q?z4zFT9Xe4wulvzH8H47PiRQnn4sVYPFarp2nVjAu02p1dbyrT7rCE5zg0EaD?=
- =?us-ascii?Q?1Ybh8vEpMBHjApdSXPfta7b3D/LhOQ+B/nsN7L6KajrxdfDKPRQX5mbrXesN?=
- =?us-ascii?Q?LuC6b976HVJXgRgQ4fhucwXQ4rwcD0g4cxeyWmOpLNqy3uxKHUMJqg+znOg2?=
- =?us-ascii?Q?dHO54LJulbvA2VkqzjOYq5wiR/JkrshZN3uWHgkLQ6dElCBgryypiTPWBFhl?=
- =?us-ascii?Q?8I0NpcBh0+GR4wovaI/zWafKqyJFS28grCS/W98wryBIANQEr2BCn+W/Bt4C?=
- =?us-ascii?Q?0NYS7cml9CJAlgnGFyDScSAy1HysguGC1oWpwV+j+zQHmliMPJjcENDWiXfB?=
- =?us-ascii?Q?88Vq4XhmR2umhL58vd4z6CBgvF29kpLeGT8c/tDzR33KcYtUXxnShNoRQPvJ?=
- =?us-ascii?Q?9rJ4ErKWiQpB5bCcw2AvmY/L2QGXT/L0qQviSJQmck3rNfjOoTOHix8XmPiB?=
- =?us-ascii?Q?FlJhOrOWWrjG3OvRoi49BsRZAmdAX4ZDUV8gG18XVTPCVtyIGWnh3N6WWD1g?=
- =?us-ascii?Q?WFQzAIiPwqPULmRCQstybCXNJjtLNSUKGf3tIbD9Y6+Snhj/sIResPZkd+wN?=
- =?us-ascii?Q?oAFhENYwDrCtgqGMq44uH6oR0rRjMz6SnGB0yjLAJImDl0hPceRt/e/RBJ+1?=
- =?us-ascii?Q?FQv5hZ7/evLV1EDhDDPRjaNaNhvpzErwM3m6ov/z7f1CBhkPgEnM6EXpRzV3?=
- =?us-ascii?Q?94HMr0OPv2NJEIk52L+3x53BDB65FPeUbWJbbk9qW4kqxVevp6ioZkgY429c?=
- =?us-ascii?Q?VQyJAas4L/nz1LD3z3W0D2Ya5hJO+T7Lc6FHbgK1YEt1pX3jD2a5f4Ij3aFP?=
- =?us-ascii?Q?MUryexYI8eZNORCVCXBa3pbzHO0Al33hftNQtGJQpVwSCZw+ePNKOK7uEvSb?=
- =?us-ascii?Q?ZYhINNFlBfZFqhsIn0EkhSHihf6hxBPO/lM7dtIzE9LX1AktppIa/MHZkfyi?=
- =?us-ascii?Q?4XQ1oW4riTcMbsb7slxpUGc1NbND3NEN3XEPHal2MXnyBg1SgnFqwpohZwcm?=
- =?us-ascii?Q?uVe8cUx0ciUHag86eaB4fsB1GQStkbcFCmvyEsK0AxiXCPusPNWaZR/KE6X3?=
- =?us-ascii?Q?B3/20usf0KlDHJLi5uuaRDR8H8K8YqbeL9ViMVRggsRz3ySHzHuTlgekDfOV?=
- =?us-ascii?Q?EJEKzF/GkoucPGjAaRmKWR4613dEAlrsItsqUiWJQUW5NL/5dRGXSezL9vJu?=
- =?us-ascii?Q?kQRdKrVIvnudHrD13cWqVXJ1Ak92oslqfddW7fu6DJiJuFmDiX1ZcywkwRsK?=
- =?us-ascii?Q?cRah1EDeuPhAuVkFeRp/ZYLjljGLHxzTjrr2otoyRO0wjWZzy9T8zw2icx6h?=
- =?us-ascii?Q?gkwj4BD5AmduktcmNsrTUMVKtD5m+K8kr0w1A/JZ4S838+4tKZVIiVxH+NHA?=
- =?us-ascii?Q?3Pzahj4/erQjorKEuuhLzcm23WLjc2pST+j5bSM0iG/r6pvJJqscdeiFlXua?=
- =?us-ascii?Q?HC+yHrHVc2IbH8jHya7mcTJAwLqqiB4ahamNCyWLf6CUVNPGx3BMmJTfbEYs?=
- =?us-ascii?Q?szMsleCFLmVxD6UwfZ2M4WJy4hodC6r8PhVwrARyXOQBJLMbA8Sak5sYkDaf?=
- =?us-ascii?Q?nhMVSZis5hyrGlY0nYE4u84u/urSzU83fY0w6XKRPb9f5cr8syv0?=
-X-OriginatorOrg: cherry.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4d2a8aaf-ab4e-4fd5-04ec-08dea45b2983
-X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB7743.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Apr 2026 12:47:37.9912
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /ROvT/W4lVpch/1+rXqpEGJCE/KHoNeXONSgUqeuDDXFQsVfa6Ujl69O43Ql8ZH60FoDaYaTfDmXRE+G2bR/ivHJzDrlifbecqqCvGf3sA0=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB12662
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 27 Apr 2026 16:43:38 +0200
+Message-Id: <DI40MO4BDL1R.306ON3EYMK35F@bootlin.com>
+Subject: Re: [docs] [PATCH v2] Document shared state signing
+Cc: "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>
+From: "Antonin Godard" <antonin.godard@bootlin.com>
+To: <quentin.schulz@cherry.de>, <docs@lists.yoctoproject.org>
+References: <20260421-sstate-signing-v2-1-7b572121f2fd@bootlin.com>
+ <a4723996-6d07-41b1-a40b-35e12e48807f@cherry.de>
+In-Reply-To: <a4723996-6d07-41b1-a40b-35e12e48807f@cherry.de>
+X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 27 Apr 2026 12:47:53 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9371
+ <docs@lists.yoctoproject.org>; Mon, 27 Apr 2026 14:43:46 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9372
 
-On 4/27/26 2:35 PM, Quentin Schulz wrote:
-> Hi Dawid,
->=20
-> On 4/24/26 8:23 AM, Dawid Bijak via lists.yoctoproject.org wrote:
->> [You don't often get email from=20
->> bijak.dawid=3Dgmail.com@lists.yoctoproject.org. Learn why this is=20
->> important at https://aka.ms/LearnAboutSenderIdentification ]
->>
->> The documentation for inherit_defer contained the claim
->>
->> "If VARNAME is going to be set, it needs to be set before the
->> inherit_defer statement is parsed"
->>
->> which is incorrect and contradicts the purpose of inherit_defer.
->> The wrong claim is replaced with an example which demonstrates
->> the contrast between a plain defer statement and the inherit_defer
->> statement by using an override assignment placed after inherit_defer
->>
->> Additionally the inline python expression examples have been
->> moved from the inherit_defer section up to the inherit section, since
->> they apply to both directives
->>
->=20
-> I'm pretty sure the whole inherit_defer thing started because an inline=20
-> Python expression didn't work. I vaguely remember a bbappend either=20
-> adding this new inherit based on PACKAGECONFIG containing a value, or=20
-> having the main recipe with this inherit <PACKAGECONFIG.contains> and a=20
-> bbappend modify PACKAGECONFIG. See commit 5c2e840eafeb ("ast/BBHandler:=20
-> Add inherit_defer support") in BitBake.
->=20
-> So I'm very skeptical this is correct.
->=20
->> Also add an anti-example showing that the previously documented
->> pattern of setting the inherited class name from an anonymous
->> Python function does not work with inherit_defer.
->>
->> Signed-off-by: Dawid Bijak <bijak.dawid@gmail.com>
+Hi,
+
+On Fri Apr 24, 2026 at 5:18 PM CEST, Quentin Schulz via lists.yoctoproject.=
+org wrote:
+> Hi Antonin,
+>
+> On 4/21/26 9:19 AM, Antonin Godard via lists.yoctoproject.org wrote:
+>> Document the shared state signing feature. Add a new document in the
+>> Security manual, and definitions for the variables involved in this
+>> process in the variable glossary.
+>>=20
+>> [YOCTO #15217]
+>>=20
+>> Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 >> ---
->> =C2=A0 .../bitbake-user-manual-metadata.rst=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 61 ++++++++++---------
->> =C2=A0 1 file changed, 32 insertions(+), 29 deletions(-)
->>
->> diff --git a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst=20
->> b/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
->> index 40cae6b05..38efe6b11 100644
->> --- a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
->> +++ b/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
->> @@ -803,7 +803,17 @@ An advantage with the inherit directive as=20
->> compared to both the
->> =C2=A0 :ref:`include <bitbake-user-manual/bitbake-user-manual-metadata:=
+>> Changes in v2:
+>> - Fix typos reported by Ulrich (thanks!)
+>> - Link to v1: https://patch.msgid.link/20260417-sstate-signing-v1-1-5df1=
+1613249e@bootlin.com
+>> ---
+>>   documentation/overview-manual/concepts.rst       |   6 +
+>>   documentation/ref-manual/variables.rst           |  50 +++++
+>>   documentation/security-manual/index.rst          |   1 +
+>>   documentation/security-manual/sstate-signing.rst | 272 +++++++++++++++=
+++++++++
+>>   4 files changed, 329 insertions(+)
+>>=20
+>> diff --git a/documentation/overview-manual/concepts.rst b/documentation/=
+overview-manual/concepts.rst
+>> index ab723d7c3..f0b336226 100644
+>> --- a/documentation/overview-manual/concepts.rst
+>> +++ b/documentation/overview-manual/concepts.rst
+>> @@ -1240,6 +1240,12 @@ variable is the function that determines whether =
+a given dependency
+>>   needs to be followed, and whether for any given relationship the
+>>   function needs to be passed. The function returns a True or False valu=
+e.
+>>  =20
+>> +.. note::
+>> +
+>> +   Is is possible to sign these artifacts with :wikipedia:`GPG
+>> +   <GNU_Privacy_Guard>`. See :doc:`/security-manual/sstate-signing` in =
+the Yocto
+>> +   Project Security Manual for more information.
+>> +
+>>   Images
+>>   ------
+>>  =20
+>> diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-=
+manual/variables.rst
+>> index 317b75913..90d7fc924 100644
+>> --- a/documentation/ref-manual/variables.rst
+>> +++ b/documentation/ref-manual/variables.rst
+>> @@ -10097,6 +10097,25 @@ system and gives an overview of their function =
+and contents.
+>>  =20
+>>         For details on the process, see the :ref:`ref-classes-staging` c=
+lass.
+>>  =20
+>> +   :term:`SSTATE_SIG_KEY`
+>> +      When signing :ref:`shared state <overview-manual/concepts:setscen=
+e tasks
+>> +      and shared state>` artifacts (when :term:`SSTATE_VERIFY_SIG` is s=
+et to
+>> +      "1"), the :term:`SSTATE_SIG_KEY` variable is the :wikipedia:`GPG
+>> +      <GNU_Privacy_Guard>` key identifier used to sign them (with the p=
+rivate
+>> +      key).
+>> +
+>> +      See :doc:`/security-manual/sstate-signing` in the Yocto Project S=
+ecurity
+>> +      Manual for more information.
+>> +
+>> +   :term:`SSTATE_SIG_PASSPHRASE`
+>> +      When signing :ref:`shared state <overview-manual/concepts:setscen=
+e tasks
+>> +      and shared state>` artifacts (when :term:`SSTATE_VERIFY_SIG` is s=
+et to
+>> +      "1"), the :term:`SSTATE_SIG_PASSPHRASE` variable is the passphras=
+e used to
+>> +      protect the private key signing the artifacts.
+>> +
+>> +      See :doc:`/security-manual/sstate-signing` in the Yocto Project S=
+ecurity
+>> +      Manual for more information.
+>> +
+>>      :term:`SSTATE_SKIP_CREATION`
+>>         The :term:`SSTATE_SKIP_CREATION` variable can be used to skip th=
+e
+>>         creation of :ref:`shared state <overview-manual/concepts:shared =
+state cache>`
+>> @@ -10117,6 +10136,37 @@ system and gives an overview of their function =
+and contents.
+>>  =20
+>>            SSTATE_SKIP_CREATION =3D "1"
+>>  =20
+>> +   :term:`SSTATE_VALID_SIGS`
+>> +      When verifying :ref:`shared state <overview-manual/concepts:setsc=
+ene tasks
+>> +      and shared state>` artifacts (when :term:`SSTATE_VERIFY_SIG` is s=
+et to
+>> +      "1"), the :term:`SSTATE_VALID_SIGS` variable is a space-separated=
+ list of
+>> +      :wikipedia:`GPG <GNU_Privacy_Guard>` key identifiers to use to ve=
+rify their
+>> +      signature.
+>> +
+>> +      It must contain the short form identifier of the key pair. For ex=
+ample,
+>> +      when running the ``gpg --list-keys`` command:
+>> +
+>> +      .. parsed-literal::
+>> +
+>
+> You could use
+>
+> .. code-block:: console
+>
+>     $ gpg --list-keys
+>     pub....
+>
+> to avoid having to use a literal include.
+
+This use of parsed-literal was intended, as it shows the last 16 characters=
+ in
+bold. I'll add " (in bold text below)" before the colon.
+
+>> +         pub   ed25519 2026-04-17 [SC]
+>> +               \4049A47E3AAA99D0250966DC\ **5B97632FA7F4E942**
+>> +         uid           [ultimate] Antonin Godard (SState Signing) <anto=
+nin.godard\@bootlin.com>
+>> +         sub   cv25519 2026-04-17 [E]
+>> +
+>> +      The short form equals the last 16 characters of the identier. In =
+the above
+>
+> s/identier/identifier/
+>
+>> +      example: ``5B97632FA7F4E942``.
+>> +
+>> +      See :doc:`/security-manual/sstate-signing` in the Yocto Project S=
+ecurity
+>> +      Manual for more information.
+>> +
+>> +   :term:`SSTATE_VERIFY_SIG`
+>> +      The :term:`SSTATE_VERIFY_SIG` variable controls whether to enable=
+ or
+>> +      disable the :ref:`shared state <overview-manual/concepts:setscene=
+ tasks
+>> +      and shared state>` artifacts signing feature.
+>> +
+>> +      See :doc:`/security-manual/sstate-signing` in the Yocto Project S=
+ecurity
+>> +      Manual for more information.
+>> +
+>>      :term:`STAGING_BASE_LIBDIR_NATIVE`
+>>         Specifies the path to the ``/lib`` subdirectory of the sysroot
+>>         directory for the build host.
+>> diff --git a/documentation/security-manual/index.rst b/documentation/sec=
+urity-manual/index.rst
+>> index 3453940f5..a767cd9c6 100644
+>> --- a/documentation/security-manual/index.rst
+>> +++ b/documentation/security-manual/index.rst
+>> @@ -14,6 +14,7 @@ Yocto Project Security Manual
+>>      securing-images
+>>      vulnerabilities
+>>      read-only-rootfs
+>> +   sstate-signing
+>>  =20
+>>   .. include:: /boilerplate.rst
+>>  =20
+>> diff --git a/documentation/security-manual/sstate-signing.rst b/document=
+ation/security-manual/sstate-signing.rst
+>> new file mode 100644
+>> index 000000000..54ae92d50
+>> --- /dev/null
+>> +++ b/documentation/security-manual/sstate-signing.rst
+>> @@ -0,0 +1,272 @@
+>> +.. SPDX-License-Identifier: CC-BY-SA-2.0-UK
+>> +
+>> +Shared State Signing
+>> +********************
+>> +
+>> +The :term:`OpenEmbedded Build System` build system has a built-in mecha=
+nism
+>> +allowing to save execution time by re-using pre-built artifacts: the
+>> +:ref:`shared state cache (sstate cache) <overview-manual/concepts:share=
+d state
+>> +cache>`. These artifacts are stored in a directory (:term:`SSTATE_DIR`)=
+ and are
+>> +not signed by default.
+>> +
+>> +This document goes through the steps to enable shared state signing.
+>> +This feature is fully dependent on :wikipedia:`GPG <GNU_Privacy_Guard>`=
+, meaning
+>> +examples shown in this document will use the ``gpg`` command-line tool.
+>> +
+>> +Host Requirements
+>> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>> +
+>> +As :wikipedia:`GPG <GNU_Privacy_Guard>` is not part of the default :ref=
+:`host
+>> +requirements <ref-manual/system-requirements:Required Packages for the =
+Build
+>> +Host>`, you will need to install it on your host.
+>> +
+>> +For example, Debian based distributions provide it with the `gpg` packa=
+ge name.
+>
+> Double tick around gpg maybe?
+>
+>> +Install it as follows:
+>> +
+>> +.. code-block:: console
+>> +
+>> +   $ sudo apt install gpg
+>> +
+>
+> apt-get
+>
+> :D
+>
+>> +Verify that your installation is successful by showing the version of G=
+PG:
+>> +
+>> +.. code-block:: console
+>> +
+>> +   $ gpg --version
+>> +
+>
+> What exactly does this depend on? Only the gpg binary or also libraries?=
 =20
->> \`\`include\`\` directive>` and :ref:`require <bitbake-user-manual/=20
->> bitbake-user-manual-metadata:\`\`require\`\` directive>`
->> =C2=A0 directives is that you can inherit class files conditionally. You=
- can
->> =C2=A0 accomplish this by using a variable expression after the ``inheri=
-t``
->> -statement.
->> +statement, as in::
->> +
->> +=C2=A0=C2=A0 inherit ${@'classname' if condition else ''}
->> +
->> +Or::
->> +
->> +=C2=A0=C2=A0 inherit ${@bb.utils.contains('VARIABLE', 'something', 'cla=
-ssname',=20
->> '', d)}
->> +
->> +In both cases, if the expression evaluates to an
->> +empty string, the statement does not trigger a syntax error because it
->> +becomes a no-op.
->>
->> =C2=A0 For inheriting classes conditionally, using the :ref:`inherit_def=
-er
->> =C2=A0 <ref-bitbake-user-manual-metadata-inherit-defer>` directive is=20
->> advised as
->> @@ -827,39 +837,32 @@ the variable after the line is parsed will take=20
->> effect. With the :ref:`inherit
->>
->> =C2=A0 Here is an example::
->>
->> -=C2=A0=C2=A0 inherit_defer ${VARNAME}
->> -
->> -If ``VARNAME`` is
->> -going to be set, it needs to be set before the ``inherit_defer``=20
->> statement is
->> -parsed. One way to achieve a conditional inherit in this case is to use
->> -overrides::
->> -
->> =C2=A0=C2=A0=C2=A0=C2=A0 VARIABLE =3D ""
->> -=C2=A0=C2=A0 VARIABLE:someoverride =3D "myclass"
->> -
->> -Another method is by using :ref:`anonymous Python
->> -<bitbake-user-manual/bitbake-user-manual-metadata:Anonymous Python=20
->> Functions>`.
->> -Here is an example::
->> +=C2=A0=C2=A0 inherit_defer ${VARIABLE}
->> +=C2=A0=C2=A0 VARIABLE:someoverride =3D "someclass"
->> +
->> +:ref:`inherit_defer <ref-bitbake-user-manual-metadata-inherit-defer>`
->> +defers the evaluation of ``${VARIABLE}`` until the end of
->> +parsing. Assuming ``someoverride`` is in :term:`OVERRIDES`,=20
->> ``${VARIABLE}``
->> +expands to ``someclass``, which is then inherited. Contrast this with=20
->> a plain
->> +:ref:`inherit <ref-bitbake-user-manual-metadata-inherit>`, which=20
->> would evaluate
->> +``${VARIABLE}`` immediately, before the ``VARIABLE:someoverride``=20
->> assignment
->> +is parsed. ``${VARIABLE}`` would expand to an empty string and the=20
->> statement
->> +would become a no-op.
->> +
->> +Note that assigning the variable from an
->> +:ref:`anonymous Python function <bitbake-user-manual/bitbake-user-=20
->> manual-metadata:Anonymous Python Functions>`
->> +does *not* work, because deferred inherits are resolved before anonymou=
-s
->> +Python functions run::
->>
->=20
-> I vaguely remember reading on IRC we're having some issues with=20
-> anonymous Python functions and parsing lately, so that may be related to=
+> It'd be nice to know because maybe other distros have different packages=
 =20
-> that. I haven't followed anything in that area so maybe I'm wrong or it=20
-> has already been fixed. So I'm not sure if you just happen to try this=20
-> when things were broken in BitBake or if it's really intended to work=20
-> that way.
->=20
+> and need more/less. It seems that Debian's package installs the binary=20
+> and depends on libgpg-error0 library.
+>
+> Can be figured out later but it'd be nice.
 
-Reading my mail backlog, I just stumbled upon=20
-https://lore.kernel.org/openembedded-core/CANPvuRk19e3PhcVXxLUJTjaPE9bMXO-0=
-4MLytqGNpA0=3DPEzeeA@mail.gmail.com/=20
-where Jose links to=20
-https://git.openembedded.org/openembedded-core/commit/?id=3D6b553a5042b9d58=
-28a9da675ede16e10f06dae90=20
-which does indeed mention this is a known limitation:
+This: https://pkgs.org/search/?q=3D%2Fusr%2Fbin%2Fgpg
+tells me that you probably only need to install a single package to get the
+``gpg`` command-line tool. However I'm not sure if there are other requirem=
+ents,
+but I don't think this document should go in length about it
 
-"""
-Anonymous python is executed after all inherits including deferred=20
-inherits are processed.
-"""
+>> +Generating A Public And Private Key Pair With GPG
+>> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D
+>> +
+>> +.. note::
+>> +
+>> +   This step is optional if you already have a pair of public and priva=
+te keys.
+>> +
+>> +We need a pair of public and private keys for two independent tasks:
+>> +
+>> +-  Signing our sstate artifacts that the :term:`OpenEmbedded Build Syst=
+em`
+>> +   generates with our **private key**.
+>> +
+>> +-  Verifying our sstate artifacts with our **public key** when re-using=
+ them.
+>> +
+>
+> You alternate between "we/us/our" and "you" and the use of the=20
+> imperative mood ("Do this") throughout the document, it's a bit=20
+> confusing. I think we've mostly use the second person and imperative=20
+> mood so far, so maybe stick to that?
+>
+> You also alternate between "sstate" and "shared state".
 
-So this part is fine :)
+I've harmonized the doc in v3, thanks
 
-Cheers,
-Quentin
+>> +.. note::
+>> +
+>> +   For more information on public key cryptography, see
+>> +   :wikipedia:`Public-key_cryptography`.
+>> +
+>> +With the ``gpg`` command-line tool, generate a new pair of public and p=
+rivate
+>> +keys:
+>> +
+>> +.. code-block:: console
+>> +
+>> +   $ gpg --full-generate-key
+>> +
+>> +This will guide you through the steps of creating the key pair.
+>> +
+>
+> s/This/It/
+>
+> I initially was being confused why there was no step after "This will=20
+> guide you" that would actually guide me through the steps :)
+>
+>> +Once done, you should be able to list your new key with the following c=
+ommand:
+>> +
+>> +.. code-block:: console
+>> +
+>> +   $ gpg --list-keys
+>> +   pub   ed25519 2026-04-17 [SC]
+>> +         4049A47E3AAA99D0250966DC5B97632FA7F4E942
+>> +   uid           [ultimate] Antonin Godard (SState Signing) <antonin.go=
+dard@bootlin.com>
+>> +   sub   cv25519 2026-04-17 [E]
+>> +
+>> +In the above example, take note of the
+>> +``4049A47E3AAA99D0250966DC5B97632FA7F4E942`` key identifier. This will =
+be used
+>> +to configure our build.
+>> +
+>> +Configuring Our Build System To Sign Sstate Artifacts
+>> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+>> +
+>> +Shared State Location
+>> +---------------------
+>> +
+>> +Our build system needs to be configured to sign new sstate artifacts wh=
+en they
+>> +are generated. The generation of new artifacts is done once a task has =
+finished
+>> +being executed.
+>> +
+>> +For the following sections let's assume that our build system has the s=
+hared
+>> +state directory location (:term:`SSTATE_DIR`) defined as follows::
+>> +
+>> +   SSTATE_DIR =3D "${TOPDIR}/sstate-cache"
+>> +
+>> +Assuming this directory and our temporary directory (:term:`TMPDIR`) ar=
+e empty,
+>> +as an example throughout this document, let's run the ``create_recipe_s=
+pdx``
+>
+> What part of the sentence does "as an example throughout this document"=
+=20
+> apply to? The wording is awkward.
+>
+>> +task of the ``gettext-minimal-native`` recipe:
+>> +
+>> +.. code-block:: console
+>> +
+>> +   $ bitbake gettext-minimal-native -c create_recipe_spdx
+>> +
+>> +After execution, our shared state directory should be populated with ne=
+w files:
+>> +
+>> +.. code-block:: console
+>> +
+>> +   $ find $BUILDDIR/sstate-cache/ -name "*gettext-minimal-native*create=
+_recipe_spdx*"
+>> +   sstate-cache/universal/a3/6e/sstate:gettext-minimal-native:x86_64-li=
+nux:1.0:r0:x86_64:14:a36ef66df6b8c0cb5a849bc70a99dcfd61e4bacd11cefe6bbaf497=
+8b2b3b617a_create_recipe_spdx.tar.zst
+>> +   sstate-cache/universal/a3/6e/sstate:gettext-minimal-native:x86_64-li=
+nux:1.0:r0:x86_64:14:a36ef66df6b8c0cb5a849bc70a99dcfd61e4bacd11cefe6bbaf497=
+8b2b3b617a_create_recipe_spdx.tar.zst.siginfo
+>> +
+>> +These are the default shared state artifacts generated by the
+>> +:term:`OpenEmbedded Build System`. They are not signed with GPG by defa=
+ult, so
+>> +let's see how to add signing of these artifacts.
+>> +
+>> +.. note::
+>> +
+>> +   The `siginfo` file is not related to GPG signing.
+>> +
+>
+> But the first file also not since we haven't enabled signing yet, what=20
+> did you want to say here?
+
+Avoid confusion as "siginfo" could make someone think of "signatures" and h=
+ence
+signing/gpg. Is adding the note more confusing?
+
+>
+>> +Enabling Shared State Signing
+>> +-----------------------------
+>> +
+>> +Create a new :term:`configuration file` on your host **in a safe locati=
+on** and
+>
+> What makes a location safe?
+
+> I would suggest to put it somewhere in $HOME/.config/ maybe?
+
+Maybe, but I don't think that makes it safer?
+
+> Since it contains a secret, we should probably also recommend to do
+>
+> chmod o-rwx <file>
+
+Yes, I'll add that.
+
+> no (and possibly chown $USER:$USER <file> ?)
+
+This should be the default when creating the file but I can add that.
+
+>> +add the two following statements::
+>> +
+>> +   SSTATE_VERIFY_SIG =3D "1"
+>> +   SSTATE_SIG_KEY =3D "80613045069236143C2EE1A3C8855DA51F042B42"
+>> +   SSTATE_SIG_PASSPHRASE =3D "3lvJGHo8HZIcaufWFRezFIYRFDMSDmmkxOiwQ67Pe=
+M8IZre90I"
+>> +
+>
+> Those (the key and the passphrase) don't match anything in this file,=20
+> it'd be best to reuse what you've highlighted in the previous section.
+>
+> For the passphrase, maybe mention to "for example use that passphrase"=20
+> when generating the key (and adding a big fat warning to not actually=20
+> use that passphrase), so we know this here refers to that there. Just a=
+=20
+> suggestion, maybe it's easier to not give an example than having to=20
+> remind people not to reuse it.
+>
+>> +It is advised to put these statements in a separate file as those conta=
+in
+>> +secrets and should not be shared. For this example, let's assume this f=
+ile is
+>> +``conf/sstate-sig-key.conf``.
+>> +
+>> +These statements define:
+>> +
+>> +-  :term:`SSTATE_VERIFY_SIG`: setting this variable to "1" enables the =
+shared
+>> +   state signing feature.
+>> +
+>> +-  :term:`SSTATE_SIG_KEY`: the GPG key identifier for signing shared st=
+ate
+>> +   artifacts with the private key.
+>> +
+>> +   In our example, this corresponds to the identifier printed with the =
+``gpg
+>> +   --list-keys`` command :ref:`above <security-manual/sstate-signing:Ge=
+nerating
+>> +   A Public And Private Key Pair With GPG>`.
+>> +
+>> +-  :term:`SSTATE_SIG_PASSPHRASE`: the passphrase used to protect your p=
+rivate
+>> +   key when creating the key, chosen when creating the key pair.
+>> +
+>
+> Am I the only bothered this is an option? Is there no way to use a=20
+> keyring or the gpg-agent instead?
+
+I don't think so, no.
+
+>> +Let's test our configuration:
+>> +
+>> +#. Continuing with our ``gettext-minimal-native`` example, let's first =
+clean the
+>> +   existing shared state artifacts:
+>> +
+>> +   .. code-block:: console
+>> +
+>> +      $ bitbake gettext-minimal-native -c cleansstate
+>> +
+>
+> Why do we need to clean the cache (I'm assuming because you want to make=
+=20
+> sure the artifacts you sign are the one you just generated and not=20
+> malicious ones, but I think it'd be worth explaining this is not a=20
+> limitation but a design decision (IFF I really guessed that right)).
+
+I'm giving an example here, and want to make sure my share state artifacts =
+are
+re-generated.
+
+>> +#. Run the ``create_recipe_spdx`` task for ``gettext-minimal-native``, =
+but this
+>> +   time pass our new ``sstate-sig-key.conf`` file to :term:`BitBake`:
+>> +
+>> +   .. code-block:: console
+>> +
+>> +      $ bitbake -R conf/sstate-sig-key.conf gettext-minimal-native -c c=
+reate_recipe_spdx
+>> +
+>> +List the files in the shared state directory again:
+>> +
+>> +.. code-block:: console
+>> +
+>> +   $ find sstate-cache/ -name "*gettext-minimal-native*create_recipe_sp=
+dx*"
+>> +   sstate-cache/universal/a3/6e/sstate:gettext-minimal-native:x86_64-li=
+nux:1.0:r0:x86_64:14:a36ef66df6b8c0cb5a849bc70a99dcfd61e4bacd11cefe6bbaf497=
+8b2b3b617a_create_recipe_spdx.tar.zst
+>> +   sstate-cache/universal/a3/6e/sstate:gettext-minimal-native:x86_64-li=
+nux:1.0:r0:x86_64:14:a36ef66df6b8c0cb5a849bc70a99dcfd61e4bacd11cefe6bbaf497=
+8b2b3b617a_create_recipe_spdx.tar.zst.sig
+>> +   sstate-cache/universal/a3/6e/sstate:gettext-minimal-native:x86_64-li=
+nux:1.0:r0:x86_64:14:a36ef66df6b8c0cb5a849bc70a99dcfd61e4bacd11cefe6bbaf497=
+8b2b3b617a_create_recipe_spdx.tar.zst.siginfo
+>> +
+>> +A new ``.sig`` file was created: this means our artifact was successful=
+ly
+>> +signed, and the signature is stored in a separate ``.sig`` file.
+>> +
+>> +Verifying Signed Shared State Artifacts
+>> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>> +
+>> +Now that we have set up our build to sign shared state artifacts, let's=
+ see how
+>> +we can verify them with the public key counterpart of the private key.
+>> +
+>> +.. note::
+>> +
+>> +   Signature of shared state and its verification can happen on two dif=
+ferent
+>> +   hosts, meaning one host can be in charge of the signature while anot=
+her only
+>> +   verifies the artifacts. This is preferred as the private key should =
+not be
+>> +   shared spread on multiple hosts.
+>> +
+>
+> s/spread on/between/
+>
+>> +From a :term:`configuration file` such as the :ref:`site configuration =
+file
+>> +<structure-build-conf-site.conf>`, include the following statements::
+>> +
+>> +   SSTATE_VERIFY_SIG =3D "1"
+>> +   SSTATE_VALID_SIGS =3D "5B97632FA7F4E942"
+>> +
+>> +These statements define:
+>> +
+>> +-  :term:`SSTATE_VERIFY_SIG`: setting this variable to "1" enables the =
+shared
+>> +   state signing feature.
+>> +
+>> +-  :term:`SSTATE_VALID_SIGS`: a space-separated list of key identifiers=
+ for
+>> +   which we can accept shared state artifacts.
+>> +
+>> +   This means that shared state will be reused **only if it was signed =
+with the
+>> +   private key corresponding to key identifier**.
+>> +
+>> +   You'll notice the short-form of the key identifier here, which are t=
+he last 16
+>> +   characters of the long-form key identifier shown with ``gpg --list-k=
+eys``:
+>> +
+>> +   .. parsed-literal::
+>> +
+>> +      pub   ed25519 2026-04-17 [SC]
+>> +            \4049A47E3AAA99D0250966DC\ **5B97632FA7F4E942**
+>> +      uid           [ultimate] Antonin Godard (SState Signing) <antonin=
+.godard\@bootlin.com>
+>> +      sub   cv25519 2026-04-17 [E]
+>> +
+>
+> See comment in the first occurrence of this parsed-literal.
+>
+>> +Let's verify that signature verification works:
+>> +
+>> +#. First, remove temporary outputs (:term:`TMPDIR`) from the previous b=
+uilds, to
+>> +   make the :term:`OpenEmbedded Build System` use the shared state:
+>
+> make <OE> rebuild everything using the shared state
+>
+> ?
+>
+>> +
+>> +   .. code-block:: console
+>> +
+>> +      $ rm -r $BUILDDIR/tmp/
+>> +
+>
+> You never tell the user what this variable should be set to. If they=20
+> forget, they'll wreak havoc on their host system deleting /tmp/ recursive=
+ly.
+
+I'll remove BUILDDIR
+
+>> +#. Then, run the task again:
+>> +
+>> +   .. code-block:: console
+>> +
+>> +      $ bitbake gettext-minimal-native -c create_recipe_spdx
+>> +
+>> +#. To make sure the shared state artifact was successfully used, look f=
+or the
+>> +   :ref:`setscene <overview-manual/concepts:setscene tasks and shared s=
+tate>` task
+>> +   for ``create_recipe_spdx`` in the latest log file from :term:`BitBak=
+e`:
+>> +
+>> +   .. code-block:: console
+>> +
+>> +      $ grep create_recipe_spdx_setscene tmp/log/cooker/<machine>/conso=
+le-latest.log
+>> +      NOTE: Running setscene task 1 of 1 (../layers/openembedded-core/m=
+eta/recipes-core/gettext/gettext-minimal-native_1.0.bb:do_create_recipe_spd=
+x_setscene)
+>> +      NOTE: recipe gettext-minimal-native-1.0-r0: task do_create_recipe=
+_spdx_setscene: Started
+>> +      NOTE: recipe gettext-minimal-native-1.0-r0: task do_create_recipe=
+_spdx_setscene: Succeeded
+>> +
+>> +   Our shared state was successfully verified and used!
+>
+> Is there any indication in the logs that verification was actually=20
+> performed?
+
+No, I didn't find any in the code, or with any verbosity level
+
+>> +
+>> +.. note::
+>> +
+>> +   To make sure shared state verification is working, you can set a "fa=
+ke"
+>> +   public key identifier in :term:`SSTATE_VALID_SIGS`::
+>> +
+>> +      SSTATE_VALID_SIGS =3D "CAFECAFECAFECAFE"
+>> +
+>> +   Remove the temporary outputs again:
+>> +
+>> +   .. code-block:: console
+>> +
+>> +      $ rm -r $BUILDDIR/tmp/
+>> +
+>> +   Now, try executing the task:
+>> +
+>> +   .. code-block:: console
+>> +
+>> +      $ bitbake gettext-minimal-native -c create_recipe_spdx
+>> +
+>> +   You should have warnings from :term:`BitBake`:
+>> +
+>
+> Is this output in the console or in the log file you mentioned earlier?
+
+In the console. I'll mention it
+
+>> +   .. code-block:: text
+>> +
+>> +      WARNING: gettext-minimal-native-1.0-r0 do_create_recipe_spdx_sets=
+cene: No accepted signatures found. Good signatures found: 5B97632FA7F4E942=
+.
+>> +      WARNING: gettext-minimal-native-1.0-r0 do_create_recipe_spdx_sets=
+cene: Cannot verify signature on sstate package ../build/sstate-cache/unive=
+rsal/a3/6e/sstate:gettext-minimal-native:x86_64-linux:1.0:r0:x86_64:14:a36e=
+f66df6b8c0cb5a849bc70a99dcfd61e4bacd11cefe6bbaf4978b2b3b617a_create_recipe_=
+spdx.tar.zst, skipping acceleration...
+>> +      WARNING: gettext-minimal-native-1.0-r0 do_create_recipe_spdx_sets=
+cene: No sstate archive obtainable, will run full task instead.
+>> +      WARNING: Logfile for failed setscene task is ../build/tmp/work/x8=
+6_64-linux/gettext-minimal-native/1.0/temp/log.do_create_recipe_spdx_setsce=
+ne.6994
+>> +      WARNING: Setscene task (../layers/openembedded-core/meta/recipes-=
+core/gettext/gettext-minimal-native_1.0.bb:do_create_recipe_spdx_setscene) =
+failed with exit code '1' - real task will be run instead
+>> +
+>> +   As you can see, this does not prevent :term:`BitBake` from continuin=
+g, but
+>> +   the real task is executed instead of re-using the shared state.
+>>=20
+
+Thanks!
+Antonin
 
