@@ -1,77 +1,73 @@
-Return-Path: <rpjday@crashcourse.ca>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9BE49FF885C
-	for <webhook@archiver.kernel.org>; Sat, 25 Apr 2026 19:34:22 +0000 (UTC)
-Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.3960.1777145661715621351
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 08083FF885E
+	for <webhook@archiver.kernel.org>; Mon, 27 Apr 2026 08:30:16 +0000 (UTC)
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.38510.1777278605953207928
  for <docs@lists.yoctoproject.org>;
- Sat, 25 Apr 2026 12:34:22 -0700
+ Mon, 27 Apr 2026 01:30:06 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=ox2XMgUZ;
- spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
-	To:From:Date:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=RirsIPX8d2h02hFb5TEklWJPU9L9T6p5KTD4jBcZDBg=; b=ox2XMgUZeOOgLO469rQua7x8mo
-	1IOCmv92hmHBvp4vb5zrLVy03PPSaeXTOnZFecPCgC8jARAS9GOsQBImIjylFLqUHnLyPAP+qqOSt
-	65YXSx6hMoZPT1BOcMdtK2kGv3k93/0NQM2wW7Z3nq5q/tNGILyx+N7CGUXkcikjBLIqC1bkGCDEx
-	0WNDMdOxqVvaKSCCPNsm82F89kzb4a2jnrIG4XSOslrUZJU8c8zisSQA4xwchRf0Q8ItN5sFikKOa
-	SaOOJPYtQ4uSBA3WuCrklSqCyWHv7nJFwZdJgswK9vGjfuWk+BV+1mLJSdESqwCjWtGtJ8EWwS6pB
-	NGMLVhaA==;
-Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:39888 helo=rday)
-	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.1)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1wGile-0000000DENM-0scA
-	for docs@lists.yoctoproject.org;
-	Sat, 25 Apr 2026 15:34:18 -0400
-Date: Sat, 25 Apr 2026 15:36:22 -0400 (EDT)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: [PATCH] dev-manual: "--runonly" should be "--runall"
-Message-ID: <1172b234-348b-fd78-d421-6224843592bc@crashcourse.ca>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=qGhnSWo+;
+ spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 3DF6B1A343D;
+	Mon, 27 Apr 2026 08:30:04 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 13B99600D1;
+	Mon, 27 Apr 2026 08:30:04 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 245D010722377;
+	Mon, 27 Apr 2026 10:30:02 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1777278603; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=NeTWD4nsFKq/ETsegjCEec6emBzYCRNHRg4VERdUOFc=;
+	b=qGhnSWo+FFeo8v0Nh7Rk/38W5gMT93mVPkcdLdJyv920jo0a0LhyelwkOeosqfFnZci9TL
+	GNPaCvixCXnXPXJEO1ORtNOU5/mUPZT+DXWOoyZahJiwHcaqss10vZnTncGN/+d6e4E/MB
+	ogQcphr0yEK24AeeJ48XJg4ijeqvKkNFhsTe5+hvuqZxy+Xr5DIJgeppTwJhdZIXoldmpf
+	99ofwUvoxG18zY9Fi/j8FGON4fN1FcqvRFQT38+6UI0K5S6J2mKhUDn7uI8QzbvhGPba4Q
+	YYBMC7ZUAahHD3FJjdxiCUFso0biCZIBvsXn+PAALrdqdbQOxBG/1bXD2R2Afw==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 27 Apr 2026 10:30:02 +0200
+Message-Id: <DI3SOMN1OBHU.16HTQGPE80IZL@bootlin.com>
+From: "Antonin Godard" <antonin.godard@bootlin.com>
+To: "Paul Barker" <paul@pbarker.dev>
+Subject: [scarthgap] Pull request
+Cc: <docs@lists.yoctoproject.org>, "Yoann Congal" <yoann.congal@smile.fr>
+X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Sat, 25 Apr 2026 19:34:22 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9367
+ <docs@lists.yoctoproject.org>; Mon, 27 Apr 2026 08:30:16 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9368
 
+The following changes since commit 2c80b891d85e0a7d9b70fc7b4a9c032325b56eca=
+:
 
-To properly fetch all the sources as suggested by the docs, one should
-use "--runall=fetch".
+  variables.rst: expand explanation of RSUGGESTS (2026-04-21 15:17:53 +0200=
+)
 
-Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+are available in the Git repository at:
 
+  git@push.yoctoproject.org:yocto-docs scarthgap-next
+
+for you to fetch changes up to 1c5e7f136d7460fa5ad4c8a49ab1de31bd670e59:
+
+  overview-manual/concepts.rst: fix do_prepare_recipe_sysroot task descript=
+ion (2026-04-27 10:22:28 +0200)
+
+----------------------------------------------------------------
+Dawid Bijak (1):
+      overview-manual/concepts.rst: fix do_prepare_recipe_sysroot task desc=
+ription
+
+Robert P. J. Day (1):
+      dev-manual: "--runonly" should be "--runall"
+
+ documentation/dev-manual/building.rst      |  2 +-
+ documentation/overview-manual/concepts.rst | 29 ++++++++++++++++----------=
 ---
-
-diff --git a/documentation/dev-manual/building.rst b/documentation/dev-manual/building.rst
-index c153eb9de..9983c7939 100644
---- a/documentation/dev-manual/building.rst
-+++ b/documentation/dev-manual/building.rst
-@@ -772,7 +772,7 @@ Follow these steps to populate your Downloads directory:
- #. *Populate Your Downloads Directory Without Building:* Use BitBake to
-    fetch your sources but inhibit the build::
-
--      $ bitbake target --runonly=fetch
-+      $ bitbake target --runall=fetch
-
-    The downloads directory (i.e. ``${DL_DIR}``) now has
-    a "snapshot" of the source files in the form of tarballs, which can
+ 2 files changed, 17 insertions(+), 14 deletions(-)
 
