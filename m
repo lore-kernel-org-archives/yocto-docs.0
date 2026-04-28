@@ -1,127 +1,141 @@
-Return-Path: <bijak.dawid@gmail.com>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8C638FF8860
-	for <webhook@archiver.kernel.org>; Mon, 27 Apr 2026 18:14:29 +0000 (UTC)
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.2505.1777313661435724733
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 69EE5FF886D
+	for <webhook@archiver.kernel.org>; Tue, 28 Apr 2026 08:27:29 +0000 (UTC)
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.8263.1777364847848132379
  for <docs@lists.yoctoproject.org>;
- Mon, 27 Apr 2026 11:14:21 -0700
+ Tue, 28 Apr 2026 01:27:28 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20251104 header.b=TjlYcbaV;
- spf=pass (domain: gmail.com, ip: 209.85.128.51, mailfrom: bijak.dawid@gmail.com)
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-488ad135063so96564665e9.0
-        for <docs@lists.yoctoproject.org>; Mon, 27 Apr 2026 11:14:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777313660; x=1777918460; darn=lists.yoctoproject.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=lU2hFO35lQ/6lsNT/GMS2wzI4J2DCb+H81By6kYtJ4U=;
-        b=TjlYcbaVzuAb90tkTzdRkZNGvihfI7Dl/r173hYpRvFV6fDEzo97DjDZBAkHNgiFeX
-         QuR3XVJW2B97GwEwIYP1Yaq/qd+8LBtGRdOjAn/DTwxaRIhJWYIq6LWdpBg79vWe7Ch5
-         cRNkvSI2ntRoE+oRialLRMqZmkSAZijIZ2MBPXph/phHnXCpFVwwg1gaH5CHaCb1NMkm
-         SRVkEcWbDhP1gj6yQNr5u1+igV0svt174859e30nqThQZ1q6nR+1ILzG3xLfskZ79kFj
-         uDms5V9TbqUIuYcUs/C1FsmB9PAnx575CMaPhSs0GkLyhxayyhfdM6I4S7YzPErdR7yT
-         c2Mg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777313660; x=1777918460;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lU2hFO35lQ/6lsNT/GMS2wzI4J2DCb+H81By6kYtJ4U=;
-        b=CyL7BKeuDqIm2VtTLHbRH2NQIzE2OOMqVHQvMcnCTmc3qENPyHjnzysByrSRrLzUYn
-         IDAhJH3cwfvq1NuvLHeMYV82+n0UK36eGi3Q1GQv8ejniohblnmonYlkkRu2epRYTq5M
-         A8Mk1MMXQJCIMPcPVVTfPRetTaItwv9lL+DWHF8iTalpE3s320PqzE02s5QEHqGSFNox
-         KjBq7A/UirNC+QqswhvbfLKXbqidQ9/WKWzECT3BwNfsba6H1ZMDdUlB1moBbGTl2Nww
-         E6hDJXv7OgwKAKTdmtUV+SitNHT2YX0XbDeponVDkUAHI+Gm3oIbYF7qDoQQEFlH5yDa
-         epNQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+DlvdWtC8r88+D763PvQ1zWiTY/695rPH3K8wlP+5Vrhr60BeUIDcx8dGGP8NdQRxujSOs@lists.yoctoproject.org
-X-Gm-Message-State: AOJu0Yya39w4ARG2JGicdwZKBG9dmmVEt8BnMTjS5odB6g8bYiOq+xNS
-	WVvUq4POq6n2Kmx3xNORIniaUHx73s9qBqj5ZjE1sATaKSFH5u76LPKT
-X-Gm-Gg: AeBDieskzMDKw2Vx31MTPbtzj0vBPAEJKMjxtmr6Sl9OuCg2/GcCGnWSnwD4d/MCjxE
-	Hrw2mZvlD/iZaNapTMQKQ9qjC6oDbVldslF5Fi/od3tOLhavysuLIRyBl/cCWCsNY3buff6UFh0
-	wMpoMtF/L0lkXBDsz0W9lKVAvpoQ2KQQ5Rgdc5UnW6kzoZpOKGy2a1+YLWeYrd7F0qvyQmAtC9d
-	jHZB1VGxYihW/FpTcrUp33EM6yMCck/9orwxwogDE6HoutLoNX76AH8qXrw/vsTrvaqUhkQSMPH
-	J1dpmaQKJna7spFPyo6LNKxhRFEG29ATaCPxiK3YWDeJSqR8Wfn3ktWTVYcEADUWTENAtCxo5hn
-	sggruLDA4NKgQ0d49pHVASHqo2N8mm5pNruKcamG7xlBFQWUwIcvH7Bk/rYioMm5YU4gwtQ+Pbu
-	7epSnKkCLYtxktkv/iZMbD2t9X5NmsAHvPO2uvSW9E+9g2TqciPo8j39i8dTLONXCk1tEU+Bczw
-	SmhoMwCcab2PmgPuttCLy4OGlt+JrtuKdBDsOQUid3HSsxUauxRoQeHFpyp
-X-Received: by 2002:a05:600c:4fc5:b0:483:64b4:79da with SMTP id 5b1f17b1804b1-48a76f8e680mr4985205e9.26.1777313659552;
-        Mon, 27 Apr 2026 11:14:19 -0700 (PDT)
-Received: from thinkpad ([2a02:8070:d188:380:a171:2495:6920:2d36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a76f7ecb2sm7957325e9.0.2026.04.27.11.14.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Apr 2026 11:14:19 -0700 (PDT)
-Date: Mon, 27 Apr 2026 20:14:16 +0200
-From: Dawid Bijak <bijak.dawid@gmail.com>
-To: Quentin Schulz <quentin.schulz@cherry.de>
-Cc: bitbake-devel@lists.openembedded.org, docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH 1/1] doc: bitbake-user-manual-metadata: fix
- inherit_defer documentation
-Message-ID: <ljbjkwt32h72aziah2gepb6k5rfxygfrhkfysmulj5scnca5pu@o4vikz4hfmh3>
-References: <20260424062327.820993-1-bijak.dawid@gmail.com>
- <20260424062327.820993-2-bijak.dawid@gmail.com>
- <c25e0e9a-8809-4ac6-90ee-3687972e03af@cherry.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c25e0e9a-8809-4ac6-90ee-3687972e03af@cherry.de>
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=iNYHdWAy;
+ spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id A53C91A346B
+	for <docs@lists.yoctoproject.org>; Tue, 28 Apr 2026 08:27:25 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 64414601D0;
+	Tue, 28 Apr 2026 08:27:25 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 45DA61072851A;
+	Tue, 28 Apr 2026 10:27:24 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1777364845; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=3HAVs0IiJxzazF3MYF2vXILn7rdxRFhKAgp/RPwt924=;
+	b=iNYHdWAy4SMuyjJA55kqfQv0Vb5DqBjfj5aSACryz+nny+1GmpvqN3remImw/U8D0XDmZM
+	nVPbBlSJutvqbEvrrG8C88Adqb0q7WoUjmOjTCrhk16vMzNFgcZkKUcO6sj0/RDXZ2l4z7
+	oClURBNHMhVRt2AkzL5vkrIOcoaOdBb9iuR2Q9wrY3vKZtXtlRmEV5WGSkVqkZmpc3+6kL
+	YAqczjmLQz6FHdA0DyyW5aT5MwMdKfZWY/KI7ssczR9m1Ea9fLxwUDzMYQsEmhAR9XMGGs
+	UAi+dB4Mn1RxsmrgZin4rmA7xZq8eO8oOQdrm53C9vi9J6GoLXVilDn4QxOBjw==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 28 Apr 2026 10:27:23 +0200
+Message-Id: <DI4N955YCS67.3IN39HM7NOLNS@bootlin.com>
+To: "Quentin Schulz" <quentin.schulz@cherry.de>,
+ <docs@lists.yoctoproject.org>
+Subject: Re: [docs] [PATCH v2] Document shared state signing
+Cc: "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>
+From: "Antonin Godard" <antonin.godard@bootlin.com>
+References: <20260421-sstate-signing-v2-1-7b572121f2fd@bootlin.com>
+ <a4723996-6d07-41b1-a40b-35e12e48807f@cherry.de>
+ <DI40MO4BDL1R.306ON3EYMK35F@bootlin.com>
+ <1bcdee06-4590-42ae-afb7-1948d21d616f@cherry.de>
+ <DI41OUUEK11E.3GOUTLCIKCHUC@bootlin.com>
+ <abcb5550-13d9-4873-9ff9-df76e55d7fb9@cherry.de>
+In-Reply-To: <abcb5550-13d9-4873-9ff9-df76e55d7fb9@cherry.de>
+X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 27 Apr 2026 18:14:29 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9376
+ <docs@lists.yoctoproject.org>; Tue, 28 Apr 2026 08:27:29 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9377
 
-On Mon, Apr 27, 2026 at 02:35:45PM +0200, Quentin Schulz wrote:
-> Hi Dawid,
-> 
-> On 4/24/26 8:23 AM, Dawid Bijak via lists.yoctoproject.org wrote:
-> > [You don't often get email from bijak.dawid=gmail.com@lists.yoctoproject.org. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
-> > 
-> > The documentation for inherit_defer contained the claim
-> > 
-> > "If VARNAME is going to be set, it needs to be set before the
-> > inherit_defer statement is parsed"
-> > 
-> > which is incorrect and contradicts the purpose of inherit_defer.
-> > The wrong claim is replaced with an example which demonstrates
-> > the contrast between a plain defer statement and the inherit_defer
-> > statement by using an override assignment placed after inherit_defer
-> > 
-> > Additionally the inline python expression examples have been
-> > moved from the inherit_defer section up to the inherit section, since
-> > they apply to both directives
-> > 
-> 
-> I'm pretty sure the whole inherit_defer thing started because an inline
-> Python expression didn't work. I vaguely remember a bbappend either adding
-> this new inherit based on PACKAGECONFIG containing a value, or having the
-> main recipe with this inherit <PACKAGECONFIG.contains> and a bbappend modify
-> PACKAGECONFIG. See commit 5c2e840eafeb ("ast/BBHandler: Add inherit_defer
-> support") in BitBake.
-> 
-> So I'm very skeptical this is correct.
+Hi,
 
-Hi Quentin,
-Thanks for your response.
-I'm afraid I don't quite follow your point about PACKAGECONFIG.contains.
-I'm not sure what you're referring to exactly.
-But, as far as I can tell, the inherit statement works fine with inline python expressions. 
-I think, it evaluates the expression in place, much like := would.
+On Mon Apr 27, 2026 at 6:44 PM CEST, Quentin Schulz wrote:
+[...]
+>
+>>> +            return True
+>>>
+>>>            import re
+>>>            goodsigs =3D []
+>>> @@ -145,6 +148,7 @@ class LocalSigner(object):
+>>>
+>>>            for sig in valid_sigs.split():
+>>>                if sig in goodsigs:
+>>> +                bb.note("Signature file %s successfully verified with =
+key %s" % (sig_file, sig))
+>>>                    return True
+>>>            if len(goodsigs):
+>>>                bb.warn('No accepted signatures found. Good signatures
+>>> found: %s.' % ' '.join(goodsigs))
+>>>
+>>>
+>>> ? I think we may have a few people resisting this as I'm guessing this
+>>> is on the hot path so adding messages isn't the best (even if disabled
+>>> most of the time).
+>>=20
+>> I see what you mean. You might be a bit more convincing by passing them =
+through
+>> bb.debug?
+>>=20
+>
+> Sure, I randomly picked bb.note() but anything will do (though, does it=
+=20
+> appear in the logs, which is what we're after after all?). Even=20
+> bb.debug() writes to the mainlogger, so I'm assuming there's *some* cost=
+=20
+> even if it's not printed. Did you try? Does it work? (Because I just=20
+> wrote this without even running bitbake with it :D)
 
-For example, on current master I tried the following:
- COND = ""
- COND:append = " x"
- inherit ${@bb.utils.contains('COND', 'x', 'foo', 'bar', d)}
-This inherits foo. 
+I tested this and this works fine. The messages will be printed when passin=
+g -v
+to bitbake (verbose), so I guess bb.note is fine.
 
-However, if I move the :append below the inherit directive:
- COND = ""
- inherit ${@bb.utils.contains('COND', 'x', 'foo', 'bar', d)}
- COND:append = " x"
-it inherits bar.
+Maybe I'd re-organize a bit and do:
 
-Greets,
-Dawid
+diff --git a/meta/lib/oe/gpg_sign.py b/meta/lib/oe/gpg_sign.py
+index ede6186c84f..9024b349ef2 100644
+--- a/meta/lib/oe/gpg_sign.py
++++ b/meta/lib/oe/gpg_sign.py
+@@ -130,10 +130,6 @@ class LocalSigner(object):
+=20
+         cmd +=3D [sig_file]
+         status =3D subprocess.run(cmd, stdout=3Dsubprocess.PIPE, stderr=3D=
+subprocess.PIPE)
+-        # Valid if any key matches if unspecified
+-        if not valid_sigs:
+-            ret =3D False if status.returncode else True
+-            return ret
+=20
+         import re
+         goodsigs =3D []
+@@ -143,8 +139,18 @@ class LocalSigner(object):
+             if s:
+                 goodsigs +=3D [s.group(1)]
+=20
++        # Valid if any key matches if unspecified
++        if not valid_sigs:
++            if status.returncode:
++                return False
++
++            bb.note("Signature file %s successfully verified with key(s): =
+%s" %
++                    (sig_file, goodsigs))
++            return True
++
+         for sig in valid_sigs.split():
+             if sig in goodsigs:
++                bb.note("Signature file %s successfully verified with key =
+%s" % (sig_file, sig))
+                 return True
+         if len(goodsigs):
+             bb.warn('No accepted signatures found. Good signatures found: =
+%s.' % ' '.join(goodsigs))
+
+To show which key on the host verified our file. What do you think?
+
+Antonin
 
