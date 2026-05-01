@@ -2,66 +2,66 @@ Return-Path: <bijak.dawid@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 166B5FF885A
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1C53ECD3425
 	for <webhook@archiver.kernel.org>; Fri,  1 May 2026 09:14:51 +0000 (UTC)
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.10684.1777626880463553141
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.10755.1777626884001472259
  for <docs@lists.yoctoproject.org>;
- Fri, 01 May 2026 02:14:40 -0700
+ Fri, 01 May 2026 02:14:44 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20251104 header.b=BXxjYHVV;
- spf=pass (domain: gmail.com, ip: 209.85.128.41, mailfrom: bijak.dawid@gmail.com)
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-488b0e1b870so28382085e9.2
-        for <docs@lists.yoctoproject.org>; Fri, 01 May 2026 02:14:40 -0700 (PDT)
+ dkim=pass header.i=@gmail.com header.s=20251104 header.b=Dpsa+Qgh;
+ spf=pass (domain: gmail.com, ip: 209.85.128.53, mailfrom: bijak.dawid@gmail.com)
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4891e86fabeso22307195e9.1
+        for <docs@lists.yoctoproject.org>; Fri, 01 May 2026 02:14:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777626879; x=1778231679; darn=lists.yoctoproject.org;
+        d=gmail.com; s=20251104; t=1777626882; x=1778231682; darn=lists.yoctoproject.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=EbkVjOYX2ZTYDmcV+w119AsgVq2edC5qOkWuWs4zWTQ=;
-        b=BXxjYHVVtPPnHDhL7k93kRrOcOimBoj7jIa/SYEHDZtMNAIKSfyZoRQ8pnqg3nM7rY
-         MP4DnmkCuVWZuVdSyd19DrsPVxrBhuX1ngAHxLVX+j+TAEPr7/QbekwatQQI8yLICaPi
-         5d6AnyGjbduqoNIdcMSK33DHN0OZePgrduzgMeGQVm59W/HY8OQU0DLQLC40O1yMMeiF
-         xABnnIlvTWmSE+h+fbFnkexEmr+oxMweycbk+0uA+o9VYKBTghmT0B5LHTe5Tz+VP9nP
-         GjzSYJS9CNhIbHYS9beyJbQ8vfPJ9eUsAALUR9Jp8dbhTkGY5NPm7MamMMeEWBbfK7Is
-         kVMQ==
+        bh=dPYOvIXYVVLcRB7cc8+Q6H0pGIMrwUSocsGb/HeRdXE=;
+        b=Dpsa+Qgh23wsjc1egfXDj/8AySC3oEvuUuo2Rc7fkOOWZEzyILwNDe038fbovwKtVJ
+         2bjNJwcTU1iqi9yauM8jL+IaY0LOfWoQ9mxlk1YRVcQEe9q4L7I0ewqAiKy7LuknGXb3
+         gluLiCDun/2wHWberiDWteQxGgmtZqi1hAqUzTRz2gZ6RDe8rksr3vwtBhGnFVzAt0ww
+         QYJybV4PiomxRTROMCBWKNsRvQQVNnw1JobIdB08YMpHmXCm92oJ5IMM32QHLq1Fvv4z
+         Nxm9TrMhw6sdod5mnTbHZDFs4UEg7Y/I86/JGGSna15S82AjdGEw93cUfbPsrTUw36EC
+         iaaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777626879; x=1778231679;
+        d=1e100.net; s=20251104; t=1777626882; x=1778231682;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=EbkVjOYX2ZTYDmcV+w119AsgVq2edC5qOkWuWs4zWTQ=;
-        b=fg7Aj76U0Wi0SAWXDtoKIU1yrFpynJ32hkwoiFOiS1/34H0131VyMIqv0PMM9/dYgq
-         nZWYbfyXbz8pk8ktHK7jhf4eQk/HJ/LLajzZg/8gUT49mffpQHKdVbu2HvZAe63xN5dG
-         OYoFz5LMWtLX3L/VmvvRNE4PKaVOP2ut99CoE12KYWFsWkzXa5ep0hB0krZ5uKksubUi
-         cyXolzdXZaW3qg+/p+zpeGQmkgufFkjU7prUx/SMOgGowyW2XJ+uFOsjKMX6KaceCJVz
-         llWQ785vKpCcAfll9OtNhZAepsM1TD2kzA3MLbm/jpap1FA4oPhJXy3nUQwOmbK3c/E8
-         790w==
-X-Gm-Message-State: AOJu0YxgNnnl28W4QEDa3WUid+296xx4cIcuRMq0fOM8+jpcjUyorgHK
-	SLQHCXZykBIsfVSybfn8ZgdzpULaY/13DUFXbA2MGU9Jnio96bkQA0lJ9TR1gYmUJKg=
-X-Gm-Gg: AeBDietj21BkVQFG/VBGo4bmBWhiOfv37Rs4LcdJSgeyBjJqXY7oUlcuNzALJv8iLVm
-	0CbNKiklpCsXo1/N2xU0AlIJxl1UwegrEcxjzUBGRo1ZoCgUWyORda1itdxXOTkxbF4DI6EQxfu
-	KxH8TRbMPIXUYy/xgo7p0pYlzR8XFQQGRRZ9IJ3XtJAtJc7pMrm8lK/poPyAHVbDbuKv+ovxuim
-	SpKSGS9EINsKP2T5g8zA/FA9proAEfdB4NV84biRftd36S0/DM8KKgqfCpwcSJIq1xo64FJ0A0i
-	4a6H0cCBPm8pvEePSVpHvnUDM2SYakK+Fb3lfBcwobuT4W6Kvq1Rt3B5uPTRWk1LJwKL9tt3UAF
-	De1m1X+3j5ydSyCbjtc0Hi3dAk3+nKLr4cZ8P2FD9tGBnvf/lOqUMFmL8kxIXVcUhN7Bk5wpACo
-	n5ZEiUGSKkoayU3bYWXkdFJYwzqk96ijPht2kZBXN57AuKFnPegb5p+xpKhnuKt9lxP8pP/FDqc
-	UWcLV3mcOuedGmyFzb6cofZQxyT//OKjyH9TMkKzhXxedv8I0EZ849KMZYUpOcH1xJYr/1JkQ==
-X-Received: by 2002:a05:600c:350c:b0:488:f453:b976 with SMTP id 5b1f17b1804b1-48a8449e51amr108314065e9.27.1777626878747;
-        Fri, 01 May 2026 02:14:38 -0700 (PDT)
+        bh=dPYOvIXYVVLcRB7cc8+Q6H0pGIMrwUSocsGb/HeRdXE=;
+        b=kdI/6ErabVBPVVouGJvuGdi4C0WYk1SphBqrqVH+rlyb5Cm+VCRip+avZWrj6Ldkub
+         WDEqrcjI0j3zwF1RRq5wLQkwlKSTFLQ7Kh8LbG6R/yPtExzLYOZcsYqhs1hEpVwAYXh3
+         FBCi4ZAssm+Axskm//ROE5yHNOBJJCGq4pGbhsn46zbWVKKsKDZyLF6dMGQ/BH4zjpXT
+         49TR9tJAA29SZTXkgpNepOo9HzghPqQzIeqcoo5ASU/eWKZwIBAOKHz6BZsTvp+ZOOEu
+         LseAMARmoTMaTuIYUZbcKBaCkJqCtqwGJaJTHCZjFRM9j1Gr6Ito6p9yrwhzkwVNLvQr
+         lNUw==
+X-Gm-Message-State: AOJu0YxqUluyXpu8InfYa80PitQHbLHivPYWLPvpsqxdKGymkwrCxxsB
+	Dx5GllijqZ7VwzpO2TdeKM89Iu9UQfGfnlCc2BB+uRz1cp3ceOCem2xP
+X-Gm-Gg: AeBDies/ubiCeU3UpAN1z2yTSP3iuHTIc3pR0IRzDz6Y+DAAz7uSVmDATm9e8DmJAAi
+	pqoNE8MG+TxS5o8xyj4Qq/aRKEeh2T//0HhEe56j0VDTuKgwlmKcn+/rNQ99veHoXwkbILkujTg
+	B39DP93UyoUGJVWUmO0UTJdc5aYe2DdslmmFlXrlEJLCL0GwRpoGJmoUp1deeRoxv92ljUp2C7A
+	QHJpnkztP75w816Q0bMnyB65k5UOVLxHqG7/wNzHLv8vVS3w+mO4a8ab5tX59cX5WlDUHu/RPHY
+	z5tTT0htB8/ij1b6ECLsIPTUsSrowXD8PDOicKcLDBzB75V7Oy3rhYBZptExwl6Rlc1hEAd5Kes
+	uiACg7rj6n17JbpeQfl6dISS8WGtDYDkm/QKukzG3VwnFJ2bu61Ym3szRTg98xChZ9v2+30dcNL
+	i7SGBUzBFrxCfSuM4qsMjp624r/hXmLAMTUgrcJ/LTTDlz8pcZIL1WN6tDJe0anDeRRNrNK27Y6
+	f7CzIKDXbLYezVv1f4+xKan9G5DLxbq8Z/8sHqXB+UK71ABCPm9BxPP5SQkmFQ=
+X-Received: by 2002:a05:600c:c058:b0:487:4eb:d125 with SMTP id 5b1f17b1804b1-48a83d6f154mr79813585e9.9.1777626882376;
+        Fri, 01 May 2026 02:14:42 -0700 (PDT)
 Received: from thinkpad.fritz.box ([2a02:8070:d188:380:6a5d:7450:e8b3:758])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-48a8fe953besm12097955e9.2.2026.05.01.02.14.35
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-48a8fe953besm12097955e9.2.2026.05.01.02.14.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 May 2026 02:14:37 -0700 (PDT)
+        Fri, 01 May 2026 02:14:41 -0700 (PDT)
 From: Dawid Bijak <bijak.dawid@gmail.com>
 To: bitbake-devel@lists.openembedded.org
 Cc: docs@lists.yoctoproject.org,
 	quentin.schulz@cherry.de,
 	richard.purdie@linuxfoundation.org,
 	Dawid Bijak <bijak.dawid@gmail.com>
-Subject: [PATCH v2 1/4] doc: bitbake-user-manual-metadata: remove incorrect claim
-Date: Fri,  1 May 2026 11:14:15 +0200
-Message-ID: <20260501091418.76994-2-bijak.dawid@gmail.com>
+Subject: [PATCH v2 4/4] doc: bitbake-user-manual-metadata: move inline python examples to inherit section
+Date: Fri,  1 May 2026 11:14:18 +0200
+Message-ID: <20260501091418.76994-5-bijak.dawid@gmail.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20260501091418.76994-1-bijak.dawid@gmail.com>
 References: <20260501091418.76994-1-bijak.dawid@gmail.com>
@@ -71,35 +71,70 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Fri, 01 May 2026 09:14:51 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9389
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9392
 
-The documentation for inherit_defer contained the claim
-"If VARNAME is going to be set, it needs to be set before the
-inherit_defer statement is parsed"
-which is incorrect and contradicts the purpose of inherit_defer.
+The two inline Python examples,
 
-Drop the incorrect statement.
+  inherit_defer ${@'classname' if condition else ''}
+  inherit_defer ${@bb.utils.contains('VARIABLE', 'something', 'classname', '', d)}
+
+are presented as inherit_defer-specific techniques, but they work
+with plain inherit too. Their placement under
+inherit_defer suggests deferred evaluation is required, which is
+not the case: the ${@...} expression is evaluated when the
+inherit line is parsed in both forms.
+
+Move the inline Python expression examples from the inherit_defer section
+up to the inherit section, since they apply to both directives.
 
 Signed-off-by: Dawid Bijak <bijak.dawid@gmail.com>
 ---
- doc/bitbake-user-manual/bitbake-user-manual-metadata.rst | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ .../bitbake-user-manual-metadata.rst          | 25 ++++++++-----------
+ 1 file changed, 11 insertions(+), 14 deletions(-)
 
 diff --git a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst b/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
-index 40cae6b05..ee6919dc4 100644
+index 0c7c3ff99..4b1aeedc1 100644
 --- a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
 +++ b/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
-@@ -829,9 +829,7 @@ Here is an example::
+@@ -803,7 +803,17 @@ An advantage with the inherit directive as compared to both the
+ :ref:`include <bitbake-user-manual/bitbake-user-manual-metadata:\`\`include\`\` directive>` and :ref:`require <bitbake-user-manual/bitbake-user-manual-metadata:\`\`require\`\` directive>`
+ directives is that you can inherit class files conditionally. You can
+ accomplish this by using a variable expression after the ``inherit``
+-statement.
++statement, as in::
++
++   inherit ${@'classname' if condition else ''}
++
++Or::
++
++   inherit ${@bb.utils.contains('VARIABLE', 'something', 'classname', '', d)}
++
++In both cases, if the expression evaluates to an
++empty string, the statement does not trigger a syntax error because it
++becomes a no-op.
  
-    inherit_defer ${VARNAME}
+ For inheriting classes conditionally, using the :ref:`inherit_defer
+ <ref-bitbake-user-manual-metadata-inherit-defer>` directive is advised as
+@@ -840,19 +850,6 @@ defers the evaluation of ``${VARNAME}`` until the end of
+ parsing. Assuming ``someoverride`` is in :term:`OVERRIDES`, ``${VARNAME}``
+ expands to ``myclass``, which is then inherited.
  
--If ``VARNAME`` is
--going to be set, it needs to be set before the ``inherit_defer`` statement is
--parsed. One way to achieve a conditional inherit in this case is to use
-+One way to achieve a conditional inherit in this case is to use
- overrides::
+-Alternatively, you could use an inline Python expression in the
+-following form::
+-
+-   inherit_defer ${@'classname' if condition else ''}
+-
+-Or::
+-
+-   inherit_defer ${@bb.utils.contains('VARIABLE', 'something', 'classname', '', d)}
+-
+-In all cases, if the expression evaluates to an
+-empty string, the statement does not trigger a syntax error because it
+-becomes a no-op.
+-
+ See also :term:`BB_DEFER_BBCLASSES` for automatically promoting classes
+ ``inherit`` calls to ``inherit_defer``.
  
-    VARIABLE = ""
 -- 
 2.48.1
 
