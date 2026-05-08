@@ -1,69 +1,111 @@
-Return-Path: <rpjday@crashcourse.ca>
+Return-Path: <alex.kanavin@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B2B0ACD3445
-	for <webhook@archiver.kernel.org>; Fri,  8 May 2026 18:37:55 +0000 (UTC)
-Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.1357.1778265474431679446
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C0451CD342F
+	for <webhook@archiver.kernel.org>; Fri,  8 May 2026 18:47:25 +0000 (UTC)
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.1573.1778266040984812097
  for <docs@lists.yoctoproject.org>;
- Fri, 08 May 2026 11:37:54 -0700
+ Fri, 08 May 2026 11:47:21 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=NUEPeZ3N;
- spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
-	To:From:Date:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=oVzF6Q2/yH+CcdD1KBcqItCDu6qFugvDwQs+/EFBk6s=; b=NUEPeZ3N7/3ARqco2159Aw6OP0
-	1+gfwihWUu/fUhcS8EIpxTGjWFD3jWyfxzZq2UTanUv2MloHvT/KTQG+HGg+yWi5c9QFfUBAObLx2
-	rpkOhX/sOudcth8qZcnasxFBb4HYvSPliETmy2d5/5F5upCLpu/WjPb4ek+roKi9hKq1DE2BbKdGu
-	gJ4RvxwSSuZhVGWgagNNco1stiiAfdhrIlFT7cLuWphjtNSG950QEBC5mXpnDJeJ7Ni+lvK54yT2e
-	OBVe8abd41wQ6ImtgFsmzwqDM1MgTUgYWyQ2egBuHxOVsehYT9p7o06y6VG/K58uHkv93Lcq//OJT
-	EZ00v7Yw==;
-Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:52308 helo=rday)
-	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.2)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1wLQ5A-00000004Jkw-02RB
-	for docs@lists.yoctoproject.org;
-	Fri, 08 May 2026 14:37:53 -0400
-Date: Fri, 8 May 2026 14:40:40 -0400 (EDT)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: Quick Build using word "naive" sounds a bit condescending
-Message-ID: <e9ecc3f8-c93c-caf1-eb73-de73633cda10@crashcourse.ca>
+ dkim=pass header.i=@gmail.com header.s=20251104 header.b=AsSZXgLh;
+ spf=pass (domain: gmail.com, ip: 209.85.219.50, mailfrom: alex.kanavin@gmail.com)
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-899a9f445cbso21341086d6.0
+        for <docs@lists.yoctoproject.org>; Fri, 08 May 2026 11:47:20 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778266040; cv=none;
+        d=google.com; s=arc-20240605;
+        b=TmEKaqyyx1TsTL77tmpWjSxlM7DCrqacwsNbTW49pN/C9T99hyslTOwG1PBTjYeyoo
+         cNDK9ggxsphgsv5QuigdPWBSWTPP6D2iXS9hZk3A4ysA66Uph6q0Ew7lLSaXxqnFBgqQ
+         VjrBEUMplFlnj+yFYXy48rCxt1/A5gyMSq0WCmGKjuht6zClnP6NHYbT3fh6l7o8vKIV
+         zvCav2Cq0nbbzDQ/3oK6K/+WM8UBqHy80kqfXevzN7AT681Xk82S7+rkmpzYxVkqSqi2
+         oIQ17Rd9PoGoPCMOE6IX0mf/Z46tNO3L3FVxiherVDn5xWfoRJxrWfi8nxH7wp5dVETF
+         bAHA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=Nr6p5oYxlAHsBoJ+GFLIhnhtm0us7OQbCsWyo00fo/g=;
+        fh=w4udndNa3z3dS987rpA732l9rCEUCMDw7O6T9DWWVD0=;
+        b=Tp/qBFHcP4/+Mh7x3lGzf4TwSDJWVzGh0NbugE21yHkFNs3MCPJOc4zXIhj4mVsMsk
+         xkZ1KWyL/xZfRhVq1KO34CMufb024KHDgWR45yKaClupyqV7oI323zHRt81WcnliPFRP
+         w2Ht12t0chMFd/inz+4Jx4cmWMnOYM9r/6YFNqTtyzefE7r2PaysNsNKH2peBEVS0qZC
+         0RDrcB95kqY4XItjloGz/GIn0zPAJVTxU8CTV+6wqboM6VCgeOUPZHxufUmBNyKIJX+u
+         lSEag9N6thq4aVEk8UJkC7AZLzGiGhPvrkkDjHui7Zx0/2L8HLRXGgSzjf9uFvcFTF6O
+         xiqQ==;
+        darn=lists.yoctoproject.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778266040; x=1778870840; darn=lists.yoctoproject.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Nr6p5oYxlAHsBoJ+GFLIhnhtm0us7OQbCsWyo00fo/g=;
+        b=AsSZXgLhYD/nilQK7gKsUqKLrk5Nwa4nyvrjfk5RkY7NaUUA23hhuTFmumb5oo3Mko
+         KAIgoiRHUFHeyK968poUI2nNCduR2Tc17IUUQwoJLDkJiob8GWZWrMDPbDSszvATfzit
+         WKIOHTFle2zqOauq2Z9QuiDxdBkDB7Nt3Ko+XhZdOx3CC+9ODq9wSUn0ptKZr5IIOyY5
+         MmGm8OYrUsXqb4Znpqd35Gz0V0okNkcp+/jfRvdZDIzrXK8Bw+xvacImb7pV/890rCHE
+         D9iqUGYKx5jH/Eul436S+NiiclkIe73aEG1HNwNYNW8VbaiE5EG/7omFLGe4qpK2+fY9
+         Q5DA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778266040; x=1778870840;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Nr6p5oYxlAHsBoJ+GFLIhnhtm0us7OQbCsWyo00fo/g=;
+        b=EP91yYwhifYaQE/tzGAiKdYdUpraGRm+IDK9B1pSqV159ox+NCQwM3myYJxcjt88eG
+         KQ8/38EFND9PnarDc2cyn7a+2hbYMo9hzKXbRNEWvFRoMCv5w3y5FrSNvNJamO2BIbth
+         8V8uuYZXAvXXC3HfYutUkBcVe7pMovjj6/vLRKTAyzwgGYIdMtrifVEfW5XA/kbBzp0F
+         tyWphehGsXt2+f14CGkywZeMLQzunx9imC80gvJ3iMkZ0FJM+skR7x7bgHvBF5HoixNX
+         +20jw2GMhuQ8Va8CvHPSSFaceVNu5W0e8ygq4RT+vOuERbKdwQBI/vTu5WmqJBpDvO2y
+         0N5A==
+X-Gm-Message-State: AOJu0YzbuP/GxwkENGAT08PWH4ajAMnc/pyEC2Iy4K1ACYpBDSjBBc+5
+	DkIuBrIm50WngNVr7zgN0PmnU5rPQLDBsyu05J/u1j+58d3xsd0HW/jLmFI9tRMr7sUpZIQtQv5
+	qA/vJZmNJ84RmWRmCusyGs183lVjS9dytLDI2
+X-Gm-Gg: Acq92OHrEl3Ft8NuIpuPoHYVvx9k4sh9aM1eW77VWzlv2oecjD8JNEqsPubecmQutQG
+	q21COeQcaLFu9ZxzWJOtB7x3Jl5+ki1pkU7Gpkowj96GjgY+yaCJaTj8eQICCjxZFx4MOH5v5Io
+	dzW/JjimCb7cnf9fTzA6qlHQVec0RN41IGnaOu4M0UtYENzs9YhMruN2AwOYjd3WNWG4D+xmOUJ
+	cdG+HfK2l52SCNx0sJGxGh1ZiwocKxIfaN+Icb69Sx2JpJI/vwiJaOrRgFREFi+k6//zisATU4T
+	N7shzBs3w5Qvoh7Uv/ykeOX2zIUzWnbjlAg3hUG8oA==
+X-Received: by 2002:a05:6214:2688:b0:8ac:73e8:af42 with SMTP id
+ 6a1803df08f44-8bf412ff41cmr67878246d6.4.1778266039899; Fri, 08 May 2026
+ 11:47:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+References: <e9ecc3f8-c93c-caf1-eb73-de73633cda10@crashcourse.ca>
+In-Reply-To: <e9ecc3f8-c93c-caf1-eb73-de73633cda10@crashcourse.ca>
+From: Alexander Kanavin <alex.kanavin@gmail.com>
+Date: Fri, 8 May 2026 20:47:08 +0200
+X-Gm-Features: AVHnY4JXpQqTcWJSytE_zFLpaBLNxgVLv75cDDDIcn_BwZtw9qKK3abWeEVrMH8
+Message-ID: <CANNYZj8TrFArNqiE2uTowv5RvnourbGoweJ_ySDXmjFKsx=P2w@mail.gmail.com>
+Subject: Re: [docs] Quick Build using word "naive" sounds a bit condescending
+To: rpjday@crashcourse.ca
+Cc: YP docs mailing list <docs@lists.yoctoproject.org>
+Content-Type: text/plain; charset="UTF-8"
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 08 May 2026 18:37:55 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9417
+ <docs@lists.yoctoproject.org>; Fri, 08 May 2026 18:47:25 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9418
 
+On Fri, 8 May 2026 at 20:37, Robert P. J. Day via
+lists.yoctoproject.org <rpjday=crashcourse.ca@lists.yoctoproject.org>
+wrote:
+>
+>
+> https://docs.yoctoproject.org/brief-yoctoprojectqs/index.html
+>
+> "If you are not in an interactive shell, dpkg-reconfigure will not
+> work as expected. To add the locale you will need to edit
+> /etc/locale.gen file to add/uncomment the en_US.UTF-8 locale. A naive
+>                                                                 ^^^^^
+> way to do this as root is:"
+>
+>   Can we not find a slightly less patronizing word? What is this
+> trying to say?
 
-https://docs.yoctoproject.org/brief-yoctoprojectqs/index.html
+TBH, I would remove both notes, they just seem outdated and not helpful.
 
-"If you are not in an interactive shell, dpkg-reconfigure will not
-work as expected. To add the locale you will need to edit
-/etc/locale.gen file to add/uncomment the en_US.UTF-8 locale. A naive
-                                                                ^^^^^
-way to do this as root is:"
+This whole Debian-specific section is also duplicated in the reference
+manual, so the quickstart should simply defer to that:
+https://docs.yoctoproject.org/ref-manual/system-requirements.html#required-packages-for-the-build-host
 
-  Can we not find a slightly less patronizing word? What is this
-trying to say?
-
-rday
+Alex
 
