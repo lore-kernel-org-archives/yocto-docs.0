@@ -1,82 +1,69 @@
-Return-Path: <foss@0leil.net>
+Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 90208CD37B9
-	for <webhook@archiver.kernel.org>; Fri,  8 May 2026 16:59:45 +0000 (UTC)
-Received: from smtp-8fab.mail.infomaniak.ch (smtp-8fab.mail.infomaniak.ch [83.166.143.171])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.1619.1778259579385653747
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B2B0ACD3445
+	for <webhook@archiver.kernel.org>; Fri,  8 May 2026 18:37:55 +0000 (UTC)
+Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.1357.1778265474431679446
  for <docs@lists.yoctoproject.org>;
- Fri, 08 May 2026 09:59:40 -0700
+ Fri, 08 May 2026 11:37:54 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@0leil.net header.s=20231125 header.b=dSfbRB2d;
- spf=pass (domain: 0leil.net, ip: 83.166.143.171, mailfrom: foss+yocto@0leil.net)
-Received: from smtp-4-0001.mail.infomaniak.ch (unknown [IPv6:2001:1600:7:10::a6c])
-	by smtp-4-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4gBwMY3gD9zDJm;
-	Fri,  8 May 2026 18:59:37 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=0leil.net;
-	s=20231125; t=1778259577;
-	bh=hR7p0kmY4fcaldilDHfr68yilTt5/7OcpM7T4Envprk=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=dSfbRB2d5aK3Ib0joqbEyb4OACtAjQwLEwkyTDE+BdYILbM/rMsklpM+3611YCBch
-	 ewEQwJ///CPSijQBvr1iar5AH0E9HJTqOK1MRaLgNZNHEvlWLoMr07f1jWziTnsprn
-	 760H7V8Q4KoqaqkdmwrOKJ771tNRUhD3FcuK7m7Th0Sk7ZxZTUi3OZG3Kr76iT7Q+Z
-	 Ywh0qK7kKgUHOTgzu+Pgy7OjFerlEATB0ktWWRfOhil2HQMRiPac6gXt+nWw+OAw4X
-	 20ZwhOwMvxAXUgs7ew82CfCF4EIK9bUU68EQXIfXTFNpk5YykxRAbnjWI34nTCv9zk
-	 frlKTRGI+xeXw==
-Received: from unknown by smtp-4-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4gBwMY1C53znHR;
-	Fri,  8 May 2026 18:59:37 +0200 (CEST)
-From: Quentin Schulz <foss+yocto@0leil.net>
-Date: Fri, 08 May 2026 18:59:25 +0200
-Subject: [PATCH 01/11] migration-guides: fix https:// prefix missing in
- anonymous reference
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=NUEPeZ3N;
+ spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
+	To:From:Date:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=oVzF6Q2/yH+CcdD1KBcqItCDu6qFugvDwQs+/EFBk6s=; b=NUEPeZ3N7/3ARqco2159Aw6OP0
+	1+gfwihWUu/fUhcS8EIpxTGjWFD3jWyfxzZq2UTanUv2MloHvT/KTQG+HGg+yWi5c9QFfUBAObLx2
+	rpkOhX/sOudcth8qZcnasxFBb4HYvSPliETmy2d5/5F5upCLpu/WjPb4ek+roKi9hKq1DE2BbKdGu
+	gJ4RvxwSSuZhVGWgagNNco1stiiAfdhrIlFT7cLuWphjtNSG950QEBC5mXpnDJeJ7Ni+lvK54yT2e
+	OBVe8abd41wQ6ImtgFsmzwqDM1MgTUgYWyQ2egBuHxOVsehYT9p7o06y6VG/K58uHkv93Lcq//OJT
+	EZ00v7Yw==;
+Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:52308 helo=rday)
+	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.99.2)
+	(envelope-from <rpjday@crashcourse.ca>)
+	id 1wLQ5A-00000004Jkw-02RB
+	for docs@lists.yoctoproject.org;
+	Fri, 08 May 2026 14:37:53 -0400
+Date: Fri, 8 May 2026 14:40:40 -0400 (EDT)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+To: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: Quick Build using word "naive" sounds a bit condescending
+Message-ID: <e9ecc3f8-c93c-caf1-eb73-de73633cda10@crashcourse.ca>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260508-misc-typo-20260508-v1-1-8fb61b5358cc@cherry.de>
-References: <20260508-misc-typo-20260508-v1-0-8fb61b5358cc@cherry.de>
-In-Reply-To: <20260508-misc-typo-20260508-v1-0-8fb61b5358cc@cherry.de>
-To: docs@lists.yoctoproject.org
-Cc: Quentin Schulz <quentin.schulz@cherry.de>
-X-Mailer: b4 0.15-dev-47773
-X-Infomaniak-Routing: alpha
+Content-Type: text/plain; charset=US-ASCII
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
+X-AntiAbuse: Original Domain - lists.yoctoproject.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - crashcourse.ca
+X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 08 May 2026 16:59:45 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9406
+ <docs@lists.yoctoproject.org>; Fri, 08 May 2026 18:37:55 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9417
 
-From: Quentin Schulz <quentin.schulz@cherry.de>
 
-By failing to prefix the URL with https://, it makes the anonymous
-reference a link relative to the "parent link". In other words, it
-renders the link as
-https://docs.yoctoproject.org/wrynose/migration-guides/dashboard.yoctoproject.org/releases.json
-instead of https://dashboard.yoctoproject.org/releases.json.
+https://docs.yoctoproject.org/brief-yoctoprojectqs/index.html
 
-Add https:// prefix to the URI so it's properly handled.
+"If you are not in an interactive shell, dpkg-reconfigure will not
+work as expected. To add the locale you will need to edit
+/etc/locale.gen file to add/uncomment the en_US.UTF-8 locale. A naive
+                                                                ^^^^^
+way to do this as root is:"
 
-Fixes: 8a29e23d144e ("migration-guides: update 6.0 (Wrynose) release notes")
-Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
----
- documentation/migration-guides/release-notes-6.0.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+  Can we not find a slightly less patronizing word? What is this
+trying to say?
 
-diff --git a/documentation/migration-guides/release-notes-6.0.rst b/documentation/migration-guides/release-notes-6.0.rst
-index f93075d7a..aae7ee4e7 100644
---- a/documentation/migration-guides/release-notes-6.0.rst
-+++ b/documentation/migration-guides/release-notes-6.0.rst
-@@ -263,7 +263,7 @@ New Features / Enhancements in |yocto-ver|
- 
-    -  The documentation build now fetches the list of active and inactive
-       version of the documentation from the remote `releases.json
--      <dashboard.yoctoproject.org/releases.json>`__ file. This also applies to
-+      <https://dashboard.yoctoproject.org/releases.json>`__ file. This also applies to
-       the :term:`BitBake` documentation.
- 
- -  Go changes:
-
--- 
-2.54.0
-
+rday
 
