@@ -2,14 +2,14 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 747ABCD3447
-	for <webhook@archiver.kernel.org>; Sat,  9 May 2026 17:41:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AE874CD3447
+	for <webhook@archiver.kernel.org>; Sat,  9 May 2026 18:41:36 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.16175.1778348488166838936
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.17245.1778352091058066977
  for <docs@lists.yoctoproject.org>;
- Sat, 09 May 2026 10:41:28 -0700
+ Sat, 09 May 2026 11:41:31 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=VWFk5+PA;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=lWtTyWdL;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
@@ -17,24 +17,24 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=rQULN7yWIN7JR8R5mjBFQ2A96op6kIrS4UBwS+/rxMk=; b=VWFk5+PAgefCLtF521OWHvE/s3
-	XAElUJxDe65hXgDSXNwh8eGqYrK3xG36JTv16leX/mbP8auaPluuwvlcgdfK7KKNi8DxtC0KR0Nbl
-	yZ8v6TGT/2e1xdATA470rTyub5X5njUO/NO/RMITVQ7jZnZg+4fRbYpb6lBTj2EOgz890BMzsXYL6
-	iqwbcL0xTOTT73amynFEPuUBev/MkHsOb6tM/IowicLBSexe7u0Hf7WawyR2btMFRbQSQ3BH+ZR+C
-	WICcwvJk0e6zrqc3KgbMh16/dNPSnePTou7QxmG+l/XTEUyw44F80kVBQQX2UKsolzKEuz97bn+MN
-	/RhKmHZQ==;
-Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:53744 helo=rday)
+	bh=BzMI4jWe1thOaO+fq3xWLY4IY3xaag4HLhzcR7OA6SE=; b=lWtTyWdL2pcAaAXhNdC0AYJpji
+	sZCqS8zpruBDX0NJFFPhl+U8fHpeg4cIeIVdx9NWeuDwutpQw1INwXvkwQQjlVdq+4KthLgsDLSVK
+	lMaZ6H4xIzCYChbo99pHk99vx1krJVcOjfEtmmd0vYBkPgGE5oM64L1uHx/5kmwh26a23A0AYtH3c
+	FVWLSBy/4qkRx4XjSnYIePBD5QQeyqrRb2DI9AV2dIED8hEA41MUR+n59S5hSChd8nazv32eW6xQA
+	aYk8ry+m/EcA6/NOqYYHes82eZIs43DfOeH3/s9gFC6y1BBMcpwAdAIW36S8E6Mu8EViQVPGWb3rF
+	vrwLfK2A==;
+Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:37558 helo=rday)
 	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.99.2)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1wLlg5-000000004nL-1hxC
+	id 1wLmcC-00000000B05-0Fcg
 	for docs@lists.yoctoproject.org;
-	Sat, 09 May 2026 13:41:26 -0400
-Date: Sat, 9 May 2026 13:44:06 -0400 (EDT)
+	Sat, 09 May 2026 14:41:29 -0400
+Date: Sat, 9 May 2026 14:44:05 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: [PATCH] Quick Build guide: Various pedantic cleanups
-Message-ID: <c1c86570-49ec-de55-563d-e43722f89573@crashcourse.ca>
+Subject: [PATCH] What I Wish I'd KNown: Various pedantic cleanups
+Message-ID: <7492d4a6-6194-d081-2266-98f33dc5ae92@crashcourse.ca>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -50,71 +50,68 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Sat, 09 May 2026 17:41:36 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9426
+ <docs@lists.yoctoproject.org>; Sat, 09 May 2026 18:41:36 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9427
 
 
 Tweaks:
 
-  - remove unnecessary capitalization
-  - add appropriate hyphenation
-  - insert missing word "to"
-  - fix incorrect link to point to raspberrypi5,
-    not beaglebone
+  - Update "Software Overview" link to go to "Technical Overview"
+  - use proper capitalization for "Git" when referring to the product
+  - numerous grammar adjustments to basic skills list
 
 Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
 
 ---
 
-diff --git a/documentation/brief-yoctoprojectqs/index.rst b/documentation/brief-yoctoprojectqs/index.rst
-index 7fbf92098..1d5fdc5e4 100644
---- a/documentation/brief-yoctoprojectqs/index.rst
-+++ b/documentation/brief-yoctoprojectqs/index.rst
-@@ -84,7 +84,7 @@ Build Host Packages
-    see the :ref:`ref-manual/system-requirements:required packages for the build host`
-    section in the Yocto Project Reference Manual.
-
--Use Git to Clone bitbake-setup
-+Use Git to clone bitbake-setup
- ==============================
-
- Once you complete the setup instructions for your machine, you need to
-@@ -352,7 +352,7 @@ development environment.
-
- In general, layers are repositories that contain related sets of
- instructions and configurations that tell the Yocto Project what to do.
--Isolating related metadata into functionally specific layers facilitates
-+Isolating related metadata into functionally-specific layers facilitates
- modular development and makes it easier to reuse the layer metadata.
-
+diff --git a/documentation/what-i-wish-id-known.rst b/documentation/what-i-wish-id-known.rst
+index bdb9e492e..d89f43304 100644
+--- a/documentation/what-i-wish-id-known.rst
++++ b/documentation/what-i-wish-id-known.rst
+@@ -9,7 +9,7 @@ What I wish I'd known about Yocto Project
  .. note::
-@@ -367,7 +367,7 @@ layer>`:
-     adds the :yocto_git:`meta-raspberrypi </meta-raspberrypi>` BSP
-     layer.
 
--    First, clone the layer next the other layers::
-+    First, clone the layer next to the other layers::
+    Before reading further, make sure you've taken a look at the
+-   :yocto_home:`Software Overview</software-overview>` page which presents the
++   :yocto_home:`Technical Overview</development/technical-overview>` page which presents the
+    definitions for many of the terms referenced here. Also, know that some of the
+    information here won't make sense now, but as you start developing, it is the
+    information you'll want to keep close at hand. These are best known methods for
+@@ -22,8 +22,8 @@ known before embarking on their first build with Yocto Project. Feel free to
+ contact us with other suggestions.
 
-       git clone -b &DISTRO_NAME_NO_CAP; https://git.yoctoproject.org/meta-raspberrypi ../layers/meta-raspberrypi
+ #. **Use Git, not the tarball download:**
+-   If you use git the software will be automatically updated with bug updates
+-   because of how git works. If you download the tarball instead, you will need
++   If you use Git, the software will be automatically updated with bug updates
++   because of how Git works. If you download the tarball instead, you will need
+    to be responsible for your own updates.
 
-@@ -375,7 +375,7 @@ layer>`:
-     it, you must add the layer and its dependencies to your ``bblayers.conf``
-     file, which is found in the :term:`Build Directory` (``conf/``) directory.
+ #. **Get to know the layer index:**
+@@ -166,19 +166,19 @@ contact us with other suggestions.
 
--    For this, the ``bitbake-layers add-layer`` can be used:
-+    For this, the ``bitbake-layers add-layer`` command can be used:
-
-     .. code-block:: console
-
-@@ -387,8 +387,8 @@ layer>`:
-
- #.  **Change the Configuration to Build for a Specific Machine:** The
-     :term:`MACHINE` variable is defined by the :ref:`ref-fragments-builtin-core-machine`
--    fragment. For this example, the meta-raspberrypi layer provides the
--    :yocto_git:`raspberrypi5 </meta-yocto/tree/meta-yocto-bsp/conf/machine/beaglebone-yocto.conf>`
-+    fragment. For this example, the ``meta-raspberrypi`` layer provides the
-+    :yocto_git:`raspberrypi5 </meta-raspberrypi/tree/conf/machine/raspberrypi5.conf>`
-     machine, so let's make it the :term:`MACHINE` used for the build with
-     ``bitbake-config-build``:
-
+    * deal with corporate proxies
+    * add a package to an image
+-   * understand the difference between a recipe and package
+-   * build a package by itself and why that's useful
++   * understand the difference between a recipe and a package
++   * build a package by itself and understand why that's useful
+    * find out what packages are created by a recipe
+    * find out what files are in a package
+    * find out what files are in an image
+-   * add an ssh server to an image (enable transferring of files to target)
++   * add an SSH server to an image (enable transferring of files to target)
+    * know the anatomy of a recipe
+    * know how to create and use layers
+    * find recipes (with the :oe_layerindex:`OpenEmbedded Layer index <>`)
+-   * understand difference between machine and distro settings
++   * understand the difference between MACHINE and DISTRO settings
+    * find and use the right BSP (machine) for your hardware
+-   * find examples of distro features and know where to set them
+-   * understanding the task pipeline and executing individual tasks
++   * find examples of DISTRO features and know where to set them
++   * understand the task pipeline and how to execute individual tasks
+    * understand devtool and how it simplifies your workflow
+    * improve build speeds with shared downloads and shared state cache
+    * generate and understand a dependency graph
 
