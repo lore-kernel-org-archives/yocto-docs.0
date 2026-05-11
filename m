@@ -2,14 +2,14 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F02C5CD37BE
-	for <webhook@archiver.kernel.org>; Mon, 11 May 2026 16:31:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 71D13CD4840
+	for <webhook@archiver.kernel.org>; Mon, 11 May 2026 17:04:53 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.54617.1778517088342865754
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.55728.1778519091963169052
  for <docs@lists.yoctoproject.org>;
- Mon, 11 May 2026 09:31:28 -0700
+ Mon, 11 May 2026 10:04:52 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=lTbJtZ9x;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=u7JA4OzV;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
@@ -17,25 +17,25 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=X/Eg4SYjOSIaqM5MLYxj/4kSo9tUEJi/u5GnqU/umWc=; b=lTbJtZ9xO8va6OP54rnjYQGagW
-	bGNr56CqlSQOtbMYOsy6z+QGz2RYhv/YAmHN2TzfTf73+yQ5JbpMan6SerXa4TDFzLwDlwBlHftoh
-	TCtI7+EkGlzKLguJuEEVRqz3F7brpqU4S1IWq1yQd2cWVV4QOMPSW8QWuJjnb3ViDykFyGx7ckkAX
-	WjWFmbXaIWclzGa2jPwu2ElWEYMBgpw+S2Y9MUOEAvAtplbIJ9eJSX3kbOWxts2dhevBD+PLfVCGg
-	9bjdkIGRapNVXs6V2tKCk+Qj1OKPaTvNvR5iU7jIfZO0ua4XTt9fisTdCdWAYpx6cbAQYvcKtVmr/
-	Iae0vHUw==;
-Received: from [147.129.179.166] (port=33828 helo=rday)
+	bh=fpDbAW7YFmmzyJxXMuNW7eDWS0bb7zzWIyCJz9ojzYQ=; b=u7JA4OzVYozmgr9SuVXsI7PI6g
+	nBLeZDSl9otKuF8y+V/SXZjKn2E53jLD40x87zZIE1aPpLfk4dPvh6GeCMC6UX2XZ7Xr5Y6UJJhJG
+	8QyUJjDiJZbhW7/c8Wwxn3L/lGiGWahYkGUW61NnFDgA/mSvwGOodfN3HKpm8Qt1gBA06mDa6fMfe
+	7LzheFI0XsraEJGjt7wlTlgEKxdfp2QOMO89itHinnm1wx14ScaQGKQrFbEz2wvUC4FAhk4Cfx0En
+	HnSY/Uf28qO6/d5IPRiEWvTti74jdb4+9xg/AbF4iQ5bv6t8Mm4KEQTO/iy2SD65istKl8R4lNx+z
+	4rsYC4BA==;
+Received: from [147.129.179.166] (port=42460 helo=rday)
 	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.99.2)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1wMTXP-00000005GuD-3yPI
+	id 1wMU3l-00000005Kr3-2EbY
 	for docs@lists.yoctoproject.org;
-	Mon, 11 May 2026 12:31:26 -0400
-Date: Mon, 11 May 2026 12:34:22 -0400 (EDT)
+	Mon, 11 May 2026 13:04:50 -0400
+Date: Mon, 11 May 2026 13:07:47 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: [PATCH] index.rst: correct "Software Overview" link to point to
- newer page
-Message-ID: <c6015c16-8033-8e1f-d84a-7b6ba4359e89@crashcourse.ca>
+Subject: Should explanation of "github-releases" class cover private
+ assets?
+Message-ID: <f3b7de9b-a40c-5638-7d5b-d7004f987b02@crashcourse.ca>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -51,36 +51,31 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 11 May 2026 16:31:32 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9452
+ <docs@lists.yoctoproject.org>; Mon, 11 May 2026 17:04:53 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9453
 
 
-Once upon a time, the docs page "Yocto Project Software Overview" link
-used to point to an appropriately-named URL,
-"www.yoctoproject.org/software-overview." These days, following that
-link redirects to
-https://www.yoctoproject.org/development/technical-overview/, a page
-with the title "Technical Overview" which does not match the name of
-the link.
+Here:
 
-Change the link name and underlying URL to match the current
-destination page.
+  https://docs.yoctoproject.org/ref-manual/classes.html#github-releases
 
-Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+there's a short, sweet explanation of "github-releases." This morning,
+for the first time, I created a recipe that tried to fetch assets from
+a *private* GitHub repository, which failed in just the way you would
+expect -- "Failed to fetch URL ...". (I had not been warned it was
+private.)
 
----
+  So I went looking for the proper(?) way to define credentials or
+authentication for that, and I ran across all sorts of suggestions. I
+eventually ended up here:
 
-diff --git a/documentation/index.rst b/documentation/index.rst
-index 7d933acc0..46b775711 100644
---- a/documentation/index.rst
-+++ b/documentation/index.rst
-@@ -17,7 +17,7 @@ Welcome to the Yocto Project Documentation
-    Quick Build <brief-yoctoprojectqs/index>
-    what-i-wish-id-known
-    transitioning-to-a-custom-environment
--   Yocto Project Software Overview <https://www.yoctoproject.org/software-overview/>
-+   Yocto Project Technical Overview <https://www.yoctoproject.org/development/technical-overview/>
-    Tips and Tricks Wiki <https://wiki.yoctoproject.org/wiki/TipsAndTricks>
+https://lists.yoctoproject.org/g/yocto/topic/bitbake_fetch_private_github/115408881
 
- .. toctree::
+so I thought I would just ask -- is there a YP-approved way to do
+this, and should it be covered in the docs? Because as it stands, the
+current explanation does not warn the reader of the extra complexity
+when private repos are involved.
+
+rday
+
 
