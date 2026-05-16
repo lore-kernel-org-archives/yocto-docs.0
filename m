@@ -1,161 +1,132 @@
-Return-Path: <jamin_lin@aspeedtech.com>
+Return-Path: <bijak.dawid@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3F063CD4F48
-	for <webhook@archiver.kernel.org>; Fri, 15 May 2026 08:03:38 +0000 (UTC)
-Received: from SEYPR02CU001.outbound.protection.outlook.com (SEYPR02CU001.outbound.protection.outlook.com [40.107.44.103])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.30313.1778832214136373903
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B672ACD4851
+	for <webhook@archiver.kernel.org>; Sat, 16 May 2026 19:12:00 +0000 (UTC)
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.11359.1778958711338445352
  for <docs@lists.yoctoproject.org>;
- Fri, 15 May 2026 01:03:34 -0700
+ Sat, 16 May 2026 12:11:51 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@aspeedtech.com header.s=selector1 header.b=ePafGOzN;
- spf=pass (domain: aspeedtech.com, ip: 40.107.44.103, mailfrom: jamin_lin@aspeedtech.com)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iu1e9FmRXhjtROi2lKs+mZDvJVptzsaRQQo/z6hZyZ34QplPKyheGd1UBxcSQeZT/Jt7qVl6tZfrxxcD2ELFPVzE3kHmIGnKQp0djZVAW0nf3Rax3DifooInjVsHMaVxxIpXWDzipHXZMfIq7/ldCs3wzk7Yx4mvMp722LxCtT/pxY+NB+BZx0uOOWbiyv3H+Vs9txkgzV23Z3I2fVywx1t2Mw42yxwvRLGgpeuo5qcXsUf9TOjfwFVRYNGKIJwJ4qd196AUwFuQqeR1c6d2Co6aMPL9bmQS5XRmew1mtrXowF3ADWTFycrTi64ENf9u3D4ccNHmrHZLrg+c9fKW6A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qkuEJ5FiyZVhjfoBFPVEMMu3BrB5q2LRLo8SqZwhxXs=;
- b=BcM2Wx1bE6LpObcq9g7s5K/7eJJ4TA4+eLdHBCaaamyhgRuJ/bJXchPV40q4+z7wJID9IzEqRG49EFyADlVEl9QXI8+qWIZTmTbxmlo9YmdayA8iC6wBnMpzfK1fDOFiE7vIHhbbGuSzz5wg1C4loBuBxBNyjfyXeGngVwqLZ5++OwSDVfY5GnHTSEnspHWnw0rMRzU0TuvQR5JKknYimGxSAoI5N77t1bHAMxYB5UC1c1ZEkYlLwlycvGbnsoHUxZSARWPYJbFXVbixVBjDwHWFMsYY7xYjNAUzvA/MnU7ue8eZzO0mITjtHj5DPxtMEamlQ7qpuqa+HJnj1HsD+g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=aspeedtech.com; dmarc=pass action=none
- header.from=aspeedtech.com; dkim=pass header.d=aspeedtech.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aspeedtech.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qkuEJ5FiyZVhjfoBFPVEMMu3BrB5q2LRLo8SqZwhxXs=;
- b=ePafGOzN4pSGmbv+rJ/aTMjAuAdHgKkD0ErGbdZC4v/FnlfjaLs0p2j1stITLswctcnNHn60MtDL1l+P21EU9PYmtZ4J7Moat0vJxlThXpktsDKhgVZUJmJ3QCSy1Sh57fgLlrhVipB6oODf00okoFhhzgCuXt66X7ViNnI/DCBVHN5O0pUH8eqOQzsvN4c5sQGBHWcwvQPfJliWeleyA+AZXsPz7hkhVRZUfxywcaFTnshnmMqepoXxweKiVhQT1etzD0sr9vgLoZGvBZkNygi+AjgOwr2Bp3Q9nDWYzHjp8IEvyShpViE666ylcq3s6Y46tOAZVmrzx+YOmE2Oqg==
-Received: from TYPPR06MB8206.apcprd06.prod.outlook.com (2603:1096:405:383::19)
- by KL1PR06MB7286.apcprd06.prod.outlook.com (2603:1096:820:142::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9913.11; Fri, 15 May
- 2026 08:03:28 +0000
-Received: from TYPPR06MB8206.apcprd06.prod.outlook.com
- ([fe80::e659:1ead:77cb:f6d3]) by TYPPR06MB8206.apcprd06.prod.outlook.com
- ([fe80::e659:1ead:77cb:f6d3%2]) with mapi id 15.20.9913.009; Fri, 15 May 2026
- 08:03:28 +0000
-From: Jamin Lin <jamin_lin@aspeedtech.com>
-To: "bitbake-devel@lists.openembedded.org"
-	<bitbake-devel@lists.openembedded.org>
-CC: "docs@lists.yoctoproject.org" <docs@lists.yoctoproject.org>, Troy Lee
-	<troy_lee@aspeedtech.com>, Jamin Lin <jamin_lin@aspeedtech.com>
-Subject: [PATCH v1] fetch2/git: Fix trailing slash in clone command causing
- double slash in alternates
-Thread-Topic: [PATCH v1] fetch2/git: Fix trailing slash in clone command
- causing double slash in alternates
-Thread-Index: AQHc5EFQb1a+hPU7RE2Z5etFl3Mp6Q==
-Date: Fri, 15 May 2026 08:03:28 +0000
-Message-ID: <20260515080327.1285043-1-jamin_lin@aspeedtech.com>
-Accept-Language: zh-TW, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=aspeedtech.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: TYPPR06MB8206:EE_|KL1PR06MB7286:EE_
-x-ms-office365-filtering-correlation-id: a0b12c84-62af-49f2-c00a-08deb25872b3
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: 
- BCL:0;ARA:13230040|366016|376014|1800799024|38070700021|18002099003|56012099003;
-x-microsoft-antispam-message-info: 
- 2rKgurOEXeM4lyH9g3ioDNDMK4W8UxLf3hJepe0X2CIod78JcsVTQeOTiqczE13s4w5VBYTJyvtvNvOx6jQp02svk5a+T5BUFx+dqM3frHcBa1R4IeGRLhYw9JWjbNVsoCsgylW5MiTs6EEAnD1Ka7SaflxiC3NqOoaJ/jrMLe5Z7yQQCdVDpFgDtpSInHPK02hYWbBNnZFeDobg+lhNNfI8aQqJdjf1+dDcGKI6wgyorlANi6tPVnyinT4emYt+f45KHqRg43vwIo8+qP5zl8F8o9raDWQydB44bz9wt/Kz1qmWsziAiiua+6hIhMoCOKpmbdUKXh8vqwfBifyubSjkWHixDsHpODtVLAGFfV6f7MB9bFVwWing8xO0gWzRp/zzZ2HpzyFKCyEJpqtFFtp3ZFndYFUWK7IP9clf3eh0az5Nypi92jox8Y2EAt6a/Kgz20cr05mHG33mYeR9q+Y85maI6VTLd8Rr13/jEuIbmXj41qy2FunGhx1YSQnM8iwTc1PZi5fPmJtFzYbSvj1WW8yIJ+LsK8sFY50TMZ9UVr9ufElTpDN7/Gj/fChGVfOb216WBSMlrGux5sYc4Y/WT1eIOfBahQt4FUJR9onAxoFHuyIdxX3eaHx9ack+YtJaTLgmHdhMyrWttjjSLe694/h9C09/zIECcteeWD+hIVRTBped06sIfPMreSLylZM9wmtYDSFTYlxj1UjS6NUx4gA1+T4XTznCAmwOn/a/SY/t2m65U3tooVYMgvr0
-x-forefront-antispam-report: 
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYPPR06MB8206.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(38070700021)(18002099003)(56012099003);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: 
- =?us-ascii?Q?R/767o17cbgHD5ir3hKHQIW7yEipFl2Yqtap8AEqn5etSzdOFReGmSN0pgsJ?=
- =?us-ascii?Q?OlUzihvhAlKBBv/U8LUzGdripG3j2LZkg/RcObf0/1lnq40Aa/vRk1gG3Gdn?=
- =?us-ascii?Q?9FNKYsCxCpp6FAIlguR4bb1Oo8nBUAVHLXqcqe5Q19M0c9Kk95CSexKLiquE?=
- =?us-ascii?Q?Z6s1+adWoGCFkBNrnuaLYx0TbqSfDpGEw3jLV3Mq5Dtka5fyyfASmzOVQo+H?=
- =?us-ascii?Q?c7T2aQjBvGb7FQs10fBKQI8diDGO3fBhYYQpmuj4YyVbJlJFvuHhfnn9DN+M?=
- =?us-ascii?Q?By4gsnAU54cNnwASMqQ7WEPZYUX9b+9cdUYCYMmEzSqDVkgvsVYKb8OiAjGv?=
- =?us-ascii?Q?5HcBhgZVE+d4itFygo6FGj9HWml2Ga7akzEqRjI2BFFNREtjyQNxE94rOmFS?=
- =?us-ascii?Q?OsS4zIuJZHlSSHwwdlVREnKrF8L7UP+b6xMnwHGysnb6YrL2tJ1bz6iIkqpm?=
- =?us-ascii?Q?ExUvnyYxwooJTh8NB3u+oaMgu1plFNBh4TWSHSIINy8y21g9HfvpG/Xd7UQM?=
- =?us-ascii?Q?lkZjLDdlfOZHlHmDhoLjFomjoW8CYd67onWuP3QtesA5ELepa+WouU4McZw6?=
- =?us-ascii?Q?+fAcflXneVlYqPVx1KC7o9WqdaWL7RLZiks5ZXrfB3g4A5ZqwdFvfypNreVd?=
- =?us-ascii?Q?XaesZNWO/L62QsijZFxn2RAkdOb+R+N1QVW5J5xuXUlyjAEIqM30jhk0A8ed?=
- =?us-ascii?Q?j/HKLZkKEbYen9jXvLfna0glEHCqT4NlAhQx5HkOAlwPzblAgZOX9TAhf93v?=
- =?us-ascii?Q?5u/5fTIIsyEDq22FhOjzIyi3ASe0jcBTI36XfTZK1B47LyuMhLJ5ozlDlPbe?=
- =?us-ascii?Q?E+79yA09pTaZahWjec0liwtZ1gs61tGjAaOkl+woQgjNqzP1KyUIXtvbAufC?=
- =?us-ascii?Q?RWRwWz9DOAgywjDuDScGI1167FVuLvFQ7oEmB/ZR6jMTbxVGVdu8nelmIf2q?=
- =?us-ascii?Q?gRes8JjVzadTWxmoT1D5IYGctdHBgWy/qux6j3myjhT50Jl5vQvX7/QGn3C5?=
- =?us-ascii?Q?NxJsbksLZHKN03xXyr+4YEAtWjb6NLszcjUV2oy8AChGhJ5rorgZFxWdl1S9?=
- =?us-ascii?Q?hu2SL+x9Fy61T+YdnVk9u/NH0LP2cISOf3hyeU6kX77x/jE9xyGDqQahLcg+?=
- =?us-ascii?Q?+vY4vyP8t+Z2FWY8gaNXNyWeEzHH9xvSZFNM8LFAle+3XVHE35v6rgzP3Cr6?=
- =?us-ascii?Q?DsaUZ8tyqJCf+NQImgkXasMMyIZe7ghCKW+AIjrHk9yR+wLghZYnfz6OtPn8?=
- =?us-ascii?Q?2EKpIp5lpfXZi6E/5o/aChm6fJG5F15SVneonjHZsfElNQWzbCgv+qiPpijF?=
- =?us-ascii?Q?sOOqGKa10Z31JjH5DXWlWEV5XhSfg6Z5GXhgVGQkdOBsvcF68cPXsiIPNosp?=
- =?us-ascii?Q?3hLYZ7v5CxL6GMwRBpfmGGaCuBXOzJure+clxEn81vD2x6ILp8AC3bpOFt1s?=
- =?us-ascii?Q?qQeR+EobjVi2psgLx53PH5Zj1RZjuVD9Lr2iWtBtlSv0Y3CxeHdoRdlDwu5e?=
- =?us-ascii?Q?n+TPWjxZe0u7ybzz2/CJXKzLZoFlBiI2zK0M6Jd7s+Vh27sWiTX+J7gO8IE7?=
- =?us-ascii?Q?OwM6V+sQz7W9b2/Pgm6hiijStlCdRlhncOOeTMlM0zFBuOrrGVE7gQWx744E?=
- =?us-ascii?Q?PWfOgDciEjw1/ZKbn3r8iYUDVt0Ca63VXbVMwm57mn+F0hV97wN6u/MdKjZp?=
- =?us-ascii?Q?MRtCmlUPvoIAGMTd96F5XRFzjvG6IadnO6hjUGzntc1S//yfZExX9x6VJmPS?=
- =?us-ascii?Q?7ErwLRqQyg=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ dkim=pass header.i=@gmail.com header.s=20251104 header.b=iF15/ILI;
+ spf=pass (domain: gmail.com, ip: 209.85.221.44, mailfrom: bijak.dawid@gmail.com)
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-44a5174670eso412107f8f.1
+        for <docs@lists.yoctoproject.org>; Sat, 16 May 2026 12:11:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778958709; x=1779563509; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ai0oP0m5S+CEn5Osnnf9QduL8sDbCqCItLi5cO9MBwY=;
+        b=iF15/ILI9cZTa4msrXWTscVItEDfbOm2FM7aAzEZrHDOvzWValbNN0y3BqY5vVVbxY
+         rV0IVsszKjXuTfifXeFPlDO68ymNuwoJqxKNCSLwSdQIiKpoh7mbz21tVnj1cYm3tK5k
+         /604hW28cAiRrhmn9eDY7YsiK+UtxFfe/nar5pxV7nW6ae0RUPkT4GT/gmc9YWOpUBzm
+         dnIIYZIV1LIxdDcX6NC39jq7r4D4EsswShmXhfwQ1zO0T67sJwunK50701dPaQzBrQDD
+         4p1E5CmVH/Hz/p2bWp/DRvKhgmzeetfYwYIUqjGb02yXrK9bDTdZ+KR6acW5CqxyfYrr
+         sOCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778958709; x=1779563509;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ai0oP0m5S+CEn5Osnnf9QduL8sDbCqCItLi5cO9MBwY=;
+        b=driNL9CYzV4ZwIjazMUtugiDPnyT6r3gGRVk+ZcC77Dhg+6y3Ff10FA187H2F3//6l
+         o3d/y+RdO8qKZDBbxlDfigm6Q+kIIc5RJji+MtWxvmtvk02wsbyLzQonrSIEHrl0VpWX
+         Y4bDsapaPRPOxiZi9JYlnEpeWwz6ouF7AQzHa2wotfXIPJb3Ti+TnB2CcZCI307daG3s
+         JTETacQvRDVvOcn0bpuBgVuvNlCoHIrU3TTlaXL/U1qbQ7g1VeGaTjfZsSUTR2/O7Xeh
+         I29aXFYTx9/j/t5jlJLjrNeNttHakVj7/8opf5wlvkWtlHWmAdTR3XO8YybJeHZfPb1X
+         +20Q==
+X-Gm-Message-State: AOJu0YwVk/8S5EhcpN4fi6URRNUhDiZWtoVNRxWGl13k9pa8pB/09T7N
+	i3CNYok/56qfmH1wZjvhlW7JTvPSqaKw6C4GP0Ew4Iua8zt1yRvsvIUN
+X-Gm-Gg: Acq92OH7IQHhXdD+p5+VS6bF9JS9viKe0K2jJNnVJXM4oeofGNPqDU45bOdxQmco7LI
+	TYl+GnlDykCqq5OwDd6NVnlWX43z3+yi2id+MnArSKzdco7pkJ20gArMJJvtTJl2ROuAJSivag6
+	weN7+b+Yv919M7RLPz2O9JpdE6gw+NGzbPbTTMi2JxMErfEo6XaZcY1/xpXH41GMXuaed2jj+3d
+	oW5dOdG76B9F+Cq65GCMw1Nl8/GWwo6AmGHX44jo8u470G8K8wLFrlXkbmVhdziE69IJLu9aUXU
+	67ecfjk0uERhwld5BlGraftfPiJO1LDlyAfR+6nmoK0FANQxKXqnhTha04bExoxlp6Lg2X33bpV
+	SXehoo3JTV1ZKROg+ZQPJuQELhLytbOi0+/sGAteLpcq4atBgFFUhq7icB/C0nSeWhquASxptle
+	BTQVjeWlCTLGXjzvEJm3FZ+jpHZIPutbPq5Y48sqg8vnnFldf1+AT7nx9ajo0SF/NoqwZAnv2NS
+	dx2aYmQa7haXkaWU3AQQxjg6PR83bOTx8sxzILc0CQR9O7LjPmd1Q==
+X-Received: by 2002:a05:600c:a293:b0:48f:e6de:1cba with SMTP id 5b1f17b1804b1-48fe6de1dc5mr78081565e9.17.1778958709137;
+        Sat, 16 May 2026 12:11:49 -0700 (PDT)
+Received: from thinkpad.fritz.box ([2a02:8070:d188:380:5f4a:8ba5:a0d5:73db])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-48fe53804aesm138951905e9.15.2026.05.16.12.11.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 16 May 2026 12:11:48 -0700 (PDT)
+From: Dawid Bijak <bijak.dawid@gmail.com>
+To: bitbake-devel@lists.openembedded.org
+Cc: docs@lists.yoctoproject.org,
+	quentin.schulz@cherry.de,
+	richard.purdie@linuxfoundation.org,
+	mathieu.dubois-briand@bootlin.com,
+	Dawid Bijak <bijak.dawid@gmail.com>
+Subject: [PATCH v4] doc: bitbake-user-manual-metadata: document inherit_defer limitations
+Date: Sat, 16 May 2026 21:11:37 +0200
+Message-ID: <20260516191137.11033-1-bijak.dawid@gmail.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
-X-OriginatorOrg: aspeedtech.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: TYPPR06MB8206.apcprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a0b12c84-62af-49f2-c00a-08deb25872b3
-X-MS-Exchange-CrossTenant-originalarrivaltime: 15 May 2026 08:03:28.4007
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 43d4aa98-e35b-4575-8939-080e90d5a249
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: cOO/Wt7bUru2t/1v8BqYgncUX/6lVEr0dknCq/Oi86cNt4S1m4bTiJO7SHWcii8O7n7Rcj+n/mkhgTudHv12hGyvq7eoAfg+lFDx+hc30nk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: KL1PR06MB7286
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 15 May 2026 08:03:38 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9470
+ <docs@lists.yoctoproject.org>; Sat, 16 May 2026 19:12:00 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9472
 
-The unpack() method constructs the git clone command with a trailing=0A=
-slash appended to ud.clonedir:=0A=
-=0A=
-  git clone -s <clonedir>/ <destdir>=0A=
-=0A=
-When git processes 'clone -s', it writes the source object path into=0A=
-<destdir>/.git/objects/info/alternates by appending '/objects' to the=0A=
-source path. The extra trailing slash produces a double slash:=0A=
-=0A=
-  <clonedir>//objects=0A=
-=0A=
-Newer versions of git refuse to normalize this path and report:=0A=
-=0A=
- error: unable to normalize alternate object path: <path>//objects=0A=
-  fatal: bad object HEAD=0A=
-=0A=
-Remove the spurious trailing slash so the alternates file contains a=0A=
-valid, normalizable path.=0A=
-=0A=
-Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>=0A=
----=0A=
- lib/bb/fetch2/git.py | 2 +-=0A=
- 1 file changed, 1 insertion(+), 1 deletion(-)=0A=
-=0A=
-diff --git a/lib/bb/fetch2/git.py b/lib/bb/fetch2/git.py=0A=
-index 01bebb764..b2b39549d 100644=0A=
---- a/lib/bb/fetch2/git.py=0A=
-+++ b/lib/bb/fetch2/git.py=0A=
-@@ -697,7 +697,7 @@ class Git(FetchMethod):=0A=
-             if update and os.path.exists(destdir):=0A=
-                 update_mode =3D True=0A=
-             else:=0A=
--                runfetchcmd("%s clone %s %s/ %s" % (ud.basecmd, ud.clonefl=
-ags, ud.clonedir, destdir), d)=0A=
-+                runfetchcmd("%s clone %s %s %s" % (ud.basecmd, ud.clonefla=
-gs, ud.clonedir, destdir), d)=0A=
-             source_found =3D True=0A=
-         else:=0A=
-             source_error.append("clone directory not available or not up t=
-o date: " + ud.clonedir)=0A=
--- =0A=
-2.43.0=0A=
+Add a warning explaining that anonymous Python functions cannot be
+used to influence inherit_defer, since they run after the directive has
+already been resolved.
+
+Also rename VARNAME to VARIABLE for consistency throughout the
+documentation.
+
+Suggested-by: Quentin Schulz <quentin.schulz@cherry.de>
+Signed-off-by: Dawid Bijak <bijak.dawid@gmail.com>
+---
+ .../bitbake-user-manual-metadata.rst           | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
+
+diff --git a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst b/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
+index 0c7c3ff99..134cf8ff1 100644
+--- a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
++++ b/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
+@@ -827,17 +827,17 @@ the variable after the line is parsed will take effect. With the :ref:`inherit
+ 
+ Here is an example::
+ 
+-   inherit_defer ${VARNAME}
++   inherit_defer ${VARIABLE}
+ 
+ One way to achieve a conditional inherit in this case is to use
+ overrides::
+ 
+-   VARNAME = ""
+-   VARNAME:someoverride = "myclass"
++   VARIABLE = ""
++   VARIABLE:someoverride = "myclass"
+ 
+ :ref:`inherit_defer <ref-bitbake-user-manual-metadata-inherit-defer>`
+-defers the evaluation of ``${VARNAME}`` until the end of
+-parsing. Assuming ``someoverride`` is in :term:`OVERRIDES`, ``${VARNAME}``
++defers the evaluation of ``${VARIABLE}`` until the end of
++parsing. Assuming ``someoverride`` is in :term:`OVERRIDES`, ``${VARIABLE}``
+ expands to ``myclass``, which is then inherited.
+ 
+ Alternatively, you could use an inline Python expression in the
+@@ -853,6 +853,14 @@ In all cases, if the expression evaluates to an
+ empty string, the statement does not trigger a syntax error because it
+ becomes a no-op.
+ 
++.. warning::
++
++    Setting or modifying variables within an :ref:`anonymous Python function
++    <bitbake-user-manual/bitbake-user-manual-metadata:Anonymous Python Functions>`
++    will have no impact on the value of that variable in an
++    :ref:`inherit_defer <ref-bitbake-user-manual-metadata-inherit-defer>` directive
++    as the function runs after the directive has been resolved.
++
+ See also :term:`BB_DEFER_BBCLASSES` for automatically promoting classes
+ ``inherit`` calls to ``inherit_defer``.
+ 
+-- 
+2.48.1
+
 
