@@ -1,127 +1,85 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3469BCD4851
-	for <webhook@archiver.kernel.org>; Tue, 19 May 2026 08:46:45 +0000 (UTC)
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.16904.1779180395626675278
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2F8E2CD4851
+	for <webhook@archiver.kernel.org>; Tue, 19 May 2026 12:16:24 +0000 (UTC)
+Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.19673.1779192974064959438
  for <docs@lists.yoctoproject.org>;
- Tue, 19 May 2026 01:46:36 -0700
+ Tue, 19 May 2026 05:16:14 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=hYDZvqzT;
- spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 8752E4E42CF0;
-	Tue, 19 May 2026 08:46:33 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 5B5BB606E9;
-	Tue, 19 May 2026 08:46:33 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2DD7E11AF87C0;
-	Tue, 19 May 2026 10:46:31 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1779180393; h=from:subject:date:message-id:to:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=Zm4xDx1XyqkwFwiyIkI1Oo2OcfXRKyJZEdcD8HxoFZg=;
-	b=hYDZvqzTZfyZ8btVC38eDnKdNNIFkLqJCzeWWCz9J4/I8CdvxMp53Z5K8026QOntfgw7d8
-	LTBsLuFhIrWrCBKnWyTXIeyJ+y637f5tsORVIgA0s0J0fPQVYAJIuBkRPS1xxRs1bMaVKC
-	+NLZ8sVHkh1eWidUvKNah+ocDlfGz+wE7lgihFOgY3f6G26s/cphdxa8e/yi/vnV37/Yg+
-	xGcm5xPDCH/W4deSmVBOQct2oxy8NG7K1FmyuU+TfOl0T8T4uD4w5SSgcmE10FdwIM0+4f
-	pgQ5r9g+PxwGXDTZunWiDToctk+yj4WGFeGm2tU9c30VXBIL2DaY1mM35yR0fQ==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 19 May 2026 10:46:31 +0200
-Message-Id: <DIMIT89CT2DQ.HEFWCBFNO54V@bootlin.com>
-Subject: Re: [docs] [PATCH 2/4] release-note-6.0: update several section
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: <chee.yang.lee@intel.com>, <docs@lists.yoctoproject.org>
-References: <20260519011715.972400-1-chee.yang.lee@intel.com>
- <20260519011715.972400-2-chee.yang.lee@intel.com>
-In-Reply-To: <20260519011715.972400-2-chee.yang.lee@intel.com>
-X-Last-TLS-Session-Version: TLSv1.3
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=m4rqAnnK;
+ spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
+	To:From:Date:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=LiNF0h2XdsMwDD/ufbKl+iX3W4Oz7Ipm8xfxIjyQIfo=; b=m4rqAnnKqMAxweVJ0qk6WVomrd
+	V6mVslO0P4bpKaYwKALZFE6mnKVZWu5O4HBSuShCiyiTztv8SqNQcjm5iClmtqY8VKBSxDDC74qKM
+	Ko5WLIKi+l9lCjA8sB0CQuuxdZY34tDTfRZ2SGyifcEw3nvrPUxgF41rzZxCFC9Lf9cMaFUWoptW5
+	tPYCGOAZdtyPQbrWoScfKuyieU16TCG6jL6Gp9Srjs9ZdV7OpxNi2fi3L8aFeSNfoZJSLvdWES4UH
+	dVu65X+Q5mbxHyFldL1ynu5wZH2Cm5fDpPgzzYsrPpk7TC6FewRl3gwRq9HgOrcYhWK982HV7KTc/
+	VSCKR6XA==;
+Received: from [147.129.179.166] (port=43028 helo=rday)
+	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.99.2)
+	(envelope-from <rpjday@crashcourse.ca>)
+	id 1wPJMo-00000008pgq-44DU
+	for docs@lists.yoctoproject.org;
+	Tue, 19 May 2026 08:16:12 -0400
+Date: Tue, 19 May 2026 08:19:31 -0400 (EDT)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+To: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: contributor-guide: fix typo, "maintainance" to "maintenance"
+Message-ID: <68dd7e77-a274-120c-5fd1-9dd4ea2c8fbb@crashcourse.ca>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
+X-AntiAbuse: Original Domain - lists.yoctoproject.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - crashcourse.ca
+X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 19 May 2026 08:46:45 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9483
+ <docs@lists.yoctoproject.org>; Tue, 19 May 2026 12:16:24 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9484
 
-Hi,
 
-Merged with the following formatting/wording fixes:
+Correct "maintainance" typo in recipe-style-guide.rst.
 
-diff --git a/documentation/migration-guides/release-notes-6.0.rst b/documen=
-tation/migration-guides/release-notes-6.0.rst
-index e539ebf38..6f8801012 100644
---- a/documentation/migration-guides/release-notes-6.0.rst
-+++ b/documentation/migration-guides/release-notes-6.0.rst
-@@ -125,7 +125,7 @@ New Features / Enhancements in |yocto-ver|
-       analysis of recipes (using the recipe SBOM, meaning building the
-       software provided by the recipe is not needed), which uses the
-       `sbom-cve-check <github.com/bootlin/sbom-cve-check>`__ tool internal=
-ly.
--      This also obsoletes the cve-check class.
-+      This also obsoletes the ``cve-check`` class.
-       (:oecore_rev:`e2518b1eaabef13c9f8d44b52b8ec9d4dd4ed916`,
-       :oecore_rev:`00de455f8d3aeca880129d23e8cfb7e246404699`)
-=20
-@@ -192,9 +192,9 @@ New Features / Enhancements in |yocto-ver|
-=20
- -  Global configuration changes:
-=20
--   -  Changes in DISTRO_FEATURES default values and how DISTRO_FEATURES &
--      MACHINE_FEATURES are provided, see :doc:`/migration-guides/migration=
--6.0`
--      for more information.
-+   -  Changes in :term:`DISTRO_FEATURES` default values and how
-+      :term:`DISTRO_FEATURES` and :term:`MACHINE_FEATURES` are provided, s=
-ee
-+      :doc:`/migration-guides/migration-6.0` for more information.
-=20
-    -  ``base-passwd``: Add a ``clock`` group as `systemd` version v258 int=
-roduces
-       this group to `enable applications like linuxptp to open clocks with=
-out
-@@ -762,21 +762,20 @@ New Features / Enhancements in |yocto-ver|
- Known Issues in |yocto-ver|
- ---------------------------
-=20
--Referencing an unset variable in DISTRO_FEATURES causes DISTRO_FEATURES_NA=
-TIVE
--and DISTRO_FEATURES_NATIVESDK to be set incorrectly. The leads to confusin=
-g
--errors, such as
-+Referencing an unset variable in :term:`DISTRO_FEATURES` causes
-+:term:`DISTRO_FEATURES_NATIVE` and :term:`DISTRO_FEATURES_NATIVESDK` to be=
- set
-+incorrectly. The leads to confusing errors, such as:
-=20
--  - Nothing PROVIDES 'libseccomp-native'
-+-  ``Nothing PROVIDES 'libseccomp-native'``
-=20
--  - Required build target 'glibc' has no buildable providers.
-+-  ``Required build target 'glibc' has no buildable providers.``
-=20
--To resolve these errors, ensure that all variables used in DISTRO_FEATURES=
- are
--set. Variables may be set to an empty string if not needed.
--
--A fix for this issue is in progress and should be included in Yocto
--Project 6.0.1. See :yocto_bugs:`Yocto bug #16275 </show_bug.cgi?id=3D16275=
->`
--for further details.
-+To resolve these errors, ensure that all variables referenced in
-+:term:`DISTRO_FEATURES` are set. Variables may be set to an empty string i=
-f not
-+needed.
-=20
-+A fix for this issue is in progress and should be included in Yocto Projec=
-t
-+6.0.1. See Yocto bug :yocto_bug:`16275` for further details.
-=20
- Recipe License changes in |yocto-ver|
- -------------------------------------
+Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
 
-Thanks,
-Antonin
+---
+
+diff --git a/documentation/contributor-guide/recipe-style-guide.rst b/documentation/contributor-guide/recipe-style-guide.rst
+index d0cb65295..79bf7c79b 100644
+--- a/documentation/contributor-guide/recipe-style-guide.rst
++++ b/documentation/contributor-guide/recipe-style-guide.rst
+@@ -315,7 +315,7 @@ following status strings:
+    No determination has been made yet, or patch has not yet been submitted to
+    upstream.
+
+-   Keep in mind that every patch submitted upstream reduces the maintainance
++   Keep in mind that every patch submitted upstream reduces the maintenance
+    burden in OpenEmbedded and Yocto Project in the long run, so this patch
+    status should only be used in exceptional cases if there are genuine
+    obstacles to submitting a patch upstream; the reason for that should be
+@@ -346,7 +346,7 @@ following status strings:
+    The patch is not appropriate for upstream, include a brief reason on the
+    same line enclosed with ``[]``. In the past, there were several different
+    reasons not to submit patches upstream, but we have to consider that every
+-   non-upstreamed patch means a maintainance burden for recipe maintainers.
++   non-upstreamed patch means a maintenance burden for recipe maintainers.
+    Currently, the only reasons to mark patches as inappropriate for upstream
+    submission are:
+
 
