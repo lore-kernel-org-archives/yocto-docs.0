@@ -2,14 +2,14 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3D8C1CD4F3C
-	for <webhook@archiver.kernel.org>; Tue, 19 May 2026 17:56:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5EDFDCD4F3C
+	for <webhook@archiver.kernel.org>; Tue, 19 May 2026 18:32:04 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.5021.1779213367241302730
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.5820.1779215516130107197
  for <docs@lists.yoctoproject.org>;
- Tue, 19 May 2026 10:56:07 -0700
+ Tue, 19 May 2026 11:31:56 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=tRm25z3u;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=RSd+D4LO;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
@@ -17,24 +17,24 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=GLjoP7EvNMT61wiBGCPF6KO6SFYHmMTLvrGEgLN6rOA=; b=tRm25z3ujomFS4TTtllNU1kSLj
-	eISM9tJGOdHXZbzI3A2L0wGVr+5D0kB7pEfl60uJX4VdSpsVOX82gP8mkI5YxoXf5MM3uAYxAHsn/
-	AuA4DlCydoCA+A9+FJwvTu3v/Ufh5YPYFOp48SqBTZlmXJBh9wMYAEuuudMPqc0AvZSC9WRsbgNJz
-	Jy6WsnaJQPbY472Z4HzNu/EkEjvICC3F8H+jAyATOZxysrLMYW+pW6dIZ0gQxXkbItkHbVZu7mg5w
-	9pEVve7ZZRz5JMjZK378MFjd7gwM0NB3O5hjkMbL4oiK2Yq9KoJZDNwniwB9ccz7cdGU8YTQpDvcy
-	r3g8+ccw==;
-Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:34368 helo=rday)
+	bh=rREe72MGzfUAWnfNOrXrx2+d0zW1yF3BDqJ/jPdjqUQ=; b=RSd+D4LOIX6zRuddH/pHLfbANJ
+	jMZdUnCgl0fyG2WLCGwYb3sTFyHsKpfuf/TJdwfMVfFKKXUq5Yaz4oMG4K+SPp7SJs55gUvjkSTR1
+	xjUDGD3in9Vs8zso5+LxAZlxd+Yi+hkdttABaJU7qaa/vIYQcLOFc1W5supIA/6Cll0j9KN97lvBu
+	fUHDUdtK9wmlKEQCJvFWtVp9gQmdWZhenIH+nBYkWeq4nwcZIswI7A9QAUW4s+bs3GS8OwpYn07HQ
+	1VVyBWQ0Yrl9zuT79/gwL83G9M1rE4kyHpgiVO6WJaIyHwIaq0RrDds9cZ+lmk5JVadtxcyqUKwLu
+	JaMuVSEA==;
+Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:34834 helo=rday)
 	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.99.2)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1wPOfg-00000009Whw-2Cg8
+	id 1wPPEP-00000009bQQ-1HIX
 	for docs@lists.yoctoproject.org;
-	Tue, 19 May 2026 13:56:05 -0400
-Date: Tue, 19 May 2026 13:59:18 -0400 (EDT)
+	Tue, 19 May 2026 14:31:54 -0400
+Date: Tue, 19 May 2026 14:35:10 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: [PATCH] overview-manual: hyphens not allowed in file version
-Message-ID: <ca4da254-48cf-033e-e548-81604af5135c@crashcourse.ca>
+Subject: [PATCH] recipe-style-guide.rst: two minor grammatical tweaks
+Message-ID: <adbfd9b9-4f6b-56b3-0a77-232948553cc8@crashcourse.ca>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -50,28 +50,36 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 19 May 2026 17:56:14 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9495
+ <docs@lists.yoctoproject.org>; Tue, 19 May 2026 18:32:04 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9496
 
 
-The Recipe Style Guide makes it clear that you can't have hyphens in
-the version part of a recipe file name.
+Minor rewording in two places.
 
 Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
 
 ---
 
-diff --git a/documentation/overview-manual/concepts.rst b/documentation/overview-manual/concepts.rst
-index ec5babe4c..ec3d81b8d 100644
---- a/documentation/overview-manual/concepts.rst
-+++ b/documentation/overview-manual/concepts.rst
-@@ -63,7 +63,7 @@ following commands::
- The most common usage for BitBake is ``bitbake recipename``, where
- ``recipename`` is the name of the recipe you want to build (referred
- to as the "target"). The target often equates to the first part of a
--recipe's filename (e.g. "foo" for a recipe named ``foo_1.3.0-r0.bb``).
-+recipe's filename (e.g. "foo" for a recipe file named ``foo_1.3.0.bb``).
- So, to process the ``matchbox-desktop_1.2.3.bb`` recipe file, you might
- type the following::
+diff --git a/documentation/contributor-guide/recipe-style-guide.rst b/documentation/contributor-guide/recipe-style-guide.rst
+index d0cb65295..8a896a31c 100644
+--- a/documentation/contributor-guide/recipe-style-guide.rst
++++ b/documentation/contributor-guide/recipe-style-guide.rst
+@@ -293,7 +293,7 @@ Tips and Guidelines for Writing Recipes
+    - then, copy ``X.orig`` back to ``X``,
+    - and, finally, modify ``X``.
 
+-   This ensures if rerun the task always has the same end result and the
++   This ensures that rerunning the task always produces the same end result and the
+    original file can be preserved to reuse. It also guards against an
+    interrupted build corrupting the file.
+
+@@ -403,7 +403,7 @@ CVE patches
+ ===========
+
+ In order to have a better control of vulnerabilities, patches that fix CVEs must
+-contain a ``CVE:`` tag. This tag list all CVEs fixed by the patch. If more than
++contain a ``CVE:`` tag. This tag should list all CVEs fixed by the patch. If more than
+ one CVE is fixed, separate them using spaces.
+
+ CVE Examples
 
