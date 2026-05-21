@@ -2,14 +2,14 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4BB31CD5BA4
-	for <webhook@archiver.kernel.org>; Thu, 21 May 2026 11:50:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 406BBCD5BB1
+	for <webhook@archiver.kernel.org>; Thu, 21 May 2026 12:12:09 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.34649.1779364256845779795
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.34954.1779365523941845452
  for <docs@lists.yoctoproject.org>;
- Thu, 21 May 2026 04:50:57 -0700
+ Thu, 21 May 2026 05:12:04 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=I6pioATn;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=FkEDPVRN;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
@@ -17,26 +17,26 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=R7iHZFrbqy994klmz96zeQ9DyDH2uGW3e5nsVrko4m0=; b=I6pioATnCumkiZekmWVbhMGMGJ
-	+NAvyszxCXFdzJwNPqa4tU+keDLuOVQlOrsUKUN+FOp7AKNxh4p6TvrFf1KfYesMEr3W6H4q8vIt8
-	8UT2eIEGMc8fXRsLQMzu4XtIekhiTTNhi41mfWsHttgEUvXFFGxYsJbyjWPVI5xz4A0l4+0Z6Yt/p
-	/sMJ/p7jxGjM8jRo33zfbhO6oZsnwKrkDSre8CISsNR3x+17/Ap5D07yDWbbiItgXZtXmtRgqDM8M
-	L5hDis+IsTZulN60C4f7lUP9newi1u3njPoVhstDT3iyJ00qGaJRWI1mLMdZFu6Fs/ur67tH/aQpa
-	Ur2+tVeQ==;
-Received: from [147.129.179.166] (port=47364 helo=rday)
+	bh=LwlW9WI+VC1Pexf048OOMaSeTX5ZewUar6TtCGfbt/A=; b=FkEDPVRNpLkL/a7O8C/Afn54lJ
+	ok4QxkfbgYyIP9hhID8PfsyzIBS86/vS1uqBiYfjbahBZ3c8U8epEumJacwcvx+iX2PvuXQqElPeX
+	DwDmXohKL5pFcDUhfk+TuVQHMTxEDDgdS53ppy5uizuC7CMDi6pW7FF9L7kghqVN8V9Gba1uWAFI7
+	4jFI0acmDzfxXSy6T+984Wf4yAkrDcfR8JokK+pyl+Yq8+MDwGc38Cynz6/Df8whrDyzV3LlzObP7
+	uWe4WZ7wWDfSbbJSSs2BhxmDyEcPX6R9PKzAj5Uy8Quq4FYxdHgwzmVZzxQO4QkBy/FlHmdRJL1ut
+	HoTbTzmg==;
+Received: from [147.129.179.166] (port=54210 helo=rday)
 	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.99.2)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1wQ1vO-00000002V1w-3vI9
+	id 1wQ2Fr-00000002Xb4-1XkJ
 	for docs@lists.yoctoproject.org;
-	Thu, 21 May 2026 07:50:55 -0400
-Date: Thu, 21 May 2026 07:54:10 -0400 (EDT)
+	Thu, 21 May 2026 08:12:02 -0400
+Date: Thu, 21 May 2026 08:15:22 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: [PATCH] bsp-guide: simplify example of structure of BSP layer
-Message-ID: <ea426fa3-2f18-891b-4e9d-c85ff1f0bcd3@crashcourse.ca>
+Subject: [PATCH] bsp-guide: update guide to reflect newer beaglebone
+Message-ID: <8ba8789a-52b7-d979-1fc8-04224055f60a@crashcourse.ca>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323329-1415588802-1779364459=:1809257"
+Content-Type: text/plain; charset=US-ASCII
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
 X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
 X-AntiAbuse: Original Domain - lists.yoctoproject.org
@@ -50,71 +50,83 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 21 May 2026 11:50:59 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9515
-
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
-
---8323329-1415588802-1779364459=:1809257
-Content-Type: text/plain; charset=KOI8-R
-Content-Transfer-Encoding: 8BIT
+ <docs@lists.yoctoproject.org>; Thu, 21 May 2026 12:12:09 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9516
 
 
-Rather than introduce a generic example of a BSP layer and follow that
-with a link to meta-yocto-bsp, eliminate the middleman and just show a
-clear hierarchical view of the meta-yocto-bsp layer where readers can
-immediately see the point being made.
+Update the section on describing the Beaglebone contents to reflect
+the current content in the meta-yocto-bsp layer.
 
 Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
 
 ---
 
 diff --git a/documentation/bsp-guide/bsp.rst b/documentation/bsp-guide/bsp.rst
-index a3b57d29f..1ae9d3353 100644
+index a3b57d29f..3fae172b1 100644
 --- a/documentation/bsp-guide/bsp.rst
 +++ b/documentation/bsp-guide/bsp.rst
-@@ -1222,22 +1222,28 @@ Project Development Tasks Manual.
- BSP Machine Configuration Example
- ---------------------------------
+@@ -1245,7 +1245,7 @@ to build, and U-Boot configurations.
 
--As mentioned earlier in this section, the existence of a machine
-+As mentioned earlier in this section, the existence of at least one machine
- configuration file is what makes a layer a BSP layer as compared to a
- general or kernel layer.
+ The following list provides some explanation for the statements found in
+ the example reference machine configuration file for the BeagleBone
+-development boards. Realize that much more can be defined as part of a
++development board. Realize that much more can be defined as part of a
+ machine's configuration file. In general, you can learn about related
+ variables that this example does not have by locating the variables in
+ the ":ref:`ref-manual/variables:variables glossary`" in the Yocto
+@@ -1319,7 +1319,7 @@ Project Reference Manual.
 
--There are one or more machine configuration files in the
--``bsp_layer/conf/machine/`` directory of the layer::
+ -  :term:`PREFERRED_VERSION_linux-yocto <PREFERRED_VERSION>`:
+    Defines the version of the recipe used to build the kernel, which is
+-   "6.12" in this case.
++   "6.18%" in this case.
+
+ -  :term:`KERNEL_IMAGETYPE`:
+    The type of kernel to build for the device. In this case, the
+@@ -1378,35 +1378,27 @@ The kernel recipe used to build the kernel image for the BeagleBone
+ device was established in the machine configuration::
+
+    PREFERRED_PROVIDER_virtual/kernel ?= "linux-yocto"
+-   PREFERRED_VERSION_linux-yocto ?= "6.1%"
++   PREFERRED_VERSION_linux-yocto ?= "6.18%"
+
+ The ``meta-yocto-bsp/recipes-kernel/linux`` directory in the layer contains
+ metadata used to build the kernel. In this case, a kernel append file
+-(i.e. ``linux-yocto_6.1.bbappend``) is used to override an established
+-kernel recipe (i.e. ``linux-yocto_6.1.bb``), which is located in
++(i.e. ``linux-yocto_6.18.bbappend``) is used to override an established
++kernel recipe (i.e. ``linux-yocto_6.18.bb``), which is located in
+ :oe_git:`/openembedded-core/tree/meta/recipes-kernel/linux`.
+
+ The contents of the append file are::
+
+-   KBRANCH:genericx86  = "v6.1/standard/base"
+-   KBRANCH:genericx86-64  = "v6.1/standard/base"
+-   KBRANCH:beaglebone-yocto = "v6.1/standard/beaglebone"
++   COMPATIBLE_MACHINE:genericarm64 = "genericarm64"
++   COMPATIBLE_MACHINE:beaglebone-yocto = "beaglebone-yocto"
++   COMPATIBLE_MACHINE:genericx86 = "genericx86"
++   COMPATIBLE_MACHINE:genericx86-64 = "genericx86-64"
+
++   KMACHINE:beaglebone-yocto ?= "beaglebone"
+    KMACHINE:genericx86 ?= "common-pc"
+    KMACHINE:genericx86-64 ?= "common-pc-64"
+-   KMACHINE:beaglebone-yocto ?= "beaglebone"
 -
--   bsp_layer/conf/machine/machine1\.conf
--   bsp_layer/conf/machine/machine2\.conf
--   bsp_layer/conf/machine/machine3\.conf
--   ... more ...
+-   SRCREV_machine:genericx86 ?= "6ec439b4b456ce929c4c07fe457b5d6a4b468e86"
+-   SRCREV_machine:genericx86-64 ?= "6ec439b4b456ce929c4c07fe457b5d6a4b468e86"
+-   SRCREV_machine:beaglebone-yocto ?= "423e1996694b61fbfc8ec3bf062fc6461d64fde1"
 -
--For example, the machine configuration file for the `BeagleBone and
--BeagleBone Black development boards <https://beagleboard.org/bone>`__ is
--located in :yocto_git:`/meta-yocto/tree/meta-yocto-bsp/conf/machine/beaglebone-yocto.conf
--</meta-yocto/tree/meta-yocto-bsp/conf/machine/beaglebone-yocto.conf>`.
-+As an actual example, consider the relevant content from the
-+:yocto_git:`/meta-yocto/tree/meta-yocto-bsp/conf/
-+</meta-yocto/tree/meta-yocto-bsp/conf/>` directory of the
-+``meta-yocto-bsp`` BSP layer::
-+
-+   $ tree -F conf
-+   conf/
-+   ��� layer.conf
-+   ��� machine/
-+       ��� beaglebone-yocto.conf
-+       ��� genericarm64.conf
-+       ��� genericx86-64.conf
-+       ��� genericx86.conf
-+       ��� include/
-+           ��� genericx86-common.inc
-+
-+showing four machine configuration files along with a lower-level
-+tuning configuration file.
+-   COMPATIBLE_MACHINE:genericx86 = "genericx86"
+-   COMPATIBLE_MACHINE:genericx86-64 = "genericx86-64"
+-   COMPATIBLE_MACHINE:beaglebone-yocto = "beaglebone-yocto"
 
- The variables used to configure the machine define machine-specific properties; for
- example, machine-dependent packages, machine tunings, the type of kernel
---8323329-1415588802-1779364459=:1809257--
+-   LINUX_VERSION:genericx86 = "6.1.30"
+-   LINUX_VERSION:genericx86-64 = "6.1.30"
+-   LINUX_VERSION:beaglebone-yocto = "6.1.20"
++   KBRANCH:genericarm64 ?= "v6.18/standard/genericarm64"
++   SRCREV_machine:genericarm64 ?= "5cd75b0b5da06045acdd0c66e50656ab82cb880f"
+
+ This particular append file works for all the machines that are
+ part of the ``meta-yocto-bsp`` layer. The relevant statements are
 
