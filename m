@@ -2,14 +2,14 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3DA0CCD5BB3
-	for <webhook@archiver.kernel.org>; Fri, 22 May 2026 16:16:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3B33CCD5BB3
+	for <webhook@archiver.kernel.org>; Fri, 22 May 2026 16:18:22 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.20311.1779466553488638881
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.20357.1779466697538169395
  for <docs@lists.yoctoproject.org>;
- Fri, 22 May 2026 09:15:53 -0700
+ Fri, 22 May 2026 09:18:17 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=Z5g6wj70;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=xrBgnPtW;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
@@ -17,25 +17,25 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=dZ/4g+rGoFHfKiKOY6AhJOVYP6SlsL6cZM5YlDN7qtU=; b=Z5g6wj70pRWxQu5yOUQZLOzbKH
-	NmQKrmVFennOV5avRJ2wO1z3YhKA0vDFsyJWeimU+sBdNp3KoQNHt7eKxFBYSMQpArCng+AMbyF8o
-	tVRmkYuYKIPunrgqd4JBM4EnXvS9UD1/OoH4R8VgHg7THKOP1Y5r+tXeocfkmcX+KY2cBnu8gWUkw
-	XgA0MsksYPPpY7aqZwTkLBY3b/qYdXMy15Ik1QA4QEFxweBD5kxU3RV+rdgl2jgLiQJHjmEq6R2s/
-	CA4IUnP/HP4Y9aWFPamp20DUWc7Rk7/xJGni9EMVQZv6jBCFgOZVOHLR1+kA1ogq8eiOLvw+JsfoN
-	f1wrjI4g==;
-Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:53884 helo=rday)
+	bh=yfZ7XqnTtgGnFOZU28aWcs7KeouZpTnxWLd7spOFgWU=; b=xrBgnPtWz732ZbLfFfTLKk2Nyp
+	bb/BVuWd7oll8CtapVBdFp1I5ZATqX042HAkSQqDViD04MPd0rlRay0R9zZwRo1wVjNMmArC1wYnx
+	iGLnrqHElNZxfvIcokOzqG/2+Lus2bGueXRyISImeXYUrJ+ZyqQih5U9XmThLT3VDx0RJxK9PhuAy
+	R491yNEwt7MyOLKbSk82XZyn2anD6q+X8YhoEfgTDSWd+ug5FDhMW4NkF21GpK4pUQb5A2N5zwuhu
+	lWJRTby9EWiJTD83I0j6C/gHDxSuxMDHk5KZUx44X+9FrQs5QbN6u3EYgwDA9uNVJ1PDBMAAbhiQs
+	rOhs2wlA==;
+Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:43990 helo=rday)
 	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.99.2)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1wQSXO-00000005ntN-0t8N
+	id 1wQSZi-00000005o4m-2yQI
 	for docs@lists.yoctoproject.org;
-	Fri, 22 May 2026 12:15:51 -0400
-Date: Fri, 22 May 2026 12:19:17 -0400 (EDT)
+	Fri, 22 May 2026 12:18:15 -0400
+Date: Fri, 22 May 2026 12:21:45 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: [PATCH] ref-manual: clarify that PACKAGE_EXCLUDE supports DEB
+Subject: [PATCH v2] ref-manual: clarify that PACKAGE_EXCLUDE supports DEB
  packaging
-Message-ID: <cb7c2ab0-bf11-5fa5-5730-2776d56dad0d@crashcourse.ca>
+Message-ID: <3faa7374-9428-5882-2862-861454dd0b49@crashcourse.ca>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -51,17 +51,19 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 22 May 2026 16:16:02 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9527
+ <docs@lists.yoctoproject.org>; Fri, 22 May 2026 16:18:22 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9528
 
 
 As an accompaniment to earlier commit
 0d05dedd62a6d4c726f120a23654ede1f0b23d8e, correct that the
-PACKAGE_EXCLUDE supports the DEB packaging backend.
+PACKAGE_EXCLUDE variable supports the DEB packaging backend.
 
 Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
 
 ---
+
+  sorry, forgot the word "variable"
 
 diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
 index c65794229..2773e9864 100644
