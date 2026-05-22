@@ -1,88 +1,119 @@
-Return-Path: <richard.purdie@linuxfoundation.org>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C17BBCD5BAC
-	for <webhook@archiver.kernel.org>; Thu, 21 May 2026 15:39:17 +0000 (UTC)
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.39746.1779377948852810942
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D0519CD5BB5
+	for <webhook@archiver.kernel.org>; Fri, 22 May 2026 14:42:41 +0000 (UTC)
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.18143.1779460958415197080
  for <docs@lists.yoctoproject.org>;
- Thu, 21 May 2026 08:39:09 -0700
+ Fri, 22 May 2026 07:42:39 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=dUsamBrX;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.128.49, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-48e82c23840so51219545e9.3
-        for <docs@lists.yoctoproject.org>; Thu, 21 May 2026 08:39:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1779377947; x=1779982747; darn=lists.yoctoproject.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:to:from:subject:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9723FH0NT3mruNqcWHQR9+mE0FKztU3jGwB41QobNwQ=;
-        b=dUsamBrXcdirNGHg6xlg3yWUSEXV1dGU1PD9p8lyJ/enobiYHAx0iEpmTgVtntsIrW
-         ETsaGAyZGlslKMRziqt6gHzyFny01aDg1Y6SEKOiVh/xargDByn5My5pttzdl+x9PSC6
-         a5sVourwUPEE5QRLIeaZkiHHlc9TbU5lJRU2s=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779377947; x=1779982747;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9723FH0NT3mruNqcWHQR9+mE0FKztU3jGwB41QobNwQ=;
-        b=LSvtKwO0i/E2i/RtfpJ3OEmHCUcFcniYscr62RRsCglrZFUystR/DmvYnldQd2N6sF
-         cjWKcwNVsPAV97xYQ5/pSgMHTstCJTDv/0Dbe7ZLyD3vpXtDV7BPLCNqb4aTLiDCzx2K
-         cUwqWmEo1/pc1v3OOmuNx6LrxzrmKw34Vc5GvVIskpC9p/ZbRCa9/ic6EsbYxKE56OQ0
-         BCCW7ZLf8DXAbFJfqRgVZATCehAp5lemQr2uo/pYs3XjG8M3Ttn1VRcVJJ/s7tbac5Tl
-         GE0Uujm8+3VjsERcA7bqbX4QsD9RzmSpQp8VXfYexWODWoQ5VmjEv9cqqkNe3w1uIGUP
-         TxIg==
-X-Forwarded-Encrypted: i=1; AFNElJ8YjmQnX76yZVmA7REUzM/c1Xhc+zzz20iKfntTW7wDPiHwfsbHafvLQooUwSPv5EdTPLvc@lists.yoctoproject.org
-X-Gm-Message-State: AOJu0Yw7J82saGdS5msiIpzueVszCIii6snJ1MEd+1Q4bJYYq/jG7fsE
-	+2IVGvAbBp5OImpoD/UdatFZ/Yk0e7DbZOXwKdTRsbVbXfJ5KYoD12T5C1Avhi3fm+eMa2Bv5Px
-	SVcfP
-X-Gm-Gg: Acq92OFEbDjmMBj35NqYkhT4TsjeRcGWGkqEe8T2BrjJG7YzJyApIQM39moRN0J6pv/
-	oYqPvOtAEACGdArLHILLyp0v7MwvMOGdn3167+H9sYA2MK/rwvFF0CPtnyz9RRNl6TSCjK94Tk/
-	ftbMCPaxmBOoVQ0yghXYHTUIIk5XkxXXizXDqfQPVIeUMRNzPQlAdzucmpYUvGb/zT1/zFkuA6Y
-	bu5Fgk9SaELyXyaiLttNn7ketDZ8vtNGdOU7i/hmfzQcHUNQBekwEgVS2/gnNLrwDx7rnPBzk3t
-	88NPwRZj8C5ymumBLT/H5iSzEgMV40ywsjTUNzxAUoEVqQseXrVxu/wJijX7HXG4nq6IKg7fNBB
-	oMhcI0AA5cJ8rdONg4ltdPdRG/344mrBdNMRc3CgTb9KREy5i+haIT2/2ovDbLCzmfH9zex7x89
-	o3lCxnZW7t4Ti3/cBme50ENpfSdrUEcI4fgPdPU6cJQ3VWO76ssczEWpXidAWJQOFoH3raVLc37
-	f2WrmVbCB/PdCy6
-X-Received: by 2002:a05:600c:c0c3:20b0:490:4033:d3df with SMTP id 5b1f17b1804b1-4904033d4bamr3356725e9.23.1779377946987;
-        Thu, 21 May 2026 08:39:06 -0700 (PDT)
-Received: from ?IPv6:2001:8b0:aba:5f3c:8b8a:4d15:b8f5:8634? ([2001:8b0:aba:5f3c:8b8a:4d15:b8f5:8634])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45eaa7d0bf6sm3894265f8f.7.2026.05.21.08.39.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 May 2026 08:39:06 -0700 (PDT)
-Message-ID: <b0f542761529b2fe6780058812cfaf23395def6c.camel@linuxfoundation.org>
-Subject: Re: [docs] [PATCH] bsp-guide: update "README" to "README.md"
-From: Richard Purdie <richard.purdie@linuxfoundation.org>
-To: rpjday@crashcourse.ca, YP docs mailing list <docs@lists.yoctoproject.org>
-Date: Thu, 21 May 2026 16:39:05 +0100
-In-Reply-To: <e7a80285-e53e-d4bd-15dc-a19e5d8fd091@crashcourse.ca>
-References: <e7a80285-e53e-d4bd-15dc-a19e5d8fd091@crashcourse.ca>
-Content-Type: text/plain; charset="UTF-8"
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=iL79djSM;
+ spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 6BDE24E42D2A;
+	Fri, 22 May 2026 14:42:36 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 39CB960734;
+	Fri, 22 May 2026 14:42:36 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9476B1081155A;
+	Fri, 22 May 2026 16:42:34 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1779460955; h=from:subject:date:message-id:to:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=994awoyNaZEyEDvHEcRLBkeni9SzxRqdya7fYwjdcxQ=;
+	b=iL79djSMrJlWJnnuDlBT8qz4c8Im7h9V9vxQ2Ok0r4T/Pj2wrSdxYU0eSPczy3HqyOvmh8
+	Kz0NGRhkbcrnJ+CqrCyKJElyGi4qyYgg44NfuV8cXE71YZVjzJhm6oFh3prtBOMMiZ+0hh
+	lpuj081s4lyH4ltGwMkuYbw3PUKbn/VMWDz1Fj5Af/EIO6+U4JK9EjCSiKC5w1g1thyLYx
+	hVUxcwAE40746CApF8PQJMqAltkAKQrq5/MLhG+UVh346ewt0LctBBlvjg/LAaTVZXKuLf
+	w6Msc/qlypQB2O8GiGBHyWET3KnG1/ddaS4fJMKbl0kQr/QQ5QqYY6P9wDRPPQ==
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-9 
-MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 22 May 2026 16:42:33 +0200
+Message-Id: <DIPA9GR9CJJ9.C4CB3DR9RSC9@bootlin.com>
+Subject: Re: [docs] [PATCH] bsp-guide: simplify example of structure of BSP
+ layer
+From: "Antonin Godard" <antonin.godard@bootlin.com>
+To: "Robert P. J. Day" <rpjday@crashcourse.ca>, "YP docs mailing list"
+ <docs@lists.yoctoproject.org>
+References: <ea426fa3-2f18-891b-4e9d-c85ff1f0bcd3@crashcourse.ca>
+In-Reply-To: <ea426fa3-2f18-891b-4e9d-c85ff1f0bcd3@crashcourse.ca>
+X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 21 May 2026 15:39:17 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9521
+ <docs@lists.yoctoproject.org>; Fri, 22 May 2026 14:42:41 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9522
 
-On Thu, 2026-05-21 at 08:35 -0700, Robert P. J. Day via lists.yoctoproject.=
-org wrote:
->=20
-> Since the standard for BSP layers appears to be top-level "README.md"
-> files rather than just "README" (and since some of the links are
-> actually misnamed because of this), do a global replacement throughout
-> the guide.
->=20
+Hi,
+
+On Thu May 21, 2026 at 1:50 PM CEST, Robert P. J. Day wrote:
+>
+> Rather than introduce a generic example of a BSP layer and follow that
+> with a link to meta-yocto-bsp, eliminate the middleman and just show a
+> clear hierarchical view of the meta-yocto-bsp layer where readers can
+> immediately see the point being made.
+>
 > Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+>
+> ---
+>
+> diff --git a/documentation/bsp-guide/bsp.rst b/documentation/bsp-guide/bs=
+p.rst
+> index a3b57d29f..1ae9d3353 100644
+> --- a/documentation/bsp-guide/bsp.rst
+> +++ b/documentation/bsp-guide/bsp.rst
+> @@ -1222,22 +1222,28 @@ Project Development Tasks Manual.
+>  BSP Machine Configuration Example
+>  ---------------------------------
+>
+> -As mentioned earlier in this section, the existence of a machine
+> +As mentioned earlier in this section, the existence of at least one mach=
+ine
+>  configuration file is what makes a layer a BSP layer as compared to a
+>  general or kernel layer.
+>
+> -There are one or more machine configuration files in the
+> -``bsp_layer/conf/machine/`` directory of the layer::
+> -
+> -   bsp_layer/conf/machine/machine1\.conf
+> -   bsp_layer/conf/machine/machine2\.conf
+> -   bsp_layer/conf/machine/machine3\.conf
+> -   ... more ...
+> -
+> -For example, the machine configuration file for the `BeagleBone and
+> -BeagleBone Black development boards <https://beagleboard.org/bone>`__ is
+> -located in :yocto_git:`/meta-yocto/tree/meta-yocto-bsp/conf/machine/beag=
+lebone-yocto.conf
+> -</meta-yocto/tree/meta-yocto-bsp/conf/machine/beaglebone-yocto.conf>`.
+> +As an actual example, consider the relevant content from the
+> +:yocto_git:`/meta-yocto/tree/meta-yocto-bsp/conf/
+> +</meta-yocto/tree/meta-yocto-bsp/conf/>` directory of the
+> +``meta-yocto-bsp`` BSP layer::
+> +
 
-I'm not convinced about this. We recommend there is a README, we don't
-prescribe a format for it...
+You could use '.. code-block:: console' here (without the :: above).
 
-Cheers,
+> +   $ tree -F conf
+> +   conf/
+> +   =E2=94=9C=E2=94=80=E2=94=80 layer.conf
+> +   =E2=94=94=E2=94=80=E2=94=80 machine/
+> +       =E2=94=9C=E2=94=80=E2=94=80 beaglebone-yocto.conf
+> +       =E2=94=9C=E2=94=80=E2=94=80 genericarm64.conf
+> +       =E2=94=9C=E2=94=80=E2=94=80 genericx86-64.conf
+> +       =E2=94=9C=E2=94=80=E2=94=80 genericx86.conf
+> +       =E2=94=94=E2=94=80=E2=94=80 include/
+> +           =E2=94=94=E2=94=80=E2=94=80 genericx86-common.inc
+> +
+> +showing four machine configuration files along with a lower-level
+> +tuning configuration file.
+>
+>  The variables used to configure the machine define machine-specific prop=
+erties; for
+>  example, machine-dependent packages, machine tunings, the type of kernel
 
-Richard
+
+Antonin
 
