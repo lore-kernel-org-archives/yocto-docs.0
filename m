@@ -1,122 +1,109 @@
-Return-Path: <rpjday@crashcourse.ca>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B1E9ECD5BB0
-	for <webhook@archiver.kernel.org>; Fri, 22 May 2026 17:15:05 +0000 (UTC)
-Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.21770.1779470099237468673
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9A07FCD5BCF
+	for <webhook@archiver.kernel.org>; Tue, 26 May 2026 07:48:11 +0000 (UTC)
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.32358.1779781687666134310
  for <docs@lists.yoctoproject.org>;
- Fri, 22 May 2026 10:14:59 -0700
+ Tue, 26 May 2026 00:48:09 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=JUuDTIQU;
- spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
-	To:From:Date:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Ymp9FxX3+GfL1ubVTNmOyDqUVuIyxZMEBIADayeTs58=; b=JUuDTIQU/7mekFdnQr+Iou/IDk
-	SXhXO5EyZM0LI9KUR+EwQUkJ/mSyAMopSiDxerD7D6myFk/959hA/m6D4Hwki74MppfseKWmPAxxD
-	BtGbbyYn8vTOD5G5duppHnlr7yjTUQp0s0tnuSlUzNaRLli8ibdek9YBiVe+gzMDkbj8TE0BdSLWK
-	XFRuIHc2s+FVl6vflH+7vdqePbR/fhQoZkh7qt/roK0rsouOQnBJf8+SI6skqq3dGwaUw3BS00rSP
-	r1gsMiUUCD8dr/UHMvnlRNJ666b0l0Rg8KuGOMD19KORaiIQ1S6Adztv11tOCMa6owi+6CHjqDZcg
-	DzrN9KBQ==;
-Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:47370 helo=rday)
-	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.2)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1wQTSX-00000005uJv-0PQh
-	for docs@lists.yoctoproject.org;
-	Fri, 22 May 2026 13:14:57 -0400
-Date: Fri, 22 May 2026 13:18:18 -0400 (EDT)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: [PATCH v2] bsp-guide: simplify example of structure of BSP layer
-Message-ID: <6e1fcbc9-6a7a-9f72-6a91-74fc46cb44b3@crashcourse.ca>
-MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323329-1562852446-1779470308=:254343"
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=CKhu/RGi;
+ spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id B37CAC79AB2;
+	Tue, 26 May 2026 07:48:04 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 740A660732;
+	Tue, 26 May 2026 07:48:05 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 86860108883D0;
+	Tue, 26 May 2026 09:48:03 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1779781684; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=D1rN3CfliSBCO1H9/qO1COLn+52dGD/ksonKTOv/kcU=;
+	b=CKhu/RGi2m4rXcHQsU3K6xNUnccGy917ED8J5NqBXHdppthVgNRYffE4hOIuS7yt6yOrF9
+	YmnkfF/5IkSgB4uAAOtMpvMk0yEVcUg+U+Ny9Hb1XWpy5s/hDnyl6TbQsH+625bLpMZ9VG
+	BvlVi/bYOSPpdD4MNhfsgQThQ5hwvbnY0Qko6Dt57EsuO41WP5VPZ7xre8FIRzDtVWBHlH
+	Qk2ZnO61KitawxS5kjozP3tJs+XtxEJQi3tsMC4s14jIPI1No7l07Qfwe2qWn0DfAb4zLl
+	c0NxF7Ed1qGRW9YizCzxSWk8a/Ay4X0wKkVzK4BBmZfHaJsQcQFoXVCs4dfcIg==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 26 May 2026 09:48:02 +0200
+Message-Id: <DISFY9Q6CGSZ.TT46F4NAJSFC@bootlin.com>
+From: "Antonin Godard" <antonin.godard@bootlin.com>
+To: <quentin.schulz@cherry.de>, "Robert P. J. Day" <rpjday@crashcourse.ca>
+Subject: Re: [docs] [PATCH] ref-manual: clarify that PACKAGE_EXCLUDE
+ supports DEB packaging
+Cc: "YP docs mailing list" <docs@lists.yoctoproject.org>
+References: <cb7c2ab0-bf11-5fa5-5730-2776d56dad0d@crashcourse.ca>
+ <005af954-7f10-4b76-9257-d86b25713d32@cherry.de>
+ <3ef2473d-af97-e952-6279-45e8438a7380@crashcourse.ca>
+ <36d0ec5d-8965-44fd-8886-ac3a014d6fab@cherry.de>
+In-Reply-To: <36d0ec5d-8965-44fd-8886-ac3a014d6fab@cherry.de>
+X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 22 May 2026 17:15:05 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9534
+ <docs@lists.yoctoproject.org>; Tue, 26 May 2026 07:48:11 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9535
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Hi,
 
---8323329-1562852446-1779470308=:254343
-Content-Type: text/plain; charset=KOI8-R
-Content-Transfer-Encoding: 8BIT
+On Fri May 22, 2026 at 6:23 PM CEST, Quentin Schulz via lists.yoctoproject.=
+org wrote:
+> On 5/22/26 6:26 PM, Robert P. J. Day wrote:
+>> On Fri, 22 May 2026, Quentin Schulz wrote:
+>>=20
+>>> Hi Robert,
+>>>
+>>> On 5/22/26 6:15 PM, Robert P. J. Day via lists.yoctoproject.org wrote:
+>>>>
+>>>> As an accompaniment to earlier commit
+>>>> 0d05dedd62a6d4c726f120a23654ede1f0b23d8e, correct that the
+>>>> PACKAGE_EXCLUDE supports the DEB packaging backend.
+>>>>
+>>>> Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+>>>>
+>>>> ---
+>>>>
+>>>> diff --git a/documentation/ref-manual/variables.rst
+>>>> b/documentation/ref-manual/variables.rst
+>>>> index c65794229..2773e9864 100644
+>>>> --- a/documentation/ref-manual/variables.rst
+>>>> +++ b/documentation/ref-manual/variables.rst
+>>>> @@ -6927,8 +6927,8 @@ system and gives an overview of their function a=
+nd
+>>>> contents.
+>>>>          an iterative development process to remove specific component=
+s from
+>>>> a
+>>>>          system.
+>>>>
+>>>> -      This variable is supported only when using the IPK and RPM
+>>>> -      packaging backends. DEB is not supported.
+>>>> +      This variable is supported by all of the RPM, DEB and IPK
+>>>> +      packaging backends.
+>>>>
+>>>
+>>> Considering those are all the backends we support, can't we simply remo=
+ve the
+>>> paragraph entirely?
+>>=20
+>>    i mentally flipped a coin and thought about people who might have
+>> remembered the earlier situation, but i'm happy to toss that last line
+>> entirely.
+>>=20
+>
+> Fine either way, let's see what Antonin prefers :)
 
+Considering both options, I think they are for the most part equal, except =
+that
+someone who did know about the limitation before will now have a clear sent=
+ence
+that clarifies this point now. So let's keep it, I'm taking the patch :)
 
-Rather than introduce a generic example of a BSP layer and follow that
-with a link to meta-yocto-bsp, eliminate the middleman and just show a
-clear hierarchical view of the meta-yocto-bsp layer where readers can
-immediately see the point being made.
-
-Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
-
----
-
-diff --git a/documentation/bsp-guide/bsp.rst b/documentation/bsp-guide/bsp.rst
-index a3b57d29f..28fd9169d 100644
---- a/documentation/bsp-guide/bsp.rst
-+++ b/documentation/bsp-guide/bsp.rst
-@@ -1222,22 +1222,30 @@ Project Development Tasks Manual.
- BSP Machine Configuration Example
- ---------------------------------
-
--As mentioned earlier in this section, the existence of a machine
-+As mentioned earlier in this section, the existence of at least one machine
- configuration file is what makes a layer a BSP layer as compared to a
- general or kernel layer.
-
--There are one or more machine configuration files in the
--``bsp_layer/conf/machine/`` directory of the layer::
--
--   bsp_layer/conf/machine/machine1\.conf
--   bsp_layer/conf/machine/machine2\.conf
--   bsp_layer/conf/machine/machine3\.conf
--   ... more ...
--
--For example, the machine configuration file for the `BeagleBone and
--BeagleBone Black development boards <https://beagleboard.org/bone>`__ is
--located in :yocto_git:`/meta-yocto/tree/meta-yocto-bsp/conf/machine/beaglebone-yocto.conf
--</meta-yocto/tree/meta-yocto-bsp/conf/machine/beaglebone-yocto.conf>`.
-+As an actual example, consider the relevant content from the
-+:yocto_git:`/meta-yocto/tree/meta-yocto-bsp/conf/
-+</meta-yocto/tree/meta-yocto-bsp/conf/>` directory of the
-+``meta-yocto-bsp`` BSP layer:
-+
-+.. code-block:: console
-+
-+   $ tree -F conf
-+   conf/
-+   ��� layer.conf
-+   ��� machine/
-+       ��� beaglebone-yocto.conf
-+       ��� genericarm64.conf
-+       ��� genericx86-64.conf
-+       ��� genericx86.conf
-+       ��� include/
-+           ��� genericx86-common.inc
-+
-+showing four machine configuration files along with a lower-level
-+tuning configuration file.
-
- The variables used to configure the machine define machine-specific properties; for
- example, machine-dependent packages, machine tunings, the type of kernel
---8323329-1562852446-1779470308=:254343--
+Antonin
 
