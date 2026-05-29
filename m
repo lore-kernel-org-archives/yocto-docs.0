@@ -2,81 +2,82 @@ Return-Path: <alex.kanavin@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7C876CD4F54
-	for <webhook@archiver.kernel.org>; Fri, 29 May 2026 16:47:50 +0000 (UTC)
-Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.14868.1780073265198785953
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 602E3CD6E4A
+	for <webhook@archiver.kernel.org>; Fri, 29 May 2026 17:01:43 +0000 (UTC)
+Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.58.1780074094784103695
  for <docs@lists.yoctoproject.org>;
- Fri, 29 May 2026 09:47:45 -0700
+ Fri, 29 May 2026 10:01:34 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20251104 header.b=YMcms7pT;
- spf=pass (domain: gmail.com, ip: 209.85.219.42, mailfrom: alex.kanavin@gmail.com)
-Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-8ccdef9f3d4so14294856d6.2
-        for <docs@lists.yoctoproject.org>; Fri, 29 May 2026 09:47:45 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780073264; cv=none;
+ dkim=pass header.i=@gmail.com header.s=20251104 header.b=Z4nNxaly;
+ spf=pass (domain: gmail.com, ip: 74.125.82.44, mailfrom: alex.kanavin@gmail.com)
+Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-13643f6d1a9so5040233c88.0
+        for <docs@lists.yoctoproject.org>; Fri, 29 May 2026 10:01:34 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780074094; cv=none;
         d=google.com; s=arc-20240605;
-        b=YMuYkIyJ7IYAXboheeuKKyKp8bKKfbRVF+dRTQB7zzYe0L6Kgj59uIMxnkGy7fnC8y
-         l0SnFJhAB0l9GK2r8BQpaxlartEiQHQ8b43wHuoDMZ41TztgN7AqYOho7ya0MtbhoHXt
-         GlGWC9z25Vco73ORjr/a5C+o6FL2CxErEG7N702qMBB+AhvgXUWOs/pExXmG2oDg3R9e
-         uFdm1cr1h2AQSJMWcmV37rCkiBFn2Lm3xZMsdYN4CRVY7ATNUNjO64rq+XpNAZD7PMGs
-         2fxQDV2gyFe8sgxLPwSE1chhSGe6hc9cYJ9PztvHVf9l/p8jb4enRouGi3Ho5fURKHM6
-         HdSw==
+        b=Fye9snLj4Sevf9NeX+uNmWj/u8+v/UUEf0LgNb+eilMx5T34KqSBt+OOzoADSE4Ovb
+         2H+0S308TN2TAVIYz60G4fUx+bbPnwIHmTtehLw7pYFqLDxRoYQ+Diq53ItKe88++Niu
+         5YMabhkoO4dV0PMxPfAsf7hHC817zrR9APlUr69vJWNipEcXSjgEkKl1tZAsp6hVDRQI
+         snD8GtVdLaQAYvuhNrcYpe/dSG7HAHJmJz+Cta5ZRYxI/jAi/M37N0MugPLK9qphVpG9
+         N1pHztfbmmbG+E0wZ4+47OYqaPTxxdJhVLC23GXxFG8CdzGocI0K40syjXRtJloDNfsI
+         S0XA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:dkim-signature;
-        bh=eApA8ktP8anQfJIejoe1t8pcSSzuSYWCD0i2fB7lDS8=;
-        fh=uH0syK/O6p96KHdLauSqg5RUPoH97TC6HSUdNQMG4hs=;
-        b=TEv80a2kuSaopCCjxWnxMYpQ+vOlvQnDQ7mOR9pSr72BI6s7qD/zjC0BTU+iIMsMKd
-         qzgBavcPAbkYJmiQTPNhxMGPhrTNslNetybj5ybybzPHuvHOtaTx+BJ8BbRCpD6FYNAC
-         A3K/p8c+qHsJgN4ZCZGZcJjaoUCarFemk5alHKPrO0U4tMZSKlHN5pFDQy0gvQLnSUGp
-         hIGSb9VRFLSaQ0OJ+v+vRI88Mgal1BoUA5kCfwUBRTXwCnpt1vSEH0uuepYRVWqQG5rm
-         L3kkRcD0uH+m3yeKXAG2JMMelU5rL5sNTtSdsShj9pFIQ1lk3RYYjEE2MCe+FajaEJ9Z
-         QVNQ==;
+        bh=Jo9vdvnpP/dC2LtU7WORLK5XbIFaK1m3SK7VhetHHiU=;
+        fh=fkwYVRm+nfqGUJzMaAXAuxy1kLEEnAaXOeZRsofUhXc=;
+        b=G0f3CxoImi7a+gvAxchwZGu0NFdMZae107Vn3uBU5sm7r3bXOnsui03TklLBVloExp
+         Yh047Hve9lTPwOBYznn4/ksCuf0DxvvyqWj4rLIH9enjIsCdTom4kxLurU0BNnh+0USD
+         XAfh5nSn6DSaDKR0XnX7JZOJfiBmTB+QzqqKBWTR3szrecd3x5fqWNs3sxRu7j/0BpES
+         AyEGPXlZlXeF3zAjUpyGkrzn2Gywlytummr8wLGC5XJjrZLka043st2zFfpWf+ujXgOS
+         AuGoSS3bv7A1+pt8c3H2IJ9ws1uAh9fmzFkkZEsplwqJByCZoSwTb6OX8cvvkj4baRX3
+         LfSg==;
         darn=lists.yoctoproject.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780073264; x=1780678064; darn=lists.yoctoproject.org;
+        d=gmail.com; s=20251104; t=1780074094; x=1780678894; darn=lists.yoctoproject.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=eApA8ktP8anQfJIejoe1t8pcSSzuSYWCD0i2fB7lDS8=;
-        b=YMcms7pTYLJCfmc0VzBabrF7OFYQjraihBXXbMAfsQjSoOc1swyh4KeoOHK7AmiuR6
-         xOyvK0izTd0+05CyFOKc8ZJCLb8XWLuidNbpBAWJs2dIn35nAajL6GpdHquYjMrGJaG1
-         oUn/LkesIPoneqbdgAwxFOwDugDhTBchX4uzh34GB2VQZsA9W+VGPtazoibYEsnvZLUA
-         n8YDU5p6UQwO1Fk1U7A5pZ0QFx/sAFfjccgia9IsN4Inx1HtXiy19FBVYhfuiMk5CpWw
-         X9mY2B5r/BU4/KrgxogwhxEXIEJF8LFQKKaL/AiqOk0z4QLnI3B3+Z2YAr2NoDS4iDz+
-         lVVw==
+        bh=Jo9vdvnpP/dC2LtU7WORLK5XbIFaK1m3SK7VhetHHiU=;
+        b=Z4nNxaly4YJ3AyFPNxHc8ua2lagtv6SQJI/HVQX0GH0y+rbcCmVyXSXsSBp+EhDewo
+         H8oWYmubHNT49Zq6EKeSSIWM6wd6Ah+kZ0nRryUjBNO7XmYJGQ3iDY6Y0csCHPfoTSUx
+         EAUdT/ks+fmEnnFr86vKMpjYyUbQ3WAzzDS7eboUBc16NFSQRZYJxzFNMip0N1I32Lmx
+         tvbULIkpn1AcKdDQyvYVxhM/0DLPc8gh64TXqNdNzry3rIf8bx8gr7ewgGOE+E4bXm6x
+         a5d8r3INoIQWFWXYAQ94IJkIRZv1r/PGMPNtno2PWLn2TXrkxvc1FU7r41RMxK+TZxI4
+         25EQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780073264; x=1780678064;
+        d=1e100.net; s=20251104; t=1780074094; x=1780678894;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=eApA8ktP8anQfJIejoe1t8pcSSzuSYWCD0i2fB7lDS8=;
-        b=Tk/77sEXAYZshwR3nRlMGqGAvaSZqPRXXzqKmXXAaoSljCaVAf7MYi+2MC9XO1lJan
-         tDaeBMfXmP4LrYDjYkoCx2G9nelEiPKwF9dZndVrKfXHzjycUwrUOdrZXYGAiCn8AoaW
-         46jbbhxBbpFhP2M99SnjDSvMsUjXGDEZ6+pVp+eUCHqU3cqmznJCOcDSfw0ORv7OtxYk
-         i5FlAGBPNzC/dXOFjbaa9mXKrixGnxdtk2vWts43NQzczzw9m6O7V1tvweboa2flF3iv
-         sa8ul33NJLF4Vz/87JZF+Wi3CXP4sSi0sUosZnFuxzwJTJD5SmHKKVycPGL1mPcThfl4
-         ODMA==
-X-Forwarded-Encrypted: i=1; AFNElJ+QHvkOiIH1dLorvIAu5OVn6Tkou7zpvmaIFEiV7ZjYXgfIdkVvSt+L2rGiwQqASz1XJmEq@lists.yoctoproject.org
-X-Gm-Message-State: AOJu0YypEu80ZJizFvhSRDdkdVtYwI7Jf75hiIQM24pJ0ZQgju08BbW3
-	xQhwCpV5kxDwJh2ZlhtTQ4wTXAPaotvhIxBFfUnvkz4Qjic1NdcqLVy/62LxF4aIcztJdbTqrC/
-	U0nBLc0Q7kcLLh2JFNtGJ25JnqD/hopM=
-X-Gm-Gg: Acq92OGxW/5IKR/PPV8iqmS+uS8p3vk6OoxkJ9AXf9hS1/dAOp33YU42evxzZWWewVU
-	Sgs1zwga68M1rE0HUUCh+waErzKSxAak0ztgxKloTT2AYprPM5GuDhacHWUtdN+Ci+AjQRqPuLi
-	XHYL1ZxVOVNhFoqQ6c31aFX1Ii3s7rPEbk14YlRIIG5aZAZ87yHgqFF3gIKlhCcDeBBNiMyl+vu
-	4KXyiS4ufPOhdWCj/lwmFQq4Bm0C6+QG23DYnbUJc3U3MWZyKvhU+Jrl8o7ak/71+C2i7WLt/q5
-	nfwtB1RoXjW8OECU+iWYMVLoxxBWywKzPJcHWs4eZP4lU+Kk2zP1
-X-Received: by 2002:a05:6214:1c87:b0:8ca:f1c:6493 with SMTP id
- 6a1803df08f44-8ccefd32d20mr8318366d6.1.1780073264262; Fri, 29 May 2026
- 09:47:44 -0700 (PDT)
+        bh=Jo9vdvnpP/dC2LtU7WORLK5XbIFaK1m3SK7VhetHHiU=;
+        b=K3ryTakFpD+22YVCxGzff1oQgp3NOPs9why+8muaaPKKgLIysj+ebuuqQBfAE/LCOi
+         TCt46SP5PfhLjomEyCNey31PZcBV/psuiKJo6hoKExoZfsj6DdOFS+RtfESC1PAgHeFP
+         asKYxHFnfzCPO/lpHIwGPY9zyvzBjYo2c1iTpHPYoBLanssK4s19fQ5HUA5JO4U7f57M
+         uiAO+SuANUOEuZmaQeFnuCHOeRN1G3AA0in+N0ESdw1v61yx+bl6RXT+Upwz091ZdCAz
+         EMZRxMp8BONWcTfUipn4AlYbLNgFH8wct7x8auc+I5ku/YFutr4gXxnDIqYC1lby0FVv
+         XOTg==
+X-Forwarded-Encrypted: i=1; AFNElJ8l6YSIwtUXCs8hX3THJsSh8w6UEPe2ctYGfjEW9e3iP/zeCFcZEfoJlhGL5xKLzdbNZNxW@lists.yoctoproject.org
+X-Gm-Message-State: AOJu0YyGCS9ASQ9kJkFJE8VVBhV1LqxNXMnBAu8oHVuyzlE/jkmp/1TH
+	krzp6oiXyG2zR8eiK9toZPGxHPVVmy+5ml/FmENwUgH4b7wg6d7nv+hAedFVMKFOQGNiVUwPuA4
+	aClQqIJlUB1PVGUePPYehoVlkDLw30oc=
+X-Gm-Gg: Acq92OGLZmgLPo+wC8gww2tt0fyt2xSWQFOmGVUYkX4dfbrBiEiYXXcWegfd++f9wtJ
+	Teiru2DqSI7HRe6m7QFoaPw9lWksm2G3MjcfUV3irbgw37LtKfOfoTTKe6sNPYn2U3SDVYH9ZIY
+	6eTrSOpcA+w54vxhDAl7HzCYCMesn51ESCP+CKOO4aTu4W8Z2azg4IsotDCIN9G/ufZNTby6jo8
+	zLF3dMnPFuR2I01O0l3sP/xFepFmRtiUQ+WyOjYDBhQqyjjmJfwJhlfOMUQSa0irSzLXDiKSWGB
+	CH1H3iukYnrZg3Mi85P825jmKGgtrHL0aa9/GfvlkTXq7E1RB+9M
+X-Received: by 2002:a05:7022:ff48:b0:133:598c:2b1a with SMTP id
+ a92af1059eb24-137d426f3famr212829c88.41.1780074093743; Fri, 29 May 2026
+ 10:01:33 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260529-bb-setup-notes-v1-0-a251ef1c5af4@toradex.com> <20260529-bb-setup-notes-v1-1-a251ef1c5af4@toradex.com>
-In-Reply-To: <20260529-bb-setup-notes-v1-1-a251ef1c5af4@toradex.com>
+References: <20260529-bb-setup-notes-v1-0-a251ef1c5af4@toradex.com> <20260529-bb-setup-notes-v1-2-a251ef1c5af4@toradex.com>
+In-Reply-To: <20260529-bb-setup-notes-v1-2-a251ef1c5af4@toradex.com>
 From: Alexander Kanavin <alex.kanavin@gmail.com>
-Date: Fri, 29 May 2026 18:47:32 +0200
-X-Gm-Features: AVHnY4LWoueJhm-_3wjMR7i3P19m6ybZd1AD6XVcaksMtnv2Jzcl58cu7jf5uus
-Message-ID: <CANNYZj9dR3cdss0_6BZ7QatGQYBvF9phtnu8bX5S1x-mqHUUJA@mail.gmail.com>
-Subject: Re: [bitbake-devel] [PATCH 1/2] bitbake-setup: clarify configuration merging
+Date: Fri, 29 May 2026 19:01:21 +0200
+X-Gm-Features: AVHnY4ILiECcTnvB-HaNUYuUJZFCgqQNn3ALsabik8uW5nduK3ob7MHSFPt5QB0
+Message-ID: <CANNYZj-4zkd76D8YvMvfYTZQM7UgnrhPfrtVQ1cDSGasTZQzAQ@mail.gmail.com>
+Subject: Re: [bitbake-devel] [PATCH 2/2] bitbake-setup: write notes for
+ generated build configs
 To: ernestvanhoecke@gmail.com
 Cc: bitbake-devel@lists.openembedded.org, 
 	Alexander Kanavin <alex@linutronix.de>, docs@lists.yoctoproject.org, 
@@ -85,10 +86,10 @@ Content-Type: text/plain; charset="UTF-8"
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 29 May 2026 16:47:50 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9544
+ <docs@lists.yoctoproject.org>; Fri, 29 May 2026 17:01:43 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9545
 
-Thanks, this lgtm!
+Thanks, this lgtm too.
 
 Alex
 
@@ -98,36 +99,88 @@ lists.openembedded.org
 >
 > From: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
 >
-> When nested configurations are used and the same key is present in both
-> configs being merged, the Python "+" behaviour is used. This leads to
-> lists being appended and strings being concatenated. The first is an
-> intuitive behaviour when specifying a tree of configs, the latter might
-> not be.
+> For bb-layers configurations, bitbake-setup currently writes an empty
+> "conf-notes.txt". Configurations using "oe-template" get this file from
+> the template.
 >
-> Clarify the configuration merging behaviour explicitly in the docs.
+> Add an optional field called "notes" to configurations that populates
+> this field when "bb-layers" is used instead of "oe-template".
 >
 > Signed-off-by: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
 > ---
->  doc/bitbake-user-manual/bitbake-user-manual-environment-setup.rst | 6 ++++++
->  1 file changed, 6 insertions(+)
+>  bin/bitbake-setup                                                 | 3 ++-
+>  doc/bitbake-user-manual/bitbake-user-manual-environment-setup.rst | 5 +++++
+>  lib/bb/tests/setup.py                                             | 4 ++++
+>  setup-schema/bitbake-setup.schema.json                            | 4 ++++
+>  4 files changed, 15 insertions(+), 1 deletion(-)
 >
+> diff --git a/bin/bitbake-setup b/bin/bitbake-setup
+> index 220540f7f9ca..e22e5b77bde1 100755
+> --- a/bin/bitbake-setup
+> +++ b/bin/bitbake-setup
+> @@ -301,7 +301,8 @@ def setup_bitbake_build(bitbake_config, layerdir, setupdir, thisdir, update_bb_c
+>              f.write(bitbake_config["description"] + "\n")
+>
+>          with open(os.path.join(build_conf_dir, "conf-notes.txt"), 'w') as f:
+> -            f.write("")
+> +            notes = bitbake_config.get("notes")
+> +            f.write(notes + "\n" if notes else "")
+>
+>      def _make_init_build_env(builddir, oeinitbuildenvdir):
+>          builddir = os.path.realpath(builddir)
 > diff --git a/doc/bitbake-user-manual/bitbake-user-manual-environment-setup.rst b/doc/bitbake-user-manual/bitbake-user-manual-environment-setup.rst
-> index 77fc4c3dcba0..1252f22c823a 100644
+> index 1252f22c823a..e99cf7b3415d 100644
 > --- a/doc/bitbake-user-manual/bitbake-user-manual-environment-setup.rst
 > +++ b/doc/bitbake-user-manual/bitbake-user-manual-environment-setup.rst
-> @@ -1068,6 +1068,12 @@ They contain the following sections:
->        configuration choices by putting together information from a leaf
->        configuration and all of its ancestors.
+> @@ -1057,6 +1057,11 @@ They contain the following sections:
+>        snippet. This is what is prompted during the
+>        :ref:`ref-bbsetup-command-init` command execution.
 >
-> +      When the same keyword is present in a nested configuration and in one of
-> +      its ancestors, the values are merged with Python ``+`` semantics. For
-> +      example, lists are appended and strings are concatenated directly. String
-> +      values such as ``description`` should include any needed separators in
-> +      the configuration data.
+> +   -  ``notes`` (*optional*): additional information written to
+> +      ``build/conf/conf-notes.txt`` when ``bitbake-setup`` generates the build
+> +      configuration from ``bb-layers``. For ``oe-template`` configurations,
+> +      this file is provided by the template.
 > +
->     -  ``bb-env-passthrough-additions`` (*optional*): List of environment
->        variables to include in :term:`BB_ENV_PASSTHROUGH_ADDITIONS`.
->
+>     -  ``configurations``: Configurations can recursively contain as many nested
+>        configurations as needed. This will create more choices when running the
+>        :ref:`ref-bbsetup-command-init` command.
+> diff --git a/lib/bb/tests/setup.py b/lib/bb/tests/setup.py
+> index 638d56d3bb32..ffe390db1bda 100644
+> --- a/lib/bb/tests/setup.py
+> +++ b/lib/bb/tests/setup.py
+> @@ -136,6 +136,7 @@ print("BBPATH is {{}}".format(os.environ["BBPATH"]))
+>              {
+>                  "name": "gadget-notemplate",
+>                  "description": "Gadget notemplate configuration",
+> +                "notes": "Gadget notemplate notes",
+>                  "bb-layers": ["layerA","layerB/meta-layer"],
+>                  "oe-fragments": ["test-fragment-1"]
+>              },
+> @@ -249,6 +250,9 @@ print("BBPATH is {{}}".format(os.environ["BBPATH"]))
+>          else:
+>              with open(os.path.join(bb_conf_path, 'conf-summary.txt')) as f:
+>                  self.assertIn(bitbake_config["description"], f.read())
+> +            with open(os.path.join(bb_conf_path, 'conf-notes.txt')) as f:
+> +                expected_notes = bitbake_config.get("notes")
+> +                self.assertEqual(f.read(), expected_notes + "\n" if expected_notes else "")
+>              with open(os.path.join(bb_conf_path, 'bblayers.conf')) as f:
+>                  bblayers = f.read()
+>                  for l in bitbake_config["bb-layers"]:
+> diff --git a/setup-schema/bitbake-setup.schema.json b/setup-schema/bitbake-setup.schema.json
+> index be8772db1b2d..6a39e66a0ae4 100644
+> --- a/setup-schema/bitbake-setup.schema.json
+> +++ b/setup-schema/bitbake-setup.schema.json
+> @@ -41,6 +41,10 @@
+>                                  "type": "string",
+>                                  "description": "Human-readable description of the configuration"
+>                              },
+> +                            "notes": {
+> +                                "type": "string",
+> +                                "description": "Extra notes that populate conf-notes.txt when bb-layers is used"
+> +                            },
+>                              "bb-layers": {
+>                                  "type": "array",
+>                                  "description": "List of BitBake layer paths to include, relative to the layers download directory",
 >
 > --
 > 2.43.0
@@ -135,8 +188,8 @@ lists.openembedded.org
 >
 > -=-=-=-=-=-=-=-=-=-=-=-
 > Links: You receive all messages sent to this group.
-> View/Reply Online (#19564): https://lists.openembedded.org/g/bitbake-devel/message/19564
-> Mute This Topic: https://lists.openembedded.org/mt/119548245/1686489
+> View/Reply Online (#19565): https://lists.openembedded.org/g/bitbake-devel/message/19565
+> Mute This Topic: https://lists.openembedded.org/mt/119548246/1686489
 > Group Owner: bitbake-devel+owner@lists.openembedded.org
 > Unsubscribe: https://lists.openembedded.org/g/bitbake-devel/unsub [alex.kanavin@gmail.com]
 > -=-=-=-=-=-=-=-=-=-=-=-
