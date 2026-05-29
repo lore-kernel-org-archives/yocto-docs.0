@@ -1,86 +1,506 @@
-Return-Path: <rpjday@crashcourse.ca>
+Return-Path: <alex.kanavin@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A649BCD6E4A
-	for <webhook@archiver.kernel.org>; Fri, 29 May 2026 11:00:25 +0000 (UTC)
-Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.7765.1780052418860226488
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A3D9DCD4F54
+	for <webhook@archiver.kernel.org>; Fri, 29 May 2026 15:57:10 +0000 (UTC)
+Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.13869.1780070219940260702
  for <docs@lists.yoctoproject.org>;
- Fri, 29 May 2026 04:00:19 -0700
+ Fri, 29 May 2026 08:57:00 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=sZoziRrT;
- spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
-	To:From:Date:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=S6tcjIk7HOwgepMBGm+I6FVZl2yNSdpjRJJD0KlmrlA=; b=sZoziRrTwW647HEoMioNYxTj0P
-	T8h12XiZ2bLOYvb6cGlXO+77KRp0lAlhhg7PA1dskC06ZEUyuMH+w57bdXh/amp/u+qZWpP1sxov3
-	rZ0fmI6edzIFFDW/zuoIha5ib5e6zOMP32wjXum0Gynob9cgIXwax+xMNn10d4XTJomHMlil+Teqj
-	0rOtuM8FLYn9w4Nj3dkzRyPxc7c7IBuVgwEBaoIkyAWUE/gmaqdyChLSSP6wRTywn6HhffhLHnUYP
-	Eaixnl9uJwvd9eLT6Qx6yntdmwsgeVJSjwOJmqxyHaYewBG/Kvl46R/Oyd7Z8b5WbbJhXvBAt74LD
-	PRL71mdQ==;
-Received: from [147.129.179.166] (port=58184 helo=rday)
-	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.2)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1wSuwp-0000000DIQo-0jES
-	for docs@lists.yoctoproject.org;
-	Fri, 29 May 2026 07:00:16 -0400
-Date: Fri, 29 May 2026 07:04:03 -0400 (EDT)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: "FILES" glossary entry does not mention including "dirname/*"
-Message-ID: <b3fa7dbe-ace4-86ea-b747-fce12c32125c@crashcourse.ca>
+ dkim=pass header.i=@gmail.com header.s=20251104 header.b=WUDZLQ/p;
+ spf=pass (domain: gmail.com, ip: 209.85.219.49, mailfrom: alex.kanavin@gmail.com)
+Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-8cce77eb087so6970506d6.1
+        for <docs@lists.yoctoproject.org>; Fri, 29 May 2026 08:56:59 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780070219; cv=none;
+        d=google.com; s=arc-20240605;
+        b=QkKz7V0HdgKMVlT2VltxaJJc5t5qIBkWpcrFQIiGB3oR2Dx75aHbHWOoneBpBpnXlM
+         H958oB85qZpmPjgRTdVsiUFNCV0Vglq8OBv8D6ZgMcbD6qdnAPjOTJ2b8tEsZrTJgft2
+         vgrYQ7AZA3jvTymh4/PKcCYFYEtv+sAmpB3ICNao9bI8RWGXQNcPRSSn0jPTK2wpYJJ+
+         FCOdh0OJlIVeaBbrGfYKPa5pbc2KQSfHl0uyl+MO33AMBrLNy97Kpeliyjsi5gqSVdJ5
+         3RFlbaEAu6iYi851sqHUSMnSTC4xr5KV1/GkL4KS4bwCfV4fGROiwUt/48Zba2EKb7FE
+         JHwg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=VciANqPdpBByu2GnhECnwhC7rvOzhNhbRVS4dRNZO24=;
+        fh=7CvLUEp6nypU+attxRO1RlQYAjKKZbFbpiHbMfr0O+Y=;
+        b=c5gCm6gCJyKu/ccoy2jOOBoNnxIrg1ROpwNBZjQ4zszAvRmYcYHxasFXkKN7lY/OJO
+         6SdE47EXiSFeiV9QSmR8Cinkblt9WYRQ67qhA3Y7xIyKXOGmQb7bkyHO3dJKO0DIRRTt
+         NKGQYgppE1fBQVzkdibgDeRI2L5glgXYGOjEqTXiHsj79mqWKtOOBKgDt0R7l/cuuZz4
+         G8ArmmrXOZFRhJh/pKdxLX2jVik4/fRfMyIWnItWm1ldU46tQjW02zysHbRFsfLpoS3s
+         oTX6kw9W6lftVBWZ868GdngzgR9O5Elr6eYQcWnwkE79Kws4/8bHgklOQ8CeQT1h84yk
+         JZGg==;
+        darn=lists.yoctoproject.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780070219; x=1780675019; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VciANqPdpBByu2GnhECnwhC7rvOzhNhbRVS4dRNZO24=;
+        b=WUDZLQ/pdBUyHPPqqwQa1KEChXki1IKID7D8/M0iHFgR2LW8WUKO+lPM7qFQGg9KfF
+         MDnhLtVZMttBhiGoaP6FR7HrqiVmI18DBE8arrVlOHwQuGI+34DVE+btWfFTo7Hrh+2Q
+         htQrP+MH5gvHnRaDKP5ejyvIpRE/hviZeCYuFCoYji+eZRJd0hJq/a3ZEyJZNv7QABWR
+         9wBPS4IoiDXtugTrhxbl/b+NSIDLfyO9Dntjwb49a6Qx6iQvg2C3Pm2hMFO9qV6yakQJ
+         l1I45mcWKqkdK4JfSZv9vO4m/w1RkGlV6QZhwdpYk7RmWAEFpnHLgdHhZSRH7he0vpFU
+         cCeA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780070219; x=1780675019;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=VciANqPdpBByu2GnhECnwhC7rvOzhNhbRVS4dRNZO24=;
+        b=gfOLgwtQGq4LFShcSZwKDsT0Yk1MstjSEqZFk/GBMwioWiM2Jhz+cUqGFEfizQZ2yu
+         RpZUf8dhnn3FqRx2ppLuqiSydxqQuW+9tRRUBVObunk+95Y8NZDcHJV9E9bc2v/oN/NR
+         1sYO1iqN1caD3G2hxx1BYC3VcubuwkIRQsAwePcxaWdjj5gOeTAGMoKqbiicZZJuyLus
+         KTKfhrznAy/ohEHvZe7yYggx5DzsYcyjmqlAXrHjU/NBQ+N3bMizRJVxD/B1m5u2c3y2
+         OiZU0LzzICLADxqs7vaZFclIixRTJ/bR3Z8f1FS0Zl72ArS5971Z9coEACLrQckKkLk9
+         3OFw==
+X-Forwarded-Encrypted: i=1; AFNElJ/KEVTPc7ychGoh3yLiOQhq9ainZO8usE/ESi/oEFnRHLCQBg3YetPtHjBgA2NvVErELKFK@lists.yoctoproject.org
+X-Gm-Message-State: AOJu0YxutS9DWIAdf3xehbOkPjGSztXl8CqcCJCl39DB6/c2lGq/VOBA
+	HVTzAN0WM1WS+HTZvapIciVKBOp0q4sY017ymolilQezRWU5ydopRnbytVBqt/k5ulDVtmw3Lq0
+	MeSAJNtIiJIRms17skU9LdTe6mtXi5D4=
+X-Gm-Gg: Acq92OF5mspD5bOZ886ds6EuA6zOQqCWU9D2PWPrbenfVHWP0XL/L5pJOb4eqIRDr3V
+	Xmj80cpThz3w3D/mmjLsKarH6YJ578vOWos5FQl7dNuI1C9nfhuGCkEMtVzrxCwjNV8FpQiuK7H
+	uH04h4bBytxzQwUYzkF6WzhHK2NTn3y9lDGgqnPKpkAkeXs+s+kV3BVv5R2lKJ9SZ+yDPWiDqdx
+	zDhbOTgN4z16ZdvKYi4jeBxXngQMwnab7mk0YDbq9IpsGVRlwQ6C2jfek65Nhq1QcIsPcDdQaxT
+	3P4c2+wsCLo/iYK7R3pdlte7GKnPqEOwP2eWcRtL2c2TE+9TQxtwbGzTLNknnPw=
+X-Received: by 2002:ad4:4eec:0:b0:8ac:732b:6cf1 with SMTP id
+ 6a1803df08f44-8ccefd8d65bmr4402956d6.24.1780070218719; Fri, 29 May 2026
+ 08:56:58 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+References: <20260529-bb-setup-override-improvements-v1-0-91db62e0149e@toradex.com>
+ <20260529-bb-setup-override-improvements-v1-2-91db62e0149e@toradex.com>
+In-Reply-To: <20260529-bb-setup-override-improvements-v1-2-91db62e0149e@toradex.com>
+From: Alexander Kanavin <alex.kanavin@gmail.com>
+Date: Fri, 29 May 2026 17:56:46 +0200
+X-Gm-Features: AVHnY4KS1ejZanc4K37cD0dP9ujaws786C-bsjU5455aX7HXciwkoJ6pLf-sUNM
+Message-ID: <CANNYZj9FxhgKEfBu0M=1o7pc3RYZ67XdcpOyr5dEKTpmTAWYYg@mail.gmail.com>
+Subject: Re: [bitbake-devel] [PATCH 2/2] bitbake-setup: support default source overrides
+To: ernestvanhoecke@gmail.com
+Cc: bitbake-devel@lists.openembedded.org, 
+	Alexander Kanavin <alex@linutronix.de>, docs@lists.yoctoproject.org, 
+	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 29 May 2026 11:00:25 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9540
+ <docs@lists.yoctoproject.org>; Fri, 29 May 2026 15:57:10 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9541
+
+On Fri, 29 May 2026 at 16:52, Ernest Van Hoecke via
+lists.openembedded.org
+<ernestvanhoecke=3Dgmail.com@lists.openembedded.org> wrote:
+> Allow a BitBake configuration to list source override files to apply by
+> default when that configuration is selected. This allows specifying
+> source-overrides files (such as fixed revisions) that live in a remote
+> registry, which is not possible with the CLI argument
+> '--source-overrides'.
+
+I'm not sure I like the idea. One of the design goals was that a
+configuration file is self-contained, and adding references to other
+files greatly complicates the logic (e.g. I can't figure out from
+reading the changes if 'update' and 'status' operations will still
+work properly, probably they won't, as the tests don't check updates
+to the default overrides, or going from using default overrides to not
+using them), and decreases readability.
+
+Is the issue that you'd like to avoid having multiple files for tagged
+releases, with largely same configuration content, and different
+source revisions? I'd like to understand the use case first.
+
+Alex
 
 
-  explaining to a colleague how to properly define a package's
-"FILES:${PN}" value, and noticed that the explanation here:
 
-  https://docs.yoctoproject.org/ref-manual/variables.html#term-FILES
-
-has a subtle distinction from the default value in bitbake.conf. in
-the glossary, the sample setting:
-
-  FILES:${PN} += "${bindir}/mydir1 ${bindir}/mydir2/myfile"
-
-shows how to include an entire directory -- just list the directory
-name and the inclusion is recursive.
-
-  my colleague had initially used the notation "dirname/*", and i
-pointed out that the "*" wildcard was superfluous since, you know,
-recursive, but he showed me the sample he had used from bitbake.conf,
-which *does* include that wildcard:
-
-  FILES:${PN} = "${bindir}/* ${sbindir}/* ${libexecdir}/* ...
-
-i couldn't immediately explain why bitbake.conf used the wildcard, as
-the only difference i could imagine is that explicitly using the "*"
-wildcard would ignore hidden paths, but that seemed like a weak
-explanation.
-
-  is there some subtlety i'm missing?
-
-rday
-
+> Relative override paths resolve against the configuration file,
+> including files loaded from a fetched registry checkout. Default
+> overrides are applied before command-line source overrides.
+>
+> For "config-upstream", keep "source-overrides" as the persisted
+> command-line override data so existing setups retain their meaning.
+> Store loaded defaults in "default-source-overrides" and merge them only
+> when applying sources.
+>
+> Extend the setup selftest to cover a registry-provided default override
+> file.
+>
+> Signed-off-by: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+> ---
+>  bin/bitbake-setup                                  | 41 ++++++++++++++++=
+------
+>  .../bitbake-user-manual-environment-setup.rst      | 13 +++++++
+>  lib/bb/tests/setup.py                              | 33 ++++++++++++----=
+-
+>  setup-schema/bitbake-setup.schema.json             |  7 ++++
+>  4 files changed, 75 insertions(+), 19 deletions(-)
+>
+> diff --git a/bin/bitbake-setup b/bin/bitbake-setup
+> index 2e234cccaba9..e032e1cd3a1e 100755
+> --- a/bin/bitbake-setup
+> +++ b/bin/bitbake-setup
+> @@ -458,8 +458,13 @@ def merge_overrides_into_sources(sources, overrides)=
+:
+>              layers[k] =3D v
+>      return layers
+>
+> +def effective_source_overrides(config):
+> +    overrides =3D copy.deepcopy(config.get("default-source-overrides", {=
+'sources':{}}))
+> +    overrides["sources"].update(config["source-overrides"]["sources"])
+> +    return overrides
+> +
+>  def update_build(config, confdir, setupdir, layerdir, d, update_bb_conf=
+=3D"prompt", init_vscode=3DFalse, rebase_conflicts_strategy=3D'abort'):
+> -    layer_config =3D merge_overrides_into_sources(config["data"]["source=
+s"], config["source-overrides"]["sources"])
+> +    layer_config =3D merge_overrides_into_sources(config["data"]["source=
+s"], effective_source_overrides(config)["sources"])
+>      sources_fixed_revisions =3D checkout_layers(layer_config, confdir, l=
+ayerdir, d, rebase_conflicts_strategy=3Drebase_conflicts_strategy)
+>      bitbake_config =3D config["bitbake-config"]
+>      thisdir =3D os.path.dirname(config["path"]) if config["type"] =3D=3D=
+ 'local' else None
+> @@ -591,11 +596,13 @@ def choose_fragments(possibilities, parameters, non=
+_interactive, skip_selection)
+>      return choices
+>
+>  def obtain_config(top_dir, registry, args, source_overrides, d):
+> +    config_dir =3D None
+>      if args.config:
+>          config_id =3D args.config[0]
+>          config_parameters =3D args.config[1:]
+>          if os.path.exists(config_id):
+>              config_id =3D os.path.abspath(config_id)
+> +            config_dir =3D os.path.dirname(config_id)
+>              logger.info("Reading configuration from local file\n    {}".=
+format(config_id))
+>              upstream_config =3D {'type':'local',
+>                                 'path':config_id,
+> @@ -617,7 +624,9 @@ def obtain_config(top_dir, registry, args, source_ove=
+rrides, d):
+>              registry_configs =3D list_registry(registry_path, with_expir=
+ed=3DTrue)
+>              if config_id not in registry_configs:
+>                  raise Exception("Config {} not found in configuration re=
+gistry, re-run 'init' without parameters to choose from available configura=
+tions.".format(config_id))
+> -            upstream_config =3D {'type':'registry','registry':registry,'=
+name':config_id,'data':json.load(open(get_registry_config(registry_path,con=
+fig_id)))}
+> +            config_path =3D get_registry_config(registry_path,config_id)
+> +            config_dir =3D os.path.dirname(config_path)
+> +            upstream_config =3D {'type':'registry','registry':registry,'=
+name':config_id,'data':json.load(open(config_path))}
+>          expiry_date =3D upstream_config['data'].get("expires", None)
+>          if has_expired(expiry_date):
+>              logger.warning("This configuration is no longer supported af=
+ter {}. Please consider changing to a supported configuration.".format(expi=
+ry_date))
+> @@ -626,18 +635,26 @@ def obtain_config(top_dir, registry, args, source_o=
+verrides, d):
+>          registry_configs =3D list_registry(registry_path, with_expired=
+=3DTrue)
+>          config_id =3D choose_config(registry_configs, args.non_interacti=
+ve)
+>          config_parameters =3D []
+> -        upstream_config =3D {'type':'registry','registry':registry,'name=
+':config_id,'data':json.load(open(get_registry_config(registry_path,config_=
+id)))}
+> +        config_path =3D get_registry_config(registry_path,config_id)
+> +        config_dir =3D os.path.dirname(config_path)
+> +        upstream_config =3D {'type':'registry','registry':registry,'name=
+':config_id,'data':json.load(open(config_path))}
+>
+>      upstream_config['bitbake-config'] =3D choose_bitbake_config(upstream=
+_config['data']['bitbake-setup']['configurations'], config_parameters, args=
+.non_interactive)
+>      upstream_config['bitbake-config']['oe-fragment-choices'] =3D choose_=
+fragments(upstream_config['bitbake-config'].get('oe-fragments-one-of',{}), =
+config_parameters[1:], args.non_interactive, args.skip_selection)
+>      upstream_config['non-interactive-cmdline-options'] =3D [config_id, u=
+pstream_config['bitbake-config']['name']] + sorted(upstream_config['bitbake=
+-config']['oe-fragment-choices'].values())
+> -    upstream_config['source-overrides'] =3D source_overrides
+>      upstream_config['skip-selection'] =3D args.skip_selection
+> +    default_source_overrides =3D upstream_config['bitbake-config'].get('=
+default-source-overrides')
+> +    if default_source_overrides and not config_dir:
+> +        raise Exception("default-source-overrides can only be used with =
+configuration templates from a registry or a local file.")
+> +    upstream_config['default-source-overrides'] =3D read_source_override=
+s(default_source_overrides, base_dir=3Dconfig_dir)
+> +    upstream_config['source-overrides'] =3D source_overrides
+>      return upstream_config
+>
+> -def obtain_overrides(args):
+> +def read_source_overrides(source_override_files, base_dir=3DNone):
+>      all_overrides =3D {'sources':{}}
+> -    for overrides_file in args.source_overrides or []:
+> +    for overrides_file in source_override_files or []:
+> +        if base_dir and not os.path.isabs(overrides_file):
+> +            overrides_file =3D os.path.join(base_dir, overrides_file)
+>          overrides =3D json.load(open(overrides_file))
+>          overrides_dir =3D os.path.dirname(os.path.abspath(overrides_file=
+))
+>          for s,v in overrides['sources'].items():
+> @@ -647,11 +664,13 @@ def obtain_overrides(args):
+>                  if not os.path.isabs(path):
+>                      v['local']['path'] =3D os.path.join(overrides_dir, p=
+ath)
+>              all_overrides['sources'][s] =3D v
+> +    return all_overrides
+>
+> +def obtain_cli_overrides(args):
+> +    overrides =3D read_source_overrides(args.source_overrides)
+>      for local_name, local_path in args.use_local_source:
+> -        all_overrides['sources'][local_name] =3D {'local':{'path':os.pat=
+h.abspath(os.path.expanduser(local_path))}}
+> -
+> -    return all_overrides
+> +        overrides['sources'][local_name] =3D {'local':{'path':os.path.ab=
+spath(os.path.expanduser(local_path))}}
+> +    return overrides
+>
+>  def configure_vscode(setupdir, layerdir, builddir, init_script):
+>      """
+> @@ -811,7 +830,7 @@ def init_config(top_dir, settings, args):
+>          logger.plain("{}% {}                ".format(progress, rate))
+>          logger.handlers[0].terminator =3D '\n'
+>
+> -    source_overrides =3D obtain_overrides(args)
+> +    source_overrides =3D obtain_cli_overrides(args)
+>      upstream_config =3D obtain_config(top_dir, settings["default"]["regi=
+stry"], args, source_overrides, d)
+>      logger.info("Run 'bitbake-setup init --non-interactive {}' to select=
+ this configuration non-interactively.\n".format(" ".join(upstream_config['=
+non-interactive-cmdline-options'])))
+>
+> @@ -949,7 +968,7 @@ def build_status(top_dir, settings, args, d, update=
+=3DFalse):
+>              bb.process.run('git -C {} restore config-upstream.json'.form=
+at(confdir))
+>          return
+>
+> -    layer_config =3D merge_overrides_into_sources(current_upstream_confi=
+g["data"]["sources"], current_upstream_config["source-overrides"]["sources"=
+])
+> +    layer_config =3D merge_overrides_into_sources(current_upstream_confi=
+g["data"]["sources"], effective_source_overrides(current_upstream_config)["=
+sources"])
+>      if are_layers_changed(layer_config, layerdir, d):
+>          if update:
+>              update_build(current_upstream_config, confdir, setupdir, lay=
+erdir,
+> diff --git a/doc/bitbake-user-manual/bitbake-user-manual-environment-setu=
+p.rst b/doc/bitbake-user-manual/bitbake-user-manual-environment-setup.rst
+> index 77fc4c3dcba0..b30ebe8aeaeb 100644
+> --- a/doc/bitbake-user-manual/bitbake-user-manual-environment-setup.rst
+> +++ b/doc/bitbake-user-manual/bitbake-user-manual-environment-setup.rst
+> @@ -1141,6 +1141,12 @@ They contain the following sections:
+>        See https://docs.yoctoproject.org/dev/ref-manual/fragments.html fo=
+r
+>        more information of OpenEmbedded configuration fragments.
+>
+> +   -  ``default-source-overrides`` (*optional*): a list of source overri=
+de files
+> +      to apply by default when this configuration is selected. This is s=
+upported
+> +      only for configuration templates read from registries or local fil=
+es; paths
+> +      are resolved relative to the configuration file. See the
+> +      :ref:`ref-bbsetup-source-overrides` section.
+> +
+>     -  ``setup-dir-name`` (*optional*): a suggestion for the :term:`Setup=
+`
+>        directory name. Bitbake-setup will use it, unless it already exist=
+s, or
+>        the :ref:`ref-bbsetup-setting-use-full-setup-dir-name` setting is =
+set
+> @@ -1193,6 +1199,13 @@ These files are written in the JSON file format an=
+d are optionally passed to the
+>  The ``--source-overrides`` option can be passed multiple times, in which=
+ case the
+>  overrides are applied in the order specified in the command-line.
+>
+> +A :term:`BitBake Configuration` can also select source override files wi=
+th the
+> +``default-source-overrides`` property. These overrides are applied befor=
+e any
+> +``--source-overrides`` arguments. Relative paths are resolved relative t=
+o the
+> +:term:`Configuration Template` file, or inside the fetched registry chec=
+kout.
+> +This allows a remote registry to provide its own default override files;=
+ the
+> +``--source-overrides`` command-line option only accepts local files.
+> +
+>  Here is an example file that overrides the branch of the BitBake reposit=
+ory to
+>  "master-next", and provides openembedded-core as a symlink to a path on =
+local disk:
+>
+> diff --git a/lib/bb/tests/setup.py b/lib/bb/tests/setup.py
+> index d425faa1f6b6..de9fde488539 100644
+> --- a/lib/bb/tests/setup.py
+> +++ b/lib/bb/tests/setup.py
+> @@ -95,7 +95,7 @@ print("BBPATH is {{}}".format(os.environ["BBPATH"]))
+>          return bb.process.run("{} --global-settings {} {}".format(bbsetu=
+p, os.path.join(self.tempdir, 'global-config'), cmd))
+>
+>
+> -    def _add_json_config_to_registry_helper(self, name, sources):
+> +    def _add_json_config_to_registry_helper(self, name, sources, default=
+_source_overrides=3D()):
+>          config =3D """
+>  {
+>      "sources": {
+> @@ -107,6 +107,7 @@ print("BBPATH is {{}}".format(os.environ["BBPATH"]))
+>              {
+>                  "name": "gadget",
+>                  "description": "Gadget configuration",
+> +                "default-source-overrides": %s,
+>                  "oe-template": "test-configuration-gadget",
+>                  "oe-fragments": ["test-fragment-1"]
+>              },
+> @@ -172,7 +173,7 @@ print("BBPATH is {{}}".format(os.environ["BBPATH"]))
+>      },
+>      "version": "1.0"
+>  }
+> -""" % (sources)
+> +""" % (sources, json.dumps(default_source_overrides))
+>          os.makedirs(os.path.join(self.registrypath, os.path.dirname(name=
+)), exist_ok=3DTrue)
+>          with open(os.path.join(self.registrypath, name), 'w') as f:
+>              f.write(config)
+> @@ -180,7 +181,7 @@ print("BBPATH is {{}}".format(os.environ["BBPATH"]))
+>          self.git('commit -m "Adding {}"'.format(name), cwd=3Dself.regist=
+rypath)
+>          return json.loads(config)
+>
+> -    def add_json_config_to_registry(self, name, rev, branch, source_name=
+s=3D("test-repo",)):
+> +    def add_json_config_to_registry(self, name, rev, branch, source_name=
+s=3D("test-repo",), default_source_overrides=3D()):
+>          sources =3D []
+>          for source_name in source_names:
+>              sources.append("""
+> @@ -196,7 +197,7 @@ print("BBPATH is {{}}".format(os.environ["BBPATH"]))
+>                  }
+>              }
+>  """ % (source_name, self.testrepopath, branch, rev))
+> -        return self._add_json_config_to_registry_helper(name, ",\n".join=
+(sources))
+> +        return self._add_json_config_to_registry_helper(name, ",\n".join=
+(sources), default_source_overrides)
+>
+>      def add_local_json_config_to_registry(self, name, path):
+>          sources =3D """
+> @@ -520,11 +521,21 @@ print("BBPATH is {{}}".format(os.environ["BBPATH"])=
+)
+>              out =3D self.runbbsetup("update --update-bb-conf=3D'yes'")
+>          _check_layer_backups(layers_path, 1)
+>
+> -        # check source overrides, local sources provided with symlinks, =
+and custom setup dir name
+> -        source_override_content =3D """
+> +        # check source overrides, default source overrides, local source=
+s provided with symlinks, and custom setup dir name
+> +        default_source_overrides_content =3D """
+>  {
+>      "sources": {
+>          "test-repo": {
+> +            "local": {
+> +                "path": "%s"
+> +            }
+> +        }
+> +    }
+> +}""" % (self.testrepopath)
+> +        source_override_content =3D """
+> +{
+> +    "sources": {
+> +        "test-repo-cli": {
+>              "local": {
+>                  "path": "."
+>              }
+> @@ -546,14 +557,20 @@ print("BBPATH is {{}}".format(os.environ["BBPATH"])=
+)
+>          }
+>      }
+>  }"""
+> +        default_source_overrides_filename =3D 'releases/default-source-o=
+verrides.json'
+>          override_filename =3D 'source-overrides.json'
+>          second_override_filename =3D 'second-source-overrides.json'
+>          custom_setup_dir =3D 'special-setup-dir'
+> -        self.add_json_config_to_registry('test-config-1.conf.json', bran=
+ch, branch, ("test-repo", "test-repo-extra"))
+> +        os.makedirs(os.path.join(self.registrypath, os.path.dirname(defa=
+ult_source_overrides_filename)), exist_ok=3DTrue)
+> +        with open(os.path.join(self.registrypath, default_source_overrid=
+es_filename), 'w') as f:
+> +            f.write(default_source_overrides_content)
+> +        self.git('add {}'.format(default_source_overrides_filename), cwd=
+=3Dself.registrypath)
+> +        self.git('commit -m "Adding {}"'.format(default_source_overrides=
+_filename), cwd=3Dself.registrypath)
+> +        self.add_json_config_to_registry('test-config-1.conf.json', bran=
+ch, branch, ("test-repo", "test-repo-cli", "test-repo-extra"), default_sour=
+ce_overrides=3D[default_source_overrides_filename])
+>          self.add_file_to_testrepo(override_filename, source_override_con=
+tent)
+>          self.add_file_to_testrepo(second_override_filename, second_sourc=
+e_override_content)
+>          out =3D self.runbbsetup("init --non-interactive --source-overrid=
+es {} --source-overrides {} --setup-dir-name {} test-config-1 gadget".forma=
+t(os.path.join(self.testrepopath, override_filename), os.path.join(self.tes=
+trepopath, second_override_filename), custom_setup_dir))
+> -        _check_local_sources(custom_setup_dir, ("test-repo", "test-repo-=
+extra"))
+> +        _check_local_sources(custom_setup_dir, ("test-repo", "test-repo-=
+cli", "test-repo-extra"))
+>
+>          # same but use command line options to specify local overrides
+>          custom_setup_dir =3D 'special-setup-dir-with-cmdline-overrides'
+> diff --git a/setup-schema/bitbake-setup.schema.json b/setup-schema/bitbak=
+e-setup.schema.json
+> index be8772db1b2d..1a3a056198cd 100644
+> --- a/setup-schema/bitbake-setup.schema.json
+> +++ b/setup-schema/bitbake-setup.schema.json
+> @@ -120,6 +120,13 @@
+>                                      "type": "string"
+>                                  }
+>                              },
+> +                            "default-source-overrides": {
+> +                                "description": "Source override files to=
+ apply by default when this configuration is selected from a registry or lo=
+cal file. Relative paths are relative to the configuration file.",
+> +                                "type": "array",
+> +                                "items": {
+> +                                    "type": "string"
+> +                                }
+> +                            },
+>                              "setup-dir-name": {
+>                                  "type": "string",
+>                                  "description": "A suggestion for the set=
+up directory name, $-prefixed keys from oe-fragments-one-of will be substit=
+uted with user selections."
+>
+> --
+> 2.43.0
+>
+>
+> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
+> Links: You receive all messages sent to this group.
+> View/Reply Online (#19562): https://lists.openembedded.org/g/bitbake-deve=
+l/message/19562
+> Mute This Topic: https://lists.openembedded.org/mt/119548105/1686489
+> Group Owner: bitbake-devel+owner@lists.openembedded.org
+> Unsubscribe: https://lists.openembedded.org/g/bitbake-devel/unsub [alex.k=
+anavin@gmail.com]
+> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
+>
 
