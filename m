@@ -1,172 +1,137 @@
-Return-Path: <quentin.schulz@cherry.de>
+Return-Path: <alex.kanavin@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 91588CD5BD1
-	for <webhook@archiver.kernel.org>; Mon,  1 Jun 2026 13:34:10 +0000 (UTC)
-Received: from AS8PR04CU009.outbound.protection.outlook.com (AS8PR04CU009.outbound.protection.outlook.com [52.101.70.17])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.28642.1780320840916682820
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A5853CD6E57
+	for <webhook@archiver.kernel.org>; Mon,  1 Jun 2026 13:50:20 +0000 (UTC)
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.29222.1780321817817923467
  for <docs@lists.yoctoproject.org>;
- Mon, 01 Jun 2026 06:34:01 -0700
+ Mon, 01 Jun 2026 06:50:17 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@cherry.de header.s=selector1 header.b=JbuVgQmP;
- spf=pass (domain: cherry.de, ip: 52.101.70.17, mailfrom: quentin.schulz@cherry.de)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WnXn9tRZArmBKLjEPOv7zNe5riTqIdFZ5IEJ9+l4JvIHcGDEPfNyiH9d22iGSXO8AyhOGYsDjVtXzave8KSvAaF0kMjpoT8lF5wm+78yIIvDIwozzPKYYacefSQ0QgxAPZyEIMlvxEIcmAs4bHol5PIyq3wVMqM75LmIroL9U7MCJ04oCQ384Clo83csk2lyI1+6duN7g3PPyGsugah2VnmLGwp+MoC3VYqOrNNhZ6qs6vxa+2R6P2J8j/YtHxR/xWhqw3FjGIMGw7qnwQV+oCztrnFu/i/N4PCKacVv3yGnhRZJKf3EEccvkz85E6OL5SIKuCZcUwYyKGnCB0NLdg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8XVxt/yYxk3zxddXxaOS9p/30rdda8l35BmeyP64SoI=;
- b=lJ9gInpOdGkAWzx4OmF7dF0rtPeM5ahW48qPpo3ShzT0U2V20Uh2UIoddtnrb8ddm369+A1WNO/wOpRwguqXTGAN5Nho62KPR+F3v2//PLDImGwKQmJ60kcomhF3Z4M45iPC6rjMfU25hvHaAJxsGyVvp5Le6pkd1zsGxwoS8q2OB6ivC5AFvJK1g5qwowcLihjfTcoINgygDHZm0TDIFkYIf15jUHGIcZK/gitVCQzG0wkyfY95q2wKAAQik8H8XrAjFKLCU0XZMxQBvV6RB8GvjW0YMpqu8Mumtcv6zRxe5rQ6V6qfLtT7CVA6Ru93ePvk9UtfeNIUzBZ1EpVl5w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
- dkim=pass header.d=cherry.de; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8XVxt/yYxk3zxddXxaOS9p/30rdda8l35BmeyP64SoI=;
- b=JbuVgQmPw1IR3PMMDYlZLvom7C5Vr5qjqb2BT4fW+WqzGQ402KLOXBjS2+Qv6Fax3viGraI1lX792pXbEnAY/coF1e1GcxJI9NQadSbGONNybIf2w19oJ+RkwzjSPOuVkrzRV4X8qMm2l0SXld49o2p1Zlu8srP2mrdKbrLlXFk=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=cherry.de;
-Received: from PA4PR04MB7743.eurprd04.prod.outlook.com (2603:10a6:102:b8::20)
- by GV2PR04MB12066.eurprd04.prod.outlook.com (2603:10a6:150:304::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.16; Mon, 1 Jun 2026
- 13:33:54 +0000
-Received: from PA4PR04MB7743.eurprd04.prod.outlook.com
- ([fe80::9a4e:252f:2fd:97b7]) by PA4PR04MB7743.eurprd04.prod.outlook.com
- ([fe80::9a4e:252f:2fd:97b7%6]) with mapi id 15.21.0071.010; Mon, 1 Jun 2026
- 13:33:54 +0000
-Message-ID: <23c161b3-2a40-489e-b61e-6ce93a8f53ea@cherry.de>
-Date: Mon, 1 Jun 2026 15:33:53 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [docs] [PATCH] ref-manual/variables.rst: link *MIRRORS
- definitions to the BitBake manual
-To: antonin.godard@bootlin.com, docs@lists.yoctoproject.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-References: <20260601-link-mirrors-def-bitbake-v1-1-fa69ec343eac@bootlin.com>
-Content-Language: en-US
-From: Quentin Schulz <quentin.schulz@cherry.de>
-In-Reply-To: <20260601-link-mirrors-def-bitbake-v1-1-fa69ec343eac@bootlin.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: VI1PR0202CA0035.eurprd02.prod.outlook.com
- (2603:10a6:803:14::48) To PA4PR04MB7743.eurprd04.prod.outlook.com
- (2603:10a6:102:b8::20)
+ dkim=pass header.i=@gmail.com header.s=20251104 header.b=dAHniIvV;
+ spf=pass (domain: gmail.com, ip: 209.85.160.169, mailfrom: alex.kanavin@gmail.com)
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-516df7b256bso49253351cf.1
+        for <docs@lists.yoctoproject.org>; Mon, 01 Jun 2026 06:50:17 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780321817; cv=none;
+        d=google.com; s=arc-20240605;
+        b=MD5VO8LCvR9PQ3mPTpuiwKvb7gQiEUGx/dfWP3JLBvGmabwpJpEUnXRhMOgKRmxfH8
+         nbToUnfFN1z0w1ivRRZaUzxtV74UOeHCQpj0+3+1Q9TcQ37xWEVqlwD48ycfHp+KhwF0
+         lC8H4M2UDop8Ebx7hhdLRN81f/hHIek8YrkI8U9QLfgLZL4/aDbK4wTBh5mOUiteRqwr
+         63Jzvp3DFEnGxQG8RTdMZ4yAbNLdzI83RbprooLv7uzSrfqtS27eSHJ3WfBd3phue+9F
+         WW0Sbrrebi9JMlu+Yq5yQWad67Dcxv/cjf/KEbC24oXrfXPmd1gjXZ7M7fekBIBOGy8N
+         IFvw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=EaqdfggLgajFTdZN0uRkOuUPLhtA3ZUFAHAhEQ57p9s=;
+        fh=5aj+No6YTS5NpxDIZ9YeEA+DV1UNQ9kB5C3ikIN78GE=;
+        b=VdT7UXPB8j4au6pga+Ac0+u+XUc6DgY0hMQM9gUJfwRm6MbZ5Zz22l08eHhBYw2QS7
+         Gi0WxAWt60S+kRRV04yNRsoymDVUec06XA2pGuAWwn8tMYtOfFZOBTDj/1NW5+o5K/bI
+         LxADjYLvUkEQkcIs8HnYKy7tNVmeZfhd1ljmjPEBdTacQFaXhTvGUy2z641hQL0T+r+4
+         OpcqZo4d5ldpAVm6nToa6LQZb3i8jfqFZWVzNwp17D/zrHl0akUMN7AMv8QWLbJpQAVX
+         4H4Klpxvz9y4hyskKhBBvSzCjusU5OpE10URe9caGLJdInHsJuKNeW0lb87KfsQarNgp
+         usog==;
+        darn=lists.yoctoproject.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780321817; x=1780926617; darn=lists.yoctoproject.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=EaqdfggLgajFTdZN0uRkOuUPLhtA3ZUFAHAhEQ57p9s=;
+        b=dAHniIvVP+OQ1WfflV0PYW8FEgX8to/+VLTnq1+2RbJHx1MtBxK0/F/ku/T3OMu0cf
+         sa/WwktO3cDdNAmVlhpBnzcPdq83xq6Pi2rXH+RMSkGoX8ByKkEB9d4KthPJH14c67E7
+         IdI2lK6iiePzKyCtXLCxhbxDqqkFGmgaPIsPSwdK6bk0VajLoGXIIL8HQ5OjfjrMc+hI
+         69gWQ4bzh8yXooniwtpni2TQB/o5qp4Y4+xgfxTMkHgDI5APang1eLE6wN713li5BM+/
+         oqireZT1em/2xomFmHctyrlp4xuEytRmSGHwAn2rk9hBGJo4x+BIjHj8HMrqCJdqD8pL
+         lthg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780321817; x=1780926617;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EaqdfggLgajFTdZN0uRkOuUPLhtA3ZUFAHAhEQ57p9s=;
+        b=OdQw1eq0O2jY/sxuUI1r7f1bcziYGACTWkkHVpU0EXyTfuI9k/TZgGzUZPVkKz7Efx
+         EMaHFO/zm0LIg19Kg7FtIUo6j3J4quMnOU+fre2yzzE+Vdp12BCgK3Vhvh9PU/CUmnmf
+         Eo6dRl1PytO/5Tv7d0hKQiLoW9My9XE78dHFf31hIO7ARcRqZkPJOMzJyuSQ5NrZ1ALi
+         yVbKLT3sLKKpQJlI/U6nk7EkEUrUrORsk9WUiYfq71Fb885ttIZ8d6UXXP4J2398XnYH
+         oa/ewImm/BEOW/usGYFqQDXOeEqR694IaUyfso8ka0J/xb4/Ap2KxXDKUJr8i9TYt5N8
+         hcIQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+H/uL5KjOPjz7ufyaSXOBJoATQblpfGqKHmo/pWASbVwFUQMl2UOzT9qqplgzgyqukZQao@lists.yoctoproject.org
+X-Gm-Message-State: AOJu0Yx3Cibk4QKI+IPdyD6Ymyq5k+A4BK65kbJEz/PeHKrdKW6ndoDR
+	A0HmmIWRfLjFC+BnQnpvNwCMNkYp0RR6p+jWgpjJYDXVGG0i25HaU3+48cIoUsrTPfht6B5W9v4
+	xDDd9IG/q3ZvZnJp5Q/et8xR2PcGJkmE=
+X-Gm-Gg: Acq92OEAcvSnxuJBLvx5V7UYtlSeLUWhD2eDlJDbDsvHBwXJuSZO/lKQdwDhsFqTsL5
+	HcBjXKKgMHyjf0Rog2/6MAmMyPpye0SmDmMYxGlahZ5RNeyqqT2nnenS3z+IegR+TgwCsdLfAKs
+	/OpfrMOf7a8TexmRJDgv3hEz+R4qacMd6V+nqCsesxikCywKl2FY6aJj4Giu9EvBd5RAfi6/DGU
+	TVQDnp1o5MlswNb7ZHNCm7fU+4uvzx1nBvVNFSr9WuQvmrU7X7w8A63NbsIklWxukhSVpQvlbZ8
+	TXAcqWDDUrNGIIrDW5hxt+l9Ob8DeP0MVRUDwZOFzqKAH47rrgFyLRKOzdY1ook=
+X-Received: by 2002:a05:622a:1f16:b0:516:d64a:e67b with SMTP id
+ d75a77b69052e-5173a82fe33mr153850621cf.40.1780321816743; Mon, 01 Jun 2026
+ 06:50:16 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA4PR04MB7743:EE_|GV2PR04MB12066:EE_
-X-MS-Office365-Filtering-Correlation-Id: 927f455c-912e-44e0-8940-08debfe26cd5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: 
-	BCL:0;ARA:13230040|366016|376014|1800799024|18002099003|22082099003|56012099006|11063799006;
-X-Microsoft-Antispam-Message-Info: 
-	rbpJ83ZyI2bE2c0yjTkUBjh245CfU5WoNgVdrlizb5BBJ5sMYyqw7SqdDaJ5t5QWXj8zyVTYRj1IUTO5arFxf4vrVYzceQXeo8SrfIrehcaJkmA8ajbxJdU2q7r0EjGPjM4RDM7DLXymiHhcafCZfKP5wM2qVGqQ4mV3uvT8rH0q5a/gWLYV563thxv46YSoGvS2voS2y+NSsacxUAzlWziuuhOKbhN8PRtt+i5FM5USGkQFLNLJYH0Zl00qV6EdKKZl3LwQxLkkV0m2B5LY3HQFhcFDWlgh1NGPZPehueGvpHFNjDiO/EQZHy+QaM/+mIGu5f8iR2IfrtnxWoA2mKUN+23YAH2y2SD/EZHEKQ6rQFuks7li/ciMCDcwZBniM48nroz3EfdsXNsesnB7AZQ0cFeHYWt648l5L0mrequhY/CobxVFrE9iHpnaaAsiUZcYH+mmX4pB0gluCbQiKvK3C8LOWvIgOUV7a5yQztJbQEyF747KWzypBpp8goqMVC869AjY/8jv3cIlr7eP6LpRg9qIxt2bS49/D7XnjjPSmqLIDiTMSTQxdrENkU1ZshNarjvM7PGlcT8Impi7ELmp7GcB9/V9HpYSP+vr4m+d6UX6mXtnjaAddY6lNG6fTROKGvSvT1ga7YwWP6Gg+mctFqDxoXh9QNYdEfeunnZwm1ySZPvVq5nrTJF/hMQN
-X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB7743.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(18002099003)(22082099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?utf-8?B?NFMzVXcxaHlHWTM5RHZRbENyaHZKREFONi9hK3J2ay9nbHJWaHJrdXV0SVhl?=
- =?utf-8?B?K1M4akttWWRxWlRhK2tpdVZ0TDE1N3AwVXozcHN3UmxtRk9vdUZVaDN3bFZU?=
- =?utf-8?B?Mi9CbFQvTTR6TkRDZURvblJMVVBrcU4vUThNYTVUNURuQy9XWlMyVVFqc3JR?=
- =?utf-8?B?MjJrVVFBVXdIQVhPTjN4TXNwTzVZeFN0bzVjTU1oOVloMGhYbVJ4V0oybzds?=
- =?utf-8?B?c1Y2ZGtnWjduWXQxZGp3My9VQ2Rwa2EybENkV0MyOTJrQzlIaWZNQThZMktz?=
- =?utf-8?B?cjN0L244b2Vobno0VkZEcEdJS3dXWWJ5RUs2eXB1R2luUzJ0alhVdWh4ZXZ0?=
- =?utf-8?B?K0wvcjNWK2d2YkMvY0NvL1pHY2FVTTNrdVZFbzduVEVkbUpLaHYvM2FCbThy?=
- =?utf-8?B?UlJrNFNrM29YR0FEYldLWm1qRlZuNzJha20rU3FXazQxZ3RqQW0yYUk1Rlli?=
- =?utf-8?B?V0FOdHFaOFFrdGNRdXFuaGVYTDh0cFZ0R0JDUHVxeUlWc3hnSjVaODJNdXpT?=
- =?utf-8?B?d2d3WlQrelpUVFM0R1VIdXliZHhHR1g3c2FzVXcwM0xSUXJXNDY4b2pxSXBv?=
- =?utf-8?B?Yzc1OTB4WVBTMjdSTjhtWVN2Zzg1WGNTM0tOT1lKSWNCZkdhdWVGUE1XWC9X?=
- =?utf-8?B?dmVpL2tYVXBZcVMxSVVFenJLOU5NVFhzUmRxaWRTbm1UckZ0blN1NEFOdFYv?=
- =?utf-8?B?bEM0QVFIUjhSWDdmTDZ2VnNJZTA0OE45dS85dHNrS3F6TXRuaGtmT25KcVJS?=
- =?utf-8?B?TXIxNlVWa0VyS2h4ZXhFSXBFK3hpcUZ2TWNNWURvRUZ6dmRtbi9BbTVYSEtv?=
- =?utf-8?B?TmtwVFB2R09QeEVFckpJVEt4U3NKTlpFbmNUTkF2S1F0ZUdhK0ZsQzdZMUY3?=
- =?utf-8?B?bCtxckZVS2NsYVNtcjF5RzI3azdzcjBMVENyb0NNejh5SGt5anYyZlMvRDA1?=
- =?utf-8?B?RGwydHdlajJuOVhSU1dpTDNLUlA0d21VbkpVRk5UK3JLYTg5WEZPZDVabFRD?=
- =?utf-8?B?dWNuWWtDdkpQc1c3a0NUeGFPaW1ranZSY1Y1RFh5OGU1QlhqS3JFY1ptQjhY?=
- =?utf-8?B?a1FvbEt6NFdiZUExa1pub1BJSml3TzAxUjl2NHlEY3pGNXkxcGhpN0tKaHl4?=
- =?utf-8?B?MW1ZbS9PYm03UGllS0N2TjY0d1BtOW1GZzkwUXMvamU1MkIvOThkeGNKK3M2?=
- =?utf-8?B?M0dyWTVPTzhQVWVSK2FoNzMxVjhhTFljYkhPTzRBZTBTdEJBRSt0RC9USFhN?=
- =?utf-8?B?UmF5Rk4veCtNbVVkeGtvY2dHM3dUYk9SZHQreUEybUI3NXVNc1dIVktTcnA1?=
- =?utf-8?B?cTM0bFRiUjRERG1VZ0w0SEhqTlMzM0NyY0pWaDlrOE1qMDFaUHFHMDFsYlc4?=
- =?utf-8?B?YXNrdHE0U3hvTGhmZXhuQ0pnSFpDUytlU09ocVROcFViQmM2dDZyeWpiUjdr?=
- =?utf-8?B?MHhERk4vQ3hDQnpQSkxmVkRZV2h4M1dJODdoREZiNFRBTjFyUUIzTWVUMjVr?=
- =?utf-8?B?QTZFejR3Z1ljaGhZa05lb0x6cisxZ2pvUHJablU1cndwdDFpMFlxSVF3elVN?=
- =?utf-8?B?Qy9GVlZZL1doUlIrMnErem9rS2VsZXpwY2diZnZkMy9zQjViMUtWa2xVa1Qx?=
- =?utf-8?B?V3d4SXN4MGZpSmJQWHVJdFZQazM3bUg5YnFyUHhja0IwMUVTK1VoNFRXRTNV?=
- =?utf-8?B?dXpQUk5jU1piWitPQmNWaklPTDBzT1ovNTJnRTRodUZweXg2dkM2b1NldjV2?=
- =?utf-8?B?UGdRRm5QRmdJYTQ2ZE9mdkFHMjlRQkNTd0t1d1o2UC9mMERNWHl6UTZjd2hK?=
- =?utf-8?B?TXhuV3lCeHBCcWFMbEpJc1pGSS9vamxSOVQzVXFRR1NzT1dSdVp1bmMwWE56?=
- =?utf-8?B?cWRUcEROSVR3dWhiK3JtazBGSGIvMFp4NmdUS0VZNzUzbWxNRnI0VTNXUCs0?=
- =?utf-8?B?RHJERWdYT1BwMWRlQmlsa0NWd2JSbW9NRWI2N0RJTHhVN3VQa0FWVWw1Y3Jx?=
- =?utf-8?B?WWFSM1J3QlBSYm5hTEVEMnRMSlJzR3F2cE1XM0ZMeE5pWDVvVjN1aW5ndFRF?=
- =?utf-8?B?Mzc0UW9xREF1N1pYWlpvYkVUOWtpTzU4bUJXcVd6YUh4OWY2bEFvbkdxT3FI?=
- =?utf-8?B?Zys5bjhVU1cvdmdUTXQzQlZScmdqbWM2OFIxVXRtaGc1MzlWdHh4dWc5ODI0?=
- =?utf-8?B?ZmxjcHVoZ0F1RlQ2dFA4bVBZaGtjdWYwY1laQ2xDRExJUWFSVzB6R1NkRFRw?=
- =?utf-8?B?VGRmVFo2MWZQaEMwbTNaUjU5NGo2RzIvRHloSmlrM3VlTEE1OWhBQXF6clFD?=
- =?utf-8?B?V0F3aUJsa2Q3RlVwUDVGQW80TW13dndMRGMrWGY0RlgwWnowU1lGUT09?=
-X-OriginatorOrg: cherry.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: 927f455c-912e-44e0-8940-08debfe26cd5
-X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB7743.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jun 2026 13:33:54.3656
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: M62WjSouj+ameFtp04MiM8jaj0iguWgemEmboV09FwHCxPEnyAbkywaRVVZXaGHYP7MAwbUWjMbkbeHAlcErpaP5RjTh9hLEUvRLu3jmQ40=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR04MB12066
+References: <20260529-bb-setup-override-improvements-v1-0-91db62e0149e@toradex.com>
+ <20260529-bb-setup-override-improvements-v1-1-91db62e0149e@toradex.com>
+ <CANNYZj_iZGyJQo-OrTXfH1rBSxtrQtOcCT9Mfnb3uiBJpwQL3Q@mail.gmail.com> <o2tur4mf7vfsmx2qkizqhhxjnz34vifjtxeschtjvueskuzrcy@5hmfaoevpek6>
+In-Reply-To: <o2tur4mf7vfsmx2qkizqhhxjnz34vifjtxeschtjvueskuzrcy@5hmfaoevpek6>
+From: Alexander Kanavin <alex.kanavin@gmail.com>
+Date: Mon, 1 Jun 2026 15:50:05 +0200
+X-Gm-Features: AVHnY4Li8PheL8nDJ10wOQE209Kfvb0B-Zb6eAwSRXgVUlCataD32rc_nvYXKUI
+Message-ID: <CANNYZj-ajQ_2LJnTHMvC82JjtNxLRMPKEJO1ez_Paj6vb9NBdA@mail.gmail.com>
+Subject: Re: [bitbake-devel] [PATCH 1/2] bitbake-setup: support multiple
+ source override files
+To: Ernest Van Hoecke <ernestvanhoecke@gmail.com>
+Cc: bitbake-devel@lists.openembedded.org, 
+	Alexander Kanavin <alex@linutronix.de>, docs@lists.yoctoproject.org, 
+	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+Content-Type: text/plain; charset="UTF-8"
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 01 Jun 2026 13:34:10 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9553
+ <docs@lists.yoctoproject.org>; Mon, 01 Jun 2026 13:50:20 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9554
 
-Hi Antonin,
+On Mon, 1 Jun 2026 at 14:43, Ernest Van Hoecke
+<ernestvanhoecke@gmail.com> wrote:
+> I arrived at this from a real use case. Admittedly, that might now be
+> semi-artifical if we don't want the other default-source-overrides
+> patch.
+>
+> My setup idea was to have all sources move, then use a fixed revisions
+> override to create a "release" setup at known pins, and then apply
+> another override on top of that one to create an "integration" setup for
+> CI where most sources are at known pins, but some repos are at latest.
+>
+> By overriding again, it prevents needing to maintain a "release" and
+> "integration" sources override files, that are mostly duplication of
+> each other.
 
-On 6/1/26 3:29 PM, Antonin Godard via lists.yoctoproject.org wrote:
-> Those are defined in BitBake documented, and would be better documented
-> there. Add a link to the BitBake manual for these variables.
-> 
-> Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
-> ---
->   documentation/ref-manual/variables.rst | 6 ++++++
->   1 file changed, 6 insertions(+)
-> 
-> diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-> index c65794229..fe3d5a999 100644
-> --- a/documentation/ref-manual/variables.rst
-> +++ b/documentation/ref-manual/variables.rst
-> @@ -6303,6 +6303,9 @@ system and gives an overview of their function and contents.
->         The default value for :term:`MIRRORS` is defined in the
->         ``meta/classes-global/mirrors.bbclass`` file in the core metadata layer.
->   
-> +      See the definition of this variable in the BitBake Manual for more
-> +      details: :term:`bitbake:MIRRORS`.
-> +
+But why can't 'release' be a full json config? If that leads to
+multiple duplicated configs for each release, then we should pursue
+the 'souces-one-of' idea to have multiple source sets in configs.
 
-Should we remove the first paragraph and point to the BitBake reference 
-manual directly?
+> You're right that this can easily be managed with other tools, the small
+> risk I see is that lots of custom solutions start growing around
+> bitbake-setup, but with your feedback on the other patch I also see less
+> value in this one.
+>
+> In short, the expectation here is that people use their own tooling to
+> manage the .conf.json and source overrides .json files? If so I'll send
+> a patch later to remove the multiple --source-overrides option from the
+> docs.
 
->      :term:`MLPREFIX`
->         Specifies a prefix has been added to :term:`PN` to create a
->         special version of a recipe or package (i.e. a Multilib version). The
-> @@ -7757,6 +7760,9 @@ system and gives an overview of their function and contents.
->         ``file://`` URLs to point to local directories or network shares as
->         well.
->   
-> +      See the definition of this variable in the BitBake Manual for more
-> +      details: :term:`bitbake:PREMIRRORS`.
-> +
+Overiddes are meant as something local and throw-away, and not
+something that is ever checked into a public git repo or otherwise
+shared. They're not self-describing for example, if you look at the
+content, there's no way to tell what is it for. Allowing multiple
+overrides that are overlaid on top of each other also makes it more
+difficult to tell what would be the final result, it's hard enough to
+figure how bitbake variables get their final values, and we don't need
+to repeat that :)
 
-Should we slim down this entry and simply point at the BitBake reference 
-manual directly?
+So if a certain set of sources is reused between many builds, it
+should really be in a config. Bitbake-setup could help with that, e.g.
+'take this override and add it to this config' command.
 
-Change itself is fine, so
-
-Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
-
-Thanks!
-Quentin
+Alex
 
