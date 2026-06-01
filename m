@@ -2,233 +2,171 @@ Return-Path: <quentin.schulz@cherry.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 71AC9CD5BD1
-	for <webhook@archiver.kernel.org>; Mon,  1 Jun 2026 13:31:40 +0000 (UTC)
-Received: from PA4PR04CU001.outbound.protection.outlook.com (PA4PR04CU001.outbound.protection.outlook.com [40.107.162.32])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.28603.1780320689910265353
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 91588CD5BD1
+	for <webhook@archiver.kernel.org>; Mon,  1 Jun 2026 13:34:10 +0000 (UTC)
+Received: from AS8PR04CU009.outbound.protection.outlook.com (AS8PR04CU009.outbound.protection.outlook.com [52.101.70.17])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.28642.1780320840916682820
  for <docs@lists.yoctoproject.org>;
- Mon, 01 Jun 2026 06:31:30 -0700
+ Mon, 01 Jun 2026 06:34:01 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@cherry.de header.s=selector1 header.b=PxMx1Y3b;
- spf=pass (domain: cherry.de, ip: 40.107.162.32, mailfrom: quentin.schulz@cherry.de)
+ dkim=pass header.i=@cherry.de header.s=selector1 header.b=JbuVgQmP;
+ spf=pass (domain: cherry.de, ip: 52.101.70.17, mailfrom: quentin.schulz@cherry.de)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=pziUIeHL7xScgn1FKGPLyBtWbdKR4C7BdOlaZr2MGCPNdX1Y+CsGe6drqXpLtQfYKZsbVlzu0MzljOX6vUzUVRVRYSy6uZFATUjxOOiUThXVZH7Hbd59oyn8CyZA5kvs6VbYSX/dBvNMieCvDJz3aUux3HEz7pwQE/Zon7Nc41cnqIjwnGOcTbk+kBGuoc9JzkaTzYtJ+2Qnks9XD8Md3zaMqnoLSMnrN+CuTEb6tvmXdu/ZH9pgcvOg5kxB6hgupkgSGO59o7VsyeCQ9gBUTyFmhqzVaz5KdhM6wC4JU7hN4VnGEf9BE6cy7IdCN0cj620auDVw7aX6XYgF44Rywg==
+ b=WnXn9tRZArmBKLjEPOv7zNe5riTqIdFZ5IEJ9+l4JvIHcGDEPfNyiH9d22iGSXO8AyhOGYsDjVtXzave8KSvAaF0kMjpoT8lF5wm+78yIIvDIwozzPKYYacefSQ0QgxAPZyEIMlvxEIcmAs4bHol5PIyq3wVMqM75LmIroL9U7MCJ04oCQ384Clo83csk2lyI1+6duN7g3PPyGsugah2VnmLGwp+MoC3VYqOrNNhZ6qs6vxa+2R6P2J8j/YtHxR/xWhqw3FjGIMGw7qnwQV+oCztrnFu/i/N4PCKacVv3yGnhRZJKf3EEccvkz85E6OL5SIKuCZcUwYyKGnCB0NLdg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YvKYqC6NG8Oa/6iCmFM7fq1ScE61jbfPmE8waPOdcSY=;
- b=bf2KTySuur9ITu3WUGSbjN91EBj1SvQb+IKOJ2LY4VglkFgwHMIomYjb6fzyADUIqEYR1t45vKtKvylXjuAi1eM9hJsCOQ5+YSqhcIlNr47s5+Kj6NoRSdiClYdk14IqoA3mMhrNAQFssk+c/qozsRuKxbn19TDRqJoTbTJJUbYGO9Wek4PEeron9LKhhrygNSXcb6mSoN9C+8HaXEczc2tC5lSEnNzpM3JSozJe4bpsBhMkFagojCnp4S9W+FoCDTX/k33FA0xZ/cwQOj7oqhpoCX64AvZUg6fCmFp50Bj6uiw6EcrwOQCjpqOJj8b1WtPptvEVTiyEEz+Lpyf26Q==
+ bh=8XVxt/yYxk3zxddXxaOS9p/30rdda8l35BmeyP64SoI=;
+ b=lJ9gInpOdGkAWzx4OmF7dF0rtPeM5ahW48qPpo3ShzT0U2V20Uh2UIoddtnrb8ddm369+A1WNO/wOpRwguqXTGAN5Nho62KPR+F3v2//PLDImGwKQmJ60kcomhF3Z4M45iPC6rjMfU25hvHaAJxsGyVvp5Le6pkd1zsGxwoS8q2OB6ivC5AFvJK1g5qwowcLihjfTcoINgygDHZm0TDIFkYIf15jUHGIcZK/gitVCQzG0wkyfY95q2wKAAQik8H8XrAjFKLCU0XZMxQBvV6RB8GvjW0YMpqu8Mumtcv6zRxe5rQ6V6qfLtT7CVA6Ru93ePvk9UtfeNIUzBZ1EpVl5w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
  dkim=pass header.d=cherry.de; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YvKYqC6NG8Oa/6iCmFM7fq1ScE61jbfPmE8waPOdcSY=;
- b=PxMx1Y3bCBHuXctcpGKdmgxZqYurfdiogwLRxIQF5sIepo7TGprJdX+8kGr1OAbnozMIzv2Qabl4l9n+FRYuefs6DQ2ya/eZ6linA7l+liKBtwsDYUVVSUWttps9vCEaU6bX7BSGsFF3BQb6XrrgTb4Naq+HxCGInDkf/bw3nKE=
+ bh=8XVxt/yYxk3zxddXxaOS9p/30rdda8l35BmeyP64SoI=;
+ b=JbuVgQmPw1IR3PMMDYlZLvom7C5Vr5qjqb2BT4fW+WqzGQ402KLOXBjS2+Qv6Fax3viGraI1lX792pXbEnAY/coF1e1GcxJI9NQadSbGONNybIf2w19oJ+RkwzjSPOuVkrzRV4X8qMm2l0SXld49o2p1Zlu8srP2mrdKbrLlXFk=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=cherry.de;
 Received: from PA4PR04MB7743.eurprd04.prod.outlook.com (2603:10a6:102:b8::20)
- by PA1PR04MB11333.eurprd04.prod.outlook.com (2603:10a6:102:4f3::16) with
+ by GV2PR04MB12066.eurprd04.prod.outlook.com (2603:10a6:150:304::10) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.16; Mon, 1 Jun 2026
- 13:31:25 +0000
+ 13:33:54 +0000
 Received: from PA4PR04MB7743.eurprd04.prod.outlook.com
  ([fe80::9a4e:252f:2fd:97b7]) by PA4PR04MB7743.eurprd04.prod.outlook.com
  ([fe80::9a4e:252f:2fd:97b7%6]) with mapi id 15.21.0071.010; Mon, 1 Jun 2026
- 13:31:24 +0000
-Message-ID: <d8535a6c-8ee8-493d-9129-7c73e678c03d@cherry.de>
-Date: Mon, 1 Jun 2026 15:31:23 +0200
+ 13:33:54 +0000
+Message-ID: <23c161b3-2a40-489e-b61e-6ce93a8f53ea@cherry.de>
+Date: Mon, 1 Jun 2026 15:33:53 +0200
 User-Agent: Mozilla Thunderbird
-Subject: Re: [docs] [PATCH] doc/bitbake-user-manual-ref-variables: extend the
- MIRRORS documentation
-To: antonin.godard@bootlin.com, bitbake-devel@lists.openembedded.org
-Cc: Ross Burton <ross.burton@arm.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, docs@lists.yoctoproject.org
-References: <20260601-clarify-mirrors-syntax-v1-1-d9dbdbaf037f@bootlin.com>
+Subject: Re: [docs] [PATCH] ref-manual/variables.rst: link *MIRRORS
+ definitions to the BitBake manual
+To: antonin.godard@bootlin.com, docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+References: <20260601-link-mirrors-def-bitbake-v1-1-fa69ec343eac@bootlin.com>
 Content-Language: en-US
 From: Quentin Schulz <quentin.schulz@cherry.de>
-In-Reply-To: <20260601-clarify-mirrors-syntax-v1-1-d9dbdbaf037f@bootlin.com>
+In-Reply-To: <20260601-link-mirrors-def-bitbake-v1-1-fa69ec343eac@bootlin.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: VI1PR0202CA0009.eurprd02.prod.outlook.com
- (2603:10a6:803:14::22) To PA4PR04MB7743.eurprd04.prod.outlook.com
+X-ClientProxiedBy: VI1PR0202CA0035.eurprd02.prod.outlook.com
+ (2603:10a6:803:14::48) To PA4PR04MB7743.eurprd04.prod.outlook.com
  (2603:10a6:102:b8::20)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA4PR04MB7743:EE_|PA1PR04MB11333:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2f43666e-9bb5-4148-f56d-08debfe213b3
+X-MS-TrafficTypeDiagnostic: PA4PR04MB7743:EE_|GV2PR04MB12066:EE_
+X-MS-Office365-Filtering-Correlation-Id: 927f455c-912e-44e0-8940-08debfe26cd5
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: 
-	BCL:0;ARA:13230040|376014|1800799024|366016|3023799007|6133799003|18002099003|22082099003|56012099006|11063799006;
+	BCL:0;ARA:13230040|366016|376014|1800799024|18002099003|22082099003|56012099006|11063799006;
 X-Microsoft-Antispam-Message-Info: 
-	L/jlLLTEPT8wBz/0fsrimmEXCPa9/Lgy3NKiTSrvfdKrIPfTCSBLFPMll0Svkl8gvO9Bs1elQvBtfmIOtEvOXLSkUS34cuoVLvfEr1ISTk5+fTqSet3fmaxGHfmWGo7ht7YOwhZlBbFY6hsl8A9I9gJ3uKRs5qLXm66ykC78gbn+kCFdpyMuTjKRJ4N1aQcrkBFOglcSTFDU1a405ih+ii8j5JGYQYVmGj9/ixUncvDtoNyq/4+jRcXGz6bI22uIq3r3bLvk0Wgmg5/hex63BeH172WeYd981vK3vdjSlWORCJH2jzrpVqOMLmULR/z2nX9CMDRVkr5xCwuS5ZkuoMLeU3DmLYjh0vXp1RdrUDlv4/0fsIO6aa+lmSJlgcpDXOMNwYQSxsyPwmRnKtRoNsA8xMh+/jxV9vUbsfzRiNpPLsYVCtCkZsH2T8IbrJA4YN/+DfBItksCX3HBygTT2oDv8qqiuX++DMJJAYTAf639oyly72PDjPUbwAQQX1Yp8bbed9lzI4hCq8vxT7QLbQWd0ltMTPcz0eWbNxusNvc65wV4qptw6lGMQM1HL1qJUDw9jGHwHAmA6bQ6XLK4okVDGEaK5NVNPLy0m93cldsn+EIfzkgXaVeJkqeUbfW0sUqXIQOuO6Bt/2rEXJU7CkYE5yDMTcGLvoflf9HUyfq5jUlmANMiC8vTouNDEOXM
+	rbpJ83ZyI2bE2c0yjTkUBjh245CfU5WoNgVdrlizb5BBJ5sMYyqw7SqdDaJ5t5QWXj8zyVTYRj1IUTO5arFxf4vrVYzceQXeo8SrfIrehcaJkmA8ajbxJdU2q7r0EjGPjM4RDM7DLXymiHhcafCZfKP5wM2qVGqQ4mV3uvT8rH0q5a/gWLYV563thxv46YSoGvS2voS2y+NSsacxUAzlWziuuhOKbhN8PRtt+i5FM5USGkQFLNLJYH0Zl00qV6EdKKZl3LwQxLkkV0m2B5LY3HQFhcFDWlgh1NGPZPehueGvpHFNjDiO/EQZHy+QaM/+mIGu5f8iR2IfrtnxWoA2mKUN+23YAH2y2SD/EZHEKQ6rQFuks7li/ciMCDcwZBniM48nroz3EfdsXNsesnB7AZQ0cFeHYWt648l5L0mrequhY/CobxVFrE9iHpnaaAsiUZcYH+mmX4pB0gluCbQiKvK3C8LOWvIgOUV7a5yQztJbQEyF747KWzypBpp8goqMVC869AjY/8jv3cIlr7eP6LpRg9qIxt2bS49/D7XnjjPSmqLIDiTMSTQxdrENkU1ZshNarjvM7PGlcT8Impi7ELmp7GcB9/V9HpYSP+vr4m+d6UX6mXtnjaAddY6lNG6fTROKGvSvT1ga7YwWP6Gg+mctFqDxoXh9QNYdEfeunnZwm1ySZPvVq5nrTJF/hMQN
 X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB7743.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(3023799007)(6133799003)(18002099003)(22082099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB7743.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(18002099003)(22082099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?utf-8?B?Y0tKY1NJamRPT1hQVDRBMkZOMmVYTXg0aEJ3M0piNHVkbXpLNDVkQmZ5Mm5K?=
- =?utf-8?B?TWYvNll4VUI0M2ZHVEU3dUtweWcydVREc213SnMyM0piMXdqdldlOExsWW1k?=
- =?utf-8?B?TzllWDA4NDVON1RPS29oa1hUemNQVWdGOUhqUlhRMzRFQzlXenBTcThndCtY?=
- =?utf-8?B?WnFFdnlmaktEUXZ4bUxwTTFodVRJNklhQzRyQ0luK2hSVnNZWmJ0VTNBemNI?=
- =?utf-8?B?VXdFNkNGOEd2RXQyRUdNTFgzNlJHUHlDbnNGYlI2YXU1K2JkR0RHL0RsenIx?=
- =?utf-8?B?RWUzY3M0L205bkNJMFFXQnNEZUwxRldwZFlrL1VXTGN6WWhRbWpkT0FjZzVE?=
- =?utf-8?B?ZlFBS0hBVWZXVGtvM3ZLODUxT3Q0UU80dXNWQUlRVklrWG5qRFNIMjFTaU90?=
- =?utf-8?B?QStNMlV2RTZHOXZBeExMT0dxakxHTzFZWFZvRk1VcnBmR3BnL1dOWFNnbzVx?=
- =?utf-8?B?OWloS1hCSjhBd2FxdTU1REQvSmViQkJ4UFhjdVR2UVpMY05GZzcveGdFQ3Jm?=
- =?utf-8?B?YVVSK1JUZGNRZkVrOExLQXF4YXdQc0c1YUpKNklBakV0bUpUNXFmQUNSTDl3?=
- =?utf-8?B?V0E4QjltQ2RQNDBWZVVjakFuYjV3ellnREU1bTRXekdkUmlYNThmcHZOcUFt?=
- =?utf-8?B?UHhPZHZoVmlja3pIenlUaGl3ZWQ0V0RzQ0l1Zy9rdkxOQjBmKzM5aDRFUDNO?=
- =?utf-8?B?ZWlGNTFIWHZtME5lWEZOWkhPcGMvU3lwa25WQXJPTTErNlVzKzNIR245bEw4?=
- =?utf-8?B?ZXFnd0hLVENubE5hZFJLR010TjZ5ZWo0M0tKYjJHZy8ybEM5UE5NNmtUaGxS?=
- =?utf-8?B?TnR3cVUrMTZLZlRReFVZTS9Oc1A4RWhuSGFCd2FqNkpIenk3elpJa1pMZDNi?=
- =?utf-8?B?ZlNnSjFYaHRRZUZwSm1YT29LVXd1UDMwMVVRaWRGTlphNFB1UWhYQ2VsYkRs?=
- =?utf-8?B?a2tRdmVHd0VVM3ZpM21sdlJtaXdoZG41ZW5GYkZYcTd1dFpmUnMxWGEvNGtq?=
- =?utf-8?B?ZFhSa0VBSDVOZHhWQ3h2TklkV1JQdU1TblVUaWJZTndzTWNTNEtGNlh3OGV4?=
- =?utf-8?B?d203R1JCY0duNzFJeUVCTThQdDhEUDVwbkd1UzNURW56bDRVaGRSUVArRmNU?=
- =?utf-8?B?LzJVdXB6dXFQaEdCUFR2YjVoeFNkWC9NejhIcU8yVHNPWmtkMmY3U2p6N0Rz?=
- =?utf-8?B?Qy9oSVR2VjhyRWQ1S0o3aVg4NkpoQzNOcTdJWDBSNW56Rk5VTnQyUWZMbmdr?=
- =?utf-8?B?TVR5UUp4cDN4ZGJuMktQc1VvcG41T0xoenU1T0hXVDNlZjFKRzZyeWF5S0gv?=
- =?utf-8?B?RzB4eDQyNmhJbW1zRlEvekN0SkRTRHkrQ3ZRM09MY0tsbEZGYUF3M2d5aitF?=
- =?utf-8?B?anZjWWttd29ZZHJVNXpNYTNENDlKVlFjMU9LV0UyNFNRRm9xSnZqazNnVG83?=
- =?utf-8?B?QUFSYXBQM3FTcWtKSHdWRlNxSWkvNGhhV2lwL25yRU9DV0ZaTFhlL2lUdDN0?=
- =?utf-8?B?WjIySkwva20wRWp2ZUNVOFc1VGJqdmN5elB5TU51KzFqQUMzZ3FzUndwUnhB?=
- =?utf-8?B?YlVBdFA0cTN3a1B5ak90Nzl6MzMyU2JRSVEyanRrVmhBSnFuZHMzczByeGIz?=
- =?utf-8?B?YURxcVk1OUJqVjFPK2tiV2w5WmxTakRLaUJNQ2hUczBOZFpramFSdUVkSnQ3?=
- =?utf-8?B?Tnl4OExON1QrYXU5Tit3ZCtlQ3MvdmlWQUl6SitzczQzZmtIc2xFTHBKcWZT?=
- =?utf-8?B?czZ1cjZUUmU0Q0lrdWRhdXBhR2RldGNIMzQ5eFRrVmtEMmErNjNtd29XNTdM?=
- =?utf-8?B?TXpKdlhiOUorRk8yMEw2U2FyMnpKdDQ4OGdQWXBIK3N6eXM4QSs2UTB4UjMx?=
- =?utf-8?B?UHlRellhZ2JCb2ZOM25JbW9neXk5T1MwZys1RWFNdWZHK1dPL3YraTZvTzFV?=
- =?utf-8?B?L0Fac01yZDZ5NGhzeUt4NXBiclhaN3UvcE1jd0NweDlMYmN6RExVWDBZUURR?=
- =?utf-8?B?TzltNU1PV0U5Y3YveEx0QUVHZ3NsdXdoenRjZmxyYjF4RWhpL3V2blVZcFRk?=
- =?utf-8?B?eGJsSjVTRlRubDh2ejZ5TXMvYWlEeS9NZ1Avd21lT0kvRVpVdkRpOFo5RUgr?=
- =?utf-8?B?QVdFYjlObEE3QS9LTWNJU2tsRm1nTGVKbDJqTVRrM0FSZEtLOFU0b1dJZ3B1?=
- =?utf-8?B?b3REZC9uQ0VERGdmb2JYZDdBMGdQcitIVUs3ODlEY0MrNjIzbERYNVNhZDla?=
- =?utf-8?B?VnhBdUpLdEZ1KzEyd2IwVE5VRVJzdXdYRWpXZm5CTzhySnFYWGVHcm9NNFhS?=
- =?utf-8?B?SUZJWkVnY2M2K0N4MUJqTnpJSC9uYUJiNmc5TTdZbEdkTS9odTVhdz09?=
+	=?utf-8?B?NFMzVXcxaHlHWTM5RHZRbENyaHZKREFONi9hK3J2ay9nbHJWaHJrdXV0SVhl?=
+ =?utf-8?B?K1M4akttWWRxWlRhK2tpdVZ0TDE1N3AwVXozcHN3UmxtRk9vdUZVaDN3bFZU?=
+ =?utf-8?B?Mi9CbFQvTTR6TkRDZURvblJMVVBrcU4vUThNYTVUNURuQy9XWlMyVVFqc3JR?=
+ =?utf-8?B?MjJrVVFBVXdIQVhPTjN4TXNwTzVZeFN0bzVjTU1oOVloMGhYbVJ4V0oybzds?=
+ =?utf-8?B?c1Y2ZGtnWjduWXQxZGp3My9VQ2Rwa2EybENkV0MyOTJrQzlIaWZNQThZMktz?=
+ =?utf-8?B?cjN0L244b2Vobno0VkZEcEdJS3dXWWJ5RUs2eXB1R2luUzJ0alhVdWh4ZXZ0?=
+ =?utf-8?B?K0wvcjNWK2d2YkMvY0NvL1pHY2FVTTNrdVZFbzduVEVkbUpLaHYvM2FCbThy?=
+ =?utf-8?B?UlJrNFNrM29YR0FEYldLWm1qRlZuNzJha20rU3FXazQxZ3RqQW0yYUk1Rlli?=
+ =?utf-8?B?V0FOdHFaOFFrdGNRdXFuaGVYTDh0cFZ0R0JDUHVxeUlWc3hnSjVaODJNdXpT?=
+ =?utf-8?B?d2d3WlQrelpUVFM0R1VIdXliZHhHR1g3c2FzVXcwM0xSUXJXNDY4b2pxSXBv?=
+ =?utf-8?B?Yzc1OTB4WVBTMjdSTjhtWVN2Zzg1WGNTM0tOT1lKSWNCZkdhdWVGUE1XWC9X?=
+ =?utf-8?B?dmVpL2tYVXBZcVMxSVVFenJLOU5NVFhzUmRxaWRTbm1UckZ0blN1NEFOdFYv?=
+ =?utf-8?B?bEM0QVFIUjhSWDdmTDZ2VnNJZTA0OE45dS85dHNrS3F6TXRuaGtmT25KcVJS?=
+ =?utf-8?B?TXIxNlVWa0VyS2h4ZXhFSXBFK3hpcUZ2TWNNWURvRUZ6dmRtbi9BbTVYSEtv?=
+ =?utf-8?B?TmtwVFB2R09QeEVFckpJVEt4U3NKTlpFbmNUTkF2S1F0ZUdhK0ZsQzdZMUY3?=
+ =?utf-8?B?bCtxckZVS2NsYVNtcjF5RzI3azdzcjBMVENyb0NNejh5SGt5anYyZlMvRDA1?=
+ =?utf-8?B?RGwydHdlajJuOVhSU1dpTDNLUlA0d21VbkpVRk5UK3JLYTg5WEZPZDVabFRD?=
+ =?utf-8?B?dWNuWWtDdkpQc1c3a0NUeGFPaW1ranZSY1Y1RFh5OGU1QlhqS3JFY1ptQjhY?=
+ =?utf-8?B?a1FvbEt6NFdiZUExa1pub1BJSml3TzAxUjl2NHlEY3pGNXkxcGhpN0tKaHl4?=
+ =?utf-8?B?MW1ZbS9PYm03UGllS0N2TjY0d1BtOW1GZzkwUXMvamU1MkIvOThkeGNKK3M2?=
+ =?utf-8?B?M0dyWTVPTzhQVWVSK2FoNzMxVjhhTFljYkhPTzRBZTBTdEJBRSt0RC9USFhN?=
+ =?utf-8?B?UmF5Rk4veCtNbVVkeGtvY2dHM3dUYk9SZHQreUEybUI3NXVNc1dIVktTcnA1?=
+ =?utf-8?B?cTM0bFRiUjRERG1VZ0w0SEhqTlMzM0NyY0pWaDlrOE1qMDFaUHFHMDFsYlc4?=
+ =?utf-8?B?YXNrdHE0U3hvTGhmZXhuQ0pnSFpDUytlU09ocVROcFViQmM2dDZyeWpiUjdr?=
+ =?utf-8?B?MHhERk4vQ3hDQnpQSkxmVkRZV2h4M1dJODdoREZiNFRBTjFyUUIzTWVUMjVr?=
+ =?utf-8?B?QTZFejR3Z1ljaGhZa05lb0x6cisxZ2pvUHJablU1cndwdDFpMFlxSVF3elVN?=
+ =?utf-8?B?Qy9GVlZZL1doUlIrMnErem9rS2VsZXpwY2diZnZkMy9zQjViMUtWa2xVa1Qx?=
+ =?utf-8?B?V3d4SXN4MGZpSmJQWHVJdFZQazM3bUg5YnFyUHhja0IwMUVTK1VoNFRXRTNV?=
+ =?utf-8?B?dXpQUk5jU1piWitPQmNWaklPTDBzT1ovNTJnRTRodUZweXg2dkM2b1NldjV2?=
+ =?utf-8?B?UGdRRm5QRmdJYTQ2ZE9mdkFHMjlRQkNTd0t1d1o2UC9mMERNWHl6UTZjd2hK?=
+ =?utf-8?B?TXhuV3lCeHBCcWFMbEpJc1pGSS9vamxSOVQzVXFRR1NzT1dSdVp1bmMwWE56?=
+ =?utf-8?B?cWRUcEROSVR3dWhiK3JtazBGSGIvMFp4NmdUS0VZNzUzbWxNRnI0VTNXUCs0?=
+ =?utf-8?B?RHJERWdYT1BwMWRlQmlsa0NWd2JSbW9NRWI2N0RJTHhVN3VQa0FWVWw1Y3Jx?=
+ =?utf-8?B?WWFSM1J3QlBSYm5hTEVEMnRMSlJzR3F2cE1XM0ZMeE5pWDVvVjN1aW5ndFRF?=
+ =?utf-8?B?Mzc0UW9xREF1N1pYWlpvYkVUOWtpTzU4bUJXcVd6YUh4OWY2bEFvbkdxT3FI?=
+ =?utf-8?B?Zys5bjhVU1cvdmdUTXQzQlZScmdqbWM2OFIxVXRtaGc1MzlWdHh4dWc5ODI0?=
+ =?utf-8?B?ZmxjcHVoZ0F1RlQ2dFA4bVBZaGtjdWYwY1laQ2xDRExJUWFSVzB6R1NkRFRw?=
+ =?utf-8?B?VGRmVFo2MWZQaEMwbTNaUjU5NGo2RzIvRHloSmlrM3VlTEE1OWhBQXF6clFD?=
+ =?utf-8?B?V0F3aUJsa2Q3RlVwUDVGQW80TW13dndMRGMrWGY0RlgwWnowU1lGUT09?=
 X-OriginatorOrg: cherry.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2f43666e-9bb5-4148-f56d-08debfe213b3
+X-MS-Exchange-CrossTenant-Network-Message-Id: 927f455c-912e-44e0-8940-08debfe26cd5
 X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB7743.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jun 2026 13:31:24.8399
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jun 2026 13:33:54.3656
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: TQcq2IgzG9e8pw4iO3UoiBc5e/xVXjx39F1UAUFF0WQx+eTs4XYpGrOszGqH4swglFez1jrFVS86IOfegLkpLzMsmJWCQ7Er0yavPAZobwI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB11333
+X-MS-Exchange-CrossTenant-UserPrincipalName: M62WjSouj+ameFtp04MiM8jaj0iguWgemEmboV09FwHCxPEnyAbkywaRVVZXaGHYP7MAwbUWjMbkbeHAlcErpaP5RjTh9hLEUvRLu3jmQ40=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR04MB12066
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 01 Jun 2026 13:31:40 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9552
+ <docs@lists.yoctoproject.org>; Mon, 01 Jun 2026 13:34:10 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9553
 
 Hi Antonin,
 
-On 6/1/26 3:21 PM, Antonin Godard via lists.yoctoproject.org wrote:
-> The MIRRORS variable wasn't properly documented as Ross highlighted in
-> bug 16297. Give it a proper description detailing its usage and which
-> keywords are available. Also link PREMIRRORS to MIRRORS as they use the
-> same syntax.
-> 
-
-Quick drive-by comment.
-
-> [YOCTO #16297]
+On 6/1/26 3:29 PM, Antonin Godard via lists.yoctoproject.org wrote:
+> Those are defined in BitBake documented, and would be better documented
+> there. Add a link to the BitBake manual for these variables.
 > 
 > Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 > ---
->   .../bitbake-user-manual-ref-variables.rst          | 56 ++++++++++++++++++++++
->   1 file changed, 56 insertions(+)
+>   documentation/ref-manual/variables.rst | 6 ++++++
+>   1 file changed, 6 insertions(+)
 > 
-> diff --git a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
-> index 9824b58ef27..753e9a38f90 100644
-> --- a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
-> +++ b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
-> @@ -1416,6 +1416,58 @@ overview of their function and contents.
->         upstream source, and then locations specified by :term:`MIRRORS` in that
->         order.
+> diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+> index c65794229..fe3d5a999 100644
+> --- a/documentation/ref-manual/variables.rst
+> +++ b/documentation/ref-manual/variables.rst
+> @@ -6303,6 +6303,9 @@ system and gives an overview of their function and contents.
+>         The default value for :term:`MIRRORS` is defined in the
+>         ``meta/classes-global/mirrors.bbclass`` file in the core metadata layer.
 >   
-> +      This variable has a specific syntax. Each line must contain a regular
-> +      expression matching the original source URL on the leftmost part and a
-> +      replacement URL for it on the rightmost part. For example::
+> +      See the definition of this variable in the BitBake Manual for more
+> +      details: :term:`bitbake:MIRRORS`.
 > +
 
-Leftmost and rightmost are confusing here. This is a space separated 
-list which is expected to have an even number of elements as it contains 
-a list of pairs (themselves separated by a space).
+Should we remove the first paragraph and point to the BitBake reference 
+manual directly?
 
-Note that the code handles newlines in MIRROR (see mirror_from_string in 
-lib/bb/fetch2/__init__.py).
-
-> +         MIRRORS:prepend = " \
-> +             git://git.openembedded.org/.* git:///mirrors/openembedded/BASENAME \
-> +         "
-> +
-> +      In the above example:
-> +
-> +      -  The leftmost part means that any Git repository (``git://`` fetcher)
-> +         whose URL starts with ``git.openembedded.org/`` will be matched.
-> +
-> +      -  The rightmost part is the replacement URL for the original repository,
-> +         which is hosted locally in the ``/mirrors/openembedded`` directory. It
-> +         also uses the ``BASENAME`` keyword which is detailed below.
-> +
-
-This is mostly fine as it visually is leftmost/rightmost verbatim.
-
-> +      The rightmost part of each line can contain keywords which are
-> +      automatically replaced by BitBake. These keywords can contain either a
-> +      sub-part of the original URL or meta-information about it.
-> +
-> +      For what follows, let's take the following URL as an example for the
-> +      original source (matched by the leftmost part of the line):
-> +      ``git://git.openembedded.org/project/repo.git``.
-> +
-> +      A replacement for this URL can be created using the following keywords:
-> +
-> +      -  ``TYPE``: the URL scheme or fetcher type. For the example above: ``git``.
-> +      -  ``HOST``: the URL host. For the example above: ``git.openembedded.org``.
-> +      -  ``PATH``: the URL path. For the example above: ``/project/repo.git``.
-> +      -  ``BASENAME``: the URL basename. For the example above: ``repo.git``.
-> +      -  ``MIRRORNAME``: a translation of the host and path with common
-> +         characters substituted to dots (``.``). For the example above:
-> +         ``git.openembedded.org.project.repo.git``.
-> +
-> +      The rightmost part of the line can also be a bare URL that uses no special
-> +      keywords (usually ``https://`` or ``file://``). For example::
-> +
-> +         MIRRORS:prepend = " \
-> +             git://git.openembedded.org/.* file:///mirrors/openembedded/ \
-> +         "
-> +
-> +      In the above example, the fetcher will try to find a mirror tarball in the
-> +      ``/mirrors/openembedded`` directory. The name of this tarball should follow
-> +      the name of the tarball created by BitBake (for Git repositories,
-> +      the :term:`BB_GENERATE_MIRROR_TARBALLS` variable must be set to "1" to
-> +      generate them).
-> +
-> +      If we take ``git://git.openembedded.org/project/repo.git`` as an example,
-> +      the tarball would have to be named
-> +      ``git2_git.openembedded.org.project.repo.git.tar.gz``.
-> +
->      :term:`OVERRIDES`
->         A colon-separated list that BitBake uses to control what variables are
->         overridden after BitBake parses recipes and configuration files.
-> @@ -1544,6 +1596,10 @@ overview of their function and contents.
->         use ``file://`` URLs to point to local directories or network shares as
+>      :term:`MLPREFIX`
+>         Specifies a prefix has been added to :term:`PN` to create a
+>         special version of a recipe or package (i.e. a Multilib version). The
+> @@ -7757,6 +7760,9 @@ system and gives an overview of their function and contents.
+>         ``file://`` URLs to point to local directories or network shares as
 >         well.
 >   
-> +      The syntax of the :term:`PREMIRRORS` variable is the same as
-> +      :term:`MIRRORS`. See the definition of the :term:`MIRRORS` for more
-> +      details on it.
+> +      See the definition of this variable in the BitBake Manual for more
+> +      details: :term:`bitbake:PREMIRRORS`.
 > +
 
-s/on it//
+Should we slim down this entry and simply point at the BitBake reference 
+manual directly?
 
-It's implied.
+Change itself is fine, so
 
-Cheers,
+Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
+
+Thanks!
 Quentin
 
