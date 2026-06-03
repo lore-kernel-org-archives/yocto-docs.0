@@ -2,14 +2,14 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 45857CD6E55
-	for <webhook@archiver.kernel.org>; Wed,  3 Jun 2026 11:10:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C97F7CD6E55
+	for <webhook@archiver.kernel.org>; Wed,  3 Jun 2026 13:20:39 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.17337.1780485011210090296
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.19833.1780492834727058627
  for <docs@lists.yoctoproject.org>;
- Wed, 03 Jun 2026 04:10:11 -0700
+ Wed, 03 Jun 2026 06:20:35 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=q3cMyhoa;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=KYs6bLlv;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
@@ -17,24 +17,24 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=ycYGAuWtaMk5NEZtFYXq8gow1mnS7D+X7iBIF6aAk/g=; b=q3cMyhoa0v1ydr/nO8jhwdytCd
-	vwpipKGryEn+uYHwEtPVLNyHfS2YlF0r+fjFvLzfKkcpKrPk99w/Zh9dpCO8Wet7bmRCbGIBw8x0b
-	Exu9QDfiNclnftHdJEzj4Hn4jWAWu2D/EtxW4B6IdnjpCQCIkR1ciXR325XZp5GeY1Qv4MwoCgQOV
-	hoJF4VFtJIvw2SkezhP/jsrWdoJfZ6GUhmFD8k0Mvtl8jYlVcdUOLguBRpG+VVTTIocxq6btiwcrp
-	anDuufcvRRB7HHw6uv/SZ+4Ec9IfebO3W6GCpLwwyfzImcezKlz1+X+cpNHXWVMjKRgQspIc6wNME
-	SjR11nOg==;
-Received: from [147.129.179.166] (port=53260 helo=rday)
+	bh=7H9wyhzhAErCVcqjW3dUg1gPk8ZVn7SYicxkxCLFM34=; b=KYs6bLlvFYau+U/KvDkLZR4zod
+	nenPZdSUZLYoGQvbfeMsaoy/I+zatuzOANJ0KCdlKuWpavtLUz+q96a8C8IOVYxPPIkQ0+EonEihI
+	WoUsn3H91+j3pnjQu3dSuUi7VIuBFlStz+5c68a7rht/DwmtQruQJVZdnaBbWDm6eU9wVgeIzuvmU
+	viNQkpLkaebv5GKyx09IT5d93AQrTsivoSlejJPpqusZIWU1LJy2XVQfscuvqsJpjhga7ekdWdA54
+	62VePhr6VL6KJSDeiq60ggM4HQoMoxtkdB2PXJ1UvkLzemc55mxYvCP4qHnBeCbxAvLbCL5bnvKfu
+	fdx53t8g==;
+Received: from [147.129.179.166] (port=57264 helo=rday)
 	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.99.4)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1wUjU8-00000008Ra4-1BUc
+	id 1wUlWJ-00000008g91-1dR7
 	for docs@lists.yoctoproject.org;
-	Wed, 03 Jun 2026 07:10:09 -0400
-Date: Wed, 3 Jun 2026 07:10:08 -0400 (EDT)
+	Wed, 03 Jun 2026 09:20:33 -0400
+Date: Wed, 3 Jun 2026 09:20:27 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: [PATCH] overview-manual: explain "ODM" and "OSV" acronyms
-Message-ID: <77b7f6d7-4d08-601a-0940-09d9a7493156@crashcourse.ca>
+Subject: why is CROPS listed under "Archived Components"?
+Message-ID: <bc5c1023-203b-aa92-b799-3c5fd584d2bc@crashcourse.ca>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -50,29 +50,20 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 03 Jun 2026 11:10:19 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9558
+ <docs@lists.yoctoproject.org>; Wed, 03 Jun 2026 13:20:39 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9559
 
 
-Beginners might not know what these acronyms stand for so explain
-them.
+here:
 
-Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+https://docs.yoctoproject.org/overview-manual/yp-intro.html#archived-components
 
----
+the title "Archived Components" strongly suggests stuff that is
+deprecated or no longer under active development, but that list
+includes CROPS, which is clearly described as the current best vehicle
+for doing builds on a non-Linux system.
 
-diff --git a/documentation/overview-manual/yp-intro.rst b/documentation/overview-manual/yp-intro.rst
-index 9f8522b25..7d3ebb58c 100644
---- a/documentation/overview-manual/yp-intro.rst
-+++ b/documentation/overview-manual/yp-intro.rst
-@@ -42,7 +42,8 @@ Here are features and advantages of the Yocto Project:
-    :yocto_home:`Yocto Project <>` home page.
+  that seems to be sending mixed messages.
 
- -  *Architecture Agnostic:* Yocto Project supports Intel, ARM, MIPS, AMD, PPC,
--   RISC-V and other architectures. Most ODMs, OSVs, and chip vendors create and
-+   RISC-V and other architectures. Most Original Design Manufacturers (ODMs),
-+   Operating System Vendors (OSVs), and chip vendors create and
-    supply BSPs that support their hardware. If you have custom silicon, you can
-    create a BSP that supports that architecture. See
-    :doc:`/ref-manual/yocto-project-supported-features` for details on the level
+rday
 
