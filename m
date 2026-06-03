@@ -2,139 +2,116 @@ Return-Path: <paul@pbarker.dev>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 59C6BCD6E57
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 82A15CD6E6B
 	for <webhook@archiver.kernel.org>; Wed,  3 Jun 2026 19:45:39 +0000 (UTC)
 Received: from fout-a1-smtp.messagingengine.com (fout-a1-smtp.messagingengine.com [103.168.172.144])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.28909.1780515930392557866
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.28512.1780515929131198907
  for <docs@lists.yoctoproject.org>;
- Wed, 03 Jun 2026 12:45:30 -0700
+ Wed, 03 Jun 2026 12:45:29 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@pbarker.dev header.s=fm2 header.b=v01D3Ya4;
- dkim=pass header.i=@messagingengine.com header.s=fm1 header.b=CMmu+oJn;
+ dkim=pass header.i=@pbarker.dev header.s=fm2 header.b=qDU7Axhw;
+ dkim=pass header.i=@messagingengine.com header.s=fm1 header.b=hoov/Wtk;
  spf=pass (domain: pbarker.dev, ip: 103.168.172.144, mailfrom: paul@pbarker.dev)
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfout.phl.internal (Postfix) with ESMTP id BA16FEC0122;
-	Wed,  3 Jun 2026 15:45:29 -0400 (EDT)
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfout.phl.internal (Postfix) with ESMTP id 42A51EC011D;
+	Wed,  3 Jun 2026 15:45:28 -0400 (EDT)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Wed, 03 Jun 2026 15:45:29 -0400
+  by phl-compute-02.internal (MEProxy); Wed, 03 Jun 2026 15:45:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pbarker.dev; h=
 	cc:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1780515929;
-	 x=1780602329; bh=HetKxqdKPo984fuiK0xngMUsLZvrKRvMpZfdIV2mI4s=; b=
-	v01D3Ya4jUoUtk/YViCB6a1R/VLxS7cMbvh5bPL+9mzcWrv6F7idqyqXPDePFLOq
-	XmFjP4FITrQxAqsSbeecEkmV+52Y8VixGB9NGOiC8WcYbOrL5FU98e6jxuLGvkjb
-	rWAWR/RW1MVWBaPeTW3AdxB2pxWQHAflhFfkiT4d+p++1K7sT2vklA9CPGfah7Dj
-	kIDvZp/7UAiJLQtByDBzezNemMDvK3Mon/ZXGzFqQFslonxAdNMgoYRdr4uxyAEY
-	XlMmj46KmAFK2SPXQn+ua81WVq1EKWUOXt7Scj9l7dsqavPsfsD/KJQOoR3VYOOl
-	ZFbxUawjdK0nugQlh+CNWw==
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1780515928;
+	 x=1780602328; bh=VfqRzjxF/0BLWEUTNikT8CAeo+RBD2FwCg44T/mOFYw=; b=
+	qDU7AxhwsThe9YU3beVbnJw68CTnoKZVcHQz3+i271xmiKfeRJh7s54ttzyXKy1q
+	vicEL7OJy3TgH/TxmHH+jPoumYjR6dc+Zs+ZmHSLG2q1z0AU6e7y+mvT9OphujKZ
+	iXV52cFy6u5PMlEzJfvTanG9cBQMAKI2l2xJ+0Ua82qou7SkS/ZqLKNVO81pwhBN
+	4cdjCog9fyUjuMdmlmPLauWBQgGurFyBrvGZeI5/vb++ifn9wy+ta/PocD5L9bl8
+	uTRmvHNzFpl+kkzZRd0JwmLS1AFCGGizBqxa0UzeN3BS00GMDpEgUKnP7dCXnTep
+	dmLHZ1iVaCpjVaXrK0+Oxw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1780515929; x=
-	1780602329; bh=HetKxqdKPo984fuiK0xngMUsLZvrKRvMpZfdIV2mI4s=; b=C
-	Mmu+oJnMvbUO5UHc12RXgEAmwhEMG/FWhmNDrRDhLLMG8fh0eMI/018+AY+TcXa5
-	A/x1dB5N4DoXOOHJdOaB86ffpxJyybjqEujIZ9H2eF0qSVd8Ip88JAY/1RUtp8Lr
-	QtTh95K18lX+OweR1ZKa+bF/8NKMdEYNsZZKO5vp+ZsBHujq8fqAvtLoT3eNGnGQ
-	h+mMr3E1nYfOlNqQDvYNA1MuFq2gHvxCX2EsJ01FkolGMU5NaUflwVq7tyS4GncK
-	IGuy/YQphRm8PixYq4sUv3/WdvAyt3XybpSPruL6UAtwL04Fukfer1pWr7S4x7Cz
-	BvZsRwptRdmjSrflGnsuQ==
-X-ME-Sender: <xms:WYQgapxKusyRRH2sFZJVcJWrTRT2dDSMgEHIP4rMzAgOpuAdyTgnHQ>
-    <xme:WYQgagvk-0uRrpG3Q7cBXUmMONueFovvo0-KRokMf5VHow0j-qmEuGlNWmlb7Fi8N
-    0_9i1k5BCp8_bwEt5uRYGP2X5TQhQs4GVyiXHlVVkHIrtoD11ZO_5o>
-X-ME-Received: <xmr:WYQgagsDxKFlnQb38KzyizbT7v_GBjCY7lb0pWwaCHvLl4DZrqN4-BlrMQdaS8P63a7LHpR44Iw1DQ9_uQQk1sfILWRfYdM>
-X-ME-Proxy-Cause: dmFkZTEIRgtuqh27/t6pN6GS+90VEnYn1KDAD8aaixByX9OK1LYnzxXURdleh05LmrSH+R
-    B5xgSs1szi80HsoTYkm0iUhYOeLBY94LayaXP91qnCxwvLNN8Py8KVUylQZhvBQz4CVa/F
-    1iGiaNVcPkgzqyK3AJXDiik5rTFUoX3gTj+flf8+b7MoabXeYPiV+h7TWWT7khEZqP2Syy
-    avqwTU8HZ4w0JoXOAkCU8mENn0IyEHcF3Nvfvs5pE+JnSM7cc0U/J+yyeQjnIOiGeStxl8
-    91eNzeCwrM3CLYJGmmKISprQbla30FdptJtYRLZvj5JVH8/ihRVELSG+QP81EeWvWw4sDJ
-    pqwfzCybRbuxEs0AAXbNl1K37JbLl6zuYjqiiqRIGmJ3ODPKXgIiy7PxiTpI4taBB0b3i5
-    s2LvbhQVeaboSJNGHtO22YGXMax2Wuu44wdHwHvi0g0Hqw51HUvzCcEbHaNCC9O9aSslyh
-    BsPlxL8RUownXc//pXSI59jQXQWQFp+L3v+Ucw2EEvFNvf/9B4XCBzUQcwytEVsQO4MzYs
-    q7169L/xZqcHzt9u64jMRopsnuIDTba+q2iaqM6EVSKKzKL0vzduDNXtZfTXqePq+2T/5r
-    kgmM1xxOXWic6bPp7QzazZJ+DROqw7AhV46NbFCRCCX0ZLiVLeYnKRi7jPUw
-X-ME-Proxy: <xmx:WYQgalOxHzzPzGiZxwx7ui43rX0HWofWJtbq8wG9-xXCA6TXedLqxw>
-    <xmx:WYQgau2NtO8V2_uACnoWEiqyRqedanvHkTs7nhKjH7ek4cFy5e3oDw>
-    <xmx:WYQgahPdcK7WYrwXM4TszS-RapDAkv7MmazkW61YRDwNUVK1Wz_sCQ>
-    <xmx:WYQgau08BGLVQycV6zK_fo7rnGY1paB-kMQjIUSM06QKi2DL-IdxHw>
-    <xmx:WYQgaiWok_BgWC-kqzW44E-YPAq_ydQcc-wHk-uxsLlox6n90nXgg3Hl>
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1780515928; x=
+	1780602328; bh=VfqRzjxF/0BLWEUTNikT8CAeo+RBD2FwCg44T/mOFYw=; b=h
+	oov/WtkC0AxTodl0FZuQlAIzqim5jUF2EBiUD8A8wcXE2wjrkDBPRJuomPTx7UTM
+	aYDrC6hoAUVgfxeM/haf6WGqKMPDdppPulJegdXOnu0lB8VEs//RK8b5SW6ir/Rt
+	SXMa2R5mkCvK8lbczXK1fqv7X3S3FYWZoK8WLux7sY8/DxOn9ylMe7rSQDlQjc4P
+	Z0Iq4fFZPUvN8Zb7fYQaPy6r8NK4xuQslMCPFpAS7zw8Lct9h4oXRdj0mJLy//iD
+	PWD4RQzBkCsCvdTZywHjmtGEHltq9R7kVrBsv8qA3DF8Omtn3yqzwrruKtiixmja
+	8V6z0roPKJT6NQqK8I4/Q==
+X-ME-Sender: <xms:WIQganaLe6OE-DzWD-GtJDu7HALMbjJ-P7-dEwnPiM8Z7jQAV8gnEQ>
+    <xme:WIQgasYEQlgzrIhm4oT5QIleL78-aTgPGLydQp5EcghGsoNIL8njfwvZ9ae5PGVz-
+    H7mSitUAjpoZgCAPWGy5YtYNxtTqifHff62oh9kawsdcIUGrBXU7ck>
+X-ME-Received: <xmr:WIQganniNjNBXfm47pkkvWqzAVzssPz27AJvDIfAn0Xa5sTmuOIyMLHcYFS1E9W92vL8FmHzPIS5jP15uZOOjqhQ9p_GauE>
+X-ME-Proxy-Cause: dmFkZTEFmFg9DfANNHu6JLYwGPK2uX1QgI2XtauA9cCv90EIVODvD4QCJQPLsRD3YIkSxp
+    wr4d+mVlTWlPd5pJAW9dfncNXk1DzvZ7wfVwYT5MXCwL6VV8bzjdfEJQqfRQIweL4jVGoW
+    Dzo3jXX6wtW6IBYBnKh7YeD6D2zJN1gA2xFcwjsOidZZobO8a9KGST93C7rb8073DfD50y
+    SFm5e+O5fnkKeP818ChblZLtXwEgF+uztOavLViG+zlfw5Dpr2rqYl1tiA0fRTHnEsZ2ii
+    4dvTuKRD0692G3M5gheIN5MuD/a7phha42pT4f2t4rBjUJPQMKHNlF756uh3dO5sc4RHjR
+    u1lcb1mIr6oaa67jCCZAw2/d45Y6JGQhL+yqY93Y/mOMD77Y6YWXD02W4Wp5XuK54PGwxu
+    ZgLvdkx0fGCpvm4/4N5B+maWBRBCqnNmYcEYY9E82JjRjiiXLehOYQqwRDUmNqRhVvK/rE
+    gaF0Ik/nbheNb5RYVreJGIuAK2xr+M358XgEdxHNg3MO/vHW/tQJHXKMFejXwKnHUjJPza
+    DjC/r9L14uxbjt1drbW6B172Md6RqaybqxxEoMUo/UB8J4Bn9Y5yeI0DeyDEN0rjgSNHK1
+    mOgtYwHBd15Je0CPzTLRPyuK1XKAjqauEWclj8mkDACOePo1psDz5TGzranw
+X-ME-Proxy: <xmx:WIQgaoxsPfvxJ1-3YZQAhrjFzvF6ndNF3bqmV5u_8n_ZLZdPbcvb3Q>
+    <xmx:WIQgalN9g4uNo2RZ6WcHCb9CTUtNUNB66N1GYHp79SM8bh98hYrFQg>
+    <xmx:WIQgasTZsKn5BZmXiV6jMFguFjabbZKIqAHrez4XP__RUoIodlLwsQ>
+    <xmx:WIQgajaDN7jTNxRIWVXROCp9SanMNtDXUM-8Ock_ZyEqbRj5ib9Bag>
+    <xmx:WIQgah_r-TegbL-F5Fi-hqxsNxtKkOJZt0JQwSEusr42zBM1K-BVaXDS>
 Feedback-ID: i51494658:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 3 Jun 2026 15:45:29 -0400 (EDT)
+ 3 Jun 2026 15:45:27 -0400 (EDT)
 From: Paul Barker <paul@pbarker.dev>
-Date: Wed, 03 Jun 2026 20:45:19 +0100
-Subject: [PATCH v2 3/3] security-team: Add section on multi-project
- embargoes
+Date: Wed, 03 Jun 2026 20:45:17 +0100
+Subject: [PATCH v2 1/3] security-team: Update membership list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260603-sec-team-v2-3-ee7d2016fbf4@pbarker.dev>
+Message-Id: <20260603-sec-team-v2-1-ee7d2016fbf4@pbarker.dev>
 References: <20260603-sec-team-v2-0-ee7d2016fbf4@pbarker.dev>
 In-Reply-To: <20260603-sec-team-v2-0-ee7d2016fbf4@pbarker.dev>
 To: docs@lists.yoctoproject.org
-Cc: Marta Rybczynska <marta.rybczynska@ygreky.com>, 
- Paul Barker <paul@pbarker.dev>
+Cc: Paul Barker <paul@pbarker.dev>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2329; i=paul@pbarker.dev;
- h=from:subject:message-id; bh=EVKVx48dL2ouWRJFqaO/OhFvX2umtqInqcvK153WjdU=;
- b=owGbwMvMwCW2OjnkzdxdX/IYT6slMWQptITN+nhwpsr3fTFpqhdNNk6V/55/+NhmUfnfu05yN
- b+aL3b/TUcpC4MYF4OsmCLL5p6v95/2OvJmhNxSgJnDygQyhIGLUwAmcnclwz8ldoNOhyMb2Y/y
- aG4sfL5IacvLB9Of/Liqvlx10QLh89uCGBkO/WZdtmRhiYWa1WfJjZzbRNuPWa8tKbxtFH37i/u
- c7gvsAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1275; i=paul@pbarker.dev;
+ h=from:subject:message-id; bh=jvYS6J08uR4ZTwRPHrlAbPVuZ2fkQepXsRYZykiEhzs=;
+ b=owGbwMvMwCW2OjnkzdxdX/IYT6slMWQptIStODv15Oq+jYxMSydPWSmdcuPwoQwO+dUuW3vWf
+ f0ntiWqvKOUhUGMi0FWTJFlc8/X+097HXkzQm4pwMxhZQIZwsDFKQAT2VLNyDDryMe5RcbyE7MZ
+ I9lMLrwP+r+1t+DdscXsS5c5L1r/9MZRRoYvHY5VuhwnRTPSfkjd3/mvvpO74KONccDyKfETZdS
+ /+PIAAA==
 X-Developer-Key: i=paul@pbarker.dev; a=openpgp;
  fpr=98B2AAC100AC3F82BB5D546774975C81B7E66BAC
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Wed, 03 Jun 2026 19:45:39 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9573
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9571
 
-This text is migrated from the Security private reporting wiki page [1],
-originally written by Marta.
+Steve Sakoman has retired from the project. The TSC announced the need
+for a new security team member and nominated me to join the team [1],
+which was then confirmed after the nomination/comments period closed
+[2].
 
-[1]: https://wiki.yoctoproject.org/wiki/index.php?title=Security_private_reporting&type=revision&diff=86034&oldid=86033
+[1]: https://lists.openembedded.org/g/openembedded-architecture/message/2352
+[2]: https://lists.openembedded.org/g/openembedded-architecture/message/2375
 
-Cc: Marta Rybczynska <marta.rybczynska@ygreky.com>
 Signed-off-by: Paul Barker <paul@pbarker.dev>
 ---
- documentation/security-reference/security-team.rst | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ documentation/security-reference/security-team.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/documentation/security-reference/security-team.rst b/documentation/security-reference/security-team.rst
-index c83ada17eb56..169d503e94af 100644
+index 30d7b37b2c43..7ec1dda02e0c 100644
 --- a/documentation/security-reference/security-team.rst
 +++ b/documentation/security-reference/security-team.rst
-@@ -80,6 +80,28 @@ vulnerability as quickly as possible.
- The Yocto Project Security team adheres to the 90 days disclosure policy
- by default. An increase of the embargo time is possible when necessary.
+@@ -107,4 +107,4 @@ information in the subject line.
  
-+Handling multi-project embargoes
-+--------------------------------
-+
-+In rare cases, a severe security issue affects multiple projects. This might be
-+numerous projects having a similar issue because of design, coding pattern, or
-+reuse of the same code (an example of this situation is :cve_nist:`2023-44487`
-+where multiple web servers share a design weakness). It might also be a
-+high-profile issue in a commonly used library (like OpenSSL). In such cases,
-+the project, learning first about the issue, might decide to notify other
-+affected projects confidentially so that they come up with a synchronized fix.
-+It might also be the affected project informing major distributions to roll out
-+the update simultaneously.
-+
-+Such notifications happen over confidential, non-public means. Typically, the
-+project initiating this "embargo" directly notifies a selected number of people
-+from each project, including a subset of the security team. When Yocto Project
-+is a part of such a notified group, developers prepare fixes on separate
-+infrastructure and test it. They might also include additional developers and
-+domain experts who can help with the fix and eventual regressions. When the
-+embargo is lifted, they send a patch to the relevant public list, and the usual
-+review process starts.
-+
- Security Team Members
- =====================
+ -  Marta Rybczynska: <marta DOT rybczynska [at] ygreky [dot] com> `Public key <https://keys.openpgp.org/search?q=marta.rybczynska@ygreky.com>`__
  
+--  Steve Sakoman: <steve [at] sakoman [dot] com> `Public key <https://keys.openpgp.org/search?q=steve%40sakoman.com>`__
++-  Paul Barker <paul [at] pbarker [dot] dev> `Public key <https://keys.openpgp.org/search?q=paul@pbarker.dev>`__
 
 -- 
 2.43.0
