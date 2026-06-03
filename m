@@ -1,184 +1,93 @@
-Return-Path: <paul@pbarker.dev>
+Return-Path: <rybczynska@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 693F5CD6E55
-	for <webhook@archiver.kernel.org>; Wed,  3 Jun 2026 16:40:01 +0000 (UTC)
-Received: from fout-b4-smtp.messagingengine.com (fout-b4-smtp.messagingengine.com [202.12.124.147])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.24893.1780504799366038737
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4A03ACD6E57
+	for <webhook@archiver.kernel.org>; Wed,  3 Jun 2026 18:58:59 +0000 (UTC)
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.27954.1780513135101470783
  for <docs@lists.yoctoproject.org>;
- Wed, 03 Jun 2026 09:39:59 -0700
+ Wed, 03 Jun 2026 11:58:55 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@pbarker.dev header.s=fm2 header.b=nml8MsXn;
- dkim=pass header.i=@messagingengine.com header.s=fm1 header.b=RNKpRpWi;
- spf=pass (domain: pbarker.dev, ip: 202.12.124.147, mailfrom: paul@pbarker.dev)
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfout.stl.internal (Postfix) with ESMTP id 7B67E1D00153;
-	Wed,  3 Jun 2026 12:39:58 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Wed, 03 Jun 2026 12:39:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pbarker.dev; h=
-	cc:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm2; t=1780504798; x=1780591198; bh=nEwwoNI+zL
-	sZuYyp9zFge/fTeERtxnJDJVzqkFBjTcY=; b=nml8MsXnDa8DRnE5B/Cgx8McHi
-	uEVMjsVCd/svm9WYAvlxFLn+nIMDhGsB3OoCqHWB7SQCEn5BbDYsFTs6CZ4PwnGR
-	WdgLrLRBCi8h87DUx/FrR6xSdrH8eKzClrWkqmszyAU91lak1MSwzXVOGaQf94Ym
-	LnFcXoc6Xd9bmNZBT7wsEGZTT4HM+M2AiTnWrUUf107DLPnkqO1gtoa4pLl6a6FQ
-	XLDO3K/Dk5/u4b+s0onnGQmdbbNF3/vZo5gMq0QKHkiIgjqQaIuEbZeEfF3onvn+
-	ltRwBWeGdjclOfN752EJpWky0ZgFwYLTVGhx4p9AljqmJfuN4yUjV7HTCafQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1780504798; x=1780591198; bh=nEwwoNI+zLsZuYyp9zFge/fTeERtxnJDJVz
-	qkFBjTcY=; b=RNKpRpWiCRnMJDx2q0tzday1JEOM3Yd1p4fNxfh6EKsKJkDNpqZ
-	2tVo2+NCvXAAflHX1VHc+UYKXDIxqEM5vXmpFkyobr8Q5XKLhkCWcmEXN1pycb5t
-	WvdQdhEXm1FgKXaMkFer2qOUQynw1cwrMlpbphE+NEokhLg7hSOAXgL2Rho0YoSo
-	oV0ihccrEg9N5UPyhNlQcuq0Xa6UH6lcIAzAC8AjYIAjgWrQxHL3pvZa3BDJPYeT
-	v958NY/Dm1D9u+RRAD6NGPGDqmRAWbBQxTuAZqkunGjkxnazvkV0VWETxDy4CZk3
-	9mpXTydUHliDfjm37hq4dbPGQKMtNu+vj4A==
-X-ME-Sender: <xms:3lggalZYu5ZakpILfIFpMrmPJEQXM73_YagLj-dmjvubDjv9gV4OEA>
-    <xme:3lggaj3YOzTf_5mRMUrcpoQ12AkbwdsqyqMNcXDk-8sAneFlsKrxqmmddKIdwzJlF
-    O02J1tn0VoFBnZ3jPWTXq5kB5dmgSekq-ivJEFpw3BDC4lH6xPua98>
-X-ME-Received: <xmr:3lggalXoe3SbkuDGOL9pcskQBMs_PiTG9SRzmGF2w6hixZ2-XjaIhxTKJ7GBlXdIalyroc2fncjPh6G4iOmEOWQ0Xz4UW0VGsOWMWerGEpFdovCnqcNzJkYvPjwIAI0Y>
-X-ME-Proxy-Cause: dmFkZTELkZ3fePGm0qDZEdLb2UG4n2LJ2gZdSs3OSuoSfYUza9ZyQJFbNca5ZDfeltk5U8
-    Ge6fDMj9NxpACgiBa+CZpf22HaZWElDxS+JKmsnBAkmtf8yQk/MQK7XeyfeWEgSMDPVcRF
-    saUs+cAxmLziCPVHPeKVB+ADn/STM7sljcyz7gkBsBtcXoQSeLNa+sxXJNZFHhpk/dQ0tA
-    6qshtalH6/uMPWl9BUX25/WmoxRW0mNvOokj1h7IpsjVAJzXdjv/v3sEOdWEV7vmc3e3u7
-    iwKCPfRLD0ByQPTVajJjesT+0iW0dXpMaISR/zTa/WD9cylPLi07BBv7I/Gc9FZECEtYBd
-    rKs0IgHZ/OlkrloxHRsfA76xMJeSmJu+Vrt+61uI05QbIPekr85DW8uMNVvDJe8+X2gniG
-    BQEz5sJtUU24CA04TKdXvyzpaVwRwcfTpzaIpbvmfG2NDwz+YJ+dgcGGuMNhGd5U/lAAiR
-    iOla7MftMcRWL4gT49oP5rGiCjktc1QkSVP6PMfOw7KPrVSEeWq4U6Q15/zjX2TqiXcAfF
-    iALLbcv4OgYU4qmjp4ZPDi3NYJpAtEiD+MMClvXrxUBRsbZuhOa2pEyQNModB2SiYd1rAL
-    i6xQ9JGmtQb5Vx9j9Uny7NMsR8t/XuZoxch2e0AC2+sqJ6Nbomn4tbxnF5uQ
-X-ME-Proxy: <xmx:3lggatXNpLgR936leNBHS65mhfom8G5a0g-dVXZ1lvP17AUe3UdwlA>
-    <xmx:3lggakd91o9alvD89Us-tJ6NovRLzDVSnQcxvozgm0ONMvzEjxB5KA>
-    <xmx:3lggamWi5gxr37CE5jzWAV_u-qyt1Yl5Ut1ngW9Ph1gwQGvUDXbLZQ>
-    <xmx:3lggatfsCG39a7lG9o-8W2KnY0IN9vKv223Rs6ZPLHLr7-J4iCQIRQ>
-    <xmx:3lgganNSBXMsPRmoiXzYm1DeI8YaHDmQTLwMM_NrumtpnK5apw4xP460>
-Feedback-ID: i51494658:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 3 Jun 2026 12:39:57 -0400 (EDT)
-Message-ID: <97144f9b8432b4c14d72a3ba03dd69f1c70f444f.camel@pbarker.dev>
-Subject: Re: [docs] [PATCH] security-team.rst: update my email address
-From: Paul Barker <paul@pbarker.dev>
-To: rybczynska@gmail.com, docs@lists.yoctoproject.org
+ dkim=pass header.i=@gmail.com header.s=20251104 header.b=nT6AQLXm;
+ spf=pass (domain: gmail.com, ip: 209.85.221.42, mailfrom: rybczynska@gmail.com)
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-45efb698ef2so2580607f8f.3
+        for <docs@lists.yoctoproject.org>; Wed, 03 Jun 2026 11:58:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780513133; x=1781117933; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=hnahYMCDPw9jGPJ3xN5LoP8H/WSPCiqWam0LTCH9zs4=;
+        b=nT6AQLXmN/uWtanHbehZaL0EITXyqNcO0fiZHI6mkkL/BgQNrlG9hwhsyOQW0IxU91
+         aL2GZ2zq7ChBNsjrxi9RhvsmiT0JRLXIIf/s0fq3bkjq5S4gBGsl0usDws05SAdY8Qqe
+         uKMWyg7aa+41q+UshLjtYgaNPVLbegMTpNzrEqKrGNOPhyctsl85cao4wdIFgC3VXnBA
+         h/xsAKs1Z4LDLb/I07qcWuaHR6ZRCv9JDxIgesBPLSwMfQQIvoEHgW+y3Wd+zKEo0vHj
+         Hk7DShH/sbGpuIwsCurN7N/CuSbA+wP/zh3YT4jWA7QAVwOZMK+VO9oi5EwSJtee/C0/
+         y6ew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780513133; x=1781117933;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hnahYMCDPw9jGPJ3xN5LoP8H/WSPCiqWam0LTCH9zs4=;
+        b=jNtEmOZPbup71Iqhpxn1J7EtBxWscAlx15Rkb4i5mlk/AcGmtkoya0h7G1bW1G9jGZ
+         5L77cB7hLhagJu4MK0Sudy8DwFtx4Q6gESh9MxJiqiLGYHjNvwSZ6SAZpkb7fSlaxe5w
+         cw4G934b1c2x1L3D5uQKA2zPtilPB83Lktvqm0QPSjo2w7NaoAMm/UyI01hcWsHFJ7R9
+         0kM9wIKmQPXQnsuv1XF161U4aXaR0L2sXp3tpSEdKLv+872Zk3ZqIrS9bWqVw6eP2/as
+         WgT/NeIoFzs5LMrd8/ulkk3OYGRpT5kQRT4vNKA/MRTfZ0TTzXVFZ5nzm1qyjUrPw/Sc
+         MC9w==
+X-Gm-Message-State: AOJu0Yw5hdyyAw7Z8MzMIFzpJ1v3W2fq9vi2AqO5F7uGRJrXzKoI7UMv
+	h1rsb2C0VbVov62gLlIE3Lj5HQsKMT7RHeA2yZ9Lt0VnnTunVdYESt3nEO8E3w==
+X-Gm-Gg: Acq92OFofDiBvD2LFek/TeLCzMrh3V6XB/UaaGnsvFC7zHkGHilVJ/qzV5TM47iQ4CX
+	9ldD/iNntGNNdiQjY/t3+bKRI287RQav7XHF6DMV4fHkE7/Nz2U5eWp3CFIcVH1ZriLsqubFYrH
+	E9FZ0Ff1zgEAKvhokpQJh6vzzAx4G+Q0/72496HOBNQfvULJnK6MpKgQTc43O2TkwUNtLfA0EsV
+	5ahB+MTH8DGN20XIdEjjzjI5dTy4NEeZD0awcE4vx9IJOHkSicc8YeyVW8EDYHgXjpBiFgkjoTO
+	y/G0dLCeYR8yh87bs2wOigIX56jt6gBZB7AMfMZd2U1V7GW1CUwXOfJjzjgW9I2HiBtPcecZehX
+	XteHgyEV+O2obULM5t8Qk0piegCOTYpLvMCAA4zMlsj+d1RiceKBQsOW9X00HKmTLrJcRnG+JZS
+	wFaGnHtNG7SE2G1Uo2vFLsy0x21M6EhoOUm4Z6dqO3ahI2Uc4ZWxjYb8NrP6xXg97pCYIiAW0Cj
+	oSF7lnRWwNpZUNHpcUjNbwn30cjN/M6iQC8WG5jTyB4Og==
+X-Received: by 2002:a05:600c:19cd:b0:490:50eb:b777 with SMTP id 5b1f17b1804b1-490b5e9fc71mr80694455e9.5.1780513133279;
+        Wed, 03 Jun 2026 11:58:53 -0700 (PDT)
+Received: from host2.home (88-170-249-143.subs.proxad.net. [88.170.249.143])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490bc413541sm11239995e9.14.2026.06.03.11.58.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Jun 2026 11:58:52 -0700 (PDT)
+From: Marta Rybczynska <rybczynska@gmail.com>
+X-Google-Original-From: Marta Rybczynska <marta.rybczynska@ygreky.com>
+To: docs@lists.yoctoproject.org
 Cc: Marta Rybczynska <marta.rybczynska@ygreky.com>
-Date: Wed, 03 Jun 2026 17:39:53 +0100
-In-Reply-To: <20260603105914.26433-1-marta.rybczynska@ygreky.com>
-References: <20260603105914.26433-1-marta.rybczynska@ygreky.com>
-Autocrypt: addr=paul@pbarker.dev; prefer-encrypt=mutual;
- keydata=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
- LUewj8JVy0aJsGTwI4invl
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-XG14zSnzLycmumwoQ/br"
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
+Subject: [PATCH v2] security-team.rst: update my email address and key
+Date: Wed,  3 Jun 2026 20:58:43 +0200
+Message-ID: <20260603185843.44152-1-marta.rybczynska@ygreky.com>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 03 Jun 2026 16:40:01 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9567
+ <docs@lists.yoctoproject.org>; Wed, 03 Jun 2026 18:58:59 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9568
 
+Update my email address and expired key
 
---=-XG14zSnzLycmumwoQ/br
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Marta Rybczynska <marta.rybczynska@ygreky.com>
+---
+ documentation/security-reference/security-team.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-On Wed, 2026-06-03 at 12:59 +0200, Marta Rybczynska via
-lists.yoctoproject.org wrote:
-> Update my email address.
->=20
-> Signed-off-by: Marta Rybczynska <marta.rybczynska@ygreky.com>
-> ---
->  documentation/security-reference/security-team.rst | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/documentation/security-reference/security-team.rst b/documen=
-tation/security-reference/security-team.rst
-> index b77365382..776dea568 100644
-> --- a/documentation/security-reference/security-team.rst
-> +++ b/documentation/security-reference/security-team.rst
-> @@ -105,6 +105,6 @@ information in the subject line.
-> =20
->  -  Richard Purdie: <richard.purdie [at] linuxfoundation [dot] org> `Publ=
-ic key <https://keys.openpgp.org/search?q=3Drichard.purdie%40linuxfoundatio=
-n.org>`__
-> =20
-> --  Marta Rybczynska: <marta DOT rybczynska [at] syslinbit [dot] com> `Pu=
-blic key <https://keys.openpgp.org/search?q=3Dmarta.rybczynska@syslinbit.co=
-m>`__
-> +-  Marta Rybczynska: <marta DOT rybczynska [at] ygreky [dot] com> `Publi=
-c key <https://keys.openpgp.org/search?q=3Dmarta.rybczynska@syslinbit.com>`=
-__
+diff --git a/documentation/security-reference/security-team.rst b/documentation/security-reference/security-team.rst
+index b77365382..30d7b37b2 100644
+--- a/documentation/security-reference/security-team.rst
++++ b/documentation/security-reference/security-team.rst
+@@ -105,6 +105,6 @@ information in the subject line.
+ 
+ -  Richard Purdie: <richard.purdie [at] linuxfoundation [dot] org> `Public key <https://keys.openpgp.org/search?q=richard.purdie%40linuxfoundation.org>`__
+ 
+--  Marta Rybczynska: <marta DOT rybczynska [at] syslinbit [dot] com> `Public key <https://keys.openpgp.org/search?q=marta.rybczynska@syslinbit.com>`__
++-  Marta Rybczynska: <marta DOT rybczynska [at] ygreky [dot] com> `Public key <https://keys.openpgp.org/search?q=marta.rybczynska@ygreky.com>`__
+ 
+ -  Steve Sakoman: <steve [at] sakoman [dot] com> `Public key <https://keys.openpgp.org/search?q=steve%40sakoman.com>`__
+-- 
+2.53.0
 
-Hi Marta,
-
-Should you also update the public key link?
-
-I tried searching for your new email address on keys.openpgp.org but it
-is not there. The linked key for your old email address is expired.
-
-Best regards,
-
---=20
-Paul Barker
-
-
---=-XG14zSnzLycmumwoQ/br
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iIcEABYKAC8WIQSzjPXf5Y1BDWhU2iCrY1Tsnbr0bgUCaiBY2REccGF1bEBwYmFy
-a2VyLmRldgAKCRCrY1Tsnbr0bt0GAQDR8XlltovQCbRllP/8Pw9gklIN1chPv2ph
-HJfClOVQVAEA5I21ciT2AkLRuZeaZh8fOH/aRSJ1UTVQ+ynNgRsKfgc=
-=86+w
------END PGP SIGNATURE-----
-
---=-XG14zSnzLycmumwoQ/br--
 
