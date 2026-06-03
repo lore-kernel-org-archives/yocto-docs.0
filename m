@@ -2,14 +2,14 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C97F7CD6E55
-	for <webhook@archiver.kernel.org>; Wed,  3 Jun 2026 13:20:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DCDAECD6E55
+	for <webhook@archiver.kernel.org>; Wed,  3 Jun 2026 14:11:59 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.19833.1780492834727058627
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.21325.1780495916859763482
  for <docs@lists.yoctoproject.org>;
- Wed, 03 Jun 2026 06:20:35 -0700
+ Wed, 03 Jun 2026 07:11:57 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=KYs6bLlv;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=XTtDFklo;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
@@ -17,24 +17,25 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=7H9wyhzhAErCVcqjW3dUg1gPk8ZVn7SYicxkxCLFM34=; b=KYs6bLlvFYau+U/KvDkLZR4zod
-	nenPZdSUZLYoGQvbfeMsaoy/I+zatuzOANJ0KCdlKuWpavtLUz+q96a8C8IOVYxPPIkQ0+EonEihI
-	WoUsn3H91+j3pnjQu3dSuUi7VIuBFlStz+5c68a7rht/DwmtQruQJVZdnaBbWDm6eU9wVgeIzuvmU
-	viNQkpLkaebv5GKyx09IT5d93AQrTsivoSlejJPpqusZIWU1LJy2XVQfscuvqsJpjhga7ekdWdA54
-	62VePhr6VL6KJSDeiq60ggM4HQoMoxtkdB2PXJ1UvkLzemc55mxYvCP4qHnBeCbxAvLbCL5bnvKfu
-	fdx53t8g==;
-Received: from [147.129.179.166] (port=57264 helo=rday)
+	bh=G87Bq+P7D9w5CFP85SBI89mMAJ9H7y2pCnxBB/+xKwA=; b=XTtDFklobzBuprQRYkYMKzCdlV
+	dxaNMzTJOsLXUkFjqxr0raZy2WVrS0jG9Cr/bcvPwqOo2J0LFjeQtf6ezkeUjPrP3M0fiabXe0zUE
+	UQzS9XuKXMAYp2+/d3n9DVtnhkZ8zTSnHzpGFBRCLmBOoPrnKapvFwpK0gqACJjyPhHD43oT0AOk8
+	RYkeDVdQa5NfB0PWPYVyMa2lwVQnYbFz/NzH1Cv0mw2rbpgJZgV9/jLiNHzZ9BP3gTRhMmPm6RMjT
+	6wBRC6eM8Kafn3wj73jk2nxq3Eeb4PSTMCpXkgfQOj33gKHrJ1AQm/CXl3CycLo36UhvxLgeGcQia
+	uN+vWayA==;
+Received: from [147.129.179.166] (port=38804 helo=rday)
 	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.99.4)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1wUlWJ-00000008g91-1dR7
+	id 1wUmK1-00000008m53-2Sa7
 	for docs@lists.yoctoproject.org;
-	Wed, 03 Jun 2026 09:20:33 -0400
-Date: Wed, 3 Jun 2026 09:20:27 -0400 (EDT)
+	Wed, 03 Jun 2026 10:11:55 -0400
+Date: Wed, 3 Jun 2026 10:11:53 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: why is CROPS listed under "Archived Components"?
-Message-ID: <bc5c1023-203b-aa92-b799-3c5fd584d2bc@crashcourse.ca>
+Subject: [PATCH] overview-manual: provide a more expansive definition of
+ "layer"
+Message-ID: <ffbcb1ff-434d-50c2-9c40-9810b63864f9@crashcourse.ca>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -50,20 +51,32 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 03 Jun 2026 13:20:39 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9559
+ <docs@lists.yoctoproject.org>; Wed, 03 Jun 2026 14:11:59 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9560
 
 
-here:
+A layer is not simply a collection of recipes; it can include any
+combination of recipe files, machine and distro configuration files,
+class file and more, so make that clear. In fact, a layer is not
+required to contain any recipe files at all.
 
-https://docs.yoctoproject.org/overview-manual/yp-intro.html#archived-components
+Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
 
-the title "Archived Components" strongly suggests stuff that is
-deprecated or no longer under active development, but that list
-includes CROPS, which is clearly described as the current best vehicle
-for doing builds on a non-Linux system.
+---
 
-  that seems to be sending mixed messages.
+diff --git a/documentation/overview-manual/yp-intro.rst b/documentation/overview-manual/yp-intro.rst
+index 9f8522b25..b2d687795 100644
+--- a/documentation/overview-manual/yp-intro.rst
++++ b/documentation/overview-manual/yp-intro.rst
+@@ -674,7 +674,9 @@ helpful for getting started:
+    their code available to other application developers. For information
+    on the eSDK, see the :doc:`/sdk-manual/index` manual.
 
-rday
+--  *Layer:* A collection of related recipes. Layers allow you to
++-  *Layer:* A collection of related metadata, which could include any of
++   recipes, machine configuration files, distro configuration files
++   and/or class files. Layers allow you to
+    consolidate related metadata to customize your build. Layers also
+    isolate information used when building for multiple architectures.
+    Layers are hierarchical in their ability to override previous
 
