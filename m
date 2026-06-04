@@ -2,14 +2,14 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 954C7CD6E57
-	for <webhook@archiver.kernel.org>; Thu,  4 Jun 2026 08:45:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DE6CCCD6E57
+	for <webhook@archiver.kernel.org>; Thu,  4 Jun 2026 09:34:31 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.6878.1780562702147015213
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.7442.1780565662239126392
  for <docs@lists.yoctoproject.org>;
- Thu, 04 Jun 2026 01:45:02 -0700
+ Thu, 04 Jun 2026 02:34:22 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=Z+2yjszH;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=YoQ4mUly;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
@@ -17,25 +17,24 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=zPq/gD5QyYOG3mPm199cWvh4InykBR+UJj2/ShDuFXc=; b=Z+2yjszHPBNkfzBHdn4byq63Jg
-	CK73JIkT6TjptR/e/vC5BjBDh1lYTJA8DGWry6CYBkO8Qk7KmWmJQSXG/Z8rElBOfqLa/TdYP5KLC
-	Q0P3wTtXjTT0oR403J6Y7yuk1TW13UqFjbd9DlKO1xmZ1u4IHY0JsbJj+1O27UDjBkDh04FEkc1D8
-	QrQPRHR6phrw3N3xgekjJGz6NuKxoJGUFxRowQDZbn7MuzDFYAdNcy1oQBd0n5iW8kJRjQ/+Zh3Ao
-	Sq/E76ntAqfZwQpkUcqr14BmN23+o0CB+zHJqcMqn0g/DFOch0noCGDT4KwJUgJjoB13RhC8wsupc
-	Eig31Obw==;
-Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:51900 helo=rday)
+	bh=3YgUm8bX7z+gDpTgUtlSiogKX4gmWsIyXASb1DsXGmU=; b=YoQ4mUlycKjwToDrPjhN+wjj+N
+	0ptJyjO9UoXYgTf5V4aQv97rmlGx2jzGn17Ybi8fSFbc7zBRPp6OVsmeRJ7fyKeLPtxJQNB9mTm8q
+	WtlEHQF+A9sm454aEpX5Gg4moPw9yyKk0JotfR5f2rXOXl7TH4MEuk/sCSORnV58LexCWZMf1/oNV
+	f8bTu6E8Q9Me/XEzdahxkOePjnmNHOZp+UeaVHvhkKYgCWBU6jPYIqZKT09uLJgf+hRfMjCl2Ori4
+	6w+MO3ZgjWBBkPepA8LBCwrMQr35tpS9mJ7qIQJPpUOAxUDGUIa4grCAnZI05yJURQFjLXy09HeXv
+	v1sXovUA==;
+Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:45368 helo=rday)
 	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.99.4)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1wV3hC-0000000Alrx-3DMV
+	id 1wV4Sw-0000000AqXA-3Q9w
 	for docs@lists.yoctoproject.org;
-	Thu, 04 Jun 2026 04:45:00 -0400
-Date: Thu, 4 Jun 2026 04:45:02 -0400 (EDT)
+	Thu, 04 Jun 2026 05:34:21 -0400
+Date: Thu, 4 Jun 2026 05:34:22 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: [PATCH] overview-manual: mention that patch files can be
- compressed
-Message-ID: <c9900698-224d-8acc-0c77-7fa1363e341f@crashcourse.ca>
+Subject: Overview Manual graphic still uses old "BLACKLIST" terminology
+Message-ID: <5d34a080-f180-aca6-45b4-98b399f4e69c@crashcourse.ca>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -51,28 +50,16 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 04 Jun 2026 08:45:06 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9576
+ <docs@lists.yoctoproject.org>; Thu, 04 Jun 2026 09:34:31 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9577
 
 
-Ensure the reader understands that patch files can be compressed.
+here:
 
-Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+https://docs.yoctoproject.org/overview-manual/concepts.html#application-development-sdk
 
----
+on the LHS, you can see the old "WHITELIST/BLACKLIST" variable names,
+since replaced by (i believe) ESDK_LOCALCONF_{REMOVE,ALLOW}".
 
-diff --git a/documentation/overview-manual/concepts.rst b/documentation/overview-manual/concepts.rst
-index ec5babe4c..0c03c0a9b 100644
---- a/documentation/overview-manual/concepts.rst
-+++ b/documentation/overview-manual/concepts.rst
-@@ -741,7 +741,8 @@ and the :term:`FILESPATH` variable
- to locate applicable patch files.
-
- Default processing for patch files assumes the files have either
--``*.patch`` or ``*.diff`` file types. You can use :term:`SRC_URI` parameters
-+``*.patch`` or ``*.diff`` file types (or a compressed form of those
-+file types). You can use :term:`SRC_URI` parameters
- to change the way the build system recognizes patch files. See the
- :ref:`ref-tasks-patch` task for more
- information.
+rday
 
