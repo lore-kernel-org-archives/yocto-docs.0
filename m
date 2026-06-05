@@ -1,91 +1,65 @@
-Return-Path: <rpjday@crashcourse.ca>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 37136CD6E79
-	for <webhook@archiver.kernel.org>; Fri,  5 Jun 2026 13:44:53 +0000 (UTC)
-Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.8645.1780667086878835014
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BC0C5CD6E7D
+	for <webhook@archiver.kernel.org>; Fri,  5 Jun 2026 14:04:13 +0000 (UTC)
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.8841.1780668243345914495
  for <docs@lists.yoctoproject.org>;
- Fri, 05 Jun 2026 06:44:47 -0700
+ Fri, 05 Jun 2026 07:04:04 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=Z0XaWra3;
- spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:References:
-	Message-ID:In-Reply-To:Subject:cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=UJ3JTMXwLcges0BujzJXQEzxSVw1ClTHScwh+x3ab80=; b=Z0XaWra3lIska9OW94Kquc3Rp9
-	9jMYeBb/4rZj8htJwkJXU6BCm5AAfcm0DiSrdgSd/3W7viFKyg2E/VAnwv6pBtXcvG5N77y1vrA1s
-	7uCxo274t4A+f9kPiup59Yjw1EQZGmEpKOPOcgpjLGGo2iJucu5Wun5/C/CHRwIHwYSNjmMC3Oo34
-	pJQmpKP9tYSDoqHbqdRIxCQJaJxwVw+y/dllNvc3UEF8Fo6JtEf893E3onn574wVrIglCxoGy04YC
-	xpPqwdROCcU/5vad6Yq+GR1/mAk12jzePokMuupT2XTUFFUNBDeq9mqgXUDwE5GiYzOKOBu/EeXN2
-	XbtMAyMw==;
-Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:53866 helo=rday)
-	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.4)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1wVUqp-0000000DmoD-2RGC;
-	Fri, 05 Jun 2026 09:44:45 -0400
-Date: Fri, 5 Jun 2026 09:44:49 -0400 (EDT)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: Antonin Godard <antonin.godard@bootlin.com>
-cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: Re: [docs] [PATCH] overview-manual: update deploy.bbclass snippet
-In-Reply-To: <DJ15P69LMOKY.3RPJL80QFHAE3@bootlin.com>
-Message-ID: <757e54a3-9b7f-a383-a771-f5687ee01cc7@crashcourse.ca>
-References: <bb559e86-8f2b-03cf-cd87-4992e9f38a7a@crashcourse.ca> <DJ15P69LMOKY.3RPJL80QFHAE3@bootlin.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=yuZ6CYIv;
+ spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 31E784E40889;
+	Fri,  5 Jun 2026 14:04:01 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id EB0F95FF0B;
+	Fri,  5 Jun 2026 14:04:00 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 73388106A245D;
+	Fri,  5 Jun 2026 16:03:59 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1780668240; h=from:subject:date:message-id:to:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=ijX6E4ZL1vqXzBEDmpr8FDqslR9Bu3KLrk7gtFj4Kx0=;
+	b=yuZ6CYIvAjSJ+iLrEIpPUd0vaZIYFZIzXrdz9JZPFkYMR3r5Pe/oa3iZRVVyco/TtqzADv
+	m4DQUDOG0tEX/P6gsnGJ+n2ffg9G4Llc6z7YG4WPrMRDnn0KkYQKEG6fEY3AtdB6YGHXKJ
+	fL23vLfYBqq+1fZmJjmbwVfYsYq6c7i8KGTu01PxffYk5ATqJqDeCjVQ3La4Y9dQ/YHQYp
+	SZHWYvA7UkXhDvOW+oU1EbgVDWU5pU47EIJkQLHL9A2qkgIzSWGw/ko4mgCe7cJeEqAVEM
+	Oic7OvgpFYOekUc16V398m+f5NBcP3IdGC68LWyoevbEbYfeyPXY1GT1ZvC98w==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 05 Jun 2026 16:03:58 +0200
+Message-Id: <DJ167JWTFOGI.23YVKLIRK8LG8@bootlin.com>
+Subject: Re: [docs] "Required Variables" aren't really "required"
+From: "Antonin Godard" <antonin.godard@bootlin.com>
+To: "Robert P. J. Day" <rpjday@crashcourse.ca>, "YP docs mailing list"
+ <docs@lists.yoctoproject.org>
+References: <8571c31b-3d25-c00c-df7a-68b61c48cb63@crashcourse.ca>
+In-Reply-To: <8571c31b-3d25-c00c-df7a-68b61c48cb63@crashcourse.ca>
+X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 05 Jun 2026 13:44:53 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9604
+ <docs@lists.yoctoproject.org>; Fri, 05 Jun 2026 14:04:13 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9605
 
-On Fri, 5 Jun 2026, Antonin Godard wrote:
-
-> Hi,
+On Fri Jun 5, 2026 at 1:40 PM CEST, Robert P. J. Day wrote:
 >
-> On Thu Jun 4, 2026 at 7:11 PM CEST, Robert P. J. Day wrote:
-> >
-> > The current contents of deploy.bbclass is slightly different so update
-> > the code snippet.
-> >
-> > Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
-> >
-> > ---
-> >
-> > diff --git a/documentation/overview-manual/concepts.rst b/documentation/overview-manual/concepts.rst
-> > index 76ace6fcf..fb9a56607 100644
-> > --- a/documentation/overview-manual/concepts.rst
-> > +++ b/documentation/overview-manual/concepts.rst
-> > @@ -1776,7 +1776,8 @@ adding shared state wrapping to a task is as simple as this
-> >         sstate_setscene(d)
-> >     }
-> >     addtask do_deploy_setscene
-> > -   do_deploy[dirs] = "${DEPLOYDIR} ${B}"
-> > +   do_deploy[dirs] = "${B}"
-> > +   do_deploy[cleandirs] = "${DEPLOYDIR}"
-> >     do_deploy[stamp-extra-info] = "${MACHINE_ARCH}"
-> >
-> >  The following list explains the previous example:
+> here:
 >
-> But you also need to update the bullet point covering this line below this snippet.
+> https://docs.yoctoproject.org/contributor-guide/recipe-style-guide.html#r=
+equired-variables
+>
+> the section "Required Variables" goes on to say that four variables
+> "should" be included in all recipes ("should" does not equal "must"),
+> but a quick test build showed that none of those four variables seemed
+> to be required for successful parsing -- only a missing "LICENSE"
+> triggered a parse error during my testing.
 
-  argh, you're right, of course. will submit v2 later.
+What do you suggest as an alternative word for "Required"?
 
-rday
+Antonin
 
