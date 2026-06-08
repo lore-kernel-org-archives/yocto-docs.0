@@ -2,38 +2,38 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 98D1FCD8C9D
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BD57FCD8CA4
 	for <webhook@archiver.kernel.org>; Mon,  8 Jun 2026 15:49:01 +0000 (UTC)
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.57878.1780933731796674022
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.57877.1780933731796262191
  for <docs@lists.yoctoproject.org>;
  Mon, 08 Jun 2026 08:48:53 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=owJYfyBV;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=H9Ch19nc;
  spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id C7B424E4178E;
-	Mon,  8 Jun 2026 15:48:49 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id BA2B24E41786
+	for <docs@lists.yoctoproject.org>; Mon,  8 Jun 2026 15:48:49 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 987E85FFC9;
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 821835FFC2;
 	Mon,  8 Jun 2026 15:48:49 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id F2DBF106A296A;
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8CFEE106A2964;
 	Mon,  8 Jun 2026 17:48:48 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
 	t=1780933729; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=lnjiASo2jyeji6zDht1VykGGHbkS2xoweIadXuSqWNE=;
-	b=owJYfyBVVL0uoLxKUb0v3sRa1v+pmNV7w+0sykLGOQ7ngUZP2Usc+EHHfbRnHkdpTZxDZH
-	RH8CwGTx2Ua5Bt0l96GMErnYAVLB+4CviW/fkqzwrCC9a+9FHu96BDgRmTKI8p9Mv+DudD
-	B2VGEAhsB5A4WBrjQkpYETp3H7YM1nK0eipRTBTdmmyzpqjksfxnLuwq5gkPNN/gFjNKaJ
-	8B4QZwCZjCrDEYNcZmKITvVlHrE/EoVljpq/vvehD0U5U8RL2dJ0f3cTpMK5tBt5SIt09G
-	8WVP7ygm5A/nPpmRrHbiXmB4yGxVJJIcEkoC0TKbSxHr+Yq4G1gZvitvPP5+xw==
+	 content-transfer-encoding; bh=LLMaVkkeXjgpd+YbbaEAZ9oq7Rc1lgOK8bA2iGDkGoU=;
+	b=H9Ch19ncv0oZXBGbsdiHHHi3P9Ut3BGRatVyjzYiFzyFwj5NjepxeGIRwUSqGdY25V+Ba0
+	2SgsqB3tsxusYpQDNeM9fMfvxrzwgY7qiaZmM7EUgx9orNBPuWNOemYv65ybRVz94qGj8p
+	cqunrEqKZHkt2YdGUyU2+Kj5qFXuVLAQOgsDqjh2Mr+NlUH0j6Gp10W6bwMaYEpuDskLV8
+	eAELgdBw3NszrVwYYVk7ZxArFd/Prpd4wmwzG7SMFUSK4+s9aXqLJwOamENWxD1D5XaWFB
+	7Ke1uIzUf6epfwQua7VJwgbHeSWweq+g2bkD9BvbQaB/hKZ++AopUzUZwG553w==
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
 Date: Mon, 08 Jun 2026 17:48:48 +0200
-Message-Id: <DJ3SBG8LRJ0C.1YVZW4OJ55P3J@bootlin.com>
-Subject: [master] Pull request
-Cc: <docs@lists.yoctoproject.org>
+Message-Id: <DJ3SBG1XMKSG.2KV5BKLFP5NCP@bootlin.com>
+Subject: [wrynose] Pull request
+Cc: <docs@lists.yoctoproject.org>, "Yoann Congal" <yoann.congal@smile.fr>
 From: "Antonin Godard" <antonin.godard@bootlin.com>
 To: "Paul Barker" <paul@pbarker.dev>
 X-Last-TLS-Session-Version: TLSv1.3
@@ -41,25 +41,24 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Mon, 08 Jun 2026 15:49:01 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9630
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9629
 
-The following changes since commit d7376cca64a0784e59d4fd60b9baefb4da2ce289=
+The following changes since commit 7ac955621b36a221126cd40f12c41fa98c213a24=
 :
 
   contributor-guide: fix type "maintainance" to "maintenance" (2026-05-19 1=
-5:33:23 +0200)
+5:39:56 +0200)
 
 are available in the Git repository at:
 
-  git@push.yoctoproject.org:yocto-docs master-next
+  git@push.yoctoproject.org:yocto-docs wrynose-next
 
-for you to fetch changes up to be424bf52cd3ac9c83a4617d0b06afe8cde055be:
+for you to fetch changes up to 768cbc95861c0da961c9f1ba77a9369caa3dce2d:
 
-  migration-guide: add release notes for 5.0.18 (2026-06-08 17:24:13 +0200)
+  migration-guide: add release notes for 5.0.18 (2026-06-08 17:25:28 +0200)
 
 ----------------------------------------------------------------
-Antonin Godard (12):
-      migration-guides: add Blacksail release note templates
+Antonin Godard (11):
       ref-manual/variables.rst: link *MIRRORS definitions to the BitBake ma=
 nual
       overview-manual/concepts: image-generation.png: convert to SVG
@@ -109,13 +108,9 @@ Robert P. J. Day (16):
  documentation/bsp-guide/bsp.rst                    |   70 +-
  .../contributor-guide/recipe-style-guide.rst       |    8 +-
  documentation/dev-manual/build-quality.rst         |    4 +-
- documentation/migration-guides/index.rst           |    1 +
- documentation/migration-guides/migration-6.1.rst   |   47 +
  documentation/migration-guides/release-5.0.rst     |    1 +
- documentation/migration-guides/release-6.1.rst     |   10 +
  .../migration-guides/release-notes-5.0.18.rst      | 2644 ++++++++++++++++=
 ++++
- .../migration-guides/release-notes-6.1.rst         |  113 +
  documentation/overview-manual/concepts.rst         |   63 +-
  .../figures/cross-development-toolchains.png       |  Bin 82633 -> 0 bytes
  .../overview-manual/figures/image-generation.png   |  Bin 123348 -> 0 byte=
@@ -144,11 +139,8 @@ s
  documentation/overview-manual/yp-intro.rst         |    7 +-
  documentation/ref-manual/variables.rst             |    6 +
  documentation/security-reference/security-team.rst |   52 +-
- 36 files changed, 17295 insertions(+), 141 deletions(-)
- create mode 100644 documentation/migration-guides/migration-6.1.rst
- create mode 100644 documentation/migration-guides/release-6.1.rst
+ 32 files changed, 17124 insertions(+), 141 deletions(-)
  create mode 100644 documentation/migration-guides/release-notes-5.0.18.rst
- create mode 100644 documentation/migration-guides/release-notes-6.1.rst
  delete mode 100644 documentation/overview-manual/figures/cross-development=
 -toolchains.png
  delete mode 100644 documentation/overview-manual/figures/image-generation.=
