@@ -1,102 +1,76 @@
-Return-Path: <alex.kanavin@gmail.com>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 73FB5CD8C88
-	for <webhook@archiver.kernel.org>; Sun,  7 Jun 2026 12:00:07 +0000 (UTC)
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.32300.1780833598108828536
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AF794CD8C9D
+	for <webhook@archiver.kernel.org>; Mon,  8 Jun 2026 14:15:40 +0000 (UTC)
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.55656.1780928136117399535
  for <docs@lists.yoctoproject.org>;
- Sun, 07 Jun 2026 04:59:58 -0700
+ Mon, 08 Jun 2026 07:15:37 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20251104 header.b=TBCWyMg1;
- spf=pass (domain: gmail.com, ip: 209.85.160.174, mailfrom: alex.kanavin@gmail.com)
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-51788280e71so38121471cf.0
-        for <docs@lists.yoctoproject.org>; Sun, 07 Jun 2026 04:59:58 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780833597; cv=none;
-        d=google.com; s=arc-20240605;
-        b=emd4LomGkf1Asro42KNSbD8FNiIU8LFYZGGoU1K6iOqwUfZVsM2wVQ9mfE83HEBm8J
-         raNBaGYpAu6+SIyComjeyHTxUxc2rdL+RU9TNjNLtY6+1V3eWzsWiLvRSthQF7LQ43Kd
-         xcDBFlWWWkhsuttRkLsrDyjrtQK6Jk0AYS8IpRUX8tjqw6/aAnfgWUMvbWzoA/0dMt7P
-         ilWnkDZyoVoUHRsti59iULRcjNVoumMx9OjkuZ6ITFmUH6hmjG+a5wgK7BBpSX5NLKEp
-         AJgGLj/QxPsMHBefZdlK98yYipzxuHQFCMGOftW80/gYvPPRkfrLzx8CIwb5ggIoeA5U
-         HlDA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=jzzUI6E5Rw4d+doJCfySGIkjFTmCl0S3TnNtI4XT0JQ=;
-        fh=k8odaTN/Ks0bCDA7NTWCPmEfUZUfbpySNaA+cbRYWWM=;
-        b=JQfzpFozmCoI1GnU3XQzt/UUZZXkhKYLitGHFXp8fC4uQDDGeraIKpGlAWWpt+yJe4
-         8PGKAyayFdyiyjQgWQUdA0W4KsqRXKYHXmS04oXrF/Et7pJ1ctIgIbxeUyGZ4kWQECIq
-         RGdMT8SK+DAguy2dl2yQWU8YemVN+8iZLGMK4XcXVknBi1kEznjRQ0CDMdMRsoIBxBbo
-         TAyM+r1Re6LlTpM4P3U6PmCUYuXZn7tr9ryKe9zM18yvE427dDxieDK4KGnoLsHxTPIJ
-         hvF/6qZQyLLbFf7/NhFbdUraw7GekUx/X6ERcD/8lTUBjSTvOH005CwUQQAW3y8CrhNE
-         rk2w==;
-        darn=lists.yoctoproject.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780833597; x=1781438397; darn=lists.yoctoproject.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=jzzUI6E5Rw4d+doJCfySGIkjFTmCl0S3TnNtI4XT0JQ=;
-        b=TBCWyMg1fhGKkcuNMsJAF42LNDOjF5UJDWE6rZkZRbKekBo/wclfDAVf4LAz0wzZrs
-         iAE6DWV/8rJOe529vkHS1wQU+3Y+t/X+4cWu5tCVskff0fBLAPybJNTGWV3XLBQnMlK5
-         fEkM58lzB58gPgy+o1O8u3cmaRLZWW55/IdoylOvYsCXsIf6UunopfaElOyFYI5ChXIG
-         VJqdLRkV88OCPG5u1lsSTA77l+1n+icfMCPfTFT3dRgrSy92rCcPL/6sOJMjmyb1mK4V
-         ConZCtWhI40ABlZ5YAw5M7Fp9hcrokXdy3dZc5d41E5rmqxERwSjuN6J8ZR/zHTciljm
-         A/2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780833597; x=1781438397;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jzzUI6E5Rw4d+doJCfySGIkjFTmCl0S3TnNtI4XT0JQ=;
-        b=l2Q1HJesN9fXda1fh47x0DOvSDLI1XaXx8oQip+eyTtObnx6/8SuqIJk3bWknch9Lo
-         D0b3Bq0manVpV00sCxmLOUeSkTI3LT1IRkQgnkv6XoT3wqmFBZQo2KIVFZ4fLvEThzR7
-         EL7vAjk39G7s5UmtsoarZxqySyd39BcQvt+n8L3X/WXzNXzaIL0HwOljV4BJHTkpNfGY
-         F52KW2DlBgt9rvZRI706es83FaO8VIMbFWNldB7kRtBVcuB6BRSwTjJj88D3op0UXFcD
-         NPyHH2vOGMnfKEnX6tria1Qhqgl5OkdqyLdWkZ1jJ0nFVFWAmaJGHULXLYHSXTrNNT78
-         FwyA==
-X-Gm-Message-State: AOJu0YxompixeZhYne4IMleFkdvgGuvsNqrYkikDb3zc9MfTV84jt+Rb
-	UxkOfEDOoU5vnq1K9iLcVvoPjP7gr3B4ctAHY5DnRgSWclYbAuIMs/Sy06oz9i44pPjzCa8Cuwl
-	BQjIuQq8MPAGlcDmBgfxoQgZQIoThXNM=
-X-Gm-Gg: Acq92OER7ZlAQY2VnPFt71SIpKOV4bYbKGw/LvNxTVSPngBASb9RdcMlqQ7KvDFZZPZ
-	JdOyDPZwoXc8yxLqoTtdu+qEk0yt/Q5dw7yLEQQ4hGwC7VKWWvZC1q7ZQqMNkmdsnez3Fl3yeUG
-	zrlcCGxDn3fXFN+qFv7Td2l4On5sqhycfp/bifgEcB2byYxkElzNFQzu1Smvo+VqmAvo3NSiQjF
-	WsgmL1e1jn2MCZe4sKXNRyzy+lJ+nzTwBjWlcyb1wbtuJ9gxJ37FhEoMxc9yo3S3UdD/SWRgDvL
-	gpoJwR5sKel7J6KvCPHI6wbOp1nBniyddcZpi3o8dTByg2RhvcVND98rclVGvOY=
-X-Received: by 2002:a05:622a:91:b0:517:9593:ed90 with SMTP id
- d75a77b69052e-51795bcb63bmr153473381cf.34.1780833597113; Sun, 07 Jun 2026
- 04:59:57 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260607-license-update-v2-1-877d92a588e0@pbarker.dev>
-In-Reply-To: <20260607-license-update-v2-1-877d92a588e0@pbarker.dev>
-From: Alexander Kanavin <alex.kanavin@gmail.com>
-Date: Sun, 7 Jun 2026 13:59:46 +0200
-X-Gm-Features: AVVi8CekL5h-NmQYXPfD01ucWu99CqW3u2MPJWopJb1zWFAeQEBkj8mm1T02E_4
-Message-ID: <CANNYZj81QRWYwRZ_T=oR1-iQvMUMGM1RzPRjOVe=LetnqqtnXQ@mail.gmail.com>
-Subject: Re: [docs] [PATCH v2] recipe-style-guide: Clarify when License-Update
- tag is needed
-To: paul@pbarker.dev
-Cc: docs@lists.yoctoproject.org
-Content-Type: text/plain; charset="UTF-8"
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=gTO22PiP;
+ spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id F29CB1A373C
+	for <docs@lists.yoctoproject.org>; Mon,  8 Jun 2026 14:15:33 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id C51515FFB7;
+	Mon,  8 Jun 2026 14:15:33 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5137D106A296B;
+	Mon,  8 Jun 2026 16:15:31 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1780928133; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=ZA5r4Vx9IZC7a1dnjL/pJw5aLptkhKaf/zr5ujLq4QI=;
+	b=gTO22PiPUp3c/cSK1CgS2A1UaSirMY6PIzJwqBGFZae361kOzqS8M1++v9hJZMWi0WnNde
+	5y0v61BKU5B3O8SEwwaarW9jqg+ZyziaKyfH4RXuFjCbfaOyjptNOBmGe6nNVRiaFQn7xE
+	g9pUTmXEz/uysOotVSt4R8YC9LRdQBfL/qpHyWD6q1Fdkatj4nFlfZUbUU/3jt/8vMqa8B
+	32ZDZLrLAxEuEVVKhd5oaKSt66FCg/aJ1UwjNynqT9Ib/Y203NsnbzaINDhKrVRGZ6uoMX
+	sqIGC6Q2rGF1ZyYB7bbyZgIyaqksXlwd5uFRoLSw9IVGLm+AvJhaBevKjGkppg==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 08 Jun 2026 16:15:31 +0200
+Message-Id: <DJ3QC0Y85OG4.DJDCTY6GPOX0@bootlin.com>
+To: "Bruce Ashfield" <bruce.ashfield@gmail.com>
+Subject: Re: [docs][PATCH] kernel-dev: document patch handling for
+ discovered BSP descriptions
+Cc: <docs@lists.yoctoproject.org>
+From: "Antonin Godard" <antonin.godard@bootlin.com>
+References: <20260605115821.2909728-1-bruce.ashfield@gmail.com>
+ <DJ16ICUL4B42.2ZEFA8MW8FNEA@bootlin.com>
+ <CADkTA4Pzgw=qB3aJyxMn+pwxf2vLhfpJe=nRS0SLTUh3tqgCtA@mail.gmail.com>
+In-Reply-To: <CADkTA4Pzgw=qB3aJyxMn+pwxf2vLhfpJe=nRS0SLTUh3tqgCtA@mail.gmail.com>
+X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Sun, 07 Jun 2026 12:00:07 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9625
+ <docs@lists.yoctoproject.org>; Mon, 08 Jun 2026 14:15:40 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9626
 
-On Sun, 7 Jun 2026 at 13:44, Paul Barker via lists.yoctoproject.org
-<paul=pbarker.dev@lists.yoctoproject.org> wrote:
->  When you change the :term:`LICENSE` or :term:`LIC_FILES_CHKSUM` in the recipe
-> -you need to briefly explain the reason for the change via a ``License-Update:``
-> -tag.  Often it's quite trivial, such as::
-> +due to an upstream license change, you need to briefly explain the reason for
-> +the change via a ``License-Update:`` tag. Often it's quite trivial, such as::
+On Fri Jun 5, 2026 at 6:52 PM CEST, Bruce Ashfield wrote:
+[...]
+>> > +applied), the BSP description can opt back in to patch application by
+>> adding the
+>> > +following directive to the description itself::
+>> > +
+>> > +   define KMETA_EXTERNAL_BSP t
+>>
+>> Just making sure, but you meant to add that "t", right? What does it sta=
+nd
+>> for?
+>> Maybe you could quickly explain it below.
+>>
+>
+>
+> It's just a non zero value. We have to define it to something, what it is=
+,
+> doesn't matter.
 
-'due to an upstream license change' reads like upstream has actually
-switched to an entirely different license. A better phrasing would be
-'due to upstream making modifications to the license files'.
+Even if it doesn't matter, I think setting it to "1" in the docs or somethi=
+ng
+similar is less confusing than "t".
 
-Alex
+Antonin
 
