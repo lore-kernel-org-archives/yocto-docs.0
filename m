@@ -1,70 +1,60 @@
-Return-Path: <peter.marko@siemens.com>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E133ECD8CB9
-	for <webhook@archiver.kernel.org>; Tue,  9 Jun 2026 06:53:47 +0000 (UTC)
-Received: from mta-65-226.siemens.flowmailer.net (mta-65-226.siemens.flowmailer.net [185.136.65.226])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.73581.1780988023055304722
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4A000CD8CBE
+	for <webhook@archiver.kernel.org>; Tue,  9 Jun 2026 07:28:40 +0000 (UTC)
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.73958.1780990116080152703
  for <docs@lists.yoctoproject.org>;
- Mon, 08 Jun 2026 23:53:44 -0700
+ Tue, 09 Jun 2026 00:28:36 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=peter.marko@siemens.com header.s=fm2 header.b=nXQ/JZjE;
- spf=pass (domain: rts-flowmailer.siemens.com, ip: 185.136.65.226, mailfrom: fm-256628-20260609065339d63a57e1e300020710-i2sh_v@rts-flowmailer.siemens.com)
-Received: by mta-65-226.siemens.flowmailer.net with ESMTPSA id 20260609065339d63a57e1e300020710
-        for <docs@lists.yoctoproject.org>;
-        Tue, 09 Jun 2026 08:53:40 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm2;
- d=siemens.com; i=peter.marko@siemens.com;
- h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc;
- bh=vlrcbIxabg7WqPxNzy0xJ6bl1xKnC/LOPABq0AjWvtg=;
- b=nXQ/JZjEtyc7MZh+ReZVzIdnFl9AjEBOzA+ibHUhWxLhJhJW9vliGWg2uRPK1Fn4mI1+r6
- 1QxOnsx13kFSPRgSSB6Vz3DeqBUihqB5/Cg5XUzIKnltPQvuxgWbwrao5ElgjW6+p0zgE7dj
- xjDtkPaXBQ5ZD5mEG2ZXeZwYHBIg+IyJdoTIZQhPuD29m8anFbECnbHlwco0w5IzLRIePCzB
- QkB+nFgevSW6Wmyr5hzuan0OMt0cniTthlzdyG/uOwveB2w8PL59fLJyQyiMI5PIByOv2aYy
- +E7CtdgJEbISFZlhbQsF9kAIwTCskLVZlzOJef5z9ZxYPt5t9V5oNWdQ==;
-From: Peter Marko <peter.marko@siemens.com>
-To: docs@lists.yoctoproject.org
-Cc: Peter Marko <peter.marko@siemens.com>
-Subject: [PATCH] build-manual: update ROOTFS_POSTPROCESS_COMMAND example
-Date: Tue,  9 Jun 2026 08:53:32 +0200
-Message-ID: <20260609065332.5274-1-peter.marko@siemens.com>
+ dkim=fail reason="dkim: signature did not verify: crypto/rsa: verification error" header.i=@bootlin.com header.s=dkim header.b=oHErXi8F;
+ spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 95F321A37F2
+	for <docs@lists.yoctoproject.org>; Tue,  9 Jun 2026 07:28:34 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 6BA775FFC1;
+	Tue,  9 Jun 2026 07:28:34 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2719A106A2AC5;
+	Tue,  9 Jun 2026 09:28:33 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1780990114; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=vvKk6EoeHQKokotZWVfl6FRZrc/QAZK2bNQImeLzGro=;
+	b=oHErXi8FxlV1UWF3hlga46zvrfK8JmmNquTqdQ/dxumWzyDeu/rXG0Uk3MOZlvDlM2vD0K
+	6IwqNJT7q7wEhlq7ASl+bNXMJkpTAocGJwsg43s2A5HuUfQ/18TpPhkpTO/eiD3XFSYpJS
+	RnuoP3h+0oE56agYpMIaxgBUvUm8yimKwpOzA8S8jP3FicmKxMZeXV+G3am+RnfESVVRv3
+	EkWwruSfF1FXAgVWJ++zuPzoETsSxy4ugdyC3r0FCNLiZdlBIDikByjz/hjxDQbidcRAJS
+	0CrO9fTlI62jv8KAg6gjVETiSfF9htQxRofxjAQzctIn79F0hIC6dFRH1JmTcA==
+From: Antonin Godard <antonin.godard@bootlin.com>
+To: docs@lists.yoctoproject.org,
+	Paul Barker <paul@pbarker.dev>
+Cc: Antonin Godard <antonin.godard@bootlin.com>,
+	Marta Rybczynska <marta.rybczynska@ygreky.com>
+Subject: Re: [PATCH v2 0/3] Security team documentation updates
+Date: Tue,  9 Jun 2026 09:27:03 +0200
+Message-ID: <178099000143.200930.191243118455832934.b4-ty@b4>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260603-sec-team-v2-0-ee7d2016fbf4@pbarker.dev>
+References: <20260603-sec-team-v2-0-ee7d2016fbf4@pbarker.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Flowmailer-Platform: Siemens
-Feedback-ID: 519:519-256628:519-21489:flowmailer
+Content-Type: text/plain; charset="utf-8"
+X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: quoted-printable
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 09 Jun 2026 06:53:47 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9634
+ <docs@lists.yoctoproject.org>; Tue, 09 Jun 2026 07:28:40 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9638
 
-From: Peter Marko <peter.marko@siemens.com>
+Applied, thanks!
 
-Some commands were moved from ROOTFS_POSTPROCESS_COMMAND to
-ROOTFS_POSTUNINSTALL_COMMAND.
-Since ROOTFS_POSTUNINSTALL_COMMAND is not in printed subset, just remove
-the tasks instead of moving them.
-
-Corresponding oe-core change:
-https://git.openembedded.org/openembedded-core/commit/?id=c3097962ac925538e99b17b771c541950a8b8c26
-
-Signed-off-by: Peter Marko <peter.marko@siemens.com>
----
- documentation/dev-manual/build-quality.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/documentation/dev-manual/build-quality.rst b/documentation/dev-manual/build-quality.rst
-index af1a903d8..c3c7ccbb2 100644
---- a/documentation/dev-manual/build-quality.rst
-+++ b/documentation/dev-manual/build-quality.rst
-@@ -242,7 +242,7 @@ Here is an example of ``image-info.txt``:
-    BAD_RECOMMENDATIONS =
-    NO_RECOMMENDATIONS =
-    PACKAGE_EXCLUDE =
--   ROOTFS_POSTPROCESS_COMMAND = write_package_manifest license_create_manifest cve_check_write_rootfs_manifest   ssh_allow_empty_password  ssh_allow_root_login  postinst_enable_logging  rootfs_update_timestamp   write_image_test_data   empty_var_volatile   sort_passwd rootfs_reproducible
-+   ROOTFS_POSTPROCESS_COMMAND = ssh_allow_empty_password  ssh_allow_root_login  postinst_enable_logging  rootfs_update_timestamp   write_image_test_data   empty_var_volatile   sort_passwd rootfs_reproducible
-    IMAGE_POSTPROCESS_COMMAND =  buildhistory_get_imageinfo
-    IMAGESIZE = 9265
- 
+[1/3] security-team: Update membership list
+      commit: 7ea9d1b37d44d79989c4d9f078f816e3bd21d0ce
+[2/3] security-team: Tidy and update section on security team operations
+      commit: 70b1e61f9ab548b091a2c4ec5d50cfdd1e2f8f11
+[3/3] security-team: Add section on multi-project embargoes
+      commit: 6ae978f4c59d737825c83c68ec51201f9fa81260
 
