@@ -2,14 +2,14 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3D896CD8CB2
-	for <webhook@archiver.kernel.org>; Tue,  9 Jun 2026 17:19:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D8B17CD8CB2
+	for <webhook@archiver.kernel.org>; Tue,  9 Jun 2026 19:20:37 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.932.1781025576538688405
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.3861.1781032834713273019
  for <docs@lists.yoctoproject.org>;
- Tue, 09 Jun 2026 10:19:36 -0700
+ Tue, 09 Jun 2026 12:20:35 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=YTIc2dQx;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=opDYt4aW;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
@@ -17,24 +17,24 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=XhsRsP8X+ySDWCJygHqsRSlIJr2mZ8iq0eJKJVAqVNo=; b=YTIc2dQx8gTxfVfYCNooDk8LJy
-	SaHDxtGxKBiSx+YQYLz7rccxeoVALeNg5SXIJp4eh4yHU6xKlHQHwW/gP6TmNVFXZ1zP2wCdrdtc7
-	O/KKDo+S72B4d6lK7XwYxORkqBTKSiYgMR1NXkdp4Kn9QFp9mQgOEzshU6uE9KGaa30Zgg9/WOocm
-	4ibnt/KtAb3A6xBrUjR0cHLQNngK28nWSROVWFp2YVYduTeVsw4xw2h9WYiHANQAv406tWP0G/pxr
-	2+zKg/94XdSSRmc1TaNqwICyQUyP1gc7FtHIwhnXZK1P9e+sh4QTrI6VIsJeNOej3PIb06CWFTKM2
-	dGfJHcOA==;
-Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:38228 helo=trixie)
+	bh=+Dzn65JTKzYkQWtX8/Rk3UIiOXYaKV9336Gw+lBfCLs=; b=opDYt4aW+9R9CODS4DcoQvEXSS
+	d8HibcZ1PbT3O4fM3aT8cA4gbgHzrtvHeYZaKKM40INBQ6YPbAKYuXRpz5SrPfAArJquC8D4SmygT
+	Ad6AeRUNlf+TRcXW/thDfvqT0982bz8i9W+AJVnTWRNQJFtxmwMUIDM2BvGfzUXShIBtlCxjrkkLS
+	HU2I5vJUC3MCjn1g6zZLlfZFILmhnRBJzLqd1f2yLOhVs64hPWUQTtDeh9rzK98jzOsq8ahdo6De3
+	mz50O2MOZ2OHDS6SjSZolySSyhXYHkOuMlhkITOnUmRPm1bvd31ubA11iDhErumB0SyWNBU8JSolc
+	5L6OL16Q==;
+Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:47976 helo=trixie)
 	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.99.4)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1wX06v-00000006g3t-43ct
+	id 1wX200-00000006unV-1dvY
 	for docs@lists.yoctoproject.org;
-	Tue, 09 Jun 2026 13:19:35 -0400
-Date: Tue, 9 Jun 2026 13:19:29 -0400 (EDT)
+	Tue, 09 Jun 2026 15:20:33 -0400
+Date: Tue, 9 Jun 2026 15:20:27 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: would anyone object to my updating "Adding a New Machine"?
-Message-ID: <f9054c50-f201-80c3-3338-3003a5748d06@crashcourse.ca>
+Subject: [PATCH] dev-manual: add command to force a recipe re-compile
+Message-ID: <06ee4e3f-d477-0b55-be14-ff74aa2383c1@crashcourse.ca>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -50,22 +50,32 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 09 Jun 2026 17:19:46 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9667
+ <docs@lists.yoctoproject.org>; Tue, 09 Jun 2026 19:20:37 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9668
 
 
-this section:
+Since this section talks about how to modify unpacked, temporary
+source code, it only makes sense to tell readers how to re-build that
+modified source.
 
-https://docs.yoctoproject.org/dev-manual/new-machine.html
+Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
 
-is pretty out of date, using the "crownbay" as an example. any
-interest in me updating it to refer to something current, perhaps
-something rockchip like the orangepi-5-plus, which would show how a
-top-level machine definition file recursively includes more and more
-low-level files to fully define a machine?
+---
 
-  or is there some other modern machine definition that would be
-a better example? or is it not worth the trouble?
+diff --git a/documentation/dev-manual/temporary-source-code.rst b/documentation/dev-manual/temporary-source-code.rst
+index aecd34099..26a96303e 100644
+--- a/documentation/dev-manual/temporary-source-code.rst
++++ b/documentation/dev-manual/temporary-source-code.rst
+@@ -65,3 +65,11 @@ build system uses to build the package would be as follows::
 
-rday
+    project/build/tmp/work/qemux86-poky-linux/foo/1.3.0
+
++Finally, if you make some changes to a recipe's unpacked source code,
++you can force a re-compile of that recipe with the command::
++
++   $ bitbake -c compile -f recipe-name
++
++The ``-f`` option in the above forces that task to be re-run
++(invalidating any existing stamp file).
++
 
