@@ -2,43 +2,42 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4A000CD8CBE
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1F927CD8CAC
 	for <webhook@archiver.kernel.org>; Tue,  9 Jun 2026 07:28:40 +0000 (UTC)
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.73958.1780990116080152703
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.73961.1780990118147572106
  for <docs@lists.yoctoproject.org>;
- Tue, 09 Jun 2026 00:28:36 -0700
+ Tue, 09 Jun 2026 00:28:38 -0700
 Authentication-Results: mx.groups.io;
- dkim=fail reason="dkim: signature did not verify: crypto/rsa: verification error" header.i=@bootlin.com header.s=dkim header.b=oHErXi8F;
- spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
+ dkim=fail reason="dkim: signature did not verify: crypto/rsa: verification error" header.i=@bootlin.com header.s=dkim header.b=lD49/TSz;
+ spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 95F321A37F2
-	for <docs@lists.yoctoproject.org>; Tue,  9 Jun 2026 07:28:34 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 930A44E42C6F;
+	Tue,  9 Jun 2026 07:28:36 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 6BA775FFC1;
-	Tue,  9 Jun 2026 07:28:34 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2719A106A2AC5;
-	Tue,  9 Jun 2026 09:28:33 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 67FD65FFC1;
+	Tue,  9 Jun 2026 07:28:36 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 48C4C106A2A05;
+	Tue,  9 Jun 2026 09:28:35 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1780990114; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1780990116; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=vvKk6EoeHQKokotZWVfl6FRZrc/QAZK2bNQImeLzGro=;
-	b=oHErXi8FxlV1UWF3hlga46zvrfK8JmmNquTqdQ/dxumWzyDeu/rXG0Uk3MOZlvDlM2vD0K
-	6IwqNJT7q7wEhlq7ASl+bNXMJkpTAocGJwsg43s2A5HuUfQ/18TpPhkpTO/eiD3XFSYpJS
-	RnuoP3h+0oE56agYpMIaxgBUvUm8yimKwpOzA8S8jP3FicmKxMZeXV+G3am+RnfESVVRv3
-	EkWwruSfF1FXAgVWJ++zuPzoETsSxy4ugdyC3r0FCNLiZdlBIDikByjz/hjxDQbidcRAJS
-	0CrO9fTlI62jv8KAg6gjVETiSfF9htQxRofxjAQzctIn79F0hIC6dFRH1JmTcA==
+	bh=KoYmuQH6x8BVRJ5WhiBC/iR152EU0dbRKzt0tfAeipI=;
+	b=lD49/TSzkHu0Cm5++pTGRQ/5By9mRgNgApv6p+5L2X63GxFals4KJ7Uxa9E71O9iGnJ1PF
+	rICtz2PC5vLRSgDx/go4preM//rwJdPqpnohmHKOrOCNK3tyJVAUX+Tjh7kiF1Hbisbh0L
+	4Z2z3ywf1jfHXqEPlboFLADrJf+Kkr1ZkAlRMrtfcw7nZ+tP3jb6DgwNIj30CXdCGKezil
+	X7tDnGPN8CHjI5Qx+nwef4gx2nG0dfRPia8mx5iA43EEKYN6fBjrYZfZuAyy9SlaDmw1OB
+	S9m8wTKwYIoBPlvZgK9UOvfWenHu+yq++2Gow31/pqG9Svgm6BrdUftcByZWpg==
 From: Antonin Godard <antonin.godard@bootlin.com>
 To: docs@lists.yoctoproject.org,
-	Paul Barker <paul@pbarker.dev>
-Cc: Antonin Godard <antonin.godard@bootlin.com>,
-	Marta Rybczynska <marta.rybczynska@ygreky.com>
-Subject: Re: [PATCH v2 0/3] Security team documentation updates
-Date: Tue,  9 Jun 2026 09:27:03 +0200
-Message-ID: <178099000143.200930.191243118455832934.b4-ty@b4>
+	"Robert P. J. Day" <rpjday@crashcourse.ca>
+Cc: Antonin Godard <antonin.godard@bootlin.com>
+Subject: Re: [PATCH] bsp-guide: mention bootloader and device tree in BSP intro
+Date: Tue,  9 Jun 2026 09:27:05 +0200
+Message-ID: <178099000071.200930.1561447179622292581.b4-ty@b4>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260603-sec-team-v2-0-ee7d2016fbf4@pbarker.dev>
-References: <20260603-sec-team-v2-0-ee7d2016fbf4@pbarker.dev>
+In-Reply-To: <9c88b765-1ae9-ec34-aafc-461613b132e1@crashcourse.ca>
+References: <9c88b765-1ae9-ec34-aafc-461613b132e1@crashcourse.ca>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Last-TLS-Session-Version: TLSv1.3
@@ -47,14 +46,10 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Tue, 09 Jun 2026 07:28:40 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9638
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9640
 
 Applied, thanks!
 
-[1/3] security-team: Update membership list
-      commit: 7ea9d1b37d44d79989c4d9f078f816e3bd21d0ce
-[2/3] security-team: Tidy and update section on security team operations
-      commit: 70b1e61f9ab548b091a2c4ec5d50cfdd1e2f8f11
-[3/3] security-team: Add section on multi-project embargoes
-      commit: 6ae978f4c59d737825c83c68ec51201f9fa81260
+[1/1] bsp-guide: mention bootloader and device tree in BSP intro
+      commit: a6eca1e7c67225de8b32638b4ba10aa73efe5030
 
