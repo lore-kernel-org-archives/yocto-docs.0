@@ -1,106 +1,91 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D9EE5CD98C7
-	for <webhook@archiver.kernel.org>; Wed, 10 Jun 2026 08:29:26 +0000 (UTC)
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.15489.1781080155519685906
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E4068CD98C7
+	for <webhook@archiver.kernel.org>; Wed, 10 Jun 2026 08:36:16 +0000 (UTC)
+Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.15555.1781080568638171071
  for <docs@lists.yoctoproject.org>;
- Wed, 10 Jun 2026 01:29:16 -0700
+ Wed, 10 Jun 2026 01:36:09 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=ha1+QTvU;
- spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 6EB2DC5146A
-	for <docs@lists.yoctoproject.org>; Wed, 10 Jun 2026 08:29:15 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 79BCF5FFC9;
-	Wed, 10 Jun 2026 08:29:13 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1F94A106B9153;
-	Wed, 10 Jun 2026 10:29:11 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1781080152; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=IPK27e3KqtrzDztNyMoJ7eMH5jYJ5s0eQqVu9yM1wZI=;
-	b=ha1+QTvUjbkMJQ6MBIuymvxVuLqhqcBbDf2p0GOeJRiimSI/bi2CO9mjI+uPUEYElgeiH5
-	Z281n0uwkSKJrSd5vXQKoBqFGVnLaLO4Zc24smyfdk+607ec4WpT1MNi/lj/mhbqABG17I
-	S/DeFaONLa6eTQ7EeMeN15zn4PuwA3j4O36QabeUZ0rJsPTDQ91UozrBaiIOeIoEKfg1yc
-	3+Nh+I513ENJaUxf52x3mqWnOTo2JTx4ed9OJBhWZVzG7T5HSvi1fptufRNQ8xopl/2pA4
-	4I7SfWfPZgRozLdBamVkGl47JJRJkV46Zuux5Hv5XJk88ryrthMkS2rOrbcXXQ==
-From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Wed, 10 Jun 2026 10:28:51 +0200
-Subject: [PATCH] doc/bitbake-user-manual-ref-variables: document
- BB_CONSOLE_LOG's persistence
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=nzNiky9W;
+ spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:References:
+	Message-ID:In-Reply-To:Subject:cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=4q4Dhyig33KZG4SU10+M9divVKZSkk2dtUUVGNl8VtM=; b=nzNiky9WgtrNo0rT9jb07gtFPo
+	aMyRdw+jwhawX9SkJq6+dVHHOSax7DBw9AWxKuGibJ/SIt8Craf1SD9I7rY+oxNZyyHvIkfcE4nxl
+	QVxCYhB1b/UoqMNkMiHATII7XO7/SBetziTr3HG5LrTNDcX2hlm0q/0nH9Za2TBd+CMfMwFzC+6HQ
+	XeXmyy5+tIt3m410uhuNfcryTpEVTQmKGArigOFZCVLypOW3SE9ewZGsbSEOzqQPyZ1nCtolPXExw
+	uzRmUZpOOBjvrLnzC4svG0+nuKOwEYK8KLJp3/dAHBkBux14gvlPPVaP0nOEx9N6SQhUDGF9Bs+TQ
+	bOX5q4GA==;
+Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:36360 helo=trixie)
+	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.99.4)
+	(envelope-from <rpjday@crashcourse.ca>)
+	id 1wXEPt-00000008NQn-0dmo;
+	Wed, 10 Jun 2026 04:36:06 -0400
+Date: Wed, 10 Jun 2026 04:36:02 -0400 (EDT)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+To: Alexander Kanavin <alex.kanavin@gmail.com>
+cc: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: Re: [docs] [PATCH] dev-manual: add command to force a recipe
+ re-compile
+In-Reply-To: <CANNYZj8OeT0eQADFc1fE7MkGhFeWC-yhb82uBasDBDQkL3w=bQ@mail.gmail.com>
+Message-ID: <03d3e318-bbc8-4b50-969a-908205b8e5ee@crashcourse.ca>
+References: <06ee4e3f-d477-0b55-be14-ff74aa2383c1@crashcourse.ca> <CANNYZj8OeT0eQADFc1fE7MkGhFeWC-yhb82uBasDBDQkL3w=bQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260610-bb-console-log-persistent-v1-1-5430d24061c3@bootlin.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMQQrCMBBG4auUWTuQVCmtVxEXZvxbR0pSMqkIp
- Xc36vJbvLeRISuMzs1GGS81TbHCHxqSxy1OYL1XU+vaznXecQgsKVqawXOaeEE2tYJYWAYvOJ7
- 82A891X7JGPX9e1+uf9sanpDyHdK+fwD0pIlPfQAAAA==
-X-Change-ID: 20260610-bb-console-log-persistent-c91ce341f898
-To: bitbake-devel@lists.openembedded.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- docs@lists.yoctoproject.org, Yoann Congal <yoann.congal@smile.fr>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1476;
- i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=FNXwukiNliKbSNOisBezSc314NnOUxnxeI6v3bvCLU4=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBqKSBXRlllfJNgsjSP+sfEJwdnQHAnymTVv9aOr
- lqOpHC15vOJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaikgVwAKCRDRgEFAKaOo
- Ni4ED/4/l0nlmGMiHLc8dImeTPMbRDBmueKZXJCC/Y5mCr3F6J8mXRpoYhfmRf46rr+BHecQS9u
- ztrJwTlNssSN+5OldnUTcdQjHkgwQ5JOqkX9YbXbHcpzBzUx1QT5uGNY1IvemukHMdW2ZdK9TR5
- B7CZW0lTgEnuveZeV+7E1IklyEEQz3C6yB2SWDLbFAeCT3s+8zYvnqpu3ggZ2K+6ayct51mm7rP
- eJAmR9G8St649H54z3XjkKz2F9WrOdV7xroxmOPgm8u9h6k00yN1OoY4r3FhmhxiuRmHokK6K5w
- UA53s6eGDrLEJt4mdVfb1ayFwcew41lcu//dzKBNkeRDYJXq6DXovrGWe6aCA7DIcuCznhS3mcn
- lt0s6Fqx5pdssz7ZLl/27cSXEyUsznYP83iArencbCromeK0C/QtiDHFAXJxNPUy5rIXGvLRLvQ
- zEU76gOn4CdLruV65+4zFd73rXenregYmVLnz1+FXTHlJT9q97mbEAllP/2Rc14GmR60iosiYjG
- ncTB5HxRZM4rOcB7QzXPWqfq1OHqVA2/oiBw+qVUtOJdZU738tJsfscyjpBa7ZTwtXNcTt9q0LV
- elv8WaOnE9yYZMhMeAwiQLxeaHyKOl990NDLDIECpAvC3HF1fVcwsbiepzy8Re2VNZrb1oB8jQ3
- wrcge2m8cSjyKhQ==
-X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
- fpr=8648725188DD401BB9A0D3FFD180414029A3A836
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=US-ASCII
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
+X-AntiAbuse: Original Domain - lists.yoctoproject.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - crashcourse.ca
+X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 10 Jun 2026 08:29:26 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9670
+ <docs@lists.yoctoproject.org>; Wed, 10 Jun 2026 08:36:16 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9671
 
-Changes to this variable only take effect after a server restart.
-Document this behavior.
+On Wed, 10 Jun 2026, Alexander Kanavin wrote:
 
-[YOCTO #15641]
+> On Tue, 9 Jun 2026 at 21:20, Robert P. J. Day via
+> lists.yoctoproject.org <rpjday=crashcourse.ca@lists.yoctoproject.org>
+> wrote:
+> > --- a/documentation/dev-manual/temporary-source-code.rst
+> > +++ b/documentation/dev-manual/temporary-source-code.rst
+> > @@ -65,3 +65,11 @@ build system uses to build the package would be as follows::
+> >
+> >     project/build/tmp/work/qemux86-poky-linux/foo/1.3.0
+> >
+> > +Finally, if you make some changes to a recipe's unpacked source code,
+> > +you can force a re-compile of that recipe with the command::
+> > +
+> > +   $ bitbake -c compile -f recipe-name
+> > +
+> > +The ``-f`` option in the above forces that task to be re-run
+> > +(invalidating any existing stamp file).
+> > +
+>
+> While explaining where to find the unpacked source is okay, taking it
+> further and providing a way to force-build it is not a good advice. If
+> someone needs to modify and build source like this, they should be
+> using 'devtool modify'.
 
-Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
----
- doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+  i actually thought about adding a link to devtool, along the lines
+of "while this technique works, devtool modify is now the recommended
+way" or something like that, at least as a historical reference for
+people who have been doing it the bitbake way all this time to let
+them know there's a better way.
 
-diff --git a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
-index 9824b58ef27..f3e1a3a38c9 100644
---- a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
-+++ b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
-@@ -135,6 +135,16 @@ overview of their function and contents.
-       Specifies the path to a log file into which BitBake's user interface
-       writes output during the build.
- 
-+      This variable's value remains persistent during the entire execution of
-+      the BitBake server. Changes to this variable will only take effect
-+      after a server restart, which can be accomplished with the ``bitbake
-+      --kill-server`` command.
-+
-+      .. note::
-+
-+         For more details on how to make the BitBake server persistent, see the
-+         :term:`BB_SERVER_TIMEOUT` variable.
-+
-    :term:`BB_CURRENTTASK`
-       Contains the name of the currently running task. The name does not
-       include the ``do_`` prefix.
-
----
-base-commit: c687d42b81b17e7a2399099cab0f1a6aafcf6520
-change-id: 20260610-bb-console-log-persistent-c91ce341f898
-
+rday
 
