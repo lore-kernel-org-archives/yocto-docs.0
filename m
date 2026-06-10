@@ -1,81 +1,77 @@
-Return-Path: <rpjday@crashcourse.ca>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2AD31CD8CB9
-	for <webhook@archiver.kernel.org>; Wed, 10 Jun 2026 10:33:44 +0000 (UTC)
-Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.17177.1781087621071182234
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 81C6BCD8CB9
+	for <webhook@archiver.kernel.org>; Wed, 10 Jun 2026 12:54:16 +0000 (UTC)
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.19784.1781096054498168953
  for <docs@lists.yoctoproject.org>;
- Wed, 10 Jun 2026 03:33:41 -0700
+ Wed, 10 Jun 2026 05:54:14 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=pEHpWHaT;
- spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
-	To:From:Date:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=tsEfBwUotGQqs7BChBVBzRGZbl2TEc8S/+KDnBLW6DM=; b=pEHpWHaTMg8CNBZ2ALF+Ts2zoT
-	AF7iDWBDGoO6WsS73FDyI3MhdZTbPYGbhHLD9ZVBQoNQYJRICihng4xsa3HG4yWOxdAcgUB+HXY/O
-	TD5TC0zH0fmG1l8GjCrLIX6RqBBG6SQFrVZ2X9zldPqs2zC002L5TXZ7sqNGIweWeN7ih8ZobTRKe
-	qKT8UTjVS995uqWpdog4iRFW/4ByfanSMoZG1Vg1qsRHtG201kvEvwlBYIcWMaHppKuu9T5FT2J1l
-	J8rgmdQFs8iNgiuaPOBkMyPgms+r/dVL8n7lQKA4sMDNtH/02fE0fgzUm3czJtQtFqqBatmEAiuqU
-	c8XFNKGg==;
-Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:54292 helo=trixie)
-	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.4)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1wXGFe-00000008aNU-132Z
-	for docs@lists.yoctoproject.org;
-	Wed, 10 Jun 2026 06:33:39 -0400
-Date: Wed, 10 Jun 2026 06:33:36 -0400 (EDT)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: [PATCH] dev-manual: for testing local changes, refer to devtool
- section
-Message-ID: <d5b8fa2c-b21c-74ca-edc1-0273e9bfe0e1@crashcourse.ca>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=SrX0xjK+;
+ spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 39F83C49F58
+	for <docs@lists.yoctoproject.org>; Wed, 10 Jun 2026 12:54:14 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 504E25FFC9;
+	Wed, 10 Jun 2026 12:54:12 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B3BAF106B90C5;
+	Wed, 10 Jun 2026 14:54:11 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1781096052; h=from:subject:date:message-id:to:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=t0ExjBHWf21hFryqCy6lPwlygtElY3Ea7ywWBTwR7eo=;
+	b=SrX0xjK+rGOWysFR38Bzm9HzZlDi1YcEBXv7D5cZhWmODF1JVcwDheZSCkqFSHRdNHoA0A
+	0tctGsN1K6LKuZUXRxfoVS6fAxvrxA79AQKa2kmL8E5Wdt0VPXiQ36Kq48RAK2wFeJlsKY
+	/sbb72Tg4NJpvznSUsYutirDeZk5uFgYv5sAi5Ha/tfsvmq/JKLsOTJ1uM64v7bThmUg4u
+	jNxHisXqavaWMWvyp/0aUwXy0MyIOjqLxTQZ0XQoE2QJprb3mzBOnUXm6oFfN3pbxFd3Az
+	DIHSsiLU1+jtX0gERw9D39FAd/WQ/kHQz8xmZiZwtArMZRO78mvZGvupSZe59g==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 10 Jun 2026 14:54:11 +0200
+Message-Id: <DJ5DUUBC0P89.TN9DME41TLHV@bootlin.com>
+Subject: Re: [docs] would anyone object to my updating "Adding a New
+ Machine"?
+From: "Antonin Godard" <antonin.godard@bootlin.com>
+To: "Robert P. J. Day" <rpjday@crashcourse.ca>, "YP docs mailing list"
+ <docs@lists.yoctoproject.org>
+References: <f9054c50-f201-80c3-3338-3003a5748d06@crashcourse.ca>
+In-Reply-To: <f9054c50-f201-80c3-3338-3003a5748d06@crashcourse.ca>
+X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 10 Jun 2026 10:33:44 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9678
+ <docs@lists.yoctoproject.org>; Wed, 10 Jun 2026 12:54:16 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9680
 
+Hi,
 
-At the end of the "Finding Temporary Source Code" section, refer the
-developer to the section on the appropriate use of "devtool".
+On Tue Jun 9, 2026 at 7:19 PM CEST, Robert P. J. Day wrote:
+>
+> this section:
+>
+> https://docs.yoctoproject.org/dev-manual/new-machine.html
+>
+> is pretty out of date, using the "crownbay" as an example. any
+> interest in me updating it to refer to something current, perhaps
+> something rockchip like the orangepi-5-plus, which would show how a
+> top-level machine definition file recursively includes more and more
+> low-level files to fully define a machine?
 
-Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+I don't see how it is out-of-date, the important variables to set are still
+valid.
 
----
+>   or is there some other modern machine definition that would be
+> a better example? or is it not worth the trouble?
 
-diff --git a/documentation/dev-manual/temporary-source-code.rst b/documentation/dev-manual/temporary-source-code.rst
-index aecd34099..cb27d2207 100644
---- a/documentation/dev-manual/temporary-source-code.rst
-+++ b/documentation/dev-manual/temporary-source-code.rst
-@@ -65,3 +65,11 @@ build system uses to build the package would be as follows::
+This document does not seem to make use of an existing machine at the momen=
+t,
+and points to meta-yocto to find examples. I think it's fine as it is, unle=
+ss
+you think of other variables that should be part of the important ones.
 
-    project/build/tmp/work/qemux86-poky-linux/foo/1.3.0
-
-+.. note::
-+
-+   If you want to iterate over testing your local changes, the proper way
-+   is to use the ``devtool`` utility.
-+
-+   To learn how to use ``devtool`` to add, modify, upgrade recipes and more,
-+   see the :ref:`dev-manual/devtool:Using the \`\`devtool\`\` command-line tool`
-+   section of this Development Tasks Manual.
+Antonin
 
