@@ -2,14 +2,14 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 37DCCCD98CC
-	for <webhook@archiver.kernel.org>; Thu, 11 Jun 2026 10:35:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5EACDCD98D8
+	for <webhook@archiver.kernel.org>; Thu, 11 Jun 2026 10:43:36 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.42453.1781174095508107989
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.42605.1781174614939031967
  for <docs@lists.yoctoproject.org>;
- Thu, 11 Jun 2026 03:34:55 -0700
+ Thu, 11 Jun 2026 03:43:35 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=MlEJZ1Op;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=RG0jD9ZH;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
@@ -17,25 +17,24 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=kcY9nTovlqBABDzzettIJnaiBgB33CHlPsadlLHuKmY=; b=MlEJZ1Op3K8GkX6UfkxT3+QfsS
-	97gxmjmHubQan5PotOHtojf9kuslD5G7lGIiqZqu5mtsA8iU828hqGqA/YxCEg+XUaGnJp6BpmnoI
-	kmVXrA3QhLHUW9kdCk8b6FfOVy8VU5D6QKWa3P0O0Uy1IRx4hiejd61vdqw0CPAzeSA078FSuSOPo
-	bujUz/IbMFAnKCLrJrQTKuqdYhKFZt2xjDkdlilNuSzLmrb72fovyaPQ9PJTW2uEOjnS2h5i77N6j
-	SNslVibzMCllN4UzBEIuXKV4plNgfaBpOG4whRX8cjZCic4YlXL2oYAIIVcW5oPosQO2N9ioeJMmA
-	RW1qwLVw==;
-Received: from pool-174-114-114-5.cpe.net.cable.rogers.com ([174.114.114.5]:39088 helo=trixie)
+	bh=WSWHjRc+QbNE64Bt8VqqCV7+/Hhi04upzi4LWYwv8CI=; b=RG0jD9ZHmMRlxIQGFxwa1Q3Gih
+	57ZBgrqFu5oHcTe+z1mZNDhVQQObBW7lqjQLvrtjwGJcmTc8DvwYoeB3wtHMRlTQzkW6mFbFr5km0
+	Wr6YiP+tXbwtljBBeEwnNIpgZSPSswADJEL+K8d0G2DzQ9joTRJDGCtlfZikxpcjwJNAQYrOF3JPR
+	vaa0pmxOYJfUW4FC7aXUpTRo7eWk3Eg5qKcMqtH/bgw0tyw20LedwrNjAiB5X/qn2HkyjcahwvkWI
+	LUYZiJ8A8gkhoZyeU/VxSaCuczDuOFKIqsj6bSPmYxjyXnMyqnEnuI4xgg+trNRBI/KRXBcm7h3Gv
+	J46mMJYg==;
+Received: from pool-174-114-114-5.cpe.net.cable.rogers.com ([174.114.114.5]:36076 helo=trixie)
 	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.99.4)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1wXckP-0000000BMko-05Sq
+	id 1wXcsm-0000000BNYm-0TcC
 	for docs@lists.yoctoproject.org;
-	Thu, 11 Jun 2026 06:34:53 -0400
-Date: Thu, 11 Jun 2026 06:34:47 -0400 (EDT)
+	Thu, 11 Jun 2026 06:43:32 -0400
+Date: Thu, 11 Jun 2026 06:43:30 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: [PATCH] ref-manual: document "RM_WORK_EXCLUDE_ITEMS" for
- rm_work.bbclass
-Message-ID: <eb6dc48a-f434-3167-ad28-d348ff1f4e77@crashcourse.ca>
+Subject: [PATCH] dev-manual: use "trade-off" as the noun
+Message-ID: <2efccbfb-b6cc-9f10-7fee-abdb2b4c3ee9@crashcourse.ca>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -51,31 +50,31 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 11 Jun 2026 10:35:05 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9690
+ <docs@lists.yoctoproject.org>; Thu, 11 Jun 2026 10:43:36 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9691
 
 
-Add an explanation of RM_WORK_EXCLUDE_ITEMS for rm_work.bbclass.
+As with "setup " versus "set up" and so on, "trade off" is used in the
+verb form, and either of "trade-off" or (less commonly) "tradeoff" is
+used as the noun.
+
+This is the only instance throughout the docs that needed fixing.
 
 Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
 
 ---
 
-diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
-index 95e07f85a..36b730823 100644
---- a/documentation/ref-manual/classes.rst
-+++ b/documentation/ref-manual/classes.rst
-@@ -2614,6 +2614,12 @@ which can also be set in your ``local.conf`` file. Here is an example::
+diff --git a/documentation/dev-manual/speeding-up-build.rst b/documentation/dev-manual/speeding-up-build.rst
+index 6e0d7873a..262935313 100644
+--- a/documentation/dev-manual/speeding-up-build.rst
++++ b/documentation/dev-manual/speeding-up-build.rst
+@@ -73,7 +73,7 @@ Additional factors that can affect build speed are:
+    assumes you structure the disk partitions and file systems in a way
+    that this is practical.
 
-    RM_WORK_EXCLUDE += "busybox glibc"
+-Aside from the previous list, you should keep some trade offs in mind
++Aside from the previous list, you should keep some trade-offs in mind
+ that can help you speed up the build:
 
-+Finally, if you are using this class for a recipe but want to prevent BitBake
-+from deleting specific folders or files in that recipe's ``${WORKDIR}``
-+(other than ``temp``), you can preserve those folders or files with::
-+
-+   RM_WORK_EXCLUDE_ITEMS += "stuff_to_keep"
-+
- .. _ref-classes-rootfs*:
-
- ``rootfs*``
+ -  Remove items from
 
