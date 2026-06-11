@@ -2,14 +2,14 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 24F53CD98D5
-	for <webhook@archiver.kernel.org>; Thu, 11 Jun 2026 11:39:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 053D6CD98CC
+	for <webhook@archiver.kernel.org>; Thu, 11 Jun 2026 15:00:59 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.43383.1781177983666158813
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.47780.1781190052559470492
  for <docs@lists.yoctoproject.org>;
- Thu, 11 Jun 2026 04:39:44 -0700
+ Thu, 11 Jun 2026 08:00:53 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=UxeQrCwD;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=mMLgSqwU;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
@@ -17,25 +17,25 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=xOMIDptLc/rSobRq5nZ5LbzzIAZSo1Ca2ioRUT4oAj8=; b=UxeQrCwDtogm/xiG2RGX175Ugb
-	+iOCwpd0c/yIrZb3828FgEXUhI/3wWifNHfSrvFLpdPX3pN8JfZ4KsQGrbs5cxJ8fmOz8iD44XEx6
-	bMtLL/1vJNBbChLGG7Iy4/M4qfZXzGGFtHYYU4QakTO7qtDgKyOq+k5tf6GTe4XIexm0CEHP/+XtI
-	ni5k1DrVjAzESowR+asl1dggquC/Fg7QrlXtVuJgr2+aIAwyVJokQs9vp5Rp+IDonN/DwhOQLhd9C
-	epbtbnGLEBgFkQG2ILRfvY1PwV4jl8Zrq06fAqred5IzDCjTgqcBo4Ro9YKxX2otki5DEYAWjT4jA
-	fWZtz+bw==;
-Received: from pool-174-114-114-5.cpe.net.cable.rogers.com ([174.114.114.5]:54476 helo=trixie)
+	bh=dOvXCfXT/TyWwCxVnCmaoxN+CmZKLyY6pAPh3Fsbn18=; b=mMLgSqwUxf3hsuBq+E0+IcQjak
+	kP6hGosWf1946KRW7xpOtR+cSGSVeHn7kRIGZ0aDfGvp7l5VXGlAx6Jfd2PnfWu1513mLQTtnvCNC
+	dxA7vPyHl7wooEq/Xzn6Cd4vE3DBwfqDkLjwDd6qX102Ggkh1dCCACgOKlKJKr8LWPHkyyTA81Upl
+	e6r/ryiIOFJC/hbzE7RIJzsT3dHN9z9fm+DNPHOh0MRLMZAEN9AuI7T3WYDlfs0B1aBcAxplY1LEH
+	X9qZke6B57oo7ihocBCR3Ve1lmKCT2+C2TX92gT334pee754YgcM7P0hOMqBw3z4N0jmAmZ7Kt5cK
+	X4a0NTIQ==;
+Received: from pool-174-114-114-5.cpe.net.cable.rogers.com ([174.114.114.5]:60742 helo=trixie)
 	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.99.4)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1wXdl7-0000000BTKQ-0s2J
+	id 1wXgth-0000000BsO1-0Kv5
 	for docs@lists.yoctoproject.org;
-	Thu, 11 Jun 2026 07:39:41 -0400
-Date: Thu, 11 Jun 2026 07:39:34 -0400 (EDT)
+	Thu, 11 Jun 2026 11:00:47 -0400
+Date: Thu, 11 Jun 2026 11:00:40 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: [PATCH] dev-manual: fully define SOLIBS-related variables in
- bitbake.conf
-Message-ID: <cb56b55a-6a0d-754e-a97c-a92c7780ab42@crashcourse.ca>
+Subject: [PATH] dev-manual: mention that "bmap-tools" is transitional
+ package
+Message-ID: <f1d0db75-5a8d-6811-51e3-6bbda146e55f@crashcourse.ca>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -51,30 +51,35 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 11 Jun 2026 11:39:50 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9694
+ <docs@lists.yoctoproject.org>; Thu, 11 Jun 2026 15:00:59 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9695
 
 
-The current (abridged) SOLIBS-related variables were not included in
-their entirety so add the missing content.
+For modern Debian and Ubuntu releases, mention that the "bmap-tools"
+package is transitional to the newer "bmaptool" package.
 
 Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
 
 ---
 
-diff --git a/documentation/dev-manual/prebuilt-libraries.rst b/documentation/dev-manual/prebuilt-libraries.rst
-index 59621ca16..9cc8bd2d9 100644
---- a/documentation/dev-manual/prebuilt-libraries.rst
-+++ b/documentation/dev-manual/prebuilt-libraries.rst
-@@ -153,8 +153,8 @@ default :term:`FILES` variables in ``bitbake.conf`` are::
+  someone can decide if this is worth adding to the bmaptool section;
+i can go either way.
 
-    SOLIBS = ".so.*"
-    SOLIBSDEV = ".so"
--   FILES:${PN} = "... ${libdir}/lib*${SOLIBS} ..."
--   FILES_SOLIBSDEV ?= "... ${libdir}/lib*${SOLIBSDEV} ..."
-+   FILES:${PN} = "... ${libdir}/lib*${SOLIBS} ... ${base_libdir}/*${SOLIBS} ..."
-+   FILES_SOLIBSDEV ?= "${base_libdir}/lib*${SOLIBSDEV} ${libdir}/lib*${SOLIBSDEV}"
-    FILES:${PN}-dev = "... ${FILES_SOLIBSDEV} ..."
+diff --git a/documentation/dev-manual/bmaptool.rst b/documentation/dev-manual/bmaptool.rst
+index 87162a49c..1e5ad2bba 100644
+--- a/documentation/dev-manual/bmaptool.rst
++++ b/documentation/dev-manual/bmaptool.rst
+@@ -24,6 +24,12 @@ system image files much faster.
 
- :term:`SOLIBS` defines a pattern that matches real shared object libraries.
+          $ bitbake bmaptool-native -caddto_recipe_sysroot
+
++   -  Finally, in modern Ubuntu and Debian releases, the ``bmap-tools``
++      package is a transitional package; it exists solely to ensure
++      backward compatibility and smooth upgrades from older installations.
++      You can safely remove it and install the active package, ``bmaptool``,
++      which contains the actual utilities for flashing block images.
++
+ Following, is an example that shows how to flash a Wic image. Realize
+ that while this example uses a Wic image, you can use `bmaptool` to flash
+ any type of image. Use these steps to flash an image using `bmaptool`:
 
