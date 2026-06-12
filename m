@@ -2,14 +2,14 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F0E83CD4F2C
-	for <webhook@archiver.kernel.org>; Fri, 12 Jun 2026 08:50:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EFCACCD8CA8
+	for <webhook@archiver.kernel.org>; Fri, 12 Jun 2026 11:33:29 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.66112.1781254222262582009
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.68372.1781264003447903187
  for <docs@lists.yoctoproject.org>;
- Fri, 12 Jun 2026 01:50:22 -0700
+ Fri, 12 Jun 2026 04:33:23 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=my82M+t7;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=BzNglwcN;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
@@ -17,25 +17,25 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Vg8ZU1//BOkdzqG9/GFgu4tpIAvXBdBxGq7w3JVTybk=; b=my82M+t7Z0OcjJuLvM1qVZd+jm
-	7ARYWa+bv6x82H8eCJY8WPoD5dsS13aqmLq/6zrSrQn4oAYz3+SdoCDQKUuAjVZ4dLh/smSWWogol
-	4gtKPS4XJaArxXuxy3uLkCl9W8wRMU51J9G+C/EIcUTa7OU463tijw2uzx1C+Si3DsfmpPdGd4rg/
-	ksaLF0vwEC8UbpdeqBJH7xs8quVkSgUc0qTdRANwo9L+8FyOZa6ZhGRdCbMkMb5/E1aw3V9fy9+yx
-	RcTD3vS1OazKcT0JHosVzw34noHsRp+vSCfVmw/rvOfdzGXxLZZ2CUIVfniLFjKCg7CNUP93pMCM7
-	ZdDx4vLw==;
-Received: from pool-174-114-114-5.cpe.net.cable.rogers.com ([174.114.114.5]:60280 helo=trixie)
+	bh=hWi6szpFXTMCsBuUjZUlAlytLmToHbRxERzteQN2GoM=; b=BzNglwcNRWE70BiyHO9KrYfYZH
+	PSYJ7kk33g5dO3oq5x1sfUgBC9hBSUF6Pr/OnFlHbDt485tuiNCL2KsKK8wjmIysmMexaQM15V/d0
+	Emt8avX2uMXzJ2CYurFHen9HcjlOMXjHI4UD5xIvYe/rrzfbTw4mXN43/I5J8y03Pl5alOznD9EX7
+	Hb3Hym6X+U+9oYhKGuJdx5U2nSRvC/AC4Dbk6xzCfMQRR4+PTbLZxSLzqf6Xz+ndkvhgNYwVK2XFN
+	7jpG9u0NuPv7QnpNTzfTiOZp3YBbTaTggnoGS8/6QLLcz0KlyaPEVOwUu5OB5ygylTN3QiPEjxI8t
+	HvtkRCBw==;
+Received: from pool-174-114-114-5.cpe.net.cable.rogers.com ([174.114.114.5]:46242 helo=trixie)
 	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.99.4)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1wXxaj-0000000Dqv1-2qX1
+	id 1wY08W-0000000E8XZ-2Shw
 	for docs@lists.yoctoproject.org;
-	Fri, 12 Jun 2026 04:50:18 -0400
-Date: Fri, 12 Jun 2026 04:50:14 -0400 (EDT)
+	Fri, 12 Jun 2026 07:33:21 -0400
+Date: Fri, 12 Jun 2026 07:33:17 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: [PATCH] dev-manual: correct inaccurate explanation of buildhistory
- setup
-Message-ID: <50ea53c0-245a-177b-52e3-c9813a99504d@crashcourse.ca>
+Subject: [PATCH] dev-manual: correct which package variables support which
+ backends
+Message-ID: <063e2bf1-5f48-3ea6-f18a-3d422af03a2f@crashcourse.ca>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -51,71 +51,62 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 12 Jun 2026 08:50:31 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9703
+ <docs@lists.yoctoproject.org>; Fri, 12 Jun 2026 11:33:29 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9704
 
 
-At the moment, the introduction to the buildhistory class suggests
-that the developer needs to add the line:
-
-  BUILDHISTORY_COMMIT = "1"
-
-to their config file. Obviously, this is untrue since it is already
-set to that by default in the buildhistory.bbclass file so remove that
-directive but clarify that there is a reason why they might want to
-subsequently set it zero.
+Update the section "Excluding packages from an image" to explain that
+all packaging backends support all three package exclusion variables,
+with the single exception that Debian packaging does not support
+BAD_RECOMMENDATIONS.
 
 Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
 
 ---
 
-diff --git a/documentation/dev-manual/build-quality.rst b/documentation/dev-manual/build-quality.rst
-index c3c7ccbb2..3c1dca2a2 100644
---- a/documentation/dev-manual/build-quality.rst
-+++ b/documentation/dev-manual/build-quality.rst
-@@ -33,13 +33,10 @@ The remainder of this section describes the following:
- Enabling and Disabling Build History
- ====================================
+  i tested with adding "minicom" to an image, then trying to exclude
+its recommendation of "lrzsz".
 
--Build history is disabled by default. To enable it, add the following
--:term:`INHERIT` statement and set the :term:`BUILDHISTORY_COMMIT` variable to
--"1" at the end of your ``conf/local.conf`` file found in the
--:term:`Build Directory`::
-+Build history is disabled by default. To enable it, simply add the following
-+:term:`INHERIT` statement at the end of your ``conf/local.conf`` file::
+diff --git a/documentation/dev-manual/packages.rst b/documentation/dev-manual/packages.rst
+index 500639565..80bcac0ba 100644
+--- a/documentation/dev-manual/packages.rst
++++ b/documentation/dev-manual/packages.rst
+@@ -30,13 +30,10 @@ installed into an image. If so, you can use several variables to direct
+ the build system to essentially ignore installing recommended packages
+ or to not install a package at all.
 
-    INHERIT += "buildhistory"
--   BUILDHISTORY_COMMIT = "1"
+-The following list introduces variables you can use to prevent packages
+-from being installed into your image. Each of these variables only works
+-with IPK and RPM package types, not for Debian packages.
+-Also, you can use these variables from your ``local.conf`` file
+-or attach them to a specific image recipe by using a recipe name
+-override. For more detail on the variables, see the descriptions in the
+-Yocto Project Reference Manual's glossary chapter.
++There are three variables you can use to avoid installing particular
++packages into the final image -- you can either set these variables
++appropriately in your ``local.conf`` file, or attach them to a specific
++image recipe by using a recipe name override.
 
- Enabling build history as
- previously described causes the OpenEmbedded build system to collect
-@@ -52,9 +49,27 @@ build output information and commit it as a single commit to a local
-    particularly for images, and increases the amount of disk space used
-    during the build.
+ -  :term:`BAD_RECOMMENDATIONS`:
+    Use this variable to specify "recommended-only" packages that you do
+@@ -53,6 +50,19 @@ Yocto Project Reference Manual's glossary chapter.
+    prevent the installation of a package whose presence is required by
+    an installed package.
 
--You can disable build history by removing the previous statements from
-+You can disable build history by removing that INHERIT statement from
- your ``conf/local.conf`` file.
-
-+.. note::
++.. warning::
 +
-+   To enable basic build history, you need only add the line::
++   All three of these package exclusion variables work with all three
++   packaging backends (DEB, RPM and IPK) with one exception:
++   Debian packaging does not support the ``BAD_RECOMMENDATIONS`` setting.
++   If you try that combination, you will get a warning similar to::
 +
-+      INHERIT += "buildhistory"
++      WARNING: core-image-minimal-1.0-r0 do_rootfs:
++        Debian package install does not support BAD_RECOMMENDATIONS
 +
-+   to your local configuration, but the subsequent generation of that history
-+   is actually controlled by the :term:`BUILDHISTORY_COMMIT` variable
-+   which is, by default, already conditionally set to "1" in the
-+   ``buildhistory.bbclass`` file::
++   All of the other combinations of packaging backend and exclusion
++   variable are supported.
 +
-+      BUILDHISTORY_COMMIT ?= "1"
-+
-+   so there is no need for you to set that variable yourself. However, as
-+   you will see later in this section, you can inherit that class file
-+   yet set that variable to zero if you don't want the history but
-+   still want some of the other information produced by this feature.
-+
- Understanding What the Build History Contains
- =============================================
+ Incrementing a Package Version
+ ==============================
 
 
