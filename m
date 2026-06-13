@@ -2,14 +2,14 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D3C20CD8CA8
-	for <webhook@archiver.kernel.org>; Fri, 12 Jun 2026 17:49:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 274F3CD98C5
+	for <webhook@archiver.kernel.org>; Sat, 13 Jun 2026 19:24:45 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.76262.1781286565042026734
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.96655.1781378681543683704
  for <docs@lists.yoctoproject.org>;
- Fri, 12 Jun 2026 10:49:25 -0700
+ Sat, 13 Jun 2026 12:24:42 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=jdZKB99a;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=pXxigg/E;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
@@ -17,24 +17,24 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=AvJ8+qzqykXH7gGZqMDBTKZ8VS4T0YRGEh2JwssV8w4=; b=jdZKB99alNEM21R4pYlrO1uTUC
-	kmaUtXnb0V/QnIZGTOpnC251dN3ttdaNwsnyPDw8Edgm56I7m/G/Qa7IdiWnuIlzKx93dZpRopT+Q
-	CkiveHjlx5Eb531dzAuMbJH5xYZ2WBKzPsh4GCuFqLhuq7NaTpnkpCN/jcIqDnltH2s/57BEh2O6F
-	EkxtwmDFjdx2qAKosCNPUo6QZGHYM2W3HeRCDZjWK6d4OUhFCaX5SG8Sau1a1pYMnZ1ni6IklYkEF
-	LYnoQUgfUVpHwvFu2eAxTKMXUmWNrnAFUVJXKqH9fsAdOPMNw4SGBEHq3izalA4GjzbYFqFLRGRu0
-	4vY90S7A==;
-Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:47956 helo=trixie)
+	bh=C3QNb19E2ImOY1V3lZucuW209ka1OudE7U2sPiTJEdY=; b=pXxigg/E06mPo6KuyhKFZ4qlth
+	ypLa9gdu2t9Z4cwFacOYll3BkcCEt70pL10d0HTGiSROALCmhCDCovgP0U4AjAe/25uEhAjogqcdc
+	kp9HelEcxqNANDwuxIIRpjBxTk79J+IUDIQvuZYEmIsr9/ZcDmx5a4OQOliCzQS339UMAFOasWH4K
+	bsKvUto7qwD7sVkyJedtkLjGmuAxPd0LrxVRoiHc1v0x9CkAaEbsl1Iatepg/tGU0z2kwxyasCiTT
+	huwRT4jmnc3BNBOJZFsQDs9N5UgW4+Nz/dTLnunaicCHeBm4N/tVPTEhKRaCyk/WborwIQK7Xy0+D
+	g6k7RsTQ==;
+Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:39950 helo=trixie)
 	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.99.4)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1wY60O-0000000ErSV-3Sk6
+	id 1wYTyA-000000002sz-0qEi
 	for docs@lists.yoctoproject.org;
-	Fri, 12 Jun 2026 13:49:23 -0400
-Date: Fri, 12 Jun 2026 13:49:16 -0400 (EDT)
+	Sat, 13 Jun 2026 15:24:39 -0400
+Date: Sat, 13 Jun 2026 15:24:32 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: improving the ptest section
-Message-ID: <d4f52ae1-8aef-e8ab-4ba2-e2bdcac0ae58@crashcourse.ca>
+Subject: [PATCH] security-manual: some grammar and wording fixes in intro
+Message-ID: <6f15263e-56f3-fe32-ea3c-c81d89f34d05@crashcourse.ca>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -50,56 +50,56 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 12 Jun 2026 17:49:32 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9711
+ <docs@lists.yoctoproject.org>; Sat, 13 Jun 2026 19:24:45 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9712
 
 
-  going over the ptest section in the docs:
+Tweaks:
 
-https://docs.yoctoproject.org/test-manual/ptest.html
+  - grammar
+  - punctuation
+  - delete word "necessary" as that is too strong a word and implies
+    that what is being discussed is mandatory when it isn't
 
-and i can see a couple potential improvements but i'll ask a couple
-questions first to make sure i did not misunderstand the code and my
-testing.
+Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
 
-  first, section 3.1 advises that to add ptests to your image, you
-need to add those *two* lines. let's back up a second and consider
-just the first line:
+---
 
-  DISTRO_FEATURES:append = " ptest"
+diff --git a/documentation/security-manual/intro.rst b/documentation/security-manual/intro.rst
+index 03a8ed1ca..5ea6f5110 100644
+--- a/documentation/security-manual/intro.rst
++++ b/documentation/security-manual/intro.rst
+@@ -5,24 +5,24 @@ Introduction
+ ************
 
-if you add "ptest" to DISTRO_FEATURES, that means that all of the
-ptest-enabled recipes will build and package their "xxx-ptest"
-packages and install them under /tmp/deploy/<backend>, correct? but if
-you stop there, all that means is that your build will have gone to
-all that trouble, only for no ptests to be installed in your image.
-and people will think, "why would i do that and then not go on to
-install those packages in my image?". which is a perfectly reasonable
-question ... unless that setting had been set for you without you
-knowing it, which is *exactly* what happens if you build with a DISTRO
-of "nodistro", since the defaultsetup.conf file in OE-core includes
-default-distrovars.inc, which includes the line:
+ Welcome to the Yocto Project Security Manual. This manual provides relevant
+-procedures necessary for dealing with security-related tasks supported in the
++procedures for dealing with security-related tasks supported in the
+ Yocto Project environment. This manual groups related procedures into
+ higher-level sections. Procedures can consist of high-level steps or low-level
+ steps depending on the topic.
 
-  DISTRO_FEATURES_DEFAULTS ?= " \
-    acl alsa bluetooth debuginfod ext2 ipv4 ipv6 \
-    wifi xattr nfs zeroconf pci 3g nfc x11 vfat seccomp pulseaudio \
-    gobject-introspection-data ldconfig opengl ptest multiarch wayland vulkan \
-    "
-which explains why *my* build created all these ptest packages i did
-not ask for. so as a first fix, i would explain that to simply *build*
-all ptest packages, that feature needs to be set, but it *might*
-already be set depending on your build configuration, so it would be
-worth mentioning the possibility of *removing* that feature if you
-don't want it.
+ This manual provides the following:
 
-  and second, in addition to simply installing *all* of the ptest
-packages, it should be mentioned how to install only *some* of them,
-with something like:
+--  Procedures that help you securing an image with features supported by the
+-   Yocto Project; for example making a root filesystem read-only.
++-  Procedures that help you secure an image using features supported by the
++   Yocto Project; for example, making a root filesystem read-only.
 
-  IMAGE_INSTALL:append = " fubar-ptest"
+--  Procedures related to processes outside of the target images; for example how
++-  Procedures related to processes outside of the target images; for example, how
+    to deal with vulnerabilities.
 
-those are two immediate improvements i can see. thoughts?
+ This manual does not provide the following:
 
-rday
+--  Procedures on security features implemented outside of
++-  Procedures for security features implemented outside of
+    :term:`OpenEmbedded-Core (OE-Core)`.
+
+--  Documentation on the security mechanisms themselves, which can often be found
++-  Documentation for the security mechanisms themselves, which can often be found
+    in the documentation of the feature itself. This manual focuses on how to
+-   integrate the security mechanism within the Yocto Project.
++   integrate those security mechanisms within the Yocto Project.
 
 
