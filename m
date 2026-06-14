@@ -2,14 +2,14 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 274F3CD98C5
-	for <webhook@archiver.kernel.org>; Sat, 13 Jun 2026 19:24:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9DF9BCD98C7
+	for <webhook@archiver.kernel.org>; Sun, 14 Jun 2026 18:40:02 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.96655.1781378681543683704
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.114447.1781462400056441278
  for <docs@lists.yoctoproject.org>;
- Sat, 13 Jun 2026 12:24:42 -0700
+ Sun, 14 Jun 2026 11:40:00 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=pXxigg/E;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=j8WuHGXP;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
@@ -17,24 +17,24 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=C3QNb19E2ImOY1V3lZucuW209ka1OudE7U2sPiTJEdY=; b=pXxigg/E06mPo6KuyhKFZ4qlth
-	ypLa9gdu2t9Z4cwFacOYll3BkcCEt70pL10d0HTGiSROALCmhCDCovgP0U4AjAe/25uEhAjogqcdc
-	kp9HelEcxqNANDwuxIIRpjBxTk79J+IUDIQvuZYEmIsr9/ZcDmx5a4OQOliCzQS339UMAFOasWH4K
-	bsKvUto7qwD7sVkyJedtkLjGmuAxPd0LrxVRoiHc1v0x9CkAaEbsl1Iatepg/tGU0z2kwxyasCiTT
-	huwRT4jmnc3BNBOJZFsQDs9N5UgW4+Nz/dTLnunaicCHeBm4N/tVPTEhKRaCyk/WborwIQK7Xy0+D
-	g6k7RsTQ==;
-Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:39950 helo=trixie)
+	bh=ZmQvbU4eJbRazsjVdnjbsHibIFxuzTh/3J0C6PHfVGE=; b=j8WuHGXP/qGiQIzRnjZdrtixld
+	obafiMR16y44cHO5Wq16nk5+DDVqP8PwBka3trCqH8JwViYWx8nKYb53Y5s9xQZtfOSXTHZ+vmzPr
+	9OmhEEOVq6Aw+nz7yAXPBMG9GS5hEYbk+VfuMdQlTP/bPYVT+e7HbIYZaaWJEFkKJNfT6bElA90bD
+	gmzX/LTN9XydhnYysz5XU6esxCMuvH+r0e7RqB1EbpfNO51rFlAzoqTdJUTl7bPEsfVhiQAtrpgSE
+	ODIcyTXEFrNX4UnOhDjdLlrjyxnF9nHGJXtKXiyoR+2V5FBKG/VCMbos3hZP0qxd8VOBwAnYiHLHo
+	ib6FOGnQ==;
+Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:38738 helo=trixie)
 	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.99.4)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1wYTyA-000000002sz-0qEi
+	id 1wYpkR-00000002TJ9-0QTb
 	for docs@lists.yoctoproject.org;
-	Sat, 13 Jun 2026 15:24:39 -0400
-Date: Sat, 13 Jun 2026 15:24:32 -0400 (EDT)
+	Sun, 14 Jun 2026 14:39:58 -0400
+Date: Sun, 14 Jun 2026 14:39:42 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: [PATCH] security-manual: some grammar and wording fixes in intro
-Message-ID: <6f15263e-56f3-fe32-ea3c-c81d89f34d05@crashcourse.ca>
+Subject: [PATCH] kernel-dev: break a paragraph into a bullet list
+Message-ID: <100f2882-f73b-4664-84ff-94819358dd0c@crashcourse.ca>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -50,56 +50,49 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Sat, 13 Jun 2026 19:24:45 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9712
+ <docs@lists.yoctoproject.org>; Sun, 14 Jun 2026 18:40:02 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9713
 
 
-Tweaks:
-
-  - grammar
-  - punctuation
-  - delete word "necessary" as that is too strong a word and implies
-    that what is being discussed is mandatory when it isn't
+Redo the first paragraph of the kernel intro section into a more
+easily-readable bullet list.
 
 Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
 
 ---
 
-diff --git a/documentation/security-manual/intro.rst b/documentation/security-manual/intro.rst
-index 03a8ed1ca..5ea6f5110 100644
---- a/documentation/security-manual/intro.rst
-+++ b/documentation/security-manual/intro.rst
-@@ -5,24 +5,24 @@ Introduction
- ************
+diff --git a/documentation/kernel-dev/intro.rst b/documentation/kernel-dev/intro.rst
+index 7df342f8d..33a47d078 100644
+--- a/documentation/kernel-dev/intro.rst
++++ b/documentation/kernel-dev/intro.rst
+@@ -8,14 +8,21 @@ Overview
+ ========
 
- Welcome to the Yocto Project Security Manual. This manual provides relevant
--procedures necessary for dealing with security-related tasks supported in the
-+procedures for dealing with security-related tasks supported in the
- Yocto Project environment. This manual groups related procedures into
- higher-level sections. Procedures can consist of high-level steps or low-level
- steps depending on the topic.
+ Regardless of how you intend to make use of the Yocto Project, chances
+-are you will work with the Linux kernel. This manual describes how to
+-set up your build host to support kernel development, introduces the
+-kernel development process, provides background information on the Yocto
+-Linux kernel :term:`Metadata`, describes
+-common tasks you can perform using the kernel tools, shows you how to
+-use the kernel Metadata needed to work with the kernel inside the Yocto
+-Project, and provides insight into how the Yocto Project team develops
+-and maintains Yocto Linux kernel Git repositories and Metadata.
++are you will work with the Linux kernel. This manual covers the following:
++
++-  how to set up your build host to support kernel development
++
++-  coverage of the kernel development process
++
++-  background information on the Yocto Linux kernel :term:`Metadata`
++
++-  common tasks you can perform using the kernel tools
++
++-  how to use the kernel Metadata needed to work with the kernel
++   inside the Yocto Project
++
++-  details on how the Yocto Project team develops and maintains
++   Yocto Linux kernel Git repositories and Metadata.
 
- This manual provides the following:
-
---  Procedures that help you securing an image with features supported by the
--   Yocto Project; for example making a root filesystem read-only.
-+-  Procedures that help you secure an image using features supported by the
-+   Yocto Project; for example, making a root filesystem read-only.
-
---  Procedures related to processes outside of the target images; for example how
-+-  Procedures related to processes outside of the target images; for example, how
-    to deal with vulnerabilities.
-
- This manual does not provide the following:
-
---  Procedures on security features implemented outside of
-+-  Procedures for security features implemented outside of
-    :term:`OpenEmbedded-Core (OE-Core)`.
-
---  Documentation on the security mechanisms themselves, which can often be found
-+-  Documentation for the security mechanisms themselves, which can often be found
-    in the documentation of the feature itself. This manual focuses on how to
--   integrate the security mechanism within the Yocto Project.
-+   integrate those security mechanisms within the Yocto Project.
-
+ Each Yocto Project release has a set of Yocto Linux kernel recipes,
+ whose Git repositories you can view in the Yocto
 
