@@ -2,39 +2,38 @@ Return-Path: <Qi.Chen@windriver.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9A898CD98CE
-	for <webhook@archiver.kernel.org>; Mon, 15 Jun 2026 06:24:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AC5A3CD98CF
+	for <webhook@archiver.kernel.org>; Mon, 15 Jun 2026 06:25:02 +0000 (UTC)
 Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.123782.1781504689957317431
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.123721.1781504690390036498
  for <docs@lists.yoctoproject.org>;
  Sun, 14 Jun 2026 23:24:50 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@windriver.com header.s=PPS06212021 header.b=LVINFMOX;
+ dkim=fail reason="dkim: body hash did not verify" header.i=@windriver.com header.s=PPS06212021 header.b=JJrV7Alm;
  spf=permerror, err=parse error for token &{10 18 %{ir}.%{v}.%{d}.spf.has.pphosted.com}: invalid domain name (domain: windriver.com, ip: 205.220.178.238, mailfrom: prvs=062669d7a8=qi.chen@windriver.com)
 Received: from pps.filterd (m0250811.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65F6Ntvj216469;
-	Mon, 15 Jun 2026 06:24:48 GMT
+	by mx0a-0064b401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65F6Ntvk216469;
+	Mon, 15 Jun 2026 06:24:49 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=windriver.com;
 	 h=cc:content-transfer-encoding:content-type:date:from
-	:in-reply-to:message-id:mime-version:references:subject:to; s=
-	PPS06212021; bh=R01EzcQtMYeD0H1edN23mtvkvwIa84mX8CdACb/Q1Dg=; b=
-	LVINFMOXt+vmSO2rYiWGh0lpG+4Qc7h5rkTYPFRAcTq+F1YYNJejjgyGjO3+7fsr
-	xF7QV0RDleYGjPC+7UooPCay2c8MHeR7bfsz+uOWDazZLzXNcFIH/uW1bzb7DxVT
-	ImMOo8OjX+WkrL4cuU3ZVBfrJrnMj0jiv8dwXbUIvzsLs2EFk2LvYiq+QEDzYN3R
-	R2caipdYZFI9JBHsVeYOAqxfbQqSIrth2ljaAqJPk2ujg5uMPVju3gqGLJpO9R0G
-	S77bR7WoIVcGPKHbpr0WGhOMXMCs5BcH3aJ4swk5wsDfb3nWrykurRA8QFJgf5Ql
-	YbIUqVtVnOsXSav9xZTA0w==
+	:message-id:mime-version:subject:to; s=PPS06212021; bh=dLp/MHL5l
+	aFvhTEMhWR3mUEYVlchWbqLLvWR8GQjy9M=; b=JJrV7Alm/tMM6c/pjaCat7dLp
+	lNUn5QIeFcwWyIHErlAoqqOE9ku0oswestncABEpO7+3xIhTn82FkU4dWiI6lbzc
+	MVTKNsX9Y3mDApDhBHA+vkf2vNEZpH0RTE3DpgHiAYpMELI4PYZv3/07ByYKSUzg
+	bzKuLdXcCIWJmXCpbYuD8e4dFERhmiHn1GHaJLwzszed2tS/4++3AraGkrtMavnW
+	jucZ6imXR0vf1ZUJvCZoZjno7sl9hIVMolgBF/OKBDgMbyEyB8T5K9Da3jWIZTTh
+	29c04noRr+gCQjeO+GWAp0I13EDhC9BB6KPJrKT35KatDRxgRKN3kWSYmRkOA==
 Received: from sn4pr2101cu001.outbound.protection.outlook.com (mail-southcentralusazon11012015.outbound.protection.outlook.com [40.93.195.15])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 4ervkp2bvm-1
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 4ervkp2bvm-2
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
 	Mon, 15 Jun 2026 06:24:48 +0000 (GMT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=oY4KLoO+3quQ5ftPggl2ck1xiHABCxekE6XsYx9Zh2D9pS6tBHyPcAQyBiC00u4Z/APhCSJ163F+JcWXM9Gvu5/AOnmSeoNHWYQVhyPtG6sBlqw4JqINEWBx/zYb33A9/Ne0pgoCPhL9TnDpOrJ35O5bqkZystNMs95/X7KcyRA8cg/H32raXkXtJUiwW5K4+sf+vyMuTUQ/vjFync/QXQsjSL7MAUVmBhEqC2qQ0ugslB4illCLvIjg0d2KixSrZrW4WVWXETuNmPPLZGacQoNDpMiOL1CehaOyr/Tafm2naNKgYbbeRHLnkoXqM8Fk65P2b9fg1Y/qatPPoh9K8Q==
+ b=s5nUKXy3OdsfIUHz0J2N6ogetqkzpBLqJyEvJKxYK7J70Y2Yx7IADZEhjKdJyq3UQ25U/wfdpTfLCaq/uPfO0OcCbIYF5gvnw1yqE+vj/6GxKmgeWYe+69lpUZT6QU9FXkEJYCoAvqtKpcuRxz7n0dMfEEYvuyqlpTasLLh05KbsGxOVtLAXHAitTZGJwj2vCQ1ILI4Gg0eTepxF5nBjErGl+aX9jh2heQ+dks5vztHP4xoyfSyfylTa+nFfWe72KW7JtBZkNauBbNrRqm8tF0QC/jjSqfeM+QFLSYh/Wao6833A6hnvc7o2eDuUvgCguZmdwh2krBc1SBkpaVwzOQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=R01EzcQtMYeD0H1edN23mtvkvwIa84mX8CdACb/Q1Dg=;
- b=SaFI5rrWrYwWAfFhIlkZxFFN4Bs2ozxlpGG16Rm31CJxLyu0nTSvOpkQI4HzNOJEIGUdY49wSPvIYhRl0mvhlGuVhmKDGpcPt738Az96MJMx0GmS2lDvQ4eYecIzmaVvHaGHxOulKIfOgEUzL3rbjWcsS3nm/8CvmgYREYm0JF21PcB100dQYueBBBkmS1ZItQirCGcQM8S7Kn9qjA1zL0h1TmSyGUe5WoszE5AOQNU1GWk32vJdvf/MHkJGCLBnXtLVTmeSg0m8RIGEiElvl+jFh4h6a+DGqmA0VkoSHOC+OYUrpmKMJ0m+61M5M9ckLeV5EQX3XR8jUj3aMIXOMQ==
+ bh=dLp/MHL5laFvhTEMhWR3mUEYVlchWbqLLvWR8GQjy9M=;
+ b=fYZ0sT+eAtreZjdAJyk2FjwyhSCeOkhO+Pr3rz7mdm+/by9J81pdiARpc7QRTYqLZF2qo+hb/ot4eDNSqDNeqTRA92vaELmoxLS2Mtj1Fw2UbypRZFKxcHaWgrD/ZUZuIA20nPJ3ckUBI/kpKlVeZ7gg6VE0xvEB9i23pFEiJ+2Gx7sj5SV0Zt1Q0kZy6EOC60f59XYZWBFxw0j51VSjmCQTIijNwBxZ8DTjrHe6zPSgeYh5+RCKY2oe9OK1bx8eyan8tUn5wqN96TUg8AE259S3S5shtdlBHSwWhPR6J808H3/+TgRIWWOlNG7DMoX/uP0QzlE7RCIb9E/4O0YaIg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=windriver.com; dmarc=pass action=none
  header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
@@ -42,7 +41,7 @@ Received: from CO6PR11MB5602.namprd11.prod.outlook.com (2603:10b6:303:13a::5)
  by CO1PR11MB5154.namprd11.prod.outlook.com (2603:10b6:303:99::15) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.18; Mon, 15 Jun
- 2026 06:24:46 +0000
+ 2026 06:24:45 +0000
 Received: from CO6PR11MB5602.namprd11.prod.outlook.com
  ([fe80::5ad6:8f90:b01d:2c62]) by CO6PR11MB5602.namprd11.prod.outlook.com
  ([fe80::5ad6:8f90:b01d:2c62%3]) with mapi id 15.21.0113.015; Mon, 15 Jun 2026
@@ -50,166 +49,176 @@ Received: from CO6PR11MB5602.namprd11.prod.outlook.com
 From: Qi.Chen@windriver.com
 To: docs@lists.yoctoproject.org
 Cc: alex.kanavin@gmail.com
-Subject: [PATCH 2/3] ref-manual/variables.rst: add UPSTREAM_STABLE_RELEASE_REGEX and STABLE_VERSION_PARTS
-Date: Sun, 14 Jun 2026 23:24:35 -0700
-Message-ID: <20260615062438.3119651-2-Qi.Chen@windriver.com>
+Subject: [PATCH 1/3] ref-manual/classes.rst: add upstream-stable-release-point class documentation
+Date: Sun, 14 Jun 2026 23:24:34 -0700
+Message-ID: <20260615062438.3119651-1-Qi.Chen@windriver.com>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260615062438.3119651-1-Qi.Chen@windriver.com>
-References: <20260615062438.3119651-1-Qi.Chen@windriver.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Content-Type: text/plain; charset=UTF-8
 X-ClientProxiedBy: SJ0PR03CA0143.namprd03.prod.outlook.com
  (2603:10b6:a03:33c::28) To CO6PR11MB5602.namprd11.prod.outlook.com
  (2603:10b6:303:13a::5)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: CO6PR11MB5602:EE_|CO1PR11MB5154:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2a1c434b-3699-4abe-d327-08decaa6cb2f
+X-MS-Office365-Filtering-Correlation-Id: a0796d3b-c4c6-435e-7cf3-08decaa6cafc
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: 
-	BCL:0;ARA:13230040|1800799024|376014|52116014|23010399003|366016|22082099003|18002099003|38350700014|56012099006|11063799006;
+	BCL:0;ARA:13230040|1800799024|376014|52116014|23010399003|366016|18002099003|38350700014|56012099006|11063799006;
 X-Microsoft-Antispam-Message-Info: 
-	dF1CB8/ituABH6B9oydx4JB9N2p1egPFoN21actDC7IS8JZt/LEzScNxOVx6L5PZUown/3EsYrgMfXpPZdMItCq5lqYULjb8VZ8wlfRy3pf1F8aSLuT2+17IYiexLHq+jEbtXiBAiQ5T0jSrVJdZQYl1HMs1aofZKXfL7pqZQcxvIrw98nizdLvaUsX03V5Bfj0H6qXmt1sZv6OVyS+XH6wIj003xESmlIxzAcy3hBcXdbNdNiiHKQppjZ+iyEsG6TiYxHFHkbr8NUGtx+GI4LSk04d0lmj2Sjzv/ZwVBPvN3uqtrvmXwn3lk2NiTplD/r2A+K1MwyFzMuf6x/8MQhRTJXwV8m/zWoLB7WEpSouxf2ic48bWiS4naH94+x/4kQLqgFBGEUfHGwBGd1Okb0XsxyZPgC3JMoeqZbAIgtgbQgEn0/rphZPWuz/n9+GON+PGkXFovLRkYmjYV764XMZly04L1I7SYYDx+i3ORNgi5vB8D3I7zGDyT9tenx6QWTUJmbPsUeHmbYnQ65TJoNXOMD7AvJ82JyXfyiu8UELZq8V40fZYbwTadlIWLrIZCE58tqjxiQvnpf8HfxSXGxqzof41Lqb1OH9UzZmwHJQjsZmPEsFtgzkGjzgHRQwvIZ3+eTSGo7CQd7INPQ6Xw9O8ggO1MgXWYPdug8iZsiSc6u7zlwv0YNWAM1HwuGm8iazjplWQHTr5zj1L2duK0RiEikzYPXnEvG9INBxbtttlqsslYDQXfVO1szl5ueLZ
+	xR6W0m5IJiWj1j83Yow6CatIBU64iYYDh5mErItFnHYcvQT+9Gl5kloBQd+zPFOBuTzJFcQIpUN85AxIKFBGfsGJvCZORcfBDIt3L7Mwu8tbS+fRHb/qi2K6HPUVxGUpBbXTpwVratjq8TmGuwEmpIcccQtvBXLErI39T26wbBBWWnIMFENPgTLPGUAvKq9uw0BNHUIZ+xPB3z00csvEZmbHbQYlsnHKHPxmsElIGtrbf2+c53A9FGqRLztS1glvCxPpV2xnQ9sdw4TczGE36xkInDTCMR7HecCqsoGKMfi5qTF73r6sHjLC7aLWsSZ4qLOSbIokgRiiwbtgP5iWGQFbMQzEVWhFmz8TejrfiML/cJq4KNIW5K3qx/Etxv2wRkNHq2vkX5PkowYeiVhDyQ5//rEIkqA7aczuf+1f2xyCAOZ4YSeT1NkmPDyj0DYTucSqOEs4bwaZGP8DluLu0hv0tIWkZBFeBP6ZtQ/8zBYUi6cRPaQW1QDKGtjh58jr2ulLR5GFZOCD80qem++WAEhI+kXCCg0BXnFS4jkHpSmHKNT6gkJJ17inuYpLqonizhC4aZa0HTVdOnfD/FVNNSZOtqIxoNgxcIbrvQIZWL1OlxdPCUiKCz6Dn/uDxoOqhtVoiB+p/TCzzk6VTMZV31cOss3MI2HJoFqhThMHG6c/UY7Op9acqd68FbZb7M/ldiFI55ooFvfDTyf85QRujfv+ID4zDkY8ucRau4Eov1NONDsjSNAXyjW1DzPyq4aQ
 X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO6PR11MB5602.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(52116014)(23010399003)(366016)(22082099003)(18002099003)(38350700014)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO6PR11MB5602.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(52116014)(23010399003)(366016)(18002099003)(38350700014)(56012099006)(11063799006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?us-ascii?Q?mEvmJF9o0Nh2gagaFUTWLJ6mMxbNttf94Caz8SoWyHUk9rVvGDPBEf6TMcUz?=
- =?us-ascii?Q?A13yJ8oAytnudbyR7raTL5ujW6SW9TGqJb1CqNYY/Aa5RUVgOrexvT4I/UEG?=
- =?us-ascii?Q?HsO6YB9L41ZPMOpqZXtxL9/mL8WYmlLMM4MOSfOl9WKYQA3XpfuO5/9h78+y?=
- =?us-ascii?Q?Czj84rjIiwQfGZvFCZmcxIF0KQlWqMC/eHs6BD/ARactHhkT33iqK+wkc8MD?=
- =?us-ascii?Q?zS2RM80cHKhXp9jHXMQFZdxzTQHxph3Ugs1JG4xZAfsxkuAyrdcfZdXCoZVX?=
- =?us-ascii?Q?AFnWfIHJ6fVUQkYTUs9kv/jA2PI4tgbFf746ARnuzaMTu8nAo6Ndf3+L/kFo?=
- =?us-ascii?Q?mIZ1lgb4TbuZ8WT5bQLs63NiKXmCZE+YNQYY4qasTCReZwzQt7oh56mId89C?=
- =?us-ascii?Q?u/d0zR2MceNt5GmU8LA4eGJluNIQ1mBeKKXJkaWZnBZNvjq+rXc2hPT842Ux?=
- =?us-ascii?Q?2P9SrkQMyzQku1NXFGEdQ1j5n1ewMkCEbF9Tj5mKN9z4xD5ZaupNv0ef41TA?=
- =?us-ascii?Q?i9qqyU02qQQgGKMCdohtdz2Cmv7J5z/1nBc5XAw2eTEsHJpg4rP8HL6zyn9o?=
- =?us-ascii?Q?hTzGZjwYx8z82GpTVKDEs6666ukFQp+x7a3kfYtBLb8v2mw3PAANdg3jXssW?=
- =?us-ascii?Q?BsXyvGubSVtbmHQicNNaeatjnhjE9BW6D3KcS3E9R++cnYIGWEENwik+plPK?=
- =?us-ascii?Q?mdBP3+/AbojP+D5lyWLREPcpTKR69vnYJ+DG8ISPG+PCEvIuI2GlDeLhwo7D?=
- =?us-ascii?Q?NWlQh/2rKD2KoZ9SQdSzuft77AaDiBJYBjJx9NC681PRtUo6iuj74navaXqX?=
- =?us-ascii?Q?N8AQrZu4pGD7KFw3NTSbPtXRK3m7w+7PYz4+QHTdadRMFC6xYLAGfCLdh2HM?=
- =?us-ascii?Q?sD3BnS1eDkGde/D/w4vWvQ3C3AkPjdSp/DsV6jlbAny5dDizs52r6uPV737L?=
- =?us-ascii?Q?jY+lSNK7bExcLJBDfyU3FFxbB+COTAAmsCksbc3MEF6I/NEzQxKsbNBcMPHF?=
- =?us-ascii?Q?ifb3EUdisuqZnMJsBXILGTahed1rEbR7C6qbsuYBRLcFM3Rl0QZd3bAuuVg5?=
- =?us-ascii?Q?/+US0dPO8raOjg6pkKXXKBga7fYx3ezA4aEl3j4ZjUVLIPb+rdaYX/fAgeeP?=
- =?us-ascii?Q?GbP9+rhmVQO8++cnPJXTUyPfLyO5FdzYgwd5+G9vRD+Nfipk5d+C2HbEFZwz?=
- =?us-ascii?Q?PFQUkvy4zJ/ORyYzJL40bwAuQK1bcSIkfSVeFmSGtroBmPe2ncwfo38NFsU+?=
- =?us-ascii?Q?eMj3nPGBVDdDurzsqStLKLIbxeiPndf0ONvVxxo90/1AwBEXgq/zDo40H6nU?=
- =?us-ascii?Q?fkulu41D5MotixefHPJyseTqRJ1rkHbsq5yknSWo48HaMKdruUUmzlFfpM95?=
- =?us-ascii?Q?iyVDjT/BwTCaJqv3jX8ToZ1JTvh9QZUSuqPJiKxdEBUzHy91+vNqZlCTIoLW?=
- =?us-ascii?Q?d2GiSZ16XrTZYzZzycpOFzXyFhHu/IjqUC1cdpESY1v9icpMZZSPzW97QlGw?=
- =?us-ascii?Q?T2BBIRN3eYNMFri2dY4UlGwf4NMcL4zbeMF0OQHxw/Q5unQspICKDvATSUfn?=
- =?us-ascii?Q?+2vYRsnorlVGfVpviKVxil5UwIiXwaYx+f2R1Y0gEJ34EebNoULaR4wru0WC?=
- =?us-ascii?Q?77GfYS5bFRYNIKdzMaGBFKBARqhQhcsuP66ixRjFIx3LG5BdaLY2eSPFZepF?=
- =?us-ascii?Q?7YTm68XyMKQYz0Rpz7D+QpuVaPr1t7hjAStXMOfVvu4vBNueNGAd2SKkQQtD?=
- =?us-ascii?Q?0reyPRnlEA=3D=3D?=
+	=?utf-8?B?cnB0YVpDdFdkVkVGclBQNFpTRklXQTQwMGxsZGtWV0ZoaFl3djc3MEljUExW?=
+ =?utf-8?B?YjdOZDhGZzRyL0VMd05KSVVkRUduS1hZSVRHVUhBL0U2UGI3YnBkUGsyR3Ur?=
+ =?utf-8?B?ampta0V5RHRDSmJScndtWkNPWHRXTXpRakZnRXRxcnQ0empqV1BuUm9NVS80?=
+ =?utf-8?B?MUk0aVNKZDFtdzQzVzV1ZVRtK3RPaE1ReEtoZWo3ZWU1MUJ2bnRrTVNMaUp6?=
+ =?utf-8?B?SEpzVUV1TlRZTm5HZ0pyS3RnVHpGYnNjT1Z3Zld4SjUyQWFOa3JFMVNnWGYz?=
+ =?utf-8?B?cmJHZnVXa2huY3EwbHBvQSt1R21xZWg4NG9jcjBTNEY1dkx2b2dpZk1JcCtx?=
+ =?utf-8?B?UHBkeW5QS1c4bWdNK292NkZ3SCtBemhCUWVzZEUzUVZrTUNFeThZUGpVQk1E?=
+ =?utf-8?B?UHpZZDZqNmtOVnhzSmlaV2tyTThZVnJKOUFNdldHSWd6Uk1IYWVTTnVFV3dU?=
+ =?utf-8?B?cnk1MFRUM0V6ck5DUmVoVE9ISmxUWitEMkxUOWxjeXExS2JMWUlhRlM5R0Rn?=
+ =?utf-8?B?VEllZENjbEt6WDNaazMra2RZMW9iakY5OEY2eEV6djVhaHhDcmQvQVpvYlVx?=
+ =?utf-8?B?ZHFXMXM0Sml2MVllVElhUzVRUWJnNFNaU0YxaWlKeWl4cmdTNlRCY0o1UUVi?=
+ =?utf-8?B?cXljeEo4bVVhVlU5QTFEbkJrcWNJOHFhMkxsdkFQUk1va1lmaEJwdEdPZjBC?=
+ =?utf-8?B?blZPOXFsK2w2MVJRVnRDUnM1MXJZNlpYd3ovNk9JcmRhMVg5MlR5ME1wQmRi?=
+ =?utf-8?B?b3c1eEl5N2NuWldpN3lWdkx4Szg5Y3NrS21uaVEyYkZKeGtuYWtjRGhkN1U4?=
+ =?utf-8?B?R04xSUtPcURqblU5dHAzWWJJRDl6TktrNEFyU1dlMGF5K1VWN3I2MWgyWE80?=
+ =?utf-8?B?cEJTajFueXdUblZmb1lnUkNacWlLZXdkVTBYOUtHcENFeVRpR3hmaEZYZGxK?=
+ =?utf-8?B?dkhEM1piNDBoZWxHNnEydVhySzNZeU1Vb0I0T2hxVHVKakZwREQ0V2xQVUda?=
+ =?utf-8?B?amdYcSt3Yi9tUHR4QWFDMnJmTTk5cGtCa2RDK0hwRFpWU0N5Y1dNQXc5V2Jv?=
+ =?utf-8?B?cWRMcU5QV2J6TE9haU9qb1h0MzRDWStmVEdLM28yc2dWejR5RHZPNDB4OHB0?=
+ =?utf-8?B?c2FhbHRhZHdYcjFDVnF0cEhiMHFrbGdXOXRyUFRBVEhMcThLUVdvL3ppRHE5?=
+ =?utf-8?B?UitySjBzQUxXS3EwRW8rTFkwRGVvZDFvOVdNZkFueFRlbFMwYmJiZWtPZ0ZF?=
+ =?utf-8?B?aXdNYXVFSlZsVkJEWWNxNmNEc1FVanl5T3puYWFhem5OVjAyVHZGVTg2ODhn?=
+ =?utf-8?B?QnVkckphWGQyNGZqMnNCN1JmUS9welIySkJ1LzF2ODlXcWVOb2RPU21NQUFZ?=
+ =?utf-8?B?dmVMS3dHeWlkajNhSDhaVEcwM05GSFJYV0NSOXk4cldWZ0hpMml0MXFxeFJq?=
+ =?utf-8?B?emIyeWJQc01iSHJNckNMaUtHaG5sOGs1aWl4T1VTZ0ZxU2E5L2h0NmU1TndK?=
+ =?utf-8?B?Z1hVWU9IUWZ5dnVpZEU3TjdibTIxL1ViM25aVW5DaXk5TjVya1V5L0xyaGNt?=
+ =?utf-8?B?UDJ0a09DdXA5NTlLVWRmWVA1YitqVUZmRUl5ZmdIeVJNN2tjYW8vWXpqaVV6?=
+ =?utf-8?B?d2w5M0N5aTA4VkZuSVJCSHp0NDU5b1FEN2x1enRkQ0s0eitFZFltUWt3YWZm?=
+ =?utf-8?B?SGVDZGNpS2NWbUdjaUd6eHE1clR0ZklVUitlc2JSbmVyVzd2ZExzdktMdVY3?=
+ =?utf-8?B?L2NHUjU3cU5lMDQ1UFpKQUJYZ3ZJdnlPRWl5cE1semNyejF1YTB4RTBTN1Bs?=
+ =?utf-8?B?WWhLNnZFUU5yK0Y5M3R3L0JEbGJnMnp2L3hrTEdIK2RyNkloNk5hY1FBd0hF?=
+ =?utf-8?B?U3h2bWptZTZycE5FeDBSd0FqZ2pHUDVwQUtlb0FoM1ZobHlSOXNQQ0VnQnQz?=
+ =?utf-8?B?ejEzMlBPVURqYU11WnRtWW1WZ2dFcitwUkUyUGtLSU5iVjV2aURmd1hoRzV3?=
+ =?utf-8?B?OTU1cUN1K1p1QndBYmJOakdVcFZHQmNNNkJPbjdqdFd5OVYxMkVWd1lsM0FU?=
+ =?utf-8?B?UzllOW5rK3dJRDlrRHdtR3VZemR2a0pEUmxBZnVUZGoxUGpYQkJ3MEEyRmNU?=
+ =?utf-8?B?VVFUNGJ4UGhnZUFUUlNXNzRieldvZjR1RmpjV3k5Mk9CUzV6dG92WGRkc0hu?=
+ =?utf-8?B?ci9ubXUxMUZKTkZqdjMvaGQxSndlWld2d01INXdTbHBpblArRVFOOUNwclU2?=
+ =?utf-8?B?Skx1VVVMdFBxN29nUnQ2ME9OOC9wcWZ3bmovRU83WFBOT3B0em9odFYzVU5Q?=
+ =?utf-8?B?MVppZTNuY1FNZ2VocGN5cjd6amNSS0xDWDFOV0NzL1hWdkdDZ08vdz09?=
 X-Exchange-RoutingPolicyChecked: 
-	NOF4ihK+L3ztJXQQux5OeVV8VYzc0PBZm9Yu4EXmZ995psq/iLu0leGO2/xulmXKp3GbP2nmo1OjEZCjOShXEhf115EjOFK3N6+MOjFFmxniYNS2OPykdndnf5GOkGhO6iK5jTOVQMki/8eXdmk77KLqKgtesexlzvkIhLcskJWg3scaNAxp0mAal8Mc0VanTxJg7F6uwxYmNi8etRU0q2FoSXuCvdIDi/qXiicMx/DbbjPus3ZeS9JqOxol+8SV/Bw2oTnuZWIdzWQVXrWKopWtitfvpNbbbHE/ZX5mHBPoH5VvCYLpjUyiFBF08CMFimpQKcSaRD+8cO5gi/D7TA==
+	frDRy7lrPFtXRDQhtGQt58gf0jIB068wcCRYTWp179+rAFqIcxLgZlGCEoUc+HIj9WB7g6TJj/qFfK0Ba4QDLlJWfViOLMo6mYD613yAaFxBJoMmmcdc7PCLvEcQTLQtlip4G2ZEaImXh0U5Xwf4SNervvaUREzp11Q4A7c9c1dbCtkJ03MO7OWsx1NZBEFHJ4VD1h8GCheSVLXgBY0iRjlKdk4J9dDRciQxd+cM6RaUTsRlBOZRkLpXPAHOFtVNqx/njx5LI6Zqlx3ug1YPw5Yu2w+R7KzevVJ+UFkAJzTl8ZODbDlK5Fid2ezcrVwctTQ/Xqd2v456gKrv9DfgCQ==
 X-OriginatorOrg: windriver.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2a1c434b-3699-4abe-d327-08decaa6cb2f
+X-MS-Exchange-CrossTenant-Network-Message-Id: a0796d3b-c4c6-435e-7cf3-08decaa6cafc
 X-MS-Exchange-CrossTenant-AuthSource: CO6PR11MB5602.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jun 2026 06:24:45.6990
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jun 2026 06:24:45.3178
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6bT99PP3dtXapS8KRsJXDevFUKSdBITXXo97scUHbgda+oCJFtQWvayzfcfp4ddMNueyId6VMoxGods43Ymfww==
+X-MS-Exchange-CrossTenant-UserPrincipalName: s4PgsiB0rrFDMuJEgFOwgVMlNpwBvJ21pS51tC7dkbQj2YE81HtXHNnhMNVU0RRCecNKYbIoFM9N1X6ijGGWiA==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB5154
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE1MDA2NCBTYWx0ZWRfXwuUf88qAK54g
- wzOARqmjtQhdSjGNNmBi18ytY1w781F2CeHKHOoYGAePo5fyBeaq3gGs+eRqTyabd8X76pjJZEm
- YhyMuXWimzbya+ICLWxjWWzbsc5nhFT3hH7gIhk2oaMNax8sZF7d1zmk3MALF34cxtYz2iGvyGg
- Jfq7P92ZhiXt572MDHP/MoYbmb2w6MC6ZTFBHtq4rILDyN8DCYervWj+qzV+5oi1/qElGmz8bIN
- tQJMfihK0s6pucGjjI8eD3DMqoxLqliIikcg0TeN80tNKlyqj2otLFZ71a9nAADkhUGNodzFRku
- 7S96+eB5ZcHPUcHpBsFj836k3g4F+/jtw6YNvC1T+MMLerLGm4vP/3fiKP/9jM9ofVvqMhU7qvs
- P1eKvwfHtojqrjCDBRtd2WX4T4M9hsgPf5EnU/6JjZ3vi+SFdy3HjY7m9lEVkWCw2kmJD55s0lH
- YVFbY63udIuu7dHBgUw==
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE1MDA2NCBTYWx0ZWRfX3h+dzptasurr
+ bwk9aBKBV216YcD74/noJk6ye4mOG1GnICq69GUJhicDKeVTJ2Uph1bCloEhhQ88yfNffiIhEbg
+ aiX5Pw/zvJE+Y10QnFkX8drx1Sk0PyShocxIiXAaz9BuNAeeh1d9ubxmJWYRfbIqVb5lWS9S/S0
+ NZ4lbtejZi9bIMJwtbZcWfT3Pq4Yi0qN22ylV8ARevpGgqi1dzfqysoijPeu8ElzS6ObnSTbi4B
+ wxFJR2Hx3abWMWzuv+R2K+A3UcDuAKrug5g/NtO7XiDML9+kexn6GRPe64CkzbVYkTzWx/TkDs2
+ E465dVL7Ouwe+f5wjSI+tKeXemBhw91LOt7AdTI2bEqj3hmJXhs4zpqMSDbzhaVHILsxdFEqmMJ
+ T2jRKJssVRMqOIbbdLSVmvpe5CWWZnR46guydSXvz25iQDLR/jiQ7g7BvEaAdp9pROJ8y9bN/vF
+ wcBjeReGAkresIFonZg==
 X-Authority-Analysis: v=2.4 cv=BK+DalQG c=1 sm=1 tr=0 ts=6a2f9ab0 cx=c_pps
  a=OAmo50eV21M7Ophgg7+Z+Q==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
  a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
- a=xqWC_Br6kY4A:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=bi6dqmuHe4P4UrxVR6um:22 a=klDOsUkWDRETUCZYPvoE:22 a=t7CeM3EgAAAA:8
- a=e08-atkVFR6WX4J2vB4A:9 a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE1MDA2NCBTYWx0ZWRfXw++7SYPHenMM
- Dog0PzrWPLk7lvvK4itNkjz/MOrppZL+OesCpv6lKKPsdNyy3VMJtBltnQ67ex5GDuwirzjg9yB
- eDTs5IgpWyzvclzmeDUxM0EcEQECaTgio2lW8o1PFF7FTyK9dGD5
-X-Proofpoint-GUID: FeR7lVe2pbgVJ0boFVQZmsSExZAbX1Wh
-X-Proofpoint-ORIG-GUID: FeR7lVe2pbgVJ0boFVQZmsSExZAbX1Wh
+ a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=bi6dqmuHe4P4UrxVR6um:22 a=klDOsUkWDRETUCZYPvoE:22
+ a=t7CeM3EgAAAA:8 a=ljOHmGDoImW_DtJpQMQA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=FdTzh2GWekK77mhwV6Dw:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE1MDA2NCBTYWx0ZWRfXy90THyc04Oko
+ 3/4MPIUjQZifv2Z0N0N0uMHjSEy+PD7F7DHJXP1UmpzVjiQE+WG/gXcCikFJx/2mS4iDEi7GHM4
+ X5KdoCCnB17ifIyA26C2rh4tPGiBoVrdYLgAo0OrR70dq2Z1SfUw
+X-Proofpoint-GUID: lpLO38Vkp_pKm56Tx9b5gHHkrWNOW8bl
+X-Proofpoint-ORIG-GUID: lpLO38Vkp_pKm56Tx9b5gHHkrWNOW8bl
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
  definitions=2026-06-15_02,2026-06-12_03,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  adultscore=0 lowpriorityscore=0 priorityscore=1501 malwarescore=0
- clxscore=1011 bulkscore=0 suspectscore=0 impostorscore=0 spamscore=0
+ clxscore=1015 bulkscore=0 suspectscore=0 impostorscore=0 spamscore=0
  phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606040000
  definitions=main-2606150064
+Content-Transfer-Encoding: quoted-printable
+X-MIME-Autoconverted: from 8bit to quoted-printable by mx0a-0064b401.pphosted.com id 65F6Ntvk216469
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 15 Jun 2026 06:24:52 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9714
+ <docs@lists.yoctoproject.org>; Mon, 15 Jun 2026 06:25:02 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9715
 
 From: Chen Qi <Qi.Chen@windriver.com>
 
-Document the two new variables used for stable point release upgrades:
-- UPSTREAM_STABLE_RELEASE_REGEX: filter regex for upstream version checks
-- STABLE_VERSION_PARTS: controls how many version parts form the stable prefix
+Document the upstream-stable-release-point bbclass which automatically
+generates UPSTREAM_STABLE_RELEASE_REGEX for recipes with dot-separated
+version schemes, enabling stable point release upgrades.
 
 Signed-off-by: Chen Qi <Qi.Chen@windriver.com>
 ---
- documentation/ref-manual/variables.rst | 28 ++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ documentation/ref-manual/classes.rst | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index fe3d5a999..cb11f7901 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -10097,6 +10097,15 @@ system and gives an overview of their function and contents.
- 
-          SSTATE_SKIP_CREATION = "1"
- 
-+   :term:`STABLE_VERSION_PARTS`
-+      The number of leading dot-separated components of :term:`PV` that
-+      constitute the stable version prefix. Used by the
-+      :ref:`ref-classes-upstream-stable-release-point` class to generate
-+      :term:`UPSTREAM_STABLE_RELEASE_REGEX`. Defaults to ``"2"``.
+diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-man=
+ual/classes.rst
+index 95e07f85a..f0d9b1d55 100644
+--- a/documentation/ref-manual/classes.rst
++++ b/documentation/ref-manual/classes.rst
+@@ -3655,6 +3655,30 @@ Three variables control this class: :term:`INITSCR=
+IPT_PACKAGES`,
+ :term:`INITSCRIPT_NAME` and :term:`INITSCRIPT_PARAMS`. See the variable =
+links
+ for details.
+=20
++.. _ref-classes-upstream-stable-release-point:
 +
-+      For example, with ``PV = "259.5"`` and ``STABLE_VERSION_PARTS = "1"``,
-+      the generated regex matches versions starting with ``259``.
++``upstream-stable-release-point``
++=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D
 +
-    :term:`STAGING_BASE_LIBDIR_NATIVE`
-       Specifies the path to the ``/lib`` subdirectory of the sysroot
-       directory for the build host.
-@@ -12001,6 +12010,25 @@ system and gives an overview of their function and contents.
- 
-          UPSTREAM_VERSION_UNKNOWN = "1"
- 
-+   :term:`UPSTREAM_STABLE_RELEASE_REGEX`
-+      A regular expression used to filter upstream versions during version
-+      checks so that only versions within the same stable series are
-+      considered. When set, BitBake's fetchers (git, wget, crate) apply this
-+      regex to discovered upstream versions and discard any that do not match.
++The :ref:`ref-classes-upstream-stable-release-point` class automatically
++generates the :term:`UPSTREAM_STABLE_RELEASE_REGEX` variable for recipes
++whose version uses a dot-separated scheme. This enables stable point rel=
+ease
++upgrades =E2=80=94 version upgrades constrained to the same stable serie=
+s (e.g.
++``1.4.2`` to ``1.4.3`` but not to ``1.5.0``).
 +
-+      For example, if a recipe is at version ``1.4.2`` and the regex is
-+      ``^1\.4(\.\d+)*$``, then ``1.4.7`` would be a valid upgrade candidate
-+      but ``1.5.0`` would not.
++The class uses the :term:`STABLE_VERSION_PARTS` variable (defaults to ``=
+"2"``)
++to determine how many leading dot-separated parts of :term:`PV` constitu=
+te the
++stable prefix. For example:
 +
-+      For recipes with dot-separated versions, inherit the
-+      :ref:`ref-classes-upstream-stable-release-point` class to generate this
-+      variable automatically. For other versioning schemes, set it directly::
++-  With ``PV =3D "1.4.2"`` and ``STABLE_VERSION_PARTS =3D "2"`` (default=
+), the
++   generated regex is ``^1\.4(\.\d+)*$``.
++-  With ``PV =3D "259.5"`` and ``STABLE_VERSION_PARTS =3D "1"`` (e.g. sy=
+stemd), the
++   generated regex is ``^259(\.\d+)*$``.
 +
-+         UPSTREAM_STABLE_RELEASE_REGEX = "^10\.2p\d+$"
++For recipes whose stable version part is not dot-separated (e.g. openssh=
+ uses
++``10.2p1``), set :term:`UPSTREAM_STABLE_RELEASE_REGEX` directly instead =
+of
++inheriting this class.
 +
-+      See :ref:`ref-manual/release-process:stable point release upgrades` for
-+      the criteria under which this variable should be set.
-+
-    :term:`USE_DEVFS`
-       Determines if ``devtmpfs`` is used for ``/dev`` population. The
-       default value used for :term:`USE_DEVFS` is "1" when no value is
--- 
+ .. _ref-classes-useradd:
+=20
+ ``useradd*``
+--=20
 2.54.0
 
 
