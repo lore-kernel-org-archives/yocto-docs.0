@@ -2,149 +2,115 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 806EACD98DA
-	for <webhook@archiver.kernel.org>; Tue, 16 Jun 2026 13:42:58 +0000 (UTC)
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.154509.1781617372748881590
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A1E3ACD98E1
+	for <webhook@archiver.kernel.org>; Tue, 16 Jun 2026 13:46:28 +0000 (UTC)
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.154621.1781617579313232142
  for <docs@lists.yoctoproject.org>;
- Tue, 16 Jun 2026 06:42:53 -0700
+ Tue, 16 Jun 2026 06:46:19 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=sy19T7w6;
- spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=KkNFNdgc;
+ spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 1FBF51A395B
-	for <docs@lists.yoctoproject.org>; Tue, 16 Jun 2026 13:42:51 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id CBC78C2BB32;
+	Tue, 16 Jun 2026 13:46:21 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id E7A7D601A9;
-	Tue, 16 Jun 2026 13:42:50 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 00790106C9D82;
-	Tue, 16 Jun 2026 15:42:49 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 41A83601A9;
+	Tue, 16 Jun 2026 13:46:17 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3261A106C9D7A;
+	Tue, 16 Jun 2026 15:46:15 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1781617370; h=from:subject:date:message-id:to:mime-version:content-type:
+	t=1781617576; h=from:subject:date:message-id:to:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=qBpmbROpF3KaotJkvVtJlkifU7w+Q0Yhmh78QgjSS7Y=;
-	b=sy19T7w6FD0/1wteG6wGDeCqENCgidtC8Rg02UcScu8sh6wZVFLOFcqN7U3goiYCarEu4W
-	ZYeTDTqRIDtbB4iLmP1ygXG/76WB/kyuDfWTQDMhT4OoT6abn0UDiES/KzRjX/mPJimY7m
-	45j6SOZGbz2Cyuplz7Wy3BNvqdzmMSBLh4bA6JZtKjVX6lhO1Q+VihBe8ZKaNlxIqd24Nj
-	ZqxDceCsJJStmsMLs7qH2KYMg4IC2DKcDr3q2M9OiBRekm3k99S4FBbjvoCnQvqG94inFp
-	ohJjsDvrhtTiLqK+ZJYEyYt/qtNbYaj0UPifVHQxt3bVgg7g1qPCg8ws6NK5/A==
+	bh=DC8CFEDEbWqq9GnRoz6/3lTPi4NkvPyuoLp4LiXYpiw=;
+	b=KkNFNdgc3OeJ+4PQoK4XuZneib+s3zsY3n+9xdBM44hm4Dm5QISE4GM7bto/cW2VPHUC9R
+	jemPuuEU9yAKaZ8OEDY7eov3x5H7pt/B0+gHOaJI+OLBwu6tLfDvDiEQXOdj/OIAqLwEgX
+	tR/5Fw3CHrpPOc0BGzLinXUnmcHNul3DQfClLtq6Bpi0IGVSngfmTKOBfBKpRI9vBxipv0
+	8dv5yn+h3VdVtOYJ2b436vHn7QFFzNA9HM7jFIgTu8bBfr1TEP/NtBgGhdmIrT2yCT6HlW
+	zoxP9AVU9B9oofhvWE3s+vDGXxo+uE4xfiRWze2cw1Bn/uTPbSoPvsGuNBiCoA==
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 16 Jun 2026 15:42:49 +0200
-Message-Id: <DJAINCHABP5K.8LYI407PP8L4@bootlin.com>
+Date: Tue, 16 Jun 2026 15:46:15 +0200
+Message-Id: <DJAIPZ8J0D0P.3TE0WU9RACO37@bootlin.com>
+Subject: Re: [docs] [PATCH] ref-manual: clarify/correct glossary entries for
+ package variables
 From: "Antonin Godard" <antonin.godard@bootlin.com>
 To: "Robert P. J. Day" <rpjday@crashcourse.ca>, "YP docs mailing list"
  <docs@lists.yoctoproject.org>
-Subject: Re: [docs] [PATCH] dev-manual: correct inaccurate explanation of
- buildhistory setup
-References: <50ea53c0-245a-177b-52e3-c9813a99504d@crashcourse.ca>
-In-Reply-To: <50ea53c0-245a-177b-52e3-c9813a99504d@crashcourse.ca>
+References: <be79bec5-1707-ee8b-3688-a21de2e31dae@crashcourse.ca>
+In-Reply-To: <be79bec5-1707-ee8b-3688-a21de2e31dae@crashcourse.ca>
 X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 16 Jun 2026 13:42:58 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9742
+ <docs@lists.yoctoproject.org>; Tue, 16 Jun 2026 13:46:28 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9743
 
 Hi,
 
-On Fri Jun 12, 2026 at 10:50 AM CEST, Robert P. J. Day wrote:
+On Fri Jun 12, 2026 at 2:46 PM CEST, Robert P. J. Day wrote:
 >
-> At the moment, the introduction to the buildhistory class suggests
-> that the developer needs to add the line:
+> Either clarify or correct the packaging backend information for the
+> package exclusion variables:
 >
->   BUILDHISTORY_COMMIT =3D "1"
->
-> to their config file. Obviously, this is untrue since it is already
-> set to that by default in the buildhistory.bbclass file so remove that
-> directive but clarify that there is a reason why they might want to
-> subsequently set it zero.
+>   - PACKAGE_EXCLUDE
+>   - BAD_RECOMMENDATIONS
+>   - NO_RECOMMENDATIONS
 >
 > Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
 >
 > ---
 >
-> diff --git a/documentation/dev-manual/build-quality.rst b/documentation/d=
-ev-manual/build-quality.rst
-> index c3c7ccbb2..3c1dca2a2 100644
-> --- a/documentation/dev-manual/build-quality.rst
-> +++ b/documentation/dev-manual/build-quality.rst
-> @@ -33,13 +33,10 @@ The remainder of this section describes the following=
-:
->  Enabling and Disabling Build History
->  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>     while i ponder how to rewrite the dev manual section for these
+> variables, we can at least fix the glossary entries.
 >
-> -Build history is disabled by default. To enable it, add the following
-> -:term:`INHERIT` statement and set the :term:`BUILDHISTORY_COMMIT` variab=
-le to
-> -"1" at the end of your ``conf/local.conf`` file found in the
-> -:term:`Build Directory`::
-> +Build history is disabled by default. To enable it, simply add the follo=
-wing
-> +:term:`INHERIT` statement at the end of your ``conf/local.conf`` file::
-
-While at it, replace
-
-"""
-at the end of your ``conf/local.conf`` file::
-"""
-
-to
-
-"""
-in a :term:`configuration file`::
-"""
-
+> diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-m=
+anual/variables.rst
+> index df3666f1c..1b98ab5ea 100644
+> --- a/documentation/ref-manual/variables.rst
+> +++ b/documentation/ref-manual/variables.rst
+> @@ -300,6 +300,9 @@ system and gives an overview of their function and co=
+ntents.
+>        variable), the OpenEmbedded build system ignores your request and
+>        will install the packages to avoid dependency errors.
 >
->     INHERIT +=3D "buildhistory"
-> -   BUILDHISTORY_COMMIT =3D "1"
+> +      This variable is supported for the RPM and IPK packaging backends,
+> +      but not for DEB.
+> +
+>        See the :term:`NO_RECOMMENDATIONS` and the
+>        :term:`PACKAGE_EXCLUDE` variables for related
+>        information.
+> @@ -6498,8 +6501,7 @@ system and gives an overview of their function and =
+contents.
+>           functionality, such as kernel modules. It is up to you to add
+>           packages with the :term:`IMAGE_INSTALL` variable.
 >
->  Enabling build history as
->  previously described causes the OpenEmbedded build system to collect
-> @@ -52,9 +49,27 @@ build output information and commit it as a single com=
-mit to a local
->     particularly for images, and increases the amount of disk space used
->     during the build.
->
-> -You can disable build history by removing the previous statements from
-> +You can disable build history by removing that INHERIT statement from
+> -      This variable is only supported when using the IPK and RPM
+> -      packaging backends. DEB is not supported.
+> +      This variable is supported for all three packaging backends.
 
-s/INHERIT/:term:`INHERIT`/
-
->  your ``conf/local.conf`` file.
-
-Also replace local.conf like above.
+This was suggested by Quentin and I agree: just say "all packaging backends=
+".
 
 >
-> +.. note::
-> +
-> +   To enable basic build history, you need only add the line::
+>        See the :term:`BAD_RECOMMENDATIONS` and
+>        the :term:`PACKAGE_EXCLUDE` variables for
+> @@ -6930,8 +6932,7 @@ system and gives an overview of their function and =
+contents.
+>        an iterative development process to remove specific components fro=
+m a
+>        system.
+>
+> -      This variable is supported by all of the RPM, DEB and IPK
+> -      packaging backends.
+> +      This variable is supported for all three packaging backends.
 
-s/you need only/you need to/
+Same here
 
-> +
-> +      INHERIT +=3D "buildhistory"
-> +
-> +   to your local configuration, but the subsequent generation of that hi=
-story
-> +   is actually controlled by the :term:`BUILDHISTORY_COMMIT` variable
-> +   which is, by default, already conditionally set to "1" in the
-> +   ``buildhistory.bbclass`` file::
-> +
-> +      BUILDHISTORY_COMMIT ?=3D "1"
-> +
-> +   so there is no need for you to set that variable yourself. However, a=
-s
-> +   you will see later in this section, you can inherit that class file
-> +   yet set that variable to zero if you don't want the history but
-> +   still want some of the other information produced by this feature.
-
-This note seems too long. You just want to say that you can set
-BUILDHISTORY_COMMIT to 0, and that it disables commits for the history whil=
-e
-keeping other information such as image content and so on. Just say that.
+>
+>        See the :term:`NO_RECOMMENDATIONS` and the
+>        :term:`BAD_RECOMMENDATIONS` variables for
 
 Antonin
 
