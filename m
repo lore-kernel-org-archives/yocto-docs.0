@@ -2,14 +2,14 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 99109CD98DA
-	for <webhook@archiver.kernel.org>; Tue, 16 Jun 2026 09:34:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D8873CD98CF
+	for <webhook@archiver.kernel.org>; Tue, 16 Jun 2026 10:18:36 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.150585.1781602493804415039
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.151137.1781605113653664289
  for <docs@lists.yoctoproject.org>;
- Tue, 16 Jun 2026 02:34:54 -0700
+ Tue, 16 Jun 2026 03:18:34 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=wnlc6cBH;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=OI1scGyw;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
@@ -17,24 +17,25 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=HL5aYRqs1HZhYMJ0JsB32O2SNN6m1huwUoruMaVi5Vo=; b=wnlc6cBHMbJdZskXF36IviN3ug
-	QWjZI0YFkT4ULmv1Gx9o0uBxw0mVJGIOxdDv5x5FXSNSePOE/7+rC5FLVpUzxY29mb4L2A02ehLRy
-	Ekt8b0qRtvSQOzTo09ledPT45BKq5cv4W8t5nYiz4/269hgNfSxS6knFXE7Fg937QzDiL6AG3JQ/U
-	nvBsKyl6oBqW39UUzrT9zLfwfwjQLHI5PPf25h5LlQ9HRhpneStEcGV/0css6kS3F0AY3QxivfqqB
-	ePr9x4/NuZvtu88s+xPU9WZ4WuuvpHn3gdBI206WixlV7tQHkpVIZB6L5fFX5CJaAEgz/dUCORxhl
-	Sf22fa2g==;
-Received: from pool-174-114-114-5.cpe.net.cable.rogers.com ([174.114.114.5]:33294 helo=trixie)
+	bh=qvJ3JX/P+EwBnI3pS8Z20rOcKPOoXvJtLpgdX0+ly+Y=; b=OI1scGyw/nzZv8qEzMueZ47n4W
+	WasfRQ+ERlUVtqEla/cu+XBpYdxQxx5zDHV6C/mrp9sY+RfAhnz9ZFXzJzXbS3X0J879dqGipkRC+
+	QkgoVap0NSZFWSYXHXU/ZdeLtICP/GqH7yTRQf0oPiB2YaFND3FJm2yJ/J/S1jt3BkH6Zq/OU5Jq/
+	MM8r7yH7j4n5beRhEUIGoDWOoEC7bzhYBUtJGuT9anb7VvFFSYg6PsPKOOtEMl6x5bCi6/HHkD5pl
+	I6D8g9WQenNUAz0dy8OFs5x30hmduMH21fKZvOrvYhadn0q5/De3H1+0siyPgVwKV1LcmUkVuYtSE
+	rz5yE2fw==;
+Received: from pool-174-114-114-5.cpe.net.cable.rogers.com ([174.114.114.5]:40436 helo=trixie)
 	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.99.4)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1wZQC3-00000006cNI-0QKJ
+	id 1wZQsI-00000006ghB-2GBB
 	for docs@lists.yoctoproject.org;
-	Tue, 16 Jun 2026 05:34:52 -0400
-Date: Tue, 16 Jun 2026 05:34:48 -0400 (EDT)
+	Tue, 16 Jun 2026 06:18:31 -0400
+Date: Tue, 16 Jun 2026 06:18:26 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: [PATCH] test-manual: add more detail to the ptest section
-Message-ID: <46ed8884-f3d1-ee7d-1da6-a73a6e07c74c@crashcourse.ca>
+Subject: should the YP docs mention layers.openembedded.org recipe advanced
+ query?
+Message-ID: <86b66622-c80e-9f67-0e21-0743b305032d@crashcourse.ca>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -50,58 +51,34 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 16 Jun 2026 09:34:56 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9730
+ <docs@lists.yoctoproject.org>; Tue, 16 Jun 2026 10:18:36 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9731
 
 
-Expand the ptest section to show how to distinguish between adding all
-ptest packages to an image versus adding only a selected set of
-packages to the image.
+  while transferring some ptest content from the ptest wiki page to
+the docs, i was reminded of the advanced query feature of recipes tab
+of the OE layers page:
 
-Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+https://layers.openembedded.org/layerindex/branch/master/recipes/
 
----
+which that ptest wiki page mentioned toward the end:
 
-  The ptest section really should be considerably longer, perhaps
-using actual examples from the OE-Core code base. But I'll add just
-this bit for now.
+https://wiki.yoctoproject.org/wiki/Ptest#Recipes_with_ptest_Enabled
 
-diff --git a/documentation/test-manual/ptest.rst b/documentation/test-manual/ptest.rst
-index 1c946f81d..dc493b72c 100644
---- a/documentation/test-manual/ptest.rst
-+++ b/documentation/test-manual/ptest.rst
-@@ -31,12 +31,29 @@ see the :yocto_wiki:`Ptest </Ptest>` wiki page.
- Adding ptest to Your Build
- ==========================
+as to how to list all recipes that inherited ptest if one wanted to
+see some examples:
 
--To add package testing to your build, add the :term:`DISTRO_FEATURES` and
--:term:`EXTRA_IMAGE_FEATURES` variables to your ``local.conf`` file, which
--is found in the :term:`Build Directory`::
-+Adding package testing to your image is done in two steps:
-+
-+#. Select that all ptest packages should be built and packaged, and
-+
-+#. Identify which of those ptest packages to add to your image.
-+
-+First, in order to build all ptest packages, add the following line
-+to your ``local.conf`` file::
+http://layers.openembedded.org/layerindex/branch/master/recipes/?q=inherits%3Aptest
 
-    DISTRO_FEATURES:append = " ptest"
--   EXTRA_IMAGE_FEATURES += "ptest-pkgs"
-+
-+Note that this will cause all ptest packages to be built and packaged,
-+but will not add any of those packages to your image; that comes in
-+the next step. You can then add ptest packages to your image in one of two ways.
-+
-+#. If you want to add *all* of the generated ptest packages, add the line::
-+
-+      EXTRA_IMAGE_FEATURES += "ptest-pkgs"
-+
-+#. On the other hand, if you want to add only a select few of the ptest
-+   packages, you can use some variation of::
-+
-+      IMAGE_INSTALL:append = " e2fsprogs-ptest zlib-ptest"
+it occurred to me that that would be kind of a useful note to make in,
+say, the ref manual "classes" section -- to inform the reader how to
+find examples of recipes that inherit a given class to see how it's
+done.
 
- Once your build is complete, the ptest files are installed into the
- ``/usr/lib/package/ptest`` directory within the image, where ``package``
+  rather than add a note to the "classes" section, would it make more
+sense to add a more comprehensive section somewhere on how to use that
+advanced query feature and link to it when appropriate? or does that
+feature fall outside the scope of the YP docs?
+
+rday
 
