@@ -2,14 +2,14 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8F638CD98E2
-	for <webhook@archiver.kernel.org>; Wed, 17 Jun 2026 08:46:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5AF2ECD98E2
+	for <webhook@archiver.kernel.org>; Wed, 17 Jun 2026 08:52:57 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.10957.1781686011170155397
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.11028.1781686376519816281
  for <docs@lists.yoctoproject.org>;
- Wed, 17 Jun 2026 01:46:51 -0700
+ Wed, 17 Jun 2026 01:52:56 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=PcF3PrFg;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=o/WPQNkK;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
@@ -17,24 +17,24 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Ys8eKbrmDX6ypIDYdO4/ked7hPK4xMPFlRCeVlVqswM=; b=PcF3PrFgejHOJIzUJlkVBpCZMP
-	abCjjLbJEUr7Zv8rLka8dA/c/ApviaJqD4AnQs3eWLhTS7Q2MwlASDIyMLDiGvMcmiZ0ZFnlSZN5p
-	BmTWpRtH/9Jce4RkOvEaIbpHNAj2744hogYtqGjgIM4/mJdO/io1PU+MsXmRdFHZ7bYdfoeDhjhxL
-	V88sxXxgCH1youg2sd8IKm2EHYg0q1QXJa3uHl18GFT5iQpI3rX4sKiKJeA+Srhwsx+r3rl+541+U
-	qQApwWT3R+TNXZtYTUjx8QVWRPnZaxCQmzmawbNa2f+oPTA3f5S0BP/iDoFsGNnr9HRxAkH5v+bkE
-	8eMSc+rg==;
-Received: from pool-174-114-114-5.cpe.net.cable.rogers.com ([174.114.114.5]:54018 helo=trixie)
+	bh=vl8ugn8Gm13F+V2RaW4QgqRI73/6ULBu4UNCfANHhD0=; b=o/WPQNkKsEi02yHlN3uznvrVQY
+	yR/wqBOjeyYnFHhez5p5LjEfTuM6nj4w/p4wKfOyWy5q7ueQVxc3p1F6YPg75R8a/hUwZpKD0GMWY
+	ZIvKyZYw9H8wb9m4UAE2AvJxYChi+FZWccz/0zkhsM5t+rrHYxeepHCJ+nTgqgSaPQKRgolaYKSa8
+	+HB4UHJ3CbOPwPmQSdBfueWhku6FgkuQETZy4G0wBAnZcrjjDzJi+MaWr8iH7o/w/yU394HNm4Ir0
+	hiatDbBQ76dZlsJAba0j18OvpSv9g5iRLQqAPBXqQZmKSTCzK5WB/FqpbafQZfz0Fe9NemRa/gelk
+	ScJtNHIg==;
+Received: from pool-174-114-114-5.cpe.net.cable.rogers.com ([174.114.114.5]:44844 helo=trixie)
 	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.99.4)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1wZlv6-000000095sE-1RkB
+	id 1wZm0z-000000096SB-1VbR
 	for docs@lists.yoctoproject.org;
-	Wed, 17 Jun 2026 04:46:49 -0400
-Date: Wed, 17 Jun 2026 04:46:44 -0400 (EDT)
+	Wed, 17 Jun 2026 04:52:55 -0400
+Date: Wed, 17 Jun 2026 04:52:50 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: [PATCH v2] test-manual: add more detail to the ptest section
-Message-ID: <4c6924c3-e8ef-9086-dad6-19220324b027@crashcourse.ca>
+Subject: [PATCH v3] test-manual: add more detail to the ptest section
+Message-ID: <aeeae320-420b-da54-3e24-3fcebf48cad5@crashcourse.ca>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -50,8 +50,8 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 17 Jun 2026 08:46:57 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9769
+ <docs@lists.yoctoproject.org>; Wed, 17 Jun 2026 08:52:57 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9770
 
 
 Enhance the ptest section by:
@@ -65,8 +65,10 @@ Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
 
 ---
 
+  sorry, forgot '$' prompt in code-block.
+
 diff --git a/documentation/test-manual/ptest.rst b/documentation/test-manual/ptest.rst
-index 1c946f81d..2edbbc4a3 100644
+index 1c946f81d..4b91e6fc3 100644
 --- a/documentation/test-manual/ptest.rst
 +++ b/documentation/test-manual/ptest.rst
 @@ -31,17 +31,49 @@ see the :yocto_wiki:`Ptest </Ptest>` wiki page.
@@ -114,7 +116,7 @@ index 1c946f81d..2edbbc4a3 100644
 +
 +   .. code-block:: console
 +
-+      oe-pkgdata-util list-pkgs "*-ptest"
++      $ oe-pkgdata-util list-pkgs "*-ptest"
 +      acl-ptest
 +      attr-ptest
 +      bash-ptest
