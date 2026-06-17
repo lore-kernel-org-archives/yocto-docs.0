@@ -2,14 +2,14 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8922DCD98F0
-	for <webhook@archiver.kernel.org>; Wed, 17 Jun 2026 11:34:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 96818CD98F0
+	for <webhook@archiver.kernel.org>; Wed, 17 Jun 2026 11:57:08 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.13492.1781696088924127561
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.13849.1781697418081358041
  for <docs@lists.yoctoproject.org>;
- Wed, 17 Jun 2026 04:34:49 -0700
+ Wed, 17 Jun 2026 04:56:58 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=B1duibHC;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=hV2KbYM+;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
@@ -17,25 +17,25 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=x8JES5z/WuI9ffsBkZ61QZ5r+xVSuAJNENsHhK0CvAM=; b=B1duibHCX53X5NqUVULj3rdfj7
-	86kSn9CY+Qt1IP5qjfuRKQ9k0z8lRkjAC41dIbat2IU2S5H3P03pTQfP7rZm31QhpQQNoPsc7SBMj
-	AlBS/j/tRjdKbYEanEtH7RgyIqIWHYg2sgXu79cJAg77ghYblOymtezv22ZRQhrXKp/lYRqCk8zXQ
-	rna6syoBNVv9WMlLyRSoMQwf45ouqwNrdr4NzQIskCbXZBl478RsK6kueX9uhE4VvkJir1q+eqYCm
-	sXouzRGW8dW6DI19LfWqVJCfQt52ZTUdnpNpuKSMDGerAv8uGZIJz32GlvSO+Bu+p8I6LaUjAR1SZ
-	IjAg8UcA==;
-Received: from pool-174-114-114-5.cpe.net.cable.rogers.com ([174.114.114.5]:44726 helo=trixie)
+	bh=MbW6oRfUR5ZA6/cGEilIBdsJeADcMzgAe7xPuW0jldk=; b=hV2KbYM+3Y+mRuKzAu97rcrEFR
+	681oNevI7s+1sA7od/6zoF/LqHcrFvY1CCtHwMY1A8/DCJb4qICQ0s/SsU+FjznHEtZ3zu0Bf6yEj
+	sZsVEvXS+yy+y/vJMuxqCMDiu6NshWChM3HdEGA0V/1WZBkReADofbuD5COIIfZ428oEDkx3rv73r
+	TCtjc5KdOD7yXmn1t73tRYTsxgu5QlhPMDhFWFc64SA4EL6QQJJSO6jfqbN3oWAvWqFnrjkkpe2Tk
+	61sjRgIHGNxL6JdaAqHayYytMN9n4CgRhOou1JiFx17K1H23Tg/pSpfePuv2DM2CSPrea4O0PVk74
+	mfgQdtTw==;
+Received: from pool-174-114-114-5.cpe.net.cable.rogers.com ([174.114.114.5]:47638 helo=trixie)
 	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.99.4)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1wZoXe-00000009MiB-0dLx
+	id 1wZot5-00000009P8a-17zR
 	for docs@lists.yoctoproject.org;
-	Wed, 17 Jun 2026 07:34:47 -0400
-Date: Wed, 17 Jun 2026 07:34:42 -0400 (EDT)
+	Wed, 17 Jun 2026 07:56:56 -0400
+Date: Wed, 17 Jun 2026 07:56:49 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: [PATCH] ref-manual: explain default value used for SUMMARY
- metadata
-Message-ID: <c1cbec86-6b95-fb96-8676-f117082d17bb@crashcourse.ca>
+Subject: [PATCH] ref-manual: add more explanation to glossary variable
+ LICENSE
+Message-ID: <3beaf215-35cd-0e87-ce29-cdf2ff3a8135@crashcourse.ca>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -51,33 +51,45 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 17 Jun 2026 11:34:58 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9772
+ <docs@lists.yoctoproject.org>; Wed, 17 Jun 2026 11:57:08 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9773
 
 
-Explain that if you don't set a value for the SUMMARY variable in a
-recipe, it will get this default value from bitbake.conf:
+Add the following to the variable glossary LICENSE entry:
 
-  SUMMARY ?= "${PN} version ${PV}-${PR}"
+  - it is a required variable in an OE recipe
+  - it must be accompanied by LIC_FILES_CHKSUM, except in the
+    case where LICENSE = "CLOSED"
 
 Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
 
 ---
 
 diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index df3666f1c..bb142dc4b 100644
+index df3666f1c..3558ccf2d 100644
 --- a/documentation/ref-manual/variables.rst
 +++ b/documentation/ref-manual/variables.rst
-@@ -10350,6 +10350,11 @@ system and gives an overview of their function and contents.
-       :term:`DESCRIPTION` variable if :term:`DESCRIPTION` is
-       not set in the recipe.
+@@ -5871,7 +5871,8 @@ system and gives an overview of their function and contents.
+       section in the Yocto Project Development Tasks Manual.
 
-+      If you don't set this variable in your recipe file, it will contain
-+      the default value as set in the ``bitbake.conf`` file::
+    :term:`LICENSE`
+-      The list of source licenses for the recipe. Follow these rules:
++      This is a required field in an Openembedded recipe file, and should
++      contain a list of source licenses for the recipe. Follow these rules:
+
+       -  Do not use spaces within individual license names.
+
+@@ -5911,6 +5912,12 @@ system and gives an overview of their function and contents.
+          LICENSE:${PN} = "GPL-2.0.only"
+          LICENSE:${PN}-doc = "GFDL-1.2"
+
++      .. note::
 +
-+         SUMMARY ?= "${PN} version ${PV}-${PR}"
++         A recipe's :term:`LICENSE` value must be accompanied by an associated
++         :term:`LIC_FILES_CHKSUM` value, except in the special case where
++         the :term:`LICENSE` value is set to "CLOSED".
 +
-    :term:`SVNDIR`
-       The directory in which files checked out of a Subversion system are
-       stored.
+    :term:`LICENSE_CREATE_PACKAGE`
+       Setting :term:`LICENSE_CREATE_PACKAGE` to "1" causes the OpenEmbedded
+       build system to create an extra package (i.e.
 
