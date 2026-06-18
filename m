@@ -1,89 +1,103 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EA746CD98F0
-	for <webhook@archiver.kernel.org>; Thu, 18 Jun 2026 08:40:33 +0000 (UTC)
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.14833.1781772026229633612
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5FF79CD98F2
+	for <webhook@archiver.kernel.org>; Thu, 18 Jun 2026 12:05:48 +0000 (UTC)
+Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.18102.1781784340429398299
  for <docs@lists.yoctoproject.org>;
- Thu, 18 Jun 2026 01:40:27 -0700
+ Thu, 18 Jun 2026 05:05:40 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=s8jSXDhf;
- spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 61B1EC06CC6
-	for <docs@lists.yoctoproject.org>; Thu, 18 Jun 2026 08:40:29 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 1102B5FF03;
-	Thu, 18 Jun 2026 08:40:24 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6396C106C88F0;
-	Thu, 18 Jun 2026 10:40:14 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1781772023; h=from:subject:date:message-id:to:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=/BHHcGdzssqqOP3S/70cfwUQXv5h9x6ClHA9d0gAbx4=;
-	b=s8jSXDhfEEKZwE6/J8uNJx8vcjkIWXn2g+KQLa09QBVd92cDDAg7qO8iVGp4wkirpBccdx
-	9wyJdZ3JWy6uzpnDfcaFDEmD9WkFx6REZI4616gTsZhFc4HU3Lw7Bes0XdH2Gyj+xajYqz
-	R9lncxdVHD0eCMRy9m6y4Ss7m278UyMh3PgnpO3GQPUN2l3VCPPZxOwjl33FC53Y1nLAyY
-	Ylj4QScshletd0MAtnP9QRNic1QY1Xy1OyqVOOGc9yPKyg3ZgvsL5dn1Xbjps19n6p2tx0
-	EXFqYrtfEHdUS5ibvEQTTqGgbNxollV0x8g9DODxDCWFUBiim+8jZr48MBJkRg==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 18 Jun 2026 10:40:13 +0200
-Message-Id: <DJC1GR3GMZ3S.2GX7XVXG6129B@bootlin.com>
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: "Robert P. J. Day" <rpjday@crashcourse.ca>, "YP docs mailing list"
- <docs@lists.yoctoproject.org>
-Subject: Re: [docs] [PATCH] ref-manual: explain default value used for
- SUMMARY metadata
-References: <c1cbec86-6b95-fb96-8676-f117082d17bb@crashcourse.ca>
-In-Reply-To: <c1cbec86-6b95-fb96-8676-f117082d17bb@crashcourse.ca>
-X-Last-TLS-Session-Version: TLSv1.3
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=rfBZ7VWF;
+ spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:References:
+	Message-ID:In-Reply-To:Subject:cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=000hYssuaYT6YPzVye43HJKARF2V9ZLw+GP23tp9Csw=; b=rfBZ7VWFI8RKMJrO1B8nK9xzVs
+	M7bHPtCMuaHH1Ok7RYFqwLnht+jBiKdLXCPePhWGcVMVewluwb3z2TaMzlp3AfIYRwhu12j/KeseV
+	z2nyf9ztwuv/sean9U9W5i+JdmSFHP8OAGZAtFTQ5tZJ+Mis0fgGpAPivF3FjFdSidnBBJUqecLWq
+	zPz8ylLuXe28oHkVLx9h2n4orbs3NB4GIbfqeGMri1/touoZ1ia9YbznVebYCo9q02HYynO+Q939C
+	Gh8kax/39dKUC04R+HEDvQ/w+Z506tHOs2zwWZfHSpbMm2Cs//Xdcpcd25AqXerL1dxrqPnByqYJG
+	JsFR4JcQ==;
+Received: from pool-174-114-114-5.cpe.net.cable.rogers.com ([174.114.114.5]:46704 helo=trixie)
+	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.99.4)
+	(envelope-from <rpjday@crashcourse.ca>)
+	id 1waBV4-000000006Zb-1sFd;
+	Thu, 18 Jun 2026 08:05:39 -0400
+Date: Thu, 18 Jun 2026 08:05:22 -0400 (EDT)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+To: Antonin Godard <antonin.godard@bootlin.com>
+cc: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: Re: [docs] should the dev manual "libraries" sections explain
+ "oe_libinstall"?
+In-Reply-To: <DJAI1K5XJBDD.3QTRALTBOKL1I@bootlin.com>
+Message-ID: <939a7e34-075b-da1c-1ea5-94272fdf9603@crashcourse.ca>
+References: <3b08f39f-86c4-ce11-0761-8ef793c0fbdd@crashcourse.ca> <DJAI1K5XJBDD.3QTRALTBOKL1I@bootlin.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
+X-AntiAbuse: Original Domain - lists.yoctoproject.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - crashcourse.ca
+X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 18 Jun 2026 08:40:33 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9777
+ <docs@lists.yoctoproject.org>; Thu, 18 Jun 2026 12:05:48 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9778
 
-Hi,
+On Tue, 16 Jun 2026, Antonin Godard wrote:
 
-On Wed Jun 17, 2026 at 1:34 PM CEST, Robert P. J. Day wrote:
+> On Thu Jun 11, 2026 at 1:26 PM CEST, Robert P. J. Day wrote:
+> >
+> >   while the "Working with Pre-Built Libraries" section:
+> >
+> > https://docs.yoctoproject.org/dev-manual/prebuilt-libraries.html
+> >
+> > explains the "oe_soinstall" utility, i see nothing anywhere in the
+> > docs that explains the similar "oe_libinstall" utility, for which
+> > there are a few examples scattered around, such as mtd-utils:
+> >
+> > https://git.openembedded.org/openembedded-core/tree/meta/recipes-devtools/mtd/mtd-utils_2.3.1.bb
+> >
+> >   does this deserve a mention?
 >
-> Explain that if you don't set a value for the SUMMARY variable in a
-> recipe, it will get this default value from bitbake.conf:
->
->   SUMMARY ?=3D "${PN} version ${PV}-${PR}"
->
-> Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
->
-> ---
->
-> diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-m=
-anual/variables.rst
-> index df3666f1c..bb142dc4b 100644
-> --- a/documentation/ref-manual/variables.rst
-> +++ b/documentation/ref-manual/variables.rst
-> @@ -10350,6 +10350,11 @@ system and gives an overview of their function a=
-nd contents.
->        :term:`DESCRIPTION` variable if :term:`DESCRIPTION` is
->        not set in the recipe.
->
-> +      If you don't set this variable in your recipe file, it will contai=
-n
-> +      the default value as set in the ``bitbake.conf`` file::
-> +
-> +         SUMMARY ?=3D "${PN} version ${PV}-${PR}"
+> Yes please
 
-I would avoid providing the value here, as it costs maintenance. You can
-simplify this sentence like so:
+after a quick check, maybe it's not worth documenting this utility
+-- google AI suggests the following:
 
-"""
-If you don't set this variable in your recipe file, it will contain a defau=
-lt
-value as set in the :oecore_path:`meta/conf/bitbake.conf` file.
-"""
+  oe_libinstall is a legacy shell helper function in the OpenEmbedded
+  / Yocto Project build framework used to install a library and all
+  its compiled variants (such as .a, .so, .la, and .lai files) into a
+  specified destination directory.
 
-Antonin
+  Historically, it was primarily utilized during the do_stage task
+  (which has since been deprecated) or inside custom do_install tasks
+  to automate the handling of multi-format library files.
+
+  ...
+
+  If you are writing modern Yocto/OpenEmbedded recipes, you should
+  avoid using oe_libinstall.
+
+  The Modern Way: Standard build systems like Autotools, CMake, or
+  Meson handle library generation and staging automatically via
+  oe_runmake install.
+
+so is it still worth documenting something that is legacy and
+deprecated? or would it make more sense to upgrade the recipes to not
+use this utility anymore?
+
+rday
 
