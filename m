@@ -1,80 +1,89 @@
-Return-Path: <rpjday@crashcourse.ca>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BEAA5CD98E2
-	for <webhook@archiver.kernel.org>; Wed, 17 Jun 2026 18:11:09 +0000 (UTC)
-Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.1572.1781719859582390441
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EA746CD98F0
+	for <webhook@archiver.kernel.org>; Thu, 18 Jun 2026 08:40:33 +0000 (UTC)
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.14833.1781772026229633612
  for <docs@lists.yoctoproject.org>;
- Wed, 17 Jun 2026 11:10:59 -0700
+ Thu, 18 Jun 2026 01:40:27 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=RxK5rT43;
- spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
-	To:From:Date:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=D7nDSn1tSrEbh6AU1aUZDprcxtrzVC5vr78E27Lrw+g=; b=RxK5rT43iPgn0ZHQGjvyR4qw27
-	VeHFuCdcrm/j693CGW5feRnZvo4DSXCp6jxeZavXet20AkxK1NbVCpZSW5QMMce9j6jr6Cf/+ugZF
-	46CLWOEgB1Omj5pHMGXK6gvop1QcbiKW1vQROYR57T9PlUjWzK0zCR75SMfXL76ilQKYeJlkqTDux
-	5BTLywG1CDvpFkJQm4XCSsSH/cLWcmUd2jq+tUq4JevD1UvJdMjobQn5NejoyOh9XcOYRND5TZsxs
-	t/h9gdviRMdgrVGiraLAaN0uYKBQhwwSEk7/y9VkjZrFi2BzX0Yiv8PDmfFnJtCbreR/aaCw4ndgH
-	lwP+bLmg==;
-Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:44956 helo=trixie)
-	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.4)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1wZuj2-0000000A6g3-2tLp
-	for docs@lists.yoctoproject.org;
-	Wed, 17 Jun 2026 14:10:58 -0400
-Date: Wed, 17 Jun 2026 14:10:49 -0400 (EDT)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: some questions about pkg_postinst* scripts
-Message-ID: <7741ea2a-aecd-50a1-e1fb-5eb952a7d793@crashcourse.ca>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=s8jSXDhf;
+ spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 61B1EC06CC6
+	for <docs@lists.yoctoproject.org>; Thu, 18 Jun 2026 08:40:29 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 1102B5FF03;
+	Thu, 18 Jun 2026 08:40:24 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6396C106C88F0;
+	Thu, 18 Jun 2026 10:40:14 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1781772023; h=from:subject:date:message-id:to:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=/BHHcGdzssqqOP3S/70cfwUQXv5h9x6ClHA9d0gAbx4=;
+	b=s8jSXDhfEEKZwE6/J8uNJx8vcjkIWXn2g+KQLa09QBVd92cDDAg7qO8iVGp4wkirpBccdx
+	9wyJdZ3JWy6uzpnDfcaFDEmD9WkFx6REZI4616gTsZhFc4HU3Lw7Bes0XdH2Gyj+xajYqz
+	R9lncxdVHD0eCMRy9m6y4Ss7m278UyMh3PgnpO3GQPUN2l3VCPPZxOwjl33FC53Y1nLAyY
+	Ylj4QScshletd0MAtnP9QRNic1QY1Xy1OyqVOOGc9yPKyg3ZgvsL5dn1Xbjps19n6p2tx0
+	EXFqYrtfEHdUS5ibvEQTTqGgbNxollV0x8g9DODxDCWFUBiim+8jZr48MBJkRg==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 18 Jun 2026 10:40:13 +0200
+Message-Id: <DJC1GR3GMZ3S.2GX7XVXG6129B@bootlin.com>
+From: "Antonin Godard" <antonin.godard@bootlin.com>
+To: "Robert P. J. Day" <rpjday@crashcourse.ca>, "YP docs mailing list"
+ <docs@lists.yoctoproject.org>
+Subject: Re: [docs] [PATCH] ref-manual: explain default value used for
+ SUMMARY metadata
+References: <c1cbec86-6b95-fb96-8676-f117082d17bb@crashcourse.ca>
+In-Reply-To: <c1cbec86-6b95-fb96-8676-f117082d17bb@crashcourse.ca>
+X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 17 Jun 2026 18:11:09 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9776
+ <docs@lists.yoctoproject.org>; Thu, 18 Jun 2026 08:40:33 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9777
 
+Hi,
 
-  in an attempt to document *all* of the features of post-installation
-scripts (and prerm and so on), i've been reading the docs, and asking
-google, and looking at various examples in the OE code base, so i have
-the first of some questions so i can improve that subsection (which, i
-submit, really deserves to be a full section of the dev manual on its
-own, and not just a small part of the "new recipe" section). so ...
+On Wed Jun 17, 2026 at 1:34 PM CEST, Robert P. J. Day wrote:
+>
+> Explain that if you don't set a value for the SUMMARY variable in a
+> recipe, it will get this default value from bitbake.conf:
+>
+>   SUMMARY ?=3D "${PN} version ${PV}-${PR}"
+>
+> Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+>
+> ---
+>
+> diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-m=
+anual/variables.rst
+> index df3666f1c..bb142dc4b 100644
+> --- a/documentation/ref-manual/variables.rst
+> +++ b/documentation/ref-manual/variables.rst
+> @@ -10350,6 +10350,11 @@ system and gives an overview of their function a=
+nd contents.
+>        :term:`DESCRIPTION` variable if :term:`DESCRIPTION` is
+>        not set in the recipe.
+>
+> +      If you don't set this variable in your recipe file, it will contai=
+n
+> +      the default value as set in the ``bitbake.conf`` file::
+> +
+> +         SUMMARY ?=3D "${PN} version ${PV}-${PR}"
 
-  first, if a recipe defines a "pkg_postinst:${PN}" script (or some
-related pkg_postinst:package script), that script will *always* be
-invoked on the build host when that package is added to the image
-during do_rootfs(), is that correct? ignore whether the script is not
-meant to run on the build host, or whether it checks ${D}, or whether
-it exits with a non-zero exit code ... leave all that to the side, is
-it true that it will always at least be *invoked*, regardless of its
-contents? what it does after being invoked we will leave until later.
+I would avoid providing the value here, as it costs maintenance. You can
+simplify this sentence like so:
 
-  related to that, the only possibility for it to not be invoked on
-the build host at all is to define it as
-pkg_postinst_ontarget:package(), yes?
+"""
+If you don't set this variable in your recipe file, it will contain a defau=
+lt
+value as set in the :oecore_path:`meta/conf/bitbake.conf` file.
+"""
 
-  let's start there.
-
-rday
+Antonin
 
