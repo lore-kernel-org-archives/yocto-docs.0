@@ -2,14 +2,14 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AE3BACD98F7
-	for <webhook@archiver.kernel.org>; Thu, 18 Jun 2026 12:34:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BAC3ACD98F2
+	for <webhook@archiver.kernel.org>; Thu, 18 Jun 2026 12:52:58 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.18399.1781786077773911414
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.18865.1781787177635059999
  for <docs@lists.yoctoproject.org>;
- Thu, 18 Jun 2026 05:34:38 -0700
+ Thu, 18 Jun 2026 05:52:58 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=FjnY6JSp;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=joYUc6QE;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
@@ -17,24 +17,24 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Kl1nqx0oFomEG9CyhbLQ7llsrIeVT/xsM/bcb7r0ldE=; b=FjnY6JSpoYxkA5KbxJzsWXEMNF
-	J5FuZgeC5irLRMQkLer1YiNwdi+UW+dZX2QWn9sXgsWySjwVv2Z2ClJc+nKmhUiXmZLOeDhnXhCgh
-	wTYepYZ8rpfeEkbdh+hS8y9/xbsCsd3NhKkuq2/gqDlhOKzoQPRK++Vmcp5xdBzodz6pNZ6K2ITGS
-	EjAWtLvLjwvYIe/20bEQz4CTLpD4ywvhAAtqNUyWSFLWyQdjbPOuQy7xNquWeez8xXxCCErpavab5
-	0DcP/a5PmWFy5ly4BIgVQYvOfoHMCjl5LD8bohi6E+WmawopqeJsgFC3Digev001iqKPCUnY5ZAsm
-	dPZMFVHw==;
-Received: from pool-174-114-114-5.cpe.net.cable.rogers.com ([174.114.114.5]:51832 helo=trixie)
+	bh=1D330d3skqYMLpa0yWDQ675QG2VTbiY/6koMYPWcWvA=; b=joYUc6QEATERXJ44pmoZFWicfz
+	PZyn9nw/F99aRfqHUg3czUmDyZ3AFWyhMH1D/t5BVk7QHy4AGSMvKhYoz374Y2bY1N3HHyiTyipb4
+	cM33iS+opWQgiJ+IVWfnR7/MEDtbdX02Ybz0mFPygMXBi8oo09KD8IenkKuFfWg407V50A8bMLCxB
+	Ocasw8M/TQAAKJ9+95v3XLLXyPXD8rjTgv6C07MXvOWWCG9NOCPJqzP5inPjmm/CuFj02QU7uuQhV
+	MOTeaBzHam5LVamlCy/xWMVHq1/dAX0cgc859u65v58gkwsc9K/4UyqjXZleutEBHIPhQ7vwl802U
+	5Mr9PpvQ==;
+Received: from pool-174-114-114-5.cpe.net.cable.rogers.com ([174.114.114.5]:41922 helo=trixie)
 	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.99.4)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1waBx5-000000009yT-2glR
+	id 1waCEp-00000000CaX-3449
 	for docs@lists.yoctoproject.org;
-	Thu, 18 Jun 2026 08:34:36 -0400
-Date: Thu, 18 Jun 2026 08:34:29 -0400 (EDT)
+	Thu, 18 Jun 2026 08:52:56 -0400
+Date: Thu, 18 Jun 2026 08:52:51 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: [PATCH v2] ref-manual: explain default value used for SUMMARY
-Message-ID: <9e54454f-72b1-06e6-b271-7a14647af536@crashcourse.ca>
+Subject: should the security manual mention the meta-exein layer?
+Message-ID: <45d7a560-e62b-df1f-f206-33535234e974@crashcourse.ca>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -50,31 +50,25 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 18 Jun 2026 12:34:38 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9779
+ <docs@lists.yoctoproject.org>; Thu, 18 Jun 2026 12:52:58 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9780
 
 
-Explain that if you do not set a value for the SUMMARY variable in a
-recipe file, that will generate a warning and that variable will be
-set to a default value from the meta/conf/bitbake.conf file.
+  looking at this section in the security manual:
 
-Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+https://docs.yoctoproject.org/security-manual/securing-images.html#tools-for-hardening-your-image
 
----
+and it's awfully brief, simply referring the reader to the
+comprehensive meta-security layer. but can/should that section be
+extended to include other (possibly non-YP) layers?
 
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index df3666f1c..dc11ea326 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -10350,6 +10350,10 @@ system and gives an overview of their function and contents.
-       :term:`DESCRIPTION` variable if :term:`DESCRIPTION` is
-       not set in the recipe.
+  for example, here:
 
-+      If you don't set this variable in your recipe file, you will be warned
-+      about that and it will be set to a default value from the
-+      :oecore_path:`meta/conf/bitbake.conf` file.
-+
-    :term:`SVNDIR`
-       The directory in which files checked out of a Subversion system are
-       stored.
+https://docs.yoctoproject.org/ref-manual/yocto-project-supported-features.html#primary-supported
+
+the meta-exein layer is listed as "Primary Supported", so does that
+mean it merits at least a mention? what about other YP-compatible
+tools?
+
+rday
 
