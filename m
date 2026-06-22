@@ -2,14 +2,14 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E7DF7CD98F2
-	for <webhook@archiver.kernel.org>; Mon, 22 Jun 2026 19:34:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EB4DBCDB466
+	for <webhook@archiver.kernel.org>; Mon, 22 Jun 2026 19:44:29 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.5194.1782156888888158030
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.5361.1782157464591874001
  for <docs@lists.yoctoproject.org>;
- Mon, 22 Jun 2026 12:34:49 -0700
+ Mon, 22 Jun 2026 12:44:24 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=hvJza6nQ;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=NCj8Dk6m;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
@@ -17,24 +17,24 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=S7vWyYfHgblEOzjJrcgS7VUjmDYsdp55bp5qV/qpGqQ=; b=hvJza6nQEWrvTacBD8pGahU64G
-	ln5R39P2DDKQYx1vLdf9GrKHAgYU06sP+OCUW+YvtD7oDGXkgvDm2ZUPfy8gnH+yDOj0iAk9tr29s
-	Bz5FeOxIWgqkpmC2SIm7dRQ2Owj/p5JdBoZ1wUTV3rO3c038kmL8n4Nng4mj/10Rc0HgTzIfIucmW
-	ftxKd6OER4pJ9fZg+NJEZ3VhVFQKDgxqN50tLGsIAtePaHIF3nbJ1vwnkpXZ+r1Gza5QibV0J/wAk
-	otBWR/SeeMWLLFf6QL5YSq+MX3I51c04ezHEtcWoFch9+fzKC78MTf7VsuiYa8H4hRkLjySgBOa7G
-	HwXHdPXA==;
-Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:40170 helo=trixie)
+	bh=auKEfpHnNgZ4SWIywO8lgRibdvfL9A04efGvPvqBJI4=; b=NCj8Dk6mRGsWDoe7B5Zc/iecAT
+	5ZTjKk6S2nk4Qck9WQ6CZBqtOfKOQvpm1ElTLDouIG1ANGgAhH0NFdyY53sJFk3SA0L5nq9ASFnz5
+	JuYgbTf1SO8hvdqiJXA9wAWygb4t0Mn5G8dEyoxkdM2yPn6Rr2b2hGCkNaNFsMAVt1SOAARVWyhvR
+	mMUd+oV+rvU4WapdAF5Psfo0xXRlBDdO8dTdFHsNZ2wZA8+Am3agrFhJhS6bgl1SFG8URRg6OWHlG
+	MgtXp8oEjhURqfLILmbH/NTJkYj4k9psbsSLPGpJ1pb0e8sTGhsTbPnkOjKa1clb3hi6nQ9YpMeUj
+	22QYaxaQ==;
+Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:54628 helo=trixie)
 	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.99.4)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1wbkPt-0000000B917-2gKW
+	id 1wbkZB-0000000BACT-2hua
 	for docs@lists.yoctoproject.org;
-	Mon, 22 Jun 2026 15:34:47 -0400
-Date: Mon, 22 Jun 2026 15:34:38 -0400 (EDT)
+	Mon, 22 Jun 2026 15:44:23 -0400
+Date: Mon, 22 Jun 2026 15:44:17 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: should more entries be documented under meta/conf/?
-Message-ID: <b5c0fc79-1ef3-48c2-885a-75c92402cea6@crashcourse.ca>
+Subject: [PATCH] ref-manual: under meta/files, mention Wic files
+Message-ID: <97f6205e-b80d-d845-717b-8a71bfca415f@crashcourse.ca>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -50,21 +50,28 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 22 Jun 2026 19:34:49 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9832
+ <docs@lists.yoctoproject.org>; Mon, 22 Jun 2026 19:44:29 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9833
 
 
-here:
+Add a reference to image Wic files under meta/files.
 
-https://docs.yoctoproject.org/ref-manual/structure.html#meta-conf
+Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
 
-there are a few missing entries that might merit inclusion like:
+---
 
-  - fragments
-  - templates
-  - multiconfig
+diff --git a/documentation/ref-manual/structure.rst b/documentation/ref-manual/structure.rst
+index ff84b250b..a55b3ba56 100644
+--- a/documentation/ref-manual/structure.rst
++++ b/documentation/ref-manual/structure.rst
+@@ -868,7 +868,8 @@ layer.
+ ---------------
 
-should any of those be added?
+ This directory contains common license files and several text files used
+-by the build system. The text files contain minimal device information
++by the build system, as well as Wic files that define generated image layouts.
++The text files contain minimal device information
+ and lists of files and directories with known permissions.
 
-rday
+ .. _structure-meta-lib:
 
