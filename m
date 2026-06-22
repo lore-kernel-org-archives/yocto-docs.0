@@ -2,14 +2,14 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 11CC5CDB46F
-	for <webhook@archiver.kernel.org>; Mon, 22 Jun 2026 17:44:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E7DF7CD98F2
+	for <webhook@archiver.kernel.org>; Mon, 22 Jun 2026 19:34:49 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.2853.1782150275791047657
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.5194.1782156888888158030
  for <docs@lists.yoctoproject.org>;
- Mon, 22 Jun 2026 10:44:36 -0700
+ Mon, 22 Jun 2026 12:34:49 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=pNpFUYhU;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=hvJza6nQ;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
@@ -17,24 +17,24 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=eZ9oJCHf3AIQWYUq+1Zd7TIrBkCAuPrxUCPw55ZCl2I=; b=pNpFUYhUJ5QqhF6amrkbYGLQLw
-	JkbypuaOutn+TEWvG6z1dTDV2M19Ii3DUCpQQGaLlebWzXGgAGp6ufrYkrYE4Z/pjNDJAfhDqJ64o
-	SFIAHQHUVsHZ9A1Nx05mt9fs5NHPJ2APaurSj6mrLgf9VpuUj48hfJaZDp1j7vKoJ/kN9fF1CiY/8
-	T+mWJloGekrL0bgnA/AvgLorlHhYTZ0rJ5Cune3s4m+TQI5AeQz/PlC/WmzYvY7jtqMKsCY8cf3Sd
-	/xrED//MVYTHp0c77UtIpjUkF2SqRnr7UZt65Pn4ETcM/dMryoy8AGjb8ZV6l/VEYZMRiEfrBmmAV
-	iI9lhs2Q==;
-Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:42124 helo=trixie)
+	bh=S7vWyYfHgblEOzjJrcgS7VUjmDYsdp55bp5qV/qpGqQ=; b=hvJza6nQEWrvTacBD8pGahU64G
+	ln5R39P2DDKQYx1vLdf9GrKHAgYU06sP+OCUW+YvtD7oDGXkgvDm2ZUPfy8gnH+yDOj0iAk9tr29s
+	Bz5FeOxIWgqkpmC2SIm7dRQ2Owj/p5JdBoZ1wUTV3rO3c038kmL8n4Nng4mj/10Rc0HgTzIfIucmW
+	ftxKd6OER4pJ9fZg+NJEZ3VhVFQKDgxqN50tLGsIAtePaHIF3nbJ1vwnkpXZ+r1Gza5QibV0J/wAk
+	otBWR/SeeMWLLFf6QL5YSq+MX3I51c04ezHEtcWoFch9+fzKC78MTf7VsuiYa8H4hRkLjySgBOa7G
+	HwXHdPXA==;
+Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:40170 helo=trixie)
 	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.99.4)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1wbihE-0000000Awqz-2x9q
+	id 1wbkPt-0000000B917-2gKW
 	for docs@lists.yoctoproject.org;
-	Mon, 22 Jun 2026 13:44:34 -0400
-Date: Mon, 22 Jun 2026 13:44:25 -0400 (EDT)
+	Mon, 22 Jun 2026 15:34:47 -0400
+Date: Mon, 22 Jun 2026 15:34:38 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: [PATCH] ref-manual: add missing section on build/tmp/deploy/spdx
-Message-ID: <3c5da9d7-fc80-7a9a-eaa1-4fb9eed25a6d@crashcourse.ca>
+Subject: should more entries be documented under meta/conf/?
+Message-ID: <b5c0fc79-1ef3-48c2-885a-75c92402cea6@crashcourse.ca>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -50,34 +50,21 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 22 Jun 2026 17:44:39 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9831
+ <docs@lists.yoctoproject.org>; Mon, 22 Jun 2026 19:34:49 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9832
 
 
-There is no subsection on build/tmp/deploy/spdx; add it.
+here:
 
-Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+https://docs.yoctoproject.org/ref-manual/structure.html#meta-conf
 
----
+there are a few missing entries that might merit inclusion like:
 
-diff --git a/documentation/ref-manual/structure.rst b/documentation/ref-manual/structure.rst
-index ff84b250b..e22de6047 100644
---- a/documentation/ref-manual/structure.rst
-+++ b/documentation/ref-manual/structure.rst
-@@ -539,6 +539,15 @@ licensing, see the
- ":ref:`dev-manual/licenses:maintaining open source license compliance during your product's lifecycle`"
- section in the Yocto Project Development Tasks Manual.
+  - fragments
+  - templates
+  - multiconfig
 
-+.. _structure-build-tmp-deploy-spdx:
-+
-+``build/tmp/deploy/spdx/``
-+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-+
-+This directory contains a Software Bill of Materials (SBOM) in SPDX format,
-+as explained in detail in the ":ref:`dev-manual/sbom:creating a software bill of materials`"
-+section of the Yocto Project Development Tasks Manual.
-+
- .. _structure-build-tmp-deploy-images:
+should any of those be added?
 
- ``build/tmp/deploy/images/``
+rday
 
