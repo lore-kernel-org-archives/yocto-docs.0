@@ -2,116 +2,109 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 83C2CCDB471
-	for <webhook@archiver.kernel.org>; Mon, 22 Jun 2026 07:56:50 +0000 (UTC)
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.38318.1782114999129186919
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A6979CDB471
+	for <webhook@archiver.kernel.org>; Mon, 22 Jun 2026 08:00:50 +0000 (UTC)
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.38192.1782115242781337552
  for <docs@lists.yoctoproject.org>;
- Mon, 22 Jun 2026 00:56:40 -0700
+ Mon, 22 Jun 2026 01:00:43 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=j4nJn0JZ;
- spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=ARzRp4xf;
+ spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id BF63F4E405D6;
-	Mon, 22 Jun 2026 07:56:36 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 2AF221A07AD;
+	Mon, 22 Jun 2026 08:00:41 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 94D72601BB;
-	Mon, 22 Jun 2026 07:56:36 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 07667106C819E;
-	Mon, 22 Jun 2026 09:56:34 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id F3B42601BB;
+	Mon, 22 Jun 2026 08:00:40 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8D96B106C8961;
+	Mon, 22 Jun 2026 10:00:39 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1782114996; h=from:subject:date:message-id:to:mime-version:content-type:
+	t=1782115240; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=XKQq736WijotFj8A6Nih3gcJj7x/ix+2zjDvlDP2VWI=;
-	b=j4nJn0JZcUXjr0P5gVTAfWIbo7p9IIEk7dsryJLVqqsiFyMJxhZPp1LrTM1HEAJQuHFFjN
-	sa6WlzZxH3jK+SyVUjn7Bt0K0QfiBEvuPc6C0Y531DqgqsmFOczESyailRC7ceIRP9SZ3d
-	ZuidTFmc9cRX3JgHyXr3ACDAEkGd259vWKjXx7zbPgTEEu2i6K/u+Xnl8KfOZ4lliLTpwO
-	PZLg09n77GrdrNMFjpI9oO/DFMgBBB3slCd+pilNk0d9dyhIxdmJoL4FneOSAF0OrBV7RI
-	Nfz7WjqCtnwKDzAssVxb+3SNBdc8LsL+XzjBo5iLV0A11eCoxnF5N6SvgBbJKg==
+	bh=hBbrOSZHkBCuhWRbARUV7C07kjCbrJEAv5uRMLWOxi4=;
+	b=ARzRp4xffw1BI/J+94J0bnwhv+kydKjkhp/WbyqtDRen4cBcEa3veIckhsoRvd651lTAVb
+	9+R3QgpHIHFegjK0mS+LRebYKCpfWFGeHZ4civY+acc6+LdKE3yT35BUGJWGt+py7xSuxA
+	DEan5BxtP+MS4ChkRtzQSq9R+UGaLJrRBoGrU7o8uUXTN75ERKqgNudTD0JpMBheHJsuHr
+	CXJAOD6gSznp9KbulSIyGkP7sCF5fr9jtMXZ9q1BWZZxQXls0lo84Ocl0GQvzw/s+mdHk/
+	czGlSyWUeWvIx5XUpatvkHioy6HiCVnrBOvilR2kMMvuHIOmTZ6bsZCRitmjdQ==
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 22 Jun 2026 09:56:33 +0200
-Message-Id: <DJFF1HYZORWJ.5OQ9DH18UIL8@bootlin.com>
+Date: Mon, 22 Jun 2026 10:00:39 +0200
+Message-Id: <DJFF4MO9VPEF.1Q1LX7KBQEIU8@bootlin.com>
+Cc: "YP docs mailing list" <docs@lists.yoctoproject.org>
 From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: "Robert P. J. Day" <rpjday@crashcourse.ca>, "YP docs mailing list"
- <docs@lists.yoctoproject.org>
-Subject: Re: [docs] [PATCH] security-manual: clarify text on avoiding root
- logins, empty passwords
-References: <e743d15e-b808-f571-22ae-7034e0155914@crashcourse.ca>
-In-Reply-To: <e743d15e-b808-f571-22ae-7034e0155914@crashcourse.ca>
+To: "Robert P. J. Day" <rpjday@crashcourse.ca>, "Quentin Schulz"
+ <quentin.schulz@cherry.de>
+Subject: Re: [docs] [PATCH v2] dev-manual: add second way to assign "PV" for
+ external SCM
+References: <c3dc6fcf-3e0e-f788-3308-1fac1fc4ea57@crashcourse.ca>
+ <cb699e59-1d5a-4e32-9c31-1bae48f660cc@cherry.de>
+ <5c45e703-6140-019a-3aff-2b11c3a93b6f@crashcourse.ca>
+In-Reply-To: <5c45e703-6140-019a-3aff-2b11c3a93b6f@crashcourse.ca>
 X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 22 Jun 2026 07:56:50 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9815
+ <docs@lists.yoctoproject.org>; Mon, 22 Jun 2026 08:00:50 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9816
 
-On Fri Jun 19, 2026 at 3:39 PM CEST, Robert P. J. Day wrote:
->
-> Explain how, during development, it's convenient to allow root logins
-> and empty passwords in one of two ways:
->
->   - explicitly setting image features, or
->   - through an available configuration fragment
->
-> and advise on removing such settings for the production image.
->
-> Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
->
-> ---
->
-> diff --git a/documentation/security-manual/securing-images.rst b/document=
-ation/security-manual/securing-images.rst
-> index 952808f3b..457921b34 100644
-> --- a/documentation/security-manual/securing-images.rst
-> +++ b/documentation/security-manual/securing-images.rst
-> @@ -92,21 +92,20 @@ Considerations Specific to the OpenEmbedded Build Sys=
-tem
->  You can take some steps that are specific to the OpenEmbedded build
->  system to make your images more secure:
->
-> --  Ensure that "allow-empty-password", "allow-root-login", or
-> -   "empty-root-password" are not one of your selected :term:`IMAGE_FEATU=
-RES`.
-> -   When creating a new project, the default is to provide you with an
-> -   initial ``local.conf`` file that enables these features using the
-> -   :term:`EXTRA_IMAGE_FEATURES`
-> -   variable with the line::
-> +-  During development, it's convenient to relax security in your builds
-> +   and allow the use of empty passwords or root logins. This is typicall=
-y
-> +   done by adding the values "allow-empty-password", "allow-root-login",=
- and
-> +   "empty-root-password" to your build's image features, commonly with t=
-he
-> +   addition of the line:
->
->        EXTRA_IMAGE_FEATURES =3D "allow-empty-password empty-root-password=
- allow-root-login"
->
-> -   To disable these features, simply comment out that line in your
-> -   ``local.conf`` file, or make sure :term:`IMAGE_FEATURES` does not con=
-tain
-> -   any of these features before producing your final image. Among other =
-things,
-> -   leaving this in place sets the root password as blank, which makes
-> -   logging in for debugging or inspection easy during development but
-> -   also means anyone can easily log in during production.
-> +   to your ``local.conf`` file, or by enabling the exactly equivalent
-> +   configuration fragment "root-login-with-empty-password.conf".
-> +
-> +   If you're using either of these approaches during development,
-> +   make sure you remove or de-activate these settings before generating
-> +   your final production image.
+Hi,
 
-Thanks, FYI I've taken this with the following change:
+On Fri Jun 19, 2026 at 5:56 PM CEST, Robert P. J. Day wrote:
+> On Fri, 19 Jun 2026, Quentin Schulz wrote:
+>
+>> Hi Robert,
+>>
+>> On 6/16/26 10:32 PM, Robert P. J. Day via lists.yoctoproject.org wrote:
+>> >
+>> > In addition to hard-coding a PV value in the context of an external
+>> > SCM, show also just appending the string "+git" to the value already
+>> > calculated for PV.
+>> >
+>> > Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+>> >
+>> > ---
+>> >
+>> > diff --git a/documentation/dev-manual/external-scm.rst
+>> > b/documentation/dev-manual/external-scm.rst
+>> > index 3ca9079b3..cac23ac1e 100644
+>> > --- a/documentation/dev-manual/external-scm.rst
+>> > +++ b/documentation/dev-manual/external-scm.rst
+>> > @@ -13,9 +13,13 @@ Subversion (SVN) and Git.
+>> >
+>> >   To enable this behavior, the :term:`PV` of
+>> >   the recipe needs to include a ``+`` sign in its assignment.
+>> > -Here is an example::
+>> > +Here are a couple examples of how this can be done --- the first
+>> > +hard-coding the value for ``PV``, the second simply appending
+>> > +the string "+git" to the value of ``PV`` already extracted from
+>> > +the recipe file name::
+>> >
+>> >      PV =3D "1.2.3+git"
+>> > +   PV .=3D "+git"
+>> >
+>>
+>> This is confusing. Do you mean that
+>>
+>> PV =3D "1.2.3+git+git"
+>>
+>> will end up being
+>>
+>> PV =3D "1.2.3-gbebedada+git"
+>> ?
+>
+>   no, the text mentions that those are a couple possibilities for
+> setting that variable -- you'd use one or the other, not both.
 
--   configuration fragment "root-login-with-empty-password.conf".
-+   configuration fragment :ref:`ref-fragments-root-login-with-empty-passwo=
-rd`.
+I think I see what Quentin is saying, that you can misinterpret this and ad=
+d the
+two lines to your recipe, while only one of the two is needed.
 
-(Each fragment has a ref like this one)
+I think this would clearer if you split the two examples and precede them w=
+ith
+what they stand for.
 
 Antonin
 
