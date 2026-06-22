@@ -2,43 +2,40 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1FB8ECDB466
-	for <webhook@archiver.kernel.org>; Mon, 22 Jun 2026 08:50:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0CCC3CDB46F
+	for <webhook@archiver.kernel.org>; Mon, 22 Jun 2026 09:09:11 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.39025.1782118224020810824
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.39040.1782119340786751002
  for <docs@lists.yoctoproject.org>;
- Mon, 22 Jun 2026 01:50:24 -0700
+ Mon, 22 Jun 2026 02:09:01 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=a0PzKcW7;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=lfpVkQF1;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:References:
-	Message-ID:In-Reply-To:Subject:cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=yPLjvSTwD43r0pbRd2tTb4iMC/BUAk0BvkaIIACxAUI=; b=a0PzKcW7F6vsMK1b1c+KoPn5XM
-	+sSfFBjKLubEPm4E9kBa0XvnFFoMKSy4OfuUJ5NU1OlrKKvr20P13AagAf+5OUvQjoW63dRtrYZUZ
-	P38hXwNgWBgnI5OTOt+7N3LYpll9ty/OkW7I+70+UFHoLt3SWV1DLOsWT4IMVezeSirxjTN4yO9Xs
-	OIR88oV3yiQOTl8fPSOAS3i0Q0OTihytCiExqYQIARufDCNel6m/8Cvgi3GHF5cGYcw9jhKN9oy+B
-	kGqqhBN0vyoXLeZr93RbC/W8cRlKpTv/8lRrmBzai2BAMhrLBVDLkWIigvCs93NDgVeCBN2Djr2cQ
-	+PLd76oQ==;
-Received: from bras-base-otwaon0916w-grc-51-67-71-147-190.dsl.bell.ca ([67.71.147.190]:32874 helo=trixie)
+	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
+	To:From:Date:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=kJ4ObxSSQvQWrQlBCIm0suUtWIeuXgZ4a9IiqpYbiOs=; b=lfpVkQF13zGhHvs0IWrnW1qvC3
+	lLOcmsytBkx6yZ4mxUKQNQoFzGWY+van9+hL1rXa1rYmPVeGL0u8hE5MUuBbkRGNLG056NtgJT0gC
+	+gU2KkCFkbUdOygaQVu++bFgH7fMqsVOKdfYSPKIQuuvUS2DvTJqHkpMJPY6tSzhIfRxXy+rB5f+o
+	UgM4/By4fkGjySLGkeWDrxM8JR4Be926pBbVu55yN1j+sHu+dPTh6YlDWrCFnr2sjnGH2gkXNguW7
+	32aQofKOCp4aZaqOCi0QnRSIf1xn9atSzpNQkpNV83zxNlqjHKMoKWRoGLj6VNbyFoKgKDk2V3Wca
+	kbviSYbA==;
+Received: from bras-base-otwaon0916w-grc-51-67-71-147-190.dsl.bell.ca ([67.71.147.190]:37298 helo=trixie)
 	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.99.4)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1wbaMF-00000009zEL-19ZF;
-	Mon, 22 Jun 2026 04:50:21 -0400
-Date: Mon, 22 Jun 2026 04:50:09 -0400 (EDT)
+	id 1wbaeH-0000000A1CW-3O55
+	for docs@lists.yoctoproject.org;
+	Mon, 22 Jun 2026 05:08:59 -0400
+Date: Mon, 22 Jun 2026 05:08:52 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: antonin.godard@bootlin.com
-cc: Quentin Schulz <quentin.schulz@cherry.de>, 
-    YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: Re: [docs] [PATCH v2] dev-manual: add second way to assign "PV" for
- external SCM
-In-Reply-To: <DJFF4MO9VPEF.1Q1LX7KBQEIU8@bootlin.com>
-Message-ID: <406ad1d1-eeaf-16bf-84ad-b762c03bf5fd@crashcourse.ca>
-References: <c3dc6fcf-3e0e-f788-3308-1fac1fc4ea57@crashcourse.ca> <cb699e59-1d5a-4e32-9c31-1bae48f660cc@cherry.de> <5c45e703-6140-019a-3aff-2b11c3a93b6f@crashcourse.ca> <DJFF4MO9VPEF.1Q1LX7KBQEIU8@bootlin.com>
+To: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: [PATCH v2] dev-manual: describe two ways to assign "PV" for external
+ SCM
+Message-ID: <dca8856e-440c-a905-f11a-34ca6c253281@crashcourse.ca>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -54,66 +51,40 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 22 Jun 2026 08:50:31 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9825
+ <docs@lists.yoctoproject.org>; Mon, 22 Jun 2026 09:09:11 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9826
 
-On Mon, 22 Jun 2026, Antonin Godard via lists.yoctoproject.org wrote:
 
-> Hi,
->
-> On Fri Jun 19, 2026 at 5:56 PM CEST, Robert P. J. Day wrote:
-> > On Fri, 19 Jun 2026, Quentin Schulz wrote:
-> >
-> >> Hi Robert,
-> >>
-> >> On 6/16/26 10:32 PM, Robert P. J. Day via lists.yoctoproject.org wrote:
-> >> >
-> >> > In addition to hard-coding a PV value in the context of an external
-> >> > SCM, show also just appending the string "+git" to the value already
-> >> > calculated for PV.
-> >> >
-> >> > Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
-> >> >
-> >> > ---
-> >> >
-> >> > diff --git a/documentation/dev-manual/external-scm.rst
-> >> > b/documentation/dev-manual/external-scm.rst
-> >> > index 3ca9079b3..cac23ac1e 100644
-> >> > --- a/documentation/dev-manual/external-scm.rst
-> >> > +++ b/documentation/dev-manual/external-scm.rst
-> >> > @@ -13,9 +13,13 @@ Subversion (SVN) and Git.
-> >> >
-> >> >   To enable this behavior, the :term:`PV` of
-> >> >   the recipe needs to include a ``+`` sign in its assignment.
-> >> > -Here is an example::
-> >> > +Here are a couple examples of how this can be done --- the first
-> >> > +hard-coding the value for ``PV``, the second simply appending
-> >> > +the string "+git" to the value of ``PV`` already extracted from
-> >> > +the recipe file name::
-> >> >
-> >> >      PV = "1.2.3+git"
-> >> > +   PV .= "+git"
-> >> >
-> >>
-> >> This is confusing. Do you mean that
-> >>
-> >> PV = "1.2.3+git+git"
-> >>
-> >> will end up being
-> >>
-> >> PV = "1.2.3-gbebedada+git"
-> >> ?
-> >
-> >   no, the text mentions that those are a couple possibilities for
-> > setting that variable -- you'd use one or the other, not both.
->
-> I think I see what Quentin is saying, that you can misinterpret this and add the
-> two lines to your recipe, while only one of the two is needed.
->
-> I think this would clearer if you split the two examples and precede them with
-> what they stand for.
+In addition to hard-coding a PV value in the context of an external
+SCM, show also the alternative of simply appending the string "+git"
+to the value already calculated for PV from the recipe file name.
 
-  will do shortly.
+Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
 
-rday
+---
+
+diff --git a/documentation/dev-manual/external-scm.rst b/documentation/dev-manual/external-scm.rst
+index e7ab8a4c6..adab4370f 100644
+--- a/documentation/dev-manual/external-scm.rst
++++ b/documentation/dev-manual/external-scm.rst
+@@ -13,9 +13,17 @@ Subversion (SVN) and Git.
+
+ To enable this behavior, the :term:`PV` of
+ the recipe needs to include a ``+`` sign in its assignment.
+-Here is an example::
++You can do this in one of two ways:
+
+-   PV = "1.2.3+git"
++-  Manually assign a version number and the string "+git"
++   in the recipe::
++
++      PV = "1.2.3+git"
++
++-  A more elegant way is to simply append the "+git" string to the
++   value of :term:`PV` already extracted from the recipe file name::
++
++      PV .= "+git"
+
+ :term:`Bitbake` later includes the source control information in :term:`PKGV`
+ during the packaging phase.
 
