@@ -1,86 +1,105 @@
-Return-Path: <foss@0leil.net>
+Return-Path: <alex.kanavin@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2A942CD98F2
-	for <webhook@archiver.kernel.org>; Tue, 23 Jun 2026 13:41:59 +0000 (UTC)
-Received: from smtp-8faa.mail.infomaniak.ch (smtp-8faa.mail.infomaniak.ch [83.166.143.170])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.21545.1782222111512156667
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9B271CDB46F
+	for <webhook@archiver.kernel.org>; Tue, 23 Jun 2026 15:21:21 +0000 (UTC)
+Received: from mail-vk1-f174.google.com (mail-vk1-f174.google.com [209.85.221.174])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.24101.1782228077369209719
  for <docs@lists.yoctoproject.org>;
- Tue, 23 Jun 2026 06:41:52 -0700
+ Tue, 23 Jun 2026 08:21:17 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@0leil.net header.s=20231125 header.b=N8dwVkxc;
- spf=pass (domain: 0leil.net, ip: 83.166.143.170, mailfrom: foss+yocto@0leil.net)
-Received: from smtp-3-0001.mail.infomaniak.ch (smtp-3-0001.mail.infomaniak.ch [10.4.36.108])
-	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4gl5p46YsYzMX4;
-	Tue, 23 Jun 2026 15:41:48 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=0leil.net;
-	s=20231125; t=1782222108;
-	bh=vnYr1wsFE88CnZhn8cOgjd1aKNYNOzaaf+8qPnZbAQM=;
-	h=From:Date:Subject:To:Cc:From;
-	b=N8dwVkxct8JwUohdmUdo4jUFGSoqoz3zlS3ZW0/9j06ZJjNbeHn/JkMDmzC3O+67o
-	 g9FCAPjUKp72WyM9cpVUv4euRoFK8vNrTOWk7v12otjGTgc/pbSStu2+6KE+WQdjab
-	 LFmh69rShP+gBS6qR2jMrnOfumqac4G+sxqocemVdHTXRWDXbDEyk4lUW0Hl+ljm15
-	 zhw9iTcbORs0OmiDBUlg0jsf4VpWYT9pM2eyxUEqzEO1MRw7XpvDyuFwQkQqqBZoDE
-	 sneNf8tecMonZqpndvN61nXz52X+D7rbZp6hG8WNBJUgdVERYi5/700iwdUKTYhlXo
-	 Qt2+zpqeHixwA==
-Received: from unknown by smtp-3-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4gl5p4116vzYfq;
-	Tue, 23 Jun 2026 15:41:47 +0200 (CEST)
-From: Quentin Schulz <foss+yocto@0leil.net>
-Date: Tue, 23 Jun 2026 15:41:39 +0200
-Subject: [PATCH] poky.yaml.in: bump min git version
+ dkim=pass header.i=@gmail.com header.s=20251104 header.b=D3fAnWbi;
+ spf=pass (domain: gmail.com, ip: 209.85.221.174, mailfrom: alex.kanavin@gmail.com)
+Received: by mail-vk1-f174.google.com with SMTP id 71dfb90a1353d-59d541955f8so2071007e0c.1
+        for <docs@lists.yoctoproject.org>; Tue, 23 Jun 2026 08:21:17 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782228076; cv=none;
+        d=google.com; s=arc-20240605;
+        b=bHFXzKJaJhJwW3NnTOe3f9Zafb/CgTwDclczSCiCVc2DEYEoIxHQy6OrAZD/1PhvQG
+         z/jkS0FRpY0eCGHwrHDYeua6A5bxeFrAWpIwtXWx02bLPshqSfvtu+uLNa7w7gI2GTdk
+         1H4kVJHe0+qkORpexD3fN/oTCTY4KIjujWkNdFbuvHf0/qAcmpKb6LhAk7zESrY2wwzc
+         hLZ/wr2h4ZZsnMTsFW+e8zgxyL6tGSGVnpWRe6Xwv8fhnbbOAPp02+ud2HzOFe6mOSPp
+         uMqWqeDZMpP2nBIr0FISK88ml6nPvtKCH89uk//XCSp6GoWY+f8i8BLveaTaTiljP9+r
+         ioeQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=Vc8mb+TWRs0EXSPgGCqamsRZll0LYWuExo4hOczpJJM=;
+        fh=w4udndNa3z3dS987rpA732l9rCEUCMDw7O6T9DWWVD0=;
+        b=fiyAZzrL5CyD2LIrWn7r1nAKLoEX84j+ty+/Glo2xsFBHXSOh2BxcYVbcthbwEJqVL
+         5DH+n72xm4yFVHwRWrfa910kERURy0GvhxWJ2U8JgJpFtVWRo+b6k+tBTIMJvuII9xRw
+         V2CScEyV+egaXVEHTk5pt53A9mbAoUgwLFbAA+1tziHjCOpULt4Ne1208hicVf8cFH0o
+         OFsSzsTJyglHTzQ6mRorkqaFilLEPJR3uHkeY+2UoWpxhZfh1lwDv8D0rbQR7ft0t1gk
+         ipz4LKOJGvdSL250eCbRl3IVNTv7yD18VJulrXnR664iaK35yYHWAG6+idbzlP7FVS0x
+         4Mqw==;
+        darn=lists.yoctoproject.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782228076; x=1782832876; darn=lists.yoctoproject.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Vc8mb+TWRs0EXSPgGCqamsRZll0LYWuExo4hOczpJJM=;
+        b=D3fAnWbiOcfp/Ox76241RIjssSbIoE3yWjSHw0QdyOowYk0590QHvCeu2SCDU8ZZf3
+         CHNLYRZKK7gGhyH34imzOJv+JglVBLwz0tNqenobQwNgm3vg85aVtPRhd0LPoxqCILRO
+         yZRl1OsYwKKECDNHs8setKPYEk0LH1sBYRmq272HYNXaMG9Jr/x5sds7H52e/SGXOCH2
+         rGqHlv6lO4tSPEJ9stJRSqf666EZ8MUTGMx+qk+MH8gAFC0HCPv6rRKA5Fu7OlQ+hQWt
+         ANxu/oaZbQpCPgMhqUu4iIOK0ErpihoJtiVowh35wXp0bHn3P+/oVSOLESwi+WevKVsG
+         ZvHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782228076; x=1782832876;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Vc8mb+TWRs0EXSPgGCqamsRZll0LYWuExo4hOczpJJM=;
+        b=hAxLNR/H/EKB8ZCvqNTpjMel+4sgZu2pcysnp6Qd6lKCZGi3z3s5krv2VKTcNa1tmX
+         rCUlBAlTH405TmJ1/8/HxIeXPU2VuTakrtWaF9sPIO+UP67DgYOTcliAtwnIJ8gtfYuJ
+         Ab569OIYSoI1nXB8khw6dDf+SUIlfMOdPZwPCd/xwHwQh9ZakIBtGaBvWmkgBGalM4P0
+         jHhG6QqcpHh62GHtBIqjCAbKbKsR6ZDlZK1BkaZpQRmdG17mdLsgbjtBeBLU87j54lNl
+         8xGHV6f8hSpb9hf6r3R05lSdkudjt7xU6Qpl6Bag+dzGl2n8cprpGa2drY3heKradv90
+         ELfQ==
+X-Gm-Message-State: AOJu0YzN8283ZUImQHfm1mK5cw9cUy9c3caE7Pw1CKKOEAyA6rMmAztI
+	eoP4uTSIYX7Mpfp6yoExV2sf28jKHX+/t+AUOMyM26a+gCi5ZNee9PM3f5kI5FPdKqH4c2gkmSL
+	nCSnYkwsJGGbSc0zEE4vPq7DvRAX1zdQ=
+X-Gm-Gg: AfdE7cn1Vbdd814GKVN3lZxC+RTHVVWRZMXf6tfRbWhkDkcvKBtbE/JIVkpKhsSO54V
+	8VggsF4AiekbnvQYb/a10gykb5s/d88QycTF2Yas0XpmMgxwqKeMRE7dyPoeLDjwslmOXzYNQKK
+	rvXQqodtweKZr/dKByn1ShNcFj7YD0tmeyG0XxXkWy0i+IutKpeFa4MgHokwL+6hvjJvTHo7cAd
+	rWyfCDEp0tk2PohUJdfhFPBRQ1fw7M80vcJgSnhWpIpF+yHMAqN7FGCm8kvxlnCgW6UwIKtXw==
+X-Received: by 2002:a05:6123:123:b0:5bb:d01d:451 with SMTP id
+ 71dfb90a1353d-5bbfbe465f3mr7526722e0c.10.1782228076185; Tue, 23 Jun 2026
+ 08:21:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260623-min-git-bump-v1-1-a634b0ec8a77@cherry.de>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMQQqEMAxA0atI1hNo41DBq8gsWo0awSqtFUG8u
- 3VcvsX/J0QOwhHq4oTAu0RZfIb+FNCO1g+M0mUDKTLKUImzeBxkQ5fmFTVR76y2plJfyMkauJf
- jv2t+r2NyE7fb84DrugEmn7x1cAAAAA==
-X-Change-ID: 20260623-min-git-bump-122fba1a6704
-To: docs@lists.yoctoproject.org
-Cc: Richard Purdie <richard.purdie@linuxfoundation.org>, 
- Quentin Schulz <quentin.schulz@cherry.de>
-X-Mailer: b4 0.15-dev-47773
-X-Infomaniak-Routing: alpha
+References: <b5c0fc79-1ef3-48c2-885a-75c92402cea6@crashcourse.ca>
+In-Reply-To: <b5c0fc79-1ef3-48c2-885a-75c92402cea6@crashcourse.ca>
+From: Alexander Kanavin <alex.kanavin@gmail.com>
+Date: Tue, 23 Jun 2026 17:21:04 +0200
+X-Gm-Features: AVVi8Cee0t9C64Hgp4PJGfEwv5nLfLii1TT9ZT0RUWUx2sxjI_5FR8XtH1qSTd4
+Message-ID: <CANNYZj9dQAamq-3yChFc-qweeLcepgY4EcVJDpFPFFzo7TdkfA@mail.gmail.com>
+Subject: Re: [docs] should more entries be documented under meta/conf/?
+To: rpjday@crashcourse.ca
+Cc: YP docs mailing list <docs@lists.yoctoproject.org>
+Content-Type: text/plain; charset="UTF-8"
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 23 Jun 2026 13:41:59 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9841
+ <docs@lists.yoctoproject.org>; Tue, 23 Jun 2026 15:21:21 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9842
 
-From: Quentin Schulz <quentin.schulz@cherry.de>
+On Mon, 22 Jun 2026 at 21:34, Robert P. J. Day via
+lists.yoctoproject.org <rpjday=crashcourse.ca@lists.yoctoproject.org>
+wrote:
+> here:
+>
+> https://docs.yoctoproject.org/ref-manual/structure.html#meta-conf
+>
+> there are a few missing entries that might merit inclusion like:
+>
+>   - fragments
+>   - templates
+>   - multiconfig
+>
+> should any of those be added?
 
-Since commit 3cccfa036a35 ("lib/bb: Further shell=True cleanups") in
-BitBake, we depend on git >= 2.22.0 according to a mail on the ML[1] so
-update the minimum required version listed in the docs to match.
+Yes.
 
-[1] https://lore.kernel.org/bitbake-devel/3ed53ffdad2597c633e5664ae4f7752c12432362.camel@linuxfoundation.org/
-
-Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
----
- documentation/poky.yaml.in | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/documentation/poky.yaml.in b/documentation/poky.yaml.in
-index 56123495a..3e74dd7e7 100644
---- a/documentation/poky.yaml.in
-+++ b/documentation/poky.yaml.in
-@@ -37,7 +37,7 @@ YOCTO_DL_URL : "https://downloads.yoctoproject.org"
- YOCTO_RELEASE_DL_URL : "&YOCTO_DL_URL;/releases/yocto/yocto-&DISTRO;"
- MIN_PYTHON_VERSION : "3.9.0"
- MIN_TAR_VERSION : "1.28"
--MIN_GIT_VERSION : "1.8.3.1"
-+MIN_GIT_VERSION : "2.22.0"
- MIN_GCC_VERSION : "10.1"
- MIN_MAKE_VERSION : "4.0"
- # Disk space (Gbytes) needed to generate qemux86-64 core-image-sato image with poky distro on Ubuntu 22.04 (x86-64), rounded up from 133
-
----
-base-commit: 104b7a1e8dc14648f55a0099fd48ec5d3474e169
-change-id: 20260623-min-git-bump-122fba1a6704
-
-Best regards,
---  
-Quentin Schulz <quentin.schulz@cherry.de>
-
+Alex
 
