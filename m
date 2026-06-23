@@ -1,188 +1,105 @@
-Return-Path: <rpjday@crashcourse.ca>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2D809CD98F2
-	for <webhook@archiver.kernel.org>; Mon, 22 Jun 2026 20:29:20 +0000 (UTC)
-Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.6433.1782160150049349544
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EBB4ACD4F26
+	for <webhook@archiver.kernel.org>; Tue, 23 Jun 2026 07:44:28 +0000 (UTC)
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.15948.1782200659793945227
  for <docs@lists.yoctoproject.org>;
- Mon, 22 Jun 2026 13:29:10 -0700
+ Tue, 23 Jun 2026 00:44:20 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=C1vZ65rH;
- spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
-	To:From:Date:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=GspfnQ+9pgyZbJ4OmvwJ4grM+gy1rnMwAu6FGGgwBu0=; b=C1vZ65rHQkkyRA8O8CLXAsjb/c
-	oCJ4zjKjR/yHzYbaJ4atoNDMjYhMU9tptBKr38gKGw9N/mat7M+ByKrwmlsJdhWpfKFdDo+tcr4+W
-	1EG0vbJCPHJbAzB+Ss2hQ+4YFtdSMPodrhQDaGHkdIheImmK3qp72+zbDBsZSBKJ/89RYHmrBmOmi
-	KohD0yCrdQqS8wkItvCxlcf3iTKXID2f8lBnhqZQ0DdQEKuS48SqYQY0aFIHHQy2HGj+a/crwQkOA
-	U9RQjP8n1k2MZ/Odc3kAdbMr69Ztyz2Gl/a+N7PGkcyHS0P/cURZ5PPB+y7ipM7HDrT9CIq3x6gKU
-	wkI+oM5A==;
-Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:56758 helo=trixie)
-	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.4)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1wblGU-0000000BFTl-2Qw7
-	for docs@lists.yoctoproject.org;
-	Mon, 22 Jun 2026 16:29:08 -0400
-Date: Mon, 22 Jun 2026 16:29:02 -0400 (EDT)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: [PATCH] ref-manual: organize all recipes-* directories under
- subdirectory
-Message-ID: <543708dc-e1aa-0798-653b-d8c073dbec50@crashcourse.ca>
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=fyPyRufB;
+ spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 15473C6B386
+	for <docs@lists.yoctoproject.org>; Tue, 23 Jun 2026 07:44:25 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 7302F601C5;
+	Tue, 23 Jun 2026 07:44:17 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4243D106C88A6;
+	Tue, 23 Jun 2026 09:44:15 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1782200656; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=4MjCnV1b+b2e+Z1FFAEK91wrcx/C5s0eD4RssXRd74g=;
+	b=fyPyRufBfcX2i7ovc+otroOxcwRWJf9YIIAEEjwSIUl/9fQqWqIka34E503BSlT3NW6hoI
+	PhB/+1yKljd8TjgWGk72aaaRwbw+Zi8APKWFWFAa82JYJf1fpTUwMXUSK80rYPuqtBZKBL
+	SkozryJejkMIZ2B9H+Az3/uCTZ/amzX+CRpnpBu5Bet2MPIHjVLak5DrWUWaeYttaUE8db
+	FdFDWBfi1NfrTao0tN3W8J+c9gLrl+T0jp43/WVzPxkvWtf3UNOscQoQrUCJw+cApxZXIz
+	lBZkMTyLlDBCviz7oEzb7Hy7gootFIFRspxIsseOwz4MLSUbEQQVfNKw3G6EKw==
+From: Antonin Godard <antonin.godard@bootlin.com>
+Date: Tue, 23 Jun 2026 09:43:41 +0200
+Subject: [PATCH] tools/build-docs-container: add debian 11
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260623-add-debian-11-container-v1-1-8cfcf8572ee9@bootlin.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMwQ6CMAyA4VchPdOEFTOjr2I4dFvReihmA2JCe
+ HcnHL/D/29QJKsUuDcbZFm16GQVrm0gvtiegpqqgTrynaceOSVMEpQNncM42cxqkpEvnm50HQP
+ 5Hmr9yTLq9zg/htNlCW+J838H+/4D4QlnbXsAAAA=
+X-Change-ID: 20260623-add-debian-11-container-a462927fb263
+To: docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Quentin Schulz <quentin.schulz@cherry.de>, 
+ Antonin Godard <antonin.godard@bootlin.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1137;
+ i=antonin.godard@bootlin.com; h=from:subject:message-id;
+ bh=iRyyQYmQQGaLN5odhBtfqNgm5XSg9CzGiJ6rKekh1VA=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBqOjlO7JaMMBo7pskDGFEBbVnHzWBXUVKdRvrCV
+ nEwDPwl316JAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCajo5TgAKCRDRgEFAKaOo
+ NlrIEADCSdZ8iPDg+EvGQgBnEJeaopRkny3MYM4kcZb01kkL0P6OV/pYwhd71biTrp62C8ofdGf
+ DPdJmV+ozRojDc11y8HG5yAtBewUQJ3JyRKzeZBEXUXW9Pcb3TMXEARm4qxN11v7KEDCS+0AxP5
+ SykJB09yYxLIq9gUs/2B1N2mGruJkQ926HvRLKNFgIeNHsP1Ymt4y5YUSYgf3i8twpkyXZbZ0Ce
+ GbQCEyLBKm6f3erv6SgrmsCnFElYe7TQyTsKMQnvBR8K53KzU5dBlt2fmgFt4JocvFov5NvENCT
+ /yq4L+iXObaHGg60CPRB1485z8g2SEckoalckq/k2Y2dWCdRzqAarq3zeTKShFNCSTvEJRSgX/3
+ KSdhdnI6Ab5K0u4D1T3u/BNrGtpEXOPREcet1cmZBdYGH6O6TOSQy3mLEDzXceAafrdYCeENiNp
+ HGnsGOnCqmydAa1aZOTCN8AX5XtSVNKto9F6yPVEDIFq1s34Q+uqfUdw0RGSSEf0PyB7mhS2id3
+ 3j1vB2Wi32n+WejzwCKSLeXIpxnCRSqT9xXdIhNqiw8lEGJn1zYyaeoA4li8AcAUv913ybKyChZ
+ 7YsoMQw6Xn96tjuiRhnIRS4Pi9k68B19bxu2zUHh7rmjFo2+sTKdSPwPh3Epc/yOtqzQR7lf280
+ HacxElNFlY8rOIA==
+X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
+ fpr=8648725188DD401BB9A0D3FFD180414029A3A836
+X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 22 Jun 2026 20:29:20 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9836
+ <docs@lists.yoctoproject.org>; Tue, 23 Jun 2026 07:44:28 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9837
 
+We removed the python3-saneyaml host dependency which was the blocker
+for building the docs with Debian 11 here. Add Debian 11 to this list.
 
-It's cumbersome to list all meta/recipes-* directories under the same
-level as other meta/ directories, so place them under a recipes-*
-higher-level directory.
+Reported-by: Quentin Schulz <quentin.schulz@cherry.de>
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+---
+ documentation/tools/build-docs-container | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+diff --git a/documentation/tools/build-docs-container b/documentation/tools/build-docs-container
+index 459daa6de..acce3b3e0 100755
+--- a/documentation/tools/build-docs-container
++++ b/documentation/tools/build-docs-container
+@@ -37,6 +37,7 @@ $0 OCI_IMAGE [make arguments...]
+      - almalinux:9
+      - centos:stream9
+      - centos:stream10
++     - debian:11
+      - debian:12
+      - debian:13
+      - fedora:42
+@@ -108,7 +109,7 @@ main ()
+       pip3=pip3_docs.sh
+       repo=quay.io/centos
+       ;;
+-    # "debian:11"*|\
++    "debian:11"*|\
+     "debian:12"*|\
+     "debian:13"*)
+       containerfile=Containerfile.debian
 
 ---
+base-commit: 47f0f69651280151a52f41fd6b425d55427401e9
+change-id: 20260623-add-debian-11-container-a462927fb263
 
-diff --git a/documentation/ref-manual/structure.rst b/documentation/ref-manual/structure.rst
-index ff84b250b..fae0368b9 100644
---- a/documentation/ref-manual/structure.rst
-+++ b/documentation/ref-manual/structure.rst
-@@ -881,10 +881,17 @@ build process. It is enabled via the ``addpylib`` directive in
- ``meta/conf/local.conf``. For more information, see
- :ref:`bitbake-user-manual/bitbake-user-manual-metadata:extending python library code`.
-
-+.. _structure-meta-recipes:
-+
-+``meta/recipes-*/``
-+---------------------
-+
-+All of the "recipes-*" subdirectories define recipes broken into related sub-categories.
-+
- .. _structure-meta-recipes-bsp:
-
- ``meta/recipes-bsp/``
-----------------------
-+~~~~~~~~~~~~~~~~~~~~~
-
- This directory contains anything linking to specific hardware or
- hardware configuration information such as "u-boot" and "grub".
-@@ -892,7 +899,7 @@ hardware configuration information such as "u-boot" and "grub".
- .. _structure-meta-recipes-connectivity:
-
- ``meta/recipes-connectivity/``
--------------------------------
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
- This directory contains libraries and applications related to
- communication with other devices.
-@@ -900,7 +907,7 @@ communication with other devices.
- .. _structure-meta-recipes-core:
-
- ``meta/recipes-core/``
------------------------
-+~~~~~~~~~~~~~~~~~~~~~~
-
- This directory contains what is needed to build a basic working Linux
- image including commonly used dependencies.
-@@ -908,7 +915,7 @@ image including commonly used dependencies.
- .. _structure-meta-recipes-devtools:
-
- ``meta/recipes-devtools/``
----------------------------
-+~~~~~~~~~~~~~~~~~~~~~~~~~~
-
- This directory contains tools that are primarily used by the build
- system. The tools, however, can also be used on targets.
-@@ -916,7 +923,7 @@ system. The tools, however, can also be used on targets.
- .. _structure-meta-recipes-extended:
-
- ``meta/recipes-extended/``
----------------------------
-+~~~~~~~~~~~~~~~~~~~~~~~~~~
-
- This directory contains non-essential applications that add features
- compared to the alternatives in core. You might need this directory for
-@@ -925,7 +932,7 @@ full tool functionality.
- .. _structure-meta-recipes-gnome:
-
- ``meta/recipes-gnome/``
-------------------------
-+~~~~~~~~~~~~~~~~~~~~~~~
-
- This directory contains all things related to the GTK+ application
- framework.
-@@ -933,7 +940,7 @@ framework.
- .. _structure-meta-recipes-graphics:
-
- ``meta/recipes-graphics/``
----------------------------
-+~~~~~~~~~~~~~~~~~~~~~~~~~~
-
- This directory contains X and other graphically related system
- libraries.
-@@ -941,7 +948,7 @@ libraries.
- .. _structure-meta-recipes-kernel:
-
- ``meta/recipes-kernel/``
--------------------------
-+~~~~~~~~~~~~~~~~~~~~~~~~
-
- This directory contains the kernel and generic applications and
- libraries that have strong kernel dependencies.
-@@ -949,7 +956,7 @@ libraries that have strong kernel dependencies.
- .. _structure-meta-recipes-multimedia:
-
- ``meta/recipes-multimedia/``
------------------------------
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
- This directory contains codecs and support utilities for audio, images
- and video.
-@@ -957,7 +964,7 @@ and video.
- .. _structure-meta-recipes-rt:
-
- ``meta/recipes-rt/``
----------------------
-+~~~~~~~~~~~~~~~~~~~~
-
- This directory contains package and image recipes for using and testing
- the ``PREEMPT_RT`` kernel.
-@@ -965,7 +972,7 @@ the ``PREEMPT_RT`` kernel.
- .. _structure-meta-recipes-sato:
-
- ``meta/recipes-sato/``
------------------------
-+~~~~~~~~~~~~~~~~~~~~~~
-
- This directory contains the Sato demo/reference UI/UX and its associated
- applications and configuration data.
-@@ -973,7 +980,7 @@ applications and configuration data.
- .. _structure-meta-recipes-support:
-
- ``meta/recipes-support/``
---------------------------
-+~~~~~~~~~~~~~~~~~~~~~~~~~
-
- This directory contains recipes used by other recipes, but that are not
- directly included in images (i.e. dependencies of other recipes).
 
