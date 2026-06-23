@@ -2,14 +2,14 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5BC5ACDB470
-	for <webhook@archiver.kernel.org>; Tue, 23 Jun 2026 17:44:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8AC7FCDB470
+	for <webhook@archiver.kernel.org>; Tue, 23 Jun 2026 18:29:52 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.27371.1782236636822436707
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.27941.1782239380096627295
  for <docs@lists.yoctoproject.org>;
- Tue, 23 Jun 2026 10:43:57 -0700
+ Tue, 23 Jun 2026 11:29:40 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=Oxxc53uQ;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=f5pDAQl+;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
@@ -17,25 +17,24 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=yHBcvHQsOC+Ol0G8up2xIVBQ23GWXGdL5WhahN4Og5c=; b=Oxxc53uQKqNcO95vH4XhU78e6j
-	sTXAHlP9Rvj8/WjmK8fKp/crI5IpvdJHXW7gYxX7/l4jmSwMwPji4V6YNK33Jh4h61jjipZ4K4dQy
-	x627/aBtW6kVX/xGhOarOex+EIxFeL3odz7F9bUEwZ3X5BICvYtTtK6qJ54XeluoZYlhn8APCqQnV
-	OcDlTyr6DDYuXFjQXKzAlQn5KwCmJclK8z7gp0g1ptVQyOWcfAMKo8mAqmwSkfLoTUJAfCIcCd7ly
-	vMpg/GYz2/dZf8r8F2YqSy99TqSUHmiA7FvduFFr/3mFefbVJu3DOZajwYZh5jQdrCc2mxBzehKzX
-	+tnXOCbA==;
-Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:59404 helo=trixie)
+	bh=j2O/Kw5cQdwQlb7CUWviMFAw0b3D3LJSgEAMjdiWAhQ=; b=f5pDAQl+z2MmD8oHmcgR8Ed4Ic
+	aLIaPfOEr9Pua8+6dS7q+gkXf04tBUzt7HwTZvbq54leDiPbXH8puQrZn4eUGViwDXho00IqbIwbR
+	N2KE9nx4QWESZFaYcBQkjWyBBUOg051UlJAVKH68sX74yaku55RN7l+hT2wYMFp1+ZaA6bwd77MaG
+	rp5mkC5iIu4Q+XY1wd4azcz0VKqVzs6QED/LKfb9xXMSEdqbrwDOSglriDakZAg/JtYklgvqr7z2T
+	uI6fNJ0G62KjOJ1AIHfo0WCdPdaFq5IIoe5c9ustYMOpYarm8Dd/u5iqBKMZka385wm5vrHf23pxO
+	fbIaBnRQ==;
+Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:56050 helo=trixie)
 	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.99.4)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1wc5A9-0000000DXTR-2XzM
+	id 1wc5sO-0000000Dcl2-2aMD
 	for docs@lists.yoctoproject.org;
-	Tue, 23 Jun 2026 13:43:55 -0400
-Date: Tue, 23 Jun 2026 13:43:49 -0400 (EDT)
+	Tue, 23 Jun 2026 14:29:38 -0400
+Date: Tue, 23 Jun 2026 14:29:32 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: [PATCH] ref_manual: add "fragments" and "templates" directories to
- structure
-Message-ID: <21c2164f-ac8d-256d-f8ef-c15336fbba3e@crashcourse.ca>
+Subject: Zaurus? Really?
+Message-ID: <023dcad6-da72-e084-4c4d-5149ebaf0e79@crashcourse.ca>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -51,48 +50,16 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 23 Jun 2026 17:44:02 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9843
+ <docs@lists.yoctoproject.org>; Tue, 23 Jun 2026 18:29:52 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9844
 
 
-Add two new entries for the meta/conf/{fragments,templates}
-directories to the structure of OE-Core metadata.
+here:
 
-Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+https://docs.yoctoproject.org/dev-manual/debugging.html#other-debugging-tips
 
----
+there is actually a reference to a Zaurus. how many readers are going
+to recognize that? :-)
 
-  I didn't bother with the "multiconfig" directory since all it
-contained was an empty default.conf file. So let's just go with these.
-
-diff --git a/documentation/ref-manual/structure.rst b/documentation/ref-manual/structure.rst
-index ff84b250b..96f9c9f34 100644
---- a/documentation/ref-manual/structure.rst
-+++ b/documentation/ref-manual/structure.rst
-@@ -862,6 +862,25 @@ it is possible to extend that support to other SDK hosts by adding
- additional configuration files in this subdirectory within another
- layer.
-
-+.. _structure-meta-conf-fragments:
-+
-+``meta/conf/fragments/``
-+~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+This directory contains a number of
-+:term:`configuration fragments <Configuration Fragment>` ---
-+top-level build configuration features that can be independently enabled
-+and disabled using standard tooling.
-+
-+.. _structure-meta-conf-templates:
-+
-+``meta/conf/templates/``
-+~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+This directory contains default templates to be used as initial files
-+such as ``local.conf``, ``bblayers.conf`` and other files when
-+initializing a new Yocto Project build.
-+
- .. _structure-meta-files:
-
- ``meta/files/``
+rday
 
