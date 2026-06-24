@@ -2,73 +2,73 @@ Return-Path: <paul@pbarker.dev>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CF883CDB470
-	for <webhook@archiver.kernel.org>; Wed, 24 Jun 2026 07:17:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CB8F8CDE002
+	for <webhook@archiver.kernel.org>; Wed, 24 Jun 2026 07:22:02 +0000 (UTC)
 Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.1588.1782285450167892137
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.1629.1782285715577044035
  for <docs@lists.yoctoproject.org>;
- Wed, 24 Jun 2026 00:17:30 -0700
+ Wed, 24 Jun 2026 00:21:55 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@pbarker.dev header.s=fm3 header.b=f9+669q2;
- dkim=pass header.i=@messagingengine.com header.s=fm1 header.b=cZ30Pa2g;
+ dkim=pass header.i=@pbarker.dev header.s=fm3 header.b=fIae6HPG;
+ dkim=pass header.i=@messagingengine.com header.s=fm1 header.b=eFaBq/d2;
  spf=pass (domain: pbarker.dev, ip: 103.168.172.148, mailfrom: paul@pbarker.dev)
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfout.phl.internal (Postfix) with ESMTP id 5FC65EC0119;
-	Wed, 24 Jun 2026 03:17:29 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Wed, 24 Jun 2026 03:17:29 -0400
+Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
+	by mailfout.phl.internal (Postfix) with ESMTP id C388AEC0121;
+	Wed, 24 Jun 2026 03:21:54 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-12.internal (MEProxy); Wed, 24 Jun 2026 03:21:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pbarker.dev; h=
 	cc:content-type:content-type:date:date:from:from:in-reply-to
 	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm3; t=1782285449; x=1782371849; bh=POna77NHxL
-	vZurkqnZl1hnADuY/Leeuo/reKm4j1oHg=; b=f9+669q2JN0WxeeTLzCI8SrXqP
-	n3tpFsuZl1oO1CxM4aOg6bP7WvK3Y4COGxJyEF16rwI5YSk11i9F47yEt1nZ/blP
-	Zf7DNfcl7E651ODBC9lSNNUcSAruryio5FJ+OyNvtBgHCAcqmo64PSSE1B9wrVkH
-	r9BLhPFMXzRRejZuWvpfRh2ChFcYo9GS+EWtcInlrvvkKSkKDgamwhCKN3TWWdGb
-	tX5b0HdAi/txxz90Qohp+hA1tcn6Rr3Rs7saCmjpkJMf555ZUAdFJYcoHe/M0egx
-	1tdlX/qySSBQvZa9VYGzTWfRSvXrgA5ZFfVaBvwDy/fJnI8d2EmWIQp2jhDQ==
+	:subject:to:to; s=fm3; t=1782285714; x=1782372114; bh=720KJcWuBz
+	aNC4tc6uCAg9Sx3JvvzgwX/oaohPCejMI=; b=fIae6HPGoHUDNCorZEcq6FC4Nz
+	Empsl0x98q6+GbsXoNKxeGGr8W4AjEv3m+bsSjc5d9UzhfOj5zL7Y98boaP1s954
+	sL1rjl4tnsEiNhpJmRaKlDXpLiZjepCAQLsDdhgOG3LG/uW+0o/gBRa5pu748ZF5
+	B41Z7fCvIpeNGuAd0SBsLWVLrxA3nTYA4OhqJ+MQm42wJEbUg4v+GnZG/TSLcsMW
+	5SkayV6P13Kjd/HHsiR2V2Jn9Sl2JgaFe2U7r7QiNP5vyg98wjemssgXateVMT7o
+	UU73Un/4eRAVmIssSOQPZtwlJlJkH2Xkjd3yL+oaqgeB+cC+Wb4U4RoK2L+A==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:content-type:content-type:date:date
 	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
 	:message-id:mime-version:references:reply-to:subject:subject:to
 	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1782285449; x=1782371849; bh=POna77NHxLvZurkqnZl1hnADuY/Leeuo/re
-	Km4j1oHg=; b=cZ30Pa2gIoCmumGtAVcOPn0JcA7tkNUXn9lyih7L+0OdtupYQ9N
-	XXty9hzSxRnKA9xoHniGQHvAP75qMuXb13u93bAFkJrt4uenJ484IiWC4QW392p5
-	/HD6CtnPE+m2tq/5BkObyYFXbYSVBy1M/h6pKHRkal48ukURYF97KkpsUZQD7x21
-	rqJ2RQtLo5tN4+j3pXoKo6wMnTOIwzDLqwo+mdmEaAJFuc18UtXWkOEh8dw5a7Uw
-	mJsirvi9haQoHzcKZeE17VHHNPFJ+aako+S6r8iV3YW7xZSrkitopqfFpy4d+dSg
-	JW/aBfuiCku48gKvBKgdPGJ+8AoePQMb11Q==
-X-ME-Sender: <xms:iYQ7aj9MK6FFiT7Ro2vqGDWpmsewFfhzeSvSofNABlDl62aEasbQCQ>
-    <xme:iYQ7aluwl0rJGqreG8OncDQMlN7ouCGHCtSNUInqLmA7arTjgSbXLPPV9uLvjFj3H
-    KWiH7-XRVIX-59fgXVKK5YiYaIMmiNNDAMMWrM0ijwOeALu-ApajJQ>
-X-ME-Received: <xmr:iYQ7aurONL1uUnClRpfA5hiwnilI7kEN34kG0MJ6nxrnPlwg3fM5xAOfxeuS3M1WC1zZKE9eEtqPQJ2qI7TKkCoYSi6D4K9AM7aE5z0Mhp72>
-X-ME-Proxy-Cause: dmFkZTEZatbC3/09HCTxyypviFJimt8i2KxjuYOqKgtce+vqAb1doTprdwvrIitnNx9dAl
-    XV4Lvr2ujuI6VaOWJ9iWXRQFco2j+kX3hVXuSXQqcScrZX/SYA31CPNqDEwlYzCe5QSl9H
-    FFuzsyu8g/Xhgo8bYv03op8ABbVnDx4m/0QZw0Z2HfrIXDKOWPT3eVw4/8dMgcwI16tXtZ
-    zIu/DKq0l0v2jIa+XWj2bMqxcAqPze8W6K80GAbsT2lMXxcNu7ECp3x9wo2n6yzLOBzE69
-    +ttUK2o/us3H1OxCWHPIVw+WBxG4QclbeWw9iCFFhFCka6yfoIK00uFIkrjoqyD+NYQusL
-    8Y7kYIvUVxjxbnkezmyfKkq2N9KVmj9UovlQwm9SOTXQApskng6yTRWUoKl8tuiHMRbGgq
-    9QwYYKe/IBSClpx0KJ2MjgprjfmcCy9iL2nmnX7MZQFtevPNSwZDrnDuKjVQ0TI7HKJwhA
-    O0XT8ljalm6XmpskOqYF9v/0V+zbx7YYlGYFLbJe5Cq8EhJJrTMi1uUXzGU6x2iM5Xo4US
-    JFseujU2vPU+f6MzSbTut7XJb4Zr6Pxa1oRWB62wrLSDvMi55GY6mrS9PenaU7/h0hTmPa
-    xjg3thdi7YZPNfz2sB9yhCPdCZrTQ2wdR/5FyLHCdRAgtXPI9xTd86ADFluA
-X-ME-Proxy: <xmx:iYQ7aqme9NSCvFNmkhPUWth0xQWA8yY0hkr2GLE6NxePVGg6o7yujg>
-    <xmx:iYQ7aqzhRS4RtIr3EALm3IuGBZMr5zxF3rTnGlv0S6KZ9O7JTpSZMg>
-    <xmx:iYQ7aqmJqUy_mB7Bc15lQ8j_SX2Wl_h8XJlW69EIxlOPMOeSewNpTQ>
-    <xmx:iYQ7arclPkd7Ir_89CwkJEJ1xGpEpu8BW5fcixj9d3hsc1SvXET26Q>
-    <xmx:iYQ7alfCxDa0nyg7YEqYaIXNyeGKWOq1m7UamNuyOoPHfI7JtNly1S6G>
+	1782285714; x=1782372114; bh=720KJcWuBzaNC4tc6uCAg9Sx3JvvzgwX/oa
+	ohPCejMI=; b=eFaBq/d20kWrpNwp6y+BXL1ONeDvrO18L90FfQ0eZztdwhu13Ag
+	sEAPrt+vMWk3E7sIjREON7/3Xq+j2kOD/n/K3IIAP18S8f+/+95SlMfLc60yWU/J
+	US5qWJLsY7G9FNk/OOr1G2YYV0Ifjm9vYQnEgvUGAHFlR3Dju2S5ge98fzYzOVhG
+	cOhhEwLSgisoIqDZXN2s8roeSDtq6D5Q16zgtRoBg54hyC5sMDUtjCPjtwxJIUSX
+	kesbCqC7U8mGdLbO2Pp3nzyj8H/qyv5GM3J70W3dPgZPg17u04ItYM6eQ18KAMn6
+	mQcZu/xwkovdXUJdCYpeUscp/SaTOtA0sPQ==
+X-ME-Sender: <xms:koU7arsUWdVp4Aqa9S7s8J2f9nVjLhEcgJzSwDUSeMiEyyEAytFxSA>
+    <xme:koU7aid1hf4pyEhZwT_OEArjLral5V5TErJslUAAolFwz1qz9e91AkIt30rv0HiRR
+    cq5QGWvepRlPywWKQny1EI7SiBYaxJfexx-XsBySsq5vGZu5SRNMsY>
+X-ME-Received: <xmr:koU7asbhUExpPeRreaXP1aklluOx26Hfpc8uplA-EDTmpsYFgRC9d8YxL7UgvEeBZhZPXgqRUd0KywLZheemG3BTqb76ghbieJt7C1gdGXO9>
+X-ME-Proxy-Cause: dmFkZTGPJT4jkl1cRh419K2uK3Qk7c+feMgt2iuccOc5y8JhmtCgQt93QSKXizIN6NzKmG
+    MlTp0DMaTjYbvUV2k22KXqAEuZojhtdnmRYql/Zkd8SsbxyS2pc0HUuJUPJCx5VHJgi6le
+    vTZAHYXX1Mm9Na+ijyzb5qk83D0K6ximNAPbX70f+1yBdS7rh/Jh3CXNO1NEvRtNwEunAx
+    iR6mrFhOCOql9xZANmWettNgQla4VMrzDCXRI3+7E4S7PmIJ3gJ2zYV4CV53SwhPFAXLUA
+    U6j2xZKNEbkjl6y8KsS2HjVLcqVw+jWEPdpM6ve95Wt9A/CLyxJkTn5oZ4NQlY3bRAoPfe
+    MXXnfSvcMJkiMqkmFHbzQ13ZiFEwNZzhxoM74Lj4uzxE2I8Ygz0dWDGoHsvCcyCKGDpkts
+    4Nws680LWb28/yo+bR0fB/1bODkrFeRVGYm7jJWTkdY1CFWZjhHUo6++CegV/mfNP03Vew
+    IZSZHcT8qP9EPgLG2p5wazfWNG2jRyQHk3L2AnV2Oj54ZMXZuBlSSHshZj7sqT6ZC/6uM/
+    PswVYXAITXpOjLrJueXBRc33WHh/Zxg84t1SfhX1CLNSUFGxZDaHvpRtTV7rn0N37XCT2m
+    2GZ/ROzO45IOxKDuazfukNDGQwNwV/yJYNY5eL+18Aj/mooVYEi/DVXOALLw
+X-ME-Proxy: <xmx:koU7alVOqicfpCI1V72qaFeN-zLrVLmv8OHlbGBWp56uXTjTuCoX0g>
+    <xmx:koU7aug1BrwnsSXQ9F-wD43aktEEmvEf9N1327bWayAguJvClOxObw>
+    <xmx:koU7ajVPiyJ0dlwIo7eoXuf_n_Ip7-qfWb-8Bu5pEyc0_eDFhawYbg>
+    <xmx:koU7alMK67T-OD6a2osWGrm2O8L3sHatspMkc-GL7ttJLFpbDWvhnQ>
+    <xmx:koU7ahNJBIVonerE7JTg9TX3V0OpTgRC29wmxByTo5Oghnrv-MSKkSFW>
 Feedback-ID: i51494658:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 24 Jun 2026 03:17:28 -0400 (EDT)
-Message-ID: <ff53860cb34e588fb2f3d6ecb46cbb33f9a3b13d.camel@pbarker.dev>
-Subject: Re: [docs] Zaurus? Really?
+ 24 Jun 2026 03:21:54 -0400 (EDT)
+Message-ID: <720327d5a41a7ec8ef5fcfa4ebf48c6aabffa60d.camel@pbarker.dev>
+Subject: Re: [docs] Should Poky's "tiny-init.bb" recipe be documented?
 From: Paul Barker <paul@pbarker.dev>
 To: "Robert P. J. Day" <rpjday@crashcourse.ca>, YP docs mailing list
 	 <docs@lists.yoctoproject.org>
-Date: Wed, 24 Jun 2026 08:17:25 +0100
-In-Reply-To: <023dcad6-da72-e084-4c4d-5149ebaf0e79@crashcourse.ca>
-References: <023dcad6-da72-e084-4c4d-5149ebaf0e79@crashcourse.ca>
+Date: Wed, 24 Jun 2026 08:21:51 +0100
+In-Reply-To: <5288d9bd-9e65-5b51-02ca-c898b5b34bcb@crashcourse.ca>
+References: <5288d9bd-9e65-5b51-02ca-c898b5b34bcb@crashcourse.ca>
 Autocrypt: addr=paul@pbarker.dev; prefer-encrypt=mutual;
  keydata=mQINBGC756sBEADXL6cawsZRrDvICz9Y1SG0/lW1me4xpq36obh7a0IGAzp3ywNRb/4MO
  DTqP4+DD0cIFuDY41/N17g0sNlp8z+/k/IIDmNPtYQOTVmAkrkdDU4BP8dD3Cp1PUw6nrbInfujAJ
@@ -114,32 +114,39 @@ Autocrypt: addr=paul@pbarker.dev; prefer-encrypt=mutual;
  ChZPI3NMLnKZPJC8ZQZ4S8yb5oA3rqTA2DMODvsrEVlaB2cQ6IWHSa/mvBwA8Ias3771cp4fZS7W7
  LUewj8JVy0aJsGTwI4invl
 Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-5lYMVmL07XYGTZe4JCod"
+	protocol="application/pgp-signature"; boundary="=-tqX8t85KjEy312QJ1maT"
 User-Agent: Evolution 3.52.3-0ubuntu1.1 
 MIME-Version: 1.0
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 24 Jun 2026 07:17:32 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9846
+ <docs@lists.yoctoproject.org>; Wed, 24 Jun 2026 07:22:02 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9847
 
 
---=-5lYMVmL07XYGTZe4JCod
+--=-tqX8t85KjEy312QJ1maT
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, 2026-06-23 at 14:29 -0400, Robert P. J. Day wrote:
-> here:
+On Mon, 2026-06-22 at 08:59 -0400, Robert P. J. Day wrote:
+>   Was just perusing the meta-poky layer and noticed the recipe
+> "tiny-init.bb", which claims:
 >=20
-> https://docs.yoctoproject.org/dev-manual/debugging.html#other-debugging-t=
-ips
+>   SUMMARY =3D "Poky-tiny init"
+>   DESCRIPTION =3D "Basic init system for poky-tiny"
 >=20
-> there is actually a reference to a Zaurus. how many readers are going
-> to recognize that? :-)
+> But the poky-tiny distro defines its init manager with:
+>=20
+>   # enable mdev/busybox for init
+>   POKY_INIT_MANAGER:poky-tiny =3D "mdev-busybox"
+>=20
+> and "tiny-init" is not a valid value for INIT_MANAGER, so what is the
+> purpose of tiny-init.bb, and should it be documented?
 
-Perhaps for those who do recognize it, it's a nice little easter egg.
-It's harmless, and it's good to keep some character of where the project
-came from.
+Looking at the git history, tiny-init was a custom init for the
+poky-tiny distro, added in 2012. In 2016 poky-tiny changed to use
+busybox's init system by default. I don't see any other references to
+tiny-init, so we should probably retire it.
 
 Best regards,
 
@@ -147,17 +154,17 @@ Best regards,
 Paul Barker
 
 
---=-5lYMVmL07XYGTZe4JCod
+--=-tqX8t85KjEy312QJ1maT
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: This is a digitally signed message part
 
 -----BEGIN PGP SIGNATURE-----
 
-iIcEABYKAC8WIQSzjPXf5Y1BDWhU2iCrY1Tsnbr0bgUCajuEhREccGF1bEBwYmFy
-a2VyLmRldgAKCRCrY1Tsnbr0bgLhAQC+U7JwDJ8gXnUhg14Y03GF+KTcYE7OVzVp
-l8q5NwcP7gD+JG4dwxR8K0bBxlACkecMK7mArPPiuZB02YHNMR1RDQE=
-=PX9T
+iIcEABYKAC8WIQSzjPXf5Y1BDWhU2iCrY1Tsnbr0bgUCajuFjxEccGF1bEBwYmFy
+a2VyLmRldgAKCRCrY1Tsnbr0bkLyAQDTOAvGUvfFVf7uCpHmFrj+KkycFaD0ecHE
+aEQcZhmRSwEA2XtDdpOo7mBiXsO/LWx4TBuc8Pzd1fS6J1gdH2nOowk=
+=c0tS
 -----END PGP SIGNATURE-----
 
---=-5lYMVmL07XYGTZe4JCod--
+--=-tqX8t85KjEy312QJ1maT--
 
