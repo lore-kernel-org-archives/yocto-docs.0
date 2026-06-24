@@ -2,39 +2,41 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 48862CDB479
-	for <webhook@archiver.kernel.org>; Wed, 24 Jun 2026 13:19:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C1D54CDB481
+	for <webhook@archiver.kernel.org>; Wed, 24 Jun 2026 13:52:47 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.6898.1782307153078247018
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.7729.1782309164817885663
  for <docs@lists.yoctoproject.org>;
- Wed, 24 Jun 2026 06:19:13 -0700
+ Wed, 24 Jun 2026 06:52:45 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=d5AYRtcv;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=LvuO9KF5;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
-	To:From:Date:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Ax59f6DZt0oX2PKYMdC32uKkgFtjfm3Ny1zhkTJF08k=; b=d5AYRtcvNmj7mO9CamEFYWJmuY
-	dPGNw2eTXNtfVqTw1oPofhr1tr9MlSgg5vXc7ufwWFxcusyYAu5LmRefYiMvM2U0MQUV6xPDcIcdT
-	sHXM74fMoqOOlv4SnxnaJPWfotOEt9hh1ZvPAQM+ERYzkcuaXJmT4jXnDRU2SikeqNSZJeihX30B9
-	fkPsOZj2y421x/EfUUOZ2wvVxP66dLiYCrdUmNeJ9Bh+UuMo8VObgPDxgyM/6bWkqAPiCu0OkG8my
-	wls042BpnCMnkiiyFTjFW5kxkUshoxydbzRDNRk2PxL0An2NhqjCkwrk/YahV5i2SzwjB/dseZm3b
-	FNijeSRw==;
-Received: from bras-base-otwaon0916w-grc-51-67-71-147-190.dsl.bell.ca ([67.71.147.190]:52048 helo=trixie)
+	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:References:
+	Message-ID:In-Reply-To:Subject:cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=iXNhI4zijKxOf4004oQBGqh6W5wWuXh9Vg95iv6cKkU=; b=LvuO9KF5PpjDNmwYEzEp6Hi4Bw
+	PurredZMQeSTPKBIt8GTBHbPj4Fb0ELhkBPLFxrOwDvwOZvfkV7R5daZI30Ggpm7OwR2f4hEy/pNo
+	S2KytVy//QFE8EI/bAWpfxtPaYEBX7pkZwmGCFV54g//WagbxCnkQ+LfLQb/3YqhavztymUAN4S5u
+	ai3ZLT6vzvCi4r3qj2LiOxESiOYfIYfXXy/rwBkD5909OwpQZh4aZnjAeZkozwOk7+sFu0P7BqGXF
+	aBxcXwkBW9QEGvNtJvn7xBl07UbmA6oumgRzC0Yc0tFdh0zr+Yjz8I/y/PjWCQU8Rl5i0SN3wxPRe
+	xeF1LY9A==;
+Received: from bras-base-otwaon0916w-grc-51-67-71-147-190.dsl.bell.ca ([67.71.147.190]:50964 helo=trixie)
 	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.99.4)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1wcNVW-0000000FaDA-03DY
-	for docs@lists.yoctoproject.org;
-	Wed, 24 Jun 2026 09:19:11 -0400
-Date: Wed, 24 Jun 2026 09:19:04 -0400 (EDT)
+	id 1wcO1t-0000000Fe4s-0ZR0;
+	Wed, 24 Jun 2026 09:52:43 -0400
+Date: Wed, 24 Jun 2026 09:52:25 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: [PATCH v2] ref-manual: under meta/files entry, mention Wic files
-Message-ID: <6d348bc4-6069-0544-0e68-80af8d34ad82@crashcourse.ca>
+To: Paul Barker <paul@pbarker.dev>
+cc: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: Re: [docs] Should Poky's "tiny-init.bb" recipe be documented?
+In-Reply-To: <720327d5a41a7ec8ef5fcfa4ebf48c6aabffa60d.camel@pbarker.dev>
+Message-ID: <40dfa966-a2e2-5bbc-2bae-cdbddf0ce3ea@crashcourse.ca>
+References: <5288d9bd-9e65-5b51-02ca-c898b5b34bcb@crashcourse.ca> <720327d5a41a7ec8ef5fcfa4ebf48c6aabffa60d.camel@pbarker.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -50,31 +52,32 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 24 Jun 2026 13:19:17 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9867
+ <docs@lists.yoctoproject.org>; Wed, 24 Jun 2026 13:52:47 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9868
 
+On Wed, 24 Jun 2026, Paul Barker wrote:
 
-Add a reference to Wic files under meta/files, and add a link to the
-section on Wic files in the Development Tasks Manual.
+> On Mon, 2026-06-22 at 08:59 -0400, Robert P. J. Day wrote:
+> >   Was just perusing the meta-poky layer and noticed the recipe
+> > "tiny-init.bb", which claims:
+> >
+> >   SUMMARY = "Poky-tiny init"
+> >   DESCRIPTION = "Basic init system for poky-tiny"
+> >
+> > But the poky-tiny distro defines its init manager with:
+> >
+> >   # enable mdev/busybox for init
+> >   POKY_INIT_MANAGER:poky-tiny = "mdev-busybox"
+> >
+> > and "tiny-init" is not a valid value for INIT_MANAGER, so what is the
+> > purpose of tiny-init.bb, and should it be documented?
+>
+> Looking at the git history, tiny-init was a custom init for the
+> poky-tiny distro, added in 2012. In 2016 poky-tiny changed to use
+> busybox's init system by default. I don't see any other references to
+> tiny-init, so we should probably retire it.
 
-Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+  i will let someone else handle that.
 
----
-
-diff --git a/documentation/ref-manual/structure.rst b/documentation/ref-manual/structure.rst
-index ff84b250b..6d5017f30 100644
---- a/documentation/ref-manual/structure.rst
-+++ b/documentation/ref-manual/structure.rst
-@@ -868,7 +868,10 @@ layer.
- ---------------
-
- This directory contains common license files and several text files used
--by the build system. The text files contain minimal device information
-+by the build system, as well as
-+:ref:`Wic files <dev-manual/wic:creating partitioned images using wic>`
-+that define the layouts of the images produced by the build.
-+The text files contain minimal device information
- and lists of files and directories with known permissions.
-
- .. _structure-meta-lib:
+rday
 
