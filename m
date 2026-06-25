@@ -2,197 +2,136 @@ Return-Path: <quentin.schulz@cherry.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8C0A2CDB466
-	for <webhook@archiver.kernel.org>; Thu, 25 Jun 2026 08:40:26 +0000 (UTC)
-Received: from DUZPR83CU001.outbound.protection.outlook.com (DUZPR83CU001.outbound.protection.outlook.com [52.101.66.57])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.6758.1782376819176457633
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E8874CDE00D
+	for <webhook@archiver.kernel.org>; Thu, 25 Jun 2026 09:02:07 +0000 (UTC)
+Received: from DUZPR83CU001.outbound.protection.outlook.com (DUZPR83CU001.outbound.protection.outlook.com [52.101.66.0])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.7009.1782378119275753478
  for <docs@lists.yoctoproject.org>;
- Thu, 25 Jun 2026 01:40:19 -0700
+ Thu, 25 Jun 2026 02:01:59 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@cherry.de header.s=selector1 header.b=lrMN5LeE;
- spf=pass (domain: cherry.de, ip: 52.101.66.57, mailfrom: quentin.schulz@cherry.de)
+ dkim=pass header.i=@cherry.de header.s=selector1 header.b=EPypy3ZM;
+ spf=pass (domain: cherry.de, ip: 52.101.66.0, mailfrom: quentin.schulz@cherry.de)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bHCdcAPMFM8zLUyQXcSsQqNbJgIE3x+48rV7K9sNclS3GYXbxdydZkr1mdsmotwn2x9uxmOQL/+MwuFACLHA2x/Q4MkEn6JpuZ6EK6VGKjiXjoCjzsUhBt0cDmm10beVJgB3lFNJnNR3fcNt/JN9aTWrwrXYSbX4pCa8gVOFn/R/exxRE1Uy0/CieuFGclpiIHjkNXmwQby1PAAAofo3GXrYt3+sWq74Z5oAxXHL0tKu28rzTXDklYU5IWAcFPAhy1KW/skbWvLUFEXw+Gru+In0T4ea7GzE9dBKTDrYx0Jx8m9xatcWqfVNGaq+yyAg4zDW93iCR9tUJ3JciF8yrA==
+ b=ea0WjSaHSuPYw/TCa4B/c4oAeZRqqz3KQusRKAj8lBJv+P1R6afyhyHNJsig8yUl6atHjOXRrvBKN1Z7hfi4AEf9OXv9b5LpkjzTiCxeNU+um5DVixGWORrZJMpqb3cQ/qUKoRIqp0mBt5J/jOCJpdJj4FQhAZGAvzR/62/Dubxkqy1fNy0pJKc0Sj208sFB8Ff/edJh2xl/YHdHOpyvf3fXR9C3u9DvikNw4oDN+yUj3chuZafrR0Tjg8uoOn7nQbdYsnwZkNBDKTRzKrJdrNBEO9HToMJBAmbrLy79farSDNLlj2XA4YF7uo6WFN345q5mg1S94m9GU+QDRTLmRQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NKw0BIZlHOssAQ8JbgLDYakRsz21stKD6adoNpdOqHA=;
- b=ljpZkHTdOjcxSl9TvpiYBR+cDiWP5X2cTbqqqlPDQIMfnVu/qA8Elr9aGrSFZXhyvcJ9tdcHC1HLCg+PhOCTWscfWSWD5jxxaYlDFAh7o1HN79OFRoEtIjIHKaHWseRDm+xWuXX5bogneB824FTWKb1OkU7d37AuXzgnoe00g8iIzwfyeRloZ2tPKwDVgtsoLP1JKQzVDv5MNzHWbY8t8D5VJTR59MtZA/HNnIk/sHimnvFmIli9qJVDuEny5VeALdVo5CzyMa7tUJDCnPLjg5179bVwFkJcY3tZBJXaCBFDu3gqolApjWmaKi/TOd3ZxGRMqPhf2jxS/SPYGOd/Zw==
+ bh=qYiNX1poF6xhA3vnzs4jl5KvmL5KDr4GTLSQVFWqWzg=;
+ b=Z+Ejq4I0PivE2yDYyvn+KlGm6TWsmdb0FLcDyn1Hxm1Yq73kp0z4RpxCSNn3SLKyfbeE0/RrPZozL9ZB5243KQJcTkUfNX6VP/zrcacI/yhpIppq3LeggOQ4IXbzxz/iF6xsjHH2XzyctUlp5TbSmHHcOMcIjPOjzs/oNeO77f8mIdwETY7VPu+UrCjCYKFQ25EnOiYTxrdKphSozftMb193pFU7Tm50M95eurNnE8bzZ6CnwI+HAH3WM4lQvfzyyx6UrKoBo9ePBfmJ7d4yl2VTmeESIz9Ld6v2UuJ8KQ32evsRNGlT8uvoxwogCAAQKmGUMtNQ76Kgp5ALMhQVPw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
  dkim=pass header.d=cherry.de; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NKw0BIZlHOssAQ8JbgLDYakRsz21stKD6adoNpdOqHA=;
- b=lrMN5LeEQBODCTzxBlyV/9gOYlKOtZ3TNQixwMKHeDU7/muxCleKG0eJkBCRN0yUZDfOnteOIWDYklHWFdCogCu1HgydfTgV1hxBU+LobPtiWDhRcV/lNHGI72gnXjj6gOgsu0LwhjFKtNLd7GE8D9j8yePt6H1yTFBhJz+JhQM=
+ bh=qYiNX1poF6xhA3vnzs4jl5KvmL5KDr4GTLSQVFWqWzg=;
+ b=EPypy3ZMXT1OEcYxXccbP+kbm+M1ZpMvsxdFJiYniJ5LeTpOBN0g0kxfmrui8HBo2Ah/OsoaIDDfmhFjjOcEtpORJ5+IyVUg4WWQaZx2TXNf1ln2p9pVUmnNCOCzcYraZcvrODuD44Pemyb3tdG+9amV6JLdJW8OE5/uIuiuHs4=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=cherry.de;
 Received: from DBBPR04MB7737.eurprd04.prod.outlook.com (2603:10a6:10:1e5::22)
- by AM0PR04MB12075.eurprd04.prod.outlook.com (2603:10a6:20b:740::5) with
+ by AS8PR04MB7815.eurprd04.prod.outlook.com (2603:10a6:20b:28a::13) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.13; Thu, 25 Jun
- 2026 08:40:13 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.16; Thu, 25 Jun
+ 2026 09:01:55 +0000
 Received: from DBBPR04MB7737.eurprd04.prod.outlook.com
  ([fe80::5960:fb4b:9313:2b00]) by DBBPR04MB7737.eurprd04.prod.outlook.com
  ([fe80::5960:fb4b:9313:2b00%5]) with mapi id 15.21.0159.015; Thu, 25 Jun 2026
- 08:40:13 +0000
-Message-ID: <80bbfc30-3b10-4871-bc56-7c3af61eb50f@cherry.de>
-Date: Thu, 25 Jun 2026 10:40:12 +0200
+ 09:01:54 +0000
+Message-ID: <a20a896a-4434-40ae-b9c5-afec6d672b7a@cherry.de>
+Date: Thu, 25 Jun 2026 11:01:53 +0200
 User-Agent: Mozilla Thunderbird
-Subject: Re: [docs] why not rename "Maintaining Build Output Quality" to
- "buildhistory"?
-To: rpjday@crashcourse.ca
-Cc: YP docs mailing list <docs@lists.yoctoproject.org>
-References: <4871863c-1d5d-1ff9-2918-a2d9c6e19041@crashcourse.ca>
- <cfc70f67-3220-4766-ae57-035f66eb56eb@cherry.de>
- <5611a1fd-167e-a1a0-c644-7e92248a6afe@crashcourse.ca>
- <75af20a8-4f59-4106-9cf1-cc750afe38b7@cherry.de>
- <7d188280-b5cd-f8a7-3d8e-dcf1aa02059b@crashcourse.ca>
+Subject: Re: [docs] [PATCH v3] ref-manual: add missing entry for
+ build/tmp/deploy/spdx
+To: rpjday@crashcourse.ca, YP docs mailing list <docs@lists.yoctoproject.org>
+References: <5d1922b8-dd2d-8a47-dc3f-fb3a8d017947@crashcourse.ca>
 Content-Language: en-US
 From: Quentin Schulz <quentin.schulz@cherry.de>
-In-Reply-To: <7d188280-b5cd-f8a7-3d8e-dcf1aa02059b@crashcourse.ca>
+In-Reply-To: <5d1922b8-dd2d-8a47-dc3f-fb3a8d017947@crashcourse.ca>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-X-ClientProxiedBy: VIXP296CA0032.AUTP296.PROD.OUTLOOK.COM
- (2603:10a6:800:36e::15) To DBBPR04MB7737.eurprd04.prod.outlook.com
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: VIUP296CA0165.AUTP296.PROD.OUTLOOK.COM
+ (2603:10a6:800:35d::8) To DBBPR04MB7737.eurprd04.prod.outlook.com
  (2603:10a6:10:1e5::22)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DBBPR04MB7737:EE_|AM0PR04MB12075:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4a432cef-78ff-466e-1ac8-08ded2955fbb
+X-MS-TrafficTypeDiagnostic: DBBPR04MB7737:EE_|AS8PR04MB7815:EE_
+X-MS-Office365-Filtering-Correlation-Id: 063bd6cf-5974-45c7-8554-08ded2986729
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: 
-	BCL:0;ARA:13230040|366016|1800799024|23010399003|376014|4133799003|3023799007|11063799006|56012099006|4143699003|18002099003|22082099003;
+	BCL:0;ARA:13230040|366016|23010399003|376014|1800799024|56012099006|18002099003|22082099003|11063799006;
 X-Microsoft-Antispam-Message-Info: 
-	bLN04SW8s7yGp9xGMuy+xjd8SA5Wi9KyyxORtLwD1afArGWwlK+576Dd/K0huShfRl1gpWC8gsSUo+CnSutT+8CgyOljLPfcx6rcOpqXjl9IyYI9s3apVrviKKRtzT7fwWGmnmumyh2KN8/j3F/VJm5T14i/wEdd3AaDS2tpR5tqi/9kZJZTu/ZzniSG0x4OmdpaTiw6QpL05j+5zPbZU76APo13SpG8hPBoWpwpuZ0UOqTcYd4g03y92haknz4qCG3n/Q2qV7Cu5ujH69kvBRmtlVofEe/yko9BX1ft7GB7RiWzXJYVyYhJR/FmB4s6EJxLxNW9fMP82Bo2tQRiESTIZNpmySpYjzd2YK4a1F0WkF7K2X6BQ1jkQYRyZa64slqSwnCsQmrG++dGekqe3r/+qmXaFSaw293CgwrQ2M9UtmU8fitIGIbVaPWxFWBes5/zjl36p6/yjhwJZTJy7PJ3Q7NOC2v1rk/NpZkHDMmrSwtLO3yOol/8nwD9+nOGIsNHvTfH4e96yuj7bCNZxfagd3IXVK9wQF3Gklko7NtsGTQue60J6V/NGxgh6C+eF6q1dqyvyTAvH38pyjoCB2a2lTUkSRYZCs5Gp6WetmlhzVUH7oKU4em3kmA7ONKgBBRxEpJLGaZIUFsP9rtVG/TpvH4RHWHwgTbL/nQBbbI=
+	RuwVoZ483grpI2FSwOjns8+8TawoXjZcrqYZodZx0mCkGM3fqvCZX07X/p8ZL9VagZeMvMSM84wlTrI0ZLTVm4sW543tbhPoVlffzfUKTG7AKUHSPNmFJoAGcr60ZAYf8EMXW9AOAElgil22N6iu12kzmd2XCPn3yBrq97ibhcNav5LtvFH3n/UdFLFZqAxsXiSA1T7mEuVPHkA6FAlZVqOynSdt+gLPfuGowHy8ead7bK++70n1U53ofH+wiHstt/3ScokrTRgSeo+PhyOLlz6M0CSU4sE4Wr0wLnkwBiN1nIrItqngyLzQpULFrr+e/X8RWpz7VLQCcWyylC4YlalMlHwQ86vLQprUFzcELiVn97lWmN8jcwluOX9m1MilRowDgMucXCUiYt7EIh9eyYYrr2nYE63/zCf6qpjbOLRCWdyvvqzxKtN1mv1xBD0p4LlrpQ9FJwvKKEj9p83Yt/mLV+ZKhvp7TyVjYEFng0qWqFmzI6O9uC2smzbTjnodAW0N3VuutU079ZuZAczGjNxJn66Vv0HI5Nql0Gb89balr7AgklABhz4zBWaH76vU4KhESUTjcchN8EDfBEOzN7K8GMTYIXN5RkBtTqdOOaIpo4sksQrMjByXM6uCHq41sbkLyKp9G/4ck9nsrs6D+dKdOpRVuofDy2Xv3j/ebTk=
 X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DBBPR04MB7737.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(4133799003)(3023799007)(11063799006)(56012099006)(4143699003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DBBPR04MB7737.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(376014)(1800799024)(56012099006)(18002099003)(22082099003)(11063799006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?utf-8?B?STA2NTU1cnMwYVViWVY0WWlIQnFHUUQ2V1Byc2Y1WE9VT3VrMVpqelRVby80?=
- =?utf-8?B?TjVHbmVNTWVWdE91U1RYT2EzQlNxMERmQi9CVitEVTdlMXF4Vy9kZEZQa0Ir?=
- =?utf-8?B?R3ZGQTdzT1JBMUU4Q1RaazhHeEhObGJQVFJ1cmlUeDhXdXVueU5UOUEzTVFL?=
- =?utf-8?B?WDBjRDlRNDg5Q0c1ZjU4cE96K1daSG9icjhScE52Y0lDdFBsWkxpSnZ4RWNI?=
- =?utf-8?B?UVh3Q2RGbUhsemtvZTlSMFNpbCt6UHA1ays4OEozcE81RnlISWpPZFphK0tX?=
- =?utf-8?B?aVUxSXcxblc2RTlocDRzYkFyL25LeWd2QUk0bEN0WkRFaDl2d3E2ZEp0RkVj?=
- =?utf-8?B?U3hGdkdOa2Zjd2ZyTTd4cEpuclpTSzFzNlNMSktsaWVWUE55ektlYmprTEE5?=
- =?utf-8?B?S3hXejVKTVlCMUp5TG5VZWdEdGw0NXJhTXRORkE3c29NL1BKYmtVR2dyZm5m?=
- =?utf-8?B?bXBpZmtRaXVwRmRjTnZhWkRDU3JXcWhReGp5MGdXR21jTWhWb01ZcUFxZGF5?=
- =?utf-8?B?TERMZ0hPUmFkTDhYUVJMSmViMjVxZWtKTmhTak0wdmtlNU53bDJNTTJIRUJh?=
- =?utf-8?B?akpFK2VDUm1IZXlzTHFsTlBPa1U2Ny8zb2xXeENjdUI3eHZPOXhvUHdDM3ds?=
- =?utf-8?B?SENKNDVZRy9WK1U2d0xqQzlVZ0JraER4Z015SGdFbDNTdWJEZ0VqdFRNSVlD?=
- =?utf-8?B?VXFuazdRYU9XTVZSYjRBRFZ4bWd1RlkwU0pLNnVLTGFYYStoZXFEdis4SytJ?=
- =?utf-8?B?OG1uZFg5N0JMZE91OCtITzJtT2h2dXFBQXhuLzEyc2k3dXl3eXJMdGgvUk5C?=
- =?utf-8?B?aGVqVlZLc2FSSGdKK1J4ZDdTdnphTWxyUWVRL09jTnZvZUN2NkEzaHRXUnhR?=
- =?utf-8?B?TXdSNkw5enU3bXBSUVZSSTVYajJHUW1naDFBZ1pVM3NHREMyRVRkU0twc2lR?=
- =?utf-8?B?S0pOcXY2U0hWM2g1dlVTSERKcEo2Um1Nd0IrUlVhWWdYeThOYVdGR2xrclBo?=
- =?utf-8?B?WTZ4UHJNZUpYckpLcUpuUUxhYlZZK1RGM05ZTVRNTXN5bGNFM1JCWnNIRlRq?=
- =?utf-8?B?eWYrT0JmZmoydWZHZWZFK0JuUDNOejZFaGRHK0VoWU1EMmpralZkMGFkVFBB?=
- =?utf-8?B?Ti9mcmFlbk1yQmc1YWV3TmZuYk8rK0xmU1BWYnM3R2Vyb0FzZlYzeWdhczV4?=
- =?utf-8?B?dld4QUVSbGliNVphUGZvMmlUYnlSTERKRXFVMklsK1hrbmFvUE1xNkR3SXVh?=
- =?utf-8?B?cjZyRU1GRFY4SjJXd0lMYWNOdzZSZnUrUHdaaHF1dmtYQmNrNU1VdXNjRFI0?=
- =?utf-8?B?ZHdlTUF6bUd2SFh2OXV2TEJteENjYnhrbEZCNFFsckNyREtBTEVodlpIY3ZW?=
- =?utf-8?B?WDZETE1NZ1VtUjhCVkkyQ2FEaWY0NDdKODBiUFBjLy9KbCtpTG1tbThoR3J0?=
- =?utf-8?B?NklHNzBtcXJNMEs0UXpCK2VucXo5SW5sOXozNjVoSVZtNG5PcXcwRUp5ZFN3?=
- =?utf-8?B?ZTBVSm1DWng5MTRyNU5OaWRZZWZBc1hqOVdRTlFuc21GNzN2SFZSTzdWME45?=
- =?utf-8?B?SGI3dHNUMzk4TjJ4TEp0UWo1SFIrYzlOVFNjTEU5VkNmZEhKUWtxVHRoaUhC?=
- =?utf-8?B?T3Qxamx3ZmpHcmw1YlRMY1BHT3NwaU9Ta3QwOTMwbjM4YnJUUmtWWHpoTi81?=
- =?utf-8?B?NFVyQlBza1poK1pUUnh1bWNIV3c3TzFxaTVoUXpvZ1hSbkZXajNxWkxQY2Mz?=
- =?utf-8?B?a0NzMTlUUW1NamRyS2NMVWsvWW16bkpYeVRkWWNQY3g2UUFaVWRsZnhvRjFH?=
- =?utf-8?B?bnU0VWpnVy92cVJtZFhZcWlIN0FtYkdiaHhzOEgzWjN1OTA0ekhFQ0FiMnlZ?=
- =?utf-8?B?elI3WmN0N0Q5VW9DbkhEV3FEaDJsKzVmRFJacy81ckhYRnRaZjhubHp3WS9h?=
- =?utf-8?B?YWwvNWs5VWIvYkNhSi8yajY4RjVhbEtoTlpUYWR3cndzR1NkTnhUU0lqOWdY?=
- =?utf-8?B?Tm1Ra0FuM3o3UWw1RGxsSXpzOGFURzF3cXU2VncvU2JGcGxKZlFoT1VoSzhU?=
- =?utf-8?B?d3BaMjlCbWhKSGJtSzBicCt6Q1kxUkpQMUwzVU9PQmtSVTlQb1J4VUIzZHpt?=
- =?utf-8?B?cWxGM25qSFNYYS8rOWhQaXdXK0dTRFZYSVBmcXdpRzY0UURqNHY4ZTJ4bk5P?=
- =?utf-8?B?N3N1NUd3bGVhVFlUb1grczBSWU5Lc0lvVHZJeHhoNHN1VmhIQUxRU1cxN1dl?=
- =?utf-8?B?VnI0QVR3OHBwNlNCenBiN1dBRjl0SktqVlc0VDQvektmM0JMOUdFL0lteS9t?=
- =?utf-8?B?OEJ4U2dsNS8wOXdqbW1CNnlXaFpOS21OWkFBTE5FaUJ0Zmh3d1ZnQT09?=
+	=?utf-8?B?QnYyQ0lTaGpmN2NrTXZzVnBGa3VpRnRXRFN2QWswbUg5azFkWFdDNU05Zmkz?=
+ =?utf-8?B?QlpWd1JzWGN0WTUyT1hoY2ZvSDJ4SS9ubUo0OGJxQkhqbkFZWTd2SGRzZ0c3?=
+ =?utf-8?B?dC9oMzRwMDFuRnNQRTdNT2NyRG1QdGpuZFFjVWRGdURCaFArZlcvMGNGUC8r?=
+ =?utf-8?B?YW05ZU1zMGpiRDRUUlRuQVByNnB0UUpYbWxnVGJyNlp1RVNsK2M1TDZLREkz?=
+ =?utf-8?B?VHNHSXVZUzVYdFlMQWtwMWxqamZpMmx2dzVCSnB6anAyNU42a1NtVDU1d2xX?=
+ =?utf-8?B?WDNFUUVSYzE5SU9mQU5TL2RZVTZnQjc2UlRNUXlJVHVidG5tUC9HY2lMYmJE?=
+ =?utf-8?B?VkhMaFhKby9wdWlQbzBMNFlISDF0Y1h4eHU4THJLUHdGSi81dmJaTDl3NU80?=
+ =?utf-8?B?bFJJM3BvUjVyT2VwN3I3Szd2Zll1ejVBTWY1SXp5UHE4dHhxYmdXbGZGS1lR?=
+ =?utf-8?B?NUhpanBUTWROWjdxSnVoeTZOSDJnR0pUTnBMZThjb2VVekJkV2ZZeE1LbGJY?=
+ =?utf-8?B?ckVERnRUQ3Jrd1FLcHhXMi9rSTdxUUpaeS9aL0RBaitBaktmWjhySTJNZ0E1?=
+ =?utf-8?B?Tno5WUpVK3c3Zmp6emVLVEE5NkZMclR1cUllL2ZWcTByWVBYUWJodGovejB1?=
+ =?utf-8?B?M3k1dUtMbTZ4bjhrcW85ZmFsU0dnc2tkNzQvSTEzYUFoSUtSaXhNUzRTdzA4?=
+ =?utf-8?B?M25nOFh1OXRUKzVITVU3dVdnUGZWSmZ2YjNzUWcva2o5Mncra0RYSGlPMEw1?=
+ =?utf-8?B?di9CejRSU1hjWnJJRUhGTnlGR1FuTmZaanV0VGZpS1V6L0dWTlVaK2VwQllP?=
+ =?utf-8?B?NmwzVllSWGRSWnQzNElXTnhtUlEwZHlncWZjbUI4NlZIRTJlcFlLWGFWS3lj?=
+ =?utf-8?B?UUVuU21sQUxHS25FMXFWUTMxbTVpRmU3RzJVbGJTZFNzRUhFRFhRZ1l0Y1hM?=
+ =?utf-8?B?WlhBcEw3eEpldnpBdU5RVElicGVJQWlNMVNYQ0hTV29MK1J4c3BENjFFcVFZ?=
+ =?utf-8?B?ZFpOWXh6ellmZ1VrS1VwbzZBNStCbmI1bENDRmxvc1JZdU1EWVNrR3g2Ry9W?=
+ =?utf-8?B?WWc2REE5T0h6M2NaWjRGdGpZUVhCbEtBS2x6ZC9sY3ZPeXd1bHZxNndhTlp5?=
+ =?utf-8?B?c0E5a3VwUEYwWmtjMUMrTjJmVjNVVnlRbU0rOGZWTVlLSituQW92WkE4ejBq?=
+ =?utf-8?B?M1BUYVQ2eXVVeDRLRlh6OWh3K3ZXamhOazNiSXFsZ1U2cTJSYStpUGI4d0Ja?=
+ =?utf-8?B?UWY4KzlDd3B0dUF6UWFuK2FhL1ZWaXFGdE9HTGlXU24vUzhYYnVObnFWbzFp?=
+ =?utf-8?B?YUtpdWF3Yk9HbFBZWjUzbmRjOW1ZSWxKb1R0QXpmeEVuVVFMYUEyYmdpRGdD?=
+ =?utf-8?B?VDhOTDBNY1gwMC9IR1hpMGxMMjQrRXpCR2wwZWRLT25wTmEweGRWNlp1VDA0?=
+ =?utf-8?B?WWhGck84c1VJRmNvYzZFVjJSVy9pYlZacXFNeGpBZ3RrWFk5N3BSZ0JMUm5P?=
+ =?utf-8?B?dG44UVRNYmZ0eTM1bXhxaUJFUGh0UVpxWEtQMXdEUndjWFc3d2ZvZmdhbmcw?=
+ =?utf-8?B?VWFSZldzeHZQZDdTTDh3UUl3QXJpUVluMS9seGxDS0dFZ0hkWVYxWlFsOGNw?=
+ =?utf-8?B?bWNmVlV5S0x6RURLZGROWWlvYzNQTVV5UUo3NHNheXpoTUpZTE5RbG02UmZX?=
+ =?utf-8?B?RTZGWnlQcUszenYzZ0tUYzBPQ3lsRW1iNTM4dE9KME1SL1BPTHhDQjBaNW1p?=
+ =?utf-8?B?eDU2ZUxVam1BeXd2Qk02R0xaL0FzZkpaQytsYWQ5SnZmQ1ZGbytPZVdXQ0ZH?=
+ =?utf-8?B?WUxRYUY3bUxxVkNJTHkyeUtzc1N5SThoL0R4ekt5N1l4WFpQQVI4WE1pWUk5?=
+ =?utf-8?B?Y1Bvc0lMTmxIWDNiQjBoZFJpa2JIeTk0bzgyYW5nR3B4aEdVYlJIL3hUUFBz?=
+ =?utf-8?B?dUJFYVN4NS9GcTFyamVvTDZOTERXOURza1I1L2pCK04ydHJuU3dsQWpOcXZq?=
+ =?utf-8?B?QllaelBoVzM5b2xZK3dUN2xFVW5OcWdrVHdHVzRpRk85WkgwK3V3VEdkS3pD?=
+ =?utf-8?B?OU8vS3N0ZjhtNjVHODV1N0lLQm1aK0h6MVNlVE5GNXJiTUQ2ejNUMXdad3Nx?=
+ =?utf-8?B?TFJqWlRndy9wQkQ0MkhpN3JjRmZzVTAzSkpzeGZrL1RwMUFqcWNHV3dZbkNo?=
+ =?utf-8?B?WVNMMnJTcmY0L0UzU0dqOEVQUmVnbldVWUJ0eVNCQ29wUlZ2ME50SWgxdGdW?=
+ =?utf-8?B?VlNUeURUZEsrSHdsRnhFTjZsVHhvamZVTmR4LzdRY3ExL3BWY2ZLeUNkTlpL?=
+ =?utf-8?B?QVlaMzhMaHQxVW9odmpEUTlzd3MwWFRreFNHTHdTOUlqSFh5endtdz09?=
 X-OriginatorOrg: cherry.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4a432cef-78ff-466e-1ac8-08ded2955fbb
+X-MS-Exchange-CrossTenant-Network-Message-Id: 063bd6cf-5974-45c7-8554-08ded2986729
 X-MS-Exchange-CrossTenant-AuthSource: DBBPR04MB7737.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jun 2026 08:40:13.3824
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jun 2026 09:01:54.2422
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: K9hK1PbPWy0U4x6mNNrjwiuf+gAWFMEAFZYgsKkL4Ucx7uRQ5hXM5Ixzx6vr0W/pZUKybiCv5n49FY8cSvxYCX9EwG7qigiy11xkhYfdkCU=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB12075
+X-MS-Exchange-CrossTenant-UserPrincipalName: zMQSMo2idcvvz9J1l6l77v66KqnQ72rDyEhMeBPstu/YkDLJIWU3l3+HMjmD3UhrJYadaYU7KOH9jyMDK07ImtAjxdf27i0l8bzz0CjFXPA=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7815
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 25 Jun 2026 08:40:26 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9880
+ <docs@lists.yoctoproject.org>; Thu, 25 Jun 2026 09:02:07 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9881
 
 Hi Robert,
 
-On 6/24/26 8:45 PM, Robert P. J. Day via lists.yoctoproject.org wrote:
-> On Wed, 24 Jun 2026, Quentin Schulz wrote:
+On 6/25/26 10:31 AM, Robert P. J. Day via lists.yoctoproject.org wrote:
 > 
->>
->>
->> On 6/24/26 11:35 AM, Robert P. J. Day wrote:
->>> On Wed, 24 Jun 2026, Quentin Schulz wrote:
->>>
->>>> On 6/24/26 10:21 AM, Robert P. J. Day via lists.yoctoproject.org wrote:
->>>>>
->>>>> while this section is titled "Maintaining Build Output Quality":
->>>>>
->>>>>      https://docs.yoctoproject.org/dev-manual/build-quality.html
->>>>>
->>>>> it's really solely about how to use "buildhistory", so why not just
->>>>> call it something like "How to use YP buildhistory"? the title seems a
->>>>
->>>> OK but why would I want to use buildhistory? How do I hear about
->>>> buildhistory
->>>> in the first place?
->>>>
->>>>> bit misleading and even a little inaccurate.
->>>>>
->>>>
->>>> What's misleading or inaccurate about it?
->>>>
->>>> """
->>>> The buildhistory class helps you maintain the quality of your build
->>>> output.
->>>> """
->>>>
->>>> This matches the title of the section (which appears in the navigation
->>>> panel
->>>> on the left.
->>>
->>>     because the title suggests a more general approach to maintaining
->>> build quality when the section covers only buildhistory. so why not
->>> just title it that way?
->>>
->>
->> You're looking for ways to improve build quality, will you read a section
->> called "How to use buildhistory" when looking for that?
-> 
->    no, but if i was interested in how to use build history, i would
-> read a section called "How to Use Build History". you know, the same
-> way that, if i wanted to know how to test my packages with ptest, i'd
-
-You would likely search something like "how to test my packages in 
-yocto" and not "how to use ptest" because you would need to know about 
-ptest to begin with.
-
-> consult a section called "Testing Packages with ptest":
+> There is no entry in the Build Directory section for the directory
+> build/tmp/deploy/spdx, so add it.
 > 
 
-So this would be fine because you have both info.
+Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
 
-My point is that the suggested rename is harmful for discovery by 
-beginners/newcomers.
-
-So, maybe we could compromise on
-
-Maintaining Build Output Quality with ``buildhistory``
-
-?
-
-Cheers,
+Thanks!
 Quentin
 
