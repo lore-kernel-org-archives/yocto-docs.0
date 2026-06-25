@@ -1,194 +1,58 @@
-Return-Path: <rpjday@crashcourse.ca>
+Return-Path: <jaekyu.lee@lge.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1F99ACDB466
-	for <webhook@archiver.kernel.org>; Thu, 25 Jun 2026 09:48:07 +0000 (UTC)
-Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.7500.1782380880060371711
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 15C01CDB466
+	for <webhook@archiver.kernel.org>; Thu, 25 Jun 2026 09:52:07 +0000 (UTC)
+Received: from lgeamrelo12.lge.com (lgeamrelo12.lge.com [156.147.23.52])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.7767.1782381121377114951
  for <docs@lists.yoctoproject.org>;
- Thu, 25 Jun 2026 02:48:00 -0700
+ Thu, 25 Jun 2026 02:52:01 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=Bp9J7FJI;
- spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
-	To:From:Date:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=R5T/yL+yhy4EA7ZBN31WG4oEv71TdPx1Ow4iVzLW2ck=; b=Bp9J7FJIM3Zcbog+gM/aCFou28
-	oP4w4MRSpfo2q4UCMUzXYubu/ay4rvLBkORDV4NkGS2d0vDh4DmtTKIra7PXoZ1w+SicLfTCxzokX
-	U1Muybi8t+kKCKbelu9xYDu3/eQ+dJa21T2THkSNrkLDm6tQYIUqhhubIIceXqXXocw53JOdkjVWr
-	8xiE6C9BgrgdmTHJeUJozrtDTiXEOULVvvrQyjgp9oWufvsIt70nZOD7t/POKmqb9zjMbWaYNtuCY
-	Wyv6erYAiguCxG4APO414z3vGodM+EsGNS0JZe6Rcr+mTg8FBrYK/xm2aMmz4kCjYraxMtk8w5OLV
-	bixQitYw==;
-Received: from bras-base-otwaon0916w-grc-51-67-71-147-190.dsl.bell.ca ([67.71.147.190]:46296 helo=trixie)
-	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.4)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1wcgge-000000009vb-1nho
-	for docs@lists.yoctoproject.org;
-	Thu, 25 Jun 2026 05:47:58 -0400
-Date: Thu, 25 Jun 2026 05:47:47 -0400 (EDT)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: [PATCH] dev-manual: rename Build Quality section to mention
- "buildhistory"
-Message-ID: <dfe0ece3-617a-02c8-d1bb-1baa904d2988@crashcourse.ca>
+ dkim=none (message not signed); spf=pass (domain: lge.com, ip: 156.147.23.52, mailfrom: jaekyu.lee@lge.com)
+Received: from unknown (HELO lgemrelse7q.lge.com) (156.147.1.151)
+	by 156.147.23.52 with ESMTP; 25 Jun 2026 18:51:58 +0900
+X-Original-SENDERIP: 156.147.1.151
+X-Original-MAILFROM: jaekyu.lee@lge.com
+Received: from unknown (HELO user1..) (10.157.71.236)
+	by 156.147.1.151 with ESMTP; 25 Jun 2026 18:51:58 +0900
+X-Original-SENDERIP: 10.157.71.236
+X-Original-MAILFROM: jaekyu.lee@lge.com
+From: Jaekyu Lee <jaekyu.lee@lge.com>
+To: docs@lists.yoctoproject.org,
+	jaekyu.lee@lge.com
+Subject: [PATCH] migration-guide: 5.1: Fix typo
+Date: Thu, 25 Jun 2026 18:51:54 +0900
+Message-Id: <20260625095154.3878438-1-jaekyu.lee@lge.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 25 Jun 2026 09:48:07 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9895
+ <docs@lists.yoctoproject.org>; Thu, 25 Jun 2026 09:52:07 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9896
 
+From: "jaekyu.lee" <jaekyu.lee@lge.com>
 
-Since the section "Maintaining Build Output Quality" is really only
-about the "buildhistory" feature, rename the section to make that
-clear, and update all references to the new name.
+- Change do_compile to do_configure
 
-Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
-
+Signed-off-by: jaekyu.lee <jaekyu.lee@lge.com>
 ---
+ documentation/migration-guides/migration-5.1.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/documentation/dev-manual/build-quality.rst b/documentation/dev-manual/build-quality.rst
-index c3c7ccbb2..c2e46b69c 100644
---- a/documentation/dev-manual/build-quality.rst
-+++ b/documentation/dev-manual/build-quality.rst
-@@ -1,7 +1,7 @@
- .. SPDX-License-Identifier: CC-BY-SA-2.0-UK
-
--Maintaining Build Output Quality
--********************************
-+Maintaining Build Output Quality with ``buildhistory``
-+******************************************************
-
- Many factors can influence the quality of a build. For example, if you
- upgrade a recipe to use a new version of an upstream software package or
-diff --git a/documentation/dev-manual/building.rst b/documentation/dev-manual/building.rst
-index c8bb31b92..60cb22785 100644
---- a/documentation/dev-manual/building.rst
-+++ b/documentation/dev-manual/building.rst
-@@ -839,7 +839,7 @@ directory:
-       still use the recipes in an offline build. Do the following:
-
-       #. Use a configuration generated by enabling :ref:`build
--         history <dev-manual/build-quality:maintaining build output quality>`.
-+         history <dev-manual/build-quality:maintaining build output quality with \`\`buildhistory\`\`>`.
-
-       #. Use the ``buildhistory-collect-srcrevs`` command to collect the
-          stored :term:`SRCREV` values from the build's history. For more
-diff --git a/documentation/dev-manual/packages.rst b/documentation/dev-manual/packages.rst
-index 500639565..c75584c93 100644
---- a/documentation/dev-manual/packages.rst
-+++ b/documentation/dev-manual/packages.rst
-@@ -194,7 +194,7 @@ each building system's ``local.conf`` file::
-
- For information on build
- history, see the
--":ref:`dev-manual/build-quality:maintaining build output quality`" section.
-+":ref:`dev-manual/build-quality:maintaining build output quality with \`\`buildhistory\`\``" section.
-
- .. note::
-
-diff --git a/documentation/dev-manual/upgrading-recipes.rst b/documentation/dev-manual/upgrading-recipes.rst
-index 01fd12d86..d0c322546 100644
---- a/documentation/dev-manual/upgrading-recipes.rst
-+++ b/documentation/dev-manual/upgrading-recipes.rst
-@@ -101,7 +101,7 @@ The following steps describe how to set up the AUH utility:
-    configurations:
-
-    -  If you want to enable :ref:`Build
--      History <dev-manual/build-quality:maintaining build output quality>`,
-+      History <dev-manual/build-quality:maintaining build output quality with \`\`buildhistory\`\`>`,
-       which is optional, you need the following lines in the
-       ``conf/local.conf`` file::
-
-diff --git a/documentation/migration-guides/migration-1.5.rst b/documentation/migration-guides/migration-1.5.rst
-index da26cca63..c21b52cf2 100644
---- a/documentation/migration-guides/migration-1.5.rst
-+++ b/documentation/migration-guides/migration-1.5.rst
-@@ -271,7 +271,7 @@ The changes to Build History are:
-    option for each utility for more information on the new syntax.
-
- For more information on Build History, see the
--":ref:`dev-manual/build-quality:maintaining build output quality`"
-+":ref:`dev-manual/build-quality:maintaining build output quality with \`\`buildhistory\`\``"
- section in the Yocto Project Development Tasks Manual.
-
- .. _migration-1.5-udev:
-diff --git a/documentation/migration-guides/migration-1.7.rst b/documentation/migration-guides/migration-1.7.rst
-index ca8222098..1a5704fd4 100644
---- a/documentation/migration-guides/migration-1.7.rst
-+++ b/documentation/migration-guides/migration-1.7.rst
-@@ -216,7 +216,7 @@ The following miscellaneous change occurred:
-    should manually remove old "build-id" files from your existing build
-    history repositories to avoid confusion. For information on the build
-    history feature, see the
--   ":ref:`dev-manual/build-quality:maintaining build output quality`"
-+   ":ref:`dev-manual/build-quality:maintaining build output quality with \`\`buildhistory\`\``"
-    section in the Yocto Project Development Tasks Manual.
-
-
-diff --git a/documentation/migration-guides/migration-general.rst b/documentation/migration-guides/migration-general.rst
-index 1820f5cfd..1671992a8 100644
---- a/documentation/migration-guides/migration-general.rst
-+++ b/documentation/migration-guides/migration-general.rst
-@@ -105,4 +105,4 @@ any new Yocto Project release.
-       :ref:`ref-classes-buildhistory` output using ``git diff`` or ``buildhistory-diff``.
-
-    For more information on using :ref:`ref-classes-buildhistory`, see
--   :ref:`dev-manual/build-quality:maintaining build output quality`.
-+   :ref:`dev-manual/build-quality:maintaining build output quality with \`\`buildhistory\`\``.
-diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
-index 56a8e7e98..7b220a284 100644
---- a/documentation/ref-manual/classes.rst
-+++ b/documentation/ref-manual/classes.rst
-@@ -270,7 +270,7 @@ The :ref:`ref-classes-buildhistory` class records a history of build output meta
- which can be used to detect possible regressions as well as used for
- analysis of the build output. For more information on using Build
- History, see the
--":ref:`dev-manual/build-quality:maintaining build output quality`"
-+":ref:`dev-manual/build-quality:maintaining build output quality with \`\`buildhistory\`\``"
- section in the Yocto Project Development Tasks Manual.
-
- .. _ref-classes-buildstats:
-diff --git a/documentation/ref-manual/structure.rst b/documentation/ref-manual/structure.rst
-index 31faec1c9..57f19a82f 100644
---- a/documentation/ref-manual/structure.rst
-+++ b/documentation/ref-manual/structure.rst
-@@ -267,7 +267,7 @@ The OpenEmbedded build system creates this directory when you enable
- build history via the :ref:`ref-classes-buildhistory` class file. The directory
- organizes build information into image, packages, and SDK
- subdirectories. For information on the build history feature, see the
--":ref:`dev-manual/build-quality:maintaining build output quality`"
-+":ref:`dev-manual/build-quality:maintaining build output quality with \`\`buildhistory\`\``"
- section in the Yocto Project Development Tasks Manual.
-
- .. _structure-build-cache:
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index c808c095e..b4c6bc957 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -1394,7 +1394,7 @@ system and gives an overview of their function and contents.
-       When inheriting the :ref:`ref-classes-buildhistory`
-       class, this variable specifies the build history features to be
-       enabled. For more information on how build history works, see the
--      ":ref:`dev-manual/build-quality:maintaining build output quality`"
-+      ":ref:`dev-manual/build-quality:maintaining build output quality with \`\`buildhistory\`\``"
-       section in the Yocto Project Development Tasks Manual.
-
-       You can specify these features in the form of a space-separated list:
+diff --git a/documentation/migration-guides/migration-5.1.rst b/documentation/migration-guides/migration-5.1.rst
+index 94b527bdc..70e034bc8 100644
+--- a/documentation/migration-guides/migration-5.1.rst
++++ b/documentation/migration-guides/migration-5.1.rst
+@@ -23,7 +23,7 @@ supported, and an error will be issued. The recipe should be changed to::
+     S = "${UNPACKDIR}"
+ 
+ Any :term:`WORKDIR` references where files from :term:`SRC_URI` are referenced
+-should be changed to :term:`S`. These are commonly in :ref:`ref-tasks-compile`,
++should be changed to :term:`S`. These are commonly in :ref:`ref-tasks-configure`,
+ :ref:`ref-tasks-compile`, :ref:`ref-tasks-install` and :term:`LIC_FILES_CHKSUM`.
+ 
+ :term:`WORKDIR` references in recipes
 
