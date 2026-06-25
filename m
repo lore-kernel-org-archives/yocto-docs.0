@@ -2,61 +2,61 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4BF1ACDE007
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 839D5CDE008
 	for <webhook@archiver.kernel.org>; Thu, 25 Jun 2026 09:33:56 +0000 (UTC)
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.7579.1782380030627707187
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.7330.1782380030091816511
  for <docs@lists.yoctoproject.org>;
  Thu, 25 Jun 2026 02:33:50 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=RY9F2ozD;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=xh/Uy8hH;
  spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id EBDB54E408D2
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 692E64E408D1
 	for <docs@lists.yoctoproject.org>; Thu, 25 Jun 2026 09:33:48 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id C2A9E5FF03
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 370385FF03
 	for <docs@lists.yoctoproject.org>; Thu, 25 Jun 2026 09:33:48 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 17137106F07AB;
-	Thu, 25 Jun 2026 11:33:48 +0200 (CEST)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6F04B106F07AE;
+	Thu, 25 Jun 2026 11:33:47 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1782380028; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1782380027; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=trQgZ1SyL6OKhyWJIrqSq0e8z7SfEQp/adz7SJORYpI=;
-	b=RY9F2ozDeR9i2j4F9GRB6hwwPey3x5beZpkBPV+WT2Uxssk5uKA6wrpii9O+LNe9FftG2l
-	EVoCaJgzhyM3vH/g2C9vdDNpkPZjCSHLaJQpVkl3OjsGUScplrP0TqkMUC+XQg5aoCDcdA
-	5c6Nwl3IYBkeTQCcvoC9apHyaRzPgzMnB6zXrGO89hesUMABaI3IIjyqEkfR6jT9Glalbo
-	TNIGV6VuVfwj5p4fF0nHHaotyKGsxu4+DruACd5xj8rfCw8wEu0TBcVJQ3+46tRyo/cR++
-	qgtvAFSDTyh3f8JFQHJd2lAgv2TJCT/VUeXP+g/yWAQirkJLIJTEPndq8WWPNQ==
+	bh=exgBweiUpsgBp5RgoJXihvZc8VIWukNBijCbeTuH3s8=;
+	b=xh/Uy8hHVA9siDRcbhxXxcqrZOYCxl2pXJGaUDbKeIrWKNrnE54N+3N1bewYzEyqQdYcIz
+	YbB5znHT5lbDWF4UWsGqakAbBi7NBIVpMMRM90FGu3wubEkFjnELEMEl4qkurf76MkCwj9
+	y+y5As8aAnaugNhSQgAfGOFaGMrQhjj86AWwlaAFr/0q8LrF6Ozjmp0FRd1qTbeCrchD0N
+	gL6OVzCY6O4rNSPtSy+6lZZSV9xWeRKmNm8Oe5fq+tas7nMLgXEwc+hJowUYFX4w28ag63
+	BuWVmvXm/IVz/Ou5MWP6X4H5DoNO5urGegz7xShjWIdHTXKLnGbSNQfQKKbvqg==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Thu, 25 Jun 2026 11:33:35 +0200
-Subject: [PATCH 08/11] dev-manual/wic.rst: add a requirement to use wic
- from the build system
+Date: Thu, 25 Jun 2026 11:33:34 +0200
+Subject: [PATCH 07/11] dev-manual/wic.rst: add where to set
+ IMAGE_FSTYPES/WKS_FILE[S] from
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260625-wic-migration-v1-8-fef8d481aecc@bootlin.com>
+Message-Id: <20260625-wic-migration-v1-7-fef8d481aecc@bootlin.com>
 References: <20260625-wic-migration-v1-0-fef8d481aecc@bootlin.com>
 In-Reply-To: <20260625-wic-migration-v1-0-fef8d481aecc@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1767;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1304;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=4dYePi6a/D5t8NFFm/7MxFbMm7PFSl6BP8wSMM14P/A=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBqPPX1NKxo8Eylhe/NOfLwDRPYEiGCK/v3qj7Ol
- GavuslKYFSJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCajz19QAKCRDRgEFAKaOo
- NkXGD/9YnGa1YtwJ5Sll528RIFA4wB0YjVCxUIu8jxrj5BkQ+CXQqhj060xyCCDw3PoMRU6oh2n
- y2DIA3tIRF6uWuwAF70Tv5OLM0rXjgciHQygNk6AI396jA1TCzMNw04axrCbAclEb3daUKTzzBJ
- JbO9mDlvyPGOn9O4IyEPwBuYBwAEbhIFvAX/SH/rqrXGNAPpsrfoBaOZVKMHZbUBnjCUGeAo9VH
- i2YZHXWwZxXY7bfPrW8LO+VtXXVILmyLCgpSKwuIidtMDHEx2LAgsefPD5d+/zDdBeE1zoPwL9j
- 1rUogJIknHosjGB5JMg0nLe9uAiw9UuHcCOKQWQ1nqZl6emYcsnxJ7UI7OBY6p+XLT4bbNhUDA7
- +lruZdFzuw7jY0p5MGDq6Ma71IwoYaloj/ZAYfOHOJeU+Bg02P39CUIy0+S4OnSchARczA9ofiB
- siIA0FVnrFYrPzBgau4oJ1OkB2tJhYxYyU8/cLF3iAWMqwPq2U9qJyi8nKu1DGWwLi6yyTlV0Jj
- nqBz+3TSELghLf18L1iBCoxL3H5hVt78rePSyJf2kAnvUirTy6DL43jfbv6QHXSTd0M0pChgTLa
- W6NibBqdDR0OfZzdrp+iHHhRbWkhWF2kholMXgMuLW3UdXi1jdOUoOuD2Fz14MgW60QIiTfmtzP
- ZFb9GrINiwzsldw==
+ bh=cwUF8rP6vKfwFhEcPuzBaKvKas56mimWJQ/4vFfH/y0=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBqPPX1mtFj6kanZchHBfahrKYfxpWkDGpk3cHOJ
+ LIkXRmZ5kuJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCajz19QAKCRDRgEFAKaOo
+ NndtD/9nCz/10e9XBOjxvN4yrN7mhvmeb8B8bbMZ2e2eU2qnZa9brjVHkYoaFOInUFxrmgpLxGv
+ Jiz77wANRfs5xTrzbg67Wd6E02myQ+7I+d7aOWsLKRYEyDb+TI7BlMnfsORHwaosaNb5u+HUztM
+ XUSZFK2ILDpJ2IAc2GeSR4jf58NKMvW+iH2m5e9rZFx0LjX1r3erfxc0kF6nG9fJ2t3kFl1HY8Y
+ cPxDSHGLgOp9v98FmM+NiHi5XY+yFIEp9BX96I5KcIhNtTIDNSCAygr0ymAGAV5JPJ9or60ZGXt
+ ZP5qH8myEhcE6WrVFAzpPgFrV/SpAKg9zLDELW91qrcPWuYe3JGklcB9xNv9dg431VgXskwC6Kb
+ M6Kq1dWYObdK42QE4AJz7i2ZRsthKR3DLFNokH3A9bed3/2kzfm0eImVvy9nLa6i7FQD58cMSR4
+ ioTgI4YfP4+GpF86ssqbdoW0AHIlrW/fz16cn9VVkhNqNd9KYOIYneBv9i2d2/s0LZsgnr2HkV4
+ LTC2uAOVIvOWaeWtJR2h+swA3L7gKmu7VfXZaxYYIwSdihGtEQusja0ZU8JBi4plNEsVRBWQ2nU
+ Fyaq7VJY83pOnppqsqj3a3FWcRoMVbvZtCfrvirEcgRESd9Vftg2bZKNLfC8GIrphqlTYAJyJRv
+ am3XGoY60fv14vA==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
@@ -64,54 +64,40 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Thu, 25 Jun 2026 09:33:56 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9891
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9890
 
-Since wic is no longer part of OE-Core since [1], we have to use wic
-from the build system instead, which can be done by following few steps,
-finally creating an alias, so that the commands from this document
-remain valid.
-
-[1]: https://git.openembedded.org/openembedded-core/commit/?id=25ca1cb46dd6d0c57f61f2dc3b649601dc81b50c
+This is typically done from a machine configuration file or in the image
+recipe, mention it here.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/dev-manual/wic.rst | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ documentation/dev-manual/wic.rst | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
 diff --git a/documentation/dev-manual/wic.rst b/documentation/dev-manual/wic.rst
-index 5fc7759f8..980f5197c 100644
+index ef8c530c2..5fc7759f8 100644
 --- a/documentation/dev-manual/wic.rst
 +++ b/documentation/dev-manual/wic.rst
-@@ -75,6 +75,29 @@ system needs to meet the following requirements:
-    going to run ``bitbake`` commands. See :ref:`dev-manual/start:Initializing
-    the Build Environment` for more details.
+@@ -82,15 +82,16 @@ system needs to meet the following requirements:
+    using Wic, the current version of Wic requires the artifacts in the
+    form generated by the OpenEmbedded build system.
  
-+-  Make the ``wic`` command-line tool available in your shell:
+--  Include "wic" as part of the
+-   :term:`IMAGE_FSTYPES`
+-   variable.
++-  Include "wic" as part of the :term:`IMAGE_FSTYPES` variable (from a
++   :term:`configuration file` or in the image recipe).
+ 
+ -  Include the name of the :ref:`wic kickstart file <openembedded-kickstart-wks-reference>`
+    as part of the :term:`WKS_FILE` variable. If multiple candidate files can
+    be provided by different layers, specify all the possible names through the
+    :term:`WKS_FILES` variable instead.
+ 
++   These assignments are typically made in a machine :term:`configuration file`.
 +
-+   #. Run the following command first:
-+
-+      .. code-block:: console
-+
-+         $ bitbake wic-native -c addto_recipe_sysroot
-+
-+   #. Check if you can use the ``wic`` utility using ``oe-run-native``:
-+
-+      .. code-block:: console
-+
-+         $ oe-run-native wic-native wic --help
-+
-+   #. Define a local alias for the above command:
-+
-+      .. code-block:: console
-+
-+         $ alias wic="oe-run-native wic-native wic"
-+
-+      This will make it possible to use ``wic`` from the :term:`OpenEmbedded
-+      Build System` transparently below.
-+
- -  You need to have the build artifacts already available, which
-    typically means that you must have already created an image using the
-    OpenEmbedded build system (e.g. ``core-image-minimal``). While it
+ Getting Help
+ ============
+ 
 
 -- 
 2.54.0
