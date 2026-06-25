@@ -2,61 +2,61 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 839D5CDE008
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A37CBCDE00B
 	for <webhook@archiver.kernel.org>; Thu, 25 Jun 2026 09:33:56 +0000 (UTC)
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.7330.1782380030091816511
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.7576.1782380028323462897
  for <docs@lists.yoctoproject.org>;
- Thu, 25 Jun 2026 02:33:50 -0700
+ Thu, 25 Jun 2026 02:33:48 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=xh/Uy8hH;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=tetzxzvq;
  spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 692E64E408D1
-	for <docs@lists.yoctoproject.org>; Thu, 25 Jun 2026 09:33:48 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 9DAC74E408D9
+	for <docs@lists.yoctoproject.org>; Thu, 25 Jun 2026 09:33:46 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 370385FF03
-	for <docs@lists.yoctoproject.org>; Thu, 25 Jun 2026 09:33:48 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6F04B106F07AE;
-	Thu, 25 Jun 2026 11:33:47 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 6CA6C5FF03
+	for <docs@lists.yoctoproject.org>; Thu, 25 Jun 2026 09:33:46 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A0141106F07AD;
+	Thu, 25 Jun 2026 11:33:45 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1782380027; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1782380026; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=exgBweiUpsgBp5RgoJXihvZc8VIWukNBijCbeTuH3s8=;
-	b=xh/Uy8hHVA9siDRcbhxXxcqrZOYCxl2pXJGaUDbKeIrWKNrnE54N+3N1bewYzEyqQdYcIz
-	YbB5znHT5lbDWF4UWsGqakAbBi7NBIVpMMRM90FGu3wubEkFjnELEMEl4qkurf76MkCwj9
-	y+y5As8aAnaugNhSQgAfGOFaGMrQhjj86AWwlaAFr/0q8LrF6Ozjmp0FRd1qTbeCrchD0N
-	gL6OVzCY6O4rNSPtSy+6lZZSV9xWeRKmNm8Oe5fq+tas7nMLgXEwc+hJowUYFX4w28ag63
-	BuWVmvXm/IVz/Ou5MWP6X4H5DoNO5urGegz7xShjWIdHTXKLnGbSNQfQKKbvqg==
+	bh=k7r+nDBzCiVPW0fic3g+PxGl7G4EWm+UY7Wtpitlras=;
+	b=tetzxzvqdIkkybSh2a1kkrByESYMQzWXUhpE8gaZiA7Tn+fAswsXXL51i1721mlv/4KCjl
+	DKS2AK12m/dJxBeE3h8dLxEkeNaEsSgVo1KTyv4FFac1BhboBKu73r+OvhqQe4Ky/lnFPZ
+	M0D6CaYIiBLXof9Sz6TCwAMEDv+uUcjEpES+IPeZoskIsqZOCecKN7pssZ2qFH5u6oCJbc
+	386rYElEn0NY2NfcyYMVD9Kb/Ekhf/ekko8pMdzh6/zQKprCRPwETM1Y6Ufr35qBcZKnry
+	Q/2u7dCVyt1+AmOQqNdDa97UdaLWtFK5kGNWHtb5214OVGf1UN2cWBS4TAmicA==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Thu, 25 Jun 2026 11:33:34 +0200
-Subject: [PATCH 07/11] dev-manual/wic.rst: add where to set
- IMAGE_FSTYPES/WKS_FILE[S] from
+Date: Thu, 25 Jun 2026 11:33:31 +0200
+Subject: [PATCH 04/11] bsp-guide/bsp.rst: fix raspberry layer content
+ example
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260625-wic-migration-v1-7-fef8d481aecc@bootlin.com>
+Message-Id: <20260625-wic-migration-v1-4-fef8d481aecc@bootlin.com>
 References: <20260625-wic-migration-v1-0-fef8d481aecc@bootlin.com>
 In-Reply-To: <20260625-wic-migration-v1-0-fef8d481aecc@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1304;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=901;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=cwUF8rP6vKfwFhEcPuzBaKvKas56mimWJQ/4vFfH/y0=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBqPPX1mtFj6kanZchHBfahrKYfxpWkDGpk3cHOJ
- LIkXRmZ5kuJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCajz19QAKCRDRgEFAKaOo
- NndtD/9nCz/10e9XBOjxvN4yrN7mhvmeb8B8bbMZ2e2eU2qnZa9brjVHkYoaFOInUFxrmgpLxGv
- Jiz77wANRfs5xTrzbg67Wd6E02myQ+7I+d7aOWsLKRYEyDb+TI7BlMnfsORHwaosaNb5u+HUztM
- XUSZFK2ILDpJ2IAc2GeSR4jf58NKMvW+iH2m5e9rZFx0LjX1r3erfxc0kF6nG9fJ2t3kFl1HY8Y
- cPxDSHGLgOp9v98FmM+NiHi5XY+yFIEp9BX96I5KcIhNtTIDNSCAygr0ymAGAV5JPJ9or60ZGXt
- ZP5qH8myEhcE6WrVFAzpPgFrV/SpAKg9zLDELW91qrcPWuYe3JGklcB9xNv9dg431VgXskwC6Kb
- M6Kq1dWYObdK42QE4AJz7i2ZRsthKR3DLFNokH3A9bed3/2kzfm0eImVvy9nLa6i7FQD58cMSR4
- ioTgI4YfP4+GpF86ssqbdoW0AHIlrW/fz16cn9VVkhNqNd9KYOIYneBv9i2d2/s0LZsgnr2HkV4
- LTC2uAOVIvOWaeWtJR2h+swA3L7gKmu7VfXZaxYYIwSdihGtEQusja0ZU8JBi4plNEsVRBWQ2nU
- Fyaq7VJY83pOnppqsqj3a3FWcRoMVbvZtCfrvirEcgRESd9Vftg2bZKNLfC8GIrphqlTYAJyJRv
- am3XGoY60fv14vA==
+ bh=4O2gJHJ5hOP2bhjmK93oQI4t7HgbH518gUfWQRnv99Y=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBqPPX0xwyGM7UZASYCZYz9K+LH+pv7l+Qcu670c
+ Y26RabpmZOJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCajz19AAKCRDRgEFAKaOo
+ NihRD/0WRix+y3ArfNLXE8z1BlNcofPRLee8o5vbigJPh69tbwdOFiCFwmepQBfqtGoKgnoSp7G
+ Z8C1JirNxo/H+SnBA+io8JJpQ8LHVbCunCIGVWVVVxMAcpm1LoizxarStpB/zZT8nnqajXc+142
+ EZfI/SFAQZlAH/ijb2qXoVhrzk/Twyctw7v8RVIqXA+OYSIsYPoezv/6y5CIdNr/xfePcAmfhXi
+ 3su236I2mda/S/aYpde8wBpnLs1LX5QR3wHuQCQd22WmiU9gsCy+WxzZECfdLvHhxiz/vtU09ij
+ YCOCz2Pnick0HlL2fagzo2qJZl9FDwBFQwCMo49eTQygKm8mMVfJufquuvkN9tD67q/5ubhL19D
+ 5hEXaY6nIrP0DqBTg8383bizGzjpspiTZT89GdKXTmqneaiUviPQNnRNZuFScYM0C8CaYzN+RoF
+ Djg9NNmqVrunmBx0+CSXreNjYCi91WmAYGdbtMdKR3qWPUEJV7R4nQ25jYcPjYZ3vM/F+4K8bgC
+ kj3Z1GllQJVMMKW9BLVl8jAzqs1zEBvsMFzIwR0WF7YKUljIjXAx9+f/b1xuhoB9+GKyOT2GOwI
+ krgqkDOH/BOZp4cQFrCKwdUOt0bSbOv2jxlqRWJBsEsaqDwLboG+3wQji1xIpBI9CWOY8AW73f/
+ 3Nc4fxvkpmPoSiA==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
@@ -64,39 +64,28 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Thu, 25 Jun 2026 09:33:56 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9890
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9887
 
-This is typically done from a machine configuration file or in the image
-recipe, mention it here.
+The last two items were on a single line, but should be two lines.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/dev-manual/wic.rst | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ documentation/bsp-guide/bsp.rst | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/documentation/dev-manual/wic.rst b/documentation/dev-manual/wic.rst
-index ef8c530c2..5fc7759f8 100644
---- a/documentation/dev-manual/wic.rst
-+++ b/documentation/dev-manual/wic.rst
-@@ -82,15 +82,16 @@ system needs to meet the following requirements:
-    using Wic, the current version of Wic requires the artifacts in the
-    form generated by the OpenEmbedded build system.
+diff --git a/documentation/bsp-guide/bsp.rst b/documentation/bsp-guide/bsp.rst
+index 4ced9665d..9cf0642d7 100644
+--- a/documentation/bsp-guide/bsp.rst
++++ b/documentation/bsp-guide/bsp.rst
+@@ -440,7 +440,8 @@ the :yocto_git:`Source Repositories <>`:
+    meta-raspberrypi/recipes-multimedia/omxplayer/omxplayer_git.bb
+    meta-raspberrypi/recipes-multimedia/x264
+    meta-raspberrypi/recipes-multimedia/x264/x264_git.bbappend
+-   meta-raspberrypi/wic meta-raspberrypi/wic/sdimage-raspberrypi.wks
++   meta-raspberrypi/wic
++   meta-raspberrypi/wic/sdimage-raspberrypi.wks
  
---  Include "wic" as part of the
--   :term:`IMAGE_FSTYPES`
--   variable.
-+-  Include "wic" as part of the :term:`IMAGE_FSTYPES` variable (from a
-+   :term:`configuration file` or in the image recipe).
- 
- -  Include the name of the :ref:`wic kickstart file <openembedded-kickstart-wks-reference>`
-    as part of the :term:`WKS_FILE` variable. If multiple candidate files can
-    be provided by different layers, specify all the possible names through the
-    :term:`WKS_FILES` variable instead.
- 
-+   These assignments are typically made in a machine :term:`configuration file`.
-+
- Getting Help
- ============
+ The following sections describe each part of the proposed BSP format.
  
 
 -- 
