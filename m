@@ -1,94 +1,194 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C1C3FCDE00D
-	for <webhook@archiver.kernel.org>; Thu, 25 Jun 2026 09:33:56 +0000 (UTC)
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.7575.1782380027589549436
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1F99ACDB466
+	for <webhook@archiver.kernel.org>; Thu, 25 Jun 2026 09:48:07 +0000 (UTC)
+Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.7500.1782380880060371711
  for <docs@lists.yoctoproject.org>;
- Thu, 25 Jun 2026 02:33:48 -0700
+ Thu, 25 Jun 2026 02:48:00 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=IaTUwhxj;
- spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id E3E054E408D8
-	for <docs@lists.yoctoproject.org>; Thu, 25 Jun 2026 09:33:45 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id B9E585FF03
-	for <docs@lists.yoctoproject.org>; Thu, 25 Jun 2026 09:33:45 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id ED7FA106F07AB;
-	Thu, 25 Jun 2026 11:33:44 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1782380025; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=5OELTGJcSp+17kFys1Uh98c9yvB0O0T1y2lySgHj3NA=;
-	b=IaTUwhxjtffDYo5mCZYbcrkkIsvgKxBBNVImGo6VC2R9C42V8lMuczGCceWqCjzDQ08Fat
-	0qjphwBviDdJJXDkt1swipi1fHYuTbMuySL8++JnHBNR2XVb0eYh2EzqVQn3/1RRIgLz7O
-	TQtnDp6VeqxsH7vMRykqFHKtG1qDblX1HeK57plSK1d48WG7B/kevMWs+BceNpGUADH7KG
-	Z+15lP4EssbIv7Ca4EfuqJo+VC7r/35K8GcDFMQZOlEJ9WVLcDNIRv498V7Zl2EZJs5qsM
-	RjsVbVHSw90DsvPwrSuiKrxJvgBQA1Vrm2gxlp6bCfUC6eHZBPKGoVoA7d9scg==
-From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Thu, 25 Jun 2026 11:33:30 +0200
-Subject: [PATCH 03/11] ref-manual/kickstart.rst: replace deprecated wks
- directory
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=Bp9J7FJI;
+ spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
+	To:From:Date:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=R5T/yL+yhy4EA7ZBN31WG4oEv71TdPx1Ow4iVzLW2ck=; b=Bp9J7FJIM3Zcbog+gM/aCFou28
+	oP4w4MRSpfo2q4UCMUzXYubu/ay4rvLBkORDV4NkGS2d0vDh4DmtTKIra7PXoZ1w+SicLfTCxzokX
+	U1Muybi8t+kKCKbelu9xYDu3/eQ+dJa21T2THkSNrkLDm6tQYIUqhhubIIceXqXXocw53JOdkjVWr
+	8xiE6C9BgrgdmTHJeUJozrtDTiXEOULVvvrQyjgp9oWufvsIt70nZOD7t/POKmqb9zjMbWaYNtuCY
+	Wyv6erYAiguCxG4APO414z3vGodM+EsGNS0JZe6Rcr+mTg8FBrYK/xm2aMmz4kCjYraxMtk8w5OLV
+	bixQitYw==;
+Received: from bras-base-otwaon0916w-grc-51-67-71-147-190.dsl.bell.ca ([67.71.147.190]:46296 helo=trixie)
+	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.99.4)
+	(envelope-from <rpjday@crashcourse.ca>)
+	id 1wcgge-000000009vb-1nho
+	for docs@lists.yoctoproject.org;
+	Thu, 25 Jun 2026 05:47:58 -0400
+Date: Thu, 25 Jun 2026 05:47:47 -0400 (EDT)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+To: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: [PATCH] dev-manual: rename Build Quality section to mention
+ "buildhistory"
+Message-ID: <dfe0ece3-617a-02c8-d1bb-1baa904d2988@crashcourse.ca>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260625-wic-migration-v1-3-fef8d481aecc@bootlin.com>
-References: <20260625-wic-migration-v1-0-fef8d481aecc@bootlin.com>
-In-Reply-To: <20260625-wic-migration-v1-0-fef8d481aecc@bootlin.com>
-To: docs@lists.yoctoproject.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Antonin Godard <antonin.godard@bootlin.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=973;
- i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=wizrrXOCugufjWLYBklNlPPAXyxNW9Uo7Zzt9tuDOKI=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBqPPX0Xw+OwTZZpG6jWN5qv2h+zOBjH5yjejd5N
- I8Y4I38cHiJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCajz19AAKCRDRgEFAKaOo
- NlK6D/9AMNesOuQZzeLHdsjSrt5lMeUzyylzXbRZd90fnrMXibcKufFNv8gNu0tj7D3zJgKmFvs
- CEkAYAbkwegmeciKhQaa4sVIK/ktTDkRjEndv0aVAEDyl1O02BLLnaRlyg554bWYNXFDYLS6dWG
- BAl0mOSFUDCwS8mCnEjxd3kYpOVLXhlYJWBmL+IoDBNFSsA7VN/sr8bgaw0Mo7KyEqmmZ6AjX/v
- cfWeX1fTvmuEbHka4WVST8dGj2Hm8/tcWh5ZPcir3QZPkk1Tkv42a8JUpeFpUwM/A+o9zQFO8DE
- a4QXJwLANkpNt8Y0h7Ty9GxcMDhF2CCgHhX5F9yloFgRFf9BtVJT+DX19sEwG2luVvdgwgaY/11
- 0q5J+ASSdnXM5/7UQpe4ZjXBWaIGCk72gxImXtSnPsALKgxhuoW6Pw29kDC1bCEmEb8s2dyn/n5
- lyTQ3BiLnz0BEjFRVVhotrYWvbmKVr0r87/K61RMJylcDrdSd62m75dYDM6GR2p0f6xsJPtcuBB
- KXfjhuX6nus6Tn6BTKk4H4x5Vx7t+5lu54YtVQ7r/fYugL/aofgwGe0wNtZQw0hzu4V1Hrk8qj8
- 4WUlI+WXFk/eiNjPSKcKWe31+U/vWtKY6+zKDCouu5iUA2Y6pRiPhID0sL58X8BLIXgHPzl0BEo
- OvdBt5kvKCrmJzg==
-X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
- fpr=8648725188DD401BB9A0D3FFD180414029A3A836
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=US-ASCII
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
+X-AntiAbuse: Original Domain - lists.yoctoproject.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - crashcourse.ca
+X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 25 Jun 2026 09:33:56 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9885
+ <docs@lists.yoctoproject.org>; Thu, 25 Jun 2026 09:48:07 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9895
 
-Since Yocto 6.0, wks and wks.in files must be placed under files/wic/
-inside a layer. Replace the "canned-wks" mention.
 
-Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+Since the section "Maintaining Build Output Quality" is really only
+about the "buildhistory" feature, rename the section to make that
+clear, and update all references to the new name.
+
+Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+
 ---
- documentation/ref-manual/kickstart.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/documentation/ref-manual/kickstart.rst b/documentation/ref-manual/kickstart.rst
-index 80e2f9d84..9ab806899 100644
---- a/documentation/ref-manual/kickstart.rst
-+++ b/documentation/ref-manual/kickstart.rst
-@@ -230,7 +230,7 @@ supports the following options:
- 
- -  ``--configfile``: Specifies a user-defined configuration file for
-    the bootloader. You can provide a full pathname for the file or a
--   file located in the ``canned-wks`` folder. This option overrides
-+   file located in the ``files/wic`` folder. This option overrides
-    all other bootloader options.
- 
- -  ``--ptable``: Specifies the partition table format. Valid values are:
+diff --git a/documentation/dev-manual/build-quality.rst b/documentation/dev-manual/build-quality.rst
+index c3c7ccbb2..c2e46b69c 100644
+--- a/documentation/dev-manual/build-quality.rst
++++ b/documentation/dev-manual/build-quality.rst
+@@ -1,7 +1,7 @@
+ .. SPDX-License-Identifier: CC-BY-SA-2.0-UK
 
--- 
-2.54.0
+-Maintaining Build Output Quality
+-********************************
++Maintaining Build Output Quality with ``buildhistory``
++******************************************************
 
+ Many factors can influence the quality of a build. For example, if you
+ upgrade a recipe to use a new version of an upstream software package or
+diff --git a/documentation/dev-manual/building.rst b/documentation/dev-manual/building.rst
+index c8bb31b92..60cb22785 100644
+--- a/documentation/dev-manual/building.rst
++++ b/documentation/dev-manual/building.rst
+@@ -839,7 +839,7 @@ directory:
+       still use the recipes in an offline build. Do the following:
+
+       #. Use a configuration generated by enabling :ref:`build
+-         history <dev-manual/build-quality:maintaining build output quality>`.
++         history <dev-manual/build-quality:maintaining build output quality with \`\`buildhistory\`\`>`.
+
+       #. Use the ``buildhistory-collect-srcrevs`` command to collect the
+          stored :term:`SRCREV` values from the build's history. For more
+diff --git a/documentation/dev-manual/packages.rst b/documentation/dev-manual/packages.rst
+index 500639565..c75584c93 100644
+--- a/documentation/dev-manual/packages.rst
++++ b/documentation/dev-manual/packages.rst
+@@ -194,7 +194,7 @@ each building system's ``local.conf`` file::
+
+ For information on build
+ history, see the
+-":ref:`dev-manual/build-quality:maintaining build output quality`" section.
++":ref:`dev-manual/build-quality:maintaining build output quality with \`\`buildhistory\`\``" section.
+
+ .. note::
+
+diff --git a/documentation/dev-manual/upgrading-recipes.rst b/documentation/dev-manual/upgrading-recipes.rst
+index 01fd12d86..d0c322546 100644
+--- a/documentation/dev-manual/upgrading-recipes.rst
++++ b/documentation/dev-manual/upgrading-recipes.rst
+@@ -101,7 +101,7 @@ The following steps describe how to set up the AUH utility:
+    configurations:
+
+    -  If you want to enable :ref:`Build
+-      History <dev-manual/build-quality:maintaining build output quality>`,
++      History <dev-manual/build-quality:maintaining build output quality with \`\`buildhistory\`\`>`,
+       which is optional, you need the following lines in the
+       ``conf/local.conf`` file::
+
+diff --git a/documentation/migration-guides/migration-1.5.rst b/documentation/migration-guides/migration-1.5.rst
+index da26cca63..c21b52cf2 100644
+--- a/documentation/migration-guides/migration-1.5.rst
++++ b/documentation/migration-guides/migration-1.5.rst
+@@ -271,7 +271,7 @@ The changes to Build History are:
+    option for each utility for more information on the new syntax.
+
+ For more information on Build History, see the
+-":ref:`dev-manual/build-quality:maintaining build output quality`"
++":ref:`dev-manual/build-quality:maintaining build output quality with \`\`buildhistory\`\``"
+ section in the Yocto Project Development Tasks Manual.
+
+ .. _migration-1.5-udev:
+diff --git a/documentation/migration-guides/migration-1.7.rst b/documentation/migration-guides/migration-1.7.rst
+index ca8222098..1a5704fd4 100644
+--- a/documentation/migration-guides/migration-1.7.rst
++++ b/documentation/migration-guides/migration-1.7.rst
+@@ -216,7 +216,7 @@ The following miscellaneous change occurred:
+    should manually remove old "build-id" files from your existing build
+    history repositories to avoid confusion. For information on the build
+    history feature, see the
+-   ":ref:`dev-manual/build-quality:maintaining build output quality`"
++   ":ref:`dev-manual/build-quality:maintaining build output quality with \`\`buildhistory\`\``"
+    section in the Yocto Project Development Tasks Manual.
+
+
+diff --git a/documentation/migration-guides/migration-general.rst b/documentation/migration-guides/migration-general.rst
+index 1820f5cfd..1671992a8 100644
+--- a/documentation/migration-guides/migration-general.rst
++++ b/documentation/migration-guides/migration-general.rst
+@@ -105,4 +105,4 @@ any new Yocto Project release.
+       :ref:`ref-classes-buildhistory` output using ``git diff`` or ``buildhistory-diff``.
+
+    For more information on using :ref:`ref-classes-buildhistory`, see
+-   :ref:`dev-manual/build-quality:maintaining build output quality`.
++   :ref:`dev-manual/build-quality:maintaining build output quality with \`\`buildhistory\`\``.
+diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
+index 56a8e7e98..7b220a284 100644
+--- a/documentation/ref-manual/classes.rst
++++ b/documentation/ref-manual/classes.rst
+@@ -270,7 +270,7 @@ The :ref:`ref-classes-buildhistory` class records a history of build output meta
+ which can be used to detect possible regressions as well as used for
+ analysis of the build output. For more information on using Build
+ History, see the
+-":ref:`dev-manual/build-quality:maintaining build output quality`"
++":ref:`dev-manual/build-quality:maintaining build output quality with \`\`buildhistory\`\``"
+ section in the Yocto Project Development Tasks Manual.
+
+ .. _ref-classes-buildstats:
+diff --git a/documentation/ref-manual/structure.rst b/documentation/ref-manual/structure.rst
+index 31faec1c9..57f19a82f 100644
+--- a/documentation/ref-manual/structure.rst
++++ b/documentation/ref-manual/structure.rst
+@@ -267,7 +267,7 @@ The OpenEmbedded build system creates this directory when you enable
+ build history via the :ref:`ref-classes-buildhistory` class file. The directory
+ organizes build information into image, packages, and SDK
+ subdirectories. For information on the build history feature, see the
+-":ref:`dev-manual/build-quality:maintaining build output quality`"
++":ref:`dev-manual/build-quality:maintaining build output quality with \`\`buildhistory\`\``"
+ section in the Yocto Project Development Tasks Manual.
+
+ .. _structure-build-cache:
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index c808c095e..b4c6bc957 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -1394,7 +1394,7 @@ system and gives an overview of their function and contents.
+       When inheriting the :ref:`ref-classes-buildhistory`
+       class, this variable specifies the build history features to be
+       enabled. For more information on how build history works, see the
+-      ":ref:`dev-manual/build-quality:maintaining build output quality`"
++      ":ref:`dev-manual/build-quality:maintaining build output quality with \`\`buildhistory\`\``"
+       section in the Yocto Project Development Tasks Manual.
+
+       You can specify these features in the form of a space-separated list:
 
