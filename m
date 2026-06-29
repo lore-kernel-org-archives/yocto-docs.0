@@ -1,103 +1,82 @@
-Return-Path: <rpjday@crashcourse.ca>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CFEACC43327
-	for <webhook@archiver.kernel.org>; Mon, 29 Jun 2026 10:29:32 +0000 (UTC)
-Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.34691.1782728971543300031
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AC03DC43327
+	for <webhook@archiver.kernel.org>; Mon, 29 Jun 2026 13:31:45 +0000 (UTC)
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.92172.1782739900185049229
  for <docs@lists.yoctoproject.org>;
- Mon, 29 Jun 2026 03:29:31 -0700
+ Mon, 29 Jun 2026 06:31:40 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=TIoKdY1Q;
- spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
-	To:From:Date:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=D2iZqcUj7EqWY/SInG4r5PBO7RN3pEEbdX2huOcwaVY=; b=TIoKdY1Q28ZTs1eVbf2SVIl07Z
-	AXqU7tdSYAsG5n0oV4ZL8wuZD6gwb8r2NW0Hwr3lxn71tTnQMjma3+fFl08sc2R8gbR54PnOw/BhB
-	3HUVyNXnK2SuQp4R84gtr2qHsgva21wcYH8sCGetr4afi4USLqcQ37EpB/b8qzbSkZw91Pfll0xF0
-	kkjjpRiPwr8RGueqPSjBJBqNVh9B1XOaRLTcFqsfdVs1QfLsTq66viznil7pAxCPnWWzLCC5OK03x
-	ABVESfWh0krNe3+uBU+ztrJXFNeaBSY/ycBrKgn1P6jWeWn0ZeW7MWoSbWD6PlyGENOz7WRFMs7OQ
-	TO4KWuTg==;
-Received: from pool-174-114-114-5.cpe.net.cable.rogers.com ([174.114.114.5]:53694 helo=sheena)
-	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.4)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1we9F3-0000000Ajgv-1gij
-	for docs@lists.yoctoproject.org;
-	Mon, 29 Jun 2026 06:29:29 -0400
-Date: Mon, 29 Jun 2026 06:29:11 -0400 (EDT)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: [PATCH v2] ref-manual: add intro content to Ref Manual "Tasks"
- section
-Message-ID: <8eb71c37-59f9-2901-f988-9c57b9a9bcca@crashcourse.ca>
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=QPSAc+O7;
+ spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 183534E40B66
+	for <docs@lists.yoctoproject.org>; Mon, 29 Jun 2026 13:31:38 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id E16425FF96
+	for <docs@lists.yoctoproject.org>; Mon, 29 Jun 2026 13:31:37 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0096D106F17E2;
+	Mon, 29 Jun 2026 15:31:36 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1782739897; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=rEoef+Gbi6efLh9wmEAvP77vz/q3UCFkPz/0yx84wrU=;
+	b=QPSAc+O7BbjBkGf/UyTqnns+bytMZfryx1fSrXNYfe0r/7m0P7wFa/9xnxsAfDvdBFvVSB
+	Ul3m/VTkgy5aKp66/78ti9n+EgL/HmyjnueHvP1ZL6NXQiEFyO3SGCnUWr44sMvSZ/O/s5
+	0xAW0KMY3i+gdkQTduZ2Yvy/AXQKVPUNnpYyMohdt9g0Idbhh7xKhV5NNG7mcLZqjfDXTp
+	ZwQKPOiGXk7XJrg6Bbt3sCF82x4O+Whs0kaKDwgTFLX1p180GVXOA0Uu/QfusRjObdQ15f
+	y9yWxBUtg7DypU/El2oMipch6LVCaaAjDrSf3qo5oKNJxl/Eh1171/ztI3xNqQ==
+From: Antonin Godard <antonin.godard@bootlin.com>
+Subject: [PATCH 0/2] Drop support for Fedora 42
+Date: Mon, 29 Jun 2026 15:31:31 +0200
+Message-Id: <20260629-remove-fedora-42-v1-0-b55005c6e434@bootlin.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMQQqDMBBG4avIrDuQBonaq5Qu0uTXTqGmTFQE8
+ e5Ndfkt3tsoQwWZbtVGikWypLHgeqkovPw4gCUWkzXWGWc7VnzSAu4Rk3quLUff1l0bmmhcoJJ
+ 9Fb2sx/L+OJ3n5xth+n9o339/SOG1dAAAAA==
+X-Change-ID: 20260629-remove-fedora-42-da8498c7d06c
+To: docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Antonin Godard <antonin.godard@bootlin.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=472;
+ i=antonin.godard@bootlin.com; h=from:subject:message-id;
+ bh=e+jbkSfwKs+fb9rX+Bh9IGOiE7UX5cJROv0+Oui6K1Q=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBqQnO2z7IZExr1xlU9NasRPD2PtkuTF5OgJt9jF
+ B9wH4NaomiJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCakJztgAKCRDRgEFAKaOo
+ NizCD/0aZ80svsrDhQLurqur4CIswuME/TtiGDvYb2Q6TsxyZMvISKHqTYLmJ28dZWOW2T+bQd/
+ Nl8AryAF6n77bgurSM4JFcOs1H8sRiL6xEeVnKHTl3Gi//blC1KrHJUWpzXMAkARGyGBnsWVFlS
+ MtMWHvtfeUm+2bLkNQ0SJe+PjJs/9K4qkOyUTYtRe0YQn/m8l1JEBJey+UrProI63EivyIj/9P2
+ QJCMN4eqUAdPg9B83jmgto45XwWkToIe8J/ATIsvcTNEvMasao0MLgczZKAaVMjgWBUR/2vWOJb
+ yy1XJ3ygaM58lHy8nbf1zq49zSRIqnorgH6fNBUji7hDwxfdxR9afeUp3QPQ4WM80Hzf7kKkEnU
+ aU6fC4VQPk00zEDdOBYPK6WjpTFCGM203Aabd6XvdCek7Kjx2ZCIGja/TP7zAcIEwz3qTw3JpDz
+ Gqz3VzNmTQyC7SIuOqGazFw3jcuRMFLgfL9U9IzzicGyWJsQbPd56OEHZBSfvB9ug7AG2TeVef6
+ 63MGS0lUFi/T1xJaRp9OTluxlXs7hR6a4QVnx2cvGpoDENHApIS4BC0v8Fl0kMfkOsT1My/bS9i
+ SCaNocMdqp25C9dP5+/5mtLQjxlWmzSJcPz0KxBj9NHzIOJc2vMQXc7QaJuxxTvNOeN2BpYoLxR
+ HDd0bppNE23BdSA==
+X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
+ fpr=8648725188DD401BB9A0D3FFD180414029A3A836
+X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 29 Jun 2026 10:29:32 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9969
+ <docs@lists.yoctoproject.org>; Mon, 29 Jun 2026 13:31:45 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9970
 
-
-Add a couple introductory paragraphs to show how to list the tasks for
-a recipe, and examine the "log" and "run" files for a recipe.
-
-Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
-
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
+Antonin Godard (2):
+      ref-manual/system-requirements.rst: drop Fedora 42 support
+      tools/build-docs-container: drop Fedora 42 support
 
-diff --git a/documentation/ref-manual/tasks.rst b/documentation/ref-manual/tasks.rst
-index e6301e708..d10674766 100644
---- a/documentation/ref-manual/tasks.rst
-+++ b/documentation/ref-manual/tasks.rst
-@@ -9,6 +9,33 @@ tasks to complete configuring, compiling, and packaging software. This
- chapter provides a reference of the tasks defined in the OpenEmbedded
- build system.
-
-+To see the tasks defined (in alphabetical order) for a given recipe,
-+you can run:
-+
-+.. code-block:: console
-+
-+   $ bitbake -c listtasks recipename
-+   do_build                              Default task for a recipe - depends on all other normal tasks required to 'build' a recipe
-+   do_checkuri                           Validates the SRC_URI value
-+   do_clean                              Removes all output files for a target
-+   do_cleanall                           Removes all output files, shared state cache, and downloaded source files for a target
-+   do_cleansstate                        Removes all output files and shared state cache for a target
-+   do_compile                            Compiles the source in the compilation directory
-+   ...
-+
-+In addition, once a recipe has been built, you can examine the
-+resulting task information in that recipe's ``${WORKDIR}/temp/``
-+directory, which will consist of the following:
-+
-+-  for each task, a ``run`` file that represents the code that
-+   was executed for that task
-+
-+-  for each task, a corresponding ``log`` file showing the result of
-+   task execution
-+
-+-  a single ``log.task_order`` file showing the execution order
-+   of all tasks for that recipe
-+
- Normal Recipe Build Tasks
- =========================
+ documentation/ref-manual/system-requirements.rst | 1 -
+ documentation/tools/build-docs-container         | 2 --
+ 2 files changed, 3 deletions(-)
+---
+base-commit: 4562ba19f36e54099bcae82cec8a70deb1c23aa7
+change-id: 20260629-remove-fedora-42-da8498c7d06c
 
 
