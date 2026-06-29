@@ -2,90 +2,93 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BB9ACC43602
-	for <webhook@archiver.kernel.org>; Mon, 29 Jun 2026 13:31:45 +0000 (UTC)
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.37597.1782739900278658424
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B55B5C43602
+	for <webhook@archiver.kernel.org>; Mon, 29 Jun 2026 14:46:29 +0000 (UTC)
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.93803.1782744384938407452
  for <docs@lists.yoctoproject.org>;
- Mon, 29 Jun 2026 06:31:41 -0700
+ Mon, 29 Jun 2026 07:46:25 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=Wd0P/KZV;
- spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=KLIs10S7;
+ spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 94F484E40B6A
-	for <docs@lists.yoctoproject.org>; Mon, 29 Jun 2026 13:31:38 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 4CFE11A0D1F
+	for <docs@lists.yoctoproject.org>; Mon, 29 Jun 2026 14:46:23 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 6AC845FF96
-	for <docs@lists.yoctoproject.org>; Mon, 29 Jun 2026 13:31:38 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id CA35D106F179E;
-	Mon, 29 Jun 2026 15:31:37 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 238B65FF96
+	for <docs@lists.yoctoproject.org>; Mon, 29 Jun 2026 14:46:23 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 72E60106F18A8;
+	Mon, 29 Jun 2026 16:46:22 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1782739898; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1782744382; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=p4zPP/Z6A/gwshKM78jD3Vqm1w/jv34+7BfFp5k4w9w=;
-	b=Wd0P/KZVO6LcJuvVTlpYc7/+jtZxUOdwKhC6CgTGIUGJa90xAwRF6R9Gx++KPjYlZ8Fn4S
-	vciEhfakZ+fiKN8Ex5shGjHQ1q62vkMIo3jaFIm4AYm2SVhS2m1Vc6dmTBNF/6ych/RKPx
-	/aGuvHF6H/bEtcCDFSb4SgMbWRGncTyFoV+RF9BB7GF1RdGvoFGA7hDeaYIfT5T+enq5J7
-	tkwmoYb5aKainqYKEIYVmm57+LKno76S78T4HtF3R3nXOCkJQoeSZu55mdWrxeBYQ8oBrB
-	plNPOOXZqzyEZFS2D5Q9n3j2if/8zjLAviozNtr7ke7duTvvc7B+sCfaJmODJg==
+	bh=mBvHFwMXEin940D3OPNuUJFGvtDzOkQlCMqUKxs8T/0=;
+	b=KLIs10S7tfrqYJuyfHpo4QVrac7fMQrBEH0M1b9A9i/LQQedEXavPs8oW1QJhHRWw10cbA
+	om8dtRsNr/xIVeBu3V+dmt2uEZGCnDXrqEZvkypMNO9PxyRGQikMBPvskgJeepr/Io46VL
+	96pl28XnxZy84+GXDXqeReFn/MhkwEKfUX+niCdpe51qrPXN/lJ1/Vwo5kIPIuzQ/9KPDi
+	elcT+QDv4ALaAqJL+bn8s8O3o1AAV4a7EC7WMTAy8spI9EhPJ74C+cjbvJNrdi7lplwkk7
+	PRDYhgFy//ukUVeMqxNOPg+ggwZPfjWQ1HdMPjgFgE8PkpQKmHNPhjl6eb+p5g==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Mon, 29 Jun 2026 15:31:32 +0200
-Subject: [PATCH 1/2] ref-manual/system-requirements.rst: drop Fedora 42
- support
+Date: Mon, 29 Jun 2026 16:46:15 +0200
+Subject: [PATCH 6/7] ref-manual/variables.rst: document the
+ UBOOT_FIT_CONF_DESC variable
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260629-remove-fedora-42-v1-1-b55005c6e434@bootlin.com>
-References: <20260629-remove-fedora-42-v1-0-b55005c6e434@bootlin.com>
-In-Reply-To: <20260629-remove-fedora-42-v1-0-b55005c6e434@bootlin.com>
+Message-Id: <20260629-master-updates-1-v1-6-ad9b047f9ff0@bootlin.com>
+References: <20260629-master-updates-1-v1-0-ad9b047f9ff0@bootlin.com>
+In-Reply-To: <20260629-master-updates-1-v1-0-ad9b047f9ff0@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=708;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1035;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=WoG0wtLSj5wZYVIHGV2PM/YYWZhh1x/HEsZHWKhw5pk=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBqQnO3+aCTdka9goHzXwG5YES/zmq9+nnLTLb5W
- o8aFLN2cZyJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCakJztwAKCRDRgEFAKaOo
- NvpZD/4icHDUI8sJuqX5iMUbKs19SGPEmdOIarVojVNLe711zqrZx65Hj2V+zLdY/YfHIFawhlx
- Ih61p96xveVjDWN9bP8jvBoTJ+zysiQa+LK8gDjVLFfGrruSiLQD0SPKHgornBHfEIsVkDobVRI
- 2vtj1gD/v+tHTzQ0YIndLlmX4X3rNRXI8OsawMtqMaH7XbGHymTlarV0CM1+pvXFSlXWekl0poI
- l82Jm3DvPGJab1tHC3jUjBS/liDrE1PR44LKdTfLAkjaQCn2gjr14qrfZml9LRrG3fgSPRxOHaM
- hL5h2oQCy7cLztCaumJahaIk8NBi56yNWrd+fDpM7emNUTJP7RGwzVZsEueOgCjNXEcEjXVHrb/
- 2SAHOJyMVPOZYljExwh4UWFr952inbp1qb8TLS+gHcI0/oXQ/Umgt2lipaw0hSOueFAWN1Pvg0O
- UG05gjd430tLEkSgZuhp0xKklwkJvVcITjge7wJE5tASFdMTrdzoAwneIxnUs41iZ38vJXsGcl7
- cpXsSM5oRdNO0LccZa0LN5h2C/zeO5y/v4brn4zO/leVmqlz83oLX4dbMZaNF75j8nQeRJBX7w4
- mDissQLlr8TIt1QUJgpLmOJhPiElamzx4QfHb61kO5xsIxBL45GZX3idHE/OEvCV+4OeUvpqyPv
- Y+Do8lfKe3kYwXg==
+ bh=tUhY4mFTm92TTolN93S13XRqOzDuZ4g+i08wd3GJr10=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBqQoU4xjASIti4OAsaMxLhLwAYXRURW2dSgWKA4
+ Zlzdb70mBOJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCakKFOAAKCRDRgEFAKaOo
+ NlnRD/0SGUqBh8wuyyU66W+3H9gqPKnA/oLkeNi/NZ1KsZIznEEaMStyWnSdf9LqsAk5HABhW+h
+ Aqdcs5QiO0l0Bm4C/Nsc4nXBt006iMDfFyeLih32FPhR+7S8KhYThP1zbH5Q7K8S7gIBSYkMVWO
+ Tw9fbVElkn7/XH9tJ+cy0KQInwGvdZxplz+k/fdMv3OHLTynI3pWpyIXgDHMrOweaEoPm6a0t2k
+ SCxdbwwwNssmca1/r4N7Ba9+xsFf8b5k/yktiWl73WqN3Gr8QMeHQE9VtFn96xA5AInzQqYWvzs
+ xeA240Pgh4tSVp15Iz5562VrPU8Ep22/BoAqZzBe+oXAvm6qyxhI5oNrdh9KuxTREQ2EHJZp3jL
+ hcoLLjlszbdm6FisDRwx+GmRwl1rk5eYyZwyssBgSvqMrPU0KrTc/MxGI/CIDhaqLCQrenXkdZQ
+ X6JNiIuiyTA3fKAESb2S1P4VyiBa+CCBVz9mCbsTWE96fVjXd17yQOKr7o8DW/vYxEEJxl9ov7E
+ CBknjR2+fPj83ockNQ/UuJ3Cj7j9sHJ9pqywLECFdJZlKTLbvzhnrT45YKX+ZBqK/FB+sC8G7tp
+ TFdRCzGnQErAjYLSQEwgVR+geW1pea13ltR3rcTNgGQdYRmYgnvikpkcsKZ7eX5ZEG3JHesufPZ
+ ewcRYQuzwouaffQ==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 29 Jun 2026 13:31:45 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9971
+ <docs@lists.yoctoproject.org>; Mon, 29 Jun 2026 14:46:29 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9979
 
-After 366fa2f21bfb ("poky: Remove fedora-42 from
-SANITY_TESTED_DISTROS") in meta-yocto.
+Added by commit df16e4a3900f ("uboot-sign: allow customizing the FIT
+configuration description") in OE-Core.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/ref-manual/system-requirements.rst | 1 -
- 1 file changed, 1 deletion(-)
+ documentation/ref-manual/variables.rst | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/documentation/ref-manual/system-requirements.rst b/documentation/ref-manual/system-requirements.rst
-index 5171ca6ba..63291cae3 100644
---- a/documentation/ref-manual/system-requirements.rst
-+++ b/documentation/ref-manual/system-requirements.rst
-@@ -69,7 +69,6 @@ supported on the following distributions:
- -  Debian 11
- -  Debian 12
- -  Debian 13
---  Fedora 42
- -  Fedora 43
- -  OpenSUSE Leap 15.6
- -  OpenSUSE Leap 16.0
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index 6044283c4..c2327247f 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -11563,6 +11563,10 @@ system and gives an overview of their function and contents.
+ 
+          do_compile[depends] += "trusted-firmware-a:do_deploy"
+ 
++   :term:`UBOOT_FIT_CONF_DESC`
++      The :term:`UBOOT_FIT_CONF_DESC` can be set to override the description
++      property of the configuration node of a U-Boot FIT image.
++
+    :term:`UBOOT_FIT_CONF_FIRMWARE`
+       Adds one image to the ``firmware`` property of the configuration node of
+       the U-Boot Image Tree Source (ITS). Sets the ``firmware`` property to
 
 -- 
 2.54.0
