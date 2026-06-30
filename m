@@ -2,61 +2,61 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 682D4C43602
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 842FFC44502
 	for <webhook@archiver.kernel.org>; Tue, 30 Jun 2026 08:13:32 +0000 (UTC)
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.16460.1782807204368984372
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.16076.1782807201479586287
  for <docs@lists.yoctoproject.org>;
- Tue, 30 Jun 2026 01:13:24 -0700
+ Tue, 30 Jun 2026 01:13:22 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=qOKMlJ0+;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=mxg9p8UO;
  spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id AE55D4E40B9E
-	for <docs@lists.yoctoproject.org>; Tue, 30 Jun 2026 08:13:22 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 99EF04E40BA0
+	for <docs@lists.yoctoproject.org>; Tue, 30 Jun 2026 08:13:19 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 8423460233
-	for <docs@lists.yoctoproject.org>; Tue, 30 Jun 2026 08:13:22 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D1A29106F1C21;
-	Tue, 30 Jun 2026 10:13:21 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 6935C60233
+	for <docs@lists.yoctoproject.org>; Tue, 30 Jun 2026 08:13:19 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B9F79106F1C21;
+	Tue, 30 Jun 2026 10:13:18 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1782807202; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1782807199; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=ZSZCf0g3laCV+TVBkK6H7ceUswplTc5BuKeDsfbk14A=;
-	b=qOKMlJ0+1ZfVcNqk3pn2t9dkQPyX2dooVFJABwjW4mqbWIQLwWCE05fBwY3RJnSAi2/86I
-	64T8I38dTLcDp1frDbjAa9TskZMuSJnJw2nJOv3LzFGaQRUvrghTq72KT5z/wjecXqcq92
-	pphzFqBCqGi7Ha7N6b0VQJMi5icPBchkFa0eJ4lb2b8TWELiXJMeD4rdDxmP8li0fzAUbT
-	1VkIVvGrM4O5V3j61h0LmbWUgytD7Q4sPS8yurg5AembKv+4Js4r1ZA4R46l+CKwK4xhrj
-	HwS75yJNIdqTU69jWfaHnWv/XberR15nZ6iS9ureO3Gz1yEctFu8MDDWL79gwg==
+	bh=tQbVrb5Qvmf1ckN34VZzl1D7MpFsN1Zohyh1jPQYdL8=;
+	b=mxg9p8UOQM1ym1BpvGK3qapadvbcNrCr5AOx2ljtlP0mB7jqv5+YkqjbiNgdf/SHJqYhKw
+	nIjxxcJ75UR/TpK8EZG0DCjg1mm2D4gd1Zp9Y8dX5ZGFi8naFpxBXrwT29tMRn4j62sx5m
+	NeJWSPhPBc2HckkmGySJreEVGUnTcsSalVPehq6a26GnuVDEkFOG+6Tgqo0DzP8H2bDQ3j
+	1wITiZZPLZ5okjOz1ckEIN41mfz3IrVUSL4t0b2t8kyi2KANrd4ACjayPDSJ1UyB8xWR9h
+	rWjm9wybvGdV5oEQ/sPV2RFsEELGQ56FwPSnNDBeC3FcCE9mfhUuane+EzRG/Q==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Tue, 30 Jun 2026 10:13:15 +0200
-Subject: [PATCH 5/7] ref-manual/variables.rst: document the
- LOCALE_UTF8_IS_DEFAULT variable
+Date: Tue, 30 Jun 2026 10:13:11 +0200
+Subject: [PATCH 1/7] ref-manual/variables.rst: document the
+ CCACHE_NATIVE_RECIPES_ALLOWED variable
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260630-sync-documentation-conf-v1-5-da14b40cb515@bootlin.com>
+Message-Id: <20260630-sync-documentation-conf-v1-1-da14b40cb515@bootlin.com>
 References: <20260630-sync-documentation-conf-v1-0-da14b40cb515@bootlin.com>
 In-Reply-To: <20260630-sync-documentation-conf-v1-0-da14b40cb515@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1243;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1179;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=k5aUh2uKeTJ1tYugCjcDB2l9S7kzTF/VlEUGvnmtR1o=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBqQ3qcWd8vpndwfUZ76RvZNK08I2DMDXJEm6JLB
- HpU1fbGmYuJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCakN6nAAKCRDRgEFAKaOo
- Nk/wD/wO8Ur5pwKqeULqRq1+OKsF2nSbzN60uFINmG84HuZzHVb4jGyeAaj7BuT2xZGj/nRtgE8
- fuubMsnXpMQmjEwukeWzpfJ7E/mFGQaGoMmLf/xhDwWabcNxxc6cMWDWFymlJ/Va/FbR8bWQd57
- UKGC8kuW798IvvCSnD2Jv/aDLbNIAEhYCtltqfA893v2up+bgT7SYTVCnQzUlruVdNf0KEGHVVb
- 8CHBuJHOujmiVdgKE3sOhQKmxwXRw++T6hFbUW8+PTKfrvLp5RlhqBql+PJeaL7IQ5dxk4eRj40
- XiFoFwWEZDzyfnNzUOszaobSOd692QoyOwacyt4azpMNvulDA03Ybp5lhhBc4H8+P765Sp41CJw
- p5EKCwdY0IOVchnYebmkzPHpJJP+Qwk9qsXfoOWGGja5bu8YwcHR+ctfYZpqdwycRRGG5/Rg5bV
- JLZ7PjvLdfHyZZtBXdDK9hTGiuI8WV5SdPmvr+IaJnZhQe/1sgv6zFx6mKvY2A6JYuUn3eF++OP
- FNEExmU+LjzANnqCfmVCWnp+4bVT884kxfjtopXiercO8j/03UNvKZ52JPQ3sxYTX60oaSvMfZd
- j1jrnnuPqInvH84vkzKvI0FJ48BaAFxeRYsI5J6r+ZN1BVx4lvm3YFPNbFtqcVgxVDcfJB5Ajqm
- z8acUt/Tgb3ehsQ==
+ bh=hkgxLtFgVnaO0yA64l/LVih+1RKw3XN2omEN3kHY2xw=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBqQ3qc7RpsnskguW5s8NCSm6U2Ha2WFluNvY/BV
+ SATtCaN0zGJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCakN6nAAKCRDRgEFAKaOo
+ NlanEACXr+GGrfEPNvcVheM8WJxAEZ54/VX11072tNDT7khFdufdJX7GBZbYnuZ6VV+BQXcQs2C
+ hVxtFmD2S+iMopBFczOKZzV88fmxo24qHUpcftkTCYuYE/vrDmv3SfnRyiUU7HB9wcLZVHQqKLH
+ qf7Lkc989s7piMl+kkcb7TkTvAwKETdvoWU4M6kv6qQ0MOXFt1rB+UVA5N8mmFyTuBN+9mKQemW
+ u2YfZPwZ1h4nskcD3t++D61zy/hNNhCfTm+16GRS7XoWJnOBQnGE3xiuMYIACl98oGJNUruUraj
+ nG5wInD1XqFZzzD0TNFZIDBtLxUz49JJLo9MCQe4QyVNad+GhuPJXn8yVqSbxNmWFBjN4FVyePJ
+ wzEw9Rd9J6cg5x5VgQM/dAcgHJ3rmTGiNFzj6krdf2qwIrBz/6ITs8X2cD8cmEPAzqDVZSZRDcK
+ I5lvqf71caNrEyrygpxZ8OmOyFH4eXHrEaTRkbv6rBYKoPDaF2Xq137cVwJFfv9QYmZj14LUiPA
+ 0G6sOUY6/ghPEnruBwgTwNjctCd/Hwa4wTTKB3VyZlxIbD/MAGPxNufXOOdP4ONUoCrIoK5t+To
+ +/S514cCbYL7RnT2OhlEfIh+Uw9QiVIa14BfUPEvBjcPefqlX2vU6yA4sZIVtDSM58oXg6AmURi
+ uECVEcCNJWRQ9wQ==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
@@ -64,34 +64,32 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Tue, 30 Jun 2026 08:13:32 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9986
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9984
 
-Added by commit fcde0c43f7b5 ("libc-package.bbclass: add
-LOCALE_UTF8_IS_DEFAULT") in OE-Core.
+Added by commit 87cb2be71e0c ("ccache.bbclass: Add allowed list for
+native recipes") in OE-Core.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/ref-manual/variables.rst | 7 +++++++
- 1 file changed, 7 insertions(+)
+ documentation/ref-manual/variables.rst | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index 231f61d37..20bcf8d60 100644
+index b4c6bc957..f8765e084 100644
 --- a/documentation/ref-manual/variables.rst
 +++ b/documentation/ref-manual/variables.rst
-@@ -6083,6 +6083,13 @@ system and gives an overview of their function and contents.
-       :ref:`overview-manual/concepts:Package Splitting`. The list
-       contains ``${datadir}/locale`` by default.
+@@ -1530,6 +1530,11 @@ system and gives an overview of their function and contents.
+       :term:`CCACHE_DISABLE` variable can be set to "1" in a recipe to disable
+       `Ccache` support. This is useful when the recipe is known to not support it.
  
-+   :term:`LOCALE_UTF8_IS_DEFAULT`
-+      If set, locale names are renamed such that those lacking an explicit
-+      encoding (e.g. ``en_US``) will always be UTF-8, and non-UTF-8 encodings
-+      are renamed to, e.g., ``en_US.ISO-8859-1``. Otherwise, the encoding is
-+      specified by `Glibc`'s ``SUPPORTED`` file. This not supported for
-+      precompiled locales.
++   :term:`CCACHE_NATIVE_RECIPES_ALLOWED`
++      The :term:`CCACHE_NATIVE_RECIPES_ALLOWED` variable can be set in a
++      :term:`configuration file` to a list of native recipes that are allowed to
++      be optimized with the :ref:`ref-classes-ccache` class.
 +
-    :term:`LOG_DIR`
-       Specifies the directory to which the OpenEmbedded build system writes
-       overall log files. The default directory is ``${TMPDIR}/log``.
+    :term:`CCACHE_TOP_DIR`
+       When inheriting the :ref:`ref-classes-ccache` class, the
+       :term:`CCACHE_TOP_DIR` variable can be set to the location of where
 
 -- 
 2.54.0
