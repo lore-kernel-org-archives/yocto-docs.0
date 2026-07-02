@@ -2,42 +2,39 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D161AC43458
-	for <webhook@archiver.kernel.org>; Thu,  2 Jul 2026 08:41:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6A7E7C43458
+	for <webhook@archiver.kernel.org>; Thu,  2 Jul 2026 09:23:39 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.65019.1782981679875879372
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.65000.1782984211307075971
  for <docs@lists.yoctoproject.org>;
- Thu, 02 Jul 2026 01:41:20 -0700
+ Thu, 02 Jul 2026 02:23:31 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=ehKufL4y;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=XvdHEV5/;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:References:
-	Message-ID:In-Reply-To:Subject:cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=kpC3m3yZwoR5Ttp2gjW0rQeRfcOA2wVk2VIYvL4G5Hc=; b=ehKufL4yIe+2yxWq5mDcQ19JZh
-	JuOWXAmn1AkEDplmM9o4mrbPnY3LZcXcGkNq9B7pb5zmLZNmNi0ZM0ZYEqlwJRhRUW+J+6Djstjsq
-	a0h0fR2TZEYFPNcRX+WfKHoIxsXv4+H/NxXPR4oo7AcujFWQMw+XhKLlAgWcxRr2h6sB9Q+mAxfhD
-	PiuDHTRBPUibM4pSTQviCcU0NQ0rv2Ivhj2F/PwONomBrXX1rzMB5DBDzMK1UstUNkPYwn/YymIGU
-	g3vKcfwvg3DDmd97C782uZCnmpdLr/htDIwqkx8grTveRI2I+L7Qn0Jmsb0ZdLijSjo3Knct+3Eeg
-	w+cTqvpA==;
-Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:45210 helo=sheena)
+	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
+	To:From:Date:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=H2XUfnGMuvI1Ui4FPY4m2wg1Ur4sB/33/iw8A8TTE/k=; b=XvdHEV5/5Yg+xKAWvbZYGNA7IV
+	KtAoMN5IhrXpe7neJrSLKpOBDiH4e9mFkwFim144xGjxV/z6IybuNuCPzrLkyeCXyfeNg7BRCorLj
+	sZPZC9GbGCeLaADsaqq/gRDZ6pkGzuqRcUqa+nj658DPp0576InRz3C13I/TPBaOLhH4IbA3Je4eI
+	u4dDA68wZ905EBbKD1aP5BvNxnShS2LJCzig7kGhpcyvXW6ol4nEl9zYVB0QMzcywAHOzcteuOIzY
+	52PRAwVPfZ7B/io3FEzt22tPGkXEKN/v681ZdN9xAd4wbo25Sia6mz0kmPiXKjwqbwzXddDMIHD0o
+	YJcBEq1Q==;
+Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:37594 helo=sheena)
 	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.99.4)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1wfCyz-00000003r9x-08j7;
-	Thu, 02 Jul 2026 04:41:18 -0400
-Date: Thu, 2 Jul 2026 04:40:41 -0400 (EDT)
+	id 1wfDdn-00000003wY9-3Hzk
+	for docs@lists.yoctoproject.org;
+	Thu, 02 Jul 2026 05:23:29 -0400
+Date: Thu, 2 Jul 2026 05:22:58 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: Antonin Godard <antonin.godard@bootlin.com>
-cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: Re: [docs] [PATCH] ref_manual: add "fragments" and "templates"
- directories to structure
-In-Reply-To: <DJNWW8OYSBHM.O3F4TCBX4XW1@bootlin.com>
-Message-ID: <ec23fe13-95b2-fe47-9c94-8915341232e4@crashcourse.ca>
-References: <21c2164f-ac8d-256d-f8ef-c15336fbba3e@crashcourse.ca> <DJHZHPQ4OTHU.G3OFW0N2RNNB@bootlin.com> <DJNWW8OYSBHM.O3F4TCBX4XW1@bootlin.com>
+To: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: build error on docs master-next
+Message-ID: <4974cf27-10e4-a4a8-cc97-f607e99d4a87@crashcourse.ca>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -53,26 +50,13 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 02 Jul 2026 08:41:24 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9996
+ <docs@lists.yoctoproject.org>; Thu, 02 Jul 2026 09:23:39 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/9997
 
-On Thu, 2 Jul 2026, Antonin Godard wrote:
 
-> Hi,
->
->
-> On Thu Jun 25, 2026 at 10:23 AM CEST, Antonin Godard wrote:
-> > Hi,
-> >
-> > On Tue Jun 23, 2026 at 7:43 PM CEST, Robert P. J. Day wrote:
-> >>
-> >> Add two new entries for the meta/conf/{fragments,templates}
-> >> directories to the structure of OE-Core metadata.
->
-> Will you follow-up on this patch?
+/home/rpjday/oe/layers/yocto-docs/documentation/migration-guides/release-notes-6.1.rst:102:
+WARNING: term not in glossary: 'USERMOD_PARAM' [ref.term]
+/home/rpjday/oe/layers/yocto-docs/documentation/migration-guides/release-notes-6.1.rst:113:
+WARNING: undefined label: 'ref-classes-extrauser' [ref.ref]
 
-  sorry, was there a request for a fix? not sure what you're asking
-for here.
-
-rday
 
