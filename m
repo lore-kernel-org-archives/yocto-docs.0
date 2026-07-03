@@ -2,42 +2,42 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5B70DC44508
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 45CE0C44507
 	for <webhook@archiver.kernel.org>; Fri,  3 Jul 2026 11:45:11 +0000 (UTC)
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.90612.1783079100522064833
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.90619.1783079106227664176
  for <docs@lists.yoctoproject.org>;
- Fri, 03 Jul 2026 04:45:01 -0700
+ Fri, 03 Jul 2026 04:45:06 -0700
 Authentication-Results: mx.groups.io;
- dkim=fail reason="dkim: signature did not verify: crypto/rsa: verification error" header.i=@bootlin.com header.s=dkim header.b=ozmM3liD;
- spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
+ dkim=fail reason="dkim: signature did not verify: crypto/rsa: verification error" header.i=@bootlin.com header.s=dkim header.b=lk0GkWhY;
+ spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 4D75DC49F4C
-	for <docs@lists.yoctoproject.org>; Fri,  3 Jul 2026 11:45:10 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id EA1EE4E40C64
+	for <docs@lists.yoctoproject.org>; Fri,  3 Jul 2026 11:45:03 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 8723560300
-	for <docs@lists.yoctoproject.org>; Fri,  3 Jul 2026 11:44:58 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id EB1BC104C94A6;
-	Fri,  3 Jul 2026 13:44:57 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id B8E4C60300;
+	Fri,  3 Jul 2026 11:45:03 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E3AF9104C94A8;
+	Fri,  3 Jul 2026 13:45:02 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1783079098; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1783079103; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=a6g5DP5eF9aoqXFAW7fsPVYu1t6SRDrpuR5BAsNUMOs=;
-	b=ozmM3liDcefcuJeiw27XILu4l3N10Itw/vrKbofu7/ckabRwI0skRPe2dGP0utRTtw5jjI
-	VJpBX03dIUoTzg2bsStnRIRO5AKt21p16pq3LnjAxjcyQs6S+AtBuOulC8k6e05tVZCjq/
-	MYUYV7VcirtAuw/F6yir6GXeNSxXYNQr9iLdfX6OGEOFW5EAZNgFg9FhMkXYh0ty9mPQoR
-	mI3nZxaJcelAu3nxhMTM2n1dnqr03gPLjmMRSHX/5rYs90vAy55jBGJs3luNX3n+r8e5/2
-	RjgUUHkqRqshcmiYgmhTIZ0L0M03F+L3A4uABZGqsf6Rg7rQ3tAFSsw5mYdRjw==
+	bh=khe1Z/2Pmt9a/smUCkgvxXd7IQOiLSF8TqsdUsIL4pM=;
+	b=lk0GkWhYdZ32iLQbxFa1SaswhPOoh/Qf8197OeSTFWi7x5QcWSLcclA9rLwdtJUxiLLPjS
+	EcRBElqkwSlv/Ehzh6QvCqXcx6o0icSeppc9sj8iLVoqHOqXS7a/mRg/u+rEsD4x/z8jCI
+	wE2ZHWa9HyWfI6xJyJk1aijvwOfhcHVaqQDuH30lZY/Pj0dRzEyldL5uubmG4dcKs5H5L8
+	B0qnQBWC1fSC8TwHB+mwXkgOgQInzwjLmKhGaiwC6g7q2Ew/txvuDPW6pu0aTRH5jixHhH
+	HLEXT/owMxvkwFx/ut2sc8R6PSTLmr6H7LvUNHgD8caE2CdyQRrdTCoIgmbHgA==
 From: Antonin Godard <antonin.godard@bootlin.com>
 To: docs@lists.yoctoproject.org,
-	Antonin Godard <antonin.godard@bootlin.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH 0/2] Drop support for Fedora 42
-Date: Fri,  3 Jul 2026 13:43:32 +0200
-Message-ID: <178307887479.248663.324219268237116552.b4-ty@b4>
+	"Robert P. J. Day" <rpjday@crashcourse.ca>
+Cc: Antonin Godard <antonin.godard@bootlin.com>
+Subject: Re: [PATCH] ref-manual: add intro content to "Manually Called Tasks"
+Date: Fri,  3 Jul 2026 13:43:39 +0200
+Message-ID: <178307887434.248663.6183803474323545291.b4-ty@b4>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260629-remove-fedora-42-v1-0-b55005c6e434@bootlin.com>
-References: <20260629-remove-fedora-42-v1-0-b55005c6e434@bootlin.com>
+In-Reply-To: <5bad0a1a-46fa-4b09-83b1-53fefa37de17@crashcourse.ca>
+References: <5bad0a1a-46fa-4b09-83b1-53fefa37de17@crashcourse.ca>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Last-TLS-Session-Version: TLSv1.3
@@ -46,12 +46,10 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Fri, 03 Jul 2026 11:45:11 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10020
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10026
 
 Applied, thanks!
 
-[1/2] ref-manual/system-requirements.rst: drop Fedora 42 support
-      commit: d36d204850530237b097ae736ea16435eee65875
-[2/2] tools/build-docs-container: drop Fedora 42 support
-      commit: 7389f7f5b055dc0a9939bf3ada16cb23bfa20432
+[1/1] ref-manual: add intro content to "Manually Called Tasks"
+      commit: ef26cf026dbbe147f113cd1bf9af87a835edeb39
 
