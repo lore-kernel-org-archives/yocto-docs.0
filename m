@@ -1,95 +1,1214 @@
-Return-Path: <rpjday@crashcourse.ca>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 87BA9C43458
-	for <webhook@archiver.kernel.org>; Fri,  3 Jul 2026 14:35:42 +0000 (UTC)
-Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.94526.1783089334423352770
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 29A0FC44500
+	for <webhook@archiver.kernel.org>; Fri,  3 Jul 2026 15:08:37 +0000 (UTC)
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.95244.1783091312512617044
  for <docs@lists.yoctoproject.org>;
- Fri, 03 Jul 2026 07:35:34 -0700
+ Fri, 03 Jul 2026 08:08:33 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=mt7bPti8;
- spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:References:
-	Message-ID:In-Reply-To:Subject:cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=icjlcgmDrKyNz7kUm3M/0Nra2vN6yDQZS+eWthd3vk4=; b=mt7bPti8Pm1yY/lv/Pwc0xrrnw
-	DuSdL3pG0XvjbpFOQXpPvPMJEbfoX5hyFJjgQjQrrXNLfWqvnkRAaRbq7zCyZDqLbRZZMCAKRA5M+
-	5Jw9AKF2HQurkLjOfNTMSfhFShQN4myJodP3Jx+qpW8ZYUa8k69tv8f9FY5MAxbyVedJ0LnWQs5St
-	3MjN1NLl5ajjzTT6zOs23YiKGROqGu4+vdbDXmB9A1pyTRoM35dSs2V0PqyxOA42NbpvZp9DwPMNj
-	TVb2Po2T7LPoxrQIngmXFXRZ4rxcjzYd9PZURXk9mhGq80PssDesTGwr7BW2UV/EoDBhJo1JIl1gS
-	k1gjZ+OA==;
-Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:48912 helo=sheena)
-	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.4)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1wfezJ-00000007H5C-2ZLK;
-	Fri, 03 Jul 2026 10:35:32 -0400
-Date: Fri, 3 Jul 2026 10:34:57 -0400 (EDT)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: antonin.godard@bootlin.com
-cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: Re: [docs] [PATCH] ref-manual: document variable and task for kernel
- version check
-In-Reply-To: <DJOZQ24ZS3L3.BNPZLMDSAVOC@bootlin.com>
-Message-ID: <f87fac25-8ce9-0e32-8785-710f630d02a1@crashcourse.ca>
-References: <57f7256c-e8b5-c425-0fb8-7699b0cbdb5d@crashcourse.ca> <DJOZQ24ZS3L3.BNPZLMDSAVOC@bootlin.com>
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=M+sZwLbs;
+ spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 676064E40C69
+	for <docs@lists.yoctoproject.org>; Fri,  3 Jul 2026 15:08:30 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 3C0EA60300
+	for <docs@lists.yoctoproject.org>; Fri,  3 Jul 2026 15:08:30 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 43C1E104C952E;
+	Fri,  3 Jul 2026 17:08:28 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1783091309; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=Qd0aVGChBH5+ERty0qfTpzQVs7JQeoKAu0bRqJly3cM=;
+	b=M+sZwLbs4j6gT5nYcHFwHogyiKv9r4GPvZszFa7kIyinZVf4RhHBPkUCyycbpuMr76e6h4
+	pYm4rWYsekSHv7gnTe99CrpRcIbWwFzl5NKY9nXTVLAqn7rjc8Guq460QUOIgd7m9/zuHd
+	9iZr2WIF861DAdjo1JRXgVlYiARnxbyEZ14iovHKov4iL36XJRuwKGyIFyXutud3YU466P
+	BAPsMmjZL/zj9kZdyyqX3M614EP7WJ4Yg9RogU5r5PcD0wjmbyu47Hu8JZA5JmNKsXVNU/
+	GmdIu/8W+uikn7DB4VnKtFZK1KP/W4Ni+tRKkwtEPyRu2uyj4t9MBdGj7dagLg==
+From: Antonin Godard <antonin.godard@bootlin.com>
+To: docs@lists.yoctoproject.org
+Cc: Antonin Godard <antonin.godard@bootlin.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: [PATCH RFC 0/6] Generate documentation links for OE-Core (cover  letter only)
+Date: Fri,  3 Jul 2026 17:07:53 +0200
+Message-ID: <20260703-gen-doc-links-v1-0-c2c31c68a0c2@bootlin.com>
+X-Mailer: git-send-email 2.54.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain; charset="utf-8"
+X-Change-ID: 20260702-gen-doc-links-99d92cebfcb4
+X-Mailer: b4 0.15.2
+Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 03 Jul 2026 14:35:42 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10034
+ <docs@lists.yoctoproject.org>; Fri, 03 Jul 2026 15:08:37 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10035
 
-On Fri, 3 Jul 2026, Antonin Godard via lists.yoctoproject.org wrote:
-
-> Hi,
->
-> On Fri Jul 3, 2026 at 3:25 PM CEST, Robert P. J. Day wrote:
-> >
-> > Add the associated variable and task for kernel version checking:
-> >
-> >   - do_kernel_version_sanity_check()
-> >   - KERNEL_VERSION_SANITY_SKIP
-> >
-> > Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
-> >
-> > ---
-> >
-> > diff --git a/documentation/ref-manual/tasks.rst b/documentation/ref-manual/tasks.rst
-> > index e1db2d5ed..5744d47dc 100644
-> > --- a/documentation/ref-manual/tasks.rst
-> > +++ b/documentation/ref-manual/tasks.rst
-> > @@ -787,6 +787,14 @@ which can then be applied by subsequent tasks such as
-> >  :ref:`ref-tasks-patch` and
-> >  :ref:`ref-tasks-kernel_configme`.
-> >
-> > +.. _ref-tasks-kernel_version_sanity_check:
-> > +
-> > +``do_kernel_version_sanity_check``
-> > +----------------------------------
-> > +
-> > +Validate the version of the kernel
->
-> This doesn't explain what this task does.
-
-  Have you *seen* the RE/pattern checking in that task? I'm open to a
-meaningful one-line descriptor.
-
-rday
+[I have pushed this here for now:=0D
+ https://git.yoctoproject.org/yocto-docs/log/?h=3Dcontrib/agodard/b4/gen-do=
+c-links=0D
+=0D
+ Not sent to mailing list as patches are quite big.]=0D
+=0D
+The purpose of this series is to make links to yocto-docs accessible=0D
+from OE-Core through a doclink flag, making the overall documentation=0D
+more accessible. This link can be shown with:=0D
+=0D
+  $ bitbake-getvar do_install --value -f doclink=0D
+  https://docs.yoctoproject.org/blacksail/ref-manual/tasks.html#term-do_ins=
+tall=0D
+  $ bitbake-getvar S --value -f doclink=0D
+  https://docs.yoctoproject.org/blacksail/ref-manual/variables.html#term-S=
+=0D
+=0D
+This is made possible through a file generated automatically, which=0D
+contains assignments such as:=0D
+=0D
+S[doclink] =3D 'https://docs.yoctoproject.org/${LAYERSERIES_COMPAT_core}/re=
+f-manual/variables.html#term-S'=0D
+do_install[doclink] =3D 'https://docs.yoctoproject.org/${LAYERSERIES_COMPAT=
+_core}/ref-manual/tasks.html#term-do_install'=0D
+=0D
+This can be used in projects that want to point to documentation, like=0D
+Toaster.=0D
+=0D
+This could also be included automatically from OE-Core's bitbake.conf with:=
+=0D
+=0D
+  # Default path to yocto-docs, assuming it is next to the openembedded-cor=
+e=0D
+  # repository, as would be provided by bitbake-setup.=0D
+  YOCTO_DOCS_DIR ??=3D "${COREBASE}/../yocto-docs"=0D
+=0D
+  include ${YOCTO_DOCS_DIR}/documentation/oecore/doclinks.conf=0D
+=0D
+The main point for this is to make documentation for variables easily=0D
+accessible, with the hope that this would also encourage people to=0D
+contribute to documentation more as it would create a bridge between=0D
+OE-Core and yocto-docs.=0D
+=0D
+This is more of an idea than anything though, comments on whether you=0D
+think this would be useful are welcome!=0D
+=0D
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>=0D
+---=0D
+Antonin Godard (6):=0D
+      ref-manual/tasks.rst: convert to glossaries=0D
+      ref-manual: split variables in their own files=0D
+      ref-manual: split tasks in their own files=0D
+      ref-manual/variables.rst: remove flags from variable names=0D
+      tools: add gen-doc-links to generate documentation link flags=0D
+      .pre-commit-config.yaml: add gen-doc-links=0D
+=0D
+ .pre-commit-config.yaml                            |     5 +=0D
+ .../contributor-guide/recipe-style-guide.rst       |    20 +-=0D
+ documentation/dev-manual/build-quality.rst         |     2 +-=0D
+ documentation/dev-manual/building.rst              |     2 +-=0D
+ documentation/dev-manual/debugging.rst             |    32 +-=0D
+ documentation/dev-manual/development-shell.rst     |     2 +-=0D
+ documentation/dev-manual/devtool.rst               |    14 +-=0D
+ documentation/dev-manual/layers.rst                |     6 +-=0D
+ documentation/dev-manual/libraries.rst             |     2 +-=0D
+ documentation/dev-manual/limiting-resources.rst    |     4 +-=0D
+ documentation/dev-manual/multiconfig.rst           |    20 +-=0D
+ documentation/dev-manual/new-machine.rst           |     2 +-=0D
+ documentation/dev-manual/new-recipe.rst            |    82 +-=0D
+ documentation/dev-manual/packages.rst              |     6 +-=0D
+ .../dev-manual/python-development-shell.rst        |     2 +-=0D
+ documentation/dev-manual/quilt.rst                 |     4 +-=0D
+ documentation/dev-manual/speeding-up-build.rst     |     4 +-=0D
+ documentation/kernel-dev/common.rst                |    24 +-=0D
+ documentation/migration-guides/migration-1.3.rst   |     2 +-=0D
+ documentation/migration-guides/migration-1.5.rst   |     4 +-=0D
+ documentation/migration-guides/migration-1.6.rst   |     2 +-=0D
+ documentation/migration-guides/migration-1.7.rst   |     8 +-=0D
+ documentation/migration-guides/migration-1.8.rst   |    10 +-=0D
+ documentation/migration-guides/migration-2.1.rst   |    20 +-=0D
+ documentation/migration-guides/migration-2.3.rst   |     4 +-=0D
+ documentation/migration-guides/migration-2.5.rst   |     2 +-=0D
+ documentation/migration-guides/migration-2.6.rst   |     6 +-=0D
+ documentation/migration-guides/migration-3.0.rst   |     2 +-=0D
+ documentation/migration-guides/migration-3.1.rst   |     2 +-=0D
+ documentation/migration-guides/migration-3.2.rst   |    12 +-=0D
+ documentation/migration-guides/migration-3.4.rst   |     2 +-=0D
+ documentation/migration-guides/migration-4.0.rst   |     6 +-=0D
+ documentation/migration-guides/migration-5.1.rst   |    14 +-=0D
+ documentation/migration-guides/migration-5.2.rst   |     2 +-=0D
+ .../migration-guides/release-notes-3.4.rst         |     2 +-=0D
+ .../migration-guides/release-notes-4.2.rst         |     2 +-=0D
+ .../migration-guides/release-notes-5.1.rst         |    12 +-=0D
+ .../migration-guides/release-notes-5.2.rst         |    14 +-=0D
+ .../migration-guides/release-notes-5.3.rst         |     6 +-=0D
+ .../migration-guides/release-notes-6.0.rst         |     8 +-=0D
+ documentation/oecore/doclinks.conf                 |  1052 ++=0D
+ documentation/overview-manual/concepts.rst         |   150 +-=0D
+ documentation/ref-manual/classes.rst               |    60 +-=0D
+ documentation/ref-manual/devtool-reference.rst     |     2 +-=0D
+ documentation/ref-manual/faq.rst                   |     2 +-=0D
+ documentation/ref-manual/features.rst              |     4 +-=0D
+ documentation/ref-manual/qa-checks.rst             |    30 +-=0D
+ documentation/ref-manual/structure.rst             |    12 +-=0D
+ documentation/ref-manual/tasks.rst                 |   838 +-=0D
+ documentation/ref-manual/tasks/do_bootimg.rst      |     3 +=0D
+ documentation/ref-manual/tasks/do_build.rst        |     2 +=0D
+ .../ref-manual/tasks/do_bundle_initramfs.rst       |     2 +=0D
+ documentation/ref-manual/tasks/do_checkuri.rst     |     1 +=0D
+ documentation/ref-manual/tasks/do_clean.rst        |    18 +=0D
+ documentation/ref-manual/tasks/do_cleanall.rst     |    34 +=0D
+ documentation/ref-manual/tasks/do_cleansstate.rst  |    34 +=0D
+ documentation/ref-manual/tasks/do_compile.rst      |     6 +=0D
+ .../ref-manual/tasks/do_compile_kernelmodules.rst  |     3 +=0D
+ .../ref-manual/tasks/do_compile_ptest_base.rst     |     1 +=0D
+ documentation/ref-manual/tasks/do_configure.rst    |     9 +=0D
+ .../ref-manual/tasks/do_configure_ptest_base.rst   |     1 +=0D
+ documentation/ref-manual/tasks/do_deploy.rst       |    40 +=0D
+ documentation/ref-manual/tasks/do_devshell.rst     |     4 +=0D
+ documentation/ref-manual/tasks/do_diffconfig.rst   |    14 +=0D
+ documentation/ref-manual/tasks/do_fetch.rst        |     4 +=0D
+ documentation/ref-manual/tasks/do_image.rst        |    12 +=0D
+ .../ref-manual/tasks/do_image_complete.rst         |    14 +=0D
+ documentation/ref-manual/tasks/do_install.rst      |    27 +=0D
+ .../ref-manual/tasks/do_install_ptest_base.rst     |     2 +=0D
+ .../ref-manual/tasks/do_kernel_checkout.rst        |     5 +=0D
+ .../ref-manual/tasks/do_kernel_configcheck.rst     |    13 +=0D
+ .../ref-manual/tasks/do_kernel_configme.rst        |     6 +=0D
+ .../ref-manual/tasks/do_kernel_metadata.rst        |     7 +=0D
+ .../ref-manual/tasks/do_list_image_features.rst    |     2 +=0D
+ documentation/ref-manual/tasks/do_listtasks.rst    |     1 +=0D
+ documentation/ref-manual/tasks/do_menuconfig.rst   |    13 +=0D
+ documentation/ref-manual/tasks/do_package.rst      |    12 +=0D
+ .../ref-manual/tasks/do_package_index.rst          |     7 +=0D
+ documentation/ref-manual/tasks/do_package_qa.rst   |     2 +=0D
+ .../ref-manual/tasks/do_package_write_deb.rst      |     5 +=0D
+ .../ref-manual/tasks/do_package_write_ipk.rst      |     5 +=0D
+ .../ref-manual/tasks/do_package_write_rpm.rst      |     5 +=0D
+ documentation/ref-manual/tasks/do_packagedata.rst  |     3 +=0D
+ documentation/ref-manual/tasks/do_patch.rst        |    60 +=0D
+ documentation/ref-manual/tasks/do_populate_lic.rst |     2 +=0D
+ documentation/ref-manual/tasks/do_populate_sdk.rst |     4 +=0D
+ .../ref-manual/tasks/do_populate_sdk_ext.rst       |     4 +=0D
+ .../ref-manual/tasks/do_populate_sysroot.rst       |    16 +=0D
+ .../ref-manual/tasks/do_prepare_recipe_sysroot.rst |     5 +=0D
+ documentation/ref-manual/tasks/do_pydevshell.rst   |     6 +=0D
+ documentation/ref-manual/tasks/do_recipe_qa.rst    |     5 +=0D
+ documentation/ref-manual/tasks/do_rm_work.rst      |     3 +=0D
+ documentation/ref-manual/tasks/do_rootfs.rst       |     4 +=0D
+ .../ref-manual/tasks/do_savedefconfig.rst          |     8 +=0D
+ .../ref-manual/tasks/do_shared_workdir.rst         |     6 +=0D
+ documentation/ref-manual/tasks/do_sizecheck.rst    |     5 +=0D
+ documentation/ref-manual/tasks/do_strip.rst        |     4 +=0D
+ documentation/ref-manual/tasks/do_testimage.rst    |     4 +=0D
+ .../ref-manual/tasks/do_testimage_auto.rst         |     7 +=0D
+ documentation/ref-manual/tasks/do_unpack.rst       |     5 +=0D
+ .../ref-manual/tasks/do_validate_branches.rst      |     5 +=0D
+ documentation/ref-manual/terms.rst                 |     6 +-=0D
+ documentation/ref-manual/variables.rst             | 12381 +++------------=
+----=0D
+ .../ref-manual/variables/ABIEXTENSION.rst          |     8 +=0D
+ documentation/ref-manual/variables/ALLOW_EMPTY.rst |    12 +=0D
+ documentation/ref-manual/variables/ALTERNATIVE.rst |    15 +=0D
+ .../ref-manual/variables/ALTERNATIVE_LINK_NAME.rst |    18 +=0D
+ .../ref-manual/variables/ALTERNATIVE_PRIORITY.rst  |    14 +=0D
+ .../ref-manual/variables/ALTERNATIVE_TARGET.rst    |    27 +=0D
+ .../variables/ANY_OF_DISTRO_FEATURES.rst           |     8 +=0D
+ documentation/ref-manual/variables/APPEND.rst      |     5 +=0D
+ documentation/ref-manual/variables/AR.rst          |     1 +=0D
+ .../ref-manual/variables/ARCHIVER_MODE.rst         |    18 +=0D
+ documentation/ref-manual/variables/AS.rst          |     2 +=0D
+ .../ref-manual/variables/ASSUME_PROVIDED.rst       |     8 +=0D
+ .../ref-manual/variables/ASSUME_SHLIBS.rst         |    13 +=0D
+ documentation/ref-manual/variables/AUTOREV.rst     |    15 +=0D
+ .../ref-manual/variables/AUTOTOOLS_SCRIPT_PATH.rst |     4 +=0D
+ .../ref-manual/variables/AUTO_LIBNAME_PKGS.rst     |     8 +=0D
+ .../ref-manual/variables/AUTO_SYSLINUXMENU.rst     |     3 +=0D
+ documentation/ref-manual/variables/AVAILTUNES.rst  |    15 +=0D
+ documentation/ref-manual/variables/AZ_SAS.rst      |     9 +=0D
+ documentation/ref-manual/variables/B.rst           |    11 +=0D
+ .../ref-manual/variables/BAD_RECOMMENDATIONS.rst   |    26 +=0D
+ .../ref-manual/variables/BAREBOX_BINARY.rst        |    10 +=0D
+ .../ref-manual/variables/BAREBOX_CONFIG.rst        |    15 +=0D
+ documentation/ref-manual/variables/BASE_LIB.rst    |     9 +=0D
+ .../ref-manual/variables/BASE_WORKDIR.rst          |     2 +=0D
+ .../ref-manual/variables/BBCLASSEXTEND.rst         |    28 +=0D
+ documentation/ref-manual/variables/BBDEBUG.rst     |     1 +=0D
+ documentation/ref-manual/variables/BBFILES.rst     |     7 +=0D
+ .../ref-manual/variables/BBFILES_DYNAMIC.rst       |    28 +=0D
+ .../ref-manual/variables/BBFILE_COLLECTIONS.rst    |     3 +=0D
+ .../ref-manual/variables/BBFILE_PATTERN.rst        |     4 +=0D
+ .../ref-manual/variables/BBFILE_PRIORITY.rst       |    24 +=0D
+ documentation/ref-manual/variables/BBINCLUDED.rst  |     1 +=0D
+ .../ref-manual/variables/BBINCLUDELOGS.rst         |     1 +=0D
+ .../ref-manual/variables/BBINCLUDELOGS_LINES.rst   |     4 +=0D
+ documentation/ref-manual/variables/BBLAYERS.rst    |    13 +=0D
+ .../ref-manual/variables/BBLAYERS_FETCH_DIR.rst    |     1 +=0D
+ documentation/ref-manual/variables/BBMASK.rst      |    34 +=0D
+ .../ref-manual/variables/BBMULTICONFIG.rst         |    18 +=0D
+ documentation/ref-manual/variables/BBPATH.rst      |     1 +=0D
+ documentation/ref-manual/variables/BBSERVER.rst    |    11 +=0D
+ documentation/ref-manual/variables/BBTARGETS.rst   |     1 +=0D
+ .../ref-manual/variables/BB_ALLOWED_NETWORKS.rst   |    36 +=0D
+ .../variables/BB_BASEHASH_IGNORE_VARS.rst          |     1 +=0D
+ documentation/ref-manual/variables/BB_CACHEDIR.rst |     1 +=0D
+ .../ref-manual/variables/BB_CHECK_SSL_CERTS.rst    |     1 +=0D
+ .../variables/BB_CONF_FRAGMENT_DESCRIPTION.rst     |     4 +=0D
+ .../variables/BB_CONF_FRAGMENT_SUMMARY.rst         |     4 +=0D
+ .../ref-manual/variables/BB_CONSOLELOG.rst         |     1 +=0D
+ .../ref-manual/variables/BB_CURRENTTASK.rst        |     1 +=0D
+ .../ref-manual/variables/BB_CURRENT_MC.rst         |     1 +=0D
+ .../ref-manual/variables/BB_DEFAULT_TASK.rst       |     1 +=0D
+ .../ref-manual/variables/BB_DEFAULT_UMASK.rst      |     1 +=0D
+ .../ref-manual/variables/BB_DEFER_BBCLASSES.rst    |     1 +=0D
+ .../ref-manual/variables/BB_DISKMON_DIRS.rst       |    70 +=0D
+ .../variables/BB_DISKMON_WARNINTERVAL.rst          |    47 +=0D
+ .../ref-manual/variables/BB_ENV_PASSTHROUGH.rst    |     1 +=0D
+ .../variables/BB_ENV_PASSTHROUGH_ADDITIONS.rst     |     1 +=0D
+ .../variables/BB_FETCH_PREMIRRORONLY.rst           |     1 +=0D
+ documentation/ref-manual/variables/BB_FILENAME.rst |     1 +=0D
+ .../variables/BB_GENERATE_MIRROR_TARBALLS.rst      |    16 +=0D
+ .../variables/BB_GENERATE_SHALLOW_TARBALLS.rst     |     1 +=0D
+ .../variables/BB_GIT_DEFAULT_DESTSUFFIX.rst        |     5 +=0D
+ .../ref-manual/variables/BB_GIT_SHALLOW.rst        |     1 +=0D
+ .../ref-manual/variables/BB_GIT_SHALLOW_DEPTH.rst  |     1 +=0D
+ .../ref-manual/variables/BB_HASHCHECK_FUNCTION.rst |     1 +=0D
+ .../variables/BB_HASHCONFIG_IGNORE_VARS.rst        |     1 +=0D
+ .../ref-manual/variables/BB_HASHSERVE.rst          |     1 +=0D
+ .../ref-manual/variables/BB_HASHSERVE_UPSTREAM.rst |     1 +=0D
+ .../ref-manual/variables/BB_INVALIDCONF.rst        |     1 +=0D
+ .../ref-manual/variables/BB_LOADFACTOR_MAX.rst     |     6 +=0D
+ .../ref-manual/variables/BB_LOGCONFIG.rst          |     1 +=0D
+ documentation/ref-manual/variables/BB_LOGFMT.rst   |     1 +=0D
+ .../variables/BB_MULTI_PROVIDER_ALLOWED.rst        |     1 +=0D
+ .../ref-manual/variables/BB_NICE_LEVEL.rst         |     1 +=0D
+ .../ref-manual/variables/BB_NO_NETWORK.rst         |     1 +=0D
+ .../variables/BB_NUMBER_PARSE_THREADS.rst          |     1 +=0D
+ .../ref-manual/variables/BB_NUMBER_THREADS.rst     |    41 +=0D
+ documentation/ref-manual/variables/BB_ORIGENV.rst  |     1 +=0D
+ .../ref-manual/variables/BB_PRESERVE_ENV.rst       |     1 +=0D
+ .../ref-manual/variables/BB_PRESSURE_MAX_CPU.rst   |     5 +=0D
+ .../ref-manual/variables/BB_PRESSURE_MAX_IO.rst    |     5 +=0D
+ .../variables/BB_PRESSURE_MAX_MEMORY.rst           |     5 +=0D
+ documentation/ref-manual/variables/BB_RUNFMT.rst   |     1 +=0D
+ documentation/ref-manual/variables/BB_RUNTASK.rst  |     1 +=0D
+ .../ref-manual/variables/BB_SCHEDULER.rst          |     1 +=0D
+ .../ref-manual/variables/BB_SCHEDULERS.rst         |     1 +=0D
+ .../ref-manual/variables/BB_SERVER_TIMEOUT.rst     |    11 +=0D
+ .../ref-manual/variables/BB_SETSCENE_DEPVALID.rst  |     1 +=0D
+ .../variables/BB_SIGNATURE_EXCLUDE_FLAGS.rst       |     1 +=0D
+ .../ref-manual/variables/BB_SIGNATURE_HANDLER.rst  |     1 +=0D
+ .../ref-manual/variables/BB_SRCREV_POLICY.rst      |     1 +=0D
+ .../ref-manual/variables/BB_STRICT_CHECKSUM.rst    |     1 +=0D
+ documentation/ref-manual/variables/BB_TASKHASH.rst |     1 +=0D
+ .../ref-manual/variables/BB_TASK_IONICE_LEVEL.rst  |     1 +=0D
+ .../ref-manual/variables/BB_TASK_NICE_LEVEL.rst    |     1 +=0D
+ .../ref-manual/variables/BB_USE_HOME_NPMRC.rst     |     1 +=0D
+ .../ref-manual/variables/BB_VERBOSE_LOGS.rst       |     1 +=0D
+ .../ref-manual/variables/BB_WORKERCONTEXT.rst      |     1 +=0D
+ documentation/ref-manual/variables/BINCONFIG.rst   |    11 +=0D
+ .../ref-manual/variables/BINCONFIG_GLOB.rst        |    21 +=0D
+ documentation/ref-manual/variables/BITBAKE_UI.rst  |     1 +=0D
+ documentation/ref-manual/variables/BP.rst          |     5 +=0D
+ documentation/ref-manual/variables/BPN.rst         |     7 +=0D
+ documentation/ref-manual/variables/BUGTRACKER.rst  |     4 +=0D
+ documentation/ref-manual/variables/BUILDDIR.rst    |     5 +=0D
+ .../ref-manual/variables/BUILDHISTORY_COMMIT.rst   |    13 +=0D
+ .../variables/BUILDHISTORY_COMMIT_AUTHOR.rst       |    15 +=0D
+ .../ref-manual/variables/BUILDHISTORY_DIR.rst      |     9 +=0D
+ .../ref-manual/variables/BUILDHISTORY_FEATURES.rst |    26 +=0D
+ .../variables/BUILDHISTORY_IMAGE_FILES.rst         |    14 +=0D
+ .../variables/BUILDHISTORY_PATH_PREFIX_STRIP.rst   |    13 +=0D
+ .../variables/BUILDHISTORY_PUSH_REPO.rst           |    14 +=0D
+ documentation/ref-manual/variables/BUILDNAME.rst   |     1 +=0D
+ .../ref-manual/variables/BUILDSDK_CFLAGS.rst       |     4 +=0D
+ .../ref-manual/variables/BUILDSDK_CPPFLAGS.rst     |     4 +=0D
+ .../ref-manual/variables/BUILDSDK_CXXFLAGS.rst     |     4 +=0D
+ .../ref-manual/variables/BUILDSDK_LDFLAGS.rst      |     4 +=0D
+ .../ref-manual/variables/BUILDSTATS_BASE.rst       |     4 +=0D
+ documentation/ref-manual/variables/BUILD_AR.rst    |    14 +=0D
+ documentation/ref-manual/variables/BUILD_ARCH.rst  |     3 +=0D
+ documentation/ref-manual/variables/BUILD_AS.rst    |    14 +=0D
+ .../ref-manual/variables/BUILD_AS_ARCH.rst         |     2 +=0D
+ documentation/ref-manual/variables/BUILD_CC.rst    |    14 +=0D
+ documentation/ref-manual/variables/BUILD_CCLD.rst  |    15 +=0D
+ .../ref-manual/variables/BUILD_CC_ARCH.rst         |     2 +=0D
+ .../ref-manual/variables/BUILD_CFLAGS.rst          |     4 +=0D
+ documentation/ref-manual/variables/BUILD_CPP.rst   |    14 +=0D
+ .../ref-manual/variables/BUILD_CPPFLAGS.rst        |     4 +=0D
+ documentation/ref-manual/variables/BUILD_CXX.rst   |    14 +=0D
+ .../ref-manual/variables/BUILD_CXXFLAGS.rst        |     4 +=0D
+ documentation/ref-manual/variables/BUILD_FC.rst    |    14 +=0D
+ documentation/ref-manual/variables/BUILD_LD.rst    |    14 +=0D
+ .../ref-manual/variables/BUILD_LDFLAGS.rst         |     4 +=0D
+ .../ref-manual/variables/BUILD_LD_ARCH.rst         |     2 +=0D
+ documentation/ref-manual/variables/BUILD_NM.rst    |    14 +=0D
+ .../ref-manual/variables/BUILD_OBJCOPY.rst         |    14 +=0D
+ .../ref-manual/variables/BUILD_OBJDUMP.rst         |    14 +=0D
+ .../ref-manual/variables/BUILD_OPTIMIZATION.rst    |     7 +=0D
+ documentation/ref-manual/variables/BUILD_OS.rst    |     4 +=0D
+ .../ref-manual/variables/BUILD_PREFIX.rst          |     3 +=0D
+ .../ref-manual/variables/BUILD_RANLIB.rst          |    14 +=0D
+ .../ref-manual/variables/BUILD_READELF.rst         |    14 +=0D
+ documentation/ref-manual/variables/BUILD_STRIP.rst |    14 +=0D
+ documentation/ref-manual/variables/BUILD_SYS.rst   |     9 +=0D
+ .../ref-manual/variables/BUILD_VENDOR.rst          |     2 +=0D
+ .../ref-manual/variables/BUSYBOX_SPLIT_SUID.rst    |     8 +=0D
+ documentation/ref-manual/variables/CACHE.rst       |     3 +=0D
+ .../variables/CARGO_INSTALL_LIBRARIES.rst          |     7 +=0D
+ documentation/ref-manual/variables/CC.rst          |     1 +=0D
+ .../ref-manual/variables/CCACHE_DISABLE.rst        |     3 +=0D
+ .../variables/CCACHE_NATIVE_RECIPES_ALLOWED.rst    |     3 +=0D
+ .../ref-manual/variables/CCACHE_TOP_DIR.rst        |     4 +=0D
+ documentation/ref-manual/variables/CCLD.rst        |     2 +=0D
+ documentation/ref-manual/variables/CFLAGS.rst      |    15 +=0D
+ .../variables/CHECKLAYER_REQUIRED_TESTS.rst        |     9 +=0D
+ .../ref-manual/variables/CLASSOVERRIDE.rst         |    28 +=0D
+ documentation/ref-manual/variables/CLEANBROKEN.rst |     5 +=0D
+ .../ref-manual/variables/COMBINED_FEATURES.rst     |     8 +=0D
+ .../variables/COMMERCIAL_AUDIO_PLUGINS.rst         |     8 +=0D
+ .../variables/COMMERCIAL_VIDEO_PLUGINS.rst         |     8 +=0D
+ .../ref-manual/variables/COMMON_LICENSE_DIR.rst    |     3 +=0D
+ .../ref-manual/variables/COMPATIBLE_HOST.rst       |     9 +=0D
+ .../ref-manual/variables/COMPATIBLE_MACHINE.rst    |    34 +=0D
+ .../ref-manual/variables/COMPLEMENTARY_GLOB.rst    |    26 +=0D
+ .../ref-manual/variables/COMPONENTS_DIR.rst        |     8 +=0D
+ documentation/ref-manual/variables/CONFFILES.rst   |    33 +=0D
+ .../ref-manual/variables/CONFIGURE_FLAGS.rst       |     1 +=0D
+ .../ref-manual/variables/CONFIGURE_SCRIPT.rst      |     9 +=0D
+ .../variables/CONFIG_INITRAMFS_SOURCE.rst          |    19 +=0D
+ documentation/ref-manual/variables/CONFIG_SITE.rst |     3 +=0D
+ .../variables/CONFLICT_COMBINED_FEATURES.rst       |     8 +=0D
+ .../variables/CONFLICT_DISTRO_FEATURES.rst         |     7 +=0D
+ .../variables/CONFLICT_IMAGE_FEATURES.rst          |     7 +=0D
+ .../variables/CONFLICT_MACHINE_FEATURES.rst        |     7 +=0D
+ .../variables/CONFLICT_TUNE_FEATURES.rst           |     7 +=0D
+ .../ref-manual/variables/CONF_VERSION.rst          |     3 +=0D
+ .../ref-manual/variables/CONVERSION_CMD.rst        |    11 +=0D
+ .../variables/COPYLEFT_LICENSE_EXCLUDE.rst         |    15 +=0D
+ .../variables/COPYLEFT_LICENSE_INCLUDE.rst         |     9 +=0D
+ .../ref-manual/variables/COPYLEFT_PN_EXCLUDE.rst   |    10 +=0D
+ .../ref-manual/variables/COPYLEFT_PN_INCLUDE.rst   |    10 +=0D
+ .../ref-manual/variables/COPYLEFT_RECIPE_TYPES.rst |     9 +=0D
+ .../ref-manual/variables/COPY_LIC_DIRS.rst         |    16 +=0D
+ .../ref-manual/variables/COPY_LIC_MANIFEST.rst     |    14 +=0D
+ documentation/ref-manual/variables/COREBASE.rst    |     2 +=0D
+ .../ref-manual/variables/COREBASE_FILES.rst        |    11 +=0D
+ .../variables/CORE_IMAGE_EXTRA_INSTALL.rst         |     6 +=0D
+ documentation/ref-manual/variables/CPP.rst         |     1 +=0D
+ documentation/ref-manual/variables/CPPFLAGS.rst    |    16 +=0D
+ .../ref-manual/variables/CROSS_COMPILE.rst         |     9 +=0D
+ .../ref-manual/variables/CVE_CHECK_IGNORE.rst      |     1 +=0D
+ .../variables/CVE_CHECK_MANIFEST_JSON.rst          |     2 +=0D
+ .../ref-manual/variables/CVE_CHECK_SKIP_RECIPE.rst |     3 +=0D
+ .../ref-manual/variables/CVE_CHECK_STATUSMAP.rst   |     5 +=0D
+ .../variables/CVE_CHECK_VEX_JUSTIFICATION.rst      |     5 +=0D
+ documentation/ref-manual/variables/CVE_PRODUCT.rst |    23 +=0D
+ documentation/ref-manual/variables/CVE_STATUS.rst  |     9 +=0D
+ .../ref-manual/variables/CVE_STATUS_GROUPS.rst     |     9 +=0D
+ documentation/ref-manual/variables/CVE_VERSION.rst |    12 +=0D
+ documentation/ref-manual/variables/CVSDIR.rst      |     2 +=0D
+ documentation/ref-manual/variables/CXX.rst         |     1 +=0D
+ documentation/ref-manual/variables/CXXFLAGS.rst    |    15 +=0D
+ documentation/ref-manual/variables/D.rst           |    11 +=0D
+ documentation/ref-manual/variables/DATE.rst        |     2 +=0D
+ documentation/ref-manual/variables/DATETIME.rst    |     2 +=0D
+ documentation/ref-manual/variables/DEBIANNAME.rst  |     8 +=0D
+ .../ref-manual/variables/DEBIAN_NOAUTONAME.rst     |     7 +=0D
+ documentation/ref-manual/variables/DEBUG_BUILD.rst |     2 +=0D
+ .../ref-manual/variables/DEBUG_OPTIMIZATION.rst    |     3 +=0D
+ .../ref-manual/variables/DEBUG_PREFIX_MAP.rst      |    15 +=0D
+ documentation/ref-manual/variables/DEFAULTTUNE.rst |     9 +=0D
+ .../ref-manual/variables/DEFAULT_PREFERENCE.rst    |    13 +=0D
+ .../ref-manual/variables/DEFAULT_TIMEZONE.rst      |     5 +=0D
+ documentation/ref-manual/variables/DEPENDS.rst     |    69 +=0D
+ documentation/ref-manual/variables/DEPLOYDIR.rst   |    15 +=0D
+ documentation/ref-manual/variables/DEPLOY_DIR.rst  |    17 +=0D
+ .../ref-manual/variables/DEPLOY_DIR_DEB.rst        |    18 +=0D
+ .../ref-manual/variables/DEPLOY_DIR_IMAGE.rst      |    19 +=0D
+ .../ref-manual/variables/DEPLOY_DIR_IPK.rst        |    16 +=0D
+ .../ref-manual/variables/DEPLOY_DIR_RPM.rst        |    17 +=0D
+ documentation/ref-manual/variables/DESCRIPTION.rst |     3 +=0D
+ .../ref-manual/variables/DEV_PKG_DEPENDENCY.rst    |     3 +=0D
+ .../ref-manual/variables/DISABLE_STATIC.rst        |    10 +=0D
+ documentation/ref-manual/variables/DISTRO.rst      |    27 +=0D
+ .../ref-manual/variables/DISTROOVERRIDES.rst       |    15 +=0D
+ .../ref-manual/variables/DISTRO_CODENAME.rst       |     1 +=0D
+ .../ref-manual/variables/DISTRO_EXTRA_RDEPENDS.rst |     6 +=0D
+ .../variables/DISTRO_EXTRA_RRECOMMENDS.rst         |     4 +=0D
+ .../ref-manual/variables/DISTRO_FEATURES.rst       |    23 +=0D
+ .../variables/DISTRO_FEATURES_DEFAULTS.rst         |     6 +=0D
+ .../variables/DISTRO_FEATURES_FILTER_NATIVE.rst    |     6 +=0D
+ .../variables/DISTRO_FEATURES_FILTER_NATIVESDK.rst |     5 +=0D
+ .../variables/DISTRO_FEATURES_NATIVE.rst           |     6 +=0D
+ .../variables/DISTRO_FEATURES_NATIVESDK.rst        |     5 +=0D
+ .../variables/DISTRO_FEATURES_OPTED_OUT.rst        |     9 +=0D
+ documentation/ref-manual/variables/DISTRO_NAME.rst |    25 +=0D
+ .../ref-manual/variables/DISTRO_VERSION.rst        |     1 +=0D
+ documentation/ref-manual/variables/DL_DIR.rst      |    35 +=0D
+ .../ref-manual/variables/DOC_COMPRESS.rst          |     8 +=0D
+ documentation/ref-manual/variables/DT_FILES.rst    |     8 +=0D
+ .../ref-manual/variables/DT_FILES_PATH.rst         |     5 +=0D
+ .../ref-manual/variables/DT_PADDING_SIZE.rst       |     3 +=0D
+ documentation/ref-manual/variables/EFI_ARCH.rst    |     3 +=0D
+ .../ref-manual/variables/EFI_PROVIDER.rst          |     7 +=0D
+ documentation/ref-manual/variables/EFI_UKI_DIR.rst |     1 +=0D
+ .../ref-manual/variables/EFI_UKI_PATH.rst          |     1 +=0D
+ .../variables/ENABLE_BINARY_LOCALE_GENERATION.rst  |     3 +=0D
+ documentation/ref-manual/variables/ERROR_QA.rst    |     5 +=0D
+ .../ref-manual/variables/ERR_REPORT_DIR.rst        |    12 +=0D
+ .../variables/ESDK_CLASS_INHERIT_DISABLE.rst       |    15 +=0D
+ .../ref-manual/variables/ESDK_LOCALCONF_ALLOW.rst  |    17 +=0D
+ .../ref-manual/variables/ESDK_LOCALCONF_REMOVE.rst |    24 +=0D
+ .../ref-manual/variables/EXCLUDE_FROM_SHLIBS.rst   |    19 +=0D
+ .../ref-manual/variables/EXCLUDE_FROM_WORLD.rst    |    14 +=0D
+ documentation/ref-manual/variables/EXTENDPE.rst    |     8 +=0D
+ documentation/ref-manual/variables/EXTENDPKGV.rst  |     9 +=0D
+ documentation/ref-manual/variables/EXTERNALSRC.rst |    10 +=0D
+ .../ref-manual/variables/EXTERNALSRC_BUILD.rst     |    11 +=0D
+ .../variables/EXTERNAL_KERNEL_DEVICETREE.rst       |     5 +=0D
+ .../ref-manual/variables/EXTERNAL_KERNEL_TOOLS.rst |     8 +=0D
+ .../ref-manual/variables/EXTERNAL_TOOLCHAIN.rst    |     4 +=0D
+ .../ref-manual/variables/EXTRANATIVEPATH.rst       |     8 +=0D
+ .../ref-manual/variables/EXTRA_AUTORECONF.rst      |     6 +=0D
+ .../ref-manual/variables/EXTRA_IMAGECMD.rst        |     6 +=0D
+ .../ref-manual/variables/EXTRA_IMAGEDEPENDS.rst    |    12 +=0D
+ .../ref-manual/variables/EXTRA_IMAGE_FEATURES.rst  |    44 +=0D
+ .../ref-manual/variables/EXTRA_OECMAKE.rst         |     2 +=0D
+ .../ref-manual/variables/EXTRA_OECONF.rst          |     3 +=0D
+ .../ref-manual/variables/EXTRA_OEMAKE.rst          |     8 +=0D
+ .../ref-manual/variables/EXTRA_OEMESON.rst         |    12 +=0D
+ .../ref-manual/variables/EXTRA_OESCONS.rst         |     3 +=0D
+ .../ref-manual/variables/EXTRA_USERS_PARAMS.rst    |    62 +=0D
+ documentation/ref-manual/variables/FAKEROOT.rst    |     1 +=0D
+ .../ref-manual/variables/FAKEROOTBASEENV.rst       |     1 +=0D
+ documentation/ref-manual/variables/FAKEROOTCMD.rst |     1 +=0D
+ .../ref-manual/variables/FAKEROOTDIRS.rst          |     1 +=0D
+ documentation/ref-manual/variables/FAKEROOTENV.rst |     1 +=0D
+ .../ref-manual/variables/FAKEROOTNOENV.rst         |     1 +=0D
+ documentation/ref-manual/variables/FC.rst          |     1 +=0D
+ .../ref-manual/variables/FEATURE_PACKAGES.rst      |    16 +=0D
+ .../variables/FEED_DEPLOYDIR_BASE_URI.rst          |    15 +=0D
+ documentation/ref-manual/variables/FETCHCMD.rst    |     1 +=0D
+ documentation/ref-manual/variables/FILE.rst        |     1 +=0D
+ documentation/ref-manual/variables/FILES.rst       |    34 +=0D
+ .../ref-manual/variables/FILESEXTRAPATHS.rst       |    63 +=0D
+ .../ref-manual/variables/FILESOVERRIDES.rst        |    18 +=0D
+ documentation/ref-manual/variables/FILESPATH.rst   |    55 +=0D
+ .../variables/FILESYSTEM_PERMS_TABLES.rst          |    26 +=0D
+ .../ref-manual/variables/FILES_SOLIBSDEV.rst       |     9 +=0D
+ .../ref-manual/variables/FIRMWARE_COMPRESSION.rst  |     8 +=0D
+ .../ref-manual/variables/FIT_ADDRESS_CELLS.rst     |    17 +=0D
+ .../ref-manual/variables/FIT_CONF_DEFAULT_DTB.rst  |     4 +=0D
+ .../ref-manual/variables/FIT_CONF_MAPPINGS.rst     |    39 +=0D
+ .../ref-manual/variables/FIT_CONF_PREFIX.rst       |     2 +=0D
+ documentation/ref-manual/variables/FIT_DESC.rst    |     5 +=0D
+ .../ref-manual/variables/FIT_GENERATE_KEYS.rst     |     4 +=0D
+ .../ref-manual/variables/FIT_HASH_ALG.rst          |     3 +=0D
+ .../ref-manual/variables/FIT_KERNEL_COMP_ALG.rst   |     6 +=0D
+ .../variables/FIT_KERNEL_COMP_ALG_EXTENSION.rst    |     4 +=0D
+ .../variables/FIT_KERNEL_SIGN_ENABLE.rst           |    13 +=0D
+ .../variables/FIT_KERNEL_SIGN_KEYDIR.rst           |     9 +=0D
+ .../variables/FIT_KERNEL_SIGN_KEYNAME.rst          |    10 +=0D
+ .../ref-manual/variables/FIT_KEY_GENRSA_ARGS.rst   |     3 +=0D
+ .../ref-manual/variables/FIT_KEY_REQ_ARGS.rst      |     4 +=0D
+ .../ref-manual/variables/FIT_KEY_SIGN_PKCS.rst     |     3 +=0D
+ .../ref-manual/variables/FIT_LOADABLES.rst         |    68 +=0D
+ .../ref-manual/variables/FIT_LOADABLE_ARCH.rst     |    11 +=0D
+ .../variables/FIT_LOADABLE_COMPRESSION.rst         |    16 +=0D
+ .../variables/FIT_LOADABLE_DESCRIPTION.rst         |    11 +=0D
+ .../variables/FIT_LOADABLE_ENTRYPOINT.rst          |    11 +=0D
+ .../ref-manual/variables/FIT_LOADABLE_FILENAME.rst |    11 +=0D
+ .../variables/FIT_LOADABLE_LOADADDRESS.rst         |    10 +=0D
+ .../ref-manual/variables/FIT_LOADABLE_OS.rst       |    11 +=0D
+ .../ref-manual/variables/FIT_LOADABLE_TYPE.rst     |    11 +=0D
+ .../variables/FIT_MKIMAGE_EXTRA_OPTS.rst           |    14 +=0D
+ documentation/ref-manual/variables/FIT_PAD_ALG.rst |     3 +=0D
+ .../ref-manual/variables/FIT_SIGN_ALG.rst          |     3 +=0D
+ .../ref-manual/variables/FIT_SIGN_INDIVIDUAL.rst   |    29 +=0D
+ .../ref-manual/variables/FIT_SIGN_NUMBITS.rst      |     3 +=0D
+ .../ref-manual/variables/FIT_UBOOT_ENV.rst         |    23 +=0D
+ .../ref-manual/variables/FONT_EXTRA_RDEPENDS.rst   |     3 +=0D
+ .../ref-manual/variables/FONT_PACKAGES.rst         |     6 +=0D
+ .../ref-manual/variables/FORCE_RO_REMOVE.rst       |     4 +=0D
+ .../ref-manual/variables/FULL_OPTIMIZATION.rst     |     3 +=0D
+ documentation/ref-manual/variables/GCCPIE.rst      |     8 +=0D
+ documentation/ref-manual/variables/GCCVERSION.rst  |     8 +=0D
+ documentation/ref-manual/variables/GDB.rst         |     1 +=0D
+ .../ref-manual/variables/GIR_EXTRA_LIBS_PATH.rst   |     5 +=0D
+ documentation/ref-manual/variables/GITDIR.rst      |     2 +=0D
+ .../ref-manual/variables/GITHUB_BASE_URI.rst       |     5 +=0D
+ .../variables/GLIBC_GENERATE_LOCALES.rst           |    12 +=0D
+ documentation/ref-manual/variables/GO_IMPORT.rst   |    12 +=0D
+ documentation/ref-manual/variables/GO_INSTALL.rst  |    24 +=0D
+ .../ref-manual/variables/GO_INSTALL_FILTEROUT.rst  |    14 +=0D
+ documentation/ref-manual/variables/GO_WORKDIR.rst  |     9 +=0D
+ .../ref-manual/variables/GROUPADD_PARAM.rst        |    19 +=0D
+ .../ref-manual/variables/GROUPMEMS_PARAM.rst       |     2 +=0D
+ .../ref-manual/variables/GRUB_GFXSERIAL.rst        |     7 +=0D
+ .../ref-manual/variables/GRUB_MKIMAGE_OPTS.rst     |     3 +=0D
+ documentation/ref-manual/variables/GRUB_OPTS.rst   |     7 +=0D
+ .../ref-manual/variables/GRUB_TIMEOUT.rst          |     6 +=0D
+ documentation/ref-manual/variables/GRUB_TITLE.rst  |     3 +=0D
+ .../ref-manual/variables/GTKIMMODULES_PACKAGES.rst |     4 +=0D
+ documentation/ref-manual/variables/HGDIR.rst       |     1 +=0D
+ documentation/ref-manual/variables/HOMEPAGE.rst    |     2 +=0D
+ documentation/ref-manual/variables/HOSTTOOLS.rst   |     9 +=0D
+ .../ref-manual/variables/HOSTTOOLS_NONFATAL.rst    |     7 +=0D
+ documentation/ref-manual/variables/HOST_ARCH.rst   |    13 +=0D
+ .../ref-manual/variables/HOST_AS_ARCH.rst          |    12 +=0D
+ .../ref-manual/variables/HOST_CC_ARCH.rst          |    13 +=0D
+ .../ref-manual/variables/HOST_LD_ARCH.rst          |    11 +=0D
+ documentation/ref-manual/variables/HOST_OS.rst     |     5 +=0D
+ documentation/ref-manual/variables/HOST_PREFIX.rst |     2 +=0D
+ documentation/ref-manual/variables/HOST_SYS.rst    |    20 +=0D
+ documentation/ref-manual/variables/HOST_VENDOR.rst |     2 +=0D
+ .../ref-manual/variables/IMAGE_BASENAME.rst        |     2 +=0D
+ .../ref-manual/variables/IMAGE_BOOT_FILES.rst      |    32 +=0D
+ .../ref-manual/variables/IMAGE_BUILDINFO_FILE.rst  |     3 +=0D
+ .../ref-manual/variables/IMAGE_BUILDINFO_VARS.rst  |     4 +=0D
+ .../ref-manual/variables/IMAGE_CLASSES.rst         |     5 +=0D
+ documentation/ref-manual/variables/IMAGE_CMD.rst   |    14 +=0D
+ .../variables/IMAGE_CONTAINER_NO_DUMMY.rst         |    16 +=0D
+ .../ref-manual/variables/IMAGE_DEVICE_TABLES.rst   |     8 +=0D
+ .../ref-manual/variables/IMAGE_EFI_BOOT_FILES.rst  |    32 +=0D
+ .../variables/IMAGE_EXTRA_PARTITION_FILES.rst      |    62 +=0D
+ .../ref-manual/variables/IMAGE_FEATURES.rst        |    17 +=0D
+ .../ref-manual/variables/IMAGE_FSTYPES.rst         |    20 +=0D
+ .../ref-manual/variables/IMAGE_FSTYPES_DEBUGFS.rst |     4 +=0D
+ .../ref-manual/variables/IMAGE_GEN_DEBUGFS.rst     |     7 +=0D
+ .../ref-manual/variables/IMAGE_INSTALL.rst         |    46 +=0D
+ .../ref-manual/variables/IMAGE_LINGUAS.rst         |    19 +=0D
+ .../ref-manual/variables/IMAGE_LINK_NAME.rst       |    15 +=0D
+ .../ref-manual/variables/IMAGE_MACHINE_SUFFIX.rst  |    13 +=0D
+ .../ref-manual/variables/IMAGE_MANIFEST.rst        |    16 +=0D
+ documentation/ref-manual/variables/IMAGE_NAME.rst  |     5 +=0D
+ .../ref-manual/variables/IMAGE_NAME_SUFFIX.rst     |     5 +=0D
+ .../ref-manual/variables/IMAGE_OUTPUT_MANIFEST.rst |     7 +=0D
+ .../variables/IMAGE_OUTPUT_MANIFEST_DIR.rst        |     8 +=0D
+ .../ref-manual/variables/IMAGE_OVERHEAD_FACTOR.rst |    32 +=0D
+ .../ref-manual/variables/IMAGE_PKGTYPE.rst         |    14 +=0D
+ .../variables/IMAGE_POSTPROCESS_COMMAND.rst        |    11 +=0D
+ .../variables/IMAGE_PREPROCESS_COMMAND.rst         |    11 +=0D
+ .../ref-manual/variables/IMAGE_ROOTFS.rst          |     3 +=0D
+ .../variables/IMAGE_ROOTFS_ALIGNMENT.rst           |     5 +=0D
+ .../variables/IMAGE_ROOTFS_EXTRA_SPACE.rst         |    16 +=0D
+ .../ref-manual/variables/IMAGE_ROOTFS_MAXSIZE.rst  |    28 +=0D
+ .../ref-manual/variables/IMAGE_ROOTFS_SIZE.rst     |    22 +=0D
+ .../ref-manual/variables/IMAGE_TYPEDEP.rst         |    10 +=0D
+ documentation/ref-manual/variables/IMAGE_TYPES.rst |    49 +=0D
+ .../ref-manual/variables/IMAGE_VERSION_SUFFIX.rst  |     6 +=0D
+ .../ref-manual/variables/IMGDEPLOYDIR.rst          |    10 +=0D
+ .../ref-manual/variables/IMGMANIFESTDIR.rst        |     8 +=0D
+ .../ref-manual/variables/INCOMPATIBLE_LICENSE.rst  |    34 +=0D
+ .../variables/INCOMPATIBLE_LICENSE_EXCEPTIONS.rst  |     6 +=0D
+ documentation/ref-manual/variables/INHERIT.rst     |    10 +=0D
+ .../ref-manual/variables/INHERIT_DISTRO.rst        |    10 +=0D
+ .../variables/INHIBIT_AUTOTOOLS_DEPS.rst           |    16 +=0D
+ .../ref-manual/variables/INHIBIT_DEFAULT_DEPS.rst  |     7 +=0D
+ .../variables/INHIBIT_DEFAULT_RUST_DEPS.rst        |    15 +=0D
+ .../variables/INHIBIT_PACKAGE_DEBUG_SPLIT.rst      |    13 +=0D
+ .../ref-manual/variables/INHIBIT_PACKAGE_STRIP.rst |     8 +=0D
+ .../ref-manual/variables/INHIBIT_SYSROOT_STRIP.rst |    19 +=0D
+ .../variables/INHIBIT_UPDATERCD_BBCLASS.rst        |    17 +=0D
+ .../variables/INITRAMFS_DEPLOY_DIR_IMAGE.rst       |     6 +=0D
+ .../ref-manual/variables/INITRAMFS_FSTYPES.rst     |    11 +=0D
+ .../ref-manual/variables/INITRAMFS_IMAGE.rst       |    36 +=0D
+ .../variables/INITRAMFS_IMAGE_BUNDLE.rst           |    49 +=0D
+ .../ref-manual/variables/INITRAMFS_IMAGE_NAME.rst  |     9 +=0D
+ .../ref-manual/variables/INITRAMFS_LINK_NAME.rst   |    14 +=0D
+ .../ref-manual/variables/INITRAMFS_MAXSIZE.rst     |    12 +=0D
+ .../ref-manual/variables/INITRAMFS_MULTICONFIG.rst |     9 +=0D
+ .../ref-manual/variables/INITRAMFS_NAME.rst        |     7 +=0D
+ documentation/ref-manual/variables/INITRD.rst      |     5 +=0D
+ .../ref-manual/variables/INITRD_IMAGE.rst          |     7 +=0D
+ .../ref-manual/variables/INITSCRIPT_NAME.rst       |     5 +=0D
+ .../ref-manual/variables/INITSCRIPT_PACKAGES.rst   |     7 +=0D
+ .../ref-manual/variables/INITSCRIPT_PARAMS.rst     |    13 +=0D
+ .../ref-manual/variables/INIT_MANAGER.rst          |    25 +=0D
+ documentation/ref-manual/variables/INSANE_SKIP.rst |    10 +=0D
+ .../ref-manual/variables/INSTALL_TIMEZONE_FILE.rst |     3 +=0D
+ .../ref-manual/variables/IPK_FEED_URIS.rst         |     5 +=0D
+ documentation/ref-manual/variables/KARCH.rst       |    11 +=0D
+ documentation/ref-manual/variables/KBRANCH.rst     |    30 +=0D
+ .../ref-manual/variables/KBUILD_DEFCONFIG.rst      |    30 +=0D
+ .../variables/KCONFIG_CONFIG_ROOTDIR.rst           |     3 +=0D
+ .../ref-manual/variables/KCONFIG_MODE.rst          |    28 +=0D
+ .../ref-manual/variables/KCONF_AUDIT_LEVEL.rst     |    19 +=0D
+ .../ref-manual/variables/KCONF_BSP_AUDIT_LEVEL.rst |    31 +=0D
+ .../ref-manual/variables/KERNELDEPMODDEPEND.rst    |     7 +=0D
+ .../ref-manual/variables/KERNEL_ALT_IMAGETYPE.rst  |     3 +=0D
+ .../ref-manual/variables/KERNEL_ARTIFACT_NAME.rst  |    12 +=0D
+ .../ref-manual/variables/KERNEL_CLASSES.rst        |     5 +=0D
+ .../ref-manual/variables/KERNEL_CONSOLE.rst        |    11 +=0D
+ .../KERNEL_DANGLING_FEATURES_WARN_ONLY.rst         |    12 +=0D
+ .../variables/KERNEL_DEBUG_TIMESTAMPS.rst          |     3 +=0D
+ .../ref-manual/variables/KERNEL_DEPLOY_DEPEND.rst  |     4 +=0D
+ .../ref-manual/variables/KERNEL_DEVICETREE.rst     |    10 +=0D
+ .../variables/KERNEL_DEVICETREE_BUNDLE.rst         |     8 +=0D
+ .../ref-manual/variables/KERNEL_DTBDEST.rst        |     6 +=0D
+ .../ref-manual/variables/KERNEL_DTBVENDORED.rst    |     7 +=0D
+ .../ref-manual/variables/KERNEL_DTB_LINK_NAME.rst  |    14 +=0D
+ .../ref-manual/variables/KERNEL_DTB_NAME.rst       |     7 +=0D
+ .../ref-manual/variables/KERNEL_DTC_FLAGS.rst      |     6 +=0D
+ .../ref-manual/variables/KERNEL_EXTRA_ARGS.rst     |     2 +=0D
+ .../ref-manual/variables/KERNEL_FEATURES.rst       |    24 +=0D
+ .../ref-manual/variables/KERNEL_FIT_LINK_NAME.rst  |    14 +=0D
+ .../ref-manual/variables/KERNEL_FIT_NAME.rst       |     7 +=0D
+ .../ref-manual/variables/KERNEL_IMAGETYPE.rst      |     6 +=0D
+ .../ref-manual/variables/KERNEL_IMAGETYPES.rst     |     3 +=0D
+ .../variables/KERNEL_IMAGE_LINK_NAME.rst           |    13 +=0D
+ .../ref-manual/variables/KERNEL_IMAGE_MAXSIZE.rst  |    11 +=0D
+ .../ref-manual/variables/KERNEL_IMAGE_NAME.rst     |     6 +=0D
+ .../ref-manual/variables/KERNEL_LOCALVERSION.rst   |     8 +=0D
+ .../variables/KERNEL_MODULE_AUTOLOAD.rst           |    27 +=0D
+ .../variables/KERNEL_MODULE_PROBECONF.rst          |     5 +=0D
+ .../ref-manual/variables/KERNEL_PACKAGE_NAME.rst   |     6 +=0D
+ documentation/ref-manual/variables/KERNEL_PATH.rst |    11 +=0D
+ .../ref-manual/variables/KERNEL_SPLIT_MODULES.rst  |    19 +=0D
+ documentation/ref-manual/variables/KERNEL_SRC.rst  |    11 +=0D
+ .../ref-manual/variables/KERNEL_STRIP.rst          |     2 +=0D
+ .../ref-manual/variables/KERNEL_VERSION.rst        |     5 +=0D
+ .../ref-manual/variables/KFEATURE_DESCRIPTION.rst  |     6 +=0D
+ documentation/ref-manual/variables/KMACHINE.rst    |    25 +=0D
+ documentation/ref-manual/variables/KMETA_AUDIT.rst |     4 +=0D
+ .../ref-manual/variables/KMETA_AUDIT_WERROR.rst    |     6 +=0D
+ .../ref-manual/variables/KMETA_CONFIG_FEATURES.rst |    11 +=0D
+ documentation/ref-manual/variables/KTYPE.rst       |    12 +=0D
+ documentation/ref-manual/variables/LABELS.rst      |     4 +=0D
+ .../ref-manual/variables/LAYERDEPENDS.rst          |    14 +=0D
+ documentation/ref-manual/variables/LAYERDIR.rst    |     4 +=0D
+ documentation/ref-manual/variables/LAYERDIR_RE.rst |     1 +=0D
+ .../ref-manual/variables/LAYERRECOMMENDS.rst       |    15 +=0D
+ .../ref-manual/variables/LAYERSERIES_COMPAT.rst    |     1 +=0D
+ .../ref-manual/variables/LAYERVERSION.rst          |     6 +=0D
+ documentation/ref-manual/variables/LD.rst          |     2 +=0D
+ documentation/ref-manual/variables/LDFLAGS.rst     |    15 +=0D
+ documentation/ref-manual/variables/LEAD_SONAME.rst |     6 +=0D
+ documentation/ref-manual/variables/LICENSE.rst     |    46 +=0D
+ .../variables/LICENSE_CREATE_PACKAGE.rst           |    21 +=0D
+ .../ref-manual/variables/LICENSE_FLAGS.rst         |    11 +=0D
+ .../variables/LICENSE_FLAGS_ACCEPTED.rst           |     5 +=0D
+ .../ref-manual/variables/LICENSE_FLAGS_DETAILS.rst |    15 +=0D
+ .../ref-manual/variables/LICENSE_PATH.rst          |     7 +=0D
+ .../ref-manual/variables/LIC_FILES_CHKSUM.rst      |    12 +=0D
+ .../ref-manual/variables/LINUX_KERNEL_TYPE.rst     |    13 +=0D
+ .../ref-manual/variables/LINUX_VERSION.rst         |    12 +=0D
+ .../variables/LINUX_VERSION_EXTENSION.rst          |    14 +=0D
+ .../ref-manual/variables/LOCALE_PATHS.rst          |     4 +=0D
+ .../variables/LOCALE_UTF8_IS_DEFAULT.rst           |     5 +=0D
+ documentation/ref-manual/variables/LOG_DIR.rst     |     5 +=0D
+ documentation/ref-manual/variables/LTO.rst         |     5 +=0D
+ documentation/ref-manual/variables/MACHINE.rst     |    36 +=0D
+ .../ref-manual/variables/MACHINEOVERRIDES.rst      |    24 +=0D
+ .../ref-manual/variables/MACHINE_ARCH.rst          |     4 +=0D
+ .../variables/MACHINE_ESSENTIAL_EXTRA_RDEPENDS.rst |    20 +=0D
+ .../MACHINE_ESSENTIAL_EXTRA_RRECOMMENDS.rst        |    39 +=0D
+ .../variables/MACHINE_EXTRA_RDEPENDS.rst           |    24 +=0D
+ .../variables/MACHINE_EXTRA_RRECOMMENDS.rst        |    24 +=0D
+ .../ref-manual/variables/MACHINE_FEATURES.rst      |     9 +=0D
+ .../variables/MACHINE_FEATURES_DEFAULTS.rst        |     6 +=0D
+ .../variables/MACHINE_FEATURES_OPTED_OUT.rst       |     9 +=0D
+ documentation/ref-manual/variables/MAINTAINER.rst  |     1 +=0D
+ .../ref-manual/variables/MESON_BUILDTYPE.rst       |     9 +=0D
+ .../ref-manual/variables/MESON_INSTALL_TAGS.rst    |     2 +=0D
+ .../ref-manual/variables/MESON_TARGET.rst          |     3 +=0D
+ .../ref-manual/variables/METADATA_BRANCH.rst       |     2 +=0D
+ .../ref-manual/variables/METADATA_REVISION.rst     |     2 +=0D
+ .../ref-manual/variables/MIME_XDG_PACKAGES.rst     |     5 +=0D
+ documentation/ref-manual/variables/MIRRORS.rst     |    12 +=0D
+ documentation/ref-manual/variables/MLPREFIX.rst    |    28 +=0D
+ .../ref-manual/variables/MODULE_TARBALL_DEPLOY.rst |     3 +=0D
+ .../variables/MODULE_TARBALL_LINK_NAME.rst         |    12 +=0D
+ .../ref-manual/variables/MODULE_TARBALL_NAME.rst   |     6 +=0D
+ documentation/ref-manual/variables/MOUNT_BASE.rst  |     3 +=0D
+ documentation/ref-manual/variables/MOUNT_GROUP.rst |     3 +=0D
+ .../ref-manual/variables/MULTIMACH_TARGET_SYS.rst  |    14 +=0D
+ .../ref-manual/variables/NATIVELSBSTRING.rst       |    13 +=0D
+ documentation/ref-manual/variables/NM.rst          |     1 +=0D
+ .../ref-manual/variables/NOAUTOPACKAGEDEBUG.rst    |     9 +=0D
+ .../ref-manual/variables/NON_MULTILIB_RECIPES.rst  |     5 +=0D
+ .../ref-manual/variables/NO_GENERIC_LICENSE.rst    |    18 +=0D
+ .../ref-manual/variables/NO_RECOMMENDATIONS.rst    |    30 +=0D
+ documentation/ref-manual/variables/OBJCOPY.rst     |     1 +=0D
+ documentation/ref-manual/variables/OBJDUMP.rst     |     1 +=0D
+ .../ref-manual/variables/OECMAKE_GENERATOR.rst     |     8 +=0D
+ .../OEQA_REPRODUCIBLE_TEST_LEAF_TARGETS.rst        |     5 +=0D
+ .../variables/OEQA_REPRODUCIBLE_TEST_PACKAGE.rst   |     3 +=0D
+ .../OEQA_REPRODUCIBLE_TEST_SSTATE_TARGETS.rst      |     2 +=0D
+ .../variables/OEQA_REPRODUCIBLE_TEST_TARGET.rst    |     3 +=0D
+ documentation/ref-manual/variables/OEROOT.rst      |     8 +=0D
+ .../variables/OE_BINCONFIG_EXTRA_MANGLE.rst        |    11 +=0D
+ .../ref-manual/variables/OE_FRAGMENTS.rst          |     4 +=0D
+ .../ref-manual/variables/OE_FRAGMENTS_BUILTIN.rst  |     5 +=0D
+ .../variables/OE_FRAGMENTS_METADATA_VARS.rst       |     5 +=0D
+ .../ref-manual/variables/OE_FRAGMENTS_PREFIX.rst   |     5 +=0D
+ .../ref-manual/variables/OE_INIT_ENV_SCRIPT.rst    |     6 +=0D
+ .../ref-manual/variables/OE_SHARED_UMASK.rst       |     3 +=0D
+ documentation/ref-manual/variables/OE_TERMINAL.rst |    15 +=0D
+ .../ref-manual/variables/OLDEST_KERNEL.rst         |     8 +=0D
+ .../ref-manual/variables/OPENSSH_HOST_KEY_DIR.rst  |     2 +=0D
+ .../OPENSSH_HOST_KEY_DIR_READONLY_CONFIG.rst       |     2 +=0D
+ .../ref-manual/variables/OPKGBUILDCMD.rst          |     5 +=0D
+ .../variables/OPKG_MAKE_INDEX_EXTRA_PARAMS.rst     |     1 +=0D
+ .../ref-manual/variables/OVERLAYFS_ETC_DEVICE.rst  |     7 +=0D
+ .../variables/OVERLAYFS_ETC_EXPOSE_LOWER.rst       |     4 +=0D
+ .../ref-manual/variables/OVERLAYFS_ETC_FSTYPE.rst  |     7 +=0D
+ .../variables/OVERLAYFS_ETC_MOUNT_OPTIONS.rst      |     3 +=0D
+ .../variables/OVERLAYFS_ETC_MOUNT_POINT.rst        |     7 +=0D
+ .../variables/OVERLAYFS_ETC_USE_ORIG_INIT_NAME.rst |     4 +=0D
+ .../ref-manual/variables/OVERLAYFS_MOUNT_POINT.rst |    14 +=0D
+ .../ref-manual/variables/OVERLAYFS_QA_SKIP.rst     |    11 +=0D
+ .../variables/OVERLAYFS_WRITABLE_PATHS.rst         |     5 +=0D
+ documentation/ref-manual/variables/OVERRIDES.rst   |    35 +=0D
+ documentation/ref-manual/variables/P.rst           |     3 +=0D
+ documentation/ref-manual/variables/P4DIR.rst       |     1 +=0D
+ .../ref-manual/variables/PACKAGECONFIG.rst         |   117 +=0D
+ .../variables/PACKAGECONFIG_CONFARGS.rst           |     9 +=0D
+ .../PACKAGEGROUP_DISABLE_COMPLEMENTARY.rst         |     5 +=0D
+ documentation/ref-manual/variables/PACKAGES.rst    |    17 +=0D
+ .../ref-manual/variables/PACKAGESPLITFUNCS.rst     |     8 +=0D
+ .../ref-manual/variables/PACKAGES_DYNAMIC.rst      |    21 +=0D
+ .../ref-manual/variables/PACKAGE_ADD_METADATA.rst  |    14 +=0D
+ .../ref-manual/variables/PACKAGE_ARCH.rst          |    18 +=0D
+ .../ref-manual/variables/PACKAGE_ARCHS.rst         |     5 +=0D
+ .../ref-manual/variables/PACKAGE_BEFORE_PN.rst     |     3 +=0D
+ .../ref-manual/variables/PACKAGE_CLASSES.rst       |    23 +=0D
+ .../variables/PACKAGE_DEBUG_SPLIT_STYLE.rst        |    42 +=0D
+ .../ref-manual/variables/PACKAGE_EXCLUDE.rst       |    24 +=0D
+ .../variables/PACKAGE_EXCLUDE_COMPLEMENTARY.rst    |    10 +=0D
+ .../ref-manual/variables/PACKAGE_EXTRA_ARCHS.rst   |     3 +=0D
+ .../ref-manual/variables/PACKAGE_FEED_ARCHS.rst    |    38 +=0D
+ .../variables/PACKAGE_FEED_BASE_PATHS.rst          |    27 +=0D
+ .../ref-manual/variables/PACKAGE_FEED_URIS.rst     |    27 +=0D
+ .../ref-manual/variables/PACKAGE_INSTALL.rst       |    15 +=0D
+ .../variables/PACKAGE_INSTALL_ATTEMPTONLY.rst      |     4 +=0D
+ .../variables/PACKAGE_PREPROCESS_FUNCS.rst         |     3 +=0D
+ .../ref-manual/variables/PACKAGE_WRITE_DEPS.rst    |    10 +=0D
+ .../ref-manual/variables/PARALLEL_MAKE.rst         |    39 +=0D
+ .../ref-manual/variables/PARALLEL_MAKEINST.rst     |    19 +=0D
+ .../ref-manual/variables/PATCHRESOLVE.rst          |    10 +=0D
+ documentation/ref-manual/variables/PATCHTOOL.rst   |    13 +=0D
+ documentation/ref-manual/variables/PE.rst          |     5 +=0D
+ .../ref-manual/variables/PEP517_WHEEL_PATH.rst     |     3 +=0D
+ .../ref-manual/variables/PERSISTENT_DIR.rst        |     1 +=0D
+ documentation/ref-manual/variables/PF.rst          |     4 +=0D
+ .../ref-manual/variables/PIXBUF_PACKAGES.rst       |     7 +=0D
+ documentation/ref-manual/variables/PKG.rst         |     9 +=0D
+ documentation/ref-manual/variables/PKGD.rst        |     7 +=0D
+ documentation/ref-manual/variables/PKGDATA_DIR.rst |    14 +=0D
+ documentation/ref-manual/variables/PKGDEST.rst     |     9 +=0D
+ documentation/ref-manual/variables/PKGDESTWORK.rst |    11 +=0D
+ documentation/ref-manual/variables/PKGE.rst        |     2 +=0D
+ documentation/ref-manual/variables/PKGR.rst        |     2 +=0D
+ documentation/ref-manual/variables/PKGV.rst        |    18 +=0D
+ .../ref-manual/variables/PKG_CONFIG_PATH.rst       |     2 +=0D
+ documentation/ref-manual/variables/PN.rst          |    17 +=0D
+ .../variables/POPULATE_SDK_POST_HOST_COMMAND.rst   |    10 +=0D
+ .../variables/POPULATE_SDK_POST_TARGET_COMMAND.rst |    10 +=0D
+ documentation/ref-manual/variables/PR.rst          |    33 +=0D
+ .../ref-manual/variables/PREFERRED_PROVIDER.rst    |    29 +=0D
+ .../ref-manual/variables/PREFERRED_PROVIDERS.rst   |     1 +=0D
+ .../ref-manual/variables/PREFERRED_RPROVIDER.rst   |    20 +=0D
+ .../ref-manual/variables/PREFERRED_TOOLCHAIN.rst   |     5 +=0D
+ .../variables/PREFERRED_TOOLCHAIN_NATIVE.rst       |    11 +=0D
+ .../variables/PREFERRED_TOOLCHAIN_SDK.rst          |     7 +=0D
+ .../variables/PREFERRED_TOOLCHAIN_TARGET.rst       |    20 +=0D
+ .../ref-manual/variables/PREFERRED_VERSION.rst     |    51 +=0D
+ documentation/ref-manual/variables/PREMIRRORS.rst  |    29 +=0D
+ documentation/ref-manual/variables/PRIORITY.rst    |     9 +=0D
+ .../ref-manual/variables/PRIVATE_LIBS.rst          |    23 +=0D
+ documentation/ref-manual/variables/PROVIDES.rst    |    49 +=0D
+ documentation/ref-manual/variables/PRSERV_HOST.rst |    12 +=0D
+ .../ref-manual/variables/PRSERV_UPSTREAM.rst       |     4 +=0D
+ .../ref-manual/variables/PSEUDO_IGNORE_PATHS.rst   |     7 +=0D
+ .../ref-manual/variables/PSEUDO_INCLUDE_PATHS.rst  |     8 +=0D
+ .../ref-manual/variables/PTEST_ENABLED.rst         |     6 +=0D
+ .../ref-manual/variables/PTEST_PYTEST_DIR.rst      |     8 +=0D
+ documentation/ref-manual/variables/PV.rst          |     8 +=0D
+ .../ref-manual/variables/PYPI_PACKAGE.rst          |     6 +=0D
+ .../ref-manual/variables/PYPI_PACKAGE_EXT.rst      |     3 +=0D
+ .../ref-manual/variables/PYPI_SRC_URI.rst          |     6 +=0D
+ documentation/ref-manual/variables/PYTHON_ABI.rst  |     8 +=0D
+ .../ref-manual/variables/QA_EMPTY_DIRS.rst         |     7 +=0D
+ .../variables/QA_EMPTY_DIRS_RECOMMENDATION.rst     |    11 +=0D
+ .../ref-manual/variables/QB_CMDLINE_IP_SLIRP.rst   |     5 +=0D
+ .../ref-manual/variables/QB_CMDLINE_IP_TAP.rst     |     9 +=0D
+ .../ref-manual/variables/QB_DEFAULT_FSTYPE.rst     |     4 +=0D
+ .../ref-manual/variables/QB_DEFAULT_KERNEL.rst     |     3 +=0D
+ .../ref-manual/variables/QB_DRIVE_TYPE.rst         |     9 +=0D
+ documentation/ref-manual/variables/QB_GRAPHICS.rst |     4 +=0D
+ .../variables/QB_KERNEL_CMDLINE_APPEND.rst         |     7 +=0D
+ documentation/ref-manual/variables/QB_MEM.rst      |     4 +=0D
+ .../ref-manual/variables/QB_NETWORK_DEVICE.rst     |     9 +=0D
+ .../variables/QB_NFSROOTFS_EXTRA_OPT.rst           |     7 +=0D
+ .../ref-manual/variables/QB_OPT_APPEND.rst         |     2 +=0D
+ documentation/ref-manual/variables/QB_RNG.rst      |     7 +=0D
+ .../ref-manual/variables/QB_ROOTFS_EXTRA_OPT.rst   |     2 +=0D
+ .../ref-manual/variables/QB_SERIAL_OPT.rst         |     6 +=0D
+ documentation/ref-manual/variables/QB_SMP.rst      |     7 +=0D
+ .../ref-manual/variables/QB_TAP_NAMESERVER.rst     |     2 +=0D
+ documentation/ref-manual/variables/QB_TAP_OPT.rst  |     9 +=0D
+ documentation/ref-manual/variables/RANLIB.rst      |     1 +=0D
+ documentation/ref-manual/variables/RCONFLICTS.rst  |    28 +=0D
+ documentation/ref-manual/variables/RDEPENDS.rst    |   103 +=0D
+ documentation/ref-manual/variables/READELF.rst     |     1 +=0D
+ .../ref-manual/variables/RECIPE_MAINTAINER.rst     |    14 +=0D
+ .../variables/RECIPE_NO_UPDATE_REASON.rst          |     5 +=0D
+ .../ref-manual/variables/RECIPE_SYSROOT.rst        |    18 +=0D
+ .../ref-manual/variables/RECIPE_SYSROOT_NATIVE.rst |     8 +=0D
+ .../variables/RECIPE_UPGRADE_EXTRA_TASKS.rst       |     9 +=0D
+ documentation/ref-manual/variables/REPODIR.rst     |     1 +=0D
+ .../variables/REQUIRED_COMBINED_FEATURES.rst       |     8 +=0D
+ .../variables/REQUIRED_DISTRO_FEATURES.rst         |     8 +=0D
+ .../variables/REQUIRED_IMAGE_FEATURES.rst          |    15 +=0D
+ .../variables/REQUIRED_MACHINE_FEATURES.rst        |     7 +=0D
+ .../variables/REQUIRED_TUNE_FEATURES.rst           |     7 +=0D
+ .../ref-manual/variables/REQUIRED_VERSION.rst      |     9 +=0D
+ .../ref-manual/variables/RETAIN_DIRS_ALWAYS.rst    |     3 +=0D
+ .../ref-manual/variables/RETAIN_DIRS_FAILURE.rst   |     3 +=0D
+ .../variables/RETAIN_DIRS_GLOBAL_ALWAYS.rst        |     3 +=0D
+ .../variables/RETAIN_DIRS_GLOBAL_FAILURE.rst       |     3 +=0D
+ .../ref-manual/variables/RETAIN_ENABLED.rst        |     3 +=0D
+ .../ref-manual/variables/RETAIN_OUTDIR.rst         |     3 +=0D
+ .../ref-manual/variables/RETAIN_TARBALL_SUFFIX.rst |     3 +=0D
+ .../ref-manual/variables/RM_WORK_EXCLUDE.rst       |     3 +=0D
+ .../ref-manual/variables/RM_WORK_EXCLUDE_ITEMS.rst |     4 +=0D
+ documentation/ref-manual/variables/ROOTFS.rst      |     4 +=0D
+ .../variables/ROOTFS_POSTINSTALL_COMMAND.rst       |    11 +=0D
+ .../variables/ROOTFS_POSTPROCESS_COMMAND.rst       |    11 +=0D
+ .../variables/ROOTFS_POSTUNINSTALL_COMMAND.rst     |    13 +=0D
+ .../variables/ROOTFS_PREPROCESS_COMMAND.rst        |    11 +=0D
+ documentation/ref-manual/variables/ROOT_HOME.rst   |    17 +=0D
+ .../ref-manual/variables/RPMBUILD_EXTRA_PARAMS.rst |     1 +=0D
+ documentation/ref-manual/variables/RPROVIDES.rst   |    14 +=0D
+ documentation/ref-manual/variables/RRECOMMENDS.rst |    55 +=0D
+ documentation/ref-manual/variables/RREPLACES.rst   |    31 +=0D
+ documentation/ref-manual/variables/RSUGGESTS.rst   |    15 +=0D
+ .../ref-manual/variables/RUST_CHANNEL.rst          |     3 +=0D
+ documentation/ref-manual/variables/S.rst           |    18 +=0D
+ .../variables/SANITY_REQUIRED_UTILITIES.rst        |     4 +=0D
+ .../ref-manual/variables/SANITY_TESTED_DISTROS.rst |     9 +=0D
+ .../variables/SBOM_CVE_CHECK_EXPORT_VARS.rst       |    16 +=0D
+ .../variables/SBOM_CVE_CHECK_EXTRA_ARGS.rst        |     6 +=0D
+ .../variables/SBOM_CVE_CHECK_SCAN_SCOPE.rst        |    10 +=0D
+ .../variables/SBOM_CVE_CHECK_SHOW_WARNINGS.rst     |    11 +=0D
+ documentation/ref-manual/variables/SDKEXTPATH.rst  |    15 +=0D
+ .../ref-manual/variables/SDKIMAGE_FEATURES.rst     |     4 +=0D
+ documentation/ref-manual/variables/SDKMACHINE.rst  |    15 +=0D
+ documentation/ref-manual/variables/SDKPATH.rst     |     2 +=0D
+ .../ref-manual/variables/SDKPATHINSTALL.rst        |     5 +=0D
+ .../ref-manual/variables/SDKTARGETSYSROOT.rst      |     3 +=0D
+ documentation/ref-manual/variables/SDK_ARCH.rst    |     2 +=0D
+ .../ref-manual/variables/SDK_ARCHIVE_TYPE.rst      |     8 +=0D
+ documentation/ref-manual/variables/SDK_AS_ARCH.rst |     3 +=0D
+ .../ref-manual/variables/SDK_BUILDINFO_FILE.rst    |     3 +=0D
+ documentation/ref-manual/variables/SDK_CC_ARCH.rst |     3 +=0D
+ .../variables/SDK_CUSTOM_TEMPLATECONF.rst          |     3 +=0D
+ documentation/ref-manual/variables/SDK_DEPLOY.rst  |     6 +=0D
+ documentation/ref-manual/variables/SDK_DIR.rst     |    11 +=0D
+ .../ref-manual/variables/SDK_EXT_TYPE.rst          |    10 +=0D
+ .../ref-manual/variables/SDK_HOST_MANIFEST.rst     |    14 +=0D
+ .../ref-manual/variables/SDK_INCLUDE_PKGDATA.rst   |    12 +=0D
+ .../ref-manual/variables/SDK_INCLUDE_TOOLCHAIN.rst |    11 +=0D
+ documentation/ref-manual/variables/SDK_LD_ARCH.rst |     3 +=0D
+ documentation/ref-manual/variables/SDK_NAME.rst    |    10 +=0D
+ documentation/ref-manual/variables/SDK_OS.rst      |     2 +=0D
+ documentation/ref-manual/variables/SDK_OUTPUT.rst  |    13 +=0D
+ .../ref-manual/variables/SDK_PACKAGE_ARCHS.rst     |     5 +=0D
+ .../variables/SDK_POSTPROCESS_COMMAND.rst          |    10 +=0D
+ documentation/ref-manual/variables/SDK_PREFIX.rst  |     5 +=0D
+ .../ref-manual/variables/SDK_RECRDEP_TASKS.rst     |    14 +=0D
+ documentation/ref-manual/variables/SDK_SYS.rst     |     8 +=0D
+ documentation/ref-manual/variables/SDK_TARGETS.rst |     6 +=0D
+ .../ref-manual/variables/SDK_TARGET_MANIFEST.rst   |    14 +=0D
+ documentation/ref-manual/variables/SDK_TITLE.rst   |    15 +=0D
+ .../ref-manual/variables/SDK_TOOLCHAIN_LANGS.rst   |     2 +=0D
+ .../ref-manual/variables/SDK_UPDATE_URL.rst        |     3 +=0D
+ documentation/ref-manual/variables/SDK_VENDOR.rst  |     1 +=0D
+ documentation/ref-manual/variables/SDK_VERSION.rst |     9 +=0D
+ .../ref-manual/variables/SDK_ZIP_OPTIONS.rst       |     3 +=0D
+ documentation/ref-manual/variables/SECTION.rst     |     2 +=0D
+ .../ref-manual/variables/SELECTED_OPTIMIZATION.rst |     7 +=0D
+ .../ref-manual/variables/SERIAL_CONSOLES.rst       |     6 +=0D
+ .../ref-manual/variables/SETUPTOOLS_BUILD_ARGS.rst |     3 +=0D
+ .../ref-manual/variables/SETUPTOOLS_SETUP_PATH.rst |     8 +=0D
+ .../variables/SIGGEN_EXCLUDERECIPES_ABISAFE.rst    |    11 +=0D
+ .../variables/SIGGEN_EXCLUDE_SAFE_RECIPE_DEPS.rst  |    26 +=0D
+ .../ref-manual/variables/SIGGEN_LOCKEDSIGS.rst     |    22 +=0D
+ .../variables/SIGGEN_LOCKEDSIGS_TASKSIG_CHECK.rst  |     7 +=0D
+ .../variables/SIGGEN_LOCKEDSIGS_TYPES.rst          |    12 +=0D
+ .../ref-manual/variables/SITEINFO_BITS.rst         |     2 +=0D
+ .../ref-manual/variables/SITEINFO_ENDIANNESS.rst   |     2 +=0D
+ .../ref-manual/variables/SKIP_FILEDEPS.rst         |     9 +=0D
+ documentation/ref-manual/variables/SKIP_RECIPE.rst |    10 +=0D
+ documentation/ref-manual/variables/SOC_FAMILY.rst  |     9 +=0D
+ documentation/ref-manual/variables/SOLIBS.rst      |     6 +=0D
+ documentation/ref-manual/variables/SOLIBSDEV.rst   |     7 +=0D
+ .../ref-manual/variables/SOURCE_DATE_EPOCH.rst     |    15 +=0D
+ .../ref-manual/variables/SOURCE_MIRROR_FETCH.rst   |    16 +=0D
+ .../ref-manual/variables/SOURCE_MIRROR_URL.rst     |    39 +=0D
+ .../ref-manual/variables/SPDXLICENSEMAP.rst        |     6 +=0D
+ .../ref-manual/variables/SPDX_BUILD_HOST.rst       |    14 +=0D
+ .../variables/SPDX_CONCLUDED_LICENSE.rst           |    14 +=0D
+ .../variables/SPDX_CUSTOM_ANNOTATION_VARS.rst      |    24 +=0D
+ .../variables/SPDX_FILE_EXCLUDE_PATTERNS.rst       |    12 +=0D
+ .../variables/SPDX_GIT_PURL_MAPPINGS.rst           |     9 +=0D
+ .../ref-manual/variables/SPDX_IMAGE_SUPPLIER.rst   |    34 +=0D
+ .../SPDX_INCLUDE_BITBAKE_PARENT_BUILD.rst          |    20 +=0D
+ .../variables/SPDX_INCLUDE_COMPILED_SOURCES.rst    |    28 +=0D
+ .../variables/SPDX_INCLUDE_KERNEL_CONFIG.rst       |    18 +=0D
+ .../variables/SPDX_INCLUDE_PACKAGECONFIG.rst       |    21 +=0D
+ .../ref-manual/variables/SPDX_INCLUDE_SOURCES.rst  |    23 +=0D
+ .../ref-manual/variables/SPDX_INCLUDE_VEX.rst      |    12 +=0D
+ .../ref-manual/variables/SPDX_INVOKED_BY.rst       |    25 +=0D
+ .../ref-manual/variables/SPDX_LICENSES.rst         |    10 +=0D
+ .../variables/SPDX_MULTILIB_SSTATE_ARCHS.rst       |     9 +=0D
+ .../ref-manual/variables/SPDX_NAMESPACE_PREFIX.rst |     3 +=0D
+ .../ref-manual/variables/SPDX_ON_BEHALF_OF.rst     |    28 +=0D
+ .../ref-manual/variables/SPDX_PACKAGE_SUPPLIER.rst |    14 +=0D
+ .../ref-manual/variables/SPDX_PACKAGE_URL.rst      |     4 +=0D
+ .../ref-manual/variables/SPDX_PACKAGE_URLS.rst     |     7 +=0D
+ .../ref-manual/variables/SPDX_PACKAGE_VERSION.rst  |     3 +=0D
+ documentation/ref-manual/variables/SPDX_PRETTY.rst |     9 +=0D
+ .../ref-manual/variables/SPDX_SDK_SUPPLIER.rst     |    14 +=0D
+ .../ref-manual/variables/SPDX_UUID_NAMESPACE.rst   |     7 +=0D
+ .../ref-manual/variables/SPECIAL_PKGSUFFIX.rst     |     4 +=0D
+ documentation/ref-manual/variables/SPLASH.rst      |     4 +=0D
+ .../ref-manual/variables/SPLASH_IMAGES.rst         |    30 +=0D
+ documentation/ref-manual/variables/SPL_BINARY.rst  |    25 +=0D
+ .../ref-manual/variables/SPL_DTB_BINARY.rst        |     3 +=0D
+ .../ref-manual/variables/SPL_MKIMAGE_DTCOPTS.rst   |     8 +=0D
+ .../ref-manual/variables/SPL_SIGN_ENABLE.rst       |     2 +=0D
+ .../ref-manual/variables/SPL_SIGN_KEYDIR.rst       |     3 +=0D
+ .../ref-manual/variables/SPL_SIGN_KEYNAME.rst      |     5 +=0D
+ documentation/ref-manual/variables/SRCDATE.rst     |     3 +=0D
+ documentation/ref-manual/variables/SRCPV.rst       |    17 +=0D
+ documentation/ref-manual/variables/SRCREV.rst      |    14 +=0D
+ .../ref-manual/variables/SRCREV_FORMAT.rst         |     1 +=0D
+ .../ref-manual/variables/SRCTREECOVEREDTASKS.rst   |    22 +=0D
+ documentation/ref-manual/variables/SRC_URI.rst     |    44 +=0D
+ .../variables/SRC_URI_OVERRIDES_PACKAGE_ARCH.rst   |     4 +=0D
+ documentation/ref-manual/variables/SSTATE_DIR.rst  |     1 +=0D
+ .../variables/SSTATE_EXCLUDEDEPS_SYSROOT.rst       |    24 +=0D
+ .../ref-manual/variables/SSTATE_MIRRORS.rst        |    67 +=0D
+ .../variables/SSTATE_MIRROR_ALLOW_NETWORK.rst      |     7 +=0D
+ .../ref-manual/variables/SSTATE_SCAN_FILES.rst     |    15 +=0D
+ .../ref-manual/variables/SSTATE_SIG_KEY.rst        |     7 +=0D
+ .../ref-manual/variables/SSTATE_SIG_PASSPHRASE.rst |     7 +=0D
+ .../ref-manual/variables/SSTATE_SKIP_CREATION.rst  |    18 +=0D
+ .../ref-manual/variables/SSTATE_VALID_SIGS.rst     |    27 +=0D
+ .../ref-manual/variables/SSTATE_VERIFY_SIG.rst     |     6 +=0D
+ .../ref-manual/variables/STABLE_VERSION_PARTS.rst  |     7 +=0D
+ .../ref-manual/variables/STAGING_BASELIBDIR.rst    |     3 +=0D
+ .../variables/STAGING_BASE_LIBDIR_NATIVE.rst       |     2 +=0D
+ .../ref-manual/variables/STAGING_BINDIR.rst        |     3 +=0D
+ .../ref-manual/variables/STAGING_BINDIR_CROSS.rst  |    11 +=0D
+ .../ref-manual/variables/STAGING_BINDIR_NATIVE.rst |     2 +=0D
+ .../ref-manual/variables/STAGING_DATADIR.rst       |     3 +=0D
+ .../variables/STAGING_DATADIR_NATIVE.rst           |     2 +=0D
+ documentation/ref-manual/variables/STAGING_DIR.rst |    18 +=0D
+ .../ref-manual/variables/STAGING_DIR_HOST.rst      |    36 +=0D
+ .../ref-manual/variables/STAGING_DIR_NATIVE.rst    |     6 +=0D
+ .../ref-manual/variables/STAGING_DIR_TARGET.rst    |    14 +=0D
+ .../ref-manual/variables/STAGING_ETCDIR_NATIVE.rst |     2 +=0D
+ .../ref-manual/variables/STAGING_EXECPREFIXDIR.rst |     3 +=0D
+ .../ref-manual/variables/STAGING_INCDIR.rst        |     3 +=0D
+ .../ref-manual/variables/STAGING_INCDIR_NATIVE.rst |     2 +=0D
+ .../variables/STAGING_KERNEL_BUILDDIR.rst          |     5 +=0D
+ .../ref-manual/variables/STAGING_KERNEL_DIR.rst    |     2 +=0D
+ .../ref-manual/variables/STAGING_LIBDIR.rst        |     3 +=0D
+ .../ref-manual/variables/STAGING_LIBDIR_NATIVE.rst |     2 +=0D
+ documentation/ref-manual/variables/STAMP.rst       |    18 +=0D
+ documentation/ref-manual/variables/STAMPCLEAN.rst  |     1 +=0D
+ documentation/ref-manual/variables/STAMPS_DIR.rst  |     2 +=0D
+ documentation/ref-manual/variables/STRIP.rst       |     2 +=0D
+ documentation/ref-manual/variables/SUMMARY.rst     |     9 +=0D
+ documentation/ref-manual/variables/SVNDIR.rst      |     2 +=0D
+ .../variables/SYSLINUX_DEFAULT_CONSOLE.rst         |     8 +=0D
+ .../ref-manual/variables/SYSLINUX_OPTS.rst         |     6 +=0D
+ .../ref-manual/variables/SYSLINUX_SERIAL.rst       |     8 +=0D
+ .../ref-manual/variables/SYSLINUX_SERIAL_TTY.rst   |     7 +=0D
+ .../ref-manual/variables/SYSLINUX_SPLASH.rst       |     6 +=0D
+ .../ref-manual/variables/SYSROOT_DESTDIR.rst       |     4 +=0D
+ .../ref-manual/variables/SYSROOT_DIRS.rst          |    41 +=0D
+ .../ref-manual/variables/SYSROOT_DIRS_IGNORE.rst   |    21 +=0D
+ .../ref-manual/variables/SYSROOT_DIRS_NATIVE.rst   |    21 +=0D
+ .../variables/SYSROOT_PREPROCESS_FUNCS.rst         |     3 +=0D
+ .../ref-manual/variables/SYSTEMD_AUTO_ENABLE.rst   |    10 +=0D
+ .../ref-manual/variables/SYSTEMD_BOOT_CFG.rst      |    10 +=0D
+ .../ref-manual/variables/SYSTEMD_BOOT_ENTRIES.rst  |    10 +=0D
+ .../ref-manual/variables/SYSTEMD_BOOT_TIMEOUT.rst  |    10 +=0D
+ .../variables/SYSTEMD_DEFAULT_TARGET.rst           |    14 +=0D
+ .../ref-manual/variables/SYSTEMD_PACKAGES.rst      |    11 +=0D
+ .../ref-manual/variables/SYSTEMD_SERVICE.rst       |    14 +=0D
+ .../variables/SYSVINIT_ENABLED_GETTYS.rst          |     7 +=0D
+ documentation/ref-manual/variables/T.rst           |    14 +=0D
+ documentation/ref-manual/variables/TARGET_ARCH.rst |    15 +=0D
+ .../ref-manual/variables/TARGET_AS_ARCH.rst        |     6 +=0D
+ .../ref-manual/variables/TARGET_CC_ARCH.rst        |     9 +=0D
+ .../ref-manual/variables/TARGET_CC_KERNEL_ARCH.rst |     8 +=0D
+ .../ref-manual/variables/TARGET_CFLAGS.rst         |     8 +=0D
+ .../ref-manual/variables/TARGET_CPPFLAGS.rst       |     9 +=0D
+ .../ref-manual/variables/TARGET_CXXFLAGS.rst       |     9 +=0D
+ .../ref-manual/variables/TARGET_DBGSRC_DIR.rst     |     2 +=0D
+ documentation/ref-manual/variables/TARGET_FPU.rst  |     4 +=0D
+ .../ref-manual/variables/TARGET_LDFLAGS.rst        |     9 +=0D
+ .../ref-manual/variables/TARGET_LD_ARCH.rst        |     6 +=0D
+ documentation/ref-manual/variables/TARGET_OS.rst   |     4 +=0D
+ .../ref-manual/variables/TARGET_PREFIX.rst         |    13 +=0D
+ documentation/ref-manual/variables/TARGET_SYS.rst  |    20 +=0D
+ .../ref-manual/variables/TARGET_VENDOR.rst         |     1 +=0D
+ documentation/ref-manual/variables/TCLIBC.rst      |     4 +=0D
+ documentation/ref-manual/variables/TCMODE.rst      |    41 +=0D
+ .../ref-manual/variables/TC_CXX_RUNTIME.rst        |     4 +=0D
+ .../ref-manual/variables/TEMPLATECONF.rst          |    13 +=0D
+ .../ref-manual/variables/TESTIMAGE_AUTO.rst        |    20 +=0D
+ .../variables/TESTIMAGE_FAILED_QA_ARTIFACTS.rst    |     3 +=0D
+ .../ref-manual/variables/TESTSDK_SUITES.rst        |     4 +=0D
+ .../ref-manual/variables/TEST_EXPORT_DIR.rst       |     6 +=0D
+ .../ref-manual/variables/TEST_EXPORT_ONLY.rst      |     3 +=0D
+ .../ref-manual/variables/TEST_LOG_DIR.rst          |     7 +=0D
+ .../ref-manual/variables/TEST_POWERCONTROL_CMD.rst |     7 +=0D
+ .../variables/TEST_POWERCONTROL_EXTRA_ARGS.rst     |     6 +=0D
+ .../ref-manual/variables/TEST_QEMUBOOT_TIMEOUT.rst |     9 +=0D
+ .../variables/TEST_SERIALCONTROL_CMD.rst           |    10 +=0D
+ .../TEST_SERIALCONTROL_CONNECT_TIMEOUT.rst         |     3 +=0D
+ .../variables/TEST_SERIALCONTROL_EXTRA_ARGS.rst    |     6 +=0D
+ .../variables/TEST_SERIALCONTROL_PS1.rst           |     4 +=0D
+ .../ref-manual/variables/TEST_SERVER_IP.rst        |    10 +=0D
+ documentation/ref-manual/variables/TEST_SUITES.rst |    38 +=0D
+ documentation/ref-manual/variables/TEST_TARGET.rst |    33 +=0D
+ .../ref-manual/variables/TEST_TARGET_IP.rst        |    14 +=0D
+ documentation/ref-manual/variables/THISDIR.rst     |     2 +=0D
+ documentation/ref-manual/variables/TIME.rst        |     3 +=0D
+ documentation/ref-manual/variables/TMPDIR.rst      |    19 +=0D
+ documentation/ref-manual/variables/TOOLCHAIN.rst   |    13 +=0D
+ .../ref-manual/variables/TOOLCHAIN_HOST_TASK.rst   |    26 +=0D
+ .../variables/TOOLCHAIN_HOST_TASK_ESDK.rst         |     3 +=0D
+ .../ref-manual/variables/TOOLCHAIN_NATIVE.rst      |    10 +=0D
+ .../ref-manual/variables/TOOLCHAIN_OPTIONS.rst     |     8 +=0D
+ .../ref-manual/variables/TOOLCHAIN_OUTPUTNAME.rst  |    10 +=0D
+ .../ref-manual/variables/TOOLCHAIN_TARGET_TASK.rst |    15 +=0D
+ documentation/ref-manual/variables/TOPDIR.rst      |     1 +=0D
+ .../variables/TRANSLATED_TARGET_ARCH.rst           |     7 +=0D
+ .../ref-manual/variables/TUNECONFLICTS.rst         |    10 +=0D
+ documentation/ref-manual/variables/TUNEVALID.rst   |    10 +=0D
+ documentation/ref-manual/variables/TUNE_ARCH.rst   |    29 +=0D
+ documentation/ref-manual/variables/TUNE_ASARGS.rst |    15 +=0D
+ documentation/ref-manual/variables/TUNE_CCARGS.rst |    11 +=0D
+ .../ref-manual/variables/TUNE_FEATURES.rst         |    14 +=0D
+ documentation/ref-manual/variables/TUNE_LDARGS.rst |    15 +=0D
+ .../ref-manual/variables/TUNE_PKGARCH.rst          |    11 +=0D
+ .../ref-manual/variables/UBOOT_BINARY.rst          |     1 +=0D
+ .../ref-manual/variables/UBOOT_CONFIG.rst          |    29 +=0D
+ .../ref-manual/variables/UBOOT_CONFIG_BINARY.rst   |    21 +=0D
+ .../variables/UBOOT_CONFIG_FRAGMENTS.rst           |    16 +=0D
+ .../variables/UBOOT_CONFIG_IMAGE_FSTYPES.rst       |    15 +=0D
+ .../variables/UBOOT_CONFIG_MAKE_OPTS.rst           |    14 +=0D
+ .../variables/UBOOT_DTBO_LOADADDRESS.rst           |     4 +=0D
+ .../ref-manual/variables/UBOOT_DTB_LOADADDRESS.rst |     4 +=0D
+ .../ref-manual/variables/UBOOT_ENTRYPOINT.rst      |    12 +=0D
+ documentation/ref-manual/variables/UBOOT_ENV.rst   |    25 +=0D
+ .../ref-manual/variables/UBOOT_ENV_SRC_SUFFIX.rst  |     3 +=0D
+ .../ref-manual/variables/UBOOT_ENV_SUFFIX.rst      |     4 +=0D
+ .../ref-manual/variables/UBOOT_FITIMAGE_ENABLE.rst |     8 +=0D
+ .../variables/UBOOT_FIT_ADDRESS_CELLS.rst          |    17 +=0D
+ .../variables/UBOOT_FIT_ARM_TRUSTED_FIRMWARE.rst   |     9 +=0D
+ .../UBOOT_FIT_ARM_TRUSTED_FIRMWARE_IMAGE.rst       |    18 +=0D
+ .../ref-manual/variables/UBOOT_FIT_CONF_DESC.rst   |     2 +=0D
+ .../variables/UBOOT_FIT_CONF_FIRMWARE.rst          |     7 +=0D
+ .../variables/UBOOT_FIT_CONF_USER_LOADABLES.rst    |     6 +=0D
+ .../ref-manual/variables/UBOOT_FIT_DESC.rst        |     4 +=0D
+ .../variables/UBOOT_FIT_GENERATE_KEYS.rst          |     9 +=0D
+ .../ref-manual/variables/UBOOT_FIT_HASH_ALG.rst    |     3 +=0D
+ .../variables/UBOOT_FIT_KEY_GENRSA_ARGS.rst        |     3 +=0D
+ .../variables/UBOOT_FIT_KEY_REQ_ARGS.rst           |     4 +=0D
+ .../variables/UBOOT_FIT_KEY_SIGN_PKCS.rst          |     3 +=0D
+ .../ref-manual/variables/UBOOT_FIT_SIGN_ALG.rst    |     3 +=0D
+ .../variables/UBOOT_FIT_SIGN_NUMBITS.rst           |     3 +=0D
+ .../ref-manual/variables/UBOOT_FIT_TEE.rst         |     8 +=0D
+ .../ref-manual/variables/UBOOT_FIT_TEE_IMAGE.rst   |    18 +=0D
+ .../variables/UBOOT_FIT_USER_SETTINGS.rst          |    67 +=0D
+ .../ref-manual/variables/UBOOT_FRAGMENTS.rst       |    11 +=0D
+ .../variables/UBOOT_INITIAL_ENV_BINARY.rst         |    21 +=0D
+ .../variables/UBOOT_INITIAL_ENV_BINARY_REDUND.rst  |    12 +=0D
+ .../variables/UBOOT_INITIAL_ENV_BINARY_SIZE.rst    |     7 +=0D
+ .../ref-manual/variables/UBOOT_LOADADDRESS.rst     |    13 +=0D
+ .../ref-manual/variables/UBOOT_LOCALVERSION.rst    |     6 +=0D
+ .../ref-manual/variables/UBOOT_MACHINE.rst         |     7 +=0D
+ .../ref-manual/variables/UBOOT_MAKE_OPTS.rst       |     4 +=0D
+ .../ref-manual/variables/UBOOT_MAKE_TARGET.rst     |     2 +=0D
+ .../ref-manual/variables/UBOOT_MKIMAGE.rst         |     4 +=0D
+ .../ref-manual/variables/UBOOT_MKIMAGE_DTCOPTS.rst |     7 +=0D
+ .../variables/UBOOT_MKIMAGE_KERNEL_TYPE.rst        |     2 +=0D
+ .../ref-manual/variables/UBOOT_MKIMAGE_SIGN.rst    |     5 +=0D
+ .../variables/UBOOT_MKIMAGE_SIGN_ARGS.rst          |     3 +=0D
+ .../ref-manual/variables/UBOOT_RD_ENTRYPOINT.rst   |     4 +=0D
+ .../ref-manual/variables/UBOOT_RD_LOADADDRESS.rst  |     4 +=0D
+ .../ref-manual/variables/UBOOT_SIGN_ENABLE.rst     |    19 +=0D
+ .../ref-manual/variables/UBOOT_SIGN_KEYDIR.rst     |     4 +=0D
+ .../ref-manual/variables/UBOOT_SIGN_KEYNAME.rst    |     6 +=0D
+ .../ref-manual/variables/UBOOT_SUFFIX.rst          |     4 +=0D
+ .../ref-manual/variables/UBOOT_TARGET.rst          |     5 +=0D
+ .../ref-manual/variables/UBOOT_VERSION.rst         |     4 +=0D
+ documentation/ref-manual/variables/UKIFY_CMD.rst   |     4 +=0D
+ documentation/ref-manual/variables/UKI_CMDLINE.rst |     4 +=0D
+ .../ref-manual/variables/UKI_CONFIG_FILE.rst       |     4 +=0D
+ .../ref-manual/variables/UKI_DEVICETREE.rst        |     3 +=0D
+ .../ref-manual/variables/UKI_FILENAME.rst          |     4 +=0D
+ .../ref-manual/variables/UKI_KERNEL_FILENAME.rst   |     2 +=0D
+ documentation/ref-manual/variables/UKI_SB_CERT.rst |     2 +=0D
+ documentation/ref-manual/variables/UKI_SB_KEY.rst  |     3 +=0D
+ .../ref-manual/variables/UNINATIVE_CHECKSUM.rst    |     9 +=0D
+ .../ref-manual/variables/UNINATIVE_URL.rst         |     3 +=0D
+ .../variables/UNKNOWN_CONFIGURE_OPT_IGNORE.rst     |    15 +=0D
+ documentation/ref-manual/variables/UNPACKDIR.rst   |     3 +=0D
+ documentation/ref-manual/variables/UPDATERCPN.rst  |     7 +=0D
+ .../variables/UPSTREAM_CHECK_COMMITS.rst           |     9 +=0D
+ .../variables/UPSTREAM_CHECK_GITTAGREGEX.rst       |    11 +=0D
+ .../ref-manual/variables/UPSTREAM_CHECK_REGEX.rst  |     6 +=0D
+ .../ref-manual/variables/UPSTREAM_CHECK_URI.rst    |     9 +=0D
+ .../variables/UPSTREAM_STABLE_RELEASE_REGEX.rst    |    17 +=0D
+ .../variables/UPSTREAM_VERSION_UNKNOWN.rst         |     9 +=0D
+ .../ref-manual/variables/USERADDEXTENSION.rst      |    20 +=0D
+ .../ref-manual/variables/USERADD_DEPENDS.rst       |     4 +=0D
+ .../ref-manual/variables/USERADD_ERROR_DYNAMIC.rst |    33 +=0D
+ .../ref-manual/variables/USERADD_GID_TABLES.rst    |    16 +=0D
+ .../ref-manual/variables/USERADD_PACKAGES.rst      |    15 +=0D
+ .../ref-manual/variables/USERADD_PARAM.rst         |    14 +=0D
+ .../ref-manual/variables/USERADD_UID_TABLES.rst    |    15 +=0D
+ .../ref-manual/variables/USERMOD_PARAMS.rst        |     6 +=0D
+ .../ref-manual/variables/USER_CLASSES.rst          |    13 +=0D
+ documentation/ref-manual/variables/USE_DEVFS.rst   |     8 +=0D
+ documentation/ref-manual/variables/USE_NLS.rst     |    10 +=0D
+ documentation/ref-manual/variables/USE_VT.rst      |    11 +=0D
+ .../ref-manual/variables/VIRTUAL-RUNTIME.rst       |    25 +=0D
+ documentation/ref-manual/variables/WARN_QA.rst     |     5 +=0D
+ .../ref-manual/variables/WATCHDOG_RUNTIME_SEC.rst  |     3 +=0D
+ .../ref-manual/variables/WATCHDOG_TIMEOUT.rst      |     2 +=0D
+ documentation/ref-manual/variables/WESTON_USER.rst |     2 +=0D
+ .../ref-manual/variables/WESTON_USER_HOME.rst      |     2 +=0D
+ .../ref-manual/variables/WIC_CREATE_EXTRA_ARGS.rst |    12 +=0D
+ .../ref-manual/variables/WIC_SECTOR_SIZE.rst       |    15 +=0D
+ .../ref-manual/variables/WIRELESS_DAEMON.rst       |     3 +=0D
+ documentation/ref-manual/variables/WKS_FILE.rst    |     7 +=0D
+ documentation/ref-manual/variables/WKS_FILES.rst   |    11 +=0D
+ .../ref-manual/variables/WKS_FILE_DEPENDS.rst      |    22 +=0D
+ documentation/ref-manual/variables/WORKDIR.rst     |    27 +=0D
+ documentation/ref-manual/variables/XSERVER.rst     |     8 +=0D
+ documentation/ref-manual/variables/XZ_MEMLIMIT.rst |     4 +=0D
+ documentation/ref-manual/variables/XZ_THREADS.rst  |    11 +=0D
+ .../variables/ZSTD_COMPRESSION_LEVEL.rst           |     3 +=0D
+ .../ref-manual/variables/ZSTD_THREADS.rst          |    11 +=0D
+ .../ref-manual/variables/module_autoload.rst       |    11 +=0D
+ documentation/ref-manual/variables/module_conf.rst |    30 +=0D
+ documentation/test-manual/intro.rst                |     2 +-=0D
+ documentation/test-manual/runtime-testing.rst      |     2 +-=0D
+ documentation/tools/gen-doc-links                  |    59 +=0D
+ 1102 files changed, 13968 insertions(+), 12024 deletions(-)=0D
+---=0D
+base-commit: 9ba54f01e07f754b6b74e16e70d2def33bb844e4=0D
+change-id: 20260702-gen-doc-links-99d92cebfcb4=0D
+=0D
 
