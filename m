@@ -2,121 +2,76 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9E39EC44501
-	for <webhook@archiver.kernel.org>; Fri,  3 Jul 2026 11:35:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CD545C44500
+	for <webhook@archiver.kernel.org>; Fri,  3 Jul 2026 11:45:10 +0000 (UTC)
 Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.91296.1783078513021659357
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.90611.1783079100299587147
  for <docs@lists.yoctoproject.org>;
- Fri, 03 Jul 2026 04:35:14 -0700
+ Fri, 03 Jul 2026 04:45:01 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=jMBX9hqm;
+ dkim=fail reason="dkim: body hash did not verify" header.i=@bootlin.com header.s=dkim header.b=Uh1a0OKU;
  spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 149A7C49F4B
-	for <docs@lists.yoctoproject.org>; Fri,  3 Jul 2026 11:35:23 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id E40A3C49F4B
+	for <docs@lists.yoctoproject.org>; Fri,  3 Jul 2026 11:45:09 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 4E68C60300
-	for <docs@lists.yoctoproject.org>; Fri,  3 Jul 2026 11:35:11 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 58B55104C958E;
-	Fri,  3 Jul 2026 13:35:10 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 0FEEC60300
+	for <docs@lists.yoctoproject.org>; Fri,  3 Jul 2026 11:44:58 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 55903104C949F;
+	Fri,  3 Jul 2026 13:44:56 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1783078510; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1783079097; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=dcaENyUF3pivt1gmWP6eKmQOUYGoCfy3J3FGjBt472o=;
-	b=jMBX9hqmlsPDh4EnHRRdCM73Zg8p82jXPwE8pdi8U/AHhrCd5VvZYfCnRYckqbeBYPxseH
-	0gd/oyZkaE7TmE+MN2myUVtdHlzBxnKC20qm1CRvdP0rpSb7Mv/4kSXalikG9BCNL8zNth
-	9uEnL93nowp1MkZSjBkAGNN4fgRUFV8+hSKP3DVIu5hjHo3QQ6+4xjEJhxHbkwdEoiUptV
-	EB7oYZnNuhO7YMixaNdpj9ikvACwZ179slxXCWm3sNL9D3t/Wly0yP8trKuSjEHBFPSY/k
-	UHo+muaJdtDIU3gNkKqCmiwNIdcDjGWkRjJNCWyz55KFu/yNtdA+RP5coWwa5A==
+	bh=QGN+YFxPIHbLpOkjZ0Hc5XlpiwHR3eIhCu2N/U79JWs=;
+	b=Uh1a0OKUzC2L71JALnmlHvSnfRo7lf8NN85fUC4APUUeFfp1j0hZ3OauRpQdw3ChjafHCY
+	PVW9/LlDy/Ix8vkZvIflLHSp4LT9WtOI7joJooqfP/QZBaXDE82a/CdPH33eOuuxKnEM1u
+	jJjL4MxbBm7boSHvIqkpCAp+kGa8u7PeTfQy3mP/SL5IQa9wc8bfY9C8GKDAVgMburzdH9
+	hWIvznI+kpO7DxCLYiLbaIWeyz8SuZdLHGaF1LGLev4U7GvDoiufHs5oIdDhSzVUDGUQzU
+	2wSldTTvwbaTkNcX0xDeC6XoWxi5AZb7T5tUgoTJz4ZSOfvh5TPka9FIbFre/A==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Fri, 03 Jul 2026 13:31:24 +0200
-Subject: [PATCH v2 1/3] tools/check-glossaries: return 1 in case of failure
+To: docs@lists.yoctoproject.org,
+	Antonin Godard <antonin.godard@bootlin.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH 00/11] Migrate WIC documentation
+Date: Fri,  3 Jul 2026 13:43:31 +0200
+Message-ID: <178307887472.248663.12376542386011255.b4-ty@b4>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260625-wic-migration-v1-0-fef8d481aecc@bootlin.com>
+References: <20260625-wic-migration-v1-0-fef8d481aecc@bootlin.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260703-pre-commit-v2-1-a9a391299c28@bootlin.com>
-References: <20260703-pre-commit-v2-0-a9a391299c28@bootlin.com>
-In-Reply-To: <20260703-pre-commit-v2-0-a9a391299c28@bootlin.com>
-To: docs@lists.yoctoproject.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1730;
- i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=cv1k31EOHlqOhqa+0eOZTnogp1sflX53BHRVYheT0Is=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBqR55tNgiAY7ih7hPVK0caKdsCiFuay1EuW+Fl2
- GGgTz8DE3CJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCakeebQAKCRDRgEFAKaOo
- NmzpD/4vGQ+EdYE3pmCa+9JT2L4fQm2yu/aH6kBDl6kQMaeWRoZbxJ78Cl6LvKX1fYmzZLJoyLZ
- Cl78ruVezmvxbpZc9kMn6JRgwhQoLd48iWMMgr0kI0uabfLTGSPFzFvaIeBLqz6qskk04NHcjF9
- U+5Gh9Ko7ogNUuKFCVRe9FatUzd1VGAcQqqNiC+qUTVdF4EzG5jVju4+9xUXr+wWs8e/XBHlZ9H
- 7L/aRcxq898EB5BRcTKhRuMKGmte5EhVfC22OwspbnpqKHFZV0km2crx4FTo2ZkeQCRUDgGrtMR
- fiWjY54tQd2pD02xcJu2hobW7gS9SIqVVjV87rH057EQFvEGSLLgJTpw8ZMj3inrt8NZkeEX5cQ
- TV3Y5md6M91d1FTxZQqHeUjhkGydjf2HM8RfKhWYFCu4DLvLgskb0/cQoMninin4R1GzAzZPstP
- LU2fW98sD3Av40Ce+QhCbL8pykaP22godrqWQJW94icfzMcB+Ztrda5mo/Nsj0FHCD74ak8W0Ac
- VKjpsKaepQ5cZAjwZIBP/lihIsotRfYyKFSi6UjPmYTXsI3Wf1DMPr01QkyiqErOcZV60Zc6GRO
- W7vHN6pLcGtTKwvpijFmJC58fhkjGUfkz1OUODNVE3rG6dhyTyg1hha7bzwRpajXWOwMKYpQIhH
- MUrs5Ef3vWY7UyA==
-X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
- fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: quoted-printable
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 03 Jul 2026 11:35:20 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10016
+ <docs@lists.yoctoproject.org>; Fri, 03 Jul 2026 11:45:10 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10018
 
-Exit with 1 in case there's an issue with the glossaries. This will be
-used for pre-commit support.
+Applied, thanks!
 
-Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
-Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
----
- documentation/tools/check-glossaries | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/documentation/tools/check-glossaries b/documentation/tools/check-glossaries
-index b5dfe834e..9f1a47126 100755
---- a/documentation/tools/check-glossaries
-+++ b/documentation/tools/check-glossaries
-@@ -4,6 +4,7 @@ import argparse
- import difflib
- import os
- import re
-+import sys
- 
- from pathlib import Path
- 
-@@ -33,6 +34,7 @@ def main():
-     # :term:`A <ABIEXTENSION>` :term:`B` :term:`C <CACHE>`
-     glossary_re = re.compile(r":term:`(?P<letter>[A-Z]{1})( <(?P<varname>[A-Z_]+)>)?`")
-     entry_re = re.compile(r"^   :term:`(?P<entry>.+)`\s*$")
-+    exit_code = 0
- 
-     for rst in glossaries:
- 
-@@ -74,6 +76,7 @@ def main():
-         if diffs:
-             print(f"WARNING: {rst}: entries are not properly sorted:")
-             print('\n'.join(diffs))
-+            exit_code = 1
- 
-         for letter in glossary:
-             try:
-@@ -81,9 +84,13 @@ def main():
-             except ValueError:
-                 print(f"WARNING: {rst}: variable "
-                       f"{glossary[letter]} in glossary does not exist")
-+                exit_code = 1
-             if index > 0 and entries[index - 1].startswith(letter[0]):
-                 print(f"WARNING: {rst}: The variable {glossary[letter]} shouldn't be in "
-                      "the glossary.")
-+                exit_code = 1
-+
-+    sys.exit(exit_code)
- 
- 
- if __name__ == "__main__":
-
--- 
-2.54.0
-
+[01/11] dev-manual/wic.rst: replace deprecated wks directories
+        commit: b981528424e6e33b8f226e81a5d2345fae4dd055
+[02/11] ref-manual/classes.rst: replace deprecated wks directory
+        commit: 70bcb62f02b9b21030b914bc54405ce10d3402b4
+[03/11] ref-manual/kickstart.rst: replace deprecated wks directory
+        commit: b314c7724fd365a19feb9458614d995d14a20910
+[04/11] bsp-guide/bsp.rst: fix raspberry layer content example
+        commit: 2e713eb4777e661348e3e6fd8b2cf00040be4c1a
+[05/11] dev-manual/wic.rst: remove note on wic-tools
+        commit: 92fe43d5bfc561e43ea114773bc2cd5829e4c320
+[06/11] dev-manual/wic.rst: remove bullet point on host requirements
+        commit: ea695e36da61e3aa427d6007436012254527b8a3
+[07/11] dev-manual/wic.rst: add where to set IMAGE_FSTYPES/WKS_FILE[S] fr=
+om
+        commit: 2c781592db342521201d93c384f9e03594db90d2
+[08/11] dev-manual/wic.rst: add a requirement to use wic from the build s=
+ystem
+        commit: 733993507402a886acc48c383e279be2ec521862
+[09/11] dev-manual/wic.rst: convert code snippet to code-blocks
+        commit: ee085e35789fa706cf302ff26f030e56bb174146
+[10/11] ref-manual/kickstart.rst: remove note on available commands
+        commit: fa821e93abff3d811ce9f9093310b7c139e46eea
+[11/11] ref-manual/kickstart.rst: document the include directive
+        commit: 6553c3c8d85c31ecbd66455657735840fe567ac3
 
