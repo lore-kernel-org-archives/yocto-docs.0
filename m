@@ -2,64 +2,64 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F30A6C43458
-	for <webhook@archiver.kernel.org>; Fri,  3 Jul 2026 07:49:57 +0000 (UTC)
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.87544.1783064995725210317
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0D487C43602
+	for <webhook@archiver.kernel.org>; Fri,  3 Jul 2026 07:49:58 +0000 (UTC)
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.88318.1783064995499849700
  for <docs@lists.yoctoproject.org>;
  Fri, 03 Jul 2026 00:49:56 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=eaAb491b;
- spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=LU1Mtjsj;
+ spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id F3B6FC49F4B
-	for <docs@lists.yoctoproject.org>; Fri,  3 Jul 2026 07:50:04 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 381B060333;
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 5F29F1A0E0E;
 	Fri,  3 Jul 2026 07:49:53 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2FE20104C958F;
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 307E86031F;
+	Fri,  3 Jul 2026 07:49:53 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9A801104C958A;
 	Fri,  3 Jul 2026 09:49:51 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
 	t=1783064992; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=DABWtvB8z00wlc5wuVjIz70RDShmyw4AWHDUlUfmE+0=;
-	b=eaAb491b2uJ+z34T5A8L4MqsL1miQjGB3WUAzJkf/wgn/amrAcN85XYiv7OnfOPsGDDMKA
-	5xP8+o72rNdxjpD8Z185UtRcQ2AyUOsgAHowhb1yMJEepCvtbIk8VT6F9vKgI+UthJAocJ
-	b3rUo4cyQL3h3TFrYdjVbjvcyrZJAIvqw4Y0zYEp4WKdV+xgGpdRYh7cATMkWy2T1u1JEO
-	rVka1ntGb55Buvp1ptYy0BvJ8iSDsD6Noa30W0ct0KDcANXkIpU349B7hdDY+PgSD5e7Sx
-	9WXo00mgEn9U+KAZDr62Wa7KVnCdnMcExHiO6mSLHBLdZxJ/Bhn/+xSMVSFsIQ==
+	 content-transfer-encoding; bh=LdqecMKuBHdYqlHLgvubUZYwVRQRTIduO0c4wGkeQXk=;
+	b=LU1MtjsjCR4Qu/++7dYlN7FLnentp3D7N6m/2lbCHZj73ycGQSb9m3PxAyCThGHm4Mo55h
+	/rOkPJoahnncrWnx+bPfLY9rmJSID0lDm+f3+8WjW45OIkHaNtRqxU3bIbMVJyxjindPKG
+	EGgZRMz5Su0wBO8lzpthFOtc5jiYKXPbBAm7JtfP5COxsnWj79SDqcWzsS1nzcsQn6nzBX
+	fXkeNu+an9gC3EkC0XP7BMIKrkh/FyCPGDjeR17533zt5otZk6rMehXbCz3NEfUsuZA/dt
+	6wsLQ6ujPgQ0fV8rFyU64wQCwXf2JZp/5REwlaP/NIq5OleTKDETj2rysta0Hg==
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
 Date: Fri, 03 Jul 2026 09:49:51 +0200
-Message-Id: <DJORSCZR1U0E.20MN4WJD6MOQS@bootlin.com>
-To: "Paul Barker" <paul@pbarker.dev>
-Subject: [master] Pull request
-Cc: <docs@lists.yoctoproject.org>
+Message-Id: <DJORSCRU5ISJ.HTESMK2BJH95@bootlin.com>
+Cc: <docs@lists.yoctoproject.org>, "Yoann Congal" <yoann.congal@smile.fr>
 From: "Antonin Godard" <antonin.godard@bootlin.com>
+To: "Paul Barker" <paul@pbarker.dev>
+Subject: [wrynose] Pull request
 X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 03 Jul 2026 07:49:57 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10006
+ <docs@lists.yoctoproject.org>; Fri, 03 Jul 2026 07:49:58 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10005
 
-The following changes since commit 4562ba19f36e54099bcae82cec8a70deb1c23aa7=
+The following changes since commit 78bd02a51fcc740180df95028c33045d23e31500=
 :
 
   migration-guides/migration-6.0.rst: fix wks file move note (2026-06-26 10=
-:19:17 +0200)
+:20:38 +0200)
 
 are available in the Git repository at:
 
-  git@push.yoctoproject.org:yocto-docs master-next
+  git@push.yoctoproject.org:yocto-docs wrynose-next
 
-for you to fetch changes up to c518622d49c50844df230c8c2a8e08312104b7ad:
+for you to fetch changes up to f5979d175971b55c4653ffe5c059d4e42034b714:
 
-  migration-guides: add add release notes for 6.0.1 (2026-07-02 14:05:36 +0=
-200)
+  ref-manual/variables.rst: document the IMAGE_*_DEBUGFS variables (2026-07=
+-03 09:33:01 +0200)
 
 ----------------------------------------------------------------
-Antonin Godard (28):
+Antonin Godard (18):
       dev-manual/wic.rst: replace deprecated wks directories
       ref-manual/classes.rst: replace deprecated wks directory
       ref-manual/kickstart.rst: replace deprecated wks directory
@@ -72,18 +72,6 @@ m
       dev-manual/wic.rst: convert code snippet to code-blocks
       ref-manual/kickstart.rst: remove note on available commands
       ref-manual/kickstart.rst: document the include directive
-      tools/update-documentation-conf: remove
-      ref-manual/variables.rst: document the USERMOD_PARAMS variable
-      migration-guides/migration-6.1.rst: add USERMOD_PARAMS note
-      ref-manual/variables.rst: add deprecation note for GROUPMEMS_PARAM
-      ref-manual/classes.rst: document python_uv_build
-      migration-guides/migration-6.1.rst: add note on oe.utils.*_distro_fea=
-tures() removal
-      ref-manual/variables.rst: document the UBOOT_FIT_CONF_DESC variable
-      migration-guides/migration/release-notes-6.1.rst: cover recent change=
-s
-      ref-manual/system-requirements.rst: drop Fedora 42 support
-      tools/build-docs-container: drop Fedora 42 support
       ref-manual/variables.rst: document the CCACHE_NATIVE_RECIPES_ALLOWED =
 variable
       ref-manual/variables.rst: document missing CONFLICT_*_FEATURES variab=
@@ -97,21 +85,13 @@ e
 e
       ref-manual/variables.rst: document the IMAGE_*_DEBUGFS variables
 
-Bruce Ashfield (1):
-      kernel-dev: document patch handling for discovered BSP descriptions
-
 Lee Chee Yang (1):
       migration-guides: add add release notes for 6.0.1
 
 Paul Barker (1):
       recipe-style-guide: Clarify when License-Update tag is needed
 
-Robert P. J. Day (7):
-      ref-manual: warn reader about confusing DEPLOYDIR and DEPLOY_DIR
-      ref-manual: render first mention of DEPLOY_DIR as a :term:
-      ref-manual: add intro content to "Manually Called Tasks"
-      ref-manual: mention EXTRA_IMAGE_FEATURES in task
-      ref-manual: add intro content to Ref Manual "Tasks" section
+Robert P. J. Day (2):
       ref-manual: remove all traces of "kernel_menuconfig" task
       dev-manual: update bmaptool section, refer to "bmaptool" package
 
@@ -120,21 +100,13 @@ Robert P. J. Day (7):
  documentation/dev-manual/bmaptool.rst              |  13 +-
  documentation/dev-manual/wic.rst                   | 213 ++++++++++++-----=
 -
- documentation/kernel-dev/advanced.rst              |  58 +++++
- documentation/migration-guides/migration-6.1.rst   |  48 ++++
  documentation/migration-guides/release-6.0.rst     |   1 +
  .../migration-guides/release-notes-6.0.1.rst       | 249 +++++++++++++++++=
 ++++
- .../migration-guides/release-notes-6.1.rst         | 221 +++++++++++++++++=
--
- documentation/ref-manual/classes.rst               |  12 +-
+ documentation/ref-manual/classes.rst               |   3 +-
  documentation/ref-manual/kickstart.rst             |  24 +-
- documentation/ref-manual/system-requirements.rst   |   1 -
- documentation/ref-manual/tasks.rst                 |  95 +++++---
- documentation/ref-manual/variables.rst             | 114 +++++++++-
- documentation/tools/build-docs-container           |   2 -
- documentation/tools/update-documentation-conf      | 158 -------------
- 16 files changed, 930 insertions(+), 291 deletions(-)
+ documentation/ref-manual/tasks.rst                 |  43 ++--
+ documentation/ref-manual/variables.rst             |  83 ++++++-
+ 10 files changed, 522 insertions(+), 119 deletions(-)
  create mode 100644 documentation/migration-guides/release-notes-6.0.1.rst
- delete mode 100644 documentation/tools/update-documentation-conf
 
