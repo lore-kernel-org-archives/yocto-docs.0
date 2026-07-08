@@ -1,76 +1,79 @@
-Return-Path: <rpjday@crashcourse.ca>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0A8D7C43458
-	for <webhook@archiver.kernel.org>; Tue,  7 Jul 2026 18:50:25 +0000 (UTC)
-Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.5161.1783450217489975623
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 771C5C43602
+	for <webhook@archiver.kernel.org>; Wed,  8 Jul 2026 10:03:53 +0000 (UTC)
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.4948.1783505030532844552
  for <docs@lists.yoctoproject.org>;
- Tue, 07 Jul 2026 11:50:17 -0700
+ Wed, 08 Jul 2026 03:03:51 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=NZ8Uno4I;
- spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
-	To:From:Date:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=BetbSbqvJGEiVDftCqfYquwU43CGvlDRTtJIPWFoYT0=; b=NZ8Uno4IDPudxkCHInUmzAaCZT
-	4begycWZzbR/EkmWNXoc7fDFMYrhNJ7NMbD4lAuYgL4F3Az+dtteyHCQhGricRgh8FSLixO7DUHAL
-	FSBmDwghQQ7Ue8PCxfZyhLiQnOw+IkgU5okFaWmbR6Mq0vql6Ny3mbyMrRzYNU0JthnM11iiPRyzK
-	UoLmoqxrBl1sBwJ+3NVMDuF4Akgi1VqoT91CH2OCG2V867tsnmtdgdiOjDadNzvh9/zVz2CLzQ62n
-	1TjqBLSSP8naBN+pUz5hV3q7RLyjKnh9yhbeF9IFOIf9SThLtyMIsh/dQSYuNqWDs0zdFS+yqOoUw
-	XcZva/5A==;
-Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:40814 helo=sheena)
-	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.4)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1whAry-00000001Ndg-2iTT
-	for docs@lists.yoctoproject.org;
-	Tue, 07 Jul 2026 14:50:15 -0400
-Date: Tue, 7 Jul 2026 14:49:39 -0400 (EDT)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: some variables in kernel-artitact-names.bbclass not in glossary
-Message-ID: <45d0bf0c-1a78-6cdc-6d88-d7f70bead8cf@crashcourse.ca>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=uXtcSY55;
+ spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 05C9AC8F448
+	for <docs@lists.yoctoproject.org>; Wed,  8 Jul 2026 10:04:02 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 22F3860337;
+	Wed,  8 Jul 2026 10:03:48 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B542611BC33C8;
+	Wed,  8 Jul 2026 12:03:46 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1783505027; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=qxDBFdmzRWzUSHxq++wPIlBT/tcUyqgJ1oQHJ6CGvbo=;
+	b=uXtcSY55UUalItZltxn7FGIjLV9uBPfWlc51Bq4lzVsomamzcpnzFoSyRCQbVTuT/SZJhJ
+	UYu+jGFDGFMb1ETW0jDxs/Q5WMa/A1Hr5ba+6gzypW7rrPgOe/YrpAd027DDULbRLMU/+G
+	r3tKVkNLlcraKVXjTh5fsa4Q14uJgccB/0jNnd/iYjAqdgYHTrlU7cwW1RKuDWiHllLemy
+	vAppn+7VYLeJUXDeV3ZMNyewAGcuryBc1xv3EEwCMcGCrBK7dIOtoIv/HqO7+KgSvMJt18
+	mkmbpDWaO++ALhJuuOlptZU5Ab/ICLsAAWZNuxdFIanx7EvlJhvF1tu6MGgPXg==
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 08 Jul 2026 12:03:45 +0200
+Message-Id: <DJT3RLUZ8AQ0.2KURC5T9ECZD1@bootlin.com>
+From: "Antonin Godard" <antonin.godard@bootlin.com>
+To: "Paul Barker" <paul@pbarker.dev>, <docs@lists.yoctoproject.org>
+Subject: Re: [docs] [PATCH RFC 0/6] Generate documentation links for OE-Core
+ (cover letter only)
+Cc: "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+References: <20260703-gen-doc-links-v1-0-c2c31c68a0c2@bootlin.com>
+ <b50ad5146a74a8a2278ebc5a7e89fc02d7d5f25b.camel@pbarker.dev>
+In-Reply-To: <b50ad5146a74a8a2278ebc5a7e89fc02d7d5f25b.camel@pbarker.dev>
+X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 07 Jul 2026 18:50:25 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10040
+ <docs@lists.yoctoproject.org>; Wed, 08 Jul 2026 10:03:53 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10042
 
+Hi,
 
-crawling through the kernel code and tasks and classes and here:
+On Mon Jul 6, 2026 at 12:02 PM CEST, Paul Barker wrote:
+[...]
+>
+> Hi Antonin,
+>
+> I think the idea is good! A couple of comments...
+>
+> I don't think we can set YOCTO_DOCS_DIR by default as there are many
+> ways of setting up the source layers without cloning the docs repo. We
+> would need a way to set this in toolcfg.conf via bitbake-setup when the
+> chosen configuration includes yocto-docs. Then the include directive in
+> bitbake.conf should be conditional on YOCTO_DOCS_DIR being set.
 
-https://git.openembedded.org/openembedded-core/tree/meta/classes-recipe/kernel-artifact-names.bbclass
+So this would require adding specific logic in bitbake-setup, I guess? I.e.=
+ make
+bitbake-setup detect that we've included the documentation as part of our b=
+uild
+and set YOCTO_DOCS_DIR appropriately? Is this what you had in mind?
 
-there are some variables that are not in the variables glossary:
+> Also looking at the gen-doc-links script, we should not use a Creative
+> Commons license for scripts. We should use MIT or GPL.
 
-  KERNEL_ARTIFACT_LINK_NAME
-  KERNEL_ARTIFACT_BIN_EXT
-  KERNEL_DTB_BIN_EXT
-  KERNEL_FIT_BIN_EXT
+Correct, I'll adjust that.
 
-in fact, there are several references in the glossary to
-KERNEL_ARTIFACT_LINK_NAME, but not by ref, just with monospaced font,
-so it seems like it merits an entry.
-
-  and, no, i can't submit a patch since i'm still learning how these
-things are used.
-
-rday
+Thanks!
+Antonin
 
