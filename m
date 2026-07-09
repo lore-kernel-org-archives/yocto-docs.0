@@ -1,94 +1,173 @@
-Return-Path: <rpjday@crashcourse.ca>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 58528C44515
-	for <webhook@archiver.kernel.org>; Thu,  9 Jul 2026 08:49:04 +0000 (UTC)
-Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.4623.1783586941353026564
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 37C55C43458
+	for <webhook@archiver.kernel.org>; Thu,  9 Jul 2026 09:19:26 +0000 (UTC)
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.5222.1783588761004925071
  for <docs@lists.yoctoproject.org>;
- Thu, 09 Jul 2026 01:49:01 -0700
+ Thu, 09 Jul 2026 02:19:22 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=F4HQVAwv;
- spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
-	To:From:Date:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=7tfU0z66xxEModz7mZ+58S+9N5p5eeNnGs3jGdgKaM4=; b=F4HQVAwvRhDo+8251aSnzqlgH9
-	zx61vz1zSrC5hemsCvNCmN+Cb3edKrSrxndMnYHf5oK8utfHitzWt0l6X36ZBqyn3romNazUbwjDs
-	2rvqOXXL3Lfx+X1XPkds0EykMw8ngTDt+vfEJTHyfXMnvSt20FQdPqQy7fYO8/SxSlYzWHTIIPdsB
-	R0P60427v2nNAsTi6tc3wqn4VyCNHct+s3qMJjt6OFEBloZzJZXkSXateAngg9zMzNUf7THp06Tal
-	QFlEDnP7/nISqiggGxwW62lYfaa+JngiItoY6FRmltHtgUcWfK5PBO+o0MlPXXRQMlRw7/VGetvBu
-	jXdvVvwQ==;
-Received: from pool-174-114-114-5.cpe.net.cable.rogers.com ([174.114.114.5]:60250 helo=sheena)
-	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.4)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1whkRF-00000005lYu-45D0
-	for docs@lists.yoctoproject.org;
-	Thu, 09 Jul 2026 04:48:59 -0400
-Date: Thu, 9 Jul 2026 04:48:33 -0400 (EDT)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: [PATCH] ref-manual: add "KERNEL_IMAGE_STRIP_EXTRA_SECTIONS" to
- variables
-Message-ID: <bbb920f3-06ee-356c-1641-e9d4dda960d8@crashcourse.ca>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=vAt3Uq10;
+ spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id BE25D1A0F02;
+	Thu,  9 Jul 2026 09:19:18 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 930C45FF03;
+	Thu,  9 Jul 2026 09:19:18 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3DD9811BC36CC;
+	Thu,  9 Jul 2026 11:19:16 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1783588758; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=DKGK2h0Txt8a/WgLFFc05BdpiQ2WcsMae1qYhNElXOk=;
+	b=vAt3Uq10Bzh280Ud5hTQNXoe6Vjw5co8NpvGyHGVihzlxc31jn0jN4++Kij5up4kO4OFOC
+	027k688CuzFr0SkuB2PVcDkhSXW0qz/A60IS9AKfVwLz5xASn0v7HRlOgsOnzEFUrYnCAi
+	1K1ICXd9w5iA6XSrI3cvj4PjIPPDi0V24u/BAYETuY8MfWYmNEV94fYlRmfwFO2XYJrwIQ
+	t3tP5jfsFXvrkRz8HDZKo5T0y2VC3FGikeIbHOjWY2dUjM5eBkaOsqZloGL52TihdisYLk
+	k8GsmtVE4r++BVq4VLkShNH76TxES70jSgNiuEvPyAcNJlHfsMHIFlWQj5MoDg==
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 09 Jul 2026 11:19:16 +0200
+Message-Id: <DJTXG3680KJ8.38KH63IRCHA58@bootlin.com>
+To: "Quentin Schulz" <quentin.schulz@cherry.de>,
+ <docs@lists.yoctoproject.org>
+Subject: Re: [docs] [PATCH RFC 0/6] Generate documentation links for OE-Core
+ (cover letter only)
+Cc: "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>
+From: "Antonin Godard" <antonin.godard@bootlin.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+References: <20260703-gen-doc-links-v1-0-c2c31c68a0c2@bootlin.com>
+ <d7cfcd90-05b0-4694-9b37-8bd7ac5fa029@cherry.de>
+ <DJT3RMDK1H4Z.2CCWEJB3VWC1L@bootlin.com>
+ <ebb09a0b-babd-47d7-bbaa-a9d99d95c84a@cherry.de>
+ <DJT67BR5EHYL.3TBALWGBB86R4@bootlin.com>
+ <754789a5-9782-407f-8d7c-85942817a65c@cherry.de>
+In-Reply-To: <754789a5-9782-407f-8d7c-85942817a65c@cherry.de>
+X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 09 Jul 2026 08:49:04 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10047
+ <docs@lists.yoctoproject.org>; Thu, 09 Jul 2026 09:19:26 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10048
 
+Hi,
 
-Add this variable to the variables glossary, and add links to it and
-back to the do_strip() task for completeness.
+On Wed Jul 8, 2026 at 2:05 PM CEST, Quentin Schulz wrote:
+> On 7/8/26 1:58 PM, Antonin Godard wrote:
+>> Hi,
+>>=20
+>> On Wed Jul 8, 2026 at 12:24 PM CEST, Quentin Schulz via lists.yoctoproje=
+ct.org wrote:
+>> [...]
+>>>>> I've barely looked at it but the first question I had when looking at
+>>>>> this was "why a file per variable in the glossary?" and the few commi=
+ts
+>>>>> I had a look at in the RFC branch don't really say. I think you may h=
+ave
+>>>>> wanted to generate a list of variables that are in the glossary and
+>>>>> parsing Sphinx is a bit overkill, so just looking for files in a
+>>>>> specific directory would be easier? There are three issues with this
+>>>>> logic, first, we would need to do this for older releases which is
+>>>>> time-consuming and error-prone (I guess you probably wrote a script t=
+o
+>>>>> do it, so maybe not that much), second, it may become outdated, third=
+,
+>>>>> you need access to the docs locally.
+>>>>>
+>>>>> Have you considering simply getting the objects.inv file generated by
+>>>>> Sphinx and available at docs.yoctoproject.org/objects.inv?
+>>>>>
+>>>>> python -m sphinx.ext.intersphinx https://docs.yoctoproject.org/object=
+s.inv
+>>>>>
+>>>>> will give you something interesting.
+>>>>
+>>>> It looks like a great fit for this indeed. My only concern is that thi=
+s
+>>>> is built after running a Sphinx build. So depending on this file to ge=
+nerate a
+>>>> configuration file that we maintain in yocto-docs means we depend on b=
+uilding
+>>>> the documentation to generate a source file. This is fine, but origina=
+lly I had
+>>>
+>>> But the neat part is, you can download this file from the official docs
+>>> so you don't have to build it yourself or require a local copy of the
+>>> tree like this RFC suggests.
+>>=20
+>> The script could always take an URL as argument and do the fetch part, i=
+f we
+>> want to do that out of yocto-docs (but do we, really?).
+>>=20
+>
+> I don't understand why you want to have it in yocto-docs. It would=20
+> require a user of OE-Core/BitBake to clone the docs to have access to a=
+=20
+> file that says where to find the documentation of a variable in... the=20
+> docs... on the Internet.
+>
+>>>> a pre-commit hook that would check whether this doclinks.conf would re=
+quire
+>>>> updating, and now this hook would require the documentation to be buil=
+t to run.
+>>>>
+>>>
+>>> Ah, I did misunderstand the intent here. I somehow thought doclinks.con=
+f
+>>> was supposed to be part of OE-Core, but I think it would be more
+>>> appropriate this way, don't you think? We can always provide the script
+>>> to generate such file, in case someone wants to generate something base=
+d
+>>> on it (like I could imagine some VSCode/vim/emacs plugin that allows a
+>>> click on the variable and open the doc link in a browser or something).
+>>> I'm not sure what's the usecase for third party projects to be able to
+>>> do it though, it'll point to the official docs, where we only document
+>>> variables in OE-Core/BitBake (and maybe other first-party layers, don't
+>>> know).
+>>=20
+>> The advantage of keeping this file in yocto-docs is that it can be autom=
+atically
+>> updated as we add or remove documentation. I'd say that's nice consideri=
+ng that
+>> variables get added or removed quite a lot. If we maintain that in OE-Co=
+re, it
+>> means it would have to be updated regularly through patches, which I thi=
+nk is
+>> not ideal.
+>>=20
+>
+> It won't, because you cannot force users to use pre-commit and it's=20
+> bound to happen someone will forgot to check and merge commits which=20
+> don't modify the file and add a variable (but yeah, the next person=20
+> running pre-commit for a commit will bring it back eventually and I'm=20
+> assuming you would be one of those people :) ).
+>
+> But maybe.... we don't need to version the result of the script? Just=20
+> the script itself and if you need whatever this outputs, you run the=20
+> script whenever you want to and you get data relevant to the current=20
+> state of your tree?
 
-Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+On one hand, running the script will most likely require Sphinx to run whic=
+h
+requires an extra dependency on the host to run the script. It could be pro=
+vided
+by python3-sphinx-native but that's not ideal (because pulling Python etc.)=
+.
 
----
+On the other hand, maintaining the file in yocto-docs costs nothing. If you
+build the docs, generating the file is just an extra step afterwards. Certa=
+inly
+not everyone will build it, but it will get updated over time. I think leav=
+ing
+the generation of this file to yocto-docs takes away this responsibility fr=
+om
+the user, and just makes things easier for the user? Especially if we write=
+ some
+configuration fragment / bitbake-setup mechanism to include it automaticall=
+y.
 
-diff --git a/documentation/ref-manual/tasks.rst b/documentation/ref-manual/tasks.rst
-index e1db2d5ed..ea0899f53 100644
---- a/documentation/ref-manual/tasks.rst
-+++ b/documentation/ref-manual/tasks.rst
-@@ -848,7 +848,7 @@ the kernel build produces a warning to that effect.
- ``do_strip``
- ------------
-
--If ``KERNEL_IMAGE_STRIP_EXTRA_SECTIONS`` is defined, this task strips
-+If :term:`KERNEL_IMAGE_STRIP_EXTRA_SECTIONS` is defined, this task strips
- the sections named in that variable from ``vmlinux``. This stripping is
- typically used to remove nonessential sections such as ``.comment``
- sections from a size-sensitive configuration.
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index c92b195ff..1629df99f 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -5623,6 +5623,11 @@ system and gives an overview of their function and contents.
-
-       See :term:`KERNEL_ARTIFACT_NAME` for additional information.
-
-+   :term:`KERNEL_IMAGE_STRIP_EXTRA_SECTIONS`
-+      If this variable is set, it should contain the sections to be
-+      stripped from the ``vmlinux`` image by the kernel-related
-+      :ref:`ref-tasks-strip` task.
-+
-    :term:`KERNEL_IMAGETYPE`
-       The type of kernel to build for a device, usually set by the machine
-       configuration files and defaults to "zImage". This variable is used
+Antonin
 
