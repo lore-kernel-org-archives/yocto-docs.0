@@ -2,100 +2,194 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9DDA9C44501
-	for <webhook@archiver.kernel.org>; Fri, 10 Jul 2026 08:11:54 +0000 (UTC)
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.8208.1783671109225880078
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8B4E0C43458
+	for <webhook@archiver.kernel.org>; Fri, 10 Jul 2026 08:20:14 +0000 (UTC)
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.8289.1783671609466697768
  for <docs@lists.yoctoproject.org>;
- Fri, 10 Jul 2026 01:11:49 -0700
+ Fri, 10 Jul 2026 01:20:10 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=WLbnz1nH;
- spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=WvvbuBR+;
+ spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id D6BC3C2F4FB;
-	Fri, 10 Jul 2026 08:12:01 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 3F4611A0F25
+	for <docs@lists.yoctoproject.org>; Fri, 10 Jul 2026 08:20:07 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 10E6D60341;
-	Fri, 10 Jul 2026 08:11:47 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C232811BD2658;
-	Fri, 10 Jul 2026 10:11:45 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 0EF2C60341
+	for <docs@lists.yoctoproject.org>; Fri, 10 Jul 2026 08:20:07 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4B24811BD26A6;
+	Fri, 10 Jul 2026 10:20:05 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1783671106; h=from:subject:date:message-id:to:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=Z+haK15fWPbRK0PJBlP9i+MuA8SPHWDLyaGcGJAPSqs=;
-	b=WLbnz1nHttffTtCBPrkTRjPEMQEB/UAiAin5VBnCx04G/cw36478arUxhsdPwwNiv470jE
-	yl5nLL5bXCgySpeQF9XAj0670why83ZLf/h4skwoLdXqOrTv2PUrzn6Q4HWCofPUThtGQc
-	CEfauMDcW0MUdddvJCmjbiNrSrntWKQal8yyGpibDkVDSICV0hvkD+vaTbT1hRT7Sv5rMW
-	wV76xB3AxlxJHo7OB2lhgTW5suc9orKPmfReaD9JLKSI4rAZenKM5Vo+jEvTw4UkKaM1Bu
-	ff3eKqI12tJt5mTa4d2S6wZ5mov5YEz3Hie5Z2IKsYugyA6nU1snwFGwu2oW1A==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 10 Jul 2026 10:11:44 +0200
-Message-Id: <DJUQMXDTBWXD.P3TB5BYLA1IK@bootlin.com>
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: "Robert P. J. Day" <rpjday@crashcourse.ca>, "YP docs mailing list"
- <docs@lists.yoctoproject.org>
-Subject: Re: [docs] [PATCH] ref-manual: add
- "KERNEL_IMAGE_STRIP_EXTRA_SECTIONS" to variables
-References: <bbb920f3-06ee-356c-1641-e9d4dda960d8@crashcourse.ca>
-In-Reply-To: <bbb920f3-06ee-356c-1641-e9d4dda960d8@crashcourse.ca>
+	t=1783671606; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=OogApggLUE9Lz1yoXSfzj7QwmDa9wapCQg9AlOR3yD4=;
+	b=WvvbuBR+Lg+uPBSZW2Gwa9ZVdEvK44yA3jKc/FBHfU4E99P4k6qMelctPyXjwLeSdwv2k6
+	tC+uXKmc6lJZoSh67sRImrGC7SFI4SBvbYOW2Nsah9vn9QZKtLW6kg2ESyTJ4QpR+tI7+v
+	PIvWmPYB75x034JCfSLBFzyeuwp4NfHHhQCUU6z023xdayqzO8SfTaxxa5QwcWBuLXs9kC
+	bpvPVdUitxo89+l+4YER6+s0d5qDcg6M81qY67loRNSOzbAzXFWdTETc2FQKdWZ8f6SNdk
+	3qqrZsELel7h/e9nczYmzqEkVxbE6tRnU2yH4Tr42YLpWEIjxtEH+54zn5Jedw==
+From: Antonin Godard <antonin.godard@bootlin.com>
+Date: Fri, 10 Jul 2026 10:19:52 +0200
+Subject: [PATCH] brief-yoctoprojectqs/index.rst: refresh bitbake-setup
+ outputs
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260710-bitbake-setup-refresh-v1-1-18ea82f38ef3@bootlin.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXM2wqDMBCE4VeRve5CYqhCX6X0IoexroKVbJSC+
+ O5N28uPYf6DFFmgdGsOythF5bVU2EtDcfTLEyypmlrTdqa3hoOU4GewomwrZwwZOvI1uZSMs3H
+ wjup3rYO8f93742/dwoRYvjE6zw99KLqXeQAAAA==
+X-Change-ID: 20260710-bitbake-setup-refresh-5d3dd031cfa3
+To: docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Antonin Godard <antonin.godard@bootlin.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5834;
+ i=antonin.godard@bootlin.com; h=from:subject:message-id;
+ bh=XTlmJOKTshXn/vrZxNKf7pHIKAGuYtiGif9GzymaNKI=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBqUKs1/VRsht5O0M4cQqXm6/8ZCNWk+94vzpVBu
+ MQ7dvansnqJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCalCrNQAKCRDRgEFAKaOo
+ NkJSD/49GxVKKjykdvcNRD+XgvS3ImGHwhSnnKlzDJjMYxzJZ7+Kf3JzKW3SCf9FoGtuRw6Y0ev
+ hF38Jxysk6WTDXTgAiDzSsNZmkT4mxYbYQAFM/hTH1Co21i+8QvaCtidXG5lppZiMVZkQaPuM7H
+ 43G6v6mLdurTiHzNd1EDV0CuYDcaaBm78gWnugL2aK2jW32Z/tvqtFK4r0CZolrrp7kPQJHOYol
+ CNE3FjlkJEIo+kn0CCGxxiZQXKBT745LCTZmcpKsd6gmntiHYz4ZPGh0AgUvXqkVsEnjtRg1Bws
+ xRS4s/dVFdgo9yzSWlGY+pT2f4jIknJ52sy1B0zSTPluHhEB55F6oaqoxOnz2i+W0C0PHz2kwvz
+ Rh3OAfIq1E1QkyEvyDUqifYrkWZcsDE1TBq/q8rPrpHnnJs24acw5nmXWrjr4ti9mULryTDGVDw
+ 8v0SKWDX9mdBEkErxAR2G5cPNvbjoOLb0fd8DX/qCOP+3wEGT5Pm43pMM5G/mVPGcDJ6KC1lcCf
+ woOePeFr6g69GM3MMia1S29CHxBuKYW3jXpZn8ZU2VxG7m+im8Pol6O8MNgQkfaPDAkIQotAQwh
+ snnYYYxIoXu4o0eBKa/nhkDcjAgD0a3E7pTnUnzLawySmN8vU5wY9cNm/d5gbUtnljX0nzlt2cS
+ 4Xtmwa2V/eE2n7g==
+X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
+ fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 10 Jul 2026 08:11:54 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10050
+ <docs@lists.yoctoproject.org>; Fri, 10 Jul 2026 08:20:14 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10051
 
-Hi,
+Outputs from bitbake-setup have changed slightly, and our intro document
+did not reflect that anymore. Refresh the outputs.
 
-On Thu Jul 9, 2026 at 10:48 AM CEST, Robert P. J. Day wrote:
->
-> Add this variable to the variables glossary, and add links to it and
-> back to the do_strip() task for completeness.
->
-> Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
->
-> ---
->
-> diff --git a/documentation/ref-manual/tasks.rst b/documentation/ref-manua=
-l/tasks.rst
-> index e1db2d5ed..ea0899f53 100644
-> --- a/documentation/ref-manual/tasks.rst
-> +++ b/documentation/ref-manual/tasks.rst
-> @@ -848,7 +848,7 @@ the kernel build produces a warning to that effect.
->  ``do_strip``
->  ------------
->
-> -If ``KERNEL_IMAGE_STRIP_EXTRA_SECTIONS`` is defined, this task strips
-> +If :term:`KERNEL_IMAGE_STRIP_EXTRA_SECTIONS` is defined, this task strip=
-s
->  the sections named in that variable from ``vmlinux``. This stripping is
->  typically used to remove nonessential sections such as ``.comment``
->  sections from a size-sensitive configuration.
-> diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-m=
-anual/variables.rst
-> index c92b195ff..1629df99f 100644
-> --- a/documentation/ref-manual/variables.rst
-> +++ b/documentation/ref-manual/variables.rst
-> @@ -5623,6 +5623,11 @@ system and gives an overview of their function and=
- contents.
->
->        See :term:`KERNEL_ARTIFACT_NAME` for additional information.
->
-> +   :term:`KERNEL_IMAGE_STRIP_EXTRA_SECTIONS`
-> +      If this variable is set, it should contain the sections to be
-> +      stripped from the ``vmlinux`` image by the kernel-related
-> +      :ref:`ref-tasks-strip` task.
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+---
+ documentation/brief-yoctoprojectqs/index.rst | 53 +++++++++++++---------------
+ 1 file changed, 24 insertions(+), 29 deletions(-)
 
-An example would be nice:
+diff --git a/documentation/brief-yoctoprojectqs/index.rst b/documentation/brief-yoctoprojectqs/index.rst
+index 3e56b8621..2ffa3a6d8 100644
+--- a/documentation/brief-yoctoprojectqs/index.rst
++++ b/documentation/brief-yoctoprojectqs/index.rst
+@@ -124,15 +124,13 @@ differ from the examples below.
+ 
+    .. code-block:: text
+ 
+-      Available configurations:
+-      1. poky-master  Poky - The Yocto Project testing distribution configurations and hardware test platforms
+-      2. oe-nodistro-&DISTRO_NAME_NO_CAP;       OpenEmbedded - 'nodistro' basic configuration, release &DISTRO_RELEASE_SERIES; '&DISTRO_NAME_NO_CAP;'
+-      3. poky-&DISTRO_NAME_NO_CAP;      Poky - The Yocto Project testing distribution configurations and hardware test platforms, release &DISTRO_RELEASE_SERIES; '&DISTRO_NAME_NO_CAP;'
+-      4. oe-nodistro-master   OpenEmbedded - 'nodistro' basic configuration
+-      ...
++      Available Configuration Templates:
++      1. oe-nodistro-master   OpenEmbedded - 'nodistro' basic configuration
++      2. oe-nodistro-&DISTRO_NAME_NO_CAP  OpenEmbedded - 'nodistro' basic configuration, release &DISTRO_RELEASE_SERIES; '&DISTRO_NAME_NO_CAP;' (supported until ...)
++      3. poky-master          Poky - The Yocto Project testing distribution configurations and hardware test platforms
++      4. poky-&DISTRO_NAME_NO_CAP         Poky - The Yocto Project testing distribution configurations and hardware test platforms, release &DISTRO_RELEASE_SERIES; '&DISTRO_NAME_NO_CAP;' (supported until ...)
+ 
+-      Please select one of the above configurations by its number:
+-      1
++      Please select one of the above configurations by its number: 3
+ 
+    Depending on the choice above, new options can be prompted to further specify
+    which configuration to use. For example:
+@@ -140,43 +138,40 @@ differ from the examples below.
+    .. code-block:: text
+ 
+       Available bitbake configurations:
+-      1. poky Poky - The Yocto Project testing distribution
+-      2. poky-with-sstate     Poky - The Yocto Project testing distribution with internet sstate acceleration. Use with caution as it requires a completely robust local network with sufficient bandwidth.
++      1. poky              Poky - The Yocto Project testing distribution
++      2. poky-with-sstate  Poky - The Yocto Project testing distribution with internet sstate acceleration. Use with caution as it requires a completely robust local network with sufficient bandwidth.
+ 
+-      Please select one of the above bitbake configurations by its number:
+-      1
++      Please select one of the above bitbake configurations by its number: 1
+ 
+ #. Choose a target :term:`MACHINE` (for example, ``qemux86-64``):
+ 
+    .. code-block:: text
+ 
+       Target machines:
+-      1. machine/qemux86-64
+-      2. machine/qemuarm64
+-      3. machine/qemuriscv64
+-      4. machine/genericarm64
+-      5. machine/genericx86-64
++      1. machine/qemux86-64     x86-64 system on QEMU
++      2. machine/qemuarm64      ARMv8 system on QEMU
++      3. machine/qemuriscv64    RISC-V system on QEMU
++      4. machine/genericarm64   Arm64 SystemReady IR/ES platforms
++      5. machine/genericx86-64  x86_64 (64-bit) PCs and servers
+ 
+-      Please select one of the above options by its number:
+-      1
++      Please select one of the above options by its number: 1
+ 
+ #. Choose a :term:`DISTRO` (for example, ``poky``):
+ 
+    .. code-block:: text
+ 
+-      Distribution configuration variants:
+-      1. distro/poky
+-      2. distro/poky-altcfg
+-      3. distro/poky-tiny
++      Target distributions:
++      1. distro/poky         Yocto Project Reference Distro
++      2. distro/poky-altcfg  Poky alternative with systemd as init manager
++      3. distro/poky-tiny    Poky alternative optimized for size
+ 
+-      Please select one of the above options by its number:
+-      1
++      Please select one of the above options by its number: 1
+ 
+ #. Choose a :term:`bitbake:setup` directory name:
+ 
+    .. code-block:: text
+ 
+-      Enter setup directory name: [poky-master-poky-distro_poky-machine_qemux86-64]
++      Enter setup directory name: [poky-master]
+ 
+    Press Enter to leave it to the default value shown in the brackets, or type a
+    custom directory name.
+@@ -188,7 +183,7 @@ differ from the examples below.
+ 
+    .. code-block:: console
+ 
+-      $ bitbake-setup init --non-interactive poky-master poky-with-sstate distro/poky machine/qemux86-64
++      $ ./bitbake/bin/bitbake-setup init --non-interactive poky-master poky distro/poky machine/qemux86-64
+ 
+ The ``init`` command creates a new :term:`bitbake:Setup` in the
+ :term:`bitbake:top directory`. The default name is derived from the selected
+@@ -198,7 +193,7 @@ For the selected options in the above example, this would be:
+ 
+ .. code-block:: text
+ 
+-   poky-master-poky-distro_poky-machine_qemux86-64
++   poky-master
+ 
+ This will be our example configuration in the following sections.
+ 
+@@ -249,7 +244,7 @@ an entire Linux distribution, including the toolchain, from source.
+ 
+     .. code-block:: console
+ 
+-       $ source poky-master-poky-distro_poky-machine_qemux86-64/build/init-build-env
++       $ source poky-master/build/init-build-env
+        Poky reference distro build
+ 
+ #.  **Examine Your Current Configuration:** When you set up the build
 
-"""
-For example::
+---
+base-commit: b01fb11a4909fe2d3afa6cb01bd7b179429e382c
+change-id: 20260710-bitbake-setup-refresh-5d3dd031cfa3
 
-   KERNEL_IMAGE_STRIP_EXTRA_SECTIONS =3D ".comment"
-"""
-
-Thanks,
-Antonin
 
