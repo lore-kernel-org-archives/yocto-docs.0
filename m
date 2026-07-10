@@ -1,108 +1,110 @@
-Return-Path: <rpjday@crashcourse.ca>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4E225C43458
-	for <webhook@archiver.kernel.org>; Fri, 10 Jul 2026 09:18:18 +0000 (UTC)
-Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.8875.1783675089664085276
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8E00DC44501
+	for <webhook@archiver.kernel.org>; Fri, 10 Jul 2026 14:47:13 +0000 (UTC)
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.604.1783694831857886984
  for <docs@lists.yoctoproject.org>;
- Fri, 10 Jul 2026 02:18:10 -0700
+ Fri, 10 Jul 2026 07:47:12 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=Bth8Vhnj;
- spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
-	To:From:Date:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=GcSVToS3e/FFXyL0ov0IemZeboIiwr048I2olbOfNvM=; b=Bth8VhnjUIWw6FPthMgrLr4WJ7
-	4cMMC6NnFyDBSQ/MtZ8fuKOvRG5UM6+LBGSla5yGyyuKtgKnfzCNTT+zmt91eUT+8K2MTt2M+Hl8a
-	5steUsE1XVidcRX3xpw+sYfwUgsD4VKTlZCnQOhPocP1tT5nZvGUYTSQbUMmSHCOPLrz8pkA9mvKa
-	ybkvte6EqMzv6VFAZws5t7NFNjZnvVrgq9W9HWyucgGK9MPRydPEuqQanz1PJT6FcilVa3YQOUzO6
-	14DN5jNw9GVd3/85cdhzux+rTZBJytjOue9OUUBC2TYOeRe8+z1e4q6n1zqJy5ByybXhlGgkbU9Ip
-	ti605Ttg==;
-Received: from pool-174-114-114-5.cpe.net.cable.rogers.com ([174.114.114.5]:60610 helo=sheena)
-	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.4)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1wi7Mz-00000008WOc-3ztb
-	for docs@lists.yoctoproject.org;
-	Fri, 10 Jul 2026 05:18:07 -0400
-Date: Fri, 10 Jul 2026 05:17:35 -0400 (EDT)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: [docs] [PATCH v2] ref-manual: add "KERNEL_IMAGE_STRIP_EXTRA_SECTIONS"
- to variables
-Message-ID: <9cd7883a-e24c-8376-5954-cdfd8b18dbcb@crashcourse.ca>
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=DXWn3zSW;
+ spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 2AEAC1A0F41
+	for <docs@lists.yoctoproject.org>; Fri, 10 Jul 2026 14:47:10 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id F379360342
+	for <docs@lists.yoctoproject.org>; Fri, 10 Jul 2026 14:47:09 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 19C8111BD1746;
+	Fri, 10 Jul 2026 16:47:09 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1783694829; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=6zH5OFTCrlcqlypFrQyLzP8r5l0B8KIoRRtV1+ZAsHU=;
+	b=DXWn3zSWBxZ/d9UDkH4X5XZaQfJa0thwpw0pUjJfylMGuKEs8+jELam0yL+3Biu+Mu1LrG
+	ih/vlmEjYil/3/d/oN2m36e/5woJIxaBB3rtbTPXDBtvvOiAvFTP+fn8r+I7bQFUb7DloU
+	LKoThEhkCZ95GwD1gpMlwlyy3o5xQ7FeNxxM2h0A9argqa6+tJA/2BNTBGTxPUHag9Q2wr
+	1rguCbCkGtXoJRYKNPGcS+sC+H2D0xcX+V6aRclQNRr2/0L62Nb6Vf7RhrPD9yQjpqIewN
+	aHk80FlRtCYX8fTt0f3h4yP5yzfQxxVGTl2azyjm1LR4BMzrHwXEt5C3yGQVCQ==
+From: Antonin Godard <antonin.godard@bootlin.com>
+Date: Fri, 10 Jul 2026 16:46:48 +0200
+Subject: [PATCH 1/8] conf.py: add linkcheck builder exclusions
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260710-linkcheck-v1-1-999168371d5e@bootlin.com>
+References: <20260710-linkcheck-v1-0-999168371d5e@bootlin.com>
+In-Reply-To: <20260710-linkcheck-v1-0-999168371d5e@bootlin.com>
+To: docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Antonin Godard <antonin.godard@bootlin.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1489;
+ i=antonin.godard@bootlin.com; h=from:subject:message-id;
+ bh=9eBnagu4jyMjzDa7TpFhjSe15g6ShH6F8Gykc9Gm9LU=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBqUQXq9Y+VxiKxpu4cwB/gbED06/ERW97BC6e7N
+ L76L9NpEaOJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCalEF6gAKCRDRgEFAKaOo
+ NlY9EACL8TOjDiYIm4DjcQeGxEZO2LkTTWylDi49Q/oXsdAR2UXTdu2LP7Jzd/z0PgENDGgWEqq
+ /yOlTAwhW/Do2XV5CHu0GeMairxmpqmATW4WX7FkW5/sycSZkMr5gVdnLj+ZVPYkVyMo3fR02QL
+ gJ8dYILMFrXa4OJS0OKeWzb9AC21qlhosh3emKCq8BzIWLcrrdmJHazqS2PlhnnJ+dhL/kj8yVr
+ lXiw6q3ro1jPOBEFI27XmkQCsCCdQN7eec4RhVJ2rP2W08I3uDeDercadgq+uoBZXBejSab9qlK
+ Gw28sWAaWzswLhXT8zoRY2VzYUYgl9uudsBpVYlG0Lv7ofZywcSCANmbdU3dzdT2p8t45JRBqFE
+ 5lhxZv2A2zryBYOs0ljOK4DW/Q/uBeAtB9hw9zKmOpZv5XubBN0H7oI9CwpDZmq9X1Z8GQcnXCv
+ 82lgt8wAxf31NiiFfervi6qSS11oas3P0WSMF/c62FcR/mQo0Aw/FYkdUix06tzCmt09H58mFe7
+ W2FArnhRYqaL/MPpWp8vsx4cY+XNpMCUvdCXPETqgXIMjD4RpulK8nVnq8nqUHOXasWAFFuquSC
+ Nh5bF/IrVAbxqRodHyeQ9qIXJW0dHabNA+U6Scm7AO2h9/Upl91W/GqZdpvsJsZsf4CGNZIVv52
+ EQ8pXAfl4uVRWFw==
+X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
+ fpr=8648725188DD401BB9A0D3FFD180414029A3A836
+X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 10 Jul 2026 09:18:18 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10055
+ <docs@lists.yoctoproject.org>; Fri, 10 Jul 2026 14:47:13 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10058
 
+The linkcheck builder can be used to scout for broken links. By looking at
+the output of:
 
-Add this variable to the variables glossary, and add links to it and
-back to the do_strip() task for completeness.
+  grep -E -r --no-filename -o 'href="http.://[^/"]+' | sort | uniq -c | sort -nr
 
-Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+from the HTML output directory, exclude links that are too frequent.
+Also remove docs.yoctoproject.org links are those should already be
+validated when building the documentation.
 
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
+ documentation/conf.py | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/documentation/ref-manual/tasks.rst b/documentation/ref-manual/tasks.rst
-index e1db2d5ed..f328edd9b 100644
---- a/documentation/ref-manual/tasks.rst
-+++ b/documentation/ref-manual/tasks.rst
-@@ -848,11 +848,19 @@ the kernel build produces a warning to that effect.
- ``do_strip``
- ------------
+diff --git a/documentation/conf.py b/documentation/conf.py
+index 7b201ebd6..aff01c1ed 100644
+--- a/documentation/conf.py
++++ b/documentation/conf.py
+@@ -143,6 +143,19 @@ suppress_warnings = ['epub.unknown_project_files']
+ # sphinx-copybutton configuration
+ copybutton_prompt_text = "$ "
+ 
++# When using the linkcheck builder, ignore the following links which are too
++# present in the docs, and self-references to yocto-docs which are already
++# checked.
++linkcheck_ignore = [
++    r'https?://nvd\.nist\.gov.*',
++    r'https?://docs\.yoctoproject\.org.*',
++    r'https?://git\.yoctoproject\.org.*',
++    r'https?://git\.openembedded\.org.*',
++    r'https?://downloads\.yoctoproject\.org.*',
++    r'https?://mirrors\.kernel\.org.*',
++    r'https?://mirrors\.edge\.kernel\.org.*'
++]
++
+ # -- Options for HTML output -------------------------------------------------
+ 
+ # The theme to use for HTML and HTML Help pages.  See the documentation for
 
--If ``KERNEL_IMAGE_STRIP_EXTRA_SECTIONS`` is defined, this task strips
-+If :term:`KERNEL_IMAGE_STRIP_EXTRA_SECTIONS` is defined, this task strips
- the sections named in that variable from ``vmlinux``. This stripping is
- typically used to remove nonessential sections such as ``.comment``
- sections from a size-sensitive configuration.
+-- 
+2.54.0
 
-+Common sections to strip:
-+
-+-  ``.comment``: Holds compiler version strings and information
-+
-+-  ``.note.*``: Extra notes often left by the compiler
-+
-+-  ``.debug``: Debugging information
-+
- .. _ref-tasks-validate_branches:
-
- ``do_validate_branches``
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index c92b195ff..cd5979a84 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -5623,6 +5623,13 @@ system and gives an overview of their function and contents.
-
-       See :term:`KERNEL_ARTIFACT_NAME` for additional information.
-
-+   :term:`KERNEL_IMAGE_STRIP_EXTRA_SECTIONS`
-+      If this variable is set, it should contain the sections to be
-+      stripped from the ``vmlinux`` image by the kernel-related
-+      :ref:`ref-tasks-strip` task. As a simple example::
-+
-+         KERNEL_IMAGE_STRIP_EXTRA_SECTIONS = ".comment .note.* .debug"
-+
-    :term:`KERNEL_IMAGETYPE`
-       The type of kernel to build for a device, usually set by the machine
-       configuration files and defaults to "zImage". This variable is used
 
