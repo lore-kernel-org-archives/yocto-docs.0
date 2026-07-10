@@ -1,341 +1,143 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <quentin.schulz@cherry.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3DD68C44509
-	for <webhook@archiver.kernel.org>; Fri, 10 Jul 2026 14:47:24 +0000 (UTC)
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.609.1783694836094025938
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6D3CDC43458
+	for <webhook@archiver.kernel.org>; Fri, 10 Jul 2026 15:10:04 +0000 (UTC)
+Received: from DUZPR83CU001.outbound.protection.outlook.com (DUZPR83CU001.outbound.protection.outlook.com [52.101.66.2])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.1198.1783696202133537493
  for <docs@lists.yoctoproject.org>;
- Fri, 10 Jul 2026 07:47:16 -0700
+ Fri, 10 Jul 2026 08:10:02 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=vL85uBA3;
- spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 731001A0F42
-	for <docs@lists.yoctoproject.org>; Fri, 10 Jul 2026 14:47:14 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 4793F60342
-	for <docs@lists.yoctoproject.org>; Fri, 10 Jul 2026 14:47:14 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8D87611BD1743;
-	Fri, 10 Jul 2026 16:47:13 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1783694833; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=8VmVoJUKUk++1YiTFSVRIAo7FVvKfqUlvZNNqXZ33QA=;
-	b=vL85uBA36izQgvb0K57lpbHgMxj+5GOo2+HeGab27D8FTfpyfsDMF4cRBb6W+auKsB3sRq
-	7qulrogwleq0qOWpTnhbNkvabhcwPpTMXn1FLVnaj38jGHvzwbg8P90cA9Bt/ZoIWKzkWC
-	FHyrp89uVSfSlXwsvjvCyC6cmz5i6NfgljOzhqlC117SwN4gDAvKPkshNrzqrPSZdo8wxD
-	IOSnkTwl2NA3MJqOeqU/tAkQbKU2oEDKkNJ9Q+SmyJuRbudtWrXGCKmm6+SN3WoPc0N/PQ
-	+Vx+6+mHVPQTdG4f7iIcylTMuoRg77+nygvaSDKwIAgMJIx1zZ3NlOX7CnlCLw==
-From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Fri, 10 Jul 2026 16:46:55 +0200
-Subject: [PATCH 8/8] docs-wide: fix various broken links
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260710-linkcheck-v1-8-999168371d5e@bootlin.com>
+ dkim=pass header.i=@cherry.de header.s=selector1 header.b=ZgrBvIOL;
+ spf=pass (domain: cherry.de, ip: 52.101.66.2, mailfrom: quentin.schulz@cherry.de)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=AKRfxDh7jQknfwkuW1b21Q8EPxmA7NwA5Z5krQY6L8w/OYhRpSQfy3T2O6dLwJme2P85CFhuhP4Glsqmq74roxr9sLqT6ptWZ6l8IcoISjA/+bTgCycqJAd8609oWrREBzEuI4EWahmobcnGcGaoBVNSvTrquFG6s35v2KleQFAWQuu34lpwhqH5y67/iPr6IxRWIopOspAHcNx0z56fI49hD3drhmmOae3COHL9YbJe9W0E2FPEVs7kAl61HZo+OP1ByO/qKEeRTujL4GIqTCA1+fmpjFGG4N12ZxwylvEoJ2D3WTLQBabqNV0KqXwf6FDf+X6YvvWe4sH92TBdbw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=oGNLxiL1/WlhgnIcABAYX+gsLODtr8nZiRnkqfEdUUs=;
+ b=pOg94+kXooZXjA/p/3j+1Bp43Nw3/i/cZ0YreqjkrtOFMbufPrlo+DQTiubcdEsxJrL9jpij0A/KYO1BBKdzM00Ym2o3HP2MEWM0FxPEy0BhUSPiK4EchmvoLlGz7JRLedSOEWW3i/85fWy+Nkfc5vaPAMAG2wTmJWZWVIpLPBB+44KulQDjyvdGOzvtozld6B4aXA7Mc686na9MmFpMJv3Fux2aQWM1RuEUXMcC5h7JPWH1ZrfYOv9Fx+TXRSfWbo19WJrJ6TK+HeGOu/vdqwd32Liuutu0ZhujoCiTaomgz6AP4RHmOxytyYWYnWxLwaFt4J/x5viwQXuSU6OrPg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
+ dkim=pass header.d=cherry.de; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=oGNLxiL1/WlhgnIcABAYX+gsLODtr8nZiRnkqfEdUUs=;
+ b=ZgrBvIOLGAqFmZolx7xkDMz0RAaJpmudcbhuG/1yf+9nN4GlROEgn6RFKGjS3dJe83ZTAPPevK2Uh7CvrMeeEDzHYSvYSbT4eC3NVegNun8l8fS/2SP1klfmBQJ/89+/eyU/TARZ1SigUaL4dMR+RChtSeW5nxpEcZpaWp6azac=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=cherry.de;
+Received: from DBBPR04MB7737.eurprd04.prod.outlook.com (2603:10a6:10:1e5::22)
+ by DB9PR04MB8298.eurprd04.prod.outlook.com (2603:10a6:10:248::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.17; Fri, 10 Jul
+ 2026 15:09:56 +0000
+Received: from DBBPR04MB7737.eurprd04.prod.outlook.com
+ ([fe80::5960:fb4b:9313:2b00]) by DBBPR04MB7737.eurprd04.prod.outlook.com
+ ([fe80::5960:fb4b:9313:2b00%5]) with mapi id 15.21.0181.016; Fri, 10 Jul 2026
+ 15:09:56 +0000
+Message-ID: <a72acc48-890d-4a9e-8b22-5d02b5dee589@cherry.de>
+Date: Fri, 10 Jul 2026 17:09:55 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [docs] [PATCH 1/8] conf.py: add linkcheck builder exclusions
+To: antonin.godard@bootlin.com, docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 References: <20260710-linkcheck-v1-0-999168371d5e@bootlin.com>
-In-Reply-To: <20260710-linkcheck-v1-0-999168371d5e@bootlin.com>
-To: docs@lists.yoctoproject.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Antonin Godard <antonin.godard@bootlin.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=13164;
- i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=ReWQCsT9Xl3qQbaaLAEWD8KSl7xfaC3bLB17EvhBDuY=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBqUQXrHXvgFWpMg5rg5WNPd4JnWSJC9QmCLOvuD
- 4Z0LCiJ0CqJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCalEF6wAKCRDRgEFAKaOo
- NjTsD/9QqYl3R4C42jpHrisCsR+Wl9e7RQN35WI2BuTUwGiFEFQ2J3FPZp2j6xfd2UExDC67lQ9
- BiNeyItG9jASSPuAgUrqzn7Vju9HwrVKI07HPjVGL9dRWSLShOyjf/HUw9b4yltgbGlzyHNkvC7
- 1TJb+BQ8d9BeqXPy8f6TJUvksEhcMPCmuH2KPeFX05qBZ8tCwtADxpKxPCaRD1n35dSGEkbznyD
- Qpqk5Gc83gPyos4+E+SIPVzzsoMru0AOB09CQFE9bXAPFivP0P8lsx9PThNsyTQp5MU2pJoDE8M
- R528itIFQg1hLBdjg55Q8ZdfABEnJDMr8S3uiuzzBIjLBcxduXG1nrB9gPW1M0kaX1DEVI+mLYX
- t9JOMMftMp4MPX4uHMi6rLpAmf6FApwgA/PCII9A7NJ5jnBBtBdSrzEH3p5TiJYhf1H5ob82H2N
- ThHAIer7hYIJXbDySnje/E/8tmm6hfif3ADAWFgAzqkV7RJKLY7V8P2NdttIId6z1lmbfvkaTxc
- g9H5u6TIw7WzoCySegjOATjcSRGIhltxmKH2OkfLpt5ObicYkNuadLbCUkICaavjoHFlpiqVZxF
- ag0gcXddUjzGEx9sGiLCg0T75uDnDZqFoyY54avTWz3MO0BcFBFqC9EDQoeYjxLOBayFmfqn3g8
- O3omGRcRZkekosA==
-X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
- fpr=8648725188DD401BB9A0D3FFD180414029A3A836
-X-Last-TLS-Session-Version: TLSv1.3
+ <20260710-linkcheck-v1-1-999168371d5e@bootlin.com>
+Content-Language: en-US
+From: Quentin Schulz <quentin.schulz@cherry.de>
+In-Reply-To: <20260710-linkcheck-v1-1-999168371d5e@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: WA3PEPF00000525.POLP291.PROD.OUTLOOK.COM
+ (2603:10a6:1d8::679) To DBBPR04MB7737.eurprd04.prod.outlook.com
+ (2603:10a6:10:1e5::22)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DBBPR04MB7737:EE_|DB9PR04MB8298:EE_
+X-MS-Office365-Filtering-Correlation-Id: 401d1491-2b87-45ab-b53f-08dede954d6d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: 
+	BCL:0;ARA:13230040|1800799024|23010399003|376014|366016|22082099003|18002099003|3023799007|11063799006|4143699003|56012099006;
+X-Microsoft-Antispam-Message-Info: 
+	zMvH6TvdTaC8/ImFdFNjOBYBc1ahrisoN63pPs2xc57A8W/HRVqBfnt4tMdmfk7knYPgBUJ7kxPp723QdBF31/D0Qn4HJhHD2AAJACRxW8yxTHtN+R4L0Rp+Tov5Jf+uxv3rtvTKPvRnUfRBDcFazYZ3qmun5RpVTIXFkjyA8gXOBihDhzMWEh+XsgwMbjugea7k0cWdsYhVcGiBnhNw/Tdc7yD6ChbNTSxrYmHNDr8Q4E093Qaw4hKfqsgEgwsHFOA+AaOHvwD6Q6EMw6mjw1pxhvueOFhvkVftyBYdWuP0b4Dhl+YKTKdACQQb+5K9TmprSvR5Qsovmgn4K0VH0N8y5X+nl6zQ2+dF7H2Bvvz+8J3iOhrV8DZLfR73RH638Q1XTGpkrhkxrACTO4hOi8sLvJ4DyYx3VQyhMzNRdgrQrsN9B7jp0s8Jy37mLlpi4Ldc6tl1DPWbn6fnd+3BqhtmyWWvyCPN8+uKd90gEqXCYt0OquQ2TgyuN4Yfn36RkrTa2aZCjWIaRYSiR+Zp+C6UE+7BuwnRQQbTWa7yGR9DFV0Q1no4wFUBCW4v+KQfvcPYoEq+DAA2pe+C9MG/gRS9380xOcRtWyqXkI64L1Xjp+iqMkkLIfgC7NbXICdvWdfLuRNTbKOves5gT7k5xADn543y54sLyUC/z0po6nc=
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DBBPR04MB7737.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(376014)(366016)(22082099003)(18002099003)(3023799007)(11063799006)(4143699003)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?utf-8?B?dURYd2R4UnRuTG5hTHRDQlphRU1IMGdVUW5HRG1YRGx2YUN3VXlrcytGeXZx?=
+ =?utf-8?B?SnVqN28vYnE3VDRHVjduZ1JONlU4QkVrRVdFOXNNNEFLSHlTWGNnaktwMDlh?=
+ =?utf-8?B?MHd6cUdzV3M5R2MxWmt3eWJZNFpWaDhESWc0ampjR2VlL0Z3WlNWcVZ2aElJ?=
+ =?utf-8?B?TTdqeDlXblNqVk1EaEpIOEV2WEVxQnpUU3Uwbk5ZRnZXcVp1Uisva0RaN1Jo?=
+ =?utf-8?B?UmVCUkVzWlVxRTludHdoc3FIdUZsK25kWExkS2pyaFNMeDFVa3pWTEpBR3Rh?=
+ =?utf-8?B?aU5xMnM3MklPRm1oeHN5ZC9mbzVVZENGWFE3ZUxPUUN3ZlpwdjJnSk4xS2Fa?=
+ =?utf-8?B?VFB0LzFYcTNYa0hzY2cwUit5S1ZPK05xQlBaVi9WbGwzWDVWVUFWc1QxU0FT?=
+ =?utf-8?B?VVBMWmgrTVhxbXJGVHVHSTE2ZWN0dDZveStFQmk4cTRPbVBQa2RUK3FtSTJv?=
+ =?utf-8?B?Vit6Y3F5cnlReTJGUldJQUw3QkhnRXR1dzhSdHpsS1BDQnBmNGppK0FEVkFK?=
+ =?utf-8?B?R1BqbUc5eGRBNy9sZjl0NWRWaHQ5TGRIYTFrSmRQV1NVSUJOejNWV1FzaERJ?=
+ =?utf-8?B?eHB6T2V2c1JMdWl0ck1lRmQzL0JVbWx5Z0UwMzJqb3h2bWZIVnRYQkswdnRD?=
+ =?utf-8?B?Z2tXcmR1RDRDem0xZTJpeG8rcWxTbWZheEJ3dFl4bVpSTGlHVlJzZTRubllz?=
+ =?utf-8?B?Vm04bVZ1c2xzZytab0Zpc2V2eU1aTDRQR251aGhCSU9EQmZuSkJTa2JFMTIy?=
+ =?utf-8?B?Rzd6S0lpQUx3eXJ4RXVEYk5hdnhldkJodVlZUFBiMWYvdVZWLzZmSkFsKzRp?=
+ =?utf-8?B?VHNIMEJqa0pKQ2E1Vmc5WVhWZnNiQk5HWnhCbEdyRXZXL2hIUTlJUnZqTlU5?=
+ =?utf-8?B?TWVvbDY2WlJPZXpkYkI4NXI0dzVqRVlMUldkZEdFbDhBSnJvTTlHeHFvTUlQ?=
+ =?utf-8?B?aDcwVWp1aUZKSFhkYlhZTnNhQjkvaDBWQXMzTVdkZnlLbExaN3Z6bTF6dlBF?=
+ =?utf-8?B?OVYwN1dFcHJNdWZhKzdrR1ZhMXdRN2FEaDY0U0RycmJDZTV3djFlcklJZStJ?=
+ =?utf-8?B?OVdORWFRMkdrckJqZTQ1c1lHOXBscTBnTllQVDUwOW1lcEVRc3BsUWZYMDJ5?=
+ =?utf-8?B?UjFSMnUxU0ZGZllyelNJZVU3VTd1OVdpcEdxU21VbmdtK2JGTXRFdzc2UDM3?=
+ =?utf-8?B?YUJwL3BTWWlQZkMwUUM1QTNCdkZ5Z3dWczN0RWIyNWRxRElENWRWR2IwVnZq?=
+ =?utf-8?B?V01MZWNPYmdXOHJzSjNYckV0bzJTNzRRb0kza3R3TEVPeFRUcHI4R2N1M0hl?=
+ =?utf-8?B?MVFUVWxnTGpRMjk1OXBUaWN0dFNpKzRoWjJtUHEyU3pQdUJRa1NyZFJnVyts?=
+ =?utf-8?B?VFFMYnBEU0pqeGZsN25IYkkwSVQvTU13dEd6OWQzRFg2WmtvSy8xTlRVTnMw?=
+ =?utf-8?B?Y1VVeG0zZm5mSlRwalQyb1NYZnRRdW9xQXpLZmdpN0plT2xTUFgwdGQrZ1Bv?=
+ =?utf-8?B?MlVpSFZhWTc4MDZZUE5ISUpxTVZINllqM0JqbmtVWHRSQi95c1ptWGJYOVAw?=
+ =?utf-8?B?S1pPOWJCenk2Z1VyODdWT3NNaStmZ3RBMzdWb1Y2YTdJL0J0NDVFN0puRjFj?=
+ =?utf-8?B?M25MUWNrZngwOVB4Z0dhbnRRSjdtS0pMdEFFaU5PNTNVWkRvQ3JXYTNVRlZM?=
+ =?utf-8?B?S08xVHRabEYvYnMyTkRXY1NrUEtzQ3ZwYjZEeTRxdkMrM2dMZG9pZnFNMTYw?=
+ =?utf-8?B?NWxmV28zcmRnLy8zWGUxR3I4bGh4eEFvVG9oZXQ5N1A5UHB3Vk5Va1BKK3c1?=
+ =?utf-8?B?NExOc1ROdHhJejd6c3E1V2lkbWVCRWxRWFV4bE52dXBZV3AzNXJnZC9TNWtm?=
+ =?utf-8?B?SWUvVDA1M1JmU0ZnMHJmSHM0T1pEN2xFUGc0SGFCM3g5cXdMSFFxdXA1VE9r?=
+ =?utf-8?B?eGZyNUJRQm9samE2UW9ybENMclNjcjZGbzgwZ204aExwRVgwaUt3Q3p3RDFm?=
+ =?utf-8?B?RDROQ1FNRVVEMHlHUU11NEpiWmx6ak1oWTJyQlNseGE3ZWFBQTBoNWpySE4x?=
+ =?utf-8?B?ckFPaDlDSy8xUGNjR1lSWnlsSHRROENESWFYZUF6V085dC83UkpTTmdleTdF?=
+ =?utf-8?B?aVJWdzc0cE9BcWUwM25pZVpsZFc1eTBleG9hTjdxMmE2OVRSYnVaWGRsRXgz?=
+ =?utf-8?B?ZnRjeXpORXN1eU9FTGJRaGJ6b3hxS1pDQWRYRzNMaFhqb2dJMk9yS2p1aWhR?=
+ =?utf-8?B?Zklkc0pFS29ReUZZSU4vSWhBVW5NNXRyWXE3dWJFTGhLSEwrWnJHbnpKR3BZ?=
+ =?utf-8?B?YldnWjNlYVJPZFFPYWVJc3cwd0Q2YU94b0pibnlta1pSVVBkL1Z5UT09?=
+X-OriginatorOrg: cherry.de
+X-MS-Exchange-CrossTenant-Network-Message-Id: 401d1491-2b87-45ab-b53f-08dede954d6d
+X-MS-Exchange-CrossTenant-AuthSource: DBBPR04MB7737.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jul 2026 15:09:56.5560
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: CLiG+znipeeya6QfsHj5+nIQP3f8QIUX+ggA5VaztRLcLq8YU93DZqDtGcXskouul8WzjWe4yDi5uyV26Xoo99n6QO8Fdfe+WvD1Hy6WC4U=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8298
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 10 Jul 2026 14:47:24 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10064
+ <docs@lists.yoctoproject.org>; Fri, 10 Jul 2026 15:10:04 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10065
 
-Fix various broken links found using the linkcheck builder, in various
-places of the documentation. For most, the replacing link is the
-equivalent new link.
+Hi Antonin,
 
-Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
----
- documentation/dev-manual/new-recipe.rst            |  2 +-
- documentation/dev-manual/start.rst                 |  2 +-
- documentation/dev-manual/x32-psabi.rst             |  4 +--
- .../migration-guides/release-notes-5.3.rst         |  2 +-
- .../overview-manual/development-environment.rst    |  4 +--
- documentation/profile-manual/usage.rst             | 38 ++++++++++------------
- documentation/ref-manual/classes.rst               |  4 +--
- documentation/ref-manual/variables.rst             |  8 ++---
- .../yocto-project-supported-features.rst           |  2 +-
- 9 files changed, 31 insertions(+), 35 deletions(-)
+On 7/10/26 4:46 PM, Antonin Godard via lists.yoctoproject.org wrote:
+> The linkcheck builder can be used to scout for broken links. By looking at
+> the output of:
+> 
+>    grep -E -r --no-filename -o 'href="http.://[^/"]+' | sort | uniq -c | sort -nr
+> 
+> from the HTML output directory, exclude links that are too frequent.
 
-diff --git a/documentation/dev-manual/new-recipe.rst b/documentation/dev-manual/new-recipe.rst
-index 5f42dd4df..6888bb46a 100644
---- a/documentation/dev-manual/new-recipe.rst
-+++ b/documentation/dev-manual/new-recipe.rst
-@@ -837,7 +837,7 @@ different ways:
- -  *systemd:* System Management Daemon (systemd) was designed to replace
-    SysVinit and to provide enhanced management of services. For more
-    information on systemd, see the systemd homepage at
--   https://freedesktop.org/wiki/Software/systemd/.
-+   https://systemd.io/.
- 
-    To enable a service using systemd, your recipe needs to inherit the
-    :ref:`ref-classes-systemd` class. See the ``systemd.bbclass`` file
-diff --git a/documentation/dev-manual/start.rst b/documentation/dev-manual/start.rst
-index 4ea27fceb..8fa7f8f38 100644
---- a/documentation/dev-manual/start.rst
-+++ b/documentation/dev-manual/start.rst
-@@ -367,7 +367,7 @@ as your Yocto Project build host:
-    Depending on your build host, you might have to install different
-    software to support Docker containers. Go to the Docker installation
-    page and read about the platform requirements in "`Supported
--   Platforms <https://docs.docker.com/engine/install/#supported-platforms>`__"
-+   Platforms <https://docs.docker.com/engine/install/#installation-procedures-for-supported-platforms>`__"
-    your build host needs to run containers.
- 
- #. *Choose What To Install:* Depending on whether or not your build host
-diff --git a/documentation/dev-manual/x32-psabi.rst b/documentation/dev-manual/x32-psabi.rst
-index 92b1f96fa..0a19d2823 100644
---- a/documentation/dev-manual/x32-psabi.rst
-+++ b/documentation/dev-manual/x32-psabi.rst
-@@ -3,8 +3,8 @@
- Using x32 psABI
- ***************
- 
--x32 processor-specific Application Binary Interface (`x32
--psABI <https://software.intel.com/en-us/node/628948>`__) is a native
-+x32 processor-specific Application Binary Interface (:wikipedia:`x32
-+psABI <X32_ABI>`) is a native
- 32-bit processor-specific ABI for Intel 64 (x86-64) architectures. An
- ABI defines the calling conventions between functions in a processing
- environment. The interface determines what registers are used and what
-diff --git a/documentation/migration-guides/release-notes-5.3.rst b/documentation/migration-guides/release-notes-5.3.rst
-index 1655ca90f..fdc092e51 100644
---- a/documentation/migration-guides/release-notes-5.3.rst
-+++ b/documentation/migration-guides/release-notes-5.3.rst
-@@ -561,7 +561,7 @@ New Features / Enhancements in |yocto-ver|
-       :term:`IMAGE_EXTRA_PARTITION_FILES` variable for more information.
- 
-    -  The ``--diskid`` option was added to allow passing a :wikipedia:`MS-DOS
--      </MS-DOS>` or :wikipedia:`GPT <GUID_Partition_Table>`-formatted
-+      <MS-DOS>` or :wikipedia:`GPT <GUID_Partition_Table>`-formatted
-       disk IDs for a partition (for example: ``deadbeef-cafe-babe-f00d-cec2ea4eface``).
- 
- -  SDK-related changes:
-diff --git a/documentation/overview-manual/development-environment.rst b/documentation/overview-manual/development-environment.rst
-index e1bb8b15d..0daaf1c1a 100644
---- a/documentation/overview-manual/development-environment.rst
-+++ b/documentation/overview-manual/development-environment.rst
-@@ -350,7 +350,7 @@ commands.
- .. note::
- 
-    -  For more information on Git, see
--      https://git-scm.com/documentation.
-+      https://git-scm.com/docs.
- 
-    -  If you need to download Git, it is recommended that you add Git to
-       your system through your distribution's "software store" (e.g. for
-@@ -474,7 +474,7 @@ you can manage with a small set of basic operations and workflows once
- you understand the basic philosophy behind Git. You do not have to be an
- expert in Git to be functional. A good place to look for instruction on
- a minimal set of Git commands is
--`here <https://git-scm.com/documentation>`__.
-+`here <https://git-scm.com/docs>`__.
- 
- The following list of Git commands briefly describes some basic Git
- operations as a way to get started. As with any set of commands, this
-diff --git a/documentation/profile-manual/usage.rst b/documentation/profile-manual/usage.rst
-index d17b256d0..f8de6848e 100644
---- a/documentation/profile-manual/usage.rst
-+++ b/documentation/profile-manual/usage.rst
-@@ -39,7 +39,7 @@ other tools when it seems useful to do so.
- The coverage below details some of the most common ways you'll likely
- want to apply the tool; full documentation can be found either within
- the tool itself or in the manual pages at
--`perf(1) <https://linux.die.net/man/1/perf>`__.
-+:manpage:`perf(1)`.
- 
- perf Setup
- ----------
-@@ -869,8 +869,8 @@ goes a little way to support the idea mentioned previously that given
- the right kind of trace data, higher-level profiling-type summaries can
- be derived from it.
- 
--Documentation on using the `'perf script' Python
--binding <https://linux.die.net/man/1/perf-script-python>`__.
-+Documentation on using the :manpage:`'perf script' Python
-+binding <perf-script-python(1)>`.
- 
- System-Wide Tracing and Profiling
- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-@@ -1150,23 +1150,19 @@ perf Documentation
- Online versions of the manual pages for the commands discussed in this
- section can be found here:
- 
---  The `'perf stat' manual page <https://linux.die.net/man/1/perf-stat>`__.
-+-  The :manpage:`'perf stat' manual page <perf-stat(1)>`.
- 
---  The `'perf record'
--   manual page <https://linux.die.net/man/1/perf-record>`__.
-+-  The :manpage:`'perf record' manual page <perf-record(1)>`.
- 
---  The `'perf report'
--   manual page <https://linux.die.net/man/1/perf-report>`__.
-+-  The :manpage:`'perf report' manual page <perf-report(1)>`.
- 
---  The `'perf probe' manual page <https://linux.die.net/man/1/perf-probe>`__.
-+-  The :manpage:`'perf probe' manual page <perf-probe(1)>`.
- 
---  The `'perf script'
--   manual page <https://linux.die.net/man/1/perf-script>`__.
-+-  The :manpage:`'perf script' manual page <perf-script(1)>`.
- 
---  Documentation on using the `'perf script' Python
--   binding <https://linux.die.net/man/1/perf-script-python>`__.
-+-  Documentation on using the :manpage:`'perf script' Python binding <perf-script-python(1)>`.
- 
---  The top-level `perf(1) manual page <https://linux.die.net/man/1/perf>`__.
-+-  The top-level :manpage:`perf(1) manual page <perf(1)>`.
- 
- Normally, you should be able to open the manual pages via perf itself
- e.g. ``perf help`` or ``perf help record``.
-@@ -1781,7 +1777,7 @@ gather / print / aggregate data extracted from the context they end up being
- called under.
- 
- For example, this probe from the `SystemTap
--tutorial <https://sourceware.org/systemtap/tutorial/>`__ just prints a
-+tutorial <https://sourceware.org/systemtap/tutorial.html>`__ just prints a
- line every time any process on the system runs ``open()`` on a file. For each line,
- it prints the executable name of the program that opened the file, along
- with its PID, and the name of the file it opened (or tried to open), which it
-@@ -1957,7 +1953,7 @@ SystemTap Documentation
- -----------------------
- 
- The SystemTap language reference can be found here: `SystemTap Language
--Reference <https://sourceware.org/systemtap/langref/>`__
-+Reference <https://sourceware.org/systemtap/langref.html>`__
- 
- Links to other SystemTap documents, tutorials, and examples can be found
- here: `SystemTap documentation
-@@ -2388,7 +2384,7 @@ first part of the filenames::
- The report shows each event that was
- found in the blktrace data, along with a summary of the overall block
- I/O traffic during the run. You can look at the
--`blkparse <https://linux.die.net/man/1/blkparse>`__ manual page to learn the
-+:manpage:`blkparse(1)` manual page to learn the
- meaning of each field displayed in the trace listing.
- 
- Live Mode
-@@ -2588,14 +2584,14 @@ blktrace Documentation
- Online versions of the manual pages for the commands discussed in this
- section can be found here:
- 
---  https://linux.die.net/man/8/blktrace
-+-  :manpage:`blktrace(8)`
- 
---  https://linux.die.net/man/1/blkparse
-+-  :manpage:`blkparse(1)`
- 
---  https://linux.die.net/man/8/btrace
-+-  :manpage:`btrace(8)`
- 
- The above manual pages, along with manuals for the other blktrace utilities
- (``btt``, ``blkiomon``, etc) can be found in the ``/doc`` directory of the blktrace
- tools git repository::
- 
--   $ git clone git://git.kernel.dk/blktrace.git
-+   $ git clone https://git.kernel.org/pub/scm/linux/kernel/git/axboe/blktrace.git
-diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
-index 02ff36178..2622be14f 100644
---- a/documentation/ref-manual/classes.rst
-+++ b/documentation/ref-manual/classes.rst
-@@ -2844,7 +2844,7 @@ Python version 3.x extensions that use build systems based on ``setuptools``
- ``pyproject.toml`` format). Unlike :ref:`ref-classes-setuptools3`,
- this uses the traditional ``setup.py`` ``build`` and ``install`` commands and
- not wheels. This use of ``setuptools`` like this is
--`deprecated <https://github.com/pypa/setuptools/blob/main/CHANGES.rst#v5830>`__
-+`deprecated <https://github.com/pypa/setuptools/blob/14cc4452199818e60cf01cd9cea96e90761abce7/NEWS.rst#v5830>`__
- but still relatively common.
- 
- .. _ref-classes-setuptools3-base:
-@@ -3100,7 +3100,7 @@ the :term:`SYSTEMD_BOOT_CFG`,
- :term:`SYSTEMD_BOOT_TIMEOUT` variables.
- 
- You can also see the `Systemd-boot
--documentation <https://www.freedesktop.org/wiki/Software/systemd/systemd-boot/>`__
-+documentation <https://systemd.io/BOOT/>`__
- for more information.
- 
- .. _ref-classes-terminal:
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index 12d2e335c..c1abd8693 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -3786,7 +3786,7 @@ system and gives an overview of their function and contents.
-             source $loadaddr#bootscr-boot.cmd
- 
-       More information can be found in the official U-Boot documentation:
--      `U-Boot source command <https://docs.u-boot.org/en/latest/usage/cmd/source.html#fit-image.f>`__
-+      `U-Boot source command <https://docs.u-boot.org/en/latest/usage/cmd/source.html#fit-image>`__
- 
-    :term:`FONT_EXTRA_RDEPENDS`
-       When inheriting the :ref:`ref-classes-fontcache` class,
-@@ -3953,7 +3953,7 @@ system and gives an overview of their function and contents.
-          GROUPADD_PARAM:${PN} = "-g 880 group1; -g 890 group2"
- 
-       For information on the standard Linux shell command
--      ``groupadd``, see https://linux.die.net/man/8/groupadd.
-+      ``groupadd``, see :manpage:`groupadd(8)`.
- 
-    :term:`GROUPMEMS_PARAM`
-       Deprecated in favor of :term:`USERMOD_PARAMS`. See
-@@ -6436,7 +6436,7 @@ system and gives an overview of their function and contents.
-       See the :term:`KERNEL_MODULE_AUTOLOAD` variable for more information.
- 
-    :term:`module_conf`
--      Specifies `modprobe.d <https://linux.die.net/man/5/modprobe.d>`__
-+      Specifies :manpage:`modprobe.d(5)`
-       syntax lines for inclusion in the ``/etc/modprobe.d/modname.conf``
-       file.
- 
-@@ -12333,7 +12333,7 @@ system and gives an overview of their function and contents.
- 
-       For information on the
-       standard Linux shell command ``useradd``, see
--      https://linux.die.net/man/8/useradd.
-+      :manpage:`useradd(8)`.
- 
-    :term:`USERADD_UID_TABLES`
-       Specifies a password file to use for obtaining static user
-diff --git a/documentation/ref-manual/yocto-project-supported-features.rst b/documentation/ref-manual/yocto-project-supported-features.rst
-index 021fca36b..d7229f1c2 100644
---- a/documentation/ref-manual/yocto-project-supported-features.rst
-+++ b/documentation/ref-manual/yocto-project-supported-features.rst
-@@ -72,7 +72,7 @@ Below is a list of primary tested features, their maintainer(s) and builder(s):
-      - Buildtools generation
-      - Collective effort
-      - buildtools
--   * - `meta-agl-core <https://gerrit.automotivelinux.org/gerrit/AGL/meta-agl>`__
-+   * - `meta-agl-core <https://git.automotivelinux.org/AGL/meta-agl/>`__
-      - meta-agl-core layer testing
-      - TBD
-      - meta-agl-core
+Because they are too frequent it's impossible they are broken? 
+Considering you fix links that are in this list later in this series, I 
+don't think this holds. At least provide a proper justification because 
+"too frequent" doesn't make sense.
 
--- 
-2.54.0
-
+Cheers,
+Quentin
 
