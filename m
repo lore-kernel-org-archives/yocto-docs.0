@@ -2,14 +2,14 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D7B43C43458
-	for <webhook@archiver.kernel.org>; Sun, 12 Jul 2026 13:01:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5485FC44509
+	for <webhook@archiver.kernel.org>; Mon, 13 Jul 2026 14:28:08 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.13417.1783861304931594817
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.11986.1783952880808465478
  for <docs@lists.yoctoproject.org>;
- Sun, 12 Jul 2026 06:01:45 -0700
+ Mon, 13 Jul 2026 07:28:01 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=dqu1LabF;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=t+sYXBjL;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
@@ -17,24 +17,24 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=uO9tRibjbwrtzo1GkWvQ8wM4MV5xHL3KrZ0PjnmkDG8=; b=dqu1LabFY6WRaj2Tw3Us6e36Cv
-	WvOtIRU3Lu3WA7DtTs/XqM9ZpAsomTFLNnW5tW4YjOBB/PVP4IpVqG1NIBjnpdMkQW0oRgBVdT82w
-	h5JmJm6dk3RdJjee2Jc4V4yd0WNUil6Cm5E3sqWoha0PO2tQmjm4GlSfxvRYwfybtwNRAVxGCZAsV
-	tPfFPDz6EHZyBZoWhSwIcJcx76ohmud7aF26C6ITlc8kbC7pac/5ZXE6bAzcjesCc8LHzlJUpZBVu
-	O5CDYef1stZ7vP53Uy66C+z7alq8TAJqBkToncF64Pak9xhD8wZCjP54zR5LFzkhRJBHRC6jJxV+A
-	uJ+MeklQ==;
-Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:35142 helo=sheena)
+	bh=jelsM9VMpY7n1PYlJ86AhoW7CpKWuK6vmZ7PwxHFEDg=; b=t+sYXBjLILEFJ6DYbtE4ArYcZT
+	fuZiOegf5C+dqe2JZZMljvYdNPmdhcxnH5RQocpWNlXHk91pfK7K8rnEU+2jVhqhDL3oEplBwX8jl
+	vBY29PjzCv6d6PeCH/j4L+NVRJCzHOjkgw76h8wu99/1K/6w4upFY1gUVbrvVF8lggJbWXrVhqi8l
+	IbGySUP6iJV5v9PMro9+igklnHNYXI+iKcxMve7GvwcuEgQBQQxwzVyZXRMeoRdRVV1a+jDUV7zTz
+	tTInqN64bAERhh53B0vgk9iO+fRtzLBMUZ8iB/RqLXhNRmfnHQQB53kNE4uzf9a7zYgFW0Wohw8o3
+	AkD3PymQ==;
+Received: from pool-174-114-114-5.cpe.net.cable.rogers.com ([174.114.114.5]:49252 helo=sheena)
 	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.99.4)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1witoQ-0000000DhiT-0m6G
+	id 1wjHdV-0000000Fxts-32S2
 	for docs@lists.yoctoproject.org;
-	Sun, 12 Jul 2026 09:01:42 -0400
-Date: Sun, 12 Jul 2026 09:01:02 -0400 (EDT)
+	Mon, 13 Jul 2026 10:27:59 -0400
+Date: Mon, 13 Jul 2026 10:27:28 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: is yocto-docs considered a part of "Poky"?
-Message-ID: <79d2d2d5-f9d9-a8ba-a43a-8370230a385f@crashcourse.ca>
+Subject: should "DISTRO_FEATURES_OVERRIDES" be in the variables glossary?
+Message-ID: <4ed778f3-596c-11aa-d1f7-de8ee6370b52@crashcourse.ca>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -50,11 +50,14 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Sun, 12 Jul 2026 13:01:48 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10068
+ <docs@lists.yoctoproject.org>; Mon, 13 Jul 2026 14:28:08 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10069
 
 
-  i've seen that claim somewhere, and it didn't sound right.
+https://git.openembedded.org/openembedded-core/tree/meta/classes/distrooverrides.bbclass
+
+or is that too niche? i'd never even *seen* that variable before all
+this poking around i've been doing.
 
 rday
 
