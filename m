@@ -2,63 +2,61 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 82AF5C4452F
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 91A4CC4451C
 	for <webhook@archiver.kernel.org>; Tue, 21 Jul 2026 12:18:10 +0000 (UTC)
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.21212.1784636288407018081
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.21228.1784636288851625595
  for <docs@lists.yoctoproject.org>;
  Tue, 21 Jul 2026 05:18:09 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=PjbKWVTB;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=oxPLdVZP;
  spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 577441A1135
-	for <docs@lists.yoctoproject.org>; Tue, 21 Jul 2026 12:18:06 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 375701A1136
+	for <docs@lists.yoctoproject.org>; Tue, 21 Jul 2026 12:18:07 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 26B9960368;
-	Tue, 21 Jul 2026 12:18:06 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A334211BD03C7;
-	Tue, 21 Jul 2026 14:18:04 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 0D3D160368
+	for <docs@lists.yoctoproject.org>; Tue, 21 Jul 2026 12:18:07 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 06AE511BD0ADC;
+	Tue, 21 Jul 2026 14:18:05 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1784636285; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=W3vRT5SouyfBgpg012uSaGfZ88pv5ZJqRV2GVrPB8eA=;
-	b=PjbKWVTBQvdTb3zb7lLpz2Cu0BrURTriTHfd4fT1vnjKjzfOhUhXLCdJ15AhOUQlCQiBvT
-	qHeW666HtepSdFXnjCY+F8O7bY8PQKDLMbY2K4p9JIF/QnNz7y1OYj0V7FaoP9y9PS4ATD
-	W5UUNiDOQX44qUK5Ysr7N3xM8COoM0J9yfL6A7bOy0VbWuNwg9Q6KJB0xp9o+h/yc7zPny
-	nUjgbviL5kryhILnVajKcCn41eyXb9DXj3ayPGS7YZ7NK36EoT1JL9Dcscm5b6EhO5q/Eb
-	4n/9BeqLzyo5zWpvuygqNvyd5kJlGiTWZYgDVQdovt0l94X7eO7UYjaC/e4RDQ==
+	t=1784636286; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=UhjmS1vGwrrIrJOhl+4m37DRJC7JagoCSFbyY2zugiE=;
+	b=oxPLdVZPbd/5bhghZRG3/hCIEIp96MpVPVlpOkllZlcIJzzAxak70SMj8z/l714ylTNBS4
+	zcfOlrOitqDdzJ7Kl5zlPVdY1NmVzZ6IvQm4zR1jLc9NeW86OyxqMJ5ZxSTJxSBN6aB6gi
+	omnIlWDpMgMOTPT92vfwTdVRIKFYogEwshSACpJ9VpiwBiykKxdK0u/GAIy5YfcPyqCkDV
+	sKOWIop6KL/XPFJeur2vdQrr8lX0MakbgGgjznrivkwIiLf3+ldwHsY6hctAL3B72fT3H4
+	nckrHcWyQZ/qtMyZPm07drpV915qkMtsQv5Q71cfCaAaMtX/iQehvv637IH3jQ==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Subject: [PATCH v2 0/3] Fix broken links
-Date: Tue, 21 Jul 2026 14:17:52 +0200
-Message-Id: <20260721-linkcheck-v2-0-32d93e054c50@bootlin.com>
+Date: Tue, 21 Jul 2026 14:17:53 +0200
+Subject: [PATCH v2 1/3] conf.py: add linkcheck builder exclusions for
+ frequent links
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/22NQQ6CMBBFr0JmbU2nKIgr72FYwDDIiLSmRaIh3
- N2CW5cv/+X9GQJ74QDnZAbPkwRxNoLZJUBdZW+spIkMRptM56jVQ2xPHVOvcjxgZSpKM2oh+k/
- Prby31rX8cXjVd6ZxDaxGJ2F0/rOdTbh6/7oTKq2KosDslObYHPlSOzfGfU9ugHJZli/Ytmvlt
- gAAAA==
-X-Change-ID: 20260710-linkcheck-7141a2ac36cf
+Message-Id: <20260721-linkcheck-v2-1-32d93e054c50@bootlin.com>
+References: <20260721-linkcheck-v2-0-32d93e054c50@bootlin.com>
+In-Reply-To: <20260721-linkcheck-v2-0-32d93e054c50@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Antonin Godard <antonin.godard@bootlin.com>, 
- Quentin Schulz <quentin.schulz@cherry.de>
+ Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1309;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2733;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=i9gN3x84fNn0COO0CiJd8JU2k9QS57K/RZt8hMWOzcI=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBqX2N7rScPTLLy1dNFG27VRdcjkfnLIftde2a2Q
- CXXWxKSZauJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCal9jewAKCRDRgEFAKaOo
- NotKD/9G9L4WD1S7NSFgqLa2m6fLM3jHsJmRgQxaePM5jipttDV4nKyxdmbhJ3kK6Dl4zuJ4MwF
- JxoT/ckEEaZ8ZSa9sx1+c+Kbngbo3RISG9Rda9n4rFZ75RK7q7Y1BT5ATbCWJ4JPfTHZ0hIbmvf
- sx+8xw5uFl4NwplPggLthauns5F2ygQqKksM7Mnxf+u3F234GG4gtKf0k3FdwwQcpxPPjb8cDnG
- varAaKBLqcUpqVgBPJ8fJPetR6OZAfnZavqQaBlnDY95RcWN/l/WBUvn3Qjz6BmPduvxC6nnlMq
- jemQf5SjCIwauC6R0Oxa3H5zmpkhMjTuKGREk4YgLNR1llRU4SeLEhf6TrrQvpOCi3cUiNuWjL+
- iUyvQ0fghKftHF40bavcGY4S6AMPi/W7YQx/YaV9HdtFDeuI5hcnfTAJHqyqIMB01OBRQJ1uK5I
- CO9jbPhnAO/FsIV78db5dtHDwwaewi1y8dKOiMRvL17KtEqytx/1A+rNSK0PQrI+x2ydMUHI1NZ
- E5ZFldccD5MZbRjy3Iy1wbuAmialkgvy9mnqlQkeDMuAkMHRcmxTK9FG3jyonC/CkZ4hYvTeh9a
- dpuXRzpVvUqBrdZWERB2EW9ryLol7fdxfX0CiP/xTC70hIwLaQgeLthKKSO2J/tnXt0/Ub/87gu
- fNhq7lxhkkMGtGA==
+ bh=5pE9xZtaN4PE2ayjPQMt1ajcTPK9KL5rTKaVDsElORA=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBqX2N8ZMvZ2KXkT3tlfGbJwOEgq+7BV6DSwbVEg
+ rZo3GSSVLyJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCal9jfAAKCRDRgEFAKaOo
+ NvSbD/4gPH6RFO1EqIEm/eRTp9jmErma3FlxV/kuGQkjjEhkcmDSkVKnWDUq5gPFlS8/uoYYZpW
+ K0tkkSdFUXhc5SyY8RQnu+6XiqJu38xRATx9JxqTW+PadjDWd+lWVWrRe7nQE1j67m3srssXGLK
+ 6nfDZWGM2E0IvNhnfeFPMq0m17kV8IoCy3MH360IshqApRTTqeXSm0a7mZZdzRDje7cTgfXROmw
+ i5+WJlTkzc5hpGAg7GCjK9MkYFj6sGCQxMmgogFskDKY3kDuu70aL9dCBZY2CI0PdrdLQ7y/C4t
+ /7M0lIqzm3jIr8kuPvWtaDQjWZuIWDBfx6uMbfFjq64Ce9ivAe3Akn0yup0MVBKdrLiOpvczcA4
+ /ZOXDyMy84ENakRwyLDFlHWbJqNmv+CcFSzuGGWF9LCQjxTFicM+L60A+9Eg+kcv5TgsViomUQA
+ JWyY2s3yQKCsWQmX24kzY4Sc5bVpgOtbdus+Ip2tqwS+ZG2s4nP9vxw56BYWgzLRTXeppzjxdX2
+ nkqChWIBsNvz/8vqolZ+XCa0HKbLQvN1HR5NyOghbBdhSHaxV5YR4wb2SKbEGsof9iebMMZBrKj
+ Gj9xEG5kd8QZ+LTC454yamCUzEyTRDvQiQGA4ubcyfu2yHryOXlU2u0+zHH6JCNa5hGvV4uCrZV
+ nE4DhKobVvr80LQ==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
@@ -66,35 +64,80 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Tue, 21 Jul 2026 12:18:10 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10101
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10102
 
-Configure the linkcheck builder and replace broken links by archive links.
+The linkcheck builder can be used to scout for broken links. By looking at
+the output of:
+
+  grep -E -r --no-filename -o 'href="http.://[^/"]+' | sort | uniq -c | sort -nr
+
+from the HTML output directory, exclude links that are too frequent.
+
+Remove docs.yoctoproject.org links are those should already be
+validated when building the documentation, and add a LINKCHECK_NOT_NICE
+env variable that can be set to check for those links anyway.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
-Changes in v2:
-- Add an environment variable to include frequent links as part of the
-  linkcheck build.
-- Replace broken links with links from https://web.archive.org/
-- Remove patch 3 -> 8 from v2, already applied.
-- Link to v1: https://patch.msgid.link/20260710-linkcheck-v1-0-999168371d5e@bootlin.com
+ documentation/README  | 14 ++++++++++++++
+ documentation/conf.py | 17 +++++++++++++++++
+ 2 files changed, 31 insertions(+)
 
----
-Antonin Godard (3):
-      conf.py: add linkcheck builder exclusions for frequent links
-      migration-guides/migration-3.4.rst: replace rlbl broken link
-      migration-guides: replace broken link with archive links
+diff --git a/documentation/README b/documentation/README
+index 326930932..39835f014 100644
+--- a/documentation/README
++++ b/documentation/README
+@@ -163,6 +163,20 @@ or directories:
+   $ make sphinx-lint SPHINXLINTDOCS="<file1> <file2>"
+   $ make sphinx-lint SPHINXLINTDOCS=<dir>
+ 
++Checking for broken links in the Yocto Project documentation
++============================================================
++
++To scout for broken links, the "linkcheck" builder from Sphinx can be used with
++the following command:
++
++  $ make linkcheck
++
++The builder is already configured in conf.py to exclude the links that are too
++frequent in the documentation. You can enable linkcheck for these links by
++setting the LINKCHECK_NOT_NICE environment variable to "1":
++
++  $ LINKCHECK_NOT_NICE=1 make linkcheck
++
+ Sphinx theme and CSS customization
+ ==================================
+ 
+diff --git a/documentation/conf.py b/documentation/conf.py
+index 7b201ebd6..8b50656bf 100644
+--- a/documentation/conf.py
++++ b/documentation/conf.py
+@@ -143,6 +143,23 @@ suppress_warnings = ['epub.unknown_project_files']
+ # sphinx-copybutton configuration
+ copybutton_prompt_text = "$ "
+ 
++# Don't check self-references to yocto-docs since they are already
++# checked when building.
++linkcheck_ignore = [r'https?://docs\.yoctoproject\.org.*']
++
++# When using the linkcheck builder, ignore the following links which are too
++# frequent in the docs, unless the LINKCHECK_NOT_NICE environment variable is set
++# to 1.
++if os.environ.get('LINKCHECK_NOT_NICE') != "1":
++    linkcheck_ignore.extend([
++        r'https?://nvd\.nist\.gov.*',
++        r'https?://git\.yoctoproject\.org.*',
++        r'https?://git\.openembedded\.org.*',
++        r'https?://downloads\.yoctoproject\.org.*',
++        r'https?://mirrors\.kernel\.org.*',
++        r'https?://mirrors\.edge\.kernel\.org.*',
++    ])
++
+ # -- Options for HTML output -------------------------------------------------
+ 
+ # The theme to use for HTML and HTML Help pages.  See the documentation for
 
- documentation/README                                 | 14 ++++++++++++++
- documentation/conf.py                                | 17 +++++++++++++++++
- documentation/migration-guides/migration-3.4.rst     |  2 +-
- documentation/migration-guides/migration-5.3.rst     |  2 +-
- documentation/migration-guides/release-notes-4.3.rst |  2 +-
- documentation/migration-guides/release-notes-5.0.rst |  2 +-
- documentation/migration-guides/release-notes-5.3.rst |  3 ++-
- 7 files changed, 37 insertions(+), 5 deletions(-)
----
-base-commit: 358519ca6406a89fee42c45dcaf63a37a374f33c
-change-id: 20260710-linkcheck-7141a2ac36cf
+-- 
+2.55.0
 
 
