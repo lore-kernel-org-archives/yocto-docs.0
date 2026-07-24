@@ -1,256 +1,136 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <daniel.turull@ericsson.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 24FDCC531F9
-	for <webhook@archiver.kernel.org>; Fri, 24 Jul 2026 13:40:45 +0000 (UTC)
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.19495.1784900443644107343
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 04454C531FA
+	for <webhook@archiver.kernel.org>; Fri, 24 Jul 2026 15:32:50 +0000 (UTC)
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (DB3PR0202CU003.outbound.protection.outlook.com [52.101.84.58])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.21863.1784907165790201975
  for <docs@lists.yoctoproject.org>;
- Fri, 24 Jul 2026 06:40:44 -0700
+ Fri, 24 Jul 2026 08:32:46 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=Vob7H1Qz;
- spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 825F84E40F26;
-	Fri, 24 Jul 2026 13:40:41 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 5795C60395;
-	Fri, 24 Jul 2026 13:40:41 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BB0F611C12509;
-	Fri, 24 Jul 2026 15:40:39 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1784900440; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=wcjFt1ex8L0SjyIESGp5T5Odo+inIxVaCm1BBLoASdA=;
-	b=Vob7H1Qz6CzMqHGcCSfXKEv/92LifzkrhxTRSeK/gYa2leSZ0nIVyXJSDeVVeBELlyM1Ny
-	3AkMfzaS/XGSQVLm/ypbtpDmrv1Ix01LCNyNCE4OJg+DyMY5rDd+QGs0tty3TN4TGrQSqA
-	o+7knDNhhslp97xbg7S8Zwd082pf9SqL/orwI9Dm61jycf7QnxXSVzTmWXyY7zIzFV46Me
-	MS0yPQyIbPOSrhcZnYJf/XqZptYQcSKrnJWg1iJl2o9zCHblOqfnRxS/QIZDTxpgS0I919
-	vvqLF5fDxyT39gAxzvkyBSYBUOfspXDL2Bd78c4k8M4K8RVvF3thEklOz+gD9g==
-Mime-Version: 1.0
+ dkim=fail reason="dkim: body hash did not verify" header.i=@ericsson.com header.s=selector2 header.b=mY8k3hvS;
+ spf=pass (domain: ericsson.com, ip: 52.101.84.58, mailfrom: edaturu@ericsson.com)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Z0UcacLpnmlCQKr1F5G7Ll+Y73mSqydrhq2nY+K7pYi98cvXB2QZ8CKe/1w6UGsa6n4hwZ62ptXULpQY+zr3Sxz4BnSXc1/MdVy1LOgCf9caYbfrPO64zTrvfvbU8m7/IM1AscE2nfCHikEJ9tnMOnkxfDW5e2PkWtranVJBXXtktMgW5vCx4i8VsGgESoGoeoBOvhvA9e4BFtCZb8OyBVlBdooJNwt+hRMDLo2G3W2plaUPvzHEfXI96Gp5PauRJWuikL3/hrYHeeVsaW1cK722vqtzdswnvj8UyZAeVpgTyM6yceONKIyw4t67ibG/7U9SAzEyahWqW7A2JLpqYw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Cs8Uw8As5E6yw1wvHiYTVcMJOIYFOnFBKFQKwVfV9pc=;
+ b=Y954JQJDIM55h0+8cwS507hdJtEKGqG01MtUD9/wfFQKKPXGElRjlTlKDka4MmBZKrYGgLLOMnexcqPYqvgVk/ntf0vysxCBJjVs77sEGjPFyVNUKQvLgD9gXrfb5xA2mo1nkiK+OuBAe2b5dJ0WsjXNYxXpHdipGDX7XXOl+Bb+mMk7HzjnmWRHvsBwr8DITQEZ0vmtP2vM5rZoFm0hsyWDYUi8pvYoKd5rhnrQBF4J1J1GjTx/btSSnnWYdk9YuPHLIJQ4j6Zhm4WpZqIiwgUyOT4+5XlPmfibjFohBjs6HU/HEw0RVEgLo6IES00x3xF61ZoYzofAj8yzkuP5wQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 192.176.1.74) smtp.rcpttodomain=linuxfoundation.org
+ smtp.mailfrom=ericsson.com; dmarc=pass (p=reject sp=reject pct=100)
+ action=none header.from=ericsson.com; dkim=none (message not signed);
+ arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ericsson.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Cs8Uw8As5E6yw1wvHiYTVcMJOIYFOnFBKFQKwVfV9pc=;
+ b=mY8k3hvSERVUSLYuPhJm/WUD4J88D/6UVus5wMQMOcMT6uSmylGmYafuxFveGC3zf5cU9IytB9O0TRHSr6iS29UMbMQ1FlwYLBG414bAhrwZYgKTzduqu8JHp2626m9TUenxl9lpDFfFF5wIiERvX7UbFVx47sdYFAPYK99if1kBvrYpmwN+ziLC2lj9/XgyLHOtkOPaAiWkuS8GX3IjL7u1yRU/1EQC/Q8rRd2fM7cu2N+E8NOKs1uYrPJJ+9aVP0AuE6kCz+Y7iAumnZzh1UbKsNnU5KVp2os6T9gbw2A74B7OKYJ2l+J59AzeHTeLGs7Y+hycSS9oZxHv/7eQmQ==
+Received: from AM8P251CA0008.EURP251.PROD.OUTLOOK.COM (2603:10a6:20b:21b::13)
+ by AM7PR07MB6883.eurprd07.prod.outlook.com (2603:10a6:20b:1b1::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.6; Fri, 24 Jul
+ 2026 15:32:41 +0000
+Received: from AMS0EPF00000197.eurprd05.prod.outlook.com
+ (2603:10a6:20b:21b:cafe::41) by AM8P251CA0008.outlook.office365.com
+ (2603:10a6:20b:21b::13) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.245.11 via Frontend Transport; Fri,
+ 24 Jul 2026 15:32:41 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 192.176.1.74)
+ smtp.mailfrom=ericsson.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=ericsson.com;
+Received-SPF: Pass (protection.outlook.com: domain of ericsson.com designates
+ 192.176.1.74 as permitted sender) receiver=protection.outlook.com;
+ client-ip=192.176.1.74; helo=oa.msg.ericsson.com; pr=C
+Received: from oa.msg.ericsson.com (192.176.1.74) by
+ AMS0EPF00000197.mail.protection.outlook.com (10.167.16.219) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.270.5 via Frontend Transport; Fri, 24 Jul 2026 15:32:41 +0000
+Received: from seroius18815.sero.gic.ericsson.se (153.88.142.248) by
+ smtp-central.internal.ericsson.com (100.87.178.60) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Fri, 24 Jul 2026 17:32:40 +0200
+Received: from seroius08462.sero.gic.ericsson.se (seroius08462.sero.gic.ericsson.se [10.63.237.245])
+	by seroius18815.sero.gic.ericsson.se (Postfix) with ESMTP id 206A84020B40;
+	Fri, 24 Jul 2026 17:32:40 +0200 (CEST)
+Received: by seroius08462.sero.gic.ericsson.se (Postfix, from userid 160155)
+	id E5E02700DBB0; Fri, 24 Jul 2026 17:32:39 +0200 (CEST)
+From: <daniel.turull@ericsson.com>
+To: <docs@lists.yoctoproject.org>
+CC: <richard.purdie@linuxfoundation.org>, <paul@pbarker.dev>,
+	<Randy.MacLeod@windriver.com>, Daniel Turull <daniel.turull@ericsson.com>
+Subject: [PATCH] ref-manual/release-process: clarifiy upstream criteria for stable
+Date: Fri, 24 Jul 2026 17:32:31 +0200
+Message-ID: <20260724153231.48828-1-daniel.turull@ericsson.com>
+X-Mailer: git-send-email 2.53.0
+MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 24 Jul 2026 15:40:39 +0200
-Message-Id: <DK6UEDV65R3Y.2HPH1DCKA1Z2V@bootlin.com>
-Subject: Re: [docs] [PATCH v2 3/4] tools: add gen-doc-links to generate
- documentation link flags
-Cc: "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: <quentin.schulz@cherry.de>, <docs@lists.yoctoproject.org>
-References: <20260716-gen-doc-links-intersphinx-v2-0-83cb3aef6ff6@bootlin.com> <20260716-gen-doc-links-intersphinx-v2-3-83cb3aef6ff6@bootlin.com> <9b51a647-76c1-4bbf-b4fe-c9fc57109bc7@cherry.de>
-In-Reply-To: <9b51a647-76c1-4bbf-b4fe-c9fc57109bc7@cherry.de>
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AMS0EPF00000197:EE_|AM7PR07MB6883:EE_
+X-MS-Office365-Filtering-Correlation-Id: 847e2368-8f2f-47d9-ed8f-08dee998ccd9
+X-SMTP-Server: smtp-central.internal.ericsson.com
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: 
+	BCL:0;ARA:13230040|36860700016|1800799024|23010399003|376014|82310400026|10067099003|56012099006|11063799006|13003099007|18002099003;
+X-Microsoft-Antispam-Message-Info: 
+	Ns/W5TEbi7Mlh9nvzI3kdHEC0sOzJDzMshBORTdYBJIqqyjv7nVxWgx1lMMwu0+5/l8vCO+C8tSMtGO7EmZKFXx1RT8pBN9ZNcBpg2hUuk1iQ6IE+B7mDuKFl1IP3F6yxeFr/XrknWFYStkkkiUDnYFlRXEvILICB9Yf1p11nx2nkQSnZHzWAja2cerV4uY7ViYhrKthp0t7dW7WvW6TVBO/o4Ltr3ITyUW5RIj8u5qPzC2lbGhwc5pC8PT4UtnokzKFOueCCXz9XX5x8KQfJs03of1cNDoCjyoiZ4EWGUqWHv/kQsTIAypPV6Z1elgmsPt+4ab0y1ZP864cPRW+V7JZ9U2ZMFlFxMzMx40GYmsR/y4KEaY5i42Cl+WYjU5I+Ocy0qotqy63IYHYS4oqvRNAFIPD4FHWkwhT+oqpU609AgXVunSQSgxf5/sNyYNzEwc5l9zqRtMBMBoRYgn1vNP6jX3VEdxr4yki1s6etK+XBQpfLaItnwvlD2CGjoEjHzTKHUH2x3Y79ZspJ6nUhIAHmax4TVhLo13aLgQOtyFZ0ar1bb9m6I8MksIGVa0gzPpL6t8n8ijV3RpH07nT4gwDOAYtEL/46NhlLFl8V6lo4v/v2mRXUPVclkp2o0/NrIac3oA3rvU9KpPMBvAqhw==
+X-Forefront-Antispam-Report: 
+	CIP:192.176.1.74;CTRY:SE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:oa.msg.ericsson.com;PTR:office365.se.ericsson.net;CAT:NONE;SFS:(13230040)(36860700016)(1800799024)(23010399003)(376014)(82310400026)(10067099003)(56012099006)(11063799006)(13003099007)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	ujZW2kph23vZKBzzGClU5YQ5H8geDsc+SWAGutL4FPaszbbaTTRnEhlzQ+dF6fKW5e8uIZPuaH/15D4gJGq8gR0vCsbU2X1PqMKqmWNadrCvOT/rH2Jy/sEYoW1+Y5Fi+NgphBFbSj0hAqwRTuo54Dcz5Ds8fypJO6BkfXM6BQFD55V/NAa0mCnWqQuOo7EtoPJfevIKvmxgjaL1PnKetpSCJlZme0/YHpQDgI3lrZcBs/j1qCIAvwvxEx//4UPFcnfpswp/y38uAs4aOJrs7AbY1EROhnymSXMmoB5++t7ueEVbVMgUiIX1K2kpXiRiBir/lbUc65ZGfZwa4VWk2Izz5zkCx8LBY3FYrUEr+vEo8iP8OK0UL8HsM7Uvaod8RsMr6JC1wFf5bDwa1tlN9EMXgp3ZMLoECX8ncczwcxNuy1kC+kFadNeXbpox+0us
+X-OriginatorOrg: ericsson.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jul 2026 15:32:41.3732
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 847e2368-8f2f-47d9-ed8f-08dee998ccd9
+X-MS-Exchange-CrossTenant-Id: 92e84ceb-fbfd-47ab-be52-080c6b87953f
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=92e84ceb-fbfd-47ab-be52-080c6b87953f;Ip=[192.176.1.74];Helo=[oa.msg.ericsson.com]
+X-MS-Exchange-CrossTenant-AuthSource: 
+	AMS0EPF00000197.eurprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR07MB6883
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 24 Jul 2026 13:40:45 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10139
+ <docs@lists.yoctoproject.org>; Fri, 24 Jul 2026 15:32:50 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10140
 
-Hi,
+From: Daniel Turull <daniel.turull@ericsson.com>
 
-On Mon Jul 20, 2026 at 6:39 PM CEST, Quentin Schulz via lists.yoctoproject.=
-org wrote:
-> Hi Antonin,
->
-> On 7/16/26 2:18 PM, Antonin Godard via lists.yoctoproject.org wrote:
->> The gen-doc-links utility can be used to generate a configuration to be
->> included in any project that want to get access to documentation links
->> for documented variables. For that it opens the objects.inv file
->> generate by our HTML build and creates links for existing variables and
->> tasks.
->>=20
->> Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
->> ---
->>   documentation/oecore/doclinks.conf | 1064 ++++++++++++++++++++++++++++=
-++++++++
->>   documentation/tools/gen-doc-links  |  112 ++++
->>   2 files changed, 1176 insertions(+)
->>=20
-> [...]
->> diff --git a/documentation/tools/gen-doc-links b/documentation/tools/gen=
--doc-links
->> new file mode 100755
->> index 000000000..11b3ef858
->> --- /dev/null
->> +++ b/documentation/tools/gen-doc-links
->> @@ -0,0 +1,112 @@
->> +#!/usr/bin/env python3
->> +#
->> +# SPDX-License-Identifier: MIT
->> +#
->> +# Author: Antonin Godard <antonin.godard@bootlin.com>
->> +#
->> +# Copyright (C) 2026 Bootlin
->> +#
->> +
->> +import argparse
->> +import sys
->> +
->> +from pathlib import Path
->> +from sphinx.util.inventory import InventoryFile
->> +
->> +
->> +YOCTO_DOCS_URL =3D "https://docs.yoctoproject.org/${LAYERSERIES_COMPAT_=
-core}"
->> +BITBAKE_DOCS_URL =3D "https://docs.yoctoproject.org/bitbake/${LAYERSERI=
-ES_COMPAT_core}"
->
-> Sorry for the mangled link, but this is invalid. We only have bitbake=20
-> version number, and not Yocto release name so this won't work.
+Make explicit that we either Upstream maintainer confirmation or
+Clear historical or common-sense evidence.
 
-/o\ you're right=E2=80=A6 good catch. Perhaps this will have to depend on t=
-he
-releases.json file which contains the mapping.
+See discussion in:
+https://lore.kernel.org/all/a5d35ab2c3edde68e4edf81ecf48ce5edeb8fb37.camel@=
+ericsson.com/
 
->> +DOCS_DIR =3D Path(__file__).parent.parent
->> +PREAMBLE =3D """#
->> +# This file is automatically generated with tools/gen-doc-links, do not=
- edit manually.
->> +#
->> +"""
->> +YOCTO_DOCS_SECTION =3D """
->> +# yocto-docs
->> +
->> +"""
->> +BITBAKE_SECTION =3D """
->> +# bitbake
->> +
->> +"""
->> +
->> +
->> +def parse_arguments() -> argparse.Namespace:
->> +    parser =3D argparse.ArgumentParser(description=3D"Generate glossari=
-es from Sphinx text output")
->> +
->> +    parser.add_argument("--yocto-docs-inv",
->> +                        type=3DPath,
->> +                        default=3DDOCS_DIR / "_build/html/objects.inv",
->> +                        help=3D"Input yocto-docs inventory file")
->> +
->> +    parser.add_argument("--bitbake-inv",
->> +                        type=3DPath,
->> +                        default=3DDOCS_DIR / "_build/doctrees/__intersp=
-hinx_cache__/bitbake_objects.inv",
->> +                        help=3D"Input bitbake inventory file")
->> +
->> +    parser.add_argument("-o", "--output",
->> +                        type=3DPath,
->> +                        default=3DDOCS_DIR / "oecore/doclinks.conf",
->> +                        help=3D"Output doclinks.conf file")
->> +
->> +    return parser.parse_args()
->> +
->> +
->> +def doclink(name: str, uri) -> str:
->> +    return f'{name}[doclink] =3D "{uri}"\n'
->> +
->> +
->> +def main():
->> +    args =3D parse_arguments()
->> +
->> +    yocto_docs_dict =3D {}
->> +
->> +    if not args.yocto_docs_inv.exists():
->> +        print(f"yocto-docs inventory not found at {args.yocto_docs_inv}=
-, "
->> +              "use the --yocto-docs-inv option or set YOCTO_DOCS_INV_PA=
-TH "
->> +              "in your environment")
->> +        sys.exit(0)
->> +
->> +    if not args.bitbake_inv.exists():
->> +        print(f"bitbake inventory not found at {args.yocto_docs_inv}, "
->> +              "use the --bitbake-inv option or set BITBAKE_INV_PATH "
->> +              "in your environment")
->> +        sys.exit(0)
->
-> Don't you want to sys.exit(1) here (and above) instead to show the user=
+Signed-off-by: Daniel Turull <daniel.turull@ericsson.com>
+---
+ documentation/ref-manual/release-process.rst | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/documentation/ref-manual/release-process.rst b/documentation/r=
+ef-manual/release-process.rst
+index 0959e5fc7..128be6b33 100644
+--- a/documentation/ref-manual/release-process.rst
++++ b/documentation/ref-manual/release-process.rst
+@@ -210,6 +210,8 @@ following criteria:
+    third part (e.g. ``2.41.3`` to ``2.41.4``) are stable point releases.
+    Similarly, systemd maintains ``stable/v259-stable``.
 =20
-> this is an error?
++And at least one of the following:
++
+ 2. **Upstream maintainer confirmation** --- the upstream project's maintai=
+ner
+    explicitly confirms that a bump in a certain part of the version is
+    bug-fix only.
+--=20
+2.43.0
 
-I did not want to block creating a commit because the docs wasn't built.
-I looked a bit at it and pre-commit does not have a special error code that
-could signify a SKIP.
-
->> +
->> +    yocto_docs_data =3D args.yocto_docs_inv.read_bytes()
->> +    yocto_docs_inv =3D InventoryFile.loads(yocto_docs_data, uri=3DYOCTO=
-_DOCS_URL)
->> +
->> +    yocto_docs_uris =3D (
->> +        f"{YOCTO_DOCS_URL}/ref-manual/variables.html#term-",
->> +        f"{YOCTO_DOCS_URL}/ref-manual/tasks.html#term-",
->> +    )
->> +
->> +    for key in sorted(yocto_docs_inv.data):
->> +        inv_entries =3D sorted(yocto_docs_inv.data[key].items())
->> +        for entry, inv_item in inv_entries:
->> +            if inv_item.uri.startswith(yocto_docs_uris):
->> +                yocto_docs_dict[entry] =3D inv_item.uri
->> +
->> +    bitbake_dict =3D {}
->> +    bitbake_data =3D args.bitbake_inv.read_bytes()
->> +    bitbake_inv =3D InventoryFile.loads(bitbake_data, uri=3DBITBAKE_DOC=
-S_URL)
->> +
->> +    bitbake_uris =3D (
->> +        f"{BITBAKE_DOCS_URL}/bitbake-user-manual/bitbake-user-manual-re=
-f-variables.html#term-",
->> +    )
->> +
->> +    for key in sorted(bitbake_inv.data):
->> +        inv_entries =3D sorted(bitbake_inv.data[key].items())
->> +        for entry, inv_item in inv_entries:
->> +            if inv_item.uri.startswith(bitbake_uris) and entry not in y=
-octo_docs_dict:
->> +                bitbake_dict[entry] =3D inv_item.uri
->> +
->
-> 1. Does the uri need to be YOCTO_DOCS_URL? We only need to have it in=20
-> the output file, which we can add in the write calls below. But we could=
-=20
-> also simply have the empty ('') string. This should make it faster to=20
-> compare (fewer letters to compare against).
-
-True, that's what I did first but then changed it. I'll revert that.
-
-> 2. Why do we need to check that it startswith()? I'm assuming you want=20
-> to avoid the ref-manual/terms.html entries? Please document this with a=
-=20
-> comment.
-
-Will do.
-
-> 3. Can't you avoid the first for-loop and directly iterate over=20
-> bitbake_inv.data['std:term'].items() since that's the only thing we're=20
-> interested in?
-
-Good point, I'll simplify that.
-
->> +    with open(args.output, "w") as links_conf:
->> +        links_conf.write(PREAMBLE)
->> +        links_conf.write(YOCTO_DOCS_SECTION)
->> +        [links_conf.write(doclink(name, uri)) for name, uri in yocto_do=
-cs_dict.items()]
->> +        links_conf.write(BITBAKE_SECTION)
->> +        [links_conf.write(doclink(name, uri)) for name, uri in bitbake_=
-dict.items()]
->
-> I'm also a bit concerned about the use of $(LAYERSERIES_COMPAT_core} as=
-=20
-> this may induce some mismatch between what OE-Core is at and the version=
-=20
-> used to generate this file. We may actually document a variable that=20
-> shouldn't be used anymore, or that isn't accessible yet due to a=20
-> different major version being used. We do know what we're building the=20
-> docs for (c.f. conf.py) so maybe we should hardcode that?
-
-I did not think of simply using the current version of the documentation an=
-d
-hardcore that in the file. It's actually probably safer, I agree. I'll see =
-how I
-can change that, thanks!
-
-Antonin
 
