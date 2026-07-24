@@ -2,61 +2,61 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 74F7FC53216
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 44A56C53200
 	for <webhook@archiver.kernel.org>; Fri, 24 Jul 2026 13:25:14 +0000 (UTC)
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.19147.1784899512549306852
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.19193.1784899513416184824
  for <docs@lists.yoctoproject.org>;
  Fri, 24 Jul 2026 06:25:13 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=OC1hGKFv;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=SnqVEQas;
  spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id D0F2A1A11E8
-	for <docs@lists.yoctoproject.org>; Fri, 24 Jul 2026 13:25:10 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id BFE6C1A11EA
+	for <docs@lists.yoctoproject.org>; Fri, 24 Jul 2026 13:25:11 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 9991E60395
-	for <docs@lists.yoctoproject.org>; Fri, 24 Jul 2026 13:25:10 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id F27F611C124EE;
-	Fri, 24 Jul 2026 15:25:09 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 8DE8060395
+	for <docs@lists.yoctoproject.org>; Fri, 24 Jul 2026 13:25:11 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A392C11C124EF;
+	Fri, 24 Jul 2026 15:25:10 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
 	t=1784899510; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=JwOLzSqWzHZCXED23EofBbHLp2nd8u0aa47D8hkcdgY=;
-	b=OC1hGKFvKGt7C6dSAFb+UEcKTdyE5bp6lbq15lNxfxvvSz2Rm3GKj/AtU+QLOk67ZBlkK3
-	5pgYS6nlioHZH7DwkZyt9Kvwm7xTNLP/cW9WnNrwj8WTPdvTCM6TjBkT/mcl90zBLvdtGb
-	25EdYHuvyFFxt2eX1avzhExOHxPfannoTBmHGLp6EUj1tDrOipkmNM36ceXla0r2fRedXJ
-	3by9goLV9+etMvOBjkOdfG1V7nqVkCYgAB8nrU8RCZR6mHTS4ARhpSx0V3oLYyCJtcleu9
-	Qceio2/LA+Zf/7ZVhVXSiChaijAv9Z2aSjvs/UHFxDeONkpH5QvyPbusm1bLrw==
+	bh=zEeAgJetQa20GMcmBlXEG1GSLTqWdBD/beLkNpHnipE=;
+	b=SnqVEQas0T4fciisMIgqE0o+8vRtGtO7wxPFgYXU+JuAXmB/LwYf4a3WZBOfZ3UZwNiekC
+	64Db2hNdwBVWNa9QG7SGg2WcjG0L/Qjd8ZhQAvjuPhxqZ9jMSPvKWMbIHK21x1Ji+fk6PL
+	3Z1LB1pwPVghMmB1kQYnJGP+lDrs9uRQs8Izr15Ilu4Azdj3ImlELRr1jIDG+PRXrIR2Jp
+	KThpY93mRC23SwbQhPNTySDr9d4HADsmB2sV4u+UdrHd0t/4uM67THRwBuYJxmfvEipJtG
+	S95F9aXk1Unn4nVmwWLLYi9VXBFAOvktYUrh11oyKHJ0XCSXKh2LGb3e+3zfwQ==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Fri, 24 Jul 2026 15:24:59 +0200
-Subject: [PATCH 2/9] index.rst: move the contributor guide out of the
- Manuals section
+Date: Fri, 24 Jul 2026 15:25:00 +0200
+Subject: [PATCH 3/9] index.rst: move the "Overview and Concepts" manual in
+ the "Introduction and Overview" section
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260724-rework-welcome-page-v1-2-491772cc4b65@bootlin.com>
+Message-Id: <20260724-rework-welcome-page-v1-3-491772cc4b65@bootlin.com>
 References: <20260724-rework-welcome-page-v1-0-491772cc4b65@bootlin.com>
 In-Reply-To: <20260724-rework-welcome-page-v1-0-491772cc4b65@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1412;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1497;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=L8i0R/vbb8GS+mC+FbAL7qlOBqAbWkUIHEVRw64Rp48=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBqY2ex3iKcL3SyT6fD/JP6qczNfebfa5QVxFWMK
- bt9EiSLQ3KJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCamNnsQAKCRDRgEFAKaOo
- NkKMEAC12pD7i6tPzPplKpv4KgD51seaWZNc8VxcRsuMTQeewvzbPwJvO9wmXmS2aId4upSLgoy
- AzU780X0vH77boV3Dznmq4XaxPr+qJehvPSLHQ89XArVqKNICIBcSB+Xc2Z0iUNRr2rdZY47tZ3
- /hC6I1A/xAn46KoBWIdhasJm1Y6pn85Ngm+uDtp5bgjCl306G/lywDO2e9VWH204/W364ZHyHxF
- kEwt9vEIwpV19kgnykS2bms3h3oRlJZRKUy44BbO7/YV+nC/hdN0ZnwEtvOEzpBf9z1EyBYRbHn
- P30LbSfcJs+q3Z9t/0bcMgNtrpQBzqiqeEVGddCr5/YY81vdpkega9DU8fBzN5dcdIz4Tbc48zC
- WC/1NOjMllpB6K2YBBDuKLvk10yDlrmd/0WHd3s04SK+ZaZm3rNlNqIqaLseY38h5ZSHkLxWIx1
- B3I1s3xvfmZ6WBLwc4UHMDf6QUeLP5niKtEGi+z0Bg+9bQFBt+P8n/lQiuqXSzuC5XeNjYod8JV
- zq8IEK6u9BbRC/xLQjdiMTM6Zs3X57BMrQgK4r5EHXE5tFwET9ZaGjZOU2IT1qRyA7jANWwGP2Y
- 7mBNKZnW8k72oBOCvsHNm+oS8cyR3skt81CXm/E6DyJkwr3X0Uuk3S/3pmicKsuQgxYJyxX6q6/
- 3VAwQtf37nAD1Aw==
+ bh=vigS+xfcMdKxdYE27TGio8ou22KqEv+LDMFbQczDax0=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBqY2exbc1JZRT5ElO5oLir/wFmscileMbEgzoA7
+ Slf1ptbKQOJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCamNnsQAKCRDRgEFAKaOo
+ Nk5GD/sHtNeXRpUn9Q9KqNVJtXLRA5HP2X5k3Ea1xCsMbdzlMPdAaKjIdl3M185+QsElNEYzLGV
+ QL2kSy/kq3P7vOyee9dRfVlSCMUQ/Qws5Z0bZ14Xqtn8BQo6mIvqDfgJJwVm79jrX65F/rOXyhU
+ SSOu+CJZtBafvNmJfwqbt+UtTyGc474WCdgFUrLFMAL0XzrkN45+KTVM9alWaOViHHDZXY2C8GD
+ Nf81DlnpDORiIdZB8t49wLRgM2A126FDi5UeAmnjrBkPzKAQ3Zn1EcFw5x47kz4ka6q0DGJBgmP
+ sih4P7PhCVRbgVPUMhO0AixiVEhnYu97B99gFxVjq3TdYfjoFNE+H/w7SBFxg77NrakXkGK2NAg
+ kWtR3jxqlXFzNxWQDo1pZtyS1gLPVeVLGpJpf/34lNeYgptQtXtVzKJLDtckggigdH1tF4heX3p
+ cNDRjyA7WluytDNfp7W7tDG5lDCJzJvr6fNuSgHXO0a0aKGhxkJR8mI4+IJQi7VVe+/PfvAOzRz
+ A2JBsnBJzO/0LlaV7KdWAiRcGDQlC0IIYQx/7SqnAPThEGh3rht4RowQyw8H7VseXoItbpB4a5i
+ lDvT+Fcjw8zsTE0N9mMebRY9ESydpNVnDaN81+uGBuC0mJpeiuVCZM/GlH4wBU3e25djbfzwUS7
+ gG7cA7G3aKXnu8Q==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
@@ -64,44 +64,43 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Fri, 24 Jul 2026 13:25:14 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10129
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10131
 
-In many project, contributing sections are usually separate from the
-technical documentation and put to the forefront. Let's follow this in
-yocto-docs by creating a dedicated section for it on the main page.
+The Overview and Concepts manual contains introductory content which
+feels like it should rather be in the first section of the welcome page,
+rather than the "Manuals" section. Moreover, this section does not feel
+like a manual either, so rename the section title to "Overview and
+Concepts". Keep the "-manual" suffix to the directory name to avoid
+breaking links, though.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/index.rst | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ documentation/index.rst | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
 diff --git a/documentation/index.rst b/documentation/index.rst
-index 802f895b4..9a5a83811 100644
+index 9a5a83811..b7c04a581 100644
 --- a/documentation/index.rst
 +++ b/documentation/index.rst
-@@ -29,6 +29,17 @@ Get started using the Yocto Project.
+@@ -29,6 +29,13 @@ Get started using the Yocto Project.
     Yocto Project Technical Overview <https://www.yoctoproject.org/development/technical-overview/>
     Tips and Tricks Wiki <https://wiki.yoctoproject.org/wiki/TipsAndTricks>
  
-+Contributing to the Yocto Project
-+=================================
-+
-+Guides on how to contribute to the different parts of the Yocto Project.
++Get familiar with the development environment and concepts of the Yocto Project.
 +
 +.. toctree::
 +   :maxdepth: 2
-+   :caption: Contributor Guide
 +
-+   Contributor Guide <contributor-guide/index>
++   Overview and Concepts <overview-manual/index>
 +
- Manuals
- =======
+ Contributing to the Yocto Project
+ =================================
  
-@@ -41,7 +52,6 @@ infrastructure.
+@@ -51,7 +58,6 @@ infrastructure.
+    :maxdepth: 1
     :caption: Manuals
  
-    Overview and Concepts Manual <overview-manual/index>
--   Contributor Guide <contributor-guide/index>
+-   Overview and Concepts Manual <overview-manual/index>
     Reference Manual <ref-manual/index>
     Board Support Package (BSP) Developer's guide <bsp-guide/index>
     Development Tasks Manual <dev-manual/index>
