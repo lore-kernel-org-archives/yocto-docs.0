@@ -2,50 +2,52 @@ Return-Path: <niko.mauno@vaisala.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 618B9C54F4C
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 88945C54F52
 	for <webhook@archiver.kernel.org>; Tue, 28 Jul 2026 09:08:13 +0000 (UTC)
 Received: from GVXPR05CU001.outbound.protection.outlook.com (GVXPR05CU001.outbound.protection.outlook.com [52.101.83.90])
  by mx.groups.io with SMTP id smtpd.msgproc02-g2.7659.1785229682736024990
  for <docs@lists.yoctoproject.org>;
- Tue, 28 Jul 2026 02:08:04 -0700
+ Tue, 28 Jul 2026 02:08:06 -0700
 Authentication-Results: mx.groups.io;
- dkim=fail reason="dkim: body hash did not verify" header.i=@vaisala.com header.s=selector1 header.b=Li9gyF/E;
+ dkim=fail reason="dkim: body hash did not verify" header.i=@vaisala.com header.s=selector1 header.b=RNk6vO6e;
  spf=permerror, err=parse error for token &{10 18 spf.protection.outlook.com}: limit exceeded (domain: vaisala.com, ip: 52.101.83.90, mailfrom: niko.mauno@vaisala.com)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=j//bDGkq77tHdJKQeb0W6AWf+ZxjGXsiUtKvdjzM14C3Sbky4ivGY+Fi+X11IjlS//VKraNzEoK4cBoIJyrNIQbaMp01UZyVtv9v/jy+pOTVpuEmaM0sndJ+5mQqCf8hc0NR4/XC01LkMO4C3uaKDIdoh1iiH6R2btUdLUzcDkXCiYg+hznp4hmJKzkA/oGxZ6OU0GR7xFPFnB184DwdoklAhJvar7eKg35MFnDeI/i6KLWNW2PvX3O6o0RewhNCiITbAmissOgdbl+C5sIgyW4TJTx52FdPrvDZTWTHQAPhwSSez7kl8S9YdHIOcL3XuuxUgGDwaoKRsZSOmx5wew==
+ b=IC2REXEOlOtNKwMXn4w9u2L/HR8zbQuRhEU6C/ae32H5OSyRae8hIT07q14XQptPEGhhuSGOmoT+s6zPdZ/yoQm35iH9TRJXxL4rSaZWWqjEYKIRCDLC5621djNOrRCaQ5lt16IL4LD2papMmpN+7cQ37jM0Jzi1gphlSxPuXKRfwR7Kg+6Vbj9U8b+fBKN4hqKrBwg9ln4/KyoY2jwW1HFxU2Y0ZEs69Mzw6HYRt7BLAtsFu7VjD6gTrjWF3za0V4uDqpDmua+SI7sBB2Gpqxf9t5j4jEBeRIbrgYNlv+JzGsja3ZrWZz8k++XZQmFG40OLfgRE7iUSRZbFi6xqDw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pjGFSD1+peqZJTgjFWE671fFqF820bA7xZskh8EBQ8A=;
- b=oEqkUU6ctIhf4URsmMVqcR4shQO2PbEcrJcVyDBkkKGmfS/KXvR4yA2sQJ9RKLRxXz3o7NvrrEXgXQ+9DIC0HrIkY3dwTi857TVMKsecavAoPDEZkZxhvKaugyrLBu/aftAKtgrEx93uK5sqSZVvBgahHTFU2ZDebUQcnY/iuUAUO7Z+oXIaQwyQxCBVXNjmaNsdZuVbNi4b68hBFqoEDQE+Dnr3QvM6dbLN61x5Sru+CfaOr02ZQNppi4IJGWJGeFQEm78w22qOpJF4BS0GFe6y6PcyvcTnlgEl+NxDo+gBx46b4bVJSWbgU16eI1uu1C/2hOnTVEbdNCu+O5cRjQ==
+ bh=P3cTTJm4c18BUgcdlLObFshOXsfc3LOcUy8PoKrrhUA=;
+ b=lxoEpT9yp6/3feXFVZ688EUcF29RrGITl+k6D/NirbJ/axLx/0C4Q3dpiDnF5JT57eMAseTfE5Lf/zIp7BTNtrvDGMA6TzzD1zpHC6dlDvRCknZ+jS/d2V6cbNAgg2ARvwyS1MsJu20sNzw4F65BnXWobyCFZG3LW+bexj4Kl+eTi6YIDhmRYMlfBMNKAbnbQTY1WCJ2llL8S79rmEB6n+J8vA8W6hgla/1IIcNpIUI/ytlwEwbFW7aOWj1NjNEZKqVdoH4MpXwZDGr8i+TBvz5t1sRtHjSGC1kIeFq/Z3hjcohsPZDZjzJP0o+v4iXCmAEFeAVJyTxE3iYj51b3Rw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=vaisala.com; dmarc=pass action=none header.from=vaisala.com;
  dkim=pass header.d=vaisala.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vaisala.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pjGFSD1+peqZJTgjFWE671fFqF820bA7xZskh8EBQ8A=;
- b=Li9gyF/E2zhIguvW9W6Qp7JhzK9rIiLwSvEf7KbLOAzelZNZZvmtIXURvQtsi+lFiKeYZik10joGpBjYQB14lFPQrnY5xC1wKX9k+/gwGOh51oQrJsQqMWmoPUOHTWNxErpgtykRCwT6newoW/RM6EVUuJ8QUthwRKouBrxQ1e9jXxyREX/ozgpDfA/8NnLtwRUgUbX0DUpCWzlh7K3CE/t+RGMRN+pUC2lfwrrAy+a35t0roj82ETn1o0chZivu4H8/pF8u9Yt1A9c7R4V3yNi+awbKCNkUR7d3JvrQKz+B3VlVnhjRkWnvpBpR8tjpg4aVcYSBbms5AESsEPlFHQ==
+ bh=P3cTTJm4c18BUgcdlLObFshOXsfc3LOcUy8PoKrrhUA=;
+ b=RNk6vO6efvAia2/OzxaXzqY0hvNEkrpWSfHfw/HrOlP7k5ahT/6KZJLXaMs0YzurGl/Dl5Eq7M7fI4l8Bl7PVW1/5idZBY/UUV4rQsB47FvyAO9w7vXVDOOXgU836mRqlsDAXFHIwcJq87SIoFl1Y1oCr7+75m+Avt3xk7DLVAnDrVvcCrAuA7f4rvFNnyIqKW6TJvFGaWoUkCmkQNZHeMWqYasE/XME46BoQ5SzcqnwxKbnikQVNbkBC6Pu/bvAdD42asbVNH/iq/rzF/nMEn3f/7vSpATcWccmjOlwNdQVIuRp2Ve4/reqGbWEqlxcDlJd0KgeZkVAWLdrKiJWbQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=vaisala.com;
 Received: from AS8PR06MB7557.eurprd06.prod.outlook.com (2603:10a6:20b:337::17)
  by PA1PR06MB9700.eurprd06.prod.outlook.com (2603:10a6:102:44a::5) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.12; Tue, 28 Jul
- 2026 09:07:57 +0000
+ 2026 09:07:59 +0000
 Received: from AS8PR06MB7557.eurprd06.prod.outlook.com
  ([fe80::44ca:1bbb:6b57:4c16]) by AS8PR06MB7557.eurprd06.prod.outlook.com
  ([fe80::44ca:1bbb:6b57:4c16%4]) with mapi id 15.21.0270.009; Tue, 28 Jul 2026
- 09:07:57 +0000
+ 09:07:59 +0000
 From: niko.mauno@vaisala.com
 To: docs@lists.yoctoproject.org
 CC: antonin.godard@bootlin.com,
 	quentin.schulz@cherry.de,
 	Niko Mauno <niko.mauno@vaisala.com>
-Subject: [PATCH v3 0/5] documentation: minor fixes, plus a confusables check
-Date: Tue, 28 Jul 2026 12:07:33 +0300
-Message-ID: <20260728090746.27793-1-niko.mauno@vaisala.com>
+Subject: [PATCH v3 2/5] ref-manual: Prune superfluous space with :append
+Date: Tue, 28 Jul 2026 12:07:35 +0300
+Message-ID: <20260728090746.27793-3-niko.mauno@vaisala.com>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260728090746.27793-1-niko.mauno@vaisala.com>
+References: <20260728090746.27793-1-niko.mauno@vaisala.com>
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain
 X-ClientProxiedBy: GVZP280CA0039.SWEP280.PROD.OUTLOOK.COM
@@ -54,141 +56,109 @@ X-ClientProxiedBy: GVZP280CA0039.SWEP280.PROD.OUTLOOK.COM
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: AS8PR06MB7557:EE_|PA1PR06MB9700:EE_
-X-MS-Office365-Filtering-Correlation-Id: f91f8b02-5e10-4ca6-1534-08deec87b779
+X-MS-Office365-Filtering-Correlation-Id: f662879f-45ba-441a-be4b-08deec87b8a0
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: 
-	BCL:0;ARA:13230040|366016|52116014|376014|23010399003|1800799024|38350700014|6133799003|56012099006|11063799006|10067099003|3023799007|18002099003;
+	BCL:0;ARA:13230040|366016|52116014|376014|23010399003|1800799024|38350700014|56012099006|5023799004|11063799006|10067099003|18002099003|22082099003;
 X-Microsoft-Antispam-Message-Info: 
-	1r2ShKHrRp3EfoWjfYBBBcsmyc4YyRH/4JFkt4O1Ek2MDZ6DwCnafQwdkuOS1nTk3xaos5W3zdLFIBuJAqnbNM16qGZykJgMfry5NjTERiDbhETJ0SsvJ8R10jDQXMFgABfVDuv2R+oVlsnf1O98TdTI/D9tTYDAAOo8kA+d0935bcGm2hvjgWHJsEfojAAk1p69dwuIYx7Ga3xnIKpITFwKvC+hvEVQcPzp6h/zKyswZPlt9aU/tj8/CFnv4WGh06QnwZh0eSe+BD/0xL7pCeVc9ceTVxvg8WByUtOsjnleEhEQG6jplRhx+/dvfiXY8NTo1GwjaPTiTn7v+3xeynpAhlELp1FsVJTYdd7MG4cOBzRQlzeFxhG/damMdlRTwBy8LpXmOh/KBM1Y0vt9Os0QX6k+5XZvQBf7n0H+aLxMLyNpZ7whw5XFupH/mOvLmJIZXp5Peukdkmq5PUlHSEJfRP06LsFOnzBR/Zuw+AJnft13T/kdpaEQafkKdw4O3n3m/kByZaDc2j2HcDOPlMSSxp/GGDWNycsKKO5sP2pIS+aPKzt8Qv+9VeZ24YpYq+LeB3Mi0pSXdI10JycWzPqYBi8NBsjo4mbKEhM4UJNkH3SE+XuGE6+XNfIozgP7FNnnWLawLSNV6eIkMA9xy6lgGZAkxWVwDMF1Xt4HGrB8YBrGZ12DbY8R3op9hXi6KzATXCU8n5yOZWosJbUshNKtMnszNKp37WNEGQRiWd8=
+	JGhsIxBWewxqADH5GlkQJSitnsaC4HLlEZ9s2grKiUfvd4hpCk3vEY7VKGcJ9nkSvCvJ1FLzZvbEZvBDHV4j12X5/lM5uoWEkYZlnuMTX/0AA0J7kUkB7VXEo8rl1zYBEtP5RzrAd823hMuQuMI3XV3BBW+tBsipy7yPRw7NwK/jMK9wImK1ryeZ7UhMFYRLs4yt3bnnPL6sZq8SvmQsoWEoSgYz3ti+m6U6ly/kpt0/4YZ7DirPQN94a0JfGxTa9eLR5s9FxX1DjSB4cBbosNV4u5RprlnOJcQe3L5HIoVpbBi6aFpSPzmAX5MTKcHQusOedOEHKAoVmMkx/Gax9T53k3BJJ9omYtAgRX17Ni5oPCVz0NBW9PKVyl+JhgWurPBqEEo9FzkxNF5co332m8FO71BUdfVo3HtqNvM6FD/dA+FuNtNjo7eDnkbAZVqr3M2daH1AjdSISwznm2aEkFZoUetICjdEbmZn14zmKS/k5ZF1pikH1lpr889EVv9pYKKLkvIoeby6CPl3OrvDy7UTB+C+oE2MT1URpxQNCvQYKOc/UnUvq+nL60aSRee2L9saEKUY+FPIK1IGkGtsyDFBS+A80Hq4vIDtsgmCtfhqCOne+VU/BBF2223CC//msWjTVQ9KHPpEb9i64HAGax4URuNutB/cDGw9xyHxVPw=
 X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR06MB7557.eurprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(376014)(23010399003)(1800799024)(38350700014)(6133799003)(56012099006)(11063799006)(10067099003)(3023799007)(18002099003);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR06MB7557.eurprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(376014)(23010399003)(1800799024)(38350700014)(56012099006)(5023799004)(11063799006)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?us-ascii?Q?Rh5d2q6r/qbcyPoAKCHv2JojSMg3oOkSrg7r4TTXLsDEE3S8aKprBHf2JPeb?=
- =?us-ascii?Q?DczvqPYxdHsOzFF2wbwKOtzs8oTCYhRrzWSfo2/VtNEsbhI4aGipNz2zhwaf?=
- =?us-ascii?Q?Q0lRDyP2cB1VIf274O5bAdeoC17nkirmSfiKnNaExbPRFMvFbt6dFMVoNbzr?=
- =?us-ascii?Q?rGqRkEgVvA2BtGwqWvGFmlTbrNhCsfkyUM64gdHg66MLd/Hg6cSn9nG3GCXD?=
- =?us-ascii?Q?FGCu2rdQNy28/vX/o3jgQhsjZm7+d9Y9gAUWrTw2u8ZozcEoJKqHjDvFyeWj?=
- =?us-ascii?Q?/NJ99LvI0jw7jj9Ql8Q5+m/HO4GalZcrc3XQ9KoL1Yv00QOcZ7NT22KziJll?=
- =?us-ascii?Q?GoxXiI+wxXuxjN1WpwOnVa8Gvt9u5Asewodkd28vWk+R9+oEXETqY6fS2uV5?=
- =?us-ascii?Q?HKBCae+/WNKqnxQEJc3EgB7vNU20002Ztqzuoq6QgXVhE0w4E6xixMqjH8kJ?=
- =?us-ascii?Q?vycf5ze8E+QsPbZ5/Y7J8HrG2586lwAY1wC2AW6aVgNzItGxthq19j5SgNHt?=
- =?us-ascii?Q?PzrDpqDyTCimROquIjbMqt2eBi7UQJobYOFq9Zno1sirR7X4AWcPrJmboLNH?=
- =?us-ascii?Q?XnzPlSsYE8SUXX4hElTDuY1qBOslYbl231GESCgDZJPEHLc1MrBGymwupWdl?=
- =?us-ascii?Q?xG+9dMCGnuBG3MDciMVRkK0Zl5vVdkcQr+b9SlZJYgeCpnfLYrARgFq0h0BK?=
- =?us-ascii?Q?wkCIvcY3sRmZaE8BvnwS4unt2Ji7JbIV6/emgInshuRk3lR5BDnb38rG7KCf?=
- =?us-ascii?Q?peHrLvV2o2q1vrhsb711A94HY2Jt1s2UXxGdhZDFeDoMs3NFoif6fJH7iQ1a?=
- =?us-ascii?Q?uVJPG6ioaHGJqOTl/fvaAYN6+v7bUXJ32i862iAp/KM4VpB5vRdVhs9zJoCg?=
- =?us-ascii?Q?IbnnKT0Ny4ArBT+c1UkIKV0S+EuSkkbfWrYcIHXcOPeT1f/QuZ4UXgeh5tKB?=
- =?us-ascii?Q?N07Ri5NfHmQXujkQA/ZJQBB5olDsQt6mVTJcPEZMnVfJDJwmFS6n2zkqfxbw?=
- =?us-ascii?Q?egukGBb0epmBgtdu4WHNMkFSxRYWQ+T/rSfJNyefy0OlQLC7gT8G6WRCby+c?=
- =?us-ascii?Q?9vjXuXlWsi4yRzJqrnb50W6TGune9tPUIfVXEQaaF0uRw6fVOYDaQ7/3tQUO?=
- =?us-ascii?Q?KLxC6tOkXvxWx+FH/4+mN6ILJtfekdA/Lrb9u59HLC1nkwFB8w86hrmEn7/A?=
- =?us-ascii?Q?Py99PHnjBd1EzZGOcDiVAeAoqCz77C9ucddFfLcDxAhhimhEmPkXLdWCKQqS?=
- =?us-ascii?Q?y7bQ5zpbFnm6FzMMDDVb8QOuF1/22Zf/k5lNCPz41rtFy1E3XgqIxdBAY8xs?=
- =?us-ascii?Q?K8LQLQP/TvxYDqR9Msth8GTnIv7j/zZFhxGY01ih1VHqTdb2dXnkCXanzpF/?=
- =?us-ascii?Q?ilJFGhZ004gyv0kSxeokf50CEKMW1P3pw1P4l32epoe5zsowHx/OQAAjfyCF?=
- =?us-ascii?Q?fkXmSO9eazPniWly+cayirmkK0sQknW6Xj1YNiQpdojDC2PsglgwIAJLIWtU?=
- =?us-ascii?Q?tAJMlrbdZForQ/4sM2g+a1TnyFunNn6I7pwEhs3Q3my1rU295G2eR/c/6YsQ?=
- =?us-ascii?Q?v69Fwg9KAHQBypJRGZ/c2ok/929EEcMJHrVnn9+f4oDakC0zEGekA0vWJCjD?=
- =?us-ascii?Q?O20zBTS6JjdJEySHnh4k5bLbcJsTUIRusIwyJ+uacDkFVOBbOVvLWRMjS/Cj?=
- =?us-ascii?Q?JoqV6WG/9/nhJLYyInTpsToYuJo3BlIxRwPymfZVmpucWLCPn+1nx5fCBAmY?=
- =?us-ascii?Q?NfwuOGOmyeZ0+vM9gfaiY1/Bx4Tl5Xk=3D?=
+	=?us-ascii?Q?tG802Rnpet0jTYK8q6CT0rL+8jn5xeou44OVRnP6XLPjRTflPawStRLl/VX0?=
+ =?us-ascii?Q?BhxQ+C5hG+OO6JAiO8HS/16iyHRQz688U0mHXuMwAB4IL88GskHY5LhcQKcw?=
+ =?us-ascii?Q?4XMtlHmwwCL3atKMxeXYek66PLAnfBBbBWvcJ4gbIYKtWXf4l25SXdhOaV/S?=
+ =?us-ascii?Q?AzYzmSt5gCK2bwY/PabXG1r0YwsX+OMZ899ZMuyA8zFq11zn73yDFoV0+4am?=
+ =?us-ascii?Q?un4MwIkw7v+lbOhtP/Bs4H0I3HJAlnz3Ze2fHs0c9PD1J3up+p476M7Hl0cq?=
+ =?us-ascii?Q?L50tPkVtG1gVkwyqozOQm4+aQsEgyQpX7xM42yYMgKp1wI54jRlBnJpV6GcJ?=
+ =?us-ascii?Q?lcsqQgMsXmDB6LtwTKcYmZkP2x1glfxUCSBPDoPlArHHRe2ndwoV8S+NWaMS?=
+ =?us-ascii?Q?Ss0XgP07zxOJbs/h3lhuQzUG/cEJK4dsRRclIZqSJ8C+T/HaVLw5OhBev9ZF?=
+ =?us-ascii?Q?kdvMGkVfgGaugEc2uaE9Au1RlIKkVXE6v/yMddf3tMbJRXGAShyCpmq5XguF?=
+ =?us-ascii?Q?paREWr0HqV/h6VJLvX1CEY2DoOauXLzniNF7QB5AOc1uBEBabqt0YatOC8/U?=
+ =?us-ascii?Q?9M/HjY+fDRUI6Cs0q0mz/Btt94AYnDx2+5Io4vA8RtarAKBHPO/Ecy0OMm9E?=
+ =?us-ascii?Q?H2G93wTBK0rMCXFp7lTH4SI75RDc23TbMcp6fO34R0EQfl0QiMUuD/ThLVYK?=
+ =?us-ascii?Q?R71s9e7wWRasIwAocUXZ7nz3ykwTmhuBemCzlSiplbaZN3B0WsS7REnhK1+1?=
+ =?us-ascii?Q?Znr/kl5X/myd46GPYjFb/ymoy6n03qu0kKMRSVfKD6OZSQ3q0631dPbvROXG?=
+ =?us-ascii?Q?nRlYbEf7ZWk9+Sbyt5yAULS0qdooQP1Wt5Cnl2aFrsE2dgL/lio8f1balkip?=
+ =?us-ascii?Q?/KUFR0cbylqBGOdPWvOeQ/mreGei0AL1lhtxL0J9sLykH+60ew7IvDHYOcKr?=
+ =?us-ascii?Q?gHMp2DhAoNeBvm/YTPeb6TTeQG1UVQJsv+adZv+JGiXXWnDJbDyYrJVl6cMr?=
+ =?us-ascii?Q?bF7apf02qanszzq+1z/3esTRymMIYcchBC8YV/+UuwaWQ37NiGs0FfIChfoS?=
+ =?us-ascii?Q?gdoLq+4VU1hf8Y+v/plrwjh+Ei7NRNUrGF7L5gA4v4eVFIrcJaCC5QRIs3HC?=
+ =?us-ascii?Q?1aoDLhBJRxCXm+Gb+dHFmiu7EVm6gydhUKXn+fOXUCxK7lxIVOmUpiun8pNI?=
+ =?us-ascii?Q?aWl8yFborZsYwMzHxSdOYWGQmWV9PKxIjV/yeQAeTwv3AaXli2pN2M6LABLu?=
+ =?us-ascii?Q?leOeSNKyalFzL33++XjN5LdYiaTSbVW8AWGFPE5/4FQpyyHShNXn2Zu7tS+Z?=
+ =?us-ascii?Q?YOD3Gz91m5I31gxkI06AyJcdwFhUyCl7ZWMf6+btGlid6bzaotUCgK0hbRdo?=
+ =?us-ascii?Q?tsucBkGw2+yWUIPk5xjBSaUFTS+1vMhqaDyql/tAXpJXpmssg9CLokDXq4lt?=
+ =?us-ascii?Q?VbANbite3tJ0JMKViLnruObO5DZ6yUw7P5PrNK6+z+vC7TvNVNU8LebexJ5C?=
+ =?us-ascii?Q?t/2ssnGEmTgdUJqHnEkhBEz32cZcaWVLdbGQbU/X97XBQirEP8gfzUhvRULV?=
+ =?us-ascii?Q?1pghk7BgLDfZ6DDIHoFN/QG07iZCGv7NdDHigD0Yi01SHbPz9NpYH2E6qfdh?=
+ =?us-ascii?Q?BphAqX7Xl5gCoFf83FeXNZzE2lNnX4ePLLa1LhUHZDAOtiPXIPNhjsWAuk/P?=
+ =?us-ascii?Q?IjmA9vpES7vmnQ3RZbs6cel/CEq34QZiB/bgyH3wIGfCeiFunoVR/L1tv4zK?=
+ =?us-ascii?Q?oKyyFZU6jRl1644qUe1Fbp4Cqeq8N/c=3D?=
 X-OriginatorOrg: vaisala.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f91f8b02-5e10-4ca6-1534-08deec87b779
+X-MS-Exchange-CrossTenant-Network-Message-Id: f662879f-45ba-441a-be4b-08deec87b8a0
 X-MS-Exchange-CrossTenant-AuthSource: AS8PR06MB7557.eurprd06.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jul 2026 09:07:57.7783
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jul 2026 09:07:59.7706
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 6d7393e0-41f5-4c2e-9b12-4c2be5da5c57
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: HjhHduTGQ/WCjZABcQxX9E2McQrww49bGQINokEF43tmlJrE3IlXXVFnN9vxKfB0Ucb3r5x+r1Zk1X69vokxMg==
+X-MS-Exchange-CrossTenant-UserPrincipalName: //6E4b+zwGP9TXiNjG23IzJaBhGo2d4In47MrXU8yPwIqAteqwChniFOe1HV4J9wloksZISn41LUVP6LYkkHQQ==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR06MB9700
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Tue, 28 Jul 2026 09:08:13 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10165
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10167
 
 From: Niko Mauno <niko.mauno@vaisala.com>
 
-A small collection of documentation fixes. Several correct example
-snippets that misbehave when copied verbatim; the last two remove
-non-ASCII "confusable" characters and add a check to keep them out.
+Remove occurrences of superfluous space characters in value field of
+:append assignments.
 
-  * ref-manual: add the trailing space missing from :prepend examples,
-    so readers don't risk inadvertent string concatenation.
-  * ref-manual: drop superfluous spaces from :append examples.
-  * dev-manual: add the whitespace around '=3D' that the Whinlatter
-    (5.3) recipe parser now warns about.
-  * documentation: replace non-ASCII confusables (curly quotes, en/em
-    dashes, zero-width spaces, and no-break spaces outside tree output)
-    with ASCII; e.g. a curly quote copied into a recipe causes a
-    bitbake ParseError. Legitimate non-ASCII (box-drawing in directory
-    trees, the no-break spaces the tree command emits there, accented
-    contributor names, CJK) is left untouched.
-  * tools: add the check-confusables script and wire it up as a
-    pre-commit hook and in the Makefile "checks" target, in the same
-    fashion as check-glossaries, to guard against regressions.
+Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
+Signed-off-by: Niko Mauno <niko.mauno@vaisala.com>
+---
+ documentation/ref-manual/qa-checks.rst | 2 +-
+ documentation/ref-manual/variables.rst | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-Changes since v2:
-  * Keep the no-break spaces that the tree command emits in directory
-    listings, and make the check tolerate them on lines containing
-    box-drawing characters (per review feedback). No-break spaces in
-    prose and command examples are still converted.
-  * Make the pre-commit hook pass filenames and check only the changed
-    files (per review feedback); the Makefile "checks" target still
-    scans the whole tree.
-  * Stop treating the horizontal ellipsis as a confusable; the
-    truncated git hashes in the release notes are left as-is, as it is
-    a cosmetic character rather than a tooling hazard.
-  * Add Quentin's Reviewed-by to the three whitespace/operator fixes
-    that are unchanged since v1.
-
-Changes since v1:
-  * Squashed the two confusable cleanups (recipe-style-guide and
-    identify-component) into a single documentation-wide patch and
-    extended it to all remaining occurrences.
-  * Added the check-confusables tool, pre-commit hook and Makefile
-    integration.
-  * The three whitespace/operator fixes are unchanged.
-
-Niko Mauno (5):
-  ref-manual: Fix occurrences of omitted space with :prepend
-  ref-manual: Prune superfluous space with :append
-  dev-manual: Fix missing whitespace around '=3D' operator
-  documentation: Replace non-ASCII confusable characters with ASCII
-  tools: Add check-confusables pre-commit hook
-
- .pre-commit-config.yaml                       |   5 +
- documentation/Makefile                        |   1 +
- .../contributor-guide/identify-component.rst  |   4 +-
- documentation/contributor-guide/index.rst     |   4 +-
- .../contributor-guide/recipe-style-guide.rst  |   8 +-
- .../contributor-guide/submit-changes.rst      |   4 +-
- documentation/dev-manual/build-quality.rst    |   2 +-
- documentation/dev-manual/debugging.rst        |  14 +--
- documentation/dev-manual/layers.rst           |   2 +-
- documentation/dev-manual/new-recipe.rst       |   4 +-
- documentation/kernel-dev/common.rst           |  10 +-
- .../migration-guides/release-notes-4.1.rst    |   2 +-
- documentation/ref-manual/classes.rst          |   4 +-
- .../ref-manual/devtool-reference.rst          |   4 +-
- documentation/ref-manual/faq.rst              |   6 +-
- documentation/ref-manual/qa-checks.rst        |   2 +-
- documentation/ref-manual/variables.rst        |   5 +-
- .../yocto-project-supported-features.rst      |  10 +-
- .../test-manual/yocto-project-compatible.rst  |   2 +-
- documentation/tools/check-confusables         | 115 ++++++++++++++++++
- .../transitioning-to-a-custom-environment.rst |   2 +-
- documentation/what-i-wish-id-known.rst        |  14 +--
- 22 files changed, 174 insertions(+), 50 deletions(-)
- create mode 100755 documentation/tools/check-confusables
-
-
-base-commit: 358519ca6406a89fee42c45dcaf63a37a374f33c
+diff --git a/documentation/ref-manual/qa-checks.rst b/documentation/ref-man=
+ual/qa-checks.rst
+index 9654cf08e..09b0f628a 100644
+--- a/documentation/ref-manual/qa-checks.rst
++++ b/documentation/ref-manual/qa-checks.rst
+@@ -889,7 +889,7 @@ or "-fpic" to the compiler command-line options. For ex=
+ample, given
+ software that reads :term:`CFLAGS` when you build it,
+ you could add the following to your recipe::
+=20
+-   CFLAGS:append =3D " -fPIC "
++   CFLAGS:append =3D " -fPIC"
+=20
+ For more information on text relocations at runtime, see
+ https://www.akkadia.org/drepper/textrelocs.html.
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-man=
+ual/variables.rst
+index 0066ede0f..b124e9c30 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -5559,7 +5559,7 @@ system and gives an overview of their function and co=
+ntents.
+          KERNEL_EXTRA_FEATURES ?=3D "features/netfilter/netfilter.scc feat=
+ures/taskstats/taskstats.scc"
+          KERNEL_FEATURES:append =3D " ${KERNEL_EXTRA_FEATURES}"
+          KERNEL_FEATURES:append:qemuall =3D " cfg/virtio.scc"
+-         KERNEL_FEATURES:append:qemux86 =3D "  cfg/sound.scc cfg/paravirt_=
+kvm.scc"
++         KERNEL_FEATURES:append:qemux86 =3D " cfg/sound.scc cfg/paravirt_k=
+vm.scc"
+          KERNEL_FEATURES:append:qemux86-64 =3D " cfg/sound.scc"
+=20
+    :term:`KERNEL_FIT_LINK_NAME`
 --=20
 2.47.3
 
