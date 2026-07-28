@@ -2,49 +2,49 @@ Return-Path: <niko.mauno@vaisala.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 88945C54F52
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 96AEBC54F53
 	for <webhook@archiver.kernel.org>; Tue, 28 Jul 2026 09:08:13 +0000 (UTC)
 Received: from GVXPR05CU001.outbound.protection.outlook.com (GVXPR05CU001.outbound.protection.outlook.com [52.101.83.90])
  by mx.groups.io with SMTP id smtpd.msgproc02-g2.7659.1785229682736024990
  for <docs@lists.yoctoproject.org>;
- Tue, 28 Jul 2026 02:08:06 -0700
+ Tue, 28 Jul 2026 02:08:05 -0700
 Authentication-Results: mx.groups.io;
- dkim=fail reason="dkim: body hash did not verify" header.i=@vaisala.com header.s=selector1 header.b=RNk6vO6e;
+ dkim=fail reason="dkim: body hash did not verify" header.i=@vaisala.com header.s=selector1 header.b=PbzCYFTf;
  spf=permerror, err=parse error for token &{10 18 spf.protection.outlook.com}: limit exceeded (domain: vaisala.com, ip: 52.101.83.90, mailfrom: niko.mauno@vaisala.com)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=IC2REXEOlOtNKwMXn4w9u2L/HR8zbQuRhEU6C/ae32H5OSyRae8hIT07q14XQptPEGhhuSGOmoT+s6zPdZ/yoQm35iH9TRJXxL4rSaZWWqjEYKIRCDLC5621djNOrRCaQ5lt16IL4LD2papMmpN+7cQ37jM0Jzi1gphlSxPuXKRfwR7Kg+6Vbj9U8b+fBKN4hqKrBwg9ln4/KyoY2jwW1HFxU2Y0ZEs69Mzw6HYRt7BLAtsFu7VjD6gTrjWF3za0V4uDqpDmua+SI7sBB2Gpqxf9t5j4jEBeRIbrgYNlv+JzGsja3ZrWZz8k++XZQmFG40OLfgRE7iUSRZbFi6xqDw==
+ b=ZrM73kPUBwKJ7KIGVaAWRI+Hxxjn1OgK08AZOhUQFvhOm+/nLW9+uMiRwH4BvQ676yB2ZkvI8yPshtfQKjlQhPU4Z1sEGjCFfTIeTa3OIAay/LLIWYTQCYDTZ7cNsbPnjZju84urs1/1BlRfBVpVuHLaJEaxd1R94BwzEWNGE6MsqNYbiMIREPhbqRNaBRvxOmpZto1JIoP27O0s+hnOGtGmwLwZw1CSqst/gBJhSvi7VC4Y2QlKrgAXkByLvMbU2cXzluAVVCuFw2CriAvyjffxWocExp5pjV4SKCvdDlSQ6qeF2xHFA9CLuQRvm80Jl/AON3ow6ixcRH9gmVv2gA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=P3cTTJm4c18BUgcdlLObFshOXsfc3LOcUy8PoKrrhUA=;
- b=lxoEpT9yp6/3feXFVZ688EUcF29RrGITl+k6D/NirbJ/axLx/0C4Q3dpiDnF5JT57eMAseTfE5Lf/zIp7BTNtrvDGMA6TzzD1zpHC6dlDvRCknZ+jS/d2V6cbNAgg2ARvwyS1MsJu20sNzw4F65BnXWobyCFZG3LW+bexj4Kl+eTi6YIDhmRYMlfBMNKAbnbQTY1WCJ2llL8S79rmEB6n+J8vA8W6hgla/1IIcNpIUI/ytlwEwbFW7aOWj1NjNEZKqVdoH4MpXwZDGr8i+TBvz5t1sRtHjSGC1kIeFq/Z3hjcohsPZDZjzJP0o+v4iXCmAEFeAVJyTxE3iYj51b3Rw==
+ bh=wsV93fXwfXlzxx4GWfwj+GXnJGQW2isS9ko1pg+uXGE=;
+ b=SXTlU8SpOveUCx4iwQCQFkS1Uq4AF9l1e5Zrq4I6Dc65OQSoidya9NkK9KQkC0eKV0JXErneTzs9bZ2WNFKXXRdSV1S2igmYx1AoLvqZAs1bJTIUNribDDD/AmT7DjySRjyMImr8jCYuYumR0t9k1f0x7CIwO4Ld7XZNArKzwOvd5Wf5FtfDz+UssWXElb3lTOs0D8uFhVaXQ94CTiuaps8K2Cm/OV1CJpM8zWYO+4ERu8iJO4svrPLWUnirQi9+eap9ir8hGqr7Bjs7G9/ErUOvrejfKrO4KP7J2BgMRcv2DyIsVeziOvctrjGrLc00hwwlVaGay4KKgjesoaDZdQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=vaisala.com; dmarc=pass action=none header.from=vaisala.com;
  dkim=pass header.d=vaisala.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vaisala.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=P3cTTJm4c18BUgcdlLObFshOXsfc3LOcUy8PoKrrhUA=;
- b=RNk6vO6efvAia2/OzxaXzqY0hvNEkrpWSfHfw/HrOlP7k5ahT/6KZJLXaMs0YzurGl/Dl5Eq7M7fI4l8Bl7PVW1/5idZBY/UUV4rQsB47FvyAO9w7vXVDOOXgU836mRqlsDAXFHIwcJq87SIoFl1Y1oCr7+75m+Avt3xk7DLVAnDrVvcCrAuA7f4rvFNnyIqKW6TJvFGaWoUkCmkQNZHeMWqYasE/XME46BoQ5SzcqnwxKbnikQVNbkBC6Pu/bvAdD42asbVNH/iq/rzF/nMEn3f/7vSpATcWccmjOlwNdQVIuRp2Ve4/reqGbWEqlxcDlJd0KgeZkVAWLdrKiJWbQ==
+ bh=wsV93fXwfXlzxx4GWfwj+GXnJGQW2isS9ko1pg+uXGE=;
+ b=PbzCYFTfWKj+bk/LWYBzZIhFrMzNqPhWdA4gn8WH7bGePLfCZGxmEkBTOYA5elAmjVtIIZBNBo4pr0Vt8a5lFtvG7xVZh4JQ7P7QiwtQFSLjvsmDbO8VT83ZRjW312uGLrgQNojOQyZs9WzaWWGqF6rRolUtmaWLWMpx4ye7ZiHgUxpRgqzaWYjf+e+b/WFH4oHF9+b/kAJKzPuBXn2bEBGQUaYHw4Bf4livciBn28zkDvfzFrLah3x6zpl04D1hBBMpQ2PCbJKL5SMICivibqY97NJlOCCwQlukWcOTL0VbC6/RC/qHeLiujqonWeQa7hDnvfWuOPTx+x9VGY0mZQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=vaisala.com;
 Received: from AS8PR06MB7557.eurprd06.prod.outlook.com (2603:10a6:20b:337::17)
  by PA1PR06MB9700.eurprd06.prod.outlook.com (2603:10a6:102:44a::5) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.12; Tue, 28 Jul
- 2026 09:07:59 +0000
+ 2026 09:07:58 +0000
 Received: from AS8PR06MB7557.eurprd06.prod.outlook.com
  ([fe80::44ca:1bbb:6b57:4c16]) by AS8PR06MB7557.eurprd06.prod.outlook.com
  ([fe80::44ca:1bbb:6b57:4c16%4]) with mapi id 15.21.0270.009; Tue, 28 Jul 2026
- 09:07:59 +0000
+ 09:07:58 +0000
 From: niko.mauno@vaisala.com
 To: docs@lists.yoctoproject.org
 CC: antonin.godard@bootlin.com,
 	quentin.schulz@cherry.de,
 	Niko Mauno <niko.mauno@vaisala.com>
-Subject: [PATCH v3 2/5] ref-manual: Prune superfluous space with :append
-Date: Tue, 28 Jul 2026 12:07:35 +0300
-Message-ID: <20260728090746.27793-3-niko.mauno@vaisala.com>
+Subject: [PATCH v3 1/5] ref-manual: Fix occurrences of omitted space with :prepend
+Date: Tue, 28 Jul 2026 12:07:34 +0300
+Message-ID: <20260728090746.27793-2-niko.mauno@vaisala.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260728090746.27793-1-niko.mauno@vaisala.com>
 References: <20260728090746.27793-1-niko.mauno@vaisala.com>
@@ -56,109 +56,120 @@ X-ClientProxiedBy: GVZP280CA0039.SWEP280.PROD.OUTLOOK.COM
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: AS8PR06MB7557:EE_|PA1PR06MB9700:EE_
-X-MS-Office365-Filtering-Correlation-Id: f662879f-45ba-441a-be4b-08deec87b8a0
+X-MS-Office365-Filtering-Correlation-Id: a7323be0-4cd9-47f4-4600-08deec87b7db
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: 
-	BCL:0;ARA:13230040|366016|52116014|376014|23010399003|1800799024|38350700014|56012099006|5023799004|11063799006|10067099003|18002099003|22082099003;
+	BCL:0;ARA:13230040|366016|52116014|376014|23010399003|1800799024|38350700014|56012099006|11063799006|10067099003|18002099003|22082099003;
 X-Microsoft-Antispam-Message-Info: 
-	JGhsIxBWewxqADH5GlkQJSitnsaC4HLlEZ9s2grKiUfvd4hpCk3vEY7VKGcJ9nkSvCvJ1FLzZvbEZvBDHV4j12X5/lM5uoWEkYZlnuMTX/0AA0J7kUkB7VXEo8rl1zYBEtP5RzrAd823hMuQuMI3XV3BBW+tBsipy7yPRw7NwK/jMK9wImK1ryeZ7UhMFYRLs4yt3bnnPL6sZq8SvmQsoWEoSgYz3ti+m6U6ly/kpt0/4YZ7DirPQN94a0JfGxTa9eLR5s9FxX1DjSB4cBbosNV4u5RprlnOJcQe3L5HIoVpbBi6aFpSPzmAX5MTKcHQusOedOEHKAoVmMkx/Gax9T53k3BJJ9omYtAgRX17Ni5oPCVz0NBW9PKVyl+JhgWurPBqEEo9FzkxNF5co332m8FO71BUdfVo3HtqNvM6FD/dA+FuNtNjo7eDnkbAZVqr3M2daH1AjdSISwznm2aEkFZoUetICjdEbmZn14zmKS/k5ZF1pikH1lpr889EVv9pYKKLkvIoeby6CPl3OrvDy7UTB+C+oE2MT1URpxQNCvQYKOc/UnUvq+nL60aSRee2L9saEKUY+FPIK1IGkGtsyDFBS+A80Hq4vIDtsgmCtfhqCOne+VU/BBF2223CC//msWjTVQ9KHPpEb9i64HAGax4URuNutB/cDGw9xyHxVPw=
+	/o3/NmjbKKZsMvesix9Drhqd0d10NOSYtXGa5imn85MyDtM/OCsgRzxsaoMShRlSnlliNomU3D8UsJ00+xybp/nI//viozU4aYUGktzyMwqy/HcfwmI/4Zq8XMetcLa1gQvn9uFPIPgNd2zoOgfciHOU3ZIahzhu1qSxsD5eP1AOFFOhL9DrTX95GoDi41lCbd/jegYPsROoPXqnfPDycWtqnHsafks2P10lOQbzzoMVii6YnFGjwRc1Zev7kjXutGCPIIDyHC54hwsN2LreM5sKfQjdWNA4QqREH6cxwSTV0AE19xUqFa2Y+KJJ7rWTXPm6Bv6nF8cj6zwd43XSwExIR9fhoYQXq415RoONCvjMfRpUu6MGcO2zeS4gPyykKKOzbG0ig6LF9m+YaSqB198I3Yr5/VgB5yxesGZrmTwQywB8GZYj5Tee8b3JLGUWmT/jf+uGT5mMm+oIgO0xhzBBEjmwgWvrCKQsGU50pujU65HA4/VHsUDevfpxF/nrwT3D3K/WGwWrKD3axOwVy29rlQODlrYFWe3GaRVfQ7tsHoIieAb6oEbGUT5U+Uq3MgRZ4k6yh4vV70OvkSuOw0OcPUXJPTe8ercn9Qi8sxLibaUZKFQUCRWRKbFx1pj+OYtTu/IZYv5ghXU3FqDq1GFBLFTJS5IB6aR4D255x+jVZd2BWTc9JQ6teSeU0Nm36rz0QbtwsEx8sBH1b3EtrVbHog+c+2yUhYYh8M7/7Mg=
 X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR06MB7557.eurprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(376014)(23010399003)(1800799024)(38350700014)(56012099006)(5023799004)(11063799006)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR06MB7557.eurprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(376014)(23010399003)(1800799024)(38350700014)(56012099006)(11063799006)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?us-ascii?Q?tG802Rnpet0jTYK8q6CT0rL+8jn5xeou44OVRnP6XLPjRTflPawStRLl/VX0?=
- =?us-ascii?Q?BhxQ+C5hG+OO6JAiO8HS/16iyHRQz688U0mHXuMwAB4IL88GskHY5LhcQKcw?=
- =?us-ascii?Q?4XMtlHmwwCL3atKMxeXYek66PLAnfBBbBWvcJ4gbIYKtWXf4l25SXdhOaV/S?=
- =?us-ascii?Q?AzYzmSt5gCK2bwY/PabXG1r0YwsX+OMZ899ZMuyA8zFq11zn73yDFoV0+4am?=
- =?us-ascii?Q?un4MwIkw7v+lbOhtP/Bs4H0I3HJAlnz3Ze2fHs0c9PD1J3up+p476M7Hl0cq?=
- =?us-ascii?Q?L50tPkVtG1gVkwyqozOQm4+aQsEgyQpX7xM42yYMgKp1wI54jRlBnJpV6GcJ?=
- =?us-ascii?Q?lcsqQgMsXmDB6LtwTKcYmZkP2x1glfxUCSBPDoPlArHHRe2ndwoV8S+NWaMS?=
- =?us-ascii?Q?Ss0XgP07zxOJbs/h3lhuQzUG/cEJK4dsRRclIZqSJ8C+T/HaVLw5OhBev9ZF?=
- =?us-ascii?Q?kdvMGkVfgGaugEc2uaE9Au1RlIKkVXE6v/yMddf3tMbJRXGAShyCpmq5XguF?=
- =?us-ascii?Q?paREWr0HqV/h6VJLvX1CEY2DoOauXLzniNF7QB5AOc1uBEBabqt0YatOC8/U?=
- =?us-ascii?Q?9M/HjY+fDRUI6Cs0q0mz/Btt94AYnDx2+5Io4vA8RtarAKBHPO/Ecy0OMm9E?=
- =?us-ascii?Q?H2G93wTBK0rMCXFp7lTH4SI75RDc23TbMcp6fO34R0EQfl0QiMUuD/ThLVYK?=
- =?us-ascii?Q?R71s9e7wWRasIwAocUXZ7nz3ykwTmhuBemCzlSiplbaZN3B0WsS7REnhK1+1?=
- =?us-ascii?Q?Znr/kl5X/myd46GPYjFb/ymoy6n03qu0kKMRSVfKD6OZSQ3q0631dPbvROXG?=
- =?us-ascii?Q?nRlYbEf7ZWk9+Sbyt5yAULS0qdooQP1Wt5Cnl2aFrsE2dgL/lio8f1balkip?=
- =?us-ascii?Q?/KUFR0cbylqBGOdPWvOeQ/mreGei0AL1lhtxL0J9sLykH+60ew7IvDHYOcKr?=
- =?us-ascii?Q?gHMp2DhAoNeBvm/YTPeb6TTeQG1UVQJsv+adZv+JGiXXWnDJbDyYrJVl6cMr?=
- =?us-ascii?Q?bF7apf02qanszzq+1z/3esTRymMIYcchBC8YV/+UuwaWQ37NiGs0FfIChfoS?=
- =?us-ascii?Q?gdoLq+4VU1hf8Y+v/plrwjh+Ei7NRNUrGF7L5gA4v4eVFIrcJaCC5QRIs3HC?=
- =?us-ascii?Q?1aoDLhBJRxCXm+Gb+dHFmiu7EVm6gydhUKXn+fOXUCxK7lxIVOmUpiun8pNI?=
- =?us-ascii?Q?aWl8yFborZsYwMzHxSdOYWGQmWV9PKxIjV/yeQAeTwv3AaXli2pN2M6LABLu?=
- =?us-ascii?Q?leOeSNKyalFzL33++XjN5LdYiaTSbVW8AWGFPE5/4FQpyyHShNXn2Zu7tS+Z?=
- =?us-ascii?Q?YOD3Gz91m5I31gxkI06AyJcdwFhUyCl7ZWMf6+btGlid6bzaotUCgK0hbRdo?=
- =?us-ascii?Q?tsucBkGw2+yWUIPk5xjBSaUFTS+1vMhqaDyql/tAXpJXpmssg9CLokDXq4lt?=
- =?us-ascii?Q?VbANbite3tJ0JMKViLnruObO5DZ6yUw7P5PrNK6+z+vC7TvNVNU8LebexJ5C?=
- =?us-ascii?Q?t/2ssnGEmTgdUJqHnEkhBEz32cZcaWVLdbGQbU/X97XBQirEP8gfzUhvRULV?=
- =?us-ascii?Q?1pghk7BgLDfZ6DDIHoFN/QG07iZCGv7NdDHigD0Yi01SHbPz9NpYH2E6qfdh?=
- =?us-ascii?Q?BphAqX7Xl5gCoFf83FeXNZzE2lNnX4ePLLa1LhUHZDAOtiPXIPNhjsWAuk/P?=
- =?us-ascii?Q?IjmA9vpES7vmnQ3RZbs6cel/CEq34QZiB/bgyH3wIGfCeiFunoVR/L1tv4zK?=
- =?us-ascii?Q?oKyyFZU6jRl1644qUe1Fbp4Cqeq8N/c=3D?=
+	=?us-ascii?Q?EoTTbdGM/ukgMujS0xtb+KhSHmdxHgrd8FHIM/78kkeibgS6vAshDpD09JoV?=
+ =?us-ascii?Q?3ISWEhaG0mrlSeU95qkUezBLVo+UFzNxD+YUabDZ0SuUqKkI8fxLI2XQQyoo?=
+ =?us-ascii?Q?mCE+m4TTKjBwR+HY0kSu35FBErsSFxyt6QE+e3W64QNMp7WFmBFx9WJvPvxE?=
+ =?us-ascii?Q?TAL3mIbX5xYaPAGFXKlhzl6ADH4n0GVP7qgv0Z9C2opMVqTTNeZvr2/aHDo9?=
+ =?us-ascii?Q?P5MwpQSwKpjcT8ne9dYGkApmFk3FsdxArVV0jLc+f9YGmVpwlQ6Bo9QL0dum?=
+ =?us-ascii?Q?GHyqtRBSdk6eL06I4szTTuoAjll+HwWSaZMArZ7vJr3wsbp7aCBAtNdiEvsg?=
+ =?us-ascii?Q?er8Xm91/2CP/5duerIGUY0SUncf7q4xJ3goi3EgtvwY7IRHL6npD02VOz9bA?=
+ =?us-ascii?Q?TzwTlpqODm6nEYnxpBpk02EGoKtLU1dN04hs+BMmQkREIyIo6ttlZgNWbtDt?=
+ =?us-ascii?Q?jWWZwkYcNXT6gYt31FolVMr5hcWhS7jeEuoxb26bl7EgKiWtQf3Uyd+uykZ8?=
+ =?us-ascii?Q?JSvnMhV0xxMuUbsLzzKeeXU2v8GoaG1oh6GGS+vDUDRF6XjQ0HkpDPVZ3enF?=
+ =?us-ascii?Q?MClbSpPEWcYpzG631MAllHwzGQC2vmnkC2Qezk8ebvuE4Xu/FFC1PvUe5Y3P?=
+ =?us-ascii?Q?Ud65pN/p6O8BqKcwT5tep4fpSrSq7luJI3K1qdXV8ts5G/f01BuatCKWzFY3?=
+ =?us-ascii?Q?KhmuTp4VF54OTgyPtqcwYG16ZWXmKEI1x26zLlTYyHpu/8vRSkDv8JdZ2Rcv?=
+ =?us-ascii?Q?+y3Vh25iPxj8BuCR2cAVKsC7m+cPSZHbX4gyKlx8uDG2UCIAw3TjYOHvM2ts?=
+ =?us-ascii?Q?IJydyNtBaTkRK0aQcoEvYLN9Cv1rMiXfsvJVpsQsqUbw0Fexq120xHzE/ywK?=
+ =?us-ascii?Q?9Ho6KdsLR3YcuHm8Y+jcxl+DB3dXvqvhaL8PaSp2JpyM93CVpSZefuzPiLFm?=
+ =?us-ascii?Q?F3I3BJWROuxJvIUk2s+kAy4yTn47lTfSori0vK52iQa0ifPkqNObYUTabyII?=
+ =?us-ascii?Q?GJWD+briuprxm7jTuW1pbSopPj0xu5QbAd/iB0eB1f+Bc8OnqmGEwxTWt7Wx?=
+ =?us-ascii?Q?5d4B4KZPRQYagEMtQj2Glr1sPFNXl3mzXaQhWHX+sAR7wPMSkiqK7bxthBie?=
+ =?us-ascii?Q?+AzgXL5o0s+KqLG49bPzhuPlktxOJURv6vHxHrg0KnY9I2rhe2u8AY2kt7Zl?=
+ =?us-ascii?Q?MzbMwK3S/Fa7nUeBi7Oeo3NjBVWqvhcM07XChfpA9GhGY4J70REGzA6ed67i?=
+ =?us-ascii?Q?GZSi6vR7BSmkLrV8HLAZLa6eEpU0qE+akgEqQkS4plg75z5X8uLsq1yxPdoW?=
+ =?us-ascii?Q?QGD/cQLf2KKn5sl1ghI8qmIo6HAEUcapRu7qSLn913OJI695DAHlkxj8rBj+?=
+ =?us-ascii?Q?RP3bOmbavt1845cduMT5it+wtqEuTtGjRb2Olpc2GzHrR3Tm4GeizzPV3J5r?=
+ =?us-ascii?Q?lvkvbCR2WjUAyEwv0eG66lsLiyR5EQ9bVCV2jkfqsVqTO5qwVObW30ZGWIif?=
+ =?us-ascii?Q?myGDKLnQmihEgYA43Ld9/nZf8VsJ6Asa9tJg6o5iCVayFsGUSO3LdvE6fJ0G?=
+ =?us-ascii?Q?a7aR7VelyXJiwA4iNmIPkmSJDqfmpzXDiOhPnRTKrXzmEniPmW425NRBll98?=
+ =?us-ascii?Q?cFJqZylf5wUiA7vQqsaPSPwsIh7x2PmatpEP1CWDCnKVBRsA1mT9PaG/q45t?=
+ =?us-ascii?Q?0E2MR3VbC30Am01gcfoBcrnypVtmj5BN+MVev8EaKBebuUygw8zFUVFioYAU?=
+ =?us-ascii?Q?t36AqhvV6GmwDlMrviCuv14W33fBZDw=3D?=
 X-OriginatorOrg: vaisala.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f662879f-45ba-441a-be4b-08deec87b8a0
+X-MS-Exchange-CrossTenant-Network-Message-Id: a7323be0-4cd9-47f4-4600-08deec87b7db
 X-MS-Exchange-CrossTenant-AuthSource: AS8PR06MB7557.eurprd06.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jul 2026 09:07:59.7706
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jul 2026 09:07:58.8698
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 6d7393e0-41f5-4c2e-9b12-4c2be5da5c57
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: //6E4b+zwGP9TXiNjG23IzJaBhGo2d4In47MrXU8yPwIqAteqwChniFOe1HV4J9wloksZISn41LUVP6LYkkHQQ==
+X-MS-Exchange-CrossTenant-UserPrincipalName: qYrRXPaK6pVqel2NXju4jzW+wav/3cyfXbpfo+wmddMPLIFOGYRb7zxnaPHeJix+Jtj9KX2InYK8YiatPc+B6g==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR06MB9700
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Tue, 28 Jul 2026 09:08:13 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10167
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10166
 
 From: Niko Mauno <niko.mauno@vaisala.com>
 
-Remove occurrences of superfluous space characters in value field of
-:append assignments.
+Add trailing space to value field in :prepend assignments, in
+order to avoid providing examples which could lead the users to risk
+inadvertent string concatenation.
 
 Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
 Signed-off-by: Niko Mauno <niko.mauno@vaisala.com>
 ---
- documentation/ref-manual/qa-checks.rst | 2 +-
- documentation/ref-manual/variables.rst | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ documentation/ref-manual/faq.rst       | 6 ++++--
+ documentation/ref-manual/variables.rst | 3 ++-
+ 2 files changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/documentation/ref-manual/qa-checks.rst b/documentation/ref-man=
-ual/qa-checks.rst
-index 9654cf08e..09b0f628a 100644
---- a/documentation/ref-manual/qa-checks.rst
-+++ b/documentation/ref-manual/qa-checks.rst
-@@ -889,7 +889,7 @@ or "-fpic" to the compiler command-line options. For ex=
-ample, given
- software that reads :term:`CFLAGS` when you build it,
- you could add the following to your recipe::
+diff --git a/documentation/ref-manual/faq.rst b/documentation/ref-manual/fa=
+q.rst
+index 65d5db5d2..2ffacaf94 100644
+--- a/documentation/ref-manual/faq.rst
++++ b/documentation/ref-manual/faq.rst
+@@ -126,7 +126,8 @@ attempt before any others by adding something like the =
+following to the
+        git://.*/.* &YOCTO_DL_URL;/mirror/sources/ \
+        ftp://.*/.* &YOCTO_DL_URL;/mirror/sources/ \
+        http://.*/.* &YOCTO_DL_URL;/mirror/sources/ \
+-       https://.*/.* &YOCTO_DL_URL;/mirror/sources/"
++       https://.*/.* &YOCTO_DL_URL;/mirror/sources/ \
++   "
 =20
--   CFLAGS:append =3D " -fPIC "
-+   CFLAGS:append =3D " -fPIC"
+ These changes cause the build system to intercept Git, FTP, HTTP, and
+ HTTPS requests and direct them to the ``http://`` sources mirror. You
+@@ -165,7 +166,8 @@ file as long as the :term:`PREMIRRORS` server is curren=
+t::
+        git://.*/.* &YOCTO_DL_URL;/mirror/sources/ \
+        ftp://.*/.* &YOCTO_DL_URL;/mirror/sources/ \
+        http://.*/.* &YOCTO_DL_URL;/mirror/sources/ \
+-       https://.*/.* &YOCTO_DL_URL;/mirror/sources/"
++       https://.*/.* &YOCTO_DL_URL;/mirror/sources/ \
++   "
+    BB_FETCH_PREMIRRORONLY =3D "1"
 =20
- For more information on text relocations at runtime, see
- https://www.akkadia.org/drepper/textrelocs.html.
+ These changes would cause the build system to successfully fetch source
 diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-man=
 ual/variables.rst
-index 0066ede0f..b124e9c30 100644
+index 394797ca3..0066ede0f 100644
 --- a/documentation/ref-manual/variables.rst
 +++ b/documentation/ref-manual/variables.rst
-@@ -5559,7 +5559,7 @@ system and gives an overview of their function and co=
+@@ -7843,7 +7843,8 @@ system and gives an overview of their function and co=
 ntents.
-          KERNEL_EXTRA_FEATURES ?=3D "features/netfilter/netfilter.scc feat=
-ures/taskstats/taskstats.scc"
-          KERNEL_FEATURES:append =3D " ${KERNEL_EXTRA_FEATURES}"
-          KERNEL_FEATURES:append:qemuall =3D " cfg/virtio.scc"
--         KERNEL_FEATURES:append:qemux86 =3D "  cfg/sound.scc cfg/paravirt_=
-kvm.scc"
-+         KERNEL_FEATURES:append:qemux86 =3D " cfg/sound.scc cfg/paravirt_k=
-vm.scc"
-          KERNEL_FEATURES:append:qemux86-64 =3D " cfg/sound.scc"
+              git://.*/.* &YOCTO_DL_URL;/mirror/sources/ \
+              ftp://.*/.* &YOCTO_DL_URL;/mirror/sources/ \
+              http://.*/.* &YOCTO_DL_URL;/mirror/sources/ \
+-             https://.*/.* &YOCTO_DL_URL;/mirror/sources/"
++             https://.*/.* &YOCTO_DL_URL;/mirror/sources/ \
++         "
 =20
-    :term:`KERNEL_FIT_LINK_NAME`
+       These changes cause the
+       build system to intercept Git, FTP, HTTP, and HTTPS requests and
 --=20
 2.47.3
 
