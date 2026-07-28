@@ -1,186 +1,298 @@
-Return-Path: <quentin.schulz@cherry.de>
+Return-Path: <niko.mauno@vaisala.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D2E5DC54EFC
-	for <webhook@archiver.kernel.org>; Tue, 28 Jul 2026 09:11:03 +0000 (UTC)
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (DB3PR0202CU003.outbound.protection.outlook.com [52.101.84.31])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.7690.1785229861960392729
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 58BB3C54EFC
+	for <webhook@archiver.kernel.org>; Tue, 28 Jul 2026 09:16:27 +0000 (UTC)
+Received: from OSPPR02CU001.outbound.protection.outlook.com (OSPPR02CU001.outbound.protection.outlook.com [40.107.159.120])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.7755.1785230182413116340
  for <docs@lists.yoctoproject.org>;
- Tue, 28 Jul 2026 02:11:02 -0700
+ Tue, 28 Jul 2026 02:16:22 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@cherry.de header.s=selector1 header.b=N+Uxfm58;
- spf=pass (domain: cherry.de, ip: 52.101.84.31, mailfrom: quentin.schulz@cherry.de)
+ dkim=fail reason="dkim: body hash did not verify" header.i=@vaisala.com header.s=selector1 header.b=uJB9aU5D;
+ spf=permerror, err=parse error for token &{10 18 spf.protection.outlook.com}: limit exceeded (domain: vaisala.com, ip: 40.107.159.120, mailfrom: niko.mauno@vaisala.com)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=t9X07XNulx7UA8wYOzhu1Ns/+U5f7D09+ZGUgJLWPm/HlJ4kXzhFZM8AKqpE3vScmqkkyg+F1M9dkWSIYQLJJQdKfkE1RjvTwthcQ8q8+vYuGjT6Hc6wmnIENm4of51uYIT1x4oKJPKccgvfYdO5Gi2zhqQznoDCVk3eVpWp9Xi+AXOIwyHTdOeOC0PdX7bMrKfbFwtxldzw2JzMsAANNa+6amFg21PHCozq+8hUkqdwwWpTu8Bzp6EsBCUxKulXIv+S2jxpqBzFJvcIA0TpabWoYMNoHhramsU9BViLquDOXBhcf7V8PEHUlCSZ8lAPpkVToYkL87kW8t50VHrXmA==
+ b=UtvsqWGqaf9jqhZc+vUYkcpxPvLzz+iCRiMyye5JLqaaGFCFC7jEXYPdHjee5Ia96OGReu/pcJugEEZNLvmiMhdj7RkKE7i/RQbjvxNtme9fvfu2LRPeEr2/QXhIcRt3ToRqcadWgb9ASxpIr4n7VwGAHRj2I62ZquRbHZrx3Fjl47BIMvTmh5yCdNw/bJeqWiD/uCFexmN46wT2f1unR2ggpKOJx8wkipwO/d/jzen1TYNkpTFVCHF6Li2JHP4Qm812+N0BxGNm6qIaGEpNsPom8yhmdiyHq+kT4bz8XDYpnIgu/hunqcSBzd92jxz4gcytFSgBMo0g8wSIN7weUg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Qhq3OCmwnqChsnyIppFXQTPRR/knemqgqPXAnvYkCJg=;
- b=DsqaE/W+o+O5+CtPqf/XESn8xCeh74E3E7lyg0hSxM2UbSzGj/x0yR/xFrtEYRV4O8+3P4vZVfTpAXRMGZ0Q4rRn2zM5wU5mZ54FpOMRCFYz4CErvMKUwXhwnZzDCyCEY8Thuuz8U/n4nXLcH1GLN4S44Vj7zAXCyFPb9G3RzLkFVoWVFgzSrgUWZaOR5Z1sxCgrD1jzfwMkgoQ8cvX0/wvjR2XieLsOd7jHQC8ogkD2GKIsiVpIGhEOE4fL4NGRshIQvoXQDy3cJvPXIxlvBrb8Fop/KT7A7yQai/CmU8LRMbMcegGuPT7mSI54f53vmgNdDsId7kYifK7Eo18CmQ==
+ bh=fzbU2rX8KhJS1QJp6vxSTebTJiX9dnagcaxjZigOHfU=;
+ b=q1cuD14x1DKztHLEa8zA56ooMmBGukAybH4gSvjzTX2/0mQ4rJ7UbnYH7w3bsCSHthY2s4SbLeYgb0B45jIlTMYS6xBClQon8J4uwYPrEZZ5lnRUiiuBhMzoT5mcae0uZuW+uFNqHp80TeeVI+jRUHHALk8QCw0nhzTHot6t56a5BkPlSzT6nHaDukWRReQpaH0Qf8CQIxU9oUwzuS2fVu3L8SsfxYhk2TU1DzPKCIuMpYEd1rCekTRpzobhu2T9XKh21lonSPGeneipuofqQP5nunKAYurWZMV0dVQfrU+UgttOrnZddeQIb3Lh0ceh9eWVBYRuf0XQk1r29xd8+Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
- dkim=pass header.d=cherry.de; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
+ smtp.mailfrom=vaisala.com; dmarc=pass action=none header.from=vaisala.com;
+ dkim=pass header.d=vaisala.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vaisala.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Qhq3OCmwnqChsnyIppFXQTPRR/knemqgqPXAnvYkCJg=;
- b=N+Uxfm58u7p4/duAcwCFXLn+UnK0wa0KTOW7vTt7agUSWomfc+BvkhhXXF2HtKEC9I5HcO/U4H1rrl2jUXKmH9zjVQF7ic2O99t/o31ag/IQs5XbCbkfQs2uhuxMfGTJw/AKhApwbwtlvl5ab/ZnRB4LXtGhL0NNfMohRpxnzEU=
+ bh=fzbU2rX8KhJS1QJp6vxSTebTJiX9dnagcaxjZigOHfU=;
+ b=uJB9aU5DqVZsFQYeILTXtaNUN8l1m2QQfaO4ZECRhqoknWsx2L6crZZkTJ+IvBP4TDBc16yqpOBsctMSi9D7QpbZBzuL1FgKgDXfPTSe1C5Q9U1CrDQ5M7yHNz5spc4HAz9VQ5yJO9HQZtDKEutoiXjyq9mO5gFA0W01dL7xWVpa0htREBkFGU94a0QY3suSWytSaktmS8QApslL4Gp8PGRgYhbroPcUF0xuPzGrOiO+SAKif9fjYtBCoFOfoyjYRMDDIsOdzr4ZoWRlpDYuIngDjTd+PtVVXyDdwnImHiZT0CzsO2Ln0qrnjGBbOudDa0GWsZYidOR/HcdCbut2jQ==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=cherry.de;
-Received: from DBBPR04MB7737.eurprd04.prod.outlook.com (2603:10a6:10:1e5::22)
- by AM9PR04MB8713.eurprd04.prod.outlook.com (2603:10a6:20b:43c::19) with
+ header.d=none;dmarc=none action=none header.from=vaisala.com;
+Received: from AS8PR06MB7557.eurprd06.prod.outlook.com (2603:10a6:20b:337::17)
+ by GV1PR06MB9320.eurprd06.prod.outlook.com (2603:10a6:150:1ae::21) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.13; Tue, 28 Jul
- 2026 09:10:43 +0000
-Received: from DBBPR04MB7737.eurprd04.prod.outlook.com
- ([fe80::5960:fb4b:9313:2b00]) by DBBPR04MB7737.eurprd04.prod.outlook.com
- ([fe80::5960:fb4b:9313:2b00%5]) with mapi id 15.21.0245.012; Tue, 28 Jul 2026
- 09:10:43 +0000
-Message-ID: <ad98101b-a5b4-4631-b6f5-3c83267373ce@cherry.de>
-Date: Tue, 28 Jul 2026 11:10:42 +0200
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.11; Tue, 28 Jul
+ 2026 09:16:17 +0000
+Received: from AS8PR06MB7557.eurprd06.prod.outlook.com
+ ([fe80::44ca:1bbb:6b57:4c16]) by AS8PR06MB7557.eurprd06.prod.outlook.com
+ ([fe80::44ca:1bbb:6b57:4c16%4]) with mapi id 15.21.0270.009; Tue, 28 Jul 2026
+ 09:16:16 +0000
+Message-ID: <9b5d7896-39f4-4404-a315-29e916c6a47b@vaisala.com>
+Date: Tue, 28 Jul 2026 12:16:14 +0300
 User-Agent: Mozilla Thunderbird
-Subject: Re: [docs] [PATCH v2 3/4] tools: add gen-doc-links to generate
- documentation link flags
+Subject: Re: [docs] [PATCH v2 5/5] tools: Add check-confusables pre-commit
+ hook
 To: Antonin Godard <antonin.godard@bootlin.com>, docs@lists.yoctoproject.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-References: <20260716-gen-doc-links-intersphinx-v2-0-83cb3aef6ff6@bootlin.com>
- <20260716-gen-doc-links-intersphinx-v2-3-83cb3aef6ff6@bootlin.com>
- <9b51a647-76c1-4bbf-b4fe-c9fc57109bc7@cherry.de>
- <DK6UEDV65R3Y.2HPH1DCKA1Z2V@bootlin.com>
- <fecc23f0-65d3-4621-8969-1ea92f24e9f2@cherry.de>
- <DKA2J31USQ4N.S0DEGRSSMX8W@bootlin.com>
+CC: quentin.schulz@cherry.de
+References: <20260728072328.11926-1-niko.mauno@vaisala.com>
+ <20260728072328.11926-6-niko.mauno@vaisala.com>
+ <DKA1IJIDVAHQ.324SKDQV530OU@bootlin.com>
 Content-Language: en-US
-From: Quentin Schulz <quentin.schulz@cherry.de>
-In-Reply-To: <DKA2J31USQ4N.S0DEGRSSMX8W@bootlin.com>
+From: Niko Mauno <niko.mauno@vaisala.com>
+In-Reply-To: <DKA1IJIDVAHQ.324SKDQV530OU@bootlin.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: AM8P191CA0003.EURP191.PROD.OUTLOOK.COM
- (2603:10a6:20b:21a::8) To DBBPR04MB7737.eurprd04.prod.outlook.com
- (2603:10a6:10:1e5::22)
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: GV2PEPF0002397C.SWEP280.PROD.OUTLOOK.COM
+ (2603:10a6:158:400::37b) To AS8PR06MB7557.eurprd06.prod.outlook.com
+ (2603:10a6:20b:337::17)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DBBPR04MB7737:EE_|AM9PR04MB8713:EE_
-X-MS-Office365-Filtering-Correlation-Id: f634e914-b668-443f-a17e-08deec881a14
+X-MS-TrafficTypeDiagnostic: AS8PR06MB7557:EE_|GV1PR06MB9320:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7d2c9dce-6bc8-4dbe-44e2-08deec88e0e7
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: 
-	BCL:0;ARA:13230040|366016|376014|23010399003|1800799024|6133799003|4143699003|11063799006|56012099006|10067099003|18002099003|22082099003;
+	BCL:0;ARA:13230040|23010399003|366016|1800799024|376014|56012099006|10067099003|11063799006|4143699003|6133799003|3023799007|18002099003|22082099003;
 X-Microsoft-Antispam-Message-Info: 
-	bVbhhtjZPONJguEN9XXmXR1fu9ZGyQ3KEwBK6d6sxDtkrjUF6xT2XX80WA77aPlECUoy14LaJ+YwkpePd5EwPkusVbIbF7tz94710vni+tmzfylWzwVD4ndNo7JEnyRs/Zt7AlagIGeDj4qO9sNqPYCMEz3nYnRDynx7XhX73LjhpvR6vcdiK3I7lgiDT6qbdNq0IhDkOpj/uYWwPp43CdGDsdYpIazOiiEJM6LcLU6+H0jCcWxMhj3b6+nAXE+SWIfGxvBmitUKRsSq8iXc9t1/S5nsaf1A4nPIHdwQe+o3NvlWx8DVYJ6dDtpSYTt+nTyHsy8p8hNDISjm29e3w4JOJEoG0FqvUH6hM94Sfsf5B6SWGuJR4rqbIyHCOkRHIRMU4VzsG4+S4DVLCb1CteHCE/4DVjdsmyuYTjQ/kzdJd39a5OK7K8HZBgaC/w9n6xxkMxH7GTcecW/hlzEtSwKSVZcmhrVaNQlPYQ+xOcdQlmhOXWgiFCx9yon4E3o6PM6RpW/j1jCnxRIYnLwE462hWpTNsLDZbEm3N62R7uoMMUZHxdv0jwF9R8TxbGzZbQVt5flT5sm5ecTSleFZLK09aePTmH95Qcex/s6qphxLEs7gf04MWi317JuTOzXebMrMPFgnq3DaE9qTf4/grohZwMkUJMMCrl+UKO0n3bM=
+	lzk+/kgdxkxYgKpzpOMV6D9bT1n1CFmwCXUGgzRLTEFXlaqevWrZtsFKOtw8XDkxHvXFfwqAceTf+9UkCarAojQkRq2MqpjLkzqO0mDCcm0Fmj1zwKIepdMhRFUWHRRDAUl3weyH/E6brBTaWFTcahOtzr3txMgvpBcUeo8svZsVeLg/YL5h+nb0YRfDYLhoJRboQodvzXzXVf4bM8qDF//YmZrep2ijVktnAfJish4PNMiXmkSek7v5mVYuAkxLvu5lo4S8p6SBGhyrWDihgciqpi5mX6cFkUK4zZ7NXLTNeeWonFOexsuOtbWo2ZBaShXizZlR2S29M6NrUbhuUcDApVwH2KitCAA8q7p3TRhB/xo4zaw2aGGMhUXBALO1g9gT3SWTLDcBHJj8gDTb8HpIjxmiTEnPInqSjG9CqPnyNvxDUHMmvaGWHU+lpE6ErrBCOhtWiPkd3WT3vwuei/8xAIevFy02o+TBZAzYEGcnk+N5Oq6fnlJALwQOjrTmlXGClg8Gq1XYSD6cKHcSzeSUY82H056ncDyrZvzp6wZvBynwpAVIfl3cOtDSTrgUZ12kAaV6rigYdCsDxtJAgHPnHe6/To/xLBQIhQ9Kt5yftC2F7aaa4Ck94F+YgPnp6YY4jN1Hdf1G56mGYBL9VoWuEd+HS7f65wE+q05sCAs=
 X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DBBPR04MB7737.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(23010399003)(1800799024)(6133799003)(4143699003)(11063799006)(56012099006)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR06MB7557.eurprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(1800799024)(376014)(56012099006)(10067099003)(11063799006)(4143699003)(6133799003)(3023799007)(18002099003)(22082099003);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?utf-8?B?L1BEcHNsdjRhQW51YmkxMkVFSVQxU2EzK2N4c3pGOVZRdGxxL0NyenJYM0Vi?=
- =?utf-8?B?WmR3YjU5VzY2c2laaWZhbXFiY3kyRmZkSWRvSW01K0hadXB3MVA3WGwvUW9a?=
- =?utf-8?B?QzRwL3hNRFJDaVc5bFE3R3JzdDh0R0txUlFnbTlnaC9mdFFmaXZFTXJBUGYy?=
- =?utf-8?B?eUZQOHJRWk1zQU1MOUdYdEhvcEQ0N3hGSEZQcmU2UHZqZk1HdEdtdFdLY1Ji?=
- =?utf-8?B?bC9GUjZBTUdRQ0JiRUd4cnpCU21rT0I4eTF5c0NBWko5eWRjcUkrSlNOS21y?=
- =?utf-8?B?N2N3dFJ0S2c1dU5YU1JMampDdzNOOXRrRjMyT2pqTVpxTE1Ma3BXcS94SlJ6?=
- =?utf-8?B?NVpCTlRGdFdPRlM5WVRXUThramtrNUlwV2Z2czV6QWZJOU9yb2xYSWZBYXNr?=
- =?utf-8?B?SC9DTzM3d3BoRW5LRzRVU0lKdlYzUWs1cW1QSy8xMUZkTWxCSzM1TWpoMWph?=
- =?utf-8?B?QkRWYVErMHpDaHZLeXowS21pY0pITW9DTndUdTYyTEF6UTlRRGlSekJUWEt1?=
- =?utf-8?B?L21zUnZsa0ZPblZkakNRT2thd2x5eU1tcTM5d2N3Uk9LdW1RQlExT0lpREtZ?=
- =?utf-8?B?eFdYdzVJbEJCS3VCcStuNTAwNUZ4bGNjK2M0TVlMd0NsQlNaRlpGMUw3aS9a?=
- =?utf-8?B?bU56NXlveTRDU2VvWnhYdEtnWTI2czZLY2RoUTNWdzgvVkZINENCY0o1NmdL?=
- =?utf-8?B?S3FYWk5uWGd2aVl3cmQyUDErVXIrSWxGQlZ4UHdadUlLYVNHZG5VcG1Fa1V2?=
- =?utf-8?B?OFVDc0NUMmgwa1VwWUg0czkzREYzYVREdHpIUFhiQ0o3Q1QwTFI3UWMxMW5P?=
- =?utf-8?B?VWFRKytXOWtoTys1cDRidW1OOUZVM2xsNDR4TkRkMjQxZ1hReFdLNVJIZ2dy?=
- =?utf-8?B?cE9kaktYTWhXRGRjL0xsUzh3bmNhVVJQNm1sazY0ME5JekV4YVB3QWUvYzRO?=
- =?utf-8?B?SENUVHcyVi9ac3BXTFcySGwxRjlCME1mVnp4dGVUYlBpTlY4UUJza3hHeXBH?=
- =?utf-8?B?bjZDWEkvMjR0azNSNTA3QXZYSzRqWVZsY0tmdXcxWS83S05LOFhJNTJBeXVX?=
- =?utf-8?B?VVpyN0R1elJSYnVLdkJSN0R3cDF5djRMZ0VQVlkzSm5rbm1vZnpVZkc4UUtG?=
- =?utf-8?B?M1lvaXZld0tYdmoyaGx1MmpDR2hiVTVkTkUyc29DYStNdU8vWHBoelJPbVAv?=
- =?utf-8?B?QTJjNlBMOCs1enFoK0tLOHFaaytXRnowUTJpWUphZzZzb0ttTE9XRXFvVUlB?=
- =?utf-8?B?UjUwQzVGUDNkMGZGZTJtbTg2U0dTTmRNdmFBMnhXM3ZTamgvYkp6N29DVy9Z?=
- =?utf-8?B?TGJGdzQrSXNUZTJuNExjdWt0K2F2RERYL1RhcEN1Z0FsdFRjSHhZS2xOWWg1?=
- =?utf-8?B?anFrQ2ltS1VxQmNueVdiQTQyMWRsU1JUKzhvaDcxRVE1VzN6V1ZiNW14ZjRx?=
- =?utf-8?B?dnVHMFNZeS9FYkU4dzBQczR4MGFQSzFaSGUrV1lQZ0ZXamNoK2FtRDkyQ0tw?=
- =?utf-8?B?Yng3cUtDSFNZRTR0OGlUakFRRnhNYmt1SFlCV2tGb0dXS2xWbjlsTlR5WHhU?=
- =?utf-8?B?WStLdFE2OUZ6cXlCOTBNUmZsbzQ4eG5TOUdDS2pJSms1QkJIN0U0WXkveVQv?=
- =?utf-8?B?UjltVnZNazNFK1FNWlUzNHk0bVJkSktkKzZvdXRNa3o2RG96SWlCTDlFQVA5?=
- =?utf-8?B?SUdxSnJVVklvQjdSeHRIWjB1cmJlVm8rK2d5K29USG1lZ2p4NllYQkFldlY4?=
- =?utf-8?B?RUt1QmFvaVYyVmhoRHJmZGtaaXZ4Y1dnUGp5TmorOCt5TnhBL1AvNTQwelc2?=
- =?utf-8?B?MHlPWXhvUHd1THRXQUtpTnQ2bTVjWEgycVZxUXJpb2xtNEtXRHJRWXQ3QkRI?=
- =?utf-8?B?MjA0amVTZThlb04wNFcvQU1CWTU1OE0zVTZzTXVYYWl1cTFyWWdZN3N0TSsx?=
- =?utf-8?B?Zy9XdFBOazQ5bHdVUGJud3NsVGRzaWZTVDVrQ2t3eVI0TE5QWWhROU9pWS9v?=
- =?utf-8?B?cVVMRUtOTWNIWi9XQlRzb0svODlBVmx0MGQzOUFTSExFRDdaZ1IxNEZOelZG?=
- =?utf-8?B?cXRPclJMV1BDRVJMTTJJazRCNDVpKzMza3BqWVlRRGM1N1lRdDhXcXAzaVpC?=
- =?utf-8?B?MGNLM29nOGhDclRQVm5hZHgzNVdTRm4zY2NOUEJlMzV0M3F3SmRLRzZCZDR1?=
- =?utf-8?B?YjFRdG4wVFpGaDQ2dG5zaHQ5amltTEJBaUlsZWpZZ3ZNUlZheERKRVIvWHBL?=
- =?utf-8?B?TG1XQmNqdlkybDhUUVBrRmFKOUJjZTNMVWpRcVZpKzFxN01hUXFZQ1FWVk5t?=
- =?utf-8?B?TlBXTlJOZ3l4L2I1NjIvMHFwQ2dqZ0ExcHVrbDdPWkdSRU1HWU82QT09?=
-X-OriginatorOrg: cherry.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: f634e914-b668-443f-a17e-08deec881a14
-X-MS-Exchange-CrossTenant-AuthSource: DBBPR04MB7737.eurprd04.prod.outlook.com
+	=?us-ascii?Q?5tTSh5adrZ5Dz0VDOTdUSjpssRK00Jt0DDv1xpe5UFMi302atQPYv/H/TOBo?=
+ =?us-ascii?Q?SBfqgqN0lwnmFk4taizQE7qjvXleAnzQvCb/HZQdv45V0pk0N5kWwYB6kqHP?=
+ =?us-ascii?Q?FYQanGA/um0w7eq+sU46Dyus0EjoXNzOh/t8LVSzEJqrHz3aYBgHogIofucl?=
+ =?us-ascii?Q?S4q1PJwnwCibMDGvL5XIcsmH9U64OohO9Suzq/Zhzf+45rufgDRbrNy9xUZv?=
+ =?us-ascii?Q?ffl/p50L27+NRVQvv6wxkxZY/pYItGx943gvCcpIHSFkxDlsUq4gjNDj9wUF?=
+ =?us-ascii?Q?q3MGDXEkS7OwLpPRKwZjQ1Yxsk4kyDnkJfy1By5AtxZNiFDk+x83b1gC4Wte?=
+ =?us-ascii?Q?Wy73IElk7HPaZWlzXYWD03ec3PShXeaN407xZ6uJeEmZJ4Wu2aP18ltT3yVd?=
+ =?us-ascii?Q?Ru1GHkoHTv3nmEwf1VSQZNyn5nHwl3v4kSjVL2xm1gqskhtQOIlge1Evp305?=
+ =?us-ascii?Q?/XJKwG4Nsd5xVg23z1m7MWMzCw/jI/ROPJ32HArDV17sskMMg4WtaXNcZaS0?=
+ =?us-ascii?Q?heQQy4gU8MYzxn8iqX2+L4hzdmKbxrhNHBY9ATLZVmUxLrUYdZ67of0FuKPl?=
+ =?us-ascii?Q?KK0siyvgwVzKerSnvBC81WSjjmBf479ej5mEI9cx576tH6SeMK1iD+Kfn1iK?=
+ =?us-ascii?Q?+7xvmS4w9eOP872A2dixKpWro8hxMuVlLMC+Ie0K+KMXt9me9+HJA1wYEoez?=
+ =?us-ascii?Q?UfzhzyFAdC7WgVTOKRamO57RM8yTDp8CWKy681CAhpSrpq3mpld3GZWT1sIZ?=
+ =?us-ascii?Q?md85qU0jVbWokYbhxQNpjHf6B3qvpRxTA8vn11UUjfU8Nurwkuw9l36l/C9a?=
+ =?us-ascii?Q?YTk2O6oiT5hl1eNkBIt/qGXMa5xFyjrts32Hcuz+GyZRd3gQKONNoYKPyOvz?=
+ =?us-ascii?Q?tjCRQQesVDC8gXV0Xr3kjOHGAGCngZOJ2ZfP9sJQuUBu4XqIjfCput95CeQz?=
+ =?us-ascii?Q?iWPA6H0UrtbEq8KV7VGMASXMaWfuxR2NmnKB5yML3PARyv0i01/0i1AUCAlo?=
+ =?us-ascii?Q?Kq7b7er8C0jqgcy+9CJGF6lfQZlBiYof8NWLE/4WWuLSwpfuFvsIjelAiF5y?=
+ =?us-ascii?Q?FK1/rl0j55HY+8gMR5H5wO5PIgxh+4ocxtw7UB3AJfUxd/CKBRj7+EkTSA0Y?=
+ =?us-ascii?Q?r/bJmF2LaSy8ld4jeoaWkJz1URwDPsZqMQFJR+fhCUf8j3VVK8MI0mqEhdlJ?=
+ =?us-ascii?Q?aC+gcHjQj/PG6UgezHNVxyntlOr2TMFT0sCJQgEtIB6EDA7fPLECf2b+la8Y?=
+ =?us-ascii?Q?40j6LHYvMgRdASd0g0bqHghUKNOUswb56dV/WQJ9E8yl3eAt/iG56Pp81A8a?=
+ =?us-ascii?Q?K6ELCmdV6KKhI7RX/Lem4+6Vui26LhBYP2mRXkfjldmHNQa5yU8THVs6oUK+?=
+ =?us-ascii?Q?fV+lxwcIHNpN+f0dnqJrxUyuHM/scN7TMRlKlV/rXVzCp5WyUxG4SfTqY+LF?=
+ =?us-ascii?Q?bKZ2+tpTT1RCkmPhrbVRtHgqoABfg+IwF1Zy7UyaG7th+As/AyrNoIqcsf9y?=
+ =?us-ascii?Q?LvqNEEb040nDnzGgQf4TScs/fd2JmX4NbKhgQIgYK1Nxk2vvzsi58lM9YnuB?=
+ =?us-ascii?Q?KogfgWSZoNbhMATCtVh2I7pK/q88ZTu3japXlaSlCALwmtuJD4IlD05Ck+W1?=
+ =?us-ascii?Q?efQsEvt597dwn3kg+yDC7Wv5XOmR5+bGBuvrJWJwjN4y+wiG29i4j1x7xmSd?=
+ =?us-ascii?Q?eneU0F6+HXM0kdgk59WyhYRlqVxz4D9+I7vvnlmpUlW1XDsfb1+QxoFcHJlo?=
+ =?us-ascii?Q?BtAKZL4yA0sUX6iv/Zg2xF+CQ+dOGUM=3D?=
+X-OriginatorOrg: vaisala.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7d2c9dce-6bc8-4dbe-44e2-08deec88e0e7
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR06MB7557.eurprd06.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jul 2026 09:10:43.2178
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jul 2026 09:16:16.7404
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
+X-MS-Exchange-CrossTenant-Id: 6d7393e0-41f5-4c2e-9b12-4c2be5da5c57
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: rD2NdifWE7aKC4zUqKQ05DxYJZivwOSr3yvMJQdvEwexVEj1FYKfptULWm4U09NH+C+1LPgEW46PzXSGmimbsf3dSDF0g3S4qupI8BzAOGI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8713
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2jkJPLAgkRvY7bp0WanMuGLhS64KK9QQL8Nmif3npbtGBHlObOFprTjcOBPYqaA3vejdUkvpkO5KppOIbwRvpA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR06MB9320
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 28 Jul 2026 09:11:03 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10171
+ <docs@lists.yoctoproject.org>; Tue, 28 Jul 2026 09:16:27 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10172
 
-Hi Antonin,
 
-On 7/28/26 10:40 AM, Antonin Godard wrote:
+
+On 7/28/26 10:53 AM, Antonin Godard wrote:
 > Hi,
-> 
-> On Fri Jul 24, 2026 at 6:27 PM CEST, Quentin Schulz via lists.yoctoproject.org wrote:
->> Hi Antonin,
+>=20
+> On Tue Jul 28, 2026 at 9:23 AM CEST, Niko Mauno via lists.yoctoproject.or=
+g wrote:
+>> From: Niko Mauno <niko.mauno@vaisala.com>
 >>
->> On 7/24/26 3:40 PM, Antonin Godard wrote:
->>> Hi,
->>>
->>> On Mon Jul 20, 2026 at 6:39 PM CEST, Quentin Schulz via lists.yoctoproject.org wrote:
->>>> Hi Antonin,
->>>>
->>>> On 7/16/26 2:18 PM, Antonin Godard via lists.yoctoproject.org wrote:
->> [...]
->>>>> +def main():
->>>>> +    args = parse_arguments()
->>>>> +
->>>>> +    yocto_docs_dict = {}
->>>>> +
->>>>> +    if not args.yocto_docs_inv.exists():
->>>>> +        print(f"yocto-docs inventory not found at {args.yocto_docs_inv}, "
->>>>> +              "use the --yocto-docs-inv option or set YOCTO_DOCS_INV_PATH "
->>>>> +              "in your environment")
->>>>> +        sys.exit(0)
->>>>> +
->>>>> +    if not args.bitbake_inv.exists():
->>>>> +        print(f"bitbake inventory not found at {args.yocto_docs_inv}, "
->>>>> +              "use the --bitbake-inv option or set BITBAKE_INV_PATH "
->>>>> +              "in your environment")
->>>>> +        sys.exit(0)
->>>>
->>>> Don't you want to sys.exit(1) here (and above) instead to show the user
->>>> this is an error?
->>>
->>> I did not want to block creating a commit because the docs wasn't built.
->>> I looked a bit at it and pre-commit does not have a special error code that
->>> could signify a SKIP.
->>>
+>> Add a check-confusables script, in the same fashion as
+>> check-glossaries, that scans the documentation .rst sources for
+>> non-ASCII "confusable" characters (curly quotes, en/em dashes,
+>> horizontal ellipsis, non-breaking and zero-width spaces, etc.) and
+>> reports each occurrence with its location and suggested ASCII
+>> replacement, exiting non-zero if any are found. This guards against
+>> the class of breakage fixed in the preceding commit, e.g. curly quotes
+>> causing recipe ParseErrors.
 >>
->> Mmmmm... Any chance this can be configurable? I'm thinking people may
->> want to run this script outside of pre-commit. Maybe via a parameter you
->> pass to pre-commit for example, or via an environment variable that is
->> set in pre-commit?
-> 
-> Actually an argument like --no-exit-code which is passed only from the
-> pre-commit configuration file might do the trick, I'll see what I can do.
-> 
+>> Legitimate non-ASCII such as box-drawing characters used in directory
+>> trees, accented letters in contributor names and CJK characters are
+>> intentionally left untouched.
+>>
+>> Wire it up both as a local pre-commit hook and in the Makefile "checks"
+>> target, alongside check-glossaries.
+>>
+>> Suggested-by: Quentin Schulz <quentin.schulz@cherry.de>
+>> Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>
+>> Signed-off-by: Niko Mauno <niko.mauno@vaisala.com>
+>> ---
+>>   .pre-commit-config.yaml               |  5 ++
+>>   documentation/Makefile                |  1 +
+>>   documentation/tools/check-confusables | 77 +++++++++++++++++++++++++++
+>>   3 files changed, 83 insertions(+)
+>>   create mode 100755 documentation/tools/check-confusables
+>>
+>> diff --git a/.pre-commit-config.yaml b/.pre-commit-config.yaml
+>> index f2b73a481..d6008b609 100644
+>> --- a/.pre-commit-config.yaml
+>> +++ b/.pre-commit-config.yaml
+>> @@ -6,3 +6,8 @@ repos:
+>>           entry: ./documentation/tools/check-glossaries
+>>           language: python
+>>           pass_filenames: false
+>> +      - id: check-confusables
+>> +        name: Check for non-ASCII confusable characters
+>> +        entry: ./documentation/tools/check-confusables
+>> +        language: python
+>> +        pass_filenames: false
+>=20
+> I think we should pass filenames and check only the modified files, no ne=
+ed to
+> checking the entire tree each time?
+>=20
+>> diff --git a/documentation/Makefile b/documentation/Makefile
+>> index fe0574537..87a6f8a8b 100644
+>> --- a/documentation/Makefile
+>> +++ b/documentation/Makefile
+>> @@ -37,6 +37,7 @@ clean:
+>>  =20
+>>   checks:
+>>   	$(SOURCEDIR)/tools/check-glossaries --docs-dir $(SOURCEDIR)
+>> +	$(SOURCEDIR)/tools/check-confusables --docs-dir $(SOURCEDIR)
+>>  =20
+>>   stylecheck:
+>>   	vale sync
+>> diff --git a/documentation/tools/check-confusables b/documentation/tools=
+/check-confusables
+>> new file mode 100755
+>> index 000000000..f79ee046c
+>> --- /dev/null
+>> +++ b/documentation/tools/check-confusables
+>> @@ -0,0 +1,77 @@
+>> +#!/usr/bin/env python3
+>> +
+>> +import argparse
+>> +import sys
+>> +
+>> +from pathlib import Path
+>> +
+>> +
+>> +def parse_arguments() -> argparse.Namespace:
+>> +    parser =3D argparse.ArgumentParser(
+>> +        description=3D"Check documentation sources for non-ASCII typogr=
+aphic "
+>> +                    "characters that should be plain ASCII")
+>> +
+>> +    parser.add_argument("-d", "--docs-dir",
+>> +                        type=3DPath,
+>> +                        default=3DPath(__file__).resolve().parent.paren=
+t,
+>> +                        help=3D"Path to documentation/ directory in yoc=
+to-docs")
+>> +
+>> +    return parser.parse_args()
+>> +
+>> +
+>> +# Map of "confusable" characters that are frequently introduced by edit=
+ors,
+>> +# word processors or copy-pasting, to their plain ASCII replacement. Th=
+ese
+>> +# look almost identical to regular ASCII but break tooling, e.g. a curl=
+y
+>> +# quote in a recipe example causes:
+>> +#
+>> +#   ERROR: ParseError ...: unparsed line: 'RDEPENDS:${PN} =3D "foo"'
+>=20
+> I don't see the curly quote here
+>=20
+>> +#
+>> +# Only these characters are flagged; legitimate non-ASCII such as box-d=
+rawing
+>> +# characters used in directory trees, accented letters in contributor n=
+ames
+>> +# and CJK characters are intentionally left alone.
+>> +confusables =3D {
+>> +    "=E2=80=98": "'",      # LEFT SINGLE QUOTATION MARK
+>> +    "=E2=80=99": "'",      # RIGHT SINGLE QUOTATION MARK
+>> +    "=E2=80=9C": '"',      # LEFT DOUBLE QUOTATION MARK
+>> +    "=E2=80=9D": '"',      # RIGHT DOUBLE QUOTATION MARK
+>> +    "=E2=80=B2": "'",      # PRIME
+>> +    "=E2=80=B3": '"',      # DOUBLE PRIME
+>> +    "=E2=80=93": "-",      # EN DASH
+>> +    "=E2=80=94": "--",     # EM DASH
+>> +    "=E2=80=90": "-",      # HYPHEN
+>> +    "=E2=80=91": "-",      # NON-BREAKING HYPHEN
+>> +    "=E2=88=92": "-",      # MINUS SIGN
+>> +    "=E2=80=A6": "...",    # HORIZONTAL ELLIPSIS
+>> +    "=C2=A0": " ",      # NO-BREAK SPACE
+>=20
+> Actually, since the `tree` command uses no-break spaces, I think it's OK =
+to keep
+> them otherwise we'd have to convert each tree output, which also might be
+> confusing.
+>=20
+>> +    "=E2=80=AF": " ",      # NARROW NO-BREAK SPACE
+>> +    "=E2=80=8B": "",       # ZERO WIDTH SPACE
+>> +    "=EF=BB=BF": "",       # ZERO WIDTH NO-BREAK SPACE / BOM
+>> +    "=C2=AD": "",       # SOFT HYPHEN
+>> +}
+>> +
+>> +
+>> +def main():
+>> +
+>> +    args =3D parse_arguments()
+>> +    exit_code =3D 0
+>> +
+>> +    for rst_path in sorted(Path(args.docs_dir).rglob("*.rst")):
+>> +        rel =3D rst_path.relative_to(args.docs_dir)
+>> +
+>> +        with open(rst_path, "r", encoding=3D"utf-8") as f:
+>> +            for lineno, line in enumerate(f, start=3D1):
+>> +                for col, char in enumerate(line, start=3D1):
+>> +                    if char in confusables:
+>> +                        replacement =3D confusables[char]
+>> +                        hint =3D (f"'{replacement}'" if replacement
+>> +                                else "(remove)")
+>> +                        print(f"WARNING: {rel}:{lineno}:{col}: non-ASCI=
+I "
+>> +                              f"character U+{ord(char):04X} should be "
+>> +                              f"replaced with {hint}")
+>> +                        exit_code =3D 1
+>> +
+>> +    sys.exit(exit_code)
+>> +
+>> +
+>> +if __name__ =3D=3D "__main__":
+>> +    main()
+>=20
+>=20
+> Antonin
 
-Exactly what I had in my mind with my first suggestion, just had it 
-poorly worded :) So we're thinking the same thing!
 
-Cheers,
-Quentin
+Thank You Antonin, I have now submitted v3 which should address the=20
+observations You pointed out above, plus adds Quentin's Reviewed-by line=20
+in the bottom three commits which remained unchanged since v1, and also=20
+leaves out conversion of "horizontal ellipsis" characters which seemed=20
+to be used for denoting git hash truncation and therefore seemed to add=20
+just noise to the fix commit.
+-Niko
 
