@@ -2,60 +2,61 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3C2FCC54FD2
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 42A56C54FD1
 	for <webhook@archiver.kernel.org>; Wed, 29 Jul 2026 10:02:52 +0000 (UTC)
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.7963.1785319367985236719
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.7965.1785319370908253505
  for <docs@lists.yoctoproject.org>;
- Wed, 29 Jul 2026 03:02:48 -0700
+ Wed, 29 Jul 2026 03:02:51 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=XVxBbcQY;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=aCzpKKKY;
  spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 523644E40FD9
-	for <docs@lists.yoctoproject.org>; Wed, 29 Jul 2026 10:02:46 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 40E724E40FD9
+	for <docs@lists.yoctoproject.org>; Wed, 29 Jul 2026 10:02:49 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 274956039A
-	for <docs@lists.yoctoproject.org>; Wed, 29 Jul 2026 10:02:46 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7969211C14BD3;
-	Wed, 29 Jul 2026 12:02:41 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 169F36039A
+	for <docs@lists.yoctoproject.org>; Wed, 29 Jul 2026 10:02:49 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 130A411C14BD0;
+	Wed, 29 Jul 2026 12:02:48 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1785319361; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1785319368; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=fXNh1uUTBK6c6961EihAjv4fV9QPdsm4X7XIaiateYg=;
-	b=XVxBbcQYUGEPelAYNNVwYkaJ6FgLGHhKBEY7xnEg0qjInxdVJK0KP7BF5OwlS21RzBlMKt
-	c/VWQ7teylRgBW2du9ChfTKPtK5eLbMy5hUImYbq55ltfHNZo4sxs3G3jTPG4TC5OFklFu
-	aS64pX+Wi9h/EGxEBkzgs62q3iI3QjJXx2WI+GPqNBKv6CuTg+i7lnoU5OhSMfqVT4C/HM
-	Y39q8hkneYr3p5Oe1LUT1T3Nxwg6IaPfsPZ4podeuK4FJcu37Er84xfTeGSNojeCD+wFUs
-	+va6mG3knyaAOy3T9PAt+bff403T3JLW8n2nPgnS9XJDIVuXdHygDT50GcyOmw==
+	bh=Y+0FJBjpcMdb7Vq2SWaki3pUzgNp82hQbteQor0dulE=;
+	b=aCzpKKKYoXRI5WyZnkH5Qmomzt6vKPT0s6abyBneoGXe0WWR0ySnTRMW5Yoyl74xFlDIdH
+	m+box+rhmdI2ghrLjAraxh7i3+Pj62xTOKP2cVZZ2qzOYdsbFTz/+E6ebcrpQ1l/egRrEC
+	BXK+1cdlfw2MDUEZGGAc8r+tdwX7IGXJcCDCDqTtFEvR5Dg4Xbf0weYE8fYV8uhT8D7Wi6
+	TGpR1wqFzxP98ZiI61MfajJP+ykoZhMHEISEPTvPrvd5goomV3nU9B2FGXPbxtHUEjeEB6
+	9fy4xG/dgEqToqwm1Gj5SEpmi3C4v1yM7xghpbUNvq3ee+CvyxhngR+YPtd3rQ==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Wed, 29 Jul 2026 12:02:25 +0200
-Subject: [PATCH 2/5] sdk-manual/intro.rst: remove a confusing sentence
+Date: Wed, 29 Jul 2026 12:02:28 +0200
+Subject: [PATCH 5/5] sdk-manual/intro.rst: detail differences between
+ standard and extensible sysroots
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260729-sdk-clarifications-v1-2-661e65201bc7@bootlin.com>
+Message-Id: <20260729-sdk-clarifications-v1-5-661e65201bc7@bootlin.com>
 References: <20260729-sdk-clarifications-v1-0-661e65201bc7@bootlin.com>
 In-Reply-To: <20260729-sdk-clarifications-v1-0-661e65201bc7@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1234;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1446;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=XaDpeAdD7L2LQsJD1K9k0FdZK3dLnh2mB4LW5TOaaaw=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBqac+2cHiOQQGvUV/zdb6Yn5Ef4MXRshDEbGoUU
- Vz1mJQEaHiJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCamnPtgAKCRDRgEFAKaOo
- Nt5tD/9CF7tamCCKGBa0h1o+04SQbJDBfpMosZ69iwRYqR23NSit/5cwVRIegzvYRV073tPKbuP
- rQeBjyD822imToS4kW6ZZ8sn9fYl2d+fcdhq2mnUDIJ9wDgLcEn3GzETquZdWD2eAbV8gqDznXT
- LhYx4soxL2DQh4WTxTOH+3OFhhgwyE3AnF797k8JnfwoufGTY/bsSvAo9VfTBtSS2iCyQsjXgXW
- RyHHT5CcBASJwP01US8cT1mSFeVOhhLpmgCvxt9+mbDftRv/Rn+742fXc5IMvbZBjBPD7axDdrv
- g1kOo0nlOeYwDBsdVgyw4j57nu7PQIQO9Q0BmizmT8ae2MsxLpIx8uSf+5amJV/D4Z6R7dyCzkb
- /imrB2qN1cvEdX410C1QS8Vf0yaf0ncHbLTs2yzPlTNoyTZyuHeCS5C7JzoywObUXYghJva1Hey
- 7PjIofziduMGxAjXDfHh1d2COBHuw+9sCuv006RrFg7sER7V9b6TPjY9k1iaEzR1wpY7zO85qjr
- fk7O2aRX/aSqn4NTfuZW+m1z9qhuNfGmWBs8+fhb63BQ9zplTCEba+6O+SYSoZFB+t2/dOKowL3
- zXxbgF3Q/DHiwmL1gCUPp9rvP3iiZhLpHK7iCwwJMzNZWW9x5b25Ffm9r9Xmgbfpco3E93rbKte
- pW62LxuOK/Ax/1Q==
+ bh=diKMm6iX7Oxm2IEAphWOKQ+osD8ynEaBF0UcAiLsRSE=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBqac+3KfkSQpEbnQgpvdnaPx85PYlFiAT6f2ST1
+ JbNUmddr9GJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCamnPtwAKCRDRgEFAKaOo
+ NjDnD/4raDpkFav1SrwwIAxOTv3E3tUqC4zdLwwVAKbhbWUGNwm83BgSSN5iPR02BLdy7qqV8mQ
+ 8KTNn9Ruv+VQN9xPq9MZSf+pEc2Wxp9jdNT69kW8yeBqLUD8Y7WbEDAyUtqq5u3oNMleq6h/8qZ
+ h7w5IZupYFckSswkTcHK2wbsCm/Gcu4wilE/wCVQcPfJ6BWQsKO2bisnOiPi6T/Ri+10mu4xAi2
+ j2xu+5dqLwC+HQbGiD16gS/n7T98N9bkjVWkmDV4qJmgdrq/WweHNfjVMhcL2M/hNqIETFt8Yaf
+ KWJbCkPOatO/1wa0fNuO9FIs/ueFiZRgZnu6Jlc8WTCeOdVRrFyjnOmBILBc4PdnU8oojKEfXNw
+ KjNXv7m68+WFFYuj7cfKLSO0lo/Jm46OI9OpN/pQi6lP+jbD2k/qFO/4fM5QuEAkWz8HUjYCAw4
+ bPKkyalF15p4UdZyF+VYV81vi1Q2RPPlDluwnDoIrCQksvbUVhqSo45QzHh18KyMfgHtdSmupQQ
+ M7c6sUyIiMp+WxTIAGcs7K+s9fw62H47Dlzyv1j+sGZ6Ikb0Jk5W6wbgNr6lz+AGFLC6EtRzuLi
+ dO0x5DiT3GWG685qbKZGlvVDSrrTdvCfudhw70yGqkxA/NhmdNDnRMiXKFNJURY+u6YmbzzX+bT
+ P675K7+ccioZb8A==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
@@ -63,32 +64,44 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Wed, 29 Jul 2026 10:02:52 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10187
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10190
 
-I have a hard time understanding the meaning of this sentence at this
-point in the manual. populate_sdk and populate_sdk_ext are best known as
-tasks, so the meaning for them as "archives" is unclear.
+The sysroot in the standard and the extensible SDKs are managed
+differently. Detail this in the Sysroots section.
+
+[YOCTO #14830]
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/sdk-manual/intro.rst | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ documentation/sdk-manual/intro.rst | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
 diff --git a/documentation/sdk-manual/intro.rst b/documentation/sdk-manual/intro.rst
-index dd2902cc4..3e78219fc 100644
+index 8ccbcfa20..2e5f73f0b 100644
 --- a/documentation/sdk-manual/intro.rst
 +++ b/documentation/sdk-manual/intro.rst
-@@ -35,9 +35,7 @@ destined to run on some target machine. SDKs are completely
- self-contained. The binaries are linked against their own copy of
- ``libc``, which results in no dependencies on the target system. To
- achieve this, the pointer to the dynamic loader is configured at install
--time since that path cannot be dynamically altered. This is the reason
--for a wrapper around the ``populate_sdk`` and ``populate_sdk_ext``
--archives.
-+time since that path cannot be dynamically altered.
+@@ -123,6 +123,21 @@ sysroot is based on the target root filesystem image that is built by
+ the OpenEmbedded build system and uses the same metadata configuration
+ used to build the cross-toolchain.
  
- Another feature of the SDKs is that only one set of cross-compiler
- toolchain binaries are produced for any given architecture. This feature
++However, the extensible and standard SDKs sysroot differ in content:
++
++-  The standard SDK sysroot only contains libraries and headers for the packages
++   found in the :term:`TOOLCHAIN_TARGET_TASK` and :term:`TOOLCHAIN_HOST_TASK`
++   definitions, for the target and native sysroots respectively.
++
++   See :doc:`/sdk-manual/appendix-customizing-standard` to learn how to
++   customize it.
++
++-  The extensible SDK sysroot is completely managed by the ``devtool``
++   command-line tool, and its content is the same as the sysroot of the image
++   recipe for which the SDK was built.
++
++   See :doc:`/sdk-manual/appendix-customizing` to learn how to customize it.
++
+ The QEMU Emulator
+ -----------------
+ 
 
 -- 
 2.55.0
