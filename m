@@ -2,42 +2,43 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9CF58C55180
-	for <webhook@archiver.kernel.org>; Fri, 31 Jul 2026 09:37:11 +0000 (UTC)
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.2964.1785490629339514823
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9EF10C5516D
+	for <webhook@archiver.kernel.org>; Fri, 31 Jul 2026 09:37:21 +0000 (UTC)
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.3045.1785490631917055468
  for <docs@lists.yoctoproject.org>;
- Fri, 31 Jul 2026 02:37:09 -0700
+ Fri, 31 Jul 2026 02:37:12 -0700
 Authentication-Results: mx.groups.io;
- dkim=fail reason="dkim: signature did not verify: crypto/rsa: verification error" header.i=@bootlin.com header.s=dkim header.b=Iksq4jao;
- spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
+ dkim=fail reason="dkim: body hash did not verify" header.i=@bootlin.com header.s=dkim header.b=e+SgIgMR;
+ spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id AE02F1A134E;
-	Fri, 31 Jul 2026 09:37:07 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 400B04E4104D;
+	Fri, 31 Jul 2026 09:37:10 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 7D84A6039A;
-	Fri, 31 Jul 2026 09:37:07 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 99D3311C16614;
-	Fri, 31 Jul 2026 11:37:06 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 151FF6039A;
+	Fri, 31 Jul 2026 09:37:10 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9AC6511C16615;
+	Fri, 31 Jul 2026 11:37:08 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1785490627; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1785490629; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=VBRv8J55VJDVupCk2osgzLgpGrGG6bhcwQgZkFO+wnQ=;
-	b=Iksq4jaoByRWirWBW9GTQj1dX9RyD15M8ZUaHW1EB1O1LLYYLvPf7z8XIj2cKcG1E/ZUVR
-	CDIsfaQMSwggbDpWCVTzij8hNsWfAJ2eZ3gQiEHsCqT72YhGX1u3WyihOUqOLLLrhwYNio
-	b9zb9DznX4LO9yEZ/8nOFo0zjCC8N29M9xWwEn5+Gee6NU7Fz8FNNKpAE5p0q45FNZV3En
-	RVoGp7Bx6Epvy71NJYBdGD/UpwnJMf0zmW0ZNYYskzjT6nAVB/eiPbg1OUBoCKzi77FblH
-	vPIMb+3ox29YOrRo/nu1HCFP4lAvoB+r6Hlt/4ZMn3SznluB5FAMEoLvztK70Q==
+	bh=C1YhvL+vh1eCsbhFSM+wUycMT4yqg+VgE9lojWxR7xo=;
+	b=e+SgIgMR7I/pm/mBy0hcvStZhqhLWOgd0H7UWe7GqNbwtr0yjugZpiSyqdcJUPp6uUfr3U
+	U9Pv8YOxVGotBmcWNu+Qny07eVTodIBSmkU0wZLQOg5YyueccCy87bkj7GUogI2fQg7Cnc
+	9rrkdQ04A9po5NkGjLQyiW7CNKl3ydtNr/LMX0lJCOxEGVZ2CD45nXGdOUZ1RfHBND2vn0
+	zRgqzfMJiaFm96aaDOqJ5hGQE7aRZllXK5zhs3/NVKqPNR7DQN9Wbb6q3Rcolw+lIahxBQ
+	4xiup8sIMk8gDx26484B3B+Jl6f8VB9ZxdkqFwNurL7hlfkPLDAPoKtEL7mQYw==
 From: Antonin Godard <antonin.godard@bootlin.com>
 To: docs@lists.yoctoproject.org,
-	daniel.turull@ericsson.com
-Cc: Antonin Godard <antonin.godard@bootlin.com>
-Subject: Re: [PATCH] ref-manual/release-process.rst: update LTS supported versions
-Date: Fri, 31 Jul 2026 11:36:22 +0200
-Message-ID: <178548999939.2379643.12780876268841273891.b4-ty@b4>
+	niko.mauno@iki.fi
+Cc: Antonin Godard <antonin.godard@bootlin.com>,
+	Niko Mauno <niko.mauno@vaisala.com>
+Subject: Re: [PATCH 1/4] ref-manual: Fix occurrences of omitted space with :prepend
+Date: Fri, 31 Jul 2026 11:36:24 +0200
+Message-ID: <178548999944.2379643.11275028829268250944.b4-ty@b4>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260724073803.1260044-1-daniel.turull@ericsson.com>
-References: <20260724073803.1260044-1-daniel.turull@ericsson.com>
+In-Reply-To: <20260727163529.30595-1-niko.mauno@iki.fi>
+References: <20260727163529.30595-1-niko.mauno@iki.fi>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Last-TLS-Session-Version: TLSv1.3
@@ -45,11 +46,15 @@ Content-Transfer-Encoding: quoted-printable
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 31 Jul 2026 09:37:11 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10220
+ <docs@lists.yoctoproject.org>; Fri, 31 Jul 2026 09:37:21 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10222
 
 Applied, thanks!
 
-[1/1] ref-manual/release-process.rst: update LTS supported versions
-      commit: 563e100d5663713e593fd92d2d0fcbddcf25c1c5
+[1/3] ref-manual: Fix occurrences of omitted space with :prepend
+      commit: b2f611f498eb22ca42dc436e3cde0c60ad2ba72f
+[2/3] ref-manual: Prune superfluous space with :append
+      commit: 92edb2468a473188273534f15682ef55d361f8d2
+[3/3] dev-manual: Fix missing whitespace around '=3D' operator
+      commit: 3119c759b290b886e4d606a53db4a8dc7a2c3bbb
 
