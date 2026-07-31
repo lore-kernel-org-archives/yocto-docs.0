@@ -2,97 +2,101 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D5E59C55172
-	for <webhook@archiver.kernel.org>; Fri, 31 Jul 2026 09:19:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D3D71C54F54
+	for <webhook@archiver.kernel.org>; Fri, 31 Jul 2026 09:19:58 +0000 (UTC)
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.2766.1785489577437955185
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.2768.1785489590517658533
  for <docs@lists.yoctoproject.org>;
- Fri, 31 Jul 2026 02:19:38 -0700
+ Fri, 31 Jul 2026 02:19:50 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=EVlQ7+an;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=NVBYLhjA;
  spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 1A1D34E41046
-	for <docs@lists.yoctoproject.org>; Fri, 31 Jul 2026 09:19:35 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id D1F574E41046
+	for <docs@lists.yoctoproject.org>; Fri, 31 Jul 2026 09:19:48 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id E413D6039A
-	for <docs@lists.yoctoproject.org>; Fri, 31 Jul 2026 09:19:34 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5DD3E11C165E5;
-	Fri, 31 Jul 2026 11:19:29 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id A73E66039A
+	for <docs@lists.yoctoproject.org>; Fri, 31 Jul 2026 09:19:48 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id CE5E511C165F0;
+	Fri, 31 Jul 2026 11:19:43 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1785489570; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=ozM2yvseaWJ+g8APFvojMIuHHBrS+A8OgDA+Fey+WE4=;
-	b=EVlQ7+anRQZSD6B0/R4nsd64J0xldbZ7J4jm0VRlB7ElA2yHSM0v4UPPDT360NiJpO2gag
-	DiM9p6uHho3uU6VnJZ82HJdTjDDegIC/RAYUghWLvtevXPocUwgNko46QmH+rtXRUf/ydD
-	bUl+HUm/nqSo7oMWcTw3hoQ8npu0vOuwu/HH4Q1xvCnA7JtoklIPHK/3tTFuXWqlrpbke0
-	3JHuUgEIlO7R4LEwutVoxkICYbqpBIr1VyULGNZ0QaD+r2axFMDVqJSPngdkaCekRLQ1Qe
-	yHQ330qlWqPljngOiuCeX7mgNcm5gP+/BhEG4tgfZqrdO6DpEFWb9PeDOMQw1w==
+	t=1785489583; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=939gnGI4atLQyC2LDSUVECDkEVZTz7018SqVEPFGyik=;
+	b=NVBYLhjAUsgbnpQeNaitybusbAeKgnvMtNhM/tkoEceRyRN8ornr4mCkwIn/cNK4J0pqdG
+	Hk+NRu0L8ogcUzy7KGoFq/yQUzyYyfihe+D746/SY3ew7bZuPOuY6Lztuza5j70NJdxbHn
+	N39OeljnQE3Pw4ZxAT9iAPkxua6lMJfDiLy1sAaGZQjG7UQ0y7Yn9FQihHbZ58taMzrPN/
+	nvHF0SHefmm+QjarVEoGoqpgnynL+CZVJ9NqIaY6rv1XiXITWHWEmNxwlwA6BlHvHBlla2
+	4pCw++Slc12rDpr2gt6AyXLpcRRpBj0F6xACTNAT56/yzN5DaisY1/YMCqKtww==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Subject: [PATCH v2 0/5] Make the SDK section not specific to the eSDK
-Date: Fri, 31 Jul 2026 11:19:23 +0200
-Message-Id: <20260731-sdk-clarifications-v2-0-b34f797492b1@bootlin.com>
+Date: Fri, 31 Jul 2026 11:19:26 +0200
+Subject: [PATCH v2 3/5] sdk-manual/intro.rst: link to sysroot term
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/22NQQ6CMBBFr0JmbU3bhBJceQ/Doi2DjCIlnUo0h
- LtbYOvyJe//twBjJGS4FAtEnIkpjBn0qQDf2/GOgtrMoKU2stS14PYp/GAjdeRtyjaL2lonO1t
- bIxHycIrY0Wc/vTUH89s90KftaTN64hTid6/OavOOQPU/MCshhTEKTamlcr66uhDSQOPZhxc06
- 7r+ALkTupzIAAAA
-X-Change-ID: 20260529-sdk-clarifications-9aab0fa9a60e
+Message-Id: <20260731-sdk-clarifications-v2-3-b34f797492b1@bootlin.com>
+References: <20260731-sdk-clarifications-v2-0-b34f797492b1@bootlin.com>
+In-Reply-To: <20260731-sdk-clarifications-v2-0-b34f797492b1@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1269;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1438;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=78npv9iwbOkylgX07uoqW79psuNp4qwUbkYx66gLbpY=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBqbGigLpKUNapioYhcYU04J1TeyRY0JIkFPbxFL
- mYA5yWF4cCJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCamxooAAKCRDRgEFAKaOo
- NmDdEACpAs1XTdqZ/seWrrlv7EhAqGBRNtecr6hiqcPkScLBLDYoaM4gTnMBO/kvjIfLrtPF/ln
- 69r9G7BT3um6QbTkASovx3Xou/IVg4r9xlbluaRFC+4rVcALl/v8yW6vbW63wn4fEYl5E2zDjdS
- PATrSopXJrY+5Wk8FKUwWHjWF+gri8gU9sKy2b+nyvxPiwdM0GPVkQOA3YBB7NUBF2VWVtakMBq
- KxMTziJJdKwdIO6w1Aa2BFzt7FBpv7Xx6hqzujZqOF+ciB1XrOCXJg6FaxYMMh+17qarhGjh/1j
- 0BQHJUpt+wFLyRtuxH7j1QpMrGIgsks/qPDjoP2K4yUOEkngSCn+hOhnG2QuZe4yGcrkoHOCR9/
- PZ9jd758BgM9srZL8ZiwYM62nXqX+vntXHvt5m5Uj68cb+S4OAJl1tbWSwOtdDSB2l8j/UZ26VG
- MfYXQT3wtZ9M9+JPx1c2AjDYI1IaWwOGcm7sBZkYecccC9zKktVpo487St8pA/fUiOTkwiEA+m5
- Kp7Og18P3+2UzH3qA0rb1ewkNgDO3G9lz7cLcgAidPeVUo3jFFs19wuz3kxjyVkNewdSmLzGdP6
- a4hysh9elJJw4Sw2S5VWa8x6dMx8vwwHmg3xPf/tie8x64Akh7tO0hx0A6mrrr9oirhj7TOuirF
- EZm/o125TPvZ/EA==
+ bh=A2/kinPAH6S0ZFgEdtAVxUyXE+SE8RZJxizs9e4LqJ4=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBqbGihMReLkNqulgtiR6IqlaqcHtJs3oznCyl8H
+ uZIxQYcqyCJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCamxooQAKCRDRgEFAKaOo
+ Nj9LEACGlI6LK0+hLFkqn/75QZQyWwMFTwL/iHIC4JvsVKbU5sbkANkC6TA7t8gfRrAOK6LmzFw
+ Iy4aqkYTJCPjTmoh5HNzBXhv97Xwzfh/pzVLV4J01XuOtYbPpecKAjq5oLySA25IOF8shdJZXH2
+ lKl6HLZElk7Z7yag89Eia10A2hsWXsU59PiNrfi3PSu+GvRc26Ck3puFEayiHVq5ZsQrpFlrgQ2
+ b7lQchFhIDzO2v2YZsstX5Vm7yuHJvDcP0TvOaVDEvZeyZTvJooKu9e56lmSVamPH1Oq/ppWWxY
+ yvR+F0tk7hPKa0ParPAKvj6qmp67EJCDddCvyYsMHAituKGKjHA8/ntW8BeHzhjgKh6OXhg5scs
+ oUHP1uZESyv4qtj1ajRMMCWY1/QLqGEWWZvGDQj1zQwsyXe+GZOoOMvZ9jb6rG+aTEAlrNlTrbp
+ RZhM23VZ58SxUpACetE1veNaV0e/QeN9DkKZ3hl+CVmrlc9TAL+p3mZUgb0de7arYFSjREG43bh
+ TdnjMRlQFw+ajK1YlWEgYnvPGBmxQ0TSAWBJY0ioiopjdWJ23Utn3sstEnKxdbUi0kYDgU+XMGN
+ VtFf1Nl1irqWIeGEhI7btau4QKsACffZ8i8NDoUx5VZ2rCW+MCJUF9xxFf05WxfPFdlkTL64t0F
+ JY6u1fYfXkaxpmw==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 31 Jul 2026 09:19:48 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10206
+ <docs@lists.yoctoproject.org>; Fri, 31 Jul 2026 09:19:58 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10209
 
-While the content of the SDK section covers both the standard and the
-extensible SDKs, the title only referred to the extensible SDK which is
-confusing.
+Link to the definition of a sysroot (from our glossary) when it is first
+introduced and later in the "Sysroots" section.
 
-This series comes with other various patches to improve this section.
-
+Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
-Changes in v2:
-- Apply suggestions from Quentin (thanks!)
-- Link to v1: https://patch.msgid.link/20260729-sdk-clarifications-v1-0-661e65201bc7@bootlin.com
+ documentation/sdk-manual/intro.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
----
-Antonin Godard (5):
-      sdk-manual/appendix-customizing-standard.rst: use code block for bitbake assignment
-      sdk-manual/intro.rst: remove a confusing sentence
-      sdk-manual/intro.rst: link to sysroot term
-      sdk-manual: rename the section to remove "extensible"
-      sdk-manual/intro.rst: detail differences between standard and extensible sysroots
+diff --git a/documentation/sdk-manual/intro.rst b/documentation/sdk-manual/intro.rst
+index 3e78219fc..53246bd9a 100644
+--- a/documentation/sdk-manual/intro.rst
++++ b/documentation/sdk-manual/intro.rst
+@@ -45,7 +45,7 @@ environment script and contained in variables such as
+ :term:`CC` and
+ :term:`LD`. This reduces the space needed
+ for the tools. Understand, however, that every target still needs its own
+-sysroot because those binaries are target-specific.
++:term:`sysroot` because those binaries are target-specific.
+ 
+ The SDK development environment consists of the following:
+ 
+@@ -117,7 +117,7 @@ cross-toolchain works with a matching target sysroot.
+ Sysroots
+ --------
+ 
+-The native and target sysroots contain needed headers and libraries for
++The native and target :term:`sysroots <Sysroot>` contain needed headers and libraries for
+ generating binaries that run on the target architecture. The target
+ sysroot is based on the target root filesystem image that is built by
+ the OpenEmbedded build system and uses the same metadata configuration
 
- documentation/index.rst                            |  2 +-
- .../sdk-manual/appendix-customizing-standard.rst   | 11 +++----
- documentation/sdk-manual/index.rst                 |  6 ++--
- documentation/sdk-manual/intro.rst                 | 35 ++++++++++++++++------
- 4 files changed, 36 insertions(+), 18 deletions(-)
----
-base-commit: 41dae3c3da3ada1745fc60228ff6269c64ee2361
-change-id: 20260529-sdk-clarifications-9aab0fa9a60e
+-- 
+2.55.0
 
 
