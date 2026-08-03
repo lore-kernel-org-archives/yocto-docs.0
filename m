@@ -1,326 +1,309 @@
-Return-Path: <niko.mauno@vaisala.com>
+Return-Path: <joerg.sommer@navimatix.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D04DEC55179
-	for <webhook@archiver.kernel.org>; Mon,  3 Aug 2026 03:49:05 +0000 (UTC)
-Received: from DU2PR03CU002.outbound.protection.outlook.com (DU2PR03CU002.outbound.protection.outlook.com [52.101.65.101])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.35978.1785728935688471806
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EB49CC55162
+	for <webhook@archiver.kernel.org>; Mon,  3 Aug 2026 06:59:07 +0000 (UTC)
+Received: from AS8PR04CU009.outbound.protection.outlook.com (AS8PR04CU009.outbound.protection.outlook.com [52.101.70.105])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.37800.1785740339343963236
  for <docs@lists.yoctoproject.org>;
- Sun, 02 Aug 2026 20:48:57 -0700
+ Sun, 02 Aug 2026 23:59:00 -0700
 Authentication-Results: mx.groups.io;
- dkim=fail reason="dkim: body hash did not verify" header.i=@vaisala.com header.s=selector1 header.b=a58fWk7l;
- spf=permerror, err=parse error for token &{10 18 spf.protection.outlook.com}: limit exceeded (domain: vaisala.com, ip: 52.101.65.101, mailfrom: niko.mauno@vaisala.com)
+ dkim=pass header.i=@navimatix.de header.s=selector1 header.b=7tMIYFSx;
+ spf=pass (domain: navimatix.de, ip: 52.101.70.105, mailfrom: joerg.sommer@navimatix.de)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=pwWQt6qO5f1G1Vd6sMGbwNfW3T7prbElaRohLWqKuHJCDvB6KXHL0/PJklxolPOmU2wd576a4C5+FfxIhorESSQud4+xFHdIY+KzRrF1dWfQ4XHgojrQG2jq9zJAAGZu3uM2IRiNoHMgfOgVdnErp1NyMBkdYfOzCp1lSqImp3m+aWsvelooDK99bVQtchJCVX4ulbpZ5Jj7+kMYVrkVch226Wcq76hMmNjzfIUoQNdlWh2yjVRCSo13l4PIk76u1otUhkxsZd19LjSsgse46WITMPUlbJbt1lfvkYC6SNfkgWpY11NlOvMXxwkGG/41o5D7EvAw3xag7rkeD4TFBg==
+ b=sZWvpJIIjMQ2mXiStl6Mw+96IWoh6s+EpN7NKPUbGOdeebAdFdgU7SEU8yCgvKtoYLubDLeFdfLv8V0POY8REZZ32Qdj5o8dtESspHrDW+0RllCQXovykSpMeTxWAlY6LVICqxxnl8lWzVC5RVDw0HTUCDS7KTZLv9zvYcfcRQe+Snyo27r1Z6UObalShXVhnxlNqQVs6jmNbV1rg9Zw9SLlA/ToXV6j7Ugt2TFQMfvaIZRIufKacUUvth5W/jq4Y38F3HkUwk7wY6kfK3dQuLCzKpb34yht4B3TIueI5qVuzSnUtcadwhv8ZC8poAjNIGdnSWEmliHVoKNyINvi4g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=aPo9tc0j1zeXDL3vOUW8L5RRUFmOJXNS9FbnKvy8BeA=;
- b=ZRX60UzHm5kdZwE0+z1JwxEekD/AnmwlCvIiPpK66vbrgPn5qZ1yrjWw6CVsxIzJgsTGH93DEuTKCeE8TwNAAf+th6A3FmAtwbnrEOL8GhErhfNF5OUj0TXPMk5poctAUI8sZmQsKz9OwR1nBwmsCMg0jTpa+M3UrWOO6wa4CboKA11kWdnmxzpV4XbRn3CSVMpSD+c2gOENFfJU3tmqXbLfr6hAdO8V6Jdnz9e40AI9FsBhC5p2lnV1WOn0F3BWW2HF9R3KLxWx8Xzju3GR51YWPu/h87jU85E9rUw+5MDW3Ow6ug6WOD/G7Axye3F2lXqcBXYH3VVwn+DKrmpepA==
+ bh=F/1fXE9ErYJ5HcZsb/sIT4Ugck8Kfy44RE0Ac5GP40g=;
+ b=lZjyuNHn7WdojTzL28EC84qMfG0Ot6VH0C0EMh0WqVvYqeJm+nDpvrwqUtcic55dKVkaf+wCppfxvMGUkrooaf8VL7rO/+s9ZWIt8O9dscZu3nVEg9sROm7wuvsLK518xm+GGG3peOx8R2DqUuLTeTD3CTDa+pojSKerrZXxAGpTb9VxPHGuJOfmWN0dn4h/yETI43/w/X2gj3DS3gGDht4cljyn1n63s6k5S6Q5cVO2/c82zosvw6TsMkqsXJSNSp9nC0WrNPMN1ZM43Xlk8uTLrzyCFoleYtH8hshv/LyNXzqTpPiLD/suVHH8rPAP/h5qEaZ7ArO7XSqMMwXYpA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=vaisala.com; dmarc=pass action=none header.from=vaisala.com;
- dkim=pass header.d=vaisala.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vaisala.com;
+ smtp.mailfrom=navimatix.de; dmarc=pass action=none header.from=navimatix.de;
+ dkim=pass header.d=navimatix.de; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=navimatix.de;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=aPo9tc0j1zeXDL3vOUW8L5RRUFmOJXNS9FbnKvy8BeA=;
- b=a58fWk7lw9eZouHcXJA3HAkMCTmxpQ8gkf5FE0hSTudrmhmKsmb5uogPA+U4uEYibKo0+uooskVmtQ/79sdVgIZhvUU/7vvZth8kIKNvriRdsMC84sEG3lXw+eCfIsvl2ECcy6O3YvJCnzWQGMBGQPqPF5XqSHTIC8ATmxELkHqtESaY6WQxoDPaAOG7iJ3W7MaEytY1IfscdxC7BWbl3U6CoKTcFBlTOdXGkbtFOD8AIpNcP+yaeMB/+b1DYlrg2Xm1apACOEDprH1I7ciUrCRe50hQt07OIiwTbr3HXKVk4wTWupQ9Lq7g+wpsC7rjs4jOaJshGIze9eNNihk5mQ==
+ bh=F/1fXE9ErYJ5HcZsb/sIT4Ugck8Kfy44RE0Ac5GP40g=;
+ b=7tMIYFSxrT9VOtFLSmq91CT1USDS28fLpncjdcM5qiIjP+dxmZS7qS2Hxrebose47ZchVF9EPC37uW1HwXeMXIiP/Y5YnC8DbFaUhfMSvPGO4l75z1m0bZDa7I+vPkR3Z02s9o/uQRB/0xt5MY4n0ugo7hQrUl+FQXcuBxza4eo=
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=vaisala.com;
-Received: from AS8PR06MB7557.eurprd06.prod.outlook.com (2603:10a6:20b:337::17)
- by AM9PR06MB8209.eurprd06.prod.outlook.com (2603:10a6:20b:3ac::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.18; Mon, 3 Aug
- 2026 03:48:51 +0000
-Received: from AS8PR06MB7557.eurprd06.prod.outlook.com
- ([fe80::44ca:1bbb:6b57:4c16]) by AS8PR06MB7557.eurprd06.prod.outlook.com
- ([fe80::44ca:1bbb:6b57:4c16%4]) with mapi id 15.21.0270.016; Mon, 3 Aug 2026
- 03:48:51 +0000
-From: niko.mauno@vaisala.com
-To: docs@lists.yoctoproject.org
-CC: paul@pbarker.dev,
-	antonin.godard@bootlin.com,
-	quentin.schulz@cherry.de,
-	Niko Mauno <niko.mauno@vaisala.com>,
-	"Claude Opus 4.8 (1M context)" <noreply@anthropic.com>
-Subject: [PATCH v5 2/2] tools: Add check-confusables pre-commit hook
-Date: Mon,  3 Aug 2026 06:48:15 +0300
-Message-ID: <20260803034827.26904-3-niko.mauno@vaisala.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260803034827.26904-1-niko.mauno@vaisala.com>
-References: <20260803034827.26904-1-niko.mauno@vaisala.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: GVZP280CA0015.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:150:272::12) To AS8PR06MB7557.eurprd06.prod.outlook.com
- (2603:10a6:20b:337::17)
+ header.d=none;dmarc=none action=none header.from=navimatix.de;
+Received: from GV2PR01MB11835.eurprd01.prod.exchangelabs.com
+ (2603:10a6:150:2cb::8) by DU2PR01MB8541.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:2f4::19) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.17; Mon, 3 Aug
+ 2026 06:58:54 +0000
+Received: from GV2PR01MB11835.eurprd01.prod.exchangelabs.com
+ ([fe80::d5c3:2dea:3d98:25fd]) by
+ GV2PR01MB11835.eurprd01.prod.exchangelabs.com ([fe80::d5c3:2dea:3d98:25fd%3])
+ with mapi id 15.21.0270.015; Mon, 3 Aug 2026 06:58:54 +0000
+Date: Mon, 3 Aug 2026 08:58:51 +0200
+From: =?utf-8?B?SsO2cmc=?= Sommer <joerg.sommer@navimatix.de>
+To: Antonin Godard <antonin.godard@bootlin.com>
+Cc: docs@lists.yoctoproject.org
+Subject: Re: [docs] [PATCH v2] features: Add distro feature "audit"
+Message-ID: <anA5F1vAGnYBEVWN@navimatix.de>
+References: <alchGk8fYN2cPmGa@navimatix.de>
+ <db22bdb6f13cb1a7159a9284058eba3f07a4a700.1784236750.git.joerg.sommer@navimatix.de>
+ <DKA11RVSKMIV.2KTHUGS1LWTID@bootlin.com>
+Content-Type: multipart/signed; micalg=sha256;
+	protocol="application/pkcs7-signature"; boundary="pctw26hy6q7ty2zs"
+Content-Disposition: inline
+In-Reply-To: <DKA11RVSKMIV.2KTHUGS1LWTID@bootlin.com>
+X-ClientProxiedBy: BE1P281CA0342.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:b10:7d::21) To GV2PR01MB11835.eurprd01.prod.exchangelabs.com
+ (2603:10a6:150:2cb::8)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8PR06MB7557:EE_|AM9PR06MB8209:EE_
-X-MS-Office365-Filtering-Correlation-Id: 680fc837-40a4-4f0a-9ddb-08def112219b
+X-MS-TrafficTypeDiagnostic: GV2PR01MB11835:EE_|DU2PR01MB8541:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9bf561d1-255f-438a-96eb-08def12cae3d
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: 
-	BCL:0;ARA:13230040|23010399003|376014|52116014|366016|1800799024|38350700014|6133799003|56012099006|5023799004|6123799006|11063799006|10067099003|18002099003|22082099003|3023799007;
+	BCL:0;ARA:13230040|23010399003|366016|376014|1800799024|56012099006|4143699003|10067099003|18002099003|22082099003;
 X-Microsoft-Antispam-Message-Info: 
-	Vyc4Qdg1Llnm3ypj9riRJskS7LhwLYM2TmiBhyAen1cViF5Xef0Tqzg1Ko7T6igP+GKY3aT7vbS2A+fuu6d+P7gfahQ4E6PgviyPxgTvHEF72rv7B++5p+InfD0TvkQDrPsnnWLtTZBV4dNT2jFkzR2fu78e++gQDX5VD31pDiYyJw6rq4fRAAPS/8E2EhW2xXsy1pdZTy3kdycX+lGNZrUb6LmozZepZj1BpVGN6Hu8i/unC/gczUkFVwAP9oMchBFxtpiGPwvvGkkEDOQs+H/zfoaEYiV85/u8dh18i9jqcsFHgSEGNvrXRGTQh1FhVFHIEvzQE7lFqC7CGSQ//+0c9tTVak6Lkbfq7jOItoaN6nguPS07k/93wPE27Vme/CqBC9LzeXxdeoBf4115uwH51gbk5bRoZxjWVX2kcK7GpTIc4oYeJctuyYjajktwhHqVXgUV4GNYqzaNLYMzRpae8dg4JSrPz2Ycj6frEvkOKfngCqdu/CXNn/8dPNTTkAjRxu8tFlp02MVx2r+PiqzXVyvlrqlX+53qaPrPQ/QzgLuqtq/qsDCCdd2e1gObzSA9omYRpF6NYLVUIK3tPWc1/EuX1EqdmunD/Fj5ePckU6Q5Fyo+UDoTLDiQsBTECR9qoDMRRKTjQoDYlF1csDyAYiJ+pClRUq8u4PpKN+yQ7ARyS/vY4vzY1l2RXSLUQtfrM2ukqklV1dwRf4O1LHDItk5HvtBYxawD+wVsIOo=
+	pii32xxIVkcH1NzYNAGh+s1cOz3tKOeMp7no4jH5D2Pi2UP6W4pFPrG/ksSaTQ3U020SzJ79PTOXhZJ5l/5P9GzGbRcSxeuEsxbwzAhuR7UCmsiAyUkneMPwAPWz2XHXVcgzzpqdYoMj5Ga/GbidIYPfLexyDNeBvwsq31ByBxU7zs6lkDslqWl23LSbNNTu0gDjO5fiq+KepSC+KSDA7sVU2zpk55d8fvMJVchFuvrqmjZvTOU1ge7CafIimPDQ/LiuVQm7MEBcli0CDuVodeUEX6RmumGFowLDca5Q0cAJOHPFX7t5w5E0O70t7IHe9PRN9w+oERBXyCDWh7h+ia6N0D2hn2PhaSiTCfUaQvtvAMHMu8F8DGjj8XdDCssTgxPA99b5MWQR+zU1rppXEegxTiLEbQz5iqvr3E6t9JFomDB0qrP7inorrEOqDCyW5IrbyYaKqpqtMYWBjT4JX4vDVGePZMqGkUubjAHuUPApduhsoCI8j4o8/7ORjW9Pn3Zv+BqupT5m4qnB3gPW8J/fVXJi7s5lOqYQkTCtRxrQ5MtL808NiLZ5ycyrZniz0VQbgvKp3/jzergxEs1Vt/5wDgAtYjF7WWvm3tGh5O4=
 X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR06MB7557.eurprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(52116014)(366016)(1800799024)(38350700014)(6133799003)(56012099006)(5023799004)(6123799006)(11063799006)(10067099003)(18002099003)(22082099003)(3023799007);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR01MB11835.eurprd01.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(376014)(1800799024)(56012099006)(4143699003)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?us-ascii?Q?fWj7WTWBVlcr11/HorFOrmv4tUGjRVtoG/PuslgIBPhEWqs67vsXC4DsFuz1?=
- =?us-ascii?Q?+NyFjdrgafBAhwfZGIdxVmrF/JfsLX42g+xwudDror7EAaPepTxFH55dEGFU?=
- =?us-ascii?Q?2/jei3ZYrqRvKTF/49MSG8fDAi8Jd/v6XktWXulETTc+fgfp0O/Trd4QnNtD?=
- =?us-ascii?Q?TuOu3IDlheMmysXXVEBLUzg66o1CzD3Z1MDSyPI3L2tDdsJGdCXdt9htBJA0?=
- =?us-ascii?Q?TgQN8pj7tY4XyJUnuCYb+ZUqY6viaJuHRn7ANQUHjpSOSw3vJcEAxx9eyzQI?=
- =?us-ascii?Q?ugmmIxZ8EEAn8fIJ6YV5tVleT4vhcyvbxLeHcBCuf0z0m1UvzR2+7JZ6Oicq?=
- =?us-ascii?Q?aWd2iFddhaQG4y/7adWO8ZZjqXqgLOdSsJD4waq/X2nnYLVFxVnI3QZbDC7B?=
- =?us-ascii?Q?4NuJ9Kix3fFZ3n9ZbiTF5BLZR9ws5jT2hTs1wdIRT2ZtIpJvPqy9O55gqtPl?=
- =?us-ascii?Q?cT2UKjYXmnhCPKJ7Vo4hbjk4TO2FEbFXFyXGQIg42Z1BCVOtkHdzZn95jp88?=
- =?us-ascii?Q?Wo2RFBSBuf/7u3nrpd3QPju3foZJI4PK7tP1yvkM2OgEX1FYAQSOVF9K5Ctm?=
- =?us-ascii?Q?3tzjz8zV7i+yiAM3VwWruaNqCbuGO58qmRJgsidH5MWNgGjBm3QAZP0cM/zh?=
- =?us-ascii?Q?sh4xPOp+lwRsBNSmwGqy0d1/5bpGHsMaex8uhCDTAD+ywjn+L8oHlrFbh5AS?=
- =?us-ascii?Q?pHisA6RYGwWF49Atvhr8MOEK2MOxuLplbOT0h++vU1rRIosDWcvCUdKsm/kb?=
- =?us-ascii?Q?hyrUD2WgwQPxjgFo5MPVk5wIsP06hZtdSeoTrkTtr1g9cWIjZPeowyTxatkw?=
- =?us-ascii?Q?We25srNKwdhk0/XUCt9llbyHoeHBVce7hX5gjbDZc0AytoQxAu5v8jcORGqB?=
- =?us-ascii?Q?P1jbVTZA1U6Hi9eqmCv8EfDiE8OK6VRtRbgCKJdJIGFX6D7L6329hLjAE6DX?=
- =?us-ascii?Q?EgtpbOttt4rgLJUeXTcl/5aMZEir+dcrFshrXFnARx+MbQY8rJ/a9cVuON+I?=
- =?us-ascii?Q?DE22tNY9DJg1O6e9m3MwcSKxgqumGoMybv3ntW5A5nFn/p/oc5ZOCxRaH9BO?=
- =?us-ascii?Q?mh7EgS5wCeIeTPRUB7rq1Kui+hsSi1dxzYm/IKVUScl2VdYg2iR4045P0TQE?=
- =?us-ascii?Q?q+axQEl71qfYmY0GeuWYlQeslw1JKcf5BDkoKJGl/lcl5ZtRbg1VF43WJduW?=
- =?us-ascii?Q?7hd0exHjgtMQ/V4kWwT/jSCga5ywOOVSfOMvaqxQyPRPn0uBoNrntvevzSSf?=
- =?us-ascii?Q?cpqu4i1xFsxzGkbcF9rYUBI19pdGhEObDvRAlBfYjPOY7KYQ4pSh0wEjMsDj?=
- =?us-ascii?Q?PcYTi57MdoHOdCxmRhSYN1T34VlhU50Qf8c/vBi8FQ4naBSZzdEblRNV+7tF?=
- =?us-ascii?Q?bF4wVA05HcHnwTlVSdtUjqdq5bXfp/2dU4Hf7G0ls9NIglYwm/j7raIykbZa?=
- =?us-ascii?Q?4PAx/U29FtQu4HEn/b9+YquBkKTsFKcO5BJYBXNuNXJ8vIb1M8HTwyMo1szB?=
- =?us-ascii?Q?zvI1++B47liavoZSAOsG1AzTBo3xWGKpe9FXO1FJ8keg/pzDdeubNBLgZ0B7?=
- =?us-ascii?Q?AaeiHUGgY4cpmNr3wI6lXa0vvKUj7LN8AmXJMSGkequQabjp6IIq7n2CEKHq?=
- =?us-ascii?Q?P28QMyKHYTyQpQKvUm/kVLud/4mz/+BWblv5BE/CEMW7SDXH7E2P1a17PN54?=
- =?us-ascii?Q?2dLvt89i5Bb1hV9QExw4XO5DCRuyBEFICLHgl2DeAnLaRYcYRBDjLaolR1Wt?=
- =?us-ascii?Q?eBQwCneS7A=3D=3D?=
-X-OriginatorOrg: vaisala.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 680fc837-40a4-4f0a-9ddb-08def112219b
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR06MB7557.eurprd06.prod.outlook.com
+	=?iso-8859-1?Q?geS0UtrXfd+RON9TpZEgtnbjdhZnhT/k+wZ9V4zGnwlq2BSrRW/WRIGkus?=
+ =?iso-8859-1?Q?KfUOtDXPUTv23UXsoR51QwkY6Ix9ZAXrN+nXQ/NOwFaZApGFCTqlfYXHB5?=
+ =?iso-8859-1?Q?8ksnvVI60qOr5bTikmsagKuF+gI5cj59Ht1A5LPBpvi2uEe1PT/8jXveX7?=
+ =?iso-8859-1?Q?vF9oPVRsg6X80kXe/6ZBT2fOMB05ng28eCe7jM+6xgSGrjTCKvaB/FSuC/?=
+ =?iso-8859-1?Q?zJRkHlGbsXB8qNvyeRQcWgYIkIR/4W9fBMI/P1++i/iaaC6tINh7p9rGs8?=
+ =?iso-8859-1?Q?sp1LGh4bZodWyiZobGaAmlct8aynYFMwG+/PDuxJACLQzhplniRoTg/jyX?=
+ =?iso-8859-1?Q?mZ9AUkugS552lODHOHrJhYeHY7ooK7M0OhWJIvIHwwhnZ4tIJNoa4ix0/M?=
+ =?iso-8859-1?Q?sXnRpDiuzGfXpW4Ff6yJ/w43R5DQgfy30IPwKSxS2Dy+fDwxmOf/0aMUz2?=
+ =?iso-8859-1?Q?khHAoxehzovniIpaMw4peOlDhofXB4WLYxS0bGwk9sjVHRhwb4M4bZsPi6?=
+ =?iso-8859-1?Q?innwt1u/9Kr9nDmNRM3pgrXw7ywWEOuMYN1o+8fNyWvMWFafJ3PwpSl2dL?=
+ =?iso-8859-1?Q?fGeHwn+UuKqkvX01VaSPfye3dl5UYF10hmwIHPwLHPa90Zf+xoLarSmuFp?=
+ =?iso-8859-1?Q?s994f4ioKM3/GNXvufSWZt78DOK5Bd22y5molBVeh0yoeUzuYaBKQRTz3O?=
+ =?iso-8859-1?Q?nelZ4t/ZP7xvI1Sdp+g0f2T4a8B6YLPsodGeBKVqJMNIT5cpJ4VEy1K76R?=
+ =?iso-8859-1?Q?r2In3+G6v1LgJ96Krj/QNlbjn3vpQaz9kaZGwB0rYNw8jVOAYo200oIDD7?=
+ =?iso-8859-1?Q?uM5VEdALeFEBcbSsSbVYotC6HZdkWcnviZC+QCUPSP55SgnmZPDGiYNRXg?=
+ =?iso-8859-1?Q?0W0Igb60Fm8gqrOchk3+e7UtvPgQ1YjGvTcwTt0q0LQYBMCL77GsceFZ5X?=
+ =?iso-8859-1?Q?JTA33wUfB73vOFmiBV9iCZkpo+WrPc9A69/XjFbQN8mw71v9y+hL8UvFnv?=
+ =?iso-8859-1?Q?TEEX7yMAxTTbJag90LDCMwPimko9wuN4hhPY0Evgvff6sRbBGMj/o4/4i0?=
+ =?iso-8859-1?Q?YjBU5PeGxZ2y6iL+kKX/a839Hb7K5n7AM7o7b0oVvovqg5h754Xtn42KOr?=
+ =?iso-8859-1?Q?xPqJ+tpO4GH7w6/2uVDKV2IVwKkxY6+h2C2+kTRH/8TZvDD5DHhH9tzOy4?=
+ =?iso-8859-1?Q?9rXgj/fDfd/W8VtHo+XnAw1BW4WGxVXm924CeRyqZ3UMualJYKbdhL4fuV?=
+ =?iso-8859-1?Q?q4rI+stKyp/BLoiHnbBMs4oe84D3VmM70uToetolllZ2PDqcF++TpincU5?=
+ =?iso-8859-1?Q?3xd2G6bWzJQCoRIcZ8nddofrjthDhcOyQdzjlW8aKiurTM8Dmoto7f7dHe?=
+ =?iso-8859-1?Q?rk7YxFUqMVt5ERCNyoa2rAovyBjRSQGEAKmX6or10fHJD86oxbBqyAyIOz?=
+ =?iso-8859-1?Q?+mJbLqOtvy/iAonewZMXyxXX1/GoUjALES5cuqjbicVl2CSalwgw8nfrQs?=
+ =?iso-8859-1?Q?LiPmd4BKAGdoWVVmFLHRV8i7+FN7U+PbUW4diuRRtXkfyLZMqdUhcKsfw3?=
+ =?iso-8859-1?Q?lYq7v1jjPwsI/Ecf2rjQM1uESEcO7085sBF5Y8sia1S18NKBGer5GSMHJa?=
+ =?iso-8859-1?Q?vJ7enC+91tNda+xoicj4j/CIt8fve2c32O+kQIwtcaH8x4SZjnfamVY4Ue?=
+ =?iso-8859-1?Q?a0fzYpWGAvJKIwkm0XHF7yj/A6pf95Ce2VmPRm0c8WWBRCyxY4YQMG60ui?=
+ =?iso-8859-1?Q?yuzHV7OCmlEQWO1j6HsvLPXgnRr0ZD2xqpqf9dlMRhCgdjam2dt72q8wc1?=
+ =?iso-8859-1?Q?LhKldt3zxZcZjzIrsyGVrCt7JX8l0ks=3D?=
+X-OriginatorOrg: navimatix.de
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9bf561d1-255f-438a-96eb-08def12cae3d
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR01MB11835.eurprd01.prod.exchangelabs.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Aug 2026 03:48:50.9808
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Aug 2026 06:58:54.0273
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 6d7393e0-41f5-4c2e-9b12-4c2be5da5c57
+X-MS-Exchange-CrossTenant-Id: c87b4f54-b992-4813-8f3f-4a876324197f
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: B+PJ18e2P/0hn/gB1Ax00YOU14ynCPScWDHRuiJCuLXcnNlbk4Z+fGwdykNl5aFeZr+e6JO0k2oSybW+ER62Tw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR06MB8209
+X-MS-Exchange-CrossTenant-UserPrincipalName: xqVFa8yJY6zl4JANlofpvsKj3JbLTnM6CCeapO8ikL5b9ZOTd+XC60f78KGkoHyS4xjFg09nARd+t7OcYF9Zq0Ta63UvxYTUwMgfo7X70EA=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR01MB8541
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 03 Aug 2026 03:49:05 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10225
+ <docs@lists.yoctoproject.org>; Mon, 03 Aug 2026 06:59:07 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10228
 
-From: Niko Mauno <niko.mauno@vaisala.com>
+--pctw26hy6q7ty2zs
+Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [docs] [PATCH v2] features: Add distro feature "audit"
+MIME-Version: 1.0
 
-Add a check-confusables script, in the same fashion as
-check-glossaries, that scans the documentation .rst sources for
-non-ASCII "confusable" characters (curly quotes, en/em dashes,
-non-breaking and zero-width spaces, etc.) and reports each occurrence
-with its location and suggested ASCII replacement, exiting non-zero if
-any are found. This guards against the class of breakage fixed in the
-preceding commit, e.g. curly quotes causing recipe ParseErrors.
+Antonin Godard schrieb am Di 28. Jul, 09:31 (+0200):
+> On Thu Jul 16, 2026 at 11:25 PM CEST, J=F6rg Sommer via lists.yoctoprojec=
+t.org wrote:
+> > From: J=F6rg Sommer <joerg.sommer@navimatix.de>
+> >
+> > Signed-off-by: J=F6rg Sommer <joerg.sommer@navimatix.de>
+> > ---
+> > Changes since v1:
+> >
+> > * I've added a link to the documentation wiki.
+> >
+> >  documentation/ref-manual/features.rst | 2 ++
+> >  1 file changed, 2 insertions(+)
+> >
+> > diff --git a/documentation/ref-manual/features.rst b/documentation/ref-=
+manual/features.rst
+> > index 77d034f0c..d12b7fa13 100644
+> > --- a/documentation/ref-manual/features.rst
+> > +++ b/documentation/ref-manual/features.rst
+> > @@ -141,6 +141,8 @@ metadata, as extra layers can define their own:
+> >     section in the Yocto Project Application Development and the
+> >     Extensible Software Development Kit (eSDK) manual.
+> > =20
+> > +-  *audit:* Enables `linux-audit <https://github.com/linux-audit/audit=
+-documentation/wiki>`__ support.
+>=20
+> We haven't received feedback on whether audit should be added to OE-Core,=
+ so at
+> least we need to note here that this recipe in available in meta-oe.
 
-Legitimate non-ASCII such as box-drawing characters used in directory
-trees, accented letters in contributor names and CJK characters are
-intentionally left untouched. No-break spaces are likewise tolerated
-on lines containing box-drawing characters, since the tree command
-emits them as indentation in directory listings.
+I have made an attempt to transfer the recipe to oe-core:
+https://lists.openembedded.org/g/openembedded-core/message/242609
 
-The set of flagged characters is intentionally small and curated
-rather than exhaustive. A general-purpose dependency such as the
-confusables PyPI package targets Unicode homoglyph detection against
-the full confusables table; it would also flag the accented names, CJK
-and box-drawing characters we deliberately keep, so we would still need
-our own allow-list and replacement policy on top of it. A short,
-dependency-free table kept in-tree matches check-glossaries and is
-trivial to extend if a new problematic character shows up.
+> By adding the following note just below your addition?
+>=20
+> .. note::
+>=20
+>    The ``audit`` recipe is provided by :oe_git:`meta-oe
+>    </meta-openembedded/tree/meta-oe/>` in ``meta-openembedded``.
 
-Wire it up both as a local pre-commit hook, which checks the changed
-files, and in the Makefile "checks" target, which scans the whole
-tree, alongside check-glossaries.
+If my commit gets rejected we should add this note.
 
-Suggested-by: Quentin Schulz <quentin.schulz@cherry.de>
-Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>
-Signed-off-by: Niko Mauno <niko.mauno@vaisala.com>
----
- .pre-commit-config.yaml               |   5 ++
- documentation/Makefile                |   1 +
- documentation/tools/check-confusables | 123 ++++++++++++++++++++++++++
- 3 files changed, 129 insertions(+)
- create mode 100755 documentation/tools/check-confusables
 
-diff --git a/.pre-commit-config.yaml b/.pre-commit-config.yaml
-index f2b73a481..876546f9a 100644
---- a/.pre-commit-config.yaml
-+++ b/.pre-commit-config.yaml
-@@ -6,3 +6,8 @@ repos:
-         entry: ./documentation/tools/check-glossaries
-         language: python
-         pass_filenames: false
-+      - id: check-confusables
-+        name: Check for non-ASCII confusable characters
-+        entry: ./documentation/tools/check-confusables
-+        language: python
-+        files: \.rst$
-diff --git a/documentation/Makefile b/documentation/Makefile
-index fe0574537..87a6f8a8b 100644
---- a/documentation/Makefile
-+++ b/documentation/Makefile
-@@ -37,6 +37,7 @@ clean:
-=20
- checks:
- 	$(SOURCEDIR)/tools/check-glossaries --docs-dir $(SOURCEDIR)
-+	$(SOURCEDIR)/tools/check-confusables --docs-dir $(SOURCEDIR)
-=20
- stylecheck:
- 	vale sync
-diff --git a/documentation/tools/check-confusables b/documentation/tools/ch=
-eck-confusables
-new file mode 100755
-index 000000000..359386e7c
---- /dev/null
-+++ b/documentation/tools/check-confusables
-@@ -0,0 +1,123 @@
-+#!/usr/bin/env python3
-+#
-+# Check documentation sources for non-ASCII typographic characters that
-+# should be plain ASCII.
-+#
-+# Copyright (c) Vaisala Oyj. All rights reserved.
-+#
-+# SPDX-License-Identifier: MIT
-+#
-+
-+import argparse
-+import sys
-+
-+from pathlib import Path
-+
-+
-+def parse_arguments() -> argparse.Namespace:
-+    parser =3D argparse.ArgumentParser(
-+        description=3D"Check documentation sources for non-ASCII typograph=
-ic "
-+                    "characters that should be plain ASCII")
-+
-+    parser.add_argument("files",
-+                        nargs=3D"*",
-+                        type=3DPath,
-+                        help=3D"Specific files to check; if none are given=
-, "
-+                             "all *.rst files under --docs-dir are scanned=
-")
-+
-+    parser.add_argument("-d", "--docs-dir",
-+                        type=3DPath,
-+                        default=3DPath(__file__).resolve().parent.parent,
-+                        help=3D"Path to documentation/ directory in yocto-=
-docs")
-+
-+    return parser.parse_args()
-+
-+
-+# Map of "confusable" characters that are frequently introduced by editors=
-,
-+# word processors or copy-pasting, to their plain ASCII replacement. These
-+# look almost identical to regular ASCII but break tooling, e.g. a curly
-+# quote in a recipe example causes:
-+#
-+#   ERROR: ParseError ...: unparsed line: 'RDEPENDS:${PN} =3D =E2=80=9Cfoo=
-=E2=80=9D'
-+#
-+# Only these characters are flagged; legitimate non-ASCII such as box-draw=
-ing
-+# characters used in directory trees, accented letters in contributor name=
-s
-+# and CJK characters are intentionally left alone.
-+confusables =3D {
-+    "\u2018": "'",      # LEFT SINGLE QUOTATION MARK
-+    "\u2019": "'",      # RIGHT SINGLE QUOTATION MARK
-+    "\u201c": '"',      # LEFT DOUBLE QUOTATION MARK
-+    "\u201d": '"',      # RIGHT DOUBLE QUOTATION MARK
-+    "\u2032": "'",      # PRIME
-+    "\u2033": '"',      # DOUBLE PRIME
-+    "\u2013": "-",      # EN DASH
-+    "\u2014": "--",     # EM DASH
-+    "\u2010": "-",      # HYPHEN
-+    "\u2011": "-",      # NON-BREAKING HYPHEN
-+    "\u2212": "-",      # MINUS SIGN
-+    "\u00a0": " ",      # NO-BREAK SPACE
-+    "\u202f": " ",      # NARROW NO-BREAK SPACE
-+    "\u200b": "",       # ZERO WIDTH SPACE
-+    "\ufeff": "",       # ZERO WIDTH NO-BREAK SPACE / BOM
-+    "\u00ad": "",       # SOFT HYPHEN
-+}
-+
-+NO_BREAK_SPACE =3D "\u00a0"
-+
-+
-+def is_box_drawing(char: str) -> bool:
-+    # Box Drawing Unicode block (U+2500..U+257F), used for the directory
-+    # trees rendered in the manuals.
-+    return "\u2500" <=3D char <=3D "\u257f"
-+
-+
-+def check_file(path: Path, display: str) -> bool:
-+    found =3D False
-+
-+    with open(path, "r", encoding=3D"utf-8") as f:
-+        for lineno, line in enumerate(f, start=3D1):
-+            # The tree(1) command indents its directory listings with
-+            # no-break spaces; such listings are embedded verbatim in the
-+            # manuals. A no-break space is therefore tolerated on any line
-+            # that also contains box-drawing characters (i.e. inside a
-+            # rendered directory tree), but still flagged elsewhere.
-+            in_tree =3D any(is_box_drawing(c) for c in line)
-+            for col, char in enumerate(line, start=3D1):
-+                if char not in confusables:
-+                    continue
-+                if char =3D=3D NO_BREAK_SPACE and in_tree:
-+                    continue
-+                replacement =3D confusables[char]
-+                hint =3D f"'{replacement}'" if replacement else "(remove)"
-+                print(f"WARNING: {display}:{lineno}:{col}: non-ASCII "
-+                      f"character U+{ord(char):04X} should be "
-+                      f"replaced with {hint}")
-+                found =3D True
-+
-+    return found
-+
-+
-+def main():
-+
-+    args =3D parse_arguments()
-+
-+    # When invoked with explicit files (e.g. by pre-commit, which passes t=
-he
-+    # staged filenames) only those are checked; otherwise the whole tree o=
-f
-+    # *.rst files under --docs-dir is scanned (e.g. by "make checks").
-+    if args.files:
-+        targets =3D [(path, str(path)) for path in args.files]
-+    else:
-+        docs_dir =3D Path(args.docs_dir)
-+        targets =3D [(path, str(path.relative_to(docs_dir)))
-+                   for path in sorted(docs_dir.rglob("*.rst"))]
-+
-+    exit_code =3D 0
-+    for path, display in targets:
-+        if check_file(path, display):
-+            exit_code =3D 1
-+
-+    sys.exit(exit_code)
-+
-+
-+if __name__ =3D=3D "__main__":
-+    main()
+Best regards, J=F6rg
+
 --=20
-2.47.3
+Navimatix GmbH           T: 03641 - 327 99 0
+Tatzendpromenade 2       F: 03641 - 526 306
+07745 Jena               www.navimatix.de
 
+Gesch=E4ftsf=FChrer: Steffen Sp=E4the, Jan Rommeley
+Registergericht: Amtsgericht Jena, HRB 501480
+
+--pctw26hy6q7ty2zs
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+MIIaGAYJKoZIhvcNAQcCoIIaCTCCGgUCAQExDzANBglghkgBZQMEAgEFADALBgkqhkiG9w0B
+BwGgghehMIIFgTCCBGmgAwIBAgIQOXJEOvkit1HX02wQ3TE1lTANBgkqhkiG9w0BAQwFADB7
+MQswCQYDVQQGEwJHQjEbMBkGA1UECAwSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHDAdT
+YWxmb3JkMRowGAYDVQQKDBFDb21vZG8gQ0EgTGltaXRlZDEhMB8GA1UEAwwYQUFBIENlcnRp
+ZmljYXRlIFNlcnZpY2VzMB4XDTE5MDMxMjAwMDAwMFoXDTI4MTIzMTIzNTk1OVowgYgxCzAJ
+BgNVBAYTAlVTMRMwEQYDVQQIEwpOZXcgSmVyc2V5MRQwEgYDVQQHEwtKZXJzZXkgQ2l0eTEe
+MBwGA1UEChMVVGhlIFVTRVJUUlVTVCBOZXR3b3JrMS4wLAYDVQQDEyVVU0VSVHJ1c3QgUlNB
+IENlcnRpZmljYXRpb24gQXV0aG9yaXR5MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKC
+AgEAgBJlFzYOw9sIs9CsVw127c0n00ytUINh4qogTQktZAnczomfzD2p7PbPwdzx07HWezco
+EStH2jnGvDoZtF+mvX2do2NCtnbyqTsrkfjib9DsFiCQCT7i6HTJGLSR1GJk23+jBvGIGGqQ
+Ijy8/hPwhxR79uQfjtTkUcYRZ0YIUcuGFFQ/vDP+fmyc/xadGL1RjjWmp2bIcmfbIWax1Jt4
+A8BQOujM8Ny8nkz+rwWWNR9XWrf/zvk9tyy29lTdyOcSOk2uTIq3XJq0tyA9yn8iNK5+O2hm
+AUTnAU5GU5szYPeUvlM3kHND8zLDU+/bqv50TmnHa4xgk97Exwzf4TKuzJM7UXiVZ4vuPVb+
+DNBpDxsP8yUmazNt925H+nND5X4OpWaxKXwyhGNVicQNwZNUMBkTrNN9N6frXTpsNVzbQdcS
+2qlJC9/YgIoJk2KOtWbPJYjNhLixP6Q5D9kCnusSTJV882sFqV4Wg8y4Z+LoE53MW4LTTLPt
+W//e5XOsIzstAL81VXQJSdhJWBp/kjbmUZIO8yZ9HE0XvMnsQybQv0FfQKlERPSZ51eHnlAf
+V1SoPv10Yy+xUGUJ5lhCLkMaTLTwJUdZ+gQek9QmRkpQgbLevni3/GcV4clXhB4PY9bpYrrW
+X1Uu6lzGKAgEJTm4Diup8kyXHAc/DVL17e8vgg8CAwEAAaOB8jCB7zAfBgNVHSMEGDAWgBSg
+EQojPpbxB+zirynvgqV/0DCktDAdBgNVHQ4EFgQUU3m/WqorSs9UgOHYm8Cd8rIDZsswDgYD
+VR0PAQH/BAQDAgGGMA8GA1UdEwEB/wQFMAMBAf8wEQYDVR0gBAowCDAGBgRVHSAAMEMGA1Ud
+HwQ8MDowOKA2oDSGMmh0dHA6Ly9jcmwuY29tb2RvY2EuY29tL0FBQUNlcnRpZmljYXRlU2Vy
+dmljZXMuY3JsMDQGCCsGAQUFBwEBBCgwJjAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuY29t
+b2RvY2EuY29tMA0GCSqGSIb3DQEBDAUAA4IBAQAYh1HcdCE9nIrgJ7cz0C7M7PDmy14R3iJv
+m3WOnnL+5Nb+qh+cli3vA0p+rvSNb3I8QzvAP+u431yqqcau8vzY7qN7Q/aGNnwU4M309z/+
+3ri0ivCRlv79Q2R+/czSAaF9ffgZGclCKxO/WIu6pKJmBHaIkU4MiRTOok3JMrO66BQavHHx
+W/BBC5gACiIDEOUMsfnNkjcZ7Tvx5Dq2+UUTJnWvu6rvP3t3O9LEApE9GQDTF1w52z97GA1F
+zZOFli9d31kWTz9RvdVFGD/tSo7oBmF0Ixa1DVBzJ0RHfxBdiSprhTEUxOipakyAvGp4z7h/
+jnZymQyd/teRCBaho1+VMIIGkDCCBHigAwIBAgIRAJNhG7GFaX1Mm3w/sd+ASzYwDQYJKoZI
+hvcNAQEMBQAwgYgxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpOZXcgSmVyc2V5MRQwEgYDVQQH
+EwtKZXJzZXkgQ2l0eTEeMBwGA1UEChMVVGhlIFVTRVJUUlVTVCBOZXR3b3JrMS4wLAYDVQQD
+EyVVU0VSVHJ1c3QgUlNBIENlcnRpZmljYXRpb24gQXV0aG9yaXR5MB4XDTIxMDMyMjAwMDAw
+MFoXDTM4MDExODIzNTk1OVowWjELMAkGA1UEBhMCR0IxGDAWBgNVBAoTD1NlY3RpZ28gTGlt
+aXRlZDExMC8GA1UEAxMoU2VjdGlnbyBQdWJsaWMgRW1haWwgUHJvdGVjdGlvbiBSb290IFI0
+NjCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAJHlG/qqbTcrdccuXxSl2yyXtixG
+j2nZ7JYt8x1avtMdI+ZoCf9KEXMarmefdprS5+y42V8r+SZWUa92nan8F+8yCtAjPLosT0eD
+7J0FaEJeBuDV6CtoSJey+vOkcTV9NJsXi39NDdvcTwVMlGK/NfovyKccZtlxX+XmWlXKq/S4
+dxlFUEVOSqvbnmbBGbc3QshWpUAS+TPoOEU6xoSjAo4vJLDDQYUHSZzP3NHyJm/tMxwzZypF
+N9mFZSIasbUQUglrA8YfcD2RxH2QPe1m+JD/JeDtkqKLMSmtnBJmeGOdV+z7C96O3IvLOql3
+9Lrl7DiMi+YTZqdpWMOCGhrN8Z/YU5JOSX2pRefxQyFatz5AzWOJz9m/x1AL4bzniJatntQX
+2l3P4JH9phDUuQOBm2ms+4SogTXrG+tobHxgPsPfybSudB1Ird1uEYbhKmo2Fq7IzrzbWPxA
+k0DYjlOXwqwiOOWIMbMuoe/s4EIN6v+TVkoGpJtMAmhkj1ZQwYEF/cvbxdcV8mu1dsOj+TLO
+yrVKqRt9Gdx/x2p+ley2uI39lUqcoytti/Fw5UcrAFzkuZ7U+NlYKdDL4ChibK6cYuLMvDaT
+QfXv/kZilbBXSnQsR1Ipnd2ioU9CwpLOLVBSXowKoffYncX4/TaHTlf9aKFfmYMc8LXd6JLT
+ZUBVypaFAgMBAAGjggEgMIIBHDAfBgNVHSMEGDAWgBRTeb9aqitKz1SA4dibwJ3ysgNmyzAd
+BgNVHQ4EFgQUp9eVd+tKwyfNk743TCaEIRR9XZgwDgYDVR0PAQH/BAQDAgGGMA8GA1UdEwEB
+/wQFMAMBAf8wHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMCMBEGA1UdIAQKMAgwBgYE
+VR0gADBQBgNVHR8ESTBHMEWgQ6BBhj9odHRwOi8vY3JsLnVzZXJ0cnVzdC5jb20vVVNFUlRy
+dXN0UlNBQ2VydGlmaWNhdGlvbkF1dGhvcml0eS5jcmwwNQYIKwYBBQUHAQEEKTAnMCUGCCsG
+AQUFBzABhhlodHRwOi8vb2NzcC51c2VydHJ1c3QuY29tMA0GCSqGSIb3DQEBDAUAA4ICAQBw
+pquT4ow8LyRHG6NgR4oUsFncHl+eWLMtEBwv90EpGCGGDDDjoO23j4Zw6tS+THzwgz4SyP0M
+FQaMzHj40enm+z1Y29QIQCnJTeDOHWHKMRxeiFD8MBso+XgVM6z6MMDbbJ95btM/4eE3LyaB
+uBbheiINaAVieIdxLq6+dVkm00kmvMdlARsTkEvr5a9nYhGAs8T5RBD1DozAv9r89WJcn+QY
+X1M2l5vv0ws3Me1ziVSjC2cRhcae4seOFFjkRdJItzfk6H/Wm2FNv2XG8nE1nbgN8UCdhORO
+lQGGQ9DN152RmSJ1A6KAJIldo3YrJNiO8J4JLAE5/Tl9CNUHtbdYTOZLCAZ95G1g2GELQ2DQ
+1Xxo55iNojqUA4w1feORe86Dq2P08xzolHKepP1LGEw1gDGCkUYR0gVXLJExGd3dfEZDm0mm
+U7vWb6vRyLso/GUawFD2MZS4kK8/igkPO2Pkjfd5HD7hknpPVhcuBaWxWj8Q7bjwVlxGwts6
+sNZ+UJ5HC4c+11vVoV9cdbb93qpbWn/d+azhit6kRYdUmAUl8Bt5VRBMKCUnSaAAspxb9kFK
++cvm/MjErxN63YNEcMs2QKs3N862V8MQaoKqD+KsKnaLxF6pxRpOotenpfUTNE9GqxP9nI6i
+9rSHf16VFwW4NnJ6yUgzHUMdIqtTge98VjCCBiowggQSoAMCAQICEHb3t/4teUvaYKSSf0s+
+XMIwDQYJKoZIhvcNAQEMBQAwWjELMAkGA1UEBhMCR0IxGDAWBgNVBAoTD1NlY3RpZ28gTGlt
+aXRlZDExMC8GA1UEAxMoU2VjdGlnbyBQdWJsaWMgRW1haWwgUHJvdGVjdGlvbiBSb290IFI0
+NjAeFw0yMTAzMjIwMDAwMDBaFw0zNjAzMjEyMzU5NTlaMFgxCzAJBgNVBAYTAkdCMRgwFgYD
+VQQKEw9TZWN0aWdvIExpbWl0ZWQxLzAtBgNVBAMTJlNlY3RpZ28gUHVibGljIEVtYWlsIFBy
+b3RlY3Rpb24gQ0EgUjM2MIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEAk7qaEDRX
+E35PMot8PAmiNaWYblItPHGyt1+H+DUs2GAYHofsdeURmjngaB0C3GcUcrVav1HsGjJuoh77
+nRif3O0gxUJGnIzj4ppKxxTsMNau8qvL+FnEkK6VrnqqnKIL3myjhJRdghUlK8Lgetl/3Pdz
+KQ7JO2xPZFklrLRm8EQSuUdyccvb+auvRdSnwrxsOvV+9n18ZdeahL/RBxM7R31DhVkMPO19
+EiQMj4PBl99wuWzXWL7yLgYh2/TJvIpSOf7waFcHkVYvfAPivV/ulUVaN2ncpSvlE4/TjA8d
+5NXKOY+C7RcyD3UZIi6XVg7T81gOfnvE/eEGsyHmgjzLFDYpgBwVOd7jLQ9jhLX4hdRbm959
+FrXQQrozzfTbyxRIwMwDqgUoPxIQVU9A7qXKu3yRXsn7OvnjYkYve6X0ZifTbjZaf4Hi/KXW
+fNn67zqCt0eNONM2QB5bNqg14qLooRQcgRpSNAEB4UsSyhwsJqEhXz4QwPFWn/wwvEJ0FgYD
+AgMBAAGjggFsMIIBaDAfBgNVHSMEGDAWgBSn15V360rDJ82TvjdMJoQhFH1dmDAdBgNVHQ4E
+FgQUHwSkfkz2MrEJ4pF84WzfUr/PLv0wDgYDVR0PAQH/BAQDAgGGMBIGA1UdEwEB/wQIMAYB
+Af8CAQAwHQYDVR0lBBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMEMBEGA1UdIAQKMAgwBgYEVR0g
+ADBPBgNVHR8ESDBGMESgQqBAhj5odHRwOi8vY3JsLnNlY3RpZ28uY29tL1NlY3RpZ29QdWJs
+aWNFbWFpbFByb3RlY3Rpb25Sb290UjQ2LmNybDB/BggrBgEFBQcBAQRzMHEwSgYIKwYBBQUH
+MAKGPmh0dHA6Ly9jcnQuc2VjdGlnby5jb20vU2VjdGlnb1B1YmxpY0VtYWlsUHJvdGVjdGlv
+blJvb3RSNDYucDdjMCMGCCsGAQUFBzABhhdodHRwOi8vb2NzcC5zZWN0aWdvLmNvbTANBgkq
+hkiG9w0BAQwFAAOCAgEAWooWgE/1j6esLJfOKB48VUcFaafH6wZcbEln7ls6BP7IvAP2GDRF
+33LtQhuVpt7qIqm/RXxWQLaC0yA14LE/pZZdm6CkkoWlTRgzZln6rM9dm2JvqyX2TLS0Z7P1
+E6o9EmPx53bRNrnauUu2lYYfpODYq/5LzDPWBjGNK5QW4+oKCykPzzfSveoF5KTuW1xxy+da
+EmtXm3hgYwYvTrB/7jHZU2hVbj/8DUAf/JCa/+AdQCtUE5XzKl6o5gGtWahY1yh9smQ3b48/
+cto1QW+ZwGCHk5CLr5bDhe2uh2ifn8BXxBOf33D6YHjnrOUyNxi43QD2wZRwyL8arpu/Ljl4
+H9zwIM0Q4vfbZuDghYLDnRVC1fGYBArWxw+uvoEMvO7lcc9MTezGkonPmanHYAcGffaIXpIQ
+rQWtWS9Pb22jEy6YZCUiqH4YcqkelJHqJD1HBLVMOPaCn2wXgBbv9jvZQsP9yFrD6tKX//ue
+D1V12I+L8qjUj17/ZRuxLcPDCF6vb/Svnu38Ejni16jHUO9G/YWFBZOuRbutUEgEp8hMXEzJ
+XO43NzBthf80VV86GaC83nNy3TETFF2yav+ioLIK7Qd5NRnI4DXNQYPq6j8qkEnODayXA1bR
+7V/qy4BrdrLHJf9NHMiANvCNiDn02MuniTPmb+rp4syaXK409MSG4PYwggVWMIIDvqADAgEC
+AhEAsFHj29zvfVPWA2FcnDeJlzANBgkqhkiG9w0BAQsFADBYMQswCQYDVQQGEwJHQjEYMBYG
+A1UEChMPU2VjdGlnbyBMaW1pdGVkMS8wLQYDVQQDEyZTZWN0aWdvIFB1YmxpYyBFbWFpbCBQ
+cm90ZWN0aW9uIENBIFIzNjAeFw0yNjA3MDIwMDAwMDBaFw0yODA3MDEyMzU5NTlaMCoxKDAm
+BgkqhkiG9w0BCQEWGWpvZXJnLnNvbW1lckBuYXZpbWF0aXguZGUwggEiMA0GCSqGSIb3DQEB
+AQUAA4IBDwAwggEKAoIBAQDNxFyhl/UuZdUpuQiuqZBMSU/pN5SMIj4lkvTlrtp2jl4Q77wb
+v4vXdXIFWqKd3qtut55G0ptK4nXs1ARrh3AHQAYwB0vW+PHVNPLs9yombnTeMgnEv/RQDFkH
++DxoKdY5+DRUmcVO/tYl6ExMEBj6oh6b/63whIkC61WRETH3FpRCRbyNBD73OWt0KzxoKzW9
+xmdqfhNtylLcIFMzuv9C1WAqJ3mLbFHYaW4NEMMckPZJWWYzvA2nwCCryerE3J9z4ZbSK0OK
+6DDRN9gW/H7+/4pHSIhdooGfQEdgLj+Z4ZPhvLMF5DncBD8k5DOK8mlDxCKp4GsrLLuBfLQd
+xilvAgMBAAGjggHHMIIBwzAfBgNVHSMEGDAWgBQfBKR+TPYysQnikXzhbN9Sv88u/TAdBgNV
+HQ4EFgQU3lTOaS6cJRsIzzEjdtC4j6GPtWIwDgYDVR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQC
+MAAwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMCMFAGA1UdIARJMEcwOgYMKwYBBAGy
+MQECAQoBMCowKAYIKwYBBQUHAgEWHGh0dHBzOi8vc2VjdGlnby5jb20vU01JTUVDUFMwCQYH
+Z4EMAQUBAjBNBgNVHR8ERjBEMEKgQKA+hjxodHRwOi8vY3JsLnNlY3RpZ28uY29tL1NlY3Rp
+Z29QdWJsaWNFbWFpbFByb3RlY3Rpb25DQVIzNi5jcmwwfQYIKwYBBQUHAQEEcTBvMEgGCCsG
+AQUFBzAChjxodHRwOi8vY3J0LnNlY3RpZ28uY29tL1NlY3RpZ29QdWJsaWNFbWFpbFByb3Rl
+Y3Rpb25DQVIzNi5jcnQwIwYIKwYBBQUHMAGGF2h0dHA6Ly9vY3NwLnNlY3RpZ28uY29tMCQG
+A1UdEQQdMBuBGWpvZXJnLnNvbW1lckBuYXZpbWF0aXguZGUwDQYJKoZIhvcNAQELBQADggGB
+AD6hnou447615g2A0y87bR6mtVI+C+wAFCqRqfrCgHu0dB29VPiVXIVYbPN7H6meSMNr2lFo
+e81aZfbE7LMQj98hVKA/ljqWKJe6R5W1Tssv1568G9GJ0fvL1iGT74LuqcuYPt0LVH99Q1rH
+MfCBKpsyFo7P3JwoqEkuIpbAhaQMYdTcOgeHMYOLrIdx/9wQ1BXjTa/Cajvc3QxJEb308wgJ
+PBxhl8FWWm5MNOynBmRZPKeOeMF5113u6b03KTmXhBqSVeN2nZXEZ+B+wNcJv1dr4Sa0/k6p
+tbjZcr9ZkK7QtCarYgLDbsSbcLRJMuXUSHf1yaLwihZWJ1asynbFEmv1SrRSQ+3Hv4megEeY
+kYmW9Jiu9qh5z6S98F7JhsP4n6tGs24Xz7l2I/T+BmJMRglTeQnzBihH0kFPUanlApSKC99A
+clKs/tfOX8HKHs79Bw3PjRjJDog4D4Pbkom8UwQ/m5sCuOf7v632pjK2jm3OErS3XZxIjnFV
+4Gl+5jZ1zzGCAjswggI3AgEBMG0wWDELMAkGA1UEBhMCR0IxGDAWBgNVBAoTD1NlY3RpZ28g
+TGltaXRlZDEvMC0GA1UEAxMmU2VjdGlnbyBQdWJsaWMgRW1haWwgUHJvdGVjdGlvbiBDQSBS
+MzYCEQCwUePb3O99U9YDYVycN4mXMA0GCWCGSAFlAwQCAQUAoIGgMBgGCSqGSIb3DQEJAzEL
+BgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDgwMzA2NTg1MFowLwYJKoZIhvcNAQkE
+MSIEIAXMna5jvCsHemEGFQRzQpZCmOzj5k1jgpgRr8G2vd7jMDUGCSqGSIb3DQEJDzEoMCYw
+CwYJYIZIAWUDBAEqMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzANBgkqhkiG9w0BAQEFAASC
+AQC1fc/NezAEkupgt/jHxnm2QXKjL2ZM2oX+JudrKa5PSWfDa7uiYoOvLVxkfPX2N5h8aC2S
+EUgfZMT7nbMjx6xDZD2xlaABTBUSYoJyM91XNUhqzVr/YENJqXKyCKfwbV59G98GYqZ7PSUm
+32gO1PPtpio06/VZtcitdgSDfZwulB3mpY+PUirN2lOlFbxp0moIHmuQOy8PT+5d220LOqzO
+49zPn9+yZYiLCMv6igbEW5FM/I1lA+0Qxzo7dBJHWGrd9WLIfnGj4drBKVm8iWjTxskn7fHo
+5wXOu6XWxzh5vPpuyZ6/DggDE5+lngbEIqJvobXvabWtjPKrlYw240wK
+
+--pctw26hy6q7ty2zs--
 
