@@ -1,390 +1,233 @@
-Return-Path: <niko.mauno@vaisala.com>
+Return-Path: <quentin.schulz@cherry.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4D6F4C55838
-	for <webhook@archiver.kernel.org>; Thu,  6 Aug 2026 06:35:57 +0000 (UTC)
-Received: from PA4PR04CU001.outbound.protection.outlook.com (PA4PR04CU001.outbound.protection.outlook.com [40.107.162.123])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.13987.1785998151784045956
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 58D62C5AC7A
+	for <webhook@archiver.kernel.org>; Thu,  6 Aug 2026 12:42:25 +0000 (UTC)
+Received: from DUZPR83CU001.outbound.protection.outlook.com (DUZPR83CU001.outbound.protection.outlook.com [52.101.66.61])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.18853.1786020133943842754
  for <docs@lists.yoctoproject.org>;
- Wed, 05 Aug 2026 23:35:52 -0700
+ Thu, 06 Aug 2026 05:42:15 -0700
 Authentication-Results: mx.groups.io;
- dkim=fail reason="dkim: body hash did not verify" header.i=@vaisala.com header.s=selector1 header.b=P3Elkn5G;
- spf=permerror, err=parse error for token &{10 18 spf.protection.outlook.com}: limit exceeded (domain: vaisala.com, ip: 40.107.162.123, mailfrom: niko.mauno@vaisala.com)
+ dkim=pass header.i=@cherry.de header.s=selector1 header.b=QCEj8J2X;
+ spf=pass (domain: cherry.de, ip: 52.101.66.61, mailfrom: quentin.schulz@cherry.de)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Fm1EvToBDp/Wt5FuiP+SOQUEES3HO21IvFiuoSyd0+WRs3ZyQq9fA3xKVO80Fv5ONN5n5DbzCjhx8we3nayfo20zV0bpaaasLRJKuu0K15RrDSiFYt8NeF5NbA9o6m60ruXytUlhrIp+vWu2DsbEjO+ccMFWB1RKx+CATMkEfExxvHTqo8PXsndxdI4Pr1+4ZKuf0Qo+LNOaei6xNa173a/xqUTWQrN9MKSUqpkZcgA+bWOAAildiu9OOO0NPUTnu1OOcQrjXCBO8odR9cQUT2LFe1d4WTU8cuKWPfSA25F6G8fS6PWY+bGNgELdEfeEPkIKwztUx4oF5MHuDDGhkw==
+ b=UILGZGvst+sCaHJrWCKn2MHgPuQN6DLsjwhwlnkPevslOSWsP3bVIOoPccIJzq1MMwR0kYJT1+gdCT7wpBIc/kCYKScqDZjCktH/8G7nP96P3ngoJajMLQcETynx3AHhVNNtMTcWa6wVd+qaQZY0NnK2+7p8M2i6hH9ea5gSQbzNIIwuauXCfG+c89duaLjV0s4xN7df5rivN2NXOW/yzA+pza0/A3zyZ55LiQS/V1VsI7SKBFZtjuESJ/WaCUqGycaLw73Ni4lJZpyP4v8JiefuP5cVuQhVieCvjUml+8vOnUpKBPd0eehrkbl8OZ6kIN5TV8l8JqFQNoyRXZvGsA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QcvDFC6FF3c3uKUWI3X3AJlDBrEwsuWHO2QeDuKUYfY=;
- b=SlkJ3Rb/daAbgJDyrw6e3Cnvuk0dSPpx2/DYEtTXezWuxny2Wz2vqYmhjk2oFWIDEUJt3pIuyjhg6WPHWqelPk2JewNFypIlcf3l6n1xRxQlLK8ryTn053OTHGlEbiOL6kfeINjjizRPbfaN7y87bVWyA1l9jE7Ahj/D7W+LbhvhIt2/E2fw708I2aiP6+YaoJ/lizWBkozCxnJIE+xfejOMTMIXxIQCiQ5qIb7sk2yvXk52VCijep7o3ER7FdAsfbV1+sUC2A+CPFGic6P8aQ5LqZqFTL6xM3VCuf2OIFuPFIV1YQDRc1ONZIOgSEyPIX7mgDj2jlHc0vtJTqjHpQ==
+ bh=IsaR/ideY2MMYGQ7aTcroj/S15ijaNQnM/kLW73BMzU=;
+ b=X/6jTf6WmUzl+1lItW0bAGDDZm1/gU2/+sK4cf03LaUdNnoBqKSfMeg62kNu8cSdjLdB37GVQIsoN9dA95d5T0375gPkttdqoO2+kIe18YHaHy+hXC2WkzE0L2H4sJySJ4hIv2oS3Lrr6+6RNBeLu0pcwYdFYIrI/8cOdY4GEl4NaBp8TwN5gcUsiBIkKnPmjrl+PKzIeZg+mb9EBYBuThNhrpFb7/10cvEPmKV4sGdTaG/fyQI2IsFgTM7QceSeKO2fKHIz9ImIAnBd/LeRQZAyiCNwkZo+drqltsx4s8DFDdKeUo9ScaU82V/l3Oey6aTc0UXf5O5w7s2gAlAesQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=vaisala.com; dmarc=pass action=none header.from=vaisala.com;
- dkim=pass header.d=vaisala.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vaisala.com;
+ smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
+ dkim=pass header.d=cherry.de; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QcvDFC6FF3c3uKUWI3X3AJlDBrEwsuWHO2QeDuKUYfY=;
- b=P3Elkn5GdguXnmEGQeike5ojr6/3uhlLqwM8otJ1QXxUGXS257NlNDLKkkRx7ey74nS/RStyeEu6m7K/hVaryLAxBsHAzELqXxRqI4XVXXJYz5MOo1wJ6fCgjUJKScckskudSvRZRLsHAnNPMVnHTuUfs1QUl9ivDn1w2PHB8dvueLmz3lS+wjo/jLNdSGgWuQf2X9SCYzItJL1PPT0BBEOtcgEBaz0rl+KpSVXBCqRH+UQnokhAqm1XHMaqaYUD1PkPgPLfCGPCMhukf+Ds4h0+2CW7QFabjWxPJMqfiw0TdaiP5sV2eijVcSoNUy42EZNmjkERpG0qnzj0eh1Jcw==
+ bh=IsaR/ideY2MMYGQ7aTcroj/S15ijaNQnM/kLW73BMzU=;
+ b=QCEj8J2X2o4RVz4WwxWe9VcaEYKIJyY71z02QiMsG4vDyLKHuBJhyaARmcmJpuwXGg8+edkYgAHr+VgVQBTjQfgPuaNUFQooQSzyNggHnY1SjgnWntlWS6BxVPHs71qgGe9TEQdgBMuWkUgkppq1OzszpkK9A/Cla18n39kRYUs=
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=vaisala.com;
-Received: from AS8PR06MB7557.eurprd06.prod.outlook.com (2603:10a6:20b:337::17)
- by PAWPR06MB8811.eurprd06.prod.outlook.com (2603:10a6:102:388::16) with
+ header.d=none;dmarc=none action=none header.from=cherry.de;
+Received: from AS8PR04MB7733.eurprd04.prod.outlook.com (2603:10a6:20b:288::18)
+ by FRRPR04MB12571.eurprd04.prod.outlook.com (2603:10a6:d10:1cf::18) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.20; Thu, 6 Aug
- 2026 06:35:46 +0000
-Received: from AS8PR06MB7557.eurprd06.prod.outlook.com
- ([fe80::44ca:1bbb:6b57:4c16]) by AS8PR06MB7557.eurprd06.prod.outlook.com
- ([fe80::44ca:1bbb:6b57:4c16%4]) with mapi id 15.21.0292.019; Thu, 6 Aug 2026
- 06:35:46 +0000
-Message-ID: <0a43cc46-6c4d-4ef1-b6b6-ad6672188a89@vaisala.com>
-Date: Thu, 6 Aug 2026 09:35:40 +0300
+ 2026 12:42:10 +0000
+Received: from AS8PR04MB7733.eurprd04.prod.outlook.com
+ ([fe80::8f86:fafb:dce7:bcd5]) by AS8PR04MB7733.eurprd04.prod.outlook.com
+ ([fe80::8f86:fafb:dce7:bcd5%3]) with mapi id 15.21.0292.018; Thu, 6 Aug 2026
+ 12:42:10 +0000
+Message-ID: <2afe491a-cde2-4d5f-bf1f-4547407e675a@cherry.de>
+Date: Thu, 6 Aug 2026 10:44:03 +0200
 User-Agent: Mozilla Thunderbird
-Subject: Re: [docs] [PATCH v5 2/2] tools: Add check-confusables pre-commit
- hook
+Subject: Re: [docs] [PATCH 5/5] sdk-manual/intro.rst: detail differences
+ between standard and extensible sysroots
 To: Antonin Godard <antonin.godard@bootlin.com>, docs@lists.yoctoproject.org
-CC: paul@pbarker.dev, quentin.schulz@cherry.de
-References: <20260803034827.26904-1-niko.mauno@vaisala.com>
- <20260803034827.26904-3-niko.mauno@vaisala.com>
- <DKF62NG8K680.7XCFNJPQIKZJ@bootlin.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+References: <20260729-sdk-clarifications-v1-0-661e65201bc7@bootlin.com>
+ <20260729-sdk-clarifications-v1-5-661e65201bc7@bootlin.com>
+ <c4107ff7-d2db-4da6-93fd-4eb850403f31@cherry.de>
+ <DKCMQY8VIU9R.23GVR5E2BW4AA@bootlin.com>
 Content-Language: en-US
-From: Niko Mauno <niko.mauno@vaisala.com>
-In-Reply-To: <DKF62NG8K680.7XCFNJPQIKZJ@bootlin.com>
+From: Quentin Schulz <quentin.schulz@cherry.de>
+In-Reply-To: <DKCMQY8VIU9R.23GVR5E2BW4AA@bootlin.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: GVX0EPF0005F700.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:158:400::257) To AS8PR06MB7557.eurprd06.prod.outlook.com
- (2603:10a6:20b:337::17)
+X-ClientProxiedBy: PR1P264CA0063.FRAP264.PROD.OUTLOOK.COM
+ (2603:10a6:102:2ca::18) To AS8PR04MB7733.eurprd04.prod.outlook.com
+ (2603:10a6:20b:288::18)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8PR06MB7557:EE_|PAWPR06MB8811:EE_
-X-MS-Office365-Filtering-Correlation-Id: d474c419-0331-454a-a6c6-08def384f28b
+X-MS-TrafficTypeDiagnostic: AS8PR04MB7733:EE_|FRRPR04MB12571:EE_
+X-MS-Office365-Filtering-Correlation-Id: 68322a78-a4c5-4716-2ec1-08def3b82215
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: 
-	BCL:0;ARA:13230040|1800799024|23010399003|376014|366016|6133799003|56012099006|5023799004|11063799006|10067099003|4143699003|3023799007|22082099003|18002099003;
+	BCL:0;ARA:13230040|1800799024|23010399003|10070799003|376014|366016|6133799003|56012099006|11063799006|10067099003|4143699003|4133799003|3023799007|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info: 
-	r5AVesZoZRpC0PzHoB8d/rCCmagqV1usKXwRQEbuiKeOtE4Yfj2WevlxLr4OhTlFVPtELYlJAR+pJVBfFHyeT80+3k47sO+z29Uyk2ONjcqk2l4UknyFeknNRgYinV5tklnjhswPp76sVc4dfMcufnWcIfMwc2uEWC46zaQuVts3kMG6eXedGOiblqgnankaEFRH+B4TJoQuzzhwrdOK+WNFbwHNyUlRT2h+A6HA2bKzXcQdT4ZIDuAcNvbaNFAuUZT0vrbL8EeuqvzDujSkk7eHwRPpaSbkyuTiWPtj+i34KO8m+7luYHe2IpOHOopkmVrJupl6QMKU5AF7xhmqqBG7B94VfMvyAFFlJneHrpJzgH7/0UPx/xZwN37nzY/eGpwu/itb3ya3z5KZpTmc4BfXWfTl26v4MI84nL8fd3Sd+yKTdKGuL8OwiB1zzb6FTBtfGXWW2pZg8iWgtUwuTxd8whC6fBgLubqwhLq9swO8XQPUUkG1lL++Nn4n/OpUGWX4Az1LJcHNmpxKcOIbf3lHmxiAkswTfjfNtimz1TR0KevXqQ1TH345M+FEqbHWjQkKAA/5bZ89NRnDviHLwm2KjClZQXbMSX3CXdp4aMf1uaExMc13agG7A2iHT2UJdTtptkpDd2rc9jWbUGl1GMJzz4rFMq+xwCo9p+9vaoc=
+	vXfnRFjQllwYZAV3kdTVe7OKuDxFg28JstDSEjDGQHpLKpqjDJo2p5JZKD3S12GW7puIYkz4PF+xGWqFcgpkMbiirouAiLPplrvBjhcADKf5k1tOJEs76/zrSlZk2vnKPCxNEMyHBNQLjzM9fBv9KDVIcEBeNOBra+4lfJSa9VT3x/vdgzg/1N92fIKLqUALfrc7liRoZ7yM8lzOHcpTZNn2GMVFzngurYWYG456FW1DzgRahocDzLx2ESP5qWULs0lPehngz4RRlnHzxtJrWV26fQAe5RY0OelWNqPTkm125ct0kxl3EbxjMhEajxdj0eFjdcS8p63JfZVNjZYSMoMYSArv0ovcA7RByiWe8VqfeNtx6yQ5xzmJETKE3XnjZ7nefQsVQ5nK123qU944cKq2oW2lGhEDV+H1YBFJ/Vi3M1Hzitch3eeww1q4BTkmeP7p4q/6tn58pifr7/ieglvgfSw5ckZB6lzZUpJHuPNHfogytRaCb2B8zDb5cCDFpXsFwhnfME3A2RSaZTL3fmBvOp0qD0z/f0E2TxCHAF0yI1sfLrrUjvxTrIVh9gmQgatC5mtD3Ln4vz76D/0eeibDlnYqge42rvo3CkgM8CCKlG4qDndSzbkEVfcLVS0iPqAsxJdBItNLa9v9iB1QSdUT5WpiEjmagqsh3+d+NyI=
 X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR06MB7557.eurprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(376014)(366016)(6133799003)(56012099006)(5023799004)(11063799006)(10067099003)(4143699003)(3023799007)(22082099003)(18002099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB7733.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(10070799003)(376014)(366016)(6133799003)(56012099006)(11063799006)(10067099003)(4143699003)(4133799003)(3023799007)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
 X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?us-ascii?Q?STrp9AZzcGvGOYARHUb/AHK/MyU45xx2ixMKBti4upOQuJcCaHauoG8BGWzy?=
- =?us-ascii?Q?cgC3P8OkysWtWr3zFQ1wrnW9hwx4bgVUgLzUgo59XAvPHjk9PuCbCmsTqcTq?=
- =?us-ascii?Q?7N7go/QhxTtueuPHEFkfnKyWmh0x61LAhqZ61EI0QnzZO4Gl0JUyAR1WSng6?=
- =?us-ascii?Q?khthsxaRNuAHxHo3vyk5/whm5vlq8dM4qh0nV4H6VjhfZR3WCDDKujzoiEz/?=
- =?us-ascii?Q?xCu54IhQQvk0QHqeDc307HpJc3iSxC4JX6llnYpIgTfsamIm/HiHuaJWm2aC?=
- =?us-ascii?Q?EiNsc7MT/7SIkIY+7N/gulgjqurD/48NfEJMk85iS3faAKR8e9UV63pi+weZ?=
- =?us-ascii?Q?PFN2R5CN0K6x1t8VhcsPOT4D4d7wIJhcqLUaAlAStGAEiDn2DSLPllDf+o7H?=
- =?us-ascii?Q?czPsJtRfRPXnwWMxfe9eNTjS4KLmKi3QYNbE9Gyr+302gJ6nqagWE4JmWHTV?=
- =?us-ascii?Q?+gV3VyGBdTRGfmBOODqlVW1drLmlkHsVpsSvDgkdDrCyO7j83+Em8hAY/Qvl?=
- =?us-ascii?Q?EoXAMQklTY8rZgCbsrvoEpFX6XMIpWQ66vhGxHxI6YsVU9k5drQ++T7vzdYq?=
- =?us-ascii?Q?cAryXyFQhUSLwG0tL00TjbPmhqucQ54vsOdz9/zZUhxEg3q8ZYY3BsXY0LcC?=
- =?us-ascii?Q?46+nVr+8tKMHQ5C9Z5dOqcXlvIJ/KqWMgdZgllpSNi5AsO9S/eo5rnIJpoPP?=
- =?us-ascii?Q?PPnhfo8J2Rukf2JsPqnNVIKUHmVcf9E4bpSEGfPuNe/bSWVJanipNJvMCSpM?=
- =?us-ascii?Q?yCol/7O4DfbLThPe7v4OqF+wdfR0ZVOrt1B1dXGG6EG0Kg7T5cJJBR0Ph5ZG?=
- =?us-ascii?Q?zUZA42BKftuDk3JTVwy24R4JOOZnavEduDTHPSUUyuXTOUGKO5zA3Me/hJcr?=
- =?us-ascii?Q?fowvTU6saJ/iwt/6ghcsD5JwH8+gRRQf2PQvVTGwD/zk4h5pvNwcD6LAM91E?=
- =?us-ascii?Q?ySIBIk6syzNmDTz11Qm4xrGxdgcwp/mUTRphECR9mvckEoMfDCW1RgnZrgqG?=
- =?us-ascii?Q?IAJMaiQL3v4ItbhDSqt2MCsasnxTQ0B+rWzLecrsyCHKheqfzVhaHIgdsKWA?=
- =?us-ascii?Q?UDI12RNZnrC1/bf/xQunll8PYNeYSAYDBLR8xeSiO3QgZ1hDVnSCOeTVsC2k?=
- =?us-ascii?Q?EjSlsIZjyb4ZUq134sOlyANTr8Xz3eP4fdyV8fZhvypBKqp+CTYdSFl9mp9e?=
- =?us-ascii?Q?KIlQXwjoqpWUnC3YCFgX6htCMXXSqkKK7xGWrhvTn4U61dxVTwT4m+1wJtTP?=
- =?us-ascii?Q?irO8WNfgjoZwU+9utZ+LBJiJXETH42cqKph+ARKKNG7fWlo/VP40y5uOuytT?=
- =?us-ascii?Q?AnIGbiHODgu6ymMSxUvInvQXT/jJyq7F/53L6BZM7PGfFTdkSKFmhRsjC3nU?=
- =?us-ascii?Q?Qmf+YYFBNuxSLYsyaFSQgbeNb2slGW+F5U1TYP8kO4CoFX1VCM21iYdjBVfa?=
- =?us-ascii?Q?fNqZSbMcpjcpNBgCet9vRPmSmNgs9JPRUQr3zO5AER0kdAYq4BM/oFAhuPu5?=
- =?us-ascii?Q?JF+FFEOSNi2h8p+kCkyiJmsncH7HjY1zkM+J0aiFuxwK8rXcWTiZclS4YXYN?=
- =?us-ascii?Q?Tw3gnEqWQkz0FyBz5qT5ajmzDCNHw7gGGaWkUP0XKg5VDOi+NKVYSoCsSw+5?=
- =?us-ascii?Q?/pQdcdM8u5gTxUtDlP2vQcjwKb8haVuUW/K6h4vvtE0i0VQKzkf9hfj7F9Tj?=
- =?us-ascii?Q?2kLV3Ck1wFYxfBcOVz39xsRyQS05B2iE4wqi30+DalOIA3p9ZH62MZG5NLcU?=
- =?us-ascii?Q?riMQMxg6aw=3D=3D?=
-X-OriginatorOrg: vaisala.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d474c419-0331-454a-a6c6-08def384f28b
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR06MB7557.eurprd06.prod.outlook.com
+	=?utf-8?B?cHFXbFlDL2dHbmFNeHZrcFNJRXBQTGNnelA2R2JVT1RhTGVXT0x1QVp4YnJ5?=
+ =?utf-8?B?Q210QXphQTgvQnEyR2E5R3BIYVRpa1dncFQ1amhTQytDL3FmTVdLTW5nZEkw?=
+ =?utf-8?B?Vm9Kczk0UW5HVzRQQkpmaHdmZFA3eEhTRVF5bVBsZk5HcjZ3VnMvYUxrTmtP?=
+ =?utf-8?B?ejZTbXJoRStIV3RKSEt5WXRGY01nVGFOSHFxZVk3N1Zyc0dNd0VlYUpFVmYv?=
+ =?utf-8?B?eW5Ib1A1MUt6OWVTdk5ranp3TmphNXJ2TFZVdmlwNGFCYjhhS3J3ajlwUU0z?=
+ =?utf-8?B?cVVyQWpkVmt3WXhCSERHcks0a1dwc3hhWlh6TGVpZTk2NWliUDNzQ0xvcWpK?=
+ =?utf-8?B?eG5OTlo5YWFmNUZEZ25kblp5WGo4aFp4VEJ0NnpRU3loSG5DanNORmorNWFw?=
+ =?utf-8?B?cUxLYVlVMnV3MHZidWczWlN0RFc2NnJucU5EZFdodCt0Q3YxOTdKZXVNWnkz?=
+ =?utf-8?B?RkFDOWRVOUNlSWpsUmFnWHpDcHNLQ01QTElEWFVtdXE4b09vQklDK2h1U1dJ?=
+ =?utf-8?B?MVNoWDF3MXE4ckJjbzhYWnlzMjFQWFVzSnlOdVBnazVXeEpNWnUvWnhpZ0c3?=
+ =?utf-8?B?YXNiUzFTbm5oU2ltS1JRWTg2YlpyYSt1cXZMUXlVOWp5U1VISCt3VTFOM0Jq?=
+ =?utf-8?B?bGx2bHBSdDd3QmgzNXgzOUw0RlRmb21UanBXazBOV0ZqZThYbzZHYjFGaWxi?=
+ =?utf-8?B?UEp0MFFJL1RGaElzT0RwSWNwaFlmSERES1FOeTh1V3dwWGxWekRvSUZ3NHJN?=
+ =?utf-8?B?VU9KWHpXVjNyT0ViZHlwNjBpZFJMeS9kRDByYUpBcTM4WUFtN09aNlZBcnBC?=
+ =?utf-8?B?K09lL0lHSkQ0Ky8zM1RkVEJ4blFBYUliMjNkOXlEdEYraFdLNU9NYUhQRmdl?=
+ =?utf-8?B?R0ZCNnRGYVQwNHBzbTM3MEpoYmI3alNDMXpOajFpNDZ0SlJFUDdYYWR4ZWd4?=
+ =?utf-8?B?cVR0L0hocC82RGRnbmpZakltWnN5Rk5NdERodFc5bTJ6QWJBVkFlbVcwQkZy?=
+ =?utf-8?B?VlZKK3Qxd1RLTzJNVUhKWkxQZWxtaGVpcFBGWDZzOTdlWG9McmxvbllNZjlM?=
+ =?utf-8?B?N0lCdXBIT05ZbVcwTmw4MzBqTzgwVi9NOWdOZUxPYTFvMklFeW5pU0wrb2xF?=
+ =?utf-8?B?SDJFU0hqUGUySnJzMEZUMEprQWZOZC9wbkVkNnhhZ2s1NlBPMEZyYlp3c2tz?=
+ =?utf-8?B?Z1hDUXZIWlE1OE1NemdQZW1zR0FheUFWZXZ2MHNxYTZkVGU1SjBsNy9VZXZF?=
+ =?utf-8?B?eC9Sb1RhV0lEb1dFRGZHejVsVmR0T3I1R2JLQmord1VHQVJ2bWVjTy9TdmJT?=
+ =?utf-8?B?UXdFSEZtS1g0VUtwYTFrak1VNEVtSXAraG8yUXhrWXlPTFVadmZpWVYweUE1?=
+ =?utf-8?B?ajdiY2RGTW9jcHMxMDQrZnBIcEZmQWZVS0htRGwyVzhrZWNCbDhZQjRCRG56?=
+ =?utf-8?B?YTRLODVnOGFBR0VJUDEycGMvZWFhVGRhaXRveEJ0YVozWU53TXYxMUxOSjFj?=
+ =?utf-8?B?aGU1REpJcG1oc3dBY2tsdEttUWtXTmZzNVFMT2hmdDZjbzBzNEJmb1I5T3c0?=
+ =?utf-8?B?K3RUQW4vTjhaaEprRFlFSjVlaEhqR3pKcHpjbjUvV3FjaUhzM3h0SlQyaXJv?=
+ =?utf-8?B?c0lWenBKbFNjcFJnb2F1dW1saXlFUjlaNGhhS2I0OFRyRUZTZ24wWnlPRVhs?=
+ =?utf-8?B?OStYeTZ6TExpb2w1bU10Y3BzQlQxV29LWTdWVXRHTjRjQVlycFRtRXAvUFRa?=
+ =?utf-8?B?KzQ5bUJWdFRGb3FkNmhTQ29nMFlKLzFYV3NXTDJxQ2xWSDZZbENDYVRQZzV5?=
+ =?utf-8?B?OS9zWXRMaWNhNEk1V2kybXFZRWJTeWZTTmpkeDAwWGZSNFdkRmZ5QzMraEd3?=
+ =?utf-8?B?V1lvNWlqdzh3bElpb1I5MEU3ajZ5bEszVEtRS1hBRHo4OTVqS1VTN3d4Ty90?=
+ =?utf-8?B?T3V0MGEwZTI3eWZPQWc2K0tDRjNUaXJ6c1YvbkEyNHJzQWlGeE5iNmNTckZ6?=
+ =?utf-8?B?TUlpSW9vYWE5aWdqVHd0dG9RVTR5L0owZWF3QjFIZ3B1clkrKzIrNFZyZXVI?=
+ =?utf-8?B?WmIxVlhMNVgvOG15NHl3TWhJdVJwVSswSEdxSFZPZ3FCcUVxbi96dUoxaEhV?=
+ =?utf-8?B?aDhDazV5MVgwUC9VeE0wMVFOcUt1b1Qwek02eWlKS05LRmdkcHR1YUNUQnNm?=
+ =?utf-8?B?NTlPNW9zdlJuQkFBQmlDV2hubWZzZ0J4ckplSTVKNU0yd0VKQmROMW81UkpK?=
+ =?utf-8?B?SUNNYUpUSVRNYzNnb1ozckRWdm1SdkN1cFZSMENyYk15WUt2bHc1K0NGSy9Y?=
+ =?utf-8?B?UjF2UUpjQVROUy9iRnRyVUZqdGtob0ErQmlkaWpKK2ZoMjNWTHZCcVdINEMy?=
+ =?utf-8?Q?ZgRmSYnP2Cz1jgKm5eOwpqXWIwN43NsW1m+/c1zJ0fiKX?=
+X-MS-Exchange-AntiSpam-MessageData-1: 8gQ3ZYYKzd0zQG/4ltXAsR+EksJBlRtRU4I=
+X-OriginatorOrg: cherry.de
+X-MS-Exchange-CrossTenant-Network-Message-Id: 68322a78-a4c5-4716-2ec1-08def3b82215
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB7733.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Aug 2026 06:35:46.5555
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Aug 2026 12:42:10.5503
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 6d7393e0-41f5-4c2e-9b12-4c2be5da5c57
+X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: hTiF+IITbkTR+0GBsMlZdzR9pgcFwrTU/cOlKuCmjTgm3Q7auLlLJoXGWfzaQkLymjAi3VJ32NJX8pTVDDLujg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR06MB8811
+X-MS-Exchange-CrossTenant-UserPrincipalName: RomrrTPlvNEY/WoU26v/cLTAId0eKUW9O7FMHFk7ZY6SQTlOsFOd67ko+dTOJgOTlJ/Ykf+4H5C0WRDwy+g1e8X/eY3HT2Rb6dnPtwDoXtY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: FRRPR04MB12571
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 06 Aug 2026 06:35:57 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10237
+ <docs@lists.yoctoproject.org>; Thu, 06 Aug 2026 12:42:25 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10238
 
+Hi Antonin,
 
-
-On 8/3/26 11:30 AM, Antonin Godard wrote:
+On 7/31/26 10:56 AM, Antonin Godard wrote:
 > Hi,
->=20
-> On Mon Aug 3, 2026 at 5:48 AM CEST, Niko Mauno via lists.yoctoproject.org=
- wrote:
->> From: Niko Mauno <niko.mauno@vaisala.com>
+> 
+> On Thu Jul 30, 2026 at 1:39 PM CEST, Quentin Schulz via lists.yoctoproject.org wrote:
+>> Hi Antonin,
 >>
->> Add a check-confusables script, in the same fashion as
->> check-glossaries, that scans the documentation .rst sources for
->> non-ASCII "confusable" characters (curly quotes, en/em dashes,
->> non-breaking and zero-width spaces, etc.) and reports each occurrence
->> with its location and suggested ASCII replacement, exiting non-zero if
->> any are found. This guards against the class of breakage fixed in the
->> preceding commit, e.g. curly quotes causing recipe ParseErrors.
+>> On 7/29/26 12:02 PM, Antonin Godard via lists.yoctoproject.org wrote:
+>>> The sysroot in the standard and the extensible SDKs are managed
+>>> differently. Detail this in the Sysroots section.
+>>>
+>>> [YOCTO #14830]
+>>>
+>>> Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+>>> ---
+>>>    documentation/sdk-manual/intro.rst | 15 +++++++++++++++
+>>>    1 file changed, 15 insertions(+)
+>>>
+>>> diff --git a/documentation/sdk-manual/intro.rst b/documentation/sdk-manual/intro.rst
+>>> index 8ccbcfa20..2e5f73f0b 100644
+>>> --- a/documentation/sdk-manual/intro.rst
+>>> +++ b/documentation/sdk-manual/intro.rst
+>>> @@ -123,6 +123,21 @@ sysroot is based on the target root filesystem image that is built by
+>>>    the OpenEmbedded build system and uses the same metadata configuration
+>>>    used to build the cross-toolchain.
+>>>    
+>>> +However, the extensible and standard SDKs sysroot differ in content:
+>>> +
 >>
->> Legitimate non-ASCII such as box-drawing characters used in directory
->> trees, accented letters in contributor names and CJK characters are
->> intentionally left untouched. No-break spaces are likewise tolerated
->> on lines containing box-drawing characters, since the tree command
->> emits them as indentation in directory listings.
+>> Why did we stop referring to the Sysroot term (:term:`Sysroot`)?
+> 
+> I can keep referring to it, but thought the first reference was enough. Will try
+> to refer to it when I can.
+> 
+
+I see it like our rule for using :term: for all variables, replace 
+whenever we have a Yocto-specific term, be it in the glossary or not, 
+use :term:/:ref: as much as possible.
+
+Maybe at some point it'll be making it harder to read with all of those 
+links being underlined but maybe we can worry at that point and figure 
+out finer rules later on? What do you think?
+
+>>> +-  The standard SDK sysroot only contains libraries and headers for the packages
 >>
->> The set of flagged characters is intentionally small and curated
->> rather than exhaustive. A general-purpose dependency such as the
->> confusables PyPI package targets Unicode homoglyph detection against
->> the full confusables table; it would also flag the accented names, CJK
->> and box-drawing characters we deliberately keep, so we would still need
->> our own allow-list and replacement policy on top of it. A short,
->> dependency-free table kept in-tree matches check-glossaries and is
->> trivial to extend if a new problematic character shows up.
+>> s/for/of/?
 >>
->> Wire it up both as a local pre-commit hook, which checks the changed
->> files, and in the Makefile "checks" target, which scans the whole
->> tree, alongside check-glossaries.
+>> I think we should also mention this brings the libraries and headers of
+>> their dependencies (recursively) as well?
+> 
+> Correct, I'll add that
+> 
+>>> +   found in the :term:`TOOLCHAIN_TARGET_TASK` and :term:`TOOLCHAIN_HOST_TASK`
+>>> +   definitions, for the target and native sysroots respectively.
+>>> +
 >>
->> Suggested-by: Quentin Schulz <quentin.schulz@cherry.de>
->> Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>
->> Signed-off-by: Niko Mauno <niko.mauno@vaisala.com>
->> ---
->>   .pre-commit-config.yaml               |   5 ++
->>   documentation/Makefile                |   1 +
->>   documentation/tools/check-confusables | 123 ++++++++++++++++++++++++++
->>   3 files changed, 129 insertions(+)
->>   create mode 100755 documentation/tools/check-confusables
+>> I know we have a nativesdk OVERRIDE, so is it still a native/target
+>> sysroot or should it be named nativesdk too (I've never built an SDK so
+>> I don't know).
+> 
+> So here saying "native sysroot" makes sense if you're only look at the SDK.
+> Under yocto it's true that we have a distinction between native and nativesdk,
+> so maybe replacing "native" by "host" here would avoid the confusion in any
+> case. Will do
+> 
+
+Yeah, we just have to be particularly careful when using "host" and 
+"target" when meson is involved because it has a different meaning than 
+what we have in Yocto.
+
+>>> +   See :doc:`/sdk-manual/appendix-customizing-standard` to learn how to
+>>> +   customize it.
+>>> +
+>>> +-  The extensible SDK sysroot is completely managed by the ``devtool``
 >>
->> diff --git a/.pre-commit-config.yaml b/.pre-commit-config.yaml
->> index f2b73a481..876546f9a 100644
->> --- a/.pre-commit-config.yaml
->> +++ b/.pre-commit-config.yaml
->> @@ -6,3 +6,8 @@ repos:
->>           entry: ./documentation/tools/check-glossaries
->>           language: python
->>           pass_filenames: false
->> +      - id: check-confusables
->> +        name: Check for non-ASCII confusable characters
->> +        entry: ./documentation/tools/check-confusables
->> +        language: python
->> +        files: \.rst$
->> diff --git a/documentation/Makefile b/documentation/Makefile
->> index fe0574537..87a6f8a8b 100644
->> --- a/documentation/Makefile
->> +++ b/documentation/Makefile
->> @@ -37,6 +37,7 @@ clean:
->>  =20
->>   checks:
->>   	$(SOURCEDIR)/tools/check-glossaries --docs-dir $(SOURCEDIR)
->> +	$(SOURCEDIR)/tools/check-confusables --docs-dir $(SOURCEDIR)
->>  =20
->>   stylecheck:
->>   	vale sync
->> diff --git a/documentation/tools/check-confusables b/documentation/tools=
-/check-confusables
->> new file mode 100755
->> index 000000000..359386e7c
->> --- /dev/null
->> +++ b/documentation/tools/check-confusables
->> @@ -0,0 +1,123 @@
->> +#!/usr/bin/env python3
->> +#
->> +# Check documentation sources for non-ASCII typographic characters that
->> +# should be plain ASCII.
->> +#
->> +# Copyright (c) Vaisala Oyj. All rights reserved.
->> +#
->> +# SPDX-License-Identifier: MIT
->> +#
->> +
->> +import argparse
->> +import sys
->> +
->> +from pathlib import Path
->> +
->> +
->> +def parse_arguments() -> argparse.Namespace:
->> +    parser =3D argparse.ArgumentParser(
->> +        description=3D"Check documentation sources for non-ASCII typogr=
-aphic "
->> +                    "characters that should be plain ASCII")
->> +
->> +    parser.add_argument("files",
->> +                        nargs=3D"*",
->> +                        type=3DPath,
->> +                        help=3D"Specific files to check; if none are gi=
-ven, "
->> +                             "all *.rst files under --docs-dir are scan=
-ned")
->> +
->> +    parser.add_argument("-d", "--docs-dir",
->> +                        type=3DPath,
->> +                        default=3DPath(__file__).resolve().parent.paren=
-t,
->> +                        help=3D"Path to documentation/ directory in yoc=
-to-docs")
->> +
->> +    return parser.parse_args()
->> +
->> +
->> +# Map of "confusable" characters that are frequently introduced by edit=
-ors,
->> +# word processors or copy-pasting, to their plain ASCII replacement. Th=
-ese
->> +# look almost identical to regular ASCII but break tooling, e.g. a curl=
-y
->> +# quote in a recipe example causes:
->> +#
->> +#   ERROR: ParseError ...: unparsed line: 'RDEPENDS:${PN} =3D =E2=80=9C=
-foo=E2=80=9D'
->> +#
->> +# Only these characters are flagged; legitimate non-ASCII such as box-d=
-rawing
->> +# characters used in directory trees, accented letters in contributor n=
-ames
->> +# and CJK characters are intentionally left alone.
->> +confusables =3D {
->=20
-> Nit, but this is defined in lowercase, but NO_BREAK_SPACE is uppercase, w=
-hile
-> both are global variables. Maybe make those all uppercase?
->=20
->> +    "\u2018": "'",      # LEFT SINGLE QUOTATION MARK
->> +    "\u2019": "'",      # RIGHT SINGLE QUOTATION MARK
->> +    "\u201c": '"',      # LEFT DOUBLE QUOTATION MARK
->> +    "\u201d": '"',      # RIGHT DOUBLE QUOTATION MARK
->> +    "\u2032": "'",      # PRIME
->> +    "\u2033": '"',      # DOUBLE PRIME
->> +    "\u2013": "-",      # EN DASH
->> +    "\u2014": "--",     # EM DASH
->> +    "\u2010": "-",      # HYPHEN
->> +    "\u2011": "-",      # NON-BREAKING HYPHEN
->> +    "\u2212": "-",      # MINUS SIGN
->> +    "\u00a0": " ",      # NO-BREAK SPACE
->=20
-> You could reuse NO_BREAK_SPACE here, if you define it before.
->=20
->> +    "\u202f": " ",      # NARROW NO-BREAK SPACE
->> +    "\u200b": "",       # ZERO WIDTH SPACE
->> +    "\ufeff": "",       # ZERO WIDTH NO-BREAK SPACE / BOM
->> +    "\u00ad": "",       # SOFT HYPHEN
->> +}
->> +
->> +NO_BREAK_SPACE =3D "\u00a0"
->> +
->> +
->> +def is_box_drawing(char: str) -> bool:
->> +    # Box Drawing Unicode block (U+2500..U+257F), used for the director=
-y
->> +    # trees rendered in the manuals.
->> +    return "\u2500" <=3D char <=3D "\u257f"
->> +
->> +
->> +def check_file(path: Path, display: str) -> bool:
->> +    found =3D False
->> +
->> +    with open(path, "r", encoding=3D"utf-8") as f:
->> +        for lineno, line in enumerate(f, start=3D1):
->> +            # The tree(1) command indents its directory listings with
->> +            # no-break spaces; such listings are embedded verbatim in t=
-he
->> +            # manuals. A no-break space is therefore tolerated on any l=
-ine
->> +            # that also contains box-drawing characters (i.e. inside a
->> +            # rendered directory tree), but still flagged elsewhere.
->> +            in_tree =3D any(is_box_drawing(c) for c in line)
->=20
-> Not a blocking change, but at this point you could probably continue if i=
-n_tree
-> is True and move onto the next line. Since we know we're in a box-drawing=
-,
-> leaving confusables is fine since it's not a command to run?
+>> Can we maybe point at some docs for devtool? From a quick grep, maybe
+>> something in documentation/ref-manual/devtool-reference.rst?
+> 
+> Agreed, will add that
+> 
+>>> +   command-line tool, and its content is the same as the sysroot of the image
+>>> +   recipe for which the SDK was built.
+>>> +
+>>
+>> I guess we could show how to do this here?
+>>
+>> I think it should be something like:
+>>
+>> bitbake my-image -c populate_sdk
+>>
+>> (or maybe point at
+>> https://docs.yoctoproject.org/sdk-manual/appendix-obtain.html#building-an-sdk-installer
+>> ?).
+> 
+> Since there are already references to appendix-obtain and appendix-customizing I
+> think it's already enough?
+> 
 
-Thanks Antonin, submitted v6 based on your feedback on other counts,
-except the above one:
+I see you added it in v2, thanks :)
 
-   =E2=96=8E On skipping the rest of the line when in_tree is true: I kept =
-the
-   =E2=96=8E narrower per-character rule. The no-break space is the only co=
-nfusable
-   =E2=96=8E the tree command is known to emit in directory listings, so ex=
-empting
-   =E2=96=8E the whole line would also stop flagging curly quotes and dashe=
-s there,
-   =E2=96=8E without a known false positive to justify it. Happy to change =
-it if
-   =E2=96=8E you would rather have the simpler loop.
-
--Niko
-
-
->=20
->> +            for col, char in enumerate(line, start=3D1):
->> +                if char not in confusables:
->> +                    continue
->> +                if char =3D=3D NO_BREAK_SPACE and in_tree:
->> +                    continue
->> +                replacement =3D confusables[char]
->> +                hint =3D f"'{replacement}'" if replacement else "(remov=
-e)"
->> +                print(f"WARNING: {display}:{lineno}:{col}: non-ASCII "
->> +                      f"character U+{ord(char):04X} should be "
->> +                      f"replaced with {hint}")
->> +                found =3D True
->> +
->> +    return found
->> +
->> +
->> +def main():
->> +
->> +    args =3D parse_arguments()
->> +
->> +    # When invoked with explicit files (e.g. by pre-commit, which passe=
-s the
->> +    # staged filenames) only those are checked; otherwise the whole tre=
-e of
->> +    # *.rst files under --docs-dir is scanned (e.g. by "make checks").
->> +    if args.files:
->> +        targets =3D [(path, str(path)) for path in args.files]
->=20
-> Those are Path objects, I don't think you need to store their string
-> representation separately to display them? Why not simply passing the Pat=
-h
-> object when calling print() directly? It should get converted to strings
-> directly. And this would make check_file() simpler:
->=20
-> def check_file(path: Path) -> bool:
->=20
->      ...
->=20
->      print(f"WARNING: {path}:{lineno}:{col}: non-ASCII "
->            f"character U+{ord(char):04X} should be "
->            f"replaced with {hint}")
->=20
->> +    else:
->> +        docs_dir =3D Path(args.docs_dir)
->> +        targets =3D [(path, str(path.relative_to(docs_dir)))
->> +                   for path in sorted(docs_dir.rglob("*.rst"))]
->> +
->> +    exit_code =3D 0
->> +    for path, display in targets:
->> +        if check_file(path, display):
->> +            exit_code =3D 1
->> +
->> +    sys.exit(exit_code)
->> +
->> +
->> +if __name__ =3D=3D "__main__":
->> +    main()
->=20
-> Thanks,
-> Antonin
-
+Cheers,
+Quentin
 
