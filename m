@@ -2,148 +2,92 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4EB1BC5AC67
-	for <webhook@archiver.kernel.org>; Tue, 11 Aug 2026 13:40:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0D16BC5B56A
+	for <webhook@archiver.kernel.org>; Tue, 11 Aug 2026 14:16:49 +0000 (UTC)
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.54614.1786455602059276742
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.55038.1786457807891892455
  for <docs@lists.yoctoproject.org>;
- Tue, 11 Aug 2026 06:40:03 -0700
+ Tue, 11 Aug 2026 07:16:48 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=UABh8llI;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=DrzAbZb0;
  spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 64EB14E411B6
-	for <docs@lists.yoctoproject.org>; Tue, 11 Aug 2026 13:40:00 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id C7ABB4E411B8;
+	Tue, 11 Aug 2026 14:16:45 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 343126033C
-	for <docs@lists.yoctoproject.org>; Tue, 11 Aug 2026 13:40:00 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A46C211C48C40;
-	Tue, 11 Aug 2026 15:39:55 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 8CA026033C;
+	Tue, 11 Aug 2026 14:16:45 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 52CCF11C48CDC;
+	Tue, 11 Aug 2026 16:16:40 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1786455595; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1786457801; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=Fg8VDGywVO4tgdXSLV8zyVc40vOfN7fK/Mb1zqdiaA4=;
-	b=UABh8llIkqXyoYLJfU0Bobslc8MTzY7383gmxdJqni3QJwmA0ZvvIeJuGV7CMtFTshLyz4
-	iJPwIqwpy01ue+svJN2gJOId94mphl6usJG+yfBz+UMEwXOG0VVyk1rOWk0dPqJ6xNU3wP
-	iOXAkxtZo+65L4OqFrOUfAH5ZOxbHO6TC4AT7g1d+doyRoO7mSKlk+KIADiiiSnnSgI8qA
-	JSOdzk4oF9ZBak3GaWYJq13DQ1XUSx20B04Eb3JBnZ1IBI+5gEYQF8Gfk9Xz25agkI51dE
-	m846RcGNXAZoZu/8OKBijiIWEbRrgMIRVo2h4zGRr7A9UbJJursVCOXhJr0W8w==
-From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Tue, 11 Aug 2026 15:39:46 +0200
-Subject: [PATCH v2 1/2] brief-yoctoprojectqs/index.rst: use pip to install
- bitbake-setup
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260811-bitbake-setup-pip-v2-1-3e8ffed354f2@bootlin.com>
-References: <20260811-bitbake-setup-pip-v2-0-3e8ffed354f2@bootlin.com>
-In-Reply-To: <20260811-bitbake-setup-pip-v2-0-3e8ffed354f2@bootlin.com>
-To: docs@lists.yoctoproject.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Antonin Godard <antonin.godard@bootlin.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2975;
- i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=mG48NKdZ5tMr+uxd09JafxiKA6eHjtYzwAnpqpzncmg=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBqeyYmO2Q7KXbUWkb3ovFIVFotuLMbX7VXBkWKs
- 85O7bK0JMqJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCansmJgAKCRDRgEFAKaOo
- Nk65D/9h2WwGEcrZpes/USRV4k7eOpmBjYtX4AwuvOyPDjYrgL4rh80tKJlHOZFX9UTBEHlZa1T
- ot7lqtyJ98ga8R4rT+Aa84p05+KErJwX/7QyA0sBx9Hkqe+ncFj76qNte/xD8UobFLCwWanmuju
- 1EstO2M8AMVtW+R/I8T736orjmX2X7lTb1IjeL7VkHPFsVQJeJzbO37W+/o/jPw94g81Jzv4hbB
- eUZAz1iiUdEygtic0wqm7mOCehnHTVjqd/L6EQwdHrZqE+n1L9j33uMvxLD/Rzfss6LKwOFDGAx
- TzIvLEHWSLRStwmJjDlPymIqSbC/zVtlKpoARPHWm4xRd2nJqSTjoKr1bhLanCyX0fA2caVSsuq
- 5Lr6ZTJ89CmFdkQb9wOt3oQKZRkkgxIdKvflBWtMJ7TAxK1U/lnHyfxcxTur/D0kuuFBwu5CwU6
- E0mSfyAiPXQ4l3zw32mhGtHUk3ixmbjOR9vjuKI9KtfLfuu9V9aycZ92hmJ6z7R1bRhqqBwlSyS
- sC/zjqHBc4RMKvY2TOhn0mguEZ/k1WuItr/tGSmlDePwA8GOPWpkG+81m1k6lz4Vq3z6tMbLecc
- wS1i0ze6iD+ll6fiif1szJWJDvZRBiqe6+RFK/HDzKUviHRSDsD6wE3tyeJERHknHakMHh5lcc2
- G4Eo7r+W7Vku7ow==
-X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
- fpr=8648725188DD401BB9A0D3FFD180414029A3A836
+	bh=tJJ0CMLIHOfh2oH6V+2Mml/jhfXNd6sFK8nknObonKo=;
+	b=DrzAbZb0yejzGNbwNOlfVMnFAjv3EPKjSb1ZE8PwLQU+AUAAUnXlFgAv/aAc7rD0QbuMV0
+	U2O6Fzx1Ay8rgMh0l0jXwGRETO4CYKCzaQwaaJ39XYwSsatNjth5liUgXDGYhTgW0Hx5yr
+	GkiqB47JZvTLDDCVVk9A4oQGGakcDqUHHSoqEYLL2kjt+HE9z4aiqwl3MPysn8MNeztG3G
+	sK3f2D4o0eYbR+ZcgrPmP8v//8iVvCnzvl3rLP67fQfSWyCws42Kp6MRcr5WJU8rI5wZtO
+	ZrKDD0QWRuQQ9r9CoSkW9W0t2Y4F4UW2W1LL+j6syUbPwGFqVBYvfj0DnDMmeQ==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 11 Aug 2026 16:16:39 +0200
+Message-Id: <DKM6FRDAN66C.2R7XLGJ615WDL@bootlin.com>
+Subject: Re: [docs] [PATCH v2] ref-manual/variables.rst: document the
+ QB_DEFAULT_BIOS variable
+Cc: "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>
+From: "Antonin Godard" <antonin.godard@bootlin.com>
+To: <quentin.schulz@cherry.de>, <docs@lists.yoctoproject.org>
+References: <20260811-qb-default-bios-v2-1-02a6284ca3cf@bootlin.com>
+ <dcab219f-68a4-4323-8876-f27b1ca7c3ca@cherry.de>
+In-Reply-To: <dcab219f-68a4-4323-8876-f27b1ca7c3ca@cherry.de>
 X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 11 Aug 2026 13:40:08 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10266
+ <docs@lists.yoctoproject.org>; Tue, 11 Aug 2026 14:16:49 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10268
 
-bitbake-setup is now available on Pypi[1], so let's use it instead of
-a clone of bitbake to use the CLI tool. Refresh commands in consequence.
-Keep git clone instructions in a note as an alternative way of setting
-things up.
+Hi,
 
-[1]: https://pypi.org/project/bitbake-setup/
+On Tue Aug 11, 2026 at 3:31 PM CEST, Quentin Schulz via lists.yoctoproject.=
+org wrote:
+> Hi Antonin,
+>
+> On 8/11/26 3:17 PM, Antonin Godard via lists.yoctoproject.org wrote:
+>> The QB_DEFAULT_BIOS allows setting the -bios parameter of QEMU, which
+>> can be used to emulate U-Boot, for example.
+>>=20
+>> Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+>> ---
+>> Changes in v2:
+>> - Address comments from Quentin (thanks!)
+>> - Link to v1: https://patch.msgid.link/20260804-qb-default-bios-v1-1-bc8=
+51931973d@bootlin.com
+>> ---
+>>   documentation/ref-manual/variables.rst | 19 +++++++++++++++++++
+>>   1 file changed, 19 insertions(+)
+>>=20
+>> diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-=
+manual/variables.rst
+>> index e75f42afe..f4ed9a883 100644
+>> --- a/documentation/ref-manual/variables.rst
+>> +++ b/documentation/ref-manual/variables.rst
+>> @@ -8084,6 +8084,25 @@ system and gives an overview of their function an=
+d contents.
+>>         replaces the ``@CLIENT@`` and ``@GATEWAY@`` place holders by the=
+ IP and
+>>         the gateway address of the QEMU guest.
+>>  =20
+>> +   :term:`QB_DEFAULT_BIOS`
+>> +      The :term:`QB_DEFAULT_BIOS` variable can be used to provide a def=
+ault
+>
+> "can be used to provide a default value" can be read as "it's not=20
+> mandatory" while it is when using runqemu
 
-Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
----
- documentation/brief-yoctoprojectqs/index.rst | 28 ++++++++++++++++++++--------
- 1 file changed, 20 insertions(+), 8 deletions(-)
+It's not? Using runqemu with qemuarm64 and _without_ a BIOS value (or
+QB_DEFAULT_BIOS) is possible. In fact it's the default behavior.
 
-diff --git a/documentation/brief-yoctoprojectqs/index.rst b/documentation/brief-yoctoprojectqs/index.rst
-index 2ffa3a6d8..a8837bc96 100644
---- a/documentation/brief-yoctoprojectqs/index.rst
-+++ b/documentation/brief-yoctoprojectqs/index.rst
-@@ -84,23 +84,35 @@ Build Host Packages
-    see the :ref:`ref-manual/system-requirements:required packages for the build host`
-    section in the Yocto Project Reference Manual.
- 
--Use Git to clone bitbake-setup
--==============================
-+Install and use bitbake-setup
-+=============================
- 
- Once you complete the setup instructions for your machine, you need to
- get a copy of the ``bitbake-setup`` tool to set up the :term:`Poky` reference
--distribution on your build host. Use the following commands to clone
--the bitbake repository.
-+distribution on your :term:`build host`. Use the following commands to install
-+the tool in a Python `virtual environment <https://docs.python.org/3/library/venv.html>`__:
- 
- .. code-block:: console
- 
--   $ git clone https://git.openembedded.org/bitbake
-+   $ python3 -m venv --clear ./bitbake-setup-venv
-+   $ . ./bitbake-setup-venv/bin/activate
-+   $ pip install bitbake-setup
-+
-+.. note::
-+
-+   The ``bitbake-setup`` tool is developed and maintained in :term:`BitBake`
-+   repository, and so can be used directly from there:
-+
-+   .. code-block:: console
-+
-+      $ git clone https://git.openembedded.org/bitbake ./bitbake
-+      $ ./bitbake/bin/bitbake-setup ...
- 
- Setup a build environment with the following command:
- 
- .. code-block:: console
- 
--   $ ./bitbake/bin/bitbake-setup init
-+   $ bitbake-setup init
- 
- By default, this will set up a top directory in the current directory.
- 
-@@ -109,7 +121,7 @@ If you prefer to set up your builds in a different top directory, for example
- 
- .. code-block:: console
- 
--   $ ./bitbake/bin/bitbake-setup settings set --global default top-dir-prefix $HOME
-+   $ bitbake-setup settings set --global default top-dir-prefix $HOME
- 
- .. note::
- 
-@@ -183,7 +195,7 @@ differ from the examples below.
- 
-    .. code-block:: console
- 
--      $ ./bitbake/bin/bitbake-setup init --non-interactive poky-master poky distro/poky machine/qemux86-64
-+      $ bitbake-setup init --non-interactive poky-master poky distro/poky machine/qemux86-64
- 
- The ``init`` command creates a new :term:`bitbake:Setup` in the
- :term:`bitbake:top directory`. The default name is derived from the selected
-
--- 
-2.55.0
-
+Antonin
 
