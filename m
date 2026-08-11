@@ -2,63 +2,61 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4D390C5B572
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 54BD3C5CFE7
 	for <webhook@archiver.kernel.org>; Tue, 11 Aug 2026 13:40:08 +0000 (UTC)
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.54267.1786455598078481808
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.54618.1786455606624140297
  for <docs@lists.yoctoproject.org>;
- Tue, 11 Aug 2026 06:39:59 -0700
+ Tue, 11 Aug 2026 06:40:06 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=uabrmJ9C;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=IwNxmh8J;
  spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id F06E64E411B6
-	for <docs@lists.yoctoproject.org>; Tue, 11 Aug 2026 13:39:55 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id E3DD64E411B6
+	for <docs@lists.yoctoproject.org>; Tue, 11 Aug 2026 13:40:04 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id C00CF6033C
-	for <docs@lists.yoctoproject.org>; Tue, 11 Aug 2026 13:39:55 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 92ABB11C48C39;
-	Tue, 11 Aug 2026 15:39:50 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id B1F156033C
+	for <docs@lists.yoctoproject.org>; Tue, 11 Aug 2026 13:40:04 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 110EE11C48C39;
+	Tue, 11 Aug 2026 15:40:00 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1786455591; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=fGMr0QjdC5fpHSsuC87SR9fjAeFEy8nzJY3FTEUKHvs=;
-	b=uabrmJ9CXNPTlQdxc9Xru8y/DFkNuz0s6qsESwXcvcX/IaJXY0LXVb3Vq6ZOQHdrNYIzWm
-	CunJIkRdiIN2xBqEEJEN/3YS57Ifc26tcDB70vlqy9FdoP0fet82+UaAQ8wCRASW9OjUPe
-	u+f+jApvpLncJER3Ubf0yIdZ8OJheQdG1J0FtJdt7Gb8nJye5ENGbfXpIhe34JEtYz7Bo9
-	I1DZ8FJTRz6AzEjDaMdBbV4ZlE2rH7rGg1kaybW9P2fWdi3dMN7mNK84cEh4iToVMXUJJ5
-	iFjpJSzFDhZVn3c+NBNv+w00bwj8Hy0PposaTV4vRsU20ZI7bn/Ah/9SkccffA==
+	t=1786455600; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=A+kaHYh9Gidt5vinEGaqW7Mxj5ZY9oWrg7Ih3pYx0bM=;
+	b=IwNxmh8J7Fr9L+/4n9ksqxVTyAlbru80pXTraVOFYEfJmMgtCdvic5TAYYoFyiSgONaNJY
+	6JQXIg//FaYlZIey+IgN6xsrdii/Gf8snttKwCl/qh4qPUTxZumyBXTwvhGH8+ISBl8ZBe
+	AKNbljsny371Cqbge4Lxp/U/3fif/6Dw0/Z0darIyT1USnUVDbq5FVmtAqLWy+6x6ZtuoU
+	Cu7Zc2IIoP2taQbvLaDTjVl+yARLeWwWjvI+gct2mbKb4qZwDlRduN+hj0Uv4tVIN3hWDz
+	gcRAX0wwpwW8sKMPJ74s+PnuPVXSVcfzzRso54AWST7x9XH7OVYnyKCtxGZU2Q==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Subject: [PATCH v2 0/2] Quick Build: use pip for bitbake-setup (and a typo
- fix)
-Date: Tue, 11 Aug 2026 15:39:45 +0200
-Message-Id: <20260811-bitbake-setup-pip-v2-0-3e8ffed354f2@bootlin.com>
+Date: Tue, 11 Aug 2026 15:39:47 +0200
+Subject: [PATCH v2 2/2] brief-yoctoprojectqs/index.rst: fix a replacement
+ typo
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/32Nyw6CMBBFf4XM2jEtAqIr/8OwoGWQ8UGbthAN6
- b9Lce/yJOeeu4Anx+ThnC3gaGbPZlwh32Wgh3a8EXK3MuQir0QtJSoOqn0QegqTRcsWe9V3rSz
- oVFQlrDvrqOf31rw2P/aTupMOKZSMgX0w7rOdzjJ5//qzRIFC1+pQCiGPVFyUMeHJ416bFzQxx
- i95ZzS2xgAAAA==
-X-Change-ID: 20260811-bitbake-setup-pip-fbfda14e9465
+Message-Id: <20260811-bitbake-setup-pip-v2-2-3e8ffed354f2@bootlin.com>
+References: <20260811-bitbake-setup-pip-v2-0-3e8ffed354f2@bootlin.com>
+In-Reply-To: <20260811-bitbake-setup-pip-v2-0-3e8ffed354f2@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=679;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1778;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=+/Zy+DjnwncQK4i6fgWoFBY+JnIZIqOmpwW+3R67XGU=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBqeyYl6SG3F2hVrZ6CORl4+eM4KDXkXAatG3wta
- o6kmIAgpLaJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCansmJQAKCRDRgEFAKaOo
- NhdpEACSfq6xzrHI4fRzoES/+EnI+tlPDwmWpBZ0YghIWGXHlnPhfNrPhdMI7yqPr9A+S8yVfq2
- BL1n9BFQy2hLPkBNXHoeZA3eM2NDgOkuoliUldK6x8mo7syZIt6Wu+pl5SmO7escI8aIq7IrKLF
- hE3rGePtjljlbtVeOHd6jeez0+Evj71254l7R2aVzf4RDTi2/0PjF9PTRyA4VvpIFTynh4vBR6u
- vvqSdrcnQVohDh+iDIvh4rNHGAycGaNf+aOQOLU5iuYjikr2wJdb7T3T/xmHiFHEK7fnpaclqB9
- cCmaFmq/rfbMaMQw72gEoEOQpQEU6hGspUbOFbv7rMVT37mZvNXE9sy/5gRImedUafj/nsT5Akm
- XNPFfZvEynOhvjWHIH5ZCZULinaNbfuLmpgo72zH3vn+GZrr7dVWcrsEMBV3svUy+ZBGkypXeYr
- FUITXXH+H27CegVLa0ayu2+Jmu3/ePYPf9onW76ibMOC3dC154AVYJaKBghpeMkovM9JsQjbQsN
- c4/wmKT/1R3754LndLEyBVWzxrcW+BGVau7KE8pJ6rnfTUHM9VjwfiS/ziu04mxYje5B+oI1nbx
- YKB9eL8++zEZFldezwdGVQTNu5cksGmPSHzriA/Qm49rtPeYApgp8r9vFkShdMyrWHYqEzoynAK
- 7sSKhhibY+c1DQA==
+ bh=ORoLN8J1rk4LY149/xD0URp/23jff5dE1ssILgC96/E=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBqeyYmga5jp4mtQrhiUAwq1OVVyz8aWcJTcOsJ4
+ Ekj875IQv6JAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCansmJgAKCRDRgEFAKaOo
+ NhM1EACXDng1t6B6ihcE/cQrEKe79jhBFA1MF3K6zeZy7/9uw02I1guK9/Hdei9KXZ1jNX5fvbe
+ anh2x/wCp/mAWjSLs4qHb+tSKxSrjPnZo/OtHORqw3RLfm8jni7QkkDKX1McUU0xQdKOwCAefdu
+ 17G603X/dsb25euEW2VF19VyOF55oIBvOyJKu6ucnfn9yPREHacev5CvW0dvCd3v0W+7vFiSY1m
+ ecwrh/zivA1DkZtwAJRtDFuHvdZ4mXntstS5D0ja2+LiH5GIHF918qw/VfReqxlkK9WWuk66cO7
+ bIMfPd8KZnZ0mrrU0f2qwY/1vY5ul26AA+siujNtbOENQTreI+ALbK6T/utVhYDiIrdYyJ9KZdf
+ 8Th9n0IkD/X+xp6A39lgy7r1G9eVQaPkR1SMwaGZew+Lsf7KlWtfaiw5BZ9ooc6cZzRjc9jmmqK
+ efnc0QQGVM0VuuthZzZ8dFPRjwc2NTieSSQ/2/N4zLfKpy5vsv0F4jaEww1KETaq/m9ojWLnhZS
+ lZHn3I4dl3XWcC0jWjl8KXUvqWwo65YrHsgpDJzCP4WfpyAgf5FiWI+r5NhaZ4ihR0t5PvGCgDV
+ CzzcIuXte8OdrDtNhN09tgJngXSH5OjhM0ozjy2Chaxxck/lxRRR8dZzy/7mw4TiKzmVXty2Jc1
+ 2pq72ygMM2o8wjw==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
@@ -66,24 +64,35 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Tue, 11 Aug 2026 13:40:08 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10265
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10267
 
+These two replacements were missing the trailing ";" which made them
+appear with their name instead of resolved value.
+
+Fixes: 34eafb89b1e4 ("brief-yoctoprojectqs/index.rst: refresh bitbake-setup outputs")
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
-Changes in v2:
-- Apply suggestions from Alex on patch 1 (thanks!)
-- s/leading/trailing/ (thanks Robert!)
-- Link to v1: https://patch.msgid.link/20260811-bitbake-setup-pip-v1-0-0c8b350017e4@bootlin.com
+ documentation/brief-yoctoprojectqs/index.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
----
-Antonin Godard (2):
-      brief-yoctoprojectqs/index.rst: use pip to install bitbake-setup
-      brief-yoctoprojectqs/index.rst: fix a replacement typo
+diff --git a/documentation/brief-yoctoprojectqs/index.rst b/documentation/brief-yoctoprojectqs/index.rst
+index a8837bc96..7186d732e 100644
+--- a/documentation/brief-yoctoprojectqs/index.rst
++++ b/documentation/brief-yoctoprojectqs/index.rst
+@@ -138,9 +138,9 @@ differ from the examples below.
+ 
+       Available Configuration Templates:
+       1. oe-nodistro-master   OpenEmbedded - 'nodistro' basic configuration
+-      2. oe-nodistro-&DISTRO_NAME_NO_CAP  OpenEmbedded - 'nodistro' basic configuration, release &DISTRO_RELEASE_SERIES; '&DISTRO_NAME_NO_CAP;' (supported until ...)
++      2. oe-nodistro-&DISTRO_NAME_NO_CAP;  OpenEmbedded - 'nodistro' basic configuration, release &DISTRO_RELEASE_SERIES; '&DISTRO_NAME_NO_CAP;' (supported until ...)
+       3. poky-master          Poky - The Yocto Project testing distribution configurations and hardware test platforms
+-      4. poky-&DISTRO_NAME_NO_CAP         Poky - The Yocto Project testing distribution configurations and hardware test platforms, release &DISTRO_RELEASE_SERIES; '&DISTRO_NAME_NO_CAP;' (supported until ...)
++      4. poky-&DISTRO_NAME_NO_CAP;         Poky - The Yocto Project testing distribution configurations and hardware test platforms, release &DISTRO_RELEASE_SERIES; '&DISTRO_NAME_NO_CAP;' (supported until ...)
+ 
+       Please select one of the above configurations by its number: 3
+ 
 
- documentation/brief-yoctoprojectqs/index.rst | 32 +++++++++++++++++++---------
- 1 file changed, 22 insertions(+), 10 deletions(-)
----
-base-commit: 41dae3c3da3ada1745fc60228ff6269c64ee2361
-change-id: 20260811-bitbake-setup-pip-fbfda14e9465
+-- 
+2.55.0
 
 
