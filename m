@@ -2,121 +2,234 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4BF4BC5B567
-	for <webhook@archiver.kernel.org>; Wed, 12 Aug 2026 06:33:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7DFF7C5B56A
+	for <webhook@archiver.kernel.org>; Wed, 12 Aug 2026 09:39:03 +0000 (UTC)
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.2203.1786516423364252427
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.4310.1786527533576952097
  for <docs@lists.yoctoproject.org>;
- Tue, 11 Aug 2026 23:33:44 -0700
+ Wed, 12 Aug 2026 02:38:54 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=tSEqWrN8;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=vrC7pYNY;
  spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 06B794E411C8
-	for <docs@lists.yoctoproject.org>; Wed, 12 Aug 2026 06:33:41 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 4C40A4E411D1;
+	Wed, 12 Aug 2026 09:38:51 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id C8D6B6045E
-	for <docs@lists.yoctoproject.org>; Wed, 12 Aug 2026 06:33:40 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2340111C4C816;
-	Wed, 12 Aug 2026 08:33:35 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 20D296045E;
+	Wed, 12 Aug 2026 09:38:51 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id AFE1B11C4CB1E;
+	Wed, 12 Aug 2026 11:38:45 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1786516416; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=4mQXTdTWOIZ0FmZ5ZcSuEcQFY2dyCXqVAlmGAZ6+9yA=;
-	b=tSEqWrN8iFoBVYTTnUGy3j790f72esw3ROuYJ2g+pWwB15lrzllP9+np+gdax/HM00RqNB
-	hVMS3UhV3MpsHu7WlNDYPM5NbUiqhmaGRtRn5XYzbWEUbKYw/cOTYHDzhR+U9Q1NHnWzz6
-	3RZZP8D6wI7fRRoNO5UTCXvuZ/w/3IggWXUujC4NttBCPmkfbZMY5pL+vx44bhFsbKuQPj
-	CQTDMBO489G5/vIxkzolASeyAsLsPYyHVgYsEXtSPCkp/joSjQ30GYIHoNLCb2YEC9K4tv
-	AcV6xoJimsmJB+CfJAk2wpucRzna3U53PwZxqFm2yS1ZGAdaPW7YQB2nmAvSeA==
-From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Wed, 12 Aug 2026 08:33:21 +0200
-Subject: [PATCH v3] ref-manual/variables.rst: document the QB_DEFAULT_BIOS
- variable
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260812-qb-default-bios-v3-1-5e0706b72d9c@bootlin.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3XNSw7CIBSF4a00jMXwqC115D6MA54WU4sCJZqme
- xfqRGMc/sm5351B0N7qAPbVDLxONlg35qCbCsiej2cNrcoNCCINYqiGdwGVNnwaIhTWBdhKTDR
- jBilBQL66eW3sYxWPp3eHSVy0jIUpi96G6PxzfZlw2f3XE4YYCsl2uKO4a6k6COfiYMetdFdQ/
- EQ+BIx/BZIFRHhDWC05leZbWJblBS404TQEAQAA
-X-Change-ID: 20260804-qb-default-bios-7c12e88f0db2
-To: docs@lists.yoctoproject.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Antonin Godard <antonin.godard@bootlin.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2117;
- i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=eNhZxMAR80BGUHzUGjiv2onIr5QF9XYmd7QLr6u9LMM=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBqfBO9t5qbRHLIgZo+/wOR7tKRp32v3z64pQWay
- 9rFkcPbW/SJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCanwTvQAKCRDRgEFAKaOo
- NnTLD/9r5tt/btNO6E3T7dQ4K4YUJm9r+ugFI6IesAe1btOdlutJ45gJtVOddhZRpxWbpWIxiqO
- qMr+CE/kglM8PkNeKD9dJmvbvQCtCbIOwhCpW/YtH6dwKpVEz8K70VQ3xZf377T9/Bu3dmJhixd
- xE1qKrbHCDDhR4eia2UOfS5JDoxh3V2nuk5oUSs7sufYmb3wZL7Rq3H0WMBiASUsWC89rjvyErS
- A1Xq2zzTHx/+9rVU3PutP7YgxXRiOUcwixSto6WcwvjItz7AbAJcvGITOaZ4WnLrowlu4BaUQ4j
- QohUgYlJni5HzfVhDNzof0djKL7F6VEIgSFiXgB15c6CeNDNkIrBPk+zgFYu5JEayH464TKknNT
- YArN2HhywTXzXM0dA4i5b+NTUyLjbZz+djRvY5zheAEls0KHlTjbKPenngJFAW4LsDHOHextEIP
- HKsHMK9uWxCAu8sHzKN5zNdr/UvyXLN6Mmjo07CgMqmzsOeM2JwiU6AqeSL6ccBxi0g847it/DL
- 98LVQDfNjsKeCVjKhc4KUg3c5dNLQq5HcALKKWjSp+bGwNqXQ7JbwceKPWpq7QvOs+WyWZV5gTV
- mfpNLLMhnocYrHoupsK8d9wUn4H+O6DtlFpi/7ZTN34n3Dvjj8F08+5HRfU/ugIdXJS/2kPX6DD
- NOiDiYzqh2VbNLQ==
-X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
- fpr=8648725188DD401BB9A0D3FFD180414029A3A836
+	t=1786527526; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=wJQJj94WwuP+tN0rE9P61L+ppTY22sRUoTpi+ONVwm8=;
+	b=vrC7pYNYBvI8ttHRpGPlSjnsWItuyNVYNCiPsjokGF8c/6AXfzJMOhXp7jDRgaNsxvaudn
+	aOiCmdg7DlnZED0utSFOfchL1py8ElhapIZxv8CHz3UEKD66tmm/xhJysHf2OLybKGaO+t
+	LJAujeov0vKWhYt5zow4BDs6jPggZwA2lXuycN3z9HYJ+GNilbhJDVxMrSqH/cAg9W2hWL
+	6JE+8r63LCGJMpcWUKIaB/fns+6dflQ3uQ9gaKMdRHaveKDRtcZRapbgIM46Qer7XESxu5
+	bOcFHEZcqtaNzvyW9fCjrHoXFE8CXPuRbuq2QE2ZqevQygNktlR1VpCh0Kf+fg==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 12 Aug 2026 11:38:44 +0200
+Message-Id: <DKMV5IQDIM9O.26GQHFMX2QORN@bootlin.com>
+To: "Quentin Schulz" <quentin.schulz@cherry.de>,
+ <docs@lists.yoctoproject.org>
+Subject: Re: [docs] [PATCH] ref-manual: add uboot-extlinux-config class
+ documentation
+Cc: "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>
+From: "Antonin Godard" <antonin.godard@bootlin.com>
+References: <20260804-uboot-extlinux-config-v1-1-f6cb1603c383@bootlin.com>
+ <660eefaa-9011-4057-870f-036bd8cf01e0@cherry.de>
+In-Reply-To: <660eefaa-9011-4057-870f-036bd8cf01e0@cherry.de>
 X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 12 Aug 2026 06:33:53 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10271
+ <docs@lists.yoctoproject.org>; Wed, 12 Aug 2026 09:39:03 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10272
 
-The QB_DEFAULT_BIOS allows setting the -bios parameter of QEMU, which
-can be used to emulate U-Boot, for example.
+Hi,
 
-Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
----
-Changes in v3:
-- Address comments from Quentin (thanks!)
-- Link to v2: https://patch.msgid.link/20260811-qb-default-bios-v2-1-02a6284ca3cf@bootlin.com
+On Thu Aug 6, 2026 at 11:54 AM CEST, Quentin Schulz wrote:
+[...]
+>> +The :ref:`ref-classes-uboot-extlinux-config` class provides support for
+>> +generating an ``extlinux.conf`` file part of the `Boot Loader Specifica=
+tion
+>> +<https://uapi-group.org/specifications/specs/boot_loader_specification/=
+>`__.
+>> +
+>
+> I think this is incorrect. We don't actually implement the Boot Loader=20
+> Specification in U-Boot and I'm not even sure it is related to extlinux=
+=20
+> at all (cannot check right now as I'm traveling).
+>
+> In U-Boot, please have a look at the "Boot Configuration Files" section=
+=20
+> in doc/develop/distro.rst.
+>
+> Specifically:
+>
+> """
+> The standard format for boot configuration files is that of=20
+> extlinux.conf, as
+> handled by U-Boot's "syslinux" (disk) or "pxe boot" (network). This=20
+> format is
+> not formally standardized and documented in a single location. However,=
+=20
+> other
+> implementations do document it and we attempt to be as compatible as=20
+> possible.
+>
+> * The UAPI Group Specifications `Boot Loader Specification`_
+>
+> * The Syslinux Project documents both `PXELINUX`_ and `SYSLINUX`_ files=
+=20
+> and is
+>    the originator of the format.
+>
+> That said, we have some differences to these documents, namely:
+> [...]
+> """
+>
+> I vaguely recall BSL v2 being discussed on the U-Boot mailing list in=20
+> the past few months.
 
-Changes in v2:
-- Address comments from Quentin (thanks!)
-- Link to v1: https://patch.msgid.link/20260804-qb-default-bios-v1-1-bc851931973d@bootlin.com
----
- documentation/ref-manual/variables.rst | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+Thanks for the pointer! I'll link to here as it is more relevant indeed.
 
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index e75f42afe..fa0dfdfb8 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -8084,6 +8084,25 @@ system and gives an overview of their function and contents.
-       replaces the ``@CLIENT@`` and ``@GATEWAY@`` place holders by the IP and
-       the gateway address of the QEMU guest.
- 
-+   :term:`QB_DEFAULT_BIOS`
-+      The :term:`QB_DEFAULT_BIOS` variable can be used to provide a default
-+      value for the path of a file located in :term:`DEPLOY_DIR_IMAGE` and
-+      used by ``runqemu`` to specify the `-bios <https://www.qemu.org/docs/master/system/invocation.html#hxtool-8>`__
-+      option of QEMU. For example, this variable can be set as follows to
-+      emulate U-Boot for the :oecore_path:`qemuarm64 <meta/conf/machine/qemuarm64.conf>`
-+      machine::
-+
-+         QB_DEFAULT_BIOS = "u-boot.bin"
-+
-+      The above example makes the assumption the U-Boot recipe was built
-+      and that the ``u-boot.bin`` is deployed in the :term:`DEPLOY_DIR_IMAGE`
-+      directory.
-+
-+      .. note::
-+
-+         When using ``runqemu``, the ``BIOS`` environment variable takes
-+         precedence over this variable.
-+
-    :term:`QB_DEFAULT_FSTYPE`
- 
-       The :term:`QB_DEFAULT_FSTYPE` variable controls the default filesystem
+[...]
+>> +   When using the :ref:`bootloader <ref-manual/kickstart:Command: bootl=
+oader>`
+>> +   command with WIC, you should explicitly configure the ``.wks.in`` fi=
+le to use
+>> +   the ``extlinux.conf`` file generated by this class with
+>> +   ``--configfile=3D"${DEPLOY_DIR_IMAGE}/extlinux.conf"``. Otherwise it=
+ generates
+>> +   a default ``extlinux.conf`` file without taking this class into acco=
+unt.
+>> +
+>
+> Uh? We use extlinux.conf in meta-rockchip, as well as this WIC command=20
+> and we don't have this set so not sure this is true?
 
----
-base-commit: 41dae3c3da3ada1745fc60228ff6269c64ee2361
-change-id: 20260804-qb-default-bios-7c12e88f0db2
+I used the beaglebone-yocto machine and wks file from here:
+https://git.yoctoproject.org/meta-yocto/tree/meta-yocto-bsp/files/wic/beagl=
+ebone-yocto.wks
 
+And here's what I had to do to make it work:
+diff --git a/meta-yocto-bsp/conf/machine/beaglebone-yocto.conf b/meta-yocto=
+-bsp/conf/machine/beaglebone-yocto.conf
+index b3c15d5aa6..bcc5838b99 100644
+--- a/meta-yocto-bsp/conf/machine/beaglebone-yocto.conf
++++ b/meta-yocto-bsp/conf/machine/beaglebone-yocto.conf
+@@ -12,7 +12,7 @@ include conf/machine/include/arm/armv7a/tune-cortexa8.inc
+=20
+ IMAGE_FSTYPES +=3D "tar.zst wic.zst wic.bmap"
+ EXTRA_IMAGECMD:jffs2 =3D "-lnp "
+-WKS_FILE ?=3D "beaglebone-yocto.wks"
++WKS_FILE ?=3D "beaglebone-yocto.wks.in"
+ MACHINE_ESSENTIAL_EXTRA_RDEPENDS +=3D "kernel-image kernel-devicetree"
+ do_image_wic[depends] +=3D "mtools-native:do_populate_sysroot dosfstools-n=
+ative:do_populate_sysroot virtual/bootloader:do_deploy"
+=20
+diff --git a/meta-yocto-bsp/files/wic/beaglebone-yocto.wks b/meta-yocto-bsp=
+/files/wic/beaglebone-yocto.wks.in
+similarity index 82%
+rename from meta-yocto-bsp/files/wic/beaglebone-yocto.wks
+rename to meta-yocto-bsp/files/wic/beaglebone-yocto.wks.in
+index 335e2b9bd5..5dc55cfb66 100644
+--- a/meta-yocto-bsp/files/wic/beaglebone-yocto.wks
++++ b/meta-yocto-bsp/files/wic/beaglebone-yocto.wks.in
+@@ -4,4 +4,4 @@
+=20
+ part /boot --source bootimg_partition --ondisk mmcblk0 --fstype=3Dvfat --l=
+abel boot --active --align 4 --fixed-size 32 --sourceparams=3D"loader=3Du-b=
+oot" --use-uuid
+ part / --source rootfs --ondisk mmcblk0 --fstype=3Dext4 --label root --ali=
+gn 4 --use-uuid
+-bootloader --append=3D"console=3DttyS0,115200"
++bootloader --append=3D"console=3DttyS0,115200" --configfile=3D"${DEPLOY_DI=
+R_IMAGE}/extlinux.conf"
+
+And even with my UBOOT_EXTLINUX set to "1" (I could verify that it was prop=
+erly
+generated), it wasn't deployed in my boot partition. Instead I always got t=
+he
+one generated by Wic:
+https://git.yoctoproject.org/wic/tree/src/wic/plugins/source/bootimg_partit=
+ion.py#n114
+
+I had to hit this codepath to get mine used:
+https://git.yoctoproject.org/wic/tree/src/wic/plugins/source/bootimg_partit=
+ion.py#n80
+
+Which is hit when cr.ks.bootloader.configfile is defined.
+
+[...]
+>> +      assignments. For example, if the :term:`UBOOT_EXTLINUX_LABELS` va=
+riable
+>> +      contains::
+>> +
+>> +         UBOOT_EXTLINUX_LABELS =3D "compressed uncompressed"
+>> +
+>> +      Then the :term:`UBOOT_EXTLINUX_KERNEL_IMAGE` variable can be spec=
+ified
+>> +      multiple times as follows::
+>> +
+>> +         UBOOT_EXTLINUX_KERNEL_IMAGE:compressed =3D "../zImage"
+>> +         UBOOT_EXTLINUX_KERNEL_IMAGE:uncompressed =3D "../Image"
+>> +
+>> +      This will make the value of the ``KERNEL`` property be different =
+in each
+>> +      of the associated labels.
+>> +
+>> +      Note that default values are used when no overrides-style assignm=
+ents are
+>> +      found for the current label. For example, taking the above exampl=
+e again,
+>> +      the following assignment would apply to both ``compressed`` and
+>> +      ``uncompressed`` labels::
+>
+> **if and only if** UBOOT_EXTLINUX_FDT:compressed and/or=20
+> UBOOT_EXTLINUX_FDT:uncompressed aren't set.
+>
+> I'm assuming all operators can be used when this override-style is used?=
+=20
+> E.g. UBOOT_EXTLINUX_FDT:compressed:append =3D " something"? I do have an=
+=20
+> :append and :remove in meta-cherry-es, but not with an override-style=20
+> syntax.
+
+Yes, this works.
+
+[...]
+>> +      ``root=3D`` parameter of the `Linux kernel command-line
+>> +      <https://docs.kernel.org/admin-guide/kernel-parameters.html>`__. =
+For
+>> +      example, the following would set this value to instruct the kerne=
+l to use
+>> +      the second partition of MMC block device 0 as its root partition:=
+:
+>> +
+>> +         UBOOT_EXTLINUX_ROOT =3D "root=3D/dev/mmcblk0p2"
+>> +
+>
+> We're also missing:
+> - UBOOT_EXTLINUX_CONFIG,
+
+I'd rather document UBOOT_EXTLINUX_INSTALL_DIR and UBOOT_EXTLINUX_CONF_NAME
+which really control how the file is named and where it's deployed. Will do=
+ in
+v2.
+
+> - UBOOT_EXTLINUX_TIMEOUT,
+> - UBOOT_EXTLINUX_DEFAULT_LABEL,
+> - UBOOT_EXTLINUX_INITRD,
+>
+> Cheers,
+> Quentin
+
+Thanks!
+Antonin
 
