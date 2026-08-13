@@ -1,126 +1,121 @@
-Return-Path: <peter.kjellerstedt@axis.com>
+Return-Path: <anis.bougrine10@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 56102C5B572
-	for <webhook@archiver.kernel.org>; Thu, 13 Aug 2026 14:31:13 +0000 (UTC)
-Received: from AM0PR83CU005.outbound.protection.outlook.com (AM0PR83CU005.outbound.protection.outlook.com [52.101.69.4])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.20481.1786631464834496978
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7B7AFC5CFDB
+	for <webhook@archiver.kernel.org>; Thu, 13 Aug 2026 18:56:16 +0000 (UTC)
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.26287.1786647373148960665
  for <docs@lists.yoctoproject.org>;
- Thu, 13 Aug 2026 07:31:05 -0700
+ Thu, 13 Aug 2026 11:56:13 -0700
 Authentication-Results: mx.groups.io;
- dkim=fail reason="dkim: body hash did not verify" header.i=@axis.com header.s=selector1 header.b=biS2tONt;
- spf=pass (domain: axis.com, ip: 52.101.69.4, mailfrom: peter.kjellerstedt@axis.com)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rZo6UDwvIHRQdbpn7s1lAr4mFdFLxvgviH+sYl7XmPVtop1STr/YMG9b8j2w5n6JwB5rRYwO0uJPKLPAP760ISYeROw26+VFrXsXp56MIPBViYMcz3CjdzbitsXOnmhnPyDhZlvLeRgg+0wyAerWD70Bnt7P8FlKbj4FBzxqSgxmQ7GqpTfj3QMsK3GraYxfYeIBW5ctU0vb8zmnI3aLlMmP5gqQEiL9AlawERafdlYjWMx7mwSdz9+OYGIipAWkQPe3M1zJs+G5aO7FHTGQaHauD0TQdgJkuL6JKaFTzLEUg/jxpFQpvu9qxx8H0mlzasnM0QrDx68Y0nqSCJ1uRg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AwupJ5eX5jXXeEwoVuvYhe6BbOTLVnUVKzkJPj5jTRU=;
- b=K6P7lA/szzIwy/FOKSCkWAzLIV4hfrm46Hp/V5091imh2iqYwhLx32l0Kp62zk06tyiPum+1yUfm6D6Se0mOLVNK9wyEuoXgmOTGkF0Fk0YkD+Rzvz2E4JvvoKbj8DxpaFM2HyAbYfeR1cZuygZOVDhF/7EIUXDMov9wt4xAIjTYHGKiP7x8ZK51Usm02hmElyq95y/eApMn6+gN/KU3WLEWjh+F6FZ3TdauwdqI9x/jtjgK8epDJ7HEQVKtmjNElZ/HVchmXJ5r0NvtpLbG2g3R25FJDYYH7Xwb9yiY5sgpg8/eL1wAzFxq3Twb5ehBU5opU2cwUmQELdP48OMi9A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 195.60.68.100) smtp.rcpttodomain=lists.yoctoproject.org
- smtp.mailfrom=axis.com; dmarc=pass (p=none sp=none pct=100) action=none
- header.from=axis.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axis.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AwupJ5eX5jXXeEwoVuvYhe6BbOTLVnUVKzkJPj5jTRU=;
- b=biS2tONtGAXDhGnbAPBNs8Z+W3ApybVfHNn85XWICEPXn+vuqnf3/gbaCUVPV8zYzzsqBWSZ5AbOiwH/HzLk+BLFNxaQ23VsHjpUIkP6cHEwXL9QwVROevTwWNSyDuZJWoC5DYn2/4YQGKXkmQToRnm+/YoYDLIgl0eAa9oW/LU=
-Received: from DU7P189CA0023.EURP189.PROD.OUTLOOK.COM (2603:10a6:10:552::16)
- by AMVPR02MB12504.eurprd02.prod.outlook.com (2603:10a6:20b:774::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.13; Thu, 13 Aug
- 2026 14:31:00 +0000
-Received: from DB5PEPF00014B97.eurprd02.prod.outlook.com
- (2603:10a6:10:552:cafe::27) by DU7P189CA0023.outlook.office365.com
- (2603:10a6:10:552::16) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.315.14 via Frontend Transport; Thu,
- 13 Aug 2026 14:31:00 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 195.60.68.100)
- smtp.mailfrom=axis.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=axis.com;
-Received-SPF: Pass (protection.outlook.com: domain of axis.com designates
- 195.60.68.100 as permitted sender) receiver=protection.outlook.com;
- client-ip=195.60.68.100; helo=mail.axis.com; pr=C
-Received: from mail.axis.com (195.60.68.100) by
- DB5PEPF00014B97.mail.protection.outlook.com (10.167.8.235) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.339.3 via Frontend Transport; Thu, 13 Aug 2026 14:30:59 +0000
-Received: from se-mail10w.axis.com (10.20.40.10) by se-mail11w.axis.com
- (10.20.40.11) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.39; Thu, 13 Aug
- 2026 16:30:59 +0200
-Received: from se-intmail02x.se.axis.com (10.4.0.28) by se-mail10w.axis.com
- (10.20.40.10) with Microsoft SMTP Server id 15.2.1748.39 via Frontend
- Transport; Thu, 13 Aug 2026 16:30:59 +0200
-Received: from pc56063-2339.se.axis.com (pc56063-2339.se.axis.com [10.92.3.2])
-	by se-intmail02x.se.axis.com (Postfix) with ESMTP id 7C2822023
-	for <docs@lists.yoctoproject.org>; Thu, 13 Aug 2026 16:30:59 +0200 (CEST)
-Received: by pc56063-2339.se.axis.com (Postfix, from userid 14323)
-	id 7627912909A; Thu, 13 Aug 2026 16:30:59 +0200 (CEST)
-From: Peter Kjellerstedt <pkj@axis.com>
-To: <docs@lists.yoctoproject.org>
-Subject: [PATCH] ref-manual/variables.rst: Correct the default value of FILESPATH
-Date: Thu, 13 Aug 2026 16:30:54 +0200
-Message-ID: <20260813143054.666806-1-pkj@axis.com>
-X-Mailer: git-send-email 2.43.0
+ dkim=pass header.i=@gmail.com header.s=20251104 header.b=caMjT7Me;
+ spf=pass (domain: gmail.com, ip: 209.85.128.45, mailfrom: anis.bougrine10@gmail.com)
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-495757ccbc1so2228935e9.2
+        for <docs@lists.yoctoproject.org>; Thu, 13 Aug 2026 11:56:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786647371; x=1787252171; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=FiL37nofRHMe0Qa6Za28zoH5tyovJdl1L2dTcWpFvyo=;
+        b=caMjT7Me1VPCr3FpofKNfWkoABNqNe2WjdDV5L/nFZzjGDSaK6CO22piqsOw30XObD
+         +KeYysL6kRRWWceavYBs072XDdwLoPLgG+0RAUPv2EeqCXs0hsju2ZcrwKeOHTeXQ5RO
+         TQLFNdFfxURJeZKqw9bfROb18DPWnuvMzWUJ3LvGQ+vQ0LBbi1w0uVIx2b5vGOSOalza
+         IICS0aaN2b2kLbTWaPUB4OSG5pYCy63fdAA8bjnX3rJAXR4/LQD77u3tHutFK85X9h0D
+         Q6YNXSOCowGkCAG2RT4ppJIo8mEJAumH80DDhef95hcMrg8FPIi0Rpt5iZf+PYv1j+Wx
+         EoVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786647371; x=1787252171;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=FiL37nofRHMe0Qa6Za28zoH5tyovJdl1L2dTcWpFvyo=;
+        b=GsK0XXJGyXA0evPQRhmAnZ0oqGT3WRuHXwVLlW+PDeIRQ10qi7PwDLzy7/t/uJEVnf
+         NLtWT1THUIS4m7cGTvETJjjxdfZ7gK1THXQvvuCoiJswZOzAXfuxGhYOgJuJwER9zMyA
+         EkFwY0spjYScySXj6omchscQqvBK7IatjFf2S4gq2JF1sY+TlU/V0V1e7gUCRZioxYcp
+         DolmeFjkTxLAz29IpbnyG6TXXV02xgfrUBo9L2eQMM0DwcwZPxAdmHRhtRHBd8jNlWKO
+         /VvqsVxelrp/gle062KVeG3Ja9MdnpM9mWANV9Gd3CeTua5VIYw2AS3HZVWt+ondyVll
+         5d+A==
+X-Gm-Message-State: AOJu0Yw4yKQ3TT6tMqY9rSYxDZkXYz4JOG5SLYz5vd8fxhRdcqmsGF6t
+	rMfyzJagNg37+7LPDHAqKJAO2bWTueMoO6KJOKMgHdNRhbMOEChOYan1niOijz6Mpc8=
+X-Gm-Gg: AR+sD13IXeinWJG03i69ZesHmJE1UL0CqpOIMK4zlvGmLn82p+4/Y6+NOCHIaG3Xog9
+	vsnQ06+yrXJ9szwDujfYevhkcY1twZmKBPJfuqd8JRR52+Q8Sgx1d0SqVKUlF6CyPb1yOEYJltQ
+	xmsJ8sUO+UotDNVnHfIkhQuNEMjoN858WnZdTntBlpZsP5V4TZ6T+M3GrrL/gZHbcvRMI7+BFLw
+	XxOmEwqZzB4zkZffUYP+hzzePA/KJZ8LKvjIM38USL+7e/hEqyE2J1G7lT1IY/77HP7VGVXc72x
+	KJZUm/ycXxUT5fQKl0/ZOFqFphRpjgFy+/J7ShlI2zxbAG8pswUAw490RaSUHi3QlZDnIOojRX5
+	qig7WfUjrbwDEVjLiKlQgKp6mw2fKv4QsPkNm4E7yQyyVdvhG12KUyF8lQmph6jq89rlobiWbjV
+	4foUvSURQIxFFoL6Cl6ydSbNlA/kCkuOIIp+TTtFeGTft6yL6EE2joxW9nUM0qSP/OWb2nrs95n
+	U1rt1a0GzSkqlds8o7jKEdHrL20QW/GtBcFiRVXl4YXTkXHxNr8RqPP3J3Z59r4iqaNT1BkBY9k
+	hRjA0NQfa6Y=
+X-Received: by 2002:a05:600c:4f4a:b0:496:bbce:f3 with SMTP id 5b1f17b1804b1-49987938c3emr7145745e9.6.1786647371201;
+        Thu, 13 Aug 2026 11:56:11 -0700 (PDT)
+Received: from device-137.home ([2a01:cb15:80cf:2100:75b8:c973:c30e:1f9])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49981b62894sm80491475e9.13.2026.08.13.11.56.10
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Thu, 13 Aug 2026 11:56:10 -0700 (PDT)
+From: Anis Bougrine <anis.bougrine10@gmail.com>
+To: docs@lists.yoctoproject.org
+Cc: anis <anis.bougrine10@gmail.com>,
+	Antonin Godard <antonin.godard@bootlin.com>
+Subject: [docs][PATCH v2] ref-manual/tasks.rst: make do_clean description more explicit
+Date: Thu, 13 Aug 2026 20:55:52 +0200
+Message-ID: <20260813185552.47183-1-anis.bougrine10@gmail.com>
+X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB5PEPF00014B97:EE_|AMVPR02MB12504:EE_
-X-MS-Office365-Filtering-Correlation-Id: bdbe6cb2-9b77-424f-706a-08def9477edb
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: 
-	BCL:0;ARA:13230040|376014|36860700016|1800799024|23010399003|82310400026|10067099003|56012099006|11063799006|18002099003;
-X-Microsoft-Antispam-Message-Info: 
-	/7VLJjDSWHrUnJRzYsjEvW6+8sKigtWOW3jkROrFnpA2BoVNghAtjB4v+8/rpiIw07qhFILiLpYKhm0si4hRaFv+Gtup3jfm7nh6+FdbNHOrM+HJnu4WPow7KdVTYPIu/D7JtJhBVAKS3qtMSTSqOZVG4Pzfhd/6YCHC0SQ4YzGsZr6J/rciC1RlaoPz6W/dcje1fMMShleLx5aGu/NwDu2QXgLXAFA2WRTejx6hdqk2xzmdYpk7Ry6BhFC0BMLGUUk9NHEwT8hvjRRyNvwxCjVHeL6bD4jLfRjYxJrAOQLxDXrgioZAkoQQQjsmyD7y68Vt0A/tiV1cyp161d5ejwqCxEVuPc5wnFhBRI+sAA+cMz1BCmc+pYkaC7k90wyatB5trbEjNgcun7+eXumObBdo0ZfqfGzzWk6r1kjtUGThlHdD+oiX6bONZj2eicvgK1bOcYhTGfSbQwHoqGY2LOgw7klSujluy8ombabvPXjwZ50nmKvcrLhfvk9Reuv+CkZg6o/xPaWNkHvtUFmIsEmBHA+2Mn2p1S0yRImTpXuQHTZoQlDROsuHQMax5LN2U+/f20hwkRU8aGDzgx7Ua6AlXeX/Z9yQd2K/qYkbOQmfhhZJS4wq6PJFPrMAszx5izq1uCBcL+fdWY60o2Uikufmr8fUrXFwHEiEWKKq2w2Ko0nNK3jgASS7ipHmqqyu
-X-Forefront-Antispam-Report: 
-	CIP:195.60.68.100;CTRY:SE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.axis.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(36860700016)(1800799024)(23010399003)(82310400026)(10067099003)(56012099006)(11063799006)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 
-	9T/DbywfMHaALfy7/+ucxlbVHc8ET7xnWUpQeS3Q3Q80ueYZyChV+2xOrlxTJ9C3/koRNdrX0KOBeDinDpGjgKBcXWJmjQsvJPvJkoP1KRKEpE+DDrkqcfczPLbtUo6EViP6hn7AQRJKlkwmVphkTEKYr4NB/FhCH7CHViwlviTIMpL6VnrCBmdvyUjs5ZebulEI2Y5zAXB4mg4iBhs0xsmZfBNwJ9Sl9QIX0YTIh/bXymlKcMq7uDXdTOZNEgOK6Pmje4j/YUJ4UN/C/luYRculSsSux7P5LizXkMKwK8FM7TOvTLXeSVOpsjDESvOH4iGAda+1zgkTSToVIfEJ54LbkHkfF17TiRQys0DPZA91KFRrILzV7VlGHKfW5aW8FiVxhFal2iBP/XkRQYyBqvvE4MTgIoqMkLCJ5ecKcNcynLQazMZeEtE3uStZTCtL
-X-OriginatorOrg: axis.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Aug 2026 14:30:59.9005
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: bdbe6cb2-9b77-424f-706a-08def9477edb
-X-MS-Exchange-CrossTenant-Id: 78703d3c-b907-432f-b066-88f7af9ca3af
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=78703d3c-b907-432f-b066-88f7af9ca3af;Ip=[195.60.68.100];Helo=[mail.axis.com]
-X-MS-Exchange-CrossTenant-AuthSource: 
-	DB5PEPF00014B97.eurprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AMVPR02MB12504
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 13 Aug 2026 14:31:13 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10288
+ <docs@lists.yoctoproject.org>; Thu, 13 Aug 2026 18:56:16 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10289
 
-It was recently changed to use oe.utils.base_set_filespath() instead of
-base_set_filespath().
+From: anis <anis.bougrine10@gmail.com>
 
-Signed-off-by: Peter Kjellerstedt <peter.kjellerstedt@axis.com>
+The current do_clean task description is generic and does not
+specify which files will be removed.
+
+This commit adds details about the files that are removed by
+explicitly listing the affected subdirectories.
+
+Signed-off-by: anis <anis.bougrine10@gmail.com>
+Cc: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/ref-manual/variables.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+changes in v2:
+- Submit the corresponding OE-Core changes, which have been merged as
+  9b363e6d586863dc5e49795df9f1346836c466c5.
+- Reformulate the sentence based on the v1 suggestions.
+---
+ documentation/ref-manual/tasks.rst | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-man=
-ual/variables.rst
-index fa0dfdfb8..a6d36be52 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -3285,7 +3285,7 @@ system and gives an overview of their function and co=
-ntents.
-       :ref:`ref-classes-base` class found in ``meta/classes-global`` in
-       :term:`OpenEmbedded-Core (OE-Core)`::
-=20
--         FILESPATH =3D "${@base_set_filespath(["${FILE_DIRNAME}/${BP}", \
-+         FILESPATH =3D "${@oe.utils.base_set_filespath(["${FILE_DIRNAME}/$=
-{BP}", \
-              "${FILE_DIRNAME}/${BPN}", "${FILE_DIRNAME}/files"], d)}"
-=20
-       The
+diff --git a/documentation/ref-manual/tasks.rst b/documentation/ref-manual/tasks.rst
+index 3517d0b91..fa6ba255d 100644
+--- a/documentation/ref-manual/tasks.rst
++++ b/documentation/ref-manual/tasks.rst
+@@ -17,7 +17,7 @@ you can run:
+    $ bitbake -c listtasks recipename
+    do_build                              Default task for a recipe - depends on all other normal tasks required to 'build' a recipe
+    do_checkuri                           Validates the SRC_URI value
+-   do_clean                              Removes all output files for a target
++   do_clean                              Removes all output files for a target (``${WORKDIR}``, sstate manifests and stamps)
+    do_cleanall                           Removes all output files, shared state cache, and downloaded source files for a target
+    do_cleansstate                        Removes all output files and shared state cache for a target
+    do_compile                            Compiles the source in the compilation directory
+@@ -501,9 +501,10 @@ You can run this task using BitBake as follows::
+ 
+    $ bitbake -c clean recipe
+ 
+-Running this task does not remove the
+-:ref:`sstate <overview-manual/concepts:shared state cache>` cache files.
+-Consequently, if no changes have been made and the recipe is rebuilt
++Running this task removes the working directory of the recipe (represented by its :term:`WORKDIR` value),
++the sstate manifests and the :ref:`stamps <overview-manual/concepts:Stamp Files and the Rerunning of Tasks>`.
++However, it does not remove the :ref:`sstate <overview-manual/concepts:shared state cache>`
++cache files. Consequently, if no changes have been made and the recipe is rebuilt
+ after cleaning, output files are simply restored from the sstate cache.
+ If you want to remove the sstate cache files for the recipe, you need to
+ use the :ref:`ref-tasks-cleansstate` task instead
+-- 
+2.50.1 (Apple Git-155)
+
 
