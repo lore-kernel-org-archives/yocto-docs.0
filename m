@@ -2,354 +2,170 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4C8E8C5CFEB
-	for <webhook@archiver.kernel.org>; Thu, 13 Aug 2026 07:36:51 +0000 (UTC)
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.13891.1786606606174059456
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 42DF9C5CFDB
+	for <webhook@archiver.kernel.org>; Thu, 13 Aug 2026 07:51:11 +0000 (UTC)
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.14017.1786607465936381690
  for <docs@lists.yoctoproject.org>;
- Thu, 13 Aug 2026 00:36:47 -0700
+ Thu, 13 Aug 2026 00:51:07 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=l6qWski0;
- spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=ois7R0Ue;
+ spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 1B0904E411DE
-	for <docs@lists.yoctoproject.org>; Thu, 13 Aug 2026 07:36:44 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id B7C3C1A15EF
+	for <docs@lists.yoctoproject.org>; Thu, 13 Aug 2026 07:51:03 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id CBAD4602B8
-	for <docs@lists.yoctoproject.org>; Thu, 13 Aug 2026 07:36:43 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 132B011C4DA41;
-	Thu, 13 Aug 2026 09:36:41 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 772B7602B8;
+	Thu, 13 Aug 2026 07:51:03 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1CE5411C4DA68;
+	Thu, 13 Aug 2026 09:51:01 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1786606603; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=9XcDW3ZfGA3y/bhmlRaXe5KvaDrOWZOMAFf+jtkPwGw=;
-	b=l6qWski0od+iakiorQnjBQKfFu+/kUoGIr0T/DsOUeYoGi7mJJMWMqDGr1IAl19NW1EmOM
-	TBStgvGadvDPFJ9I6qsKtt/JApwL6z858f/zpdqGl6Znw4PLPmYoZcnnjUXepFt6Ke38sb
-	lF5LAqV9QipDgpc1UNxXEWNAKF5nav1CroetWOb30EwDOuQZDsXAr0o30nuGOnPkXfhe36
-	cMZLsLrT/x2B700JIS3BHZyQ0x+k4N1kMQTwsH/4LE+/PMfm1HCjOjRD8mPHFsQkSe520P
-	Z9HlwdJSiYY6YrCLf/uL7hln5iA77SY2b/hGmRokWZFqP1TkyTcKr99Qz1/nYw==
+	t=1786607462; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=7A32b7YISxjh5B5cJuYy+/YUx15hA8YOGwu/oQ9D7ak=;
+	b=ois7R0UeREIHZLmGQu/8Fb4n7FPdH0b3vfmyAZR9DzymYHcQKepMK2S9FnnagIUvXDiWMw
+	WVd3gJukt5dADoRCBVkXU++LuRo15L++WQUld/6NzAux7rucw7oDp9nZn9S2G89hwnqJuO
+	q1zaHuetJk7o7Gq7KGNah22MwMkppIXTjI6qdLeDVYaGH2IBz7D/LSAFKQo9tuMeRM6TAY
+	Uht8s3ODJf0TCPjn3oQQZjnzFG38HTluK3VPa72DgH93eF1NC/guyNFbnRx+/9ZzMeCfk2
+	hk6nN46M/x4r3XJ4QO/R84bH2uMtL3OLBi3aRh3agXA2123QJ7eHv/c1irrZOg==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Thu, 13 Aug 2026 09:36:26 +0200
-Subject: [PATCH v2] ref-manual: add uboot-extlinux-config class
- documentation
+Date: Thu, 13 Aug 2026 09:50:43 +0200
+Subject: [PATCH] doc: bitbake-user-manual-environment-setup: use pip to
+ install bitbake-setup
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260813-uboot-extlinux-config-v2-1-e6c2e4b78afc@bootlin.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3WNyw7CIBBFf6WZtRigD1tX/ofpQkZoxygYoE1N0
- 38X7NrlSc69Z4WgPekA52IFr2cK5GwCeSgAx5sdNKN7YpBcNrySHZuUc5HpJT7JTgtDZw0NzJi
- 6PSHnnawVpO3ba0PL7/fa7xwm9dAY81k2RgrR+c8vPIvs7Y2WV38as2CCmQaVaHiJZVtespaUI
- 7oX9Nu2fQHvitxdzgAAAA==
-X-Change-ID: 20260429-uboot-extlinux-config-ff587c00925b
-To: docs@lists.yoctoproject.org
+Message-Id: <20260813-bitbake-setup-pip-v1-1-f45ae8cd5fb0@bootlin.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMQQ6CMBBG4auQWTsJbY2gVzEsKPzAaIJNpxASw
+ t2tuPwW7+2kiAKlR7FTxCoqnznDXArqpnYewdJnky3trayNYy/Jt2+wIi2BgwR2DuZa3ytbDY5
+ yFyIG2c7ns/lbF/9Cl34jOo4vDE6oWnUAAAA=
+X-Change-ID: 20260813-bitbake-setup-pip-33e1489727f3
+To: bitbake-devel@lists.openembedded.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Antonin Godard <antonin.godard@bootlin.com>
+ docs@lists.yoctoproject.org, Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=12976;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3719;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=T0dn2M5Vu7/bn3XAE7zp65ov8x84HYsmElzJ7Sfq2R0=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBqfXQKlN+pxSIwXTXdO5ghDABNkjeeB9hOHdvMs
- NWRxDheOZSJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCan10CgAKCRDRgEFAKaOo
- NpEcD/4u8oeObtSB8hPrdMBp8N+Ypeu2Mnn6cGm6XAjtjaU4eXq/7MAIisgRZdGed2AfeyfrEXH
- r61aX1b1XhwhYd+04/ODHsoR2+ztEVBiShe8bYtsFxRkRVFAZe4eE/M9JI6oJ3fjsD9ROZ0Q7dW
- wTwc0s/SJbnDhSZmZ/+PVmJQ1hfmGvBF9xclORVEb5liIqQXwPSvBLiC3mTcKgaNWPs0874rSJo
- 74VoDjRk1aX7UIHeCjjpNM/g7lO+poJuxZrD7g9RztsFJ4fFHnHzzxdGNLrh28uufOEmpXcGSlB
- IwrK9fOt4RtQk4XHBwVrV2/5GJPVhBGS6XGsM1z2B0XZpDIQrtW0jUF223me7TLPQT0es9Khv89
- CwhtCh7DmmtmSg30L4OW4P0JmHjYDCz/vet/+DA1TThp2hB/ptv/B801VDEpES5RGpTiiyb9ir4
- EshJFL6E8Z+T36mwPM9/aK2fUhPcgR0eIfuNpouNisfUNb0GQy+OJtOo1LQhewEY5xMAIF+IoWj
- qJuS87Bi83DeL7maFa6KmdUk6rzLu4IdGucEX8yDkhRjFvcQgnO4Gd2Qwk3JcSmQSKL0gwhrqYs
- 4hdrxLKb7aAzTnQdMsMp5Pvo3YFdDpkvXUJBlXmi5NsCZqegTsVVFYFnxEY53hGzAtRrvWPdOea
- mfx11J/MMXfEVAQ==
+ bh=EefXFv+ONkSyA8Er9+D/4yQSwOIwzG2APzZyegyuAzs=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBqfXdlhSqrtPPcTOxJKblqXPPG7zA1u+vsmLV5r
+ LWHNcugLUWJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCan13ZQAKCRDRgEFAKaOo
+ Nk0eD/0RMyfmnlg8aogNYk89p+ThC44xj5FNLvks2cLHbXDoRjAjIsjJM5q5Ywti8DsxpG4HGQV
+ Chha29fGinDR3KYyah2WDggcaBssubt89wHShk/bImFVDiEycn6vEhPFjVQHYJeeWILyGQs/BVX
+ dgBRW8e+5yIcfYsanK3Efw7A/3NZUD6Ox9ojMG/Vl2WnaCZeN7ujWrX71GU04kHgPCs4AuntzYX
+ RYvox87/5ZDZ1YQYQ9+f3a1scpJ4uTscagpcdnHArvF+uAU9yeH5golj2hx2w88RLTdkNGHV4XN
+ 5MkVZp5eN8rhowk0FBobV77LG20Op/eEKWeFrjotQQYQ/sojPnhqFxssugAK0Qn0ciC9aoKaeO0
+ Y9jz22qj1tcHt5zlQ5HOBaqt4cM7kTLx5NdOY5CgSj4104AkOVX0zYtvlY7QdEl1KqckGJ1hHh/
+ gIgyp1UzsCuaBKb9s7p143Tl4Qcd1pwK7LALkM2BclBhqmdSDFReuRzzROk6LmVGAH3bLQfrxzp
+ C1uMPY87I3zRw8a+oL2iUaFstjoo8oEgVB+eEw+x9Y9sSK+4TzRQLly+f2TBqGSZ2m5/lP9YHIq
+ Lp+WB58PSv5z7gFRQMEtTsFEiz1kX5PlCCu8EOU78Qvoe+S//6eAFeDLNaknlxFgBDlc/eqy4E0
+ sT8MGZBT/zl7EeQ==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 13 Aug 2026 07:36:51 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10273
+ <docs@lists.yoctoproject.org>; Thu, 13 Aug 2026 07:51:11 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10274
 
-Add documentation for the uboot-extlinux-config class and the variables
-it defines, including how to enable it and how to customize the output
-extlinux.conf file.
+bitbake-setup is now available on Pypi[1], so let's use it instead of
+a clone of bitbake to use the CLI tool. Refresh commands in consequence.
+Keep git clone instructions in a note as an alternative way of setting
+things up, and mention how to update it if needed.
 
-[YOCTO #15629]
+[1]: https://pypi.org/project/bitbake-setup/
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
-Changes in v2:
-- Address comments by Quentin (thanks!)
-- Add doc for more extlinux related variables
-- Link to v1: https://patch.msgid.link/20260804-uboot-extlinux-config-v1-1-f6cb1603c383@bootlin.com
----
- documentation/ref-manual/classes.rst   |  56 ++++++++++
- documentation/ref-manual/variables.rst | 184 +++++++++++++++++++++++++++++++++
- 2 files changed, 240 insertions(+)
+ .../bitbake-user-manual-environment-setup.rst      | 37 ++++++++++++++++------
+ 1 file changed, 28 insertions(+), 9 deletions(-)
 
-diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
-index 98dff1bac..b015dc169 100644
---- a/documentation/ref-manual/classes.rst
-+++ b/documentation/ref-manual/classes.rst
-@@ -3470,6 +3470,62 @@ possible.
- See the :term:`UBOOT_CONFIG` and :term:`UBOOT_MACHINE` variables for additional
- information.
+diff --git a/doc/bitbake-user-manual/bitbake-user-manual-environment-setup.rst b/doc/bitbake-user-manual/bitbake-user-manual-environment-setup.rst
+index c32a6964a43..e15c9ed0de2 100644
+--- a/doc/bitbake-user-manual/bitbake-user-manual-environment-setup.rst
++++ b/doc/bitbake-user-manual/bitbake-user-manual-environment-setup.rst
+@@ -25,20 +25,29 @@ the following tasks:
+ Quick Start
+ ===========
  
-+.. _ref-classes-uboot-extlinux-config:
+-#. If you haven't already, clone the BitBake repository:
++#. First, run the following command to install the ``bitbake-setup``
++   command-line tool in a Python `virtual environment
++   <https://docs.python.org/3/library/venv.html>`__:
+ 
+    .. code-block:: shell
+ 
+-      $ git clone https://git.openembedded.org/bitbake
++      $ python3 -m venv --clear ./bitbake-setup-venv
++      $ . ./bitbake-setup-venv/bin/activate
++      $ pip install bitbake-setup
+ 
+-#. ``bitbake-setup`` is part of the BitBake source tree under
+-   ``./bitbake/bin/bitbake-setup``.
++   .. tip::
+ 
+-   To start, run:
++      To update ``bitbake-setup`` when already installed, you can run:
 +
-+``uboot-extlinux-config``
-+=========================
++      .. code-block:: console
 +
-+The :ref:`ref-classes-uboot-extlinux-config` class provides support for
-+generating an ``extlinux.conf`` file part of the `Generic Distro Configuration Concept
-+<https://docs.u-boot-project.org/en/latest/develop/distro.html#boot-configuration-files>`__
-+of U-Boot.
++         $ pip install --upgrade bitbake-setup
 +
-+The class can be inherited in a `U-Boot <https://u-boot-project.org/>`__ recipe
-+with::
-+
-+   inherit uboot-extlinux-config
-+
-+However, the class functionality is disabled by default. To enable it, set the
-+:term:`UBOOT_EXTLINUX` variable to "1" from the U-Boot recipe or from a
-+``bbappend`` file::
-+
-+   UBOOT_EXTLINUX = "1"
-+
-+In addition to :term:`UBOOT_EXTLINUX`, the :term:`UBOOT_EXTLINUX_ROOT` variable
-+must be set to the ``root=`` parameter of the `Linux kernel command-line
-+<https://docs.kernel.org/admin-guide/kernel-parameters.html>`__. For example,
-+the following would set this value to the second partition of MMC block device
-+0::
-+
-+   UBOOT_EXTLINUX_ROOT = "root=/dev/mmcblk0p2"
-+
-+After building the U-Boot recipe, an ``extlinux.conf`` is generated and placed
-+in the deployment directory (:term:`DEPLOY_DIR_IMAGE`):
-+
-+.. code-block:: text
-+
-+   tmp/deploy/images/<MACHINE>/extlinux.conf
-+
-+This file can be customized using the variables beginning with
-+``UBOOT_EXTLINUX_`` in the :doc:`Variables Glossary </ref-manual/variables>`
-+section of the Yocto Project Reference Manual.
-+
++#. To start using ``bitbake-setup``, run:
+ 
+    .. code-block:: shell
+ 
+-      $ ./bitbake/bin/bitbake-setup init
++      $ bitbake-setup init
+ 
+    This command will ask you to choose which configurations to use available as
+    part of the default BitBake :term:`Configuration Templates <Configuration
+@@ -104,6 +113,16 @@ Quick Start
+    on how to use ``bitbake``, see the :doc:`/bitbake-user-manual/bitbake-user-manual-execution`
+    section of this manual.
+ 
 +.. note::
 +
-+   Multiple ``LABELS`` can be specified through the
-+   :term:`UBOOT_EXTLINUX_LABELS` variable (i.e. multiple boot entries).
-+   Override-style assignment should then be used to specify label-specific
-+   properties. See the definition of :term:`UBOOT_EXTLINUX_LABELS` for more
-+   information.
++   The ``bitbake-setup`` tool is developed and maintained in the BitBake
++   repository and can also be used directly from there:
 +
-+.. tip::
++   .. code-block:: console
 +
-+   When using the :ref:`bootloader <ref-manual/kickstart:Command: bootloader>`
-+   command with WIC, you should explicitly configure the ``.wks.in`` file to use
-+   the ``extlinux.conf`` file generated by this class with
-+   ``--configfile="${DEPLOY_DIR_IMAGE}/extlinux.conf"``. Otherwise it generates
-+   a default ``extlinux.conf`` file without taking this class into account.
++      $ git clone https://git.openembedded.org/bitbake ./bitbake
++      $ ./bitbake/bin/bitbake-setup ...
 +
- .. _ref-classes-uboot-sign:
+ Terminology
+ ===========
  
- ``uboot-sign``
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index e75f42afe..dfcb95374 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -11570,6 +11570,190 @@ system and gives an overview of their function and contents.
-       The default is ``txt`` which means the script is installed as-is, with
-       no modification.
+@@ -345,7 +364,7 @@ In addition, the command can take the following arguments:
  
-+   :term:`UBOOT_EXTLINUX`
-+      When inheriting the :ref:`ref-classes-uboot-extlinux-config` class in a
-+      U-Boot recipe, the :term:`UBOOT_EXTLINUX` variable should be set to "1" to
-+      enable the class functionality (inheriting the class is not enough).
-+
-+   :term:`UBOOT_EXTLINUX_CONF_NAME`
-+      When inheriting the :ref:`ref-classes-uboot-extlinux-config` class, the
-+      :term:`UBOOT_EXTLINUX_CONF_NAME` variable controls the name of the
-+      file used for booting, which is ``extlinux.conf`` by default.
-+
-+   :term:`UBOOT_EXTLINUX_CONSOLE`
-+      When inheriting the :ref:`ref-classes-uboot-extlinux-config` class, the
-+      :term:`UBOOT_EXTLINUX_CONSOLE` variable can be set to control the
-+      ``console=`` parameter of the `Linux kernel command-line
-+      <https://docs.kernel.org/admin-guide/kernel-parameters.html>`__. For
-+      example::
-+
-+         UBOOT_EXTLINUX_CONSOLE = "console=ttyS0,115200n8"
-+
-+      This is added to the ``APPEND`` property of the ``extlinux.conf`` file
-+      used for booting.
-+
-+   :term:`UBOOT_EXTLINUX_DEFAULT_LABEL`
-+      When inheriting the :ref:`ref-classes-uboot-extlinux-config` class, the
-+      :term:`UBOOT_EXTLINUX_DEFAULT_LABEL` variable can be set to the name of
-+      the label to automatically boot after the timeout period (controlled with
-+      :term:`UBOOT_EXTLINUX_TIMEOUT`).
-+
-+   :term:`UBOOT_EXTLINUX_FDT`
-+      When inheriting the :ref:`ref-classes-uboot-extlinux-config` class, the
-+      :term:`UBOOT_EXTLINUX_FDT` variable can be set to control the ``FDT``
-+      property of the ``extlinux.conf`` file used for booting, which controls
-+      the Linux kernel device tree to use. For example::
-+
-+         UBOOT_EXTLINUX_FDT = "../am335x-bone.dtb"
-+
-+      .. note::
-+
-+         The above path is relative to the ``extlinux.conf`` file used for
-+         booting. It can also be absolute, with the path being the one as stored
-+         in the partition from which the ``extlinux.conf`` file is.
-+
-+   :term:`UBOOT_EXTLINUX_FDTDIR`
-+      When inheriting the :ref:`ref-classes-uboot-extlinux-config` class, the
-+      :term:`UBOOT_EXTLINUX_FDTDIR` variable can be set to control the ``FDTDIR``
-+      property of the ``extlinux.conf`` file used for booting, which controls
-+      the directory where the Linux kernel device tree specified in the
-+      ``fdtfile`` U-Boot environment variable is. For example::
-+
-+         UBOOT_EXTLINUX_FDTDIR = "../"
-+
-+      .. note::
-+
-+         The above path is relative to the ``extlinux.conf`` file used for
-+         booting. It can also be absolute, with the path being the one as stored
-+         in the partition from which the ``extlinux.conf`` file is.
-+
-+   :term:`UBOOT_EXTLINUX_FDTOVERLAYS`
-+      When inheriting the :ref:`ref-classes-uboot-extlinux-config` class, the
-+      :term:`UBOOT_EXTLINUX_FDT` variable can be set to control the ``FDTOVERLAYS``
-+      property of the ``extlinux.conf`` file used for booting, which controls
-+      the Linux kernel device overlays tree to apply on top of the device tree.
-+      For example::
-+
-+         UBOOT_EXTLINUX_FDTOVERLAYS = "../am335x-bone-wifi.dtbo"
-+
-+      .. note::
-+
-+         The above path is relative to the ``extlinux.conf`` file used for
-+         booting. It can also be absolute, with the path being the one as stored
-+         in the partition from which the ``extlinux.conf`` file is.
-+
-+   :term:`UBOOT_EXTLINUX_INITRD`
-+      When inheriting the :ref:`ref-classes-uboot-extlinux-config` class, the
-+      :term:`UBOOT_EXTLINUX_INITRD` variable is optional and sets the value of
-+      the ``INITRD`` property of the ``extlinux.conf`` file used for booting, if
-+      the initramfs is external to the Linux kernel (see
-+      :term:`INITRAMFS_IMAGE_BUNDLE`). For example::
-+
-+         UBOOT_EXTLINUX_INITRD = "../ramdisk.tar.zst"
-+
-+      .. note::
-+
-+         The above path is relative to the ``extlinux.conf`` file used for
-+         booting. It can also be absolute, with the path being the one as stored
-+         in the partition from which the ``extlinux.conf`` file is.
-+
-+   :term:`UBOOT_EXTLINUX_INSTALL_DIR`
-+      When inheriting the :ref:`ref-classes-uboot-extlinux-config` class, the
-+      :term:`UBOOT_EXTLINUX_INSTALL_DIR` variable controls the name of the
-+      directory where the ``extlinux.conf`` file used for booting is installed,
-+      relative to the root of the partition where the directory will belong.
-+
-+   :term:`UBOOT_EXTLINUX_KERNEL_ARGS`
-+      When inheriting the :ref:`ref-classes-uboot-extlinux-config` class, the
-+      :term:`UBOOT_EXTLINUX_KERNEL_ARGS` variable can be used to pass extra
-+      parameters to the `Linux kernel command-line
-+      <https://docs.kernel.org/admin-guide/kernel-parameters.html>`__. For
-+      example::
-+
-+         UBOOT_EXTLINUX_KERNEL_ARGS = "rootwait ro"
-+
-+      This is included in the ``APPEND`` property of the ``extlinux.conf`` file
-+      used for booting.
-+
-+   :term:`UBOOT_EXTLINUX_KERNEL_IMAGE`
-+      When inheriting the :ref:`ref-classes-uboot-extlinux-config` class, the
-+      :term:`UBOOT_EXTLINUX_KERNEL_IMAGE` variable can be used to specify the
-+      ``KERNEL`` property of the ``extlinux.conf`` file used for booting, which controls
-+      the Linux kernel image to use. For example::
-+
-+         UBOOT_EXTLINUX_KERNEL_IMAGE = "../zImage"
-+
-+      .. note::
-+
-+         The above path is relative to the ``extlinux.conf`` file used for
-+         booting. It can also be absolute, with the path being the one as stored
-+         in the partition from which the ``extlinux.conf`` file is.
-+
-+      .. tip::
-+
-+         The :term:`KERNEL_IMAGETYPE` variable can be used to get the name of
-+         the current Linux kernel being built by its associated recipe.
-+
-+   :term:`UBOOT_EXTLINUX_LABELS`
-+      When inheriting the :ref:`ref-classes-uboot-extlinux-config` class, the
-+      :term:`UBOOT_EXTLINUX_LABELS` variable contains a list of labels
-+      (``LABEL`` property of the ``extlinux.conf`` file used for booting) that
-+      can be used for booting. This list must contain at least one entry, and
-+      default to "linux".
-+
-+      When multiple labels are specified in this list, all of the
-+      ``UBOOT_EXTLINUX_`` variables should be specified with overrides-style
-+      assignments. For example, if the :term:`UBOOT_EXTLINUX_LABELS` variable
-+      contains::
-+
-+         UBOOT_EXTLINUX_LABELS = "compressed uncompressed"
-+
-+      Then the :term:`UBOOT_EXTLINUX_KERNEL_IMAGE` variable can be specified
-+      multiple times as follows::
-+
-+         UBOOT_EXTLINUX_KERNEL_IMAGE:compressed = "../zImage"
-+         UBOOT_EXTLINUX_KERNEL_IMAGE:uncompressed = "../Image"
-+
-+      This will make the value of the ``KERNEL`` property be different in each
-+      of the associated labels.
-+
-+      Note that default values are used when no overrides-style assignments are
-+      found for the current label. For example, taking the above example again,
-+      the following assignment would apply to both ``compressed`` and
-+      ``uncompressed`` labels if and only if ``UBOOT_EXTLINUX_FDT:compressed``
-+      and ``UBOOT_EXTLINUX_FDT:uncompressed`` aren't set::
-+
-+         UBOOT_EXTLINUX_FDT = "../am335x-bone-wifi.dtbo"
-+
-+   :term:`UBOOT_EXTLINUX_MENU_DESCRIPTION`
-+      When inheriting the :ref:`ref-classes-uboot-extlinux-config` class, the
-+      :term:`UBOOT_EXTLINUX_MENU_DESCRIPTION` variable sets the value of the
-+      ``LABEL`` property of the ``extlinux.conf`` file. If not specified, the
-+      name of the label itself is used as the description.
-+
-+   :term:`UBOOT_EXTLINUX_MENU_TITLE`
-+      When inheriting the :ref:`ref-classes-uboot-extlinux-config` class, the
-+      :term:`UBOOT_EXTLINUX_MENU_TITLE` variable sets the ``MENU TITLE``
-+      property of the ``extlinux.conf`` file used for booting. This variable
-+      doesn't support the overrides-style syntax described in
-+      the definition of :term:`UBOOT_EXTLINUX_LABELS` as it applies to the whole
-+      ``extlinux.conf`` file.
-+
-+   :term:`UBOOT_EXTLINUX_ROOT`
-+      When inheriting the :ref:`ref-classes-uboot-extlinux-config` class, the
-+      :term:`UBOOT_EXTLINUX_ROOT` variable is mandatory and contains the
-+      ``root=`` parameter of the `Linux kernel command-line
-+      <https://docs.kernel.org/admin-guide/kernel-parameters.html>`__. For
-+      example, the following would set this value to instruct the kernel to use
-+      the second partition of MMC block device 0 as its root partition::
-+
-+         UBOOT_EXTLINUX_ROOT = "root=/dev/mmcblk0p2"
-+
-+   :term:`UBOOT_EXTLINUX_TIMEOUT`
-+      When inheriting the :ref:`ref-classes-uboot-extlinux-config` class, the
-+      :term:`UBOOT_EXTLINUX_TIMEOUT` variable is optional and sets the value of
-+      the ``TIMEOUT`` property of the ``extlinux.conf`` file used for booting.
-+
-    :term:`UBOOT_FIT_ADDRESS_CELLS`
-       Specifies the value of the ``#address-cells`` value for the
-       description of the U-Boot FIT image.
+    .. code-block:: shell
+ 
+-      $ ./bitbake/bin/bitbake-setup \
++      $ bitbake-setup \
+           --setting default registry 'git://example.com/bitbake-setup-configurations.git;protocol=https;branch=main;rev=main' \
+           init
+ 
+@@ -354,7 +373,7 @@ In addition, the command can take the following arguments:
+ 
+    .. code-block:: shell
+ 
+-      $ ./bitbake/bin/bitbake-setup init https://git.openembedded.org/bitbake/plain/default-registry/configurations/oe-nodistro-master.conf.json
++      $ bitbake-setup init https://git.openembedded.org/bitbake/plain/default-registry/configurations/oe-nodistro-master.conf.json
+ 
+ -  This example initializes a :term:`Setup` with:
+ 
+@@ -365,7 +384,7 @@ In addition, the command can take the following arguments:
+ 
+    .. code-block:: shell
+ 
+-      $ ./bitbake/bin/bitbake-setup \
++      $ bitbake-setup \
+           --setting default top-dir-prefix /work/bitbake-setup \
+           --setting default top-dir-name custom-project \
+           init \
 
 ---
-base-commit: 41dae3c3da3ada1745fc60228ff6269c64ee2361
-change-id: 20260429-uboot-extlinux-config-ff587c00925b
+base-commit: 7a3cb0d55e3698e883a9ff8491febc9d155482ca
+change-id: 20260813-bitbake-setup-pip-33e1489727f3
 
 
