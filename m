@@ -2,14 +2,14 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 72C95C5DF93
-	for <webhook@archiver.kernel.org>; Fri, 21 Aug 2026 15:51:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id ACA68C5DF7D
+	for <webhook@archiver.kernel.org>; Fri, 21 Aug 2026 16:24:25 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.10470.1787327509877006127
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.11163.1787329463441245070
  for <docs@lists.yoctoproject.org>;
- Fri, 21 Aug 2026 08:51:50 -0700
+ Fri, 21 Aug 2026 09:24:24 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=b+OOzvOL;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=BdEv8zKr;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
@@ -17,24 +17,24 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Fa57+Q7HHyUOfSHopXka/PCLY4RfNkhdmnk200DKL+Q=; b=b+OOzvOLWJuGP/iaHDUDzoUChD
-	HlZoohSIjYZ/UNU1xYD5+VAfcEjtBmZXqKAtCWf7TeddDVij9Q4TGgvQdnbTRb/rwzxeeI2RmzWnA
-	BmHYXR6KHDcsLVkRzKwqUyPz5KxI/DeURBDNr71ROYIGx81aOdUrRdE8VCE/m1S+OltWEOhswlw/d
-	Z6MYUmT4h2GL3bMBYTHfeTNzd5Uusr2FpdS82Amt6GTiy5XD06iiKiv06SZS2d2vTCSB7rKO4NAwf
-	FYx3OELyUEdUSqFDDUJRpNW2mR97CWc+miwDgNQZxpmkysG912HE2+m2OolSeeuMfbrAoyS9IIl80
-	aC/ffX/Q==;
-Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:56636 helo=sheena)
+	bh=ThOWzWMxgmD3kGPE8giP60/NGxW6vARW79CuYEQlCi0=; b=BdEv8zKrH/LWDs/Bgk5PBMBfFA
+	j4+xs1NHbiRNZPBLO60gzQEpboZ1NwDAKppYCPaevFZ3Ns/PxbysoIv0/Lri9LoeBDPbJjF4U37a1
+	5ec5v8S1EJAOff16t+azKjW2kATk/U1yNKslHMCvBQdyuQoi+CIld4O2KHtwo5K0nZLgeFyrgzS+i
+	XdhM5NcrWOSnvT7HvnLmX5eE6+afjpw/hBOhtIuXGxivUgF3UVTfH6xN4OzJ/tdvH0cZICdA6T9fa
+	EzsrX0hHv+7l/ApViM5Z7U3qyCjRnVZUJqRbCPCcfsJvaeuBK6oCA8ezJXtR4P0qc4ETtTdAWfFU5
+	Yh88NPSw==;
+Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:45266 helo=sheena)
 	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.99.5)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1wxRX0-000000039dt-3iRA
+	id 1wxS2W-00000003Do8-0Swq
 	for docs@lists.yoctoproject.org;
-	Fri, 21 Aug 2026 11:51:48 -0400
-Date: Fri, 21 Aug 2026 11:50:13 -0400 (EDT)
+	Fri, 21 Aug 2026 12:24:21 -0400
+Date: Fri, 21 Aug 2026 12:22:47 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: [PATCH] README: add references to recent security documents
-Message-ID: <8ca675d0-b3b5-5602-5b0b-07099df7aff4@crashcourse.ca>
+Subject: should yoctoproject URLs use consistent protocols?
+Message-ID: <dfa91d03-3aa0-bf09-75e2-a5ed2825a937@crashcourse.ca>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -50,30 +50,16 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 21 Aug 2026 15:51:55 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10314
+ <docs@lists.yoctoproject.org>; Fri, 21 Aug 2026 16:24:25 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10315
 
 
-To the list of doc folders in the README file, add the newer:
+  just noticed that the docs files bounce around between:
 
-  - security-manual
-  - security-reference
+  - https://git.yoctoproject.org/...
+  - git://git.yoctoproject.org/...
 
-Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+obviously, both work but should the docs pick a consistent standard?
 
----
-
-diff --git a/documentation/README b/documentation/README
-index a3301b662..208d42358 100644
---- a/documentation/README
-+++ b/documentation/README
-@@ -26,6 +26,8 @@ Here the folders corresponding to individual manuals:
- * sdk-manual           - Yocto Project Software Development Kit (SDK) Developer's Guide.
- * toaster-manual       - Toaster User Manual
- * test-manual          - Yocto Project Test Environment Manual
-+* security-manual      - Yocto Project Security Manual
-+* security-reference   - Yocto Project Security Reference
- * migration-guides     - Yocto Project Release and Migration Notes
-
- Each folder is self-contained regarding content and figures.
+rday
 
