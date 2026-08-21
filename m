@@ -1,129 +1,70 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B73F9C5DF95
-	for <webhook@archiver.kernel.org>; Fri, 21 Aug 2026 14:45:55 +0000 (UTC)
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.9052.1787323544024866554
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 63281C5DF94
+	for <webhook@archiver.kernel.org>; Fri, 21 Aug 2026 15:38:35 +0000 (UTC)
+Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.10118.1787326712301385931
  for <docs@lists.yoctoproject.org>;
- Fri, 21 Aug 2026 07:45:45 -0700
+ Fri, 21 Aug 2026 08:38:32 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=QcktSseT;
- spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 47CA51A1780;
-	Fri, 21 Aug 2026 14:45:42 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 1C9F7604AA;
-	Fri, 21 Aug 2026 14:45:42 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 657D711C77292;
-	Fri, 21 Aug 2026 16:45:36 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1787323537; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=8gh8aKFKrR/aRghKjbG4QF24Ku/HPW5LZhKkHOWA8DI=;
-	b=QcktSseTSB4cNgsYCVi+QO/WQ0rhfequjniAgyOuEQRZCr6PzQXn1m+amzVmwYOcC8vXsT
-	qCxvPRjCW0HNKtRd2WiIEsitpKOXlvKfv6LqxbSIcmAfNxo1nU8S2nx+8foXCcOEjC73Yg
-	Cp7YOsh2DtnbKFA58Gvij+HggejJwkco8ECqhyJCBFlP/i/nsOWhVqBl47rVeH9F1LEruL
-	JVYOzX5PrjaJdrMqUE/ptUpf0EDOL+Aw47qCxvrxxp5htSI5E6VyBHpMcVtw4a2/QMs36Q
-	a9ZvikYr/+W1/rXA0dG9ipx6wuc2V2aNXWBdO6e+Vryw19tq1jkMJ/rssP/SOg==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 21 Aug 2026 16:45:35 +0200
-Message-Id: <DKUPBD5JQA0B.2YZC84NQ1DL4E@bootlin.com>
-Subject: [wrynose] Pull request
-Cc: <docs@lists.yoctoproject.org>, "Yoann Congal" <yoann.congal@smile.fr>
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: "Paul Barker" <paul@pbarker.dev>
-X-Last-TLS-Session-Version: TLSv1.3
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=baWBjKVa;
+ spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
+	To:From:Date:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=ZNHnMXUHv6VyR9wiKLr23fp6UuRS/FHbo9WFmyRQqTA=; b=baWBjKVaWeGj2YDv8zUkdlUU0d
+	wtn9esOoeU5G+H/2LDIp/NkdURhgkxysvNgPWBOiyequ+Z7HQn6X7qfyZh5JhPav9Z5D/1TQTB6Rq
+	6NA66OGg+5XGMfrkz7YdVFHpnvEDSihg1Wl3c9q8wykPHPY3VybLAqjwDVV1sJerhoBrnhpyvVtjx
+	gD1IQqihTl+4KC45XUyEWTuKqScuwMzsATUboFLqOKSrpy9rTPXKCXcF4wUocc2IwN6HANnKctGcT
+	UunAQlK2Mm6GSN1nkkoTDKMvJ6JdSGZO2NDbyYCjXFBAcuxEIi1G7xiXN9BmP6MkCYNkWOz51bU30
+	df1NXzjA==;
+Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:54804 helo=sheena)
+	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.99.5)
+	(envelope-from <rpjday@crashcourse.ca>)
+	id 1wxRK9-000000037WI-1alU
+	for docs@lists.yoctoproject.org;
+	Fri, 21 Aug 2026 11:38:30 -0400
+Date: Fri, 21 Aug 2026 11:36:54 -0400 (EDT)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+To: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: "pipenv check" fails with latest build instructions
+Message-ID: <92d39d57-bd4a-96f1-5304-e309f8378f30@crashcourse.ca>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
+X-AntiAbuse: Original Domain - lists.yoctoproject.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - crashcourse.ca
+X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 21 Aug 2026 14:45:55 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10312
+ <docs@lists.yoctoproject.org>; Fri, 21 Aug 2026 15:38:35 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10313
 
-The following changes since commit 5b1ff88511d90634bb3077b878176de577464e12=
-:
 
-  brief-yoctoprojectqs/index.rst: fix a replacement typo (2026-08-13 10:39:=
-52 +0200)
+  playing with quentin's latest pipenv instructions, and noticed:
 
-are available in the Git repository at:
+$ pipenv check
+Checking PEP 508 requirements...
+Specifier python_version does not match 3 (3.13).
+Failed!
+$
 
-  git@push.yoctoproject.org:yocto-docs wrynose-next
+since, as i read it, "python_version" in Pipfile cannot just be "3",
+but needs to be at least a major release like "3.13". other than that,
+sphinx-lint and stylecheck seem to work fine, so do we even care?
 
-for you to fetch changes up to 026924a74741307bec398662c146edf77a597b1c:
-
-  README: update instructions for installing vale and sphinx-lint (2026-08-=
-21 16:36:26 +0200)
-
-----------------------------------------------------------------
-Antonin Godard (12):
-      index.rst: add introduction paragraphs
-      index.rst: move the contributor guide out of the Manuals section
-      index.rst: move the "Overview and Concepts" manual in the "Introducti=
-on and Overview" section
-      index.rst: move external links to the bottom of the intro section
-      overview-manual: move the intro content in the index
-      bsp-guide: rename to bsp-manual
-      contributor-guide/identify-component.rst: use the same tense as other=
- section
-      bitbake.rst: rename section to "BitBake User Manual"
-      index.rst: move release notes in their own section
-      index.rst: show the intro paragraph only for html-based docs
-      ref-manual/variables.rst: document the PACKAGE_NO_LOCALE variable
-      ref-manual/variables.rst: document the PACKAGEFUNCS variable
-
-Daiane Angolini (2):
-      ref-manual/features.rst: fix some cross references
-      docs-wide: fix manual names in cross references
-
-Quentin Schulz (1):
-      README: update instructions for installing vale and sphinx-lint
-
- documentation/Pipfile                              |   2 +
- documentation/README                               |  35 ++++++-----
- documentation/bitbake.rst                          |   6 +-
- documentation/bsp-guide/index.rst                  |  15 -----
- documentation/{bsp-guide =3D> bsp-manual}/bsp.rst    |  34 +++++-----
- .../figures/bsp-dev-flow.png                       | Bin
- documentation/bsp-manual/index.rst                 |  15 +++++
- .../contributor-guide/identify-component.rst       |   4 +-
- documentation/dev-manual/layers.rst                |   4 +-
- documentation/dev-manual/new-machine.rst           |   2 +-
- documentation/dev-manual/start.rst                 |   2 +-
- documentation/dev-manual/upgrading-recipes.rst     |   2 +-
- documentation/index.rst                            |  70 +++++++++++++++++=
-+---
- documentation/kernel-dev/advanced.rst              |   2 +-
- documentation/kernel-dev/common.rst                |   6 +-
- documentation/migration-guides/migration-2.5.rst   |   2 +-
- documentation/overview-manual/concepts.rst         |   2 +-
- .../overview-manual/development-environment.rst    |   4 +-
- documentation/overview-manual/index.rst            |  59 ++++++++++++++++-
- documentation/overview-manual/intro.rst            |  69 -----------------=
----
- documentation/overview-manual/yp-intro.rst         |   4 +-
- documentation/ref-manual/classes.rst               |   6 +-
- documentation/ref-manual/faq.rst                   |   6 +-
- documentation/ref-manual/features.rst              |   6 +-
- documentation/ref-manual/qa-checks.rst             |   2 +-
- documentation/ref-manual/resources.rst             |   2 +-
- documentation/ref-manual/structure.rst             |   2 +-
- documentation/ref-manual/terms.rst                 |   4 +-
- documentation/ref-manual/variables.rst             |  61 +++++++++++++++++=
--
- documentation/sphinx-static/theme_overrides.css    |   4 ++
- documentation/standards.md                         |   6 +-
- documentation/test-manual/intro.rst                |   2 +-
- .../transitioning-to-a-custom-environment.rst      |   2 +-
- documentation/what-i-wish-id-known.rst             |   6 +-
- 34 files changed, 277 insertions(+), 171 deletions(-)
- delete mode 100644 documentation/bsp-guide/index.rst
- rename documentation/{bsp-guide =3D> bsp-manual}/bsp.rst (98%)
- rename documentation/{bsp-guide =3D> bsp-manual}/figures/bsp-dev-flow.png =
-(100%)
- create mode 100644 documentation/bsp-manual/index.rst
- delete mode 100644 documentation/overview-manual/intro.rst
+rday
 
