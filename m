@@ -2,39 +2,41 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id ACA68C5DF7D
-	for <webhook@archiver.kernel.org>; Fri, 21 Aug 2026 16:24:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B72ACC5DF8C
+	for <webhook@archiver.kernel.org>; Fri, 21 Aug 2026 16:48:15 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.11163.1787329463441245070
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.11568.1787330888953865453
  for <docs@lists.yoctoproject.org>;
- Fri, 21 Aug 2026 09:24:24 -0700
+ Fri, 21 Aug 2026 09:48:09 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=BdEv8zKr;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=nZ5ZRSM9;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
-	To:From:Date:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=ThOWzWMxgmD3kGPE8giP60/NGxW6vARW79CuYEQlCi0=; b=BdEv8zKrH/LWDs/Bgk5PBMBfFA
-	j4+xs1NHbiRNZPBLO60gzQEpboZ1NwDAKppYCPaevFZ3Ns/PxbysoIv0/Lri9LoeBDPbJjF4U37a1
-	5ec5v8S1EJAOff16t+azKjW2kATk/U1yNKslHMCvBQdyuQoi+CIld4O2KHtwo5K0nZLgeFyrgzS+i
-	XdhM5NcrWOSnvT7HvnLmX5eE6+afjpw/hBOhtIuXGxivUgF3UVTfH6xN4OzJ/tdvH0cZICdA6T9fa
-	EzsrX0hHv+7l/ApViM5Z7U3qyCjRnVZUJqRbCPCcfsJvaeuBK6oCA8ezJXtR4P0qc4ETtTdAWfFU5
-	Yh88NPSw==;
-Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:45266 helo=sheena)
+	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:References:
+	Message-ID:In-Reply-To:Subject:To:From:Date:Sender:Reply-To:Cc:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=opb39886Gm8GLTfC/IOuoUChKCAMkgO6FsPs+yDT6kk=; b=nZ5ZRSM9fIIczJlGT52pFTRV8c
+	WAtZqP62PT2DgzaKWtA1Qx/+70bpa5NK5pQ5S75IrR8PW6ftbMIdOw33CzZZB2wYNOU9LdsE2kqDn
+	UZN685mlwc0UlubKby4Lw5iPHoi6vN6K7giihharYSXEpQWxn1ZJPbhlHLSFlQDtrhdmPutclo15r
+	SJhgBbbgP+9ZQ88JsKUZswmcDkRqophdBaVWFcjwq6glJdm7HXLmbClzDvfpnMYXZUvnH7yhwJvjQ
+	GZ7CZjBfH5ghQf4UamZuzwCG/NzmbVD7TldA7dFzjqQ/zF6cD44LDfpEhFqIKSmRA6cUVwvejL/bo
+	0Wx3Gkzg==;
+Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:43840 helo=sheena)
 	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.99.5)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1wxS2W-00000003Do8-0Swq
+	id 1wxSPS-00000003HCt-2QtT
 	for docs@lists.yoctoproject.org;
-	Fri, 21 Aug 2026 12:24:21 -0400
-Date: Fri, 21 Aug 2026 12:22:47 -0400 (EDT)
+	Fri, 21 Aug 2026 12:48:07 -0400
+Date: Fri, 21 Aug 2026 12:46:30 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: should yoctoproject URLs use consistent protocols?
-Message-ID: <dfa91d03-3aa0-bf09-75e2-a5ed2825a937@crashcourse.ca>
+Subject: Re: [docs] should yoctoproject URLs use consistent protocols?
+In-Reply-To: <18CDDEAD97270016.3140487@lists.yoctoproject.org>
+Message-ID: <0ec9ab44-3d05-f1bb-70f4-a81b88502f37@crashcourse.ca>
+References: <18CDDEAD97270016.3140487@lists.yoctoproject.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -50,16 +52,32 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 21 Aug 2026 16:24:25 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10315
+ <docs@lists.yoctoproject.org>; Fri, 21 Aug 2026 16:48:15 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10316
+
+On Fri, 21 Aug 2026, Robert P. J. Day wrote:
+
+>
+>   just noticed that the docs files bounce around between:
+>
+>   - https://git.yoctoproject.org/...
+>   - git://git.yoctoproject.org/...
+>
+> obviously, both work but should the docs pick a consistent standard?
+
+  i should have mentioned that i noticed this when the README file
+couldn't even stay consistent over the course of a few sentences:
 
 
-  just noticed that the docs files bounce around between:
 
-  - https://git.yoctoproject.org/...
-  - git://git.yoctoproject.org/...
 
-obviously, both work but should the docs pick a consistent standard?
+This is the directory that contains the Yocto Project documentation. The Yocto
+Project documentation is hosted at https://git.yoctoproject.org/yocto-docs:
 
-rday
+This repository is where manual development occurs. If you plan on contributing
+back to the Yocto Project documentation, you should set up a local Git
+repository based on this upstream repository as follows:
+
+  git clone git://git.yoctoproject.org/yocto-docs
+
 
