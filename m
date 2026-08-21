@@ -1,168 +1,112 @@
-Return-Path: <foss@0leil.net>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 30FD6C5DF7D
-	for <webhook@archiver.kernel.org>; Fri, 21 Aug 2026 08:25:52 +0000 (UTC)
-Received: from smtp-8fae.mail.infomaniak.ch (smtp-8fae.mail.infomaniak.ch [83.166.143.174])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.2993.1787300742338093109
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6BAA5C5DF89
+	for <webhook@archiver.kernel.org>; Fri, 21 Aug 2026 12:47:21 +0000 (UTC)
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.6579.1787316432350082254
  for <docs@lists.yoctoproject.org>;
- Fri, 21 Aug 2026 01:25:43 -0700
+ Fri, 21 Aug 2026 05:47:13 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@0leil.net header.s=20231125 header.b=VlD6xwZd;
- spf=pass (domain: 0leil.net, ip: 83.166.143.174, mailfrom: foss+yocto@0leil.net)
-Received: from smtp-3-0000.mail.infomaniak.ch (unknown [IPv6:2001:1600:4:17::246b])
-	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4hRD034rlKz62l;
-	Fri, 21 Aug 2026 10:25:39 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=0leil.net;
-	s=20231125; t=1787300739;
-	bh=QCypIh4oaPy6N+oKMHsWPpQQMhTARS9ILHa+gwlEqms=;
-	h=From:Date:Subject:To:Cc:From;
-	b=VlD6xwZdXT+aKs4rLsE0GuyAi0y3EcbzwDb6JDhJkq8ZmtCFcnEKMpAPD5nDuyfoC
-	 zcM33hf3N1kCe2wi5ZuAzkynqaAmmnHinWzpDppIXTgVxL2yRef7pSK5LDYK7Usl26
-	 PjrIWjKXMX51fqU4cEZpnDokwfICK3bE9ZRuROgGgtnFz5FPjXzwhnmwK/CqjTxiHf
-	 NqXOQWB9igWD2omqAGCB1b4p5bJkROqL44MWCcY25SkO6GycLKrV/OqK68+hT7KYZV
-	 0jMIKk4KsMP+Mth1znDHZW47a05qAV8WArttMuu7SFTCOXMWA9t3iVPCEe8cFcuEIz
-	 /PPWb/SrLG0lg==
-Received: from unknown by smtp-3-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4hRD0266FYzZ6X;
-	Fri, 21 Aug 2026 10:25:38 +0200 (CEST)
-From: Quentin Schulz <foss+yocto@0leil.net>
-Date: Fri, 21 Aug 2026 10:25:18 +0200
-Subject: [PATCH] README: update instructions for installing vale and
- sphinx-lint
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=iMyMimm0;
+ spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 2D1281A1779;
+	Fri, 21 Aug 2026 12:47:10 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 01008604AA;
+	Fri, 21 Aug 2026 12:47:10 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 888F311C770CD;
+	Fri, 21 Aug 2026 14:47:04 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1787316425; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=6ruT+Ubx1M27/tXcW3RtIVIjqde70JqFB1xST51daTE=;
+	b=iMyMimm0EEwJnSy7PomNsImWGCxoNyP6qWMQ42G/oDtwZoopM8Guopk/kJV5EODofne1g+
+	oriOxIpdYuc/Oc9B2KldPw6r8WrWOyLV6N2nnSBsOXhIJw67ZrqUAVCvTzuS15rMu+uMSW
+	xWdj9puV52O8EaGng2aSlXuPxl9nN1DyFLTb/P7+XeSt5oF3zhicVpqFgnKgC89HQyuwTO
+	0OmrV2+M/URtfCMB8wY6dWWu0JMiCyay54A39Ix2NsFpNpDUPdMNZM+wdy4BgfCqU+C/+A
+	8e5CmdO9dVoW+Swb4NJescwaI8j4zBODvDqu83QIcIy4QXObgvX3SKmoyLWHnQ==
+From: Antonin Godard <antonin.godard@bootlin.com>
+Date: Fri, 21 Aug 2026 14:46:41 +0200
+Subject: [PATCH] Makefile: remove unused O variable
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260821-pipenv-vale-sphinx-lint-v1-1-f108b7e3e739@cherry.de>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMQQqEMAxA0atI1hPQCqV6lWEWVaNGJFMaLYJ4d
- zvj8i3+P0EpMim0xQmREit/JaN6FdDPXiZCHrLBlMaWzlQYOJAkTH4l1DCzHLiybGgaOza171z
- tLOQ6RBr5+J/fn8e6dwv1228H13UDU+Hf0XsAAAA=
-X-Change-ID: 20260821-pipenv-vale-sphinx-lint-296f93ab8386
+Message-Id: <20260821-remove-o-makefile-v1-1-fe61b5cf7fe1@bootlin.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMUQqDMBCE4avIPrsQYyjFq5Q+GJ2026qRREUQ7
+ 27Ux29g/o0igiBSlW0UsEgUPyQUeUbNtx4+YGmTSSv9UE9dcEDvF7Dnvv7DSQeGcqY1BqWzltJ
+ vDGlfr+brfTvO9odmOkO07wcfRHA6dQAAAA==
+X-Change-ID: 20260821-remove-o-makefile-e0f4d44e3fbb
 To: docs@lists.yoctoproject.org
-Cc: Quentin Schulz <quentin.schulz@cherry.de>, 
- "Robert P. J. Day" <rpjday@crashcourse.ca>
-X-Mailer: b4 0.17-dev
-X-Infomaniak-Routing: alpha
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ "Robert P. J. Day" <rpjday@crashcourse.ca>, 
+ Antonin Godard <antonin.godard@bootlin.com>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1644;
+ i=antonin.godard@bootlin.com; h=from:subject:message-id;
+ bh=973nbnamQ8VLsNmHrhdi1ZOetBJxEW5ryoxjpvtJ0Oo=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBqiEjHtBdsFGjciboDMPdbMucvkXbbdMQAr4s2J
+ /Vkj+ccUk2JAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaohIxwAKCRDRgEFAKaOo
+ Nn8yEAC2k1WPXQMvMr9UYv/mnclK6UC7Ck9wcAJFv6vnwt9n387dluJ9w1uMdpGgPbt6pqflJsw
+ 1NSQrIqDogfHJmlW9sAne1VwqwvgWyQmBUm4NEkOPuxO8eKe1if5nD4B65hA8sAXmZjFdjT/ewB
+ pXlaarjvQkymF7RTg4eBvIhNCtC9kszV6dkNNH8NdrNWuE8gxpBhcq4GnRhAKBM3RQ1Rbv+Au0U
+ kmzOOEb6KcwbsOM9EQffzZBWIU80BBkm3lEMouEiUPwlRRFXNAq5rKbHRwn8uM4BWza+ox/YkoL
+ yNZvqoKjkYsRRUtwtuosCNpWUpNeWFX+95K4j2WimrlvUFKd5RpeJQY9E54/8fdANdsgje3Sqf2
+ vJNFK+gd7wMk8Q5sn7YljPUjjMcjjyhK6GLbabr8OgUx1m4/6dgK3XlJPAEVFDZwPd49/6xgmY+
+ V+xPxouLz4iy/A5VnBvybs5o4MqjVHGct1f/YJC6kS/u0ko3jT6cioh6ItGO5zFrITgGCbPrREQ
+ fjtUvyVls3aLeM+t6rGmKP9aBqB0oTF6YhM5BwqDUxoSVhaMEhDEqcYUg9/9h62dYev/p+vCSwk
+ kSBiRW7kQBqU5Q13kDQtuniZlRmxkiHnZvCGrGBokOP7m9sWmjcSO2ZphjgzOHQXBLWFlD6yb99
+ Pr5hEv6RothJsAQ==
+X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
+ fpr=8648725188DD401BB9A0D3FFD180414029A3A836
+X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 21 Aug 2026 08:25:52 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10308
+ <docs@lists.yoctoproject.org>; Fri, 21 Aug 2026 12:47:21 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10309
 
-From: Quentin Schulz <quentin.schulz@cherry.de>
+This variable isn't set or used anywhere, remove it and remove the
+misleading comment.
 
-pip install won't work on recent Debian distros (and Debian-based ones
-I'm assuming as well) and will suggest using pipx instead.
-
-In any case, pip and pipx aren't actually that user-friendly to us for
-the simple reason the instructions to build the documentation, c.f.
-documentation/tools/host_packages_scripts/pip3_docs.sh, make use of a
-virtual environment which doesn't have access to the host system's
-Python modules (missing --system-site-packages). So you would need to
-chose between building the docs and running vale/sphinx-lint but not
-both at the same time.
-
-Instead, update the instructions to use pipenv for stylecheck and
-sphinx-lint make targets such that there's a setup in which one can
-build the docs AND run those commands without doing some back and forth
-between venvs or host packages and the venv.
-
-Reported-by: Robert P. J. Day <rpjday@crashcourse.ca>
-Closes: https://lore.kernel.org/yocto-docs/959e65b6-e7eb-bcc3-992f-bed7276c8449@crashcourse.ca/
-Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
+Reported-by: "Robert P. J. Day" <rpjday@crashcourse.ca>
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/Pipfile |  2 ++
- documentation/README  | 27 +++++++++++++++++----------
- 2 files changed, 19 insertions(+), 10 deletions(-)
+ documentation/Makefile | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/documentation/Pipfile b/documentation/Pipfile
-index 67fce078d..f415cbf3f 100644
---- a/documentation/Pipfile
-+++ b/documentation/Pipfile
-@@ -4,6 +4,8 @@ url = "https://pypi.org/simple"
- verify_ssl = true
+diff --git a/documentation/Makefile b/documentation/Makefile
+index 87a6f8a8b..2df23ebf4 100644
+--- a/documentation/Makefile
++++ b/documentation/Makefile
+@@ -19,7 +19,7 @@ endif
  
- [dev-packages]
-+sphinx-lint = "*"
-+vale = "*"
+ # Put it first so that "make" without argument is like "make help".
+ help:
+-	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
++	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS)
  
- [packages]
- sphinx = "*"
-diff --git a/documentation/README b/documentation/README
-index 4701357c3..a3301b662 100644
---- a/documentation/README
-+++ b/documentation/README
-@@ -119,6 +119,13 @@ dependencies in a virtual environment:
-  $ pipenv install
-  $ pipenv run make html
+ .PHONY: all checks help Makefile clean stylecheck publish latexpdf
  
-+Note: if you decide to use Pipenv for installing the dependencies, don't forget
-+to prefix all the make commands below with "pipenv run ". The make commands
-+which already start with "pipenv run " don't need to be prefixed a second time
-+but require you to use Pipenv for them to run and aren't available when
-+following the instructions from
-+https://docs.yoctoproject.org/dev/ref-manual/system-requirements.html#required-packages-for-the-build-host.
-+
- Style checking the Yocto Project documentation
- ==============================================
+@@ -51,12 +51,10 @@ sphinx-lint:
+ #   Unable to read an entire line---bufsize=200000. Please increase buf_size in texmf.cnf.
+ latexpdf:
+ 	$(SOURCEDIR)/set_versions.py
+-	buf_size=10000000 LATEXMKOPTS="-silent" $(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
++	buf_size=10000000 LATEXMKOPTS="-silent" $(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS)
  
-@@ -127,19 +134,19 @@ to validate the text style.
+ all: html epub latexpdf
  
- To install Vale:
- 
-- $ pip install vale
-+ $ pipenv install --dev
- 
- To run Vale:
- 
-- $ make stylecheck
-+ $ pipenv run make stylecheck
- 
- Style checking the whole documentation might take some time and generate a
- lot of warnings/errors, thus one can run Vale on a subset of files or
- directories:
- 
--  $ make stylecheck VALEDOCS=<file>
--  $ make stylecheck VALEDOCS="<file1> <file2>"
--  $ make stylecheck VALEDOCS=<dir>
-+  $ pipenv run make stylecheck VALEDOCS=<file>
-+  $ pipenv run make stylecheck VALEDOCS="<file1> <file2>"
-+  $ pipenv run make stylecheck VALEDOCS=<dir>
- 
- Lint checking the Yocto Project documentation
- =============================================
-@@ -149,19 +156,19 @@ the project uses sphinx-lint (https://github.com/sphinx-contrib/sphinx-lint).
- 
- To install sphinx-lint:
- 
-- $ pip install sphinx-lint
-+ $ pipenv install --dev
- 
- To run sphinx-lint:
- 
-- $ make sphinx-lint
-+ $ pipenv run make sphinx-lint
- 
- Lint checking the whole documentation might take some time and generate a
- lot of warnings/errors, thus one can run sphinx-lint on a subset of files
- or directories:
- 
--  $ make sphinx-lint SPHINXLINTDOCS=<file>
--  $ make sphinx-lint SPHINXLINTDOCS="<file1> <file2>"
--  $ make sphinx-lint SPHINXLINTDOCS=<dir>
-+  $ pipenv run make sphinx-lint SPHINXLINTDOCS=<file>
-+  $ pipenv run make sphinx-lint SPHINXLINTDOCS="<file1> <file2>"
-+  $ pipenv run make sphinx-lint SPHINXLINTDOCS=<dir>
- 
- Checking for broken links in the Yocto Project documentation
- ============================================================
+-# Catch-all target: route all unknown targets to Sphinx using the new
+-# "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
+ %:
+ 	$(SOURCEDIR)/set_versions.py
+-	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
++	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS)
 
 ---
 base-commit: 3660b8085a5e790c1ea8bf75236fff4b216fe19c
-change-id: 20260821-pipenv-vale-sphinx-lint-296f93ab8386
-
-Best regards,
---  
-Quentin Schulz <quentin.schulz@cherry.de>
+change-id: 20260821-remove-o-makefile-e0f4d44e3fbb
 
 
