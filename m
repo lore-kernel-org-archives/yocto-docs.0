@@ -1,98 +1,116 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <aleksandar.nikolic010@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 42EE9C61DB6
-	for <webhook@archiver.kernel.org>; Tue, 25 Aug 2026 07:07:56 +0000 (UTC)
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.16227.1787641669849370073
+	by smtp.lore.kernel.org (Postfix) with ESMTP id ED47EC61DBE
+	for <webhook@archiver.kernel.org>; Tue, 25 Aug 2026 14:45:27 +0000 (UTC)
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.23226.1787669125497756556
  for <docs@lists.yoctoproject.org>;
- Tue, 25 Aug 2026 00:07:51 -0700
+ Tue, 25 Aug 2026 07:45:25 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=xsKPzKvx;
- spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 9E7761A1810;
-	Tue, 25 Aug 2026 07:07:47 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 71D25604C4;
-	Tue, 25 Aug 2026 07:07:47 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1510211C79F70;
-	Tue, 25 Aug 2026 09:07:41 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1787641663; h=from:subject:date:message-id:to:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=KxyD4gc3SVgun1D35jsd7aAtR890CR8wzm2PQy3Szgc=;
-	b=xsKPzKvxz8jP+XXhZM/yBjyWaZZRrAyQsrJ5bwGjT80L0UochMwDKgWaRFQegsZzLTSo7u
-	ZkyUd+AMMu6V6Ki08vKkoyzDDXGUDzTt2YYhUqcYgmZ8kJnpHnQ3x6V33FLiq3ItaqL12k
-	P/Np0rsqEGkYIm+vDqGwE722rt9qUQJr9eXofY/LsjmFKDzt6xySMbOK34Lx8V9eY6al6u
-	AwqtjMbSBZRR5TgRzx52wuuRHBKRTTRcWc5FQwB/mQHA7VuUWjmI6xSrATpFjtDlSwD49Z
-	wX80snyN/kbAFCrQlJ3sPjMNbseCQqH5JzHbgrhPhkfkPK9iQkuqwR/ZyE0Vjw==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 25 Aug 2026 09:07:41 +0200
-Message-Id: <DKXU2Y2J3H47.1TSOGHLLAVS2U@bootlin.com>
-To: "Richard Purdie" <richard.purdie@linuxfoundation.org>, "Trevor Woerner"
- <twoerner@gmail.com>, <docs@lists.yoctoproject.org>
-Subject: Re: request a rebuild to pick up Pygments 2.21.0
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-References: <aozKcnogXKWfOiFA@localhost.localdomain>
- <53235180fe3e221ea8bd27c81afc4a35085226b7.camel@linuxfoundation.org>
-In-Reply-To: <53235180fe3e221ea8bd27c81afc4a35085226b7.camel@linuxfoundation.org>
-X-Last-TLS-Session-Version: TLSv1.3
+ dkim=pass header.i=@gmail.com header.s=20251104 header.b=e4Pbd4ON;
+ spf=pass (domain: gmail.com, ip: 209.85.218.52, mailfrom: aleksandar.nikolic010@gmail.com)
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-c207cb16cf5so769272066b.1
+        for <docs@lists.yoctoproject.org>; Tue, 25 Aug 2026 07:45:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787669124; x=1788273924; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=vx7HQHS1ac8PA+qSllFPFfevsbzcVci2pmbAVnKmq4w=;
+        b=e4Pbd4ONvFu6sMENAZZf90WMcz71bhavyTohBEhPD8v1zMPz9CsXAvR6Ssb9VMDCP1
+         7T8DLNs9fXW1cOuoI4u5GLD1TUIkdC5opv1ewz3Q3tY+7gZknHKIwRzHk7aWzfS9tnKW
+         BaZGKflStb0enikkZQaXiL/9c9d1TIhRDlTPvKO2s0GMlXcoAPwQpcUX4KAeLPRgQybf
+         B4b1xpeRewuRuVGwoAB+sdBUd0oxzuB8Go0+DtKZMsER/eo6VDLr2Qngm9pW3gEwVfHH
+         FUn8scz1dhPf+iiGIsd0HJxQ3LFhCfPDclTBh4Jdz2te9kjKjnId+gdNLrug6OgpptAs
+         vziw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787669124; x=1788273924;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=vx7HQHS1ac8PA+qSllFPFfevsbzcVci2pmbAVnKmq4w=;
+        b=S55pJu1LkCs62CoOVtxN79EZs7/CVBkLCPOyHcR2J61/sx29ZyYOOahdvnWLCf3adr
+         fz3O+TOykePcd76FwmfaEoi42kXdSZms0q2lQbNjwkXxtQnvAm9l3miAmxU3JKr9TkC0
+         dZxWESL/3GIeWDyNn1GGH1adRuubgXqOYNYtWXrG41BQkjjXh/Gj4YU/ZdE5Y0gN2GMo
+         wrVrmF5vh1xq681ytL0MvaduTNTwkbTxV2gpLfn8qEIFIo8dNShmhVLS/LZI9e2XwrlN
+         Y5ocqdyPFmhyILx6iIL3PrTFw7waKQeWJgIdZtrEu2CGIOnMwwgGuoMOQIdfaRPXIH8S
+         seHA==
+X-Gm-Message-State: AFuF++lLFpewKoeYRYbm6kEX+inHtfriWbDlPDj3+PiCbKRtl5dW3qaD
+	2+rdj4co00qgWDkAa/UgWHgvYumSRH5mPlR4lq99C7kYsNY/hYQJNWycVH77onh7
+X-Gm-Gg: AR+sD11Qj8qoypFRlzkkgxj93gj/XND0oNkRStjdntUkOXjhD6KaI0m8cNZFEaJDurc
+	SjFhifaU9QQjEss9GswjcB1pPy4SXS2iwGLMmG6XOAAq9jJHJuZvLq5fqhC6BTJQVZ+ksz5o9Qt
+	Ei/XeaqwRKPk7Dmls4OwGJy4ADJOpCS9aXNpDmz48k8PdHRf7h8pWTDSPBhurMs6CHsCX7b/pZU
+	Dw3BTuE1UrjgdQqYAh08+yiok32rCwLYrMahgCOOhbUiPxKlJWp889bNtDOhiHJZojIFLKcEPFk
+	TsWTiNYd+sD/0RAhC+U3yPVYVxe3kpl6P+bB7anP7S9aJAgFpUfGUsEiz9eUCWkH8YNOlIkBgz4
+	COEVh5kfzfLqG9r412numzXr4P0KDmOn3SnYpsldQQWm+9K3bC1zP9Pq7WRuJvZA3u0Rx9mwsmV
+	pwYihwf5SUxwmBm+yMUJaUTQrMgbq0X9cHyDv4A4oO1/TI7LS0cemOUwtE7fX+OzvJC/RoTuJbn
+	KhlRVdKjb5K
+X-Received: by 2002:a17:907:c20:b0:c1f:b883:ed3b with SMTP id a640c23a62f3a-c246a2cf2d0mr3976498066b.4.1787669123281;
+        Tue, 25 Aug 2026 07:45:23 -0700 (PDT)
+Received: from localhost.localdomain ([2a02:810d:61f:4100:e4ef:e83f:1a8f:1ecb])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c24968d5f59sm1792779766b.63.2026.08.25.07.45.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Aug 2026 07:45:22 -0700 (PDT)
+From: Aleksandar Nikolic <aleksandar.nikolic010@gmail.com>
+X-Google-Original-From: Aleksandar Nikolic <aleksandar.nikolic22@pm.me>
+To: docs@lists.yoctoproject.org
+Cc: Aleksandar Nikolic <aleksandar.nikolic@zeiss.com>
+Subject: [scarthgap][PATCH] ref-manual/classes.rst: document the vex class
+Date: Tue, 25 Aug 2026 09:45:20 -0500
+Message-ID: <20260825144520.16267-1-aleksandar.nikolic22@pm.me>
+X-Mailer: git-send-email 2.47.3
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 25 Aug 2026 07:07:56 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10337
+ <docs@lists.yoctoproject.org>; Tue, 25 Aug 2026 14:45:27 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10338
 
-Hi,
+From: Aleksandar Nikolic <aleksandar.nikolic@zeiss.com>
 
-On Tue Aug 25, 2026 at 8:36 AM CEST, Richard Purdie wrote:
-> On Mon, 2026-08-24 at 18:49 -0400, Trevor Woerner wrote:
->> Could someone build buildtools-docs against current master and publish
->> the result?
->>=20
->> scripts/run-docs-build line 29 pins the docs toolchain to the
->> yocto-6.0_M2 tarball, which ships Pygments 2.19.2. The newest
->> published milestone, yocto-6.1_M2, has 2.20.0. OE-Core master carries
->> python3-pygments_2.21.0.bb.
->>=20
->> 2.21.0 is the release that added a BitBake lexer, so it is the first
->> version in which
->>=20
->> 	.. code-block:: bitbake
->>=20
->> does anything at all. I have a conversion of the BitBake snippets
->> in yocto-docs and the BitBake user manual ready to send, but on the
->> current toolchain every block would publish unhighlighted - and since
->> run-docs-build drops the Makefile's -W, silently.
->>=20
->> I've tested the change. run-docs-build feeds every BitBake docs branch
->> through $builddir/buildtools unconditionally, and yocto-docs from
->> scarthgap forward, so I built all of them twice - once with 2.19.2,
->> once with 2.21.0 - applying the same docs-build-patches and master-file
->> checkouts the script does:
->>=20
->> 	bitbake=C2=A0=C2=A0=C2=A0=C2=A0 1.46 through 2.18, and master=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 14/14 identical
->> 	yocto-docs=C2=A0 scarthgap styhead walnascar whinlatter=C2=A0=C2=A0 4/4=
- identical
->>=20
->> 36 builds, same exit status, same warning count - zero warnings
->> throughout.
->
-> How urgent is this? Could we do this as part of M3 and use the artefact
-> from that release build?
+This class has been in OE-Core on Scarthgap for a while but never
+documented in the reference manual. Copy the description from master.
 
-I was planning on doing that.
+Signed-off-by: Aleksandar Nikolic <aleksandar.nikolic@zeiss.com>
+---
+ documentation/ref-manual/classes.rst | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-I have a local copy and build setup that has an updated buildtools tarball =
-with
-the new version of Pygments. Trevor, if you want to send another version of=
- your
-patch, I can review and test it locally.
+diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
+index 79ed905d5..887cc0c15 100644
+--- a/documentation/ref-manual/classes.rst
++++ b/documentation/ref-manual/classes.rst
+@@ -3642,6 +3642,27 @@ using the Vala programming language.
+ 
+ .. _ref-classes-waf:
+ 
++.. _ref-classes-vex:
++
++``vex``
++========
++
++The :ref:`ref-classes-vex` class is used to generate metadata needed by external
++tools to check for vulnerabilities, for example CVEs.
++
++In order to use this class, inherit the class in the ``local.conf`` file and it
++will add the ``generate_vex`` task for every recipe::
++
++   INHERIT += "vex"
++
++If an image is built it will generate a report in :term:`DEPLOY_DIR_IMAGE` for
++all the packages used, it will also generate a file for all recipes used in the
++build.
++
++Example usage::
++
++   bitbake -c generate_vex openssl
++
+ ``waf``
+ =======
+ 
+-- 
+2.47.3
 
-Antonin
 
