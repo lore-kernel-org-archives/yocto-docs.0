@@ -2,125 +2,413 @@ Return-Path: <twoerner@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F0A81C61DBD
-	for <webhook@archiver.kernel.org>; Wed, 26 Aug 2026 01:37:12 +0000 (UTC)
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.3434.1787708229745303041
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D9573C61DBE
+	for <webhook@archiver.kernel.org>; Wed, 26 Aug 2026 01:37:22 +0000 (UTC)
+Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.3499.1787708237073790774
  for <docs@lists.yoctoproject.org>;
- Tue, 25 Aug 2026 18:37:09 -0700
+ Tue, 25 Aug 2026 18:37:17 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20251104 header.b=S4KF549m;
- spf=pass (domain: gmail.com, ip: 209.85.222.169, mailfrom: twoerner@gmail.com)
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-92e65e18969so36072685a.1
-        for <docs@lists.yoctoproject.org>; Tue, 25 Aug 2026 18:37:09 -0700 (PDT)
+ dkim=pass header.i=@gmail.com header.s=20251104 header.b=g+xlu2RH;
+ spf=pass (domain: gmail.com, ip: 209.85.222.172, mailfrom: twoerner@gmail.com)
+Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-9371bcf1f8fso20416585a.1
+        for <docs@lists.yoctoproject.org>; Tue, 25 Aug 2026 18:37:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787708229; x=1788313029; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=NFWrIK7q5swhXALBkw1yx9Y3MjbyO0YF6+zCdDPwEa0=;
-        b=S4KF549mmIOnwys+0YJ45NNTX9WVfnK6NO2rdg/THopuV4B4/h8r1Is4mTfCGuO9ED
-         QBq5Jlk2/7cb0OLNdwBS4iK6sUGq4N9thnbSe8ktjKgnmf0zb8hfaiUw02oKL039NX7r
-         v+R8uKwhLl/XSdER8vHdfvsy/ElT6BOjoN949OWX5CxhShR88p5R5T3g7e6dK0KGXM6N
-         AS9hUOkui8ALwbHn8I4CEPGlAVlJPB8vTzVGWV/+uyLAxSJw2uhScmB0y1DgI7Qnfmmx
-         rlszHvdg5/UCjrjIlFF1rs85hit4NqKTCI7Vsl1Pw+Mwu3U1xoULXsTcWFokn8HKIAjm
-         Wwrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787708229; x=1788313029;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1787708236; x=1788313036; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=NFWrIK7q5swhXALBkw1yx9Y3MjbyO0YF6+zCdDPwEa0=;
-        b=NApBfeJ6exPbYrCouu7pZREtzq2hHAr8mzV3jBsQbQ5QOSeifR3Hsnupba4WlAwOT/
-         3MqUpm61Yes/D4q5wv835rf0sIiNc0ggHJU26nvl85TnbiTsWVkUvrip90a2MyXD+eRj
-         1R9v57UQNKJAfashC/HdlzPdJ0GeOdNUfhFfA7Bu4SRnwEJSAGBC89hrvxSp+Tsw4k9o
-         eDz/VWIkKZzyG1PiWylAmjAct7aoJnyTMoZg+xuyUJQK7GNAHQQOOsAV3ZHIxoup7+Mq
-         +om03xxxqCJ09TruSzu8qDfaxQm9D03R4405cEH6syy9x46thXIkFutHWwVPXB2U1k6+
-         BFBg==
-X-Gm-Message-State: AFuF++n7bVinNKIUL0COhO3A6m6pRdvAfIkQAMQq6ZcytNv6OBAlniDz
-	e5k8VKTaBokX5WzYTaZ2u/Sy4srVrarxGu+KfH1rpPcrKeB1lX5CRwLe91tepHGm
-X-Gm-Gg: AR+sD101snGA1hMtGNWZBMTPZCH0EvUL9AQJOzDjRc1q61IbNtu2MqyJu75vtRfSmN+
-	+hBWDf8z5v6/Ofn1OpNfxSwGNlEhKsA792WnzqEr6n9iirSr3MvIysWfuktsxEPJWMRaNmCra3G
-	jqAgX/376Ok4eQg5TKhdl0ceAUXcJ4QUNgxlwQFIMhTq+I6uuw9r5vVsUx6EwAQz4qJ0I7mTpCU
-	hEuCI4N38yuT6Tyvv7qXgP9BZeGUMh/p6AyFLRxrEPrfnF9kEJizhgq3CQP4kdvO5mTWnwBqYzc
-	++8KAZ3lcKXY4o+PciGjg9BY8ITR/VATuwRM4/EauSQBjQ18+qKJDE+VK1HlR9GP+fpFhEHKf7V
-	XIfbPhIr759OxbAwBFGFB3vBqfSm4B3OXkpXSFgxO9Y1238iPGrr3YghkWe2zye+BLgj8aw5jEq
-	4no30o6ouHkqGlCRnaPUi3u6VZx+/LQrk11FBRZIB2mtqUhsX3xiz+msydpls3dEjbbW4owoDsQ
-	s5CckxNdAC43kdTLC856oryWO9V3+k=
-X-Received: by 2002:a05:620a:440f:b0:936:ef9c:8bef with SMTP id af79cd13be357-9376f2fb958mr1235192785a.2.1787708228608;
-        Tue, 25 Aug 2026 18:37:08 -0700 (PDT)
+        bh=+MKszRxE5v+/ejGd2uRRZbnHvmyaYJJq3HcPThZvIsE=;
+        b=g+xlu2RHTeKQO/rKMizj3Bx4Jdb8ReHCTL4RfJNfBUsDIu9uUmMPocNTsoBaXRenm8
+         EbiEIyQwHX5F/uSmdX0bJ5KmthOElwkOOfwu1C6sTPR1Bt/iVXvc8ozfGHXouR/2aqvN
+         7dT2dOn+/DApU2ulbGv9EoEthYGvBFryz0ENj7mVnEmheFuogalpAMpMgaJYBJQQEpXD
+         OYT9ZzKLmZl+TLC0nBHMiD8R4h1oLcgyTjcg+eamkL8emMN2NER8p4VExkdJVhbwfPSk
+         R8PI65TkEOkMZ8T8GkTMQbNJdcQs68+jCfQ3w65ie4BZW8vDuVlU7zgy8MeB+jMfi58x
+         OZdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787708236; x=1788313036;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=+MKszRxE5v+/ejGd2uRRZbnHvmyaYJJq3HcPThZvIsE=;
+        b=nc+ZaZWta13loVwXMmXV3xXuMdbb2SK5Rn8ui1PsgLKP11RbtGaTH9pw7okHv0/VOW
+         n7HAWJ6vryPvMShCrQ+QRigsRf3Cm3nfDtZ6kzMXB1Ei6oGQ5LB3Xxf5iPahOb4zIWbl
+         VslEn3fn8f9VwCJpOB3CXlE7/j34k/IW/+1hJsn3duDbgF1ZnrNux+R9bu+B76WNBCAO
+         vL4OVW29ig9bTWr8qYGFDSXs7WnX8oKk4DqFg3RUYgIejbiX9T5QoRb+QeDBQQroCmm7
+         VE98SZ86OPWbu9mRaUmL3YmXpx69ZUY3FT4QhtH0jBaOv6OR7N0iHqm694m3QnVnljAT
+         aT+g==
+X-Gm-Message-State: AFuF++kJjPa6cBzy+huHfnjlApnK0MHA18glfDz5PttUJWaI8aAn3XMx
+	i8BfjOPKAus+qDG46JYet+7FqlXpeGvJurw6KcGqn8726t0J0hYHKaUjT/SHSEk6
+X-Gm-Gg: AR+sD114KPhiGdcv2o0urBtzWuqaIMZSdC+YOTqM8eUkAtU2Uw8elHTNM3SEpM7xySc
+	EMo6t/K+kfpgg/VoH/a77OgRd5dqehbqIs9yVH2WH3sONnuHhB6OdFt9t3tN7VWpek8oyNfaTzU
+	xsdTSKC7mh35qWpOEXJeXOgA9cMU0jRou1jLsMddy3NqAriplv8LNGc62k5aG//44t5MScuWv+j
+	a+G1VdJwRp1+hfzo/B4SdutTcJtcSac2hxnNO8Gd6kGGfc5I5G1ntLYbE7NGhqn6Ht64T7opOJE
+	XxbmD0NTgv99NeXG/bSy8EUXFXxIe0f2NQapXbNYAMj8+C494fSW3EWJtVQcBLxQrh4RUPUWt/1
+	lvtsqW/t/Bc/aRBRvaLC3odlQg0o0POpopZNklHJHLm56/Yjn1GLqXc0FO9968J36ZP3uoTc33g
+	VWGH5+AoS3ZOmNdOcaeljRDDR8ue75mnq4T2HTRX442ysJanmTAgRbHfVzDc/bXeWmMzwEL7pbD
+	avLFsWUMT77+4MYOeTBgkx/Lb6/Fmwl9kGxDDnoaw==
+X-Received: by 2002:a05:620a:701c:b0:92e:f372:7b5b with SMTP id af79cd13be357-93780107a2fmr272907985a.10.1787708235733;
+        Tue, 25 Aug 2026 18:37:15 -0700 (PDT)
 Received: from localhost.localdomain (pppoe-209-91-167-254.vianet.ca. [209.91.167.254])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-9377e67c50esm103863685a.37.2026.08.25.18.37.07
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9377e67c50esm103863685a.37.2026.08.25.18.37.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Aug 2026 18:37:07 -0700 (PDT)
+        Tue, 25 Aug 2026 18:37:13 -0700 (PDT)
 From: Trevor Woerner <twoerner@gmail.com>
 To: docs@lists.yoctoproject.org
 Cc: bitbake-devel@lists.openembedded.org
-Subject: [PATCH 0/4] doc: highlight BitBake snippets with the bitbake language
-Date: Tue, 25 Aug 2026 21:36:59 -0400
-Message-ID: <20260826013703.2674786-1-twoerner@gmail.com>
+Subject: [PATCH 3/4] doc: bitbake-user-manual-fetching: use the bitbake code-block language
+Date: Tue, 25 Aug 2026 21:37:02 -0400
+Message-ID: <20260826013703.2674786-4-twoerner@gmail.com>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260826013703.2674786-1-twoerner@gmail.com>
+References: <20260826013703.2674786-1-twoerner@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 26 Aug 2026 01:37:12 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10356
+ <docs@lists.yoctoproject.org>; Wed, 26 Aug 2026 01:37:22 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10358
 
-Pygments 2.21.0 added a BitBake lexer, so BitBake snippets can now say
-what they are instead of rendering as plain literal blocks. The user
-manual is where the language is documented, so it seemed the wrong place
-to leave unhighlighted.
+BitBake snippets here render as unhighlighted text. A reStructuredText
+literal block carries no language, and Sphinx falls back to a default
+that cannot recognise BitBake metadata.
 
-No prose changes, no reflowing, no reindenting - every hunk turns a
-literal-block introducer into a code-block directive and nothing else.
+Pygments 2.21 added a BitBake lexer, so tag these 34 blocks
+explicitly. Variable names, assignment operators, override chains,
+expansions and shell or Python task bodies are then highlighted.
 
-Which blocks were converted was decided by reading. Blocks that share
-BitBake's assignment shape but are another language were left alone,
-including the bitbake-setup settings files, which are INI and already
-tagged as such.
+AI-Generated: codex/claude-opus 5 (xhigh)
+Signed-off-by: Trevor Woerner <twoerner@gmail.com>
+---
+ .../bitbake-user-manual-fetching.rst          | 124 +++++++++++++-----
+ 1 file changed, 93 insertions(+), 31 deletions(-)
 
-Please do not apply this yet
-----------------------------
-
-The autobuilder builds the docs with a pinned buildtools tarball that
-currently carries Pygments 2.19.2, which predates the BitBake lexer.
-run-docs-build also passes SPHINXOPTS="-j auto", dropping the -W the
-Makefile defaults to, so on that toolchain every one of these blocks
-would publish unhighlighted and the build would still succeed. I have
-asked separately about refreshing that tarball.
-
-Sending now for review rather than to be merged. Once the toolchain can
-render it, this applies as-is.
-
-Depends on
-----------
-
-"doc: state the language of six Python blocks explicitly", sent
-separately. That patch stands on its own and can go in independently;
-this series is based on it only so the two do not touch the same lines.
-
-One block worth a second opinion
---------------------------------
-
-bitbake-user-manual-ref-variables.rst has two blocks where one real
-assignment is followed by a long prose "where: ..." explanation. I have
-tagged them, but the same shape elsewhere was deliberately left as a
-plain literal block, so I may have called this one wrong.
-
-Trevor Woerner (4):
-  doc: bitbake-user-manual-metadata: use the bitbake code-block language
-  doc: bitbake-user-manual-ref-variables: use the bitbake code-block
-    language
-  doc: bitbake-user-manual-fetching: use the bitbake code-block language
-  doc: use the bitbake code-block language in the remaining chapters
-
- .../bitbake-user-manual-execution.rst         |  44 ++-
- .../bitbake-user-manual-fetching.rst          | 124 ++++--
- .../bitbake-user-manual-hello.rst             |  20 +-
- .../bitbake-user-manual-intro.rst             |  24 +-
- .../bitbake-user-manual-metadata.rst          | 372 +++++++++++++-----
- .../bitbake-user-manual-ref-variables.rst     | 188 ++++++---
- 6 files changed, 579 insertions(+), 193 deletions(-)
-
+diff --git a/doc/bitbake-user-manual/bitbake-user-manual-fetching.rst b/doc/bitbake-user-manual/bitbake-user-manual-fetching.rst
+index 2993eda49439..f98e3176333d 100644
+--- a/doc/bitbake-user-manual/bitbake-user-manual-fetching.rst
++++ b/doc/bitbake-user-manual/bitbake-user-manual-fetching.rst
+@@ -85,7 +85,9 @@ In the former case, the URL is passed to the ``wget`` fetcher, which does not
+ understand "git". Therefore, the latter case is the correct form since the Git
+ fetcher does know how to use HTTP as a transport.
+ 
+-Here are some examples that show commonly used mirror definitions::
++Here are some examples that show commonly used mirror definitions:
++
++.. code-block:: bitbake
+ 
+    PREMIRRORS ?= "\
+       git://.*/.\*  http://somemirror.org/sources/ \
+@@ -112,19 +114,25 @@ File integrity is of key importance for reproducing builds. For
+ non-local archive downloads, the fetcher code can verify SHA-256 and MD5
+ checksums to ensure the archives have been downloaded correctly. You can
+ specify these checksums by using the :term:`SRC_URI` variable with the
+-appropriate varflags as follows::
++appropriate varflags as follows:
++
++.. code-block:: bitbake
+ 
+    SRC_URI[md5sum] = "value"
+    SRC_URI[sha256sum] = "value"
+ 
+ You can also specify the checksums as
+-parameters on the :term:`SRC_URI` as shown below::
++parameters on the :term:`SRC_URI` as shown below:
++
++.. code-block:: bitbake
+ 
+   SRC_URI = "http://example.com/foobar.tar.bz2;md5sum=4a8e0f237e961fd7785d19d07fdb994d"
+ 
+ If multiple URIs exist, you can specify the checksums either directly as
+ in the previous example, or you can name the URLs. The following syntax
+-shows how you name the URIs::
++shows how you name the URIs:
++
++.. code-block:: bitbake
+ 
+    SRC_URI = "http://example.com/foobar.tar.bz2;name=foo"
+    SRC_URI[foo.md5sum] = 4a8e0f237e961fd7785d19d07fdb994d
+@@ -262,7 +270,9 @@ time the ``download()`` method is called.
+ If you specify a directory, the entire directory is unpacked.
+ 
+ Here are a couple of example URLs, the first relative and the second
+-absolute::
++absolute:
++
++.. code-block:: bitbake
+ 
+    SRC_URI = "file://relativefile.patch"
+    SRC_URI = "file:///Users/ich/very_important_software"
+@@ -288,7 +298,9 @@ Authorization header will be added to each request, including across redirects.
+ To instead limit the Authorization header to the first request, add
+ "redirectauth=0" to the list of parameters.
+ 
+-Some example URLs are as follows::
++Some example URLs are as follows:
++
++.. code-block:: bitbake
+ 
+    SRC_URI = "http://oe.handhelds.org/not_there.aac"
+    SRC_URI = "ftp://oe.handhelds.org/not_there_as_well.aac"
+@@ -298,19 +310,25 @@ Some example URLs are as follows::
+ 
+    Because URL parameters are delimited by semi-colons, this can
+    introduce ambiguity when parsing URLs that also contain semi-colons,
+-   for example::
++   for example:
++
++   .. code-block:: bitbake
+ 
+       SRC_URI = "http://abc123.org/git/?p=gcc/gcc.git;a=snapshot;h=a5dd47"
+ 
+    Such URLs should should be modified by replacing semi-colons with '&'
+-   characters::
++   characters:
++
++   .. code-block:: bitbake
+ 
+       SRC_URI = "http://abc123.org/git/?p=gcc/gcc.git&a=snapshot&h=a5dd47"
+ 
+    In most cases this should work. Treating semi-colons and '&' in
+    queries identically is recommended by the World Wide Web Consortium
+    (W3C). Note that due to the nature of the URL, you may have to
+-   specify the name of the downloaded file as well::
++   specify the name of the downloaded file as well:
++
++   .. code-block:: bitbake
+ 
+       SRC_URI = "http://abc123.org/git/?p=gcc/gcc.git&a=snapshot&h=a5dd47;downloadfilename=myfile.bz2"
+ 
+@@ -351,7 +369,9 @@ The supported parameters are as follows:
+    username is different than the username used in the main URL, which
+    is passed to the subversion command.
+ 
+-Following are three examples using svn::
++Following are three examples using svn:
++
++.. code-block:: bitbake
+ 
+    SRC_URI = "svn://myrepos/proj1;module=vip;protocol=http;rev=667"
+    SRC_URI = "svn://myrepos/proj1;module=opie;protocol=svn+ssh"
+@@ -385,7 +405,9 @@ This fetcher supports the following parameters:
+       by the Git server to fetch from. For example, the URL returned by GitLab
+       server for ``mesa`` when cloning over SSH is
+       ``git@gitlab.freedesktop.org:mesa/mesa.git``, however the expected URL in
+-      :term:`SRC_URI` is the following::
++      :term:`SRC_URI` is the following:
++
++      .. code-block:: bitbake
+ 
+          SRC_URI = "git://git@gitlab.freedesktop.org/mesa/mesa.git;branch=main;protocol=ssh;..."
+ 
+@@ -439,7 +461,9 @@ This fetcher supports the following parameters:
+    parameter implies no branch and only works when the transfer protocol
+    is ``file://``.
+ 
+-Here are some example URLs::
++Here are some example URLs:
++
++.. code-block:: bitbake
+ 
+    SRC_URI = "git://github.com/fronteed/icheck.git;protocol=https;branch=${PV};tag=${PV}"
+    SRC_URI = "git://github.com/asciidoc/asciidoc-py;protocol=https;branch=main"
+@@ -496,7 +520,9 @@ repository.
+ 
+ To use this fetcher, make sure your recipe has proper
+ :term:`SRC_URI`, :term:`SRCREV`, and
+-:term:`PV` settings. Here is an example::
++:term:`PV` settings. Here is an example:
++
++.. code-block:: bitbake
+ 
+    SRC_URI = "ccrc://cc.example.org/ccrc;vob=/example_vob;module=/example_module"
+    SRCREV = "EXAMPLE_CLEARCASE_TAG"
+@@ -570,7 +596,9 @@ the server's URL and port number, and you can specify a username and
+ password directly in your recipe within :term:`SRC_URI`.
+ 
+ Here is an example that relies on ``P4CONFIG`` to specify the server URL
+-and port, username, and password, and fetches the Head Revision::
++and port, username, and password, and fetches the Head Revision:
++
++.. code-block:: bitbake
+ 
+    SRC_URI = "p4://example-depot/main/source/..."
+    SRCREV = "${AUTOREV}"
+@@ -578,7 +606,9 @@ and port, username, and password, and fetches the Head Revision::
+    S = "${UNPACKDIR}/p4"
+ 
+ Here is an example that specifies the server URL and port, username, and
+-password, and fetches a Revision based on a Label::
++password, and fetches a Revision based on a Label:
++
++.. code-block:: bitbake
+ 
+    P4PORT = "tcp:p4server.example.net:1666"
+    SRC_URI = "p4://user:passwd@example-depot/main/source/..."
+@@ -604,7 +634,9 @@ paths locally is desirable, the fetcher supports two parameters:
+    paths locally for the specified location, even in combination with the
+    ``module`` parameter.
+ 
+-Here is an example use of the the ``module`` parameter::
++Here is an example use of the the ``module`` parameter:
++
++.. code-block:: bitbake
+ 
+    SRC_URI = "p4://user:passwd@example-depot/main;module=source/..."
+ 
+@@ -612,7 +644,9 @@ In this case, the content of the top-level directory ``source/`` will be fetched
+ to ``${P4DIR}``, including the directory itself.  The top-level directory will
+ be accesible at ``${P4DIR}/source/``.
+ 
+-Here is an example use of the the ``remotepath`` parameter::
++Here is an example use of the the ``remotepath`` parameter:
++
++.. code-block:: bitbake
+ 
+    SRC_URI = "p4://user:passwd@example-depot/main;module=source/...;remotepath=keep"
+ 
+@@ -640,7 +674,9 @@ This fetcher supports the following parameters:
+ 
+ -  *"manifest":* Name of the manifest file (default: ``default.xml``).
+ 
+-Here are some example URLs::
++Here are some example URLs:
++
++.. code-block:: bitbake
+ 
+    SRC_URI = "repo://REPOROOT;protocol=git;branch=some_branch;manifest=my_manifest.xml"
+    SRC_URI = "repo://REPOROOT;protocol=file;branch=some_branch;manifest=my_manifest.xml"
+@@ -663,11 +699,15 @@ Such functionality is set by the variable:
+    delegate access to resources, if this variable is set, the Az Fetcher will
+    use it when fetching artifacts from the cloud.
+ 
+-You can specify the AZ_SAS variable prefixed with a ? as shown below::
++You can specify the AZ_SAS variable prefixed with a ? as shown below:
++
++.. code-block:: bitbake
+ 
+    AZ_SAS = "?se=2021-01-01&sp=r&sv=2018-11-09&sr=c&skoid=<skoid>&sig=<signature>"
+ 
+-Here is an example URL::
++Here is an example URL:
++
++.. code-block:: bitbake
+ 
+    SRC_URI = "az://<azure-storage-account>.blob.core.windows.net/<foo_container>/<bar_file>"
+ 
+@@ -694,17 +734,23 @@ chosen bucket. Instructions for authentication can be found in the
+ 
+ If it used from the OpenEmbedded build system, the fetcher can be used for
+ fetching sstate artifacts from a GCS bucket by specifying the
+-``SSTATE_MIRRORS`` variable as shown below::
++``SSTATE_MIRRORS`` variable as shown below:
++
++.. code-block:: bitbake
+ 
+    SSTATE_MIRRORS ?= "\
+        file://.* gs://<bucket name>/PATH \
+    "
+ 
+-The fetcher can also be used in recipes::
++The fetcher can also be used in recipes:
++
++.. code-block:: bitbake
+ 
+    SRC_URI = "gs://<bucket name>/<foo_container>/<bar_file>"
+ 
+-However, the checksum of the file should be also be provided::
++However, the checksum of the file should be also be provided:
++
++.. code-block:: bitbake
+ 
+    SRC_URI[sha256sum] = "<sha256 string>"
+ 
+@@ -718,7 +764,9 @@ This submodule fetches code for
+ corresponding to Rust libraries and programs to compile. Such crates are typically shared
+ on https://crates.io/ but this fetcher supports other crate registries too.
+ 
+-The format for the :term:`SRC_URI` setting must be::
++The format for the :term:`SRC_URI` setting must be:
++
++.. code-block:: bitbake
+ 
+    SRC_URI = "crate://REGISTRY/NAME/VERSION"
+ 
+@@ -727,7 +775,9 @@ This fetcher supports the following parameters:
+ -  *"protocol":* The protocol used to fetch the crates. The default is "https".
+    You can also use "http".
+ 
+-Here is an example URL::
++Here is an example URL:
++
++.. code-block:: bitbake
+ 
+    SRC_URI = "crate://crates.io/glob/0.2.11"
+ 
+@@ -746,7 +796,9 @@ This submodule fetches source code from an
+ `NPM <https://en.wikipedia.org/wiki/Npm_(software)>`__
+ Javascript package registry.
+ 
+-The format for the :term:`SRC_URI` setting must be::
++The format for the :term:`SRC_URI` setting must be:
++
++.. code-block:: bitbake
+ 
+    SRC_URI = "npm://some.registry.url;ParameterA=xxx;ParameterB=xxx;..."
+ 
+@@ -763,7 +815,9 @@ This fetcher supports the following parameters:
+ Note that NPM fetcher only fetches the package source itself. The dependencies
+ can be fetched through the `npmsw-fetcher`_.
+ 
+-Here is an example URL with both fetchers::
++Here is an example URL with both fetchers:
++
++.. code-block:: bitbake
+ 
+    SRC_URI = " \
+        npm://registry.npmjs.org/;package=cute-files;version=${PV} \
+@@ -792,7 +846,9 @@ This submodule fetches source code from an
+ description file, which lists the dependencies
+ of an NPM package while locking their versions.
+ 
+-The format for the :term:`SRC_URI` setting must be::
++The format for the :term:`SRC_URI` setting must be:
++
++.. code-block:: bitbake
+ 
+    SRC_URI = "npmsw://some.registry.url;ParameterA=xxx;ParameterB=xxx;..."
+ 
+@@ -804,7 +860,9 @@ This fetcher supports the following parameters:
+    (``${S}`` by default).
+ 
+ Note that the shrinkwrap file can also be provided by the recipe for
+-the package which has such dependencies, for example::
++the package which has such dependencies, for example:
++
++.. code-block:: bitbake
+ 
+    SRC_URI = " \
+        npm://registry.npmjs.org/;package=cute-files;version=${PV} \
+@@ -840,7 +898,9 @@ Auto Revisions
+ 
+ For recipes which need to use the latest revision of their source code,
+ the way to achieve it is to use :term:`AUTOREV` as the value of the
+-source code repository's :term:`SRCREV`::
++source code repository's :term:`SRCREV`:
++
++.. code-block:: bitbake
+ 
+    SRCREV = "${AUTOREV}"
+ 
+@@ -862,7 +922,9 @@ the different SCM revisions in its package version string, instead of its
+ usual approach with a single :term:`SRCREV`.
+ 
+ For this purpose, the recipe must set the :term:`SRCREV_FORMAT`
+-variable. Consider the following example::
++variable. Consider the following example:
++
++.. code-block:: bitbake
+ 
+    SRC_URI = " \
+        git://git.some.example.com/source-tree.git;name=machine \
 
