@@ -2,2141 +2,4494 @@ Return-Path: <twoerner@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6895AC61DC7
-	for <webhook@archiver.kernel.org>; Wed, 26 Aug 2026 01:35:22 +0000 (UTC)
-Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.3463.1787708115070320448
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BA09CC61DB9
+	for <webhook@archiver.kernel.org>; Wed, 26 Aug 2026 01:35:21 +0000 (UTC)
+Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.3462.1787708111832077245
  for <docs@lists.yoctoproject.org>;
- Tue, 25 Aug 2026 18:35:15 -0700
+ Tue, 25 Aug 2026 18:35:12 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20251104 header.b=jMK7OvTe;
- spf=pass (domain: gmail.com, ip: 209.85.222.182, mailfrom: twoerner@gmail.com)
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-930f618435cso22625385a.3
-        for <docs@lists.yoctoproject.org>; Tue, 25 Aug 2026 18:35:14 -0700 (PDT)
+ dkim=pass header.i=@gmail.com header.s=20251104 header.b=bLFVHN/v;
+ spf=pass (domain: gmail.com, ip: 209.85.222.175, mailfrom: twoerner@gmail.com)
+Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-92ed19f4d60so29711885a.0
+        for <docs@lists.yoctoproject.org>; Tue, 25 Aug 2026 18:35:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787708114; x=1788312914; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=OFJSulw2RkqwGV2dzmcoVPk5cqc4QAoKI32qJxyYP4Y=;
-        b=jMK7OvTedswZ3Sy1nEHTqlEXHL8i89jPThkth0jRsmeVIV+4uW4qzgn3C4dpMvzw4Z
-         rzADwV1mRUb0lJOBFxXy3YlBebRcQlmBA84yrVmcOa/IjhhY2MIhKXyuHNMkOwVn0+HY
-         THz4ra5sgOQemDx0Ml6AvfhRAqXJyXxkp2ED1CXCKGVxJfWLnLCyqCbXFscBWXSS+A3j
-         eWV4h03UUTGp2MpRctJaXcvI0vowlQeno5//QjIJjEquY3cR62VDq1EStiYEikobcrcl
-         zMWrTtQzY+ofVxYpv8uTVmNEp44B6v4G3300VUe4RuF+kojh5+9sey+Vy4ChbfW4+33G
-         V7Hw==
+        d=gmail.com; s=20251104; t=1787708111; x=1788312911; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=eR5JHgIOaC6B/Ek7HgVciHB1oRMXtDg90Dw3zDiV754=;
+        b=bLFVHN/vtTs3tolUsQoKn2s4PdK+KK6p/4uXqME8Louo9tGesyC6+00BpD2nGN73XT
+         fiIvRm2YUIh3m84BOxKlMDny7R1PhEhf3ff8LXr+zxqvY+ppja+vmC//3rBIWMoTmNm0
+         Kadztl2veXh/RwEKceW0TWR5kRoMcoxRNVpKKOi11xura1+ghRt7SBbsRvc58Kr3Uh0W
+         6KbSTf/dmElOR+g0nBa3bCWxLnc50rG/r1L2+048g1zgQDnD8n1M59MZITQdJLq4HO3L
+         j54lP60zEIgMZXflVB4oam3ZXpXKg6rFZYiUTcNxMQSIzUf9chU9Sk8DdDcGnz3GLw2R
+         tzdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787708114; x=1788312914;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=OFJSulw2RkqwGV2dzmcoVPk5cqc4QAoKI32qJxyYP4Y=;
-        b=izJ7cP4/sFTQyw6DO630m6h4tVzmktz1ez6ANTLveL+ZxFOfk0yUKTkqjIAumuLKOw
-         Z8LCpoVy8s+Hj1xeBjt8fXDjx92LF2E7OPvewl7kDnzWvKvPpyXB9MVWdi+SP4j+VoDE
-         +91w+/o3QgvEMIC64JVz9jYzY6LpQQFWrJR9x9WggAHOYVFTsLtgDUiIWkJaKgm749QF
-         jCCu+3hMC8TINY+WaOZDDm4sDDcATRntDJJRYkETO7/zLwShs2tBZgazanIWNpJ5i1Hx
-         hgNRzl49lNPeCTS3FOVLimAU7+60aJY8q+C+xKlEcpe+gOaSFh5EkIyTTr+Res55Dj8a
-         8dKA==
-X-Gm-Message-State: AFuF++mr3V0u11r7o4NjmMkehLcFZlWiGMoTVXYsdENumKusGkx/QvpG
-	lfnj1NQyt7aUbqyMzW1LdZjxLUYGzIxYk2TMn4NGcYM8PyZG48kgvsmLLJuEfG6i
-X-Gm-Gg: AR+sD10/kzUaliIn0f5hD0kib7Ttn72gReR3iLoGwV4BOu+54+lPU9jd8fdZNCPFMIV
-	sdpQGsUVF4N/qZfc+H6dt6HXyWMpFM10uF7O0LkXsszpZpVigcWyJ9L/e1NdDWGGdlbEfN1naD1
-	tNk5/VMVBxy/sYBi+ATYMqSmpnIiPWmMGRq+gGTY5KJ0vM1PF4MlUcthqgPTHGVhMzhJNdhnNfJ
-	BXsuNkbPx88ZGwimqddsxsUtj5vgKOH32oh9RvW8PE92IN+WWYW6eslcZPK/XhVGQfj9c7UqyLx
-	vLuZwEBy6NF54BpyvDqnOp6a4SzMqE37Od0UY4j7xTKx4v0X7By4ykxIFLhi7FVC7nUT4av+W6m
-	VXwXCtjL02LZceYcs3fcjwY/QNLDekxQNE2g6nawCK08GplRFn4gLMRp0JSmV/cRfLh+JZYz/D3
-	CaNgsZ+q5IFqww6I7iytFu73MsZxhj+E12gq9dKCLrS/Gnys0vXOohJ5TdPovziLxTBOOVoNGej
-	auHzA1y+LKMAPyKwn6FWPTIYjZBDl8=
-X-Received: by 2002:a05:620a:4892:b0:930:b4f9:f327 with SMTP id af79cd13be357-93780445ef0mr250368285a.33.1787708112010;
-        Tue, 25 Aug 2026 18:35:12 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1787708111; x=1788312911;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=eR5JHgIOaC6B/Ek7HgVciHB1oRMXtDg90Dw3zDiV754=;
+        b=Ew12Kmoe9d/BvjS1zn+B3mdgAj1pfCSdpG8fbVFI4huYNfVmBDsf8K57y0d0f0NlUT
+         ql+Px4RF5rwGNvagcSbVtU9OW/k0ksz031NqihNTwQeRw+/BxaWev3rViHD9czSLdlki
+         XNr+rlw52WkDImeYzS5VlYq/jyCqCqwvrjUfgqbbAOoQfUiIeOSzSzYXejcD93QmTCKu
+         JUHsNV495Ft0l5h9dwuwuKW53MgkKftzSD6KMw31cvE8fBQDjZidRZiNHumSmgp0xT2X
+         p/BAY/fyoh/cx+ITjp52/0DSFrqpnTgr+PQY2NE3mMa3GdXdXSxS5J0pPsxJuGa2kSAN
+         eHag==
+X-Gm-Message-State: AFuF++nO5J0K+/tqjvFER/h4cRZCIEtS2qpcmDCrxv8SVsastoI1jvCn
+	R6FLSqiXFbNmAfkEdT+pv1F28+Q8if8sDZKWbfl9gqhD0O+vwa3Cm8oyyJlLXjX9
+X-Gm-Gg: AR+sD12gNADwjZGzGS9dl938SaZpjikRXL/PQX8WuQBtXBQwU2SU8Kke1SQ1g8d8Vh7
+	zdCeLt2v1oDX4K3TOIdrxX9wzuNoFV3BlAM+bYvfkzXo8SsXjf/rIefjQTJZG4fL0Eh6ElsGCKG
+	qHzmXbpqN7h4cgwsNCVtbIogx8BaUzEmosW+o62iBvWVquzeSoR7piFpvhHy0CgPPRrFXAM7rp0
+	SNrXZ3U5noM5oavwZ+0dLmfMH2DhP5AHwd62xVKJDOf2GY9uJkszNJ5nUyu5mmjVgM20drVDzjE
+	2rVy8iqNXatqJFgtMy8G+HEI3g/LFnTeq8AJcs6sS24HAwLDhyZMzQ9jniR2atSVq5DUmO2KOf+
+	kidm6lIxfeJ7Oanmi5qPdaxQGsjU6jsf16bADjEBe46TgdHVaWppFVtbMe0x1c+W9NpvIa5tKl7
+	cjkwLnzBWXpx7blijV1DmQ66qrOBniu8L/m2UH8PanfahE2m1hSYp64iesgZAIsVcWg+hIAFo/2
+	JNznPsLMyoRfFp5f+MU9AAxZqqdan0=
+X-Received: by 2002:ae9:f703:0:b0:92e:57ea:8c8b with SMTP id af79cd13be357-9376f0ddbacmr916030685a.0.1787708108216;
+        Tue, 25 Aug 2026 18:35:08 -0700 (PDT)
 Received: from localhost.localdomain (pppoe-209-91-167-254.vianet.ca. [209.91.167.254])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-9377e68053dsm104323785a.39.2026.08.25.18.35.10
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9377e68053dsm104323785a.39.2026.08.25.18.35.06
         for <docs@lists.yoctoproject.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Aug 2026 18:35:11 -0700 (PDT)
+        Tue, 25 Aug 2026 18:35:06 -0700 (PDT)
 From: Trevor Woerner <twoerner@gmail.com>
 To: docs@lists.yoctoproject.org
-Subject: [PATCH 03/10] dev-manual: use the bitbake code-block language
-Date: Tue, 25 Aug 2026 21:34:48 -0400
-Message-ID: <20260826013502.2674000-4-twoerner@gmail.com>
+Subject: [PATCH 01/10] ref-manual/variables.rst: use the bitbake code-block language
+Date: Tue, 25 Aug 2026 21:34:46 -0400
+Message-ID: <20260826013502.2674000-2-twoerner@gmail.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260826013502.2674000-1-twoerner@gmail.com>
 References: <20260826013502.2674000-1-twoerner@gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 26 Aug 2026 01:35:22 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10348
+ <docs@lists.yoctoproject.org>; Wed, 26 Aug 2026 01:35:21 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10346
 
 BitBake snippets here render as unhighlighted text. A reStructuredText
 literal block carries no language, and Sphinx falls back to a default
 that cannot recognise BitBake metadata.
 
-Pygments 2.21 added a BitBake lexer, so tag these 176 blocks
+Pygments 2.21 added a BitBake lexer, so tag these 418 blocks
 explicitly. Variable names, assignment operators, override chains,
 expansions and shell or Python task bodies are then highlighted.
 
 Blocks that only look like BitBake are left alone, as are blocks
 already tagged "none" where the content is deliberately unhighlighted.
 
+The variables glossary is the densest concentration of BitBake syntax in
+the documentation, and nearly every entry showing how to set a variable
+was affected.
+
 AI-Generated: codex/claude-opus 5 (xhigh)
 Signed-off-by: Trevor Woerner <twoerner@gmail.com>
 ---
- documentation/dev-manual/bblock.rst           |   4 +-
- documentation/dev-manual/bmaptool.rst         |   4 +-
- documentation/dev-manual/build-quality.rst    |   8 +-
- documentation/dev-manual/building.rst         |  44 +++--
- .../dev-manual/creating-fragments.rst         |   6 +-
- .../dev-manual/custom-distribution.rst        |   4 +-
- .../dev-manual/customizing-images.rst         |  32 +++-
- documentation/dev-manual/debugging.rst        |  40 +++--
- documentation/dev-manual/device-manager.rst   |  12 +-
- documentation/dev-manual/devtool.rst          |   8 +-
- documentation/dev-manual/disk-space.rst       |   4 +-
- .../dev-manual/error-reporting-tool.rst       |  12 +-
- documentation/dev-manual/external-scm.rst     |  20 ++-
- .../dev-manual/gobject-introspection.rst      |  12 +-
- documentation/dev-manual/hashequivserver.rst  |  12 +-
- documentation/dev-manual/init-manager.rst     |  16 +-
- documentation/dev-manual/layers.rst           |  56 ++++--
- documentation/dev-manual/libraries.rst        |  12 +-
- documentation/dev-manual/licenses.rst         |  60 +++++--
- .../dev-manual/limiting-resources.rst         |   4 +-
- documentation/dev-manual/multiconfig.rst      |  40 +++--
- documentation/dev-manual/new-machine.rst      |   4 +-
- documentation/dev-manual/new-recipe.rst       | 160 +++++++++++++-----
- documentation/dev-manual/packages.rst         |  44 +++--
- .../dev-manual/poky-manual-setup.rst          |   4 +-
- .../dev-manual/prebuilt-libraries.rst         |  12 +-
- documentation/dev-manual/qemu.rst             |   4 +-
- documentation/dev-manual/quilt.rst            |   4 +-
- documentation/dev-manual/sbom.rst             |   4 +-
- .../dev-manual/speeding-up-build.rst          |   4 +-
- .../dev-manual/sstate-mirrors-setup.rst       |  16 +-
- .../dev-manual/temporary-source-code.rst      |   8 +-
- .../dev-manual/upgrading-recipes.rst          |  12 +-
- documentation/dev-manual/wayland.rst          |   8 +-
- documentation/dev-manual/x32-psabi.rst        |   4 +-
- 35 files changed, 522 insertions(+), 176 deletions(-)
+ documentation/ref-manual/variables.rst | 1635 ++++++++++++++++++------
+ 1 file changed, 1226 insertions(+), 409 deletions(-)
 
-diff --git a/documentation/dev-manual/bblock.rst b/documentation/dev-manual/bblock.rst
-index 605bb7565524..a6ca740c5123 100644
---- a/documentation/dev-manual/bblock.rst
-+++ b/documentation/dev-manual/bblock.rst
-@@ -87,7 +87,9 @@ Locking mechanism
- variables: :term:`SIGGEN_LOCKEDSIGS`, :term:`SIGGEN_LOCKEDSIGS_TYPES`
- and :term:`SIGGEN_LOCKEDSIGS_TASKSIG_CHECK`.
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index 646a77982646..61a4c6faca20 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -31,7 +31,9 @@ system and gives an overview of their function and contents.
  
--In particular, ``bblock`` sets::
-+In particular, ``bblock`` sets:
+       ABI extensions are set in the machine include files. For example, the
+       ``meta/conf/machine/include/arm/arch-arm.inc`` file sets the
+-      following extension::
++      following extension:
 +
-+.. code-block:: bitbake
++      .. code-block:: bitbake
  
-   SIGGEN_LOCKEDSIGS_TASKSIG_CHECK = "info"
-   SIGGEN_LOCKEDSIGS_TYPES += "${PACKAGE_ARCHS}"
-diff --git a/documentation/dev-manual/bmaptool.rst b/documentation/dev-manual/bmaptool.rst
-index 29e7f0d2ebbd..8fd949eea2a2 100644
---- a/documentation/dev-manual/bmaptool.rst
-+++ b/documentation/dev-manual/bmaptool.rst
-@@ -29,7 +29,9 @@ that while this example uses a Wic image, you can use `bmaptool` to flash
- any type of image. Use these steps to flash an image using `bmaptool`:
+          ABIEXTENSION = "eabi"
  
- #. *Update your local.conf File:* You need to have the following set
--   in your ``local.conf`` file before building your image::
-+   in your ``local.conf`` file before building your image:
+@@ -43,7 +45,9 @@ system and gives an overview of their function and contents.
+       requirement on the existence of the package.
+ 
+       Like all package-controlling variables, you must always use them in
+-      conjunction with a package name override, as in::
++      conjunction with a package name override, as in:
 +
-+   .. code-block:: bitbake
++      .. code-block:: bitbake
  
-       IMAGE_FSTYPES += "wic wic.bmap"
+          ALLOW_EMPTY:${PN} = "1"
+          ALLOW_EMPTY:${PN}-dev = "1"
+@@ -58,7 +62,9 @@ system and gives an overview of their function and contents.
  
-diff --git a/documentation/dev-manual/build-quality.rst b/documentation/dev-manual/build-quality.rst
-index e9b066c4453f..6682122d4ee4 100644
---- a/documentation/dev-manual/build-quality.rst
-+++ b/documentation/dev-manual/build-quality.rst
-@@ -36,7 +36,9 @@ Enabling and Disabling Build History
- Build history is disabled by default. To enable it, add the following
- :term:`INHERIT` statement and set the :term:`BUILDHISTORY_COMMIT` variable to
- "1" at the end of your ``conf/local.conf`` file found in the
--:term:`Build Directory`::
-+:term:`Build Directory`:
+       To use the variable, list out the package's commands that are also
+       provided by another package. For example, if the ``busybox`` package
+-      has four such commands, you identify them as follows::
++      has four such commands, you identify them as follows:
 +
-+.. code-block:: bitbake
++      .. code-block:: bitbake
  
-    INHERIT += "buildhistory"
-    BUILDHISTORY_COMMIT = "1"
-@@ -261,7 +263,9 @@ image. If you are just interested in this information and not interested
- in collecting specific package or SDK information, you can enable
- writing only image information without any history by adding the
- following to your ``conf/local.conf`` file found in the
--:term:`Build Directory`::
-+:term:`Build Directory`:
+          ALTERNATIVE:busybox = "sh sed test bracket"
+ 
+@@ -71,7 +77,9 @@ system and gives an overview of their function and contents.
+       locations. For example, if the ``bracket`` command provided by the
+       ``busybox`` package is duplicated through another package, you must
+       use the :term:`ALTERNATIVE_LINK_NAME` variable to specify the actual
+-      location::
++      location:
 +
-+.. code-block:: bitbake
++      .. code-block:: bitbake
  
-    INHERIT += "buildhistory"
-    BUILDHISTORY_COMMIT = "0"
-diff --git a/documentation/dev-manual/building.rst b/documentation/dev-manual/building.rst
-index 60cb22785725..cb073a2be5ad 100644
---- a/documentation/dev-manual/building.rst
-+++ b/documentation/dev-manual/building.rst
-@@ -230,14 +230,18 @@ To achieve this, you need to perform some additional steps:
- #. *Create a multiconfig for your Initramfs image:* You can perform the steps
-    on ":ref:`dev-manual/building:building images for multiple targets using multiple configurations`" to create a separate multiconfig.
-    For the sake of simplicity let's assume such multiconfig is called: ``initramfscfg.conf`` and
--   contains the variables::
-+   contains the variables:
+          ALTERNATIVE_LINK_NAME[bracket] = "/usr/bin/["
+ 
+@@ -92,7 +100,9 @@ system and gives an overview of their function and contents.
+       default regardless of the command name or package, a default for
+       specific duplicated commands regardless of the package, or a default
+       for specific commands tied to particular packages. Here are the
+-      available syntax forms::
++      available syntax forms:
 +
-+   .. code-block:: bitbake
++      .. code-block:: bitbake
  
-       TMPDIR = "${TOPDIR}/tmp-initramfscfg"
-       TCLIBC = "musl"
- 
- #. *Set additional Initramfs variables on your main configuration:*
-    Additionally, on your main configuration (``local.conf``) you need to set the
--   variables::
-+   variables:
+          ALTERNATIVE_PRIORITY = "priority"
+          ALTERNATIVE_PRIORITY[name] = "priority"
+@@ -108,7 +118,9 @@ system and gives an overview of their function and contents.
+       default location for all duplicated commands regardless of the
+       command name or package, a default for specific duplicated commands
+       regardless of the package, or a default for specific commands tied to
+-      particular packages. Here are the available syntax forms::
++      particular packages. Here are the available syntax forms:
 +
-+   .. code-block:: bitbake
++      .. code-block:: bitbake
  
-      INITRAMFS_MULTICONFIG = "initramfscfg"
-      INITRAMFS_DEPLOY_DIR_IMAGE = "${TOPDIR}/tmp-initramfscfg/deploy/images/${MACHINE}"
-@@ -416,7 +420,9 @@ instead of ``udev``.
- 
- Use your ``local.conf`` file to make changes. For example, to eliminate
- ``udev`` and ``glib``, set the following in the local configuration
--file::
-+file:
+          ALTERNATIVE_TARGET = "target"
+          ALTERNATIVE_TARGET[name] = "target"
+@@ -156,7 +168,9 @@ system and gives an overview of their function and contents.
+       determines the type of information used to create a released archive.
+       You can use this variable to create archives of patched source,
+       original source, configured source, and so forth by employing the
+-      following variable flags (varflags)::
++      following variable flags (varflags):
 +
-+.. code-block:: bitbake
++      .. code-block:: bitbake
  
-    VIRTUAL-RUNTIME_dev_manager = ""
+          ARCHIVER_MODE[src] = "original"                   # Uses original (unpacked) source files.
+          ARCHIVER_MODE[src] = "patched"                    # Uses patched source files. This is the default.
+@@ -196,7 +210,9 @@ system and gives an overview of their function and contents.
+          shlibname:packagename[_version]
  
-@@ -603,7 +609,9 @@ your tunings to best consider build times and package feed maintenance.
-    machine-architecture dependent, make sure your recipe enables the
-    "machine" package architecture through the
-    :term:`MACHINE_ARCH`
--   variable::
-+   variable:
+       Here is an example that adds a shared library named ``libEGL.so.1``
+-      as being provided by the ``libegl-implementation`` package::
++      as being provided by the ``libegl-implementation`` package:
 +
-+   .. code-block:: bitbake
++      .. code-block:: bitbake
  
-       PACKAGE_ARCH = "${MACHINE_ARCH}"
+          ASSUME_SHLIBS = "libEGL.so.1:libegl-implementation"
  
-@@ -611,7 +619,9 @@ your tunings to best consider build times and package feed maintenance.
-    specifically enable a package architecture through the
-    :term:`PACKAGE_ARCH`, The
-    OpenEmbedded build system defaults to the
--   :term:`TUNE_PKGARCH` setting::
-+   :term:`TUNE_PKGARCH` setting:
-+
-+   .. code-block:: bitbake
+@@ -217,14 +233,18 @@ system and gives an overview of their function and contents.
  
-       PACKAGE_ARCH = "${TUNE_PKGARCH}"
- 
-@@ -707,13 +717,17 @@ the external directory and use it as is, not copy it.
- To build from software that comes from an external source, all you need to do
- is inherit the :ref:`ref-classes-externalsrc` class and then set
- the :term:`EXTERNALSRC` variable to point to your external source code. Here
--are the statements to put in your ``local.conf`` file::
-+are the statements to put in your ``local.conf`` file:
-+
-+.. code-block:: bitbake
- 
-    INHERIT += "externalsrc"
-    EXTERNALSRC:pn-myrecipe = "path-to-your-source-tree"
- 
- This next example shows how to accomplish the same thing by setting
--:term:`EXTERNALSRC` in the recipe itself or in the recipe's append file::
-+:term:`EXTERNALSRC` in the recipe itself or in the recipe's append file:
-+
-+.. code-block:: bitbake
- 
-    EXTERNALSRC = "path"
-    EXTERNALSRC_BUILD = "path"
-@@ -729,7 +743,9 @@ directory separate from the external source directory as specified by
- to have the source built in the same directory in which it resides, or
- some other nominated directory, you can set
- :term:`EXTERNALSRC_BUILD`
--to point to that directory::
-+to point to that directory:
-+
-+.. code-block:: bitbake
- 
-    EXTERNALSRC_BUILD:pn-myrecipe = "path-to-your-source-tree"
- 
-@@ -757,7 +773,9 @@ Follow these steps to populate your Downloads directory:
-    an empty location or one that does not yet exist.
- 
- #. *Generate Tarballs of the Source Git Repositories:* Edit your
--   ``local.conf`` configuration file as follows::
-+   ``local.conf`` configuration file as follows:
-+
-+   .. code-block:: bitbake
- 
-       DL_DIR = "/home/your-download-dir/"
-       BB_GENERATE_MIRROR_TARBALLS = "1"
-@@ -795,7 +813,9 @@ directory:
- #. *Using Local Files Only:* Inside your ``local.conf`` file, add the
-    :term:`SOURCE_MIRROR_URL` variable, inherit the
-    :ref:`ref-classes-own-mirrors` class, and add the
--   :term:`BB_NO_NETWORK` variable to your ``local.conf``::
-+   :term:`BB_NO_NETWORK` variable to your ``local.conf``:
-+
-+   .. code-block:: bitbake
- 
-       SOURCE_MIRROR_URL ?= "file:///home/your-download-dir/"
-       INHERIT += "own-mirrors"
-@@ -824,7 +844,9 @@ directory:
-       The offline build does not work if recipes attempt to find the
-       latest version of software by setting
-       :term:`SRCREV` to
--      ``${``\ :term:`AUTOREV`\ ``}``::
-+      ``${``\ :term:`AUTOREV`\ ``}``:
+    :term:`AUTOREV`
+       When :term:`SRCREV` is set to the value of this variable, it specifies to
+-      use the latest source revision in the repository. Here is an example::
++      use the latest source revision in the repository. Here is an example:
 +
 +      .. code-block:: bitbake
  
           SRCREV = "${AUTOREV}"
  
-diff --git a/documentation/dev-manual/creating-fragments.rst b/documentation/dev-manual/creating-fragments.rst
-index 8dabd599f13f..ea9ad8eb23dc 100644
---- a/documentation/dev-manual/creating-fragments.rst
-+++ b/documentation/dev-manual/creating-fragments.rst
-@@ -61,7 +61,7 @@ Build System`:
- After creating these variables, our custom fragment should look like the
- following:
- 
--.. code-block::
-+.. code-block:: bitbake
-    :caption: custom-fragment.conf
- 
-    BB_CONF_FRAGMENT_SUMMARY = "This fragment sets a limit of 4 bitbake threads and 4 parsing threads"
-@@ -71,7 +71,7 @@ following:
- For now, our fragment does not have any additional configuration statement.
- Let's add the following assignments to our fragment:
- 
--.. code-block::
-+.. code-block:: bitbake
-    :caption: custom-fragment.conf (continued)
- 
-    BB_NUMBER_THREADS = "4"
-@@ -123,7 +123,7 @@ Adding new :term:`Built-in Fragments <Built-in Fragment>` can be done by
- appending the :term:`OE_FRAGMENTS_BUILTIN` variable from your :term:`layer`
- configuration file:
- 
--.. code-block::
-+.. code-block:: bitbake
-    :caption: layer.conf
- 
-    OE_FRAGMENTS_BUILTIN:append = " custom-builtin-fragment:CUSTOM_VARIABLE"
-diff --git a/documentation/dev-manual/custom-distribution.rst b/documentation/dev-manual/custom-distribution.rst
-index 4dafd2725557..1146d5313102 100644
---- a/documentation/dev-manual/custom-distribution.rst
-+++ b/documentation/dev-manual/custom-distribution.rst
-@@ -87,7 +87,9 @@ layer. The following steps provide some more detail:
-    file in the :term:`Build Directory`, set your :term:`DISTRO` variable to
-    point to your distribution's configuration file. For example, if your
-    distribution's configuration file is named ``mydistro.conf``, then
--   you point to it as follows::
-+   you point to it as follows:
-+
-+   .. code-block:: bitbake
- 
-       DISTRO = "mydistro"
- 
-diff --git a/documentation/dev-manual/customizing-images.rst b/documentation/dev-manual/customizing-images.rst
-index 6eed9ef56a80..b715f83990fa 100644
---- a/documentation/dev-manual/customizing-images.rst
-+++ b/documentation/dev-manual/customizing-images.rst
-@@ -18,7 +18,9 @@ variable changes are in effect for every build and consequently affect
- all images, which might not be what you require.
- 
- To add a package to your image using the local configuration file, use
--the :term:`IMAGE_INSTALL` variable with the ``:append`` operator::
-+the :term:`IMAGE_INSTALL` variable with the ``:append`` operator:
-+
-+.. code-block:: bitbake
- 
-    IMAGE_INSTALL:append = " strace"
- 
-@@ -36,7 +38,9 @@ takes effect.
- 
- As shown in its simplest use, ``IMAGE_INSTALL:append`` affects all
- images. It is possible to extend the syntax so that the variable applies
--to a specific image only. Here is an example::
-+to a specific image only. Here is an example:
-+
-+.. code-block:: bitbake
- 
-    IMAGE_INSTALL:append:pn-core-image-minimal = " strace"
- 
-@@ -105,7 +109,9 @@ Customizing Images Using Custom .bb Files
- 
- You can also customize an image by creating a custom recipe that defines
- additional software as part of the image. The following example shows
--the form for the two lines you need::
-+the form for the two lines you need:
-+
-+.. code-block:: bitbake
- 
-    IMAGE_INSTALL = "packagegroup-core-x11-base package1 package2"
-    inherit core-image
-@@ -120,7 +126,9 @@ The other method for creating a custom image is to base it on an
- existing image. For example, if you want to create an image based on
- ``core-image-sato`` but add the additional package ``strace`` to the
- image, copy the ``meta/recipes-sato/images/core-image-sato.bb`` to a new
--``.bb`` and add the following line to the end of the copy::
-+``.bb`` and add the following line to the end of the copy:
-+
-+.. code-block:: bitbake
- 
-    IMAGE_INSTALL += "strace"
- 
-@@ -151,7 +159,9 @@ in the ``packagegroup-base.bb`` recipe.
- Here is a short, fabricated example showing the same basic pieces for a
- hypothetical packagegroup defined in ``packagegroup-custom.bb``, where
- the variable :term:`PN` is the standard way to abbreviate the reference to
--the full packagegroup name ``packagegroup-custom``::
-+the full packagegroup name ``packagegroup-custom``:
-+
-+.. code-block:: bitbake
- 
-    DESCRIPTION = "My Custom Package Groups"
- 
-@@ -193,11 +203,15 @@ configured hostname written to ``/etc/hostname`` is "qemux86".
- 
- You can customize this name by altering the value of the "hostname"
- variable in the ``base-files`` recipe using either an append file or a
--configuration file. Use the following in an append file::
-+configuration file. Use the following in an append file:
-+
-+.. code-block:: bitbake
- 
-    hostname = "myhostname"
- 
--Use the following in a configuration file::
-+Use the following in a configuration file:
-+
-+.. code-block:: bitbake
- 
-    hostname:pn-base-files = "myhostname"
- 
-@@ -212,7 +226,9 @@ you can easily reset the default hostname.
- 
- Another point of interest is that if you unset the variable, the image
- will have no default hostname in the filesystem. Here is an example that
--unsets the variable in a configuration file::
-+unsets the variable in a configuration file:
-+
-+.. code-block:: bitbake
- 
-   hostname:pn-base-files = ""
- 
-diff --git a/documentation/dev-manual/debugging.rst b/documentation/dev-manual/debugging.rst
-index 3afc17ad4ba2..6ee101721ef8 100644
---- a/documentation/dev-manual/debugging.rst
-+++ b/documentation/dev-manual/debugging.rst
-@@ -628,7 +628,9 @@ in the log, use the "debug" loglevel.
- Here is an example written in Python. The code handles logging for
- a function that determines the number of tasks needed to be run. See the
- ":ref:`ref-tasks-listtasks`"
--section for additional information::
-+section for additional information:
-+
-+.. code-block:: bitbake
- 
-    python do_listtasks() {
-        bb.debug(2, "Starting to figure out the task list")
-@@ -654,7 +656,9 @@ The syntax you use for recipes written in Bash is similar to that of
- recipes written in Python described in the previous section.
- 
- Here is an example written in Bash. The code logs the progress of
--the ``do_my_function`` function::
-+the ``do_my_function`` function:
-+
-+.. code-block:: bitbake
- 
-    do_my_function() {
-        bbdebug 2 "Running do_my_function"
-@@ -861,7 +865,9 @@ The final thing you need to do to implement the fix in the build is to
- update the "neard" recipe (i.e. ``neard-0.14.bb``) so that the
- :term:`SRC_URI` statement includes
- the patch file. The recipe file is in the folder above the patch. Here
--is what the edited :term:`SRC_URI` statement would look like::
-+is what the edited :term:`SRC_URI` statement would look like:
-+
-+.. code-block:: bitbake
- 
-    SRC_URI = "${KERNELORG_MIRROR}/linux/network/nfc/${BPN}-${PV}.tar.xz \
-               file://neard.in \
-@@ -943,7 +949,9 @@ To run a ``debuginfod`` server, you need to do the following:
-    (it already is in :term:`OpenEmbedded-Core (OE-Core)` defaults and
-    :term:`Poky` reference distribution).
- 
--   If not, set in your distro config file or in ``local.conf``::
-+   If not, set in your distro config file or in ``local.conf``:
-+
-+   .. code-block:: bitbake
- 
-       DISTRO_FEATURES:append = " debuginfod"
- 
-@@ -1010,7 +1018,9 @@ debugger.
- #. *Configure your build system to construct the companion debug
-    filesystem:*
- 
--   In your ``local.conf`` file, set the following::
-+   In your ``local.conf`` file, set the following:
-+
-+   .. code-block:: bitbake
- 
-       IMAGE_GEN_DEBUGFS = "1"
-       IMAGE_FSTYPES_DEBUGFS = "tar.bz2"
-@@ -1029,7 +1039,9 @@ debugger.
- 
- #. *Configure the system to include gdbserver in the target filesystem:*
- 
--   Make the following addition in your ``local.conf`` file::
-+   Make the following addition in your ``local.conf`` file:
-+
-+   .. code-block:: bitbake
- 
-       EXTRA_IMAGE_FEATURES:append = " tools-debug"
- 
-@@ -1165,17 +1177,23 @@ debug on the target hardware.
- To support this kind of debugging, you need do the following:
- 
- -  Ensure that GDB is on the target. You can do this by making
--   the following addition to your ``local.conf`` file::
-+   the following addition to your ``local.conf`` file:
-+
-+   .. code-block:: bitbake
- 
-       EXTRA_IMAGE_FEATURES:append = " tools-debug"
- 
- -  Ensure that debug symbols are present. You can do so by adding the
--   corresponding ``-dbg`` package to :term:`IMAGE_INSTALL`::
-+   corresponding ``-dbg`` package to :term:`IMAGE_INSTALL`:
-+
-+   .. code-block:: bitbake
- 
-       IMAGE_INSTALL:append = " packagename-dbg"
- 
-    Alternatively, you can add the following to ``local.conf`` to include
--   all the debug symbols::
-+   all the debug symbols:
-+
-+   .. code-block:: bitbake
- 
-       EXTRA_IMAGE_FEATURES:append = " dbg-pkgs"
- 
-@@ -1185,7 +1203,9 @@ To support this kind of debugging, you need do the following:
-    of optimization used by the compiler. For example, when adding the
-    following line to your ``local.conf`` file, you will reduce optimization
-    from :term:`FULL_OPTIMIZATION` of "-O2" to :term:`DEBUG_OPTIMIZATION`
--   of "-O -fno-omit-frame-pointer"::
-+   of "-O -fno-omit-frame-pointer":
-+
-+   .. code-block:: bitbake
- 
-            DEBUG_BUILD = "1"
- 
-diff --git a/documentation/dev-manual/device-manager.rst b/documentation/dev-manual/device-manager.rst
-index 49fc785feccb..1fa572090804 100644
---- a/documentation/dev-manual/device-manager.rst
-+++ b/documentation/dev-manual/device-manager.rst
-@@ -23,7 +23,9 @@ Using Persistent and Pre-Populated ``/dev``
- 
- To use the static method for device population, you need to set the
- :term:`USE_DEVFS` variable to "0"
--as follows::
-+as follows:
-+
-+.. code-block:: bitbake
- 
-    USE_DEVFS = "0"
- 
-@@ -35,7 +37,9 @@ machine or distro configuration file. Alternatively, you can set this
- variable in your ``local.conf`` configuration file.
- 
- If you do not define the :term:`IMAGE_DEVICE_TABLES` variable, the default
--``device_table-minimal.txt`` is used::
-+``device_table-minimal.txt`` is used:
-+
-+.. code-block:: bitbake
- 
-    IMAGE_DEVICE_TABLES = "device_table-mymachine.txt"
- 
-@@ -47,7 +51,9 @@ Using ``devtmpfs`` and a Device Manager
- 
- To use the dynamic method for device population, you need to use (or be
- sure to set) the :term:`USE_DEVFS`
--variable to "1", which is the default::
-+variable to "1", which is the default:
-+
-+.. code-block:: bitbake
- 
-    USE_DEVFS = "1"
- 
-diff --git a/documentation/dev-manual/devtool.rst b/documentation/dev-manual/devtool.rst
-index d67f22277342..2078678a855e 100644
---- a/documentation/dev-manual/devtool.rst
-+++ b/documentation/dev-manual/devtool.rst
-@@ -981,7 +981,9 @@ the :term:`DEPENDS` variable in the original recipe to include the new
- recipe.
- 
- If you need to add runtime dependencies, you can do so by adding the
--following to your recipe::
-+following to your recipe:
-+
-+.. code-block:: bitbake
- 
-    RDEPENDS:${PN} += "dependency1 dependency2 ..."
- 
-@@ -1062,7 +1064,9 @@ mind:
-    the command line, add the variable setting to
-    :term:`EXTRA_OEMAKE` or
-    :term:`PACKAGECONFIG_CONFARGS`
--   within the recipe. Here is an example using :term:`EXTRA_OEMAKE`::
-+   within the recipe. Here is an example using :term:`EXTRA_OEMAKE`:
-+
-+   .. code-block:: bitbake
- 
-       EXTRA_OEMAKE += "'CC=${CC}' 'CXX=${CXX}'"
- 
-diff --git a/documentation/dev-manual/disk-space.rst b/documentation/dev-manual/disk-space.rst
-index ba3afa5a2cab..efc7529d9263 100644
---- a/documentation/dev-manual/disk-space.rst
-+++ b/documentation/dev-manual/disk-space.rst
-@@ -8,7 +8,9 @@ Conserving Disk Space During Builds
- 
- To help conserve disk space during builds, you can add the following
- statement to your project's ``local.conf`` configuration file found in
--the :term:`Build Directory`::
-+the :term:`Build Directory`:
-+
-+.. code-block:: bitbake
- 
-    INHERIT += "rm_work"
- 
-diff --git a/documentation/dev-manual/error-reporting-tool.rst b/documentation/dev-manual/error-reporting-tool.rst
-index 30d1ce2b315b..3b765e30db51 100644
---- a/documentation/dev-manual/error-reporting-tool.rst
-+++ b/documentation/dev-manual/error-reporting-tool.rst
-@@ -28,14 +28,18 @@ Enabling and Using the Tool
- By default, the error reporting tool is disabled. You can enable it by
- inheriting the :ref:`ref-classes-report-error` class by adding the
- following statement to the end of your ``local.conf`` file in your
--:term:`Build Directory`::
-+:term:`Build Directory`:
-+
-+.. code-block:: bitbake
- 
-    INHERIT += "report-error"
- 
- By default, the error reporting feature stores information in
- ``${``\ :term:`LOG_DIR`\ ``}/error-report``.
- However, you can specify a directory to use by adding the following to
--your ``local.conf`` file::
-+your ``local.conf`` file:
-+
-+.. code-block:: bitbake
- 
-    ERR_REPORT_DIR = "path"
- 
-@@ -70,7 +74,9 @@ Disabling the Tool
- 
- To disable the error reporting feature, simply remove or comment out the
- following statement from the end of your ``local.conf`` file in your
--:term:`Build Directory`::
-+:term:`Build Directory`:
-+
-+.. code-block:: bitbake
- 
-    INHERIT += "report-error"
- 
-diff --git a/documentation/dev-manual/external-scm.rst b/documentation/dev-manual/external-scm.rst
-index e7ab8a4c6b9e..dfdd6853ff68 100644
---- a/documentation/dev-manual/external-scm.rst
-+++ b/documentation/dev-manual/external-scm.rst
-@@ -13,7 +13,9 @@ Subversion (SVN) and Git.
- 
- To enable this behavior, the :term:`PV` of
- the recipe needs to include a ``+`` sign in its assignment.
--Here is an example::
-+Here is an example:
-+
-+.. code-block:: bitbake
- 
-    PV = "1.2.3+git"
- 
-@@ -21,7 +23,9 @@ Here is an example::
- during the packaging phase.
- 
- Then, you can add the following to your
--``local.conf``::
-+``local.conf``:
-+
-+.. code-block:: bitbake
- 
-    SRCREV:pn-PN = "${AUTOREV}"
- 
-@@ -29,17 +33,23 @@ Then, you can add the following to your
- which you want to enable automatic source revision updating.
- 
- If you do not want to update your local configuration file, you can add
--the following directly to the recipe to finish enabling the feature::
-+the following directly to the recipe to finish enabling the feature:
-+
-+.. code-block:: bitbake
- 
-    SRCREV = "${AUTOREV}"
- 
- The Yocto Project provides a distribution named ``poky-bleeding``, whose
--configuration file contains the line::
-+configuration file contains the line:
-+
-+.. code-block:: bitbake
- 
-    require conf/distro/include/poky-floating-revisions.inc
- 
- This line pulls in the listed include file that defines the set of
--AUTOREV-enabled recipes::
-+AUTOREV-enabled recipes:
-+
-+.. code-block:: bitbake
- 
-    INHERIT += "poky-bleeding"
- 
-diff --git a/documentation/dev-manual/gobject-introspection.rst b/documentation/dev-manual/gobject-introspection.rst
-index 8203f17f0177..c57b0a302227 100644
---- a/documentation/dev-manual/gobject-introspection.rst
-+++ b/documentation/dev-manual/gobject-introspection.rst
-@@ -52,7 +52,9 @@ library package involves the following:
- #. Try to build the recipe. If you encounter build errors that look like
-    something is unable to find ``.so`` libraries, check where these
-    libraries are located in the source tree and add the following to the
--   recipe::
-+   recipe:
-+
-+   .. code-block:: bitbake
- 
-       GIR_EXTRA_LIBS_PATH = "${B}/something/.libs"
- 
-@@ -82,7 +84,9 @@ perhaps QEMU does not work on your build host and target architecture
- combination. If so, you can use either of the following methods to
- disable GIR file generations:
- 
---  Add the following to your distro configuration::
-+-  Add the following to your distro configuration:
-+
-+   .. code-block:: bitbake
- 
-       DISTRO_FEATURES_OPTED_OUT = "gobject-introspection-data"
- 
-@@ -90,7 +94,9 @@ disable GIR file generations:
-    QEMU but will still enable building introspection tools and libraries
-    (i.e. building them does not require the use of QEMU).
- 
---  Add the following to your machine configuration::
-+-  Add the following to your machine configuration:
-+
-+   .. code-block:: bitbake
- 
-       MACHINE_FEATURES_OPTED_OUT = "qemu-usermode"
- 
-diff --git a/documentation/dev-manual/hashequivserver.rst b/documentation/dev-manual/hashequivserver.rst
-index 75b77c30b944..3c1f813cf95f 100644
---- a/documentation/dev-manual/hashequivserver.rst
-+++ b/documentation/dev-manual/hashequivserver.rst
-@@ -79,7 +79,9 @@ Yocto Project Build Setup
- =========================
- 
- To use the server started in the previous section, set the following variables
--in a :term:`configuration file`::
-+in a :term:`configuration file`:
-+
-+.. code-block:: bitbake
- 
-    BB_HASHSERVE = "<bind address>"
-    BB_SIGNATURE_HANDLER = "OEEquivHash"
-@@ -91,7 +93,9 @@ See the documentation of :term:`BB_SIGNATURE_HANDLER` for more details on this
- variable.
- 
- You can optionally specify an upstream server with :term:`BB_HASHSERVE_UPSTREAM`
--variable. For example::
-+variable. For example:
-+
-+.. code-block:: bitbake
- 
-    BB_HASHSERVE_UPSTREAM = "wss://hashserv.yoctoproject.org/ws"
- 
-@@ -101,7 +105,9 @@ This will make the local server pull hashes from the upstream server. The
- 
- To output debugging information on what is happening with Hash Equivalence when
- builds are started, you can configure :term:`BitBake` logging as follows from a
--:term:`configuration file`::
-+:term:`configuration file`:
-+
-+.. code-block:: bitbake
- 
-    BB_LOGCONFIG = "hashequiv.json"
- 
-diff --git a/documentation/dev-manual/init-manager.rst b/documentation/dev-manual/init-manager.rst
-index c9d344a88bf3..51644df2dd51 100644
---- a/documentation/dev-manual/init-manager.rst
-+++ b/documentation/dev-manual/init-manager.rst
-@@ -54,7 +54,9 @@ Using SysVinit with udev
- =========================
- 
- SysVinit with the udev device manager corresponds to the
--default setting in :term:`Poky`. This corresponds to setting::
-+default setting in :term:`Poky`. This corresponds to setting:
-+
-+.. code-block:: bitbake
- 
-    INIT_MANAGER = "sysvinit"
- 
-@@ -63,7 +65,9 @@ Using BusyBox init with BusyBox mdev
- 
- BusyBox init with BusyBox mdev is the simplest and lightest solution
- for small root filesystems. All you need is BusyBox, which most systems
--have anyway::
-+have anyway:
-+
-+.. code-block:: bitbake
- 
-    INIT_MANAGER = "mdev-busybox"
- 
-@@ -72,7 +76,9 @@ Using systemd
- 
- The last option is to use systemd together with the udev device
- manager. This is the most powerful and versatile solution, especially
--for more complex systems::
-+for more complex systems:
-+
-+.. code-block:: bitbake
- 
-    INIT_MANAGER = "systemd"
- 
-@@ -103,7 +109,9 @@ Using systemd-journald without a traditional syslog daemon
- Counter-intuitively, ``systemd-journald`` is not a syslog runtime or provider,
- and the proper way to use ``systemd-journald`` as your sole logging mechanism is to
- effectively disable syslog entirely by setting these variables in your distribution
--configuration file::
-+configuration file:
-+
-+.. code-block:: bitbake
- 
-    VIRTUAL-RUNTIME_syslog = ""
-    VIRTUAL-RUNTIME_base-utils-syslog = ""
-diff --git a/documentation/dev-manual/layers.rst b/documentation/dev-manual/layers.rst
-index 3937c54ad2cc..a15fce6b93ba 100644
---- a/documentation/dev-manual/layers.rst
-+++ b/documentation/dev-manual/layers.rst
-@@ -212,7 +212,9 @@ following list:
-       machine "one". To do so, you use an append file named
-       ``base-files.bbappend`` and create a dependency on "foo" by
-       altering the :term:`DEPENDS`
--      variable::
-+      variable:
+       If you use the previous statement to retrieve the latest version of
+       software, you need to make sure :term:`PV` contains the ``+`` sign so
+       :term:`bitbake` includes source control information to :term:`PKGV` when
+-      packaging the recipe. For example::
++      packaging the recipe. For example:
 +
 +      .. code-block:: bitbake
  
-          DEPENDS = "foo"
+          PV = "6.10.y+git"
  
-@@ -225,12 +227,16 @@ following list:
-       ``foo``.
- 
-       To make sure your changes apply only when building machine "one",
--      use a machine override with the :term:`DEPENDS` statement::
-+      use a machine override with the :term:`DEPENDS` statement:
+@@ -259,7 +279,9 @@ system and gives an overview of their function and contents.
+       Azure Storage Shared Access Signature, when using the
+       :ref:`Azure Storage fetcher (az://) <bitbake-user-manual/bitbake-user-manual-fetching:fetchers>`
+       This variable can be defined to be used by the fetcher to authenticate
+-      and gain access to non-public artifacts::
++      and gain access to non-public artifacts:
 +
 +      .. code-block:: bitbake
  
-          DEPENDS:one = "foo"
+          AZ_SAS = ""se=2021-01-01&sp=r&sv=2018-11-09&sr=c&skoid=<skoid>&sig=<signature>""
  
-       You should follow the same strategy when using ``:append``
--      and ``:prepend`` operations::
-+      and ``:prepend`` operations:
+@@ -270,7 +292,9 @@ system and gives an overview of their function and contents.
+       The directory within the :term:`Build Directory` in which the
+       OpenEmbedded build system places generated objects during a recipe's
+       build process. By default, this directory is the same as the
+-      :term:`S` directory, which is defined as::
++      :term:`S` directory, which is defined as:
 +
 +      .. code-block:: bitbake
  
-          DEPENDS:append:one = " foo"
-          DEPENDS:prepend:one = "foo "
-@@ -238,7 +244,9 @@ following list:
-       As an actual example, here's a
-       snippet from the generic kernel include file ``linux-yocto.inc``,
-       wherein the kernel compile and link options are adjusted in the
--      case of a subset of the supported architectures::
-+      case of a subset of the supported architectures:
+          S = "${UNPACKDIR}/${BP}"
+ 
+@@ -284,13 +308,17 @@ system and gives an overview of their function and contents.
+       packages are packages installed only through the
+       :term:`RRECOMMENDS` variable. You can prevent any
+       of these "recommended" packages from being installed by listing them
+-      with the :term:`BAD_RECOMMENDATIONS` variable::
++      with the :term:`BAD_RECOMMENDATIONS` variable:
 +
 +      .. code-block:: bitbake
  
-          DEPENDS:append:aarch64 = " libgcc"
-          KERNEL_CC:append:aarch64 = " ${TOOLCHAIN_OPTIONS}"
-@@ -260,7 +268,9 @@ following list:
-       file, you can use an append file to cause the build to use your
-       own version of the file. For example, an append file in your layer
-       at ``meta-one/recipes-core/base-files/base-files.bbappend`` could
--      extend :term:`FILESPATH` using :term:`FILESEXTRAPATHS` as follows::
-+      extend :term:`FILESPATH` using :term:`FILESEXTRAPATHS` as follows:
+          BAD_RECOMMENDATIONS = "package_name package_name package_name ..."
+ 
+       You can set this variable globally in your ``local.conf`` file or you
+       can attach it to a specific image recipe by using the recipe name
+-      override::
++      override:
 +
 +      .. code-block:: bitbake
  
-          FILESEXTRAPATHS:prepend := "${THISDIR}/${BPN}:"
+          BAD_RECOMMENDATIONS:pn-target_image = "package_name"
  
-@@ -571,7 +581,9 @@ during the build.
+@@ -315,7 +343,9 @@ system and gives an overview of their function and contents.
+       By default, all built binaries will be deployed and installed under their
+       original name.
  
- Here is the append file, which is named ``formfactor_0.0.bbappend``
- and is from the Raspberry Pi BSP Layer named ``meta-raspberrypi``. The
--file is in the layer at ``recipes-bsp/formfactor``::
-+file is in the layer at ``recipes-bsp/formfactor``:
-+
-+.. code-block:: bitbake
- 
-    FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
- 
-@@ -619,7 +631,9 @@ As another example, consider the main ``xserver-xf86-config`` recipe and a
- corresponding ``xserver-xf86-config`` append file both from
- :term:`OpenEmbedded-Core (OE-Core)`.  Here is the main ``xserver-xf86-config`` recipe, which is named
- ``xserver-xf86-config_0.1.bb`` and located in the "meta" layer at
--``meta/recipes-graphics/xorg-xserver``::
-+``meta/recipes-graphics/xorg-xserver``:
-+
-+.. code-block:: bitbake
- 
-    SUMMARY = "X.Org X server configuration file"
-    HOMEPAGE = "http://www.x.org"
-@@ -645,7 +659,9 @@ corresponding ``xserver-xf86-config`` append file both from
- 
- Here is the append file, which is named ``xserver-xf86-config_%.bbappend``
- and is from the Raspberry Pi BSP Layer named ``meta-raspberrypi``. The
--file is in the layer at ``recipes-graphics/xorg-xserver``::
-+file is in the layer at ``recipes-graphics/xorg-xserver``:
-+
-+.. code-block:: bitbake
- 
-    FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
- 
-@@ -685,7 +701,9 @@ build system to calculate it based on the layer's dependencies.
- 
- To specify the layer's priority manually, use the
- :term:`BBFILE_PRIORITY`
--variable and append the layer's root name::
-+variable and append the layer's root name:
-+
-+.. code-block:: bitbake
- 
-    BBFILE_PRIORITY_mylayer = "1"
- 
-@@ -753,14 +771,18 @@ for the kernel only if our feature ``mylayer-kernel`` is part of the
- 
-       PREFERRED_PROVIDER_virtual/kernel = "linux-custom"
- 
--#. Provide a path to this include file in your ``layer.conf``::
-+#. Provide a path to this include file in your ``layer.conf``:
-+
-+   .. code-block:: bitbake
- 
-       META_MYLAYER_KERNEL_PROVIDER_PATH = "${LAYERDIR}/conf/distro/include/mylayer-kernel-provider.inc"
- 
- #. Create a new class in ``meta-mylayer/classes-global/``, for example a class
-    ``meta-mylayer-cfg.bbclass``. Make it conditionally require the file
-    ``mylayer-kernel-provider.inc`` defined above, using the variable
--   ``META_MYLAYER_KERNEL_PROVIDER_PATH`` defined in ``layer.conf``::
-+   ``META_MYLAYER_KERNEL_PROVIDER_PATH`` defined in ``layer.conf``:
-+
-+   .. code-block:: bitbake
- 
-       require ${@bb.utils.contains('DISTRO_FEATURES', 'mylayer-kernel', '${META_MYLAYER_KERNEL_PROVIDER_PATH}', '', d)}
- 
-@@ -773,7 +795,9 @@ for the kernel only if our feature ``mylayer-kernel`` is part of the
-       ``bb.utils.contains`` returns an empty string.
- 
- #. Back to your ``layer.conf`` file, add the class ``meta-mylayer-cfg`` class to
--   the :term:`USER_CLASSES` variable::
-+   the :term:`USER_CLASSES` variable:
-+
-+   .. code-block:: bitbake
- 
-       USER_CLASSES:append = " meta-mylayer-cfg"
- 
-@@ -846,7 +870,9 @@ The following list describes the available commands:
-       variable values, you need to tidy these up yourself. Consider the
-       following example. Here, the ``bitbake-layers`` command adds the
-       line ``#### bbappended ...`` so that you know where the following
--      lines originate::
-+      lines originate:
+-      Here is an example usage of this variable::
++      Here is an example usage of this variable:
 +
 +      .. code-block:: bitbake
  
-          ...
-          DESCRIPTION = "A useful utility"
-@@ -860,7 +886,9 @@ The following list describes the available commands:
-          EXTRA_OECONF += "--enable-somethingelse"
+          BAREBOX_BINARY = "barebox-boundarydevices-imx6dl-nitrogen6x-1g.img"
  
- 
--      Ideally, you would tidy up these utilities as follows::
-+      Ideally, you would tidy up these utilities as follows:
+@@ -326,7 +356,9 @@ system and gives an overview of their function and contents.
+       This variable is mainly useful for generic use cases where a dedicated
+       configuration is not required.
+       The :ref:`ref-classes-barebox` class itself already sets it for some QEMU
+-      machines::
++      machines:
 +
 +      .. code-block:: bitbake
  
-          ...
-          DESCRIPTION = "Customized utility"
-diff --git a/documentation/dev-manual/libraries.rst b/documentation/dev-manual/libraries.rst
-index 160734729183..46ce2856158e 100644
---- a/documentation/dev-manual/libraries.rst
-+++ b/documentation/dev-manual/libraries.rst
-@@ -38,7 +38,9 @@ library files.
-    static library files through ``${PN}-dev``.
+          BAREBOX_CONFIG:qemuarm = "multi_v7_defconfig"
+          BAREBOX_CONFIG:qemuarm64 = "multi_v8_defconfig"
+@@ -361,7 +393,9 @@ system and gives an overview of their function and contents.
  
- Here is a small part of the BitBake configuration file, where you can see
--how the static library files are defined::
-+how the static library files are defined:
+       -  There is limited support for wildcard matching against the beginning of
+          host names. For example, the following setting matches
+-         ``git.gnu.org``, ``ftp.gnu.org``, and ``foo.git.gnu.org``::
++         ``git.gnu.org``, ``ftp.gnu.org``, and ``foo.git.gnu.org``:
 +
-+.. code-block:: bitbake
++         .. code-block:: bitbake
  
-    PACKAGES = "${PN}-src ${PN}-dbg ${PN}-staticdev ${PN}-dev ${PN}-doc ${PN}-locale ${PACKAGE_BEFORE_PN} ${PN}"
+             BB_ALLOWED_NETWORKS = "*.gnu.org"
  
-@@ -118,7 +120,9 @@ Using Multilib
- After you have set up the recipes, you need to define the actual
- combination of multiple libraries you want to build. You accomplish this
- through your ``local.conf`` configuration file in the
--:term:`Build Directory`. An example configuration would be as follows::
-+:term:`Build Directory`. An example configuration would be as follows:
+@@ -473,7 +507,9 @@ system and gives an overview of their function and contents.
+                not specify G, M, or K, Kbytes is assumed by
+                default.  Do not use GB, MB, or KB.
+ 
+-      Here are some examples::
++      Here are some examples:
 +
-+.. code-block:: bitbake
++      .. code-block:: bitbake
  
-    MACHINE = "qemux86-64"
-    require conf/multilib.conf
-@@ -231,7 +235,9 @@ you have other recipes that depend on a given library, you need to use
- the :term:`DEPENDS` variable to
- create the dependency. Continuing with the same example, if you want to
- have a recipe depend on the 1.8 version of the ``clutter`` library, use
--the following in your recipe::
-+the following in your recipe:
+          BB_DISKMON_DIRS = "ABORT,${TMPDIR},1G,100K WARN,${SSTATE_DIR},1G,100K"
+          BB_DISKMON_DIRS = "STOPTASKS,${TMPDIR},1G"
+@@ -513,7 +549,9 @@ system and gives an overview of their function and contents.
+ 
+       If you do not provide a :term:`BB_DISKMON_WARNINTERVAL` variable and you
+       do use :term:`BB_DISKMON_DIRS` with the "WARN" action, the disk
+-      monitoring interval defaults to the following::
++      monitoring interval defaults to the following:
 +
-+.. code-block:: bitbake
++      .. code-block:: bitbake
  
-    DEPENDS = "clutter-1.8"
+          BB_DISKMON_WARNINTERVAL = "50M,5K"
  
-diff --git a/documentation/dev-manual/licenses.rst b/documentation/dev-manual/licenses.rst
-index 774b5db23517..132a848b4660 100644
---- a/documentation/dev-manual/licenses.rst
-+++ b/documentation/dev-manual/licenses.rst
-@@ -28,7 +28,9 @@ Specifying the ``LIC_FILES_CHKSUM`` Variable
+@@ -536,7 +574,9 @@ system and gives an overview of their function and contents.
+                G, M, or K for Gbytes, Mbytes, or Kbytes,
+                respectively. You cannot use GB, MB, or KB.
  
- The :term:`LIC_FILES_CHKSUM` variable contains checksums of the license text
- in the source code for the recipe. Here is an example of how to
--specify :term:`LIC_FILES_CHKSUM`::
-+specify :term:`LIC_FILES_CHKSUM`:
+-      Here is an example::
++      Here is an example:
 +
-+.. code-block:: bitbake
++      .. code-block:: bitbake
  
-    LIC_FILES_CHKSUM = "file://COPYING;md5=xxxx \
-                        file://licfile1.txt;beginline=5;endline=29;md5=yyyy \
-@@ -51,7 +53,9 @@ variable as the default directory when searching files listed in
- :term:`LIC_FILES_CHKSUM`. The previous example employs the default
- directory.
+          BB_DISKMON_DIRS = "WARN,${SSTATE_DIR},1G,100K"
+          BB_DISKMON_WARNINTERVAL = "50M,5K"
+@@ -568,7 +608,9 @@ system and gives an overview of their function and contents.
  
--Consider this next example::
-+Consider this next example:
+       For performance reasons, creating and placing tarballs of these
+       repositories is not the default action by the OpenEmbedded build
+-      system::
++      system:
 +
-+.. code-block:: bitbake
++      .. code-block:: bitbake
  
-    LIC_FILES_CHKSUM = "file://src/ls.c;beginline=5;endline=16;\
-                                        md5=bb14ed3c4cda583abc85401304b5cd4e"
-@@ -113,18 +117,24 @@ are defined on a recipe-by-recipe basis through the
- :term:`LICENSE_FLAGS` variable
- definition in the affected recipe. For instance, the
- ``meta/recipes-multimedia/gstreamer/gstreamer1.0-plugins-ugly`` recipe of
--:term:`OpenEmbedded-Core (OE-Core)` contains the following statement::
-+:term:`OpenEmbedded-Core (OE-Core)` contains the following statement:
+          BB_GENERATE_MIRROR_TARBALLS = "1"
+ 
+@@ -724,7 +766,9 @@ system and gives an overview of their function and contents.
+       long the BitBake server stays resident between invocations.
+ 
+       For example, the following statement in your ``local.conf`` file
+-      instructs the server to be unloaded after 20 seconds of inactivity::
++      instructs the server to be unloaded after 20 seconds of inactivity:
 +
-+.. code-block:: bitbake
++      .. code-block:: bitbake
  
-    LICENSE_FLAGS = "commercial"
+          BB_SERVER_TIMEOUT = "20"
  
- Here is a
- slightly more complicated example that contains both an explicit recipe
--name and version (after variable expansion)::
-+name and version (after variable expansion):
+@@ -775,7 +819,9 @@ system and gives an overview of their function and contents.
+       the form "``multilib:``\ multilib_name".
+ 
+       To build a different variant of the recipe with a minimal amount of
+-      code, it usually is as simple as adding the following to your recipe::
++      code, it usually is as simple as adding the following to your recipe:
 +
-+.. code-block:: bitbake
++      .. code-block:: bitbake
  
-    LICENSE_FLAGS = "license_${PN}_${PV}"
+          BBCLASSEXTEND =+ "native nativesdk"
+          BBCLASSEXTEND =+ "multilib:multilib_name"
+@@ -857,7 +903,9 @@ system and gives an overview of their function and contents.
+       ``collection_name:filename_pattern``.
  
- It is possible to give more details about a specific license
--using flags on the :term:`LICENSE_FLAGS_DETAILS` variable::
-+using flags on the :term:`LICENSE_FLAGS_DETAILS` variable:
+       The following example identifies two collection names and two
+-      filename patterns::
++      filename patterns:
 +
-+.. code-block:: bitbake
++      .. code-block:: bitbake
  
-    LICENSE_FLAGS_DETAILS[my-eula-license] = "For further details, see https://example.com/eula."
- 
-@@ -142,7 +152,9 @@ could add either the string "commercial_gst-plugins-ugly" or the more
- general string "commercial" to :term:`LICENSE_FLAGS_ACCEPTED`. See the
- ":ref:`dev-manual/licenses:license flag matching`" section for a full
- explanation of how :term:`LICENSE_FLAGS` matching works. Here is the
--example::
-+example:
+          BBFILES_DYNAMIC += " \
+             clang-layer:${LAYERDIR}/dynamic-layers/meta-clang/*/*/*.bbappend \
+@@ -888,7 +936,9 @@ system and gives an overview of their function and contents.
+    :term:`BBLAYERS`
+       Lists the layers to enable during the build. This variable is defined
+       in the ``bblayers.conf`` configuration file in the :term:`Build Directory`.
+-      Here is an example::
++      Here is an example:
 +
-+.. code-block:: bitbake
++      .. code-block:: bitbake
  
-    LICENSE_FLAGS_ACCEPTED = "commercial_gst-plugins-ugly"
+          BBLAYERS = " \
+              /home/scottrif/bitbake-builds/layers/meta \
+@@ -920,13 +970,17 @@ system and gives an overview of their function and contents.
  
-@@ -150,7 +162,9 @@ Likewise, to additionally enable the package built from the recipe
- containing ``LICENSE_FLAGS = "license_${PN}_${PV}"``, and assuming that
- the actual recipe name was ``emgd_1.10.bb``, the following string would
- enable that package as well as the original ``gst-plugins-ugly``
--package::
-+package:
+       The following example uses a complete regular expression to tell
+       BitBake to ignore all recipe and recipe append files in the
+-      ``meta-ti/recipes-misc/`` directory::
++      ``meta-ti/recipes-misc/`` directory:
 +
-+.. code-block:: bitbake
++      .. code-block:: bitbake
  
-    LICENSE_FLAGS_ACCEPTED = "commercial_gst-plugins-ugly license_emgd_1.10"
+          BBMASK = "meta-ti/recipes-misc/"
  
-@@ -162,7 +176,9 @@ or characters. A partial string will match any license that contains the
- given string as the first portion of its license. For example, the
- following value will also match both of the packages
- previously mentioned as well as any other packages that have licenses
--starting with "commercial" or "license"::
-+starting with "commercial" or "license":
+       If you want to mask out multiple directories or recipes, you can
+       specify multiple regular expression fragments. This next example
+-      masks out multiple directories and individual recipes::
++      masks out multiple directories and individual recipes:
 +
-+.. code-block:: bitbake
++      .. code-block:: bitbake
  
-    LICENSE_FLAGS_ACCEPTED = "commercial license"
- 
-@@ -207,7 +223,9 @@ For example, simply specifying the string "commercial" in the
- "commercial" such as "commercial_foo" and "commercial_bar", which
- are the strings the build system automatically generates for
- hypothetical recipes named "foo" and "bar" assuming those recipes simply
--specify the following::
-+specify the following:
+          BBMASK += "/meta-ti/recipes-misc/ meta-ti/recipes-ti/packagegroup/"
+          BBMASK += "/meta-oe/recipes-support/"
+@@ -944,7 +998,9 @@ system and gives an overview of their function and contents.
+       building targets with multiple configurations. Use this variable in
+       your ``conf/local.conf`` configuration file. Specify a
+       multiconfigname for each configuration file you are using. For
+-      example, the following line specifies three configuration files::
++      example, the following line specifies three configuration files:
 +
-+.. code-block:: bitbake
++      .. code-block:: bitbake
  
-    LICENSE_FLAGS = "commercial"
+          BBMULTICONFIG = "configA configB configC"
  
-@@ -245,13 +263,17 @@ Other Variables Related to Commercial Licenses
+@@ -987,7 +1043,9 @@ system and gives an overview of their function and contents.
+       and replaced.
  
- There are other helpful variables related to commercial license handling,
- defined in the
--``meta/conf/distro/include/default-distrovars.inc`` file in :term:`OpenEmbedded-Core (OE-Core)`::
-+``meta/conf/distro/include/default-distrovars.inc`` file in :term:`OpenEmbedded-Core (OE-Core)`:
+       To add multiple scripts, separate them by spaces. Here is an example
+-      from the ``libpng`` recipe::
++      from the ``libpng`` recipe:
 +
-+.. code-block:: bitbake
++      .. code-block:: bitbake
  
-    COMMERCIAL_AUDIO_PLUGINS ?= ""
-    COMMERCIAL_VIDEO_PLUGINS ?= ""
+          BINCONFIG = "${bindir}/libpng-config ${bindir}/libpng16-config"
  
- If you want to enable these components, you can do so by making sure you have
--statements similar to the following in your ``local.conf`` configuration file::
-+statements similar to the following in your ``local.conf`` configuration file:
+@@ -1042,7 +1100,9 @@ system and gives an overview of their function and contents.
+    :term:`BUILD_AR`
+       Specifies the architecture-specific :manpage:`archiver <ar(1)>` for the
+       build host, and its default definition is derived in part from
+-      :term:`BUILD_PREFIX`::
++      :term:`BUILD_PREFIX`:
 +
-+.. code-block:: bitbake
++      .. code-block:: bitbake
  
-    COMMERCIAL_AUDIO_PLUGINS = "gst-plugins-ugly-mad \
-        gst-plugins-ugly-mpegaudioparse"
-@@ -262,7 +284,9 @@ statements similar to the following in your ``local.conf`` configuration file::
- Of course, you could also create a matching list for those components using the
- more general "commercial" string in the :term:`LICENSE_FLAGS_ACCEPTED` variable,
- but that would also enable all the other packages with :term:`LICENSE_FLAGS`
--containing "commercial", which you may or may not want::
-+containing "commercial", which you may or may not want:
+          BUILD_AR = "${BUILD_PREFIX}ar"
+ 
+@@ -1063,7 +1123,9 @@ system and gives an overview of their function and contents.
+    :term:`BUILD_AS`
+       Specifies the architecture-specific :manpage:`assembler <as(1)>` for the
+       build host, and its default definition is derived in part from
+-      :term:`BUILD_PREFIX`::
++      :term:`BUILD_PREFIX`:
 +
-+.. code-block:: bitbake
++      .. code-block:: bitbake
  
-    LICENSE_FLAGS_ACCEPTED = "commercial"
+          BUILD_AS = "${BUILD_PREFIX}as ${BUILD_AS_ARCH}"
  
-@@ -361,7 +385,9 @@ create them with various levels of compliance in mind.
- 
- One way of doing this (but certainly not the only way) is to release
- just the source as a tarball. You can do this by adding the following to
--the ``local.conf`` file found in the :term:`Build Directory`::
-+the ``local.conf`` file found in the :term:`Build Directory`:
+@@ -1083,7 +1145,9 @@ system and gives an overview of their function and contents.
+    :term:`BUILD_CC`
+       Specifies the architecture-specific C compiler for the build host,
+       and its default definition is derived in part from :term:`BUILD_PREFIX`
+-      and :term:`BUILD_CC_ARCH`::
++      and :term:`BUILD_CC_ARCH`:
 +
-+.. code-block:: bitbake
++      .. code-block:: bitbake
  
-    INHERIT += "archiver"
-    ARCHIVER_MODE[src] = "original"
-@@ -417,7 +443,9 @@ One requirement that is often overlooked is inclusion of license text.
- This requirement also needs to be dealt with prior to generating the
- final image. Some licenses require the license text to accompany the
- binary. You can achieve this by adding the following to your
--``local.conf`` file::
-+``local.conf`` file:
+          BUILD_CC = "${CCACHE}${BUILD_PREFIX}gcc ${BUILD_CC_ARCH}"
+ 
+@@ -1104,7 +1168,9 @@ system and gives an overview of their function and contents.
+       Specifies the :manpage:`linker <ld(1)>` command to be used for the build
+       host when the C compiler is being used as the linker, and its default
+       definition is derived in part from :term:`BUILD_PREFIX` and
+-      :term:`BUILD_CC_ARCH`::
++      :term:`BUILD_CC_ARCH`:
 +
-+.. code-block:: bitbake
++      .. code-block:: bitbake
  
-    COPY_LIC_MANIFEST = "1"
-    COPY_LIC_DIRS = "1"
-@@ -528,7 +556,9 @@ variable. Using this variable also avoids QA errors when you use a
- non-common, non-CLOSED license in a recipe.
+          BUILD_CCLD = "${BUILD_PREFIX}gcc ${BUILD_CC_ARCH}"
  
- Here is an example that uses the ``LICENSE.Abilis.txt`` file as
--the license from the fetched source::
-+the license from the fetched source:
+@@ -1126,7 +1192,9 @@ system and gives an overview of their function and contents.
+    :term:`BUILD_CPP`
+       Specifies the C preprocessor command (to both the C and the C++ compilers)
+       when building for the build host, and its default definition is derived in
+-      part from :term:`BUILD_PREFIX` and :term:`BUILD_CC_ARCH`::
++      part from :term:`BUILD_PREFIX` and :term:`BUILD_CC_ARCH`:
 +
-+.. code-block:: bitbake
++      .. code-block:: bitbake
  
-    NO_GENERIC_LICENSE[Firmware-Abilis] = "LICENSE.Abilis.txt"
+          BUILD_CPP = "${BUILD_PREFIX}gcc ${BUILD_CC_ARCH} -E"
  
-diff --git a/documentation/dev-manual/limiting-resources.rst b/documentation/dev-manual/limiting-resources.rst
-index 9b3db0a59514..8101a9d1ea3b 100644
---- a/documentation/dev-manual/limiting-resources.rst
-+++ b/documentation/dev-manual/limiting-resources.rst
-@@ -38,7 +38,9 @@ details.
- 
-    If you want to have a different limit from the rest of the build for a
-    recipe, it is also possible to achieve with the following line added to your
--   ``local.conf`` :term:`configuration file`::
-+   ``local.conf`` :term:`configuration file`:
+@@ -1148,7 +1216,9 @@ system and gives an overview of their function and contents.
+    :term:`BUILD_CXX`
+       Specifies the architecture-specific C++ compiler for the build host,
+       and its default definition is derived in part from :term:`BUILD_PREFIX`
+-      and :term:`BUILD_CC_ARCH`::
++      and :term:`BUILD_CC_ARCH`:
 +
-+   .. code-block:: bitbake
++      .. code-block:: bitbake
  
-       PARALLEL_MAKE:pn-linux-yocto = "-j4"
+          BUILD_CXX = "${CCACHE}${BUILD_PREFIX}g++ ${BUILD_CC_ARCH}"
  
-diff --git a/documentation/dev-manual/multiconfig.rst b/documentation/dev-manual/multiconfig.rst
-index 71fe542efbbd..356dcb768def 100644
---- a/documentation/dev-manual/multiconfig.rst
-+++ b/documentation/dev-manual/multiconfig.rst
-@@ -61,7 +61,9 @@ Follow these steps to set up and execute multiple configuration builds:
- 
-    Here is an example showing the minimal statements needed in a
-    :term:`configuration file` named ``qemux86.conf`` for a ``qemux86`` target
--   whose temporary build directory is ``tmp-qemux86``::
-+   whose temporary build directory is ``tmp-qemux86``:
+@@ -1170,7 +1240,9 @@ system and gives an overview of their function and contents.
+    :term:`BUILD_FC`
+       Specifies the Fortran compiler command for the build host, and its default
+       definition is derived in part from :term:`BUILD_PREFIX` and
+-      :term:`BUILD_CC_ARCH`::
++      :term:`BUILD_CC_ARCH`:
 +
-+   .. code-block:: bitbake
++      .. code-block:: bitbake
  
-       MACHINE = "qemux86"
-       TMPDIR .= "-${BB_CURRENT_MC}"
-@@ -77,7 +79,9 @@ Follow these steps to set up and execute multiple configuration builds:
-    variable in your ``conf/local.conf`` configuration file to specify
-    each multiconfig. Continuing with the example from the previous
-    figure, the :term:`BBMULTICONFIG` variable needs to enable two
--   multiconfigs: "x86" and "arm" by specifying each configuration file::
-+   multiconfigs: "x86" and "arm" by specifying each configuration file:
+          BUILD_FC = "${BUILD_PREFIX}gfortran ${BUILD_CC_ARCH}"
+ 
+@@ -1186,7 +1258,9 @@ system and gives an overview of their function and contents.
+    :term:`BUILD_LD`
+       Specifies the linker command for the build host, and its default
+       definition is derived in part from :term:`BUILD_PREFIX` and
+-      :term:`BUILD_LD_ARCH`::
++      :term:`BUILD_LD_ARCH`:
 +
-+   .. code-block:: bitbake
++      .. code-block:: bitbake
  
-       BBMULTICONFIG = "x86 arm"
+          BUILD_LD = "${BUILD_PREFIX}ld ${BUILD_LD_ARCH}"
  
-@@ -134,13 +138,17 @@ essentially that the
- 
- To enable dependencies in a multiple configuration build, you must
- declare the dependencies in the recipe using the following statement
--form::
-+form:
+@@ -1212,7 +1286,9 @@ system and gives an overview of their function and contents.
+    :term:`BUILD_NM`
+       Specifies the architecture-specific utility to list symbols from object
+       files for the build host, and its default definition is derived in part
+-      from :term:`BUILD_PREFIX`::
++      from :term:`BUILD_PREFIX`:
 +
-+.. code-block:: bitbake
++      .. code-block:: bitbake
  
-    task_or_package[mcdepends] = "mc:from_multiconfig:to_multiconfig:recipe_name:task_on_which_to_depend"
+          BUILD_NM = "${BUILD_PREFIX}nm"
  
- To better show how to use this statement, consider the example scenario
- from the first paragraph of this section. The following statement needs
--to be added to the recipe that builds the ``core-image-sato`` image::
-+to be added to the recipe that builds the ``core-image-sato`` image:
+@@ -1228,7 +1304,9 @@ system and gives an overview of their function and contents.
+    :term:`BUILD_OBJCOPY`
+       Specifies the architecture-specific utility to copy object files for the
+       build host, and its default definition is derived in part from
+-      :term:`BUILD_PREFIX`::
++      :term:`BUILD_PREFIX`:
 +
-+.. code-block:: bitbake
++      .. code-block:: bitbake
  
-    do_image[mcdepends] = "mc:x86:arm:core-image-minimal:do_rootfs"
+          BUILD_OBJCOPY = "${BUILD_PREFIX}objcopy"
  
-@@ -161,7 +169,9 @@ dependency, BitBake also executes through the :ref:`ref-tasks-rootfs` task for t
- 
- Having a recipe depend on the root filesystem of another build might not
- seem that useful. Consider this change to the statement in the
--``core-image-sato`` recipe::
-+``core-image-sato`` recipe:
+@@ -1244,7 +1322,9 @@ system and gives an overview of their function and contents.
+    :term:`BUILD_OBJDUMP`
+       Specifies the architecture-specific utility to display object files
+       information for the build host, and its default definition is derived in
+-      part from :term:`BUILD_PREFIX`::
++      part from :term:`BUILD_PREFIX`:
 +
-+.. code-block:: bitbake
++      .. code-block:: bitbake
  
-    do_image[mcdepends] = "mc:x86:arm:core-image-minimal:do_image"
+          BUILD_OBJDUMP = "${BUILD_PREFIX}objdump"
  
-@@ -192,7 +202,9 @@ Suggested best practices
-    the deployed item based on :term:`TMPDIR`.
- 
-    The :ref:`ref-tasks-install` and :ref:`ref-tasks-deploy` tasks should look
--   like this::
-+   like this:
+@@ -1280,7 +1360,9 @@ system and gives an overview of their function and contents.
+    :term:`BUILD_RANLIB`
+       Specifies the architecture-specific utility to generate indexes for
+       archives for the build host, and its default definition is derived in part
+-      from :term:`BUILD_PREFIX`::
++      from :term:`BUILD_PREFIX`:
 +
-+   .. code-block:: bitbake
++      .. code-block:: bitbake
  
-       do_install() {
-           install -m 0644 ${TMPDIR}-<multiconfig>/tmp/deploy/images/<machine>/somefile ${D}/some/path
-@@ -234,7 +246,9 @@ Configuration Build`, each multiconfig will require a separate
- :term:`TMPDIR` for our baremetal firmware build configuration.
+          BUILD_RANLIB = "${BUILD_PREFIX}ranlib -D"
  
- For example, we will define a new ``conf/multiconfig/baremetal-firmware.conf``
--as follows::
-+as follows:
+@@ -1296,7 +1378,9 @@ system and gives an overview of their function and contents.
+    :term:`BUILD_READELF`
+       Specifies the architecture-specific utility to display information about
+       ELF files for the build host, and its default definition is derived in
+-      part from :term:`BUILD_PREFIX`::
++      part from :term:`BUILD_PREFIX`:
 +
-+.. code-block:: bitbake
++      .. code-block:: bitbake
  
-    TMPDIR .= "-${BB_CURRENT_MC}"
-    TCLIBC = "newlib"
-@@ -272,7 +286,9 @@ Using a ``mcdepend``, a recipe belonging to the Linux build can trigger the
- build of ``my-firmware``. For example, let's consider that our Linux build needs
- to assemble a "special" firmware that uses the output of our ``my-firmware``
- recipe - let's call it ``my-parent-firmware.bb``. Then, we should specify this
--dependency in ``my-parent-firmware.bb`` with::
-+dependency in ``my-parent-firmware.bb`` with:
+          BUILD_READELF = "${BUILD_PREFIX}readelf"
+ 
+@@ -1312,7 +1396,9 @@ system and gives an overview of their function and contents.
+    :term:`BUILD_STRIP`
+       Specifies the command to be used to strip debugging symbols from binaries
+       produced for the build host, and its default definition is derived in part
+-      from :term:`BUILD_PREFIX`::
++      from :term:`BUILD_PREFIX`:
 +
-+.. code-block:: bitbake
++      .. code-block:: bitbake
  
-    do_compile[mcdepends] = "mc::baremetal-firmware:my-firmware:do_deploy"
+          BUILD_STRIP = "${BUILD_PREFIX}strip"
  
-@@ -287,7 +303,9 @@ After ``my-firmware`` recipe has deployed ``my-firmware.elf``, we need to use
- the output in some way. We can make a series of assumptions, based on the
- default Yocto Project variables in order to get the binary for packaging.
+@@ -1358,7 +1444,9 @@ system and gives an overview of their function and contents.
+       "1".
  
--First, we can set the following in ``my-parent-firmware.bb``::
-+First, we can set the following in ``my-parent-firmware.bb``:
+       By default, the :ref:`ref-classes-buildhistory` class
+-      enables committing the buildhistory output in a local Git repository::
++      enables committing the buildhistory output in a local Git repository:
 +
-+.. code-block:: bitbake
++      .. code-block:: bitbake
  
-    FIRMWARE_FILE ??= "${TMPDIR}-baremetal-firmware/deploy/images/<machine>/my-firmware.elf"
-    FIRMWARE_FILE[vardepsexclude] += "TMPDIR"
-@@ -302,7 +320,9 @@ cache <overview-manual/concepts:shared state cache>`.
- Additionally, ``<machine>`` should be replaced by the :term:`MACHINE` for which
- we are building in the baremetal-firmware context.
+          BUILDHISTORY_COMMIT ?= "1"
  
--We can then add a :ref:`ref-tasks-install` task to ``my-parent-firmware``::
-+We can then add a :ref:`ref-tasks-install` task to ``my-parent-firmware``:
+@@ -1375,7 +1463,9 @@ system and gives an overview of their function and contents.
+       does not produce an error.
+ 
+       By default, the :ref:`ref-classes-buildhistory` class sets the variable
+-      as follows::
++      as follows:
 +
-+.. code-block:: bitbake
++      .. code-block:: bitbake
  
-    do_install() {
-        install -Dm 0644 ${FIRMWARE_FILE} ${D}/lib/firmware/my-firmware.elf
-diff --git a/documentation/dev-manual/new-machine.rst b/documentation/dev-manual/new-machine.rst
-index b4d29027be12..c08e359a2e64 100644
---- a/documentation/dev-manual/new-machine.rst
-+++ b/documentation/dev-manual/new-machine.rst
-@@ -77,7 +77,9 @@ of adding a suitable ``defconfig`` file. The file needs to be added into
- a location similar to ``defconfig`` files used for other machines in a
- given kernel recipe. A possible way to do this is by listing the file in
- the :term:`SRC_URI` and adding the machine to the expression in
--:term:`COMPATIBLE_MACHINE`::
-+:term:`COMPATIBLE_MACHINE`:
+          BUILDHISTORY_COMMIT_AUTHOR ?= "buildhistory <buildhistory@${DISTRO}>"
+ 
+@@ -1386,7 +1476,9 @@ system and gives an overview of their function and contents.
+       see the :ref:`ref-classes-buildhistory` class.
+ 
+       By default, the :ref:`ref-classes-buildhistory` class sets the directory
+-      as follows::
++      as follows:
 +
-+.. code-block:: bitbake
++      .. code-block:: bitbake
  
-    COMPATIBLE_MACHINE = '(qemux86|qemumips)'
+          BUILDHISTORY_DIR ?= "${TOPDIR}/buildhistory"
  
-diff --git a/documentation/dev-manual/new-recipe.rst b/documentation/dev-manual/new-recipe.rst
-index d1c863117259..27e9065d5f4c 100644
---- a/documentation/dev-manual/new-recipe.rst
-+++ b/documentation/dev-manual/new-recipe.rst
-@@ -147,7 +147,9 @@ get started. Here are some points on both methods:
- -  *Use and modify the following skeleton recipe:* If for some reason
-    you do not want to use ``recipetool`` and you cannot find an existing
-    recipe that is close to meeting your needs, you can use the following
--   structure to provide the fundamental areas of a new recipe::
-+   structure to provide the fundamental areas of a new recipe:
+@@ -1414,7 +1506,9 @@ system and gives an overview of their function and contents.
+          each file staged (i.e. the output of the task).
+ 
+       By default, the :ref:`ref-classes-buildhistory` class enables the
+-      following features::
++      following features:
 +
-+   .. code-block:: bitbake
++      .. code-block:: bitbake
  
-       DESCRIPTION = ""
-       HOMEPAGE = ""
-@@ -170,7 +172,9 @@ the recipe.
-    recipe through the layer's ``conf/layer.conf`` file and the
-    :term:`BBFILES` variable. This
-    variable sets up a path from which the build system can locate
--   recipes. Here is the typical use::
-+   recipes. Here is the typical use:
+          BUILDHISTORY_FEATURES ?= "image package sdk"
+ 
+@@ -1430,7 +1524,9 @@ system and gives an overview of their function and contents.
+       Consequently, you can include files that might not always be present.
+ 
+       By default, the :ref:`ref-classes-buildhistory` class provides paths to
+-      the following files::
++      the following files:
 +
-+   .. code-block:: bitbake
++      .. code-block:: bitbake
  
-       BBFILES += "${LAYERDIR}/recipes-*/*/*.bb \
-                   ${LAYERDIR}/recipes-*/*/*.bbappend"
-@@ -289,7 +293,9 @@ recipe to match the new version.
- Here is a simple example from the
- :oe_git:`strace recipe </openembedded-core/tree/meta/recipes-devtools/strace>`
- where the source comes from a single tarball. Notice the use of the
--:term:`PV` variable::
-+:term:`PV` variable:
+          BUILDHISTORY_IMAGE_FILES ?= "/etc/passwd /etc/group"
+ 
+@@ -1443,7 +1539,9 @@ system and gives an overview of their function and contents.
+       all use the same top level directory.
+ 
+       By default, the :ref:`ref-classes-buildhistory` class sets the variable
+-      as follows::
++      as follows:
 +
-+.. code-block:: bitbake
++      .. code-block:: bitbake
  
-    SRC_URI = "${GITHUB_BASE_URI}/download/v${PV}/strace-${PV}.tar.xz \
+          BUILDHISTORY_PATH_PREFIX_STRIP ?= ""
  
-@@ -303,7 +309,9 @@ another example that specifies these types of files, see the
- Another way of specifying source is from an SCM. For Git repositories,
- you must specify :term:`SRCREV` and you should specify :term:`PV` to include
- a ``+`` sign in its definition. Here is an example from the recipe
--:oe_git:`l3afpad_git.bb </openembedded-core/tree/meta/recipes-sato/l3afpad/l3afpad_git.bb>`::
-+:oe_git:`l3afpad_git.bb </openembedded-core/tree/meta/recipes-sato/l3afpad/l3afpad_git.bb>`:
+@@ -1461,7 +1559,9 @@ system and gives an overview of their function and contents.
+       repository.
+ 
+       By default, the :ref:`ref-classes-buildhistory` class sets the variable
+-      as follows::
++      as follows:
 +
-+.. code-block:: bitbake
++      .. code-block:: bitbake
  
-    SRC_URI = "git://github.com/stevenhoneyman/l3afpad.git;branch=master;protocol=https"
+          BUILDHISTORY_PUSH_REPO ?= ""
  
-@@ -329,7 +337,9 @@ If your :term:`SRC_URI` variable points to more than a single URL (excluding
- SCM URLs), you need to provide the ``sha256`` checksum for each URL. For these
- cases, you provide a name for each URL as part of the :term:`SRC_URI` and then
- reference that name in the subsequent checksum statements. Here is an example
--combining lines from the files ``git.inc`` and ``git_2.24.1.bb``::
-+combining lines from the files ``git.inc`` and ``git_2.24.1.bb``:
+@@ -1586,7 +1686,9 @@ system and gives an overview of their function and contents.
+          ``bitbake.conf`` file.
+ 
+       As an example, the following override allows you to install extra
+-      files, but only when building for the target::
++      files, but only when building for the target:
 +
-+.. code-block:: bitbake
++      .. code-block:: bitbake
  
-    SRC_URI = "${KERNELORG_MIRROR}/software/scm/git/git-${PV}.tar.gz;name=tarball \
-               ${KERNELORG_MIRROR}/software/scm/git/git-manpages-${PV}.tar.gz;name=manpages"
-@@ -360,7 +370,9 @@ paste them into your recipe and then run the build again to continue.
- This final example is a bit more complicated and is from the
- :oe_git:`rxvt-unicode </openembedded-core/tree/meta/recipes-sato/rxvt-unicode>`
- recipe. The example's :term:`SRC_URI` statement identifies multiple files as the source
--files for the recipe: a tarball, a patch file, a desktop file, and an icon::
-+files for the recipe: a tarball, a patch file, a desktop file, and an icon:
+          do_install:append:class-target() {
+              install my-extra-file ${D}${sysconfdir}
+@@ -1594,7 +1696,9 @@ system and gives an overview of their function and contents.
+ 
+       Here is an example where ``FOO`` is set to
+       "native" when building for the build host, and to "other" when not
+-      building for the build host::
++      building for the build host:
 +
-+.. code-block:: bitbake
++      .. code-block:: bitbake
  
-    SRC_URI = "http://dist.schmorp.de/rxvt-unicode/Attic/rxvt-unicode-${PV}.tar.bz2 \
-               file://xwc.patch \
-@@ -396,7 +408,9 @@ Limiting the Number of Parallel Connections
- Some users are behind firewalls or use servers where the number of parallel
- connections is limited. In such cases, you can limit the number of fetch
- tasks being run in parallel by adding the following to your ``local.conf``
--file::
-+file:
+          FOO:class-native = "native"
+          FOO = "other"
+@@ -1711,7 +1815,9 @@ system and gives an overview of their function and contents.
+ 
+       To add a new feature item pointing to a wildcard, use a variable flag
+       to specify the feature item name and use the value to specify the
+-      wildcard. Here is an example::
++      wildcard. Here is an example:
 +
-+.. code-block:: bitbake
++      .. code-block:: bitbake
  
-    do_fetch[number_threads] = "4"
+          COMPLEMENTARY_GLOB[dev-pkgs] = '*-dev'
  
-@@ -644,7 +658,9 @@ standard mainline kernel, not your own custom one.
- When you use custom kernel headers you need to get them from
- :term:`STAGING_KERNEL_DIR`,
- which is the directory with kernel headers that are required to build
--out-of-tree modules. Your recipe will also need the following::
-+out-of-tree modules. Your recipe will also need the following:
+@@ -1748,7 +1854,9 @@ system and gives an overview of their function and contents.
+ 
+       To use the :term:`CONFFILES` variable, provide a package name override
+       that identifies the resulting package. Then, provide a
+-      space-separated list of files. Here is an example::
++      space-separated list of files. Here is an example:
 +
-+.. code-block:: bitbake
++      .. code-block:: bitbake
  
-    do_configure[depends] += "virtual/kernel:do_shared_workdir"
- 
-@@ -675,7 +691,9 @@ Here are some common issues that cause failures.
- 
-    To fix the problem, you need to either satisfy the missing dependency
-    in the Makefile or whatever script produced the Makefile, or (as a
--   workaround) set :term:`PARALLEL_MAKE` to an empty string::
-+   workaround) set :term:`PARALLEL_MAKE` to an empty string:
+          CONFFILES:${PN} += "${sysconfdir}/file1 \
+              ${sysconfdir}/file2 ${sysconfdir}/file3"
+@@ -1803,7 +1911,9 @@ system and gives an overview of their function and contents.
+       When using the :ref:`ref-classes-autotools` class, the
+       :term:`CONFIGURE_SCRIPT` variable stores the location of the ``configure``
+       script for the Autotools build system. The default definition for this
+-      variable is::
++      variable is:
 +
-+   .. code-block:: bitbake
++      .. code-block:: bitbake
  
-       PARALLEL_MAKE = ""
+          CONFIGURE_SCRIPT ?= "${AUTOTOOLS_SCRIPT_PATH}/configure"
  
-@@ -784,7 +802,9 @@ installed correctly.
-       can result in race conditions. If you experience intermittent failures
-       during :ref:`ref-tasks-install`, you might be able to work around them by
-       disabling parallel Makefile installs by adding the following to the
+@@ -1865,7 +1975,9 @@ system and gives an overview of their function and contents.
+       -   Checksums for the image
+ 
+       An example of :term:`CONVERSION_CMD` from :ref:`ref-classes-image_types`
+-      class is::
++      class is:
++
++      .. code-block:: bitbake
+ 
+          CONVERSION_CMD:lzo = "lzop -9 ${IMAGE_NAME}${IMAGE_NAME_SUFFIX}.${type}"
+ 
+@@ -2038,14 +2150,18 @@ system and gives an overview of their function and contents.
+    :term:`CVE_CHECK_STATUSMAP`
+       Mapping variable for all possible reasons of :term:`CVE_STATUS`:
+       ``Patched``, ``Unpatched`` and ``Ignored``.
+-      See :oecore_path:`meta/conf/cve-check-map.conf` for more details::
++      See :oecore_path:`meta/conf/cve-check-map.conf` for more details:
++
++      .. code-block:: bitbake
+ 
+          CVE_CHECK_STATUSMAP[cpe-incorrect] = "Ignored"
+ 
+    :term:`CVE_CHECK_VEX_JUSTIFICATION`
+       Mapping variable for :term:`CVE_STATUS` reasons
+       (for example ``not-applicable-platform``) to :ref:`ref-classes-vex`
+-      justifications. Should be set as follows::
++      justifications. Should be set as follows:
++
++      .. code-block:: bitbake
+ 
+          CVE_CHECK_VEX_JUSTIFICATION[not-applicable-config] = "vulnerableCodeNotPresent"
+ 
+@@ -2059,14 +2175,18 @@ system and gives an overview of their function and contents.
+       database or matches with multiple entries in the database, the default
+       value needs to be changed.
+ 
+-      Here is an example from the :oe_layerindex:`Berkeley DB recipe </layerindex/recipe/544>`::
++      Here is an example from the :oe_layerindex:`Berkeley DB recipe </layerindex/recipe/544>`:
++
++      .. code-block:: bitbake
+ 
+          CVE_PRODUCT = "oracle_berkeley_db berkeley_db"
+ 
+       Sometimes the product name is not specific enough, for example
+       "tar" has been matching CVEs for the GNU ``tar`` package and also
+       the ``node-tar`` node.js extension. To avoid this problem, use the
+-      vendor name as a prefix. The syntax for this is::
++      vendor name as a prefix. The syntax for this is:
++
++      .. code-block:: bitbake
+ 
+          CVE_PRODUCT = "vendor:package"
+ 
+@@ -2076,7 +2196,9 @@ system and gives an overview of their function and contents.
+ 
+    :term:`CVE_STATUS`
+       The CVE ID which is patched or should be ignored. Here is
+-      an example from the :oe_layerindex:`Python3 recipe</layerindex/recipe/23823>`::
++      an example from the :oe_layerindex:`Python3 recipe</layerindex/recipe/23823>`:
++
++      .. code-block:: bitbake
+ 
+          CVE_STATUS[CVE-2020-15523] = "not-applicable-platform: Issue only applies on Windows"
+ 
+@@ -2087,7 +2209,9 @@ system and gives an overview of their function and contents.
+ 
+    :term:`CVE_STATUS_GROUPS`
+       If there are many CVEs with the same status and reason, they can by simplified by using this
+-      variable instead of many similar lines with :term:`CVE_STATUS`::
++      variable instead of many similar lines with :term:`CVE_STATUS`:
++
++      .. code-block:: bitbake
+ 
+          CVE_STATUS_GROUPS = "CVE_STATUS_WIN CVE_STATUS_PATCHED"
+ 
+@@ -2106,7 +2230,9 @@ system and gives an overview of their function and contents.
+       which do not map to upstream software component release versions and the versions
+       used in the CVE database, then this variable can be used to set the
+       version number for :ref:`ref-classes-vex` or
+-      :ref:`ref-classes-create-spdx`. Example::
++      :ref:`ref-classes-create-spdx`. Example:
++
++      .. code-block:: bitbake
+ 
+           CVE_VERSION = "2.39"
+ 
+@@ -2160,7 +2286,9 @@ system and gives an overview of their function and contents.
+       which is the default behavior, :term:`DEBIAN_NOAUTONAME` specifies a
+       particular package should not be renamed according to Debian library
+       package naming. You must use the package name as an override when you
+-      set this variable. Here is an example from the ``fontconfig`` recipe::
++      set this variable. Here is an example from the ``fontconfig`` recipe:
++
++      .. code-block:: bitbake
+ 
+          DEBIAN_NOAUTONAME:fontconfig-utils = "1"
+ 
+@@ -2170,7 +2298,9 @@ system and gives an overview of their function and contents.
+       the library name for an individual package. Overriding the library
+       name in these cases is rare. You must use the package name as an
+       override when you set this variable. Here is an example from the
+-      ``dbus`` recipe::
++      ``dbus`` recipe:
++
++      .. code-block:: bitbake
+ 
+          DEBIANNAME:${PN} = "dbus-1"
+ 
+@@ -2239,7 +2369,9 @@ system and gives an overview of their function and contents.
+       needed by the recipe at build time.
+ 
+       As an example, consider a recipe ``foo`` that contains the following
+-      assignment::
++      assignment:
++
++      .. code-block:: bitbake
+ 
+           DEPENDS = "bar"
+ 
+@@ -2262,7 +2394,9 @@ system and gives an overview of their function and contents.
+       As another example, :term:`DEPENDS` can also be used to add utilities
+       that run on the build machine during the build. For example, a recipe
+       that makes use of a code generator built by the recipe ``codegen``
+-      might have the following::
++      might have the following:
++
++      .. code-block:: bitbake
+ 
+          DEPENDS = "codegen-native"
+ 
+@@ -2331,7 +2465,9 @@ system and gives an overview of their function and contents.
+ 
+       The BitBake configuration file initially defines the
+       :term:`DEPLOY_DIR_DEB` variable as a sub-folder of
+-      :term:`DEPLOY_DIR`::
++      :term:`DEPLOY_DIR`:
++
++      .. code-block:: bitbake
+ 
+          DEPLOY_DIR_DEB = "${DEPLOY_DIR}/deb"
+ 
+@@ -2371,7 +2507,9 @@ system and gives an overview of their function and contents.
+       ":ref:`ref-classes-package_ipk`".
+ 
+       The BitBake configuration file initially defines this variable as a
+-      sub-folder of :term:`DEPLOY_DIR`::
++      sub-folder of :term:`DEPLOY_DIR`:
++
++      .. code-block:: bitbake
+ 
+          DEPLOY_DIR_IPK = "${DEPLOY_DIR}/ipk"
+ 
+@@ -2389,7 +2527,9 @@ system and gives an overview of their function and contents.
+       ":ref:`ref-classes-package_rpm`".
+ 
+       The BitBake configuration file initially defines this variable as a
+-      sub-folder of :term:`DEPLOY_DIR`::
++      sub-folder of :term:`DEPLOY_DIR`:
++
++      .. code-block:: bitbake
+ 
+          DEPLOY_DIR_RPM = "${DEPLOY_DIR}/rpm"
+ 
+@@ -2404,7 +2544,9 @@ system and gives an overview of their function and contents.
+    :term:`DEPLOYDIR`
+       When inheriting the :ref:`ref-classes-deploy` class, the
+       :term:`DEPLOYDIR` points to a temporary work area for deployed files that
+-      is set in the :ref:`ref-classes-deploy` class as follows::
++      is set in the :ref:`ref-classes-deploy` class as follows:
++
++      .. code-block:: bitbake
+ 
+          DEPLOYDIR = "${WORKDIR}/deploy-${PN}"
+ 
+@@ -2453,7 +2595,9 @@ system and gives an overview of their function and contents.
+       :yocto_git:`meta-poky </meta-yocto/tree/meta-poky>`.
+ 
+       Within that ``poky.conf`` file, the :term:`DISTRO` variable is set as
+-      follows::
++      follows:
++
++      .. code-block:: bitbake
+ 
+          DISTRO = "poky"
+ 
+@@ -2554,7 +2698,9 @@ system and gives an overview of their function and contents.
+       when they are provided by the :term:`DISTRO_FEATURES_DEFAULTS` variable.
+ 
+       You can also opt out of all default features by setting
+-      :term:`DISTRO_FEATURES_OPTED_OUT` to ``*``::
++      :term:`DISTRO_FEATURES_OPTED_OUT` to ``*``:
++
++      .. code-block:: bitbake
+ 
+          DISTRO_FEATURES_OPTED_OUT = "*"
+ 
+@@ -2572,7 +2718,9 @@ system and gives an overview of their function and contents.
+       of :yocto_git:`meta-poky </meta-yocto/tree/meta-poky>`.
+ 
+       Within that ``poky.conf`` file, the :term:`DISTRO_NAME` variable is set
+-      as follows::
++      as follows:
++
++      .. code-block:: bitbake
+ 
+          DISTRO_NAME = "Poky (Yocto Project Reference Distro)"
+ 
+@@ -2603,7 +2751,9 @@ system and gives an overview of their function and contents.
+       :term:`OVERRIDES`.
+ 
+       Here is an example from :yocto_git:`meta-poky/conf/distro/poky-tiny.conf
+-      </meta-yocto/tree/meta-poky/conf/distro/poky-tiny.conf>`::
++      </meta-yocto/tree/meta-poky/conf/distro/poky-tiny.conf>`:
++
++      .. code-block:: bitbake
+ 
+          DISTROOVERRIDES = "poky:poky-tiny"
+ 
+@@ -2711,7 +2861,9 @@ system and gives an overview of their function and contents.
+ 
+       You can set :term:`ERR_REPORT_DIR` to the path you want the error
+       reporting tool to store the debug files as follows in your
+-      ``local.conf`` file::
++      ``local.conf`` file:
++
++      .. code-block:: bitbake
+ 
+          ERR_REPORT_DIR = "path"
+ 
+@@ -2726,7 +2878,9 @@ system and gives an overview of their function and contents.
+       A list of classes to remove from the :term:`INHERIT`
+       value globally within the extensible SDK configuration. The
+       :ref:`populate-sdk-ext <ref-classes-populate-sdk-*>` class sets the
+-      default value::
++      default value:
++
++      .. code-block:: bitbake
+ 
+          ESDK_CLASS_INHERIT_DISABLE ?= "buildhistory"
+ 
+@@ -2801,7 +2955,9 @@ system and gives an overview of their function and contents.
+       package's particular libraries only and not the whole package.
+ 
+       Use the :term:`EXCLUDE_FROM_SHLIBS` variable by setting it to "1" for a
+-      particular package::
++      particular package:
++
++      .. code-block:: bitbake
+ 
+          EXCLUDE_FROM_SHLIBS = "1"
+ 
+@@ -2835,7 +2991,9 @@ system and gives an overview of their function and contents.
+       The full package version specification as it appears on the final
+       packages produced by a recipe. The variable's value is normally used
+       to fix a runtime dependency to the exact same version of another
+-      package in the same recipe::
++      package in the same recipe:
++
++      .. code-block:: bitbake
+ 
+          RDEPENDS:${PN}-additional-module = "${PN} (= ${EXTENDPKGV})"
+ 
+@@ -2948,7 +3106,9 @@ system and gives an overview of their function and contents.
+       Specifies additional options for the image creation command that has
+       been specified in :term:`IMAGE_CMD`. When setting
+       this variable, use an override for the associated image type. Here is
+-      an example::
++      an example:
++
++      .. code-block:: bitbake
+ 
+          EXTRA_IMAGECMD:ext3 ?= "-i 4096"
+ 
+@@ -2992,7 +3152,9 @@ system and gives an overview of their function and contents.
+       In addition to standard Meson options, such options correspond to
+       `Meson build options <https://mesonbuild.com/Build-options.html>`__
+       defined in the ``meson_options.txt`` file in the sources to build.
+-      Here is an example::
++      Here is an example:
++
++      .. code-block:: bitbake
+ 
+          EXTRA_OEMESON = "-Dpython=disabled -Dvalgrind=disabled"
+ 
+@@ -3034,7 +3196,9 @@ system and gives an overview of their function and contents.
+ 
+          printf "%q" $(mkpasswd -m sha256crypt tester01)
+ 
+-      The resulting hash is set to a variable and used in ``useradd`` command parameters::
++      The resulting hash is set to a variable and used in ``useradd`` command parameters:
++
++      .. code-block:: bitbake
+ 
+          inherit extrausers
+          PASSWD = "\$X\$ABC123\$A-Long-Hash"
+@@ -3043,7 +3207,9 @@ system and gives an overview of their function and contents.
+              useradd -p '${PASSWD}' tester-sue; \
+              "
+ 
+-      Finally, here is an example that sets the root password::
++      Finally, here is an example that sets the root password:
++
++      .. code-block:: bitbake
+ 
+          inherit extrausers
+          EXTRA_USERS_PARAMS = "\
+@@ -3059,7 +3225,9 @@ system and gives an overview of their function and contents.
+ 
+       Additionally there is a special ``passwd-expire`` command that will
+       cause the password for a user to be expired and thus force changing it
+-      on first login, for example::
++      on first login, for example:
++
++      .. code-block:: bitbake
+ 
+          EXTRA_USERS_PARAMS += " useradd myuser; passwd-expire myuser;"
+ 
+@@ -3074,7 +3242,9 @@ system and gives an overview of their function and contents.
+       added to the beginning of the environment variable ``PATH``. As an
+       example, the following prepends
+       "${STAGING_BINDIR_NATIVE}/foo:${STAGING_BINDIR_NATIVE}/bar:" to
+-      ``PATH``::
++      ``PATH``:
++
++      .. code-block:: bitbake
+ 
+          EXTRANATIVEPATH = "foo bar"
+ 
+@@ -3103,7 +3273,9 @@ system and gives an overview of their function and contents.
+       Defines one or more packages to include in an image when a specific
+       item is included in :term:`IMAGE_FEATURES`.
+       When setting the value, :term:`FEATURE_PACKAGES` should have the name of
+-      the feature item as an override. Here is an example::
++      the feature item as an override. Here is an example:
++
++      .. code-block:: bitbake
+ 
+          FEATURE_PACKAGES_widget = "package1 package2"
+ 
+@@ -3123,7 +3295,9 @@ system and gives an overview of their function and contents.
+       OPKG to support runtime package management of IPK packages. You set
+       this variable in your ``local.conf`` file.
+ 
+-      Consider the following example::
++      Consider the following example:
++
++      .. code-block:: bitbake
+ 
+          FEED_DEPLOYDIR_BASE_URI = "http://192.168.7.1/BOARD-dir"
+ 
+@@ -3148,7 +3322,9 @@ system and gives an overview of their function and contents.
+       To use the :term:`FILES` variable, provide a package name override that
+       identifies the resulting package. Then, provide a space-separated
+       list of files or paths that identify the files you want included as
+-      part of the resulting package. Here is an example::
++      part of the resulting package. Here is an example:
++
++      .. code-block:: bitbake
+ 
+          FILES:${PN} += "${bindir}/mydir1 ${bindir}/mydir2/myfile"
+ 
+@@ -3183,7 +3359,9 @@ system and gives an overview of their function and contents.
+       symbolic link (symlink) for shared libraries on the target platform.
+ 
+       The following statement from the ``bitbake.conf`` shows how it is
+-      set::
++      set:
++
++      .. code-block:: bitbake
+ 
+          FILES_SOLIBSDEV ?= "${base_libdir}/lib*${SOLIBSDEV} ${libdir}/lib*${SOLIBSDEV}"
+ 
+@@ -3196,7 +3374,9 @@ system and gives an overview of their function and contents.
+ 
+       Best practices dictate that you accomplish this by using
+       :term:`FILESEXTRAPATHS` from within a ``.bbappend`` file and that you
+-      prepend paths as follows::
++      prepend paths as follows:
++
++      .. code-block:: bitbake
+ 
+          FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
+ 
+@@ -3218,7 +3398,9 @@ system and gives an overview of their function and contents.
+          are directing BitBake to extend the path by prepending directories
+          to the search path.
+ 
+-      Here is another common use::
++      Here is another common use:
++
++      .. code-block:: bitbake
+ 
+          FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
+ 
+@@ -3226,13 +3408,17 @@ system and gives an overview of their function and contents.
+       :term:`FILESPATH` variable to include a directory named ``files`` that is
+       in the same directory as the corresponding append file.
+ 
+-      This next example specifically adds three paths::
++      This next example specifically adds three paths:
++
++      .. code-block:: bitbake
+ 
+          FILESEXTRAPATHS:prepend := "path_1:path_2:path_3:"
+ 
+       A final example shows how you can extend the search path and include
+       a :term:`MACHINE`-specific override, which is useful
+-      in a BSP layer::
++      in a BSP layer:
++
++      .. code-block:: bitbake
+ 
+           FILESEXTRAPATHS:prepend:intel-x86-common := "${THISDIR}/${PN}:"
+ 
+@@ -3262,7 +3448,9 @@ system and gives an overview of their function and contents.
+       ":ref:`bitbake-user-manual/bitbake-user-manual-metadata:conditional syntax (overrides)`"
+       section of the BitBake User Manual.
+ 
+-      By default, the :term:`FILESOVERRIDES` variable is defined as::
++      By default, the :term:`FILESOVERRIDES` variable is defined as:
++
++      .. code-block:: bitbake
+ 
+          FILESOVERRIDES = "${TRANSLATED_TARGET_ARCH}:${MACHINEOVERRIDES}:${DISTROOVERRIDES}"
+ 
+@@ -3283,7 +3471,9 @@ system and gives an overview of their function and contents.
+ 
+       The default value for the :term:`FILESPATH` variable is defined in the
+       :ref:`ref-classes-base` class found in ``meta/classes-global`` in
+-      :term:`OpenEmbedded-Core (OE-Core)`::
++      :term:`OpenEmbedded-Core (OE-Core)`:
++
++      .. code-block:: bitbake
+ 
+          FILESPATH = "${@base_set_filespath(["${FILE_DIRNAME}/${BP}", \
+              "${FILE_DIRNAME}/${BPN}", "${FILE_DIRNAME}/files"], d)}"
+@@ -3379,7 +3569,9 @@ system and gives an overview of their function and contents.
+       set this value to "2", as two 32 bit values (cells) will be needed
+       to represent such addresses.
+ 
+-      Here is an example setting "0x400000000" as a load address::
++      Here is an example setting "0x400000000" as a load address:
++
++      .. code-block:: bitbake
+ 
+          FIT_ADDRESS_CELLS = "2"
+          UBOOT_LOADADDRESS = "0x04 0x00000000"
+@@ -3416,7 +3608,9 @@ system and gives an overview of their function and contents.
+          bootloader configurations or just need an alias configuration name for
+          some other reason.
+ 
+-      For example::
++      For example:
++
++      .. code-block:: bitbake
+ 
+          FIT_CONF_MAPPINGS = "\
+              dtb-extra-conf:am335x-bonegreen:bonegreen \
+@@ -3440,7 +3634,9 @@ system and gives an overview of their function and contents.
+    :term:`FIT_DESC`
+       Specifies the description string encoded into a FIT image. The
+       default value is set by the :ref:`ref-classes-kernel-fit-image` class as
+-      follows::
++      follows:
++
++      .. code-block:: bitbake
+ 
+          FIT_DESC ?= "U-Boot fitImage for ${DISTRO_NAME}/${PV}/${MACHINE}"
+ 
+@@ -3531,7 +3727,9 @@ system and gives an overview of their function and contents.
+ 
+       This variable cannot be used directly, but only defining flags on it.
+ 
+-      Example::
++      Example:
++
++      .. code-block:: bitbake
+ 
+          FIT_LOADABLES = "foo"
+          FIT_LOADABLE_ARCH[foo] = "arm"
+@@ -3544,7 +3742,9 @@ system and gives an overview of their function and contents.
+ 
+       This variable cannot be used directly, but only defining flags on it.
+ 
+-      Example::
++      Example:
++
++      .. code-block:: bitbake
+ 
+          FIT_LOADABLES = "foo"
+          FIT_LOADABLE_COMPRESSION[foo] = "gzip"
+@@ -3562,7 +3762,9 @@ system and gives an overview of their function and contents.
+ 
+       This variable cannot be used directly, but only defining flags on it.
+ 
+-      Example::
++      Example:
++
++      .. code-block:: bitbake
+ 
+          FIT_LOADABLES = "foo"
+          FIT_LOADABLE_DESCRIPTION[foo] = "Foo firmware binary"
+@@ -3575,7 +3777,9 @@ system and gives an overview of their function and contents.
+ 
+       This variable cannot be used directly, but only defining flags on it.
+ 
+-      Example::
++      Example:
++
++      .. code-block:: bitbake
+ 
+          FIT_LOADABLES = "foo"
+          FIT_LOADABLE_ENTRYPOINT[foo] = "0x80234000"
+@@ -3588,7 +3792,9 @@ system and gives an overview of their function and contents.
+ 
+       This variable cannot be used directly, but only defining flags on it.
+ 
+-      Example::
++      Example:
++
++      .. code-block:: bitbake
+ 
+          FIT_LOADABLES = "foo"
+          FIT_LOADABLE_FILENAME[foo] = "foo-firmware.bin"
+@@ -3600,7 +3806,9 @@ system and gives an overview of their function and contents.
+ 
+       This variable cannot be used directly, but only defining flags on it.
+ 
+-      Example::
++      Example:
++
++      .. code-block:: bitbake
+ 
+          FIT_LOADABLES = "foo"
+          FIT_LOADABLE_LOADADDRESS[foo] = "0x80230000"
+@@ -3613,7 +3821,9 @@ system and gives an overview of their function and contents.
+ 
+       This variable cannot be used directly, but only defining flags on it.
+ 
+-      Example::
++      Example:
++
++      .. code-block:: bitbake
+ 
+          FIT_LOADABLES = "foo"
+          FIT_LOADABLE_OS[foo] = "linux"
+@@ -3626,7 +3836,9 @@ system and gives an overview of their function and contents.
+ 
+       This variable cannot be used directly, but only defining flags on it.
+ 
+-      Example::
++      Example:
++
++      .. code-block:: bitbake
+ 
+          FIT_LOADABLES = "foo"
+          FIT_LOADABLE_TYPE[foo] = "firmware"
+@@ -3649,7 +3861,9 @@ system and gives an overview of their function and contents.
+ 
+       For example, the following configuration adds as loadables a TF-A BL31
+       firmware and a (compressed) TEE firmware, to be loaded respectively at
+-      0x204E0000 and 0x96000000::
++      0x204E0000 and 0x96000000:
++
++      .. code-block:: bitbake
+ 
+          FIT_LOADABLES = "atf tee"
+ 
+@@ -3709,7 +3923,9 @@ system and gives an overview of their function and contents.
+       ``mkimage`` during FIT image generation, providing flexibility for platforms
+       that require additional ``mkimage`` arguments beyond the defaults.
+ 
+-      For example::
++      For example:
++
++      .. code-block:: bitbake
+ 
+          FIT_MKIMAGE_EXTRA_OPTS = "-B 8 -E"
+ 
+@@ -3775,7 +3991,9 @@ system and gives an overview of their function and contents.
+ 
+       Example:
+ 
+-      -  Add a script ``boot.cmd`` to the Linux kernel recipe::
++      -  Add a script ``boot.cmd`` to the Linux kernel recipe:
++
++         .. code-block:: bitbake
+ 
+             FIT_UBOOT_ENV = "boot.cmd"
+             SRC_URI += "file://${FIT_UBOOT_ENV}"
+@@ -3820,14 +4038,18 @@ system and gives an overview of their function and contents.
+       Programming (ROP) attacks much more difficult to execute.
+ 
+       By default the ``security_flags.inc`` file enables PIE by setting the
+-      variable as follows::
++      variable as follows:
++
++      .. code-block:: bitbake
+ 
+          GCCPIE ?= "--enable-default-pie"
+ 
+    :term:`GCCVERSION`
+       Specifies the default version of the GNU C Compiler (GCC) used for
+       compilation. By default, :term:`GCCVERSION` is set to "8.x" in the
+-      ``meta/conf/distro/include/tcmode-default.inc`` include file::
++      ``meta/conf/distro/include/tcmode-default.inc`` include file:
++
++      .. code-block:: bitbake
+ 
+          GCCVERSION ?= "8.%"
+ 
+@@ -3851,7 +4073,9 @@ system and gives an overview of their function and contents.
+    :term:`GITHUB_BASE_URI`
+       When inheriting the :ref:`ref-classes-github-releases`
+       class, specifies the base URL for fetching releases for the github
+-      project you wish to fetch sources from. The default value is as follows::
++      project you wish to fetch sources from. The default value is as follows:
++
++      .. code-block:: bitbake
+ 
+          GITHUB_BASE_URI ?= "https://github.com/${BPN}/${BPN}/releases/"
+ 
+@@ -3865,7 +4089,9 @@ system and gives an overview of their function and contents.
+          :term:`IMAGE_LINGUAS` appropriately.
+ 
+       You can set :term:`GLIBC_GENERATE_LOCALES` in your ``local.conf`` file.
+-      By default, all locales are generated::
++      By default, all locales are generated:
++
++      .. code-block:: bitbake
+ 
+          GLIBC_GENERATE_LOCALES = "en_GB.UTF-8 en_US.UTF-8"
+ 
+@@ -3879,7 +4105,9 @@ system and gives an overview of their function and contents.
+ 
+       Here is an example setting from the
+       :oe_git:`go-helloworld_0.1.bb </openembedded-core/tree/meta/recipes-extended/go-examples/go-helloworld_0.1.bb>`
 -      recipe::
 +      recipe:
 +
 +      .. code-block:: bitbake
  
-          PARALLEL_MAKEINST = ""
+           GO_IMPORT = "golang.org/x/example"
  
-@@ -895,7 +915,9 @@ take. The following list describes the process:
-    :term:`MACHINE` value is passed
-    into the configure script or a patch is applied only for a particular
-    machine), you should mark them as such by adding the following to the
--   recipe::
-+   recipe:
-+
-+   .. code-block:: bitbake
+@@ -3891,14 +4119,18 @@ system and gives an overview of their function and contents.
  
-       PACKAGE_ARCH = "${MACHINE_ARCH}"
- 
-@@ -903,7 +925,9 @@ take. The following list describes the process:
-    contain anything specific to the target machine or architecture at
-    all (e.g. recipes that simply package script files or configuration
-    files), you should use the :ref:`ref-classes-allarch` class to
--   do this for you by adding this to your recipe::
-+   do this for you by adding this to your recipe:
-+
-+   .. code-block:: bitbake
- 
-       inherit allarch
- 
-@@ -947,7 +971,9 @@ used by the :ref:`ref-tasks-populate_sysroot` task as defined by the
- :term:`SYSROOT_DIRS` variable to automatically populate the sysroot. It
- is possible to modify the list of directories that populate the sysroot.
- The following example shows how you could add the ``/opt`` directory to
--the list of directories within a recipe::
-+the list of directories within a recipe:
-+
-+.. code-block:: bitbake
- 
-    SYSROOT_DIRS += "/opt"
- 
-@@ -974,7 +1000,9 @@ recipe. Suppose you have three kernel recipes whose :term:`PN` values map to
- ``kernel-big``, ``kernel-mid``, and ``kernel-small``. Furthermore, each of
- these recipes in some way uses a :term:`PROVIDES` statement that essentially
- identifies itself as being able to provide ``virtual/kernel``. Here is one way
--through the :ref:`ref-classes-kernel` class::
-+through the :ref:`ref-classes-kernel` class:
-+
-+.. code-block:: bitbake
- 
-    PROVIDES += "virtual/kernel"
- 
-@@ -996,7 +1024,9 @@ relevant line from that include file::
- When you use a virtual provider, you do not have to "hard code" a recipe
- name as a build dependency. You can use the
- :term:`DEPENDS` variable to state the
--build is dependent on ``virtual/kernel`` for example::
-+build is dependent on ``virtual/kernel`` for example:
-+
-+.. code-block:: bitbake
- 
-    DEPENDS = "virtual/kernel"
- 
-@@ -1053,7 +1083,9 @@ build system and package managers, so the resulting packages will not
- correctly trigger an upgrade.
- 
- In order to ensure the versions compare properly, the recommended
--convention is to use a tilde (``~``) character as follows::
-+convention is to use a tilde (``~``) character as follows:
-+
-+.. code-block:: bitbake
- 
-   PV = 0.8.16~rc1
- 
-@@ -1158,7 +1190,9 @@ Building an application from a single file that is stored locally (e.g. under
- variable. Additionally, you need to manually write the :ref:`ref-tasks-compile`
- and :ref:`ref-tasks-install` tasks. The :term:`S` variable defines the
- directory containing the source code, which is set to :term:`UNPACKDIR` in this
--case --- the directory BitBake uses for the build::
-+case --- the directory BitBake uses for the build:
-+
-+.. code-block:: bitbake
- 
-    SUMMARY = "Simple helloworld application"
-    SECTION = "examples"
-@@ -1198,11 +1232,15 @@ empty :ref:`ref-tasks-install` task by default.
- Some applications might require extra parameters to be passed to the
- compiler. For example, the application might need an additional header
- path. You can accomplish this by adding to the :term:`CFLAGS` variable. The
--following example shows this::
-+following example shows this:
-+
-+.. code-block:: bitbake
- 
-    CFLAGS:prepend = "-I ${S}/include "
- 
--In the following example, ``lz4`` is a makefile-based package::
-+In the following example, ``lz4`` is a makefile-based package:
-+
-+.. code-block:: bitbake
- 
-    SUMMARY = "Extremely Fast Compression algorithm"
-    DESCRIPTION = "LZ4 is a very fast lossless compression algorithm, providing compression speed at 400 MB/s per core, scalable with multi-cores CPU. It also features an extremely fast decoder, with speed in multiple GB/s per core, typically reaching RAM speed limits on multi-core systems."
-@@ -1242,7 +1280,9 @@ inherit the :ref:`ref-classes-autotools` class, which contains the definitions
- of all the steps needed to build an Autotool-based application. The result of
- the build is automatically packaged. And, if the application uses NLS for
- localization, packages with local information are generated (one package per
--language). Here is one example: (``hello_2.3.bb``)::
-+language). Here is one example: (``hello_2.3.bb``):
-+
-+.. code-block:: bitbake
- 
-    SUMMARY = "GNU Helloworld application"
-    SECTION = "examples"
-@@ -1268,7 +1308,9 @@ just need a recipe that has sources described in :term:`SRC_URI` and inherits
- the :ref:`ref-classes-meson` class.
- 
- The :oe_git:`ipcalc recipe </meta-openembedded/tree/meta-networking/recipes-support/ipcalc>`
--is a simple example of an application without dependencies::
-+is a simple example of an application without dependencies:
-+
-+.. code-block:: bitbake
- 
-    SUMMARY = "Tool to assist in network address calculations for IPv4 and IPv6."
-    HOMEPAGE = "https://gitlab.com/ipcalc/ipcalc"
-@@ -1296,7 +1338,9 @@ application into multiple packages.
- Here is an example that uses the ``libxpm`` recipe. By default,
- this recipe generates a single package that contains the library along
- with a few binaries. You can modify the recipe to split the binaries
--into separate packages::
-+into separate packages:
-+
-+.. code-block:: bitbake
- 
-    require xorg-lib-common.inc
- 
-@@ -1385,7 +1429,9 @@ doing the following:
-    that replaces :ref:`ref-tasks-configure` and :ref:`ref-tasks-compile` with custom
-    versions, then you can use the
-    ``[``\ :ref:`noexec <bitbake-user-manual/bitbake-user-manual-metadata:variable flags>`\ ``]``
--   flag to turn the tasks into no-ops, as follows::
-+   flag to turn the tasks into no-ops, as follows:
-+
-+   .. code-block:: bitbake
- 
-       do_configure[noexec] = "1"
-       do_compile[noexec] = "1"
-@@ -1409,7 +1455,9 @@ As a basic example of a :ref:`ref-classes-bin-package`-style recipe, consider
- this snippet from the
- :oe_git:`wireless-regdb </openembedded-core/tree/meta/recipes-kernel/wireless-regdb>`
- recipe file, which fetches a single tarball of binary content and manually
--installs with no need for any configuration or compilation::
-+installs with no need for any configuration or compilation:
-+
-+.. code-block:: bitbake
- 
-    SRC_URI = "https://www.kernel.org/pub/software/network/${BPN}/${BP}.tar.xz"
-    SRC_URI[sha256sum] = "57f8e7721cf5a880c13ae0c202edbb21092a060d45f9e9c59bcd2a8272bfa456"
-@@ -1454,7 +1502,9 @@ chapter of the BitBake User Manual.
-    supported.
- 
-    The following example shows some of the ways you can use variables in
--   recipes::
-+   recipes:
-+
-+   .. code-block:: bitbake
- 
-       S = "${UNPACKDIR}/postfix-${PV}"
-       CFLAGS += "-DNO_ASM"
-@@ -1467,7 +1517,9 @@ chapter of the BitBake User Manual.
-    syntax, although access to OpenEmbedded variables and internal
-    methods are also available.
- 
--   Here is an example function from the ``sed`` recipe::
-+   Here is an example function from the ``sed`` recipe:
-+
-+   .. code-block:: bitbake
- 
-       do_install () {
-           autotools_do_install
-@@ -1490,7 +1542,9 @@ chapter of the BitBake User Manual.
-    from other files (``include`` and ``require``) and export variables
-    to the environment (``export``).
- 
--   The following example shows the use of some of these keywords::
-+   The following example shows the use of some of these keywords:
-+
-+   .. code-block:: bitbake
- 
-       export POSTCONF = "${STAGING_BINDIR}/postconf"
-       inherit autoconf
-@@ -1509,7 +1563,9 @@ in the BitBake User Manual.
- 
- -  *Line Continuation (\\):* Use the backward slash (``\``) character to
-    split a statement over multiple lines. Place the slash character at
--   the end of the line that is to be continued on the next line::
-+   the end of the line that is to be continued on the next line:
-+
-+   .. code-block:: bitbake
- 
-        VAR = "A really long \
-               line"
-@@ -1520,7 +1576,9 @@ in the BitBake User Manual.
-       slash character.
- 
- -  *Using Variables (${VARNAME}):* Use the ``${VARNAME}`` syntax to
--   access the contents of a variable::
-+   access the contents of a variable:
-+
-+   .. code-block:: bitbake
- 
-       SRC_URI = "${SOURCEFORGE_MIRROR}/libpng/zlib-${PV}.tar.gz"
- 
-@@ -1540,7 +1598,9 @@ in the BitBake User Manual.
-       when you make the assignment, but this is not generally needed.
- 
- -  *Quote All Assignments ("value"):* Use double quotes around values in
--   all variable assignments (e.g. ``"value"``). Here is an example::
-+   all variable assignments (e.g. ``"value"``). Here is an example:
-+
-+   .. code-block:: bitbake
- 
-       VAR1 = "${OTHERVAR}"
-       VAR2 = "The version is ${PV}"
-@@ -1554,11 +1614,15 @@ in the BitBake User Manual.
- 
-    Here is an example where ``VAR1`` is set to "New value" if it is
-    currently empty. However, if ``VAR1`` has already been set, it
--   remains unchanged::
-+   remains unchanged:
-+
-+   .. code-block:: bitbake
- 
-       VAR1 ?= "New value"
- 
--   In this next example, ``VAR1`` is left with the value "Original value"::
-+   In this next example, ``VAR1`` is left with the value "Original value":
-+
-+   .. code-block:: bitbake
- 
-       VAR1 = "Original value"
-       VAR1 ?= "New value"
-@@ -1571,7 +1635,9 @@ in the BitBake User Manual.
-       This operator adds a space between the existing content of the
-       variable and the new content.
- 
--   Here is an example::
-+   Here is an example:
-+
-+   .. code-block:: bitbake
- 
-       SRC_URI += "file://fix-makefile.patch"
- 
-@@ -1583,7 +1649,9 @@ in the BitBake User Manual.
-       This operator adds a space between the new content and the
-       existing content of the variable.
- 
--   Here is an example::
-+   Here is an example:
-+
-+   .. code-block:: bitbake
- 
-       VAR =+ "Starts"
- 
-@@ -1597,13 +1665,17 @@ in the BitBake User Manual.
- 
-    The following example shows the space being explicitly added to the
-    start to ensure the appended value is not merged with the existing
--   value::
-+   value:
-+
-+   .. code-block:: bitbake
- 
-       CFLAGS:append = " --enable-important-feature"
- 
-    You can also use
-    the ``:append`` operator with overrides, which results in the actions
--   only being performed for the specified target or machine::
-+   only being performed for the specified target or machine:
-+
-+   .. code-block:: bitbake
- 
-       CFLAGS:append:sh4 = " --enable-important-sh4-specific-feature"
- 
-@@ -1615,13 +1687,17 @@ in the BitBake User Manual.
- 
-    The following example shows the space being explicitly added to the
-    end to ensure the prepended value is not merged with the existing
--   value::
-+   value:
-+
-+   .. code-block:: bitbake
- 
-       CFLAGS:prepend = "-I${S}/myincludes "
- 
-    You can also use the
-    ``:prepend`` operator with overrides, which results in the actions
--   only being performed for the specified target or machine::
-+   only being performed for the specified target or machine:
-+
-+   .. code-block:: bitbake
- 
-       CFLAGS:prepend:sh4 = "-I${S}/myincludes "
- 
-@@ -1631,7 +1707,9 @@ in the BitBake User Manual.
-    value to "standard/base" for any target
-    :term:`MACHINE`, except for
-    qemuarm where it should be set to "standard/arm-versatile-926ejs",
--   you would do the following::
-+   you would do the following:
-+
-+   .. code-block:: bitbake
- 
-       KBRANCH = "standard/base"
-       KBRANCH:qemuarm = "standard/arm-versatile-926ejs"
-@@ -1654,7 +1732,9 @@ in the BitBake User Manual.
-    search and replacement on a variable).
- 
-    You indicate Python code using the ``${@python_code}`` syntax for the
--   variable assignment::
-+   variable assignment:
-+
-+   .. code-block:: bitbake
- 
-       SRC_URI = "ftp://ftp.info-zip.org/pub/infozip/src/zip${@d.getVar('PV',1).replace('.', '')}.tgz
- 
-diff --git a/documentation/dev-manual/packages.rst b/documentation/dev-manual/packages.rst
-index c75584c936bf..16ce82606007 100644
---- a/documentation/dev-manual/packages.rst
-+++ b/documentation/dev-manual/packages.rst
-@@ -163,7 +163,9 @@ be consistent and correct with the latest changes.
- The simplest form for a PR Service is for a single host development system
- that builds the package feed (building system). For this scenario, you can
- enable a local PR Service by setting :term:`PRSERV_HOST` in your
--``local.conf`` file in the :term:`Build Directory`::
-+``local.conf`` file in the :term:`Build Directory`:
-+
-+.. code-block:: bitbake
- 
-    PRSERV_HOST = "localhost:0"
- 
-@@ -248,13 +250,17 @@ the specific source code revision from which to build. You set the
- :term:`SRCREV` variable to
- :term:`AUTOREV` to cause the
- OpenEmbedded build system to automatically use the latest revision of
--the software::
-+the software:
-+
-+.. code-block:: bitbake
- 
-    SRCREV = "${AUTOREV}"
- 
- Furthermore, you need to include a ``+`` sign in :term:`PV` in order to
- automatically update the version whenever the revision of the source
--code changes. Here is an example::
-+code changes. Here is an example:
-+
-+.. code-block:: bitbake
- 
-    PV = "1.0+git"
- 
-@@ -338,7 +344,9 @@ package for each one it finds by appending to the
- :term:`PACKAGES` variable and
- setting the appropriate values for ``FILES:packagename``,
- ``RDEPENDS:packagename``, ``DESCRIPTION:packagename``, and so forth.
--Here is an example from the ``lighttpd`` recipe::
-+Here is an example from the ``lighttpd`` recipe:
-+
-+.. code-block:: bitbake
- 
-    python populate_packages:prepend () {
-        lighttpd_libdir = d.expand('${libdir}')
-@@ -470,7 +478,9 @@ any dependencies on optional modules from other recipes are satisfied by
- your recipe. You can be sure these dependencies are satisfied by using
- the :term:`PACKAGES_DYNAMIC`
- variable. Here is an example that continues with the ``lighttpd`` recipe
--shown earlier::
-+shown earlier:
-+
-+.. code-block:: bitbake
- 
-    PACKAGES_DYNAMIC = "lighttpd-module-.*"
- 
-@@ -561,7 +571,9 @@ variable to specify the format:
- #. Open the ``local.conf`` file inside your :term:`Build Directory` (e.g.
-    ``bitbake-builds/build/conf/local.conf``).
- 
--#. Select the desired package format as follows::
-+#. Select the desired package format as follows:
-+
-+   .. code-block:: bitbake
- 
-       PACKAGE_CLASSES ?= "package_packageformat"
- 
-@@ -837,11 +849,15 @@ Signing RPM Packages
- 
- To enable signing RPM packages, you must modify the ``rpm``
- recipe configuration to include support for OpenPGP signing.
--That may be done either in a ``.bbappend`` for the ``rpm`` recipe::
-+That may be done either in a ``.bbappend`` for the ``rpm`` recipe:
-+
-+.. code-block:: bitbake
- 
-    PACKAGECONFIG:append = " sequoia"
- 
--or in a :term:`Configuration File`::
-+or in a :term:`Configuration File`:
-+
-+.. code-block:: bitbake
- 
-    PACKAGECONFIG:append:pn-rpm-native = " sequoia"
-    PACKAGECONFIG:append:pn-rpm = " sequoia"
-@@ -878,7 +894,9 @@ signed package feeds for IPK and RPM packages.
- 
- The steps you need to take to enable signed package feed use are similar
- to the steps used to sign RPM packages. You must define the following in
--your ``local.config`` or ``distro.config`` file::
-+your ``local.config`` or ``distro.config`` file:
-+
-+.. code-block:: bitbake
- 
-    INHERIT += "sign_package_feed"
-    PACKAGE_FEED_GPG_NAME = "key_name"
-@@ -1115,7 +1133,9 @@ command::
-    $ devtool add https://github.com/martinaglv/cute-files.git
- 
- The recipe this command generates is very similar to the recipe created in
--the previous section. However, the :term:`SRC_URI` looks like the following::
-+the previous section. However, the :term:`SRC_URI` looks like the following:
-+
-+.. code-block:: bitbake
- 
-    SRC_URI = " \
-        git://github.com/martinaglv/cute-files.git;protocol=https;branch=master \
-@@ -1167,7 +1187,9 @@ by the literal sequence '\\n'. The separator can be redefined using the
- variable flag ``separator``.
- 
- Here is an example that adds two custom fields for ipk
--packages::
-+packages:
-+
-+.. code-block:: bitbake
- 
-    PACKAGE_ADD_METADATA_IPK = "Vendor: CustomIpk\nGroup:Applications/Spreadsheets"
- 
-diff --git a/documentation/dev-manual/poky-manual-setup.rst b/documentation/dev-manual/poky-manual-setup.rst
-index 833e1631ee50..f2287c25c339 100644
---- a/documentation/dev-manual/poky-manual-setup.rst
-+++ b/documentation/dev-manual/poky-manual-setup.rst
-@@ -119,7 +119,9 @@ an entire Linux distribution, including the toolchain, from source.
-        can download these artifacts faster than you would be able to build them.
- 
-        To use such mirrors, uncomment the below lines in your ``conf/local.conf``
--       file in the :term:`Build Directory`::
-+       file in the :term:`Build Directory`:
-+
-+       .. code-block:: bitbake
- 
-           BB_HASHSERVE_UPSTREAM = "wss://hashserv.yoctoproject.org/ws"
-           SSTATE_MIRRORS ?= "file://.* http://sstate.yoctoproject.org/all/PATH;downloadfilename=PATH"
-diff --git a/documentation/dev-manual/prebuilt-libraries.rst b/documentation/dev-manual/prebuilt-libraries.rst
-index 9cc8bd2d9dee..8eb4d5023b17 100644
---- a/documentation/dev-manual/prebuilt-libraries.rst
-+++ b/documentation/dev-manual/prebuilt-libraries.rst
-@@ -149,7 +149,9 @@ triggers a QA warning that a non-symlink library is in a ``-dev`` package,
- and binaries in the same recipe link to the library in ``${PN}-dev``,
- which triggers more QA warnings. To solve this problem, you need to package the
- unversioned library into ``${PN}`` where it belongs. The abridged
--default :term:`FILES` variables in ``bitbake.conf`` are::
-+default :term:`FILES` variables in ``bitbake.conf`` are:
-+
-+.. code-block:: bitbake
- 
-    SOLIBS = ".so.*"
-    SOLIBSDEV = ".so"
-@@ -162,7 +164,9 @@ default :term:`FILES` variables in ``bitbake.conf`` are::
- variables are then used in ``FILES:${PN}`` and ``FILES:${PN}-dev``, which puts
- the real libraries into ``${PN}`` and the unversioned symbolic link into ``${PN}-dev``.
- To package unversioned libraries, you need to modify the variables in the recipe
--as follows::
-+as follows:
-+
-+.. code-block:: bitbake
- 
-    SOLIBS = ".so"
-    FILES_SOLIBSDEV = ""
-@@ -186,7 +190,9 @@ The example below installs an unversioned x86-64 pre-built library named
- x86-64 architecture while the :term:`INSANE_SKIP`, :term:`INHIBIT_PACKAGE_STRIP`
- and :term:`INHIBIT_SYSROOT_STRIP` variables are all set as in the above
- versioned library example. The "magic" is setting the :term:`SOLIBS` and
--:term:`FILES_SOLIBSDEV` variables as explained above::
-+:term:`FILES_SOLIBSDEV` variables as explained above:
-+
-+.. code-block:: bitbake
- 
-    SUMMARY = "libfoo sample recipe"
-    SECTION = "libs"
-diff --git a/documentation/dev-manual/qemu.rst b/documentation/dev-manual/qemu.rst
-index 514a72fc528a..eead23f67376 100644
---- a/documentation/dev-manual/qemu.rst
-+++ b/documentation/dev-manual/qemu.rst
-@@ -434,7 +434,9 @@ command line:
-    (or the next free ports). Specific forwarding rules can be configured
-    by setting ``QB_SLIRP_OPT`` as environment variable or in ``qemuboot.conf``
-    in the :term:`Build Directory` ``deploy/image`` directory.
--   Examples::
-+   Examples:
-+
-+   .. code-block:: bitbake
- 
-       QB_SLIRP_OPT = "-netdev user,id=net0,hostfwd=tcp::8080-:80"
- 
-diff --git a/documentation/dev-manual/quilt.rst b/documentation/dev-manual/quilt.rst
-index 59240705ad99..2173d86981db 100644
---- a/documentation/dev-manual/quilt.rst
-+++ b/documentation/dev-manual/quilt.rst
-@@ -83,7 +83,9 @@ Follow these general steps:
-    that holds the recipe (``.bb``) file or the append (``.bbappend``)
-    file. Placing the patch here guarantees that the OpenEmbedded build
-    system will find the patch. Next, add the patch into the :term:`SRC_URI`
--   of the recipe. Here is an example::
-+   of the recipe. Here is an example:
-+
-+   .. code-block:: bitbake
- 
-       SRC_URI += "file://my_changes.patch"
- 
-diff --git a/documentation/dev-manual/sbom.rst b/documentation/dev-manual/sbom.rst
-index 45b63ed8edea..aff328423287 100644
---- a/documentation/dev-manual/sbom.rst
-+++ b/documentation/dev-manual/sbom.rst
-@@ -27,7 +27,9 @@ assessments, as all the components used in the Software Supply Chain are listed.
- The OpenEmbedded build system generates such information by default (by
- inheriting the :ref:`ref-classes-create-spdx` class in :term:`INHERIT_DISTRO`).
- 
--If needed, it can be disabled from a :term:`configuration file`::
-+If needed, it can be disabled from a :term:`configuration file`:
-+
-+.. code-block:: bitbake
- 
-    INHERIT_DISTRO:remove = "create-spdx"
- 
-diff --git a/documentation/dev-manual/speeding-up-build.rst b/documentation/dev-manual/speeding-up-build.rst
-index 262935313a19..a6930fc41642 100644
---- a/documentation/dev-manual/speeding-up-build.rst
-+++ b/documentation/dev-manual/speeding-up-build.rst
-@@ -90,7 +90,9 @@ that can help you speed up the build:
- -  Disable static library generation for recipes derived from
-    ``autoconf`` or ``libtool``: Here is an example showing how to
-    disable static libraries and still provide an override to handle
--   exceptions::
-+   exceptions:
-+
-+   .. code-block:: bitbake
- 
-       STATICLIBCONF = "--disable-static"
-       STATICLIBCONF:sqlite3-native = ""
-diff --git a/documentation/dev-manual/sstate-mirrors-setup.rst b/documentation/dev-manual/sstate-mirrors-setup.rst
-index e69aa00d1cc6..a0c6e7d579fc 100644
---- a/documentation/dev-manual/sstate-mirrors-setup.rst
-+++ b/documentation/dev-manual/sstate-mirrors-setup.rst
-@@ -86,7 +86,9 @@ Client Configuration
- 
- Configuring clients to this server happens through a :term:`configuration file`,
- for example, the :ref:`site.conf <structure-build-conf-site.conf>` file. Only
--the :term:`SSTATE_MIRRORS` variable is needed to setup the connection::
-+the :term:`SSTATE_MIRRORS` variable is needed to setup the connection:
-+
-+.. code-block:: bitbake
- 
-    SSTATE_MIRRORS = "file://.* http://127.0.0.1:8000/PATH;downloadfilename=PATH"
- 
-@@ -134,7 +136,9 @@ Going Further
- 
-    Another method to configure the username and password is from the
-    URL in :term:`SSTATE_MIRRORS` directly, with the ``user`` and ``pswd``
--   parameters::
-+   parameters:
-+
-+   .. code-block:: bitbake
- 
-       SSTATE_MIRRORS ?= "\
-           file://.* https://someserver.tld/share/sstate/PATH;user=<user>;pswd=<password>;downloadfilename=PATH \
-@@ -146,7 +150,9 @@ Going Further
-    mirror as an exception.
- 
- -  Multiple shared state sources can be specified in the :term:`SSTATE_MIRRORS`
--   variable. For example::
-+   variable. For example:
-+
-+   .. code-block:: bitbake
- 
-       SSTATE_MIRRORS = "\
-          file://.* https://someserver.com/PATH;downloadfilename=PATH \
-@@ -158,7 +164,9 @@ Going Further
- 
- -  Fetching the shared state artifacts from a local directory, such as an
-    :wikipedia:`NFS <Network_File_System>`-mounted directory, is also possible
--   using the ``file://`` fetcher::
-+   using the ``file://`` fetcher:
-+
-+   .. code-block:: bitbake
- 
-       SSTATE_MIRRORS = "file://.* file:///path/to/shared-state/PATH;downloadfilename=PATH"
- 
-diff --git a/documentation/dev-manual/temporary-source-code.rst b/documentation/dev-manual/temporary-source-code.rst
-index cb27d22070ef..a2f6b6ef40d5 100644
---- a/documentation/dev-manual/temporary-source-code.rst
-+++ b/documentation/dev-manual/temporary-source-code.rst
-@@ -16,7 +16,9 @@ During a build, the unpacked temporary source code used by recipes to
- build packages is available in the :term:`Build Directory` as defined by the
- :term:`S` variable. Below is the default value for the :term:`S` variable as
- defined in the ``meta/conf/bitbake.conf`` configuration file in
--:term:`OpenEmbedded-Core (OE-Core)`::
-+:term:`OpenEmbedded-Core (OE-Core)`:
-+
-+.. code-block:: bitbake
- 
-    S = "${UNPACKDIR}/${BP}"
- 
-@@ -26,7 +28,9 @@ You should be aware that many recipes override the
- .. note::
- 
-    The :term:`BP` represents the base recipe name, which consists of the name
--   and version::
-+   and version:
-+
-+   .. code-block:: bitbake
- 
-            BP = "${BPN}-${PV}"
- 
-diff --git a/documentation/dev-manual/upgrading-recipes.rst b/documentation/dev-manual/upgrading-recipes.rst
-index cc984bbccbeb..fdbe630393a7 100644
---- a/documentation/dev-manual/upgrading-recipes.rst
-+++ b/documentation/dev-manual/upgrading-recipes.rst
-@@ -103,7 +103,9 @@ The following steps describe how to set up the AUH utility:
-    -  If you want to enable :ref:`Build
-       History <dev-manual/build-quality:maintaining build output quality with \`\`buildhistory\`\`>`,
-       which is optional, you need the following lines in the
--      ``conf/local.conf`` file::
-+      ``conf/local.conf`` file:
+       Here is an example setting from the
+       :oe_git:`crucible </meta-openembedded/tree/meta-oe/recipes-support/crucible/>`
+-      recipe::
++      recipe:
 +
 +      .. code-block:: bitbake
  
-          INHERIT =+ "buildhistory"
-          BUILDHISTORY_COMMIT = "1"
-@@ -115,14 +117,18 @@ The following steps describe how to set up the AUH utility:
+          GO_INSTALL = "\
+              ${GO_IMPORT}/cmd/crucible \
+              ${GO_IMPORT}/cmd/habtool \
+          "
  
-    -  If you want to enable testing through the :ref:`ref-classes-testimage`
-       class, which is optional, you need to have the following set in
--      your ``conf/local.conf`` file::
-+      your ``conf/local.conf`` file:
+-      By default, :term:`GO_INSTALL` is defined as::
++      By default, :term:`GO_INSTALL` is defined as:
 +
 +      .. code-block:: bitbake
  
-          IMAGE_CLASSES += "testimage"
+          GO_INSTALL ?= "${GO_IMPORT}/..."
  
-       .. note::
+@@ -3942,7 +4174,9 @@ system and gives an overview of their function and contents.
+       passed to the ``groupadd`` command if you wish to add a group to the
+       system when the package is installed.
  
-          If your distro does not enable by default ptest, which :term:`Poky`
--         does, you need the following in your ``local.conf`` file::
-+         does, you need the following in your ``local.conf`` file:
+-      Here is an example from the ``dbus`` recipe::
++      Here is an example from the ``dbus`` recipe:
++
++      .. code-block:: bitbake
+ 
+          GROUPADD_PARAM:${PN} = "-r netdev"
+ 
+@@ -3950,7 +4184,9 @@ system and gives an overview of their function and contents.
+       groups' parameters with a semicolon.
+ 
+       Here is an example adding multiple groups from the ``useradd-example.bb``
+-      file in the ``meta-skeleton`` layer::
++      file in the ``meta-skeleton`` layer:
++
++      .. code-block:: bitbake
+ 
+          GROUPADD_PARAM:${PN} = "-g 880 group1; -g 890 group2"
+ 
+@@ -4137,7 +4373,9 @@ system and gives an overview of their function and contents.
+       installed name, separate it from the original name with a semi-colon
+       (;). Source files need to be located in
+       :term:`DEPLOY_DIR_IMAGE`. Here are two
+-      examples::
++      examples:
++
++      .. code-block:: bitbake
+ 
+          IMAGE_BOOT_FILES = "u-boot.img uImage;kernel"
+          IMAGE_BOOT_FILES = "u-boot.${UBOOT_SUFFIX} ${KERNEL_IMAGETYPE}"
+@@ -4146,7 +4384,9 @@ system and gives an overview of their function and contents.
+       this case, the destination file must have the same name as the base
+       name of the source file path. To install files into a directory
+       within the target location, pass its name after a semi-colon (;).
+-      Here are two examples::
++      Here are two examples:
++
++      .. code-block:: bitbake
+ 
+          IMAGE_BOOT_FILES = "bcm2835-bootfiles/*"
+          IMAGE_BOOT_FILES = "bcm2835-bootfiles/*;boot/"
+@@ -4185,7 +4425,9 @@ system and gives an overview of their function and contents.
+       type, which corresponds to the value set in
+       :term:`IMAGE_FSTYPES`, (e.g. ``ext3``,
+       ``btrfs``, and so forth). When setting this variable, you should use
+-      an override for the associated type. Here is an example::
++      an override for the associated type. Here is an example:
++
++      .. code-block:: bitbake
+ 
+          IMAGE_CMD:jffs2 = "mkfs.jffs2 --root=${IMAGE_ROOTFS} --faketime \
+              --output=${IMGDEPLOYDIR}/${IMAGE_NAME}${IMAGE_NAME_SUFFIX}.jffs2 \
+@@ -4233,7 +4475,9 @@ system and gives an overview of their function and contents.
+       installed name, separate it from the original name with a semi-colon
+       (;). Source files need to be located in
+       :term:`DEPLOY_DIR_IMAGE`. Here are two
+-      examples::
++      examples:
++
++      .. code-block:: bitbake
+ 
+          IMAGE_EFI_BOOT_FILES = "${KERNEL_IMAGETYPE};bz2"
+          IMAGE_EFI_BOOT_FILES = "${KERNEL_IMAGETYPE} microcode.cpio"
+@@ -4242,7 +4486,9 @@ system and gives an overview of their function and contents.
+       this case, the destination file must have the same name as the base
+       name of the source file path. To install files into a directory
+       within the target location, pass its name after a semi-colon (;).
+-      Here are two examples::
++      Here are two examples:
++
++      .. code-block:: bitbake
+ 
+          IMAGE_EFI_BOOT_FILES = "boot/loader/*"
+          IMAGE_EFI_BOOT_FILES = "boot/loader/*;boot/"
+@@ -4267,7 +4513,9 @@ system and gives an overview of their function and contents.
+       installed name, separate it from the original name with a semi-colon
+       (;). Source files need to be located in
+       :term:`DEPLOY_DIR_IMAGE`. Here is an
+-      example::
++      example:
++
++      .. code-block:: bitbake
+ 
+          IMAGE_EXTRA_PARTITION_FILES = "foobar file.conf;config"
+ 
+@@ -4280,7 +4528,9 @@ system and gives an overview of their function and contents.
+       The destination file will have the same name as the base
+       name of the source file path. To install files into a renamed directory
+       within the target location, pass its name after a semi-colon (;).
+-      Here are two examples::
++      Here are two examples:
++
++      .. code-block:: bitbake
+ 
+          IMAGE_EXTRA_PARTITION_FILES = "foo/*"
+          IMAGE_EXTRA_PARTITION_FILES = "foo/*;bar/"
+@@ -4299,7 +4549,9 @@ system and gives an overview of their function and contents.
+          part --source extra_partition --fstype=ext4 --uuid e7d0824e-cda3-4bed-9f54-9ef5312d105d
+          part --source extra_partition --fstype=ext4 --part-name config
+ 
+-      And the following configuration::
++      And the following configuration:
++
++      .. code-block:: bitbake
+ 
+          IMAGE_EXTRA_PARTITION_FILES_label-foo = "foo/*"
+          IMAGE_EXTRA_PARTITION_FILES_uuid-e7d0824e-cda3-4bed-9f54-9ef5312d105d = "foo/*;bar/"
+@@ -4345,7 +4597,9 @@ system and gives an overview of their function and contents.
+       Specifies the formats the OpenEmbedded build system uses during the
+       build when creating the root filesystem. For example, setting
+       :term:`IMAGE_FSTYPES` as follows causes the build system to create root
+-      filesystems using two formats: ``.ext3`` and ``.tar.bz2``::
++      filesystems using two formats: ``.ext3`` and ``.tar.bz2``:
++
++      .. code-block:: bitbake
+ 
+          IMAGE_FSTYPES = "ext3 tar.bz2"
+ 
+@@ -4390,7 +4644,9 @@ system and gives an overview of their function and contents.
+       them into auto-generated entries in :term:`IMAGE_INSTALL` in addition
+       to its default contents.
+ 
+-      When you use this variable, it is best to use it as follows::
++      When you use this variable, it is best to use it as follows:
++
++      .. code-block:: bitbake
+ 
+          IMAGE_INSTALL:append = " package-name"
+ 
+@@ -4433,7 +4689,9 @@ system and gives an overview of their function and contents.
+       into separate packages. Setting the :term:`IMAGE_LINGUAS` variable
+       ensures that any locale packages that correspond to packages already
+       selected for installation into the image are also installed. Here is
+-      an example::
++      an example:
++
++      .. code-block:: bitbake
+ 
+          IMAGE_LINGUAS = "pt-br de-de"
+ 
+@@ -4452,7 +4710,9 @@ system and gives an overview of their function and contents.
+       The name of the output image symlink (which does not include
+       the version part as :term:`IMAGE_NAME` does). The default value
+       is derived using the :term:`IMAGE_BASENAME` and
+-      :term:`IMAGE_MACHINE_SUFFIX` variables::
++      :term:`IMAGE_MACHINE_SUFFIX` variables:
++
++      .. code-block:: bitbake
+ 
+          IMAGE_LINK_NAME ?= "${IMAGE_BASENAME}${IMAGE_MACHINE_SUFFIX}"
+ 
+@@ -4460,21 +4720,27 @@ system and gives an overview of their function and contents.
+ 
+          It is possible to set this to "" to disable symlink creation,
+          however, you also need to set :term:`IMAGE_NAME` to still have
+-         a reasonable value e.g.::
++         a reasonable value e.g.:
 +
 +         .. code-block:: bitbake
  
-                  DISTRO_FEATURES:append = " ptest"
+             IMAGE_LINK_NAME = ""
+             IMAGE_NAME = "${IMAGE_BASENAME}${IMAGE_MACHINE_SUFFIX}${IMAGE_VERSION_SUFFIX}"
  
-diff --git a/documentation/dev-manual/wayland.rst b/documentation/dev-manual/wayland.rst
-index 18d1bfb0a608..510bc2bcfd91 100644
---- a/documentation/dev-manual/wayland.rst
-+++ b/documentation/dev-manual/wayland.rst
-@@ -48,7 +48,9 @@ Wayland with Kernel Mode Setting
- (`KMS <https://wiki.archlinux.org/index.php/Kernel_Mode_Setting>`__)
- support, include the "wayland" flag in the
- :term:`DISTRO_FEATURES`
--statement in your ``local.conf`` file::
-+statement in your ``local.conf`` file:
+    :term:`IMAGE_MACHINE_SUFFIX`
+       Specifies the by default machine-specific suffix for image file names
+-      (before the extension). The default value is set as follows::
++      (before the extension). The default value is set as follows:
 +
-+.. code-block:: bitbake
++      .. code-block:: bitbake
  
-    DISTRO_FEATURES:append = " wayland"
+          IMAGE_MACHINE_SUFFIX ??= "-${MACHINE}"
  
-@@ -63,7 +65,9 @@ Installing Wayland and Weston
- To install the Wayland feature into an image, you must include the
- following
- :term:`CORE_IMAGE_EXTRA_INSTALL`
--statement in your ``local.conf`` file::
-+statement in your ``local.conf`` file:
+       The default :term:`DEPLOY_DIR_IMAGE` already has a :term:`MACHINE`
+       subdirectory, so you may find it unnecessary to also include this suffix
+       in the name of every image file. If you prefer to remove the suffix you
+-      can set this variable to an empty string::
++      can set this variable to an empty string:
 +
-+.. code-block:: bitbake
++      .. code-block:: bitbake
  
-    CORE_IMAGE_EXTRA_INSTALL += "wayland weston"
+          IMAGE_MACHINE_SUFFIX = ""
  
-diff --git a/documentation/dev-manual/x32-psabi.rst b/documentation/dev-manual/x32-psabi.rst
-index 0a19d28233d8..1bff33a34a3b 100644
---- a/documentation/dev-manual/x32-psabi.rst
-+++ b/documentation/dev-manual/x32-psabi.rst
-@@ -39,7 +39,9 @@ follows:
- -  There is support for large images.
+@@ -4488,7 +4754,9 @@ system and gives an overview of their function and contents.
+           packagename packagearch version
  
- To use the x32 psABI, you need to edit your ``conf/local.conf``
--configuration file as follows::
-+configuration file as follows:
+       The :ref:`rootfs-postcommands <ref-classes-rootfs*>` class defines the manifest
+-      file as follows::
++      file as follows:
 +
-+.. code-block:: bitbake
++      .. code-block:: bitbake
  
-    MACHINE = "qemux86-64"
-    DEFAULTTUNE = "x86-64-x32"
+          IMAGE_MANIFEST = "${IMGDEPLOYDIR}/${IMAGE_NAME}${IMAGE_NAME_SUFFIX}.manifest"
+ 
+@@ -4501,7 +4769,9 @@ system and gives an overview of their function and contents.
+    :term:`IMAGE_NAME`
+       The name of the output image files minus the extension. By default
+       this variable is set using the :term:`IMAGE_LINK_NAME`, and
+-      :term:`IMAGE_VERSION_SUFFIX` variables::
++      :term:`IMAGE_VERSION_SUFFIX` variables:
++
++      .. code-block:: bitbake
+ 
+          IMAGE_NAME ?= "${IMAGE_LINK_NAME}${IMAGE_VERSION_SUFFIX}"
+ 
+@@ -4517,7 +4787,9 @@ system and gives an overview of their function and contents.
+       :ref:`ref-classes-core-image` class, the :term:`IMAGE_OUTPUT_MANIFEST`
+       points to a manifest ``json`` file that lists what images were created by
+       various image creation tasks (as defined by the :term:`IMAGE_FSTYPES`
+-      variable). It is set in the :ref:`ref-classes-image` class as follows::
++      variable). It is set in the :ref:`ref-classes-image` class as follows:
++
++      .. code-block:: bitbake
+ 
+           IMAGE_OUTPUT_MANIFEST = "${IMAGE_OUTPUT_MANIFEST_DIR}/manifest.json"
+ 
+@@ -4527,7 +4799,9 @@ system and gives an overview of their function and contents.
+       a directory that stores a manifest ``json`` file that lists what
+       images were created by various image creation tasks (as defined by the
+       :term:`IMAGE_FSTYPES` variable). It is set in the :ref:`ref-classes-image`
+-      class as follows::
++      class as follows:
++
++      .. code-block:: bitbake
+ 
+           IMAGE_OUTPUT_MANIFEST_DIR = "${WORKDIR}/deploy-image-output-manifest"
+ 
+@@ -4551,7 +4825,9 @@ system and gives an overview of their function and contents.
+       to boot and allows for basic post installs while still leaving a
+       small amount of free disk space. If 30% free space is inadequate, you
+       can increase the default value. For example, the following setting
+-      gives you 50% free space added to the image::
++      gives you 50% free space added to the image:
++
++      .. code-block:: bitbake
+ 
+          IMAGE_OVERHEAD_FACTOR = "1.5"
+ 
+@@ -4584,7 +4860,9 @@ system and gives an overview of their function and contents.
+    :term:`IMAGE_POSTPROCESS_COMMAND`
+       Specifies a list of functions to call once the OpenEmbedded build
+       system creates the final image output files. You can specify
+-      functions separated by spaces::
++      functions separated by spaces:
++
++      .. code-block:: bitbake
+ 
+          IMAGE_POSTPROCESS_COMMAND += "function"
+ 
+@@ -4597,7 +4875,9 @@ system and gives an overview of their function and contents.
+    :term:`IMAGE_PREPROCESS_COMMAND`
+       Specifies a list of functions to call before the OpenEmbedded build
+       system creates the final image output files. You can specify
+-      functions separated by spaces::
++      functions separated by spaces:
++
++      .. code-block:: bitbake
+ 
+          IMAGE_PREPROCESS_COMMAND += "function"
+ 
+@@ -4628,12 +4908,16 @@ system and gives an overview of their function and contents.
+       This variable is particularly useful when you want to ensure that a
+       specific amount of free disk space is available on a device after an
+       image is installed and running. For example, to be sure 5 Gbytes of
+-      free disk space is available, set the variable as follows::
++      free disk space is available, set the variable as follows:
++
++      .. code-block:: bitbake
+ 
+          IMAGE_ROOTFS_EXTRA_SPACE = "5242880"
+ 
+       For example, the Yocto Project Build Appliance specifically requests
+-      40 Gbytes of extra space with the line::
++      40 Gbytes of extra space with the line:
++
++      .. code-block:: bitbake
+ 
+          IMAGE_ROOTFS_EXTRA_SPACE = "41943040"
+ 
+@@ -4693,7 +4977,9 @@ system and gives an overview of their function and contents.
+ 
+    :term:`IMAGE_TYPEDEP`
+       Specifies a dependency from one image type on another. Here is an
+-      example from the :ref:`ref-classes-image-live` class::
++      example from the :ref:`ref-classes-image-live` class:
++
++      .. code-block:: bitbake
+ 
+          IMAGE_TYPEDEP:live = "ext3"
+ 
+@@ -4766,7 +5052,9 @@ system and gives an overview of their function and contents.
+       When inheriting the :ref:`ref-classes-image` class directly or
+       through the :ref:`ref-classes-core-image` class, the
+       :term:`IMGDEPLOYDIR` points to a temporary work area for deployed files
+-      that is set in the ``image`` class as follows::
++      that is set in the ``image`` class as follows:
++
++      .. code-block:: bitbake
+ 
+          IMGDEPLOYDIR = "${WORKDIR}/deploy-${PN}-image-complete"
+ 
+@@ -4780,7 +5068,9 @@ system and gives an overview of their function and contents.
+       points to a temporary area that stores manifest ``json`` files, that list
+       what images were created by various images creation tasks (as defined by
+       the :term:`IMAGE_FSTYPES` variable). It is set in the
+-      :ref:`ref-classes-image` class as follows::
++      :ref:`ref-classes-image` class as follows:
++
++      .. code-block:: bitbake
+ 
+           IMGMANIFESTDIR = "${WORKDIR}/image-task-manifest"
+ 
+@@ -4811,7 +5101,9 @@ system and gives an overview of their function and contents.
+       .. note::
+ 
+          This functionality is only regularly tested using the following
+-         setting::
++         setting:
++
++         .. code-block:: bitbake
+ 
+                  INCOMPATIBLE_LICENSE = "GPL-3.0* LGPL-3.0* AGPL-3.0*"
+ 
+@@ -4824,7 +5116,9 @@ system and gives an overview of their function and contents.
+       Specifies a space-separated list of package and license pairs that
+       are allowed to be used even if the license is specified in
+       :term:`INCOMPATIBLE_LICENSE`. The package and license pairs are
+-      separated using a colon. Example::
++      separated using a colon. Example:
++
++      .. code-block:: bitbake
+ 
+          INCOMPATIBLE_LICENSE_EXCEPTIONS = "gdbserver:GPL-3.0-only gdbserver:LGPL-3.0-only"
+ 
+@@ -4848,7 +5142,9 @@ system and gives an overview of their function and contents.
+       ``classes-global/`` or ``classes/`` subdirectories.
+ 
+       The default value of the variable is set as follows in the
+-      ``meta/conf/distro/defaultsetup.conf`` file::
++      ``meta/conf/distro/defaultsetup.conf`` file:
++
++      .. code-block:: bitbake
+ 
+          INHERIT_DISTRO ?= "debian devshell sstate license remove-libtool create-spdx"
+ 
+@@ -4862,7 +5158,9 @@ system and gives an overview of their function and contents.
+       support the ``autotools`` build process.
+ 
+       To prevent the build system from adding these dependencies automatically,
+-      set the :term:`INHIBIT_AUTOTOOLS_DEPS` variable as follows::
++      set the :term:`INHIBIT_AUTOTOOLS_DEPS` variable as follows:
++
++      .. code-block:: bitbake
+ 
+          INHIBIT_AUTOTOOLS_DEPS = "1"
+ 
+@@ -4888,7 +5186,9 @@ system and gives an overview of their function and contents.
+       to :term:`DEPENDS` to support the ``rust`` build process.
+ 
+       To prevent the build system from adding these dependencies automatically,
+-      set the :term:`INHIBIT_DEFAULT_RUST_DEPS` variable as follows::
++      set the :term:`INHIBIT_DEFAULT_RUST_DEPS` variable as follows:
++
++      .. code-block:: bitbake
+ 
+          INHIBIT_DEFAULT_RUST_DEPS = "1"
+ 
+@@ -4907,7 +5207,9 @@ system and gives an overview of their function and contents.
+ 
+       To prevent the build system from splitting out debug information
+       during packaging, set the :term:`INHIBIT_PACKAGE_DEBUG_SPLIT` variable as
+-      follows::
++      follows:
++
++      .. code-block:: bitbake
+ 
+          INHIBIT_PACKAGE_DEBUG_SPLIT = "1"
+ 
+@@ -4953,7 +5255,9 @@ system and gives an overview of their function and contents.
+       traditional SysV init system.
+ 
+       To prevent the build system from adding these scripts and configurations
+-      automatically, set the :term:`INHIBIT_UPDATERCD_BBCLASS` variable as follows::
++      automatically, set the :term:`INHIBIT_UPDATERCD_BBCLASS` variable as follows:
++
++      .. code-block:: bitbake
+ 
+          INHIBIT_UPDATERCD_BBCLASS = "1"
+ 
+@@ -5078,12 +5382,16 @@ system and gives an overview of their function and contents.
+ 
+       Setting the variable to "1" in a configuration file causes the
+       OpenEmbedded build system to generate a kernel image with the
+-      :term:`Initramfs` specified in :term:`INITRAMFS_IMAGE` bundled within::
++      :term:`Initramfs` specified in :term:`INITRAMFS_IMAGE` bundled within:
++
++      .. code-block:: bitbake
+ 
+          INITRAMFS_IMAGE_BUNDLE = "1"
+ 
+       By default, the :ref:`ref-classes-kernel` class sets this variable to a
+-      null string as follows::
++      null string as follows:
++
++      .. code-block:: bitbake
+ 
+          INITRAMFS_IMAGE_BUNDLE ?= ""
+ 
+@@ -5114,13 +5422,17 @@ system and gives an overview of their function and contents.
+    :term:`INITRAMFS_LINK_NAME`
+       The link name of the initial RAM filesystem image. This variable is
+       set in the ``meta/classes-recipe/kernel-artifact-names.bbclass`` file as
+-      follows::
++      follows:
++
++      .. code-block:: bitbake
+ 
+          INITRAMFS_LINK_NAME ?= "initramfs-${KERNEL_ARTIFACT_LINK_NAME}"
+ 
+       The value of the
+       ``KERNEL_ARTIFACT_LINK_NAME`` variable, which is set in the same
+-      file, has the following value::
++      file, has the following value:
++
++      .. code-block:: bitbake
+ 
+          KERNEL_ARTIFACT_LINK_NAME ?= "${MACHINE}"
+ 
+@@ -5155,7 +5467,9 @@ system and gives an overview of their function and contents.
+    :term:`INITRAMFS_NAME`
+       The base name of the initial RAM filesystem image. This variable is
+       set in the ``meta/classes-recipe/kernel-artifact-names.bbclass`` file as
+-      follows::
++      follows:
++
++      .. code-block:: bitbake
+ 
+          INITRAMFS_NAME ?= "initramfs-${KERNEL_ARTIFACT_NAME}"
+ 
+@@ -5194,7 +5508,9 @@ system and gives an overview of their function and contents.
+       variable.
+ 
+    :term:`INITSCRIPT_PARAMS`
+-      Specifies the options to pass to ``update-rc.d``. Here is an example::
++      Specifies the options to pass to ``update-rc.d``. Here is an example:
++
++      .. code-block:: bitbake
+ 
+          INITSCRIPT_PARAMS = "start 99 5 2 . stop 20 0 1 6 ."
+ 
+@@ -5213,7 +5529,9 @@ system and gives an overview of their function and contents.
+       recipe. For example, to skip the check for symbolic link ``.so``
+       files in the main package of a recipe, add the following to the
+       recipe. The package name override must be used, which in this example
+-      is ``${PN}``::
++      is ``${PN}``:
++
++      .. code-block:: bitbake
+ 
+          INSANE_SKIP:${PN} += "dev-so"
+ 
+@@ -5255,7 +5573,9 @@ system and gives an overview of their function and contents.
+       kernel's append file. For example, if you are using the
+       ``linux-yocto_4.12`` kernel, the kernel recipe file is the
+       ``meta/recipes-kernel/linux/linux-yocto_4.12.bb`` file. :term:`KBRANCH`
+-      is set as follows in that kernel recipe file::
++      is set as follows in that kernel recipe file:
++
++      .. code-block:: bitbake
+ 
+          KBRANCH ?= "standard/base"
+ 
+@@ -5267,7 +5587,9 @@ system and gives an overview of their function and contents.
+       Beaglebone and generic versions of both 32 and 64-bit IA
+       machines (``meta-yocto-bsp``) is named
+       ``meta-yocto-bsp/recipes-kernel/linux/linux-yocto_6.1.bbappend``.
+-      Here are the related statements from that append file::
++      Here are the related statements from that append file:
++
++      .. code-block:: bitbake
+ 
+          KBRANCH:genericx86  = "v6.1/standard/base"
+          KBRANCH:genericx86-64  = "v6.1/standard/base"
+@@ -5296,11 +5618,15 @@ system and gives an overview of their function and contents.
+          KBUILD_DEFCONFIG:<machine> ?= "defconfig_file"
+ 
+       Here is an example from a "raspberrypi2" :term:`MACHINE` build that uses
+-      a ``defconfig`` file named "bcm2709_defconfig"::
++      a ``defconfig`` file named "bcm2709_defconfig":
++
++      .. code-block:: bitbake
+ 
+          KBUILD_DEFCONFIG:raspberrypi2 = "bcm2709_defconfig"
+ 
+-      As an alternative, you can use the following within your append file::
++      As an alternative, you can use the following within your append file:
++
++      .. code-block:: bitbake
+ 
+          KBUILD_DEFCONFIG:pn-linux-yocto ?= "defconfig_file"
+ 
+@@ -5371,7 +5697,9 @@ system and gives an overview of their function and contents.
+    :term:`KCONFIG_MODE`
+       When used with the :ref:`ref-classes-kernel-yocto`
+       class, specifies the kernel configuration values to use for options
+-      not specified in the provided ``defconfig`` file. Valid options are::
++      not specified in the provided ``defconfig`` file. Valid options are:
++
++      .. code-block:: bitbake
+ 
+          KCONFIG_MODE = "alldefconfig"
+          KCONFIG_MODE = "allnoconfig"
+@@ -5394,7 +5722,9 @@ system and gives an overview of their function and contents.
+       generated using the
+       :ref:`ref-tasks-savedefconfig`
+       task and placed into the Linux kernel ``${WORKDIR}`` through your
+-      meta-layer. Explicitely set :term:`KCONFIG_MODE`::
++      meta-layer. Explicitely set :term:`KCONFIG_MODE`:
++
++      .. code-block:: bitbake
+ 
+          KCONFIG_MODE = "alldefconfig"
+ 
+@@ -5410,7 +5740,9 @@ system and gives an overview of their function and contents.
+ 
+       The value of :term:`KERNEL_ARTIFACT_NAME`, which is set in the
+       ``meta/classes-recipe/kernel-artifact-names.bbclass`` file, has the
+-      following default value::
++      following default value:
++
++      .. code-block:: bitbake
+ 
+          KERNEL_ARTIFACT_NAME ?= "${PKGE}-${PKGV}-${PKGR}${IMAGE_MACHINE_SUFFIX}${IMAGE_VERSION_SUFFIX}"
+ 
+@@ -5443,7 +5775,9 @@ system and gives an overview of their function and contents.
+       building and configuring the kernel stops with an error.
+ 
+       You can turn these errors into warnings by setting the
+-      following in ``conf/local.conf``::
++      following in ``conf/local.conf``:
++
++      .. code-block:: bitbake
+ 
+          KERNEL_DANGLING_FEATURES_WARN_ONLY = "1"
+ 
+@@ -5487,13 +5821,17 @@ system and gives an overview of their function and contents.
+    :term:`KERNEL_DTB_LINK_NAME`
+       The link name of the kernel device tree binary (DTB). This variable
+       is set in the ``meta/classes-recipe/kernel-artifact-names.bbclass`` file as
+-      follows::
++      follows:
++
++      .. code-block:: bitbake
+ 
+          KERNEL_DTB_LINK_NAME ?= "${KERNEL_ARTIFACT_LINK_NAME}"
+ 
+       The
+       value of the ``KERNEL_ARTIFACT_LINK_NAME`` variable, which is set in
+-      the same file, has the following value::
++      the same file, has the following value:
++
++      .. code-block:: bitbake
+ 
+          KERNEL_ARTIFACT_LINK_NAME ?= "${MACHINE}"
+ 
+@@ -5503,7 +5841,9 @@ system and gives an overview of their function and contents.
+    :term:`KERNEL_DTB_NAME`
+       The base name of the kernel device tree binary (DTB). This variable
+       is set in the ``meta/classes-recipe/kernel-artifact-names.bbclass`` file as
+-      follows::
++      follows:
++
++      .. code-block:: bitbake
+ 
+          KERNEL_DTB_NAME ?= "${KERNEL_ARTIFACT_NAME}"
+ 
+@@ -5556,7 +5896,9 @@ system and gives an overview of their function and contents.
+       For example, the following example from the ``linux-yocto-rt_4.12``
+       kernel recipe adds "netfilter" and "taskstats" features to all BSPs
+       as well as "virtio" configurations to all QEMU machines. The last two
+-      statements add specific configurations to targeted machine types::
++      statements add specific configurations to targeted machine types:
++
++      .. code-block:: bitbake
+ 
+          KERNEL_EXTRA_FEATURES ?= "features/netfilter/netfilter.scc features/taskstats/taskstats.scc"
+          KERNEL_FEATURES:append = " ${KERNEL_EXTRA_FEATURES}"
+@@ -5567,13 +5909,17 @@ system and gives an overview of their function and contents.
+    :term:`KERNEL_FIT_LINK_NAME`
+       The link name of the kernel flattened image tree (FIT) image. This
+       variable is set in the ``meta/classes-recipe/kernel-artifact-names.bbclass``
+-      file as follows::
++      file as follows:
++
++      .. code-block:: bitbake
+ 
+          KERNEL_FIT_LINK_NAME ?= "${KERNEL_ARTIFACT_LINK_NAME}"
+ 
+       The value of the
+       ``KERNEL_ARTIFACT_LINK_NAME`` variable, which is set in the same
+-      file, has the following value::
++      file, has the following value:
++
++      .. code-block:: bitbake
+ 
+          KERNEL_ARTIFACT_LINK_NAME ?= "${MACHINE}"
+ 
+@@ -5583,7 +5929,9 @@ system and gives an overview of their function and contents.
+    :term:`KERNEL_FIT_NAME`
+       The base name of the kernel flattened image tree (FIT) image. This
+       variable is set in the ``meta/classes-recipe/kernel-artifact-names.bbclass``
+-      file as follows::
++      file as follows:
++
++      .. code-block:: bitbake
+ 
+          KERNEL_FIT_NAME ?= "${KERNEL_ARTIFACT_NAME}"
+ 
+@@ -5591,13 +5939,17 @@ system and gives an overview of their function and contents.
+ 
+    :term:`KERNEL_IMAGE_LINK_NAME`
+       The link name for the kernel image. This variable is set in the
+-      ``meta/classes-recipe/kernel-artifact-names.bbclass`` file as follows::
++      ``meta/classes-recipe/kernel-artifact-names.bbclass`` file as follows:
++
++      .. code-block:: bitbake
+ 
+          KERNEL_IMAGE_LINK_NAME ?= "${KERNEL_ARTIFACT_LINK_NAME}"
+ 
+       The value of
+       the ``KERNEL_ARTIFACT_LINK_NAME`` variable, which is set in the same
+-      file, has the following value::
++      file, has the following value:
++
++      .. code-block:: bitbake
+ 
+          KERNEL_ARTIFACT_LINK_NAME ?= "${MACHINE}"
+ 
+@@ -5620,7 +5972,9 @@ system and gives an overview of their function and contents.
+ 
+    :term:`KERNEL_IMAGE_NAME`
+       The base name of the kernel image. This variable is set in the
+-      ``meta/classes-recipe/kernel-artifact-names.bbclass`` file as follows::
++      ``meta/classes-recipe/kernel-artifact-names.bbclass`` file as follows:
++
++      .. code-block:: bitbake
+ 
+          KERNEL_IMAGE_NAME ?= "${KERNEL_ARTIFACT_NAME}"
+ 
+@@ -5629,7 +5983,9 @@ system and gives an overview of their function and contents.
+    :term:`KERNEL_IMAGE_STRIP_EXTRA_SECTIONS`
+       If this variable is set, it should contain the sections to be
+       stripped from the ``vmlinux`` image by the kernel-related
+-      :ref:`ref-tasks-strip` task. As a simple example::
++      :ref:`ref-tasks-strip` task. As a simple example:
++
++      .. code-block:: bitbake
+ 
+          KERNEL_IMAGE_STRIP_EXTRA_SECTIONS = ".comment .note.* .debug"
+ 
+@@ -5670,7 +6026,9 @@ system and gives an overview of their function and contents.
+       configuration file, an append file for the recipe, or the recipe
+       itself).
+ 
+-      Specify it as follows::
++      Specify it as follows:
++
++      .. code-block:: bitbake
+ 
+          KERNEL_MODULE_AUTOLOAD += "module_name1 module_name2 module_name3"
+ 
+@@ -5678,7 +6036,9 @@ system and gives an overview of their function and contents.
+       system to populate the ``/etc/modules-load.d/modname.conf`` file with
+       the list of modules to be auto-loaded on boot. The modules appear
+       one-per-line in the file. Here is an example of the most common use
+-      case::
++      case:
++
++      .. code-block:: bitbake
+ 
+          KERNEL_MODULE_AUTOLOAD += "module_name"
+ 
+@@ -5787,7 +6147,9 @@ system and gives an overview of their function and contents.
+ 
+       These mappings between different names occur in the Yocto Linux
+       Kernel's ``meta`` branch. As an example take a look in the
+-      ``common/recipes-kernel/linux/linux-yocto_3.19.bbappend`` file::
++      ``common/recipes-kernel/linux/linux-yocto_3.19.bbappend`` file:
++
++      .. code-block:: bitbake
+ 
+          LINUX_VERSION:core2-32-intel-common = "3.19.0"
+          COMPATIBLE_MACHINE:core2-32-intel-common = "${MACHINE}"
+@@ -5852,7 +6214,9 @@ system and gives an overview of their function and contents.
+    :term:`LAYERDEPENDS`
+       Lists the layers, separated by spaces, on which this layer depends.
+       Optionally, you can specify a specific layer version for a dependency
+-      by adding it to the end of the layer name. Here is an example::
++      by adding it to the end of the layer name. Here is an example:
++
++      .. code-block:: bitbake
+ 
+          LAYERDEPENDS_mylayer = "anotherlayer (=3)"
+ 
+@@ -5880,7 +6244,9 @@ system and gives an overview of their function and contents.
+ 
+       Optionally, you can specify a specific layer version for a
+       recommendation by adding the version to the end of the layer name.
+-      Here is an example::
++      Here is an example:
++
++      .. code-block:: bitbake
+ 
+          LAYERRECOMMENDS_mylayer = "anotherlayer (=3)"
+ 
+@@ -5964,7 +6330,9 @@ system and gives an overview of their function and contents.
+          :term:`SPDXLICENSEMAP` flag names defined in
+          ``meta/conf/licenses.conf``.
+ 
+-      Here are some examples::
++      Here are some examples:
++
++      .. code-block:: bitbake
+ 
+          LICENSE = "LGPL-2.1-only | GPL-3.0-only"
+          LICENSE = "MPL-1.0 & LGPL-2.1-only"
+@@ -5981,7 +6349,9 @@ system and gives an overview of their function and contents.
+       situations where components of the output have different licenses.
+       For example, a piece of software whose code is licensed under GPLv2
+       but has accompanying documentation licensed under the GNU Free
+-      Documentation License 1.2 could be specified as follows::
++      Documentation License 1.2 could be specified as follows:
++
++      .. code-block:: bitbake
+ 
+          LICENSE = "GFDL-1.2 & GPL-2.0-only"
+          LICENSE:${PN} = "GPL-2.0.only"
+@@ -6042,7 +6412,9 @@ system and gives an overview of their function and contents.
+       the error message will be more informative, containing the specified
+       extra details.
+ 
+-      For example, a recipe with an EULA may set::
++      For example, a recipe with an EULA may set:
++
++      .. code-block:: bitbake
+ 
+          LICENSE_FLAGS = "FooBar-EULA"
+          LICENSE_FLAGS_DETAILS[FooBar-EULA] = "For further details, see https://example.com/eula."
+@@ -6058,7 +6430,9 @@ system and gives an overview of their function and contents.
+       OpenEmbedded build system uses :term:`COMMON_LICENSE_DIR` to define the
+       directory that holds common license text used during the build. The
+       :term:`LICENSE_PATH` variable allows you to extend that location to other
+-      areas that have additional licenses::
++      areas that have additional licenses:
++
++      .. code-block:: bitbake
+ 
+          LICENSE_PATH += "path-to-additional-common-licenses"
+ 
+@@ -6082,12 +6456,16 @@ system and gives an overview of their function and contents.
+       being built using the OpenEmbedded build system is based. You define
+       this variable in the kernel recipe. For example, the
+       ``linux-yocto-3.4.bb`` kernel recipe found in
+-      ``meta/recipes-kernel/linux`` defines the variables as follows::
++      ``meta/recipes-kernel/linux`` defines the variables as follows:
++
++      .. code-block:: bitbake
+ 
+          LINUX_VERSION ?= "3.4.24"
+ 
+       The :term:`LINUX_VERSION` variable is used to define :term:`PV`
+-      for the recipe::
++      for the recipe:
++
++      .. code-block:: bitbake
+ 
+          PV = "${LINUX_VERSION}+git"
+ 
+@@ -6095,7 +6473,9 @@ system and gives an overview of their function and contents.
+       A string extension compiled into the version string of the Linux
+       kernel built with the OpenEmbedded build system. You define this
+       variable in the kernel recipe. For example, the linux-yocto kernel
+-      recipes all define the variable as follows::
++      recipes all define the variable as follows:
++
++      .. code-block:: bitbake
+ 
+          LINUX_VERSION_EXTENSION ?= "-yocto-${LINUX_KERNEL_TYPE}"
+ 
+@@ -6139,7 +6519,9 @@ system and gives an overview of their function and contents.
+       :term:`MACHINE` in the ``local.conf`` file found in the
+       :term:`Build Directory`. By default, :term:`MACHINE` is set to
+       "qemux86", which is an x86-based architecture machine to be emulated
+-      using QEMU::
++      using QEMU:
++
++      .. code-block:: bitbake
+ 
+          MACHINE ?= "qemux86"
+ 
+@@ -6151,7 +6533,9 @@ system and gives an overview of their function and contents.
+       ``meta/conf/machine``.
+ 
+       The list of machines supported by the Yocto Project as shipped
+-      include the following::
++      include the following:
++
++      .. code-block:: bitbake
+ 
+          MACHINE ?= "qemuarm"
+          MACHINE ?= "qemuarm64"
+@@ -6196,7 +6580,9 @@ system and gives an overview of their function and contents.
+       As an example, suppose the machine for which you are building
+       requires ``example-init`` to be run during boot to initialize the
+       hardware. In this case, you would use the following in the machine's
+-      ``.conf`` configuration file::
++      ``.conf`` configuration file:
++
++      .. code-block:: bitbake
+ 
+          MACHINE_ESSENTIAL_EXTRA_RDEPENDS += "example-init"
+ 
+@@ -6227,7 +6613,9 @@ system and gives an overview of their function and contents.
+       "recommends" relationship so that in the latter case, the build will
+       not fail due to the missing package. To accomplish this, assuming the
+       package for the module was called ``kernel-module-ab123``, you would
+-      use the following in the machine's ``.conf`` configuration file::
++      use the following in the machine's ``.conf`` configuration file:
++
++      .. code-block:: bitbake
+ 
+          MACHINE_ESSENTIAL_EXTRA_RRECOMMENDS += "kernel-module-ab123"
+ 
+@@ -6263,7 +6651,9 @@ system and gives an overview of their function and contents.
+       exist, so it is acceptable for the build process to depend upon
+       finding the package. In this case, assuming the package for the
+       firmware was called ``wifidriver-firmware``, you would use the
+-      following in the ``.conf`` file for the machine::
++      following in the ``.conf`` file for the machine:
++
++      .. code-block:: bitbake
+ 
+          MACHINE_EXTRA_RDEPENDS += "wifidriver-firmware"
+ 
+@@ -6289,7 +6679,9 @@ system and gives an overview of their function and contents.
+       the build to succeed instead of failing as a result of the package
+       not being found. To accomplish this, assuming the package for the
+       module was called ``kernel-module-examplewifi``, you would use the
+-      following in the ``.conf`` file for the machine::
++      following in the ``.conf`` file for the machine:
++
++      .. code-block:: bitbake
+ 
+          MACHINE_EXTRA_RRECOMMENDS += "kernel-module-examplewifi"
+ 
+@@ -6317,7 +6709,9 @@ system and gives an overview of their function and contents.
+       when they are provided by the :term:`MACHINE_FEATURES_DEFAULTS` variable.
+ 
+       You can also opt out of all default features by setting
+-      :term:`MACHINE_FEATURES_OPTED_OUT` to ``*``::
++      :term:`MACHINE_FEATURES_OPTED_OUT` to ``*``:
++
++      .. code-block:: bitbake
+ 
+          MACHINE_FEATURES_OPTED_OUT = "*"
+ 
+@@ -6332,14 +6726,18 @@ system and gives an overview of their function and contents.
+       should apply to a machine. For example, all machines emulated in QEMU
+       (e.g. ``qemuarm``, ``qemux86``, and so forth) include a file named
+       ``meta/conf/machine/include/qemu.inc`` that prepends the following
+-      override to :term:`MACHINEOVERRIDES`::
++      override to :term:`MACHINEOVERRIDES`:
++
++      .. code-block:: bitbake
+ 
+          MACHINEOVERRIDES =. "qemuall:"
+ 
+       This
+       override allows variables to be overridden for all machines emulated
+       in QEMU, like in the following example from the ``connman-conf``
+-      recipe::
++      recipe:
++
++      .. code-block:: bitbake
+ 
+          SRC_URI:append:qemuall = " file://wired.config \
+              file://wired-setup \
+@@ -6422,23 +6820,31 @@ system and gives an overview of their function and contents.
+       declares build-time dependencies on tasks in other recipes by using
+       :term:`DEPENDS`, then a dependency on "foo" will automatically get
+       rewritten to a dependency on "nativesdk-foo". However, dependencies like
+-      the following will not get rewritten automatically::
++      the following will not get rewritten automatically:
++
++      .. code-block:: bitbake
+ 
+          do_foo[depends] += "recipe:do_foo"
+ 
+       If you want such a dependency to also get transformed, you can do the
+-      following::
++      following:
++
++      .. code-block:: bitbake
+ 
+          do_foo[depends] += "${MLPREFIX}recipe:do_foo"
+ 
+    :term:`module_autoload`
+       This variable has been replaced by the :term:`KERNEL_MODULE_AUTOLOAD`
+       variable. You should replace all occurrences of :term:`module_autoload`
+-      with additions to :term:`KERNEL_MODULE_AUTOLOAD`, for example::
++      with additions to :term:`KERNEL_MODULE_AUTOLOAD`, for example:
++
++      .. code-block:: bitbake
+ 
+          module_autoload_rfcomm = "rfcomm"
+ 
+-      should now be replaced with::
++      should now be replaced with:
++
++      .. code-block:: bitbake
+ 
+          KERNEL_MODULE_AUTOLOAD += "rfcomm"
+ 
+@@ -6457,7 +6863,9 @@ system and gives an overview of their function and contents.
+       :term:`KERNEL_MODULE_PROBECONF`
+       variable.
+ 
+-      Here is the general syntax::
++      Here is the general syntax:
++
++      .. code-block:: bitbake
+ 
+          module_conf_module_name = "modprobe.d-syntax"
+ 
+@@ -6469,7 +6877,9 @@ system and gives an overview of their function and contents.
+       Including :term:`module_conf` causes the OpenEmbedded build system to
+       populate the ``/etc/modprobe.d/modname.conf`` file with
+       ``modprobe.d`` syntax lines. Here is an example that adds the options
+-      ``arg1`` and ``arg2`` to a module named ``mymodule``::
++      ``arg1`` and ``arg2`` to a module named ``mymodule``:
++
++      .. code-block:: bitbake
+ 
+          module_conf_mymodule = "options mymodule arg1=val1 arg2=val2"
+ 
+@@ -6483,13 +6893,17 @@ system and gives an overview of their function and contents.
+ 
+    :term:`MODULE_TARBALL_LINK_NAME`
+       The link name of the kernel module tarball. This variable is set in
+-      the ``meta/classes-recipe/kernel-artifact-names.bbclass`` file as follows::
++      the ``meta/classes-recipe/kernel-artifact-names.bbclass`` file as follows:
++
++      .. code-block:: bitbake
+ 
+          MODULE_TARBALL_LINK_NAME ?= "${KERNEL_ARTIFACT_LINK_NAME}"
+ 
+       The value
+       of the ``KERNEL_ARTIFACT_LINK_NAME`` variable, which is set in the
+-      same file, has the following value::
++      same file, has the following value:
++
++      .. code-block:: bitbake
+ 
+          KERNEL_ARTIFACT_LINK_NAME ?= "${MACHINE}"
+ 
+@@ -6497,7 +6911,9 @@ system and gives an overview of their function and contents.
+ 
+    :term:`MODULE_TARBALL_NAME`
+       The base name of the kernel module tarball. This variable is set in
+-      the ``meta/classes-recipe/kernel-artifact-names.bbclass`` file as follows::
++      the ``meta/classes-recipe/kernel-artifact-names.bbclass`` file as follows:
++
++      .. code-block:: bitbake
+ 
+          MODULE_TARBALL_NAME ?= "${KERNEL_ARTIFACT_NAME}"
+ 
+@@ -6557,13 +6973,17 @@ system and gives an overview of their function and contents.
+       not exist in common licenses.
+ 
+       The following example shows how to add :term:`NO_GENERIC_LICENSE` to a
+-      recipe::
++      recipe:
++
++      .. code-block:: bitbake
+ 
+          NO_GENERIC_LICENSE[license_name] = "license_file_in_fetched_source"
+ 
+       Here is an example that
+       uses the ``LICENSE.Abilis.txt`` file as the license from the fetched
+-      source::
++      source:
++
++      .. code-block:: bitbake
+ 
+          NO_GENERIC_LICENSE[Firmware-Abilis] = "LICENSE.Abilis.txt"
+ 
+@@ -6571,13 +6991,17 @@ system and gives an overview of their function and contents.
+       Prevents installation of all "recommended-only" packages.
+       Recommended-only packages are packages installed only through the
+       :term:`RRECOMMENDS` variable). Setting the
+-      :term:`NO_RECOMMENDATIONS` variable to "1" turns this feature on::
++      :term:`NO_RECOMMENDATIONS` variable to "1" turns this feature on:
++
++      .. code-block:: bitbake
+ 
+          NO_RECOMMENDATIONS = "1"
+ 
+       You can set this variable globally in your ``local.conf`` file or you
+       can attach it to a specific image recipe by using the recipe name
+-      override::
++      override:
++
++      .. code-block:: bitbake
+ 
+          NO_RECOMMENDATIONS:pn-target_image = "1"
+ 
+@@ -6603,7 +7027,9 @@ system and gives an overview of their function and contents.
+       Disables auto package from splitting ``.debug`` files. If a recipe
+       requires ``FILES:${PN}-dbg`` to be set manually, the
+       :term:`NOAUTOPACKAGEDEBUG` can be defined allowing you to define the
+-      content of the debug package. For example::
++      content of the debug package. For example:
++
++      .. code-block:: bitbake
+ 
+          NOAUTOPACKAGEDEBUG = "1"
+          FILES:${PN}-dev = "${includedir}/${QT_DIR_NAME}/Qt/*"
+@@ -6613,7 +7039,9 @@ system and gives an overview of their function and contents.
+    :term:`NON_MULTILIB_RECIPES`
+       A list of recipes that should not be built for multilib. OE-Core's
+       ``multilib.conf`` file defines a reasonable starting point for this
+-      list with::
++      list with:
++
++      .. code-block:: bitbake
+ 
+          NON_MULTILIB_RECIPES = "grub grub-efi make-mod-scripts ovmf u-boot"
+ 
+@@ -6699,7 +7127,9 @@ system and gives an overview of their function and contents.
+ 
+       By default, this variable is set to ``Ninja``, which is faster than GNU
+       make, but if building is broken with Ninja, a recipe can use this
+-      variable to use GNU make instead::
++      variable to use GNU make instead:
++
++      .. code-block:: bitbake
+ 
+          OECMAKE_GENERATOR = "Unix Makefiles"
+ 
+@@ -6758,7 +7188,9 @@ system and gives an overview of their function and contents.
+    :term:`OPKGBUILDCMD`
+       The variable :term:`OPKGBUILDCMD` specifies the command used to build opkg
+       packages when using the :ref:`ref-classes-package_ipk` class. It is
+-      defined in :ref:`ref-classes-package_ipk` as::
++      defined in :ref:`ref-classes-package_ipk` as:
++
++      .. code-block:: bitbake
+ 
+           OPKGBUILDCMD ??= 'opkg-build -Z zstd -a "${ZSTD_DEFAULTS}"'
+ 
+@@ -6767,7 +7199,9 @@ system and gives an overview of their function and contents.
+       inherited, specifies the device to be mounted for the read/write
+       layer of ``/etc``. There is no default, so you must set this if you
+       wish to enable :ref:`ref-classes-overlayfs-etc`, for
+-      example, assuming ``/dev/mmcblk0p2`` was the desired device::
++      example, assuming ``/dev/mmcblk0p2`` was the desired device:
++
++      .. code-block:: bitbake
+ 
+          OVERLAYFS_ETC_DEVICE = "/dev/mmcblk0p2"
+ 
+@@ -6782,7 +7216,9 @@ system and gives an overview of their function and contents.
+       inherited, specifies the file system type for the read/write
+       layer of ``/etc``. There is no default, so you must set this if you
+       wish to enable :ref:`ref-classes-overlayfs-etc`,
+-      for example, assuming the file system is ext4::
++      for example, assuming the file system is ext4:
++
++      .. code-block:: bitbake
+ 
+          OVERLAYFS_ETC_FSTYPE = "ext4"
+ 
+@@ -6796,7 +7232,9 @@ system and gives an overview of their function and contents.
+       inherited, specifies the parent mount path for the filesystem layers.
+       There is no default, so you must set this if you wish to enable
+       :ref:`ref-classes-overlayfs-etc`, for example if the desired path is
+-      "/data"::
++      "/data":
++
++      .. code-block:: bitbake
+ 
+          OVERLAYFS_ETC_MOUNT_POINT = "/data"
+ 
+@@ -6808,7 +7246,9 @@ system and gives an overview of their function and contents.
+ 
+    :term:`OVERLAYFS_MOUNT_POINT`
+       When inheriting the :ref:`ref-classes-overlayfs` class,
+-      specifies mount point(s) to be used. For example::
++      specifies mount point(s) to be used. For example:
++
++      .. code-block:: bitbake
+ 
+          OVERLAYFS_MOUNT_POINT[data] = "/data"
+ 
+@@ -6825,7 +7265,9 @@ system and gives an overview of their function and contents.
+    :term:`OVERLAYFS_QA_SKIP`
+       When inheriting the :ref:`ref-classes-overlayfs` class,
+       provides the ability to disable QA checks for particular overlayfs
+-      mounts. For example::
++      mounts. For example:
++
++      .. code-block:: bitbake
+ 
+          OVERLAYFS_QA_SKIP[data] = "mount-configured"
+ 
+@@ -6838,7 +7280,9 @@ system and gives an overview of their function and contents.
+    :term:`OVERLAYFS_WRITABLE_PATHS`
+       When inheriting the :ref:`ref-classes-overlayfs` class,
+       specifies writable paths used at runtime for the recipe. For
+-      example::
++      example:
++
++      .. code-block:: bitbake
+ 
+          OVERLAYFS_WRITABLE_PATHS[data] = "/usr/share/my-custom-application"
+ 
+@@ -6853,7 +7297,9 @@ system and gives an overview of their function and contents.
+       As an example, if the string "an-override" appears as an element in
+       the colon-separated list in :term:`OVERRIDES`, then the following
+       assignment will override ``FOO`` with the value "overridden" at the
+-      end of parsing::
++      end of parsing:
++
++      .. code-block:: bitbake
+ 
+          FOO:an-override = "overridden"
+ 
+@@ -6868,7 +7314,9 @@ system and gives an overview of their function and contents.
+       :term:`DISTROOVERRIDES` variables. Another
+       important override included by default is ``pn-${PN}``. This override
+       allows variables to be set for a single recipe within configuration
+-      (``.conf``) files. Here is an example::
++      (``.conf``) files. Here is an example:
++
++      .. code-block:: bitbake
+ 
+          FOO:pn-myrecipe = "myrecipe-specific value"
+ 
+@@ -6919,7 +7367,9 @@ system and gives an overview of their function and contents.
+       However, if your recipe's output packages are built specific to the
+       target machine rather than generally for the architecture of the
+       machine, you should set :term:`PACKAGE_ARCH` to the value of
+-      :term:`MACHINE_ARCH` in the recipe as follows::
++      :term:`MACHINE_ARCH` in the recipe as follows:
++
++      .. code-block:: bitbake
+ 
+          PACKAGE_ARCH = "${MACHINE_ARCH}"
+ 
+@@ -6942,14 +7392,18 @@ system and gives an overview of their function and contents.
+       OpenEmbedded build system uses when packaging data.
+ 
+       You can provide one or more of the following arguments for the
+-      variable::
++      variable:
++
++      .. code-block:: bitbake
+ 
+          PACKAGE_CLASSES ?= "package_rpm package_deb package_ipk"
+ 
+       The build system uses only the first argument in the list as the
+       package manager when creating your image or SDK. However, packages
+       will be created using any additional packaging classes you specify.
+-      For example, if you use the following in your ``local.conf`` file::
++      For example, if you use the following in your ``local.conf`` file:
++
++      .. code-block:: bitbake
+ 
+          PACKAGE_CLASSES ?= "package_ipk"
+ 
+@@ -7006,13 +7460,17 @@ system and gives an overview of their function and contents.
+ 
+    :term:`PACKAGE_EXCLUDE`
+       Lists packages that should not be installed into an image. For
+-      example::
++      example:
++
++      .. code-block:: bitbake
+ 
+          PACKAGE_EXCLUDE = "package_name package_name package_name ..."
+ 
+       You can set this variable globally in your ``local.conf`` file or you
+       can attach it to a specific image recipe by using the recipe name
+-      override::
++      override:
++
++      .. code-block:: bitbake
+ 
+          PACKAGE_EXCLUDE:pn-target_image = "package_name"
+ 
+@@ -7067,7 +7525,9 @@ system and gives an overview of their function and contents.
+ 
+       Consider the following example where the :term:`PACKAGE_FEED_URIS`,
+       :term:`PACKAGE_FEED_BASE_PATHS`, and :term:`PACKAGE_FEED_ARCHS` variables are
+-      defined in your ``local.conf`` file::
++      defined in your ``local.conf`` file:
++
++      .. code-block:: bitbake
+ 
+          PACKAGE_FEED_URIS = "https://example.com/packagerepos/release \
+                               https://example.com/packagerepos/updates"
+@@ -7096,7 +7556,9 @@ system and gives an overview of their function and contents.
+ 
+       Consider the following example where the :term:`PACKAGE_FEED_URIS`,
+       :term:`PACKAGE_FEED_BASE_PATHS`, and :term:`PACKAGE_FEED_ARCHS` variables are
+-      defined in your ``local.conf`` file::
++      defined in your ``local.conf`` file:
++
++      .. code-block:: bitbake
+ 
+          PACKAGE_FEED_URIS = "https://example.com/packagerepos/release \
+                               https://example.com/packagerepos/updates"
+@@ -7125,7 +7587,9 @@ system and gives an overview of their function and contents.
+ 
+       Consider the following example where the :term:`PACKAGE_FEED_URIS`,
+       :term:`PACKAGE_FEED_BASE_PATHS`, and :term:`PACKAGE_FEED_ARCHS` variables are
+-      defined in your ``local.conf`` file::
++      defined in your ``local.conf`` file:
++
++      .. code-block:: bitbake
+ 
+          PACKAGE_FEED_URIS = "https://example.com/packagerepos/release \
+                               https://example.com/packagerepos/updates"
+@@ -7190,7 +7654,9 @@ system and gives an overview of their function and contents.
+       recipe on a per-recipe basis. :term:`PACKAGECONFIG` blocks are defined in
+       recipes when you specify features and then arguments that define
+       feature behaviors. Here is the basic block structure (broken over
+-      multiple lines for readability)::
++      multiple lines for readability):
++
++      .. code-block:: bitbake
+ 
+          PACKAGECONFIG ??= "f1 f2 f3 ..."
+          PACKAGECONFIG[f1] = "\
+@@ -7231,7 +7697,9 @@ system and gives an overview of their function and contents.
+ 
+       Consider the following :term:`PACKAGECONFIG` block taken from the
+       ``librsvg`` recipe. In this example the feature is ``gtk``, which has
+-      three arguments that determine the feature's behavior::
++      three arguments that determine the feature's behavior:
++
++      .. code-block:: bitbake
+ 
+          PACKAGECONFIG[gtk] = "--with-gtk3,--without-gtk3,gtk+3"
+ 
+@@ -7253,22 +7721,30 @@ system and gives an overview of their function and contents.
+       -  *Append file:* Create an append file named
+          ``recipename.bbappend`` in your layer and override the value of
+          :term:`PACKAGECONFIG`. You can either completely override the
+-         variable::
++         variable:
++
++         .. code-block:: bitbake
+ 
+             PACKAGECONFIG = "f4 f5"
+ 
+-         Or, you can just append the variable::
++         Or, you can just append the variable:
++
++         .. code-block:: bitbake
+ 
+             PACKAGECONFIG:append = " f4"
+ 
+       -  *Configuration file:* This method is identical to changing the
+          block through an append file except you edit your ``local.conf``
+          or ``mydistro.conf`` file. As with append files previously
+-         described, you can either completely override the variable::
++         described, you can either completely override the variable:
++
++         .. code-block:: bitbake
+ 
+             PACKAGECONFIG:pn-recipename = "f4 f5"
+ 
+-         Or, you can just amend the variable::
++         Or, you can just amend the variable:
++
++         .. code-block:: bitbake
+ 
+             PACKAGECONFIG:append:pn-recipename = " f4"
+ 
+@@ -7293,14 +7769,18 @@ system and gives an overview of their function and contents.
+       :term:`EXTRA_OECMAKE`, which :term:`PACKAGECONFIG_CONFARGS` will be
+       appended to.  Now, knowing that :term:`PACKAGECONFIG_CONFARGS` is
+       automatically filled with either the first or second element of
+-      :term:`PACKAGECONFIG` flag value, the recipe would be like::
++      :term:`PACKAGECONFIG` flag value, the recipe would be like:
++
++      .. code-block:: bitbake
+ 
+          inherit cmake
+          PACKAGECONFIG = "systemd"
+          PACKAGECONFIG[systemd] = "-DWITH_SYSTEMD=ON,-DWITH_SYSTEMD=OFF"
+ 
+       A side note to this recipe is to check if ``systemd`` is in fact the used :term:`INIT_MANAGER`
+-      or not::
++      or not:
++
++      .. code-block:: bitbake
+ 
+          PACKAGECONFIG = "${@'systemd' if d.getVar('INIT_MANAGER') == 'systemd' else ''}"
+ 
+@@ -7458,7 +7938,9 @@ system and gives an overview of their function and contents.
+       patched, it uses "patch".
+ 
+       If you wish to use an alternative patching tool, set the variable in
+-      the recipe using one of the following::
++      the recipe using one of the following:
++
++      .. code-block:: bitbake
+ 
+          PATCHTOOL = "patch"
+          PATCHTOOL = "quilt"
+@@ -7609,7 +8091,9 @@ system and gives an overview of their function and contents.
+    :term:`POPULATE_SDK_POST_HOST_COMMAND`
+       Specifies a list of functions to call once the OpenEmbedded build
+       system has created the host part of the SDK. You can specify
+-      functions separated by spaces::
++      functions separated by spaces:
++
++      .. code-block:: bitbake
+ 
+           POPULATE_SDK_POST_HOST_COMMAND += "function"
+ 
+@@ -7621,7 +8105,9 @@ system and gives an overview of their function and contents.
+    :term:`POPULATE_SDK_POST_TARGET_COMMAND`
+       Specifies a list of functions to call once the OpenEmbedded build
+       system has created the target part of the SDK. You can specify
+-      functions separated by spaces::
++      functions separated by spaces:
++
++      .. code-block:: bitbake
+ 
+          POPULATE_SDK_POST_TARGET_COMMAND += "function"
+ 
+@@ -7705,7 +8191,9 @@ system and gives an overview of their function and contents.
+       *runtime* component. Runtime providers are declared in recipes that set
+       the :term:`RPROVIDES` variable for a specific package.
+ 
+-      For example::
++      For example:
++
++      .. code-block:: bitbake
+ 
+          PREFERRED_RPROVIDER_virtual-x-terminal-emulator = "rxvt-unicode"
+ 
+@@ -7713,7 +8201,9 @@ system and gives an overview of their function and contents.
+       ``rxvt-unicode``. The ``rxvt-unicode`` package is a runtime provider of
+       this component because the ``rxvt-unicode`` recipe set the following
+       :term:`RPROVIDES` definition for the ``rxvt-unicode`` (``${PN}``)
+-      package::
++      package:
++
++      .. code-block:: bitbake
+ 
+          RPROVIDES:${PN} = "virtual-x-terminal-emulator"
+ 
+@@ -7783,7 +8273,9 @@ system and gives an overview of their function and contents.
+       through the "``%``" character. You can use the character to match any
+       number of characters, which can be useful when specifying versions
+       that contain long revision numbers that potentially change. Here are
+-      two examples::
++      two examples:
++
++      .. code-block:: bitbake
+ 
+          PREFERRED_VERSION_python = "3.4.0"
+          PREFERRED_VERSION_linux-yocto = "5.0%"
+@@ -7806,13 +8298,17 @@ system and gives an overview of their function and contents.
+       Sometimes the :term:`PREFERRED_VERSION` variable can be set by
+       configuration files in a way that is hard to change. You can use
+       :term:`OVERRIDES` to set a machine-specific
+-      override. Here is an example::
++      override. Here is an example:
++
++      .. code-block:: bitbake
+ 
+          PREFERRED_VERSION_linux-yocto:qemux86 = "5.0%"
+ 
+       Although not recommended, worst case, you can also use the
+       "forcevariable" override, which is the strongest override possible.
+-      Here is an example::
++      Here is an example:
++
++      .. code-block:: bitbake
+ 
+          PREFERRED_VERSION_linux-yocto:forcevariable = "5.0%"
+ 
+@@ -7839,7 +8335,9 @@ system and gives an overview of their function and contents.
+       Typically, you could add a specific server for the build system to
+       attempt before any others by adding something like the following to
+       the ``local.conf`` configuration file in the
+-      :term:`Build Directory`::
++      :term:`Build Directory`:
++
++      .. code-block:: bitbake
+ 
+          PREMIRRORS:prepend = "\
+              git://.*/.* &YOCTO_DL_URL;/mirror/sources/ \
+@@ -7879,7 +8377,9 @@ system and gives an overview of their function and contents.
+       standard version of the library.
+ 
+       Libraries specified in this variable should be specified by their
+-      file name. For example, from the Firefox recipe in meta-browser::
++      file name. For example, from the Firefox recipe in meta-browser:
++
++      .. code-block:: bitbake
+ 
+          PRIVATE_LIBS = "libmozjs.so \
+                          libxpcom.so \
+@@ -7903,7 +8403,9 @@ system and gives an overview of their function and contents.
+       :term:`DEPENDS`.
+ 
+       Consider the following example :term:`PROVIDES` statement from the recipe
+-      file ``eudev_3.2.9.bb``::
++      file ``eudev_3.2.9.bb``:
++
++      .. code-block:: bitbake
+ 
+          PROVIDES += "udev"
+ 
+@@ -7940,7 +8442,9 @@ system and gives an overview of their function and contents.
+          package of the component that manages the ``/dev`` directory.
+ 
+          Setting the "preferred provider" for runtime dependencies is as
+-         simple as using the following assignment in a configuration file::
++         simple as using the following assignment in a configuration file:
++
++         .. code-block:: bitbake
+ 
+                  VIRTUAL-RUNTIME_dev_manager = "udev"
+ 
+@@ -7950,7 +8454,9 @@ system and gives an overview of their function and contents.
+ 
+       The ``conf/templates/default/local.conf.sample.extended`` configuration
+       file in :yocto_git:`meta-poky </meta-yocto/tree/meta-poky>` shows how the
+-      :term:`PRSERV_HOST` variable is set::
++      :term:`PRSERV_HOST` variable is set:
++
++      .. code-block:: bitbake
+ 
+          PRSERV_HOST = "localhost:0"
+ 
+@@ -8078,7 +8584,9 @@ system and gives an overview of their function and contents.
+ 
+       This variable is similar to the :term:`QB_CMDLINE_IP_SLIRP` variable.
+ 
+-      Use as follows::
++      Use as follows:
++
++      .. code-block:: bitbake
+ 
+          QB_CMDLINE_IP_TAP = "ip=192.168.7.@CLIENT@::192.168.7.@GATEWAY@:255.255.255.0::eth0"
+ 
+@@ -8092,7 +8600,9 @@ system and gives an overview of their function and contents.
+       used by ``runqemu`` to specify the `-bios <https://www.qemu.org/docs/master/system/invocation.html#hxtool-8>`__
+       option of QEMU. For example, this variable can be set as follows to
+       emulate U-Boot for the :oecore_path:`qemuarm64 <meta/conf/machine/qemuarm64.conf>`
+-      machine::
++      machine:
++
++      .. code-block:: bitbake
+ 
+          QB_DEFAULT_BIOS = "u-boot.bin"
+ 
+@@ -8143,14 +8653,18 @@ system and gives an overview of their function and contents.
+       to the Linux kernel's ``-append`` QEMU options, which controls the Linux kernel
+       command-line.
+ 
+-      For example::
++      For example:
++
++      .. code-block:: bitbake
+ 
+          QB_KERNEL_CMDLINE_APPEND = "console=ttyS0"
+ 
+    :term:`QB_MEM`
+ 
+       The :term:`QB_MEM` variable controls the amount of memory allocated to the
+-      emulated machine. Specify as follows::
++      emulated machine. Specify as follows:
++
++      .. code-block:: bitbake
+ 
+          QB_MEM = "-m 512"
+ 
+@@ -8160,7 +8674,9 @@ system and gives an overview of their function and contents.
+       the network device instantiated by QEMU. This value needs to be compatible
+       with the :term:`QB_TAP_OPT` variable.
+ 
+-      Example::
++      Example:
++
++      .. code-block:: bitbake
+ 
+          QB_NETWORK_DEVICE = "-device virtio-net-pci,netdev=net0,mac=@MAC@"
+ 
+@@ -8172,7 +8688,9 @@ system and gives an overview of their function and contents.
+       controls extra options to be appended to the NFS rootfs options in the
+       Linux kernel command-line.
+ 
+-      For example::
++      For example:
++
++      .. code-block:: bitbake
+ 
+          QB_NFSROOTFS_EXTRA_OPT = "wsize=4096,rsize=4096"
+ 
+@@ -8187,7 +8705,9 @@ system and gives an overview of their function and contents.
+       pass-through for host random number generator, it can speedup boot
+       in system mode, where system is experiencing entropy starvation.
+ 
+-      For example::
++      For example:
++
++      .. code-block:: bitbake
+ 
+          QB_RNG = "-object rng-random,filename=/dev/urandom,id=rng0 -device virtio-rng-pci,rng=rng0"
+ 
+@@ -8201,7 +8721,9 @@ system and gives an overview of their function and contents.
+       When using ``runqemu``, the :term:`QB_SERIAL_OPT` variable controls the
+       serial port option.
+ 
+-      For example::
++      For example:
++
++      .. code-block:: bitbake
+ 
+          QB_SERIAL_OPT = "-serial mon:stdio"
+ 
+@@ -8211,7 +8733,9 @@ system and gives an overview of their function and contents.
+       amount of CPU cores made availalble inside the QEMU guest, each mapped to
+       a thread on the host.
+ 
+-      For example::
++      For example:
++
++      .. code-block:: bitbake
+ 
+          QB_SMP = "-smp 8".
+ 
+@@ -8225,7 +8749,9 @@ system and gives an overview of their function and contents.
+       When using ``runqemu``, the :term:`QB_TAP_OPT` variable controls
+       the network option for "tap" mode.
+ 
+-      For example::
++      For example:
++
++      .. code-block:: bitbake
+ 
+          QB_TAP_OPT = "-netdev tap,id=net0,ifname=@TAP@,script=no,downscript=no"
+ 
+@@ -8240,7 +8766,9 @@ system and gives an overview of their function and contents.
+       will not be installed if conflicting packages are not first removed.
+ 
+       Like all package-controlling variables, you must always use them in
+-      conjunction with a package name override. Here is an example::
++      conjunction with a package name override. Here is an example:
++
++      .. code-block:: bitbake
+ 
+          RCONFLICTS:${PN} = "another_conflicting_package_name"
+ 
+@@ -8248,7 +8776,9 @@ system and gives an overview of their function and contents.
+       specifying versioned dependencies. Although the syntax varies
+       depending on the packaging format, BitBake hides these differences
+       from you. Here is the general syntax to specify versions with the
+-      :term:`RCONFLICTS` variable::
++      :term:`RCONFLICTS` variable:
++
++      .. code-block:: bitbake
+ 
+          RCONFLICTS:${PN} = "package (operator version)"
+ 
+@@ -8261,7 +8791,9 @@ system and gives an overview of their function and contents.
+       - >=
+ 
+       For example, the following sets up a dependency on version 1.2 or
+-      greater of the package ``foo``::
++      greater of the package ``foo``:
++
++      .. code-block:: bitbake
+ 
+          RCONFLICTS:${PN} = "foo (>= 1.2)"
+ 
+@@ -8270,7 +8802,9 @@ system and gives an overview of their function and contents.
+       packages that must be installed in order for the package to function
+       correctly. As an example, the following assignment declares that the
+       package ``foo`` needs the packages ``bar`` and ``baz`` to be
+-      installed::
++      installed:
++
++      .. code-block:: bitbake
+ 
+          RDEPENDS:foo = "bar baz"
+ 
+@@ -8311,7 +8845,9 @@ system and gives an overview of their function and contents.
+       name (remember that a single recipe can build multiple packages). For
+       example, suppose you are building a development package that depends
+       on the ``perl`` package. In this case, you would use the following
+-      :term:`RDEPENDS` statement::
++      :term:`RDEPENDS` statement:
++
++      .. code-block:: bitbake
+ 
+          RDEPENDS:${PN}-dev += "perl"
+ 
+@@ -8340,7 +8876,9 @@ system and gives an overview of their function and contents.
+       specifying versioned dependencies. Although the syntax varies
+       depending on the packaging format, BitBake hides these differences
+       from you. Here is the general syntax to specify versions with the
+-      :term:`RDEPENDS` variable::
++      :term:`RDEPENDS` variable:
++
++      .. code-block:: bitbake
+ 
+          RDEPENDS:${PN} = "package (operator version)"
+ 
+@@ -8360,7 +8898,9 @@ system and gives an overview of their function and contents.
+          specification.
+ 
+       For example, the following sets up a dependency on version 1.2 or
+-      greater of the package ``foo``::
++      greater of the package ``foo``:
++
++      .. code-block:: bitbake
+ 
+          RDEPENDS:${PN} = "foo (>= 1.2)"
+ 
+@@ -8385,7 +8925,9 @@ system and gives an overview of their function and contents.
+           meta/conf/distro/include/maintainers.inc:RECIPE_MAINTAINER:pn-sysvinit = "Ross Burton <ross.burton@arm.com>"
+ 
+       It can also be directly defined in a recipe,
+-      for example in the ``libgpiod`` one::
++      for example in the ``libgpiod`` one:
++
++      .. code-block:: bitbake
+ 
+           RECIPE_MAINTAINER = "Bartosz Golaszewski <brgl@bgdev.pl>"
+ 
+@@ -8554,7 +9096,9 @@ system and gives an overview of their function and contents.
+ 
+    :term:`ROOT_HOME`
+       Defines the root home directory. By default, this directory is set as
+-      follows in the BitBake configuration file::
++      follows in the BitBake configuration file:
++
++      .. code-block:: bitbake
+ 
+          ROOT_HOME ??= "/home/root"
+ 
+@@ -8564,7 +9108,9 @@ system and gives an overview of their function and contents.
+          prefer to have a read-only root filesystem and prefer to keep
+          writeable data in one place.
+ 
+-      When setting ``INIT_MANAGER = systemd``, the default will be set to::
++      When setting ``INIT_MANAGER = systemd``, the default will be set to:
++
++      .. code-block:: bitbake
+ 
+          ROOT_HOME ?= "/root"
+ 
+@@ -8580,7 +9126,9 @@ system and gives an overview of their function and contents.
+    :term:`ROOTFS_POSTINSTALL_COMMAND`
+       Specifies a list of functions to call after the OpenEmbedded build
+       system has installed packages. You can specify functions separated by
+-      spaces::
++      spaces:
++
++      .. code-block:: bitbake
+ 
+          ROOTFS_POSTINSTALL_COMMAND += "function"
+ 
+@@ -8593,7 +9141,9 @@ system and gives an overview of their function and contents.
+    :term:`ROOTFS_POSTPROCESS_COMMAND`
+       Specifies a list of functions to call once the OpenEmbedded build
+       system has created the root filesystem. You can specify functions
+-      separated by spaces::
++      separated by spaces:
++
++      .. code-block:: bitbake
+ 
+          ROOTFS_POSTPROCESS_COMMAND += "function"
+ 
+@@ -8608,7 +9158,9 @@ system and gives an overview of their function and contents.
+       system has removed unnecessary packages. When runtime package
+       management is disabled in the image, several packages are removed
+       including ``base-passwd``, ``shadow``, and ``update-alternatives``.
+-      You can specify functions separated by spaces::
++      You can specify functions separated by spaces:
++
++      .. code-block:: bitbake
+ 
+          ROOTFS_POSTUNINSTALL_COMMAND += "function"
+ 
+@@ -8621,7 +9173,9 @@ system and gives an overview of their function and contents.
+    :term:`ROOTFS_PREPROCESS_COMMAND`
+       Specifies a list of functions to call before the OpenEmbedded build
+       system has created the root filesystem. You can specify functions
+-      separated by spaces::
++      separated by spaces:
++
++      .. code-block:: bitbake
+ 
+          ROOTFS_PREPROCESS_COMMAND += "function"
+ 
+@@ -8646,7 +9200,9 @@ system and gives an overview of their function and contents.
+ 
+       As with all package-controlling variables, you must always use the
+       variable in conjunction with a package name override. Here is an
+-      example::
++      example:
++
++      .. code-block:: bitbake
+ 
+          RPROVIDES:${PN} = "widget-abi-2"
+ 
+@@ -8677,7 +9233,9 @@ system and gives an overview of their function and contents.
+       particular package whose usability is being extended. For example,
+       suppose you are building a development package that is extended to
+       support wireless functionality. In this case, you would use the
+-      following::
++      following:
++
++      .. code-block:: bitbake
+ 
+          RRECOMMENDS:${PN}-dev += "wireless_package_name"
+ 
+@@ -8690,7 +9248,9 @@ system and gives an overview of their function and contents.
+       specifying versioned recommends. Although the syntax varies depending
+       on the packaging format, BitBake hides these differences from you.
+       Here is the general syntax to specify versions with the
+-      :term:`RRECOMMENDS` variable::
++      :term:`RRECOMMENDS` variable:
++
++      .. code-block:: bitbake
+ 
+          RRECOMMENDS:${PN} = "package (operator version)"
+ 
+@@ -8703,7 +9263,9 @@ system and gives an overview of their function and contents.
+       - >=
+ 
+       For example, the following sets up a recommend on version 1.2 or
+-      greater of the package ``foo``::
++      greater of the package ``foo``:
++
++      .. code-block:: bitbake
+ 
+          RRECOMMENDS:${PN} = "foo (>= 1.2)"
+ 
+@@ -8715,7 +9277,9 @@ system and gives an overview of their function and contents.
+       the other package to the :term:`RCONFLICTS` variable.
+ 
+       As with all package-controlling variables, you must use this variable
+-      in conjunction with a package name override. Here is an example::
++      in conjunction with a package name override. Here is an example:
++
++      .. code-block:: bitbake
+ 
+          RREPLACES:${PN} = "other_package_being_replaced"
+ 
+@@ -8723,7 +9287,9 @@ system and gives an overview of their function and contents.
+       specifying versioned replacements. Although the syntax varies
+       depending on the packaging format, BitBake hides these differences
+       from you. Here is the general syntax to specify versions with the
+-      :term:`RREPLACES` variable::
++      :term:`RREPLACES` variable:
++
++      .. code-block:: bitbake
+ 
+          RREPLACES:${PN} = "package (operator version)"
+ 
+@@ -8736,7 +9302,9 @@ system and gives an overview of their function and contents.
+       - >=
+ 
+       For example, the following sets up a replacement using version 1.2
+-      or greater of the package ``foo``::
++      or greater of the package ``foo``:
++
++      .. code-block:: bitbake
+ 
+           RREPLACES:${PN} = "foo (>= 1.2)"
+ 
+@@ -8749,7 +9317,9 @@ system and gives an overview of their function and contents.
+ 
+       As with all package-controlling variables, you must always use this
+       variable in conjunction with a package name override. Here is an
+-      example::
++      example:
++
++      .. code-block:: bitbake
+ 
+          RSUGGESTS:${PN} = "useful_package another_package"
+ 
+@@ -8811,7 +9381,9 @@ system and gives an overview of their function and contents.
+       -  The ``ext`` flag contains the filename extension (suffix). The output
+          filename is going will be ``${IMAGE_NAME}${ext}``.
+ 
+-      For example::
++      For example:
++
++      .. code-block:: bitbake
+ 
+          SBOM_CVE_CHECK_EXPORT_VARS = "SBOM_CVE_CHECK_EXPORT_SPDX3"
+          SBOM_CVE_CHECK_EXPORT_SPDX3[type] = "spdx3"
+@@ -8888,7 +9460,9 @@ system and gives an overview of their function and contents.
+       The directory set up and used by the
+       :ref:`populate_sdk_base <ref-classes-populate-sdk>` class to which the
+       SDK is deployed. The :ref:`populate_sdk_base <ref-classes-populate-sdk>`
+-      class defines :term:`SDK_DEPLOY` as follows::
++      class defines :term:`SDK_DEPLOY` as follows:
++
++      .. code-block:: bitbake
+ 
+          SDK_DEPLOY = "${TMPDIR}/deploy/sdk"
+ 
+@@ -8896,7 +9470,9 @@ system and gives an overview of their function and contents.
+       The parent directory used by the OpenEmbedded build system when
+       creating SDK output. The
+       :ref:`populate_sdk_base <ref-classes-populate-sdk-*>` class defines
+-      the variable as follows::
++      the variable as follows:
++
++      .. code-block:: bitbake
+ 
+          SDK_DIR = "${WORKDIR}/sdk"
+ 
+@@ -8926,7 +9502,9 @@ system and gives an overview of their function and contents.
+          packagename packagearch version
+ 
+       The :ref:`populate_sdk_base <ref-classes-populate-sdk-*>` class
+-      defines the manifest file as follows::
++      defines the manifest file as follows:
++
++      .. code-block:: bitbake
+ 
+          SDK_HOST_MANIFEST = "${SDK_DEPLOY}/${TOOLCHAIN_OUTPUTNAME}.host.manifest"
+ 
+@@ -8973,7 +9551,9 @@ system and gives an overview of their function and contents.
+       :term:`SDKMACHINE`,
+       :term:`IMAGE_BASENAME`,
+       :term:`TUNE_PKGARCH`, and
+-      :term:`MACHINE` variables::
++      :term:`MACHINE` variables:
++
++      .. code-block:: bitbake
+ 
+          SDK_NAME = "${DISTRO}-${TCLIBC}-${SDKMACHINE}-${IMAGE_BASENAME}-${TUNE_PKGARCH}-${MACHINE}"
+ 
+@@ -8984,7 +9564,9 @@ system and gives an overview of their function and contents.
+    :term:`SDK_OUTPUT`
+       The location used by the OpenEmbedded build system when creating SDK
+       output. The :ref:`populate_sdk_base <ref-classes-populate-sdk-*>`
+-      class defines the variable as follows::
++      class defines the variable as follows:
++
++      .. code-block:: bitbake
+ 
+          SDK_DIR = "${WORKDIR}/sdk"
+          SDK_OUTPUT = "${SDK_DIR}/image"
+@@ -9057,7 +9639,9 @@ system and gives an overview of their function and contents.
+          packagename packagearch version
+ 
+       The :ref:`populate_sdk_base <ref-classes-populate-sdk-*>` class
+-      defines the manifest file as follows::
++      defines the manifest file as follows:
++
++      .. code-block:: bitbake
+ 
+          SDK_TARGET_MANIFEST = "${SDK_DEPLOY}/${TOOLCHAIN_OUTPUTNAME}.target.manifest"
+ 
+@@ -9077,7 +9661,9 @@ system and gives an overview of their function and contents.
+       this title is based on the :term:`DISTRO_NAME` or
+       :term:`DISTRO` variable and is set in the
+       :ref:`populate_sdk_base <ref-classes-populate-sdk-*>` class as
+-      follows::
++      follows:
++
++      .. code-block:: bitbake
+ 
+          SDK_TITLE ??= "${@d.getVar('DISTRO_NAME') or d.getVar('DISTRO')} SDK"
+ 
+@@ -9104,7 +9690,9 @@ system and gives an overview of their function and contents.
+    :term:`SDK_VERSION`
+       Specifies the version of the SDK. The Poky distribution configuration file
+       (``/meta-poky/conf/distro/poky.conf``) sets the default
+-      :term:`SDK_VERSION` as follows::
++      :term:`SDK_VERSION` as follows:
++
++      .. code-block:: bitbake
+ 
+          SDK_VERSION = "${@d.getVar('DISTRO_VERSION').replace('snapshot-${METADATA_REVISION}', 'snapshot')}"
+ 
+@@ -9122,7 +9710,9 @@ system and gives an overview of their function and contents.
+       default, this directory is based on the :term:`DISTRO`
+       variable and is set in the
+       :ref:`populate_sdk_base <ref-classes-populate-sdk-*>` class as
+-      follows::
++      follows:
++
++      .. code-block:: bitbake
+ 
+          SDKEXTPATH ??= "~/${@d.getVar('DISTRO')}_sdk"
+ 
+@@ -9190,7 +9780,9 @@ system and gives an overview of their function and contents.
+       Defines a serial console (TTY) to enable using
+       :wikipedia:`getty <Getty_(Unix)>`. Provide a value that specifies the
+       baud rate followed by the TTY device name separated by a semicolon.
+-      Use spaces to separate multiple devices::
++      Use spaces to separate multiple devices:
++
++      .. code-block:: bitbake
+ 
+          SERIAL_CONSOLES = "115200;ttyS0 115200;ttyS1"
+ 
+@@ -9205,14 +9797,18 @@ system and gives an overview of their function and contents.
+       the ``setup.py`` file is located if it is not at the root of the source
+       tree (as specified by :term:`S`). For example, in a recipe where the
+       sources are fetched from a Git repository and ``setup.py`` is in a
+-      ``python/pythonmodule`` subdirectory, you would have this::
++      ``python/pythonmodule`` subdirectory, you would have this:
++
++      .. code-block:: bitbake
+ 
+          SETUPTOOLS_SETUP_PATH = "${S}/python/pythonmodule"
+ 
+    :term:`SIGGEN_EXCLUDE_SAFE_RECIPE_DEPS`
+       A list of recipe dependencies that should not be used to determine
+       signatures of tasks from one recipe when they depend on tasks from
+-      another recipe. For example::
++      another recipe. For example:
++
++      .. code-block:: bitbake
+ 
+          SIGGEN_EXCLUDE_SAFE_RECIPE_DEPS += "intone->mplayer2"
+ 
+@@ -9220,7 +9816,9 @@ system and gives an overview of their function and contents.
+ 
+       You can use the special token ``"*"`` on the left-hand side of the
+       dependency to match all recipes except the one on the right-hand
+-      side. Here is an example::
++      side. Here is an example:
++
++      .. code-block:: bitbake
+ 
+          SIGGEN_EXCLUDE_SAFE_RECIPE_DEPS += "*->quilt-native"
+ 
+@@ -9251,7 +9849,9 @@ system and gives an overview of their function and contents.
+          after the other had been built.
+ 
+    :term:`SIGGEN_LOCKEDSIGS`
+-     The list of locked tasks, with the form::
++     The list of locked tasks, with the form:
++
++     .. code-block:: bitbake
+ 
+        SIGGEN_LOCKEDSIGS += "<package>:<task>:<signature>"
+ 
+@@ -9260,7 +9860,9 @@ system and gives an overview of their function and contents.
+      rebuilding the ``<task>``. If it does not exist, BitBake will build the
+      ``<task>`` and the sstate cache will be used next time.
+ 
+-     Example::
++     Example:
++
++     .. code-block:: bitbake
+ 
+        SIGGEN_LOCKEDSIGS += "bc:do_compile:09772aa4532512baf96d433484f27234d4b7c11dd9cda0d6f56fa1b7ce6f25f0"
+ 
+@@ -9286,7 +9888,9 @@ system and gives an overview of their function and contents.
+    :term:`SIGGEN_LOCKEDSIGS_TYPES`
+      Allowed overrides for :term:`SIGGEN_LOCKEDSIGS`. This is mainly used
+      for architecture specific locks. A common value for
+-     :term:`SIGGEN_LOCKEDSIGS_TYPES` is ``${PACKAGE_ARCHS}``::
++     :term:`SIGGEN_LOCKEDSIGS_TYPES` is ``${PACKAGE_ARCHS}``:
++
++     .. code-block:: bitbake
+ 
+        SIGGEN_LOCKEDSIGS_TYPES += "${PACKAGE_ARCHS}"
+ 
+@@ -9312,7 +9916,9 @@ system and gives an overview of their function and contents.
+ 
+       To enable file removal, set the variable to "1" in your
+       ``conf/local.conf`` configuration file in your:
+-      :term:`Build Directory`::
++      :term:`Build Directory`:
++
++      .. code-block:: bitbake
+ 
+          SKIP_FILEDEPS = "1"
+ 
+@@ -9324,7 +9930,9 @@ system and gives an overview of their function and contents.
+ 
+       To prevent a recipe from being built, use the :term:`SKIP_RECIPE`
+       variable in your ``local.conf`` file or distribution configuration.
+-      Here is an example which prevents ``myrecipe`` from being built::
++      Here is an example which prevents ``myrecipe`` from being built:
++
++      .. code-block:: bitbake
+ 
+          SKIP_RECIPE[myrecipe] = "Not supported by our organization."
+ 
+@@ -9369,7 +9977,9 @@ system and gives an overview of their function and contents.
+       :oe_git:`meta/lib/oe/reproducible.py </openembedded-core/tree/meta/lib/oe/reproducible.py>`.
+ 
+       If a recipe wishes to override the default behavior, it should set its
+-      own :term:`SOURCE_DATE_EPOCH` value::
++      own :term:`SOURCE_DATE_EPOCH` value:
++
++      .. code-block:: bitbake
+ 
+           SOURCE_DATE_EPOCH = "1613559011"
+ 
+@@ -9398,7 +10008,9 @@ system and gives an overview of their function and contents.
+ 
+       To use this variable, you must globally inherit the
+       :ref:`ref-classes-own-mirrors` class and then provide
+-      the URL to your mirrors. Here is the general syntax::
++      the URL to your mirrors. Here is the general syntax:
++
++      .. code-block:: bitbake
+ 
+          INHERIT += "own-mirrors"
+          SOURCE_MIRROR_URL = "http://example.com/my_source_mirror"
+@@ -9428,7 +10040,9 @@ system and gives an overview of their function and contents.
+ 
+          Another method to configure the username and password is from the URL
+          in :term:`SOURCE_MIRROR_URL` directly, with the ``user`` and ``pswd``
+-         parameters::
++         parameters:
++
++         .. code-block:: bitbake
+ 
+             SOURCE_MIRROR_URL = "http://example.com/my_source_mirror;user=<user>;pswd=<password>"
+ 
+@@ -9456,18 +10070,24 @@ system and gives an overview of their function and contents.
+ 
+       This variable can be set in two ways:
+ 
+-      -  For the entire recipe::
++      -  For the entire recipe:
++
++         .. code-block:: bitbake
+ 
+             SPDX_CONCLUDED_LICENSE = "MIT & Apache-2.0"
+ 
+-      -  For an individual package produced by the recipe::
++      -  For an individual package produced by the recipe:
++
++         .. code-block:: bitbake
+ 
+             SPDX_CONCLUDED_LICENSE:${PN} = "MIT & Apache-2.0"
+ 
+    :term:`SPDX_CUSTOM_ANNOTATION_VARS`
+       This option allows to associate `SPDX annotations
+       <https://spdx.github.io/spdx-spec/v2.3/annotations/>`__ to a recipe,
+-      using the values of variables in the recipe::
++      using the values of variables in the recipe:
++
++      .. code-block:: bitbake
+ 
+          ANNOTATION1 = "First annotation for recipe"
+          ANNOTATION2 = "Second annotation for recipe"
+@@ -9533,14 +10153,18 @@ system and gives an overview of their function and contents.
+       so the sub-variable names follow directly from
+       ``SPDX_IMAGE_SUPPLIER``.
+ 
+-      Example (set in the image recipe or in a :term:`configuration file`)::
++      Example (set in the image recipe or in a :term:`configuration file`):
++
++      .. code-block:: bitbake
+ 
+          SPDX_IMAGE_SUPPLIER = "SPDX_IMAGE_SUPPLIER"
+          SPDX_IMAGE_SUPPLIER_name = "Acme Corp"
+          SPDX_IMAGE_SUPPLIER_type = "organization"
+ 
+       Alternatively, you can use any other prefix name, which is useful for
+-      sharing an agent definition across multiple supplier variables::
++      sharing an agent definition across multiple supplier variables:
++
++      .. code-block:: bitbake
+ 
+          MY_COMPANY_name = "Acme Corp"
+          MY_COMPANY_type = "organization"
+@@ -9566,7 +10190,9 @@ system and gives an overview of their function and contents.
+          Enabling this variable will result in non-reproducible SPDX output,
+          because the build invocation identity changes with every run.
+ 
+-      Enable as follows::
++      Enable as follows:
++
++      .. code-block:: bitbake
+ 
+          SPDX_INCLUDE_BITBAKE_PARENT_BUILD = "1"
+ 
+@@ -9586,7 +10212,9 @@ system and gives an overview of their function and contents.
+       This enables an external tool to use the SPDX information to disregard
+       vulnerabilities that are not compiled in the packages.
+ 
+-      Enable this option as follows::
++      Enable this option as follows:
++
++      .. code-block:: bitbake
+ 
+          SPDX_INCLUDE_COMPILED_SOURCES = "1"
+ 
+@@ -9615,7 +10243,9 @@ system and gives an overview of their function and contents.
+          This variable only has effect when using the SPDX 3.0 output
+          format (see :ref:`ref-classes-create-spdx`).
+ 
+-      Enable this option as follows::
++      Enable this option as follows:
++
++      .. code-block:: bitbake
+ 
+          SPDX_INCLUDE_KERNEL_CONFIG = "1"
+ 
+@@ -9636,7 +10266,9 @@ system and gives an overview of their function and contents.
+          This variable only has effect when using the SPDX 3.0 output
+          format (see :ref:`ref-classes-create-spdx`).
+ 
+-      Enable this option as follows::
++      Enable this option as follows:
++
++      .. code-block:: bitbake
+ 
+          SPDX_INCLUDE_PACKAGECONFIG = "1"
+ 
+@@ -9654,7 +10286,9 @@ system and gives an overview of their function and contents.
+       ``packages`` subdirectories in ``tmp/deploy/spdx/MACHINE`` are also
+       modified to include references to such source file descriptions.
+ 
+-      Enable this option as follows::
++      Enable this option as follows:
++
++      .. code-block:: bitbake
+ 
+          SPDX_INCLUDE_SOURCES = "1"
+ 
+@@ -9697,7 +10331,9 @@ system and gives an overview of their function and contents.
+       -  ``SPDX_INVOKED_BY_name``: display name of the invoking agent
+       -  ``SPDX_INVOKED_BY_type``: agent type, such as ``software`` for a CI system
+ 
+-      Example (CI pipeline invoking the build)::
++      Example (CI pipeline invoking the build):
++
++      .. code-block:: bitbake
+ 
+          SPDX_INCLUDE_BITBAKE_PARENT_BUILD = "1"
+          SPDX_INVOKED_BY = "SPDX_INVOKED_BY"
+@@ -9752,7 +10388,9 @@ system and gives an overview of their function and contents.
+       -  ``SPDX_ON_BEHALF_OF_name``: display name of the commissioning agent
+       -  ``SPDX_ON_BEHALF_OF_type``: agent type, such as ``organization``
+ 
+-      Example (CI system building on behalf of a customer organization)::
++      Example (CI system building on behalf of a customer organization):
++
++      .. code-block:: bitbake
+ 
+          SPDX_INCLUDE_BITBAKE_PARENT_BUILD = "1"
+          SPDX_INVOKED_BY = "SPDX_INVOKED_BY"
+@@ -9778,7 +10416,9 @@ system and gives an overview of their function and contents.
+       Typically set in a distro :term:`configuration file` to apply globally
+       to all packages, or in a specific software recipe (or a ``.bbappend``)
+       to apply only to packages of that recipe. Recipe-level overrides
+-      (``SPDX_PACKAGE_SUPPLIER:pn-<recipe>``) are also supported::
++      (``SPDX_PACKAGE_SUPPLIER:pn-<recipe>``) are also supported:
++
++      .. code-block:: bitbake
+ 
+          SPDX_PACKAGE_SUPPLIER = "SPDX_PACKAGE_SUPPLIER"
+          SPDX_PACKAGE_SUPPLIER_name = "Acme Corp"
+@@ -9809,7 +10449,9 @@ system and gives an overview of their function and contents.
+    :term:`SPDX_PRETTY`
+       This option makes the SPDX output more human-readable, using
+       identation and newlines, instead of the default output in a
+-      single line::
++      single line:
++
++      .. code-block:: bitbake
+ 
+          SPDX_PRETTY = "1"
+ 
+@@ -9938,13 +10580,17 @@ system and gives an overview of their function and contents.
+           └── psplash_%.bbappend
+ 
+       And here are the contents of the ``psplash_%.bbappend`` file in
+-      this example::
++      this example:
++
++      .. code-block:: bitbake
+ 
+           SPLASH_IMAGES = "file://logo-acme.png;outsuffix=default"
+           FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
+ 
+       You could even add specific configuration options for ``psplash``,
+-      for example::
++      for example:
++
++      .. code-block:: bitbake
+ 
+           EXTRA_OECONF += "--disable-startup-msg --enable-img-fullscreen"
+ 
+@@ -10022,7 +10668,9 @@ system and gives an overview of their function and contents.
+ 
+          The :term:`SRCPV` variable used to be defined in the
+          ``meta/conf/bitbake.conf`` configuration file in
+-         :term:`OpenEmbedded-Core (OE-Core)` as follows::
++         :term:`OpenEmbedded-Core (OE-Core)` as follows:
++
++         .. code-block:: bitbake
+ 
+             SRCPV = "${@bb.fetch2.get_srcrev(d)}"
+ 
+@@ -10052,13 +10700,17 @@ system and gives an overview of their function and contents.
+       A list of tasks that are typically not relevant (and therefore skipped)
+       when building using the :ref:`ref-classes-externalsrc`
+       class. The default value as set in that class file is the set of tasks
+-      that are rarely needed when using external source::
++      that are rarely needed when using external source:
++
++      .. code-block:: bitbake
+ 
+          SRCTREECOVEREDTASKS ?= "do_patch do_unpack do_fetch"
+ 
+       The notable exception is when processing external kernel source as
+       defined in the :ref:`ref-classes-kernel-yocto` class file (formatted for
+-      aesthetics)::
++      aesthetics):
++
++      .. code-block:: bitbake
+ 
+          SRCTREECOVEREDTASKS += "\
+            do_validate_branches \
+@@ -10123,7 +10775,9 @@ system and gives an overview of their function and contents.
+       you point to can also be from builds on other machines.
+ 
+       The Yocto Project actually shares the cache data objects built by its
+-      autobuilder::
++      autobuilder:
++
++      .. code-block:: bitbake
+ 
+          SSTATE_MIRRORS ?= "file://.* http://sstate.yoctoproject.org/all/PATH;downloadfilename=PATH"
+ 
+@@ -10183,11 +10837,15 @@ system and gives an overview of their function and contents.
+       size and time costs of the artefact are similar to just running the
+       tasks. This generally only applies to end artefact output like images.
+ 
+-      The syntax to disable it for one task is::
++      The syntax to disable it for one task is:
++
++      .. code-block:: bitbake
+ 
+          SSTATE_SKIP_CREATION:task-image-complete = "1"
+ 
+-      The syntax to disable it for the whole recipe is::
++      The syntax to disable it for the whole recipe is:
++
++      .. code-block:: bitbake
+ 
+          SSTATE_SKIP_CREATION = "1"
+ 
+@@ -10402,7 +11060,9 @@ system and gives an overview of their function and contents.
+       to an actual stamp file is constructed by evaluating this string and
+       then appending additional information. Currently, the default
+       assignment for :term:`STAMP` as set in the ``meta/conf/bitbake.conf``
+-      file is::
++      file is:
++
++      .. code-block:: bitbake
+ 
+          STAMP = "${STAMPS_DIR}/${MULTIMACH_TARGET_SYS}/${PN}/${EXTENDPE}${PV}-${PR}"
+ 
+@@ -10446,7 +11106,9 @@ system and gives an overview of their function and contents.
+    :term:`SYSLINUX_DEFAULT_CONSOLE`
+       Specifies the kernel boot default console. If you want to use a
+       console other than the default, set this variable in your recipe as
+-      follows where "X" is the console number you want to use::
++      follows where "X" is the console number you want to use:
++
++      .. code-block:: bitbake
+ 
+          SYSLINUX_DEFAULT_CONSOLE = "console=ttyX"
+ 
+@@ -10465,7 +11127,9 @@ system and gives an overview of their function and contents.
+       Specifies the alternate serial port or turns it off. To turn off
+       serial, set this variable to an empty string in your recipe. The
+       variable's default value is set in the
+-      :ref:`ref-classes-syslinux` class as follows::
++      :ref:`ref-classes-syslinux` class as follows:
++
++      .. code-block:: bitbake
+ 
+          SYSLINUX_SERIAL ?= "0 115200"
+ 
+@@ -10474,7 +11138,9 @@ system and gives an overview of their function and contents.
+    :term:`SYSLINUX_SERIAL_TTY`
+       Specifies the alternate console=tty... kernel boot argument. The
+       variable's default value is set in the :ref:`ref-classes-syslinux`
+-      class as follows::
++      class as follows:
++
++      .. code-block:: bitbake
+ 
+          SYSLINUX_SERIAL_TTY ?= "console=ttyS0,115200"
+ 
+@@ -10497,7 +11163,9 @@ system and gives an overview of their function and contents.
+    :term:`SYSROOT_DIRS`
+       Directories that are staged into the sysroot by the
+       :ref:`ref-tasks-populate_sysroot` task. By
+-      default, the following directories are staged::
++      default, the following directories are staged:
++
++      .. code-block:: bitbake
+ 
+          SYSROOT_DIRS = " \
+              ${includedir} \
+@@ -10526,14 +11194,18 @@ system and gives an overview of their function and contents.
+       ``A``'s :term:`RECIPE_SYSROOT`, which is "``${WORKDIR}/recipe-sysroot``". So,
+       the linking process will fail.
+ 
+-      To fix this, you need to add ``/opt/lib`` to :term:`SYSROOT_DIRS`::
++      To fix this, you need to add ``/opt/lib`` to :term:`SYSROOT_DIRS`:
++
++      .. code-block:: bitbake
+ 
+          SYSROOT_DIRS:append = " /opt/lib"
+ 
+       .. note::
+          Even after setting ``/opt/lib`` to :term:`SYSROOT_DIRS`, the linking process will still fail
+          because the linker does not know that location, since :term:`TARGET_LDFLAGS`
+-         doesn't contain it (if your recipe is for the target). Therefore, so you should add::
++         doesn't contain it (if your recipe is for the target). Therefore, so you should add:
++
++         .. code-block:: bitbake
+ 
+             TARGET_LDFLAGS:append = " -L${RECIPE_SYSROOT}/opt/lib"
+ 
+@@ -10542,7 +11214,9 @@ system and gives an overview of their function and contents.
+       :ref:`ref-tasks-populate_sysroot` task. You
+       can use this variable to exclude certain subdirectories of
+       directories listed in :term:`SYSROOT_DIRS` from
+-      staging. By default, the following directories are not staged::
++      staging. By default, the following directories are not staged:
++
++      .. code-block:: bitbake
+ 
+          SYSROOT_DIRS_IGNORE = " \
+              ${mandir} \
+@@ -10565,7 +11239,9 @@ system and gives an overview of their function and contents.
+       :ref:`ref-tasks-populate_sysroot` task for
+       ``-native`` recipes, in addition to those specified in
+       :term:`SYSROOT_DIRS`. By default, the following
+-      extra directories are staged::
++      extra directories are staged:
++
++      .. code-block:: bitbake
+ 
+          SYSROOT_DIRS_NATIVE = " \
+              ${bindir} \
+@@ -10594,7 +11270,9 @@ system and gives an overview of their function and contents.
+       :term:`SYSTEMD_SERVICE` should start
+       automatically or not. By default, the service is enabled to
+       automatically start at boot time. The default setting is in the
+-      :ref:`ref-classes-systemd` class as follows::
++      :ref:`ref-classes-systemd` class as follows:
++
++      .. code-block:: bitbake
+ 
+          SYSTEMD_AUTO_ENABLE ??= "enable"
+ 
+@@ -10605,7 +11283,9 @@ system and gives an overview of their function and contents.
+       "systemd-boot", the :term:`SYSTEMD_BOOT_CFG` variable specifies the
+       configuration file that should be used. By default, the
+       :ref:`ref-classes-systemd-boot` class sets the
+-      :term:`SYSTEMD_BOOT_CFG` as follows::
++      :term:`SYSTEMD_BOOT_CFG` as follows:
++
++      .. code-block:: bitbake
+ 
+          SYSTEMD_BOOT_CFG ?= "${S}/loader.conf"
+ 
+@@ -10617,7 +11297,9 @@ system and gives an overview of their function and contents.
+       "systemd-boot", the :term:`SYSTEMD_BOOT_ENTRIES` variable specifies a
+       list of entry files (``*.conf``) to install that contain one boot
+       entry per file. By default, the :ref:`ref-classes-systemd-boot` class
+-      sets the :term:`SYSTEMD_BOOT_ENTRIES` as follows::
++      sets the :term:`SYSTEMD_BOOT_ENTRIES` as follows:
++
++      .. code-block:: bitbake
+ 
+           SYSTEMD_BOOT_ENTRIES ?= ""
+ 
+@@ -10629,7 +11311,9 @@ system and gives an overview of their function and contents.
+       "systemd-boot", the :term:`SYSTEMD_BOOT_TIMEOUT` variable specifies the
+       boot menu timeout in seconds. By default, the
+       :ref:`ref-classes-systemd-boot` class sets the
+-      :term:`SYSTEMD_BOOT_TIMEOUT` as follows::
++      :term:`SYSTEMD_BOOT_TIMEOUT` as follows:
++
++      .. code-block:: bitbake
+ 
+          SYSTEMD_BOOT_TIMEOUT ?= "10"
+ 
+@@ -10649,7 +11333,9 @@ system and gives an overview of their function and contents.
+ 
+       For example, this variable is used in the :oe_git:`core-image-minimal-xfce.bb
+       </meta-openembedded/tree/meta-xfce/recipes-core/images/core-image-minimal-xfce.bb>`
+-      recipe::
++      recipe:
++
++      .. code-block:: bitbake
+ 
+           SYSTEMD_DEFAULT_TARGET = "graphical.target"
+ 
+@@ -10658,7 +11344,9 @@ system and gives an overview of their function and contents.
+       this variable locates the systemd unit files when they are not found
+       in the main recipe's package. By default, the :term:`SYSTEMD_PACKAGES`
+       variable is set such that the systemd unit files are assumed to
+-      reside in the recipes main package::
++      reside in the recipes main package:
++
++      .. code-block:: bitbake
+ 
+          SYSTEMD_PACKAGES ?= "${PN}"
+ 
+@@ -10674,7 +11362,9 @@ system and gives an overview of their function and contents.
+ 
+       When you specify this file in your recipe, use a package name
+       override to indicate the package to which the value applies. Here is
+-      an example from the connman recipe::
++      an example from the connman recipe:
++
++      .. code-block:: bitbake
+ 
+          SYSTEMD_SERVICE:${PN} = "connman.service"
+ 
+@@ -10694,7 +11384,9 @@ system and gives an overview of their function and contents.
+    :term:`T`
+       This variable points to a directory were BitBake places temporary
+       files, which consist mostly of task logs and scripts, when building a
+-      particular recipe. The variable is typically set as follows::
++      particular recipe. The variable is typically set as follows:
++
++      .. code-block:: bitbake
+ 
+          T = "${WORKDIR}/temp"
+ 
+@@ -10728,7 +11420,9 @@ system and gives an overview of their function and contents.
+       Specifies architecture-specific assembler flags for the target
+       system. :term:`TARGET_AS_ARCH` is initialized from
+       :term:`TUNE_ASARGS` by default in the BitBake
+-      configuration file (``meta/conf/bitbake.conf``)::
++      configuration file (``meta/conf/bitbake.conf``):
++
++      .. code-block:: bitbake
+ 
+          TARGET_AS_ARCH = "${TUNE_ASARGS}"
+ 
+@@ -10799,7 +11493,9 @@ system and gives an overview of their function and contents.
+       Specifies architecture-specific linker flags for the target system.
+       :term:`TARGET_LD_ARCH` is initialized from
+       :term:`TUNE_LDARGS` by default in the BitBake
+-      configuration file (``meta/conf/bitbake.conf``)::
++      configuration file (``meta/conf/bitbake.conf``):
++
++      .. code-block:: bitbake
+ 
+          TARGET_LD_ARCH = "${TUNE_LDARGS}"
+ 
+@@ -10988,7 +11684,9 @@ system and gives an overview of their function and contents.
+       program does.
+ 
+       For example, to use the Picocom terminal program on serial device
+-      ``/dev/ttyUSB0`` at 115200bps, you would set the variable as follows::
++      ``/dev/ttyUSB0`` at 115200bps, you would set the variable as follows:
++
++      .. code-block:: bitbake
+ 
+          TEST_SERIALCONTROL_CMD = "picocom /dev/ttyUSB0 -b 115200"
+ 
+@@ -11037,13 +11735,17 @@ system and gives an overview of their function and contents.
+ 
+       Tests include ``ping``, ``ssh``, ``df`` among others. You can add
+       your own tests to the list of tests by appending :term:`TEST_SUITES` as
+-      follows::
++      follows:
++
++      .. code-block:: bitbake
+ 
+          TEST_SUITES:append = " mytest"
+ 
+       Alternatively, you can
+       provide the "auto" option to have all applicable tests run against
+-      the image::
++      the image:
++
++      .. code-block:: bitbake
+ 
+          TEST_SUITES:append = " auto"
+ 
+@@ -11055,7 +11757,9 @@ system and gives an overview of their function and contents.
+       another test must appear later in the list than the test on which
+       they depend. For example, if you append the list of tests with two
+       tests (``test_A`` and ``test_B``) where ``test_B`` is dependent on
+-      ``test_A``, then you must order the tests as follows::
++      ``test_A``, then you must order the tests as follows:
++
++      .. code-block:: bitbake
+ 
+          TEST_SUITES = "test_A test_B"
+ 
+@@ -11065,7 +11769,9 @@ system and gives an overview of their function and contents.
+ 
+    :term:`TEST_TARGET`
+       Specifies the target controller to use when running tests against a
+-      test image. The default controller to use is "qemu"::
++      test image. The default controller to use is "qemu":
++
++      .. code-block:: bitbake
+ 
+          TEST_TARGET = "qemu"
+ 
+@@ -11104,7 +11810,9 @@ system and gives an overview of their function and contents.
+       set to "qemu".
+ 
+       When you specify the IP address, you can also include a port. Here is
+-      an example::
++      an example:
++
++      .. code-block:: bitbake
+ 
+          TEST_TARGET_IP = "192.168.1.4:2201"
+ 
+@@ -11164,7 +11872,9 @@ system and gives an overview of their function and contents.
+ 
+       If you want to establish this directory in a location other than the
+       default, you can set it to another value in your
+-      :ref:`structure-build-conf-site.conf` configuration file::
++      :ref:`structure-build-conf-site.conf` configuration file:
++
++      .. code-block:: bitbake
+ 
+          TMPDIR = "/another/location"
+ 
+@@ -11240,7 +11950,9 @@ system and gives an overview of their function and contents.
+    :term:`TOOLCHAIN_OPTIONS`
+       This variable holds extra options passed to the compiler and the linker
+       for non ``-native`` recipes as they have to point to their custom
+-      ``sysroot`` folder pointed to by :term:`RECIPE_SYSROOT`::
++      ``sysroot`` folder pointed to by :term:`RECIPE_SYSROOT`:
++
++      .. code-block:: bitbake
+ 
+          TOOLCHAIN_OPTIONS = " --sysroot=${RECIPE_SYSROOT}"
+ 
+@@ -11250,7 +11962,9 @@ system and gives an overview of their function and contents.
+    :term:`TOOLCHAIN_OUTPUTNAME`
+       This variable defines the name used for the toolchain output. The
+       :ref:`populate_sdk_base <ref-classes-populate-sdk-*>` class sets
+-      the :term:`TOOLCHAIN_OUTPUTNAME` variable as follows::
++      the :term:`TOOLCHAIN_OUTPUTNAME` variable as follows:
++
++      .. code-block:: bitbake
+ 
+          TOOLCHAIN_OUTPUTNAME ?= "${SDK_NAME}-toolchain-${SDK_VERSION}"
+ 
+@@ -11304,7 +12018,9 @@ system and gives an overview of their function and contents.
+       :term:`TUNE_ARCH` is tied closely to
+       :term:`TARGET_ARCH`, which defines the target
+       machine's architecture. The BitBake configuration file
+-      (``meta/conf/bitbake.conf``) sets :term:`TARGET_ARCH` as follows::
++      (``meta/conf/bitbake.conf``) sets :term:`TARGET_ARCH` as follows:
++
++      .. code-block:: bitbake
+ 
+          TARGET_ARCH = "${TUNE_ARCH}"
+ 
+@@ -11326,7 +12042,9 @@ system and gives an overview of their function and contents.
+       typically under ``meta/conf/machine/include/`` and are influenced
+       through :term:`TUNE_FEATURES`. For example, the
+       ``meta/conf/machine/include/x86/arch-x86.inc`` file defines the flags
+-      for the x86 architecture as follows::
++      for the x86 architecture as follows:
++
++      .. code-block:: bitbake
+ 
+          TUNE_ASARGS += "${@bb.utils.contains("TUNE_FEATURES", "mx32", "-x32", "", d)}"
+ 
+@@ -11372,7 +12090,9 @@ system and gives an overview of their function and contents.
+       typically under ``meta/conf/machine/include/`` and are influenced
+       through :term:`TUNE_FEATURES`. For example, the
+       ``meta/conf/machine/include/x86/arch-x86.inc`` file defines the flags
+-      for the x86 architecture as follows::
++      for the x86 architecture as follows:
++
++      .. code-block:: bitbake
+ 
+          TUNE_LDARGS += "${@bb.utils.contains("TUNE_FEATURES", "mx32", "-m elf32_x86_64", "", d)}"
+ 
+@@ -11385,13 +12105,17 @@ system and gives an overview of their function and contents.
+    :term:`TUNE_PKGARCH`
+       The package architecture understood by the packaging system to define
+       the architecture, ABI, and tuning of output packages. The specific
+-      tune is defined using the "_tune" override as follows::
++      tune is defined using the "_tune" override as follows:
++
++      .. code-block:: bitbake
+ 
+          TUNE_PKGARCH:tune-tune = "tune"
+ 
+       These tune-specific package architectures are defined in the machine
+       include files. Here is an example of the "core2-32" tuning as used in
+-      the ``meta/conf/machine/include/x86/tune-core2.inc`` file::
++      the ``meta/conf/machine/include/x86/tune-core2.inc`` file:
++
++      .. code-block:: bitbake
+ 
+          TUNE_PKGARCH:tune-core2-32 = "core2-32"
+ 
+@@ -11403,7 +12127,9 @@ system and gives an overview of their function and contents.
+       :term:`OpenEmbedded-Core (OE-Core)`. Here is an example from
+       the ``meta/conf/machine/include/mips/arch-mips.inc`` include file
+       that lists the "o32" and "n64" features as conflicting with the "n32"
+-      feature::
++      feature:
++
++      .. code-block:: bitbake
+ 
+          TUNECONFLICTS[n32] = "o32 n64"
+ 
+@@ -11412,7 +12138,9 @@ system and gives an overview of their function and contents.
+       feature. The specified feature is stored as a flag. Valid features
+       are specified in the machine include files (e.g.
+       ``meta/conf/machine/include/arm/arch-arm.inc``). Here is an example
+-      from that file::
++      from that file:
++
++      .. code-block:: bitbake
+ 
+          TUNEVALID[bigendian] = "Enable big-endian mode."
+ 
+@@ -11429,7 +12157,9 @@ system and gives an overview of their function and contents.
+       :term:`UBOOT_CONFIG_FRAGMENTS`, :term:`UBOOT_CONFIG_IMAGE_FSTYPES`, and
+       :term:`UBOOT_CONFIG_MAKE_OPTS`. 
+ 
+-      Here is an updated example from the ``meta-freescale`` layer. ::
++      Here is an updated example from the ``meta-freescale`` layer.
++
++      .. code-block:: bitbake
+ 
+          UBOOT_CONFIG ??= "sdcard-ifc-secure-boot sdcard-ifc sdcard-qspi lpuart qspi secure-boot nor"
+ 
+@@ -11455,7 +12185,9 @@ system and gives an overview of their function and contents.
+ 
+    :term:`UBOOT_CONFIG_BINARY`
+       This variable cannot be set to a value in a config, it is a placeholder
+-      for configuring the :term:`UBOOT_CONFIG` flow via flags::
++      for configuring the :term:`UBOOT_CONFIG` flow via flags:
++
++      .. code-block:: bitbake
+ 
+          UBOOT_CONFIG_BINARY[foo] = "binary1"
+          UBOOT_CONFIG_BINARY[bar] = "binary2"
+@@ -11478,7 +12210,9 @@ system and gives an overview of their function and contents.
+ 
+    :term:`UBOOT_CONFIG_FRAGMENTS`
+       This variable cannot be set to a value in a config, it is a placeholder
+-      for configuring the :term:`UBOOT_CONFIG` flow via flags::
++      for configuring the :term:`UBOOT_CONFIG` flow via flags:
++
++      .. code-block:: bitbake
+ 
+          UBOOT_CONFIG_FRAGMENTS[foo] = "frag1 frag2"
+          UBOOT_CONFIG_FRAGMENTS[bar] = "frag3"
+@@ -11496,7 +12230,9 @@ system and gives an overview of their function and contents.
+ 
+    :term:`UBOOT_CONFIG_IMAGE_FSTYPES`
+       This variable cannot be set to a value in a config, it is a placeholder
+-      for configuring the :term:`UBOOT_CONFIG` flow via flags::
++      for configuring the :term:`UBOOT_CONFIG` flow via flags:
++
++      .. code-block:: bitbake
+ 
+          UBOOT_CONFIG_IMAGE_FSTYPES[foo] = "fstype1"
+          UBOOT_CONFIG_IMAGE_FSTYPES[bar] = "fstype2"
+@@ -11513,7 +12249,9 @@ system and gives an overview of their function and contents.
+ 
+    :term:`UBOOT_CONFIG_MAKE_OPTS`
+       This variable cannot be set to a value in a config, it is a placeholder
+-      for configuring the :term:`UBOOT_CONFIG` flow via flags::
++      for configuring the :term:`UBOOT_CONFIG` flow via flags:
++
++      .. code-block:: bitbake
+ 
+          UBOOT_CONFIG_MAKE_OPTS[foo] = "OPT1=foo OPT2=2"
+          UBOOT_CONFIG_MAKE_OPTS[bar] = "OPT1=bar"
+@@ -11568,13 +12306,17 @@ system and gives an overview of their function and contents.
+ 
+       Some examples:
+ 
+-      -  Adding a script ``boot.cmd`` as a uImage to ``/boot``::
++      -  Adding a script ``boot.cmd`` as a uImage to ``/boot``:
++
++         .. code-block:: bitbake
+ 
+             UBOOT_ENV = "boot"
+             UBOOT_ENV_SUFFIX = "scr"
+             SRC_URI += "file://${UBOOT_ENV_SRC}"
+ 
+-      -  Adding a script ``uEnv.txt`` as a plain text file to ``/boot``::
++      -  Adding a script ``uEnv.txt`` as a plain text file to ``/boot``:
++
++         .. code-block:: bitbake
+ 
+             UBOOT_ENV = "uEnv"
+             UBOOT_ENV_SUFFIX = "txt"
+@@ -11603,7 +12345,9 @@ system and gives an overview of their function and contents.
+       set this value to "2", as two 32 bit values (cells) will be needed
+       to represent such addresses.
+ 
+-      Here is an example setting "0x400000000" as a load address::
++      Here is an example setting "0x400000000" as a load address:
++
++      .. code-block:: bitbake
+ 
+          UBOOT_FIT_ADDRESS_CELLS = "2"
+          UBOOT_LOADADDRESS = "0x04 0x00000000"
+@@ -11617,19 +12361,25 @@ system and gives an overview of their function and contents.
+       Secure Monitor. This variable enables the generation of a U-Boot FIT
+       image with a Trusted Firmware-A (TF-A) binary.
+ 
+-      Its default value is "0", so set it to "1" to enable this functionality::
++      Its default value is "0", so set it to "1" to enable this functionality:
++
++      .. code-block:: bitbake
+ 
+          UBOOT_FIT_ARM_TRUSTED_FIRMWARE = "1"
+ 
+    :term:`UBOOT_FIT_ARM_TRUSTED_FIRMWARE_IMAGE`
+       Specifies the path to the Trusted Firmware-A (TF-A) binary. Its default
+-      value is "bl31.bin"::
++      value is "bl31.bin":
++
++      .. code-block:: bitbake
+ 
+          UBOOT_FIT_ARM_TRUSTED_FIRMWARE_IMAGE ?= "bl31.bin"
+ 
+       If a relative path is provided, the file is expected to be relative to
+       U-Boot's :term:`B` directory. An absolute path can be provided too,
+-      e.g.::
++      e.g.:
++
++      .. code-block:: bitbake
+ 
+          UBOOT_FIT_ARM_TRUSTED_FIRMWARE_IMAGE ?= "${DEPLOY_DIR_IMAGE}/bl31.bin"
+ 
+@@ -11637,7 +12387,9 @@ system and gives an overview of their function and contents.
+       you must add the necessary dependency in a U-Boot ``.bbappend`` file. The
+       recipe name for Trusted Firmware-A (TF-A) binary is
+       ``trusted-firmware-a``, which comes from the
+-      :yocto_git:`meta-arm </meta-arm>` layer::
++      :yocto_git:`meta-arm </meta-arm>` layer:
++
++      .. code-block:: bitbake
+ 
+          do_compile[depends] += "trusted-firmware-a:do_deploy"
+ 
+@@ -11648,7 +12400,9 @@ system and gives an overview of their function and contents.
+    :term:`UBOOT_FIT_CONF_FIRMWARE`
+       Adds one image to the ``firmware`` property of the configuration node of
+       the U-Boot Image Tree Source (ITS). Sets the ``firmware`` property to
+-      select the image to boot first::
++      select the image to boot first:
++
++      .. code-block:: bitbake
+ 
+          UBOOT_FIT_CONF_FIRMWARE = "fwa"
+ 
+@@ -11658,13 +12412,17 @@ system and gives an overview of their function and contents.
+       Adds one or more user-defined images to the ``loadables`` property of the
+       configuration node of the U-Boot Image Tree Source (ITS). This variable
+       is handled by the local shell in the recipe so appropriate escaping
+-      should be done, e.g. escaping quotes.::
++      should be done, e.g. escaping quotes.:
++
++      .. code-block:: bitbake
+ 
+          UBOOT_FIT_CONF_USER_LOADABLES = '\"fwa\", \"fwb\"'
+ 
+    :term:`UBOOT_FIT_DESC`
+       Specifies the description string encoded into a U-Boot fitImage. The default
+-      value is set by the :ref:`ref-classes-uboot-sign` class as follows::
++      value is set by the :ref:`ref-classes-uboot-sign` class as follows:
++
++      .. code-block:: bitbake
+ 
+          UBOOT_FIT_DESC ?= "U-Boot fitImage for ${DISTRO_NAME}/${PV}/${MACHINE}"
+ 
+@@ -11673,7 +12431,9 @@ system and gives an overview of their function and contents.
+       they don't already exist. The keys are created in :term:`SPL_SIGN_KEYDIR`.
+       The default value is "0".
+ 
+-      Enable this as follows::
++      Enable this as follows:
++
++      .. code-block:: bitbake
+ 
+          UBOOT_FIT_GENERATE_KEYS = "1"
+ 
+@@ -11716,19 +12476,25 @@ system and gives an overview of their function and contents.
+       the surrounding system. This variable enables the generation of a U-Boot
+       FIT image with a Trusted Execution Environment (TEE) binary.
+ 
+-      Its default value is "0", so set it to "1" to enable this functionality::
++      Its default value is "0", so set it to "1" to enable this functionality:
++
++      .. code-block:: bitbake
+ 
+          UBOOT_FIT_TEE = "1"
+ 
+    :term:`UBOOT_FIT_TEE_IMAGE`
+       Specifies the path to the Trusted Execution Environment (TEE) binary. Its
+-      default value is "tee-raw.bin"::
++      default value is "tee-raw.bin":
++
++      .. code-block:: bitbake
+ 
+          UBOOT_FIT_TEE_IMAGE ?= "tee-raw.bin"
+ 
+       If a relative path is provided, the file is expected to be relative to
+       U-Boot's :term:`B` directory. An absolute path can be provided too,
+-      e.g.::
++      e.g.:
++
++      .. code-block:: bitbake
+ 
+          UBOOT_FIT_TEE_IMAGE ?= "${DEPLOY_DIR_IMAGE}/tee-raw.bin"
+ 
+@@ -11736,7 +12502,9 @@ system and gives an overview of their function and contents.
+       recipe, you must add the necessary dependency in a U-Boot ``.bbappend``
+       file. The recipe name for Trusted Execution Environment (TEE) binary is
+       ``optee-os``, which comes from the :yocto_git:`meta-arm </meta-arm>`
+-      layer::
++      layer:
++
++      .. code-block:: bitbake
+ 
+          do_compile[depends] += "optee-os:do_deploy"
+ 
+@@ -11764,7 +12532,9 @@ system and gives an overview of their function and contents.
+              };
+          };
+ 
+-      Users can include their custom ITS snippet in this variable, e.g.::
++      Users can include their custom ITS snippet in this variable, e.g.:
++
++      .. code-block:: bitbake
+ 
+          UBOOT_FIT_FWA_ITS = '\
+              fwa {\n\
+@@ -11817,7 +12587,9 @@ system and gives an overview of their function and contents.
+       This variable allows to generate a FIT image for U-Boot, which is one
+       of the ways to implement a verified boot process.
+ 
+-      Its default value is "0", so set it to "1" to enable this functionality::
++      Its default value is "0", so set it to "1" to enable this functionality:
++
++      .. code-block:: bitbake
+ 
+          UBOOT_FITIMAGE_ENABLE = "1"
+ 
+@@ -11829,7 +12601,9 @@ system and gives an overview of their function and contents.
+       These fragments are located in same ``${S}/configs/`` directory as the
+       defconfig.
+ 
+-      For example::
++      For example:
++
++      .. code-block:: bitbake
+ 
+           UBOOT_MACHINE = "am62x_evm_r5_defconfig"
+           UBOOT_FRAGMENTS = "am62x_r5_usbdfu.config"
+@@ -11840,7 +12614,9 @@ system and gives an overview of their function and contents.
+       This variable enables the generation of the U-Boot initial environment in
+       binary format.
+ 
+-      Its default value is "0", set it to "1" to enable this functionality::
++      Its default value is "0", set it to "1" to enable this functionality:
++
++      .. code-block:: bitbake
+ 
+          UBOOT_INITIAL_ENV_BINARY = "1"
+ 
+@@ -11864,7 +12640,9 @@ system and gives an overview of their function and contents.
+       this variable should be set to properly generate the redundant environment
+       in the output U-boot environment binary file.
+ 
+-      Its default value is "0", set it to "1" to enable this functionality::
++      Its default value is "0", set it to "1" to enable this functionality:
++
++      .. code-block:: bitbake
+ 
+          UBOOT_INITIAL_ENV_BINARY_REDUND = "1"
+ 
+@@ -11876,7 +12654,9 @@ system and gives an overview of their function and contents.
+    :term:`UBOOT_INITIAL_ENV_BINARY_SIZE`
+       This variable sets the binary size (in bytes) of the U-Boot initial
+       environment. Both hexadecimal and decimal values are supported and can be
+-      set as follows::
++      set as follows:
++
++      .. code-block:: bitbake
+ 
+          UBOOT_INITIAL_ENV_BINARY_SIZE = "0x4000"
+ 
+@@ -11901,7 +12681,9 @@ system and gives an overview of their function and contents.
+       Appends a string to the name of the local version of the U-Boot
+       image. For example, assuming the version of the U-Boot image built
+       was "2013.10", the full version string reported by U-Boot would be
+-      "2013.10-yocto" given the following statement::
++      "2013.10-yocto" given the following statement:
++
++      .. code-block:: bitbake
+ 
+          UBOOT_LOCALVERSION = "-yocto"
+ 
+@@ -12068,7 +12850,9 @@ system and gives an overview of their function and contents.
+       :term:`UNINATIVE_CHECKSUM` variable flags contain the checksums of the
+       uninative tarball as specified by the :term:`UNINATIVE_URL` variable.
+       There should be one checksum per tarballs published at
+-      :term:`UNINATIVE_URL`, which match architectures. For example::
++      :term:`UNINATIVE_URL`, which match architectures. For example:
++
++      .. code-block:: bitbake
+ 
+          UNINATIVE_CHECKSUM[aarch64] ?= "812045d826b7fda88944055e8526b95a5a9440bfef608d5b53fd52faab49bf85"
+          UNINATIVE_CHECKSUM[i686] ?= "5cc28efd0c15a75de4bcb147c6cce65f1c1c9d442173a220f08427f40a3ffa09"
+@@ -12117,7 +12901,9 @@ system and gives an overview of their function and contents.
+       releases are not identified by Git tags, set :term:`UPSTREAM_CHECK_COMMITS`
+       to ``1`` in the recipe, and the OpenEmbedded build system
+       will compare the latest commit with the one currently specified
+-      by the recipe (:term:`SRCREV`)::
++      by the recipe (:term:`SRCREV`):
++
++      .. code-block:: bitbake
+ 
+          UPSTREAM_CHECK_COMMITS = "1"
+ 
+@@ -12130,7 +12916,9 @@ system and gives an overview of their function and contents.
+ 
+       You can use the :term:`UPSTREAM_CHECK_GITTAGREGEX` variable to provide a
+       regular expression to filter only the relevant tags should the
+-      default filter not work correctly::
++      default filter not work correctly:
++
++      .. code-block:: bitbake
+ 
+          UPSTREAM_CHECK_GITTAGREGEX = "git_tag_regex"
+ 
+@@ -12138,7 +12926,9 @@ system and gives an overview of their function and contents.
+       Use the :term:`UPSTREAM_CHECK_REGEX` variable to specify a different
+       regular expression instead of the default one when the package
+       checking system is parsing the page found using
+-      :term:`UPSTREAM_CHECK_URI`::
++      :term:`UPSTREAM_CHECK_URI`:
++
++      .. code-block:: bitbake
+ 
+          UPSTREAM_CHECK_REGEX = "package_regex"
+ 
+@@ -12149,7 +12939,9 @@ system and gives an overview of their function and contents.
+       determined by fetching the directory listing where the tarball is and
+       attempting to find a later tarball. When this approach does not work,
+       you can use :term:`UPSTREAM_CHECK_URI` to provide a different URI that
+-      contains the link to the latest tarball::
++      contains the link to the latest tarball:
++
++      .. code-block:: bitbake
+ 
+          UPSTREAM_CHECK_URI = "recipe_url"
+ 
+@@ -12179,7 +12971,9 @@ system and gives an overview of their function and contents.
+       :term:`UPSTREAM_CHECK_GITTAGREGEX` and :term:`UPSTREAM_CHECK_COMMITS` variables in
+       the recipe allows to determine what the latest upstream version is,
+       you can set :term:`UPSTREAM_VERSION_UNKNOWN` to ``1`` in the recipe
+-      to acknowledge that the check cannot be performed::
++      to acknowledge that the check cannot be performed:
++
++      .. code-block:: bitbake
+ 
+          UPSTREAM_VERSION_UNKNOWN = "1"
+ 
+@@ -12225,7 +13019,9 @@ system and gives an overview of their function and contents.
+       Classes inherited using :term:`USER_CLASSES` must be located in the
+       ``classes-global/`` or ``classes/`` subdirectories.
+ 
+-      The default list is set in your ``local.conf`` file::
++      The default list is set in your ``local.conf`` file:
++
++      .. code-block:: bitbake
+ 
+          USER_CLASSES ?= "buildstats"
+ 
+@@ -12252,7 +13048,9 @@ system and gives an overview of their function and contents.
+       :term:`USERADD_ERROR_DYNAMIC` variable is by default not set. If you plan
+       on using statically assigned ``gid`` and ``uid`` values, you should
+       set the :term:`USERADD_ERROR_DYNAMIC` variable in your ``local.conf``
+-      file as follows::
++      file as follows:
++
++      .. code-block:: bitbake
+ 
+          USERADD_ERROR_DYNAMIC = "error"
+ 
+@@ -12282,8 +13080,9 @@ system and gives an overview of their function and contents.
+       When applying static group identification (``gid``) values, the
+       OpenEmbedded build system looks in :term:`BBPATH` for a
+       ``files/group`` file and then applies those ``uid`` values. Set the
+-      variable as follows in your ``local.conf`` file::
++      variable as follows in your ``local.conf`` file:
+ 
++      .. code-block:: bitbake
+ 
+          USERADD_GID_TABLES = "files/group"
+ 
+@@ -12299,7 +13098,9 @@ system and gives an overview of their function and contents.
+ 
+       You must set this variable if the recipe inherits the class. For
+       example, the following enables adding a user for the main package in
+-      a recipe::
++      a recipe:
++
++      .. code-block:: bitbake
+ 
+          USERADD_PACKAGES = "${PN}"
+ 
+@@ -12315,7 +13116,9 @@ system and gives an overview of their function and contents.
+       the ``useradd`` command if you add a user to the system when the
+       package is installed.
+ 
+-      Here is an example from the ``dbus`` recipe::
++      Here is an example from the ``dbus`` recipe:
++
++      .. code-block:: bitbake
+ 
+          USERADD_PARAM:${PN} = "--system --home ${localstatedir}/lib/dbus \
+                                 --no-create-home --shell /bin/false \
+@@ -12333,7 +13136,9 @@ system and gives an overview of their function and contents.
+       When applying static user identification (``uid``) values, the
+       OpenEmbedded build system looks in :term:`BBPATH` for a
+       ``files/passwd`` file and then applies those ``uid`` values. Set the
+-      variable as follows in your ``local.conf`` file::
++      variable as follows in your ``local.conf`` file:
++
++      .. code-block:: bitbake
+ 
+          USERADD_UID_TABLES = "files/passwd"
+ 
+@@ -12368,7 +13173,9 @@ system and gives an overview of their function and contents.
+       When a recipe inherits the :ref:`ref-classes-useradd` class, this variable
+       specifies for a package what parameters should be passed to the ``usermod``
+       command if you wish to modify a user when the package is installed.
+-      Is is typically used to add the user to one or more groups. For example::
++      Is is typically used to add the user to one or more groups. For example:
++
++      .. code-block:: bitbake
+ 
+          USERMOD_PARAM:${PN} = "--append --groups group1,group2 user"
+ 
+@@ -12378,24 +13185,32 @@ system and gives an overview of their function and contents.
+       or in image definitions.
+ 
+       An example is ``VIRTUAL-RUNTIME_base-utils`` that makes it possible
+-      to either use BusyBox based utilities::
++      to either use BusyBox based utilities:
++
++      .. code-block:: bitbake
+ 
+          VIRTUAL-RUNTIME_base-utils = "busybox"
+ 
+       or their full featured implementations from GNU Coreutils
+-      and other projects::
++      and other projects:
++
++      .. code-block:: bitbake
+ 
+          VIRTUAL-RUNTIME_base-utils = "packagegroup-core-base-utils"
+ 
+       Here are two examples using this virtual runtime package. The
+       first one is in :oe_git:`initramfs-framework_1.0.bb
+-      </openembedded-core/tree/meta/recipes-core/initrdscripts/initramfs-framework_1.0.bb>`::
++      </openembedded-core/tree/meta/recipes-core/initrdscripts/initramfs-framework_1.0.bb>`:
++
++      .. code-block:: bitbake
+ 
+          RDEPENDS:${PN} += "${VIRTUAL-RUNTIME_base-utils}"
+ 
+       The second example is in the :oe_git:`core-image-initramfs-boot
+       </openembedded-core/tree/meta/recipes-core/images/core-image-initramfs-boot.bb>`
+-      image definition::
++      image definition:
++
++      .. code-block:: bitbake
+ 
+          PACKAGE_INSTALL = "${INITRAMFS_SCRIPTS} ${VIRTUAL-RUNTIME_base-utils} base-passwd"
+ 
+@@ -12485,7 +13300,9 @@ system and gives an overview of their function and contents.
+       With the :term:`WKS_FILE_DEPENDS` variable, you have the possibility to
+       specify a list of additional dependencies (e.g. native tools,
+       bootloaders, and so forth), that are required to build Wic images.
+-      Here is an example::
++      Here is an example:
++
++      .. code-block:: bitbake
+ 
+          WKS_FILE_DEPENDS = "some-native-tool"
+ 
 
