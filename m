@@ -1,159 +1,231 @@
-Return-Path: <peter.kjellerstedt@axis.com>
+Return-Path: <twoerner@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 681E7C61DBD
-	for <webhook@archiver.kernel.org>; Tue, 25 Aug 2026 18:17:13 +0000 (UTC)
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (DB3PR0202CU003.outbound.protection.outlook.com [52.101.84.13])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.28528.1787681823340154724
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D247FC61DB9
+	for <webhook@archiver.kernel.org>; Wed, 26 Aug 2026 01:30:41 +0000 (UTC)
+Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.3413.1787707832686566501
  for <docs@lists.yoctoproject.org>;
- Tue, 25 Aug 2026 11:17:03 -0700
+ Tue, 25 Aug 2026 18:30:32 -0700
 Authentication-Results: mx.groups.io;
- dkim=fail reason="dkim: body hash did not verify" header.i=@axis.com header.s=selector1 header.b=lhZTXshm;
- spf=pass (domain: axis.com, ip: 52.101.84.13, mailfrom: peter.kjellerstedt@axis.com)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=BLXQZL8P0ItnjnURJguHDMqoIk885ULkYTWMVRkeB94u6sDfEsWQZT/xWPXGj43vDwxV6xGTyS2jg+xh4Ee3wE1pikFTTm//Kc1TYtd3l4dR97mngrkAHoejsFM2aitS5r7M4KURKoNHOOdGmRPzDkEc3IGUHImE5n/Q8KLRmW47DCC32LPigyv6Zz5rdBpnTpJ4dtVXmOSuC5MRUTsXGWvS9mSt5kOdUlxCdhcurJqGsOnrjR6XvEXCooEkwSsh7GU5p1PtZH/Zz3vHqhJPFZsbhft/iuYL4kNvIchgnGtVZO1Vu9Kv5Cd9D4SpVYvI3f3bN4YV45xAEBOMVvBfXw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=n4tdD3IRV2SYcx6x3wokouFgHudtb+h0VTXSe6dm6/E=;
- b=AmXtKHXj8gZzLFnat+7j8orpI0k79ZwHQVy4AbvujqaG6yNO3NaxGlyLXSZ3UG9h5tuu2DiZTCKYmeNAh7pod1JDAbJcTo1Zjg6OwgQPAYZHaapv4hcFAOutfC9TNseFsUX8Dm/NDS+A6tROY3G7Aq6ZALq0oMpxU1dhsITJEEKJv4F4fAnH273646voUY7kJ38KULW4dxYuYEWQX4chxa0GSDTXIWGdNJTr+R7w+/m9pKlwZlB9+Igq9LSrL0g3R3qeSV40JGAIYqfjzXlyEpXEcjxTRC5P/DXZ3Pn/vnrP1ggLw1AEqwxlo7fdfrImJE82Qmvx34gXQFplEtuCQw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 195.60.68.100) smtp.rcpttodomain=lists.yoctoproject.org
- smtp.mailfrom=axis.com; dmarc=pass (p=none sp=none pct=100) action=none
- header.from=axis.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axis.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=n4tdD3IRV2SYcx6x3wokouFgHudtb+h0VTXSe6dm6/E=;
- b=lhZTXshmmGOrffHp0430furhQESkxa7vDNujY7XpnW4MfZ53/M/2cYnd7ZEGb09r6VbBHowYc7o3gebaeI/d9DLiJkZXRRevWhlfYOR1l2m99+kwryAm0mVQEKhh4XmCuD2lc1tev+uqSwdZ3OvK8Ngo1ToawR00fpE+lcae/hk=
-Received: from DUZPR01CA0342.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:4b8::26) by AMBPR02MB11846.eurprd02.prod.outlook.com
- (2603:10a6:20b:72e::11) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.6; Tue, 25 Aug
- 2026 18:16:59 +0000
-Received: from DU2PEPF00028D10.eurprd03.prod.outlook.com
- (2603:10a6:10:4b8:cafe::83) by DUZPR01CA0342.outlook.office365.com
- (2603:10a6:10:4b8::26) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.360.7 via Frontend Transport; Tue, 25
- Aug 2026 18:16:55 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 195.60.68.100)
- smtp.mailfrom=axis.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=axis.com;
-Received-SPF: Pass (protection.outlook.com: domain of axis.com designates
- 195.60.68.100 as permitted sender) receiver=protection.outlook.com;
- client-ip=195.60.68.100; helo=mail.axis.com; pr=C
-Received: from mail.axis.com (195.60.68.100) by
- DU2PEPF00028D10.mail.protection.outlook.com (10.167.242.24) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.339.3 via Frontend Transport; Tue, 25 Aug 2026 18:16:54 +0000
-Received: from se-mail10w.axis.com (10.20.40.10) by se-mail10w.axis.com
- (10.20.40.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.39; Tue, 25 Aug
- 2026 20:16:54 +0200
-Received: from se-intmail01x.se.axis.com (10.4.0.28) by se-mail10w.axis.com
- (10.20.40.10) with Microsoft SMTP Server id 15.2.1748.39 via Frontend
- Transport; Tue, 25 Aug 2026 20:16:54 +0200
-Received: from pc56063-2339.se.axis.com (pc56063-2339.se.axis.com [10.92.3.2])
-	by se-intmail01x.se.axis.com (Postfix) with ESMTP id 4AB8A1276
-	for <docs@lists.yoctoproject.org>; Tue, 25 Aug 2026 20:16:54 +0200 (CEST)
-Received: by pc56063-2339.se.axis.com (Postfix, from userid 14323)
-	id 40C4412B4CE; Tue, 25 Aug 2026 20:16:54 +0200 (CEST)
-From: Peter Kjellerstedt <pkj@axis.com>
-To: <docs@lists.yoctoproject.org>
-Subject: [PATCH] ref-manual: Remove the documentation of the GROUPMEMS_PARAM variable
-Date: Tue, 25 Aug 2026 20:16:52 +0200
-Message-ID: <20260825181652.2993460-1-pkj@axis.com>
-X-Mailer: git-send-email 2.43.0
+ dkim=pass header.i=@gmail.com header.s=20251104 header.b=TxLsHjmR;
+ spf=pass (domain: gmail.com, ip: 209.85.219.49, mailfrom: twoerner@gmail.com)
+Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-8ee43b3e5abso3123316d6.3
+        for <docs@lists.yoctoproject.org>; Tue, 25 Aug 2026 18:30:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787707831; x=1788312631; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=CjKXHBAxYDU+xhu4za0IorNFPpb7a/gTy6e5e5NM2Dc=;
+        b=TxLsHjmRDZMaaTIwGYc08LwnsJmOGGboalaz+FkTXORofMfNanuO3/8Nyi0H/rdu8Q
+         ow8XEvnQhJKdw7ehe506pvx7TqS6aLhVuaqZeUmb2vmGCQS4MN3ZpGgtXfQD4pdgWsNM
+         VP4YfWW4a13Jc7GS3LsJGxpVw2GRCVYdcFOR58EYnp7KGj6nlihZx9G02sXt9+th7JZ1
+         44uCw3DEc8Jjj3DTdUG6SBboOMee09xy1A6B0ecr11N7naPpCNXhCT0ApSiUz4641HYK
+         GUglbcJeRTOsT1GcsEbKTxSoAxMqcLOHmp3Ai0odC5wk6xqAtaqyVs8uIr+V7TQahpyA
+         p0UA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787707831; x=1788312631;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=CjKXHBAxYDU+xhu4za0IorNFPpb7a/gTy6e5e5NM2Dc=;
+        b=rGWfQCUD8za/hrdktymn2dZTADkISKJZasDO9hVBuHh027oKNoV+VlGVWd1/m1gvXI
+         E3fnNmU9R1C4sufwCyCJDkN1cNMELpDifXjKTyXjBmRw9WxGOZzaTPvIhKuwq3ag/lTf
+         dZhdFzziQZ/0OvGonQKyhQCQu4x4iC+L7t1XZYJACc2qmbWyH5AmdAkdaioLaJAxiECS
+         ClEfNH9cMNzuWq9fLA5vxxfjEmDtIGzgk3RDjIN6wmUUWrT1uF93ydVvon5onNQvBOZP
+         WZyHXJl3FLSngnR38851FpLWfnsg3W/bmjQ0UoXaGm4nKaGBNWM/HHz7Fyd0heGN8Qd+
+         5ofg==
+X-Gm-Message-State: AFuF++kV2RvMZPKLoTpQ1qTh+NTRUOimppMJfPnmak7C/81Ma/4XQ+gK
+	hqOco+hSIJ5KdBteEEElmNxrBJ8XzLv3LcV5HeZhx/XN/pPUVATG1eDdyJk48ooz
+X-Gm-Gg: AR+sD123QpmT6qgHnjSgMw6+oEPjX3hEjz74e64KZMlniFu/JwqTU/aXlQMC93K7j/a
+	yGXfKQZORKner1G0WD8oR5nBKUfMmriEihNC6duQK6YKNRFvJFvIiagSrahnahKl3n0ltIBFSqS
+	NhgHETvE3C4pt1kU8M3lFbugPHhTMXbX/PjMZg8/ma1Isyucd12OYfnPZQUOWt2Vfhe2q5jAEfT
+	71LI18QLHp80p+ft7nx/LDw0vxtMfYxS5C6SpjE5DsDs4CHhf+Pr6Uxoe4LL26/UtP5Gq/+LYC2
+	ahk/e6okA6AcM+PzyR9kdntB6vEdht7Utr1GVFC4GHJ6OT1DcxXTPZNbijfh3ReION/7OtRQ5PM
+	F4s2B9QbcxdluJv7FWUHLfU84VUunASAk0sElioZMO5mL2z3uiiFw445gQU9FP6DU21qZIVg2cq
+	TTsiOA0InHX1RuaXEn5XrRtsaClazwhIbYZKt4XuA5LUcl12aiyu3+W3Ggt8nXtSuu9UIu+ybXt
+	87BUjQsPMKzK7Ii8nHhbYQOpHF39iYlbB/O0ks5WQ==
+X-Received: by 2002:a05:620a:13e1:b0:937:5aaf:8c7b with SMTP id af79cd13be357-9378015d753mr229102585a.14.1787707831062;
+        Tue, 25 Aug 2026 18:30:31 -0700 (PDT)
+Received: from localhost.localdomain (pppoe-209-91-167-254.vianet.ca. [209.91.167.254])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9377e30f097sm106654585a.1.2026.08.25.18.30.27
+        for <docs@lists.yoctoproject.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Aug 2026 18:30:28 -0700 (PDT)
+From: Trevor Woerner <twoerner@gmail.com>
+To: docs@lists.yoctoproject.org
+Subject: [PATCH] docs: state the language of nine literal blocks explicitly
+Date: Tue, 25 Aug 2026 21:30:18 -0400
+Message-ID: <20260826013018.2673213-1-twoerner@gmail.com>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PEPF00028D10:EE_|AMBPR02MB11846:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5e68b4b1-99e9-464c-79ef-08df02d50b16
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: 
-	BCL:0;ARA:13230040|82310400026|376014|23010399003|1800799024|36860700016|18002099003|11063799006|56012099006|10067099003;
-X-Microsoft-Antispam-Message-Info: 
-	Rw3b8Y2hZ2+GztDRUfGRqzlbS5Z3ZlsjGhtkwgCl3oawBOTQ5xIFL1c4ve+dwbLscxydDCGWZxVlAVfXn5zkz6jVRkbmU3c1aLGz9/WZqqiUTOoVYzcn5yF+4osqwxfdo47KAfbl1YdpiN1W05DO8SBuZatHUgb9aSs0d4xD4aSm8ADzmsbqWHD58yTJTOoG/Jzewy+jUNWWYTuTc28zbRh9AOoT2G/igWifiDt+wTGBeR3ZE8ElXJ2LTisRgr0QNmyqD3WUuyCpDmc/imDoSyy31QWHZGrE2NwLIDZ3iEBPqZNn3kTr4SbDrJnND7Bj1nYb1XvDfOGsbpRdb8WGz6YwiPEaUcfPjJNFm/T9OpDwL38NcvUPsheTC6zH/zMkqK2Fov9VRffvz4rKXELYYG84OtFnK5+PZUAAclK8IZ/jtyzVGe3YSJuWd/Gggi2KwwKn9oxi0zAp46dvVkDh5vQv05xufoN/JykcenufPOUImtgD+3gbKhuEFe6znSbrxBoGmsCSpN1jBGtb68IqnfdOXdZXlLAf91EY5tJIeMfpTc0ex0c4irmXCpSrCIsqBkp/PE3V4/IWwHkctBjNOeXwMXcXNy/HY9CSOjFN/d7gNpjJ712xaXIC5ofwqPo0ytc3OcE4Hq4vFnzKUo0baa2sMwaGmMNzGefEtNPEDm7NklWT8s+Icw4qRQFOjWTeGR2RlA0wosnlhlurGiOJVg==
-X-Forefront-Antispam-Report: 
-	CIP:195.60.68.100;CTRY:SE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.axis.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(376014)(23010399003)(1800799024)(36860700016)(18002099003)(11063799006)(56012099006)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 
-	CSEwYeyJuL/TU1ekH6KMk0JpgKL+D6n4AsGI4OVNhYr2+pjwMkWvpQofIOFpk9OFhiWZqoNenAIpETJnZwcdipUoY6pc+Xv/8rh8RVeUZnlnYQwCufdnJVE5587FNa5nvGwAJpTV7WemoP/YfJKASTU0u5yhOzYRPlTexLPvnXYIW4xUGuFEutT5NN6Xo2oAlKg/OSBLLgS6Tc5VrHBApCJZCRnZSjbpxyezvKQh2UwaHgyB5m3coKyHPuvxSEszdYHY3i5n14vgP5r/ygvgyKrxowkwSBK8sQ0kvC/m3LgeOFfe6tESYO8AJIL5XCCcUODf26psleXpUBe17SRRETLYggTd+++0hM7WMwcQ5CJpW5+Gy4YwfeUbzmifjvu2kTbgwJJYQg14dLDhGjqChoskHYW/NKMX7KS/H9qD1cOxWATYEUnKmkhlXf2qIJ8u
-X-OriginatorOrg: axis.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Aug 2026 18:16:54.6718
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5e68b4b1-99e9-464c-79ef-08df02d50b16
-X-MS-Exchange-CrossTenant-Id: 78703d3c-b907-432f-b066-88f7af9ca3af
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=78703d3c-b907-432f-b066-88f7af9ca3af;Ip=[195.60.68.100];Helo=[mail.axis.com]
-X-MS-Exchange-CrossTenant-AuthSource: 
-	DU2PEPF00028D10.eurprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AMBPR02MB11846
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 25 Aug 2026 18:17:13 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10342
+ <docs@lists.yoctoproject.org>; Wed, 26 Aug 2026 01:30:41 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10343
 
-It has been removed from OE-Core.
+Nine blocks carry no language, so Sphinx falls back to "default". That is
+not the same as being unhighlighted, and not the same as being right
+either: "default" is the Python lexer, and when it raises, the block is
+dropped silently to "none" where a named language would warn.
 
-Signed-off-by: Peter Kjellerstedt <peter.kjellerstedt@axis.com>
+  except ErrorToken as err:
+      if lang == 'default':
+          lang = 'none'   # automatic highlighting failed.
+      else:
+          logger.warning('Lexing literal_block %r as "%s" resulted in
+                          an error at token: %r ...')
+
+So a block that happens to be valid Python is highlighted by accident,
+and stops being highlighted the moment an edit makes it not-quite-valid,
+with nothing to say so. Naming the language turns that silence into a
+warning, which -W surfaces to whoever made the edit.
+
+Two of the three cases also render differently right away:
+
+  ref-manual/variables.rst       three U-Boot Image Tree Source blocks,
+                                 introduced as "the following FIT
+                                 source". This is device-tree syntax;
+                                 guessing Python finds roughly two
+                                 thirds of the tokens.
+  overview-manual/concepts.rst   a Makefile, introduced as "the contents
+                                 of sayhello/Makefile". Guessing Python
+                                 raises, so today it renders with no
+                                 highlighting at all.
+  test-manual/intro.rst          five unittest classes quoted from
+                                 bitbake/lib/bb/tests/data.py and
+                                 meta/lib/oeqa/. They use BitBake's own
+                                 API, but they are Python source files
+                                 rather than metadata, and they already
+                                 render correctly; the change is that
+                                 they now say so.
+
+Each language was chosen by lexing the block and comparing the result,
+not by eye. Two plausible alternatives were rejected on that evidence:
+yaml renders the FIT blocks as one flat scalar run, and make emits
+per-character error tokens on kernel .scc syntax, so the .scc blocks are
+left alone here.
+
+AI-Generated: codex/claude-opus 5 (xhigh)
+Signed-off-by: Trevor Woerner <twoerner@gmail.com>
 ---
+ documentation/overview-manual/concepts.rst |  4 +++-
+ documentation/ref-manual/variables.rst     | 12 +++++++++---
+ documentation/test-manual/intro.rst        | 20 +++++++++++++++-----
+ 3 files changed, 27 insertions(+), 9 deletions(-)
 
-This is obviously only true once my corresponding patches for OE-Core
-have been integrated. ;)
-
- documentation/ref-manual/classes.rst   | 2 +-
- documentation/ref-manual/variables.rst | 6 +-----
- 2 files changed, 2 insertions(+), 6 deletions(-)
-
-diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manua=
-l/classes.rst
-index 3e74bb884..631091f03 100644
---- a/documentation/ref-manual/classes.rst
-+++ b/documentation/ref-manual/classes.rst
-@@ -3780,7 +3780,7 @@ The :ref:`useradd* <ref-classes-useradd>` classes sup=
-port the
- :term:`USERADD_PACKAGES`,
- :term:`USERADD_PARAM`,
- :term:`GROUPADD_PARAM`, and
--:term:`GROUPMEMS_PARAM` variables.
-+:term:`USERMOD_PARAM` variables.
-=20
- The :ref:`useradd-staticids <ref-classes-useradd>` class supports the addi=
-tion of users or groups
- that have static user identification (``uid``) and group identification
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-man=
-ual/variables.rst
-index ae9cbfddf..5cc01cf45 100644
+diff --git a/documentation/overview-manual/concepts.rst b/documentation/overview-manual/concepts.rst
+index 73a24d8d301b..d4530e97fed9 100644
+--- a/documentation/overview-manual/concepts.rst
++++ b/documentation/overview-manual/concepts.rst
+@@ -2296,7 +2296,9 @@ The contents of ``libhello/hellolib.c`` are::
+       puts("Hello from a Yocto demo \n");
+    }
+ 
+-The contents of ``sayhello/Makefile`` are::
++The contents of ``sayhello/Makefile`` are:
++
++.. code-block:: make
+ 
+    EXEC=sayhello
+    LDFLAGS += -lhello
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index fa0dfdfb87f2..646a77982646 100644
 --- a/documentation/ref-manual/variables.rst
 +++ b/documentation/ref-manual/variables.rst
-@@ -3955,10 +3955,6 @@ system and gives an overview of their function and c=
-ontents.
-       For information on the standard Linux shell command
-       ``groupadd``, see :manpage:`groupadd(8)`.
-=20
--   :term:`GROUPMEMS_PARAM`
--      Deprecated in favor of :term:`USERMOD_PARAMS`. See
--      :ref:`ref-migration-6-1-groupmems` for more information.
--
-    :term:`GRUB_GFXSERIAL`
-       Configures the GNU GRand Unified Bootloader (GRUB) to have graphics
-       and serial in the boot menu. Set this variable to "1" in your
-@@ -12542,7 +12538,7 @@ system and gives an overview of their function and =
-contents.
-=20
-          It follows that if you are going to use the :term:`USERADD_PACKAG=
-ES`
-          variable, you need to set one or more of the :term:`USERADD_PARAM=
-`,
--         :term:`GROUPADD_PARAM`, or :term:`GROUPMEMS_PARAM` variables.
-+         :term:`GROUPADD_PARAM`, or :term:`USERMOD_PARAM` variables.
-=20
-    :term:`USERADD_PARAM`
-       When inheriting the :ref:`ref-classes-useradd` class,
+@@ -3667,7 +3667,9 @@ system and gives an overview of their function and contents.
+          FIT_LOADABLE_OS[tee] = "tee"
+          FIT_LOADABLE_LOADADDRESS[tee] = "0x96000000"
+ 
+-      and will be converted to the following FIT source::
++      and will be converted to the following FIT source:
++
++      .. code-block:: devicetree
+ 
+          images {
+                  atf {
+@@ -11745,7 +11747,9 @@ system and gives an overview of their function and contents.
+       https://fitspec.osfw.foundation/\ .
+ 
+       The original content of the U-Boot Image Tree Source (ITS) is as
+-      follows::
++      follows:
++
++      .. code-block:: devicetree
+ 
+          images {
+              uboot {
+@@ -11782,7 +11786,9 @@ system and gives an overview of their function and contents.
+       ``\n``.
+ 
+       The generated content of the U-Boot Image Tree Source (ITS) is as
+-      follows::
++      follows:
++
++      .. code-block:: devicetree
+ 
+          images {
+              uboot {
+diff --git a/documentation/test-manual/intro.rst b/documentation/test-manual/intro.rst
+index 0868abe8c3c4..4ddc9851f824 100644
+--- a/documentation/test-manual/intro.rst
++++ b/documentation/test-manual/intro.rst
+@@ -325,7 +325,9 @@ This section provides example tests for each of the tests listed in the
+ ``bitbake-selftest``
+ --------------------
+ 
+-A simple test example from ``bitbake/lib/bb/tests/data.py`` is::
++A simple test example from ``bitbake/lib/bb/tests/data.py`` is:
++
++.. code-block:: python
+ 
+    class DataExpansions(unittest.TestCase):
+       def setUp(self):
+@@ -358,7 +360,9 @@ for full builds. Rather than directly using `Python unittest
+ <https://docs.python.org/3/library/unittest.html>`__, the code
+ wraps most of the standard objects. The tests can be simple, such as
+ testing a command from within the OE build environment using the
+-following example::
++following example:
++
++.. code-block:: python
+ 
+    class BitbakeLayers(OESelftestTestCase):
+       def test_bitbakelayers_showcrossdepends(self):
+@@ -401,7 +405,9 @@ These tests are run once an image is up and running, either on target
+ hardware or under QEMU. As a result, they are assumed to be running in a
+ target image environment, as opposed to in a host build environment. A
+ simple example from ``meta/lib/oeqa/runtime/cases/python.py`` contains
+-the following::
++the following:
++
++.. code-block:: python
+ 
+    class PythonTest(OERuntimeTestCase):
+       @OETestDepends(['ssh.SSHTest.test_ssh'])
+@@ -427,7 +433,9 @@ the image.
+ 
+ These tests are run against built extensible SDKs (eSDKs). The tests can
+ assume that the eSDK environment has already been set up. An example from
+-``meta/lib/oeqa/sdk/cases/devtool.py`` contains the following::
++``meta/lib/oeqa/sdk/cases/devtool.py`` contains the following:
++
++.. code-block:: python
+ 
+    class DevtoolTest(OESDKExtTestCase):
+       @classmethod def setUpClass(cls):
+@@ -460,7 +468,9 @@ the ``devtool build`` command within the eSDK.
+ These tests are run against built SDKs. The tests can assume that an SDK
+ has already been extracted and its environment file has been sourced. A
+ simple example from ``meta/lib/oeqa/sdk/cases/python.py`` contains the
+-following::
++following:
++
++.. code-block:: python
+ 
+    class Python3Test(OESDKTestCase):
+       def setUp(self):
 
