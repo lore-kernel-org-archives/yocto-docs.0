@@ -1,215 +1,170 @@
-Return-Path: <quentin.schulz@cherry.de>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 01BFAC61DBD
-	for <webhook@archiver.kernel.org>; Wed, 26 Aug 2026 14:45:49 +0000 (UTC)
-Received: from AM0PR83CU005.outbound.protection.outlook.com (AM0PR83CU005.outbound.protection.outlook.com [52.101.69.54])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.14283.1787755541041288578
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1683EC5DF97
+	for <webhook@archiver.kernel.org>; Wed, 26 Aug 2026 15:10:40 +0000 (UTC)
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.14918.1787757031383067114
  for <docs@lists.yoctoproject.org>;
- Wed, 26 Aug 2026 07:45:41 -0700
+ Wed, 26 Aug 2026 08:10:32 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@cherry.de header.s=selector1 header.b=ld0FdZ9y;
- spf=pass (domain: cherry.de, ip: 52.101.69.54, mailfrom: quentin.schulz@cherry.de)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=itumw03lr24f+Spp9GA4mw2oSRuIIQXIpy2gj64mCCMdgG4syYOTQ4YgAoXJwCWn8jNLcMLeVeOcigGPhIe71A97EBuq083ikDUMH18NSNyljRSOBulr700kXg1Z/n5j//CcsuCdgVielvbAvpYbhinnHqEBjMOEK5CkJ5U9V6yxxjRwSFWIsAUJb0SFBKjN8s94gCzokNOFUBAoEcSDWVbyk476dtLMe/GwjQ70ItmsBfptpH8rjED5YkO6a76oYf6C+LKp7yhkHEgqHrWXMfGmmDaN2bioqLj4joN5UNEFLIhwOAJsMQ3a6whBZGlcCTsL2mHukMqsqneVXKNYzw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=F9M8+DAF/Bm0EKrV/yJCMH+zO+HddUC6zMAepPCV6g8=;
- b=ExRH1I2cmDyrL2ch65n+8xnye7tyymPuGK3UMf4jkIg9wQWyyA1BiUIH4rFLfKlAlPGUEyJhDzN0kJb5N9zXchWTTTC0Mp7e2LcA4U6ykxjFbbukzJ4I+/lcPs/FCFeUey95Tx4vvuOm4+kXo35T20X/krgD6jdapPrTT9JbdxFOmrctAki+sA5TnkdyS1Ey4UH0Eu73Y/Z03SjcsNfcMcKrlybCpDc+3h6OzQshpesY3+rKrKUwYjoPH/KhssNlWs2/pAOOf6SZkj4nt8WBxQlZP9WxWfWgvHH2KZwvYLkyX+ECHevWjzwS7RDuN6sahLLnZJUt4xO+6DYwHBc5zQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
- dkim=pass header.d=cherry.de; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=F9M8+DAF/Bm0EKrV/yJCMH+zO+HddUC6zMAepPCV6g8=;
- b=ld0FdZ9yUve/Dkn62nw69fOtt/8i2MEjjTuLWyl1vRPyVFUf6sK74iO6pyeQr2SMvwOwggHRyXw49bhtQG4Ns9tcdIABPJl56/ry45d4/3VokHkn6e0W1AN2iZgat+1PPxQrabhobbWt7fX+EmCLKLWlcO2Cozej/bA3au6PvqA=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=cherry.de;
-Received: from PA3PR04MB11153.eurprd04.prod.outlook.com (2603:10a6:102:4ab::7)
- by AS5PR04MB9944.eurprd04.prod.outlook.com (2603:10a6:20b:682::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.6; Wed, 26 Aug
- 2026 14:45:35 +0000
-Received: from PA3PR04MB11153.eurprd04.prod.outlook.com
- ([fe80::6b02:c0eb:95a4:3c3d]) by PA3PR04MB11153.eurprd04.prod.outlook.com
- ([fe80::6b02:c0eb:95a4:3c3d%4]) with mapi id 15.21.0360.005; Wed, 26 Aug 2026
- 14:45:35 +0000
-Message-ID: <66624f77-ae0d-4670-bd99-c6ea9d2b2a54@cherry.de>
-Date: Wed, 26 Aug 2026 16:45:33 +0200
-User-Agent: Mozilla Thunderbird
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=Brjko66K;
+ spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 4E72B1A1848;
+	Wed, 26 Aug 2026 15:10:29 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 22E42604EC;
+	Wed, 26 Aug 2026 15:10:29 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id AA68111C78185;
+	Wed, 26 Aug 2026 17:10:27 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1787757028; h=from:subject:date:message-id:to:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=yiiWij8K3pK2kHpCLuCfT6Go43ZHm8FlMweU6i3GtBY=;
+	b=Brjko66KrIZa/zaqZSjqhkPqdtOluBI9XUaZB6QjYEPArTaY9wRtiGBFw4rcSvfjapKRQZ
+	q4nh5eh5vz8KyyIdgSJCrhcM3xXuLByroFFHwrTDUHQiEfT/B+DawEkSruI0zBLt6bU/G9
+	lDdMtvtIGM3dIFCOBlVI6oR0/v1h5tm6IY9VgUYdHY1N5LWv/KNbuJi3oxVdaXLNhkDio6
+	BhFZSwaUAHKtv7C5Kl0JFJMgjEqf5BISCCDCDUziMAMChnsIcTYBVUBeebUPzZMXjn1gep
+	s6Sr28Wk0SukkJdtKqm23JT4qlkbmKc6o06u9BMtSrSGwwKmld3pIXeLibsc1w==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 26 Aug 2026 17:10:26 +0200
+Message-Id: <DKYYZ48110MA.28EKFR3DVIU9C@bootlin.com>
 Subject: Re: [docs] [PATCH 00/10] docs: highlight BitBake snippets with the
  bitbake language
-To: twoerner@gmail.com, Antonin Godard <antonin.godard@bootlin.com>
-Cc: docs@lists.yoctoproject.org
+From: "Antonin Godard" <antonin.godard@bootlin.com>
+To: <quentin.schulz@cherry.de>, <twoerner@gmail.com>,
+ <docs@lists.yoctoproject.org>
 References: <20260826013502.2674000-1-twoerner@gmail.com>
  <34c79745-33ff-41dd-bb85-144bb26b02a2@cherry.de>
  <DKYWEFNK1215.22ZC7DOYBOIH9@bootlin.com>
- <ao7pU4NN4uuZDzS1@localhost.localdomain>
-Content-Language: en-US
-From: Quentin Schulz <quentin.schulz@cherry.de>
-In-Reply-To: <ao7pU4NN4uuZDzS1@localhost.localdomain>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: VIVP296CA0090.AUTP296.PROD.OUTLOOK.COM
- (2603:10a6:800:35b::12) To PA3PR04MB11153.eurprd04.prod.outlook.com
- (2603:10a6:102:4ab::7)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA3PR04MB11153:EE_|AS5PR04MB9944:EE_
-X-MS-Office365-Filtering-Correlation-Id: 21b9bc0f-bd7f-45c2-4b23-08df0380afda
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: 
-	BCL:0;ARA:13230040|10070799003|376014|23010399003|1800799024|366016|10067099003|4143699003|11063799006|5023799004|56012099006|22082099003|18002099003|3023799007;
-X-Microsoft-Antispam-Message-Info: 
-	p3H9nHp797poM53Jm92eebVlUPfI0vfux3K/obX0iuhxQpLvUr2uiWoq3oyvxB1c5Kh4TnePko2hi3xPGf8uVV+TtOLbzM0YKRYedAJBWCy/x2Q7IkkpOZmzmot+baS7+2Qq+rvNYOsX7Mf9DxzdiiPU0QwDqagrDYme9hPLg3S/0cIkLqTuEtgBrRMbkhg0rbUxqfg7ekZuxX2eOwo2p4UA3uImR5kRL9dEx+OTycqkG66qdEKQ79Ia1IXPs6u3IbyVjiYjVeNXyEHn1s3v9BCUoT/utX5QBQ3yE0K/AK5xqYorCJH+lgkJfAA7PlCLFQ+ZFAMcFuro+6CTJLjZLK9DP4qL7EJl0n9bFatVD0qbhfPC9IDZZhw3GYICp6lBTI5iPWi0NCsdw7DlOrrV/PXhY4A29UDFDnlO3ns/KeWLFxuzAQo02P1MG9DXTBjCby203KCbS7YmXhVeBxr9cuIr+mBj/o5i5yEhd8ScowhWxmmOd8cvy3Z72qzumoAhBBxh6p3bYB85/j2b4KqOIV6yawgmLaH47etPs+RpMk6BFK955SEMpU8gyjNdyMTHv06J6w7qtACrEwS/VuxLryx8jo/CUlc4Am0gCCV3/InpyisJXSmwcNMMoh5iFE6h
-X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA3PR04MB11153.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(376014)(23010399003)(1800799024)(366016)(10067099003)(4143699003)(11063799006)(5023799004)(56012099006)(22082099003)(18002099003)(3023799007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?utf-8?B?L3pWZUQ4b3BnWkxpYzZzSXpVYkZwMmRNZkwzYlhaVExBMnRwT09EVnFXZktD?=
- =?utf-8?B?aHhjVHhHVmdzczhDTUVuWGlMMWtDNlpENkdrSjFFOFNhR3p5d1BFRXpQa2lR?=
- =?utf-8?B?UDliWmVSNitpbkZmMzIvekhzWGpnT25uZ1NQM0FBZ2RIVE1idFFiWVRVL1Zt?=
- =?utf-8?B?bW1JZk0ra3lyQTNVL1BlMlQyeUpUdGw0RU0wWWoxaWZlZDlyYkQxVWZ6SGNE?=
- =?utf-8?B?TXBIMEo4S0lHN29XQkp6V1pSdytBL21yeVU0bzB3MnhtcVoyQnYwMlM2MjYz?=
- =?utf-8?B?RjlxbXJIUE9Zd1ArTnlXaWlsejhwUzNWVEdYMmpsNCtSdHE5a3g3KzBPOUx5?=
- =?utf-8?B?V1JJamJXT05KL1kxUDJ3YmR6TVBZOVhxL1N1ODF0V0NyVXRUSFhZU08weUVm?=
- =?utf-8?B?SXdQaGR2d1lSSGdQeUZyT1RSd2RZUHErYzFKRVZraFhpRmNUNGZ4M25UU3Zh?=
- =?utf-8?B?UGJvUGs2WERqdm44MWEyOGtUN1ZZZm85SEE5S3NxT3BzTmk0Yi9EaUFlbXdG?=
- =?utf-8?B?cTBQeTBKQzhrNGREMFJ5dDEvTS9ESUd4UjhGRmR2Vk9Ua3UzWjUyaGhjWnh3?=
- =?utf-8?B?QlVtd2xxMWt1T1dtQlY4VjZYN3o1Y0JJQWpaVThUSUVFc0NQNm50U0UzTnll?=
- =?utf-8?B?K09DVzUzZ3h4WldrK3NrM0R4alJ6blAybWFheG5OMFh3aHVvRnlTaDQwN1kz?=
- =?utf-8?B?UHF4Mm80TCtQQWFhUHgvVFRSZDNYL1hNRUtNWURONkhLdW5NZ0YzZk9RUUtX?=
- =?utf-8?B?Z2hKQldtQ0ZuUW15RWhwdG9WbHhrOTVmWS9zRHRySldXcnhaRnZUaGhDdmpO?=
- =?utf-8?B?bk81aFZzQ2FaOEVRY0hrcWF0ZFQwSTdNc2hkOW44a0dMMWErSnRudnRvRUxl?=
- =?utf-8?B?UlpBeEhRZENIMkJYVkNlQm5QV0h1ZWNGcmdLQ0VXb1lPcWVUVHRUSkg2d09I?=
- =?utf-8?B?akt6RFFlOEJlck5SdjdSd0tqNHdwZzZoblFlTDBySlhWUk56eUhIT2pZWEdR?=
- =?utf-8?B?ZWlwVHpXZGNwOE1KQTdHL0ZZcW9NcWxxWkZDakMrVFB3ek5xQXUxeWpEVW85?=
- =?utf-8?B?dnVwS1JlUEh6amFtSGpFTmNjbG1PT1U3dnV5MDBSNmlSSXUwcC94eUZ3NXJS?=
- =?utf-8?B?bmxDMjFNUnMxNWppa2NWQ2FTWHZVSng5c055NE92czNrekloQllyN1FqVGc3?=
- =?utf-8?B?bWxKTUJVRkJUVUc2WllsRWpNQWhHcnhWUUJaOG9XWFRwbE9TTGNYYWpVYlMx?=
- =?utf-8?B?MXJjS3VBdUV6Q0l2Z2R2L1I1VStVejlwbVoyblQwOUdnZ2VBL1g2d0krdGo4?=
- =?utf-8?B?elFadVRPMWU2VVdQazdzcTBWeXhDVlJWWC9QUEhDNXVhQ0VWZ0s1d2g0OHFS?=
- =?utf-8?B?M0xKM2V1ejBhMTFtVDliOHhkbUZ2LzlPOG1yMnBJZFJzUUVYUnM3dXhMSnVi?=
- =?utf-8?B?dFpiN3RsdklYdTY3N0k1WlZDR3ZWL3ZYakdEZm9oNlRVMVR1RkZNNHRrYmhG?=
- =?utf-8?B?NmxPNllBZEVJMlJmRjZLQndJK2ZPRkg4MHBZVm80SVh3VjdaYkM3RW1Hcnkw?=
- =?utf-8?B?R1pSSXhDaXQyak4zVnErd3ZzRzNYUGpVdjFlOHoyYlVDb2IrbUFCclQxbi9w?=
- =?utf-8?B?eW53eXlBa2dKL1NraGhjcG9jVmtSRXRWUUY0TjRuVzJMYis1Uy8ycVUwcVNu?=
- =?utf-8?B?MzFNTnVJYTdsdFJtemFYSE1QdDNqK2ZOblpFc1VieEhrUzVKOW9zcXF6Ym55?=
- =?utf-8?B?U2dyV3BQa0w5MksxMjNTNXUxcWFVYVJmN3ZFdzBnNUkrakhWT1pqb1hIUFZ1?=
- =?utf-8?B?ZkxpVE1IQ3k3NGJhcXVWdXNtZmdZM3lZYjV6YWhZSml5azlQRjR4WEd0c2VX?=
- =?utf-8?B?ZXNQRTRVUkowQXl6eVVGdEVVdDRJOFFiWWFEYVJ1NHBWbUx0QjQvSmJUQnRB?=
- =?utf-8?B?eTB6WHRNNWJxL1FXbnVtMzZ3dG5IZ0l4eGJyS2VjSE1MUG9EeTNOQ0pSbS8x?=
- =?utf-8?B?N0h3SVp2RjFkV3RoYVVRU24wdm1NOXhBdXFJWnNmMnBoVUVZNFM2UGp3eWVG?=
- =?utf-8?B?YXpFbG80YkYrMkd3Q2Nvd2tHM0pvMjhLcEZLR1l1dkEzRzJUZURaQ0hmM3FU?=
- =?utf-8?B?ejNLdnE3bENEaWRDaGU3Q0dLRFdnMzdZelpVcXVPcndjWjJMa1I0dGhPTXFo?=
- =?utf-8?B?blIvK0UzU3dCMFAzL3RVYkFDL2VzMlkweHp0QXFVdWlSelIrcHp1SWMzV25D?=
- =?utf-8?B?UkowdUM0NWhDMWw2ZXZnczJUUmxXQjY1MnNxbkNhWnhMODVGOHBzRXMyZ3pq?=
- =?utf-8?B?NGNrays0cGFGS2tpQnZNTCtObERhZFd4QkRnVVJIcXRITUdpbkREZGY1K3d0?=
- =?utf-8?Q?TqUdIcSgLh2cv3+hctiTK/z/iKGfzNUZou2i5S46/nRpu?=
-X-MS-Exchange-AntiSpam-MessageData-1: uhd1QWGtdUA3RlZfSX802pwYG7KxnUMk0OU=
-X-OriginatorOrg: cherry.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: 21b9bc0f-bd7f-45c2-4b23-08df0380afda
-X-MS-Exchange-CrossTenant-AuthSource: PA3PR04MB11153.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2026 14:45:35.2945
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: XuVPbANia/8Ny+H1K3IT3taosuudFDFUtNf3LnHfX5SM4rgDQXj43VxqiindZJPPLen8q4gIkTOnRTbcui3GdKfytq+a2SlsaT0uw1NJ0i8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS5PR04MB9944
+ <78a29634-d64c-48ed-a012-71fff5efcb75@cherry.de>
+In-Reply-To: <78a29634-d64c-48ed-a012-71fff5efcb75@cherry.de>
+X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 26 Aug 2026 14:45:49 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10368
+ <docs@lists.yoctoproject.org>; Wed, 26 Aug 2026 15:10:40 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10369
 
+Hi,
 
-
-On 8/26/26 3:25 PM, Trevor Woerner via lists.yoctoproject.org wrote:
-> On Wed 2026-08-26 @ 03:09:23 PM, Antonin Godard wrote:
->> Hi,
->>
->> On Wed Aug 26, 2026 at 2:10 PM CEST, Quentin Schulz via lists.yoctoproject.org wrote:
->>> Hi Trevor,
->>>
->>> On 8/26/26 3:34 AM, Trevor Woerner via lists.yoctoproject.org wrote:[...]>>>
->>> [...]
->>>
->>>> Depends on
->>>> ----------
->>>>
->>>> "docs: state the language of nine literal blocks explicitly", sent
->>>
->>> Link to the ML please to make maintainers and reviewers job easier.
->>>
->>> [...]
->>>
+On Wed Aug 26, 2026 at 4:34 PM CEST, Quentin Schulz via lists.yoctoproject.=
+org wrote:
+>
+>
+> On 8/26/26 3:09 PM, Antonin Godard wrote:
+[...]
 >>> I think this is going the wrong direction. We should actually make
 >>> explicit the language of every :: that is NOT to be understood as
 >>> BitBake code and then make the default highlight language be BitBake.
->>
->> But then this might get forgotten? How about having the default highlighted as
+>>=20
+>> But then this might get forgotten? How about having the default highligh=
+ted as
 >> "none", and make _everything_ use explicit code-blocks?
->>
->> Sure, this is more efforts and review time, but also this is how other markup
->> languages work - like markdown, where by default (when using ```...```) no
+>>=20
+>
+> """
+> The direct benefit is the ability to still backport whatever needs to be=
+=20
+> backported without having to care about the highlight language being=20
+> explicitly bitbake (which won't be available in every branch but master).
+> """
+>
+> *exactly* the sentence after what you quoted.
+>
+> It's bound to happen someone will want to backport a patch with
+>
+> .. code-block:: bitbake
+>
+> Either we'll forget during review and it'll break the docs build, or we=
+=20
+> need to adapt each and every patch/commit for stable branches.
+>
+> I'm usually the one trying to add friction to processes, but I don't=20
+> think the above is a good idea.
+>
+> I'm trying to avoid having code-blocks set to use the bitbake lexer so=20
+> we can easily backport without having to care.
+
+Our current active releases where we backport patches are Wrynose and Scart=
+hgap.
+Both use the same buildtools tarball on the Autobuilder, and contain the sa=
+me
+version of pygments, so backporting patches that use the bitbake lexer won'=
+t be
+an issue (from an Autobuilder perspective).
+
+>> Sure, this is more efforts and review time, but also this is how other m=
+arkup
+>> languages work - like markdown, where by default (when using ```...```) =
+no
 >> syntax highlighting is done.
->>
->> This is maybe a more conservative approach but at least it doesn't leave room
+>> > This is maybe a more conservative approach but at least it doesn't=20
+> leave room
 >> for code blocks mistakenly highlighted with the bitbake lexer.
-> 
-> Yes, I agree too.  Personally I'm not fond of "hidden defaults".
-> 
+>>=20
+>
+> It's currently mistakenly highlighted in Python if it looks like Python=
+=20
+> to pygments (the default).
+>
+> It's the Yocto/Bitbake documentation, I'm assuming the overwhelming=20
+> majority of code-blocks should be BitBake code.
+>
+> If you really want to require explicit lexers, then set
+>
+> highlight_language =3D "please_specify_the_highlight_language_for_this_bl=
+ock"
+>
+> in conf.py and then everybody will have to set one.
+>
+> Again, if you explicitly use the bitbake lexer in master, you won't be=20
+> able to backport those patches to stable branches easily. Or you'll need=
+=20
+> your users to update their build environments to use the new release of=
+=20
+> pygments.
 
-There's already one.
+We can add a requirement on pygments:
 
-> By default a non-specified block will cause pygments to guess. So if I'm
+diff --git a/documentation/tools/host_packages_scripts/pip3_docs.sh b/docum=
+entation/tools/host_packages_scripts/pip3_docs.sh
+index 852845783..d7a983731 100644
+--- a/documentation/tools/host_packages_scripts/pip3_docs.sh
++++ b/documentation/tools/host_packages_scripts/pip3_docs.sh
+@@ -1,3 +1,3 @@
+ python3 -m venv --clear ./yocto-docs-venv
+ . ./yocto-docs-venv/bin/activate
+-python3 -m pip install sphinx sphinx_rtd_theme pyyaml sphinx-copybutton 's=
+phinxcontrib-svg2pdfconverter>=3D2.0.0'
++python3 -m pip install sphinx sphinx_rtd_theme pyyaml sphinx-copybutton 's=
+phinxcontrib-svg2pdfconverter>=3D2.0.0' 'pygments>=3D2.21.0'
 
-Sphinx explicitly states that Python will be tried and if there are 
-highlights warnings, none will be used. c.f. 
-https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#showing-code-examples
+And backport it to Wrynose/Scarthgap?
 
-> looking at a lot of reST and seeing no tags, I'm going to assume the
-> authors have left pygments to guess. I would have to go looking in other
-> places to see if there's a default in place for non-specified code-block
-> tags, which I'm probably not going to think of doing, which will
-> sometimes probably cause more confusion before it becomes clear.
-> 
+> Or maybe you want to write a custom bitbake lexer for stable=20
+> branches that is an alias to the "default" (the default value of=20
+> highlight_language) lexer, but only have it if the version of pygments=20
+> doesn't contain a bitbake lexer already.
 
-This is the Yocto/BitBake docs, we're documenting that project, which 
-uses BitBake syntax. Would you want to write
+This could be an alternative, yes.
 
-.. code-block:: rust
+Quoting your other email (https://lore.kernel.org/r/66624f77-ae0d-4670-bd99=
+-c6ea9d2b2a54@cherry.de):
 
-for every code-block in the Rust documentation?
+> Sphinx explicitly states that Python will be tried and if there are
+> highlights warnings, none will be used. c.f.
+> https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.ht=
+ml#showing-code-examples
 
-> Maybe it's just me, but I prefer to see every example block using an
-> explicit code-block tag and specifying a language. That way the author's
-> intentions are unambiguous, and we have an expected output.
-> 
+This is interesting! If it behaves the same way with whatever highlight_lan=
+guage
+you set in conf.py, then this would be less of an issue I guess.
 
-You won't be able to backport patches with
-
-.. code-block:: bitbake
-
-which is what I would like to avoid. But I'm not the one sending patches 
-to the stable branches nor the maintainer(s) handling stable, so maybe I 
-shouldn't care.
-
-> That's what I've enforced for our reST at work, and I've also
-> differentiated between "bash" (for actual shell programs) versus
-> "console" (for interactive work at a shell prompt, a shell most likely
-> to be bash).
-> 
-
-We differentiate console and shell in these docs here too. If you're 
-seeing one that is using the wrong lexer, please fix it.
-
-Cheers,
-Quentin
+Thanks,
+Antonin
 
