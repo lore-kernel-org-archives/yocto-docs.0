@@ -2,75 +2,97 @@ Return-Path: <twoerner@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D247FC61DB9
-	for <webhook@archiver.kernel.org>; Wed, 26 Aug 2026 01:30:41 +0000 (UTC)
-Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.3413.1787707832686566501
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A5027C61DBD
+	for <webhook@archiver.kernel.org>; Wed, 26 Aug 2026 01:31:21 +0000 (UTC)
+Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.3423.1787707878854519976
  for <docs@lists.yoctoproject.org>;
- Tue, 25 Aug 2026 18:30:32 -0700
+ Tue, 25 Aug 2026 18:31:19 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20251104 header.b=TxLsHjmR;
- spf=pass (domain: gmail.com, ip: 209.85.219.49, mailfrom: twoerner@gmail.com)
-Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-8ee43b3e5abso3123316d6.3
-        for <docs@lists.yoctoproject.org>; Tue, 25 Aug 2026 18:30:32 -0700 (PDT)
+ dkim=pass header.i=@gmail.com header.s=20251104 header.b=XUmE+Lj6;
+ spf=pass (domain: gmail.com, ip: 209.85.222.174, mailfrom: twoerner@gmail.com)
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-92e65e18969so35756385a.1
+        for <docs@lists.yoctoproject.org>; Tue, 25 Aug 2026 18:31:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787707831; x=1788312631; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=CjKXHBAxYDU+xhu4za0IorNFPpb7a/gTy6e5e5NM2Dc=;
-        b=TxLsHjmRDZMaaTIwGYc08LwnsJmOGGboalaz+FkTXORofMfNanuO3/8Nyi0H/rdu8Q
-         ow8XEvnQhJKdw7ehe506pvx7TqS6aLhVuaqZeUmb2vmGCQS4MN3ZpGgtXfQD4pdgWsNM
-         VP4YfWW4a13Jc7GS3LsJGxpVw2GRCVYdcFOR58EYnp7KGj6nlihZx9G02sXt9+th7JZ1
-         44uCw3DEc8Jjj3DTdUG6SBboOMee09xy1A6B0ecr11N7naPpCNXhCT0ApSiUz4641HYK
-         GUglbcJeRTOsT1GcsEbKTxSoAxMqcLOHmp3Ai0odC5wk6xqAtaqyVs8uIr+V7TQahpyA
-         p0UA==
+        d=gmail.com; s=20251104; t=1787707878; x=1788312678; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=dYedTuHIpyrsWrzGe833NzqIravMuWMM7NgdSj5Afdc=;
+        b=XUmE+Lj6b1gxWmpCV1P/SgTIY52xulHoOvXk4ocSj0LbLGQ9psvdOX002i12FtPLG8
+         k87ojOj0mU3O7cBDHQZ/I8zCMZmssdiGZL/gWQTHr5kgF8976MMpMQ0noMFNFnCk970Q
+         fFAZDzTcZmltjWZGcFyAnaPMJJUJp2JJeeGa/3B0WDc+W4R2lXcRShVb8DymwuMkwx3h
+         AW4/F7JnZ4h4pB/GBUgnwHqS8FeP9NNrhfWhw1nkJ8zjEliMdvAnucWxFCXTC2d7W/xr
+         7/jfqQzvitt+QsNaM3HzqdB6phM1W8jVCs9PZl6p0IViqsB3Q45IXtgBEB/OQkcW4s08
+         Dc0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787707831; x=1788312631;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=CjKXHBAxYDU+xhu4za0IorNFPpb7a/gTy6e5e5NM2Dc=;
-        b=rGWfQCUD8za/hrdktymn2dZTADkISKJZasDO9hVBuHh027oKNoV+VlGVWd1/m1gvXI
-         E3fnNmU9R1C4sufwCyCJDkN1cNMELpDifXjKTyXjBmRw9WxGOZzaTPvIhKuwq3ag/lTf
-         dZhdFzziQZ/0OvGonQKyhQCQu4x4iC+L7t1XZYJACc2qmbWyH5AmdAkdaioLaJAxiECS
-         ClEfNH9cMNzuWq9fLA5vxxfjEmDtIGzgk3RDjIN6wmUUWrT1uF93ydVvon5onNQvBOZP
-         WZyHXJl3FLSngnR38851FpLWfnsg3W/bmjQ0UoXaGm4nKaGBNWM/HHz7Fyd0heGN8Qd+
-         5ofg==
-X-Gm-Message-State: AFuF++kV2RvMZPKLoTpQ1qTh+NTRUOimppMJfPnmak7C/81Ma/4XQ+gK
-	hqOco+hSIJ5KdBteEEElmNxrBJ8XzLv3LcV5HeZhx/XN/pPUVATG1eDdyJk48ooz
-X-Gm-Gg: AR+sD123QpmT6qgHnjSgMw6+oEPjX3hEjz74e64KZMlniFu/JwqTU/aXlQMC93K7j/a
-	yGXfKQZORKner1G0WD8oR5nBKUfMmriEihNC6duQK6YKNRFvJFvIiagSrahnahKl3n0ltIBFSqS
-	NhgHETvE3C4pt1kU8M3lFbugPHhTMXbX/PjMZg8/ma1Isyucd12OYfnPZQUOWt2Vfhe2q5jAEfT
-	71LI18QLHp80p+ft7nx/LDw0vxtMfYxS5C6SpjE5DsDs4CHhf+Pr6Uxoe4LL26/UtP5Gq/+LYC2
-	ahk/e6okA6AcM+PzyR9kdntB6vEdht7Utr1GVFC4GHJ6OT1DcxXTPZNbijfh3ReION/7OtRQ5PM
-	F4s2B9QbcxdluJv7FWUHLfU84VUunASAk0sElioZMO5mL2z3uiiFw445gQU9FP6DU21qZIVg2cq
-	TTsiOA0InHX1RuaXEn5XrRtsaClazwhIbYZKt4XuA5LUcl12aiyu3+W3Ggt8nXtSuu9UIu+ybXt
-	87BUjQsPMKzK7Ii8nHhbYQOpHF39iYlbB/O0ks5WQ==
-X-Received: by 2002:a05:620a:13e1:b0:937:5aaf:8c7b with SMTP id af79cd13be357-9378015d753mr229102585a.14.1787707831062;
-        Tue, 25 Aug 2026 18:30:31 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1787707878; x=1788312678;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=dYedTuHIpyrsWrzGe833NzqIravMuWMM7NgdSj5Afdc=;
+        b=W74OyxbcsaOlT2OI1DRKNmLGw3Jcef6UFKb14gbNO6MtNe2Sf4ClCrEOd0MO7F95I5
+         /uTTqCDrfFpC62WLXBvu7VuyqCeDLnPMGbYbup1WCQ62BDMyWA7KSopvyd1zR9KFgdSZ
+         UpNQkq4BJy66A7m1H3QWodq3lGIvwsYZP3W5CcR/gt1HmzC5fY+9mynRPz730XjHFoz+
+         YVc++yFPNCbQP7Y+OC87E0j8VVq8R4nZtiTdtAwMfzO1NTGB+kzD5J3ajLU0wsdYhZMW
+         EcawaPoidfwRLQGmuI/VMNyx3Rq+riqXWjhT/BTW0nC8A8g9MsSasEYzIKBUhN6nKCGU
+         2heg==
+X-Gm-Message-State: AFuF++l/68llS8aOQK5DvYKjcBeqa1Aom0NXnlDrOqO2Q1Tdaht5ZRvh
+	DKR3b+zPc8tdKDMJ4diRZ8qUYEjSTp2ZHz8OJ1/2Q+Zvvst39oTosLKh7XT8ieq9
+X-Gm-Gg: AR+sD12jwjoiovP7829q/sAKr5ZvWX0j+bbwYnEXgaOXMT7spp0u41DejROtm7NyQEH
+	DH1wtEyN3FXE7p+XcYXlvNc85FrV6E2hYM4x8RvSKAyhb31Q2e8FzW4yIIr3p/9oQjr+o7NJ2Ye
+	fVEhgG5yiFIVHxccNH8bc8B5ejimHC4sVrz7ASu5mw9D+Z82ISwQ5CEHAIaqCNoT9BD4XVr7Jjf
+	em6HaOwTDZVz+6cthWQdYiOByOHHwrM2Mps09zh84yEk8F5i9QExNmIEvfRPQ8kQPL8y5Sk6fxC
+	NS9s6B/mkDdUC6D8DQe2cPLUgKt1MhybWQar3gLBa6NvVhsWWTm3JsoUXmOh2w1BVFpCOLZllxZ
+	G+BD9B8Z41gphVuz1sUjdQvMpG7MqsYviWfLyy2G1AJ1YWk2C5MHb31WCR0mmkJ10aUGjrDg23F
+	22DLW2uDIPYz/tj3/GTJNXu3xJJ6rDFlv2UTOBvRl4Z4qsu0Wywqfh1JYDA9xNgrSghhvhc282l
+	56DATaQtt92s8Lk8K6gkSG47b4/KG0=
+X-Received: by 2002:a05:620a:700c:b0:937:783f:4fa5 with SMTP id af79cd13be357-937783f54e3mr702291585a.19.1787707876878;
+        Tue, 25 Aug 2026 18:31:16 -0700 (PDT)
 Received: from localhost.localdomain (pppoe-209-91-167-254.vianet.ca. [209.91.167.254])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-9377e30f097sm106654585a.1.2026.08.25.18.30.27
-        for <docs@lists.yoctoproject.org>
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9377e36879asm105857785a.17.2026.08.25.18.31.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Aug 2026 18:30:28 -0700 (PDT)
+        Tue, 25 Aug 2026 18:31:15 -0700 (PDT)
 From: Trevor Woerner <twoerner@gmail.com>
 To: docs@lists.yoctoproject.org
-Subject: [PATCH] docs: state the language of nine literal blocks explicitly
-Date: Tue, 25 Aug 2026 21:30:18 -0400
-Message-ID: <20260826013018.2673213-1-twoerner@gmail.com>
+Cc: bitbake-devel@lists.openembedded.org
+Subject: [PATCH] doc: state the language of six Python blocks explicitly
+Date: Tue, 25 Aug 2026 21:31:13 -0400
+Message-ID: <20260826013113.2673355-1-twoerner@gmail.com>
 X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 26 Aug 2026 01:30:41 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10343
+ <docs@lists.yoctoproject.org>; Wed, 26 Aug 2026 01:31:21 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10344
 
-Nine blocks carry no language, so Sphinx falls back to "default". That is
-not the same as being unhighlighted, and not the same as being right
-either: "default" is the Python lexer, and when it raises, the block is
-dropped silently to "none" where a named language would warn.
+Six blocks show BitBake datastore and library calls - d.getVar,
+d.getVarFlags, bb.fetch2.Fetch, bb.fatal - written in Python, and carry
+no language:
+
+  fetching.rst              "the code to execute the first part of this
+                            process", the fetcher instantiation and the
+                            two unpack calls
+  metadata.rst              the BB_ORIGENV datastore example and the
+                            getVarFlags/setVarFlags pair
+  library-functions.rst     the f-string example, introduced with
+                            "Python f-strings may also be used"
+
+These are BitBake snippets, but "bitbake" is the wrong language for
+them. In a recipe this code lives inside a python task, and the BitBake
+lexer hands task bodies to the Python lexer; wrapping each of these in a
+python task and comparing tokens by offset gives a result identical to
+lexing it as Python directly. Presented as a bare block instead, the
+BitBake lexer reads each line as a variable assignment at column 0 and
+renders d.getVar( as part of a string value. BitBake's own parser agrees
+it is not an assignment: there is no quoted value, so it would be a
+parse error. So "python" is what the BitBake lexer itself produces for
+this code in the context where it belongs.
+
+Nothing renders differently today. Sphinx maps an untagged block to
+"default", which is the Python lexer, so these are already highlighted -
+by accident. The difference is what happens when that lexer raises:
 
   except ErrorToken as err:
       if lang == 'default':
@@ -79,153 +101,94 @@ dropped silently to "none" where a named language would warn.
           logger.warning('Lexing literal_block %r as "%s" resulted in
                           an error at token: %r ...')
 
-So a block that happens to be valid Python is highlighted by accident,
-and stops being highlighted the moment an edit makes it not-quite-valid,
-with nothing to say so. Naming the language turns that silence into a
-warning, which -W surfaces to whoever made the edit.
-
-Two of the three cases also render differently right away:
-
-  ref-manual/variables.rst       three U-Boot Image Tree Source blocks,
-                                 introduced as "the following FIT
-                                 source". This is device-tree syntax;
-                                 guessing Python finds roughly two
-                                 thirds of the tokens.
-  overview-manual/concepts.rst   a Makefile, introduced as "the contents
-                                 of sayhello/Makefile". Guessing Python
-                                 raises, so today it renders with no
-                                 highlighting at all.
-  test-manual/intro.rst          five unittest classes quoted from
-                                 bitbake/lib/bb/tests/data.py and
-                                 meta/lib/oeqa/. They use BitBake's own
-                                 API, but they are Python source files
-                                 rather than metadata, and they already
-                                 render correctly; the change is that
-                                 they now say so.
-
-Each language was chosen by lexing the block and comparing the result,
-not by eye. Two plausible alternatives were rejected on that evidence:
-yaml renders the FIT blocks as one flat scalar run, and make emits
-per-character error tokens on kernel .scc syntax, so the .scc blocks are
-left alone here.
+"default" is dropped silently to "none"; a named language warns, and -W
+puts that in front of whoever made the edit. Naming the language turns a
+guess that happens to be right into a statement that stays checked.
 
 AI-Generated: codex/claude-opus 5 (xhigh)
 Signed-off-by: Trevor Woerner <twoerner@gmail.com>
 ---
- documentation/overview-manual/concepts.rst |  4 +++-
- documentation/ref-manual/variables.rst     | 12 +++++++++---
- documentation/test-manual/intro.rst        | 20 +++++++++++++++-----
- 3 files changed, 27 insertions(+), 9 deletions(-)
+ .../bitbake-user-manual-fetching.rst                 | 12 +++++++++---
+ .../bitbake-user-manual-library-functions.rst        |  4 +++-
+ .../bitbake-user-manual-metadata.rst                 |  8 ++++++--
+ 3 files changed, 18 insertions(+), 6 deletions(-)
 
-diff --git a/documentation/overview-manual/concepts.rst b/documentation/overview-manual/concepts.rst
-index 73a24d8d301b..d4530e97fed9 100644
---- a/documentation/overview-manual/concepts.rst
-+++ b/documentation/overview-manual/concepts.rst
-@@ -2296,7 +2296,9 @@ The contents of ``libhello/hellolib.c`` are::
-       puts("Hello from a Yocto demo \n");
-    }
+diff --git a/doc/bitbake-user-manual/bitbake-user-manual-fetching.rst b/doc/bitbake-user-manual/bitbake-user-manual-fetching.rst
+index b96018a4edcf..2993eda49439 100644
+--- a/doc/bitbake-user-manual/bitbake-user-manual-fetching.rst
++++ b/doc/bitbake-user-manual/bitbake-user-manual-fetching.rst
+@@ -27,7 +27,9 @@ and unpacking the files is often optionally followed by patching.
+ Patching, however, is not covered by this module.
  
--The contents of ``sayhello/Makefile`` are::
-+The contents of ``sayhello/Makefile`` are:
-+
-+.. code-block:: make
- 
-    EXEC=sayhello
-    LDFLAGS += -lhello
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index fa0dfdfb87f2..646a77982646 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -3667,7 +3667,9 @@ system and gives an overview of their function and contents.
-          FIT_LOADABLE_OS[tee] = "tee"
-          FIT_LOADABLE_LOADADDRESS[tee] = "0x96000000"
- 
--      and will be converted to the following FIT source::
-+      and will be converted to the following FIT source:
-+
-+      .. code-block:: devicetree
- 
-          images {
-                  atf {
-@@ -11745,7 +11747,9 @@ system and gives an overview of their function and contents.
-       https://fitspec.osfw.foundation/\ .
- 
-       The original content of the U-Boot Image Tree Source (ITS) is as
--      follows::
-+      follows:
-+
-+      .. code-block:: devicetree
- 
-          images {
-              uboot {
-@@ -11782,7 +11786,9 @@ system and gives an overview of their function and contents.
-       ``\n``.
- 
-       The generated content of the U-Boot Image Tree Source (ITS) is as
--      follows::
-+      follows:
-+
-+      .. code-block:: devicetree
- 
-          images {
-              uboot {
-diff --git a/documentation/test-manual/intro.rst b/documentation/test-manual/intro.rst
-index 0868abe8c3c4..4ddc9851f824 100644
---- a/documentation/test-manual/intro.rst
-+++ b/documentation/test-manual/intro.rst
-@@ -325,7 +325,9 @@ This section provides example tests for each of the tests listed in the
- ``bitbake-selftest``
- --------------------
- 
--A simple test example from ``bitbake/lib/bb/tests/data.py`` is::
-+A simple test example from ``bitbake/lib/bb/tests/data.py`` is:
+ The code to execute the first part of this process, a fetch, looks
+-something like the following::
++something like the following:
 +
 +.. code-block:: python
  
-    class DataExpansions(unittest.TestCase):
-       def setUp(self):
-@@ -358,7 +360,9 @@ for full builds. Rather than directly using `Python unittest
- <https://docs.python.org/3/library/unittest.html>`__, the code
- wraps most of the standard objects. The tests can be simple, such as
- testing a command from within the OE build environment using the
--following example::
-+following example:
+    src_uri = (d.getVar('SRC_URI') or "").split()
+    fetcher = bb.fetch2.Fetch(src_uri, d)
+@@ -37,7 +39,9 @@ This code sets up an instance of the fetch class. The instance uses a
+ space-separated list of URLs from the :term:`SRC_URI`
+ variable and then calls the ``download`` method to download the files.
+ 
+-The instantiation of the fetch class is usually followed by::
++The instantiation of the fetch class is usually followed by:
 +
 +.. code-block:: python
  
-    class BitbakeLayers(OESelftestTestCase):
-       def test_bitbakelayers_showcrossdepends(self):
-@@ -401,7 +405,9 @@ These tests are run once an image is up and running, either on target
- hardware or under QEMU. As a result, they are assumed to be running in a
- target image environment, as opposed to in a host build environment. A
- simple example from ``meta/lib/oeqa/runtime/cases/python.py`` contains
--the following::
-+the following:
+    rootdir = l.getVar('UNPACKDIR')
+    fetcher.unpack(rootdir)
+@@ -203,7 +207,9 @@ that updates an existing checkout *in place* rather than removing and
+ re-cloning it. This is useful when the target directory may contain
+ local commits that should be preserved across updates.
+ 
+-The code to call the non-destructive update looks like the following::
++The code to call the non-destructive update looks like the following:
 +
 +.. code-block:: python
  
-    class PythonTest(OERuntimeTestCase):
-       @OETestDepends(['ssh.SSHTest.test_ssh'])
-@@ -427,7 +433,9 @@ the image.
+    rootdir = l.getVar('UNPACKDIR')
+    fetcher.unpack_update(rootdir)
+diff --git a/doc/bitbake-user-manual/bitbake-user-manual-library-functions.rst b/doc/bitbake-user-manual/bitbake-user-manual-library-functions.rst
+index 09e353945bb6..8c9d9003dd7b 100644
+--- a/doc/bitbake-user-manual/bitbake-user-manual-library-functions.rst
++++ b/doc/bitbake-user-manual/bitbake-user-manual-library-functions.rst
+@@ -29,7 +29,9 @@ Formatted string can also be used directly::
  
- These tests are run against built extensible SDKs (eSDKs). The tests can
- assume that the eSDK environment has already been set up. An example from
--``meta/lib/oeqa/sdk/cases/devtool.py`` contains the following::
-+``meta/lib/oeqa/sdk/cases/devtool.py`` contains the following:
+    bb.error("%s, we have a %s" % ("Houston", "big problem"))
+ 
+-Python f-strings may also be used::
++Python f-strings may also be used:
 +
 +.. code-block:: python
  
-    class DevtoolTest(OESDKExtTestCase):
-       @classmethod def setUpClass(cls):
-@@ -460,7 +468,9 @@ the ``devtool build`` command within the eSDK.
- These tests are run against built SDKs. The tests can assume that an SDK
- has already been extracted and its environment file has been sourced. A
- simple example from ``meta/lib/oeqa/sdk/cases/python.py`` contains the
--following::
-+following:
+    h = "Houston"
+    bb.fatal(f"{h}, we have a critical problem")
+diff --git a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst b/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
+index b0535b5dd459..a146b897c884 100644
+--- a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
++++ b/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
+@@ -1719,7 +1719,9 @@ environment into a special variable named :term:`BB_ORIGENV`.
+ The :term:`BB_ORIGENV` variable returns a datastore object that can be
+ queried using the standard datastore operators such as
+ ``getVar(, False)``. The datastore object is useful, for example, to
+-find the original ``DISPLAY`` variable. Here is an example::
++find the original ``DISPLAY`` variable. Here is an example:
 +
 +.. code-block:: python
  
-    class Python3Test(OESDKTestCase):
-       def setUp(self):
+    origenv = d.getVar("BB_ORIGENV", False)
+    bar = origenv.getVar("BAR", False)
+@@ -1732,7 +1734,9 @@ Variable Flags
+ 
+ Variable flags (varflags) help control a task's functionality and
+ dependencies. BitBake reads and writes varflags to the datastore using
+-the following command forms::
++the following command forms:
++
++.. code-block:: python
+ 
+    variable = d.getVarFlags("variable")
+    self.d.setVarFlags("FOO", {"func": True})
 
