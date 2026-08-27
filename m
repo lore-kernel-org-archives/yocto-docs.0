@@ -2,22 +2,22 @@ Return-Path: <chris.laplante@agilent.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AE405C61DD3
-	for <webhook@archiver.kernel.org>; Thu, 27 Aug 2026 14:30:57 +0000 (UTC)
-Received: from CY3PR05CU001.outbound.protection.outlook.com (CY3PR05CU001.outbound.protection.outlook.com [40.93.201.4])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.37439.1787841053726823806
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E259CC61DC6
+	for <webhook@archiver.kernel.org>; Thu, 27 Aug 2026 14:30:55 +0000 (UTC)
+Received: from PH8PR06CU001.outbound.protection.outlook.com (PH8PR06CU001.outbound.protection.outlook.com [40.107.209.46])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.37441.1787841054058742723
  for <docs@lists.yoctoproject.org>;
- Thu, 27 Aug 2026 07:30:53 -0700
+ Thu, 27 Aug 2026 07:30:54 -0700
 Authentication-Results: mx.groups.io;
- dkim=fail reason="dkim: body hash did not verify" header.i=@agilent.com header.s=selector1 header.b=ASRf965e;
- spf=permerror, err=parse error for token &{10 18 %{i}._ip.%{h}._ehlo.%{d}._spf.vali.email}: invalid domain name (domain: agilent.com, ip: 40.93.201.4, mailfrom: chris.laplante@agilent.com)
+ dkim=fail reason="dkim: body hash did not verify" header.i=@agilent.com header.s=selector1 header.b=hVqMp1b+;
+ spf=permerror, err=parse error for token &{10 18 %{i}._ip.%{h}._ehlo.%{d}._spf.vali.email}: invalid domain name (domain: agilent.com, ip: 40.107.209.46, mailfrom: chris.laplante@agilent.com)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=on2lLjd7SDkk67qhWgdgh3V0pdzOaaGGgYpZCBwk0HK2wbqbv3ZTf88qyWGPXGWlm0og8NNi7imCky7mheThwa0X9cUbXykBn6DQNxzne98XskNhWJhy2WLRL/0CCQpHyokeEXpJu9EMbI1Z5TZ/lsGZp5fTxIrYcNI9rImtxc3Q0KjB6jLJ8UUEuluqcCmndZTnYMAoZL8sFxkC2wTc06fv+TCLI4PlxK1MOrR4RID/WWjutwA4pbiZ6gZb3Ynm3BdxMByOaYCw7ynom0acKXBYoQmrfCZE7JdJ9gOpcN/sdlG/vrj9+0XSelwrxf2eZiYRB8rKRrpRH1XHYBtnqA==
+ b=BBpaZutQ0LHyBOF2YtEoKKgf8bUKRpO+7QtL3hOmrszfbe4VPLyA7Wf94wk/zWNKD2ljgaOV/gGlHd27mQLEZD6OG2AJiez5/gFEaqtFyCZMORV8tQimm6zVfs5UfHtWALi8dctmS/D7T4Ea0YysCsX3OHsNFeOm0RO3Yq1RREiy/8X1Q3zbsLJW0ZTcGD7g/FiGyRtaWUDlomTD49KTsYE0cLvSebuIz89X4fFK82uOMpvqHzvuQjek2ObX6e6dxVEz8sgpVFQchAdjLqqEZElmpflyLHXdmiBDYeaNo4j9NB3JkL7ek7IG539wJuYrZH6Xie4dwnhP03EVE9qmHQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bdT16wZ1axm0KM4CPhizs+rYPQs/VCKEoDtCUYe9p2g=;
- b=VmNQxyS0ubWwIgJzjnmpQkM151M5p4kvhmCm6C0O8eHvnoNk1KELCree+F2+z61M41QNq1ForxbP3VKFZhyro/+h8Nwzn7g0qs1XvhdGRtzIF0S0+9CalYRfjcF8yULv+CLaOkIyhRGmB2d4+64DJ+a661CcwLpy2BkiN6XgEqc0fp92xzPM6w6dPMhYDCoVLmRqyhoK4L830cBDyS0FkKI/EKWoV8lvgyGqv4fEnjutrFsPCARMMiaD0wF2medjDHhze4UgxflS5Q3Si1Wky2NoYlfcK2u+QjGvnhLcM/HZXVil/JjOQmd8Uv9iZqbPZEDhVF4eIDI8VRqPJUa22Q==
+ bh=WL6enQx4yHW69uaoNOsgoLooKCrgKEj3A1s4K2Y/9R0=;
+ b=qVSGOziLhml8qc2gcV8MOuNaM0ANoiV0gH2aTA+YK+VKr1qcrsAffSz0RbsjsxjaAiXeeXPaxexqn51Yx1rRNCP5kmBBO/0ESZfdCJlvEEPrwf50P5fI1dugW3Vs43abElUO5O1OPm+t1hK9PC55LhDPhwWKvGql+wHr4j6FvVjcLCj/vlt38eh4Vztk8Ci+Esz1otfKyGas07qM1wnUhG2Q4bd59F5hG2qNGvbE1+goIVMqAUUy6TUngHWAMHLs4HhgJ4UwfpD88AwYvss97xgV2q5E+J7poBUOgRgcXOMYw53XLG8m1LsNIGT/1sBmAe7exEsF1myq8rgGCzL+VA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  192.25.218.36) smtp.rcpttodomain=lists.openembedded.org
  smtp.mailfrom=agilent.com; dmarc=pass (p=reject sp=reject pct=100)
@@ -26,18 +26,18 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=agilent.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bdT16wZ1axm0KM4CPhizs+rYPQs/VCKEoDtCUYe9p2g=;
- b=ASRf965eApgr+XT1xPxoQKIGBum0IB84i1W/1SLziEuG+0UxJM0lsXN9KBLgCZ2NTpq0IqJHp0vYXdgwEr/Q/v1KW5UXo32D3FGW0QFhi16yNHact7USgONcWAY36WejHCk171YqjtS50PVqUJhW1Tbi3pTtVGVuAxxEseBMPJIfqFccAK8v3ZMOuHVOKfWj/wHGrMK2CDkuKteUVBxkHi1I46jrHKhKxiZJ6XK6FumxVMwXJSDvk83c6Zxqbjgv+3Qc8wZQtdEzW56ArHbHdO/xfdg2G7Oy73NvS3JvDGn81ZBBtoxOMSeELja0N18Xf7lR1KJpMoXR3GpWcA4cbA==
-Received: from BN9PR03CA0574.namprd03.prod.outlook.com (2603:10b6:408:10d::9)
- by CH0PR12MB8530.namprd12.prod.outlook.com (2603:10b6:610:188::10) with
+ bh=WL6enQx4yHW69uaoNOsgoLooKCrgKEj3A1s4K2Y/9R0=;
+ b=hVqMp1b+dzYgMJCQPOaqF62BBgYC2iuI+7zelN4unueOv8kMesW7V6K06XDmhPWNdNjGn+bYljXYQBZqnguR446AwSBfS/24+IEm0p6tjCBAR8OnLu7yrJ0+bo5snstVe3qS3MWsXsNtzK2pKbOchXnIcZiKIg4pBL4MD1jC/zktsqJlc1bsoR9qoGgK1IPG5uoIAxK7NMHLuRcm8SIJ5SrIFCAsQwGzFOgjugGroje07hXxJEBR6fCXsu6NThS6DjueF7TnCVJuHzZtvEjKJg/x4U86Ibu6Nohyuv/B/GTsGNvtJEfLjkZ+Srs0bx5rVtKc9DyomA10QrePXH/HjQ==
+Received: from BN9PR03CA0599.namprd03.prod.outlook.com (2603:10b6:408:10d::34)
+ by SJ2PR12MB8009.namprd12.prod.outlook.com (2603:10b6:a03:4c7::10) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.12; Thu, 27 Aug
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.10; Thu, 27 Aug
  2026 14:30:50 +0000
 Received: from BN3PEPF0000B36D.namprd21.prod.outlook.com
- (2603:10b6:408:10d:cafe::95) by BN9PR03CA0574.outlook.office365.com
- (2603:10b6:408:10d::9) with Microsoft SMTP Server (version=TLS1_3,
+ (2603:10b6:408:10d:cafe::81) by BN9PR03CA0599.outlook.office365.com
+ (2603:10b6:408:10d::34) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.21.360.10 via Frontend Transport; Thu,
- 27 Aug 2026 14:30:49 +0000
+ 27 Aug 2026 14:30:50 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 192.25.218.36)
  smtp.mailfrom=agilent.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=agilent.com;
@@ -47,17 +47,17 @@ Received-SPF: Pass (protection.outlook.com: domain of agilent.com designates
 Received: from wpcosapexchedg5.windmz.agilent.com (192.25.218.36) by
  BN3PEPF0000B36D.mail.protection.outlook.com (10.167.243.164) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.382.0 via Frontend Transport; Thu, 27 Aug 2026 14:30:49 +0000
+ 15.21.382.0 via Frontend Transport; Thu, 27 Aug 2026 14:30:50 +0000
 Received: from laplante-B650.lfs.agilent.com (192.25.126.4) by
  edgeappmail.agilent.com (192.25.218.36) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.41; Thu, 27 Aug 2026 08:30:14 -0600
+ 15.2.2562.41; Thu, 27 Aug 2026 08:30:15 -0600
 From: <chris.laplante@agilent.com>
 To: <bitbake-devel@lists.openembedded.org>
 CC: <docs@lists.yoctoproject.org>, Chris Laplante <chris.laplante@agilent.com>
-Subject: [PATCH 3/4] tests: add fetch_import tests to test bb.fetch2 => bb.fetch migration
-Date: Thu, 27 Aug 2026 10:29:57 -0400
-Message-ID: <20260827142958.547182-3-chris.laplante@agilent.com>
+Subject: [PATCH 4/4] doc: update manual to reflect bb.fetch2 => bb.fetch migration
+Date: Thu, 27 Aug 2026 10:29:58 -0400
+Message-ID: <20260827142958.547182-4-chris.laplante@agilent.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260827142958.547182-1-chris.laplante@agilent.com>
 References: <20260827142958.547182-1-chris.laplante@agilent.com>
@@ -66,135 +66,78 @@ Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN3PEPF0000B36D:EE_|CH0PR12MB8530:EE_
-X-MS-Office365-Filtering-Correlation-Id: 62ca6c27-768b-4139-c6f8-08df0447caaa
+X-MS-TrafficTypeDiagnostic: BN3PEPF0000B36D:EE_|SJ2PR12MB8009:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5e7405bd-b661-458d-3144-08df0447cb15
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: 
-	BCL:0;ARA:13230040|36860700016|376014|1800799024|23010399003|82310400026|10067099003|56012099006|11063799006|18002099003|22082099003;
+	BCL:0;ARA:13230040|23010399003|82310400026|376014|36860700016|1800799024|10067099003|6133799003|11063799006|56012099006|18002099003|22082099003;
 X-Microsoft-Antispam-Message-Info: 
-	/Y3QCG3vBxajTdkldjjvA76nkmBAC3COP24B42KRSfCvRucVCXXk5qVxSUoIE50Izum549k8fMeajGwtu92rA00JqHuvDlSxwhAp+0uvmK+8J98HE3JLe1eqXRzJCzyAM9EIHZ1oz7zqQD2BH1bFYGXk2u7CC7Q1KynteORwtvEXIyXwYfLqC2z8wqrctbsntnvHwurcQVP2kl4IXDbBtWLBjkFrLWHuxkVYc63u8fsvMIE+GhCa1e2T4F4gQvuxuIEzRLWRRtuj6TXHx4hpuJgXPfLAIRAqTWqhEXf6vx2FxMhBh9hCDK9BkIWW4t6b6T/dZVahPoZ0B0279fihZ0VjDHlCjnqE0P4jQM5hDsJxaHqFTs2/I+OL0vNfKMAD5LdQxx2KVpElbob193hnLuAnvMxbhLravcROGoOwFymDvSNdq2crzz1C373gpfVNL0batTHapnktM4hI+sSXvbKfFYtsbwMFKLEZI7yGzxGEWK1tKMzRmrjWeEHPAqvL3OuMw1mXFYplDGNmJBO4GXZ/tDFZLhF548wUHkdaMxC1jLWNqkmtM2RKkRX7ImIAhq0JWAIHXkNdhng1tc/7B3VmBi18ygFsp5q+fCp54cCO8Xhtd6qZiB4sGeHmv5ZDJ5ZwX4zxMNzTZRfYnBFQLO29Ve3ZbXx7POaCYHZgQBjBwykO3qqDv8XdfiB2umj/2+RYRJbDio2BRVRwtOL0AA==
+	QUzy1518i+SyFeUv9gx3oz1wuWbpaVGZsXHQgzeCqiUlhCqYoIMRoKabj/0MbLX5Z/jGZqh5NJU6wmef1V9tGtPFMOj7qbGCpb3KiO0BcEbKtULcWCUjrnTcbheSdXJC53hhzM1mVK81ILdNMTtQtVI2poT4SgoDeRpR2UiE4TLnZFGiFgIzNY02T2eND09L3Mms0wpaS/ROgs59M9wjrWo8Gu27vQODwQIm7iKCYn/vFwfuJocQfb7w7RMw+JL7dGgVA6Zt20ESPygtexR4AperdyYk/1EgDRO5ixROIPfWPT4w4XkRbPmstIDNa4o6wQXBz9j61JCb+Kg8RvnfgupPFSqE6dj/92FjXhCAyNb5bypz2UYOYjJRCPk/q3wpch9dlyFyp8kQw7tYC99JZ05WCRYXer80ntblQjHo9ZtNel2d1TG6Yy2umkTh3Kr6GruzDOUw91x0DZ8JxicMo/YkiFeqbVPW5o27vY+Pazko0oAkB9dWNOpyqbvlnewD5Hr2Q3MSIK4n/cRCU6V5lEnYwCk5nn9TiAVN18HZMlK6S5bbdnzX2Um7EPo3frUAc+MZW0ZgcIzBtMhObZj9vJ/kCTiozi0En0WXkIqIUKjSpJQxPWQxlYCHM7JFFMY9KqS+Bu+hzql9+Rmjbk8VsGRShi2Sh2n06yOA/Y1/I/lLbL5GGMPu14gv5BEgMgW0Utfr8GJwjjPS3310v982CA==
 X-Forefront-Antispam-Report: 
-	CIP:192.25.218.36;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:wpcosapexchedg5.windmz.agilent.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(376014)(1800799024)(23010399003)(82310400026)(10067099003)(56012099006)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+	CIP:192.25.218.36;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:wpcosapexchedg5.windmz.agilent.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(82310400026)(376014)(36860700016)(1800799024)(10067099003)(6133799003)(11063799006)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0: 
-	Aj75D25SERE8GaYn07luZaoznm5ikNTT0/lzPKKglly/n5OJuUAPzDScwTUVUai9kNemWAW0uCSWvLtXNC0YhJ/hUji7AdfY7UhfCvzf+d/WSOBInrr9s0OIyClHzKetnigMJNqHkY+AuHYuwH44zL8WodLPfWOOe5jyw8SSME6X+fYk2Yvj+/+HAGC4APC+F32QFoaxBcmp54CaaxlFCefQdpxpw/LbVs+dPHbwYb6qBfO6ReozkC22L4qvn/swn7550OB51sAB6nqjZFO3kdTKaAXqUBEvBrcWQA5Qu8gYNo6TZchcSjUvpExf7N1+YCdJ8+9U82Nt7/SYaEamTkWWEbWtlhAjw/9UBbc3JuPfRRQVr5XaKYUe+T9H2I4LesRcTsOuR/6saiVzbI3RZMGwa1cqSuO3KDdSJNHXmjrTh1pWgCEI8eUJdiREsFur
+	df6owNE3o1TuOtyRN47bogPOv30NaWEJW9q8+lI37+W086Wvf4P8QdYjvCz8nxJ0fwYz3Of09II7e77rYN1J+0NbPMZx9ue+k9wzNwf5WvJg5KIAKKDzldNp2zWNZ8tLOw7uA9cb/+HU7NyMGtathmMBgOm4+RXvOIPCUKFfNpQhN37A+AhSErh75BcEt39xdj1K72BxIGvzO6V70KQXwznp0BcCLe80C3ELcXnyTe2DdiGSw9pmRlnCG0sCkjMWyuJCUKz2x6EXswzrAW/jbvWp36JNwHnH9+70HjAwMGdQANobzR0Mp723Q17bF6oG6j3LK5/zxSbnviLsbuGgm9b5Qk/ooGKaYAE+slmXxoq1srO0i4R1Fekv+ImllmbJw5Cls+LiZFbt5TUu7S7MMJ/XRzzn6dzhoaHyhIaYz5vcfSiVtijicd+l+muVsdQS
 X-OriginatorOrg: agilent.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Aug 2026 14:30:49.7888
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Aug 2026 14:30:50.4877
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 62ca6c27-768b-4139-c6f8-08df0447caaa
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5e7405bd-b661-458d-3144-08df0447cb15
 X-MS-Exchange-CrossTenant-Id: a9c0bc09-8b46-4206-9351-2ba12fb4a5c0
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=a9c0bc09-8b46-4206-9351-2ba12fb4a5c0;Ip=[192.25.218.36];Helo=[wpcosapexchedg5.windmz.agilent.com]
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: TreatMessagesAsInternal-BN3PEPF0000B36D.namprd21.prod.outlook.com
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR12MB8530
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8009
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 27 Aug 2026 14:30:57 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10384
+ <docs@lists.yoctoproject.org>; Thu, 27 Aug 2026 14:30:55 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10385
 
 From: Chris Laplante <chris.laplante@agilent.com>
-
-Also tests that importing bb.fetch2 (instead of bb.fetch) results in a
-DeprecationWarning.
 
 AI-Generated: GPT-5.6 Sol
 
 Signed-off-by: Chris Laplante <chris.laplante@agilent.com>
 ---
- bin/bitbake-selftest         |  1 +
- lib/bb/tests/fetch_import.py | 64 ++++++++++++++++++++++++++++++++++++
- 2 files changed, 65 insertions(+)
- create mode 100644 lib/bb/tests/fetch_import.py
+ .../bitbake-user-manual-fetching.rst                  | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/bin/bitbake-selftest b/bin/bitbake-selftest
-index 8ac0aeb5f..27791d2db 100755
---- a/bin/bitbake-selftest
-+++ b/bin/bitbake-selftest
-@@ -32,6 +32,7 @@ tests =3D ["bb.tests.codeparser",
-          "bb.tests.data",
-          "bb.tests.event",
-          "bb.tests.fetch",
-+         "bb.tests.fetch_import",
-          "bb.tests.parse",
-          "bb.tests.runqueue",
-          "bb.tests.setup",
-diff --git a/lib/bb/tests/fetch_import.py b/lib/bb/tests/fetch_import.py
-new file mode 100644
-index 000000000..3c44a1b3a
---- /dev/null
-+++ b/lib/bb/tests/fetch_import.py
-@@ -0,0 +1,64 @@
-+#
-+# Copyright (C) 2026 Agilent Technologies, Inc.
-+#
-+# SPDX-License-Identifier: GPL-2.0-only
-+#
-+
-+import os
-+import subprocess
-+import sys
-+import unittest
-+
-+
-+class FetchImportTests(unittest.TestCase):
-+    def run_python(self, code):
-+        env =3D os.environ.copy()
-+        libdir =3D os.path.realpath(os.path.join(os.path.dirname(__file__)=
-, "..", ".."))
-+        env["PYTHONPATH"] =3D os.pathsep.join(filter(None, (libdir, env.ge=
-t("PYTHONPATH"))))
-+        result =3D subprocess.run(
-+            [sys.executable, "-c", code],
-+            env=3Denv,
-+            stdout=3Dsubprocess.PIPE,
-+            stderr=3Dsubprocess.PIPE,
-+            text=3DTrue,
-+        )
-+        self.assertEqual(result.returncode, 0, result.stderr)
-+
-+    def test_fetch_is_lazy(self):
-+        self.run_python("""
-+import sys
-+import bb
-+
-+assert "bb.fetch" not in sys.modules
-+assert "bb.fetch2" not in sys.modules
-+""")
-+
-+    def test_fetch_import(self):
-+        self.run_python("""
-+import sys
-+import bb.fetch
-+from bb.fetch import Fetch
-+
-+assert sys.modules["bb.fetch"] is bb.fetch
-+assert Fetch is bb.fetch.Fetch
-+""")
-+
-+    def test_fetch2_import_compatibility(self):
-+        self.run_python("""
-+import sys
-+import warnings
-+
-+with warnings.catch_warnings(record=3DTrue) as caught:
-+    warnings.simplefilter("always")
-+    import bb.fetch2
-+    from bb.fetch2 import Fetch
-+
-+assert len(caught) =3D=3D 1
-+assert caught[0].category is DeprecationWarning
-+assert str(caught[0].message) =3D=3D "bb.fetch2 is deprecated; use bb.fetc=
-h instead"
-+assert caught[0].filename =3D=3D "<string>"
-+
-+assert bb.fetch2 is bb.fetch
-+assert sys.modules["bb.fetch2"] is bb.fetch
-+assert Fetch is bb.fetch.Fetch
-+""")
-\ No newline at end of file
+diff --git a/doc/bitbake-user-manual/bitbake-user-manual-fetching.rst b/doc=
+/bitbake-user-manual/bitbake-user-manual-fetching.rst
+index b96018a4e..d326403fa 100644
+--- a/doc/bitbake-user-manual/bitbake-user-manual-fetching.rst
++++ b/doc/bitbake-user-manual/bitbake-user-manual-fetching.rst
+@@ -11,10 +11,11 @@ with the intricacies of downloading source code and fil=
+es from remote
+ systems. Fetching source code is one of the cornerstones of building
+ software. As such, this module forms an important part of BitBake.
+=20
+-The current fetch module is called "fetch2" and refers to the fact that
+-it is the second major version of the API. The original version is
+-obsolete and has been removed from the codebase. Thus, in all cases,
+-"fetch" refers to "fetch2" in this manual.
++The fetch module was previously called ``fetch2`` to distinguish the secon=
+d
++major version of the API from the original version, which is obsolete and =
+has
++been removed from the codebase. The module has since been renamed back to
++``fetch``. Existing code using ``bb.fetch2`` remains supported by a
++compatibility alias, but new code should use ``bb.fetch``.
+=20
+ The Download (Fetch)
+ =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+@@ -30,7 +31,7 @@ The code to execute the first part of this process, a fet=
+ch, looks
+ something like the following::
+=20
+    src_uri =3D (d.getVar('SRC_URI') or "").split()
+-   fetcher =3D bb.fetch2.Fetch(src_uri, d)
++   fetcher =3D bb.fetch.Fetch(src_uri, d)
+    fetcher.download()
+=20
+ This code sets up an instance of the fetch class. The instance uses a
 --=20
 2.43.0
 
