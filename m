@@ -2,22 +2,22 @@ Return-Path: <chris.laplante@agilent.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D56ACC61DB9
-	for <webhook@archiver.kernel.org>; Thu, 27 Aug 2026 14:30:55 +0000 (UTC)
-Received: from DM5PR21CU001.outbound.protection.outlook.com (DM5PR21CU001.outbound.protection.outlook.com [52.101.62.51])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.37730.1787841054225846062
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 71287C61DB9
+	for <webhook@archiver.kernel.org>; Thu, 27 Aug 2026 14:31:16 +0000 (UTC)
+Received: from MW6PR02CU001.outbound.protection.outlook.com (MW6PR02CU001.outbound.protection.outlook.com [52.101.48.41])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.37737.1787841070472930182
  for <docs@lists.yoctoproject.org>;
- Thu, 27 Aug 2026 07:30:54 -0700
+ Thu, 27 Aug 2026 07:31:10 -0700
 Authentication-Results: mx.groups.io;
- dkim=fail reason="dkim: body hash did not verify" header.i=@agilent.com header.s=selector1 header.b=cAhC/xbh;
- spf=permerror, err=parse error for token &{10 18 %{i}._ip.%{h}._ehlo.%{d}._spf.vali.email}: invalid domain name (domain: agilent.com, ip: 52.101.62.51, mailfrom: chris.laplante@agilent.com)
+ dkim=fail reason="dkim: body hash did not verify" header.i=@agilent.com header.s=selector1 header.b=Ebf84X3E;
+ spf=permerror, err=parse error for token &{10 18 %{i}._ip.%{h}._ehlo.%{d}._spf.vali.email}: invalid domain name (domain: agilent.com, ip: 52.101.48.41, mailfrom: chris.laplante@agilent.com)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Ed4HMG5Y9IVvQ8FTH4DeckMB6d/dc4muzdHa8mYJQmBguxKxIjVKeXDi5vBM0AFUJDE+je7/zO6CjCXsGmMMd85Rx8CjD1JE1qCfSVBKLHhUEQR9dA5H0MUCl//aP9e+cbCCFHpjmshtuPS+V4we4C9i5XRub0/JsFE+25x5eCNAatvrEJ2S0GKBKp4uQVxau/QqJuTmbHI46ry5Bn1r3tyTw96McTNuOg+yMhBO91rRS93sk88Y8DUfDAMoZvGvSlioBKUXI2grzultA2oZGK75nWh0rXpX2m9RIp1k2HUegRfKVACNiDkcoKvtTikGzMEyiOyayYOuNkPt1vezeQ==
+ b=YCiNLfMplF1kHZogOZ8ZLCEj2XJa0uxP9qFb/VgaOrcMoA11Qyup9aMFTRhCFlRmBzEOA2PENykuKiat4Okbn0elHzO04+p/rTpMi2mUOszEDQpbpCVIUmodA17IryJrgZh7EPckQBzmkK94adevzh8sICcxqyuNNwXoKgv9SJthY67p9kl34/XmerpR9efqVGXw6cNAVVgzHl0+ObwlXyiFnmF4S3WEfXIFMncy0T/TJDbDBSOMpzKSr7bhWA+OBEVTrob5ZetAdfTnVBPIX4IU9VTqSmh23SRgH3j+VeJqzyAPP4ZPJl6Gs7Fpz/QSPsHVKuuLYshJh4K3ZKxz0w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZdXmxsBXyQJXP1dLQYs2T6czGQ/cOkZXR43n3b8+Rqw=;
- b=q9cZHRl28HnbcP+DvexAIkNSIzKO2HUkrvo7lMJqyXLN7gIcmnE8UwLOHuW25JRapTSN66BQ3nNhZ/Ga4MNziOzX+troPQMtDmIVtly0QUfFil6xlaLE/Gj5UwTKsGPOXym5F4kB3kvzFC0Lx5jX9kaEf1cM8ucYu6itpaTvEYVvbjQqLPtGjWNtZGGBdYQdkr0YY9UzPDGshelgU1lsNDZharYugzwEXHn1jzKGlAs2FQRBHdZ6quZtjokubzLE28jtjAjn40VxUdv6fMhEKY6X0vzmtMA4D6Fqt0luP3UALFThso0n9tYNpCbgrmYVHiKvySJh4D1LWEiIV3jO6Q==
+ bh=f0Ea0qrmXRvhCcsfM/aZMwhxyof7zYAetbN8i+jfE1w=;
+ b=HTGzsrOMYQHcC/npUhOkaGlTuxtwVQ6Cjwito/r/qDhuluDdoQi9eYQN7WBw0CCVqh7cgAE9S6U9mQ7isuqTjZib219xQyLxv/5upldxeu78ysLb0ha1Znu0h1v9X7Ymft04eKcTw4XYbrHc66NB7i1MwEffOpQ8St43715RxnYP/1Oq9UGGrTgokUahE1HBu8XJadK1BE5lF2K57EPEQobjoATRmSbB7mn5CuIRiMYcz/1yQdjud9K4QTC7PUkOQekHzKQTlV7rMbii+f7FIHEdp+7e4ogvNYZKZVaxy9zJxMI87eehL+mCoq3QU/6Xu3PwqbKvNJQEaCP7s0vlZw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  192.25.218.36) smtp.rcpttodomain=lists.openembedded.org
  smtp.mailfrom=agilent.com; dmarc=pass (p=reject sp=reject pct=100)
@@ -26,16 +26,16 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=agilent.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZdXmxsBXyQJXP1dLQYs2T6czGQ/cOkZXR43n3b8+Rqw=;
- b=cAhC/xbhjEuVG2GkieyJAR3KzSad01kJVf9EMDKxA97F3Tvbs+SowtwNDQ8ic5xhJG5JkyTpQQ/U4hMtbsW7m/DymfCCiNf6l/NqaYFBwY8Qj8ACYq+Xx0dD/Tzr4WBMcow9oO+N/DVt2OiOIIaTXjWKYQPEi3JZId7I0oSDBE2Qk6tvO3rU7RlzJ6+3BJ5QsenSK1+2f8I1p4ScJN/B/eKO6hkqI5aWSrln+qm2I9FdoXoVGqja9Ijw2MIEYPGESWixxxV2E+iOD2ouXBb22Wn9Z9QdLxh0uvlWaL25ET9fxRkzPTSjxsH4asLKuuusn7ZJWaAXAoH/s4/LDba4UA==
-Received: from BLAPR03CA0154.namprd03.prod.outlook.com (2603:10b6:208:32f::28)
- by DM6PR12MB4201.namprd12.prod.outlook.com (2603:10b6:5:216::9) with
+ bh=f0Ea0qrmXRvhCcsfM/aZMwhxyof7zYAetbN8i+jfE1w=;
+ b=Ebf84X3EpHk9BTqKUPk9E6rC72e+UZmHziezP90C0SlAt+Guow2uASLN1piK10h0xYaxRh1c7z7GQ0CrJOVgihFugx24JmKLjPjCteVt44H1qETEk6UaJcId939tgJQ5X1KVVwJ5G9PxI1+H7yBEBUb9a9CzkKQPda1f75BUo6kymcUR6rG7sBRkjQGfIIHEtsqroniFrtw5l+sEU2T71fyxjFG4VBIumBhCII8pln6YW7/qTAWL8NARXMD5Gt52LCSzjBE0pifUankolgrRdW8AVQh42uo6CrvrqGv/0o8UcYokPzcYkDXVOhZdkslFoDpKE8FqCjqDSgKa1PUdAA==
+Received: from BLAPR03CA0158.namprd03.prod.outlook.com (2603:10b6:208:32f::24)
+ by DM4PR12MB5914.namprd12.prod.outlook.com (2603:10b6:8:67::21) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.10; Thu, 27 Aug
- 2026 14:30:49 +0000
+ 2026 14:30:50 +0000
 Received: from BN3PEPF0000B373.namprd21.prod.outlook.com
- (2603:10b6:208:32f:cafe::52) by BLAPR03CA0154.outlook.office365.com
- (2603:10b6:208:32f::28) with Microsoft SMTP Server (version=TLS1_3,
+ (2603:10b6:208:32f:cafe::f) by BLAPR03CA0158.outlook.office365.com
+ (2603:10b6:208:32f::24) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.21.360.10 via Frontend Transport; Thu,
  27 Aug 2026 14:30:49 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 192.25.218.36)
@@ -47,1361 +47,1384 @@ Received-SPF: Pass (protection.outlook.com: domain of agilent.com designates
 Received: from wpcosapexchedg5.windmz.agilent.com (192.25.218.36) by
  BN3PEPF0000B373.mail.protection.outlook.com (10.167.243.170) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.382.0 via Frontend Transport; Thu, 27 Aug 2026 14:30:49 +0000
+ 15.21.382.0 via Frontend Transport; Thu, 27 Aug 2026 14:30:48 +0000
 Received: from laplante-B650.lfs.agilent.com (192.25.126.4) by
  edgeappmail.agilent.com (192.25.218.36) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.41; Thu, 27 Aug 2026 08:30:14 -0600
+ 15.2.2562.41; Thu, 27 Aug 2026 08:30:13 -0600
 From: <chris.laplante@agilent.com>
 To: <bitbake-devel@lists.openembedded.org>
 CC: <docs@lists.yoctoproject.org>, Chris Laplante <chris.laplante@agilent.com>
-Subject: [PATCH 2/4] bin, lib, conf: use bb.fetch instead of bb.fetch2
-Date: Thu, 27 Aug 2026 10:29:56 -0400
-Message-ID: <20260827142958.547182-2-chris.laplante@agilent.com>
+Subject: [PATCH 1/4] lib: rename fetch2 as fetch; invert compat shim to make bb.fetch2 = bb.fetch
+Date: Thu, 27 Aug 2026 10:29:55 -0400
+Message-ID: <20260827142958.547182-1-chris.laplante@agilent.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260827142958.547182-1-chris.laplante@agilent.com>
-References: <20260827142958.547182-1-chris.laplante@agilent.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN3PEPF0000B373:EE_|DM6PR12MB4201:EE_
-X-MS-Office365-Filtering-Correlation-Id: ad7267f3-8dd8-4958-5c24-08df0447ca51
+X-MS-TrafficTypeDiagnostic: BN3PEPF0000B373:EE_|DM4PR12MB5914:EE_
+X-MS-Office365-Filtering-Correlation-Id: 85af5391-92bd-43dd-71e0-08df0447ca2f
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: 
-	BCL:0;ARA:13230040|1800799024|82310400026|376014|23010399003|36860700016|13003099007|6133799003|10067099003|56012099006|11063799006|18002099003|22082099003|3023799007;
+	BCL:0;ARA:13230040|1800799024|23010399003|82310400026|376014|36860700016|13003099007|6133799003|10067099003|11063799006|56012099006|18002099003|3023799007;
 X-Microsoft-Antispam-Message-Info: 
-	9QcLWREzFxjZii8+tjfnrztgSPhrU+pJx5RzRqbpsh5kLiOXKZF4vpCH+T6z1CQR3GZ7D37Q03IlVD2kwt2Z+6owAlJwclpOlIBF0c5FUzccm5CAlWn5bmFk0efPIkmweIsRz/NgpA9nqktZUnUeYkNV4Chb3c11lltGChESE7kDpa+OY/+bC1GajxdZMhmwrCNIE/tBDggoprtp3+TE99frrllNMZA3aAShO1NEIPCikHvMEbxnngB1M5MVAu8l5232SMzJrnBIAeo5NcYRzybZPNitceY5l+o17ffwJbMx/fHS3JeJRG6RwiyZWWWZLJ+3qQGdAIuIE5MhzdcqFniHi/C4/ug75kxRD/NL3YxyMfvGQWZmkcGt3wNTR1NvkgY1w2iKICS1bjqAVsE3ocN1/GEhc12v/ZALVkCygIxrhmZ8DrEmgRS14WfwztpXPvEwDleX/lguJGSDwCBWIElKFSk/NZ/RpQu97wqzohJEeUaRxtDphyidroQbNJ4V0eeJqUQrUZLM4OSTHtx8FRrRt/5pJPriX5XlxwqCgzUEf+OUYPnbxyGVp8+O3aDRjkz28rtrw0jlNfkynzc/FbljleNmXVoi+rKr9HgVqM3m7dpJJ7LPDqkjvxTXf4s2Xnwg/cf0Jdn5cP5v2H0N3w==
+	bWT8J+z7iXQ910+3f+eM6EliaVL7iWjygFHBpnP/55ed+he82w4akCyD7oCeldlzL3H3UF+OlnZlk6KXnS25B0AJN+UNeycyGdmiCQ3NYdjxE19KD6itPfyhiEs9acxfTuIOlJyG4GhGl2izCDkkZO1aDCNc8UjdhwHwGsjlKHfiG3bX91Vm9qXYlbT2/5AHCkR4A30bFI8DM07j1OJYQBN9D3DcaWbTXsFAeTROUjXwtVD1bWLbzJpi4PI0idU8UnHCY/4YW5fS5yxKaC7Bv4jam8CojgHvn/cqfcILLkX/+OZOuaCv/Alsf4H7Onc6VejIY4U4W26mHyxZElPuSyz0TECwjpSDVOfWunEiyxDyf/R6f7KuzYAwrSulC3vhb0TCVgMS80jK4rymoRNz7mN8hnpx0CXfvBvJFHhujGy+6AlDZrEwE6D7lUBsfwnde3XcDYPT5ovNXXSrkJz5vd9XAdqhi6boyrn3NBJI0FWiwVpnY35cAWo03h08azoP/030lQYb1mYSWcCYGNZLtIuO2ln0Y/+zsOmLQtSIPba+P/UgfSuLMFuIwdyvNdY+WpkZkU9FrExm8cat1Vftk11Zi0JOwfRJ/V321DsCdrXRNfPMj8v2KIWD3pPH1bVi3Neec4D+CE3jByTU5oo3Cw==
 X-Forefront-Antispam-Report: 
-	CIP:192.25.218.36;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:wpcosapexchedg5.windmz.agilent.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(376014)(23010399003)(36860700016)(13003099007)(6133799003)(10067099003)(56012099006)(11063799006)(18002099003)(22082099003)(3023799007);DIR:OUT;SFP:1101;
+	CIP:192.25.218.36;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:wpcosapexchedg5.windmz.agilent.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(82310400026)(376014)(36860700016)(13003099007)(6133799003)(10067099003)(11063799006)(56012099006)(18002099003)(3023799007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0: 
-	eVW0kz172RdytbqGdonu1zFJ52UfHSNj1tJGetwLCb/ouxbwpqmxfx92XBVdxoMNBW+UT95p0fflllIi8CQYZBHO7Cli7JXmHSnp+MX3YeU1JqTtUFiRvMhymOYW+25zV74J3M5RpEbQCOpFd5VoHKbb+/w5spTJUV8WXlr3RDbfz+JrBCmF3XiEf1Zsfm6BUdmUWYAhX7mTaasS+1+ZKUmo/uEe8L+ZWT8261dYhy3Un0MaIJzGVDqy5p3VjJiY+H9TsgAZRPQUx9JH5VCGvQRS8qpRXb6XpyGUPMtpkjo4a3Flpg0XfZR/ZDgvHsRfz5OGKMBLBsoV674cgTuFu9u9aw9syRSpbfwlJDahle3/ZYHqysH4yrF/r+NTbj5VW7Gqcqe2cuMqcpApJVdRrt172RGNPzLcgcNExLaRX56HtgSO9aWVSjjZITfAq2DV
+	kgNW+2DNuErC2HyTcFwCiLIMjcCsrGxp037B/0fuD3J+AkeaMztQyRHw7eEKorzVU1oE3TvvAyJRBxmld0YQKk3T6LyPljaiI4TdcMaTEQmcDYrVFrdLURC/XfiLsU3DG4VaY7fuQRkRx21MwHkodke8pFZPCTXlXbwNKTRdGdKMOPhvG0zvWw0e30V6oGqh03sojXcDeR8W9qS4Aajs+VdtDJAvB1sSFG46yAlNwZBQuRJMxVjLlR1cmwSWtVp7LyfybdB7rhZThJ1bXzPFq7rHrwWImKfPPHuIYbflxeupix39N9DBVywc9Qo9hnx95Jtl+muOHRG8SiRaCZEdtc1TgGY3BXHZN3CqmdEGhqoOkKKO6Q4lmSRaj8SF7/IzcZZp/vpsJZ8Y++bSRwiRgJ+f16TfNKJ8Y9LOdJBByJi+0sUG/CgDQD3taOgZQ7Ei
 X-OriginatorOrg: agilent.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Aug 2026 14:30:49.2026
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Aug 2026 14:30:48.9813
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: ad7267f3-8dd8-4958-5c24-08df0447ca51
+X-MS-Exchange-CrossTenant-Network-Message-Id: 85af5391-92bd-43dd-71e0-08df0447ca2f
 X-MS-Exchange-CrossTenant-Id: a9c0bc09-8b46-4206-9351-2ba12fb4a5c0
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=a9c0bc09-8b46-4206-9351-2ba12fb4a5c0;Ip=[192.25.218.36];Helo=[wpcosapexchedg5.windmz.agilent.com]
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: TreatMessagesAsInternal-BN3PEPF0000B373.namprd21.prod.outlook.com
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4201
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5914
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 27 Aug 2026 14:30:55 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10386
+ <docs@lists.yoctoproject.org>; Thu, 27 Aug 2026 14:31:16 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10387
 
 From: Chris Laplante <chris.laplante@agilent.com>
 
+bb.fetch2 replaced bb.fetch back in 2012, and the compatibility shim of
+bb.fetch =3D bb.fetch2 has been in place ever since. There's no longer a
+good reason to keep the '2' suffix, so lets drop it.
+
+We also invert the bb.fetch =3D bb.fetch2 compatibility shim to now make
+bb.fetch2 =3D bb.fetch. We do this by creating a new lib/bb/fetch2.py,
+which lets us get rid of the ugly-ish shim in lib/bb/__init__.py.
+Finally, we add a deprecation warning for good measure.
+
 Signed-off-by: Chris Laplante <chris.laplante@agilent.com>
 ---
- bin/bitbake-setup     |  13 +--
- bin/bitbake-worker    |   2 +-
- conf/bitbake.conf     |   2 +-
- lib/bb/command.py     |   1 +
- lib/bb/cooker.py      |   7 +-
- lib/bb/cookerdata.py  |   2 +-
- lib/bb/siggen.py      |   7 +-
- lib/bb/tests/fetch.py | 230 +++++++++++++++++++++---------------------
- lib/bb/tinfoil.py     |   2 +-
- lib/bb/utils.py       |   2 +-
- 10 files changed, 136 insertions(+), 132 deletions(-)
+ lib/bb/__init__.py                    |  3 -
+ lib/bb/{fetch2 =3D> fetch}/README       |  0
+ lib/bb/{fetch2 =3D> fetch}/__init__.py  | 20 +++----
+ lib/bb/{fetch2 =3D> fetch}/az.py        |  8 +--
+ lib/bb/{fetch2 =3D> fetch}/clearcase.py | 18 +++---
+ lib/bb/{fetch2 =3D> fetch}/crate.py     |  6 +-
+ lib/bb/{fetch2 =3D> fetch}/gcp.py       | 12 ++--
+ lib/bb/{fetch2 =3D> fetch}/git.py       | 80 +++++++++++++--------------
+ lib/bb/{fetch2 =3D> fetch}/gitannex.py  |  4 +-
+ lib/bb/{fetch2 =3D> fetch}/gitsm.py     | 10 ++--
+ lib/bb/{fetch2 =3D> fetch}/gomod.py     | 14 ++---
+ lib/bb/{fetch2 =3D> fetch}/hg.py        | 18 +++---
+ lib/bb/{fetch2 =3D> fetch}/local.py     |  6 +-
+ lib/bb/{fetch2 =3D> fetch}/npm.py       | 18 +++---
+ lib/bb/{fetch2 =3D> fetch}/npmsw.py     | 18 +++---
+ lib/bb/{fetch2 =3D> fetch}/perforce.py  | 16 +++---
+ lib/bb/{fetch2 =3D> fetch}/repo.py      | 10 ++--
+ lib/bb/{fetch2 =3D> fetch}/s3.py        | 12 ++--
+ lib/bb/{fetch2 =3D> fetch}/sftp.py      | 12 ++--
+ lib/bb/{fetch2 =3D> fetch}/ssh.py       |  2 +-
+ lib/bb/{fetch2 =3D> fetch}/svn.py       | 18 +++---
+ lib/bb/{fetch2 =3D> fetch}/wget.py      | 18 +++---
+ lib/bb/fetch2.py                      | 19 +++++++
+ 23 files changed, 179 insertions(+), 163 deletions(-)
+ rename lib/bb/{fetch2 =3D> fetch}/README (100%)
+ rename lib/bb/{fetch2 =3D> fetch}/__init__.py (99%)
+ rename lib/bb/{fetch2 =3D> fetch}/az.py (96%)
+ rename lib/bb/{fetch2 =3D> fetch}/clearcase.py (95%)
+ rename lib/bb/{fetch2 =3D> fetch}/crate.py (97%)
+ rename lib/bb/{fetch2 =3D> fetch}/gcp.py (92%)
+ rename lib/bb/{fetch2 =3D> fetch}/git.py (92%)
+ rename lib/bb/{fetch2 =3D> fetch}/gitannex.py (97%)
+ rename lib/bb/{fetch2 =3D> fetch}/gitsm.py (97%)
+ rename lib/bb/{fetch2 =3D> fetch}/gomod.py (97%)
+ rename lib/bb/{fetch2 =3D> fetch}/hg.py (95%)
+ rename lib/bb/{fetch2 =3D> fetch}/local.py (91%)
+ rename lib/bb/{fetch2 =3D> fetch}/npm.py (97%)
+ rename lib/bb/{fetch2 =3D> fetch}/npmsw.py (96%)
+ rename lib/bb/{fetch2 =3D> fetch}/perforce.py (96%)
+ rename lib/bb/{fetch2 =3D> fetch}/repo.py (89%)
+ rename lib/bb/{fetch2 =3D> fetch}/s3.py (93%)
+ rename lib/bb/{fetch2 =3D> fetch}/sftp.py (93%)
+ rename lib/bb/{fetch2 =3D> fetch}/ssh.py (98%)
+ rename lib/bb/{fetch2 =3D> fetch}/svn.py (94%)
+ rename lib/bb/{fetch2 =3D> fetch}/wget.py (98%)
+ create mode 100644 lib/bb/fetch2.py
 
-diff --git a/bin/bitbake-setup b/bin/bitbake-setup
-index 92ed563c2..35d9730ae 100755
---- a/bin/bitbake-setup
-+++ b/bin/bitbake-setup
-@@ -27,6 +27,7 @@ bindir =3D os.path.abspath(os.path.dirname(__file__))
- sys.path[0:0] =3D [os.path.join(os.path.dirname(bindir), 'lib')]
-=20
- import bb.msg  # noqa: E402
-+import bb.fetch  # noqa: E402
- import bb.process  # noqa: E402
- from bb import __version__ as libbb_version # noqa: E402
-=20
-@@ -108,8 +109,8 @@ def init_bb_cache(top_dir, settings, args):
-     return d
-=20
- def save_bb_cache():
--    bb.fetch2.fetcher_parse_save()
--    bb.fetch2.fetcher_parse_done()
-+    bb.fetch.fetcher_parse_save()
-+    bb.fetch.fetcher_parse_done()
-=20
- def get_config_name(config):
-     suffix =3D '.conf.json'
-@@ -192,7 +193,7 @@ def checkout_layers(layers, confdir, layerdir, d, rebas=
-e_conflicts_strategy=3D'abo
-             repodir_path =3D os.path.join(layerdir, repodir)
-             try:
-                 do_fetch(fetcher, layerdir)
--            except (bb.fetch2.LocalModificationsError, bb.fetch2.RebaseErr=
-or) as e:
-+            except (bb.fetch.LocalModificationsError, bb.fetch.RebaseError=
-) as e:
-                 if rebase_conflicts_strategy !=3D 'backup':
-                     e.msg +=3D ("\nUse 'bitbake-setup update --rebase-conf=
-licts-strategy=3Dbackup'"
-                               " to automatically back up the directory and=
- re-clone from upstream,"
-@@ -893,7 +894,7 @@ def get_diff(file1, file2):
-=20
- def are_layers_changed(layers, layerdir, d):
-     def _is_git_remote_changed(r_remote, repodir):
--        from bb.fetch2.git import git_hash_re
-+        from bb.fetch.git import git_hash_re
-=20
-         rev =3D r_remote['rev']
-         branch =3D r_remote.get('branch', None)
-@@ -1108,11 +1109,11 @@ def install_buildtools(top_dir, settings, args, d):
-     fetcher =3D bb.fetch.Fetch([src_uri], d)
-     try:
-         fetcher.download()
--    except bb.fetch2.ChecksumError as e:
-+    except bb.fetch.ChecksumError as e:
-         logger.error("Checksum mismatch for buildtools installer. "
-                      "Verify the URL and downloaded file.\n%s" % str(e))
-         sys.exit(1)
--    except bb.fetch2.FetchError as e:
-+    except bb.fetch.FetchError as e:
-         logger.error("Failed to download buildtools installer: %s" % str(e=
-))
-         sys.exit(1)
-=20
-diff --git a/bin/bitbake-worker b/bin/bitbake-worker
-index a9946f067..d011b2af4 100755
---- a/bin/bitbake-worker
-+++ b/bin/bitbake-worker
-@@ -11,7 +11,7 @@ import warnings
- warnings.simplefilter("default")
- warnings.filterwarnings("ignore", category=3DDeprecationWarning, message=
-=3D".*use.of.fork.*may.lead.to.deadlocks.in.the.child.*")
- sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(sys.argv[0=
-])), 'lib'))
--from bb import fetch2
-+from bb import fetch
- import logging
- import bb
- import select
-diff --git a/conf/bitbake.conf b/conf/bitbake.conf
-index f5a5a333a..a8cd5c079 100644
---- a/conf/bitbake.conf
-+++ b/conf/bitbake.conf
-@@ -43,4 +43,4 @@ T =3D "${WORKDIR}/temp"
- TARGET_ARCH =3D "${BUILD_ARCH}"
- TMPDIR =3D "${TOPDIR}/tmp"
- WORKDIR =3D "${TMPDIR}/work/${PF}"
--GITPKGV =3D "${@bb.fetch2.get_srcrev(d, 'gitpkgv_revision')}"
-+GITPKGV =3D "${@bb.fetch.get_srcrev(d, 'gitpkgv_revision')}"
-diff --git a/lib/bb/command.py b/lib/bb/command.py
-index 9c421aa9a..068d95c16 100644
---- a/lib/bb/command.py
-+++ b/lib/bb/command.py
-@@ -22,6 +22,7 @@ from collections import OrderedDict, defaultdict
-=20
- import io
- import bb.event
-+import bb.fetch
- import bb.cooker
- import bb.remotedata
- import bb.parse
-diff --git a/lib/bb/cooker.py b/lib/bb/cooker.py
-index 00a6bac55..8a422e506 100644
---- a/lib/bb/cooker.py
-+++ b/lib/bb/cooker.py
-@@ -18,6 +18,7 @@ from io import StringIO, UnsupportedOperation
- from contextlib import closing
- from collections import defaultdict, namedtuple
- import bb, bb.command
-+import bb.fetch
- from bb import utils, data, parse, event, cache, providers, taskdata, runq=
-ueue, build
- import queue
- import signal
-@@ -1600,8 +1601,8 @@ You can also remove the BB_HASHSERVE_UPSTREAM setting=
-, but this may result in si
-=20
-         dump =3D {}
-         # Horrible but for now we need to avoid any sideeffects of autorev=
- being called
--        saved =3D bb.fetch2.get_autorev
--        bb.fetch2.get_autorev =3D dummy_autorev
-+        saved =3D bb.fetch.get_autorev
-+        bb.fetch.get_autorev =3D dummy_autorev
-         for k in self.data.keys():
-             try:
-                 expand =3D True
-@@ -1621,7 +1622,7 @@ You can also remove the BB_HASHSERVE_UPSTREAM setting=
-, but this may result in si
-                             dump[k][d] =3D None
-             except Exception as e:
-                 print(e)
--        bb.fetch2.get_autorev =3D saved
-+        bb.fetch.get_autorev =3D saved
-         return dump
-=20
-=20
-diff --git a/lib/bb/cookerdata.py b/lib/bb/cookerdata.py
-index d307bff0a..d65e3c974 100644
---- a/lib/bb/cookerdata.py
-+++ b/lib/bb/cookerdata.py
-@@ -22,7 +22,7 @@ import bb.codeparser
- import bb.data
- import bb.data_smart
- import bb.event
--import bb.fetch2
-+import bb.fetch
- import bb.parse
- import bb.utils
-=20
-diff --git a/lib/bb/siggen.py b/lib/bb/siggen.py
-index a2ef38e17..76c82c684 100644
---- a/lib/bb/siggen.py
-+++ b/lib/bb/siggen.py
-@@ -11,6 +11,7 @@ import re
- import tempfile
- import pickle
- import bb.data
-+import bb.fetch
- import difflib
- from bb._vendor import simplediff
- import json
-@@ -362,7 +363,7 @@ class SignatureGeneratorBasic(SignatureGenerator):
-             if self.checksum_cache:
-                 checksums =3D self.checksum_cache.get_checksums(dataCaches=
-[mc].file_checksums[mcfn][task], recipename, self.localdirsexclude)
-             else:
--                checksums =3D bb.fetch2.get_file_checksums(dataCaches[mc].=
-file_checksums[mcfn][task], recipename, self.localdirsexclude)
-+                checksums =3D bb.fetch.get_file_checksums(dataCaches[mc].f=
-ile_checksums[mcfn][task], recipename, self.localdirsexclude)
-             for (f,cs) in checksums:
-                 self.file_checksum_values[tid].append((f,cs))
-=20
-@@ -413,8 +414,8 @@ class SignatureGeneratorBasic(SignatureGenerator):
-             self.checksum_cache.save_extras()
-             self.checksum_cache.save_merge()
-         else:
--            bb.fetch2.fetcher_parse_save()
--            bb.fetch2.fetcher_parse_done()
-+            bb.fetch.fetcher_parse_save()
-+            bb.fetch.fetcher_parse_done()
-=20
-     def save_unitaskhashes(self):
-         self.unihash_cache.save(self.unitaskhashes)
-diff --git a/lib/bb/tests/fetch.py b/lib/bb/tests/fetch.py
-index a1e4b45f8..58aff7f67 100644
---- a/lib/bb/tests/fetch.py
-+++ b/lib/bb/tests/fetch.py
-@@ -1,5 +1,5 @@
- #
--# BitBake Tests for the Fetcher (fetch2/)
-+# BitBake Tests for the Fetcher (fetch/)
- #
- # Copyright (C) 2012 Richard Purdie
- #
-@@ -21,7 +21,7 @@ import subprocess
- import json
- import tarfile
- import threading
--from bb.fetch2 import URI
-+from bb.fetch import URI
- import bb
- import bb.utils
- from bb.tests.support.httpserver import HTTPService
-@@ -520,28 +520,28 @@ class MirrorUriTest(FetcherTest):
-         for k, v in self.replaceuris.items():
-             ud =3D bb.fetch.FetchData(k[0], self.d)
-             ud.setup_localpath(self.d)
--            mirrors =3D bb.fetch2.mirror_from_string("%s %s" % (k[1], k[2]=
-))
--            newuris, uds =3D bb.fetch2.build_mirroruris(ud, mirrors, self.=
-d)
-+            mirrors =3D bb.fetch.mirror_from_string("%s %s" % (k[1], k[2])=
-)
-+            newuris, uds =3D bb.fetch.build_mirroruris(ud, mirrors, self.d=
-)
-             self.assertEqual([v] if v else [], newuris)
-=20
-     def test_urilist1(self):
-         fetcher =3D bb.fetch.FetchData("http://downloads.yoctoproject.org/=
-releases/bitbake/bitbake-1.0.tar.gz", self.d)
--        mirrors =3D bb.fetch2.mirror_from_string(self.mirrorvar)
--        uris, uds =3D bb.fetch2.build_mirroruris(fetcher, mirrors, self.d)
-+        mirrors =3D bb.fetch.mirror_from_string(self.mirrorvar)
-+        uris, uds =3D bb.fetch.build_mirroruris(fetcher, mirrors, self.d)
-         self.assertEqual(uris, ['file:///somepath/downloads/bitbake-1.0.ta=
-r.gz', 'file:///someotherpath/downloads/bitbake-1.0.tar.gz'])
-=20
-     def test_urilist2(self):
-         # Catch https:// -> files:// bug
-         fetcher =3D bb.fetch.FetchData("https://downloads.yoctoproject.org=
-/releases/bitbake/bitbake-1.0.tar.gz", self.d)
--        mirrors =3D bb.fetch2.mirror_from_string(self.mirrorvar)
--        uris, uds =3D bb.fetch2.build_mirroruris(fetcher, mirrors, self.d)
-+        mirrors =3D bb.fetch.mirror_from_string(self.mirrorvar)
-+        uris, uds =3D bb.fetch.build_mirroruris(fetcher, mirrors, self.d)
-         self.assertEqual(uris, ['file:///someotherpath/downloads/bitbake-1=
-.0.tar.gz'])
-=20
-     def test_urilistsvn(self):
-         # Catch svn:// -> svn:// bug
-         fetcher =3D bb.fetch.FetchData("svn://svn.server1.com/isource/svnr=
-oot/reponame/tags/tagname;module=3Dpath_in_tagnamefolder;protocol=3Dhttps;r=
-ev=3D2", self.d)
--        mirrors =3D bb.fetch2.mirror_from_string(self.mirrorvar)
--        uris, uds =3D bb.fetch2.build_mirroruris(fetcher, mirrors, self.d)
-+        mirrors =3D bb.fetch.mirror_from_string(self.mirrorvar)
-+        uris, uds =3D bb.fetch.build_mirroruris(fetcher, mirrors, self.d)
-         self.assertEqual(uris, ['svn://svn.server2.com/isource/svnroot/rep=
-oname/tags/tagname;module=3Dpath_in_tagnamefolder;protocol=3Dhttps;rev=3D2'=
-])
-=20
-     def test_mirror_of_mirror(self):
-@@ -549,8 +549,8 @@ class MirrorUriTest(FetcherTest):
-         mirrorvar =3D self.mirrorvar + " http://.*/.* http://otherdownload=
-s.yoctoproject.org/downloads/"
-         mirrorvar =3D mirrorvar + " http://otherdownloads.yoctoproject.org=
-/.* http://downloads2.yoctoproject.org/downloads/"
-         fetcher =3D bb.fetch.FetchData("http://downloads.yoctoproject.org/=
-releases/bitbake/bitbake-1.0.tar.gz", self.d)
--        mirrors =3D bb.fetch2.mirror_from_string(mirrorvar)
--        uris, uds =3D bb.fetch2.build_mirroruris(fetcher, mirrors, self.d)
-+        mirrors =3D bb.fetch.mirror_from_string(mirrorvar)
-+        uris, uds =3D bb.fetch.build_mirroruris(fetcher, mirrors, self.d)
-         self.assertEqual(uris, ['file:///somepath/downloads/bitbake-1.0.ta=
-r.gz',
-                                 'file:///someotherpath/downloads/bitbake-1=
-.0.tar.gz',
-                                 'http://otherdownloads.yoctoproject.org/do=
-wnloads/bitbake-1.0.tar.gz',
-@@ -561,8 +561,8 @@ class MirrorUriTest(FetcherTest):
-=20
-     def test_recursive(self):
-         fetcher =3D bb.fetch.FetchData("https://downloads.yoctoproject.org=
-/releases/bitbake/bitbake-1.0.tar.gz", self.d)
--        mirrors =3D bb.fetch2.mirror_from_string(self.recmirrorvar)
--        uris, uds =3D bb.fetch2.build_mirroruris(fetcher, mirrors, self.d)
-+        mirrors =3D bb.fetch.mirror_from_string(self.recmirrorvar)
-+        uris, uds =3D bb.fetch.build_mirroruris(fetcher, mirrors, self.d)
-         self.assertEqual(uris, ['http://aaaa/A/A/A/bitbake/bitbake-1.0.tar=
-.gz',
-                                 'https://bbbb/B/B/B/bitbake/bitbake-1.0.ta=
-r.gz',
-                                 'http://aaaa/A/A/A/B/B/bitbake/bitbake-1.0=
-.tar.gz'])
-@@ -798,7 +798,7 @@ class FetcherLocalTest(FetcherTest):
-         self.assertEqual(tree, [r'backslash\x2dsystemd-unit.device'])
-=20
-     def test_local_wildcard(self):
--        with self.assertRaises(bb.fetch2.ParameterError):
-+        with self.assertRaises(bb.fetch.ParameterError):
-             tree =3D self.fetchUnpack(['file://a', 'file://dir/*'])
-=20
-     def test_local_dir(self):
-@@ -827,7 +827,7 @@ class FetcherLocalTest(FetcherTest):
-         tree =3D self.fetchUnpack(['file://a;subdir=3D%s' % os.path.join(s=
-elf.unpackdir, 'bar')])
-=20
-         # Unpacking to an absolute path outside of the root should fail
--        with self.assertRaises(bb.fetch2.UnpackError):
-+        with self.assertRaises(bb.fetch.UnpackError):
-             self.fetchUnpack(['file://a;subdir=3D/bin/sh'])
-=20
-     def test_local_striplevel(self):
-@@ -854,20 +854,20 @@ class FetcherLocalTest(FetcherTest):
-=20
-     def test_local_deb_rejects_unknown_data_member_suffix(self):
-         package =3D self.make_ar_package("archive.deb", data_member=3D"dat=
-a.tar.foo")
--        with self.assertRaises(bb.fetch2.UnpackError) as context:
-+        with self.assertRaises(bb.fetch.UnpackError) as context:
-             self.fetchUnpack(['file://%s' % package])
-=20
-         self.assertIn("does not contain supported data.tar* file", str(con=
-text.exception))
-=20
-     def test_local_deb_rejects_unsafe_data_member(self):
-         package =3D self.make_ar_package("archive.deb", data_member=3D"dat=
-a.tar.xz;id")
--        with self.assertRaises(bb.fetch2.UnpackError) as context:
-+        with self.assertRaises(bb.fetch.UnpackError) as context:
-             self.fetchUnpack(['file://%s' % package])
-=20
-         self.assertIn("does not contain supported data.tar* file", str(con=
-text.exception))
-=20
-     def assertInvalidStriplevel(self, value):
--        with self.assertRaises(bb.fetch2.UnpackError) as context:
-+        with self.assertRaises(bb.fetch.UnpackError) as context:
-             self.fetchUnpack(['file://archive.tar;subdir=3Dbar;striplevel=
-=3D%s' % value])
-         self.assertIn("Invalid striplevel parameter", str(context.exceptio=
-n))
-=20
-@@ -931,7 +931,7 @@ class FetcherNoNetworkTest(FetcherTest):
-         self.assertFalse(os.path.exists(os.path.join(self.dldir, "test-fil=
-e.tar.gz")))
-         self.assertFalse(os.path.exists(os.path.join(self.dldir, "test-fil=
-e.tar.gz.done")))
-         fetcher =3D bb.fetch.Fetch(["http://invalid.yoctoproject.org/test-=
-file.tar.gz"], self.d)
--        with self.assertRaises(bb.fetch2.NetworkAccess):
-+        with self.assertRaises(bb.fetch.NetworkAccess):
-             fetcher.download()
-=20
-     def test_valid_missing_donestamp(self):
-@@ -961,7 +961,7 @@ class FetcherNoNetworkTest(FetcherTest):
-         self.assertTrue(os.path.exists(os.path.join(self.dldir, "test-file=
-.tar.gz")))
-         self.assertFalse(os.path.exists(os.path.join(self.dldir, "test-fil=
-e.tar.gz.done")))
-         fetcher =3D bb.fetch.Fetch(["http://invalid.yoctoproject.org/test-=
-file.tar.gz"], self.d)
--        with self.assertRaises(bb.fetch2.NetworkAccess):
-+        with self.assertRaises(bb.fetch.NetworkAccess):
-             fetcher.download()
-         # the existing file should not exist or should have be moved to "b=
-ad-checksum"
-         self.assertFalse(os.path.exists(os.path.join(self.dldir, "test-fil=
-e.tar.gz")))
-@@ -972,7 +972,7 @@ class FetcherNoNetworkTest(FetcherTest):
-         # ssh fetch does not support checksums
-         fetcher =3D bb.fetch.Fetch(["ssh://invalid@invalid.yoctoproject.or=
-g/test-file.tar.gz"], self.d)
-         # attempts to download with missing donestamp
--        with self.assertRaises(bb.fetch2.NetworkAccess):
-+        with self.assertRaises(bb.fetch.NetworkAccess):
-             fetcher.download()
-=20
-     def test_nochecksums_missing_donestamp(self):
-@@ -985,7 +985,7 @@ class FetcherNoNetworkTest(FetcherTest):
-         # ssh fetch does not support checksums
-         fetcher =3D bb.fetch.Fetch(["ssh://invalid@invalid.yoctoproject.or=
-g/test-file.tar.gz"], self.d)
-         # attempts to download with missing donestamp
--        with self.assertRaises(bb.fetch2.NetworkAccess):
-+        with self.assertRaises(bb.fetch.NetworkAccess):
-             fetcher.download()
-=20
-     def test_nochecksums_has_donestamp(self):
-@@ -1014,7 +1014,7 @@ class FetcherNoNetworkTest(FetcherTest):
-         self.assertTrue(os.path.exists(os.path.join(self.dldir, "test-file=
-.tar.gz.done")))
-         # ssh fetch does not support checksums
-         fetcher =3D bb.fetch.Fetch(["ssh://invalid@invalid.yoctoproject.or=
-g/test-file.tar.gz"], self.d)
--        with self.assertRaises(bb.fetch2.NetworkAccess):
-+        with self.assertRaises(bb.fetch.NetworkAccess):
-             fetcher.download()
-         # both files should still exist
-         self.assertFalse(os.path.exists(os.path.join(self.dldir, "test-fil=
-e.tar.gz")))
-@@ -1315,7 +1315,7 @@ class FetcherNetworkTest(FetcherTest):
-         self.d.setVar("SRCREV", "14e1138441bbbb584160cb1c0a0426ec1bac35f1"=
-)
-         with Timeout(60):
-             fetcher =3D bb.fetch.Fetch([self.recipe_url], self.d)
--            with self.assertRaises(bb.fetch2.FetchError):
-+            with self.assertRaises(bb.fetch.FetchError):
-                 fetcher.download()
-=20
- class SVNTest(FetcherTest):
-@@ -1601,7 +1601,7 @@ class FetchLatestVersionTest(FetcherTest):
-                 self.d.setVar("PN", k[0])
-                 self.d.setVar("SRCREV", k[2])
-                 self.d.setVar("UPSTREAM_CHECK_GITTAGREGEX", k[3])
--                ud =3D bb.fetch2.FetchData(k[1], self.d)
-+                ud =3D bb.fetch.FetchData(k[1], self.d)
-                 pupver=3D ud.method.latest_versionstring(ud, self.d)
-                 verstring =3D pupver[0]
-                 self.assertTrue(verstring, msg=3D"Could not find upstream =
-version for %s" % k[0])
-@@ -1628,7 +1628,7 @@ class FetchLatestVersionTest(FetcherTest):
-                         self.d.setVar("UPSTREAM_CHECK_REGEX", data.check_r=
-egex)
-=20
-                     url =3D "http://127.0.0.1:%s/%s" % (port, data.path)
--                    ud =3D bb.fetch2.FetchData(url, self.d)
-+                    ud =3D bb.fetch.FetchData(url, self.d)
-                     pupver =3D ud.method.latest_versionstring(ud, self.d)
-                     verstring =3D pupver[0]
-                     self.assertTrue(verstring, msg=3D"Could not find upstr=
-eam version for %s" % data.pn)
-@@ -1642,7 +1642,7 @@ class FetchLatestVersionTest(FetcherTest):
-         for k, v in self.test_crate_uris.items():
-             with self.subTest(pn=3Dk[0]):
-                 self.d.setVar("PN", k[0])
--                ud =3D bb.fetch2.FetchData(k[1], self.d)
-+                ud =3D bb.fetch.FetchData(k[1], self.d)
-                 pupver =3D ud.method.latest_versionstring(ud, self.d)
-                 verstring =3D pupver[0]
-                 self.assertTrue(verstring, msg=3D"Could not find upstream =
-version for %s" % k[0])
-@@ -1657,7 +1657,7 @@ class FetchLatestVersionTest(FetcherTest):
-                 self.d.setVar("SRCREV", k[2])
-                 self.d.setVar("UPSTREAM_CHECK_GITTAGREGEX", k[3])
-                 filter_regex =3D k[4]
--                ud =3D bb.fetch2.FetchData(k[1], self.d)
-+                ud =3D bb.fetch.FetchData(k[1], self.d)
-                 pupver=3D ud.method.latest_versionstring(ud, self.d, filte=
-r_regex=3Dfilter_regex)
-                 verstring =3D pupver[0]
-                 self.assertTrue(verstring, msg=3D"Could not find upstream =
-version for %s" % k[0])
-@@ -1680,7 +1680,7 @@ class FetchLatestVersionTest(FetcherTest):
-                 if k[4]:
-                     self.d.setVar("UPSTREAM_CHECK_REGEX", k[4])
-                 filter_regex =3D k[5]
--                ud =3D bb.fetch2.FetchData(url, self.d)
-+                ud =3D bb.fetch.FetchData(url, self.d)
-                 pupver=3D ud.method.latest_versionstring(ud, self.d, filte=
-r_regex=3Dfilter_regex)
-                 verstring =3D pupver[0]
-                 self.assertTrue(verstring, msg=3D"Could not find upstream =
-version for %s" % k[0])
-@@ -1696,7 +1696,7 @@ class FetchLatestVersionTest(FetcherTest):
-         for k, v in self.test_crate_stable_uris.items():
-             with self.subTest(pn=3Dk[0]):
-                 self.d.setVar("PN", k[0])
--                ud =3D bb.fetch2.FetchData(k[1], self.d)
-+                ud =3D bb.fetch.FetchData(k[1], self.d)
-                 filter_regex =3D k[2]
-                 pupver =3D ud.method.latest_versionstring(ud, self.d, filt=
-er_regex=3Dfilter_regex)
-                 verstring =3D pupver[0]
-@@ -1750,13 +1750,13 @@ class FetchCheckStatusTest(FetcherTest):
-         return server
-=20
-     def _checkstatus(self, url):
--        fetch =3D bb.fetch2.Fetch([url], self.d)
-+        fetch =3D bb.fetch.Fetch([url], self.d)
-         ud =3D fetch.ud[url]
-         return ud.method.checkstatus(fetch, ud, self.d)
-=20
-     @skipIfNoNetwork()
-     def test_wget_checkstatus(self):
--        fetch =3D bb.fetch2.Fetch(self.test_wget_uris, self.d)
-+        fetch =3D bb.fetch.Fetch(self.test_wget_uris, self.d)
-         for u in self.test_wget_uris:
-             with self.subTest(url=3Du):
-                 ud =3D fetch.ud[u]
-@@ -1766,10 +1766,10 @@ class FetchCheckStatusTest(FetcherTest):
-=20
-     @skipIfNoNetwork()
-     def test_wget_checkstatus_connection_cache(self):
--        from bb.fetch2 import FetchConnectionCache
-+        from bb.fetch import FetchConnectionCache
-=20
-         connection_cache =3D FetchConnectionCache()
--        fetch =3D bb.fetch2.Fetch(self.test_wget_uris, self.d,
-+        fetch =3D bb.fetch.Fetch(self.test_wget_uris, self.d,
-                     connection_cache =3D connection_cache)
-=20
-         for u in self.test_wget_uris:
-@@ -1785,7 +1785,7 @@ class FetchCheckStatusTest(FetcherTest):
-     def test_wget_checkstatus_https_connection_cache(self):
-         import ssl
-         from socketserver import ThreadingMixIn
--        from bb.fetch2 import FetchConnectionCache
-+        from bb.fetch import FetchConnectionCache
-=20
-         class HTTPSRequestHandler(http.server.BaseHTTPRequestHandler):
-             protocol_version =3D "HTTP/1.1"
-@@ -1832,7 +1832,7 @@ class FetchCheckStatusTest(FetcherTest):
-         try:
-             url =3D "https://127.0.0.1:%s/test" % server.server_port
-             self.d.setVar("BB_CHECK_SSL_CERTS", "0")
--            fetch =3D bb.fetch2.Fetch([url], self.d,
-+            fetch =3D bb.fetch.Fetch([url], self.d,
-                                     connection_cache=3Dconnection_cache)
-             ud =3D fetch.ud[url]
-             self.assertTrue(ud.method.checkstatus(fetch, ud, self.d))
-@@ -1918,7 +1918,7 @@ class GitShallowTest(FetcherTest):
-         uri =3D 'git://%s;protocol=3Dfile;subdir=3D${S};branch=3Dmaster' %=
- self.srcdir
-         self.d.setVar('SRC_URI', uri)
-         self.d.setVar('SRCREV', '${AUTOREV}')
--        self.d.setVar('AUTOREV', '${@bb.fetch2.get_autorev(d)}')
-+        self.d.setVar('AUTOREV', '${@bb.fetch.get_autorev(d)}')
-=20
-         self.d.setVar('BB_GIT_SHALLOW', '1')
-         self.d.setVar('BB_GENERATE_MIRROR_TARBALLS', '0')
-@@ -1963,7 +1963,7 @@ class GitShallowTest(FetcherTest):
-             uri =3D d.expand(uri)
-             uris =3D [uri]
-=20
--        fetcher =3D bb.fetch2.Fetch(uris, d)
-+        fetcher =3D bb.fetch.Fetch(uris, d)
-         fetcher.download()
-         ud =3D fetcher.ud[uri]
-         return fetcher, ud
-@@ -2294,7 +2294,7 @@ class GitShallowTest(FetcherTest):
-         self.add_empty_file('b')
-=20
-         self.d.setVar('BB_GIT_SHALLOW_DEPTH', '-12')
--        with self.assertRaises(bb.fetch2.FetchError):
-+        with self.assertRaises(bb.fetch.FetchError):
-             self.fetch()
-=20
-     def test_shallow_invalid_depth_default(self):
-@@ -2302,7 +2302,7 @@ class GitShallowTest(FetcherTest):
-         self.add_empty_file('b')
-=20
-         self.d.setVar('BB_GIT_SHALLOW_DEPTH_default', '-12')
--        with self.assertRaises(bb.fetch2.FetchError):
-+        with self.assertRaises(bb.fetch.FetchError):
-             self.fetch()
-=20
-     def test_shallow_extra_refs(self):
-@@ -2367,7 +2367,7 @@ class GitShallowTest(FetcherTest):
-         self.add_empty_file('b')
-=20
-         self.d.setVar('BB_GIT_SHALLOW_EXTRA_REFS', 'refs/heads/foo')
--        with self.assertRaises(bb.fetch2.FetchError):
-+        with self.assertRaises(bb.fetch.FetchError):
-             self.fetch()
-=20
-     def test_shallow_missing_extra_refs_wildcard(self):
-@@ -2406,7 +2406,7 @@ class GitShallowTest(FetcherTest):
-         self.d.setVar('BB_GIT_SHALLOW_DEPTH', '0')
-         self.d.setVar('BB_GIT_SHALLOW_REVS', 'v0.0')
-=20
--        with self.assertRaises(bb.fetch2.FetchError):
-+        with self.assertRaises(bb.fetch.FetchError):
-             self.fetch()
-=20
-     def test_shallow_fetch_missing_revs(self):
-@@ -2417,7 +2417,7 @@ class GitShallowTest(FetcherTest):
-         self.d.setVar('BB_GIT_SHALLOW_DEPTH', '0')
-         self.d.setVar('BB_GIT_SHALLOW_REVS', 'v0.0')
-=20
--        with self.assertRaises(bb.fetch2.FetchError), self.assertLogs("Bit=
-Bake.Fetcher", level=3D"ERROR") as cm:
-+        with self.assertRaises(bb.fetch.FetchError), self.assertLogs("BitB=
-ake.Fetcher", level=3D"ERROR") as cm:
-             self.fetch_shallow()
-         self.assertIn("fatal: no commits selected for shallow requests", c=
-m.output[0])
-=20
-@@ -2428,7 +2428,7 @@ class GitShallowTest(FetcherTest):
-         self.d.setVar('BB_GIT_SHALLOW_DEPTH', '0')
-         self.d.setVar('BB_GIT_SHALLOW_REVS', 'v0.0')
-=20
--        with self.assertRaises(bb.fetch2.FetchError), self.assertLogs("Bit=
-Bake.Fetcher", level=3D"ERROR") as cm:
-+        with self.assertRaises(bb.fetch.FetchError), self.assertLogs("BitB=
-ake.Fetcher", level=3D"ERROR") as cm:
-             self.fetch_shallow()
-         self.assertIn("Unable to find revision v0.0 even from upstream", c=
-m.output[0])
-=20
-@@ -2485,7 +2485,7 @@ class GitShallowTest(FetcherTest):
-         bb.utils.remove(self.gitdir, recurse=3DTrue)
-         bb.utils.remove(self.dldir, recurse=3DTrue)
-=20
--        with self.assertRaises(bb.fetch2.UnpackError) as context:
-+        with self.assertRaises(bb.fetch.UnpackError) as context:
-             fetcher.unpack(self.d.getVar('WORKDIR'))
-=20
-         self.assertIn("No up to date source found", context.exception.msg)
-@@ -2534,7 +2534,7 @@ class GitLfsTest(FetcherTest):
-         self.d.delVar('MIRRORS')
-=20
-         self.d.setVar('SRCREV', '${AUTOREV}')
--        self.d.setVar('AUTOREV', '${@bb.fetch2.get_autorev(d)}')
-+        self.d.setVar('AUTOREV', '${@bb.fetch.get_autorev(d)}')
-         self.d.setVar("__BBSRCREV_SEEN", "1")
-=20
-         bb.utils.mkdirhier(self.srcdir)
-@@ -2559,7 +2559,7 @@ class GitLfsTest(FetcherTest):
-         uri =3D uris[0]
-         d =3D self.d
-=20
--        fetcher =3D bb.fetch2.Fetch(uris, d)
-+        fetcher =3D bb.fetch.Fetch(uris, d)
-         if download:
-             fetcher.download()
-         ud =3D fetcher.ud[uri]
-@@ -2758,7 +2758,7 @@ class GitLfsTest(FetcherTest):
-=20
-         fetcher.download()
-         # If git-lfs cannot be found, the unpack should throw an error
--        with self.assertRaises(bb.fetch2.FetchError):
-+        with self.assertRaises(bb.fetch.FetchError):
-             with unittest.mock.patch("shutil.which", return_value=3DNone):
-                 shutil.rmtree(self.gitdir, ignore_errors=3DTrue)
-                 fetcher.unpack(self.d.getVar('WORKDIR'))
-@@ -2772,7 +2772,7 @@ class GitLfsTest(FetcherTest):
-=20
-         # If git-lfs cannot be found, the download should throw an error
-         with unittest.mock.patch("shutil.which", return_value=3DNone):
--            with self.assertRaises(bb.fetch2.FetchError):
-+            with self.assertRaises(bb.fetch.FetchError):
-                 fetcher.download()
-=20
-     def test_lfs_disabled_not_installed(self):
-@@ -2862,7 +2862,7 @@ class FetchLocallyMissingTagFromRemote(FetcherTest):
-         self.git(['commit', '-m', 'dummymsg', 'dummyfile'], self.srcdir)
-=20
-     def _fetch_and_unpack(self, uri_to_fetch):
--        fetcher =3D bb.fetch2.Fetch([uri_to_fetch], self.d)
-+        fetcher =3D bb.fetch.Fetch([uri_to_fetch], self.d)
-         fetcher.download()
-         fetcher.unpack(self.d.getVar('WORKDIR'))
-=20
-@@ -2896,7 +2896,7 @@ class CrateTest(FetcherTest):
-         uris =3D self.d.getVar('SRC_URI').split()
-         d =3D self.d
-=20
--        fetcher =3D bb.fetch2.Fetch(uris, self.d)
-+        fetcher =3D bb.fetch.Fetch(uris, self.d)
-         ud =3D fetcher.ud[fetcher.urls[0]]
-=20
-         self.assertIn("name", ud.parm)
-@@ -2922,7 +2922,7 @@ class CrateTest(FetcherTest):
-         uris =3D self.d.getVar('SRC_URI').split()
-         d =3D self.d
-=20
--        fetcher =3D bb.fetch2.Fetch(uris, self.d)
-+        fetcher =3D bb.fetch.Fetch(uris, self.d)
-         ud =3D fetcher.ud[fetcher.urls[0]]
-=20
-         self.assertIn("name", ud.parm)
-@@ -2945,7 +2945,7 @@ class CrateTest(FetcherTest):
-         uris =3D self.d.getVar('SRC_URI').split()
-         d =3D self.d
-=20
--        fetcher =3D bb.fetch2.Fetch(uris, self.d)
-+        fetcher =3D bb.fetch.Fetch(uris, self.d)
-         ud =3D fetcher.ud[fetcher.urls[0]]
-=20
-         self.assertIn("name", ud.parm)
-@@ -2969,7 +2969,7 @@ class CrateTest(FetcherTest):
-         uris =3D self.d.getVar('SRC_URI').split()
-         d =3D self.d
-=20
--        fetcher =3D bb.fetch2.Fetch(uris, self.d)
-+        fetcher =3D bb.fetch.Fetch(uris, self.d)
-         ud =3D fetcher.ud[fetcher.urls[0]]
-=20
-         self.assertIn("name", ud.parm)
-@@ -3000,8 +3000,8 @@ class CrateTest(FetcherTest):
-=20
-         uris =3D self.d.getVar('SRC_URI').split()
-=20
--        fetcher =3D bb.fetch2.Fetch(uris, self.d)
--        with self.assertRaisesRegex(bb.fetch2.FetchError, "Fetcher failure=
- for URL"):
-+        fetcher =3D bb.fetch.Fetch(uris, self.d)
-+        with self.assertRaisesRegex(bb.fetch.FetchError, "Fetcher failure =
-for URL"):
-             fetcher.download()
-=20
- class NPMTest(FetcherTest):
-@@ -3151,7 +3151,7 @@ class NPMTest(FetcherTest):
-                 '83f1263230afc588123958b73e36bb241f63eaf08119aac5aa2a870bc=
-4de9223']
-         self.d.setVar('BB_NO_NETWORK', '1')
-         fetcher =3D bb.fetch.Fetch(urls, self.d)
--        with self.assertRaises(bb.fetch2.NetworkAccess):
-+        with self.assertRaises(bb.fetch.NetworkAccess):
-             fetcher.download()
-=20
-     @skipIfNoNpm()
-@@ -3186,7 +3186,7 @@ class NPMTest(FetcherTest):
-     @skipIfNoNpm()
-     def test_npm_version_latest_rejected(self):
-         url =3D ['npm://registry.npmjs.org;package=3D@savoirfairelinux/nod=
-e-server-example;version=3Dlatest']
--        with self.assertRaises(bb.fetch2.ParameterError):
-+        with self.assertRaises(bb.fetch.ParameterError):
-             bb.fetch.Fetch(url, self.d)
-=20
-     @skipIfNoNpm()
-@@ -3196,7 +3196,7 @@ class NPMTest(FetcherTest):
-                 ';sha512sum=3Df2dd7d88cb9a129fbb97eb87a8b5103bab24f783420f=
-d7587f8000a355a12bf7'
-                 '83f1263230afc588123958b73e36bb241f63eaf08119aac5aa2a870bc=
-4de9223']
-         fetcher =3D bb.fetch.Fetch(urls, self.d)
--        with self.assertRaises(bb.fetch2.FetchError):
-+        with self.assertRaises(bb.fetch.FetchError):
-             fetcher.download()
-=20
-     @skipIfNoNpm()
-@@ -3206,14 +3206,14 @@ class NPMTest(FetcherTest):
-                 ';sha512sum=3Df2dd7d88cb9a129fbb97eb87a8b5103bab24f783420f=
-d7587f8000a355a12bf7'
-                 '83f1263230afc588123958b73e36bb241f63eaf08119aac5aa2a870bc=
-4de9223']
-         fetcher =3D bb.fetch.Fetch(urls, self.d)
--        with self.assertRaises(bb.fetch2.FetchError):
-+        with self.assertRaises(bb.fetch.FetchError):
-             fetcher.download()
-=20
-     @skipIfNoNpm()
-     @skipIfNoNetwork()
-     def test_npm_version_invalid(self):
-         urls =3D ['npm://registry.npmjs.org;package=3D@savoirfairelinux/no=
-de-server-example;version=3Dinvalid']
--        with self.assertRaises(bb.fetch2.ParameterError):
-+        with self.assertRaises(bb.fetch.ParameterError):
-             fetcher =3D bb.fetch.Fetch(urls, self.d)
-=20
-     @skipIfNoNpm()
-@@ -3221,7 +3221,7 @@ class NPMTest(FetcherTest):
-     def test_npm_recipe_checksum(self):
-         """A sha512sum param in SRC_URI is forwarded to the proxy and veri=
-fied."""
-         import subprocess
--        from bb.fetch2.npm import npm_integrity
-+        from bb.fetch.npm import npm_integrity
-         result =3D subprocess.run(
-             ['npm', 'view', '--json', '@savoirfairelinux/node-server-examp=
-le@1.0.0'],
-             capture_output=3DTrue, text=3DTrue)
-@@ -3249,7 +3249,7 @@ class NPMTest(FetcherTest):
-         urls =3D ['npm://registry.npmjs.org;package=3D@savoirfairelinux/no=
-de-server-example'
-                 ';version=3D1.0.0;sha512sum=3Ddeadbeef00']
-         fetcher =3D bb.fetch.Fetch(urls, self.d)
--        with self.assertRaises(bb.fetch2.FetchError):
-+        with self.assertRaises(bb.fetch.FetchError):
-             fetcher.download()
-=20
-     @skipIfNoNpm()
-@@ -3267,28 +3267,28 @@ class NPMTest(FetcherTest):
-                 self.d.delVar('BB_STRICT_CHECKSUM')
-             else:
-                 self.d.setVar('BB_STRICT_CHECKSUM', strict)
--            with self.assertRaises(bb.fetch2.MissingParameterError):
-+            with self.assertRaises(bb.fetch.MissingParameterError):
-                 bb.fetch.Fetch(urls, self.d)
-=20
-     @skipIfNoNpm()
-     @skipIfNoNetwork()
-     def test_npm_registry_none(self):
-         urls =3D ['npm://;package=3D@savoirfairelinux/node-server-example;=
-version=3D1.0.0']
--        with self.assertRaises(bb.fetch2.MalformedUrl):
-+        with self.assertRaises(bb.fetch.MalformedUrl):
-             fetcher =3D bb.fetch.Fetch(urls, self.d)
-=20
-     @skipIfNoNpm()
-     @skipIfNoNetwork()
-     def test_npm_package_none(self):
-         urls =3D ['npm://registry.npmjs.org;version=3D1.0.0']
--        with self.assertRaises(bb.fetch2.MissingParameterError):
-+        with self.assertRaises(bb.fetch.MissingParameterError):
-             fetcher =3D bb.fetch.Fetch(urls, self.d)
-=20
-     @skipIfNoNpm()
-     @skipIfNoNetwork()
-     def test_npm_version_none(self):
-         urls =3D ['npm://registry.npmjs.org;package=3D@savoirfairelinux/no=
-de-server-example']
--        with self.assertRaises(bb.fetch2.MissingParameterError):
-+        with self.assertRaises(bb.fetch.MissingParameterError):
-             fetcher =3D bb.fetch.Fetch(urls, self.d)
-=20
-     def create_shrinkwrap_file(self, data):
-@@ -3405,7 +3405,7 @@ class NPMTest(FetcherTest):
-         })
-         self.d.setVar('BB_NO_NETWORK', '1')
-         fetcher =3D bb.fetch.Fetch(['npmsw://' + swfile], self.d)
--        with self.assertRaises(bb.fetch2.NetworkAccess):
-+        with self.assertRaises(bb.fetch.NetworkAccess):
-             fetcher.download()
-=20
-     @skipIfNoNpm()
-@@ -3466,7 +3466,7 @@ class NPMTest(FetcherTest):
-             }
-         })
-         fetcher =3D bb.fetch.Fetch(['npmsw://' + swfile], self.d)
--        with self.assertRaises(bb.fetch2.FetchError):
-+        with self.assertRaises(bb.fetch.FetchError):
-             fetcher.download()
-         # Fetch correctly to get a tarball
-         swfile =3D self.create_shrinkwrap_file({
-@@ -3634,7 +3634,7 @@ class GitTagVerificationTests(FetcherTest):
-     def test_tag_rev_match4(self):
-         # Test a url with SRCREV and rev=3D mismatching errors
-         self.d.setVar('SRCREV', 'bade540fc31a1c26839efd2c7785a751ce24ebfb'=
-)
--        with self.assertRaises(bb.fetch2.FetchError):
-+        with self.assertRaises(bb.fetch.FetchError):
-             fetcher =3D bb.fetch.Fetch(["git://git.openembedded.org/bitbak=
-e;branch=3D2.12;protocol=3Dhttps;rev=3D5b4e20377eea8d428edf1aeb2187c18f82ca=
-6757;tag=3D2.12.0"], self.d)
-=20
-     @skipIfNoNetwork()
-@@ -3652,7 +3652,7 @@ class GitTagVerificationTests(FetcherTest):
-         self.d.setVar('BB_GIT_SHALLOW', '1')
-         fetcher =3D bb.fetch.Fetch(["git://git.openembedded.org/bitbake;br=
-anch=3D2.12;protocol=3Dhttps;rev=3D5b4e20377eea8d428edf1aeb2187c18f82ca6757=
-;tag=3D2.8.0"], self.d)
-         fetcher.download()
--        with self.assertRaises(bb.fetch2.FetchError):
-+        with self.assertRaises(bb.fetch.FetchError):
-             fetcher.unpack(self.unpackdir)
-=20
-     @skipIfNoNetwork()
-@@ -3661,7 +3661,7 @@ class GitTagVerificationTests(FetcherTest):
-         self.d.setVar('SRCREV', '5b4e20377eea8d428edf1aeb2187c18f82ca6757'=
-)
-         fetcher =3D bb.fetch.Fetch(["git://git.openembedded.org/bitbake;br=
-anch=3D2.12;protocol=3Dhttps;rev=3D5b4e20377eea8d428edf1aeb2187c18f82ca6757=
-;tag=3D2.8.0"], self.d)
-         fetcher.download()
--        with self.assertRaises(bb.fetch2.FetchError):
-+        with self.assertRaises(bb.fetch.FetchError):
-             fetcher.unpack(self.unpackdir)
-=20
-=20
-@@ -3730,7 +3730,7 @@ class FetchPremirroronlyLocalTest(FetcherTest):
-         self.make_git_repo()
-         self.d.setVar("SRCREV", "0"*40)
-         fetcher =3D bb.fetch.Fetch([self.recipe_url], self.d)
--        with self.assertRaises(bb.fetch2.NetworkAccess):
-+        with self.assertRaises(bb.fetch.NetworkAccess):
-             fetcher.download()
-=20
-     def test_mirror_commit_exists(self):
-@@ -3743,7 +3743,7 @@ class FetchPremirroronlyLocalTest(FetcherTest):
-     def test_mirror_tarball_nonexistent(self):
-         self.d.setVar("SRCREV", "0"*40)
-         fetcher =3D bb.fetch.Fetch([self.recipe_url], self.d)
--        with self.assertRaises(bb.fetch2.NetworkAccess):
-+        with self.assertRaises(bb.fetch.NetworkAccess):
-             fetcher.download()
-=20
-=20
-@@ -3784,7 +3784,7 @@ class FetchPremirroronlyNetworkTest(FetcherTest):
-         ## Upstream commit not in the mirror
-         self.d.setVar("SRCREV", "49d65d53c2bf558ae6e9185af0f3af7b79d255ec"=
-)
-         fetcher =3D bb.fetch.Fetch([self.recipe_url], self.d)
--        with self.assertRaises(bb.fetch2.NetworkAccess):
-+        with self.assertRaises(bb.fetch.NetworkAccess):
-             fetcher.download()
-=20
- class FetchPremirroronlyMercurialTest(FetcherTest):
-@@ -3849,7 +3849,7 @@ class FetchPremirroronlyBrokenTarball(FetcherTest):
-     def test_mirror_broken_download(self):
-         self.d.setVar("SRCREV", "0"*40)
-         fetcher =3D bb.fetch.Fetch([self.recipe_url], self.d)
--        with self.assertRaises(bb.fetch2.FetchError), self.assertLogs() as=
- logs:
-+        with self.assertRaises(bb.fetch.FetchError), self.assertLogs() as =
-logs:
-             fetcher.download()
-         output =3D "".join(logs.output)
-         self.assertFalse(" not a git repository (or any parent up to mount=
- point /)" in output)
-@@ -3861,7 +3861,7 @@ class GoModTest(FetcherTest):
-         urls =3D ['gomod://github.com/Azure/azure-sdk-for-go/sdk/storage/a=
-zblob;version=3Dv1.0.0;'
-                 'sha256sum=3D9bb69aea32f1d59711701f9562d66432c9c0374205e50=
-09d1d1a62f03fb4fdad']
-=20
--        fetcher =3D bb.fetch2.Fetch(urls, self.d)
-+        fetcher =3D bb.fetch.Fetch(urls, self.d)
-         ud =3D fetcher.ud[urls[0]]
-         self.assertEqual(ud.url, 'https://proxy.golang.org/github.com/%21a=
-zure/azure-sdk-for-go/sdk/storage/azblob/%40v/v1.0.0.zip')
-         self.assertEqual(ud.parm['downloadfilename'], 'github.com.Azure.az=
-ure-sdk-for-go.sdk.storage.azblob@v1.0.0.zip')
-@@ -3880,7 +3880,7 @@ class GoModTest(FetcherTest):
-         urls =3D ['gomod://github.com/Azure/azure-sdk-for-go/sdk/storage/a=
-zblob;version=3Dv1.0.0;mod=3D1;'
-                 'sha256sum=3D7873b8544842329b4f385a3aa6cf82cc2bc8defb41a04=
-fa5291c35fd5900e873']
-=20
--        fetcher =3D bb.fetch2.Fetch(urls, self.d)
-+        fetcher =3D bb.fetch.Fetch(urls, self.d)
-         ud =3D fetcher.ud[urls[0]]
-         self.assertEqual(ud.url, 'https://proxy.golang.org/github.com/%21a=
-zure/azure-sdk-for-go/sdk/storage/azblob/%40v/v1.0.0.mod')
-         self.assertEqual(ud.parm['downloadfilename'], 'github.com.Azure.az=
-ure-sdk-for-go.sdk.storage.azblob@v1.0.0.mod')
-@@ -3896,7 +3896,7 @@ class GoModTest(FetcherTest):
-         urls =3D ['gomod://gopkg.in/ini.v1;version=3Dv1.67.0']
-         self.d.setVarFlag('SRC_URI', 'gopkg.in/ini.v1@v1.67.0.sha256sum', =
-'bd845dfc762a87a56e5a32a07770dc83e86976db7705d7f89c5dbafdc60b06c6')
-=20
--        fetcher =3D bb.fetch2.Fetch(urls, self.d)
-+        fetcher =3D bb.fetch.Fetch(urls, self.d)
-         ud =3D fetcher.ud[urls[0]]
-         self.assertEqual(ud.url, 'https://proxy.golang.org/gopkg.in/ini.v1=
-/%40v/v1.67.0.zip')
-         self.assertEqual(ud.parm['downloadfilename'], 'gopkg.in.ini.v1@v1.=
-67.0.zip')
-@@ -3915,7 +3915,7 @@ class GoModTest(FetcherTest):
-         urls =3D ['gomod://gopkg.in/ini.v1;version=3Dv1.67.0;'
-                 'sha256sum=3Dbd845dfc762a87a56e5a32a07770dc83e86976db7705d=
-7f89c5dbafdc60b06c6']
-=20
--        fetcher =3D bb.fetch2.Fetch(urls, self.d)
-+        fetcher =3D bb.fetch.Fetch(urls, self.d)
-         ud =3D fetcher.ud[urls[0]]
-         self.assertEqual(ud.url, 'https://proxy.golang.org/gopkg.in/ini.v1=
-/%40v/v1.67.0.zip')
-         self.assertEqual(ud.parm['downloadfilename'], 'gopkg.in.ini.v1@v1.=
-67.0.zip')
-@@ -3934,7 +3934,7 @@ class GoModTest(FetcherTest):
-         urls =3D ['gomod://go.opencensus.io;version=3Dv0.24.0;'
-                 'sha256sum=3D203a767d7f8e7c1ebe5588220ad168d1e15b14ae70a63=
-6de7ca9a4a88a7e0d0c']
-=20
--        fetcher =3D bb.fetch2.Fetch(urls, self.d)
-+        fetcher =3D bb.fetch.Fetch(urls, self.d)
-         ud =3D fetcher.ud[urls[0]]
-         self.assertEqual(ud.url, 'https://proxy.golang.org/go.opencensus.i=
-o/%40v/v0.24.0.zip')
-         self.assertEqual(ud.parm['downloadfilename'], 'go.opencensus.io@v0=
-.24.0.zip')
-@@ -3956,7 +3956,7 @@ class GoModGitTest(FetcherTest):
-                 'repo=3Dgo.googlesource.com/net;'
-                 'srcrev=3D694cff8668bac64e0864b552bffc280cd27f21b1']
-=20
--        fetcher =3D bb.fetch2.Fetch(urls, self.d)
-+        fetcher =3D bb.fetch.Fetch(urls, self.d)
-         ud =3D fetcher.ud[urls[0]]
-         self.assertEqual(ud.host, 'go.googlesource.com')
-         self.assertEqual(ud.path, '/net')
-@@ -3981,7 +3981,7 @@ class GoModGitTest(FetcherTest):
-                 'repo=3Dgithub.com/Azure/azure-sdk-for-go;subdir=3Dsdk/sto=
-rage/azblob;'
-                 'srcrev=3Dec928e0ed34db682b3f783d3739d1c538142e0c3']
-=20
--        fetcher =3D bb.fetch2.Fetch(urls, self.d)
-+        fetcher =3D bb.fetch.Fetch(urls, self.d)
-         ud =3D fetcher.ud[urls[0]]
-         self.assertEqual(ud.host, 'github.com')
-         self.assertEqual(ud.path, '/Azure/azure-sdk-for-go')
-@@ -4006,7 +4006,7 @@ class GoModGitTest(FetcherTest):
-         urls =3D ['gomodgit://gopkg.in/ini.v1;version=3Dv1.67.0']
-         self.d.setVar('SRCREV_gopkg.in/ini.v1@v1.67.0', 'b2f570e5b5b844226=
-bbefe6fb521d891f529a951')
-=20
--        fetcher =3D bb.fetch2.Fetch(urls, self.d)
-+        fetcher =3D bb.fetch.Fetch(urls, self.d)
-         ud =3D fetcher.ud[urls[0]]
-         self.assertEqual(ud.host, 'gopkg.in')
-         self.assertEqual(ud.path, '/ini.v1')
-@@ -4028,7 +4028,7 @@ class GoModGitTest(FetcherTest):
-         urls =3D ['gomodgit://gopkg.in/ini.v1;version=3Dv1.67.0;'
-                 'srcrev=3Db2f570e5b5b844226bbefe6fb521d891f529a951']
-=20
--        fetcher =3D bb.fetch2.Fetch(urls, self.d)
-+        fetcher =3D bb.fetch.Fetch(urls, self.d)
-         ud =3D fetcher.ud[urls[0]]
-         self.assertEqual(ud.host, 'gopkg.in')
-         self.assertEqual(ud.path, '/ini.v1')
-@@ -4051,7 +4051,7 @@ class GoModGitTest(FetcherTest):
-                 'repo=3Dgithub.com/census-instrumentation/opencensus-go;'
-                 'srcrev=3Db1a01ee95db0e690d91d7193d037447816fae4c5']
-=20
--        fetcher =3D bb.fetch2.Fetch(urls, self.d)
-+        fetcher =3D bb.fetch.Fetch(urls, self.d)
-         ud =3D fetcher.ud[urls[0]]
-         self.assertEqual(ud.host, 'github.com')
-         self.assertEqual(ud.path, '/census-instrumentation/opencensus-go')
-@@ -4153,7 +4153,7 @@ class GitUnpackUpdateTest(FetcherTest):
-         4. Verify testfile.txt now contains 'updated content'.
-         """
-         # First fetch at initial revision
--        fetcher =3D bb.fetch2.Fetch([self.d.getVar('SRC_URI')], self.d)
-+        fetcher =3D bb.fetch.Fetch([self.d.getVar('SRC_URI')], self.d)
-         fetcher.download()
-         fetcher.unpack(self.unpackdir)
-=20
-@@ -4165,7 +4165,7 @@ class GitUnpackUpdateTest(FetcherTest):
-=20
-         # Update to new revision
-         self.d.setVar('SRCREV', self.updated_rev)
--        fetcher =3D bb.fetch2.Fetch([self.d.getVar('SRC_URI')], self.d)
-+        fetcher =3D bb.fetch.Fetch([self.d.getVar('SRC_URI')], self.d)
-         fetcher.download()
-=20
-         # Use unpack_update
-@@ -4187,7 +4187,7 @@ class GitUnpackUpdateTest(FetcherTest):
-         and its URL must be 'file://<ud.clonedir>'.
-         """
-         # First fetch
--        fetcher =3D bb.fetch2.Fetch([self.d.getVar('SRC_URI')], self.d)
-+        fetcher =3D bb.fetch.Fetch([self.d.getVar('SRC_URI')], self.d)
-         fetcher.download()
-=20
-         uri =3D self.d.getVar('SRC_URI')
-@@ -4225,7 +4225,7 @@ class GitUnpackUpdateTest(FetcherTest):
-         so this test covers those scenarios implicitly.
-         """
-         # Step 1 - fetch + unpack at initial_rev
--        fetcher =3D bb.fetch2.Fetch([self.d.getVar('SRC_URI')], self.d)
-+        fetcher =3D bb.fetch.Fetch([self.d.getVar('SRC_URI')], self.d)
-         fetcher.download()
-         fetcher.unpack(self.unpackdir)
-=20
-@@ -4248,7 +4248,7 @@ class GitUnpackUpdateTest(FetcherTest):
-         # Step 3 - advance SRCREV and download; clonedir must now contain
-         # updated_rev so that unpack_update can fetch it without network a=
-ccess.
-         self.d.setVar('SRCREV', self.updated_rev)
--        fetcher =3D bb.fetch2.Fetch([self.d.getVar('SRC_URI')], self.d)
-+        fetcher =3D bb.fetch.Fetch([self.d.getVar('SRC_URI')], self.d)
-         fetcher.download()
-=20
-         ud =3D fetcher.ud[uri]
-@@ -4281,7 +4281,7 @@ class GitUnpackUpdateTest(FetcherTest):
-         the working tree unchanged. No rebase should be attempted because =
-the
-         checkout already points at ud.revision.
-         """
--        fetcher =3D bb.fetch2.Fetch([self.d.getVar('SRC_URI')], self.d)
-+        fetcher =3D bb.fetch.Fetch([self.d.getVar('SRC_URI')], self.d)
-         fetcher.download()
-         fetcher.unpack(self.unpackdir)
-=20
-@@ -4308,7 +4308,7 @@ class GitUnpackUpdateTest(FetcherTest):
-         untracked files untouched, so both the upstream update and the unt=
-racked
-         file must be present after the call.
-         """
--        fetcher =3D bb.fetch2.Fetch([self.d.getVar('SRC_URI')], self.d)
-+        fetcher =3D bb.fetch.Fetch([self.d.getVar('SRC_URI')], self.d)
-         fetcher.download()
-         fetcher.unpack(self.unpackdir)
-=20
-@@ -4321,7 +4321,7 @@ class GitUnpackUpdateTest(FetcherTest):
-=20
-         # Update to new upstream revision
-         self.d.setVar('SRCREV', self.updated_rev)
--        fetcher =3D bb.fetch2.Fetch([self.d.getVar('SRC_URI')], self.d)
-+        fetcher =3D bb.fetch.Fetch([self.d.getVar('SRC_URI')], self.d)
-         fetcher.download()
-=20
-         uri =3D self.d.getVar('SRC_URI')
-@@ -4346,7 +4346,7 @@ class GitUnpackUpdateTest(FetcherTest):
-         dirty index. The caller (bitbake-setup) is expected to catch the
-         resulting LocalModificationsError and fall back to backup + re-fet=
-ch.
-         """
--        fetcher =3D bb.fetch2.Fetch([self.d.getVar('SRC_URI')], self.d)
-+        fetcher =3D bb.fetch.Fetch([self.d.getVar('SRC_URI')], self.d)
-         fetcher.download()
-         fetcher.unpack(self.unpackdir)
-=20
-@@ -4360,7 +4360,7 @@ class GitUnpackUpdateTest(FetcherTest):
-=20
-         # Update to new upstream revision
-         self.d.setVar('SRCREV', self.updated_rev)
--        fetcher =3D bb.fetch2.Fetch([self.d.getVar('SRC_URI')], self.d)
-+        fetcher =3D bb.fetch.Fetch([self.d.getVar('SRC_URI')], self.d)
-         fetcher.download()
-=20
-         uri =3D self.d.getVar('SRC_URI')
-@@ -4368,7 +4368,7 @@ class GitUnpackUpdateTest(FetcherTest):
-         git_fetcher =3D ud.method
-=20
-         # Should fail - git rebase refuses to run with a dirty index
--        with self.assertRaises(bb.fetch2.LocalModificationsError):
-+        with self.assertRaises(bb.fetch.LocalModificationsError):
-             git_fetcher.unpack_update(ud, self.unpackdir, self.d)
-=20
-     def test_unpack_update_with_modified_tracked_file(self):
-@@ -4379,7 +4379,7 @@ class GitUnpackUpdateTest(FetcherTest):
-         the caller can fall back to backup + re-fetch rather than silently=
- discarding
-         work in progress.
-         """
--        fetcher =3D bb.fetch2.Fetch([self.d.getVar('SRC_URI')], self.d)
-+        fetcher =3D bb.fetch.Fetch([self.d.getVar('SRC_URI')], self.d)
-         fetcher.download()
-         fetcher.unpack(self.unpackdir)
-=20
-@@ -4391,7 +4391,7 @@ class GitUnpackUpdateTest(FetcherTest):
-=20
-         # Update to new upstream revision
-         self.d.setVar('SRCREV', self.updated_rev)
--        fetcher =3D bb.fetch2.Fetch([self.d.getVar('SRC_URI')], self.d)
-+        fetcher =3D bb.fetch.Fetch([self.d.getVar('SRC_URI')], self.d)
-         fetcher.download()
-=20
-         uri =3D self.d.getVar('SRC_URI')
-@@ -4400,7 +4400,7 @@ class GitUnpackUpdateTest(FetcherTest):
-=20
-         # Should fail - unstaged modification to tracked file is detected =
-by
-         # 'git status --untracked-files=3Dno --porcelain'
--        with self.assertRaises(bb.fetch2.LocalModificationsError):
-+        with self.assertRaises(bb.fetch.LocalModificationsError):
-             git_fetcher.unpack_update(ud, self.unpackdir, self.d)
-=20
-     def test_unpack_update_conflict_raises_rebase_error(self):
-@@ -4412,7 +4412,7 @@ class GitUnpackUpdateTest(FetcherTest):
-         to a backup + re-fetch.
-         """
-         # Fetch and unpack at the initial revision
--        fetcher =3D bb.fetch2.Fetch([self.d.getVar('SRC_URI')], self.d)
-+        fetcher =3D bb.fetch.Fetch([self.d.getVar('SRC_URI')], self.d)
-         fetcher.download()
-         fetcher.unpack(self.unpackdir)
-=20
-@@ -4433,7 +4433,7 @@ class GitUnpackUpdateTest(FetcherTest):
-=20
-         # Update SRCREV to the new upstream commit
-         self.d.setVar('SRCREV', conflict_rev)
--        fetcher =3D bb.fetch2.Fetch([self.d.getVar('SRC_URI')], self.d)
-+        fetcher =3D bb.fetch.Fetch([self.d.getVar('SRC_URI')], self.d)
-         fetcher.download()
-=20
-         uri =3D self.d.getVar('SRC_URI')
-@@ -4442,7 +4442,7 @@ class GitUnpackUpdateTest(FetcherTest):
-=20
-         # unpack_update must fail and clean up (rebase --abort) rather tha=
-n
-         # leaving the repo in a mid-rebase state
--        with self.assertRaises(bb.fetch2.RebaseError):
-+        with self.assertRaises(bb.fetch.RebaseError):
-             git_fetcher.unpack_update(ud, self.unpackdir, self.d)
-=20
-         # Verify the repo is not left in a conflicted / mid-rebase state
-@@ -4475,7 +4475,7 @@ class GitUnpackUpdateTest(FetcherTest):
-             local file is untouched.
-             """
-             # Fresh fetch + unpack at the current SRCREV
--            fetcher =3D bb.fetch2.Fetch([self.d.getVar('SRC_URI')], self.d=
-)
-+            fetcher =3D bb.fetch.Fetch([self.d.getVar('SRC_URI')], self.d)
-             fetcher.download()
-             fetcher.unpack(self.unpackdir)
-=20
-@@ -4497,7 +4497,7 @@ class GitUnpackUpdateTest(FetcherTest):
-                 f.write('local untracked content\n')
-=20
-             self.d.setVar('SRCREV', new_rev)
--            fetcher =3D bb.fetch2.Fetch([self.d.getVar('SRC_URI')], self.d=
-)
-+            fetcher =3D bb.fetch.Fetch([self.d.getVar('SRC_URI')], self.d)
-             fetcher.download()
-=20
-             uri =3D self.d.getVar('SRC_URI')
-@@ -4505,7 +4505,7 @@ class GitUnpackUpdateTest(FetcherTest):
-             git_fetcher =3D ud.method
-=20
-             # git rebase refuses because the untracked file would be overw=
-ritten
--            with self.assertRaises(bb.fetch2.RebaseError):
-+            with self.assertRaises(bb.fetch.RebaseError):
-                 git_fetcher.unpack_update(ud, self.unpackdir, self.d)
-=20
-             # Repo must not be left in a mid-rebase state
-@@ -4543,7 +4543,7 @@ class GitUnpackUpdateTest(FetcherTest):
-         self.d.setVar('BB_GENERATE_SHALLOW_TARBALLS', '1')
-=20
-         # First fetch at initial revision
--        fetcher =3D bb.fetch2.Fetch([self.d.getVar('SRC_URI')], self.d)
-+        fetcher =3D bb.fetch.Fetch([self.d.getVar('SRC_URI')], self.d)
-         fetcher.download()
-=20
-         # Remove clonedir to force use of shallow tarball
-@@ -4555,7 +4555,7 @@ class GitUnpackUpdateTest(FetcherTest):
-=20
-         # Update to new revision
-         self.d.setVar('SRCREV', self.updated_rev)
--        fetcher =3D bb.fetch2.Fetch([self.d.getVar('SRC_URI')], self.d)
-+        fetcher =3D bb.fetch.Fetch([self.d.getVar('SRC_URI')], self.d)
-         fetcher.download()
-=20
-         # unpack_update should fail for shallow clones
-@@ -4563,7 +4563,7 @@ class GitUnpackUpdateTest(FetcherTest):
-         ud =3D fetcher.ud[uri]
-         git_fetcher =3D ud.method
-=20
--        with self.assertRaises(bb.fetch2.UnpackError) as context:
-+        with self.assertRaises(bb.fetch.UnpackError) as context:
-             git_fetcher.unpack_update(ud, self.unpackdir, self.d)
-=20
-         self.assertIn("shallow clone", str(context.exception).lower())
-@@ -4576,7 +4576,7 @@ class GitUnpackUpdateTest(FetcherTest):
-         update_mode will fail with a FetchError which must be re-raised as
-         UnpackError so the caller can fall back to a full re-fetch.
-         """
--        fetcher =3D bb.fetch2.Fetch([self.d.getVar('SRC_URI')], self.d)
-+        fetcher =3D bb.fetch.Fetch([self.d.getVar('SRC_URI')], self.d)
-         fetcher.download()
-         fetcher.unpack(self.unpackdir)
-=20
-@@ -4584,7 +4584,7 @@ class GitUnpackUpdateTest(FetcherTest):
-=20
-         # Advance SRCREV to trigger update_mode
-         self.d.setVar('SRCREV', self.updated_rev)
--        fetcher =3D bb.fetch2.Fetch([self.d.getVar('SRC_URI')], self.d)
-+        fetcher =3D bb.fetch.Fetch([self.d.getVar('SRC_URI')], self.d)
-         fetcher.download()
-=20
-         uri =3D self.d.getVar('SRC_URI')
-@@ -4597,7 +4597,7 @@ class GitUnpackUpdateTest(FetcherTest):
-                  cwd=3Dunpack_path)
-=20
-         git_fetcher =3D ud.method
--        with self.assertRaises(bb.fetch2.UnpackError):
-+        with self.assertRaises(bb.fetch.UnpackError):
-             git_fetcher.unpack_update(ud, self.unpackdir, self.d)
-=20
-     def test_fetch_unpack_update_toplevel_api(self):
-@@ -4609,7 +4609,7 @@ class GitUnpackUpdateTest(FetcherTest):
-         fetch again, then call fetcher.unpack_update(root) and confirm the=
- content
-         is updated.
-         """
--        fetcher =3D bb.fetch2.Fetch([self.d.getVar('SRC_URI')], self.d)
-+        fetcher =3D bb.fetch.Fetch([self.d.getVar('SRC_URI')], self.d)
-         fetcher.download()
-         fetcher.unpack(self.unpackdir)
-=20
-@@ -4618,7 +4618,7 @@ class GitUnpackUpdateTest(FetcherTest):
-             self.assertEqual(f.read(), 'initial content\n')
-=20
-         self.d.setVar('SRCREV', self.updated_rev)
--        fetcher =3D bb.fetch2.Fetch([self.d.getVar('SRC_URI')], self.d)
-+        fetcher =3D bb.fetch.Fetch([self.d.getVar('SRC_URI')], self.d)
-         fetcher.download()
-=20
-         # Use the public Fetch.unpack_update() rather than the method dire=
-ctly
-diff --git a/lib/bb/tinfoil.py b/lib/bb/tinfoil.py
-index 42385c879..9b9925e51 100644
---- a/lib/bb/tinfoil.py
-+++ b/lib/bb/tinfoil.py
-@@ -25,7 +25,7 @@ import bb.utils
- import bb.command
- import bb.remotedata
- from bb.main import setup_bitbake, BitBakeConfigParameters
--import bb.fetch2
-+import bb.fetch
-=20
- def wait_for(f):
+diff --git a/lib/bb/__init__.py b/lib/bb/__init__.py
+index a9c31815a..049c87ef0 100644
+--- a/lib/bb/__init__.py
++++ b/lib/bb/__init__.py
+@@ -153,9 +153,6 @@ class PrefixLoggerAdapter(logging.LoggerAdapter):
+ # can result in construction of the various loggers.
+ import bb.msg
+=20
+-from bb import fetch2 as fetch
+-sys.modules['bb.fetch'] =3D sys.modules['bb.fetch2']
+-
+ # Messaging convenience functions
+ def plain(*args):
      """
-diff --git a/lib/bb/utils.py b/lib/bb/utils.py
-index 37edd4353..22e3f13f9 100644
---- a/lib/bb/utils.py
-+++ b/lib/bb/utils.py
-@@ -2107,7 +2107,7 @@ def landlock_restrict_network():
+diff --git a/lib/bb/fetch2/README b/lib/bb/fetch/README
+similarity index 100%
+rename from lib/bb/fetch2/README
+rename to lib/bb/fetch/README
+diff --git a/lib/bb/fetch2/__init__.py b/lib/bb/fetch/__init__.py
+similarity index 99%
+rename from lib/bb/fetch2/__init__.py
+rename to lib/bb/fetch/__init__.py
+index 9cb268be5..153700dfb 100644
+--- a/lib/bb/fetch2/__init__.py
++++ b/lib/bb/fetch/__init__.py
+@@ -543,8 +543,8 @@ def fetcher_init(d, servercontext=3DTrue):
+     try:
+         # fetcher_init is called multiple times, so make sure we only save=
+ the
+         # revs the first time it is called.
+-        if not bb.fetch2.saved_headrevs:
+-            bb.fetch2.saved_headrevs =3D _revisions_cache.get_revs()
++        if not bb.fetch.saved_headrevs:
++            bb.fetch.saved_headrevs =3D _revisions_cache.get_revs()
+     except:
+         pass
+=20
+@@ -578,7 +578,7 @@ def fetcher_compare_revisions(d):
+     """
+=20
+     headrevs =3D _revisions_cache.get_revs()
+-    return headrevs !=3D bb.fetch2.saved_headrevs
++    return headrevs !=3D bb.fetch.saved_headrevs
+=20
+ def mirror_from_string(data):
+     mirrors =3D (data or "").replace('\\n',' ').split()
+@@ -885,7 +885,7 @@ def get_srcrev(d, method_name=3D'sortable_revision'):
+     return pkgv
+=20
+ def localpath(url, d):
+-    fetcher =3D bb.fetch2.Fetch([url], d)
++    fetcher =3D bb.fetch.Fetch([url], d)
+     return fetcher.localpath(url)
+=20
+ # Need to export PATH as binary could be in metadata paths
+@@ -926,7 +926,7 @@ FETCH_EXPORT_VARS =3D ['HOME', 'PATH',
+ def get_fetcher_environment(d):
+     newenv =3D {}
+     origenv =3D d.getVar("BB_ORIGENV")
+-    for name in bb.fetch2.FETCH_EXPORT_VARS:
++    for name in bb.fetch.FETCH_EXPORT_VARS:
+         value =3D d.getVar(name)
+         if not value and origenv:
+             value =3D origenv.getVar(name)
+@@ -1059,7 +1059,7 @@ def build_mirroruris(origud, mirrors, ld):
+                     newud.setup_localpath(ld)
+                     if hasattr(ud, 'unpack_tracer'):
+                         newud.unpack_tracer =3D ud.unpack_tracer
+-                except bb.fetch2.BBFetchException as e:
++                except bb.fetch.BBFetchException as e:
+                     logger.debug("Mirror fetch failure for url %s (origina=
+l url: %s)" % (newuri, origud.url))
+                     logger.debug(str(e))
+                     try:
+@@ -1154,10 +1154,10 @@ def try_mirror_url(fetch, origud, ud, ld, check =3D=
+ False):
+         update_stamp(origud, ld)
+         return ud.localpath
+=20
+-    except bb.fetch2.NetworkAccess:
++    except bb.fetch.NetworkAccess:
+         raise
+=20
+-    except bb.fetch2.BBFetchException as e:
++    except bb.fetch.BBFetchException as e:
+         if isinstance(e, ChecksumError):
+             logger.warning("Mirror checksum failure for url %s (original u=
+rl: %s)\nCleaning and trying again." % (ud.url, origud.url))
+             logger.warning(str(e))
+@@ -1814,7 +1814,7 @@ class DummyUnpackTracer(object):
+ class Fetch(object):
+     def __init__(self, urls, d, cache =3D True, localonly =3D False, conne=
+ction_cache =3D None):
+         if localonly and cache:
+-            raise Exception("bb.fetch2.Fetch.__init__: cannot set cache an=
+d localonly at same time")
++            raise Exception("bb.fetch.Fetch.__init__: cannot set cache and=
+ localonly at same time")
+=20
+         if not urls:
+             urls =3D d.getVar("SRC_URI").split()
+@@ -1934,7 +1934,7 @@ class Fetch(object):
+                         # fetcher still have chance to fetch from mirror
+                         m.update_donestamp(ud, d)
+=20
+-                    except bb.fetch2.NetworkAccess:
++                    except bb.fetch.NetworkAccess:
+                         raise
+=20
+                     except BBFetchException as e:
+diff --git a/lib/bb/fetch2/az.py b/lib/bb/fetch/az.py
+similarity index 96%
+rename from lib/bb/fetch2/az.py
+rename to lib/bb/fetch/az.py
+index 81fd14468..76c411adf 100644
+--- a/lib/bb/fetch2/az.py
++++ b/lib/bb/fetch/az.py
+@@ -5,7 +5,7 @@ BitBake 'Fetch' Azure Storage implementation
+=20
+ # Copyright (C) 2021 Alejandro Hernandez Samaniego
+ #
+-# Based on bb.fetch2.wget:
++# Based on bb.fetch.wget:
+ # Copyright (C) 2003, 2004  Chris Larson
+ #
+ # SPDX-License-Identifier: GPL-2.0-only
+@@ -15,9 +15,9 @@ BitBake 'Fetch' Azure Storage implementation
+ import shlex
+ import os
+ import bb
+-from   bb.fetch2 import FetchError
+-from   bb.fetch2 import logger
+-from   bb.fetch2.wget import Wget
++from   bb.fetch import FetchError
++from   bb.fetch import logger
++from   bb.fetch.wget import Wget
 =20
 =20
- def export_proxies(d):
--    from bb.fetch2 import get_fetcher_environment
-+    from bb.fetch import get_fetcher_environment
-     """ export common proxies variables from datastore to environment """
-     newenv =3D get_fetcher_environment(d)
-     for v in newenv:
+ class Az(Wget):
+diff --git a/lib/bb/fetch2/clearcase.py b/lib/bb/fetch/clearcase.py
+similarity index 95%
+rename from lib/bb/fetch2/clearcase.py
+rename to lib/bb/fetch/clearcase.py
+index cb3f8b650..54f347952 100644
+--- a/lib/bb/fetch2/clearcase.py
++++ b/lib/bb/fetch/clearcase.py
+@@ -52,12 +52,12 @@ import os
+ import shlex
+ import shutil
+ import bb
+-from   bb.fetch2 import FetchMethod
+-from   bb.fetch2 import FetchError
+-from   bb.fetch2 import MissingParameterError
+-from   bb.fetch2 import ParameterError
+-from   bb.fetch2 import runfetchcmd
+-from   bb.fetch2 import logger
++from   bb.fetch import FetchMethod
++from   bb.fetch import FetchError
++from   bb.fetch import MissingParameterError
++from   bb.fetch import ParameterError
++from   bb.fetch import runfetchcmd
++from   bb.fetch import logger
+=20
+ class ClearCase(FetchMethod):
+     """Class to fetch urls via 'clearcase'"""
+@@ -189,7 +189,7 @@ class ClearCase(FetchMethod):
+         if os.path.exists(ud.viewdir):
+             cmd =3D self._build_ccase_command(ud, 'rmview');
+             logger.info("cleaning up [VOB=3D%s label=3D%s view=3D%s]", ud.=
+vob, ud.label, ud.viewname)
+-            bb.fetch2.check_network_access(d, cmd, ud.url)
++            bb.fetch.check_network_access(d, cmd, ud.url)
+             output =3D runfetchcmd(cmd, d, workdir=3Dud.ccasedir)
+             logger.info("rmview output: %s", output)
+=20
+@@ -215,7 +215,7 @@ class ClearCase(FetchMethod):
+         self._write_configspec(ud, d)
+         cmd =3D self._build_ccase_command(ud, 'mkview')
+         logger.info("creating view [VOB=3D%s label=3D%s view=3D%s]", ud.vo=
+b, ud.label, ud.viewname)
+-        bb.fetch2.check_network_access(d, cmd, ud.url)
++        bb.fetch.check_network_access(d, cmd, ud.url)
+         try:
+             runfetchcmd(cmd, d)
+         except FetchError as e:
+@@ -227,7 +227,7 @@ class ClearCase(FetchMethod):
+         # Set configspec: Setting the configspec effectively fetches the f=
+iles as defined in the configspec
+         cmd =3D self._build_ccase_command(ud, 'setcs');
+         logger.info("fetching data [VOB=3D%s label=3D%s view=3D%s]", ud.vo=
+b, ud.label, ud.viewname)
+-        bb.fetch2.check_network_access(d, cmd, ud.url)
++        bb.fetch.check_network_access(d, cmd, ud.url)
+         output =3D runfetchcmd(cmd, d, workdir=3Dud.viewdir)
+         logger.info("%s", output)
+=20
+diff --git a/lib/bb/fetch2/crate.py b/lib/bb/fetch/crate.py
+similarity index 97%
+rename from lib/bb/fetch2/crate.py
+rename to lib/bb/fetch/crate.py
+index 830612c98..16ea02d8a 100644
+--- a/lib/bb/fetch2/crate.py
++++ b/lib/bb/fetch/crate.py
+@@ -26,8 +26,8 @@ import subprocess
+ import re
+ from functools import cmp_to_key
+ import bb
+-from   bb.fetch2 import logger, subprocess_setup, UnpackError, runfetchcmd
+-from   bb.fetch2.wget import Wget
++from   bb.fetch import logger, subprocess_setup, UnpackError, runfetchcmd
++from   bb.fetch.wget import Wget
+=20
+=20
+ class Crate(Wget):
+@@ -76,7 +76,7 @@ class Crate(Wget):
+         # break the URL apart by /
+         parts =3D ud.url.split('/')
+         if len(parts) < 5:
+-            raise bb.fetch2.ParameterError("Invalid URL: Must be crate://H=
+OST/NAME/VERSION", ud.url)
++            raise bb.fetch.ParameterError("Invalid URL: Must be crate://HO=
+ST/NAME/VERSION", ud.url)
+=20
+         # version is expected to be the last token
+         # but ignore possible url parameters which will be used
+diff --git a/lib/bb/fetch2/gcp.py b/lib/bb/fetch/gcp.py
+similarity index 92%
+rename from lib/bb/fetch2/gcp.py
+rename to lib/bb/fetch/gcp.py
+index 462b8e97a..dd85b9fd2 100644
+--- a/lib/bb/fetch2/gcp.py
++++ b/lib/bb/fetch/gcp.py
+@@ -10,7 +10,7 @@ Additionally, gsutil must also be installed.
+=20
+ # Copyright (C) 2023, Snap Inc.
+ #
+-# Based in part on bb.fetch2.s3:
++# Based in part on bb.fetch.s3:
+ #    Copyright (C) 2017 Andre McCurdy
+ #
+ # SPDX-License-Identifier: GPL-2.0-only
+@@ -20,9 +20,9 @@ Additionally, gsutil must also be installed.
+ import os
+ import bb
+ import urllib.parse, urllib.error
+-from bb.fetch2 import FetchMethod
+-from bb.fetch2 import FetchError
+-from bb.fetch2 import logger
++from bb.fetch import FetchMethod
++from bb.fetch import FetchError
++from bb.fetch import logger
+=20
+ class GCP(FetchMethod):
+     """
+@@ -62,7 +62,7 @@ class GCP(FetchMethod):
+         if self.gcp_client is None:
+             self.get_gcp_client()
+=20
+-        bb.fetch2.check_network_access(d, "blob.download_to_filename", f"g=
+s://{ud.host}{ud.path}")
++        bb.fetch.check_network_access(d, "blob.download_to_filename", f"gs=
+://{ud.host}{ud.path}")
+=20
+         # Path sometimes has leading slash, so strip it
+         path =3D ud.path.lstrip("/")
+@@ -101,7 +101,7 @@ class GCP(FetchMethod):
+         if self.gcp_client is None:
+             self.get_gcp_client()
+=20
+-        bb.fetch2.check_network_access(d, "gcp_client.bucket(ud.host).blob=
+(path).exists()", f"gs://{ud.host}{ud.path}")
++        bb.fetch.check_network_access(d, "gcp_client.bucket(ud.host).blob(=
+path).exists()", f"gs://{ud.host}{ud.path}")
+=20
+         # Path sometimes has leading slash, so strip it
+         path =3D ud.path.lstrip("/")
+diff --git a/lib/bb/fetch2/git.py b/lib/bb/fetch/git.py
+similarity index 92%
+rename from lib/bb/fetch2/git.py
+rename to lib/bb/fetch/git.py
+index 0bb2ea39a..30618f073 100644
+--- a/lib/bb/fetch2/git.py
++++ b/lib/bb/fetch/git.py
+@@ -76,10 +76,10 @@ import urllib
+ import bb
+ import bb.progress
+ from contextlib import contextmanager
+-from   bb.fetch2 import FetchMethod
+-from   bb.fetch2 import runfetchcmd
+-from   bb.fetch2 import logger
+-from   bb.fetch2 import trusted_network
++from   bb.fetch import FetchMethod
++from   bb.fetch import runfetchcmd
++from   bb.fetch import logger
++from   bb.fetch import trusted_network
+=20
+=20
+ git_hash_re =3D re.compile(r'^[0-9a-f]{40,64}$')
+@@ -162,7 +162,7 @@ class Git(FetchMethod):
+             bb.warn("URL: %s uses git protocol which is no longer supporte=
+d by github. Please change to ;protocol=3Dhttps in the url." % ud.url)
+=20
+         if not ud.proto in ('git', 'file', 'ssh', 'http', 'https', 'rsync'=
+):
+-            raise bb.fetch2.ParameterError(f"Invalid protocol type: '{ud.p=
+roto}'", ud.url)
++            raise bb.fetch.ParameterError(f"Invalid protocol type: '{ud.pr=
+oto}'", ud.url)
+=20
+         ud.nocheckout =3D ud.parm.get("nocheckout","0") =3D=3D "1"
+=20
+@@ -174,7 +174,7 @@ class Git(FetchMethod):
+         ud.usehead =3D ud.parm.get("usehead","0") =3D=3D "1"
+         if ud.usehead:
+             if ud.proto !=3D "file":
+-                 raise bb.fetch2.ParameterError("The usehead option is onl=
+y for use with local ('protocol=3Dfile') git repositories", ud.url)
++                 raise bb.fetch.ParameterError("The usehead option is only=
+ for use with local ('protocol=3Dfile') git repositories", ud.url)
+             ud.nobranch =3D 1
+=20
+         # bareclone implies nocheckout
+@@ -185,7 +185,7 @@ class Git(FetchMethod):
+         ud.unresolvedrev =3D ""
+         ud.branch =3D ud.parm.get("branch", "")
+         if not ud.branch and not ud.nobranch:
+-            raise bb.fetch2.ParameterError("The url does not set any branc=
+h parameter or set nobranch=3D1.", ud.url)
++            raise bb.fetch.ParameterError("The url does not set any branch=
+ parameter or set nobranch=3D1.", ud.url)
+=20
+         ud.noshared =3D d.getVar("BB_GIT_NOSHARED") =3D=3D "1"
+=20
+@@ -206,10 +206,10 @@ class Git(FetchMethod):
+             try:
+                 depth_default =3D int(depth_default or 0)
+             except ValueError:
+-                raise bb.fetch2.FetchError("Invalid depth for BB_GIT_SHALL=
+OW_DEPTH: %s" % depth_default)
++                raise bb.fetch.FetchError("Invalid depth for BB_GIT_SHALLO=
+W_DEPTH: %s" % depth_default)
+             else:
+                 if depth_default < 0:
+-                    raise bb.fetch2.FetchError("Invalid depth for BB_GIT_S=
+HALLOW_DEPTH: %s" % depth_default)
++                    raise bb.fetch.FetchError("Invalid depth for BB_GIT_SH=
+ALLOW_DEPTH: %s" % depth_default)
+         else:
+             depth_default =3D 1
+         ud.shallow_depths =3D collections.defaultdict(lambda: depth_defaul=
+t)
+@@ -224,10 +224,10 @@ class Git(FetchMethod):
+             try:
+                 shallow_depth =3D int(shallow_depth or 0)
+             except ValueError:
+-                raise bb.fetch2.FetchError("Invalid depth for BB_GIT_SHALL=
+OW_DEPTH_%s: %s" % (ud.name, shallow_depth))
++                raise bb.fetch.FetchError("Invalid depth for BB_GIT_SHALLO=
+W_DEPTH_%s: %s" % (ud.name, shallow_depth))
+             else:
+                 if shallow_depth < 0:
+-                    raise bb.fetch2.FetchError("Invalid depth for BB_GIT_S=
+HALLOW_DEPTH_%s: %s" % (ud.name, shallow_depth))
++                    raise bb.fetch.FetchError("Invalid depth for BB_GIT_SH=
+ALLOW_DEPTH_%s: %s" % (ud.name, shallow_depth))
+                 ud.shallow_depths[ud.name] =3D shallow_depth
+=20
+         revs =3D d.getVar("BB_GIT_SHALLOW_REVS_%s" % ud.name)
+@@ -343,7 +343,7 @@ class Git(FetchMethod):
+         for rev in ud.shallow_revs:
+             try:
+                 runfetchcmd(ud.basecmd + ['rev-parse', '-q', '--verify', r=
+ev], d, quiet=3DTrue, workdir=3Dud.clonedir)
+-            except bb.fetch2.FetchError:
++            except bb.fetch.FetchError:
+                 return rev
+         return None
+=20
+@@ -415,7 +415,7 @@ class Git(FetchMethod):
+                 if not bb.utils.path_is_descendant(toplevel, ud.clonedir):
+                     logger.warning("Top level directory '%s' is not a desc=
+endant of '%s'. Re-cloning", toplevel, ud.clonedir)
+                     needs_clone =3D True
+-            except bb.fetch2.FetchError as e:
++            except bb.fetch.FetchError as e:
+                 logger.warning("Unable to get top level for %s (not a git =
+directory?): %s", ud.clonedir, e)
+                 needs_clone =3D True
+             except FileNotFoundError as e:
+@@ -438,7 +438,7 @@ class Git(FetchMethod):
+                     repourl =3D repourl_path
+             clone_cmd =3D ud.basecmd + ['clone', '--bare', '--mirror', rep=
+ourl, ud.clonedir, '--progress']
+             if ud.proto.lower() !=3D 'file':
+-                bb.fetch2.check_network_access(d, clone_cmd, ud.url)
++                bb.fetch.check_network_access(d, clone_cmd, ud.url)
+             progresshandler =3D GitProgressHandler(d)
+=20
+             # Try creating a fast initial shallow clone
+@@ -473,7 +473,7 @@ class Git(FetchMethod):
+             else:
+                 fetch_cmd =3D ud.basecmd + ['fetch', '-f', '--progress', r=
+epourl, 'refs/heads/*:refs/heads/*', 'refs/tags/*:refs/tags/*']
+             if ud.proto.lower() !=3D 'file':
+-                bb.fetch2.check_network_access(d, fetch_cmd, ud.url)
++                bb.fetch.check_network_access(d, fetch_cmd, ud.url)
+             progresshandler =3D GitProgressHandler(d)
+             runfetchcmd(fetch_cmd, d, log=3Dprogresshandler, workdir=3Dud.=
+clonedir, extraenv=3D{'LANG':'C'})
+             runfetchcmd(ud.basecmd + ['repack','-adk'], d, workdir=3Dud.cl=
+onedir)
+@@ -486,12 +486,12 @@ class Git(FetchMethod):
+                     raise
+=20
+         if not self._contains_ref(ud, d, ud.name, ud.clonedir):
+-            raise bb.fetch2.FetchError("Unable to find revision %s in bran=
+ch %s even from upstream" % (ud.revision, ud.branch))
++            raise bb.fetch.FetchError("Unable to find revision %s in branc=
+h %s even from upstream" % (ud.revision, ud.branch))
+=20
+         if ud.shallow and ud.write_shallow_tarballs:
+             missing_rev =3D self.clonedir_need_shallow_revs(ud, d)
+             if missing_rev:
+-                raise bb.fetch2.FetchError("Unable to find revision %s eve=
+n from upstream" % missing_rev)
++                raise bb.fetch.FetchError("Unable to find revision %s even=
+ from upstream" % missing_rev)
+=20
+         if self.lfs_need_update(ud, d):
+             self.lfs_fetch(ud, d, ud.clonedir, ud.revision)
+@@ -595,7 +595,7 @@ class Git(FetchMethod):
+=20
+         # The --depth and --shallow-exclude can't be used together
+         if depth and shallow_exclude:
+-            raise bb.fetch2.FetchError("BB_GIT_SHALLOW_REVS is set, but BB=
+_GIT_SHALLOW_DEPTH is not 0.")
++            raise bb.fetch.FetchError("BB_GIT_SHALLOW_REVS is set, but BB_=
+GIT_SHALLOW_DEPTH is not 0.")
+=20
+         # For nobranch, we need a ref, otherwise the commits will be
+         # removed, and for non-nobranch, we truncate the branch to our
+@@ -673,7 +673,7 @@ class Git(FetchMethod):
+             # If 'subdir' param exists, create a dir and use it as destina=
+tion for unpack cmd
+             if os.path.isabs(subdir):
+                 if not os.path.realpath(subdir).startswith(os.path.realpat=
+h(destdir)):
+-                    raise bb.fetch2.UnpackError("subdir argument isn't a s=
+ubdirectory of unpack root %s" % destdir, ud.url)
++                    raise bb.fetch.UnpackError("subdir argument isn't a su=
+bdirectory of unpack root %s" % destdir, ud.url)
+                 destdir =3D subdir
+             else:
+                 destdir =3D os.path.join(destdir, subdir)
+@@ -721,35 +721,35 @@ class Git(FetchMethod):
+                 source_error.append("shallow clone not enabled")
+=20
+         if not source_found:
+-            raise bb.fetch2.UnpackError("No up to date source found: " + "=
+; ".join(source_error), ud.url)
++            raise bb.fetch.UnpackError("No up to date source found: " + ";=
+ ".join(source_error), ud.url)
+=20
+         if update_mode:
+             if ud.shallow:
+-                raise bb.fetch2.UnpackError("Can't update shallow clones c=
+heckouts without network access, not supported.", ud.url)
++                raise bb.fetch.UnpackError("Can't update shallow clones ch=
+eckouts without network access, not supported.", ud.url)
+=20
+             output =3D runfetchcmd(ud.basecmd + ['status', '--untracked-fi=
+les=3Dno', '--porcelain'], d, workdir=3Ddestdir, extraenv=3Dextraenv)
+             if output:
+-                raise bb.fetch2.LocalModificationsError(destdir, ud.url, o=
+utput)
++                raise bb.fetch.LocalModificationsError(destdir, ud.url, ou=
+tput)
+=20
+             # Set up remote for the download location if it doesn't exist
+             try:
+                 runfetchcmd(ud.basecmd + ['remote', 'get-url', 'dldir'], d=
+, workdir=3Ddestdir)
+-            except bb.fetch2.FetchError:
++            except bb.fetch.FetchError:
+                 if ud.clonedir:
+                     runfetchcmd(ud.basecmd + ['remote', 'add', 'dldir', 'f=
+ile://' + ud.clonedir], d, workdir=3Ddestdir)
+             try:
+                 runfetchcmd(ud.basecmd + ['fetch', 'dldir'], d, workdir=3D=
+destdir, extraenv=3Dextraenv)
+-            except bb.fetch2.FetchError as e:
+-                raise bb.fetch2.UnpackError("Failed to fetch from dldir re=
+mote: %s" % str(e), ud.url)
++            except bb.fetch.FetchError as e:
++                raise bb.fetch.UnpackError("Failed to fetch from dldir rem=
+ote: %s" % str(e), ud.url)
+             try:
+                 runfetchcmd(ud.basecmd + ['rebase', '--no-autosquash', '--=
+no-autostash', ud.revision], d, workdir=3Ddestdir, extraenv=3Dextraenv)
+-            except bb.fetch2.FetchError as e:
++            except bb.fetch.FetchError as e:
+                 # If rebase failed, abort it
+                 try:
+                     runfetchcmd(ud.basecmd + ['rebase', '--abort'], d, wor=
+kdir=3Ddestdir)
+                 except Exception:
+                     pass
+-                raise bb.fetch2.RebaseError(destdir, ud.url, str(e))
++                raise bb.fetch.RebaseError(destdir, ud.url, str(e))
+             return True
+=20
+         # If there is a tag parameter in the url and we also have a fixed =
+srcrev, check the tag
+@@ -763,14 +763,14 @@ class Git(FetchMethod):
+                 output2 =3D runfetchcmd(ud.basecmd + ['rev-list', '-n', '1=
+', ud.revision], d, workdir=3Ddestdir)
+                 output2 =3D output2.strip()
+                 if output !=3D output2:
+-                    raise bb.fetch2.FetchError("The revision the git tag '=
+%s' resolved to didn't match the SRCREV in use (%s vs %s)" % (ud.parm['tag'=
+], output, ud.revision), ud.url)
++                    raise bb.fetch.FetchError("The revision the git tag '%=
+s' resolved to didn't match the SRCREV in use (%s vs %s)" % (ud.parm['tag']=
+, output, ud.revision), ud.url)
+=20
+         repourl =3D self._get_repo_url(ud)
+         runfetchcmd(ud.basecmd + ['remote', 'set-url', 'origin', repourl],=
+ d, workdir=3Ddestdir)
+         if ud.clonedir:
+             try:
+                 runfetchcmd(ud.basecmd + ['remote', 'get-url', 'dldir'], d=
+, workdir=3Ddestdir)
+-            except bb.fetch2.FetchError:
++            except bb.fetch.FetchError:
+                 runfetchcmd(ud.basecmd + ['remote', 'add', 'dldir', "file:=
+//" + ud.clonedir], d, workdir=3Ddestdir)
+=20
+         if self._contains_lfs(ud, d, destdir):
+@@ -830,7 +830,7 @@ class Git(FetchMethod):
+             cmd =3D ud.basecmd + ['branch', '--contains', git_ref_name, '-=
+-list', ud.branch]
+         try:
+             output =3D runfetchcmd(cmd, d, workdir=3Dwd)
+-        except (bb.fetch2.FetchError):
++        except (bb.fetch.FetchError):
+             return False
+         return len(output.splitlines()) > 0
+=20
+@@ -876,7 +876,7 @@ class Git(FetchMethod):
+             output =3D runfetchcmd(cmd, d, quiet=3DTrue, workdir=3Dwd)
+             if len(output.splitlines()) > 0:
+                 return True
+-        except (bb.fetch2.FetchError,ValueError):
++        except (bb.fetch.FetchError,ValueError):
+             pass
+         return False
+=20
+@@ -885,7 +885,7 @@ class Git(FetchMethod):
+         Ensures that git-lfs is available, raising a FetchError if it isn'=
+t.
+         """
+         if shutil.which("git-lfs", path=3Dd.getVar('PATH')) is None:
+-            raise bb.fetch2.FetchError(
++            raise bb.fetch.FetchError(
+                 "Repository %s has LFS content, install git-lfs on host to=
+ download (or set lfs=3D0 "
+                 "to ignore it)" % self._get_repo_url(ud))
+=20
+@@ -930,10 +930,10 @@ class Git(FetchMethod):
+             if search:
+                 cmd.append(search)
+             if ud.proto.lower() !=3D 'file':
+-                bb.fetch2.check_network_access(d, cmd, repourl)
++                bb.fetch.check_network_access(d, cmd, repourl)
+             output =3D runfetchcmd(cmd, d, True)
+             if not output:
+-                raise bb.fetch2.FetchError("The command %s gave empty outp=
+ut unexpectedly" % cmd, ud.url)
++                raise bb.fetch.FetchError("The command %s gave empty outpu=
+t unexpectedly" % cmd, ud.url)
+         finally:
+             d.delVar('_BB_GIT_IN_LSREMOTE')
+         return output
+@@ -943,10 +943,10 @@ class Git(FetchMethod):
+         Compute the HEAD revision for the url
+         """
+         if not d.getVar("__BBSRCREV_SEEN"):
+-            raise bb.fetch2.FetchError("Recipe uses a floating tag/branch =
+'%s' for repo '%s' without a fixed SRCREV yet doesn't call bb.fetch2.get_sr=
+crev() (use SRCPV in PV for OE)." % (ud.unresolvedrev, ud.host+ud.path))
++            raise bb.fetch.FetchError("Recipe uses a floating tag/branch '=
+%s' for repo '%s' without a fixed SRCREV yet doesn't call bb.fetch.get_srcr=
+ev() (use SRCPV in PV for OE)." % (ud.unresolvedrev, ud.host+ud.path))
+=20
+         # Ensure we mark as not cached
+-        bb.fetch2.mark_recipe_nocache(d)
++        bb.fetch.mark_recipe_nocache(d)
+=20
+         output =3D self._lsremote(ud, d, "")
+         # Tags of the form ^{} may not work, need to fallback to other for=
+m
+@@ -961,7 +961,7 @@ class Git(FetchMethod):
+                 sha1, ref =3D l.split()
+                 if s =3D=3D ref:
+                     return sha1
+-        raise bb.fetch2.FetchError("Unable to resolve '%s' in upstream git=
+ repository in git ls-remote output for %s" % \
++        raise bb.fetch.FetchError("Unable to resolve '%s' in upstream git =
+repository in git ls-remote output for %s" % \
+             (ud.unresolvedrev, ud.host+ud.path))
+=20
+     def latest_versionstring(self, ud, d, filter_regex=3DNone):
+@@ -974,7 +974,7 @@ class Git(FetchMethod):
+=20
+         try:
+             output =3D self._lsremote(ud, d, "refs/tags/*")
+-        except (bb.fetch2.FetchError, bb.fetch2.NetworkAccess) as e:
++        except (bb.fetch.FetchError, bb.fetch.NetworkAccess) as e:
+             bb.note("Could not list remote: %s" % str(e))
+             return pupver
+=20
+@@ -1031,7 +1031,7 @@ class Git(FetchMethod):
+             commits =3D None
+         else:
+             if not os.path.exists(rev_file) or not os.path.getsize(rev_fil=
+e):
+-                commits =3D len(bb.fetch2.runfetchcmd(['git', 'rev-list', =
+rev, '--'], d).splitlines())
++                commits =3D len(bb.fetch.runfetchcmd(['git', 'rev-list', r=
+ev, '--'], d).splitlines())
+                 if commits:
+                     open(rev_file, "w").write("%d\n" % commits)
+             else:
+@@ -1045,5 +1045,5 @@ class Git(FetchMethod):
+         try:
+             self._lsremote(ud, d, "")
+             return True
+-        except bb.fetch2.FetchError:
++        except bb.fetch.FetchError:
+             return False
+diff --git a/lib/bb/fetch2/gitannex.py b/lib/bb/fetch/gitannex.py
+similarity index 97%
+rename from lib/bb/fetch2/gitannex.py
+rename to lib/bb/fetch/gitannex.py
+index c378cc36d..d5917e54f 100644
+--- a/lib/bb/fetch2/gitannex.py
++++ b/lib/bb/fetch/gitannex.py
+@@ -9,8 +9,8 @@ BitBake 'Fetch' git annex implementation
+ #
+=20
+ import bb
+-from   bb.fetch2.git import Git
+-from   bb.fetch2 import runfetchcmd
++from   bb.fetch.git import Git
++from   bb.fetch import runfetchcmd
+=20
+ class GitANNEX(Git):
+     def supports(self, ud, d):
+diff --git a/lib/bb/fetch2/gitsm.py b/lib/bb/fetch/gitsm.py
+similarity index 97%
+rename from lib/bb/fetch2/gitsm.py
+rename to lib/bb/fetch/gitsm.py
+index d4340e116..734b35364 100644
+--- a/lib/bb/fetch2/gitsm.py
++++ b/lib/bb/fetch/gitsm.py
+@@ -22,10 +22,10 @@ import bb
+ import copy
+ import shutil
+ import tempfile
+-from   bb.fetch2.git import Git
+-from   bb.fetch2 import runfetchcmd
+-from   bb.fetch2 import logger
+-from   bb.fetch2 import Fetch
++from   bb.fetch.git import Git
++from   bb.fetch import runfetchcmd
++from   bb.fetch import logger
++from   bb.fetch import Fetch
+=20
+ class GitSM(Git):
+     def supports(self, ud, d):
+@@ -115,7 +115,7 @@ class GitSM(Git):
+                     proto =3D "file"
+                     url =3D "gitsm://" + uris[module]
+             if url.endswith("{}{}".format(ud.host, ud.path)):
+-                raise bb.fetch2.FetchError("Submodule refers to the parent=
+ repository. This will cause deadlock situation in current version of Bitba=
+ke." \
++                raise bb.fetch.FetchError("Submodule refers to the parent =
+repository. This will cause deadlock situation in current version of Bitbak=
+e." \
+                                            "Consider using git fetcher ins=
+tead.")
+=20
+             url +=3D ';protocol=3D%s' % proto
+diff --git a/lib/bb/fetch2/gomod.py b/lib/bb/fetch/gomod.py
+similarity index 97%
+rename from lib/bb/fetch2/gomod.py
+rename to lib/bb/fetch/gomod.py
+index 5cdf8f998..a62d643fb 100644
+--- a/lib/bb/fetch2/gomod.py
++++ b/lib/bb/fetch/gomod.py
+@@ -67,12 +67,12 @@ import subprocess
+ import zipfile
+=20
+ import bb
+-from bb.fetch2 import FetchError
+-from bb.fetch2 import MissingParameterError
+-from bb.fetch2 import runfetchcmd
+-from bb.fetch2 import subprocess_setup
+-from bb.fetch2.git import Git
+-from bb.fetch2.wget import Wget
++from bb.fetch import FetchError
++from bb.fetch import MissingParameterError
++from bb.fetch import runfetchcmd
++from bb.fetch import subprocess_setup
++from bb.fetch.git import Git
++from bb.fetch.wget import Wget
+=20
+=20
+ def escape(path):
+@@ -115,7 +115,7 @@ class GoMod(Wget):
+         else:
+             ext =3D '.zip'
+         path =3D escape(f"{module}/@v/{version}{ext}")
+-        ud.url =3D bb.fetch2.encodeurl(
++        ud.url =3D bb.fetch.encodeurl(
+             ('https', proxy, '/' + path, None, None, None))
+         ud.parm['downloadfilename'] =3D  f"{module.replace('/', '.')}@{ver=
+sion}{ext}"
+=20
+diff --git a/lib/bb/fetch2/hg.py b/lib/bb/fetch/hg.py
+similarity index 95%
+rename from lib/bb/fetch2/hg.py
+rename to lib/bb/fetch/hg.py
+index 5c65a1985..9813b0edd 100644
+--- a/lib/bb/fetch2/hg.py
++++ b/lib/bb/fetch/hg.py
+@@ -16,11 +16,11 @@ import os
+ import bb
+ import errno
+ import shlex
+-from bb.fetch2 import FetchMethod
+-from bb.fetch2 import FetchError
+-from bb.fetch2 import MissingParameterError
+-from bb.fetch2 import runfetchcmd
+-from bb.fetch2 import logger
++from bb.fetch import FetchMethod
++from bb.fetch import FetchError
++from bb.fetch import MissingParameterError
++from bb.fetch import runfetchcmd
++from bb.fetch import logger
+=20
+ class Hg(FetchMethod):
+     """Class to fetch from mercurial repositories"""
+@@ -159,13 +159,13 @@ class Hg(FetchMethod):
+             logger.debug("Running %s", updatecmd)
+             try:
+                 runfetchcmd(updatecmd, d, workdir=3Dud.moddir)
+-            except bb.fetch2.FetchError:
++            except bb.fetch.FetchError:
+                 # Runnning pull in the repo
+                 pullcmd =3D self._buildhgcommand(ud, d, "pull")
+                 logger.info("Pulling " + ud.url)
+                 # update sources there
+                 logger.debug("Running %s", pullcmd)
+-                bb.fetch2.check_network_access(d, pullcmd, ud.url)
++                bb.fetch.check_network_access(d, pullcmd, ud.url)
+                 runfetchcmd(pullcmd, d, workdir=3Dud.moddir)
+                 try:
+                     os.unlink(ud.fullmirror)
+@@ -180,7 +180,7 @@ class Hg(FetchMethod):
+             # check out sources there
+             bb.utils.mkdirhier(ud.pkgdir)
+             logger.debug("Running %s", fetchcmd)
+-            bb.fetch2.check_network_access(d, fetchcmd, ud.url)
++            bb.fetch.check_network_access(d, fetchcmd, ud.url)
+             runfetchcmd(fetchcmd, d, workdir=3Dud.pkgdir)
+=20
+         # Even when we clone (fetch), we still need to update as hg's clon=
+e
+@@ -203,7 +203,7 @@ class Hg(FetchMethod):
+         """
+         Compute tip revision for the url
+         """
+-        bb.fetch2.check_network_access(d, self._buildhgcommand(ud, d, "inf=
+o"), ud.url)
++        bb.fetch.check_network_access(d, self._buildhgcommand(ud, d, "info=
+"), ud.url)
+         output =3D runfetchcmd(self._buildhgcommand(ud, d, "info"), d)
+         return output.strip()
+=20
+diff --git a/lib/bb/fetch2/local.py b/lib/bb/fetch/local.py
+similarity index 91%
+rename from lib/bb/fetch2/local.py
+rename to lib/bb/fetch/local.py
+index fda56a564..dfc5b564c 100644
+--- a/lib/bb/fetch2/local.py
++++ b/lib/bb/fetch/local.py
+@@ -17,8 +17,8 @@ import os
+ import urllib.request, urllib.parse, urllib.error
+ import bb
+ import bb.utils
+-from   bb.fetch2 import FetchMethod, FetchError, ParameterError
+-from   bb.fetch2 import logger
++from   bb.fetch import FetchMethod, FetchError, ParameterError
++from   bb.fetch import logger
+=20
+ class Local(FetchMethod):
+     def supports(self, urldata, d):
+@@ -33,7 +33,7 @@ class Local(FetchMethod):
+         ud.basepath =3D ud.path
+         ud.needdonestamp =3D False
+         if "*" in ud.path:
+-            raise bb.fetch2.ParameterError("file:// urls using globbing ar=
+e no longer supported. Please place the files in a directory and reference =
+that instead.", ud.url)
++            raise bb.fetch.ParameterError("file:// urls using globbing are=
+ no longer supported. Please place the files in a directory and reference t=
+hat instead.", ud.url)
+         return
+=20
+     def localpath(self, urldata, d):
+diff --git a/lib/bb/fetch2/npm.py b/lib/bb/fetch/npm.py
+similarity index 97%
+rename from lib/bb/fetch2/npm.py
+rename to lib/bb/fetch/npm.py
+index a429a8292..c8995ba6b 100644
+--- a/lib/bb/fetch2/npm.py
++++ b/lib/bb/fetch/npm.py
+@@ -35,15 +35,15 @@ import re
+ import shlex
+ import tempfile
+ import bb
+-from bb.fetch2 import Fetch
+-from bb.fetch2 import FetchError
+-from bb.fetch2 import FetchMethod
+-from bb.fetch2 import MalformedUrl
+-from bb.fetch2 import MissingParameterError
+-from bb.fetch2 import ParameterError
+-from bb.fetch2 import URI
+-from bb.fetch2 import check_network_access
+-from bb.fetch2 import runfetchcmd
++from bb.fetch import Fetch
++from bb.fetch import FetchError
++from bb.fetch import FetchMethod
++from bb.fetch import MalformedUrl
++from bb.fetch import MissingParameterError
++from bb.fetch import ParameterError
++from bb.fetch import URI
++from bb.fetch import check_network_access
++from bb.fetch import runfetchcmd
+ from bb.utils import is_semver
+=20
+ # Preference order matches strength; the first one present in SRC_URI wins=
+.
+diff --git a/lib/bb/fetch2/npmsw.py b/lib/bb/fetch/npmsw.py
+similarity index 96%
+rename from lib/bb/fetch2/npmsw.py
+rename to lib/bb/fetch/npmsw.py
+index f09ea5794..fde4fe65b 100644
+--- a/lib/bb/fetch2/npmsw.py
++++ b/lib/bb/fetch/npmsw.py
+@@ -21,15 +21,15 @@ import json
+ import os
+ import re
+ import bb
+-from bb.fetch2 import FetchError
+-from bb.fetch2 import Fetch
+-from bb.fetch2 import FetchMethod
+-from bb.fetch2 import ParameterError
+-from bb.fetch2 import runfetchcmd
+-from bb.fetch2 import URI
+-from bb.fetch2.npm import npm_integrity
+-from bb.fetch2.npm import npm_localfile
+-from bb.fetch2.npm import npm_unpack
++from bb.fetch import FetchError
++from bb.fetch import Fetch
++from bb.fetch import FetchMethod
++from bb.fetch import ParameterError
++from bb.fetch import runfetchcmd
++from bb.fetch import URI
++from bb.fetch.npm import npm_integrity
++from bb.fetch.npm import npm_localfile
++from bb.fetch.npm import npm_unpack
+ from bb.utils import is_semver
+ from bb.utils import lockfile
+ from bb.utils import unlockfile
+diff --git a/lib/bb/fetch2/perforce.py b/lib/bb/fetch/perforce.py
+similarity index 96%
+rename from lib/bb/fetch2/perforce.py
+rename to lib/bb/fetch/perforce.py
+index 52ea061c0..aa46e0ebc 100644
+--- a/lib/bb/fetch2/perforce.py
++++ b/lib/bb/fetch/perforce.py
+@@ -27,10 +27,10 @@ Supported SRC_URI options are:
+ import os
+ import bb
+ import shlex
+-from   bb.fetch2 import FetchMethod
+-from   bb.fetch2 import FetchError
+-from   bb.fetch2 import logger
+-from   bb.fetch2 import runfetchcmd
++from   bb.fetch import FetchMethod
++from   bb.fetch import FetchError
++from   bb.fetch import logger
++from   bb.fetch import runfetchcmd
+=20
+ class PerforceProgressHandler (bb.progress.BasicProgressHandler):
+     """
+@@ -97,7 +97,7 @@ class Perforce(FetchMethod):
+             logger.debug('Trying to use P4CONFIG to automatically set P4PO=
+RT...')
+             ud.usingp4config =3D True
+             p4cmd =3D ud.basecmd + ['info']
+-            bb.fetch2.check_network_access(d, p4cmd, ud.url)
++            bb.fetch.check_network_access(d, p4cmd, ud.url)
+             output =3D runfetchcmd(p4cmd, d, True)
+             ud.host =3D None
+             for line in output.splitlines():
+@@ -201,7 +201,7 @@ class Perforce(FetchMethod):
+         'p4 files' command, including trailing '#rev' file revision indica=
+tor
+         """
+         p4cmd =3D self._buildp4command(ud, d, 'files')
+-        bb.fetch2.check_network_access(d, p4cmd, ud.url)
++        bb.fetch.check_network_access(d, p4cmd, ud.url)
+         p4fileslist =3D runfetchcmd(p4cmd, d, True)
+         p4fileslist =3D [f.rstrip() for f in p4fileslist.splitlines()]
+=20
+@@ -234,7 +234,7 @@ class Perforce(FetchMethod):
+=20
+         for afile in filelist:
+             p4fetchcmd =3D self._buildp4command(ud, d, 'print', afile)
+-            bb.fetch2.check_network_access(d, p4fetchcmd, ud.url)
++            bb.fetch.check_network_access(d, p4fetchcmd, ud.url)
+             runfetchcmd(p4fetchcmd, d, workdir=3Dud.pkgdir, log=3Dprogress=
+handler)
+=20
+         runfetchcmd(['tar', '-czf', ud.localpath, 'p4'], d, cleanup=3D[ud.=
+localpath], workdir=3Dud.pkgdir)
+@@ -254,7 +254,7 @@ class Perforce(FetchMethod):
+     def _latest_revision(self, ud, d, name):
+         """ Return the latest upstream scm revision number """
+         p4cmd =3D self._buildp4command(ud, d, "changes")
+-        bb.fetch2.check_network_access(d, p4cmd, ud.url)
++        bb.fetch.check_network_access(d, p4cmd, ud.url)
+         tip =3D runfetchcmd(p4cmd, d, True)
+=20
+         if not tip:
+diff --git a/lib/bb/fetch2/repo.py b/lib/bb/fetch/repo.py
+similarity index 89%
+rename from lib/bb/fetch2/repo.py
+rename to lib/bb/fetch/repo.py
+index 9b96cd824..c7eaf8b3c 100644
+--- a/lib/bb/fetch2/repo.py
++++ b/lib/bb/fetch/repo.py
+@@ -14,9 +14,9 @@ BitBake "Fetch" repo (git) implementation
+ import os
+ import bb
+ import shlex
+-from   bb.fetch2 import FetchMethod
+-from   bb.fetch2 import runfetchcmd
+-from   bb.fetch2 import logger
++from   bb.fetch import FetchMethod
++from   bb.fetch import runfetchcmd
++from   bb.fetch import logger
+=20
+ class Repo(FetchMethod):
+     """Class to fetch a module or modules from repo (git) repositories"""
+@@ -63,10 +63,10 @@ class Repo(FetchMethod):
+         repodir =3D os.path.join(codir, "repo")
+         bb.utils.mkdirhier(repodir)
+         if not os.path.exists(os.path.join(repodir, ".repo")):
+-            bb.fetch2.check_network_access(d, "%s init -m %s -b %s -u %s:/=
+/%s%s%s" % (ud.basecmd, ud.manifest, ud.branch, ud.proto, username, ud.host=
+, ud.path), ud.url)
++            bb.fetch.check_network_access(d, "%s init -m %s -b %s -u %s://=
+%s%s%s" % (ud.basecmd, ud.manifest, ud.branch, ud.proto, username, ud.host,=
+ ud.path), ud.url)
+             runfetchcmd(ud.basecmd + ['init', '-m', ud.manifest, '-b', ud.=
+branch, '-u', '%s://%s%s%s' % (ud.proto, username, ud.host, ud.path)], d, w=
+orkdir=3Drepodir)
+=20
+-        bb.fetch2.check_network_access(d, ud.basecmd + ['sync'], ud.url)
++        bb.fetch.check_network_access(d, ud.basecmd + ['sync'], ud.url)
+         runfetchcmd(ud.basecmd + ['sync'], d, workdir=3Drepodir)
+=20
+         scmdata =3D ud.parm.get("scmdata", "")
+diff --git a/lib/bb/fetch2/s3.py b/lib/bb/fetch/s3.py
+similarity index 93%
+rename from lib/bb/fetch2/s3.py
+rename to lib/bb/fetch/s3.py
+index fdd450429..ea3dc28fc 100644
+--- a/lib/bb/fetch2/s3.py
++++ b/lib/bb/fetch/s3.py
+@@ -8,7 +8,7 @@ The aws tool must be correctly installed and configured pri=
+or to use.
+=20
+ # Copyright (C) 2017, Andre McCurdy <armccurdy@gmail.com>
+ #
+-# Based in part on bb.fetch2.wget:
++# Based in part on bb.fetch.wget:
+ #    Copyright (C) 2003, 2004  Chris Larson
+ #
+ # SPDX-License-Identifier: GPL-2.0-only
+@@ -20,9 +20,9 @@ import bb
+ import urllib.request, urllib.parse, urllib.error
+ import re
+ import shlex
+-from bb.fetch2 import FetchMethod
+-from bb.fetch2 import FetchError
+-from bb.fetch2 import runfetchcmd
++from bb.fetch import FetchMethod
++from bb.fetch import FetchError
++from bb.fetch import runfetchcmd
+=20
+ def convertToBytes(value, unit):
+     value =3D float(value)
+@@ -89,7 +89,7 @@ class S3(FetchMethod):
+         """
+=20
+         cmd =3D ud.basecmd + ['cp', 's3://%s%s' % (ud.host, ud.path), ud.l=
+ocalpath]
+-        bb.fetch2.check_network_access(d, cmd, ud.url)
++        bb.fetch.check_network_access(d, cmd, ud.url)
+=20
+         progresshandler =3D S3ProgressHandler(d)
+         runfetchcmd(cmd, d, False, log=3Dprogresshandler)
+@@ -113,7 +113,7 @@ class S3(FetchMethod):
+         """
+=20
+         cmd =3D ud.basecmd + ['ls', 's3://%s%s' % (ud.host, ud.path)]
+-        bb.fetch2.check_network_access(d, cmd, ud.url)
++        bb.fetch.check_network_access(d, cmd, ud.url)
+         output =3D runfetchcmd(cmd, d)
+=20
+         # "aws s3 ls s3://mybucket/foo" will exit with success even if the=
+ file
+diff --git a/lib/bb/fetch2/sftp.py b/lib/bb/fetch/sftp.py
+similarity index 93%
+rename from lib/bb/fetch2/sftp.py
+rename to lib/bb/fetch/sftp.py
+index 82c76bb66..4054382d7 100644
+--- a/lib/bb/fetch2/sftp.py
++++ b/lib/bb/fetch/sftp.py
+@@ -39,7 +39,7 @@ SRC_URI =3D "sftp://user@host.example.com/dir/path.file.t=
+xt"
+=20
+ # Copyright (C) 2013, Olof Johansson <olof.johansson@axis.com>
+ #
+-# Based in part on bb.fetch2.wget:
++# Based in part on bb.fetch.wget:
+ #    Copyright (C) 2003, 2004  Chris Larson
+ #
+ # SPDX-License-Identifier: GPL-2.0-only
+@@ -49,9 +49,9 @@ SRC_URI =3D "sftp://user@host.example.com/dir/path.file.t=
+xt"
+ import os
+ import bb
+ import urllib.request, urllib.parse, urllib.error
+-from bb.fetch2 import URI
+-from bb.fetch2 import FetchMethod
+-from bb.fetch2 import runfetchcmd
++from bb.fetch import URI
++from bb.fetch import FetchMethod
++from bb.fetch import runfetchcmd
+=20
+ class SFTP(FetchMethod):
+     """Class to fetch urls via 'sftp'"""
+@@ -67,7 +67,7 @@ class SFTP(FetchMethod):
+=20
+     def urldata_init(self, ud, d):
+         if 'protocol' in ud.parm and ud.parm['protocol'] =3D=3D 'git':
+-            raise bb.fetch2.ParameterError(
++            raise bb.fetch.ParameterError(
+                 "Invalid protocol - if you wish to fetch from a " +
+                 "git repository using ssh, you need to use the " +
+                 "git:// prefix with protocol=3Dssh", ud.url)
+@@ -106,6 +106,6 @@ class SFTP(FetchMethod):
+=20
+         cmd =3D basecmd + [remote, lpath]
+=20
+-        bb.fetch2.check_network_access(d, cmd, ud.url)
++        bb.fetch.check_network_access(d, cmd, ud.url)
+         runfetchcmd(cmd, d)
+         return True
+diff --git a/lib/bb/fetch2/ssh.py b/lib/bb/fetch/ssh.py
+similarity index 98%
+rename from lib/bb/fetch2/ssh.py
+rename to lib/bb/fetch/ssh.py
+index 56e455fb4..304872ad0 100644
+--- a/lib/bb/fetch2/ssh.py
++++ b/lib/bb/fetch/ssh.py
+@@ -31,7 +31,7 @@ IETF secsh internet draft:
+ #
+=20
+ import re, os
+-from bb.fetch2 import check_network_access, FetchMethod, ParameterError, r=
+unfetchcmd
++from bb.fetch import check_network_access, FetchMethod, ParameterError, ru=
+nfetchcmd
+ import urllib
+=20
+=20
+diff --git a/lib/bb/fetch2/svn.py b/lib/bb/fetch/svn.py
+similarity index 94%
+rename from lib/bb/fetch2/svn.py
+rename to lib/bb/fetch/svn.py
+index 973f76f00..73ce83f4e 100644
+--- a/lib/bb/fetch2/svn.py
++++ b/lib/bb/fetch/svn.py
+@@ -14,11 +14,11 @@ import os
+ import bb
+ import re
+ import shlex
+-from   bb.fetch2 import FetchMethod
+-from   bb.fetch2 import FetchError
+-from   bb.fetch2 import MissingParameterError
+-from   bb.fetch2 import runfetchcmd
+-from   bb.fetch2 import logger
++from   bb.fetch import FetchMethod
++from   bb.fetch import FetchError
++from   bb.fetch import MissingParameterError
++from   bb.fetch import runfetchcmd
++from   bb.fetch import logger
+=20
+ class Svn(FetchMethod):
+     """Class to fetch a module or modules from svn repositories"""
+@@ -141,7 +141,7 @@ class Svn(FetchMethod):
+                 except FetchError:
+                     pass
+                 logger.debug("Running %s", svncmd)
+-                bb.fetch2.check_network_access(d, svncmd, ud.url)
++                bb.fetch.check_network_access(d, svncmd, ud.url)
+                 runfetchcmd(svncmd, d, workdir=3Dud.moddir, extraenv=3Dext=
+raenv)
+             else:
+                 svncmd, extraenv =3D self._buildsvncommand(ud, d, "fetch")
+@@ -149,7 +149,7 @@ class Svn(FetchMethod):
+                 # check out sources there
+                 bb.utils.mkdirhier(ud.pkgdir)
+                 logger.debug("Running %s", svncmd)
+-                bb.fetch2.check_network_access(d, svncmd, ud.url)
++                bb.fetch.check_network_access(d, svncmd, ud.url)
+                 runfetchcmd(svncmd, d, workdir=3Dud.pkgdir, extraenv=3Dext=
+raenv)
+=20
+             if not ("externals" in ud.parm and ud.parm["externals"] =3D=3D=
+ "nowarn"):
+@@ -164,7 +164,7 @@ class Svn(FetchMethod):
+                             bb.warn("To disable this warning add ';externa=
+ls=3Dnowarn' to the url.")
+                         else:
+                             bb.debug(1, "svn repository has externals:\n%s=
+" % output)
+-                except bb.fetch2.FetchError:
++                except bb.fetch.FetchError:
+                     passs
+             scmdata =3D ud.parm.get("scmdata", "")
+             if scmdata =3D=3D "keep":
+@@ -199,7 +199,7 @@ class Svn(FetchMethod):
+         Return the latest upstream revision number
+         """
+         cmd, extraenv =3D self._buildsvncommand(ud, d, "log1")
+-        bb.fetch2.check_network_access(d, cmd, ud.url)
++        bb.fetch.check_network_access(d, cmd, ud.url)
+         extraenv['LANG'] =3D 'C'
+         extraenv['LC_ALL'] =3D 'C'
+         output =3D runfetchcmd(cmd, d, True, extraenv=3Dextraenv)
+diff --git a/lib/bb/fetch2/wget.py b/lib/bb/fetch/wget.py
+similarity index 98%
+rename from lib/bb/fetch2/wget.py
+rename to lib/bb/fetch/wget.py
+index 0d2b7f5c8..7b05a9ef2 100644
+--- a/lib/bb/fetch2/wget.py
++++ b/lib/bb/fetch/wget.py
+@@ -23,10 +23,10 @@ import socket
+ import http.client
+ import urllib.request, urllib.parse, urllib.error
+ import subprocess
+-from   bb.fetch2 import FetchMethod
+-from   bb.fetch2 import FetchError
+-from   bb.fetch2 import logger
+-from   bb.fetch2 import runfetchcmd
++from   bb.fetch import FetchMethod
++from   bb.fetch import FetchError
++from   bb.fetch import logger
++from   bb.fetch import runfetchcmd
+ from   bb._vendor.bs4 import BeautifulSoup
+ from   bb._vendor.bs4 import SoupStrainer
+=20
+@@ -94,7 +94,7 @@ class Wget(FetchMethod):
+     def urldata_init(self, ud, d):
+         if 'protocol' in ud.parm:
+             if ud.parm['protocol'] =3D=3D 'git':
+-                raise bb.fetch2.ParameterError("Invalid protocol - if you =
+wish to fetch from a git repository using http, you need to instead use the=
+ git:// prefix with protocol=3Dhttp", ud.url)
++                raise bb.fetch.ParameterError("Invalid protocol - if you w=
+ish to fetch from a git repository using http, you need to instead use the =
+git:// prefix with protocol=3Dhttp", ud.url)
+=20
+         if 'downloadfilename' in ud.parm:
+             ud.basename =3D ud.parm['downloadfilename']
+@@ -118,7 +118,7 @@ class Wget(FetchMethod):
+         progresshandler =3D WgetProgressHandler(d)
+=20
+         logger.debug2("Fetching %s using command '%s'" % (ud.url, command)=
+)
+-        bb.fetch2.check_network_access(d, command, ud.url)
++        bb.fetch.check_network_access(d, command, ud.url)
+=20
+         runfetchcmd(command + ['--progress=3Ddot', '--verbose'], d, quiet,=
+ log=3Dprogresshandler, workdir=3Dworkdir)
+=20
+@@ -167,7 +167,7 @@ class Wget(FetchMethod):
+         # Try and verify any checksum now, meaning if it isn't correct, we=
+ don't remove the
+         # original file, which might be a race (imagine two recipes refere=
+ncing the same
+         # source, one with an incorrect checksum)
+-        bb.fetch2.verify_checksum(ud, d, localpath=3Dlocalpath, fatal_noch=
+ecksum=3DFalse)
++        bb.fetch.verify_checksum(ud, d, localpath=3Dlocalpath, fatal_noche=
+cksum=3DFalse)
+=20
+         # Remove the ".tmp" and move the file into position atomically
+         # Our lock prevents multiple writers but mirroring code may grab i=
+ncomplete files
+@@ -177,7 +177,7 @@ class Wget(FetchMethod):
+=20
+     def checkstatus(self, fetch, ud, d, try_again=3DTrue):
+         check_certs =3D self.check_certs(d)
+-        newenv =3D bb.fetch2.get_fetcher_environment(d)
++        newenv =3D bb.fetch.get_fetcher_environment(d)
+=20
+         class HTTPConnectionCache(http.client.HTTPConnection):
+             def cache_id(self):
+@@ -568,7 +568,7 @@ class Wget(FetchMethod):
+             try:
+                 self._runwget(ud, d, fetchcmd, True, workdir=3Dworkdir)
+                 fetchresult =3D f.read()
+-            except bb.fetch2.BBFetchException:
++            except bb.fetch.BBFetchException:
+                 fetchresult =3D ""
+=20
+         return fetchresult
+diff --git a/lib/bb/fetch2.py b/lib/bb/fetch2.py
+new file mode 100644
+index 000000000..e64017016
+--- /dev/null
++++ b/lib/bb/fetch2.py
+@@ -0,0 +1,19 @@
++#
++# Copyright (C) 2026 Agilent Technologies, Inc.
++#
++# SPDX-License-Identifier: GPL-2.0-only
++#
++
++import sys
++import warnings
++
++import bb.fetch
++
++warnings.warn(
++    "bb.fetch2 is deprecated; use bb.fetch instead",
++    DeprecationWarning,
++    stacklevel=3D2,
++)
++
++# Compatibility shim for code using bb.fetch2
++sys.modules[__name__] =3D bb.fetch
 --=20
 2.43.0
 
