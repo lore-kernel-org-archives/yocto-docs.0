@@ -2,103 +2,143 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6C080C61DC2
-	for <webhook@archiver.kernel.org>; Thu, 27 Aug 2026 07:47:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9C3D7C61DC2
+	for <webhook@archiver.kernel.org>; Thu, 27 Aug 2026 08:02:47 +0000 (UTC)
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.31341.1787816858134202641
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.31131.1787817761610933681
  for <docs@lists.yoctoproject.org>;
- Thu, 27 Aug 2026 00:47:38 -0700
+ Thu, 27 Aug 2026 01:02:42 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=HU60o6f4;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=kulYXftr;
  spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 7D2E71A185C
-	for <docs@lists.yoctoproject.org>; Thu, 27 Aug 2026 07:47:36 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 868681A1848;
+	Thu, 27 Aug 2026 08:02:39 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 51711602B8
-	for <docs@lists.yoctoproject.org>; Thu, 27 Aug 2026 07:47:36 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B53B111C7815F;
-	Thu, 27 Aug 2026 09:47:31 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 59A08602B8;
+	Thu, 27 Aug 2026 08:02:39 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E76BB11C782C2;
+	Thu, 27 Aug 2026 10:02:33 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1787816852; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1787817754; h=from:subject:date:message-id:to:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=dsz8IRl4sVfjeI7F3eAX8GLkO1JMYVleLUVE0MDwx+M=;
-	b=HU60o6f423hx2AF3XD4fxdLtAmKvvjI6xpoqMLKinVBXM+xM+79rtyC+iBEOmSEym38jAr
-	CtoIjEczzlxdPT9bsdvzHv8scUHN6NFVuxMPprEifABXvOiR+AFsZV7fS/odyMbxAXKESW
-	kmrif1edy4dKugmDz5FC97PQz1aDBZ8fHVcuLS0K51r0acPdC/J5/Dpkmv+MlpbDVmgKQL
-	NOMs5Mm/Z/n0nRzUXlzXajTAB1YaL77uiBuM2DzvX/gJ1NIZ842c//Ji0HjhDk9HSkL9wh
-	kXdq9l7Vw9e2EOw5SkywgLYRPJMkS90hvCgqI3qoqkZiTKAG1nitfobrnsr2lQ==
-From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Thu, 27 Aug 2026 09:47:00 +0200
-Subject: [PATCH 4/4] ref-manual/variables.rst: drop documentation for
- FIT_KERNEL_COMP_ALG_EXTENSION
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260827-missing-variables-v1-4-7ec8b525b23b@bootlin.com>
-References: <20260827-missing-variables-v1-0-7ec8b525b23b@bootlin.com>
-In-Reply-To: <20260827-missing-variables-v1-0-7ec8b525b23b@bootlin.com>
-To: docs@lists.yoctoproject.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Antonin Godard <antonin.godard@bootlin.com>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1538;
- i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=a50y9a4BaI9OWfMcG5o4fbyzdQhOe/cB44OOgXQ7WRw=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBqj+uA5AKCBrjtrrwVU+3GOitkMw9hgmtZmOgPH
- xMTnwfEe7qJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCao/rgAAKCRDRgEFAKaOo
- NiOiD/93MAIhzjnDSSFpU1ouG7NxF4fxIlxQv4/bknNJN9IoiHeD3w3H/pgKR2AJIYpKZAx7lKD
- 2j0sU+KJaRhOlHhrqLwDfVu0E5CVWyPXPm9FE24Dnz+9kkmvVRZvofQEXEkYKX1FAbUkt61VuPT
- eGs19WyBgShpIGAT3rO3O997+54IxLD3W722d2C61zCdJSj+z0GJXCQPdZD3dc94pF2L5BvP/Ng
- y/dwImKMQ8bUdIqfYgb+vz3VU3q1UbFXfNIF6QPPEa8GbVva2UxCXLkLN3MGrq8OrqbyokkedHi
- A97mORLXfrWjOfQ6XgDzdJy9MhNKMhshswv4gB5YSOY09CoVNkQG45wXap+YPXUO+/yHWUg+A1C
- G58ejkxBEVE1ikgfP3ty25l3gU0CXLXedCo5/z5A3SevEgeVcxRSNge4q0VeQCz2ZHtAy/Wg7xK
- uabxSjRj3ggHZjt1NZXPQ0AT7GWZfcv3h4dYsNN4nYvzVaKGCHIevjJ9FmQvBTFubEIs9TVPYh5
- vbhh/0U8RS77w+viVsmZRZk7R1rzE7zK53njio5pXarEzwSLECvla3/jPzYgij0wu+YHrfxpd4e
- OMWbcPt20dW7cykCMXvkZkdKMcsqz9rBgDxF2hKTgN8qSEBadFtf6YM95ysDIBkKOk2j55unRRb
- f3FjKp3C4v7E7Ew==
-X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
- fpr=8648725188DD401BB9A0D3FFD180414029A3A836
+	bh=LvX19whs+nKQDpuZkEQVq6Q+neaxj5heiAHasOZ7mPY=;
+	b=kulYXftrXNzVqj4VtsrjqOcUx/YOAtIQZKVt4G0PnmPZRIX8SVPShYcR0L0c6SapjLJb3R
+	Wi7JhpOF16pBW+R+Oa58eLQHMvpnfX6Y+KXYmE7kxmFXuzfcPKOE9Di7jhlU0hVb1fkniq
+	5vXpaa4HLJn4dWSdoJUHZ5bsqVNXhEWwTP+9eHFzH/8/5BZCIsb5tMq42w2cIfcU3YtMOb
+	7stMPYGtdUaEYlH1e7gqGBlA2VS8GMEHZn1uVtLvuM4L0Hp1qQFKS6og1drZZWB4T0EO46
+	PpAYrrHpY7ygfoclRKqPuojcDRdtAruhVBfN33FdLwA5gGBvYliPkq6KNCZapw==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 27 Aug 2026 10:02:33 +0200
+Message-Id: <DKZKI1KXQX7L.3G2TJYPXYINTD@bootlin.com>
+From: "Antonin Godard" <antonin.godard@bootlin.com>
+To: <quentin.schulz@cherry.de>, <twoerner@gmail.com>,
+ <docs@lists.yoctoproject.org>
+Subject: Re: [docs] [PATCH 00/10] docs: highlight BitBake snippets with the
+ bitbake language
+References: <20260826013502.2674000-1-twoerner@gmail.com>
+ <34c79745-33ff-41dd-bb85-144bb26b02a2@cherry.de>
+ <DKYWEFNK1215.22ZC7DOYBOIH9@bootlin.com>
+ <78a29634-d64c-48ed-a012-71fff5efcb75@cherry.de>
+ <DKYYZ48110MA.28EKFR3DVIU9C@bootlin.com>
+ <6f60c33e-17aa-45c9-b23a-dd46baa1a207@cherry.de>
+In-Reply-To: <6f60c33e-17aa-45c9-b23a-dd46baa1a207@cherry.de>
 X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 27 Aug 2026 07:47:47 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10376
+ <docs@lists.yoctoproject.org>; Thu, 27 Aug 2026 08:02:47 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10377
 
-Variable was dropped from OE-Core with 46bb48b42be3 ("kernel-uboot: drop
-FIT_KERNEL_COMP_ALG_EXTENSION"). Remove the documentation for this
-obsolete variable.
+On Wed Aug 26, 2026 at 5:43 PM CEST, Quentin Schulz via lists.yoctoproject.=
+org wrote:
+>
+>
+> On 8/26/26 5:10 PM, Antonin Godard wrote:
+>> Hi,
+>>=20
+>> On Wed Aug 26, 2026 at 4:34 PM CEST, Quentin Schulz via lists.yoctoproje=
+ct.org wrote:
+>>>
+>>>
+>>> On 8/26/26 3:09 PM, Antonin Godard wrote:
+>> [...]
+>>>>> I think this is going the wrong direction. We should actually make
+>>>>> explicit the language of every :: that is NOT to be understood as
+>>>>> BitBake code and then make the default highlight language be BitBake.
+>>>>
+>>>> But then this might get forgotten? How about having the default highli=
+ghted as
+>>>> "none", and make _everything_ use explicit code-blocks?
+>>>>
+>>>
+>>> """
+>>> The direct benefit is the ability to still backport whatever needs to b=
+e
+>>> backported without having to care about the highlight language being
+>>> explicitly bitbake (which won't be available in every branch but master=
+).
+>>> """
+>>>
+>>> *exactly* the sentence after what you quoted.
+>>>
+>>> It's bound to happen someone will want to backport a patch with
+>>>
+>>> .. code-block:: bitbake
+>>>
+>>> Either we'll forget during review and it'll break the docs build, or we
+>>> need to adapt each and every patch/commit for stable branches.
+>>>
+>>> I'm usually the one trying to add friction to processes, but I don't
+>>> think the above is a good idea.
+>>>
+>>> I'm trying to avoid having code-blocks set to use the bitbake lexer so
+>>> we can easily backport without having to care.
+>>=20
+>> Our current active releases where we backport patches are Wrynose and Sc=
+arthgap.
+>> Both use the same buildtools tarball on the Autobuilder, and contain the=
+ same
+>
+> But should they? Aren't we supposed to build the docs with an SDK we=20
+> build from the same branch as the one from the docs?
 
-Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
----
- documentation/ref-manual/variables.rst | 8 --------
- 1 file changed, 8 deletions(-)
+It's been like this for a while now, and has not caused issues. I'm afraid
+maintaining several SDKs for each branch would be a bit painful, although i=
+t's
+probably the "right" thing to do.
 
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index d1bbc437f..b7846585e 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -3454,17 +3454,9 @@ system and gives an overview of their function and contents.
-    :term:`FIT_KERNEL_COMP_ALG`
-       The compression algorithm to use for the kernel image inside the FIT Image.
-       At present, the only supported values are "gzip" (default), "lzo" or "none".
--      If you set this variable to anything other than "none" you may also need
--      to set :term:`FIT_KERNEL_COMP_ALG_EXTENSION`.
- 
-       This variable is used in the :ref:`ref-classes-kernel-uboot` class.
- 
--   :term:`FIT_KERNEL_COMP_ALG_EXTENSION`
--      File extension corresponding to :term:`FIT_KERNEL_COMP_ALG`. The default
--      value is set ".gz" by the :ref:`ref-classes-kernel-uboot` class. If you
--      set :term:`FIT_KERNEL_COMP_ALG` to "lzo", you may want to set this
--      variable to ".lzo".
--
-    :term:`FIT_KERNEL_SIGN_ENABLE`
-       This variable is used by the :ref:`ref-classes-kernel-fit-image` class
-       to enable or disable signing of the FIT image.
+[...]
+>> This is interesting! If it behaves the same way with whatever highlight_=
+language
+>> you set in conf.py, then this would be less of an issue I guess.
+>>=20
+>
+> I don't know for sure without looking at Sphinx's source code but my=20
+> reading of the docs says "no", this is specific to "default"=20
+> (highlight_language =3D "default", which is the default value if absent).
+>
+> highlight_block() in sphinx/highlighting.py has a check when there's a=20
+> parsing error to use none if the language is currently "default".=20
+> Reading a bit further down, there's a check on the force flag. I'm=20
+> assuming this comes from :force: from rST, so I'm not sure whether we=20
+> can actually pass it by default (and in any case, we would still have a=
+=20
+> big fat warning, which we don't with the "default" value).
+>
+> "default" seems to be a synonym of Python in get_lexer() as well, so not=
+=20
+> sure we can simply decide "actually, no rather bitbake instead of python=
+=20
+> lexer".
+>
+> I haven't had a deeper look than that into Sphinx source code.
 
--- 
-2.55.0
+I've tested it directly: setting highlight_language to "bitbake" would prod=
+uce
+errors in case Sphinx fails to highlight a code-block.
 
+Antonin
 
