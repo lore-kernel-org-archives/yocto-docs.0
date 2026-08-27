@@ -1,172 +1,201 @@
-Return-Path: <quentin.schulz@cherry.de>
+Return-Path: <chris.laplante@agilent.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C628EC61DC2
-	for <webhook@archiver.kernel.org>; Thu, 27 Aug 2026 14:23:25 +0000 (UTC)
-Received: from OSPPR02CU001.outbound.protection.outlook.com (OSPPR02CU001.outbound.protection.outlook.com [40.107.159.15])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.37586.1787840596182469999
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AE405C61DD3
+	for <webhook@archiver.kernel.org>; Thu, 27 Aug 2026 14:30:57 +0000 (UTC)
+Received: from CY3PR05CU001.outbound.protection.outlook.com (CY3PR05CU001.outbound.protection.outlook.com [40.93.201.4])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.37439.1787841053726823806
  for <docs@lists.yoctoproject.org>;
- Thu, 27 Aug 2026 07:23:17 -0700
+ Thu, 27 Aug 2026 07:30:53 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@cherry.de header.s=selector1 header.b=n9lWbJ1M;
- spf=pass (domain: cherry.de, ip: 40.107.159.15, mailfrom: quentin.schulz@cherry.de)
+ dkim=fail reason="dkim: body hash did not verify" header.i=@agilent.com header.s=selector1 header.b=ASRf965e;
+ spf=permerror, err=parse error for token &{10 18 %{i}._ip.%{h}._ehlo.%{d}._spf.vali.email}: invalid domain name (domain: agilent.com, ip: 40.93.201.4, mailfrom: chris.laplante@agilent.com)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HexV2W/dnEXlg+xxjauCUYJSuGjQfpQoMgyytsxYcezIin35Wh5JfxqRJJWLJ6wazE/euJ1rkOVbaewBlOX+gRY1EnPIi7m0O/b1eS4vZiTqga0qQNMG4hxzzxojVh7aMY3NiPdb3aJJ1ZQVWNeFQFM3bKF2PO6fudPHA83hi22QMBbkuyvl1vm4mLvtBE0GC7dyvaBvYrijBJoyA/L+NNAvjitgZD6rvLD0d+cuMNf2qfQhx2v7LVmsYricS5ZmehEAIjev/wae6D/yNAZfFhdQH50lIDfHw3B/Xrn55ctH+yUc7RnROvSJdbBegfQwynE2462hxwM0gpygXJMs9g==
+ b=on2lLjd7SDkk67qhWgdgh3V0pdzOaaGGgYpZCBwk0HK2wbqbv3ZTf88qyWGPXGWlm0og8NNi7imCky7mheThwa0X9cUbXykBn6DQNxzne98XskNhWJhy2WLRL/0CCQpHyokeEXpJu9EMbI1Z5TZ/lsGZp5fTxIrYcNI9rImtxc3Q0KjB6jLJ8UUEuluqcCmndZTnYMAoZL8sFxkC2wTc06fv+TCLI4PlxK1MOrR4RID/WWjutwA4pbiZ6gZb3Ynm3BdxMByOaYCw7ynom0acKXBYoQmrfCZE7JdJ9gOpcN/sdlG/vrj9+0XSelwrxf2eZiYRB8rKRrpRH1XHYBtnqA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=oADOi20OMyZ7CZBdIWDnNqOV8MBWKHdvX45YwHZ2rIw=;
- b=zVzqNgPmhKPD9zh1U9h2CoTGcFm/AkEBgcIXxou12DFAARLMe2++MnVAWJJwMyuKKlarBbQbCQ9ki4JMnqoXZk5IcJvrvHcQD6MlJ0EL/kkX6UC9JELKE1EG50sYKWa1pPbxWU9wJxVcHH36+dFnvzJYw9g04NUE/ZsuQSbgA099JoMsXOwAkp7l6A4mYPThQee3GMgus334Qc20mnMvQOPNmKp9WRgI4lJDLkPA57+47lWh+oKAhiGVwqNTicBnIHqwNsjVp+Qwk+vmB3uhbUyF2/Lz0XC/dOcwyk7YrzJHGgZ8VB3NpmMUfUCes/9TdQ2EC80WbJyIcMFa0J2pQw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
- dkim=pass header.d=cherry.de; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
+ bh=bdT16wZ1axm0KM4CPhizs+rYPQs/VCKEoDtCUYe9p2g=;
+ b=VmNQxyS0ubWwIgJzjnmpQkM151M5p4kvhmCm6C0O8eHvnoNk1KELCree+F2+z61M41QNq1ForxbP3VKFZhyro/+h8Nwzn7g0qs1XvhdGRtzIF0S0+9CalYRfjcF8yULv+CLaOkIyhRGmB2d4+64DJ+a661CcwLpy2BkiN6XgEqc0fp92xzPM6w6dPMhYDCoVLmRqyhoK4L830cBDyS0FkKI/EKWoV8lvgyGqv4fEnjutrFsPCARMMiaD0wF2medjDHhze4UgxflS5Q3Si1Wky2NoYlfcK2u+QjGvnhLcM/HZXVil/JjOQmd8Uv9iZqbPZEDhVF4eIDI8VRqPJUa22Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 192.25.218.36) smtp.rcpttodomain=lists.openembedded.org
+ smtp.mailfrom=agilent.com; dmarc=pass (p=reject sp=reject pct=100)
+ action=none header.from=agilent.com; dkim=none (message not signed); arc=none
+ (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=agilent.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oADOi20OMyZ7CZBdIWDnNqOV8MBWKHdvX45YwHZ2rIw=;
- b=n9lWbJ1MTA1UBL5GRbXkS6Hh5eqsO4APBCJjv0Zu8voZiLnIUmsGxaKgVJY3EWV8woD8DlEMAXNiTW9U6ec5cMNnl21rzLEJgRcQcPO6DOoSC26XNmZb0NOyPGNi/RFTTKl3pKIvpPFF5CZhC5jEkANyzlTSjDA38Y3YixNby5M=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=cherry.de;
-Received: from PA3PR04MB11153.eurprd04.prod.outlook.com (2603:10a6:102:4ab::7)
- by BR0PR04MB152861.eurprd04.prod.outlook.com (2603:10a6:2c8:44::21) with
+ bh=bdT16wZ1axm0KM4CPhizs+rYPQs/VCKEoDtCUYe9p2g=;
+ b=ASRf965eApgr+XT1xPxoQKIGBum0IB84i1W/1SLziEuG+0UxJM0lsXN9KBLgCZ2NTpq0IqJHp0vYXdgwEr/Q/v1KW5UXo32D3FGW0QFhi16yNHact7USgONcWAY36WejHCk171YqjtS50PVqUJhW1Tbi3pTtVGVuAxxEseBMPJIfqFccAK8v3ZMOuHVOKfWj/wHGrMK2CDkuKteUVBxkHi1I46jrHKhKxiZJ6XK6FumxVMwXJSDvk83c6Zxqbjgv+3Qc8wZQtdEzW56ArHbHdO/xfdg2G7Oy73NvS3JvDGn81ZBBtoxOMSeELja0N18Xf7lR1KJpMoXR3GpWcA4cbA==
+Received: from BN9PR03CA0574.namprd03.prod.outlook.com (2603:10b6:408:10d::9)
+ by CH0PR12MB8530.namprd12.prod.outlook.com (2603:10b6:610:188::10) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.10; Thu, 27 Aug
- 2026 14:23:10 +0000
-Received: from PA3PR04MB11153.eurprd04.prod.outlook.com
- ([fe80::6b02:c0eb:95a4:3c3d]) by PA3PR04MB11153.eurprd04.prod.outlook.com
- ([fe80::6b02:c0eb:95a4:3c3d%4]) with mapi id 15.21.0360.008; Thu, 27 Aug 2026
- 14:23:10 +0000
-Message-ID: <3e21159f-939c-4e66-9c8d-e6208b1bb2ed@cherry.de>
-Date: Thu, 27 Aug 2026 16:23:08 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [docs] [PATCH 00/10] docs: highlight BitBake snippets with the
- bitbake language
-To: antonin.godard@bootlin.com, Trevor Woerner <twoerner@gmail.com>
-Cc: docs@lists.yoctoproject.org
-References: <20260826013502.2674000-1-twoerner@gmail.com>
- <DKZL9X7BV6TH.1WARGZV04JK2V@bootlin.com>
- <apAgqQXALqu6eX7W@localhost.localdomain>
- <DKZPWL5N9LAS.EB6LNEC08FQE@bootlin.com>
-Content-Language: en-US
-From: Quentin Schulz <quentin.schulz@cherry.de>
-In-Reply-To: <DKZPWL5N9LAS.EB6LNEC08FQE@bootlin.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-X-ClientProxiedBy: VIXP296CA0027.AUTP296.PROD.OUTLOOK.COM
- (2603:10a6:800:36e::7) To PA3PR04MB11153.eurprd04.prod.outlook.com
- (2603:10a6:102:4ab::7)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.12; Thu, 27 Aug
+ 2026 14:30:50 +0000
+Received: from BN3PEPF0000B36D.namprd21.prod.outlook.com
+ (2603:10b6:408:10d:cafe::95) by BN9PR03CA0574.outlook.office365.com
+ (2603:10b6:408:10d::9) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.360.10 via Frontend Transport; Thu,
+ 27 Aug 2026 14:30:49 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 192.25.218.36)
+ smtp.mailfrom=agilent.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=agilent.com;
+Received-SPF: Pass (protection.outlook.com: domain of agilent.com designates
+ 192.25.218.36 as permitted sender) receiver=protection.outlook.com;
+ client-ip=192.25.218.36; helo=wpcosapexchedg5.windmz.agilent.com; pr=C
+Received: from wpcosapexchedg5.windmz.agilent.com (192.25.218.36) by
+ BN3PEPF0000B36D.mail.protection.outlook.com (10.167.243.164) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.382.0 via Frontend Transport; Thu, 27 Aug 2026 14:30:49 +0000
+Received: from laplante-B650.lfs.agilent.com (192.25.126.4) by
+ edgeappmail.agilent.com (192.25.218.36) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.41; Thu, 27 Aug 2026 08:30:14 -0600
+From: <chris.laplante@agilent.com>
+To: <bitbake-devel@lists.openembedded.org>
+CC: <docs@lists.yoctoproject.org>, Chris Laplante <chris.laplante@agilent.com>
+Subject: [PATCH 3/4] tests: add fetch_import tests to test bb.fetch2 => bb.fetch migration
+Date: Thu, 27 Aug 2026 10:29:57 -0400
+Message-ID: <20260827142958.547182-3-chris.laplante@agilent.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260827142958.547182-1-chris.laplante@agilent.com>
+References: <20260827142958.547182-1-chris.laplante@agilent.com>
 MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA3PR04MB11153:EE_|BR0PR04MB152861:EE_
-X-MS-Office365-Filtering-Correlation-Id: 81e5fcaf-9367-4f4e-9b29-08df0446b88b
+X-MS-TrafficTypeDiagnostic: BN3PEPF0000B36D:EE_|CH0PR12MB8530:EE_
+X-MS-Office365-Filtering-Correlation-Id: 62ca6c27-768b-4139-c6f8-08df0447caaa
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: 
-	BCL:0;ARA:13230040|10070799003|366016|23010399003|376014|1800799024|10067099003|4133799003|6133799003|4143699003|11063799006|56012099006|18002099003|22082099003;
+	BCL:0;ARA:13230040|36860700016|376014|1800799024|23010399003|82310400026|10067099003|56012099006|11063799006|18002099003|22082099003;
 X-Microsoft-Antispam-Message-Info: 
-	47iGxDJYAnkijUnoeus5AcDi3uEZ7rSJahvAZH3LACi0eL13wxAH1/0ME6vCTM0MiDIzn5M3nJrIb5qx5siMCgCjPWBeuMbOnFff0IclyNpZF3GiW5gPyOFI+3DnS6ThusrX7eUI61KsyOOOpxPBS1nnbY8OCSLPZnfIQadtxlLVLigO9BZfJRwVpU8hMEdDshHrBzDZGrm6YCQxyDkpRL5WZz2pnwJoS1DfLxF/AgDTpW9doMRvtOwQ8t7goAuZYeLEwXVM8xs652yrXHqoJYLR6BQ3PMQA3LezyHXbbE0BDGXmWXB0Dha+GFVRxszIyrr+++mrxjSqRRpNtlwMfPnhl2Uk1sgzIfXc6OVIgryFIvKcZgn6dAUWonE5X2yILhRJiG9lEyx/uTXbjxHmFlHkApfDge0n/nR1LuAy2wMngYGN5lyf8f5aF9pwBjUznyZXfWNSsmbxGs+64rPMhGpbjQsKy2pMRQQBlvnVCahWV0yMK8A9fFMlQNIpANFAUbj2DSr8B3i+Tx+jLgmPUUnW7S8D3DstbOdrgHIxUMpBtD1nEqGIh5UiS/GtS1RAdJgA/8yOr3lNh3qWOafc8jPCerF00tEd/oGTxHPRgvB1OhMn4/Qxhp1Z/upjIuQJdHKliWZbfx6HaJZD2HsBKqDbstV3MWTg9RlRCyyLBis=
+	/Y3QCG3vBxajTdkldjjvA76nkmBAC3COP24B42KRSfCvRucVCXXk5qVxSUoIE50Izum549k8fMeajGwtu92rA00JqHuvDlSxwhAp+0uvmK+8J98HE3JLe1eqXRzJCzyAM9EIHZ1oz7zqQD2BH1bFYGXk2u7CC7Q1KynteORwtvEXIyXwYfLqC2z8wqrctbsntnvHwurcQVP2kl4IXDbBtWLBjkFrLWHuxkVYc63u8fsvMIE+GhCa1e2T4F4gQvuxuIEzRLWRRtuj6TXHx4hpuJgXPfLAIRAqTWqhEXf6vx2FxMhBh9hCDK9BkIWW4t6b6T/dZVahPoZ0B0279fihZ0VjDHlCjnqE0P4jQM5hDsJxaHqFTs2/I+OL0vNfKMAD5LdQxx2KVpElbob193hnLuAnvMxbhLravcROGoOwFymDvSNdq2crzz1C373gpfVNL0batTHapnktM4hI+sSXvbKfFYtsbwMFKLEZI7yGzxGEWK1tKMzRmrjWeEHPAqvL3OuMw1mXFYplDGNmJBO4GXZ/tDFZLhF548wUHkdaMxC1jLWNqkmtM2RKkRX7ImIAhq0JWAIHXkNdhng1tc/7B3VmBi18ygFsp5q+fCp54cCO8Xhtd6qZiB4sGeHmv5ZDJ5ZwX4zxMNzTZRfYnBFQLO29Ve3ZbXx7POaCYHZgQBjBwykO3qqDv8XdfiB2umj/2+RYRJbDio2BRVRwtOL0AA==
 X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA3PR04MB11153.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(23010399003)(376014)(1800799024)(10067099003)(4133799003)(6133799003)(4143699003)(11063799006)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+	CIP:192.25.218.36;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:wpcosapexchedg5.windmz.agilent.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(376014)(1800799024)(23010399003)(82310400026)(10067099003)(56012099006)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?utf-8?B?UE1MOVF0RDdIc08xVU1ySm13anFQWEdkc2V2SVBraW13WUl0bXZyZ2xvZ1BR?=
- =?utf-8?B?WEpqRVVJOGc2K1pFNDNVWlQvSEVPLzBjMklzUnhlLy9CZ2t3dFo0U25qOE9s?=
- =?utf-8?B?Z1JkOTBqcWk2SGtOZUdrMWJEaDFKNWJLQWx2a0dsMEpyS05XL05HRTc3dzMy?=
- =?utf-8?B?WEpmVE1FVVJuTVpYbnBOTjVTOXlWdTl2YlNPNy9RTlR4MCtZSjBLenNkZll3?=
- =?utf-8?B?NmRLcDNic3d5Qy9RTk1YdjFZakhHNFlRdXZCVzI5ZDZKMzV5SUhXT1RaakRz?=
- =?utf-8?B?NWFJVXVXczdpOWFSSWlOaEdYK3BmMFFUdUNHaUlxUUtyUytUNitRQTNQSVFQ?=
- =?utf-8?B?cDd5LzVzcVd3VVk1STFBeWNvYklKbDBWOUQ3QnpxN3YzcHJNZ2RmZE9vWUVm?=
- =?utf-8?B?RVNya1U0Z3pXOVZhWVZUTDQvYXBvZkhGZDJ1WU9EZUV1cTVxZ1VPdlRaWDdN?=
- =?utf-8?B?SlhiR0E0RDJSMlVKNFFlU2Q4WDYrd2lOTzRuVmhSeWhON2FlZlFRRk03K2Z4?=
- =?utf-8?B?QS9rUEJRSG5ScVV0UnNJemJUSlZXb1pibk1kWlcvZEZndnBJQmFqVndBMUZy?=
- =?utf-8?B?N0hxMnBwQjBFZ2VPSkxYeDFzYWJudE9SNldRbWpHS0hnaXhtdG1JUE5PVXJs?=
- =?utf-8?B?SGRUUVFvcTdzaEw4M1VMOHp3amh4TUJNVm4xb3hFTndEL2hYL3lIWHBBUENI?=
- =?utf-8?B?L1ppVnhmOXhMTzdrMmQ5T2F3dGhQRndiZlZZYzkzTXpDU0tuMmM4REwvVllx?=
- =?utf-8?B?ZHRJb3ZsV0tFc3NiaStHUmtrelpOUU0yWE5Za2dxeDBSaTVNUWRmUmJ4V0pY?=
- =?utf-8?B?NnJEQkJpMXlNclY0c2F1RHpMK25QS3FCclhGckhaZTFsSC9NaGluSXE3cDhQ?=
- =?utf-8?B?ekhNZHh0YjBlSGFFa1l6VmhQY2VyT3JJSktuaXZCczVmRkdtaEgxb082Zzk3?=
- =?utf-8?B?NW9oOXNtYVV6QldUaXFFMk9ydHBKVC83c1dqc3BESm5QVHo0enk1VDVIbFZQ?=
- =?utf-8?B?QVBCOHVHT0pUTGFURUI0dHMvVzZOZXowMy90cVpVWUswQno3ZW9aNDRJMm95?=
- =?utf-8?B?dEdLVDNYMWFDSTdlOGFzT2ttL2dJS0VKanJGb1U0cmdBVDJycWZSNGlYY21y?=
- =?utf-8?B?aHBhazVhaFlyTlJQL1lkTXNoZ1BISmF2R3l0M1A2TGVwTldiRHNWcWxWTDFs?=
- =?utf-8?B?U1lIa1pWVlpNd1NxK3ZzZTNGOEQ5SXpkU2YvRFhuTW9jOTFDb2FDK2poZnlX?=
- =?utf-8?B?RmpkUEluSzBYMi8wKzY0aVd5eDB5MnVSUXhQalMrcmJOc2JON3hCM2VQckJy?=
- =?utf-8?B?c1hPbk9WN2c4NnMxWHIxa2dvTm9XWmQxbUV0Y2JoNGNrUFdFYjBtYXZiR01k?=
- =?utf-8?B?MWxwaUtLam5pWHRUS0NCc2ZTT2laQlpyUXBBbVorNElpa1JPejJ2aEF2QXJU?=
- =?utf-8?B?MjJXWVhQSUZLL0FuZ1c4L2xva0RXSk1VSTVkWkRxTGJjT2R4RVIyeGxFSEdk?=
- =?utf-8?B?RHhOYklsdEhnbEs3a05VSTBWZmc2eEZacm9LRmVkeTU1SEtSSjg3U2N4cFZw?=
- =?utf-8?B?YzduT0hrYXhDTFZubVprUXJXYzhHSjkzNk9TOVJJR3owWnptRFgvdjBUaWth?=
- =?utf-8?B?S0ZTd0hXRFBrbjc3OW5EdXdyL0hXRDk1WWdmc1FXT3FVRkRDcVNKMDJ1KzhW?=
- =?utf-8?B?SVN0T3ZRNVlETTl2a0hGQzRuOUlxNk8zZEFXcTNmazJmU2IrajUxNGN6c3I5?=
- =?utf-8?B?TDlPYjA5VGYvTEMyY3hoYzhlNVM3YzRCRnBQOUE1Q25WOHVVdmpDQnlpWVRx?=
- =?utf-8?B?YUdMU2pCdko5YVFISlBpMVc4T1U1bTVYWHNEWXgwdFZ2dGFpcTF5aGFjVnYr?=
- =?utf-8?B?NmxhMDJpeWRlSWVMcDJNRWg1R2E0di82cjJ4dUowVzZaOU01aG5qNUV1L2ZC?=
- =?utf-8?B?M1JyUnNKNmpBRU1xd0h2OHF2WHk2ZkljeS9TVzNBVE1OMTVOZkdMS2ZBbmtS?=
- =?utf-8?B?cDgyRzdnZzQvcWlMSVJPaXJqUTBZcG9DNFZZVjhPcm96OHJZTCtHbDRVaHdl?=
- =?utf-8?B?ZTJUdmNJZXZ3ZjZibzRic2FFYndjblp2UExsdXdDQmgzbS9YRExQVFhwU0k2?=
- =?utf-8?B?bDFtUCtLaVpOR2tTejZDZmcyc2NpTE1nVEhMWlE4TEJMa2lmZ2hYN0lsY0Uw?=
- =?utf-8?B?V2VUbTdGd0xvVk9MVTVMMVNjNWViUkFkRm96aGdLV2pEMHZZRlZHWUlpeTNF?=
- =?utf-8?B?MnpIZTBLMVVFRGU5eDdObUcxSEJGVVFqNEluYnp6WHhyMC8zQ1hIRnBmTG1s?=
- =?utf-8?B?UzJVaEJpTWI0dGRndUZxbFBnSHNjQWU3ZktwaWlqT1ZuaEJuTXpmK3ljR09G?=
- =?utf-8?Q?0VCigyVtORCUOZ6HREKd8I4Tv7jN/39nze5rhOHwYZB4E?=
-X-MS-Exchange-AntiSpam-MessageData-1: pqpx+vI1g1rb0/sRDZCIbSjZp83SoDdSa/o=
-X-OriginatorOrg: cherry.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: 81e5fcaf-9367-4f4e-9b29-08df0446b88b
-X-MS-Exchange-CrossTenant-AuthSource: PA3PR04MB11153.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Aug 2026 14:23:10.3891
+	Aj75D25SERE8GaYn07luZaoznm5ikNTT0/lzPKKglly/n5OJuUAPzDScwTUVUai9kNemWAW0uCSWvLtXNC0YhJ/hUji7AdfY7UhfCvzf+d/WSOBInrr9s0OIyClHzKetnigMJNqHkY+AuHYuwH44zL8WodLPfWOOe5jyw8SSME6X+fYk2Yvj+/+HAGC4APC+F32QFoaxBcmp54CaaxlFCefQdpxpw/LbVs+dPHbwYb6qBfO6ReozkC22L4qvn/swn7550OB51sAB6nqjZFO3kdTKaAXqUBEvBrcWQA5Qu8gYNo6TZchcSjUvpExf7N1+YCdJ8+9U82Nt7/SYaEamTkWWEbWtlhAjw/9UBbc3JuPfRRQVr5XaKYUe+T9H2I4LesRcTsOuR/6saiVzbI3RZMGwa1cqSuO3KDdSJNHXmjrTh1pWgCEI8eUJdiREsFur
+X-OriginatorOrg: agilent.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Aug 2026 14:30:49.7888
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YGodRH1GSduUPAG5ZTQgO5eEuZIaD3RiaiGOkniqnh4yHc1/XZDpF5vNzQ0azhzNQqTtdtVe9+bQHbWh15lbKh7yn7znya8i5G5/KyvFBro=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BR0PR04MB152861
+X-MS-Exchange-CrossTenant-Network-Message-Id: 62ca6c27-768b-4139-c6f8-08df0447caaa
+X-MS-Exchange-CrossTenant-Id: a9c0bc09-8b46-4206-9351-2ba12fb4a5c0
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=a9c0bc09-8b46-4206-9351-2ba12fb4a5c0;Ip=[192.25.218.36];Helo=[wpcosapexchedg5.windmz.agilent.com]
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: TreatMessagesAsInternal-BN3PEPF0000B36D.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR12MB8530
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 27 Aug 2026 14:23:25 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10383
+ <docs@lists.yoctoproject.org>; Thu, 27 Aug 2026 14:30:57 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10384
 
-Hi Antonin,
+From: Chris Laplante <chris.laplante@agilent.com>
 
-On 8/27/26 2:16 PM, Antonin Godard via lists.yoctoproject.org wrote:
-> Hi,
-> 
-> On Thu Aug 27, 2026 at 1:34 PM CEST, Trevor Woerner wrote:
->> On Thu 2026-08-27 @ 10:38:58 AM, Antonin Godard wrote:
->>> Hi,
->>>
->>> On Wed Aug 26, 2026 at 3:34 AM CEST, Trevor Woerner via lists.yoctoproject.org wrote:
->>> [...]
->>>> Not included
->>>> ------------
->>>>
->>>> Six blocks in ref-manual/ trip a defect in the released BitBake lexer,
->>>> fixed upstream but not yet in a release. They are a separate patch, held
->>>> until that release, so the rest is not blocked behind them.
->>>
->>> Would it make sense to apply a patch to Pygments in OE-Core to fix these issues
->>> until a new version of Pygments is released?
->>
->> It would be very easy for me to provide a patch that would fix these
->> things locally until (if) upstream pygments picks up my updates:
->>
->> https://github.com/pygments/pygments/pull/3284
->>
->> I had wanted to add such a patch when I first developed the bitbake
->> lexer for pygments but the last time I proposed adding a temporary,
->> local pygments update it was decided we should wait for upstream.
->> Therefore I stopped short of doing that here.
-> 
-> I think you misunderstood me :) What I meant is that we could patch
-> python3-pygments in *OE-Core* (*not* provide the lexer from yocto-docs)
-> temporarily, until your above pull request is merged, and we drop the
-> patches in OE-Core after an update.
-> 
+Also tests that importing bb.fetch2 (instead of bb.fetch) results in a
+DeprecationWarning.
 
-Please don't, otherwise people will be forced to use the buildtools to 
-build the docs.
+AI-Generated: GPT-5.6 Sol
 
-Cheers,
-Quentin
+Signed-off-by: Chris Laplante <chris.laplante@agilent.com>
+---
+ bin/bitbake-selftest         |  1 +
+ lib/bb/tests/fetch_import.py | 64 ++++++++++++++++++++++++++++++++++++
+ 2 files changed, 65 insertions(+)
+ create mode 100644 lib/bb/tests/fetch_import.py
+
+diff --git a/bin/bitbake-selftest b/bin/bitbake-selftest
+index 8ac0aeb5f..27791d2db 100755
+--- a/bin/bitbake-selftest
++++ b/bin/bitbake-selftest
+@@ -32,6 +32,7 @@ tests =3D ["bb.tests.codeparser",
+          "bb.tests.data",
+          "bb.tests.event",
+          "bb.tests.fetch",
++         "bb.tests.fetch_import",
+          "bb.tests.parse",
+          "bb.tests.runqueue",
+          "bb.tests.setup",
+diff --git a/lib/bb/tests/fetch_import.py b/lib/bb/tests/fetch_import.py
+new file mode 100644
+index 000000000..3c44a1b3a
+--- /dev/null
++++ b/lib/bb/tests/fetch_import.py
+@@ -0,0 +1,64 @@
++#
++# Copyright (C) 2026 Agilent Technologies, Inc.
++#
++# SPDX-License-Identifier: GPL-2.0-only
++#
++
++import os
++import subprocess
++import sys
++import unittest
++
++
++class FetchImportTests(unittest.TestCase):
++    def run_python(self, code):
++        env =3D os.environ.copy()
++        libdir =3D os.path.realpath(os.path.join(os.path.dirname(__file__)=
+, "..", ".."))
++        env["PYTHONPATH"] =3D os.pathsep.join(filter(None, (libdir, env.ge=
+t("PYTHONPATH"))))
++        result =3D subprocess.run(
++            [sys.executable, "-c", code],
++            env=3Denv,
++            stdout=3Dsubprocess.PIPE,
++            stderr=3Dsubprocess.PIPE,
++            text=3DTrue,
++        )
++        self.assertEqual(result.returncode, 0, result.stderr)
++
++    def test_fetch_is_lazy(self):
++        self.run_python("""
++import sys
++import bb
++
++assert "bb.fetch" not in sys.modules
++assert "bb.fetch2" not in sys.modules
++""")
++
++    def test_fetch_import(self):
++        self.run_python("""
++import sys
++import bb.fetch
++from bb.fetch import Fetch
++
++assert sys.modules["bb.fetch"] is bb.fetch
++assert Fetch is bb.fetch.Fetch
++""")
++
++    def test_fetch2_import_compatibility(self):
++        self.run_python("""
++import sys
++import warnings
++
++with warnings.catch_warnings(record=3DTrue) as caught:
++    warnings.simplefilter("always")
++    import bb.fetch2
++    from bb.fetch2 import Fetch
++
++assert len(caught) =3D=3D 1
++assert caught[0].category is DeprecationWarning
++assert str(caught[0].message) =3D=3D "bb.fetch2 is deprecated; use bb.fetc=
+h instead"
++assert caught[0].filename =3D=3D "<string>"
++
++assert bb.fetch2 is bb.fetch
++assert sys.modules["bb.fetch2"] is bb.fetch
++assert Fetch is bb.fetch.Fetch
++""")
+\ No newline at end of file
+--=20
+2.43.0
+
 
