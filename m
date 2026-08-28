@@ -1,380 +1,179 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <peter.kjellerstedt@axis.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 76DE2C61DB9
-	for <webhook@archiver.kernel.org>; Fri, 28 Aug 2026 09:50:11 +0000 (UTC)
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.2828.1787910605830662960
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8DE10C61DB9
+	for <webhook@archiver.kernel.org>; Fri, 28 Aug 2026 12:01:02 +0000 (UTC)
+Received: from AM0PR83CU005.outbound.protection.outlook.com (AM0PR83CU005.outbound.protection.outlook.com [52.101.69.27])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.4689.1787918459546913095
  for <docs@lists.yoctoproject.org>;
- Fri, 28 Aug 2026 02:50:06 -0700
+ Fri, 28 Aug 2026 05:00:59 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=WzsnsgJT;
- spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 246C44E413FD
-	for <docs@lists.yoctoproject.org>; Fri, 28 Aug 2026 09:50:04 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id EB9AD60537
-	for <docs@lists.yoctoproject.org>; Fri, 28 Aug 2026 09:50:03 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 55BB311C78192;
-	Fri, 28 Aug 2026 11:49:59 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1787910599; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=SESI1e7m6m+vDTof3Gr4X1wSPaZkZjwWH83/W8q0Q/g=;
-	b=WzsnsgJT3FbL4h6Gt796aZQhJVrKrcfKSHOmv7vGouXUDa6lMRReOsi3NYoAPzW/XiKSgr
-	mFbUFnlGt6cqcrY8AWTIFaBN0Bqeam1YcpdbQdo2kq4UZDDRcSBE3RsDgDwIpVUlGZbWdE
-	cIRg6c5XVWDGh241wQxoJdS5ZCYwkgZmyVkM0zOHxgrPdHclTy3eD9/IYAK+ftivWe3+Yk
-	sZy2D0NKm+5eV7fWNi5VhM6Dr2m/lkaomUFH33pUGePCerAU62NQHutIB5DYkaDhmdwuMu
-	9sjqP2GcdpKcusQVeHVuaOJ7KGIXUyAY2H3XpdPPjyaADizKZWv1a/DdmLOo2Q==
-From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Fri, 28 Aug 2026 11:49:36 +0200
-Subject: [PATCH 3/3] conf.py: reorganize options
-MIME-Version: 1.0
+ dkim=pass header.i=@axis.com header.s=selector1 header.b=ZCweG0Mo;
+ spf=pass (domain: axis.com, ip: 52.101.69.27, mailfrom: peter.kjellerstedt@axis.com)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Py8VrQm0439VZrnGs9zPrJLOopd/dEdmjV7DnVza+VYAvrIUyWGxUfJjs7FhHXq1nXfLgrhcdG//7Ia3ww1a621staq+0fQTDXj9wAMR2N+utxqG0vEMdWnsg3y4dDsQqqLAWu3S2i7sVvv38ZS/elohzQsmZhfHwzcTNVZbT75jXdLY/WB5vJpxX8843xN0ai8wSiLrApsbOp0y+4DBnM3XO1YzbLUfeYthdZwA5po1JQxZcnKv2WZ1tTEVzgxhdb6T6fMvw4ps5Wc/aG5u03iksu6nPSDIOoh/90NY7D+UIrLtxvJK44rxv8nVGZD8hrmvNSeGns9JGTv2AqqhDQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zOObR6Wuxk3Qx1/wBCrzqGwiuAj4Kr5Fs1/Do4251uA=;
+ b=DshaMu0oypVz47T4/4z2T3XDMBsoN86YQ0Ku+BZL1YLqir7KhQXGb5wTYN1W46OZx6ZUxzhd7ZKPJmNCPt8zxcuHDx07ICagUFMZ/jPzhidGUVVCuKHSDR4oUjIBUzy4dT8MgrIO3g3BEPvoQc3OPo/GLsDEAyCjMmLGD3pecPKoX4SQ7pY84vvubNtpc2N3f/qjbZYicdwO3v/DuI2Mkz6dhPhDf/GdTS65GrOvrADTwSICg3UZExwBuueEkJJ4jZsRmFoYuQWuhBu+vRPyVjuDFt3jxwv4CrAunVPUEiIsffkCNyPrTcvI/iyffjaCna5qIiEJIlCymp/DeVgA+g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=axis.com; dmarc=pass action=none header.from=axis.com;
+ dkim=pass header.d=axis.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axis.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zOObR6Wuxk3Qx1/wBCrzqGwiuAj4Kr5Fs1/Do4251uA=;
+ b=ZCweG0Mo6MIzt+aGBAw0trYhsAfIxePeCq+Wsl/icskr4Bt7g0Ye2tQuZIWg05TtXzMOIzwbisOzTUK7XmmGPfqducMVmCL3SspKwxAazKw65iVAM2cWXfUxOnGLZm4KE8eSRm/hr/XFp5hiw8xi1YS97yDOOopIqZUD9SJDHzA=
+Received: from AS8PR02MB10201.eurprd02.prod.outlook.com (2603:10a6:20b:63d::6)
+ by DB5PR02MB10161.eurprd02.prod.outlook.com (2603:10a6:10:4a3::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.10; Fri, 28 Aug
+ 2026 12:00:53 +0000
+Received: from AS8PR02MB10201.eurprd02.prod.outlook.com
+ ([fe80::670:3815:35f6:ba2c]) by AS8PR02MB10201.eurprd02.prod.outlook.com
+ ([fe80::670:3815:35f6:ba2c%5]) with mapi id 15.21.0360.008; Fri, 28 Aug 2026
+ 12:00:53 +0000
+From: Peter Kjellerstedt <peter.kjellerstedt@axis.com>
+To: "mathieu.dubois-briand@bootlin.com" <mathieu.dubois-briand@bootlin.com>,
+	"chris.laplante@agilent.com" <chris.laplante@agilent.com>,
+	"bitbake-devel@lists.openembedded.org" <bitbake-devel@lists.openembedded.org>
+CC: "docs@lists.yoctoproject.org" <docs@lists.yoctoproject.org>
+Subject: RE: [bitbake-devel] [docs] [PATCH 1/4] lib: rename fetch2 as fetch;
+ invert compat shim to make bb.fetch2 = bb.fetch
+Thread-Topic: [bitbake-devel] [docs] [PATCH 1/4] lib: rename fetch2 as fetch;
+ invert compat shim to make bb.fetch2 = bb.fetch
+Thread-Index: AQHdNjC9bpSs//XDak+U/8DtjkuvxLay9jmAgABmcOA=
+Date: Fri, 28 Aug 2026 12:00:53 +0000
+Message-ID: 
+ <AS8PR02MB10201CF48B8F8DD1675237AD3EFAC2@AS8PR02MB10201.eurprd02.prod.outlook.com>
+References: <20260827142958.547182-1-chris.laplante@agilent.com>
+ <DL0CCF115T08.227YUHOXXHLP3@bootlin.com>
+In-Reply-To: <DL0CCF115T08.227YUHOXXHLP3@bootlin.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=axis.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: AS8PR02MB10201:EE_|DB5PR02MB10161:EE_
+x-ms-office365-filtering-correlation-id: 188ae24c-78c9-4974-d3cf-08df04fc02f5
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: 
+ BCL:0;ARA:13230040|366016|23010399003|1800799024|376014|38070700021|10067099003|4143699003|11063799006|18002099003|22082099003|3023799007|56012099006;
+x-microsoft-antispam-message-info: 
+ UvqdIRCzALmkUzbdoCWgxb+a0p/KRFBnQPGHVzWah/yqghQRya1xggbu9a0YsQIe0/HPzDkogF0D6VpV9l6y6+RkTFLTmZzOILrq9uWNUKiATd1s/7Ko7LD7izWDnSvdNvbZkmBHa3FUh5ko72XTmugu5Ek+DGG0XsTQMOAQeM5D+bOguzjd1XNnpgIWEI6W82mdXjzUk3xiYyJ9Q2psIdT7D6dOH686pZtaVl3PqAGqgYYogfYIGrrIJ1cN6m6ZCAehru9R5FqSxwNa0CcJUg8x4m+gCNN2VpwgqBFKJdhSZ8ROc47KFnzqH9xobBMCHgiuoY5lGXz9FVkASsSTsp+ftsRyYVIECkkBZvMjzTgF9eJ6YKkwghC1MZK9uDo6q3Cf3MWxD+xvEr+NpRiCCx1xIx/MS0eYrCI16DnCCRs6ajE427XBPGFHmqmTXBI5oREoJ7RbvMfWGiqUQG+eQp3l9BERGvyTQLxoo6PW/M4KgPhm6fzC/JZrDkTbtqQJLUETZ6ELZRGejz2lg4WO43SK5KFSXiqzy5FG5mf62DbJTjvrhFRjEb1AhBUkIx14q2TXqz/Hlm2hv3lEoY/rejqJ+ss3MU4T8Gz4sHfP2RLPe2l2sR3+Zvw5BworpnU4JNzkct83vKCExL1wDpf44+c7tMQPvztSWwxW4efXWDs=
+x-forefront-antispam-report: 
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR02MB10201.eurprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(1800799024)(376014)(38070700021)(10067099003)(4143699003)(11063799006)(18002099003)(22082099003)(3023799007)(56012099006);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: 
+ =?utf-8?B?UlRRQUFKUVZ4ckpZOVBwMTFaMWw2RXVxWnk4TnNncjNhWlRoVkFhTU94elZ0?=
+ =?utf-8?B?cnJhdThDTGl0YUtIa3dSdytCYjUrQ1BwdmhGWldrc3Q5KzNPTmxGMlFEMXUx?=
+ =?utf-8?B?ZTJxcy95WmdNNzVGUWQvYmljRHh2ZW4zV0dpOXRyaU1HV1UzMThuSjFVRTB5?=
+ =?utf-8?B?Mmg1b2NrU21Takd3TkYxVHZoOVQ2cmgrQ3dTSTYwZFNGdzFjbUtBNlM3dlFK?=
+ =?utf-8?B?enZkN2l6THNMZ1hyb1Q3dHZZQWlGYkFJTlJuZGRLTFZMQjg0SlFhcWxTaTMr?=
+ =?utf-8?B?RVpjdGI5MUxselNmWmI5Z3dqL2NSQkx0M2RPMzB1MVNOVmN6Q0Z3M2RoRS9i?=
+ =?utf-8?B?ajhoQVk0enRlU2NKS2pVd2ttSlk5MHAyZXFsTDZleXBCZHhiYWh6VTRpZjUv?=
+ =?utf-8?B?UUZHdXA0UGZ5NCtVenhNeG1wNWIzb0dsK29HcDVybXk1bFlVZUNLVlVYMHRw?=
+ =?utf-8?B?dVpGMGVhSEw4b1pJc2lZd3FLUXpqTDc4YlhPS1NGc2J5WldibUJueGkzaWtM?=
+ =?utf-8?B?NXZZLzdmOWVaWTdVTjgxblJHdWJFclo4TEp5Z2hPVTE0QlZKalFMZWt1czJF?=
+ =?utf-8?B?VWFyd1UvbkRHa0VIemNESHpYd2sxV2UyQ05KM01GdFk4MzhScElqMXVBY3BF?=
+ =?utf-8?B?M3BqM1BndHNFMXlZODJmaEFUMVZQcS8wVWl4UFFEZHR3UGJNSVFKWVlxbVZ3?=
+ =?utf-8?B?SVAvV1BWVmNyVld2WGdaY2gwbjRDei9nb0RWTWJOcndPSEhrTEhxVW94dXI0?=
+ =?utf-8?B?RjNvdFd6bVhNM3V1bUV5Z3hjRTBrNzJSWW9JWVJSK2FES3JDZlFxWFkxdm1T?=
+ =?utf-8?B?ZUtIK2VYeEdJQm5sTDRHTk5mZE9uL2IvQk5LSnZmVXNPbkpsVFhnS05ZQysw?=
+ =?utf-8?B?RFhNMGV4RFFJZEM4NDliaHlMYUJIS3pNY2pLTTF4OEVYZG12TlV1MDBwNWMx?=
+ =?utf-8?B?a2ZNOWRvWHZpa0d3Y01SU2owYVExVnlwMjRnYW5QZCtPY2x1WHIrU0Juc3pS?=
+ =?utf-8?B?UHc1ck0vTWkrUWdqcHo5eUdsdFhVc3hSTDBha1BHQ0ZRdVUwdjhVbFI3aWxo?=
+ =?utf-8?B?bUo5RVJwMDI4cXNyREFZUTdhVERidVhldThDaThuQUl1VTVxZUt0MWkvaUdr?=
+ =?utf-8?B?dUNOWUNmOGh5M1g3eXgxTy8rR2VkODZVajYxWlVzYUFlY3RhcjZGWGNxeFdN?=
+ =?utf-8?B?aEtlYjE1Y29iZzk0UXd0Sk5QVTl4aGx3ajlmdGpQR3ZIZnlrRWFvSWtoc3ZR?=
+ =?utf-8?B?V2JTTGx2cmE4Y2xROWcyb2dONTI5U1RPYXFkU0RlMjlCLzRwanFoclkvb2Nz?=
+ =?utf-8?B?UWkrUmdFbkFDMmJGSTN3U3krZjFDY3VINTJmSFI1ckw4R0c4cnY1eExMOXRW?=
+ =?utf-8?B?aTlZeTBoMXdEVGF5WTlLeVpKMFdKRnJCU29CNTFHaVJCdnpFTis0M3I4cnlW?=
+ =?utf-8?B?SGZCZmJtZjJncS95ZmIwVGs1OWVqL1NETWpicW4zVzlMbHE2ZzRRWHc3aS9o?=
+ =?utf-8?B?S3R0U2xUWVFRVlRHaUpLSlY0R05LWUZZK2xQaEFVSm5NcWJRLzg0SVNaUG9s?=
+ =?utf-8?B?WDRlSG1pMm1wR1k5YmdBc0pDMWdrbXNBUHdIRlJHZVhuWit1UFhxMW5tT3hB?=
+ =?utf-8?B?SG1nQ0FleGVJL2dXUXpmdEpkY3BBYVNUalg5TnM2b01rUk4rMGRGMWlucE9u?=
+ =?utf-8?B?MmZkM3hpRm1ubElCQWpqTCtycFdwV1pMOWFLSERzdFFOZG9JQmkveEZHWldr?=
+ =?utf-8?B?RTR3emFOM1F4VVhCWEZlQzJ5WWFXd0tWQXRVdnZmaVhxak92aXg0dFNTeVRD?=
+ =?utf-8?B?VWlZUHhQQ3g3QTNCTlpHbEQ4eXYyN051MGJheG9SWjFKT1BBSXRwNUhOTmp0?=
+ =?utf-8?B?TnphZXZRZCs2cHF5dmtoSTVPQ3NIRVR1QTU3V0V5aE1zM1crckd2RkxXamY3?=
+ =?utf-8?B?R2xlMVlKcFhERmxFOTRkRThyLzZTOUpWNzRpejl2Q3l5U0xIemE2N2k2aUQx?=
+ =?utf-8?B?WmRNVHJJdXRMWDhYNEFYejZDd200RkhDTTduQjdaTEF0MG1MQnJ2SU40MzQx?=
+ =?utf-8?B?a0VObytMblhHMjlKU29Jb1phZnR0TzUwSEdRZFJOQ1ZRVytUNTE4eENvS0c1?=
+ =?utf-8?B?U1NiSFVyNm1HWGJqZitqa2JwWGpBWStxZU1XQmJSOGNOc0ZGK2lhM0tUOEZZ?=
+ =?utf-8?B?eGVqRGJTWW81S0lJZDF5T1JrRFI2eWxJY1o0cVhSbEZsSWIwZnhqcFJza0or?=
+ =?utf-8?Q?CzimVv9mYdRz7UkKN3QoEqivRn3WgOQJimF7TeN/ao=3D?=
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260828-cleanup-conf-py-v1-3-c8925e5fe1ac@bootlin.com>
-References: <20260828-cleanup-conf-py-v1-0-c8925e5fe1ac@bootlin.com>
-In-Reply-To: <20260828-cleanup-conf-py-v1-0-c8925e5fe1ac@bootlin.com>
-To: docs@lists.yoctoproject.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Antonin Godard <antonin.godard@bootlin.com>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=13469;
- i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=6+bNWF1+z+y1BShuRXvJkDWtvmZhdwc2dJDuTJ+TFEk=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBqkVm5CLACxZKJBAgRMTKz5FlFk7Gjpeompxp1+
- JTX2O2vO8KJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCapFZuQAKCRDRgEFAKaOo
- No+qEACqJe319YUaS+/LzsiXzVwdNRdg3wFuHqu4jSNnDhP/IT6Nf5R6LllMxwEAbmIgwnFHxp1
- IFTwZ+PflGxZDX6oKb0SoTJdZgcZAbR1zLzh5PMCqeFm9gOeC5n+dNpU11WiIZK448vRevesCDw
- HUNFMkTb5+QaUiyDTBWlKFlmYLPNgFkaTrFU5JgoW3uOBtojfg179taZymrDq+zxWcwAbfNr1D0
- Z6XlEvmvBt58qdYEO2KeUTuuvuQU+16kRsI+eEGfIvlgSzZ1TvF9dOefBaNSGpBJrt2m0YBMXu7
- jETkngG27bmDXOdiYifsNGAzeKuzPdEBp/er5CGtZAbb6FMUoGV8jTZPbzF+Enj5iP9IcwBxEm4
- 9mmTGEiwndrOrzGAagKGk3j/jpHzkjIXtLODAaDBXiliZR+VybA9B9pk5/NhS42jP57KSEp1vx5
- s7e3fQ9wB+2AyqZ38c3hFIdrlkEyuD4caLO2WYW7GjGuIbh1W3m1920WyYOLbK1YoQTEOD6bnYD
- 0nbrm9mb7sEU0riwdPv0iByMnIZxy6Nk8aWnkqaj4PEss/BSFa8w1thdis5DqBZUJxCw/T9BG4Y
- slP9ASWX89aFsjqtfoY6ViO//q3KFRMl8FXnZjQ1M5V0DQLPbLrDhsNfeDp62DzNJFXN1KrBEvS
- OZ8qEUov2yVrdxg==
-X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
- fpr=8648725188DD401BB9A0D3FFD180414029A3A836
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-OriginatorOrg: axis.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR02MB10201.eurprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 188ae24c-78c9-4974-d3cf-08df04fc02f5
+X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Aug 2026 12:00:53.7783
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 78703d3c-b907-432f-b066-88f7af9ca3af
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: c8m/LSYIsH7uUhEunBjNGYucxIZ5MwthbpZuAJGBmx2Ef0b/gLbhU1FuoQiiF9mN
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB5PR02MB10161
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 28 Aug 2026 09:50:11 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10394
+ <docs@lists.yoctoproject.org>; Fri, 28 Aug 2026 12:01:02 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10395
 
-This patch does not modify the configuration, but only moves them around
-to categorize them better - per category and extension. The only "mixed"
-section is the "General configuration" section but only contains native
-Sphinx modification (nothing related to extensions).
-
-Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
----
- documentation/conf.py | 238 ++++++++++++++++++++++++++------------------------
- 1 file changed, 124 insertions(+), 114 deletions(-)
-
-diff --git a/documentation/conf.py b/documentation/conf.py
-index bd3a4e5bc..48d28a686 100644
---- a/documentation/conf.py
-+++ b/documentation/conf.py
-@@ -6,12 +6,6 @@
- # list see the documentation:
- # https://www.sphinx-doc.org/en/master/usage/configuration.html
- 
--# -- Path setup --------------------------------------------------------------
--
--# If extensions (or modules to document with autodoc) are in another directory,
--# add these directories to sys.path here. If the directory is relative to the
--# documentation root, use os.path.abspath to make it absolute, like shown here.
--
- import datetime
- import importlib.util
- import os
-@@ -29,42 +23,25 @@ except ImportError:
-     \nPlease make sure to install pyyaml Python package.\n")
-     sys.exit(1)
- 
--# current_version = "dev"
--# bitbake_version = "" # Leave empty for development branch
--# Obtain versions from poky.yaml instead
--with open("poky.yaml") as data:
--    buff = data.read()
--    subst_vars = yaml.safe_load(buff)
--    if "DOCCONF_VERSION" not in subst_vars:
--        sys.stderr.write("Please set DOCCONF_VERSION in poky.yaml")
--        sys.exit(1)
--    current_version = subst_vars["DOCCONF_VERSION"]
--    if "BITBAKE_SERIES" not in subst_vars:
--        sys.stderr.write("Please set BITBAKE_SERIES in poky.yaml")
--        sys.exit(1)
--    bitbake_version = subst_vars["BITBAKE_SERIES"]
--
--# String used in sidebar
--version = 'Version: ' + current_version
--if current_version == 'dev':
--    version = 'Version: Current Development'
--# Version seen in documentation_options.js and hence in js switchers code
--release = current_version
--
--
- # -- Project information -----------------------------------------------------
-+
- project = 'The Yocto Project \xae'
- copyright = '2010-%s, The Linux Foundation, CC-BY-SA-2.0-UK license' % datetime.datetime.now().year
- author = 'The Linux Foundation'
- 
-+# -- Path setup --------------------------------------------------------------
-+
-+# If extensions (or modules to document with autodoc) are in another directory,
-+# add these directories to sys.path here. If the directory is relative to the
-+# documentation root, use os.path.abspath to make it absolute, like shown here.
-+
-+sys.path.insert(0, os.path.abspath('sphinx'))
-+
- # -- General configuration ---------------------------------------------------
- 
- # Prevent building with an outdated version of sphinx
- needs_sphinx = "4.0"
- 
--# to load local extension from the folder 'sphinx'
--sys.path.insert(0, os.path.abspath('sphinx'))
--
- # Add any Sphinx extension module names here, as strings. They can be
- # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
- # ones.
-@@ -76,7 +53,28 @@ extensions = [
-     'sphinxcontrib.rsvgconverter',
-     'yocto-vars'
- ]
--autosectionlabel_prefix_document = True
-+
-+# current_version = "dev"
-+# bitbake_version = "" # Leave empty for development branch
-+# Obtain versions from poky.yaml instead
-+with open("poky.yaml") as data:
-+    buff = data.read()
-+    subst_vars = yaml.safe_load(buff)
-+    if "DOCCONF_VERSION" not in subst_vars:
-+        sys.stderr.write("Please set DOCCONF_VERSION in poky.yaml")
-+        sys.exit(1)
-+    current_version = subst_vars["DOCCONF_VERSION"]
-+    if "BITBAKE_SERIES" not in subst_vars:
-+        sys.stderr.write("Please set BITBAKE_SERIES in poky.yaml")
-+        sys.exit(1)
-+    bitbake_version = subst_vars["BITBAKE_SERIES"]
-+
-+# String used in sidebar
-+version = 'Version: ' + current_version
-+if current_version == 'dev':
-+    version = 'Version: Current Development'
-+# Version seen in documentation_options.js and hence in js switchers code
-+release = current_version
- 
- # Add any paths that contain templates here, relative to this directory.
- templates_path = ['_templates']
-@@ -97,74 +95,39 @@ rst_prolog = """
- .. |author| replace:: %s
- """ % (project, copyright, author)
- 
--# base url definitions
--oe_git_server = "https://git.openembedded.org"
--oecore_git = f"{oe_git_server}/openembedded-core"
--bitbake_git = f"{oe_git_server}/bitbake"
--yocto_git_server = "https://git.yoctoproject.org"
--meta_yocto_git = f"{yocto_git_server}/meta-yocto"
--bugzilla_server = "https://bugzilla.yoctoproject.org"
--
--# external links and substitutions
--extlinks = {
--    'bitbake_git': (f'{bitbake_git}%s', None),
--    'bitbake_path': (f'{bitbake_git}/tree/%s', '%s'),
--    'bitbake_rev': (f'{bitbake_git}/commit/?id=%s', '%.7s'),
--    'cve_mitre': ('https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-%s', 'CVE-%s'),
--    'cve_nist': ('https://nvd.nist.gov/vuln/detail/CVE-%s', 'CVE-%s'),
--    'yocto_home': ('https://www.yoctoproject.org%s', None),
--    'yocto_wiki': ('https://wiki.yoctoproject.org/wiki%s', None),
--    'yocto_dl': ('https://downloads.yoctoproject.org%s', None),
--    'yocto_lists': ('https://lists.yoctoproject.org%s', None),
--    'yocto_bugs': (f'{bugzilla_server}%s', None),
--    'yocto_bug': (f'{bugzilla_server}/show_bug.cgi?id=%s', '%s'),
--    'yocto_ab': ('https://autobuilder.yoctoproject.org%s', None),
--    'yocto_docs': ('https://docs.yoctoproject.org%s', None),
--    'yocto_git': (f'{yocto_git_server}%s', None),
--    'meta_yocto_path': (f'{meta_yocto_git}/tree/%s', '%s'),
--    'meta_yocto_rev': (f'{meta_yocto_git}/commit/?id=%s', '%.7s'),
--    'yocto_sstate': ('http://sstate.yoctoproject.org%s', None),
--    'oe_home': ('https://www.openembedded.org%s', None),
--    'oe_lists': ('https://lists.openembedded.org%s', None),
--    'oe_git': (f'{oe_git_server}%s', None),
--    'oecore_path': (f'{oecore_git}/tree/%s', '%s'),
--    'oecore_rev': (f'{oecore_git}/commit/?id=%s', '%.7s'),
--    'oe_wiki': ('https://www.openembedded.org/wiki%s', None),
--    'oe_layerindex': ('https://layers.openembedded.org%s', None),
--    'oe_layer': ('https://layers.openembedded.org/layerindex/branch/master/layer%s', None),
--    'wikipedia': ('https://en.wikipedia.org/wiki/%s', None),
--}
--
- # To be able to use :manpage:`<something>` in the docs.
- manpages_url = 'https://manpages.debian.org/{path}'
- 
--# Intersphinx config to use cross reference with BitBake user manual
--intersphinx_mapping = {
--    'bitbake': ('https://docs.yoctoproject.org/bitbake/' + bitbake_version, None)
--}
--
- # Suppress "WARNING: unknown mimetype for ..."
- suppress_warnings = ['epub.unknown_project_files']
- 
--# sphinx-copybutton configuration
--copybutton_prompt_text = "$ "
-+# We need XeTeX to process special unicode character, sometimes the contributor
-+# list from the release note contains those.
-+# See https://docs.readthedocs.io/en/stable/guides/pdf-non-ascii-languages.html.
-+latex_engine = 'xelatex'
-+latex_use_xindy = False
-+latex_elements = {
-+    'passoptionstopackages': '\\PassOptionsToPackage{bookmarksdepth=5}{hyperref}',
-+    'preamble': '\\usepackage[UTF8]{ctex}\n\\setcounter{tocdepth}{2}',
-+}
- 
--# Don't check self-references to yocto-docs since they are already
--# checked when building.
--linkcheck_ignore = [r'https?://docs\.yoctoproject\.org.*']
-+class DashFriendlySearchEnglish(SearchEnglish):
- 
--# When using the linkcheck builder, ignore the following links which are too
--# frequent in the docs, unless the LINKCHECK_NOT_NICE environment variable is set
--# to 1.
--if os.environ.get('LINKCHECK_NOT_NICE') != "1":
--    linkcheck_ignore.extend([
--        r'https?://nvd\.nist\.gov.*',
--        r'https?://git\.yoctoproject\.org.*',
--        r'https?://git\.openembedded\.org.*',
--        r'https?://downloads\.yoctoproject\.org.*',
--        r'https?://mirrors\.kernel\.org.*',
--        r'https?://mirrors\.edge\.kernel\.org.*',
--    ])
-+    # Accept words that can include 'inner' hyphens or dots
-+    _word_re = re.compile(r'[\w]+(?:[\.\-][\w]+)*')
-+
-+    js_splitter_code = r"""
-+function splitQuery(query) {
-+    return query
-+        .split(/[^\p{Letter}\p{Number}_\p{Emoji_Presentation}\-\.]+/gu)
-+        .filter(term => term.length > 0);
-+}
-+"""
-+
-+languages['en'] = DashFriendlySearchEnglish
-+
-+# Make the EPUB builder prefer PNG to SVG because of issues rendering Inkscape SVG
-+Epub3Builder.supported_image_types = ['image/png', 'image/gif', 'image/jpeg']
- 
- # -- Options for HTML output -------------------------------------------------
- 
-@@ -206,30 +169,77 @@ html_last_updated_fmt = '%b %d, %Y'
- # Remove the trailing 'dot' in section numbers
- html_secnumber_suffix = " "
- 
--# We need XeTeX to process special unicode character, sometimes the contributor
--# list from the release note contains those.
--# See https://docs.readthedocs.io/en/stable/guides/pdf-non-ascii-languages.html.
--latex_engine = 'xelatex'
--latex_use_xindy = False
--latex_elements = {
--    'passoptionstopackages': '\\PassOptionsToPackage{bookmarksdepth=5}{hyperref}',
--    'preamble': '\\usepackage[UTF8]{ctex}\n\\setcounter{tocdepth}{2}',
--}
-+# -- linkcheck configuration -------------------------------------------------
- 
--class DashFriendlySearchEnglish(SearchEnglish):
-+# Don't check self-references to yocto-docs since they are already
-+# checked when building.
-+linkcheck_ignore = [r'https?://docs\.yoctoproject\.org.*']
- 
--    # Accept words that can include 'inner' hyphens or dots
--    _word_re = re.compile(r'[\w]+(?:[\.\-][\w]+)*')
-+# When using the linkcheck builder, ignore the following links which are too
-+# frequent in the docs, unless the LINKCHECK_NOT_NICE environment variable is set
-+# to 1.
-+if os.environ.get('LINKCHECK_NOT_NICE') != "1":
-+    linkcheck_ignore.extend([
-+        r'https?://nvd\.nist\.gov.*',
-+        r'https?://git\.yoctoproject\.org.*',
-+        r'https?://git\.openembedded\.org.*',
-+        r'https?://downloads\.yoctoproject\.org.*',
-+        r'https?://mirrors\.kernel\.org.*',
-+        r'https?://mirrors\.edge\.kernel\.org.*',
-+    ])
- 
--    js_splitter_code = r"""
--function splitQuery(query) {
--    return query
--        .split(/[^\p{Letter}\p{Number}_\p{Emoji_Presentation}\-\.]+/gu)
--        .filter(term => term.length > 0);
-+# -- sphinx.ext.autosectionlabel configuration -------------------------------
-+
-+autosectionlabel_prefix_document = True
-+
-+# -- sphinx.ext.extlinks configuration ---------------------------------------
-+
-+# base url definitions
-+oe_git_server = "https://git.openembedded.org"
-+oecore_git = f"{oe_git_server}/openembedded-core"
-+bitbake_git = f"{oe_git_server}/bitbake"
-+yocto_git_server = "https://git.yoctoproject.org"
-+meta_yocto_git = f"{yocto_git_server}/meta-yocto"
-+bugzilla_server = "https://bugzilla.yoctoproject.org"
-+
-+# external links and substitutions
-+extlinks = {
-+    'bitbake_git': (f'{bitbake_git}%s', None),
-+    'bitbake_path': (f'{bitbake_git}/tree/%s', '%s'),
-+    'bitbake_rev': (f'{bitbake_git}/commit/?id=%s', '%.7s'),
-+    'cve_mitre': ('https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-%s', 'CVE-%s'),
-+    'cve_nist': ('https://nvd.nist.gov/vuln/detail/CVE-%s', 'CVE-%s'),
-+    'yocto_home': ('https://www.yoctoproject.org%s', None),
-+    'yocto_wiki': ('https://wiki.yoctoproject.org/wiki%s', None),
-+    'yocto_dl': ('https://downloads.yoctoproject.org%s', None),
-+    'yocto_lists': ('https://lists.yoctoproject.org%s', None),
-+    'yocto_bugs': (f'{bugzilla_server}%s', None),
-+    'yocto_bug': (f'{bugzilla_server}/show_bug.cgi?id=%s', '%s'),
-+    'yocto_ab': ('https://autobuilder.yoctoproject.org%s', None),
-+    'yocto_docs': ('https://docs.yoctoproject.org%s', None),
-+    'yocto_git': (f'{yocto_git_server}%s', None),
-+    'meta_yocto_path': (f'{meta_yocto_git}/tree/%s', '%s'),
-+    'meta_yocto_rev': (f'{meta_yocto_git}/commit/?id=%s', '%.7s'),
-+    'yocto_sstate': ('http://sstate.yoctoproject.org%s', None),
-+    'oe_home': ('https://www.openembedded.org%s', None),
-+    'oe_lists': ('https://lists.openembedded.org%s', None),
-+    'oe_git': (f'{oe_git_server}%s', None),
-+    'oecore_path': (f'{oecore_git}/tree/%s', '%s'),
-+    'oecore_rev': (f'{oecore_git}/commit/?id=%s', '%.7s'),
-+    'oe_wiki': ('https://www.openembedded.org/wiki%s', None),
-+    'oe_layerindex': ('https://layers.openembedded.org%s', None),
-+    'oe_layer': ('https://layers.openembedded.org/layerindex/branch/master/layer%s', None),
-+    'wikipedia': ('https://en.wikipedia.org/wiki/%s', None),
- }
--"""
- 
--languages['en'] = DashFriendlySearchEnglish
-+# -- sphinx.ext.intersphinx configuration ------------------------------------
- 
--# Make the EPUB builder prefer PNG to SVG because of issues rendering Inkscape SVG
--Epub3Builder.supported_image_types = ['image/png', 'image/gif', 'image/jpeg']
-+# Intersphinx config to use cross reference with BitBake user manual
-+intersphinx_mapping = {
-+    'bitbake': ('https://docs.yoctoproject.org/bitbake/' + bitbake_version, None)
-+}
-+
-+# -- sphinx_copybutton configuration -----------------------------------------
-+
-+# sphinx-copybutton configuration
-+copybutton_prompt_text = "$ "
-
--- 
-2.55.0
-
+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBiaXRiYWtlLWRldmVsQGxpc3Rz
+Lm9wZW5lbWJlZGRlZC5vcmcgPGJpdGJha2UtZGV2ZWxAbGlzdHMub3BlbmVtYmVkZGVkLm9yZz4g
+T24gQmVoYWxmIE9mIE1hdGhpZXUgRHVib2lzLUJyaWFuZCB2aWEgbGlzdHMub3BlbmVtYmVkZGVk
+Lm9yZw0KPiBTZW50OiBkZW4gMjggYXVndXN0aSAyMDI2IDA3OjUyDQo+IFRvOiBjaHJpcy5sYXBs
+YW50ZUBhZ2lsZW50LmNvbTsgYml0YmFrZS1kZXZlbEBsaXN0cy5vcGVuZW1iZWRkZWQub3JnDQo+
+IENjOiBkb2NzQGxpc3RzLnlvY3RvcHJvamVjdC5vcmcNCj4gU3ViamVjdDogUmU6IFtiaXRiYWtl
+LWRldmVsXSBbZG9jc10gW1BBVENIIDEvNF0gbGliOiByZW5hbWUgZmV0Y2gyIGFzIGZldGNoOyBp
+bnZlcnQgY29tcGF0IHNoaW0gdG8gbWFrZSBiYi5mZXRjaDIgPSBiYi5mZXRjaA0KPiANCj4gT24g
+VGh1IEF1ZyAyNywgMjAyNiBhdCA0OjI5IFBNIENFU1QsIENocmlzIExhcGxhbnRlIHZpYSBsaXN0
+cy55b2N0b3Byb2plY3Qub3JnIHdyb3RlOg0KPiA+IEZyb206IENocmlzIExhcGxhbnRlIDxjaHJp
+cy5sYXBsYW50ZUBhZ2lsZW50LmNvbT4NCj4gPg0KPiA+IGJiLmZldGNoMiByZXBsYWNlZCBiYi5m
+ZXRjaCBiYWNrIGluIDIwMTIsIGFuZCB0aGUgY29tcGF0aWJpbGl0eSBzaGltIG9mDQo+ID4gYmIu
+ZmV0Y2ggPSBiYi5mZXRjaDIgaGFzIGJlZW4gaW4gcGxhY2UgZXZlciBzaW5jZS4gVGhlcmUncyBu
+byBsb25nZXIgYQ0KPiA+IGdvb2QgcmVhc29uIHRvIGtlZXAgdGhlICcyJyBzdWZmaXgsIHNvIGxl
+dHMgZHJvcCBpdC4NCj4gPg0KPiA+IFdlIGFsc28gaW52ZXJ0IHRoZSBiYi5mZXRjaCA9IGJiLmZl
+dGNoMiBjb21wYXRpYmlsaXR5IHNoaW0gdG8gbm93IG1ha2UNCj4gPiBiYi5mZXRjaDIgPSBiYi5m
+ZXRjaC4gV2UgZG8gdGhpcyBieSBjcmVhdGluZyBhIG5ldyBsaWIvYmIvZmV0Y2gyLnB5LA0KPiA+
+IHdoaWNoIGxldHMgdXMgZ2V0IHJpZCBvZiB0aGUgdWdseS1pc2ggc2hpbSBpbiBsaWIvYmIvX19p
+bml0X18ucHkuDQo+ID4gRmluYWxseSwgd2UgYWRkIGEgZGVwcmVjYXRpb24gd2FybmluZyBmb3Ig
+Z29vZCBtZWFzdXJlLg0KPiA+DQo+ID4gU2lnbmVkLW9mZi1ieTogQ2hyaXMgTGFwbGFudGUgPGNo
+cmlzLmxhcGxhbnRlQGFnaWxlbnQuY29tPg0KPiA+IC0tLQ0KPiANCj4gSGkgQ2hyaXMsDQo+IA0K
+PiBJIHN1c3BlY3Qgc29tZSByZW5hbWluZyBpcyBtaXNzaW5nIG9uIHRoZSBvZWNvcmUgc2lkZS4g
+V2UgaGF2ZSB0aGlzDQo+IGVycm9yIG9uIGFsbCBidWlsZHM6DQo+IA0KPiBSdW5uaW5nICcuIC4v
+aW5pdC1idWlsZC1lbnY7IGJpdGJha2Ugd29ybGQgLWsnIHdpdGggb3V0cHV0IHRvIC9zcnYvcG9r
+eWJ1aWxkL3lvY3RvLXdvcmtlci9xZW11eDg2LXdvcmxkLWFsdC9idWlsZC9idWlsZC9jb21tYW5k
+LTEtYnVpbGQtdGFyZ2V0cy5sb2cgaW4gL3Nydi9wb2t5YnVpbGQveW9jdG8td29ya2VyL3FlbXV4
+ODYtd29ybGQtYWx0L2J1aWxkL2J1aWxkDQo+IEVSUk9SOiBFeGVjdXRpb24gb2YgZXZlbnQgaGFu
+ZGxlciAnY2hlY2tfc2FuaXR5X2V2ZW50aGFuZGxlcicgZmFpbGVkDQo+IFRyYWNlYmFjayAobW9z
+dCByZWNlbnQgY2FsbCBsYXN0KToNCj4gICBGaWxlICIvc3J2L3Bva3lidWlsZC95b2N0by13b3Jr
+ZXIvcWVtdXg4Ni13b3JsZC1hbHQvYnVpbGQvbGF5ZXJzL29wZW5lbWJlZGRlZC1jb3JlL21ldGEv
+Y2xhc3Nlcy1nbG9iYWwvc2FuaXR5LmJiY2xhc3MiLCBsaW5lIDE2OSwgaW4gY2hlY2tfc2FuaXR5
+X2V2ZW50aGFuZGxlcg0KPiAgICAgb2Uuc2FuaXR5LmNoZWNrX3Nhbml0eShzYW5pdHlfZGF0YSkN
+Cj4gICAgIH5+fn5+fn5+fn5+fn5+fn5+fn5+fn5eXl5eXl5eXl5eXl5eDQo+ICAgRmlsZSAiL3Ny
+di9wb2t5YnVpbGQveW9jdG8td29ya2VyL3FlbXV4ODYtd29ybGQtYWx0L2J1aWxkL2xheWVycy9v
+cGVuZW1iZWRkZWQtY29yZS9tZXRhL2xpYi9vZS9zYW5pdHkucHkiLCBsaW5lIDEwMDcsIGluIGNo
+ZWNrX3Nhbml0eQ0KPiAgICAgY2hlY2tfc2FuaXR5X2V2ZXJ5YnVpbGQoc3RhdHVzLCBzYW5pdHlf
+ZGF0YSkNCj4gICAgIH5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+Xl5eXl5eXl5eXl5eXl5eXl5eXl5e
+DQo+ICAgRmlsZSAiL3Nydi9wb2t5YnVpbGQveW9jdG8td29ya2VyL3FlbXV4ODYtd29ybGQtYWx0
+L2J1aWxkL2xheWVycy9vcGVuZW1iZWRkZWQtY29yZS9tZXRhL2xpYi9vZS9zYW5pdHkucHkiLCBs
+aW5lIDg5MCwgaW4gY2hlY2tfc2FuaXR5X2V2ZXJ5YnVpbGQNCj4gICAgIGRlY29kZWQgPSBiYi5m
+ZXRjaDIuZGVjb2RldXJsKHBhdHRlcm4pDQo+ICAgICAgICAgICAgICAgXl5eXl5eXl5eDQo+IEF0
+dHJpYnV0ZUVycm9yOiBtb2R1bGUgJ2JiJyBoYXMgbm8gYXR0cmlidXRlICdmZXRjaDInLiBEaWQg
+eW91IG1lYW46DQo+ICdmZXRjaCc/DQo+IA0KPiBodHRwczovL2F1dG9idWlsZGVyLnlvY3RvcHJv
+amVjdC5vcmcvdmFsa3lyaWUvIy9idWlsZGVycy8xNy9idWlsZHMvNDM1OQ0KPiANCj4gQ2FuIHlv
+dSBoYXZlIGEgbG9vayBhdCB0aGUgaXNzdWU/DQo+IA0KPiBUaGFua3MsDQo+IE1hdGhpZXUNCj4g
+DQo+IC0tDQo+IE1hdGhpZXUgRHVib2lzLUJyaWFuZCwgQm9vdGxpbg0KPiBFbWJlZGRlZCBMaW51
+eCBhbmQgS2VybmVsIGVuZ2luZWVyaW5nDQo+IGh0dHBzOi8vYm9vdGxpbi5jb20NCg0KSXNuJ3Qg
+dGhlIGJiLmZldGNoMiBzaGltIGV4cGVjdGVkIHRvIHRha2UgY2FyZSBvZiB0aGF0Pw0KDQovL1Bl
+dGVyDQo=
 
