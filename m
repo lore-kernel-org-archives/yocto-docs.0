@@ -1,105 +1,118 @@
-Return-Path: <mathieu.dubois-briand@bootlin.com>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 364FAC61DB9
-	for <webhook@archiver.kernel.org>; Fri, 28 Aug 2026 05:52:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8B73BC61DB9
+	for <webhook@archiver.kernel.org>; Fri, 28 Aug 2026 09:45:11 +0000 (UTC)
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.346.1787896313684371352
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.2763.1787910300283532872
  for <docs@lists.yoctoproject.org>;
- Thu, 27 Aug 2026 22:51:54 -0700
+ Fri, 28 Aug 2026 02:45:01 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=c0sJRHdk;
- spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: mathieu.dubois-briand@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=qD/iy3Ix;
+ spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 76C8A4E413F6;
-	Fri, 28 Aug 2026 05:51:51 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 0F4184E413FD;
+	Fri, 28 Aug 2026 09:44:58 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 3855B60537;
-	Fri, 28 Aug 2026 05:51:51 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id F3CB211C78082;
-	Fri, 28 Aug 2026 07:51:44 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id D877360537;
+	Fri, 28 Aug 2026 09:44:57 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8F73711C78176;
+	Fri, 28 Aug 2026 11:44:51 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1787896306; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1787910293; h=from:subject:date:message-id:to:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=T0gJpv3nCvy3SetQRhSBrKpCGY2lHri38KcYe71F0Ek=;
-	b=c0sJRHdksyY+hbMW+aP0O5epfTk6j9L3l6rdd9q/cGrSfdHVnw1aOFtdKT5ERUl4SUh1iS
-	OnEWXE8oraa/7FTGURa95C2HLFX+rFZU8mhgvb/JhN6d0QRlfBgsKBrkm6eF7B8Uae3f0j
-	+w/PiOnKMP1LkXHXf4nv0mdPidhC+QxHRNaLkZLW4gUXBnHhvkIXaP2eb9V6qfeUIj7N4z
-	lw1DM4DbsUOUrrYeylfBaE+cyJNO/4iduv6oeaEIrGGsJrWXKu1jDbWs12S2i8U1Cgxx6u
-	357pEuHVVaYfu40BHtM4Wv6AxLq0qaam5+KNPy638d8cllqymOyh0OT6VPoXTg==
+	bh=UsJ7fQZ7uN86ovL8IE5+PFWctegdv7gmR/ULt4WAZnA=;
+	b=qD/iy3IxJd6Crfh4SQx/z3HXbBeCTB2nL/EsgZPwkeNBFpf8cEpraaXlXv7wZL1swNn1In
+	0yom/n2Tp3JjEW7rfHcrWWvdkBAlTAGjdgW9IAn65zdlqA+9fF+Ms2kisvcL0DH4SNSnzV
+	RVz/b9n/1SULMpct5xqrR2MoHMMjTvgVJp/lwinSGNg0N1wL0RxxKw+qXVVqdD4WUYgIAT
+	09tuyNq9+S3ADSrlvt1/uxgCBy3bEH6Vsbb6GJ1wl7JB1nn/ZWKOv+ZZYXE4bG+jzb9gz4
+	XkZVgxQbrc2+xlAKTCrojozWm5t52BjJY7BtQ1DpOaiDXTS80C7mRgLBj9nP0g==
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 28 Aug 2026 07:51:43 +0200
-Message-Id: <DL0CCF115T08.227YUHOXXHLP3@bootlin.com>
-Subject: Re: [docs] [PATCH 1/4] lib: rename fetch2 as fetch; invert compat
- shim to make bb.fetch2 = bb.fetch
-Cc: <docs@lists.yoctoproject.org>
-From: "Mathieu Dubois-Briand" <mathieu.dubois-briand@bootlin.com>
-To: <chris.laplante@agilent.com>, <bitbake-devel@lists.openembedded.org>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260827142958.547182-1-chris.laplante@agilent.com>
-In-Reply-To: <20260827142958.547182-1-chris.laplante@agilent.com>
+Date: Fri, 28 Aug 2026 11:44:51 +0200
+Message-Id: <DL0HAX07P2Z5.21ZPG2JB814OE@bootlin.com>
+Subject: Re: [docs] [PATCH] ref-manual: Remove the documentation of the
+ GROUPMEMS_PARAM variable
+From: "Antonin Godard" <antonin.godard@bootlin.com>
+To: <peter.kjellerstedt@axis.com>, <docs@lists.yoctoproject.org>
+References: <20260825181652.2993460-1-pkj@axis.com>
+In-Reply-To: <20260825181652.2993460-1-pkj@axis.com>
 X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 28 Aug 2026 05:52:02 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10389
+ <docs@lists.yoctoproject.org>; Fri, 28 Aug 2026 09:45:11 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10390
 
-On Thu Aug 27, 2026 at 4:29 PM CEST, Chris Laplante via lists.yoctoproject.=
-org wrote:
-> From: Chris Laplante <chris.laplante@agilent.com>
+Hi,
+
+On Tue Aug 25, 2026 at 8:16 PM CEST, Peter Kjellerstedt via lists.yoctoproj=
+ect.org wrote:
+> It has been removed from OE-Core.
 >
-> bb.fetch2 replaced bb.fetch back in 2012, and the compatibility shim of
-> bb.fetch =3D bb.fetch2 has been in place ever since. There's no longer a
-> good reason to keep the '2' suffix, so lets drop it.
->
-> We also invert the bb.fetch =3D bb.fetch2 compatibility shim to now make
-> bb.fetch2 =3D bb.fetch. We do this by creating a new lib/bb/fetch2.py,
-> which lets us get rid of the ugly-ish shim in lib/bb/__init__.py.
-> Finally, we add a deprecation warning for good measure.
->
-> Signed-off-by: Chris Laplante <chris.laplante@agilent.com>
+> Signed-off-by: Peter Kjellerstedt <peter.kjellerstedt@axis.com>
 > ---
+>
+> This is obviously only true once my corresponding patches for OE-Core
+> have been integrated. ;)
+>
+>  documentation/ref-manual/classes.rst   | 2 +-
+>  documentation/ref-manual/variables.rst | 6 +-----
+>  2 files changed, 2 insertions(+), 6 deletions(-)
+>
+> diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-man=
+ual/classes.rst
+> index 3e74bb884..631091f03 100644
+> --- a/documentation/ref-manual/classes.rst
+> +++ b/documentation/ref-manual/classes.rst
+> @@ -3780,7 +3780,7 @@ The :ref:`useradd* <ref-classes-useradd>` classes s=
+upport the
+>  :term:`USERADD_PACKAGES`,
+>  :term:`USERADD_PARAM`,
+>  :term:`GROUPADD_PARAM`, and
+> -:term:`GROUPMEMS_PARAM` variables.
+> +:term:`USERMOD_PARAM` variables.
+> =20
+>  The :ref:`useradd-staticids <ref-classes-useradd>` class supports the ad=
+dition of users or groups
+>  that have static user identification (``uid``) and group identification
+> diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-m=
+anual/variables.rst
+> index ae9cbfddf..5cc01cf45 100644
+> --- a/documentation/ref-manual/variables.rst
+> +++ b/documentation/ref-manual/variables.rst
+> @@ -3955,10 +3955,6 @@ system and gives an overview of their function and=
+ contents.
+>        For information on the standard Linux shell command
+>        ``groupadd``, see :manpage:`groupadd(8)`.
+> =20
+> -   :term:`GROUPMEMS_PARAM`
+> -      Deprecated in favor of :term:`USERMOD_PARAMS`. See
+> -      :ref:`ref-migration-6-1-groupmems` for more information.
+> -
 
-Hi Chris,
+There are places in the documentation that still use the :term:`GROUPMEMS_P=
+ARAM`
+ref.
 
-I suspect some renaming is missing on the oecore side. We have this
-error on all builds:
+yocto-docs/documentation/migration-guides/migration-6.1.rst:39: WARNING: te=
+rm not in glossary: 'GROUPMEMS_PARAM' [ref.term]
+yocto-docs/documentation/migration-guides/migration-6.1.rst:46: WARNING: te=
+rm not in glossary: 'GROUPMEMS_PARAM' [ref.term]
+yocto-docs/documentation/migration-guides/release-notes-6.1.rst:102: WARNIN=
+G: term not in glossary: 'GROUPMEMS_PARAM' [ref.term]
+yocto-docs/documentation/migration-guides/release-notes-6.1.rst:107: WARNIN=
+G: term not in glossary: 'GROUPMEMS_PARAM' [ref.term]
+yocto-docs/documentation/ref-manual/classes.rst:3779: WARNING: term not in =
+glossary: 'USERMOD_PARAM' [ref.term]
+yocto-docs/documentation/ref-manual/variables.rst:12540: WARNING: term not =
+in glossary: 'USERMOD_PARAM' [ref.term]
 
-Running '. ./init-build-env; bitbake world -k' with output to /srv/pokybuil=
-d/yocto-worker/qemux86-world-alt/build/build/command-1-build-targets.log in=
- /srv/pokybuild/yocto-worker/qemux86-world-alt/build/build
-ERROR: Execution of event handler 'check_sanity_eventhandler' failed
-Traceback (most recent call last):
-  File "/srv/pokybuild/yocto-worker/qemux86-world-alt/build/layers/openembe=
-dded-core/meta/classes-global/sanity.bbclass", line 169, in check_sanity_ev=
-enthandler
-    oe.sanity.check_sanity(sanity_data)
-    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
-  File "/srv/pokybuild/yocto-worker/qemux86-world-alt/build/layers/openembe=
-dded-core/meta/lib/oe/sanity.py", line 1007, in check_sanity
-    check_sanity_everybuild(status, sanity_data)
-    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
-  File "/srv/pokybuild/yocto-worker/qemux86-world-alt/build/layers/openembe=
-dded-core/meta/lib/oe/sanity.py", line 890, in check_sanity_everybuild
-    decoded =3D bb.fetch2.decodeurl(pattern)
-              ^^^^^^^^^
-AttributeError: module 'bb' has no attribute 'fetch2'. Did you mean: 'fetch=
-'?
-
-https://autobuilder.yoctoproject.org/valkyrie/#/builders/17/builds/4359
-
-Can you have a look at the issue?
+I've replaced those with ``GROUPMEMS_PARAM`` when merging your patch to
+master-next.
 
 Thanks,
-Mathieu
-
---=20
-Mathieu Dubois-Briand, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
+Antonin
 
