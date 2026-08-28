@@ -2,115 +2,116 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BDFD1C61DD6
-	for <webhook@archiver.kernel.org>; Fri, 28 Aug 2026 09:50:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8D20DC61DBD
+	for <webhook@archiver.kernel.org>; Fri, 28 Aug 2026 09:50:11 +0000 (UTC)
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.2843.1787910596947932927
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.2826.1787910601210931798
  for <docs@lists.yoctoproject.org>;
- Fri, 28 Aug 2026 02:49:57 -0700
+ Fri, 28 Aug 2026 02:50:02 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=xWRVFu2X;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=MVO2mZGp;
  spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 111BC4E413FD
-	for <docs@lists.yoctoproject.org>; Fri, 28 Aug 2026 09:49:55 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 8D0174E413FD
+	for <docs@lists.yoctoproject.org>; Fri, 28 Aug 2026 09:49:59 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id DA1E160537
-	for <docs@lists.yoctoproject.org>; Fri, 28 Aug 2026 09:49:54 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 455BF11C78144;
-	Fri, 28 Aug 2026 11:49:50 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 62F0E60537
+	for <docs@lists.yoctoproject.org>; Fri, 28 Aug 2026 09:49:59 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C30CC11C78176;
+	Fri, 28 Aug 2026 11:49:54 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1787910590; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1787910595; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=o0SKBxCpZdJUjta7N5B6AbKLe/K/osXxqigGXhKHrSs=;
-	b=xWRVFu2XoZAspqrmciUP1yhxDJNpvyLgN8jR8BMVRz9gsQdvke5CwoBvfGa093XpFatwsT
-	+GkSw4NRPr2pN+WLbLRR07hM9rTfTAsDVWG/aw7JA99E80D5Vuy3sh8EyCqThlun1mzzUz
-	23xXk/pFgNXCoU8p2SnIAfmKT8hbfFD443h1c3dstXpeMASqtKpypQKdGWK6hgA2YVrssW
-	lFynOsqLRCiBQqyYvauKbl755MMCw9wWXBRsnwo18Hi+XcuPZ8UjzxqdjGwUtirPHI6QCE
-	gQ56dhFMmHM33UsvOtoua9fuJAGw+cfxQK2PF0Dva265oemkgAqXin9N9K4SSQ==
+	bh=Kqu1fW6cCyqn4SKvI3SkEGEj/bUihpqJ/ZNQmhK+HME=;
+	b=MVO2mZGpLKhsjxlI5YzWujJWhaOuf9UcYtU31v3iwb3YvFKUIpT3uWPJ0omtiFRmJNakaz
+	1IdqOp30Hif3f2hqBXNnuEa+lufGCH+6Bb6CUTfS+Qh2R4J3bTk/3Ceoprfm2zrw/7JtTp
+	8FQyXpme/5AhuPnQelaNCNNm6DZJIXf7YwAAIU3vnzT63Mf7UG+zg7owOWqwUBXNYzikIa
+	20ytPBz+q/sCr3eg3qrXPKZ5b4BzxVz/Vz+r3swRCA4MbYOrpziHTX7nj73UM1BozPgxsS
+	BUXTaYbRF8wbgTk0k/YQj9BepyawHHr2COJsTr/bZmm6bvO2MpzjzeikYXifNA==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Fri, 28 Aug 2026 11:49:34 +0200
-Subject: [PATCH 1/3] conf.py: move and sort imports
+Date: Fri, 28 Aug 2026 11:49:35 +0200
+Subject: [PATCH 2/3] conf.py: use importlib to check that sphinx_rtd_theme
+ exists
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260828-cleanup-conf-py-v1-1-c8925e5fe1ac@bootlin.com>
+Message-Id: <20260828-cleanup-conf-py-v1-2-c8925e5fe1ac@bootlin.com>
 References: <20260828-cleanup-conf-py-v1-0-c8925e5fe1ac@bootlin.com>
 In-Reply-To: <20260828-cleanup-conf-py-v1-0-c8925e5fe1ac@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1544;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1453;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=HwOE/XWZqQlC5TCmjE353DqUFXAnyR2VoZ6Fz3wjBYw=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBqkVm45L2/ZKPp5h4EsFhtncm+UsWNVovM20DBy
- SrP5Oh77EiJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCapFZuAAKCRDRgEFAKaOo
- NrzwD/wOhBEkw3X3cs3SUb2fbpgmOiPf1zAjIHZwH2/CwqQE0zjO7p7qu8TgC/lRkdMBOQAJiD5
- QI34IU6brk/vPVQ3ZZLtGjPVg3lHk4JPydp/gZS7Sl4f5xy1ox+pJpT2+JSPxhaeNUo96yuJB09
- lRUpvk4iQZeMfEKS8nNIvM79hXA/riYNxbrpxxqjDtoYXK3k9Hp3TSfKUBca0rqAhfNGtyW8gk4
- sLwsvKfJLftB61QO1OYgeMtKhk5MCpAZ6UewN0i6do+Ilq0lki+oWPWxBA16JNHRRt69TCtxQPj
- mTWghmJpjl9/nw4Jo+oM6dOJ4esC9hTLRzac4MRzOKsx4uV7/GKY6f08DbjVuERLOgJ482VC/f5
- 3iZkVSzxiIF6hlrHDptVxkxpORekYvkknhYmdJTTLb+i4GhgzrliEd3RJL1idXrzwjgXtxRBNpp
- Q0dXaDW4B61Gsj7iUa8/NhxKNHWxHnoEJHhl8XPfk5y6YCRl5Ga/jN/BfICKko/BVn4W36AKMua
- fyuw0nKEFiuVSuqkrTS2B8ruKSm1bKplVLtEYasXtRoY49Hbp3nTBoycWNhlHIU303DP8w1H7bn
- 1hiyApY/Yex885uuaam/JZ7+mP33hS8z/H3QmAVyhJXPaZBL2KbLKcQu4CRHSp2FL5BCifVaJ4n
- 8gKIPZ71eADr7jw==
+ bh=GbfJ5HSoGKKgpEC7BHDlvip7tTzMsWIVqHb+hZ5KzVY=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBqkVm5PN8zphW6K+oUC7oTfbD+gLnoREpKj1UAs
+ gwWCJ3ILoGJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCapFZuQAKCRDRgEFAKaOo
+ NggREAC0IRZxMQ0rmOKrHlsgwthygsNrkHA1Bx9yrJ0ad6PVsJUzlSWPxq73G3weL+IpPP2XgQ1
+ foa92v+SjOCFIycYCNQ+xuWj1sFCpOnAAxRchv/cEfmkRnnrsNZSje3kjHKC3HbD4S0bp34M09a
+ O4jZtdYkdWiLbuIg+TPn4vetspl8xid5vM/QMKFG/J6zkoIsD9rtGtUrliIaTPhYQBn7heWZWsr
+ PYyvTvh6zhrqc9wJAZ+mmQtBcIKL+Fn9IKEyjtkkOz1e6V2ABVtdVDfJbmvW5kx4sBKQHXUNoNf
+ z1snaWeka9AN3sfCrE8mLJTrpIsmiicttazS/+Y21LQrlTspB+mA6wb+GIWwZAIf2R+AihMtEg6
+ qrTCA8FqO7szIdY4vEGnhdbY8Pugc9zhVpcXxICdRr4ssjr1aum8RTc3PtqvD2XwWZywNqNHJrb
+ CeZ7HA+/qc7u7CsxJ7lpKXQPfa8HdNTZvnEOh05VniUONWeTgszQKxbv9Jln8a09pYhftCfEgbX
+ +A+dHKk50O57fC/V5QuzEHDBhofIpMbFnNgn+egLfUtQc9mOhPNMKRkjWvE5XpvCT9IC7sSj21a
+ gzvXg/yGnpDeJcNILSyKugcWIPQAKy/jjTKtOz7+n/JuT36IKEx/h3Z8KhnnszDKLxC5fSmQdGF
+ STzPqZK7/8qn5sw==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 28 Aug 2026 09:50:01 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10392
+ <docs@lists.yoctoproject.org>; Fri, 28 Aug 2026 09:50:11 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10393
 
-Move all imports at the top of the file and sort them.
+We don't need to import sphinx_rtd_theme in this file, only check if it
+exists, so use importlib.util.find_spec() which is made for that.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/conf.py | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ documentation/conf.py | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
 diff --git a/documentation/conf.py b/documentation/conf.py
-index 8b50656bf..671bf537c 100644
+index 671bf537c..bd3a4e5bc 100644
 --- a/documentation/conf.py
 +++ b/documentation/conf.py
-@@ -11,11 +11,16 @@
- # If extensions (or modules to document with autodoc) are in another directory,
- # add these directories to sys.path here. If the directory is relative to the
+@@ -13,6 +13,7 @@
  # documentation root, use os.path.abspath to make it absolute, like shown here.
--#
-+
-+import datetime
+ 
+ import datetime
++import importlib.util
  import os
  import re
  import sys
--import datetime
+@@ -169,18 +170,17 @@ if os.environ.get('LINKCHECK_NOT_NICE') != "1":
+ 
+ # The theme to use for HTML and HTML Help pages.  See the documentation for
+ # a list of builtin themes.
+-#
+-try:
+-    import sphinx_rtd_theme
+-    html_theme = 'sphinx_rtd_theme'
+-    html_theme_options = {
+-        'sticky_navigation': False,
+-    }
+-except ImportError:
 +
-+from sphinx.builders.epub3 import Epub3Builder
-+from sphinx.search import SearchEnglish
-+from sphinx.search import languages
++if not importlib.util.find_spec('sphinx_rtd_theme'):
+     sys.stderr.write("The Sphinx sphinx_rtd_theme HTML theme was not found.\
+     \nPlease make sure to install the sphinx_rtd_theme Python package.\n")
+     sys.exit(1)
+ 
++html_theme = 'sphinx_rtd_theme'
++html_theme_options = {
++    'sticky_navigation': False,
++}
 +
- try:
-     import yaml
- except ImportError:
-@@ -211,9 +216,6 @@ latex_elements = {
-     'preamble': '\\usepackage[UTF8]{ctex}\n\\setcounter{tocdepth}{2}',
- }
+ html_logo = 'sphinx-static/YoctoProject_Logo_RGB.jpg'
+ html_favicon = 'sphinx-static/favicon.ico'
  
--
--from sphinx.search import SearchEnglish
--from sphinx.search import languages
- class DashFriendlySearchEnglish(SearchEnglish):
- 
-     # Accept words that can include 'inner' hyphens or dots
-@@ -230,5 +232,4 @@ function splitQuery(query) {
- languages['en'] = DashFriendlySearchEnglish
- 
- # Make the EPUB builder prefer PNG to SVG because of issues rendering Inkscape SVG
--from sphinx.builders.epub3 import Epub3Builder
- Epub3Builder.supported_image_types = ['image/png', 'image/gif', 'image/jpeg']
 
 -- 
 2.55.0
