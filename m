@@ -2,39 +2,38 @@ Return-Path: <chris.laplante@agilent.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CD09DC61DE1
-	for <webhook@archiver.kernel.org>; Sat, 29 Aug 2026 16:12:26 +0000 (UTC)
-Received: from BL0PR03CU003.outbound.protection.outlook.com (BL0PR03CU003.outbound.protection.outlook.com [52.101.53.66])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.10210.1788019938919346807
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E289FC61DDE
+	for <webhook@archiver.kernel.org>; Sun, 30 Aug 2026 13:43:01 +0000 (UTC)
+Received: from CY7PR03CU001.outbound.protection.outlook.com (CY7PR03CU001.outbound.protection.outlook.com [40.93.198.6])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.8708.1788097375697734071
  for <docs@lists.yoctoproject.org>;
- Sat, 29 Aug 2026 09:12:19 -0700
+ Sun, 30 Aug 2026 06:42:55 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@agilent.com header.s=selector1 header.b=2M7hCKOV;
- spf=permerror, err=parse error for token &{10 18 %{i}._ip.%{h}._ehlo.%{d}._spf.vali.email}: invalid domain name (domain: agilent.com, ip: 52.101.53.66, mailfrom: chris.laplante@agilent.com)
+ dkim=pass header.i=@agilent.com header.s=selector1 header.b=lfAyeS64;
+ spf=permerror, err=parse error for token &{10 18 %{i}._ip.%{h}._ehlo.%{d}._spf.vali.email}: invalid domain name (domain: agilent.com, ip: 40.93.198.6, mailfrom: chris.laplante@agilent.com)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=m2W6RLGGpD4Op8xLX24Y6Fced1E199ALQngFmqMRz68Efp9EdkGCNFFfEKfbcabXetKwjhQux8J18YGSLJQ3Vkgb1fuuIjXszRZv7Hydw3HEaqEcXnvInhAf5stPfoP42iPdzwfLjTWk/U9ffWhVyUA2B6inEswFhUAAi1vTvSIcjrULWEMXceiRzjrCgPkHMpZX1kxQ/60NACsWNHTlKt6bOhv5Sg0WTOJevxOoXBn+fXsOsY75OGQdxUEJep6L3Q9xXHG0KRwnmx/9ZbwhbAxkgxe0mpfwok66BN/xV/XhaMfJMGOgbAnMpuHTaEgOLk+Xx/AlqFBv9Wf/M1Atbg==
+ b=kAK3TiMTcgi/n7Ra++npypgHH+ni4/U6SKAMwYRJSrGKoOEuZaXWG7im8QTd2hOIQrDVHHa6vtVwT+mmV/svcGI8wHXo1jv9FCjbvQKlIP5c512m8KxNFpXUfv1b21fIubSXKfxBDqhO33OsbePK5rL05qVx3vRRzTCAlVIjx8jga+FFq0epwU3pLVBxfmmQ8OSz4XnluEOZRTfTV0FkltKLysZMPQMBEDm8pNzTwutD1Jry44Vj4ECAtKP7mrY0AlXuqVeBwsqjt60JLCbEVWbJLHEO3Yzo2Z3IlxPsQE4T+tFqqa+1bcenSQSfCjL30fAO7+nBtGRdxi54MP96Sw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/Ndrv6UdM8yMw46CWhJCYqVeKvkmXcc+sdM2kv56xMA=;
- b=cDmhkIk14dGd0hnRCnrPuV9gkJxROcitgmL0AwIQZNf23xO49moSOMON+X2N8Tx8a8OKii/DgVP+y86yJ1nxrZYgimB41bKa68px82Ppra4OwAZJaXz7t9JU+htTFnP/c5SlqKXb+jxNzYMMeeNzhhhR1kjPRE1comM6QcEPMaAB+5cpsQGj1dkIVKNOazegWEfGZm7zL1S34exVu1sDtY9hIRz/ruoTsAOg0/xX6q8U8Zm+Chsp4x1QLoHv68cjR0JuNxEqvcEv1JvB/ubWxZoFaofVW8ExtHxWcZgHRyH6g1Gp9JY9OrUb+wFfS2uRdfeRMUw8j6DXVGKxx1up0g==
+ bh=/NtHc6cVJ5u4/CTCGkDYbOIsOIANmIEQHLJtTIWNaQA=;
+ b=Y7jaOk0TBmh/uPv91ZX3BAgOZqcayw6/TWv5+qZZca9rwGu4I1U2pDQ0lzyHpebapECwHJTyvuKCGCSJTYGVrZDjKRepM5Sm1u/R2BGKOT4K7eeJsddXNq/lZGkFnQqS3UWguR7NK7IB8sMO0r37KmUY9jeORB7fjsyDywL9wTLpG8lxQnEUxcxAt/dXRcJ++Rj6CjEM2WcnXr9nWkCQcwIUKOK37fRYLKHeKToRTODnqCbN22eurTLn7VCwikxv61UyOK6OdnrIyiH3js3CH5Xe+rPZH4Mw9hQz8obxamdm4SQMXIMwzGeLyFPLFxq4rP5kq0J7wzTrcaMjujYJcQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=agilent.com; dmarc=pass action=none header.from=agilent.com;
  dkim=pass header.d=agilent.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=agilent.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/Ndrv6UdM8yMw46CWhJCYqVeKvkmXcc+sdM2kv56xMA=;
- b=2M7hCKOV5uy4volz0LvoU/sFc3HuDZTZrGnR/2i83f+E6DtH6rlIEhsR/rsmB3fy107lTbts7ECfA31BkECYzPJmIOmP3Yk5OPBlAve3H0/B7CYnJEunBuq79eKn/c2T7bEl5XFSdMwtRUOutau09tNF9CFkTar3ToMu0z7JeXcRzl79oQeiWIoH+MzmrSGJedGruGSDwXW4wEl1RKRB8Pf6u36YddDUipV4TZWu0mf7XyyUbL8FIfjj1XwV+mdMULOuVA4kNlyYYZH8HJ+Jm3MnxOVe4ADjXs+dvk0vDcV1j6yUxU9UAyTeMuiQzD4N2GtoJBcVW7bury1CczgqgA==
+ bh=/NtHc6cVJ5u4/CTCGkDYbOIsOIANmIEQHLJtTIWNaQA=;
+ b=lfAyeS64Fd6jjLzxN3PDSPMn0D5RDsZottNs+LGNnpnpTcTteHwu1G2o+lI05U0KQE+lU1CzR4SaggCCGb5Tk0dhgwNsKBUoRka8Q3UeWXzQLpB44j8vNed8k760plMJWncVtGcmmHwzo8OOnnXH+hUm7ujWa3CS0I49KOt8xU6DuRPYd/Uu7RVezNug1XCxXKD0daYW48ZB/jRGE32zH2EizKSpKAsl20XpSj7+DLVR66a/QqafAmYcxc4Y6Zn6SQEHbe4BBD5Jmwjjwuvs9rLXVMRZuP0doYjyyDkiLxgGvWQlyMB27DcAbt7ckQeV3dnoN1he5b7uaUuLPWMEIw==
 Received: from DM8PR12MB5430.namprd12.prod.outlook.com (2603:10b6:8:28::6) by
- IA0PR12MB9048.namprd12.prod.outlook.com (2603:10b6:208:408::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.12; Sat, 29 Aug
- 2026 16:12:15 +0000
+ SA0PR12MB4413.namprd12.prod.outlook.com (2603:10b6:806:9e::9) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.360.13; Sun, 30 Aug 2026 13:42:51 +0000
 Received: from DM8PR12MB5430.namprd12.prod.outlook.com
  ([fe80::152b:7346:321d:4a2]) by DM8PR12MB5430.namprd12.prod.outlook.com
- ([fe80::152b:7346:321d:4a2%6]) with mapi id 15.21.0360.008; Sat, 29 Aug 2026
- 16:12:13 +0000
+ ([fe80::152b:7346:321d:4a2%6]) with mapi id 15.21.0360.008; Sun, 30 Aug 2026
+ 13:42:51 +0000
 From: "chris.laplante@agilent.com" <chris.laplante@agilent.com>
 To: Richard Purdie <richard.purdie@linuxfoundation.org>,
 	"bitbake-devel@lists.openembedded.org"
@@ -45,14 +44,15 @@ Subject: RE: [docs] [PATCH v2 1/4] lib: rename fetch2 as fetch; invert compat
  shim to make bb.fetch2 = bb.fetch
 Thread-Topic: [docs] [PATCH v2 1/4] lib: rename fetch2 as fetch; invert compat
  shim to make bb.fetch2 = bb.fetch
-Thread-Index: AQHdNwoK38+J/mz3P06K3mDmr6DsAra0y6yAgABntVA=
-Date: Sat, 29 Aug 2026 16:12:13 +0000
+Thread-Index: AQHdNwoK38+J/mz3P06K3mDmr6DsAra0y6yAgABntVCAAWh1EA==
+Date: Sun, 30 Aug 2026 13:42:50 +0000
 Message-ID: 
- <DM8PR12MB5430BA865CCED3DCCC43896D8BAB2@DM8PR12MB5430.namprd12.prod.outlook.com>
+ <DM8PR12MB5430F04981C8E621C0C666D68BAA2@DM8PR12MB5430.namprd12.prod.outlook.com>
 References: <20260828162612.753815-1-chris.laplante@agilent.com>
  <81f397e0bfb6373b29d8a6205ae926946f8c12e0.camel@linuxfoundation.org>
+ <DM8PR12MB5430BA865CCED3DCCC43896D8BAB2@DM8PR12MB5430.namprd12.prod.outlook.com>
 In-Reply-To: 
- <81f397e0bfb6373b29d8a6205ae926946f8c12e0.camel@linuxfoundation.org>
+ <DM8PR12MB5430BA865CCED3DCCC43896D8BAB2@DM8PR12MB5430.namprd12.prod.outlook.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -63,123 +63,95 @@ msip_labels:
 authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=agilent.com;
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DM8PR12MB5430:EE_|IA0PR12MB9048:EE_
-x-ms-office365-filtering-correlation-id: 4938837a-fd42-452c-5347-08df05e849cc
+x-ms-traffictypediagnostic: DM8PR12MB5430:EE_|SA0PR12MB4413:EE_
+x-ms-office365-filtering-correlation-id: 03ed90d8-cdf3-4279-67ea-08df069c95f1
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: 
- BCL:0;ARA:13230040|366016|1800799024|23010399003|376014|22082099003|18002099003|56012099006|4133799003|38070700021|4143699003|11063799006|10067099003;
+ BCL:0;ARA:13230040|376014|366016|1800799024|23010399003|10067099003|38070700021|56012099006|11063799006|4143699003|22082099003|18002099003;
 x-microsoft-antispam-message-info: 
- dJefL74rOis+K83ITjYZ8fis5H1sy1Y1muMTDP3jAvv1g8A+0K4tVgFjiYiyDrZ9yvkWrzfTkS7usqH90xBnn1l6GlvxAS6rP/JE8Ce7gXzV7yq5QVNQ9Gg9AmOzZkIrQyPEvqn3vC/KJNUYDNm+3cna+AEJ0VE6m8kOsXDZePAnt17H4EHn7epW5EUm6uxGjesYn+tsOA7w9rRAOGlXrJ+CDmpM+XBWdY8lqtzqkB0CLENLDzZnjy0icdO4gsMBIYfvJ0KY49NE+ZCtXllX6uZTfG4IcMr9bnmB2R7Hmg5lcIbAJgQgtQZIY1C2eQvrMp5/GjnyRwjWK89Jb65ySMzeX0SS4B5A7qR053kBP5XvNG4ejZWBCUIRHsEdG2itlwlHMEPq5f9cckVIPoG56r+KwH2ukgKtkxrJz3L0NsmsWcTE4FOohgsfpzfy/tG7TYT1HoHLMcmPUSXxehuzcVmeGtj4VA6i/LhVgQNyPsb5T2OtetZQhT1/ar4MRjFn6ZsOi0I1UkdD+TmdjHRZtyNrbAMcPgWlGdEHx6metsWKW3aKcb5KY3sraaV1qMqsZjMnVUKQ54tAIkLGRH+FnxPFxhdXBKW7tHHu46GlRJZh47p0rIfJC2At1JtqbfJ4cmHK99TAyMWOA0WIofCDc0Dw1lWC/mGEGMaJqW2Hhg4=
+ hiAf86SzH/H2tuNi2PQOT3oS5iwvb9C/GeVb1wBwfBJXKM7s75cMuDmTsWo6Ob1Jz4hV6frYSeHqDD1k7pScbCn4K8ZgvEDrecWgQvpv0RX8u0yRkZt4RPcpQzh9dAM6IsjlHQZ74gNVRMYJF/RvuRg3yRarz5Z0hEgiz6xFzj2y7Y1ddKQr6ixAhN3xTQBKBjlYF9G+/RNpR1KdcxwkfI/ohH/dMc5hsQSL1Yb4O3XY3WSg8C+49YHkz1O6cRrC/VpePlElLtXC9cIngskMC0rnHFe/fIJ0xTLXqx6/WiBR9OVpNQHPS04uGS7i4MdjtXNZYBJ53Xuh1A5TPNnTkQ4PXqDoCqvYCiMzsYhO05deKbhFQUkrP4ijz71rAL12jAcYWymWj8VpShJDY2GAtUB2YhLPA9Awn9izdq51uxT2n2O3qT/cpTXtjfIMwZS2IpC3R7oYhyug+N/8/eAuMff9DjhjkdBYfKbgzRdQeAVO9ISbMDXSjN7rWwaNqxhLstbMzoCTO2x17huxCWDxEtGMXEcEmSB8Wjolf183FjTaEVqgZBtaDqcjtTiS0UoaWg5PNKB3xLTaTt2y93YtXGlHNOVwSBW90jrqrorpIgVHf1bhlL+U5vhoIQ7QmerTekQ/t31hccOgT8eUmIAQy7OfmTyJBE8kIMHjei4mbtQ=
 x-forefront-antispam-report: 
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM8PR12MB5430.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(22082099003)(18002099003)(56012099006)(4133799003)(38070700021)(4143699003)(11063799006)(10067099003);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM8PR12MB5430.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(23010399003)(10067099003)(38070700021)(56012099006)(11063799006)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
 x-ms-exchange-antispam-messagedata-0: 
- =?us-ascii?Q?pO/CGkYlXHLoVTqbwqcpQNcOSaoc85/UtLUrQ3jV5jtHZJT56RZ8eX49IVVA?=
- =?us-ascii?Q?VHMA7gqWAlWSAKsVyHB8PeBUgDttG02U8nbbTIpEBKfa9tWUvBfdDLgJzGhR?=
- =?us-ascii?Q?DeMsAY7zF2H12AhclyWRXGpPrORGSSt/emXkWUlCgDqFF3hrPuXNAajls2Sz?=
- =?us-ascii?Q?H0UExa8D2qFi5QBYkNHJ6aYW4D9dMywdTeRqyrMB/+9MDD+hu1do43gGpYSX?=
- =?us-ascii?Q?IMi5RNIPu4l815VO0uSfgkKpoSWoXwl7PoxsSwbjw8nQXJ9OepmEiIfywD0P?=
- =?us-ascii?Q?EIDH/Mn9yGDIytUm66+0BxTJJEQj5EYjJVpB2JbJyxayfykUwz65A21H5s0F?=
- =?us-ascii?Q?+yTqJO5zBo+/J08oydaeSsLN43nTUCSU6Rh8WdYY0TUGFH9AYgWWIwzo3h3/?=
- =?us-ascii?Q?aJe39dYgNPohEUi2ZuSJkrOkrpge5/BbY5mUuVjJyb+sjZ/Q3Nf6Y8CEogFy?=
- =?us-ascii?Q?cAcMHfi8qKzdqecNMtnHTvKRoG/stMZpJZ1D1tbdCVEMsXslPKYrUf1KCOcj?=
- =?us-ascii?Q?Ufpg4P3jsQ9Jb9G59udzeYll5QtyCKpGD4aDQsKwJIfhCY/Sdls5lbLOVNX2?=
- =?us-ascii?Q?IcQ/Shy7C/PH4CWwnUIjd5RPLL2Nq1zP3/BdSqZ4l8jufYqzhuBItEVWMiKM?=
- =?us-ascii?Q?eWYG2Z9RBxtl14KgZGOZs83HtB6j/IB0+amhboD6XhvtasJaGPRHyHpkmCDA?=
- =?us-ascii?Q?HRs4/oTCUaiBbrE55aqvvO/hE3bF6+5kIomWb0TICffErSqg6yzmRfsRgrxP?=
- =?us-ascii?Q?EDZFgjBICRacGweE7Q5Ekhgki9+nOD/Gh27B4kZGvWjGrwOmf4DM8oDSA1XA?=
- =?us-ascii?Q?rlpXA7YP0vqz+b5hKDyDvFP+7Chv+krWAq6evPFfVooBkG/rSY9ZKbCVFXwg?=
- =?us-ascii?Q?g6+medmZwe1zgf4RYBM/H1xCqVD01sPmJxz2EjaarVkLHmOAqrAUoF1PMN7w?=
- =?us-ascii?Q?Nj0zvDbMsG18WOR485UbeJM7LXd6MzOn/g++jrIX7U5GaO/N9tc6ecHwN51v?=
- =?us-ascii?Q?Td0x28ZbvWHFWh/j75cjwvFmIKYUoSBuxcOWNhntEM6A/8VED5E6S6hx/R66?=
- =?us-ascii?Q?+OWd2aR7SsyBw3j2bz7fX6B/3d/yULb+X05NSVfbKVPDAvrAyVJJcGwkN5XP?=
- =?us-ascii?Q?Tel8i7mDmjbwBvwk65z+dSdcHY/f6uPV5iD+1TFRVlNdGjHGdIFqZn837U0P?=
- =?us-ascii?Q?IUtyZTiC+EBGIXmKZQVQzODvNAQ67w93qdqfLFsxtCxT2k+FehRYnVUPTHMf?=
- =?us-ascii?Q?Gu7QoOkvr1RA6291CWQ0j9/bzcOaboJ0xaV64DKH5IZiU2Q0628Rtx4+8/yM?=
- =?us-ascii?Q?pMIZTRMSxGmU7IRj1N+U9QD2L+mrtHGfLv+fGvfIzxwnmLB6McVQN6M6/3S9?=
- =?us-ascii?Q?pYVYiiNFBSjOU0YwU8IEJqutRDMK0yO9MFqnkLDVK3EoEku64bOOhbH1WcAu?=
- =?us-ascii?Q?jFaOYKZUm9W6QzbxlXCAECObvjx4zLdSIu7E2Tp8N65WDWF/aKkaMY/ETd2E?=
- =?us-ascii?Q?zhA7ahgREOHnWq+hmlHUmn46q/HXctp73PV08oZZ2eG2mXUeZhj2TG7Wtrii?=
- =?us-ascii?Q?m0Aw5ppkgljAqK948uHkZz1QYo9pnVkpMw180SgCjwJz+guyQyybC+koBO9i?=
- =?us-ascii?Q?7J5ItZNCOKyxNA2UqmJ+yZHDjKh54wNgwU4O1YB6dFbTa2ZwJYW9nkDFiljr?=
- =?us-ascii?Q?KwJwhKGmebqKszF0sNCnDvHdRB6aMU8RYHjrgZ9MYHdFdKNAfGQ5ryAZ+zdN?=
- =?us-ascii?Q?a0/mYQkPFg=3D=3D?=
+ =?us-ascii?Q?58Q5EIrm86YotKEbinjWay36TpSPmci3h9nHTWZnzLqZ1GrS+Lg3x7OzfAvy?=
+ =?us-ascii?Q?amU5DMMuHGWuv4RDGh6wZiRHpbnyzw3vZYU+Im5DEoCg0gZfCPxWOcMH4/80?=
+ =?us-ascii?Q?PLMHoHFgLm3qQDKV4fMr5NssXgebuXH/LuchDrAkK3tINSoNekLSXlUVacPE?=
+ =?us-ascii?Q?Q0c7kjCi3eKxpFGF1FbiCvL9gBYJgMc6IN9Z9a88ZmNtGhbmyeWqUlc07C/k?=
+ =?us-ascii?Q?kKk7GN8Pm813PNbv/45sB84RXxwoN0crFNCgMJCTbs8X2LlS1aNRCoJRwtK7?=
+ =?us-ascii?Q?fmfiPUDd3t54hterTC+04zcNK/tiq2y0ZBPfTwj0Ofsj1JJW+UEgqDkIeIV1?=
+ =?us-ascii?Q?9JVjz6xt6JoKp0URODtj8RFfTsUdyTmpOQsq2t5RV5hcM9arfAoXBSaeCvmu?=
+ =?us-ascii?Q?jEHjhvLTwsqA+x3Iyi+OpvC9/5/Kiqw7MSBckg5ovWetGsV02tRemD4wHGvw?=
+ =?us-ascii?Q?Z1k5X3/3odr2aL5viN/IwbPRGh/ztpv+kb43g71TzapMXGM92/RU0V5c2EM5?=
+ =?us-ascii?Q?vfo+/LsRn4arxjmkAzNZa/vd6FbaCXzC9Jdm/FYFL6u+cIt/GPewoy9V+OC3?=
+ =?us-ascii?Q?efRl/WUkoGp9zldVe5Jba/noGKK8kY692iMuh+4NAwG4Th1XrWSupnlszN5u?=
+ =?us-ascii?Q?oiZ4mzI/1sxLD5Os1alYD8aS7G7pb/AUyul3y2XD//p+cgC3qv+dDewVviVi?=
+ =?us-ascii?Q?cIzJJSLa4cLoTA8BE6ddHnmEePEdvnbOAzCiAH7UF1c6F0jaU3lJZslvTCvg?=
+ =?us-ascii?Q?Cylt9c0fSjG0JQq7pa8Mq7WqRDbRTinLMAlGHmZVq9MvtyrZf528N2gTilDC?=
+ =?us-ascii?Q?cwQhiv7YsbMdiZpBSaiG0sxMJf6/CQMQXJ5T/pW04kJ8EshgKrWryMc3LOBe?=
+ =?us-ascii?Q?cKPfwhhHoWnwYK43KFi3vg7KKZQjLqGv7n0T4jUM5borUtv6k83zvlZ32LJL?=
+ =?us-ascii?Q?08ZT+gbY4aow9kC68RPBMxYJgMjzUNC6GX4M/Vf5BmamjDB9zrbOrLs8JfyM?=
+ =?us-ascii?Q?10cwJ4YxNjSc/cFS6H6LZx4uPDnOrQwe+wmHM9Nbsb0LmMcasov/d8p9ZXJC?=
+ =?us-ascii?Q?nAx2Mg999yHvw5k2Hroxm2CvvH1O6w8tw8fFVpZNeTH+WTToGJSH+PzMyDih?=
+ =?us-ascii?Q?oughDTDxP15O4bzjkSlcWtUcQBBcLXQnjt4skmzKh4Zkz1EWyYui4WmGo3MO?=
+ =?us-ascii?Q?FIowOdf9wld0iMW3P+Mg6/vFozGZ+1En4umtbxCPUcUhmvpZR7A6O5IneulK?=
+ =?us-ascii?Q?pM9wsmAWhxIfs9bVHkZlHqDDjLDwJmHjZvFJso8Qn5oLBcDrSkssioWx+2qK?=
+ =?us-ascii?Q?4kEu5S8OMaZPMsY4cJDa3HHg9sqj2s2Ulwy91e5JGiAB0eu/PZhfCsZEyiUA?=
+ =?us-ascii?Q?JYFO9oeTVJJjxjvI9bm6P6Hrrrih4KxcoKMo5oLOhLST6CMyg8eJPXhP0+Nm?=
+ =?us-ascii?Q?Nf2KWm+lWxgzFgsvew6ZpVcghpJxDs1tcgufuKi/0OoT3t+A3QZ/Ed3h6aQ0?=
+ =?us-ascii?Q?bhqNusHOdShCbDRvEKwhlv235F7dqFQW4ppe28jr+rM32xV+Sbw90dyTAeDB?=
+ =?us-ascii?Q?/hXqPbH3jk4LWILVMLCFM5pKNqwHFlDyRw203gQsme7/dPnt9H2qyYR2fj+3?=
+ =?us-ascii?Q?B8EeW9yxihVsU4VWrJyMO+nZbjvIbywJIUygh1mnogj79C4QsAPH8x+BtYpM?=
+ =?us-ascii?Q?ny6peE8aO31zG63u4Z5F7+6m4paXlVaCfKGVKHCymaFnqGji1DjzMFQ1hZgC?=
+ =?us-ascii?Q?YY+Q2ROKSg=3D=3D?=
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-OriginatorOrg: agilent.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: DM8PR12MB5430.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4938837a-fd42-452c-5347-08df05e849cc
-X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Aug 2026 16:12:13.8553
+X-MS-Exchange-CrossTenant-Network-Message-Id: 03ed90d8-cdf3-4279-67ea-08df069c95f1
+X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Aug 2026 13:42:50.9809
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: a9c0bc09-8b46-4206-9351-2ba12fb4a5c0
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: t05eM0Kiajy8m60YjsFJpaoK1plGEt+vvLtdCa46oo7ndKL/dt5+zln7N6N2q16eXx6wV3xzZ0yH+g1SCNmVj9bV8nIm9h4UO0xq7l1T6Zk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB9048
+X-MS-Exchange-CrossTenant-userprincipalname: BKWJuksx2ckOga9SgCcqbqiRiEkWST85I6arNKLaSg+OJBkpYgQsH7ToHG1/64t7OYsWywhnHuOZ0a4w3+Z0A0UY2K3XJoKE8M0i/y3NC3g=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4413
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Sat, 29 Aug 2026 16:12:26 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10404
+ <docs@lists.yoctoproject.org>; Sun, 30 Aug 2026 13:43:01 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10405
 
 Hi Richard,
 
-> On Fri, 2026-08-28 at 12:26 -0400, Chris Laplante via lists.yoctoproject.=
-org
-> wrote:
-> > From: Chris Laplante <chris.laplante@agilent.com>
-> >
-> > bb.fetch2 replaced bb.fetch back in 2012, and the compatibility shim
-> > of bb.fetch =3D bb.fetch2 has been in place ever since. There's no
-> > longer a good reason to keep the '2' suffix, so lets drop it.
-> >
-> > We also invert the bb.fetch =3D bb.fetch2 compatibility shim to now mak=
-e
-> > bb.fetch2 =3D bb.fetch. We do this by creating a new lib/bb/fetch2.py.
-> >
-> > Layers are accustomed to accessing bb.fetch2 without first importing
-> > bb.fetch2, so we declare a module __getattr__
-> >
-> (https://peps.p/
-> ython.org%2Fpep-
-> 0562%2F&data=3D05%7C02%7Cchris.laplante%40agilent.com%7C8dcf4cbed7a94
-> a6d07e408df05b40514%7Ca9c0bc098b46420693512ba12fb4a5c0%7C0%7C0%
-> 7C639235942913901460%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiO
-> nRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ
-> %3D%3D%7C0%7C%7C%7C&sdata=3DTKmQWEwWxoF3%2BT0vRYaCXXzYNTcxFrS
-> kbPzd5KOKKAM%3D&reserved=3D0) to keep this working.
-> >
-> > Finally, we add a deprecation warning for good measure.
-> >
-> > Signed-off-by: Chris Laplante <chris.laplante@agilent.com>
->
-> I confirmed this is still resulting in failures in oe-selftest, e.g.:
->
-> https://autobui/
-> lder.yoctoproject.org%2Fvalkyrie%2F%23%2Fbuilders%2F23%2Fbuilds%2F4744
-> &data=3D05%7C02%7Cchris.laplante%40agilent.com%7C8dcf4cbed7a94a6d07e4
-> 08df05b40514%7Ca9c0bc098b46420693512ba12fb4a5c0%7C0%7C0%7C63923
-> 5942913938265%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWU
-> sIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D
-> %7C0%7C%7C%7C&sdata=3DL7erW%2B9r5fo18eAI86c5LrCm0fR9a%2FOKEn5Kw7
-> LooU4%3D&reserved=3D0
->
-> I've not dug into why...
+> > I've not dug into why...
+>=20
+> Looks like it's failing in gitunpackoffline:
+>=20
+> stdio: ERROR: gitunpackoffline-fail-1.0-r0 do_fetch: Bitbake Fetcher Erro=
+r:
+> FetchError("Recipe uses a floating tag/branch '2.10' for repo
+> 'git.yoctoproject.org/matchbox-panel-2' without a fixed SRCREV yet doesn'=
+t call
+> bb.fetch.get_srcrev() (use SRCPV in PV for OE).", None)
+>=20
+> (https://autobuilder.yoctoproject.org/valkyrie/#/builders/23/builds/4744/=
+steps
+> /17/logs/errors)
+>=20
+> I'll try to reproduce locally.
 
-Looks like it's failing in gitunpackoffline:
+The test failed because it is re searching for this pattern: "Recipe uses a=
+ floating tag/branch .* for repo .* without a fixed SRCREV yet doesn't call=
+ bb.fetch2.get_srcrev()"
 
-stdio: ERROR: gitunpackoffline-fail-1.0-r0 do_fetch: Bitbake Fetcher Error:=
- FetchError("Recipe uses a floating tag/branch '2.10' for repo 'git.yoctopr=
-oject.org/matchbox-panel-2' without a fixed SRCREV yet doesn't call bb.fetc=
-h.get_srcrev() (use SRCPV in PV for OE).", None)
+But the rename changed it to be "bb.fetch.get_srcrev()".=20
 
-(https://autobuilder.yoctoproject.org/valkyrie/#/builders/23/builds/4744/st=
-eps/17/logs/errors)
-
-I'll try to reproduce locally.
+I'll submit a patch to openembedded-core that tweaks the regex to match eit=
+her fetch2 or fetch in the name.=20
 
 Thanks,
 Chris
