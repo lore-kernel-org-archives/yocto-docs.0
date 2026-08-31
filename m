@@ -2,93 +2,154 @@ Return-Path: <twoerner@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4F7A7C61DFD
-	for <webhook@archiver.kernel.org>; Mon, 31 Aug 2026 02:13:09 +0000 (UTC)
-Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.21086.1788142382481999196
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E0163C61DF0
+	for <webhook@archiver.kernel.org>; Mon, 31 Aug 2026 03:14:59 +0000 (UTC)
+Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.21900.1788146091009805306
  for <docs@lists.yoctoproject.org>;
- Sun, 30 Aug 2026 19:13:02 -0700
+ Sun, 30 Aug 2026 20:14:51 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20251104 header.b=UHIuq9IZ;
- spf=pass (domain: gmail.com, ip: 209.85.222.178, mailfrom: twoerner@gmail.com)
-Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-9390a2c8909so199048085a.0
-        for <docs@lists.yoctoproject.org>; Sun, 30 Aug 2026 19:13:02 -0700 (PDT)
+ dkim=pass header.i=@gmail.com header.s=20251104 header.b=g9fK1kiO;
+ spf=pass (domain: gmail.com, ip: 209.85.222.171, mailfrom: twoerner@gmail.com)
+Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-9384cb251fbso137062985a.2
+        for <docs@lists.yoctoproject.org>; Sun, 30 Aug 2026 20:14:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788142381; x=1788747181; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=eLVJHumWniOhh58hQ6f/iMeSwnJjLGue9Ze9GLA2LJU=;
-        b=UHIuq9IZP7omANyES3EQcSvJWeQi4KyWHpGHtKCk/0ZbgqCyRQ1/Vl6aJPrz9LVKgX
-         JXhs58gX3KjJabLFh/U5+kCmHfXzok3cZNWhELtig3Op84feDX3ZUZxWLwLg/tM691z2
-         vdxoJ+CMEsqYdl1T3Iu0vfNXDy0W44Wvtv/ZBgHz43cMls5NdGh4oFFDSuzUPutY0LGh
-         ZTn8FNXkGc5hvF51P7kT6Fii3dvMMMHyRlBFebZtkGNaUSgAC5fGB6C8ly6bKZPqniMr
-         lj0GZZEBvJtfRjtRdR7gCtYqZouS4/s3mCQ/uQQ06fY5uUvhywvzGn7S9V2xtyz2DvaR
-         9uCw==
+        d=gmail.com; s=20251104; t=1788146090; x=1788750890; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=W3qld+8w/IZVgjPjWx14n99ySoyUmzgosZgtpW8SFds=;
+        b=g9fK1kiOVy8wWcIKXUniqTSQYH3vP4MEkEkXIQGd2AL4qa2ZlPHeb3faHujG3XsWSr
+         SeHV1WdOOFFarAZMKm9H9PQnAl5M/tJloBrnOVMDSNO8lZcPkyU5J2qlPVWtB8IDxY4g
+         HTQj7Wzy1STUhPh4dc38od+cf47nvjK7G8JQZr0uDOMIlVlO051jEMnbtCnB6C8Z+P81
+         r+17mVdcV/yBqeGn8Kt2haIVKiLAI/JMmGhhy4t6GNKO1RMQhZH6G2nFygiw4R1EHoAm
+         LgidpmHaMjyiksfxEqtn5ym1jdo1dDAOJN3Br+Bi3QefRY7dHXPejJq6kIsBbQ+RGtp1
+         12Ug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788142381; x=1788747181;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=eLVJHumWniOhh58hQ6f/iMeSwnJjLGue9Ze9GLA2LJU=;
-        b=GdVnYQeXALyanoMFZUHYYqgsdud/hleB+1hR+6ZhLwlqd2FViXgIZZojosk80CDONC
-         kByn55AQFvVy3ivfJxlxcnNEKvzBE/F/xWN2pC4lI3kB1uZVaKd+tD2qnyfs8I12tZzU
-         bCibPVuiuU5v2l+SUWMLo+5IfdFp6NC+EY4ZaDd3yXOMBVkpZ6Ctg/XjrBc+VPlP7Y/s
-         8UO9+ig2TGqw/7O/RTSsGuiziy0gw+TxYWrjGamIqahZUq8+YTK+O1SU/FCEpHgce/Tz
-         tMrE9KdpvvY0qTefuU0g1Ynqrs3sH2CV17wzP7fKsdsgFxHzeiBvaYTmbV5mMbaL+p6H
-         0vEw==
-X-Gm-Message-State: AFuF++m1TE7XJbVpBeM23VYSxXfQVrvr9LUcWXIoJJpSaSz4hJ0FCOcn
-	CDN0HKPcaQ6337Soohd1c+9Y6HSUXEaG/lA7vhkcPReDaj4NcsMH+8B8aCCKdKdA
-X-Gm-Gg: AR+sD130+kV8Wv1Bhp3witcZIm9b1IFVQo/rDLU6hBq6cc0DIOYA+Mvb5bHCg3xXGnQ
-	jYxS1gV9UOyOVG3x6ceLTgob0yhpFCSe9FkGpcQ+iJzj1nc+JUbA+/vO64nqKj65Z3mBP7wMDTl
-	ZWhy/O/bVMujtJ5ZhNoKl5yZ1vaj7cyBqJS8bP86hWQZuCIHs8kkSzORoNwUi8wZVwSZz+lC4bn
-	/Fjo1N22q7cJjCiJcDfoJxJjzqEf6iAJfaHUCyJDX/WFpAw7NHwrL67IDB+VLnxnQvQZ+2yH8KK
-	sgRinSXqTsuju5a1WI63Ahtu/2I1nIFb9EjYDAM+ezMM6b5np4Mh67pFowgwlReA+/LcjoLDAvH
-	/swVGBUfLnZ+gFUzSN7Wb8WuPV77ZOvPZbDW7i1d/HqwFHLNXGx/gEZZyrvjqr81gLeFtF53x82
-	1poGS7vwfsjQYINDCPkhiID+gVwtk07udexVZXebuf8CRXGtS/mta74P2hDoe/u02/YrT8BJ/0+
-	Hci/7M9u6R8AryffSXA5eBLUoywcA==
-X-Received: by 2002:a05:620a:6cc8:b0:937:372a:b97 with SMTP id af79cd13be357-939428460efmr11621485a.17.1788142381459;
-        Sun, 30 Aug 2026 19:13:01 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1788146090; x=1788750890;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=W3qld+8w/IZVgjPjWx14n99ySoyUmzgosZgtpW8SFds=;
+        b=ranZoCRQl6NBDFTc4pkrjk63jW2gYIwLg+wqtcrzaiSh2/qQn9SVd93VVZjnNS3J8S
+         ZC8MiTcZbaqPCh1+di0QWxw4OGqRvxPlA3evy8ZrOuMLAGYRyhI1f0egZCb2y9eTgWCy
+         FXkyGhMau13G5rqoS/CxnAYs2BOPc4GevGe6j+V/4n+fmSI0dgDUE86CmYlKhVbpD6FG
+         TBgDM2EcL6HtQQh6HFOHMHfya1aW059iOpUAl4RD1asCENdLMeBRPFPTR1B/SK7pbir5
+         Xdc6Wl92dWeYTTLFY2HzpmEhDTfXWGxSd45JKHAwDntLpjtrvpFAbp+tK2G1XSu0hNlE
+         XViA==
+X-Gm-Message-State: AFuF++nhzv31WWm+L6Gxo2D7cVVheeNbpD0Wc4rElaLwmod8VKRcg9mn
+	2lgXJeA+2HLCM7euIZuPyoKG9xV3Oe7rj+nX9LuE3aZNAQ7rQFV8Qvlem3CtXHTr
+X-Gm-Gg: AR+sD11DpV7rOvN0Y7mGT1wt/Na3EyW1iWv7HrTWRBhp0pYOQ0ajvwUTH3/cr+aqjPX
+	Cq91EGPBPzGV5Yjnz5oU6htO0JLgIgAJR4hAyTytwEDlwhHVQyNPZe8rp08SGkvdtHKZdWZnHL5
+	DqJtTIoZDi8jN0nF2T0CiYIP/jajUfvElkrGC6smA6c2KQ1hfXTjY6R4gXpp73d8ekqC3mz0+E+
+	yoILfFi09nWr7MvVFwmmUM1hrVdtIDMtWOY7CVEJdAPCJ5MKKnuO3C7qSjYdc/FhG0mwZkyD9wg
+	JQnn5sAAOabp0lEcFd7cK5HEK0X9NDnnfVyc1K2Aj7lV8QseIFkdAR/RU+TDUzF/oWyEXAi5RGs
+	mX/c1CgJIl/jB6gtF3uFGnx4jCvD/gS2jUy8H8bBO05KP5e740hgJBDX7ezGn+ERE4FrUkykHgV
+	96BP8+TGRrlsFUkpbolg+LdzyKSKSd3nfH8PHk2MtkP8rRY5p+b8NdVnb4PDmzdEfo94T97w7i+
+	Y1O16yiz4IcnAWubXpk/bhQzQo62Q==
+X-Received: by 2002:a05:620a:3197:b0:937:2d64:57ae with SMTP id af79cd13be357-93913517ff1mr2606918085a.0.1788146089719;
+        Sun, 30 Aug 2026 20:14:49 -0700 (PDT)
 Received: from localhost.localdomain (pppoe-209-91-167-254.vianet.ca. [209.91.167.254])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93918b0f825sm660825185a.40.2026.08.30.19.12.59
-        for <docs@lists.yoctoproject.org>
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-93922e5278fsm510791785a.14.2026.08.30.20.14.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 30 Aug 2026 19:13:00 -0700 (PDT)
+        Sun, 30 Aug 2026 20:14:48 -0700 (PDT)
 From: Trevor Woerner <twoerner@gmail.com>
 To: docs@lists.yoctoproject.org
-Subject: [PATCH 2/4] ref-manual: fix a typo in the QB_SMP description
-Date: Sun, 30 Aug 2026 22:12:53 -0400
-Message-ID: <20260831021255.4064163-2-twoerner@gmail.com>
+Cc: bitbake-devel@lists.openembedded.org
+Subject: [PATCH] doc: document the conventions used in the manual
+Date: Sun, 30 Aug 2026 23:14:44 -0400
+Message-ID: <20260831031444.4070152-1-twoerner@gmail.com>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260831021255.4064163-1-twoerner@gmail.com>
-References: <20260831021255.4064163-1-twoerner@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 31 Aug 2026 02:13:09 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10408
+ <docs@lists.yoctoproject.org>; Mon, 31 Aug 2026 03:14:59 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10411
+
+The manual uses angle brackets for placeholders and a prompt to mark a
+command, and says so nowhere. A reader can only infer both.
 
 AI-Generated: codex/claude opus 5 (xhigh)
 Signed-off-by: Trevor Woerner <twoerner@gmail.com>
 ---
- documentation/ref-manual/variables.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ doc/conventions.rst | 53 +++++++++++++++++++++++++++++++++++++++++++++
+ doc/index.rst       |  2 ++
+ 2 files changed, 55 insertions(+)
+ create mode 100644 doc/conventions.rst
 
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index 95454698f969..fd95a9ad4796 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -8261,7 +8261,7 @@ system and gives an overview of their function and contents.
-    :term:`QB_SMP`
+diff --git a/doc/conventions.rst b/doc/conventions.rst
+new file mode 100644
+index 000000000000..ab020113d046
+--- /dev/null
++++ b/doc/conventions.rst
+@@ -0,0 +1,53 @@
++.. SPDX-License-Identifier: CC-BY-SA-2.0-UK
++
++=================================
++Conventions used in this document
++=================================
++
++Placeholders
++============
++
++Text enclosed in angle brackets is a placeholder. Replace it, including the
++brackets, with a value of your own:
++
++.. code-block:: none
++
++   SRCREV:pn-<recipe> = "${AUTOREV}"
++
++Here, ``<recipe>`` stands for the name of your recipe. A placeholder is
++never text to be copied as it stands, and an example containing one will
++not work until every placeholder in it has been replaced.
++
++Commands and prompts
++====================
++
++Commands are shown with the prompt that runs them, and the prompt is not
++part of the command. Do not type it.
++
++A ``$`` introduces a command you run as your normal user:
++
++.. code-block:: console
++
++   $ bitbake core-image-minimal
++
++Where a command needs administrative privileges on your build host, it is
++shown with ``sudo`` rather than with a root prompt:
++
++.. code-block:: console
++
++   $ sudo apt install gawk
++
++A full prompt ending in ``#`` introduces a command run as ``root``, usually
++on a target machine rather than on your build host:
++
++.. code-block:: console
++
++   root@qemux86-64:~# gdb /bin/cat
++
++Within an example, a line beginning with ``#`` is a comment rather than a
++command:
++
++.. code-block:: console
++
++   # This is a comment, not a command to run as root.
++   $ bitbake core-image-minimal
+diff --git a/doc/index.rst b/doc/index.rst
+index 9f2a9067d385..d9547e1c723d 100644
+--- a/doc/index.rst
++++ b/doc/index.rst
+@@ -29,6 +29,8 @@ BitBake User Manual
  
-       When using ``runqemu``, the :term:`QB_SMP` variable controls
--      amount of CPU cores made availalble inside the QEMU guest, each mapped to
-+      amount of CPU cores made available inside the QEMU guest, each mapped to
-       a thread on the host.
+ ----
  
-       For example::
++.. include:: /conventions.rst
++
+ .. include:: <xhtml1-lat1.txt>
+ 
+ | BitBake Community
 -- 
 2.50.0.173.g8b6f19ccfc3a
 
