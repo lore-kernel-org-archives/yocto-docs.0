@@ -2,114 +2,93 @@ Return-Path: <twoerner@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 20C7FC61DE2
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 82F91C624A4
 	for <webhook@archiver.kernel.org>; Mon, 31 Aug 2026 02:13:09 +0000 (UTC)
-Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.21089.1788142385444800631
+Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.21073.1788142380054920004
  for <docs@lists.yoctoproject.org>;
- Sun, 30 Aug 2026 19:13:05 -0700
+ Sun, 30 Aug 2026 19:13:00 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20251104 header.b=dUyLNBhU;
- spf=pass (domain: gmail.com, ip: 209.85.222.170, mailfrom: twoerner@gmail.com)
-Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-9377f717879so166426585a.1
-        for <docs@lists.yoctoproject.org>; Sun, 30 Aug 2026 19:13:05 -0700 (PDT)
+ dkim=pass header.i=@gmail.com header.s=20251104 header.b=Mome0luY;
+ spf=pass (domain: gmail.com, ip: 209.85.222.179, mailfrom: twoerner@gmail.com)
+Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-9390dd46b45so153621785a.0
+        for <docs@lists.yoctoproject.org>; Sun, 30 Aug 2026 19:12:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788142384; x=1788747184; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=Kxp+PdENhpQR3FYQR7dzyZNTRNUKooc4/Q/UTYOvQn8=;
-        b=dUyLNBhUIeBsjK+Z1vHhMbDRFVMiIFF9IO3ibrQWk2X7Xpv+XiKLmSKyoRhzDyL5wy
-         v+BHRg77IqWms1SiHOBjIRgNlvcc9Y53O7EMBkcTdGQjELhYUbHOUmD4ZkuJMci3L48c
-         wsz/1dobIvwlsO7DMeFlFYRDLmRktknEn3drgKLLGdGdX01c0lMm0+VOKL+e9YBgH5Wj
-         dHm/GVJI0OEg2yRMW/HX0j8Gk4ctVu7HAiJWBTaP0B0cTxmK3WzYE9s2PMWPFfu8ONQM
-         GrYWr6Obw1IUB6e9dLJ4/VZD+d5AsazkAlzHeZTI70o+J0u/eoa+VWjqViKhNOeDlxzy
-         ioFA==
+        d=gmail.com; s=20251104; t=1788142379; x=1788747179; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=vCqZU9R4lTcNNgw+wDMorh0eItmLnsjrlIpWJoFztVg=;
+        b=Mome0luYrXaInmF4dlV3hrQJwLnaNRus93YQPryWgwplZVm2Mf7Qn2m8nCIKCd6Q1E
+         p9g8xeS31Nye5kLShoI4VTv554PzG9mr5q/B4vsx4gzNrjCUFHlJRIaEmuvmnpJKE9Nm
+         0p18j55YpneudzyFhvEaBEjla0lGAXixkEeIraen/uYb3HOwIrIqLzZTw07pkWN9bsFf
+         Zvb3Flu8MGSx0E/vBePKFS5gbKo/PrVypHvQmFBNq1OKIl8MvPdnyLFzelEa2Jh7VZC2
+         J2X2pImv8L81bqN5uTu46su47rlbrbLujfCCW5j3sJh3j2LD6kKdGLjKGpJSqUOPR7Mt
+         f96w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788142384; x=1788747184;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=Kxp+PdENhpQR3FYQR7dzyZNTRNUKooc4/Q/UTYOvQn8=;
-        b=e7W9vmii011vdCLVk5ekhaRKdV+vKqp+NPxG7703QpzoIEKNHiwVsjTFNqIhDoeZDK
-         xiZ3rmfcnPeauqxTlxZxwaEZFnLQD6zxxaynckRK440hkyUPsn5LoWWnNULRb6wFzQYN
-         Jy3lAkLmeegdwtK7fylsp2jtsumJlPkH9oRvejxrMCTwV+gYbdn0McLG56LPO2irRBt+
-         zJT0A310nX8AOa0mhNGwtAErEDhQ5tQgmGPKG/ZzrzNwgiZK6p6XLwMXCIPmkLtR4OjU
-         QomTAZk/Ng7vcNkcXsgWeE48XrlPG0sZ6vIDIAOBCldh/GjS9vcM7z835TsY8OrCeRuQ
-         lRug==
-X-Gm-Message-State: AFuF++lRMxAGk9u6HeYa9xYjBJrSHJUtZDO6tQBSaNztCV5215ebZLQY
-	V1qc1A2Dl4AYwCvYY+cDp4rIhlcZ04NZvX3p9x2lBPfpy7pfjloUvsqxD8ARRMBo
-X-Gm-Gg: AR+sD135YKNiWwla3lCe8V3HHSEXS8pT5kLVC2euHu7rIT4QVmVWD6g67nFga2ReSLl
-	KFlL2Dq85tfbN2pc3k2FjKZzNYGpY6MFEf0Lkp3mMnK06LeDs0mKV/iBEnL0R79TDljPKgXYprR
-	UZGJ/qtnLaH81BSE3nSQYijRec16SiPR0pYaxpHk7u8lfzEnIAagFkNv+b/xSuc5Gs98oot51Am
-	Vq/LgM2uMBK7TQy6pcICDJ/cqJi6pwujMWACTn8zMW2KW+UT665UFdyaWXlyyZvxDZGFOFcs/D9
-	W3pmIPbf5AhQDCjM0NiXvPiJvGGfw6aHuDvkmNGZeAtpwvQl72s6hIzjLhQr3FtGFAT8OUhBIRV
-	Q+2i3xxC5fwSSKvWJERS8N5XQ6l5YEAsk6lzgynq1iV1R5q61a/DwIVms7NjUvtkSA+11lvUesR
-	D5E5VFcbjj9FzzUtbTjYjUziOqdR+LAeJ3wemmnIdGwrz+ZlTsAOguAKibY+u6KRR1tjKrrd1NK
-	FKLqyIEdR8GG6amhW+FwEQz8AeawA==
-X-Received: by 2002:a05:620a:4b41:b0:937:6832:1f04 with SMTP id af79cd13be357-93913958bffmr1972356385a.34.1788142384374;
-        Sun, 30 Aug 2026 19:13:04 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1788142379; x=1788747179;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=vCqZU9R4lTcNNgw+wDMorh0eItmLnsjrlIpWJoFztVg=;
+        b=VAVx99PpT/TZIJVVc83VpCY0z9g06BBu4z34x5kVu1xoPmwlCUGeGZUdB032CAlHvD
+         ectxqm1MEG4QrBMK6B7v75F+9UzXqYlLEsem92W1MvuBZir59JLXTOWqyEXOIvBvHrX4
+         Wm+2CvFvwY22MPR2p0q2kJUA6EuQ38alze7pFCMX1BbmEqaIsk+Kd0dQ81oQDRR65rLO
+         3VASEIfXMGrKbV0W33tr+miNbHFRcRrK1AgIuV0xQTkwsQWXG3CYUpk0sBp+c02RAsg9
+         gcev9gVg7EbONFRE5TTmRkUWeqquA7UZCrT8QvOOdG/flmgZ6dStu3Dz0pQy+6vWTLN3
+         NV5w==
+X-Gm-Message-State: AFuF++kycLCygmT3/PPE6FK4aC1d3L4vx2gBnfg9kG+7JThA59+3pVoX
+	vuk9fSzuRdxCNqbBgjtnDcarVsStQBSKaa9QfEG9+RulXdA3JGlT8aCS8rWoL81S
+X-Gm-Gg: AR+sD130MV+xCxqGgdoSLE6ebCVAYE4FwsjoeAHPEEbZ2rpIo6ieaZtRbXVOoAgU7Nx
+	bgFU0mWNWYvZe4kUFVrjgH1RsC3klaqdCwUqb6MSrIhdQp7j+VEJe5gyPC5uQzWmuHwVWVkFjKY
+	QvAo7UvlhQWmP+5AIhIBJTEhr/yZBIPRKFxT2n2vWWmMR+L4eSDaTC6o0PUMm/K8ssZKw8iJYaE
+	MDsPGOeEnw5idWblBjOCyovzp2bKq4t50EGMMOKQQo5LI/BnIR2xxnuYBQCnmvyQ8h/XBX1J6lg
+	XfCT6TsxAJwW7V0ky8uTW6VoD3M+Rl///kAL+R0imo+3aX4JUxfImD+eLDZcwtrFB53G/lD/XYy
+	2eLV9oFDqHXhiJR47w2ZcaAaTlJo9sqplStgF0JK+c7BMiycnKEvTjlAL4bjQCnBTMbMB0lRiN1
+	9Agz3u9ltFUdAG7iPNieo5+PuZ6U3M2ge6ewsbaPXQgVYcQJF7D6tJmIbx9Ror93sA33KAIuwYe
+	0nmnUg7R3F4yYrcq6UdkFEAdfl6WQ==
+X-Received: by 2002:a05:620a:4506:b0:936:2fa5:387a with SMTP id af79cd13be357-93913990a9bmr2346954785a.43.1788142378886;
+        Sun, 30 Aug 2026 19:12:58 -0700 (PDT)
 Received: from localhost.localdomain (pppoe-209-91-167-254.vianet.ca. [209.91.167.254])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93918b0f825sm660825185a.40.2026.08.30.19.13.02
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-93918b0f825sm660825185a.40.2026.08.30.19.12.57
         for <docs@lists.yoctoproject.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 30 Aug 2026 19:13:03 -0700 (PDT)
+        Sun, 30 Aug 2026 19:12:58 -0700 (PDT)
 From: Trevor Woerner <twoerner@gmail.com>
 To: docs@lists.yoctoproject.org
-Subject: [PATCH 4/4] toaster-manual: spell the json code-block language in lower case
-Date: Sun, 30 Aug 2026 22:12:55 -0400
-Message-ID: <20260831021255.4064163-4-twoerner@gmail.com>
+Subject: [PATCH 1/4] ref-manual: drop the full stop from the QB_SMP example
+Date: Sun, 30 Aug 2026 22:12:52 -0400
+Message-ID: <20260831021255.4064163-1-twoerner@gmail.com>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260831021255.4064163-1-twoerner@gmail.com>
-References: <20260831021255.4064163-1-twoerner@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Mon, 31 Aug 2026 02:13:09 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10410
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10407
 
-Pygments resolves either spelling, so nothing renders differently. Every
-other block in the documentation uses the lower-case form.
+The full stop belongs to the sentence, not to the value. BitBake rejects
+the line as printed.
 
 AI-Generated: codex/claude opus 5 (xhigh)
 Signed-off-by: Trevor Woerner <twoerner@gmail.com>
 ---
- documentation/toaster-manual/reference.rst | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ documentation/ref-manual/variables.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/documentation/toaster-manual/reference.rst b/documentation/toaster-manual/reference.rst
-index 3050b5d0f55c..bc065a446a1c 100644
---- a/documentation/toaster-manual/reference.rst
-+++ b/documentation/toaster-manual/reference.rst
-@@ -408,7 +408,7 @@ itemizes all builds in progress. This file includes the time in seconds since
- each respective build started as well as the progress of the cloning, parsing,
- and task execution. Here is sample output for a build in progress:
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index ae9cbfddf906..95454698f969 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -8266,7 +8266,7 @@ system and gives an overview of their function and contents.
  
--.. code-block:: JSON
-+.. code-block:: json
+       For example::
  
-    {"count": 1,
-     "building": [
-@@ -442,7 +442,7 @@ Be sure to provide values for host and port. The output is a JSON file that
- itemizes all complete builds, and includes build summary information. Here
- is sample output for a completed build:
+-         QB_SMP = "-smp 8".
++         QB_SMP = "-smp 8"
  
--.. code-block:: JSON
-+.. code-block:: json
+    :term:`QB_TAP_NAMESERVER`
  
-    {"count": 1,
-     "builds": [
-@@ -481,7 +481,7 @@ The output is a JSON file that itemizes the specific build and includes
- build summary information. Here is sample output for a specific
- build:
- 
--.. code-block:: JSON
-+.. code-block:: json
- 
-    {"build":
-       {"distro": "poky",
 -- 
 2.50.0.173.g8b6f19ccfc3a
 
