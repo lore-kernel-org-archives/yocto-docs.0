@@ -2,67 +2,70 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A29EBC61DD3
-	for <webhook@archiver.kernel.org>; Mon, 31 Aug 2026 08:20:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A1A65C61DE2
+	for <webhook@archiver.kernel.org>; Mon, 31 Aug 2026 08:26:43 +0000 (UTC)
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.25160.1788164427129350775
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.25216.1788164798404622028
  for <docs@lists.yoctoproject.org>;
- Mon, 31 Aug 2026 01:20:27 -0700
+ Mon, 31 Aug 2026 01:26:39 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=Ee+kTfCG;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=bO+1KCSz;
  spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 681254E41464;
-	Mon, 31 Aug 2026 08:20:25 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id B348A4E41464;
+	Mon, 31 Aug 2026 08:26:36 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 3CC88601E1;
-	Mon, 31 Aug 2026 08:20:25 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5D8AC11C783B9;
-	Mon, 31 Aug 2026 10:20:24 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 7D539601E1;
+	Mon, 31 Aug 2026 08:26:36 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2FA3711C789DA;
+	Mon, 31 Aug 2026 10:26:30 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1788164424; h=from:subject:date:message-id:to:mime-version:content-type:
+	t=1788164792; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=ZwkccIjpbJosjihrKuASxsh3M+Q8WPrEw/UJWDLmQYk=;
-	b=Ee+kTfCGZTdZ4MjnpTTqthwLA0SqIDM3iQdBb/OWVf6w68UnWevHyarc0K0GC5Nlf13M1E
-	QwjPWocAGMlBeHAJc8L5q+mqc9unC6T83Qi7+vNCw7sx4lo0RjGkoRocS/Y4WHzfeijwNF
-	FWuN4hfJUGVN2jYEfZZz5e9hEamzGcBwvxkFgvNVSdS0L1qVNhjn+B+DIckryHKqgy9jet
-	Pe1nNs/eiP1lbKl/iFwAC/YXkCiv/eN8WT7kyEa2/xB7VBIxtGEV+8mb6ITOjNMS7GLCAR
-	QdGCWqOB7ohTAXjzM4Dv93XibRV5zx0OU/e/9Cp1LwPWI5CkRXJpduEE/amPAQ==
+	bh=uPRfj09+gxlAdgXOYa8sUJU/7xRrzH/z7O1VdKqX+NM=;
+	b=bO+1KCSz6UFz0anTJtHTrPcGLPAfCe1JmM4JVykJlFj3zghvj4Ou3qdxxqNfDWrBMRfIBd
+	I6NcpFVRQtGrOmc2dly8683yN2kMkEBlN+7HXv2HCor2gBh0J/Oix8dHDlWY7qdnX7ERwL
+	CN1REx5zeF60lsPIyLPVdXXaoTv4gZ1NjA3zomLVaixdxbBRD3I/cpgj6bLTUUReOONB4m
+	DijX9WPlbPfn/a6y6cjeV1HwoT0TKBxEVxMR09DOeONlKNhfQ57iFe9p8Lv9r/Dx366CKX
+	2B8d6mUb/uIhbMCeqxAcCvI8yjCkDdr1ujidvt2zAbaNCQvAuwCpOgDClng/5A==
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 31 Aug 2026 10:20:24 +0200
-Message-Id: <DL2ZDVVFILT9.195AJS5FZO23O@bootlin.com>
+Date: Mon, 31 Aug 2026 10:26:30 +0200
+Message-Id: <DL2ZIK7TQ8WL.W6B1D1LECK18@bootlin.com>
+Subject: Re: [docs] [PATCH] doc: document the conventions used in the manual
+Cc: <bitbake-devel@lists.openembedded.org>
 From: "Antonin Godard" <antonin.godard@bootlin.com>
 To: <twoerner@gmail.com>, <docs@lists.yoctoproject.org>
-Subject: Re: [docs] [PATCH] docs: document the conventions used in the
- manuals
-References: <20260831031458.4070250-1-twoerner@gmail.com>
- <DL2ZCLBWUBX3.5ITP3G3AJ0SV@bootlin.com>
-In-Reply-To: <DL2ZCLBWUBX3.5ITP3G3AJ0SV@bootlin.com>
+References: <20260831031444.4070152-1-twoerner@gmail.com>
+In-Reply-To: <20260831031444.4070152-1-twoerner@gmail.com>
 X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 31 Aug 2026 08:20:33 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10415
+ <docs@lists.yoctoproject.org>; Mon, 31 Aug 2026 08:26:43 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10416
 
-On Mon Aug 31, 2026 at 10:18 AM CEST, Antonin Godard wrote:
-> Hi,
->
-> On Mon Aug 31, 2026 at 5:14 AM CEST, Trevor Woerner via lists.yoctoprojec=
-t.org wrote:
->> The manuals use angle brackets for placeholders and a prompt to mark a
->> command, and say so nowhere. A reader can only infer both, and one
->> example reads as advice to paste a line that will not parse.
->>
->> Include the new section from every manual, the way the boilerplate is
->> included, so each is self-contained.
->
-> We already have a standard.md document that explains these kind of things=
-.
+Hi,
 
-Sorry, s/standard.md/standards.md/.
+On Mon Aug 31, 2026 at 5:14 AM CEST, Trevor Woerner via lists.yoctoproject.=
+org wrote:
+> The manual uses angle brackets for placeholders and a prompt to mark a
+> command, and says so nowhere. A reader can only infer both.
 
+This only adds the document at the bottom of the main page, which I don't t=
+hink
+is a proper place for it. We should either have a section dedicated to this=
+, or
+make this a separate document (similar to standards.md in yocto-docs).
+
+I'm leaning towards a separate document (named "standards.md"?), because th=
+ese
+instructions are not related to Bitbake itself. This document should be eas=
+ily
+found though, so perhaps we should mention it in the main README, under the
+Contributing section.
+
+Thanks,
 Antonin
 
