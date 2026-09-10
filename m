@@ -1,67 +1,73 @@
-Return-Path: <rpjday@crashcourse.ca>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E4EFCC79F9F
-	for <webhook@archiver.kernel.org>; Thu, 10 Sep 2026 12:59:33 +0000 (UTC)
-Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.13386.1789045171540158580
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B60C7C79F9F
+	for <webhook@archiver.kernel.org>; Thu, 10 Sep 2026 14:48:35 +0000 (UTC)
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.16081.1789051706608749030
  for <docs@lists.yoctoproject.org>;
- Thu, 10 Sep 2026 05:59:31 -0700
+ Thu, 10 Sep 2026 07:48:27 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=GBGKuWNP;
- spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
-	To:From:Date:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=iwbz1ZjbsTlW0D86xfbCou6tox5cWgC0QdnF83wdmtg=; b=GBGKuWNP/l5kufb6G+PrFMrdGf
-	hheJaL8kNWMMQBxRgxFGgrNpTADEYiW6yloWVMOccYXewiZinumzvdf4bVAuqozsIrjULT3FUolm2
-	xLmA6FusI9feAsuInQDgchKIoB+O+mihOfH2iekXT7bTkdI6gTOEpJ1+Kjl/9JjEP/inQo0/JLLkA
-	76v8VsGzcZn+n7g7Ri48UkEMXOf/aZ9vC7Nxi+X48Eu69+Tq0ivdLxG0EpxboWT1tUu4B8xd3DRRi
-	R1OsdiOXyJxb0XvYkTb0DLyLzqnq6GJRtbxwtXDsv06xhan+zsUjRgA64htHmvZ8K/8KfEU+1/Sjs
-	9GQzwFRA==;
-Received: from pool-174-114-114-5.cpe.net.cable.rogers.com ([174.114.114.5]:41884 helo=sheena)
-	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.5)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1x4eNE-00000000f6C-1Vl8
-	for docs@lists.yoctoproject.org;
-	Thu, 10 Sep 2026 08:59:29 -0400
-Date: Thu, 10 Sep 2026 08:57:27 -0400 (EDT)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: Does Ubuntu 24.04 and newer still require AppArmor tweaking to run
- bitbake?
-Message-ID: <ec2658dc-005e-f6cc-d64e-0a1c15e992a7@crashcourse.ca>
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=afvFGX5U;
+ spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 8F597C653E5
+	for <docs@lists.yoctoproject.org>; Thu, 10 Sep 2026 14:49:05 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 364075FA2F;
+	Thu, 10 Sep 2026 14:48:24 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3C79111C7926E;
+	Thu, 10 Sep 2026 16:48:22 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1789051703; h=from:subject:date:message-id:to:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=57iXPDywua/3JRJXp8tAQD4FNTvkuqfAzkxGBqZUIGI=;
+	b=afvFGX5UNdRsShlMJOfFY3QSNIj/qTjiQrLICYm3VojW6EB5WU0IElF7W2gI9LsPJTTj4n
+	k0e3rnVsZV0P0YLkGfjD8FC7OIA6WYYdT6MQie5OTwyglV4RExJ41nEIUceKmna/NbYLg4
+	sMTHulPQkDFoSLpaQI/lQXnC9dQr8gxof3y/v4f9LnIcnB7hKgtVam9BYWuz9cwXd9nvWY
+	HDsAI17bMwBgrT+ZIczhqBZXdudxRK7rKDVpOePT/v4YPpqvPFxDpjsbxgNa9ids70Cx/8
+	K5j1LbUmkB4sVZ7QVWR7re05bWRtqE7oCl2uWdmMy1DQP5jjQH1r4xbtnu9w7A==
+From: Antonin Godard <antonin.godard@bootlin.com>
+To: docs@lists.yoctoproject.org, 
+ Andrei Lalaev <andrei.lalaev@anton-paar.com>
+In-Reply-To: <20260910-master-v1-1-7bf67b4fbebd@anton-paar.com>
+References: <20260910-master-v1-1-7bf67b4fbebd@anton-paar.com>
+Subject: Re: [PATCH RESEND] ref-manual: update
+ DEBUG_OPTIMIZATION/FULL_OPTIMIZATION
+Message-Id: <178905144273.19748.7996237682429705414.b4-ty@b4>
+Date: Thu, 10 Sep 2026 16:44:02 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=169;
+ i=antonin.godard@bootlin.com; h=from:subject:message-id;
+ bh=AHXhFEEbLzVUVflEcmv3OrLtbjyi1hP64IMGb2BPxhw=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBqosM1O+5E5cRL+SspfvTzGO6cwoArEP64C152+
+ EpXwW3R22iJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaqLDNQAKCRDRgEFAKaOo
+ NsneEACAFwstczcuSctkb5CYK4u38M4HDP38z8wEnOIWQ/CErrsQW9urkAH+MkrUHVQlOAf0Iij
+ an5xIuP/8j8QOQFAn9v2gww7Hs8MIjJUUFXb7/Kb/ozqdjAWKpP/XcgZ/xgDaIDmeZbp8a7qcMw
+ 5engOTRu33LqEu05u46uxCTjd1o0v21PRjaMY54efPHvYIqZ0zVmRGj6yU+knGZaO4vVQKVPmfi
+ XZGjl19QK3yBB/8p1+y2TqN7DMJ2kiQbA1Zk+NlX/PbHJAdDZ7sdMJZ0Sune+Jh4JS3p/XuH4GF
+ 3lPWq04fR0WX/bfe44vkl3CWvI1WpzBPnSKYoDPV7BnyvBvxz9zgpmbCUXNbNSbqlUrUgWuws1K
+ bUBku+klHqZRH0ubDH0AmN77drM6yWCZ72Ic4NJ6rpm+Ov/u1NQasoOBdAxaKArg7/rtQtyORJ0
+ 0rfrOfznculiVkmEFyItsvpyZCTDAMxJCt37c5jtu8xiKzdSib8AMUkeQR8dP4u6xrsD3pKknn5
+ uOc8KT+TdVWtYOhxweHhNvdbZdBzxGL49ijI6vIIRZhiht4wKiKS8b8n6CX8PV0xuKOpXxZ+Hd0
+ EmT9vxnFTpiDBgJCtCtNC2MhMakrXde1Via9vV7S4DVdQ+DN1Js1uJkx2/K+Q5AFNEEKtu9xBHo
+ 7l9EbznIV+ZSQHg==
+X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
+ fpr=8648725188DD401BB9A0D3FFD180414029A3A836
+X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 10 Sep 2026 12:59:33 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10448
+ <docs@lists.yoctoproject.org>; Thu, 10 Sep 2026 14:48:35 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10449
 
+Applied to master-next, thanks!
 
-  I use stock Debian so I haven't needed to mess with this, but Ubuntu
-once had this issue with AppArmor:
+[1/1] ref-manual: update DEBUG_OPTIMIZATION/FULL_OPTIMIZATION
+      https://git.yoctoproject.org/yocto-docs/commit/?id=091c7f30110c
 
-https://developerwiki.proventusnova.com/Error:_BitBake_+_AppArmor_User_Namespace_Restriction_Fix
-
-If that's still a problem, it doesn't seem to be mentioned in the
-docs.
-
-rday
 
