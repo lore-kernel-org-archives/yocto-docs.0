@@ -2,61 +2,61 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 71140C88E58
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 710FEC88E45
 	for <webhook@archiver.kernel.org>; Fri, 11 Sep 2026 14:56:36 +0000 (UTC)
 Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.41374.1789138586597053686
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.41383.1789138594597453185
  for <docs@lists.yoctoproject.org>;
- Fri, 11 Sep 2026 07:56:27 -0700
+ Fri, 11 Sep 2026 07:56:35 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=IE5YWiRE;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=i7/jYj++;
  spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 5D315C653FF
-	for <docs@lists.yoctoproject.org>; Fri, 11 Sep 2026 14:57:06 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id BCB1DC63A0C
+	for <docs@lists.yoctoproject.org>; Fri, 11 Sep 2026 14:57:14 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 8D4AA601DE
-	for <docs@lists.yoctoproject.org>; Fri, 11 Sep 2026 14:56:24 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B0E0B11C7AFA5;
-	Fri, 11 Sep 2026 16:56:23 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id ECAD3601DE
+	for <docs@lists.yoctoproject.org>; Fri, 11 Sep 2026 14:56:32 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 83DCE11C7AFAC;
+	Fri, 11 Sep 2026 16:56:31 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1789138584; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=TNs35nGAVGa2Ylr8ZTznpQOl392vFtZjy7ammTibcew=;
-	b=IE5YWiREt65YhtjWj/M/ps7mvCPoqmc6vm0e1wtaDRNG5Gq9+mWPbVbzAhjgS5B93N0wAL
-	goMlRyKBvOQT+6+IffBhkMo9cafixZ1hJbIMtkYj4YKZwMlRUjMYSgnvFlRwUvy9xry/if
-	HV8tsh4pqDdiLmuc80W0yeQX61SUz6vGdVpj9xNNm5qVflAT8sUY+nBfSUzX1eBUee2ha+
-	AQ7Qkg6TZs0eFCPmN9j07F9O9h1RK50jPT92V2gRcvCfCbUFjxN1933AZ17EvVa/U/UzyI
-	J006wFZTJPT5E8BzQ6wYZXadpoapnbrP8EG5I4CiQaH0HK16c54txPsZxjubBA==
+	t=1789138591; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=s9yEr/Oyf75sTFm3kofEvAHOOf/SlLH9h0g14dM5RJs=;
+	b=i7/jYj++8OsaWopPNcujj51zXEH+YFulav0SLwI7oV8VZ7DolxXgDvZp+6pm1EkXi4eBaq
+	HQWkXtv4zL5C8lDeSkzK5+S7+QVBTRN72bFL2tLhp2/NxnWjWybDFaC/FIsZ5FGj0mIvzj
+	iZJNHmrD8SI0c6ktQ06EDCTEy7skmw95ze3E71vXIEclWM3U5WqrNngzz6PMYz02xykdeM
+	tXW2+64Vvo4KXXghnPC0LDPBqph3Ep8PRDzuk7EwmI/jee1u/Nfb9VMkc674HVHrzw6O8E
+	H3SvLvLMQ5H+GgkWAzF+rI+EC/c3AWo8Nv6yrY9eOCZRkyyoDeLNqHvhVhk1Iw==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Subject: [PATCH 00/10] Assorted fixes and additions
-Date: Fri, 11 Sep 2026 16:56:00 +0200
-Message-Id: <20260911-assorted-fixes-v1-0-0d92a8112918@bootlin.com>
+Date: Fri, 11 Sep 2026 16:56:10 +0200
+Subject: [PATCH 10/10] ref-manual/variables.rst: mention built-in fragments
+ for MACHINE/DISTRO
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMQQ5AMBCF4avIrDUxDaWuIhbUYCyQDiIRd1csv
- 7z87wIhzyRQRhd4Olh4mQMwjsCNzTyQ4i4YdKJNYhFVI7L4jTrV80miUo2YWZPnurAQotXTN4S
- mqn/L3k7ktvcF7vsBArb5ZHIAAAA=
-X-Change-ID: 20260911-assorted-fixes-421159677289
+Message-Id: <20260911-assorted-fixes-v1-10-0d92a8112918@bootlin.com>
+References: <20260911-assorted-fixes-v1-0-0d92a8112918@bootlin.com>
+In-Reply-To: <20260911-assorted-fixes-v1-0-0d92a8112918@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1431;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2572;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=fy0duNRAtrzkfByIcGQgQbz/TUlcRKQV2Q39OAUw4k4=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBqpBaULGFXTKsKpGOAymqMEwpXar8tjr+EQulhe
- +Lg1LVt+xSJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaqQWlAAKCRDRgEFAKaOo
- NoNdEACtR8mHR9vW9KiEsUdb/aEsW8Hl7+xlvpDfpFAb40cp10Id49V77ZCT9XjRXSLzSOZa27M
- QK1R10Mm7V0NWwx4hrNw3SZTVCfy0vV1+2+8Fj1tMBGsy4ouwi+uI4WU2FxT1aWklgPTv9VwRSG
- /CUAEpxWiObc9wMdhL4O1v5Ob8Y07VSqz4qA4SUablZrwWfwV+wu9YPvEwWSq/+a0GvT6vRjw8h
- nCLRlIBIYyPCS3/R9VYGr6GnulJMctZGW+5gBs7Rd3sIOoZWHQ3z2cJI/QJ0sIeG+KgBUtkQf0F
- qmEeLDE4R3IWIVpC4gp3LzIwrb0QDLPM8nBYWWjoXdm3ctJJkvOVw7zYWqXiSPA3Up6GXlppCaJ
- 7IE0wfqequ8AW0TWkMqQ1eItmlAfYgKsZ0qDN7UuyoVnwJpQ1fMhcEv28J7M7d3g6haotNxH+lY
- 5LtpvX75oj2cQcFNzYqNBdcCoXdBTZQfIU5Aswirb5JTXkwjkd89vseLVzVs8GdtaqD1z45vNCx
- kGQM+s/9JghQs3wYWVEN+C9W7wlGLIN20WWtccjXo/q7jEaqKsme1Lo1UB2dC0HekZc+6cu5QG/
- BgftU485wkgY0y3sT0Lb9soyTMYV5+yoEUOQDhX+2Ra9CYjWFanPWOQwX0gGH8RMW1y3ugKt+Nh
- ghPhT8TYWFD4H/Q==
+ bh=ryEFmiPI7aBwuVsrgIC4XvRFidyNLmo8ySl13wTGA90=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBqpBaWvrpuL7h4aAu+SWohX6pcLkt7/vTdd7g0/
+ zOhdU8DfPeJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaqQWlgAKCRDRgEFAKaOo
+ Ns5yEACjIz3+jMv/ZHfX2nNpwZDG2Qizmodr0wdmsFOyXdL0L0P44+RrPJSWRjhN8BXbikBvbEQ
+ ayPzmdKrtIYqUZN5ler7jHgnYKFtRxCWMBVTLLHn1vkPDr3CHLcc23WAfNoV/y6lEg4502jSWV8
+ UPOCmLHDZUQDt02WO/kvMS3S8WfzPnxjNFCWaQp35rC6cEbUX78Gcw4MB+pYlur/9pkKTOS2L+w
+ tK2/MHUlpa1IN0idgObn/2P/s5gDJ/I50RERSXZqkNRk3gVJIcnh8dSAKubMssbLecqyQvH3Ydt
+ l+r6j0+9VDHaXxMR4HUwDREWxB+hCeJz91QuW+2uZu2+ktid1iPkUa2+K4pysc5ghSTCdLSgmYb
+ DIX+tIsKpnMWODMMyMOPQnU9aLP20bPKIxjSs2w7vmjVw+x3rvzJoxszPC5r3CHLsM15eCOjNaA
+ QdeKcrJvH7bi1vhAQol0J6u29V2mxyjopa/tNSFIEjnS8q9eq7qWZfMzZ3zqMLtZGymr3yBufg6
+ rSSHEtNoIDXBEJe/IofbNNAcBXTGTkkypYjIZvp3H38U+HRvPf40/ayJ8+EtQHFLeDijOBFJgaA
+ BA7aGC4Mmth83jKGAyhgG3dmsw+FZ6l5BMXa85FDngGG9wmPZSvdqZSUuDHMaGXWVhyFWxpQ/bu
+ kBXtdybTYwKQFLQ==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
@@ -64,32 +64,71 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Fri, 11 Sep 2026 14:56:36 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10454
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10464
+
+In the MACHINE and DISTRO variable description, mention that these can
+be set either with their built-in fragments, or from the local.conf
+file.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
-Antonin Godard (10):
-      security-manual/securing-images.rst: remove "your" in "your OE-Core"
-      bsp-manual/bsp.rst: fix a "local.conf" -> "layer.conf" typo
-      ref-manual/structure.rst: fix a "local.conf" -> "layer.conf" typo
-      ref-manual/varlocality.rst: mention built-in fragments for distro/machine
-      ref-manual/varlocality.rst: remove BBFILES from local configuration assignments
-      ref-manual/features.rst: add tools-profile
-      ref-manual/variables.rst: BBMULTICONFIG: fix a typo
-      dev-manual/poky-manual-setup.rst: suggest use of fragment instead of assignments
-      ref-manual/variables.rst: fix local.conf.extended obsolete path
-      ref-manual/variables.rst: mention built-in fragments for MACHINE/DISTRO
+ documentation/ref-manual/variables.rst | 33 +++++++++++++++++++++++++++------
+ 1 file changed, 27 insertions(+), 6 deletions(-)
 
- documentation/bsp-manual/bsp.rst                  |  2 +-
- documentation/dev-manual/poky-manual-setup.rst    | 10 +++---
- documentation/ref-manual/features.rst             |  4 +++
- documentation/ref-manual/structure.rst            |  2 +-
- documentation/ref-manual/variables.rst            | 39 +++++++++++++++++------
- documentation/ref-manual/varlocality.rst          |  8 ++---
- documentation/security-manual/securing-images.rst |  2 +-
- 7 files changed, 45 insertions(+), 22 deletions(-)
----
-base-commit: 091c7f30110c019cbd8bec3cdb14b328e333d49d
-change-id: 20260911-assorted-fixes-421159677289
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index 4a41e3501..f76e5ba4d 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -2441,6 +2441,20 @@ system and gives an overview of their function and contents.
+       of the distribution, see the :term:`DISTRO_NAME`
+       variable.
+ 
++      You can define the :term:`DISTRO` in two ways:
++
++      -  with the :ref:`ref-fragments-builtin-core-distro` fragment:
++
++         .. code-block:: console
++
++            $ bitbake-config-build enable-fragment distro/<DISTRO>
++
++         Replace ``<DISTRO>`` with the name of the distro in the above
++         command.
++
++      -  in the :ref:`structure-build-conf-local.conf` file found in the
++         :term:`Build Directory`.
++
+       The :term:`DISTRO` variable corresponds to a distribution configuration
+       file whose root name is the same as the variable's argument and whose
+       filename extension is ``.conf``. For example, the distribution
+@@ -6121,13 +6135,20 @@ system and gives an overview of their function and contents.
+       in-use.
+ 
+    :term:`MACHINE`
+-      Specifies the target device for which the image is built. You define
+-      :term:`MACHINE` in the ``local.conf`` file found in the
+-      :term:`Build Directory`. By default, :term:`MACHINE` is set to
+-      "qemux86", which is an x86-based architecture machine to be emulated
+-      using QEMU::
++      Specifies the target device for which the image is built. You can define
++      the :term:`MACHINE` in two ways:
+ 
+-         MACHINE ?= "qemux86"
++      -  with the :ref:`ref-fragments-builtin-core-machine` fragment:
++
++         .. code-block:: console
++
++            $ bitbake-config-build enable-fragment machine/<MACHINE>
++
++         Replace ``<MACHINE>`` with the name of the machine in the above
++         command.
++
++      -  in the :ref:`structure-build-conf-local.conf` file found in the
++         :term:`Build Directory`.
+ 
+       The variable corresponds to a machine configuration file of the same
+       name, through which machine-specific configurations are set. Thus,
+
+-- 
+2.55.0
 
 
