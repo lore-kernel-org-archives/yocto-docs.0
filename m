@@ -2,96 +2,94 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B481AC88E5A
-	for <webhook@archiver.kernel.org>; Fri, 11 Sep 2026 14:56:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 16D32C88E5D
+	for <webhook@archiver.kernel.org>; Fri, 11 Sep 2026 14:56:38 +0000 (UTC)
 Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.41377.1789138588821951144
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.41380.1789138590163304679
  for <docs@lists.yoctoproject.org>;
- Fri, 11 Sep 2026 07:56:29 -0700
+ Fri, 11 Sep 2026 07:56:30 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=O4En96aF;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=QLyrAnN4;
  spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 0791FC63A0F
-	for <docs@lists.yoctoproject.org>; Fri, 11 Sep 2026 14:57:09 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 56524C653FF
+	for <docs@lists.yoctoproject.org>; Fri, 11 Sep 2026 14:57:10 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 38DDA601DE
-	for <docs@lists.yoctoproject.org>; Fri, 11 Sep 2026 14:56:27 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7287811C7AFAC;
-	Fri, 11 Sep 2026 16:56:26 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 853A1601DE
+	for <docs@lists.yoctoproject.org>; Fri, 11 Sep 2026 14:56:28 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C548411C7AFA5;
+	Fri, 11 Sep 2026 16:56:27 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1789138586; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1789138588; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=LLu6zTfzTRvbsamyKkWAodzb6pLAFA8LKTXDWAay9+s=;
-	b=O4En96aF8izUFSO0LFk60Z2SZcnMjNroYPJKXk/4t4ZAopK36Bjfal86uwvZOEtBtx3pZm
-	EQ3zT4shDG9oDmhLZItguI8oIu8FZdYMYCDdb/ZklYywD9yMwBK0UHQ8HEWa0ekrxg8CGU
-	6A9zfYcjl/JjnJkIATTiamTRqvXwUtBXElEROiE1M+jABud3EWbYKaMa021rpHdsgtzWUr
-	cbCGpjm6CXyTB5UsBsNXsldJ4l4mAU1fyR+d/YULO0Tw8xsWH8v4Ph0r76oVSnS7hqQ0LX
-	HAiYMBfhgj1tupCg4xG0ZL11s4Emjxv+hxEx7liub7lQ8FZ4gKmQzwSmYQ8zEw==
+	bh=49mEcdQsIX8XNVIBRtM01NWiRm4ur/5Hb00tY63QcM0=;
+	b=QLyrAnN4NXHjAK2TqNWAHpE4mCqFCcwr0wCZHnQGTaYpirCamIxxxIjzOuiV3zQJIRJky7
+	cUgD+hFW2Zcy02adflJ7J8SoYv6lYYzBP9T8QE3cVImsPzC4gLz4/2qBI6n17Pd3iWEPi0
+	DcbJlujT/Mg8IhTDCAFLZa55fy2z7ci0fKYGe+cmbWZvh28sa7BEURkmDnnsJorDslP1D8
+	/UnwT8wnRNEv5jty6HncK4Lq+89fd3lYIYIvpdFqph/zrg/pXDlrGpxidg3WvgFV2zM/Ju
+	YB+OygFuCUvvX9vKRfdWgT+4FCqowAsqisnpMytajnQr/3QeXwGfr9C6UdTXog==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Fri, 11 Sep 2026 16:56:04 +0200
-Subject: [PATCH 04/10] ref-manual/varlocality.rst: mention built-in
- fragments for distro/machine
+Date: Fri, 11 Sep 2026 16:56:06 +0200
+Subject: [PATCH 06/10] ref-manual/features.rst: add tools-profile
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260911-assorted-fixes-v1-4-0d92a8112918@bootlin.com>
+Message-Id: <20260911-assorted-fixes-v1-6-0d92a8112918@bootlin.com>
 References: <20260911-assorted-fixes-v1-0-0d92a8112918@bootlin.com>
 In-Reply-To: <20260911-assorted-fixes-v1-0-0d92a8112918@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=965;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1170;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=hS/M5ho6bKL01avlkk1DMt9h9m46JmVLHC126p1rVII=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBqpBaVk6/3CLCjtNhgHhDBBT1xuB2EVpE39Bm8Z
- dsnpF9FSyGJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaqQWlQAKCRDRgEFAKaOo
- NqSkD/43dPk2h2SjH4DjqJAq1wBklPe8yhOVWOfFBc6D8bB6phHd9xoT0yvMCdw4lVuotdgR9T8
- AGVMWkLbXi9RPabzmCCC4RA7dccmg1kbtENCpKZobYlU1oBgwyTarHeT2FoVGG4emXsLhyEPXRV
- kY8/RVTwcFrksAfJHGR4DLsuEa1H0S2tfF9myq5vvXFvvxi9jHJSK68qadCsLK+sZn/BbJ71X+3
- 4FJtXtrPnhZ1TAPShWkjaOTvdwP/yprQP6SK757xMrXZeZUdnz4indydvXUgt4DvamciW+3vlfm
- cXTEZw5HPqOKP7CcgmDg05j4Ikm3KYDT6SLEAxnvnRMawvGOYBl4mcJI8cApFJWFuf97t1uXvSU
- txlXeK6Hv/5z0hXCcj4XADBNurjMvckBQkoWarcGM8BhmzSw0Qzu2CaxDttJGy+4wJYxp8p6Zxl
- sS6xHpQfjqJp6OVrTw46NuQxCkOj5bdW+FRhPaMCCZTDB4EEjUoaXCJWBEHJxA4eqAqEFaNsWqB
- BIPXaSqkrkasCWjW3LA322qk6zbi+dLUF9RRXvRPnayXOZ/g5MI5vwcICe7YTywfj24WlxlKMC7
- 8wvuJgJeBNQlJzkoL5Q34j2suIdr/jaZky02lJhC0bSB/bKtWuh8ncWmWxisngK3fQjs44Z8z8n
- 4bbBAPQVcJ3R9Cg==
+ bh=OmyPdepJ0F1EKE5CiZx7JP01xGRjtaAZoGF0DEljwiM=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBqpBaWqkxy/cv3ZK19g8jrIDmNs1oCRmRiT9S31
+ b7y7QedSc6JAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaqQWlgAKCRDRgEFAKaOo
+ NjGgEADOPy4wFDI0H6kOy+NcErCG6AG95rbYWiV2XPsNAEIhzpSwe1yfS/rsGoqI4u/qBQufxDP
+ ZgNwo3Tj2ja9gtQO6oKRj4YdqCHxe6GP9OVHoI02iaIowx8/sWOGkpVrJk8/jtUYPO4ZnXZoIvd
+ F1WFn2IaLHgd5AW40DVMRMTcXuGAlz5WkFAIaaBG8iMjXks1TZLH5i/XLM2jwHFpOTUGYCO+qv7
+ nRllf37IKA1/f8rQCmipAffeIQ9cLirh6nzUmScPOC0b7Gba9G+BUQPgy/Hg3trLX+5vlnvHR0F
+ PgCmiDIzoGgzBbn0HrShKsuG1bDH6m/m3D7HftrmGKS5F+bpmhLW3/WbIHS3PgsMVEA/QHocRjf
+ OG7pyVe+cAthOy6FJ0nG4zrnSqbozF+B5rDlnqGfhNuip6jdzED6yxnyAhr7RyuuGHUK2LgGVGS
+ ZkVGpWnAX8HrGE9DpUvmQZkfYm6vNGcYHoBAuc/GleVF8kJqz2ld22iDzZrvG4pAc/W31uyN6s7
+ bg0/O/WxT0JWRtBZiUHfDD618z4z83T4/lVOGMV7eNk1IsmB45sAWOpdgwDmb/n7DQsSM0lpB5F
+ wwXb/cpP9PgifAqoeu9N6NZLC5By5+eyjF44xPTtE6NoH46FFH5vr9YmLkD6rp9FUibVV9ZW+y6
+ TNBcGGHabnlI1gQ==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 11 Sep 2026 14:56:37 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10458
+ <docs@lists.yoctoproject.org>; Fri, 11 Sep 2026 14:56:38 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10460
 
-Those two variables can clash with the machine and distro built-in
-fragments. Mention it.
+The tools-profile feature was introduced in 2007 with eabfa35d7ce4
+("Rewrite IMAGE_FEATURES tools options (people may be to update their
+local.conf), split into debug and profiling and add more profiling
+tools.")  but was not documented. Add the feature to the list.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/ref-manual/varlocality.rst | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ documentation/ref-manual/features.rst | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/documentation/ref-manual/varlocality.rst b/documentation/ref-manual/varlocality.rst
-index e2c086ffa..706ed40ab 100644
---- a/documentation/ref-manual/varlocality.rst
-+++ b/documentation/ref-manual/varlocality.rst
-@@ -76,9 +76,11 @@ Local
- This section lists variables whose configuration context is the local
- configuration through the ``local.conf`` file.
+diff --git a/documentation/ref-manual/features.rst b/documentation/ref-manual/features.rst
+index 4ee6e20c8..879d98ca1 100644
+--- a/documentation/ref-manual/features.rst
++++ b/documentation/ref-manual/features.rst
+@@ -406,6 +406,10 @@ these valid features is as follows:
+    in the Yocto Project Development Tasks Manual. For information on
+    tracing and profiling, see the :doc:`/profile-manual/index`.
  
---  :term:`DISTRO`
-+-  :term:`DISTRO` (can also be set by the :ref:`ref-fragments-builtin-core-distro`
-+   :term:`built-in fragment`)
++-  *tools-profile:*: Installs profiling tools such as ``perf``. See the
++   :ref:`profile-manual/intro:Yocto Project Profiling and Tracing Manual` for more
++   information.
++
+ -  *tools-sdk:* Installs a full SDK that runs on the device.
  
---  :term:`MACHINE`
-+-  :term:`MACHINE` (can also be set by the :ref:`ref-fragments-builtin-core-machine`
-+   :term:`built-in fragment`)
- 
- -  :term:`DL_DIR`
- 
+ -  *tools-testapps:* Installs device testing tools (e.g. touchscreen
 
 -- 
 2.55.0
