@@ -2,72 +2,82 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B60C7C79F9F
-	for <webhook@archiver.kernel.org>; Thu, 10 Sep 2026 14:48:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8AF7BC79FA1
+	for <webhook@archiver.kernel.org>; Fri, 11 Sep 2026 07:37:12 +0000 (UTC)
 Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.16081.1789051706608749030
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.34200.1789112223465103547
  for <docs@lists.yoctoproject.org>;
- Thu, 10 Sep 2026 07:48:27 -0700
+ Fri, 11 Sep 2026 00:37:04 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=afvFGX5U;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=j0ug9tvI;
  spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 8F597C653E5
-	for <docs@lists.yoctoproject.org>; Thu, 10 Sep 2026 14:49:05 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id CBEAFC653F9;
+	Fri, 11 Sep 2026 07:37:42 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 364075FA2F;
-	Thu, 10 Sep 2026 14:48:24 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3C79111C7926E;
-	Thu, 10 Sep 2026 16:48:22 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 26C15601DE;
+	Fri, 11 Sep 2026 07:37:01 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4A88B11C78B21;
+	Fri, 11 Sep 2026 09:36:58 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1789051703; h=from:subject:date:message-id:to:mime-version:content-type:
+	t=1789112220; h=from:subject:date:message-id:to:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=57iXPDywua/3JRJXp8tAQD4FNTvkuqfAzkxGBqZUIGI=;
-	b=afvFGX5UNdRsShlMJOfFY3QSNIj/qTjiQrLICYm3VojW6EB5WU0IElF7W2gI9LsPJTTj4n
-	k0e3rnVsZV0P0YLkGfjD8FC7OIA6WYYdT6MQie5OTwyglV4RExJ41nEIUceKmna/NbYLg4
-	sMTHulPQkDFoSLpaQI/lQXnC9dQr8gxof3y/v4f9LnIcnB7hKgtVam9BYWuz9cwXd9nvWY
-	HDsAI17bMwBgrT+ZIczhqBZXdudxRK7rKDVpOePT/v4YPpqvPFxDpjsbxgNa9ids70Cx/8
-	K5j1LbUmkB4sVZ7QVWR7re05bWRtqE7oCl2uWdmMy1DQP5jjQH1r4xbtnu9w7A==
-From: Antonin Godard <antonin.godard@bootlin.com>
-To: docs@lists.yoctoproject.org, 
- Andrei Lalaev <andrei.lalaev@anton-paar.com>
-In-Reply-To: <20260910-master-v1-1-7bf67b4fbebd@anton-paar.com>
-References: <20260910-master-v1-1-7bf67b4fbebd@anton-paar.com>
-Subject: Re: [PATCH RESEND] ref-manual: update
- DEBUG_OPTIMIZATION/FULL_OPTIMIZATION
-Message-Id: <178905144273.19748.7996237682429705414.b4-ty@b4>
-Date: Thu, 10 Sep 2026 16:44:02 +0200
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=169;
- i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=AHXhFEEbLzVUVflEcmv3OrLtbjyi1hP64IMGb2BPxhw=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBqosM1O+5E5cRL+SspfvTzGO6cwoArEP64C152+
- EpXwW3R22iJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaqLDNQAKCRDRgEFAKaOo
- NsneEACAFwstczcuSctkb5CYK4u38M4HDP38z8wEnOIWQ/CErrsQW9urkAH+MkrUHVQlOAf0Iij
- an5xIuP/8j8QOQFAn9v2gww7Hs8MIjJUUFXb7/Kb/ozqdjAWKpP/XcgZ/xgDaIDmeZbp8a7qcMw
- 5engOTRu33LqEu05u46uxCTjd1o0v21PRjaMY54efPHvYIqZ0zVmRGj6yU+knGZaO4vVQKVPmfi
- XZGjl19QK3yBB/8p1+y2TqN7DMJ2kiQbA1Zk+NlX/PbHJAdDZ7sdMJZ0Sune+Jh4JS3p/XuH4GF
- 3lPWq04fR0WX/bfe44vkl3CWvI1WpzBPnSKYoDPV7BnyvBvxz9zgpmbCUXNbNSbqlUrUgWuws1K
- bUBku+klHqZRH0ubDH0AmN77drM6yWCZ72Ic4NJ6rpm+Ov/u1NQasoOBdAxaKArg7/rtQtyORJ0
- 0rfrOfznculiVkmEFyItsvpyZCTDAMxJCt37c5jtu8xiKzdSib8AMUkeQR8dP4u6xrsD3pKknn5
- uOc8KT+TdVWtYOhxweHhNvdbZdBzxGL49ijI6vIIRZhiht4wKiKS8b8n6CX8PV0xuKOpXxZ+Hd0
- EmT9vxnFTpiDBgJCtCtNC2MhMakrXde1Via9vV7S4DVdQ+DN1Js1uJkx2/K+Q5AFNEEKtu9xBHo
- 7l9EbznIV+ZSQHg==
-X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
- fpr=8648725188DD401BB9A0D3FFD180414029A3A836
+	bh=g6bicYJp8nRvrd0GxRmdE+NAzr+YpYPsl9ZBmITFSSg=;
+	b=j0ug9tvIBB+VvU2iXcBGeaw0HHLvSXVVxB/FENFaveZWEcUd1xEbn3trtPNnTxJZhUYEgf
+	mpiAQ+4lk/Rr2JoB9NQ9RqiyZYdIUZ05Ay11uAjWDgt/eCIvdwPNiUmFn1CePP/XZaBexf
+	7xTdLpvSb9Y9LfT9BEDPj0v32LJmhUi+remYhVMYyQTw5oDzG1jRwBkGYVN9io4lo55I3R
+	atm46aH/EtD6OYgHWPP2E8BaltEnC+MYW9P+KMc4bfiSWNqqhiyLrtjebci/OkLZZNNuTi
+	smLnZI7+6Dp0a+uUjJhJKvy7ve7twTkQVyWbSPAb+rmhZOiyc/4sCcC7rR8TlA==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 11 Sep 2026 09:36:49 +0200
+Message-Id: <DLCBCIBSXUHT.2SR3V23FN8VPD@bootlin.com>
+Subject: Re: [docs] Does Ubuntu 24.04 and newer still require AppArmor
+ tweaking to run bitbake?
+From: "Antonin Godard" <antonin.godard@bootlin.com>
+To: "Robert P. J. Day" <rpjday@crashcourse.ca>, "YP docs mailing list"
+ <docs@lists.yoctoproject.org>
+References: <ec2658dc-005e-f6cc-d64e-0a1c15e992a7@crashcourse.ca>
+In-Reply-To: <ec2658dc-005e-f6cc-d64e-0a1c15e992a7@crashcourse.ca>
 X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 10 Sep 2026 14:48:35 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10449
+ <docs@lists.yoctoproject.org>; Fri, 11 Sep 2026 07:37:12 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10450
 
-Applied to master-next, thanks!
+Hi,
 
-[1/1] ref-manual: update DEBUG_OPTIMIZATION/FULL_OPTIMIZATION
-      https://git.yoctoproject.org/yocto-docs/commit/?id=091c7f30110c
+On Thu Sep 10, 2026 at 2:57 PM CEST, Robert P. J. Day wrote:
+>
+>   I use stock Debian so I haven't needed to mess with this, but Ubuntu
+> once had this issue with AppArmor:
+>
+> https://developerwiki.proventusnova.com/Error:_BitBake_+_AppArmor_User_Na=
+mespace_Restriction_Fix
+>
+> If that's still a problem, it doesn't seem to be mentioned in the
+> docs.
 
+I don't have a running Ubuntu 26.04 distribution but I would say it is stil=
+l the
+case if 26.04 is still running AppArmor.
+
+Users will face the same error as before which is:
+
+  bb.fatal("User namespaces are not usable by BitBake, possibly due to AppA=
+rmor.\n"
+           "See https://discourse.ubuntu.com/t/ubuntu-24-04-lts-noble-numba=
+t-release-notes/39890#unprivileged-user-namespace-restrictions for more inf=
+ormation.")
+
+In OE-Core's meta/lib/oe/sanity.py.
+
+This sounds like something we could say in the docs. Would you mind sending=
+ a
+patch for that?
+
+Thanks,
+Antonin
 
