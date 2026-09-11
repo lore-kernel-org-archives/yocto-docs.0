@@ -2,94 +2,110 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 34D51C88E45
-	for <webhook@archiver.kernel.org>; Fri, 11 Sep 2026 15:11:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3CE49C88E50
+	for <webhook@archiver.kernel.org>; Fri, 11 Sep 2026 15:11:59 +0000 (UTC)
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.41855.1789139501376046329
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.41860.1789139512552826491
  for <docs@lists.yoctoproject.org>;
- Fri, 11 Sep 2026 08:11:41 -0700
+ Fri, 11 Sep 2026 08:11:52 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=xR5o4JWc;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=ob4drZn+;
  spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id B12A21A01EF
-	for <docs@lists.yoctoproject.org>; Fri, 11 Sep 2026 15:11:39 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id D0D431A01ED
+	for <docs@lists.yoctoproject.org>; Fri, 11 Sep 2026 15:11:50 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 87104601DE
-	for <docs@lists.yoctoproject.org>; Fri, 11 Sep 2026 15:11:39 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E997611C7AFBA;
-	Fri, 11 Sep 2026 17:11:34 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id A083C601DE
+	for <docs@lists.yoctoproject.org>; Fri, 11 Sep 2026 15:11:50 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 31D6711C7AFBD;
+	Fri, 11 Sep 2026 17:11:45 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1789139495; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1789139505; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=2HZqUgnIZnSUhCpT4blXX91qHtM0mO+O1vXLCeclhD0=;
-	b=xR5o4JWc1TlRcbjDR9zZ0BgBdtgrDiE+ofjl6Wehs9qU4U0COWHbz4HP/rkj22dQEtlW2/
-	OPrykozDHFUf/rZpfzvnlk7ARtaOVdJNsPwMhPq8LwrYITWm4mx2tcYIzbHLFWazEPDgys
-	Kfhsa2TNPKsxSHhYLL86286bLem+rBRAU9dbD5w7hRyw4YUxwjVR/fJAbjkahsTIDvq598
-	AqIIGtgKMS+vOVy38K5RV5Xv/jx+1yhLpT3XwePgHTm8nclitxy7b5HWtG1v53thzIOwQe
-	FSGnIETP3RPIc6/ujioGzp+XGngmo0qLfom9/m1/+L4hcE09IsGNANMxnB6KLA==
+	bh=Fz0z7Xy2gWEQkdTpbQJpzMuScbS8vS6EOT6SWrLLeUA=;
+	b=ob4drZn+BnFdbTLEPNoymyhtWyA9E6l/Re410gI2XgT3Y1qA3M+lJFCcV+jivSzC73Ro6p
+	nDg+uAxQ0UzyCIrKOm23y67532E1/RJCgrW09zvTE/hzS0mwZgZrdy1TAkNOnp3P0qUPs+
+	OSaYVMFEtUfVeIACdfMY5f+2o8gY8cmMyNyALbqhDrWGEIzt/MYDn3KGKyFQ51OtA14D4k
+	61N12MhRsuXfZvg/6inZBxvtKsOXUBvY2tdlK00TtT6hKC4rBGniytxSmdJ9xCTkMsMlxF
+	Bv+SOKKLLXgFq/8bVbVOnkitwF2fzsPDYeupTC+RYvn1ylYyaJihpLerAMsAKg==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Fri, 11 Sep 2026 17:11:09 +0200
-Subject: [PATCH 3/8] ref-manual/terms.rst: Configuration File: use a link
- to local.conf
+Date: Fri, 11 Sep 2026 17:11:11 +0200
+Subject: [PATCH 5/8] dev-manual/wic.rst: remove local.conf mentions
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260911-remove-local-conf-refs-v1-3-322e1e9a232d@bootlin.com>
+Message-Id: <20260911-remove-local-conf-refs-v1-5-322e1e9a232d@bootlin.com>
 References: <20260911-remove-local-conf-refs-v1-0-322e1e9a232d@bootlin.com>
 In-Reply-To: <20260911-remove-local-conf-refs-v1-0-322e1e9a232d@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1214;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1630;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=heuNLsku99EyCCYchrYkQstc7jvKb2TTTr0yO0SuMf8=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBqpBoWvoURtkySSoeKtTfvyGhbh1nHTvNCyb0/1
- vP8P9903Y6JAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaqQaFgAKCRDRgEFAKaOo
- NgyZD/0emd9zT26N5PdffSCDQ5EsNIlZOpBZxdgMnCxNGd7nViqW9O7a3zMSyNHzKdxhkB/Bc84
- d+0g8cUC6/OBhrg7Rq987SjfT/ICSNJNTRu7CBx+zP74KufdhxhUi80+GFe+C5c8WS2Ardl2R2c
- HD3LqZsNffmjxUzHRXyJykAhV2p/EaJpdPJwys8/dt6MH3dI5Wz4j+czvH9ihZI1SQWJrarKRLx
- lmyHcvmhUJoOwgYQsSn+5XWvNnibe9/nvgKVD1pSG2r6/JERZXwOO7C6NLXs5RrA6Dx0EP9Fw9y
- JL98mPCThK3tE7tVphLdUklKLjv7LcJ8i69bz8pOQdPkHcoQlWmibw9PTVv7gL18KdAxX3vK6Lo
- IYsqzTFV7CjRJTgC5C85Nu/l28R2mBlbfWgoik5Fisqjv6kyQ3oZGNgIDqTjc6WszYSuKQF9Epx
- DZNs+EYh5gP/ZshA6q0bPN7ZLeaRA9lcFuq+dH8ggeeOvP2uIfCW4o9TIyXr1CQe8kNJGB0LLV2
- hGSQiy44LcDD/L8oypX2L0d6Q8a9OfxahNrrZtIluIIqqgo38pDx+DvAVIldRmut96/AE1JQYgN
- mUNVHno+3YEYVaNESGcpv43xMUr76BT2+TS51vsGgrucxBHYJX7TzjxjfRiqA/wX2v47EU2PHRg
- 8dgDBnS6hZaz4GQ==
+ bh=z6mVX32MGSMlqjdkfGSDm9wSwu2BSyZuq2dWQAbBhco=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBqpBoXIzFuQQ4MI9Niti5C2JeLMnP1dHZJbBzlx
+ mDSrjhRLV2JAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaqQaFwAKCRDRgEFAKaOo
+ NukwEACqkK0Q4uBqrAwmbzcGpXHb7B7zcieu91MjFAc4cZJE2csqe6g470jZqDtrHI4Hh23GNrH
+ CA4NP5T6orLXmoKEA50/yhO/S3pCXMaaJYuucjpxUzIRHExNcKcBoIkOlQWTfB7neEcd0JxKZWR
+ D/O3cSxCq5crfOGxAzl9FoXk7jKVf8113khs5V5PkPjZnFZejuNgZu+snVeeP9RmZzlMHejigoQ
+ tzP4HenBQQ413orV6GS7mgnvUgvPqdByzmqyn2BB+df139pNhsEMa4UzyMfkHEcacMdnLMens3Z
+ BAMs0QJILHAxNRmjnGgJbKZUpJSf35TAeJsKWDtU1ciPWJ9qorh3UxF8+HVisSDJ4AcZfKBSk06
+ TWEwj8MkBXhPlRGkPmG5M0d3zJHBqwcufyX9uBY3Bt0TD19fcufzOku8qz5U280yET8s4nCNK1O
+ 0zNh/3wIGtkHEdn0OaPuOfNczqOCwfyye7rBK/tdCx5CTUySYN2K0MNR9ofqQutMq09vMhPBD01
+ ez0+yOi44jBq2/tWBVdC02O6+DjbEP3vN2X00gCCqpUnv5hr/tj1UWXca8XUUGBXzDLs2oJYiuF
+ 9d6N54ISer4BUa0A/gadzo+eD8YNFKcxCnAsXSqscvKd+NMY0PPaM1fk+/R49ES1RccFHT8KOyV
+ +NT4TPhNoWzqt9A==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 11 Sep 2026 15:11:49 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10472
+ <docs@lists.yoctoproject.org>; Fri, 11 Sep 2026 15:11:59 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10474
 
-Reference our structure document when referencing this file, so that the
-reader can get further information on it.
+These mentions are not needed for the examples, remove them.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/ref-manual/terms.rst | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ documentation/dev-manual/wic.rst | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/documentation/ref-manual/terms.rst b/documentation/ref-manual/terms.rst
-index c210da4cb..7c2ae896f 100644
---- a/documentation/ref-manual/terms.rst
-+++ b/documentation/ref-manual/terms.rst
-@@ -198,8 +198,9 @@ universal, the list includes them just in case:
-       Configuration files end with a ``.conf`` filename extension. There are
-       multiple types of configuration files, such as:
+diff --git a/documentation/dev-manual/wic.rst b/documentation/dev-manual/wic.rst
+index bd3b5f697..c13655f87 100644
+--- a/documentation/dev-manual/wic.rst
++++ b/documentation/dev-manual/wic.rst
+@@ -530,9 +530,7 @@ file:
  
--      -  The :file:`conf/local.conf` configuration file in the :term:`Build
--         Directory` contains user-defined variables that affect every build.
-+      -  The :ref:`structure-build-conf-local.conf` configuration file in the
-+         :term:`Build Directory` contains user-defined variables that affect
-+         every build.
+ The previous example shows the easiest way to create an image by running
+ in cooked mode and supplying a kickstart file and the "-e" option to
+-point to the existing build artifacts. Your ``local.conf`` file needs to
+-have the :term:`MACHINE` variable set
+-to the machine you are using, which is "qemux86" in this example.
++point to the existing build artifacts (the "qemux86" machine is used here).
  
-       -  The :file:`meta-poky/conf/distro/poky.conf` configuration file defines
-          Yocto "distro" configuration variables used only when building with
+ Once the image builds, the output provides image location, artifact use,
+ and kickstart file information.
+@@ -608,8 +606,7 @@ untouched:
+ Once the lines are changed, the
+ example generates the ``directdisksdb-gpt`` image. The command points
+ the process at the ``core-image-minimal`` artifacts for the Next Unit of
+-Computing (nuc) :term:`MACHINE` the
+-``local.conf``:
++Computing (nuc) :term:`MACHINE`:
+ 
+ .. code-block:: console
+ 
+@@ -680,7 +677,7 @@ default output directory, which is the current directory:
+ 
+ For this example,
+ :term:`MACHINE` did not have to be
+-specified in the ``local.conf`` file since the artifact is manually
++specified since the artifact is manually
+ specified.
+ 
+ Using Wic to Manipulate an Image
 
 -- 
 2.55.0
