@@ -1,106 +1,198 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <adrian.freihofer@siemens.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 954EAC88E5E
-	for <webhook@archiver.kernel.org>; Fri, 11 Sep 2026 14:56:38 +0000 (UTC)
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.41431.1789138591956113780
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D3BFCC88E50
+	for <webhook@archiver.kernel.org>; Fri, 11 Sep 2026 15:07:58 +0000 (UTC)
+Received: from mta-64-225.siemens.flowmailer.net (mta-64-225.siemens.flowmailer.net [185.136.64.225])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.41752.1789139276786995718
  for <docs@lists.yoctoproject.org>;
- Fri, 11 Sep 2026 07:56:32 -0700
+ Fri, 11 Sep 2026 08:07:58 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=b2SXxZP/;
- spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 2732AC63A0D
-	for <docs@lists.yoctoproject.org>; Fri, 11 Sep 2026 14:57:12 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 5830B601DE
-	for <docs@lists.yoctoproject.org>; Fri, 11 Sep 2026 14:56:30 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3231411C7AFB0;
-	Fri, 11 Sep 2026 16:56:29 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1789138589; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=ZQmXY0tiOBTd0O7Ef6f+TeA8ITf/kd4OdfZc9k9vsBI=;
-	b=b2SXxZP/JBxlrH9YCCI2UZo6E5aecdtHneiQEwNDdodbwB5ifFVI4WBxeGZebeQb+P92B8
-	kE/JY+zHx3sfrZvVEfK+2bg7JcJcFwKTHu9/kgOUNGVZZu2LpIPJeAe3Y7jLxrbDklRlkL
-	/Kq0p0nvlef9sI1j+uoLznxNVsQ+QaAqLGDMkD0Da0+ZYV9TLdNDkj/s35fHzK93chQiY6
-	eCf7AaAhIhLIyWnge4lCWcQj7AG2sA8KNyVR7a9F2JjazZt6Syp4ZrVB1uQOIm7ZJKLxfs
-	uWG8esOK7CGjDeCTfhI1o9HzmXbx4n7X7UZN7D0JX8pndXlYA8nb6AFdupEPQg==
-From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Fri, 11 Sep 2026 16:56:08 +0200
-Subject: [PATCH 08/10] dev-manual/poky-manual-setup.rst: suggest use of
- fragment instead of assignments
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260911-assorted-fixes-v1-8-0d92a8112918@bootlin.com>
-References: <20260911-assorted-fixes-v1-0-0d92a8112918@bootlin.com>
-In-Reply-To: <20260911-assorted-fixes-v1-0-0d92a8112918@bootlin.com>
+ dkim=pass header.i=adrian.freihofer@siemens.com header.s=fm1 header.b=E86CLTLt;
+ spf=pass (domain: rts-flowmailer.siemens.com, ip: 185.136.64.225, mailfrom: fm-1329275-20260911150752794e3e613b000207b7-nzgae3@rts-flowmailer.siemens.com)
+Received: by mta-64-225.siemens.flowmailer.net with ESMTPSA id 20260911150752794e3e613b000207b7
+        for <docs@lists.yoctoproject.org>;
+        Fri, 11 Sep 2026 17:07:53 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm1;
+ d=siemens.com; i=adrian.freihofer@siemens.com;
+ h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc;
+ bh=LUXxLOlv6EJBUsSy0H4NOLpnElJOtLkb0fTTXt5lFHQ=;
+ b=E86CLTLtSUa1/CALovVaaRC3r6Hrz3+xMmIBhWgueMGOQ/ShzkBKSu0TfwkKUv5duWyfdg
+ /F7FjMIyXx/xxarlNuq/W3VNM6EGSgR6ryN5ot3T6llhH1wdVhSfJ1kr8DVOEknCFNZjMXle
+ mKBg04D6RCxrakl31QxZ3lpdqnMoKsR2SQryDz+Np4hohx/zO/wGrbhW1s2J/rRF0maGIxmN
+ C2p1bQhaflLkJD/lNN2HuDjRHXrzl8CQU1g3X+56CD19UcnEdBDuNtuL/ziUU6wNiIfC8r82
+ a0I3Zh4t3P1VG9iV0BktBI0ibAoKggLrGnRxFua/5WOgAsK0PeOnqW0g==;
+From: AdrianF <adrian.freihofer@siemens.com>
 To: docs@lists.yoctoproject.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Antonin Godard <antonin.godard@bootlin.com>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1845;
- i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=cL1fnO4NX8SMKpEHzbKXgIR1d0tmQNmYuoZq3zosnXM=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBqpBaWGMvUVKVPkOYZs/3a9jP4oUwRtceHNKHKk
- 0zaqZZ8rlmJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaqQWlgAKCRDRgEFAKaOo
- Nu8QD/wP1YnKqshsTX9+TnhSz5UL1L5rXPvBvt8riq3TvhoP2nN0HiF9KiW3OTMwDfO2QliJ4Kx
- MQ1DAQXUSpg42ZppQRvozf5oUSj+WoxgmGupNUIVy9uyrTD/SK8TBz0iOGDHs/ntFPBe3qjNXdI
- LNiFHkiLyhd+KIHrG8RUMEYVgVCGor4mci1UIQ9DtfcjhogSh8IdBo+RlyQr7SOj/yEwNS8EqQi
- BPoVSLa9Gm2M6N3hHu1X+FPeU7M/kNDTSNUvITvO1E7wICtQtE8sM8QYSh9q17GU4eM+z1Z2CK7
- k0HrHPU14aGDzB+zLxWzZSXxb4FZ4mni6/yeUA9vJqMNChVamCJEUqRshGSAiIBFD/xBHwuMDdz
- jCQOunhUEoRLSC3OqmY4Y1lS8q4ZWe/shu1HvN3dixlVYbNyMtt4xWDc5s8HwrGuFTU2Jj8i2um
- 1Vt9d69Vkj9tjAO5R4mEOLSeC6DsXW34WR6CPUWOU7u6Mc33xaj9xOhAFRRdUki2J77e7KhvxQc
- 1BYKq1b0UboKGtcXevN6+rFPwFD9pVeQ9INK0hHc+kDjQ7mFtQ3LSSU7jLLOi9k7QnIjMoXwQqi
- ld9QhHjE83E2gIlfeeNEhpFXwfkeVLr8R6TattEK7aczjYILsCvN5MslEvpi22Pyiq8QImstrG0
- uOow/E7gUu1uQ2A==
-X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
- fpr=8648725188DD401BB9A0D3FFD180414029A3A836
-X-Last-TLS-Session-Version: TLSv1.3
+Cc: Adrian Freihofer <adrian.freihofer@siemens.com>
+Subject: [PATCH 1/4] dev-manual/devtool: fix non-patch local file handling docs
+Date: Fri, 11 Sep 2026 17:07:47 +0200
+Message-ID: <20260911150750.75697-1-adrian.freihofer@siemens.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Flowmailer-Platform: Siemens
+Feedback-ID: 519:519-1329275:519-21489:flowmailer
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 11 Sep 2026 14:56:38 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10462
+ <docs@lists.yoctoproject.org>; Fri, 11 Sep 2026 15:07:58 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10465
 
-The poky-manual-setup document was ported from the previous Quick start
-guide we used to maintain. While this document is oriented towards
-setting variables from configuration files rather than using fragments
-and bitbake-setup, we can still suggest to enable hash equivalence
-through our sstate-mirror-cdn fragment. This way, changes to this
-fragment don't have to be maintained here explicitly.
+From: Adrian Freihofer <adrian.freihofer@siemens.com>
 
-Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+Non-patch ``file://`` entries in :term:`SRC_URI` no longer end up in an
+``oe-local-files`` folder: that mechanism, along with ``S = WORKDIR``, was
+removed in 5.1 (see migration-5.1.rst). Whether such files reach
+``srctree`` now depends on :term:`S`: they land directly in ``srctree``
+only if the recipe sets ``S = "${UNPACKDIR}"``; otherwise they are
+unpacked into :term:`UNPACKDIR` outside of ``S`` and never reach
+``srctree``, so they must be edited next to the recipe instead. Update
+the ``devtool modify``/``extract``/``upgrade``/``finish`` descriptions
+accordingly.
+
+Signed-off-by: Adrian Freihofer <adrian.freihofer@siemens.com>
 ---
- documentation/dev-manual/poky-manual-setup.rst | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ documentation/dev-manual/devtool.rst | 91 +++++++++++++++++++---------
+ 1 file changed, 61 insertions(+), 30 deletions(-)
 
-diff --git a/documentation/dev-manual/poky-manual-setup.rst b/documentation/dev-manual/poky-manual-setup.rst
-index 833e1631e..5e65763d5 100644
---- a/documentation/dev-manual/poky-manual-setup.rst
-+++ b/documentation/dev-manual/poky-manual-setup.rst
-@@ -118,13 +118,11 @@ an entire Linux distribution, including the toolchain, from source.
-        This is relevant only when your network and the server that you use
-        can download these artifacts faster than you would be able to build them.
+diff --git a/documentation/dev-manual/devtool.rst b/documentation/dev-manual/devtool.rst
+index d67f22277..e84a13394 100644
+--- a/documentation/dev-manual/devtool.rst
++++ b/documentation/dev-manual/devtool.rst
+@@ -231,15 +231,27 @@ command:
+       append file within the workspace while the recipe remains in its
+       original location.
  
--       To use such mirrors, uncomment the below lines in your ``conf/local.conf``
--       file in the :term:`Build Directory`::
-+       To use such mirrors, run the following command:
- 
--          BB_HASHSERVE_UPSTREAM = "wss://hashserv.yoctoproject.org/ws"
--          SSTATE_MIRRORS ?= "file://.* http://sstate.yoctoproject.org/all/PATH;downloadfilename=PATH"
--          BB_HASHSERVE = "auto"
--          BB_SIGNATURE_HANDLER = "OEEquivHash"
-+       .. code-block:: console
+-      Additionally, if you have any non-patch local files (i.e. files
+-      referred to with ``file://`` entries in :term:`SRC_URI` statement
+-      excluding ``*.patch/`` or ``*.diff``), these files are copied to
+-      an ``oe-local-files`` folder under the newly created source tree.
+-      Copying the files here gives you a convenient area from which you
+-      can modify the files. Any changes or additions you make to those
+-      files are incorporated into the build the next time you build the
+-      software just as are other changes you might have made to the
+-      source.
++      Additionally, any non-patch local files (i.e. files referred to
++      with ``file://`` entries in the recipe's :term:`SRC_URI`
++      statement, excluding ``*.patch`` or ``*.diff`` files) only end up
++      in the extracted source tree if the recipe sets
++      ``S = "${UNPACKDIR}"``. In that case, they are unpacked directly
++      into the source tree at the same location as the upstream source,
++      mixed in with the rest of the unpacked source with no separate
++      area to identify them, so you need to check the recipe's
++      :term:`SRC_URI` to tell which files came from local ``file://``
++      entries. You can edit them directly in the source tree, and any
++      changes you make are incorporated into the build the next time
++      you build the software just as are other changes you might have
++      made to the upstream source.
 +
-+         $ bitbake-config-build enable-fragment core/yocto/sstate-mirror-cdn
++      If instead :term:`S` is a subdirectory of :term:`UNPACKDIR` (the
++      traditional default, e.g. ``S = "${UNPACKDIR}/${BP}"``), these
++      local files are unpacked into :term:`UNPACKDIR` but outside of
++      :term:`S`, so they never end up in the source tree at all. They
++      remain purely recipe-side, and are unpacked again into the
++      recipe's real :term:`WORKDIR` on every subsequent build regardless
++      of ``devtool modify``; edit them next to the recipe instead.
  
-        The hash equivalence server needs the websockets python module version 9.1
-        or later. Debian GNU/Linux 12 (Bookworm) and later, Fedora, CentOS Stream
-
+    -  *Middle*: The middle scenario in the figure represents a situation
+       where the source code also does not exist locally. In this case,
+@@ -260,8 +272,10 @@ command:
+ 
+       As with all extractions, the command uses the recipe's :term:`SRC_URI`
+       statements to locate the source files and any associated patch
+-      files. Non-patch files are copied to an ``oe-local-files`` folder
+-      under the newly created source tree.
++      files. Non-patch files only end up in ``srctree`` if the recipe
++      sets ``S = "${UNPACKDIR}"``; otherwise they are unpacked into
++      :term:`UNPACKDIR` but outside of :term:`S` and never reach
++      ``srctree`` at all.
+ 
+       Once the files are located, the command by default extracts them
+       into ``srctree``.
+@@ -283,12 +297,15 @@ command:
+ 
+          $ devtool modify -n recipe srctree
+ 
+-      If an ``oe-local-files`` subdirectory happens to exist and it
+-      contains non-patch files, the files are used. However, if the
+-      subdirectory does not exist and you run the ``devtool finish``
+-      command, any non-patch files that might exist next to the recipe
+-      are removed because it appears to ``devtool`` that you have
+-      deleted those files.
++      For a recipe that sets ``S = "${UNPACKDIR}"``, non-patch local
++      files are expected to already be present directly in ``srctree``
++      at the same location as the upstream source. If they are missing
++      there and you run the ``devtool finish`` command, any non-patch
++      files that might exist next to the recipe are removed because it
++      appears to ``devtool`` that you have deleted those files. This
++      does not apply if :term:`S` is a subdirectory of
++      :term:`UNPACKDIR`, since in that case the local files never lived
++      in ``srctree`` to begin with.
+ 
+       Once the ``devtool modify`` command finishes, it creates only an
+       append file for the recipe in the ``devtool`` workspace. The
+@@ -356,9 +373,10 @@ command:
+    Because there is no need to move the recipe, ``devtool finish``
+    either updates the original recipe in the original layer or the
+    command creates a ``.bbappend`` file in a different layer as provided
+-   by layer. Any work you did in the ``oe-local-files`` directory is
+-   preserved in the original files next to the recipe during the
+-   ``devtool finish`` command.
++   by layer. If the recipe sets ``S = "${UNPACKDIR}"``, any changes you
++   made directly to local files in the source tree are written back to
++   the original files next to the recipe during the ``devtool finish``
++   command.
+ 
+    As a final process of the ``devtool finish`` command, the state of
+    the standard layers and the upstream source is restored so that you
+@@ -811,14 +829,26 @@ The following diagram shows the common development flow used with the
+    the new version of the recipe, and an append file all within the
+    workspace.
+ 
+-   Additionally, if you have any non-patch local files (i.e. files
+-   referred to with ``file://`` entries in :term:`SRC_URI` statement
+-   excluding ``*.patch/`` or ``*.diff``), these files are copied to an
+-   ``oe-local-files`` folder under the newly created source tree.
+-   Copying the files here gives you a convenient area from which you can
+-   modify the files. Any changes or additions you make to those files
+-   are incorporated into the build the next time you build the software
+-   just as are other changes you might have made to the source.
++   Additionally, any non-patch local files (i.e. files referred to with
++   ``file://`` entries in the recipe's :term:`SRC_URI` statement,
++   excluding ``*.patch`` or ``*.diff`` files) only end up in the
++   extracted source tree if the recipe sets ``S = "${UNPACKDIR}"``. In
++   that case, they are unpacked directly into the source tree at the
++   same location as the upstream source, mixed in with the rest of the
++   unpacked source with no separate area to identify them, so you need
++   to check the recipe's :term:`SRC_URI` to tell which files came from
++   local ``file://`` entries. You can edit them directly in the source
++   tree, and any changes you make are incorporated into the build the
++   next time you build the software just as are other changes you might
++   have made to the upstream source.
++
++   If instead :term:`S` is a subdirectory of :term:`UNPACKDIR` (the
++   traditional default, e.g. ``S = "${UNPACKDIR}/${BP}"``), these local
++   files are unpacked into :term:`UNPACKDIR` but outside of :term:`S`,
++   so they never end up in the source tree at all. They remain purely
++   recipe-side, and are unpacked again into the recipe's real
++   :term:`WORKDIR` on every subsequent build regardless of
++   ``devtool upgrade``; edit them next to the recipe instead.
+ 
+ #. *Resolve any Conflicts created by the Upgrade*: Conflicts could happen
+    after upgrading the software to a new version. Conflicts occur
+@@ -877,8 +907,9 @@ The following diagram shows the common development flow used with the
+    resets the recipe so that the recipe is built normally rather than
+    from the workspace.
+ 
+-   Any work you did in the ``oe-local-files`` directory is preserved in
+-   the original files next to the recipe during the ``devtool finish``
++   If the recipe sets ``S = "${UNPACKDIR}"``, any changes you made
++   directly to local files in the source tree are written back to the
++   original files next to the recipe during the ``devtool finish``
+    command.
+ 
+    If you specify a destination layer that is the same as the original
 -- 
 2.55.0
 
