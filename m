@@ -1,111 +1,120 @@
-Return-Path: <alex.kanavin@gmail.com>
+Return-Path: <JPEWhacker@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AEC99C88E72
-	for <webhook@archiver.kernel.org>; Mon, 14 Sep 2026 15:49:37 +0000 (UTC)
-Received: from mail-qv2-f12.google.com (mail-qv2-f12.google.com [74.125.230.140])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.847.1789400968922213400
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0C6BAC88E6E
+	for <webhook@archiver.kernel.org>; Mon, 14 Sep 2026 16:08:48 +0000 (UTC)
+Received: from mail-oo2-f42.google.com (mail-oo2-f42.google.com [74.125.231.170])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.1384.1789402124286011561
  for <docs@lists.yoctoproject.org>;
- Mon, 14 Sep 2026 08:49:29 -0700
+ Mon, 14 Sep 2026 09:08:44 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20251104 header.b=f96594cs;
- spf=pass (domain: gmail.com, ip: 74.125.230.140, mailfrom: alex.kanavin@gmail.com)
-Received: by mail-qv2-f12.google.com with SMTP id 6a1803df08f44-90cdfc9b6ebso24980876d6.2
-        for <docs@lists.yoctoproject.org>; Mon, 14 Sep 2026 08:49:28 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789400968; cv=none;
-        d=google.com; s=arc-20260327;
-        b=AQlSe1hSQpWAok+I4ngclAy4+jsCJRPfYcheX1UmobrqGsmOE/kor67VKJ622iSpP0
-         OYj0GNndDhUyofPhX1EEO47OgL31qUzP2gtSaI5dqbVFZXUWrOQDDRQiYdqktaFFbFg6
-         wBbsfQjEP9gYHtV65Fy497OHR0/tVat4nVErkzXbiSMJhxAwHDd0VClW9WPiB3xWz6vZ
-         duD7fKb75xENJ3RHG6E8aZwM1vnIIVxtJndtMaJ0W+/5EmQXrunaa54Omx2MSKyxsyXM
-         ScqlsVt7EizvcmZuxXm5G/i9aGVBBonZ6HKuErcQjkLT/PRaQzC/SiNg31PZav1NqZo9
-         vEjg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=ddlMFN/lu8YDSg/AyvW4ztIzTDGVBO0eNYlQxXwyPPk=;
-        fh=iLteoAP1ztHyMOIcoW4ExpNNB+cYXNHUFmF2RpULhi4=;
-        b=o0uzH2jRdX47aSrtPO5D2Dn4WQAkNQUkcutVv2Zt34FLiHl1M0k5rck9bPH5zTGIob
-         EieqtAHTYmJE4cbGTm4RjPf9lOVWau57tNLOdNAoDBfk+1vJDQSsD/qGWr2jgC4I4GkZ
-         X9L81EJTCOVorM9TP9NSZ/l4zrkjP5vgZBqLF5+1fnNn7IKfxBnHUIHv/jfckzphmF+1
-         Ezh+DqHPkTzJtu9KJR8ppx+JclVoeCuP0BXkHkRgPWiY5pwqGTTV6uGp3Ok1NF9sChQP
-         E+1lgYnQ8QX4F4/0SrALlYB/4YoDG+bJVwN3BLELdfndZQNzQrOZxp4L/q+FoKcjcEk/
-         lzgA==;
-        darn=lists.yoctoproject.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+ dkim=pass header.i=@gmail.com header.s=20251104 header.b=FdJfEWta;
+ spf=pass (domain: gmail.com, ip: 74.125.231.170, mailfrom: jpewhacker@gmail.com)
+Received: by mail-oo2-f42.google.com with SMTP id 006d021491bc7-6beed321ad9so1425410eaf.3
+        for <docs@lists.yoctoproject.org>; Mon, 14 Sep 2026 09:08:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789400968; x=1790005768; darn=lists.yoctoproject.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ddlMFN/lu8YDSg/AyvW4ztIzTDGVBO0eNYlQxXwyPPk=;
-        b=f96594csiL7HUfLXf0UNH+jRtf/IXPA+CmZpjLDp9uViNdW6DlxSvwV+7B5Xus3NUJ
-         1kIoP4ljgZM6X3nEJgapsfVQl9fQzRquSMjU8Diz0H2St2/zXGppozEmLZ8AcBvw1tCg
-         RMxgfoa1gwgxokV5btdVQ76/DcAe/WPq+pwwXjStgplCJGrXxaqn0iHAvRjUZz7XNesk
-         53egxg3LZn8Wz/KjsDHRYJKB8kfN/R6BDmPKoDCBApSON0E10PU0w8h6rflFpqnaPxJ7
-         Yd5OVZ0VIucACU9x22pl7RHLRgK1wsJ0SuP/+5qB37Nw6K1Dw5a6Ur+gmKaVaagD036M
-         y/UA==
+        d=gmail.com; s=20251104; t=1789402123; x=1790006923; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=phYBkVMTQBh9yLYT/87ogJsohkG7NYR7yRccMbxX5ew=;
+        b=FdJfEWtaSghmZ523Oe6gbooKxGELuHzPXntSnYnANmbCuzVgBRKmTW4uY0wiKJOkhH
+         /aInOun/yCOOnxF9QKfSj6VvbxEfohob1nInRf9f06q1PkUctqq3urIm4qRNkNnW4f+G
+         tbOy5xo7S3mFHOrHMSYt40tIDLGMoEQIzHNlmvJIfZ2ziTDlipXNsStzFIKoMCfsqn79
+         PxT+X8brWoWl6rOq0l+ytUZuH7XnbBhkXX6od3M65Gr4kE9aj7obPtUvHn/TvxZQcOlO
+         c0zSX0FV4OMzq9jpO6dj2/9H0iBuzENhT3W5j+wOfI12C5mdhzVLVs3sf6LDCI6Rdhf5
+         u8HA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789400968; x=1790005768;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=ddlMFN/lu8YDSg/AyvW4ztIzTDGVBO0eNYlQxXwyPPk=;
-        b=rcXVsbiCwX3qETDZ6sKcOl3HR3rfMtIYDV6T2KySDUcJTWAYyH+HcfMyhXctyBWVU8
-         emh8DHo08a4r/SawTiI5YK4OQqDMkB9F85D8e6LvA0/twZoIN/jhYM+S0qryKV5BW1ei
-         h/KmKmOZO+J1fIaVneaeIjlfh9ppjsCIDegYMpPAsHN6EOYNjO9tBMVqb7xU0VetjGZo
-         QTjyUAa6VrP434XH5NtBX7iimCJH2mi9mUOV1Y8uNWioRi2Xb4ZK7v2I8eD/x8qh/pXc
-         Aj8qnMC81iSjmturgU7anVZsvbAp+c0hSnvToLR6DFyGpFmGCUTXBZYNTiT1jUED34G8
-         njaQ==
-X-Forwarded-Encrypted: i=1; AKwUvByhKDu/R4DVPdzmWHQcUYQZlEZA4MDnT+d7S92FkBycREco3/v7Px6r0fnX0JQCcmvh19n4@lists.yoctoproject.org
-X-Gm-Message-State: AFuF++mZDeSwjM70QxFf2JQ2RpmQ3NhOe8zGopsCIpoDqfP8hDO6zUQF
-	xxmyHVIKItRTnmIUZwXQ1hdClQbJjVbabJZCKjjhFpVd+hGEgLN6YG9EWMC2XMxXjzq6CWvD1b0
-	HD0tA0lJj0TSDe80Ovyv5X1/GNLAbd2A=
-X-Gm-Gg: AYBFou0NBK+TlIcH/gTIZMQtuBizplkTeoW/O6c2vgIZRKVo+LYKlNE129aUIuXIbG9
-	LI9ozumbQxL4NuLUeiPGeLfBgO8sHAhX29MCqGMvFbxKVIKG/1/U9O06LBQyhn+Ty+F8X1rLDkI
-	96bIHsni6CN2arcWA0xm8MclUYQfInbwFgW/P1bykx6d7is2mAvdcXD7rv8/I50yOM5iNhpghQf
-	qM6l4W9bE2IzZNm53G6UGTUJtVRr01/z2cLzhamPxpwyi115UYGDfEC7muMVeyXPwSBZw4jNOUJ
-	m2JonitkSILrnt6+0TMqvRbowb2+OjdD8IPG/tR+OstHH4ZJmGDiGZAElZwOvfCeo5CY9eATjny
-	F0QNwhmORBzgHyQ/oNvNOevyr
-X-Received: by 2002:a05:6214:2b8a:b0:910:63b6:fc63 with SMTP id
- 6a1803df08f44-9122e511ea4mr45111076d6.15.1789400967820; Mon, 14 Sep 2026
- 08:49:27 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1789402123; x=1790006923;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=phYBkVMTQBh9yLYT/87ogJsohkG7NYR7yRccMbxX5ew=;
+        b=OwJmwcEWDbQCVEHILykeOS9KdF9NzMiR341JEzw9t/VwzHM6NH+rTM0H9Z0pyUV6ZI
+         1WhYQlxqfnJ7uvgJvk5mzOwMimErBxRfvBYnz7PvvciGBV1Prdz7FMplMi3iwLpKd2k6
+         iZDwFjcZGxe81rg/4HCBWJHtAvVjKqfmNEKtY2/QfH0UGEfLPFkWAvNtvOFQjnQq1JYs
+         ZCSGjtVaeZ+BGHOKfPFk0oMhKXbac3rHPZbnVcnaXT1sUDRv5tm0w5iKHCI+zbS0jF1j
+         1Clgy3jjSoI2BEtDp9bfhjCkqSlVhl+AN9xJhow0ac8sjJuiY5JCFaLijB0qNoXkiNPc
+         aYgw==
+X-Gm-Message-State: AFuF++kXERgzlPRuAMHf4zDDBeYiHgr5FgQqIfbAI2GpvwySbBMZ9Wy+
+	SJwHrQJ4eRCwnjW0p/ZYKO+OLdnFMVNidsY+UrzvcIYPHESUgcj9NZQYCMQVyg==
+X-Gm-Gg: AYBFou1G6Q9PSVChKGQkcDqoOza/+m9I5fH3u/c+iRWjPAOff1XN6sW2UW2w5MErDbN
+	7hPnQAJGt/vh9AYDdU3PCsxr/1dSh8zJCAhlJ5eQoVim+JNzxxRUWKzCGgPDkREaFj0sx8hFuvU
+	qoJOfGmV2pJ3xrPp4lJrtT8Lq698njYV5mMBAF7o9b30O3jfO4hvdgbaekf9GJJAjnDci7odhYE
+	Md5cEQyHps2Ea6wTxH4f0Do8Srve+LX/0aL8O+VwnEnwsgzUo9BidwUBIqoBlHv3wh2Uon1VblV
+	iuviEGlygGGptL3vgmayq4mILdI3IGavsPVgdzxo+dlVVJrpaXKNX4M6bqpQCoPVt5lUeJbUovI
+	xCQND27FQzWKVUQAOyiRQAom1kiTaBMiK2+SeuF6hCAM+pUCaEXmvUn1mAjCqHCNAWCVMmS8i9I
+	OByb6Pvax7dhyh42Qzie7IOGmCwbvmj49xrubd9CrJ7rkixHn493DFeSUG1UQ4mrZXKD7mT+3v0
+	wxvoqY=
+X-Received: by 2002:a05:6820:3083:b0:6b7:46fa:16a9 with SMTP id 006d021491bc7-6c542832ae1mr1824495eaf.62.1789402123329;
+        Mon, 14 Sep 2026 09:08:43 -0700 (PDT)
+Received: from localhost.localdomain ([2601:283:4b01:ba50::9413])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6c0990cc05fsm11012356eaf.3.2026.09.14.09.08.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Sep 2026 09:08:43 -0700 (PDT)
+From: Joshua Watt <jpewhacker@gmail.com>
+X-Google-Original-From: Joshua Watt <JPEWhacker@gmail.com>
+To: docs@lists.yoctoproject.org
+Cc: Joshua Watt <JPEWhacker@gmail.com>
+Subject: [docs][PATCH 2/2] ref-manual/variables.rst: Document SPDX_AUTHORS
+Date: Mon, 14 Sep 2026 10:08:36 -0600
+Message-ID: <20260914160836.1673868-2-JPEWhacker@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260914160836.1673868-1-JPEWhacker@gmail.com>
+References: <20260914160836.1673868-1-JPEWhacker@gmail.com>
 MIME-Version: 1.0
-References: <20260828162612.753815-1-chris.laplante@agilent.com> <d8eedd54-51b2-4d71-a8c8-4dabe0437c63@cherry.de>
-In-Reply-To: <d8eedd54-51b2-4d71-a8c8-4dabe0437c63@cherry.de>
-From: Alexander Kanavin <alex.kanavin@gmail.com>
-Date: Mon, 14 Sep 2026 17:49:16 +0200
-X-Gm-Features: AcwNN1WxG9OLL3FeMgYXK6N6nuhcsy2_h8wnCarl09bhaKJ_nTmfuQyyya2y000
-Message-ID: <CANNYZj96bFyuvNrTtF+pk8zzn1up98o4MwoB7sRai1GxKV7HsA@mail.gmail.com>
-Subject: Re: [docs] [PATCH v2 1/4] lib: rename fetch2 as fetch; invert compat
- shim to make bb.fetch2 = bb.fetch
-To: quentin.schulz@cherry.de
-Cc: chris.laplante@agilent.com, bitbake-devel@lists.openembedded.org, 
-	docs@lists.yoctoproject.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 14 Sep 2026 15:49:37 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10496
+ <docs@lists.yoctoproject.org>; Mon, 14 Sep 2026 16:08:48 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10498
 
-On Mon, 14 Sept 2026 at 17:21, Quentin Schulz via
-lists.yoctoproject.org
-<quentin.schulz=cherry.de@lists.yoctoproject.org> wrote:
-> I see this has merged already but I cannot help but ask "why". You don't
-> explain what is the issue with having fetch2 instead of fetch or what
-> this is helping with. The only thing I see this changing is adding a
-> deprecation warning if you're using bb.fetch2 in a third-party layer,
-> and I'm assuming at some point it'll be removed and layers will need to
-> adapt or be broken. What's the context? If it works, why "fix" it and
-> potentially introduce issues?
+Document the SPDX_AUTHORS variable. There was some confusion about how
+this variable works compared to the other single-agent variables, so
+adding explicit documentation that indicates how it diverges is useful.
 
-Personally I can't stand having those unnecessary numbers. We're stuck
-with things like python3, and gstreamer1.0, and it's just eyesore and
-extra characters to type for no good reason. That's why I always
-resist introducing those version appendages, not always successfully
-unfortunately.
+Signed-off-by: Joshua Watt <JPEWhacker@gmail.com>
+---
+ documentation/ref-manual/variables.rst | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-Alex
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index e1d3cd70f..4ec4ce988 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -9499,6 +9499,29 @@ system and gives an overview of their function and contents.
+       ``SPDX_IMPORTS``, :term:`SPDX_INVOKED_BY`,
+       and :term:`SPDX_ON_BEHALF_OF`.
+ 
++   :term:`SPDX_AUTHORS`
++      This variable is used to list the authors of the created SPDX data.
++      It works slightly differently than the other agent variables (like
++      :term:`SPDX_IMAGE_SUPPLIER`) in that the base variable provides a list of
++      suffixes which are used to construct the variable prefixes for the
++      created authors. For example::
++
++        SPDX_AUTHORS = "myorg myself"
++        SPDX_AUTHORS_myorg_name = "My Organization"
++        SPDX_AUTHORS_myorg_type = "organization"
++        SPDX_AUTHORS_myself_name = "My Name"
++        SPDX_AUTHORS_myself_type = "Person"
++
++
++      Note that references to other objects can be made using the ``_ref``
++      suffix, for example::
++
++        SPDX_AUTHORS_myself_ref = "SPDX_IMAGE_SUPPLIER"
++
++      And other variables can reference authors by using the correct prefix::
++
++        SPDX_IMAGE_SUPPLIER_ref = "SPDX_AUTHORS_myorg"
++
+    :term:`SPDX_CONCLUDED_LICENSE`
+       The :term:`SPDX_CONCLUDED_LICENSE` variable allows overriding the
+       ``hasConcludedLicense`` object to individual SBOM packages. This can be
+-- 
+2.55.0
+
 
