@@ -1,140 +1,155 @@
-Return-Path: <richard.purdie@linuxfoundation.org>
+Return-Path: <quentin.schulz@cherry.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9B6A1C88E72
-	for <webhook@archiver.kernel.org>; Mon, 14 Sep 2026 14:34:06 +0000 (UTC)
-Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.21563.1789396438338013321
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 99C35C88E77
+	for <webhook@archiver.kernel.org>; Mon, 14 Sep 2026 15:21:57 +0000 (UTC)
+Received: from DUZPR83CU001.outbound.protection.outlook.com (DUZPR83CU001.outbound.protection.outlook.com [52.101.66.57])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.223.1789399314023832348
  for <docs@lists.yoctoproject.org>;
- Mon, 14 Sep 2026 07:33:59 -0700
+ Mon, 14 Sep 2026 08:21:54 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=iJusjvB7;
- spf=pass (domain: linuxfoundation.org, ip: 74.125.225.141, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49b965f447cso16066485e9.3
-        for <docs@lists.yoctoproject.org>; Mon, 14 Sep 2026 07:33:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1789396436; x=1790001236; darn=lists.yoctoproject.org;
-        h=mime-version:user-agent:content-transfer-encoding:content-type
-         :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=RxkfF0KbpbMo2v8tPVl7iDAAmJlkjGexa4oWvPkVSpU=;
-        b=iJusjvB7JlPpZnsW9zhab6godZyzZ2g60Jd8xMayE0T3EDDAYw2ysSvRvlqSdZVWu3
-         r+LN8ZISYz+nGVdtL7RXyzyg55wJQ8EXRtb+qLfr/mNGwsP0eVPwYO8vLs9/S2XJBFlR
-         ov5sSyaRU14FBHknzSUwtw2jlXsOfpIiEf5aE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789396436; x=1790001236;
-        h=mime-version:user-agent:content-transfer-encoding:content-type
-         :references:in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=RxkfF0KbpbMo2v8tPVl7iDAAmJlkjGexa4oWvPkVSpU=;
-        b=f8Qt2sEgaO5wh+QhJUxrrhOssx8A+uVKOwwrZygfL1mKZ2yy1ojOk/LNREglE2igrx
-         NTCyJvsmYPF8/OaR16rgEoGV4N6LWQh/km7l9QZ6Nuyq4vcRe547nSpHriUXNEoMUHii
-         8kPXbcpdKsFf4T3+/QlkDOC5FGC42sDg0gAXPa4PQ55Qbqj0/288btBtgxS85smNDPKJ
-         GFN8tDnwB5gsYA9d+HN2dpkPXS/UvNlteTJcRGplmTsrA0A4B7OE+1xdmrdpcQ1xQc/a
-         hkf8gAhztqwJlQILeXovX0nuYjSik8dXNDaaItuefSbHNpZTDhsk4mp/aknalVYc/BdZ
-         UP8A==
-X-Gm-Message-State: AFuF++mRWEM3tesyF/V63ewZEDN2pqSTweRVubTorzw36ksvSvIGro6B
-	uIBhjl0nvubYQeSfjH+czFU3c8W4H5G1x0Y7FCA0qYVrzoK5qbzyNkIKX0mmG+Au9k8=
-X-Gm-Gg: AYBFou1AvFtfXae5DIJM0f6EGPMHkhkbu06ykRK+XshppNl+YVaZ9HHE4m4B5rMkvQO
-	mgD/lboz5extvgXOSPIfu8kRD27rpyc/S/THGZrybBsWDcZS48lX37qGXNFT/shpNMaQ7vAXUrS
-	YV+V3frOIG/UHd/xbwMU2duunwLsCiu0rv4WH2ijywLWZvsKv0yAy3rOFIu722eSkhASI0/fc1v
-	DXLyMYT/o2fOcKFkWV5r8FscwSD03IcYcP51IPOfWv0rO6KuSo4pdGrBAPCDi5wEA43OZI8cMPV
-	iIubcriT12FWWA6a5yKLXkacNaiIl8+m0c5THisefWIEK7awlNZCaeS6HYvj0kenIv2JUM1vaPQ
-	25ZcKgTU3xbJrmkcLJhjU08xwX2yZJAD0K56DLfwcgijvnIlwb4zna0l7SsjNas2kGBExgtSpsm
-	ye3dObDsmWC6Jcepgw0cipVA8xb7kTldPwA5ht7fua/jnUVzHaPyyM/DQGIVNY4SFk3YURsmY1G
-	bwNvAxlpoCtMEDYNY0zE+cjD2Doz7WkYbYsYqREzKfQfKEqV4PsP9UiiKybwEG6
-X-Received: by 2002:a05:600c:3583:b0:49e:645e:2616 with SMTP id 5b1f17b1804b1-49e7a637631mr46994465e9.5.1789396436465;
-        Mon, 14 Sep 2026 07:33:56 -0700 (PDT)
-Received: from ?IPv6:2001:8b0:aba:5f3c:e738:2a19:1746:7e8c? ([2001:8b0:aba:5f3c:e738:2a19:1746:7e8c])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49e60adaee4sm482966855e9.14.2026.09.14.07.33.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Sep 2026 07:33:55 -0700 (PDT)
-Message-ID: <f90a94a1719d52ad8188706757114f5631e7e497.camel@linuxfoundation.org>
-Subject: Re: [docs] how should one update "dual, six-core Xeons"?
-From: Richard Purdie <richard.purdie@linuxfoundation.org>
-To: "Robert P. J. Day" <rpjday@crashcourse.ca>, Antonin Godard
-	 <antonin.godard@bootlin.com>
-Cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Date: Mon, 14 Sep 2026 15:33:55 +0100
-In-Reply-To: <5cbbde75-6821-a4e5-f44e-8290522cf53c@crashcourse.ca>
-References: <b13f1dcb-14aa-8063-e9da-96817167a9aa@crashcourse.ca>
-	 <DLEWHJ0DKML4.2ITSSJJ00H3ZG@bootlin.com>
-	 <5f70fb6ea6d2c9a4a24f476f463ab1adf02aa7e5.camel@linuxfoundation.org>
-	 <ffbce176-bd78-f316-dd71-dda8ae2dd8f1@crashcourse.ca>
-	 <DLF1KOQ6EK65.32CUFMXM5545U@bootlin.com>
-	 <5cbbde75-6821-a4e5-f44e-8290522cf53c@crashcourse.ca>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-9 
+ dkim=pass header.i=@cherry.de header.s=selector1 header.b=coQt0B0p;
+ spf=pass (domain: cherry.de, ip: 52.101.66.57, mailfrom: quentin.schulz@cherry.de)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=NWaiWJLqhk8XFk6sIILphxdTvnzHogdii+zW7aKki1a8PQcYkKJ9HV7MmO702p9W/32zth/tmit2m7Bgr9M3m0MuWy5S/9B/FKcqDSgkDRSdEULR0PAariUAI1c7Gl2xMRdYTxQ/SRsBp6J+8kA/xyd0F966fnxyBA2ngpq5VQ9JG2lERMBs/qvqzuFFheVDVdZsDSyBZ9qHtnVoL2wWGeU/iwV/si3z99dt6G+5O/Jx58Vz4JLaEnFbjbWDppMfSA8OIlJAfbT7cv3teEz8uMUxI73N1mJ1cZ+1ZqfVpLRaHiA+rOl93C3ox8Qk9XuxymrQ9+bS0YmFJUD97AoH9Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=otFE/+XqgKf65/XFyvkqJ1ERNjJ8zq/tBu37YnzAyYY=;
+ b=GvnFyiM5kqS18m7fFiaw1lner1FwN8jY0e1LrsOhadpBecLVsZreKlbQ3V7FXSmnTk87+iHZ+bpeF4yXogpkgfBEaH0Yakr6Em0Fh0qri2fQvuxGulXu4Ul3AZCyTiQaHYby0o8waPXrCgymqngGRAIBryZRAu5GcgXV9TxqEE+y54CDxKwXG4pJR6sS8gmSPxpJ+k51YX5zGj91Ex7UceL0+yM8UJ0i0k7+3rJSSzvuIsHkWila9gKIYjzSJJ7cpLNlbkekbD7l5qVTXHmGk8+ITh0Wgxljzl4CziUI+fjg7t1yknXhs9FQZckdZKasT/5JrLTgKq2vducxOW277w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
+ dkim=pass header.d=cherry.de; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=otFE/+XqgKf65/XFyvkqJ1ERNjJ8zq/tBu37YnzAyYY=;
+ b=coQt0B0pv8IBYYu8sqVjCnlC/FABQB5mFBh0vmNF40iDaYOdxOJB+izqVubKcKIdCFUKe1GKRrrcvTxDJtRZQAMlfPJCET0oTuFdODpq103l7tRHWNIjPIs7B27GUUDziSVH2US2e/ctdGMhWx3GM1CB4d1av648GLgp4661XVQ=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=cherry.de;
+Received: from PA3PR04MB11153.eurprd04.prod.outlook.com (2603:10a6:102:4ab::7)
+ by PA1PR04MB11508.eurprd04.prod.outlook.com (2603:10a6:102:4e0::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.12; Mon, 14 Sep
+ 2026 15:21:48 +0000
+Received: from PA3PR04MB11153.eurprd04.prod.outlook.com
+ ([fe80::6b02:c0eb:95a4:3c3d]) by PA3PR04MB11153.eurprd04.prod.outlook.com
+ ([fe80::6b02:c0eb:95a4:3c3d%4]) with mapi id 15.21.0406.007; Mon, 14 Sep 2026
+ 15:21:48 +0000
+Message-ID: <d8eedd54-51b2-4d71-a8c8-4dabe0437c63@cherry.de>
+Date: Mon, 14 Sep 2026 17:21:47 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [docs] [PATCH v2 1/4] lib: rename fetch2 as fetch; invert compat
+ shim to make bb.fetch2 = bb.fetch
+To: chris.laplante@agilent.com, bitbake-devel@lists.openembedded.org
+Cc: docs@lists.yoctoproject.org
+References: <20260828162612.753815-1-chris.laplante@agilent.com>
+Content-Language: en-US
+From: Quentin Schulz <quentin.schulz@cherry.de>
+In-Reply-To: <20260828162612.753815-1-chris.laplante@agilent.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: VIVP296CA0094.AUTP296.PROD.OUTLOOK.COM
+ (2603:10a6:800:35b::9) To PA3PR04MB11153.eurprd04.prod.outlook.com
+ (2603:10a6:102:4ab::7)
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PA3PR04MB11153:EE_|PA1PR04MB11508:EE_
+X-MS-Office365-Filtering-Correlation-Id: bd96c8cd-0ea1-40fe-c690-08df1273e508
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: 
+	BCL:0;ARA:13230040|23010399003|366016|376014|1800799024|10067099003|56012099006|11063799006|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info: 
+	P1Y390fA7tkSzowk1Yx2fMeQWz1rZw6k2QD6OEVEvG7cIyZBpb7V2Kg8yIBJ1sKHoSgt16hcVLcesZsyJOFqLixhcW2RWLAPWc4+W4S3OVVi9VOXqQj2XQV2RDPA+BAAfmeFws/nf732NyV/rVACuoczREK27DjxkYYWXuR8kUbRBXdFgIcDXJopkpEzRj2hfmYy5XaHxQsIWXn5okExbjfaVV0xAH4opaZm+3aW1fc3K/O5zF9BMMf+L9pEXGQREWmCizjgN6STU3+5mhutgp5LxGTX12UZ3py8ZXefsVLZ57GaOQ+T7DwTE76GT66sTed+jia9mtUa6Cwvhgne4Oi+r7Swu2+1GKvuBbpla84/2fBZSvwQqFUixU7hALXckoxHHHdkfUT/0xSXRlVQQFanZLV7D83QzHDBsltppJVWL4ENx4Xk5sIgGjza4SGqF96/zta4JyiUsnJ76D/SZPRu/qmwk8pLGsY5BMit9DD5QdHa0I7lLf1kXJ7ijlCnxwJCDXGqMExjOWPszbIWBmMyAOwAHlUJ8U/ReNfy1XGC8eogFzmkz6jfS/Hn4Hojts76cDUrFEmiGFyJMx7OPua7cYV5Xn49V2VFlAAB3JO2/X0cfqb61Aev2f4UfBCycmkGhUY0hKgeV+GnHpVtHLfaXwQgSmI8z9uieOZ5V5A=
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA3PR04MB11153.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(376014)(1800799024)(10067099003)(56012099006)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?utf-8?B?ZEtVYXAvMVFhRFFWd1UzWHRnWVVRQ2dqNkdkSmVleThtWHg4bGV2L1FTNDd5?=
+ =?utf-8?B?MkV3YjYzVkNZbFhCUEh5NllyQVdyZFZLWnJMbGFHWlk5b0YvRk1qbzltU3V5?=
+ =?utf-8?B?dTNnOUI2NTlIT1V6M0tReDZ3a3B1cGF0cWVrU0s5TWVtWUxvZDdhcmprbWcz?=
+ =?utf-8?B?S0RoQWRqVzJodmtJcWRDOVJERG5IWkdYLy8yd1lVbExweFJVS1p1ZWVPUEFh?=
+ =?utf-8?B?eHd6WS9TbWJIb3YwUlNNR0NNa3JLR1pYMVh1Ry93YnJxNjFTUnhPNFFCVE05?=
+ =?utf-8?B?aFlJcVRaaEYvUTNWSFkrMnJxUjlLeExJYVFzbG5CNDNWNlp1R1BCU3JXSHRs?=
+ =?utf-8?B?QmkrU3pDK3I3VDBZa3B6SS9XUWpqNTV5UTRPZE4xQzZsNXJLYWRaZTFyd3hX?=
+ =?utf-8?B?RGx4Mk1zM05VMDllVGxxaklYKzZqczNQNDlLU01IQktRenhjQmNGYWhxRnQ3?=
+ =?utf-8?B?Q1lPQnE0dW56c2Y0QmtDaXBQZjE5dUEvdE9ZRHpMS0xVTFJmYzR6MTYzVWlF?=
+ =?utf-8?B?dGYvcndaUEUyQit0QTA5M1ByS01OV0NYY0w0dFlNbDRMNVJ5WWpkRXRhajVa?=
+ =?utf-8?B?bFYwWExWYm5La29ablhqUks3UXhRS1VOWXdlSmF5d2gwY2FrMS91M2FQU1Bm?=
+ =?utf-8?B?MWp3c2VXb0pHUi8rR0VVOVZ6cTJ2ZVp6Z293WWRiNE1oZTU5WFpFMHJ1dlNw?=
+ =?utf-8?B?dDRCUFpUUTJjWHlzVVd1Y1BoK08yRE9jMWUweEhmU2tVZzlNVVZSMDFsbXds?=
+ =?utf-8?B?U2E2NG5MV0NjUGZqSWRFM2xvT1N0cmJLU0dRK0lGQ0ZDTUlPRXNMVFQ1VWNr?=
+ =?utf-8?B?cFd0alFVY2ZhQjd3TXNYVlA1Wi83U0tZUmlkS2RnWksyWjZqMzFCdDU5cFln?=
+ =?utf-8?B?c2RCVmJqclI4eVZtVXBEZzRud1lERmIvOU5FVHdhck0rUmxoMVIxT0dmTXEv?=
+ =?utf-8?B?WnFMaG1RR09OUWc3aDlPQ3dtNEhyN3RTeXFYRkFJeTE1NVp4R0ttSVR4MXZJ?=
+ =?utf-8?B?MlR0WitSUHdmN0hGTzZiVE9paTVjeHl1SUttWDQxaDFaQkRwajRwRkV3OU9R?=
+ =?utf-8?B?c1ZuVE4vdDMwMCtDU2NFSnllWlNaRi9sTURkZ3IrbFFZUWZsVGZCc3NGWDlO?=
+ =?utf-8?B?dkpqQXR2UlRJZHI1bXY3dVpzdVR1dmJxNEwrWjJCM2RTRURJclhZalR3NVE4?=
+ =?utf-8?B?dFJQazByMlBXNGpvNDRXTVdLUTc0b1FDZlFKUjhXVTB1U2E2UEcybEY3M0hR?=
+ =?utf-8?B?eEhxVStYS0xHYTJsc3JiMmpKRW81dnNsNGlITkFpQ1loc0FwcUVKK0tjV20y?=
+ =?utf-8?B?TFp5VkJaZ2F4cVVORE10UHVqYXMzazVYRUQ4ZXhoUHZzV3NPc1hrWXNSNS9y?=
+ =?utf-8?B?cG4vemU2cVF1TFZqRUNnMkg4MTgvS3NRR3NsNFFhRFhTOW5jUHRtOGEydDZV?=
+ =?utf-8?B?Y0xJUmZjWE5GYTF5RmJ3T1pJRSs1TzQ5K1hFUW5PbjRkMXY2MDluL0RXcytG?=
+ =?utf-8?B?NUFXdzhhTDVtanhOZDRtTnhCd1M3Z1pod1k1UGZ4OVE1bDlYWVFFRXAwTGJk?=
+ =?utf-8?B?cU4zaFZhb05LeHNmbEI1NU95ZGZsVWl0RHhqckdoL0F0TFpiUXhWTzd5djBj?=
+ =?utf-8?B?U3ZmQWwvdHdDK2l5enh2eGYyT0IzOXhwem5aQ3h1MkUzL2NnZ2REVXE5aC9L?=
+ =?utf-8?B?aVBFQm9jM3dybWErUHY3ekxzM1p3OEFwczM5YU5wK0JHMnBxZEJ3YlI4R3Br?=
+ =?utf-8?B?TWhkSXFwc3M3eDd3MHF3bjlaMjBGZ2xnYWYxVnRWRU1XbjN1bnhnNzBFMDd5?=
+ =?utf-8?B?cHFCWmZONkhMeE1OaVpsd0pOdVl5M1RGanZGdTBJek1MK3RtaTVGaEdhZHdy?=
+ =?utf-8?B?ZnB2UHhTMjFVSjFmanpQVVdYUWF6RVg4RTltV2UyczV6WEJibGJmR3dMOHlD?=
+ =?utf-8?B?ZlhsTVFldVNWbktSeXhZSTBsMHlIV1hJM2tLZXVqb2NlV2NkdktncXo4RFNI?=
+ =?utf-8?B?d1hxUVRwVkYwa2pUb3lwV0hTT3VhRk5pcFJDRUJiOFhkTHh0ZFMrV1BJRnln?=
+ =?utf-8?B?UEJ1NFZ1dXhnYXc3VGlBbEY4TGw2dWdYL1U2NmdBSC94N0V5dGhpUmcxdWdF?=
+ =?utf-8?B?a2FyTjFNVE8yNWloQkl4MlVqL0wySjhoUnNrb3NKR1hOVWxCNEVHRkh4NG96?=
+ =?utf-8?B?TW9rM1VCck04Nkt4L3VvcUdHTzZKcDZnSUNKMDdQaW5SbW9GeFUzUXJTK2h2?=
+ =?utf-8?B?VUNsbXVxK1V2UFZ3OEZrU3FoclhkOVhiWnpPcE1yT01ZdTlyT2xVcisxQkU3?=
+ =?utf-8?B?elI0SDFNdU5JSitDeTY0T1c4aFhvTnc4S1hQOEEvME1Ybnk3UTFkQT09?=
+X-OriginatorOrg: cherry.de
+X-MS-Exchange-CrossTenant-Network-Message-Id: bd96c8cd-0ea1-40fe-c690-08df1273e508
+X-MS-Exchange-CrossTenant-AuthSource: PA3PR04MB11153.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Sep 2026 15:21:48.5632
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: xNKXZp11hLbVcc3lAtFrTFtN+1EpeIIyX6Tb7s4Lp/Jy4/9G2ZBT6YkQRM6mfG26xdq5uEz3v/pnf2AU4aM84PAsNx2wHg6CISkqVeE4vqk=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB11508
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 14 Sep 2026 14:34:06 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10493
+ <docs@lists.yoctoproject.org>; Mon, 14 Sep 2026 15:21:57 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10494
 
-On Mon, 2026-09-14 at 09:01 -0400, Robert P. J. Day wrote:
-> On Mon, 14 Sep 2026, Antonin Godard wrote:
-> > On Mon Sep 14, 2026 at 11:46 AM CEST, Robert P. J. Day wrote:
-> > > On Mon, 14 Sep 2026, Richard Purdie wrote:
-> > > > On Mon, 2026-09-14 at 10:36 +0200, Antonin Godard via
-> > > > lists.yoctoproject.org wrote:
-> > > > > On Fri Sep 11, 2026 at 8:08 PM CEST, Robert P. J. Day wrote:
-> > > > > >=20
-> > > > > > here:
-> > > > > >=20
-> > > > > > https://docs.yoctoproject.org/dev/dev-manual/start.html
-> > > > > >=20
-> > > > > > it's amusing to read, "These systems, in general, should be
-> > > > > > high
-> > > > > > performance (e.g. dual, six-core Xeons with 24 Gbytes of
-> > > > > > RAM and
-> > > > > > plenty of disk space)."
-> > > > > >=20
-> > > > > > would someone like to suggest a more modern configuration,
-> > > > > > and i'll
-> > > > > > submit a patch.
-> > > > >=20
-> > > > > We could simply say: "&MIN_RAM; Gbytes of RAM, at least
-> > > > > &MIN_DISK_SPACE; disk
-> > > > > space".
-> > > > >=20
-> > > > > Those are replaced by our poky.yaml.in replacements when
-> > > > > building.
-> > > > >=20
-> > > > > Not sure we need to mention a processor model here, as it
-> > > > > would become obsolete
-> > > > > in the future.
-> > > >=20
-> > > > I think the key is to mention multi cored system, "ideally with
-> > > > at least 16 cores"?
-> > >=20
-> > > =C2=A0 i can submit a v2 with that info, but would that be hard-coded
-> > > since
-> > > there is no variable in poky.yaml.in that relates to that.
-> >=20
-> > Right, I think we could hold this value next to MIN_RAM and
-> > MIN_DISK_SPACE, so
-> > we keep all of them in sync.
-> >=20
-> > I think we should add MIN_CPU_CORES in a patch, then use this value
-> > next to
-> > where MIN_DISK_SPACE and MIN_RAM are used in the docs.
->=20
-> =C2=A0 we can do this in two steps, and someone else higher up the food
-> chain can peruse poky.yaml.in and decide if there are any other
-> variables that can be added that would be useful in the docs, after
-> which i'll submit a patch to take care of my little issue and others
-> can think where else those new variables can be used.
+Hi Chris,
 
-Can you not just send some patches helping to fix the various issues?
-Do we need "someone else higher up in the food chain"?
+On 8/28/26 6:26 PM, Chris Laplante via lists.yoctoproject.org wrote:
+> From: Chris Laplante <chris.laplante@agilent.com>
+> 
+> bb.fetch2 replaced bb.fetch back in 2012, and the compatibility shim of
+> bb.fetch = bb.fetch2 has been in place ever since. There's no longer a
+> good reason to keep the '2' suffix, so lets drop it.
+> 
+> We also invert the bb.fetch = bb.fetch2 compatibility shim to now make
+> bb.fetch2 = bb.fetch. We do this by creating a new lib/bb/fetch2.py.
+> 
+> Layers are accustomed to accessing bb.fetch2 without first importing
+> bb.fetch2, so we declare a module __getattr__
+> (https://peps.python.org/pep-0562/) to keep this working.
+> 
+> Finally, we add a deprecation warning for good measure.
+> 
 
-What you're doing here is creating work for others :/
+I see this has merged already but I cannot help but ask "why". You don't 
+explain what is the issue with having fetch2 instead of fetch or what 
+this is helping with. The only thing I see this changing is adding a 
+deprecation warning if you're using bb.fetch2 in a third-party layer, 
+and I'm assuming at some point it'll be removed and layers will need to 
+adapt or be broken. What's the context? If it works, why "fix" it and 
+potentially introduce issues?
 
 Cheers,
-
-Richard
+Quenitn
 
