@@ -1,170 +1,194 @@
-Return-Path: <quentin.schulz@cherry.de>
+Return-Path: <david.nystrom@est.tech>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2E339C88E72
-	for <webhook@archiver.kernel.org>; Mon, 14 Sep 2026 17:07:28 +0000 (UTC)
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (DB3PR0202CU003.outbound.protection.outlook.com [52.101.84.38])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.2837.1789405638590425218
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 053BDC88E72
+	for <webhook@archiver.kernel.org>; Mon, 14 Sep 2026 18:22:09 +0000 (UTC)
+Received: from GVXPR05CU001.outbound.protection.outlook.com (GVXPR05CU001.outbound.protection.outlook.com [52.101.83.42])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.4382.1789410125675108270
  for <docs@lists.yoctoproject.org>;
- Mon, 14 Sep 2026 10:07:18 -0700
+ Mon, 14 Sep 2026 11:22:06 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@cherry.de header.s=selector1 header.b=lloe3qj4;
- spf=pass (domain: cherry.de, ip: 52.101.84.38, mailfrom: quentin.schulz@cherry.de)
+ dkim=fail reason="dkim: body hash did not verify" header.i=@est.tech header.s=selector1 header.b=kIPK/D08;
+ spf=pass (domain: est.tech, ip: 52.101.83.42, mailfrom: david.nystrom@est.tech)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rHaGu+a5ANb1GW8uQM7YNITPdVQ0jMFZ2gOmSafV6v3BLxeESh3ekCAjxctsn5lAzsaGGfVvojh8BuQ4086UrrXdqCbC1scOm4We2gykhAPAARrrdamHpBXOrRaNGA3vi58ZKMknUTFdDFw2suWlKCI5+u6xNi/hzM+8dTKlN52J7Ic6fF1YaPQaJAn/UOqCozTWsexNvqzL/+olzflsYCpvF6bT44NyL5LRnhGiZbZFLtgPVmd5QyPm05H4dT8Gn6i6Tq9PUdRQChjSBsWsulkZJr5430NAnF3ghHPKpBHrqBVpS8ONRsZrB3oYiA6K2IKT8ZKdNtsBIaPgmIpliA==
+ b=nh19soFJ6z+KYFvvWa6YlfKdkkVANHuuok11Ati9ZV56aA+U6BKLEi+4Q5rgODiuH7ngO2FYpeaQe0rWZHQ0XKIqpFHKcdH2Zx7gTlzPw+x8pSTTnkqFMi2SypPr7e5ZKWd3CnJ2FA3azRq8dr7M07N27mAlAL3dfK0FqnTK7GLaztsf38g/F5XjEj82RxurWxi4jswDakbdarxYNA0IzFvcfZC1e4lMxN+a6B0f+g5+XCInmdCJURGQ8kWa7LDXe7dPpyz7UZqNZlCA+uUquc2SVrlEHbuQRvyFLr8jqv26uA3q88EMaqEi5mg5RfHimptY8y5qZHkk2brddk69jg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=i3POuBVeddmSdrxCdJUD7KrEfgkC4XaaW9wV+OOWifs=;
- b=YJ+kdZLzbbK8Szd635Mj/GKlJM8EQK5Jmt+xG9cO+zNJUaLCePqjaaqbcExdDE38bIYQIc6sK91kN3Wh2W0KpSi79HaorfQYsyz5Z+rn0+3NicQWAYFrquT9xz4RXkDJH+4zmUfAMLQkdv7sY4CAI1LGeBhgSInYbbgx2HwSrHe+zegNUueguPA0NO2WioFXacPsbW3k4V+oHqri6sBGYi0iwhv4qIoViB1l3UUA56mhZ96Gvze1/ilVD1VlBFcfWX2vXyl+BHJpRXMSM/9r71JI9D/W8MS3IzoKkYqmJPGK6rIFfUMi4C4n7QgCo+PI4NmyU2TAgelMFl20J7GaRA==
+ bh=JVJid1fz9VK+CSsmxZbkeKFMoUeFrlD7JkKrvD0dGGk=;
+ b=jmx5Sz2RsK6kUL6zT/zqBj3V22lT52gltMkJ4eRdrQg00moGkV3UCdg4cH1WjHJZZsvsU3jC2qoqhvasojALkpKVDAUQ+u4HXQC5aHF8Qc5QjJmAPlOvCmCPtqc0J5x68kfRpKkWk5Q3nRNA7TGpSOhkscXzHkL28lKVXYf/aNElREPOw6AbxCt69U5iEfeMgCQRo39TnYvWMflclBHvN1Tr7v/PLX289ORa/+fbSA6sH0hWLelhthjY8huvM1gsQE+SywkrTuiPE4gLg7hA9jiJ6cDywPeuzigC+Ad5RrEJRh0503YJhrC6GztKmdkmjtOdpPsAtTUJRBVzVuv8UQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
- dkim=pass header.d=cherry.de; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
- s=selector1;
+ smtp.mailfrom=est.tech; dmarc=pass action=none header.from=est.tech;
+ dkim=pass header.d=est.tech; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=est.tech; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=i3POuBVeddmSdrxCdJUD7KrEfgkC4XaaW9wV+OOWifs=;
- b=lloe3qj4vqbvZhVi2/62QKpR2UM6H2CwAA1iwKtLTjdv80qIroXxS5/m0Ni+w7M91JLRZ2fKFQ8K+jMxXw7oS8PP+Kb9MmEwfGYQP5TDh45Gwizosd3kcSeIThyN54yy3LtxM5rCh5fIuA57WVnQ7eVDqJWu2ac20XDNRAtBw2I=
+ bh=JVJid1fz9VK+CSsmxZbkeKFMoUeFrlD7JkKrvD0dGGk=;
+ b=kIPK/D086Qk/oTA4jOI/rMM8RYEx5GZtGskJ8MdC3VX8AgpAxnszEPQ5T0mg3PiRwBtcMhxU7E6fJX6EXHsgZZ2D49id8d6Ol1RVD4QDNV1mSdNi5BQpcvygotRyTgc3DZP5K1Z8JLZw3zjL38inhqYVWt1f1dDqdpQYDDZmwFuGuyGfb2niANWan7tp3Xy7xR8QAt46MKh0fHNTTPO0GAEOGFs644FrNEUOtkxczsjVg4DigoOMA4TJCqKNwsnp+o3aYvLN8f9NbuBHvUszRSn1Q6Pr6hyU5SWmcmChSphFZevJad/NUFjI3pOCmeO3nQZqHcBwH2e+8Pzx8eBdow==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=cherry.de;
-Received: from PA3PR04MB11153.eurprd04.prod.outlook.com (2603:10a6:102:4ab::7)
- by AMBPR04MB759424.eurprd04.prod.outlook.com (2603:10a6:20b:799::7) with
+ header.d=none;dmarc=none action=none header.from=est.tech;
+Received: from VI0P189MB3589.EURP189.PROD.OUTLOOK.COM (2603:10a6:800:2db::9)
+ by AS8P189MB1302.EURP189.PROD.OUTLOOK.COM (2603:10a6:20b:2aa::19) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.12; Mon, 14 Sep
- 2026 17:07:13 +0000
-Received: from PA3PR04MB11153.eurprd04.prod.outlook.com
- ([fe80::6b02:c0eb:95a4:3c3d]) by PA3PR04MB11153.eurprd04.prod.outlook.com
- ([fe80::6b02:c0eb:95a4:3c3d%4]) with mapi id 15.21.0406.007; Mon, 14 Sep 2026
- 17:07:13 +0000
-Message-ID: <79063836-a355-475b-9e40-7b2ca80d70c0@cherry.de>
-Date: Mon, 14 Sep 2026 19:07:13 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [docs] [PATCH] Makefile: remove unused O variable
-To: antonin.godard@bootlin.com, docs@lists.yoctoproject.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- "Robert P. J. Day" <rpjday@crashcourse.ca>
-References: <20260821-remove-o-makefile-v1-1-fe61b5cf7fe1@bootlin.com>
-Content-Language: en-US
-From: Quentin Schulz <quentin.schulz@cherry.de>
-In-Reply-To: <20260821-remove-o-makefile-v1-1-fe61b5cf7fe1@bootlin.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: VIVP296CA0007.AUTP296.PROD.OUTLOOK.COM
- (2603:10a6:800:357::13) To PA3PR04MB11153.eurprd04.prod.outlook.com
- (2603:10a6:102:4ab::7)
+ 2026 18:22:00 +0000
+Received: from VI0P189MB3589.EURP189.PROD.OUTLOOK.COM
+ ([fe80::149:d9cc:d017:c9ec]) by VI0P189MB3589.EURP189.PROD.OUTLOOK.COM
+ ([fe80::149:d9cc:d017:c9ec%5]) with mapi id 15.21.0406.007; Mon, 14 Sep 2026
+ 18:22:00 +0000
+From: =?utf-8?q?David_Nystr=C3=B6m?= <david.nystrom@est.tech>
+Subject: [PATCH v2 0/5] bitbake: Add basic landlock support
+Date: Mon, 14 Sep 2026 20:21:39 +0200
+Message-ID: <20260914-landlock_try2-v2-0-0a1bad3579ec@est.tech>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXM0QpAMBSA4VfRubaaEfEqktgODhptI5J3N1x+F
+ /9/gUVDaKEILjC4k6VFe4gwADk0ukdGyhsEFynPI87mRqt5kVPtzClYlidtnHElE1Tgm9VgR8f
+ 3K6vfdmtHlO6dwH0/qvuMK3EAAAA=
+X-Change-ID: 20260910-landlock_try2-794b370dc4ed
+To: bitbake-devel@lists.openembedded.org
+CC: =?utf-8?q?David_Nystr=C3=B6m?= <david.nystrom@est.tech>, 
+ docs@lists.yoctoproject.org, bruce.ashfield@gmail.com, 
+ mattias.jernberg@axis.com, peter.kjellerstedt@axis.com
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1789410117; l=2595;
+ i=david.nystrom@est.tech; s=20251215; h=from:subject:message-id;
+ bh=imfnDn/M6bKN8DJ7DHe4sLvaAMIxII2pCih0A5lQT2I=;
+ b=4ve+dBn5HM2TLrBZxH4hw/MXTBmwc1bV3N1peCOO4ZgqCkMGW1X+SWWQ+ELH+G76IyjI4JZSh
+ sGSvAdxm6aRAlObY5MKvGoYhhsc42CoDVmyJ10odXPOJx0/htojvoAJ
+X-Developer-Key: i=david.nystrom@est.tech; a=ed25519;
+ pk=4E3iRjA+3w+a4ykfCHDoL5z4ONs9OcY4IN3pTwIG7Bs=
+X-ClientProxiedBy: GV2PEPF00023954.SWEP280.PROD.OUTLOOK.COM
+ (2603:10a6:158:400::351) To VI0P189MB3589.EURP189.PROD.OUTLOOK.COM
+ (2603:10a6:800:2db::9)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA3PR04MB11153:EE_|AMBPR04MB759424:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1a64e7d7-3d15-4cf6-d5d4-08df12829f48
+X-MS-TrafficTypeDiagnostic: VI0P189MB3589:EE_|AS8P189MB1302:EE_
+X-MS-Office365-Filtering-Correlation-Id: 089a7edd-493d-48c4-1e53-08df128d1195
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: 
-	BCL:0;ARA:13230040|23010399003|366016|1800799024|376014|11063799006|56012099006|10067099003|22082099003|18002099003;
+	BCL:0;ARA:13230040|376014|23010399003|1800799024|366016|10070799003|18002099003|3023799007|10067099003|56012099006|11063799006;
 X-Microsoft-Antispam-Message-Info: 
-	T2Uy9/0vdquTpELeZq7ozgcZFMdWR+maxfrI4rDVz3Jf+x6KYxPgFvAmV5tpiG8QkYnydfOPBMF+FED/WmIMYkWMeob/cHMQYvPcRLfkO6QmH/DVrrcGFdAfqfEnhl0UfahuQVdHNIPOMY4BUzNkYIC1uOnxFcUHy6E2zdK8tOvSLdWgBoJRm26PxiizInui5zLLau7x5L+Xm7lfso2rdpHjVLIXicpYjhVIXl/sOuCvemutJfyFfzmiQHvrAIt+VJJIpht5SKyDvl+Go0s1p/tZAQg+oHLtOa6jg6RpNOz67kY5KeX045BtbsZXqYcO8QJXkfeRhL2kpvr2lH8ETl6IohEdC/EWP4AaEUiWHt08ahXpFpOcqrBKd3frgHhltZ0yTlK/VwVo1rWFORdxeG06uCT24NGalguvzLvSId+kp4JjqoKbcGzBAFIRqnwtteufH+R6P0bXdckNt4XIc306RR0KvDK3QqpH5FVWmxfEL7bcH7WZZ1kt2HcXZViOMn+q8O8TNxl0E7ItDISC09pMAVI013Wq4gVQ1QMxP2UvYGdrRoFLYBUhe7oe50RVg58TFgAu7sHD7LbrnqHfYcc0rxHmdQI5Ca05yH8tCS0h2vTWPE7k5vRFsDBgqmIZe891yQKnFP5yf52b0mlQEDFfA00IzZxAl04I5/CaSEw=
+	n/jnz1fnmrYtRBCip9kTrmRkXgBcOQbmLvaYxO97RehIL5Tvgaywzqtv4teA6RIQ74Cpscp5DErmFUoC4BHRmEG43GUiHLZ+GEkCFSMmfmaf46jMZ6Fsd19jO2OfeIsxGlo8RP4HrFgU9Rjw3xQMdTlxcGuq1HfVMQj+M9OA+M+c3Ub7oBjG7uk606Z82c4Sg1tTofd4KpqjEOHyYA6qNhwa1D97aXx5e92nGCHbTMhDXHEzL0k+aondGVkYwMWB1C3QoTuSkFibwG9czYsdUqslMBIzT2p36f9B3q15Uey7uCKOTiVH9WfhCIxqTH6XViiFUWvEH8iXMCaqc7qwghlXq7TeMbcQyKZ5v0SIWO9GDOaHDCmd67AZ6V2+t32lR1tggQNQAsanYL01j2fAaAts7IyyE75rJ+7utqylGC28QD82Uy/T6kbhl5X2Rgj/hu4RK/tpTx6hKMKp5MwNQtWGNxWA40mT1HR0JskA3q4jPl6IMCnmbQEcuOHraic2X49Djx4sA5RNd5lmbpoZuJzRF45u/vFvwAjvnwPmIvS7wwgvmr7N7/XL6CtLF1Mz/t5GBJ1LW7fDTL+xqJeqYYbu8YQe3/U5NI+Fy6V9qektE1oCU8qvi4EZTh25Pt+RSfQFsbBG8UmbrCADhQjWOgPS32Ztgz9EeN16HN9dZ9k=
 X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA3PR04MB11153.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(1800799024)(376014)(11063799006)(56012099006)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI0P189MB3589.EURP189.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(1800799024)(366016)(10070799003)(18002099003)(3023799007)(10067099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
 X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?utf-8?B?aVo5Vzl5ZUNMRGpYRk1HU1ovQzlKU1ZLOFNwZ1VOVGtRSHZHZXNFRmg1Q213?=
- =?utf-8?B?Q2VvUUpSVTV0eUtvdXdtS3BlOXJLOGZRWjhqMW13VzU4TmtnbXV3MU9XTmFo?=
- =?utf-8?B?ZStwS1RtNmV0TlNVZEUxNUVpY0MwVk12c0plVVY5Qjd4UUxabXRIQUtUYzh0?=
- =?utf-8?B?MFhEY3ZnUytLbkZhODZzSjd1UkpXL28xd3FIc2ZPQlJmZkt6MW9BbW9acFdM?=
- =?utf-8?B?M3pENUExUE9HdDlidDRRMUVHcjdZT3pzdHZUV2J4WEY4eEFrSi80eFZzK0xP?=
- =?utf-8?B?dTUwUTFYNTJKcS9nMFFxVmZ2MllwODR2VnNFZ3MvSlF2UGxid2d0ajg4SUU0?=
- =?utf-8?B?ZTBwclNPdXd5L0U4Q05JUnl0WEZrSGJsc04zQXFJcnlGMzEwdi9KRTkxSVgy?=
- =?utf-8?B?OHQvZXUzK3grMWZJNHBqUUpZd0xxdHArQkIrNmJhY1QwS3EybXBxQlJPOW9L?=
- =?utf-8?B?RlFXemI5MzZNL3pxdDUyN0hpaDdUd3ErSGI5NUZ6em5nWXJLNVhnRk9GL2Zj?=
- =?utf-8?B?MVk4SU5UUWlQNUZJV2FOWHczTHp2dk5LSEUxU1lIcVdCclU3MVBkK0s4ZTcx?=
- =?utf-8?B?NmlpQmc1SkZ0KzJKZDdYaWFtQWlSRE1DcDQ0RVhTZ04rSE0zR0hMSXlWR2xF?=
- =?utf-8?B?V2Rob2dISUJ2UGQydXN4TUREUnBXVUowcnVxRzRhdmZTWTlBWVJIQ3FNY0tW?=
- =?utf-8?B?SW9ld3BxN3ExR1hGWTh6NWpPYVRWUTBKRGYwYks1VjY0Sk9xUEhKNjdockt6?=
- =?utf-8?B?c24vY2QwU0pON25OS21QRDRVQ09SdlVxWW1HVVJSN1lnZHNFanU1cWdlR2po?=
- =?utf-8?B?dThHd1JNdFdBR25OWU95WVVXMHR4NzBmOXpLN3JWaU1Xam9MZWlPOUJLLzFi?=
- =?utf-8?B?bG5oRHlIVGx1UUhRLzlsc3VtOVJ5NE1FVlIrY1VxWkE2VzNTTlkrWWFIZWpo?=
- =?utf-8?B?aEpNUUZOaTBlZGUwaWJNQlhmNVR0OHg1UkxKZGdmZzhCbDVLQXI2QWs2cEVT?=
- =?utf-8?B?MXVIRVdHQ0hZNGZVUWJoOU1hSXQrWkdRU04zc2REYWd6N3FCRlZJN2VzZFox?=
- =?utf-8?B?Y2pRa0gyamJoQ1kvYUxPNFVTVHdyWjI4QXVLRW95Smh5NFFTWkxuUlNnSFdF?=
- =?utf-8?B?dzFkQzRHcHpORGZxemJqaXBFVTFxYW9YbHp3WENkdmo0L3BDdDFNR3dBVDUz?=
- =?utf-8?B?WUVmQUdXZDZMQjdHRnlGU3p0bEErYkN1VEhKMW0zem5aRkVnWEd2THZaSXFi?=
- =?utf-8?B?VnB2bUN4K2hianhCT04xVkVleFMvdkQxMkZ4UmRURFdnNW1LSHhwVVQreDJn?=
- =?utf-8?B?dnVvQlJXUFNFVWZQSG96TFZuaGl5WXcwblpuUUw1bzRESG9KMnFRem5YUURp?=
- =?utf-8?B?aGhXVWZLSDRpSUtRYlh3SE9nZitkQjFERzNzMFR1TFpjSE5ySlZGelBVQ2sy?=
- =?utf-8?B?WndvN3pNTlVXWHl4MXNYTFh2YXZhRFhRRmRydkRoN3FTRnBuRHVkWHNHOTQv?=
- =?utf-8?B?K1YzOVZpdERGOEFEcDk5c2wvNGo4S240dDQ0czJCVjB1UzJPd3hWRWd2Q2p5?=
- =?utf-8?B?ZUxqUTJ4OWtzSXdwaC8wNldMUG9YdEk4ZGlWRjFkWjY4ZzVTTitzWUtTTm1v?=
- =?utf-8?B?SlFCb3FOTG1YSGJwQnZ6VllYTkRURWlzY2VYcHhlMk9QYUsrazg5RFA2eGF1?=
- =?utf-8?B?aVpXQWc1Z1ZEMVQrNVFFR1BGRldOWm1hcThuNnF0U3M3S29JWmN0RDZNdVUv?=
- =?utf-8?B?ZDFkZDlWN253RjNadGR0Nlc0NFkrNkNIbU1kREVDVnAvYWtoWmgxenRaSmpW?=
- =?utf-8?B?UUVmWjBqWi9CY0ttWnhqcXJFMnFtalU4cktzTlB0c0JXMzczVDB0L0FESWZt?=
- =?utf-8?B?Y0xDY2VyQUdGTC84V0RDTnFlUUY0d0VudTdPUHFnLzVRUkhFZFBYWUNmL1hr?=
- =?utf-8?B?OXBmZ1VHUWRITldoWlBZbXd6TlJpblZGTkpWM1U2Skk0MjNGZjZuN25oenE1?=
- =?utf-8?B?bS9KMUNuQi9WQk4vcytXcWlncEdQd3o2UmtHT0JQdnJEL2RLWTV3ay9ncGxu?=
- =?utf-8?B?NzNZU09uZE9rWG5GYlJiaXN1TDlrWGp5REhxM25Cd1k2UklZQmloNmNRZmFt?=
- =?utf-8?B?QVlUSU55T01xSGlKWG41aHNqdXBMYlZPcmNyaUVWZVd1Y1dsdVYzMUlLTC94?=
- =?utf-8?B?NkhBZGFjQm1sL1F5UEtNRGcyMzBIemtwdlZiL3hmc0Ric1JRRnB1T2Q2T00y?=
- =?utf-8?B?TGJZMDVuWEc1eHlFRDFmNm5Ed0xWd0wrYitRSXBPcXVYWVhnNGRScDh1dmJ6?=
- =?utf-8?B?WkxXcmtCY0FyQlJLc29RUkhRdHQvaURtQXQvb2xUNDNuVHNiRnpCZz09?=
-X-OriginatorOrg: cherry.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1a64e7d7-3d15-4cf6-d5d4-08df12829f48
-X-MS-Exchange-CrossTenant-AuthSource: PA3PR04MB11153.eurprd04.prod.outlook.com
+	=?us-ascii?Q?bKZc5rBep4lEvHw4fR+oenKvfXEzdPUcgWyt2kBeGYMR5wENdafuyrRnuCxu?=
+ =?us-ascii?Q?2bC6u5fzh2JJIyMJqfrXUwQEmxTF2RWvn2nn4QW9rieYPsT8fVIA7fDf0ouu?=
+ =?us-ascii?Q?AiwpLGOt23KJWAOdwZir6Hjpi+oyOaway9pSwjc8vtf4c2L+4LL5H/hIS+1c?=
+ =?us-ascii?Q?4I4O5Hf9IjWzM7m12jMz/9QF885OapKTCfMwcQsMKBVxNyWEiDkttAwJ4NHD?=
+ =?us-ascii?Q?toLPX7vYEW2BjceCByrn46bYsIVE7r32I/5Mq+JQA81M3VxWY+YRDeXlrpBN?=
+ =?us-ascii?Q?+bPcGCNSCoI8v1fNFUbsxh+5m8hKrpKc+KsdnVbHdVhoSjNl/omibJykAseB?=
+ =?us-ascii?Q?LmfeH9eI0fm7VFa4bpq6P+MlWzlYImboLcSZe4vvvi6L24yci0gsAd4fphds?=
+ =?us-ascii?Q?P0OHDDYdrFSMpTthJqFcwSAhE0p8/ZhHvHKdwDGEfbIQYiPoJTdNtkMZWSoZ?=
+ =?us-ascii?Q?Er4fu1kO4xEGBbkAoyOHsKYBGi0KP1I4coJfuo4htje0CBDLZOJek1OrmLh/?=
+ =?us-ascii?Q?qqrzWYTwpBKeiLqeYPEsph5iVbCZHj18kqBKmp7kO66/3AszRdaReD9cLTvE?=
+ =?us-ascii?Q?Plqjvmqmy5ts6CJNlBfG5adVhuyLKIy1bqr6w/dTxP+ohzdHdye2rvBUSM9c?=
+ =?us-ascii?Q?VA2qOJQmZZEoRZOkaN8NGM41r10YQVm2BK9enrYe5+lki8NxGPx5lYs7xGrH?=
+ =?us-ascii?Q?zY0q3cqiwmt95n9axSW3WLYccdSPc9CrHiaEu0gpH3uwqiUVhMBLx0ARgYv0?=
+ =?us-ascii?Q?WoUff0iCUXVWvknZR0J4lxDM002MLa6M6IOFVFbPCLE1moRzdW+/TrFuVx1L?=
+ =?us-ascii?Q?e2vJUnleSI4djkZTlalt2R4q5TrUluFTPRO3Tz6hmdjaGlve2R2A+z7nruvE?=
+ =?us-ascii?Q?vdcsIFK+XM9Zps0A5xyEovAKLfKAdw0Nn1+tru0myaI/h9VCCm6eGoeYvlPi?=
+ =?us-ascii?Q?RQYNuuRX+Cfy3xUuTWTOKaI69GCw5G/JnKfY5HmpfrI8+MZZd/uF4AXd5g/k?=
+ =?us-ascii?Q?0MOZqeTBiBGbVniDKAOkFdK/Fdka43USgsE2jTk47OKS7BKQB2do/rOReear?=
+ =?us-ascii?Q?H9f/NAdBZCw+R/T4SnV32coE+lKBHRNGdPkD55EfWW6l7qVSAQYpPEfQ/wYQ?=
+ =?us-ascii?Q?zjxwVyLFDwl16QowlFVqLYUkSBgkRNKe8jVVwmaljKfACbUCWM0sJ9k2G1u2?=
+ =?us-ascii?Q?he+6f9dewy+ABQjSWZQqQjFAHr0XoE4yH7bX9lGbI1Rzjpdn53cEtW4wF3kX?=
+ =?us-ascii?Q?87myZhar70e/qvhHzorTthdABiA1WLagJfeugGFKnUBvmGv880hSosu46QnF?=
+ =?us-ascii?Q?BMnG5nLkDeA1lm1Ui9Na52U/qI8ANLAD5I3hhrsYABpY6pY2R/HX5kd4nSIU?=
+ =?us-ascii?Q?ORJbsBFPn4gCQxeU64GU11UkeBgKugkoS0jPztPFVu2T667nYxtX8Trk15Rj?=
+ =?us-ascii?Q?mYfolBfaj2cfL/wYUHA5qpju40iGEsqU6Pe4+Oi0+ABYvsPTULzb5C36eQEb?=
+ =?us-ascii?Q?IUaj9hbSciOKVfW1yuXp/1mBzX5YruIU971fTmFEaAtqmgkdMwpwHtPXk4C7?=
+ =?us-ascii?Q?KVrzY7KafwxlS8D4D9fbH0S8nB97h52J6c3JzR/N6RixvFBXzNfiVxaIdY29?=
+ =?us-ascii?Q?htC/npnRKgaNVEuD+jYDVRVx4xHUs0RzY2RsxilFRH2H5Qhsy9vpTwvfCnS5?=
+ =?us-ascii?Q?VVFmO8ngEFDVq/E4hOzSvFtUz7coi4jyQr8nDiUV9XHFRiHPnYExTCyNX3Jp?=
+ =?us-ascii?Q?rQ8NkRhrL2j5YWA+YrHZMtfljtAXCsCbLaSvk9f4C9OAL9+jVWlfNcBuxgDY?=
+X-MS-Exchange-AntiSpam-MessageData-1: 3T/8d+2Z9qx9iODg+xpod4eVHuLudc477oE=
+X-OriginatorOrg: est.tech
+X-MS-Exchange-CrossTenant-Network-Message-Id: 089a7edd-493d-48c4-1e53-08df128d1195
+X-MS-Exchange-CrossTenant-AuthSource: VI0P189MB3589.EURP189.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Sep 2026 17:07:13.8762
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Sep 2026 18:22:00.6247
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
+X-MS-Exchange-CrossTenant-Id: d2585e63-66b9-44b6-a76e-4f4b217d97fd
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: T+7Bt92a38hQy/dnTw9uxxopYSNKllPtJSjdNDRgYsssPcj07OSHz8Ig09IMaIqc0K7eZlKHI2uS5mkKuo7c2K2fSyjoRdd/D7u0BPpDH94=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AMBPR04MB759424
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9aL4jboul7etb7TsjftpR2kI+tYPg1ReR9bQr3JFqZdFc50bT1jl8vSx22rF+ZxDpRzex4P/Ts+48OD8pKFT7Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8P189MB1302
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 14 Sep 2026 17:07:28 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10501
+ <docs@lists.yoctoproject.org>; Mon, 14 Sep 2026 18:22:09 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10502
 
-Hi Antonin,
+When current implementation runs in an unprivileged docker container,
+basic networking will be allowed by default in all steps, ignoring the
+network varflags intention.
+Introduce support for landlock blocking of bind and connect, providing
+basic support for blocking TCP.
+UDP is corrently beeing worked on upstream, but not yet supported.
 
-On 8/21/26 2:46 PM, Antonin Godard via lists.yoctoproject.org wrote:
-> This variable isn't set or used anywhere, remove it and remove the
-> misleading comment.
-> 
-> Reported-by: "Robert P. J. Day" <rpjday@crashcourse.ca>
-> Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
-> ---
->   documentation/Makefile | 8 +++-----
->   1 file changed, 3 insertions(+), 5 deletions(-)
-> 
-> diff --git a/documentation/Makefile b/documentation/Makefile
-> index 87a6f8a8b..2df23ebf4 100644
-> --- a/documentation/Makefile
-> +++ b/documentation/Makefile
-> @@ -19,7 +19,7 @@ endif
->   
->   # Put it first so that "make" without argument is like "make help".
->   help:
-> -	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
-> +	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS)
->   
->   .PHONY: all checks help Makefile clean stylecheck publish latexpdf
->   
-> @@ -51,12 +51,10 @@ sphinx-lint:
->   #   Unable to read an entire line---bufsize=200000. Please increase buf_size in texmf.cnf.
->   latexpdf:
->   	$(SOURCEDIR)/set_versions.py
-> -	buf_size=10000000 LATEXMKOPTS="-silent" $(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
-> +	buf_size=10000000 LATEXMKOPTS="-silent" $(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS)
->   
->   all: html epub latexpdf
->   
-> -# Catch-all target: route all unknown targets to Sphinx using the new
-> -# "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
+Landlock requires PR_SET_NO_NEW_PRIVS for unpriv usage,=20
+which is also attempted. devshell and related are already tagged=20
+with network varflag and can sudo at will.
 
-This was actually a useful comment (aside from the last sentence). It is 
-a catch-all command we redirect to pass to sphinx-build as the builder. 
-That's how we can run make html, singlehtml and epub without having 
-those make targets defined!
+This changes the default task behaviour to set no_new_privs, and=20
+the 'network' varflag to exclude no_new_privs, which is needed
+in a few places, like do_testimage.
 
-Cheers,
-Quentin
+syscall ABI is asm-generic, 6.7+ for all archs except alpha.
+On alpha, we leak 2 fd:s in the childs context before graceful exit,
+which is cleaned up at child termination.
+x32, MIPS(except LoongSoon) will fail gracefully.
+Don't have an alpha target, so this is not tested, evaluated via=20
+static analysis only.
+
+Adding Bruce to CC, due to fusermount usage in vrunner.
+There might be fallout in other sublayers as well,=20
+give me a CC and I'll try to help out.
+
+Adding Peter and Mattias for awareness, since they seem to be=20
+users of enable_loopback_networking
+
+Signed-off-by: David Nystr=C3=B6m <david.nystrom@est.tech>
+---
+Changes in v2:
+- Make no_new_privs unconditional to linux version
+- Add landlock-disable varflag, and document it.
+- Addressed review comments from Paul regarding constant naming.
+- Link to v1: https://lore.kernel.org/r/20260612-landlock-v1-0-77891f63ed7f=
+@est.tech
+
+To: bitbake-devel@lists.openembedded.org
+Cc: docs@lists.yoctoproject.org
+Cc: bruce.ashfield@gmail.com
+Cc: mattias.jernberg@axis.com
+Cc: peter.kjellerstedt@axis.com
+
+Signed-off-by: David Nystr=C3=B6m <david.nystrom@est.tech>
+
+---
+David Nystr=C3=B6m (5):
+      utils: Add landlock_restrict_network function
+      bitbake-worker: Call landlock_restrict_network for tasks without netw=
+ork
+      doc: bitbake-user-manual-metadata: Doc change in default behaviour
+      bitbake-worker: Allow tasks to disable Landlock restrictions
+      doc: Document the landlock-disable task varflag
+
+ bin/bitbake-worker                                 |  2 ++
+ .../bitbake-user-manual-metadata.rst               |  8 +++++
+ lib/bb/utils.py                                    | 38 ++++++++++++++++++=
+++++
+ 3 files changed, 48 insertions(+)
+---
+base-commit: 046a90b0e9b7b914b7a95aec579cdc3fc9c7617a
+change-id: 20260910-landlock_try2-794b370dc4ed
+
+Best regards,
+-- =20
+David Nystr=C3=B6m <david.nystrom@est.tech>
+
 
