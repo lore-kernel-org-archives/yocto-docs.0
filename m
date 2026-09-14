@@ -1,105 +1,89 @@
-Return-Path: <richard.purdie@linuxfoundation.org>
+Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2853CC88E50
-	for <webhook@archiver.kernel.org>; Mon, 14 Sep 2026 09:42:01 +0000 (UTC)
-Received: from mail-ej2-f12.google.com (mail-ej2-f12.google.com [74.125.228.140])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.16488.1789378912448179852
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2F1C9C88E64
+	for <webhook@archiver.kernel.org>; Mon, 14 Sep 2026 09:49:11 +0000 (UTC)
+Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.16549.1789379348438832870
  for <docs@lists.yoctoproject.org>;
- Mon, 14 Sep 2026 02:41:53 -0700
+ Mon, 14 Sep 2026 02:49:08 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=HyHzto1I;
- spf=pass (domain: linuxfoundation.org, ip: 74.125.228.140, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-ej2-f12.google.com with SMTP id a640c23a62f3a-c29703cb796so295677166b.2
-        for <docs@lists.yoctoproject.org>; Mon, 14 Sep 2026 02:41:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1789378910; x=1789983710; darn=lists.yoctoproject.org;
-        h=mime-version:user-agent:content-transfer-encoding:content-type
-         :references:in-reply-to:date:to:from:subject:message-id:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=La7FzrKg2HakG7HA/ucA8YQXZHm5Je+P3ZKR/3UDXoo=;
-        b=HyHzto1I29UrkjcgBNTNd3t4MX06rTDGFAAJ5htRDaEjrRkSrnrwE3X0In/lCnZOar
-         w94SykrwTzOS3Cah9xJiWeLRegcxXC4avViAaMfRDNbDzt7+69QIboJr2UXCBuGaTbTr
-         lAiY7R6RrQVObkZ1VUewyrDTRHu8M+fdUm/Go=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789378910; x=1789983710;
-        h=mime-version:user-agent:content-transfer-encoding:content-type
-         :references:in-reply-to:date:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=La7FzrKg2HakG7HA/ucA8YQXZHm5Je+P3ZKR/3UDXoo=;
-        b=B7cjhVWhDERZIKsGnVcp4SBu7ttjXMuq+Y+2kM2hOFOV6nd94vuBOEoghf+j7Dfoom
-         m0kkWf90RiFKZu93/ld7PuIOxQ9ukXX7wPCfbLdiGMgHLIguXZuVZjW7RJqpMwGYwkHJ
-         DEiyhspEJnB9wmzZppTkQ1SqLLjlTaheWb8ZZYTLljT4faxX6rMNRkFPqxX0b2C27LHs
-         3XGCbNyxsciWXKRYEfYxnpMtVordiN35iIDSG6JHSXQ9VzcyGdj8rxWM8XBfEx31HT3n
-         InWY+jzz95zC/Gepz3vNN5pfmeby6L2dJPk65R+z/ahjQ6Nfbnreh1VHJqIvc0dp9gO0
-         F+NA==
-X-Forwarded-Encrypted: i=1; AKwUvBz0MOESWn0rcoMmce82UU8ysWwWS5ggssEvMRVNFDi8I5j+1g8eZyb+MZGwrwA17x/7gRw1@lists.yoctoproject.org
-X-Gm-Message-State: AFuF++nfl9vcMj2dK9Jzei62RuF/SGbK1nxSTWFKQ0b6HgthVP9KOI1e
-	AW0wGpnzI1yeKSWf64FzCm4QQ2kt/wZwQ8jIdbi0nRHpjIv7Aev/QbUTjeVJ5omIVJE=
-X-Gm-Gg: AYBFou0/Oo3vPXld7CROwxYnQ+IP+Quk80i9jOp0UMjqm0guS9v4XDXxLwm0kcQxFwy
-	V9wgmuzuux9Pu3Md+JhqLIlmlAjXo7brbZIMLfamhyr0SJ7EfLA1BdjndMA4jRwThmKGSYrP0yN
-	Ce4UhIsKjNw/APaIhyr0+a4GYn74hMQmXxKZTaQlNhJ/KEbFqyyEW4D0/CUXc/dthM9knUwZ5XH
-	3WjsAnxJzXKGwoBrc9O83GLoRGPieiXEXg4crRraBOCua3qlvoL4mziBXgIz3dgZpb+t80cP9DN
-	Pox7niBZzk9zyyP0RKAo9HJ5NUiRsPQUKIfFsHOX0R+zqUWVArDKJbdkGxEIGNpX0Wermu3Q8QT
-	kqUg9FsDXCuv0loPNyg8/Jff7eJ3Qqlqg2VhuA6evBQezkYVY2/8zGb9JSBfx333aGpo3TjbTA8
-	KMp03X5WSWY4fwj6gTjJ7yqBJW94HoNjAxx0cS5MreXMWJPGWyO+lj/dBl+c5j08qEmiBcdGkS1
-	Zp6SvrZrLuqHVzcFp3DYRbHPAN/kd4NSZVU3oKeWBgMKx3qLaJ+ffaXNbQMBr48
-X-Received: by 2002:a17:907:9804:b0:c29:5215:b2d2 with SMTP id a640c23a62f3a-c29b8724ff9mr138906366b.23.1789378910348;
-        Mon, 14 Sep 2026 02:41:50 -0700 (PDT)
-Received: from ?IPv6:2001:8b0:aba:5f3c:e738:2a19:1746:7e8c? ([2001:8b0:aba:5f3c:e738:2a19:1746:7e8c])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c296608ef30sm403002366b.42.2026.09.14.02.41.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Sep 2026 02:41:49 -0700 (PDT)
-Message-ID: <5f70fb6ea6d2c9a4a24f476f463ab1adf02aa7e5.camel@linuxfoundation.org>
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=pR/D8tiT;
+ spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:References:
+	Message-ID:In-Reply-To:Subject:cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Unsubscribe-Post:List-Subscribe:List-Post:
+	List-Owner:List-Archive; bh=JJrD7HcHIPlJmtYYZNmytKZA/B/JZ6QaQhT78z9+fBw=; b=p
+	R/D8tiTYdqoqBCaqMBz00+RoIMcPqkfBn64SrKj6ViH1oU9m2voqafOPTwMpi89jbTTvcxVphWA5L
+	YQDjp79y48wae3kKwhWAh6VEi/8xbSKtdWDvU7zHphJAhMiod4b8l9ZKRtyUQhsTw1rN3ssIpXfhn
+	YDBv7UebVJNa8pt2Q5gRdjiLC5GXwVU4qymPVhejjnp7mfEYNmROuVSs8Scay8vBruPwHUmjokfOf
+	7RqAz9Twrx1h1CjQsqsUX6bmZ6F2F9YiOIxyHnGzEs5l9eRof1Uwu6YarDUPQu7zUxqg9bv8Nl+Eo
+	NSJulwER1/iJHSweMT7sLmpkFcb3gy1vA==;
+Received: from pool-174-114-114-5.cpe.net.cable.rogers.com ([174.114.114.5]:37838 helo=sheena)
+	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.100)
+	(envelope-from <rpjday@crashcourse.ca>)
+	id 1x63JC-0000000Ac7I-107S;
+	Mon, 14 Sep 2026 05:49:07 -0400
+Date: Mon, 14 Sep 2026 05:46:55 -0400 (EDT)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+To: Richard Purdie <richard.purdie@linuxfoundation.org>
+cc: antonin.godard@bootlin.com, 
+    YP docs mailing list <docs@lists.yoctoproject.org>
 Subject: Re: [docs] how should one update "dual, six-core Xeons"?
-From: Richard Purdie <richard.purdie@linuxfoundation.org>
-To: antonin.godard@bootlin.com, "Robert P. J. Day" <rpjday@crashcourse.ca>, 
- YP docs mailing list <docs@lists.yoctoproject.org>
-Date: Mon, 14 Sep 2026 10:41:48 +0100
-In-Reply-To: <DLEWHJ0DKML4.2ITSSJJ00H3ZG@bootlin.com>
-References: <b13f1dcb-14aa-8063-e9da-96817167a9aa@crashcourse.ca>
-	 <DLEWHJ0DKML4.2ITSSJJ00H3ZG@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-9 
+In-Reply-To: <5f70fb6ea6d2c9a4a24f476f463ab1adf02aa7e5.camel@linuxfoundation.org>
+Message-ID: <ffbce176-bd78-f316-dd71-dda8ae2dd8f1@crashcourse.ca>
+References: <b13f1dcb-14aa-8063-e9da-96817167a9aa@crashcourse.ca>  <DLEWHJ0DKML4.2ITSSJJ00H3ZG@bootlin.com> <5f70fb6ea6d2c9a4a24f476f463ab1adf02aa7e5.camel@linuxfoundation.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
+X-AntiAbuse: Original Domain - lists.yoctoproject.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - crashcourse.ca
+X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 14 Sep 2026 09:42:01 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10489
+ <docs@lists.yoctoproject.org>; Mon, 14 Sep 2026 09:49:11 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10490
 
-On Mon, 2026-09-14 at 10:36 +0200, Antonin Godard via lists.yoctoproject.or=
-g wrote:
-> On Fri Sep 11, 2026 at 8:08 PM CEST, Robert P. J. Day wrote:
-> >=20
-> > here:
-> >=20
-> > https://docs.yoctoproject.org/dev/dev-manual/start.html
-> >=20
-> > it's amusing to read, "These systems, in general, should be high
-> > performance (e.g. dual, six-core Xeons with 24 Gbytes of RAM and
-> > plenty of disk space)."
-> >=20
-> > would someone like to suggest a more modern configuration, and i'll
-> > submit a patch.
->=20
-> We could simply say: "&MIN_RAM; Gbytes of RAM, at least &MIN_DISK_SPACE; =
-disk
-> space".
->=20
-> Those are replaced by our poky.yaml.in replacements when building.
->=20
-> Not sure we need to mention a processor model here, as it would become ob=
-solete
-> in the future.
+On Mon, 14 Sep 2026, Richard Purdie wrote:
 
-I think the key is to mention multi cored system, "ideally with at least 16=
- cores"?
+> On Mon, 2026-09-14 at 10:36 +0200, Antonin Godard via lists.yoctoproject.org wrote:
+> > On Fri Sep 11, 2026 at 8:08 PM CEST, Robert P. J. Day wrote:
+> > >
+> > > here:
+> > >
+> > > https://docs.yoctoproject.org/dev/dev-manual/start.html
+> > >
+> > > it's amusing to read, "These systems, in general, should be high
+> > > performance (e.g. dual, six-core Xeons with 24 Gbytes of RAM and
+> > > plenty of disk space)."
+> > >
+> > > would someone like to suggest a more modern configuration, and i'll
+> > > submit a patch.
+> >
+> > We could simply say: "&MIN_RAM; Gbytes of RAM, at least &MIN_DISK_SPACE; disk
+> > space".
+> >
+> > Those are replaced by our poky.yaml.in replacements when building.
+> >
+> > Not sure we need to mention a processor model here, as it would become obsolete
+> > in the future.
+>
+> I think the key is to mention multi cored system, "ideally with at least 16 cores"?
 
-Cheers,
+  i can submit a v2 with that info, but would that be hard-coded since
+there is no variable in poky.yaml.in that relates to that.
 
-Richard
+rday
 
