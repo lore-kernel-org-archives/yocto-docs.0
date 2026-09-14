@@ -2,331 +2,169 @@ Return-Path: <quentin.schulz@cherry.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 45391C88E72
-	for <webhook@archiver.kernel.org>; Mon, 14 Sep 2026 17:04:38 +0000 (UTC)
-Received: from AM0PR83CU005.outbound.protection.outlook.com (AM0PR83CU005.outbound.protection.outlook.com [52.101.69.0])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.2660.1789405475065565409
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2E339C88E72
+	for <webhook@archiver.kernel.org>; Mon, 14 Sep 2026 17:07:28 +0000 (UTC)
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (DB3PR0202CU003.outbound.protection.outlook.com [52.101.84.38])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.2837.1789405638590425218
  for <docs@lists.yoctoproject.org>;
- Mon, 14 Sep 2026 10:04:36 -0700
+ Mon, 14 Sep 2026 10:07:18 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@cherry.de header.s=selector1 header.b=Aq8AiCM0;
- spf=pass (domain: cherry.de, ip: 52.101.69.0, mailfrom: quentin.schulz@cherry.de)
+ dkim=pass header.i=@cherry.de header.s=selector1 header.b=lloe3qj4;
+ spf=pass (domain: cherry.de, ip: 52.101.84.38, mailfrom: quentin.schulz@cherry.de)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=or8ItZ88JMN18u0c6BAcc+6lvWBkZ570MB8FMHZ2DZ1TuBb2Z5/U98R2Jg3I7BuMboYvfeGxtmSlUGxNAMTaWmdzb2H67p9q2LkPiAr5yExZlp1I3VzKKl3VdtFWIEWtR9D1ZuBWp2b7N10kh0N7LVOW9Z3zcBsyYUvWyz/ISuSAJ3w5jc4q9ezYeNwIalvykNbCjoX6tDSjkVoeNC1Kp18R9fCCRHRttHh8Kj/XAtqkt1icYz8HlAYrMgaz3D1nByK86eyRZKfDWbGDyX1WGC4X1gOhmlElSz4vOKeXaqlg84yebrnHLyHMGZ6KhttmgDLU+YW/Dw/PeI/o7mtE7w==
+ b=rHaGu+a5ANb1GW8uQM7YNITPdVQ0jMFZ2gOmSafV6v3BLxeESh3ekCAjxctsn5lAzsaGGfVvojh8BuQ4086UrrXdqCbC1scOm4We2gykhAPAARrrdamHpBXOrRaNGA3vi58ZKMknUTFdDFw2suWlKCI5+u6xNi/hzM+8dTKlN52J7Ic6fF1YaPQaJAn/UOqCozTWsexNvqzL/+olzflsYCpvF6bT44NyL5LRnhGiZbZFLtgPVmd5QyPm05H4dT8Gn6i6Tq9PUdRQChjSBsWsulkZJr5430NAnF3ghHPKpBHrqBVpS8ONRsZrB3oYiA6K2IKT8ZKdNtsBIaPgmIpliA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ltsFp8pns2BqPDM3Sm4OoqzKppqK11hQkgqTSgRuScU=;
- b=gKABZWjjZyPfDT1SoWix72PCQzNZ5JsNmbiZWSnwVM3MknZtQ/yQlpYupsxFN2CoYFbpjMOR6PK+MMZju3Up2iCpDEzwq9g35R3FUwBqqRSzJ05dzdheARTHv9qs0KrI0/cVyYwU3ItmxyQveaNJCTiEc4mCBVKgoN8gn+cUO9aiD9hoxseGDhnuvYyHPFFBhqo7CbzkMXz9baCQLpLURH/922AyBgnnIHDP6+F1d+WGIYQdQ1SbxK7z2K5UaYsOv7bYKkaPG6iPEQ7vRogFp3U5eeo605VuvPev5nRY1dKqJAqAhWEImmjBCWNSG/soay/u46eYwh/2sTm6K7T4mQ==
+ bh=i3POuBVeddmSdrxCdJUD7KrEfgkC4XaaW9wV+OOWifs=;
+ b=YJ+kdZLzbbK8Szd635Mj/GKlJM8EQK5Jmt+xG9cO+zNJUaLCePqjaaqbcExdDE38bIYQIc6sK91kN3Wh2W0KpSi79HaorfQYsyz5Z+rn0+3NicQWAYFrquT9xz4RXkDJH+4zmUfAMLQkdv7sY4CAI1LGeBhgSInYbbgx2HwSrHe+zegNUueguPA0NO2WioFXacPsbW3k4V+oHqri6sBGYi0iwhv4qIoViB1l3UUA56mhZ96Gvze1/ilVD1VlBFcfWX2vXyl+BHJpRXMSM/9r71JI9D/W8MS3IzoKkYqmJPGK6rIFfUMi4C4n7QgCo+PI4NmyU2TAgelMFl20J7GaRA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
  dkim=pass header.d=cherry.de; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ltsFp8pns2BqPDM3Sm4OoqzKppqK11hQkgqTSgRuScU=;
- b=Aq8AiCM0W7r7o9WX8Ay1pB9WFg+SGXTjLkYAMQaLrpP7bt8V7A24rXtZ4DLbmrY5TPYfkYY8W4r+ZUXCg4+uiF3hxvKtkpMdyHQTj/P5XBXZmcgsqZtaOBB0AbNkaOevXESAjHV1V6wUS7hD0psa3J/sEenn3ylb17Gtbh3vqsA=
+ bh=i3POuBVeddmSdrxCdJUD7KrEfgkC4XaaW9wV+OOWifs=;
+ b=lloe3qj4vqbvZhVi2/62QKpR2UM6H2CwAA1iwKtLTjdv80qIroXxS5/m0Ni+w7M91JLRZ2fKFQ8K+jMxXw7oS8PP+Kb9MmEwfGYQP5TDh45Gwizosd3kcSeIThyN54yy3LtxM5rCh5fIuA57WVnQ7eVDqJWu2ac20XDNRAtBw2I=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=cherry.de;
 Received: from PA3PR04MB11153.eurprd04.prod.outlook.com (2603:10a6:102:4ab::7)
- by PA1PR04MB11060.eurprd04.prod.outlook.com (2603:10a6:102:491::13) with
+ by AMBPR04MB759424.eurprd04.prod.outlook.com (2603:10a6:20b:799::7) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.12; Mon, 14 Sep
- 2026 17:04:29 +0000
+ 2026 17:07:13 +0000
 Received: from PA3PR04MB11153.eurprd04.prod.outlook.com
  ([fe80::6b02:c0eb:95a4:3c3d]) by PA3PR04MB11153.eurprd04.prod.outlook.com
  ([fe80::6b02:c0eb:95a4:3c3d%4]) with mapi id 15.21.0406.007; Mon, 14 Sep 2026
- 17:04:29 +0000
-Message-ID: <e2efa236-b929-4fb0-9186-0e996413aa00@cherry.de>
-Date: Mon, 14 Sep 2026 19:04:28 +0200
+ 17:07:13 +0000
+Message-ID: <79063836-a355-475b-9e40-7b2ca80d70c0@cherry.de>
+Date: Mon, 14 Sep 2026 19:07:13 +0200
 User-Agent: Mozilla Thunderbird
-From: Quentin Schulz <quentin.schulz@cherry.de>
-Subject: Re: [docs] [PATCH 1/4] tools/obsolete-variables: add script
+Subject: Re: [docs] [PATCH] Makefile: remove unused O variable
 To: antonin.godard@bootlin.com, docs@lists.yoctoproject.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-References: <20260827-missing-variables-v1-0-7ec8b525b23b@bootlin.com>
- <20260827-missing-variables-v1-1-7ec8b525b23b@bootlin.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ "Robert P. J. Day" <rpjday@crashcourse.ca>
+References: <20260821-remove-o-makefile-v1-1-fe61b5cf7fe1@bootlin.com>
 Content-Language: en-US
-In-Reply-To: <20260827-missing-variables-v1-1-7ec8b525b23b@bootlin.com>
+From: Quentin Schulz <quentin.schulz@cherry.de>
+In-Reply-To: <20260821-remove-o-makefile-v1-1-fe61b5cf7fe1@bootlin.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: VIVP296CA0011.AUTP296.PROD.OUTLOOK.COM
- (2603:10a6:800:357::19) To PA3PR04MB11153.eurprd04.prod.outlook.com
+X-ClientProxiedBy: VIVP296CA0007.AUTP296.PROD.OUTLOOK.COM
+ (2603:10a6:800:357::13) To PA3PR04MB11153.eurprd04.prod.outlook.com
  (2603:10a6:102:4ab::7)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA3PR04MB11153:EE_|PA1PR04MB11060:EE_
-X-MS-Office365-Filtering-Correlation-Id: 32379ab8-17c9-40a5-3889-08df12823d5e
+X-MS-TrafficTypeDiagnostic: PA3PR04MB11153:EE_|AMBPR04MB759424:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1a64e7d7-3d15-4cf6-d5d4-08df12829f48
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: 
-	BCL:0;ARA:13230040|366016|376014|1800799024|23010399003|5023799004|11063799006|56012099006|4143699003|10067099003|22082099003|18002099003|6133799003|3023799007;
+	BCL:0;ARA:13230040|23010399003|366016|1800799024|376014|11063799006|56012099006|10067099003|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info: 
-	Drfx/G655NCT3zxnpmhPSzANDEmU8xlEF+GueWQES35HeSLRvtMOp8E+x8LEFuu67r+SfCTL54pMUrX8MP2dAnK3Irg0Wxby8N7qBBl14L4kVtK4tPY/KsboCr/+lRUiFZaXax+bON+Zn2CRCbacvN+WPE8r7RAzI0w/vF4MdDDd9yT89Q7k9sLsm+fv7Xu0yCgChAmtfL/zQPp66bUCgXky2PgHCS+bQnSTMA42ANk3z7F+sSao/zKdcTKmdDR5i7K0PBoR5gpIecN50pNWPbJsqAWyXMbm+ceV3yqLcey2SJnpZ3yrbowav/dLku8wBJVbG1bFm4KowsbyHfbbKZjmvQhhbm+cZgTnv8drnLfScKqt5miHSvVAKNro4aGV4StjcW7P2et73jLbifMQVvd3RM5UqF/xssn6vGmDMRIl53xIhaxFmwV5DBTrIfsIU1qrYuWHXVFZy1madMHwrad/MXcmFtCbMicpp/xv+eUodkn7irMJlqp2utMmiNcLuYy9RuS/q0NB306jSELJSDOBXhrTwS+IsByVEw/y3Dyum2BBcrPMYfxlVnlWt1zcr2uQYrpeRazFbxpCTBVdLVE3USeVAhZnqWq0MWdyyQhWwnD+TvRE04hn+APHYFEGh9M4Jv0+D1UG7zFw4EgLUAjq5Aa8OSjVNYPZkmHAAig=
+	T2Uy9/0vdquTpELeZq7ozgcZFMdWR+maxfrI4rDVz3Jf+x6KYxPgFvAmV5tpiG8QkYnydfOPBMF+FED/WmIMYkWMeob/cHMQYvPcRLfkO6QmH/DVrrcGFdAfqfEnhl0UfahuQVdHNIPOMY4BUzNkYIC1uOnxFcUHy6E2zdK8tOvSLdWgBoJRm26PxiizInui5zLLau7x5L+Xm7lfso2rdpHjVLIXicpYjhVIXl/sOuCvemutJfyFfzmiQHvrAIt+VJJIpht5SKyDvl+Go0s1p/tZAQg+oHLtOa6jg6RpNOz67kY5KeX045BtbsZXqYcO8QJXkfeRhL2kpvr2lH8ETl6IohEdC/EWP4AaEUiWHt08ahXpFpOcqrBKd3frgHhltZ0yTlK/VwVo1rWFORdxeG06uCT24NGalguvzLvSId+kp4JjqoKbcGzBAFIRqnwtteufH+R6P0bXdckNt4XIc306RR0KvDK3QqpH5FVWmxfEL7bcH7WZZ1kt2HcXZViOMn+q8O8TNxl0E7ItDISC09pMAVI013Wq4gVQ1QMxP2UvYGdrRoFLYBUhe7oe50RVg58TFgAu7sHD7LbrnqHfYcc0rxHmdQI5Ca05yH8tCS0h2vTWPE7k5vRFsDBgqmIZe891yQKnFP5yf52b0mlQEDFfA00IzZxAl04I5/CaSEw=
 X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA3PR04MB11153.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(23010399003)(5023799004)(11063799006)(56012099006)(4143699003)(10067099003)(22082099003)(18002099003)(6133799003)(3023799007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA3PR04MB11153.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(1800799024)(376014)(11063799006)(56012099006)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?utf-8?B?T0JvS0pMTzNmQlc0VTdGSFZtTGZtZkR4SGE3c1BiSkZZQWJNdXdEVDQ2VTZy?=
- =?utf-8?B?RytQeEo5MkVJNVJLd2U1TUJhaVdLYVFQN0huUHZIUE9xaDRISEdVbGtycHJZ?=
- =?utf-8?B?QjZVWDdyUFN3cUxyd3p6L2tBQXVpZEdtVGlkZ1lIKzJKU1hrY2tOOWxJSkMz?=
- =?utf-8?B?bE1YWVdMOU8xWmNyejR2MGp1SmNTWHBkZUNIMHl4QVc4UForMDRJeThHd3FN?=
- =?utf-8?B?clUxODlwN0ZhYUZJclRZMWl6MFRITWhSbkJrdDRTeE9hbU1sbDJucmxiLzVm?=
- =?utf-8?B?ZjI5SXd6dWNscnZNMXVBQU83bk50cjlEWWRJS3ZwbGZGMGRPWFR5TFo0T0pF?=
- =?utf-8?B?WDl1TWswNlF2VTR5UUZOTU96WlVZd21VMnMzTm5LcWZMOU5ldXBhQ2lXTXlD?=
- =?utf-8?B?VFFSQ2FmSGMvZGYyV0c4MkZOOVB0ZWhTSmY3SFAwbWtIWVlZNVpMYVgvNE9l?=
- =?utf-8?B?Wi9oOEVDRHRydGFRL3RqSm1vVElhQlZVaG5mc2tOaXdhVmJvK3c5akJONUZm?=
- =?utf-8?B?b1JCbWNwbEhaWTRJMnR6M1pER2tZdjh5bTY3MXBsZjJZVXA0cnozSDBaNUh4?=
- =?utf-8?B?amtuM0xXVXdqNXNLc3FDSzBMNFJyd3FuSngyTGhQMUNqVWtGRDlDKy9kTWxx?=
- =?utf-8?B?MUFVeFl3WTNwdzJZaFVMUDhiTllaZ0U4YXdORVpTQmxKRGN4bFpocUEvR01o?=
- =?utf-8?B?SnZJZGVWUFVvWmppU2JNVVl1K0N5cS92VU5WZmRDNVNEYnQyVXFVVEhjNDRE?=
- =?utf-8?B?OWFUR0ZYMGpuU2FUNDdyU0JleWViKzQ4YUpGcExDTTFyRzY2amk1NFZERG85?=
- =?utf-8?B?N0oxTTY4TWYrNlZFZk9aNGRPQnJxR3FOQld3b3k0S2VWdWM0M0xyMk81WElv?=
- =?utf-8?B?OFB4SjhSeThCK0pnOWlkSDM3SWFBTENOWUxrMjQ5cHlNOEd6ajBzZ3hRT01z?=
- =?utf-8?B?UVpCZ2VNWVhVVkc5VmNiZXhPTTFKSHhhT25oWFQ1VENJUmVTYWFnNm0yaUJ1?=
- =?utf-8?B?QWRMVzZXdllCcFJOdis3MWo5Wit2Vmx6M3QvRm1ZenAwRGwzUndudVdzQlJ3?=
- =?utf-8?B?ZWx5MnR5cTZ3cnNjQ3ByaVl1U1NITHBWbCtDMkUzc3c1S1g5a2Z3UnhCSUxW?=
- =?utf-8?B?Wk43dVdwUkQvalF0QVlkdEVhQ1RvMHllTm5SNC81OUVYVzVkcEQxNk1ROG9B?=
- =?utf-8?B?NlBhazFVSzFOdmoyQy9nT0dkWXJxWVBWcVNGcEg3RWI3ZHpuclFBWnFVMVd1?=
- =?utf-8?B?NUt1ekVxUkwrR0UyOWJwT2lyaVd4SDFzQUlSQmRCK1Y5WENEUkg1UXd1blFq?=
- =?utf-8?B?amJybzlzYkdyMUorYzVRMHZLUC8vVlZkSDVDdzRlZ3JOQW1IYkJLRzR4YXJ5?=
- =?utf-8?B?cE5vK29tYmtBQVZucVl5a0NNMGlabDhOdzVRelBBK2FQeWxWdFY0SGgxNG1G?=
- =?utf-8?B?YjdyVEtvSFNmRkhDZ2dqT1ZYQU9rcFAzcUxrcjMzZVZyT0hlcmhFSk12RkIv?=
- =?utf-8?B?TFRBdktQRDEyWDVXMUV0S2kzZmF4MXExdjQ0R0tKV2NPNGNLMGJpMzVmbldJ?=
- =?utf-8?B?Ym9MR0doYnk4YnAzaVhEaHg5SVcrY2ZLVCt1aXkyckxEdWdtWnBwcFpOY3pU?=
- =?utf-8?B?ejM1Y1JWZGFFMlpLLytrL0RsVXJ3ZWg5NEZuQmZIL0FqYzVhaWxCN3g4R0lX?=
- =?utf-8?B?YU5sMmRKcncwZENWQy9tenA3cEp4cVE2c1VyUVNuSzNtNjVRNncvcStDTVdC?=
- =?utf-8?B?ZmhtZWZpVlArWUtUTVc1amRWbVNkcGJyU3NiUUZENW9zY3JqVUVxTUZ1OHpC?=
- =?utf-8?B?clhDczdTUGIwd1NFUnZsYktwWm15cjh4azVDckVWTkVtSXcrMS83ZHYrbkNV?=
- =?utf-8?B?ZnFCTTVITXlmbzVxTEJaSllHZXF0eUIya2lwYmZyMy9KOCt4R0c1Q0VUV2pZ?=
- =?utf-8?B?S1ZXRStIN3lhK1VMZ2ZqcjltVVEvbTZ4OUt4M1ZhdlZ1b0VieTd1N01VczBk?=
- =?utf-8?B?TkRtVm1ZeTNIcFo2dVNiN0lxSVBFa2ZuNGlScHV3bmpQd3pKa1ZCcUxFMGVG?=
- =?utf-8?B?ZnRpVW1KYlV1MlBpN2NqMFRWT1Fpd0VocUU4WDA1dDJRSVFFTkVaWURBZXNt?=
- =?utf-8?B?MVREZlZKWkxwTk1HSHhSOWluWTdQODFMMW5CbFl6bitQT1Z4eTR5UndzdGMz?=
- =?utf-8?B?a1Y2Rk1XSVlEV3NTci9NRFBnQ3VtOSs5V2hqZG01Yzh3RENUM3FqYmVmUlhH?=
- =?utf-8?B?ZkdwTGNMREdpcUlPR21Zbld4dHZmNmsrZTc0dUYrL0RMRG1tZUR2WlpINGtS?=
- =?utf-8?B?Vk9wcnJOdjhrUDNOYUpmbmhOdldDUWlhSlhVQytYZWU4MnlrUENvdz09?=
+	=?utf-8?B?aVo5Vzl5ZUNMRGpYRk1HU1ovQzlKU1ZLOFNwZ1VOVGtRSHZHZXNFRmg1Q213?=
+ =?utf-8?B?Q2VvUUpSVTV0eUtvdXdtS3BlOXJLOGZRWjhqMW13VzU4TmtnbXV3MU9XTmFo?=
+ =?utf-8?B?ZStwS1RtNmV0TlNVZEUxNUVpY0MwVk12c0plVVY5Qjd4UUxabXRIQUtUYzh0?=
+ =?utf-8?B?MFhEY3ZnUytLbkZhODZzSjd1UkpXL28xd3FIc2ZPQlJmZkt6MW9BbW9acFdM?=
+ =?utf-8?B?M3pENUExUE9HdDlidDRRMUVHcjdZT3pzdHZUV2J4WEY4eEFrSi80eFZzK0xP?=
+ =?utf-8?B?dTUwUTFYNTJKcS9nMFFxVmZ2MllwODR2VnNFZ3MvSlF2UGxid2d0ajg4SUU0?=
+ =?utf-8?B?ZTBwclNPdXd5L0U4Q05JUnl0WEZrSGJsc04zQXFJcnlGMzEwdi9KRTkxSVgy?=
+ =?utf-8?B?OHQvZXUzK3grMWZJNHBqUUpZd0xxdHArQkIrNmJhY1QwS3EybXBxQlJPOW9L?=
+ =?utf-8?B?RlFXemI5MzZNL3pxdDUyN0hpaDdUd3ErSGI5NUZ6em5nWXJLNVhnRk9GL2Zj?=
+ =?utf-8?B?MVk4SU5UUWlQNUZJV2FOWHczTHp2dk5LSEUxU1lIcVdCclU3MVBkK0s4ZTcx?=
+ =?utf-8?B?NmlpQmc1SkZ0KzJKZDdYaWFtQWlSRE1DcDQ0RVhTZ04rSE0zR0hMSXlWR2xF?=
+ =?utf-8?B?V2Rob2dISUJ2UGQydXN4TUREUnBXVUowcnVxRzRhdmZTWTlBWVJIQ3FNY0tW?=
+ =?utf-8?B?SW9ld3BxN3ExR1hGWTh6NWpPYVRWUTBKRGYwYks1VjY0Sk9xUEhKNjdockt6?=
+ =?utf-8?B?c24vY2QwU0pON25OS21QRDRVQ09SdlVxWW1HVVJSN1lnZHNFanU1cWdlR2po?=
+ =?utf-8?B?dThHd1JNdFdBR25OWU95WVVXMHR4NzBmOXpLN3JWaU1Xam9MZWlPOUJLLzFi?=
+ =?utf-8?B?bG5oRHlIVGx1UUhRLzlsc3VtOVJ5NE1FVlIrY1VxWkE2VzNTTlkrWWFIZWpo?=
+ =?utf-8?B?aEpNUUZOaTBlZGUwaWJNQlhmNVR0OHg1UkxKZGdmZzhCbDVLQXI2QWs2cEVT?=
+ =?utf-8?B?MXVIRVdHQ0hZNGZVUWJoOU1hSXQrWkdRU04zc2REYWd6N3FCRlZJN2VzZFox?=
+ =?utf-8?B?Y2pRa0gyamJoQ1kvYUxPNFVTVHdyWjI4QXVLRW95Smh5NFFTWkxuUlNnSFdF?=
+ =?utf-8?B?dzFkQzRHcHpORGZxemJqaXBFVTFxYW9YbHp3WENkdmo0L3BDdDFNR3dBVDUz?=
+ =?utf-8?B?WUVmQUdXZDZMQjdHRnlGU3p0bEErYkN1VEhKMW0zem5aRkVnWEd2THZaSXFi?=
+ =?utf-8?B?VnB2bUN4K2hianhCT04xVkVleFMvdkQxMkZ4UmRURFdnNW1LSHhwVVQreDJn?=
+ =?utf-8?B?dnVvQlJXUFNFVWZQSG96TFZuaGl5WXcwblpuUUw1bzRESG9KMnFRem5YUURp?=
+ =?utf-8?B?aGhXVWZLSDRpSUtRYlh3SE9nZitkQjFERzNzMFR1TFpjSE5ySlZGelBVQ2sy?=
+ =?utf-8?B?WndvN3pNTlVXWHl4MXNYTFh2YXZhRFhRRmRydkRoN3FTRnBuRHVkWHNHOTQv?=
+ =?utf-8?B?K1YzOVZpdERGOEFEcDk5c2wvNGo4S240dDQ0czJCVjB1UzJPd3hWRWd2Q2p5?=
+ =?utf-8?B?ZUxqUTJ4OWtzSXdwaC8wNldMUG9YdEk4ZGlWRjFkWjY4ZzVTTitzWUtTTm1v?=
+ =?utf-8?B?SlFCb3FOTG1YSGJwQnZ6VllYTkRURWlzY2VYcHhlMk9QYUsrazg5RFA2eGF1?=
+ =?utf-8?B?aVpXQWc1Z1ZEMVQrNVFFR1BGRldOWm1hcThuNnF0U3M3S29JWmN0RDZNdVUv?=
+ =?utf-8?B?ZDFkZDlWN253RjNadGR0Nlc0NFkrNkNIbU1kREVDVnAvYWtoWmgxenRaSmpW?=
+ =?utf-8?B?UUVmWjBqWi9CY0ttWnhqcXJFMnFtalU4cktzTlB0c0JXMzczVDB0L0FESWZt?=
+ =?utf-8?B?Y0xDY2VyQUdGTC84V0RDTnFlUUY0d0VudTdPUHFnLzVRUkhFZFBYWUNmL1hr?=
+ =?utf-8?B?OXBmZ1VHUWRITldoWlBZbXd6TlJpblZGTkpWM1U2Skk0MjNGZjZuN25oenE1?=
+ =?utf-8?B?bS9KMUNuQi9WQk4vcytXcWlncEdQd3o2UmtHT0JQdnJEL2RLWTV3ay9ncGxu?=
+ =?utf-8?B?NzNZU09uZE9rWG5GYlJiaXN1TDlrWGp5REhxM25Cd1k2UklZQmloNmNRZmFt?=
+ =?utf-8?B?QVlUSU55T01xSGlKWG41aHNqdXBMYlZPcmNyaUVWZVd1Y1dsdVYzMUlLTC94?=
+ =?utf-8?B?NkhBZGFjQm1sL1F5UEtNRGcyMzBIemtwdlZiL3hmc0Ric1JRRnB1T2Q2T00y?=
+ =?utf-8?B?TGJZMDVuWEc1eHlFRDFmNm5Ed0xWd0wrYitRSXBPcXVYWVhnNGRScDh1dmJ6?=
+ =?utf-8?B?WkxXcmtCY0FyQlJLc29RUkhRdHQvaURtQXQvb2xUNDNuVHNiRnpCZz09?=
 X-OriginatorOrg: cherry.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: 32379ab8-17c9-40a5-3889-08df12823d5e
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1a64e7d7-3d15-4cf6-d5d4-08df12829f48
 X-MS-Exchange-CrossTenant-AuthSource: PA3PR04MB11153.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Sep 2026 17:04:29.5819
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Sep 2026 17:07:13.8762
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: pB0+1FLJvWmuQoxMm2X16U6U/sUlf9n6fC3X+07sAymYN9TFI0Is+G9q6MXwaeBc7Ax2q3NtOtJ0thVkNG9/fWDubtAI+eQHfnXL7UgLbUs=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB11060
+X-MS-Exchange-CrossTenant-UserPrincipalName: T+7Bt92a38hQy/dnTw9uxxopYSNKllPtJSjdNDRgYsssPcj07OSHz8Ig09IMaIqc0K7eZlKHI2uS5mkKuo7c2K2fSyjoRdd/D7u0BPpDH94=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AMBPR04MB759424
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 14 Sep 2026 17:04:38 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10500
+ <docs@lists.yoctoproject.org>; Mon, 14 Sep 2026 17:07:28 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10501
 
 Hi Antonin,
 
-On 8/27/26 9:46 AM, Antonin Godard via lists.yoctoproject.org wrote:
-> Add a script that outputs missing variables from
-> OE-Core/meta-yocto/BitBake, i.e. for which grepping returned nothing.
+On 8/21/26 2:46 PM, Antonin Godard via lists.yoctoproject.org wrote:
+> This variable isn't set or used anywhere, remove it and remove the
+> misleading comment.
 > 
-> There are a few exceptions, which are listed in VAR_EXCEPTIONS.
-> 
-> The script currently returns:
-> 
->    ERROR: Variable CVSDIR not found anywhere
->    ERROR: Variable FIT_KERNEL_COMP_ALG_EXTENSION not found anywhere
->    ERROR: Variable USERMOD_PARAMS not found anywhere
-> 
+> Reported-by: "Robert P. J. Day" <rpjday@crashcourse.ca>
 > Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 > ---
->   documentation/tools/obsolete-variables | 142 +++++++++++++++++++++++++++++++++
->   1 file changed, 142 insertions(+)
+>   documentation/Makefile | 8 +++-----
+>   1 file changed, 3 insertions(+), 5 deletions(-)
 > 
-> diff --git a/documentation/tools/obsolete-variables b/documentation/tools/obsolete-variables
-> new file mode 100755
-> index 000000000..bc97cbb71
-> --- /dev/null
-> +++ b/documentation/tools/obsolete-variables
-> @@ -0,0 +1,142 @@
-> +#!/usr/bin/env python3
-> +#
-> +# SPDX-License-Identifier: MIT
-> +#
-> +# Author: Antonin Godard <antonin.godard@bootlin.com>
-> +#
-> +# Copyright (C) 2026 Bootlin
-> +#
-> +
-> +import argparse
-> +import logging
-> +import subprocess
-> +import sys
-> +
-> +from pathlib import Path
-> +from sphinx.util.inventory import InventoryFile
+> diff --git a/documentation/Makefile b/documentation/Makefile
+> index 87a6f8a8b..2df23ebf4 100644
+> --- a/documentation/Makefile
+> +++ b/documentation/Makefile
+> @@ -19,7 +19,7 @@ endif
+>   
+>   # Put it first so that "make" without argument is like "make help".
+>   help:
+> -	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
+> +	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS)
+>   
+>   .PHONY: all checks help Makefile clean stylecheck publish latexpdf
+>   
+> @@ -51,12 +51,10 @@ sphinx-lint:
+>   #   Unable to read an entire line---bufsize=200000. Please increase buf_size in texmf.cnf.
+>   latexpdf:
+>   	$(SOURCEDIR)/set_versions.py
+> -	buf_size=10000000 LATEXMKOPTS="-silent" $(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
+> +	buf_size=10000000 LATEXMKOPTS="-silent" $(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS)
+>   
+>   all: html epub latexpdf
+>   
+> -# Catch-all target: route all unknown targets to Sphinx using the new
+> -# "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
 
-I would recommend splitting modules that aren't from core Python into a 
-separate section. pathlib and typing are python core modules, but 
-sphinx.util... isn't.
+This was actually a useful comment (aside from the last sentence). It is 
+a catch-all command we redirect to pass to sphinx-build as the builder. 
+That's how we can run make html, singlehtml and epub without having 
+those make targets defined!
 
-> +from typing import List
-> +
-> +
-> +DOCS_DIR = Path(__file__).parent.parent
-> +# False positives:
-> +# - variables we know exist but have a specific syntax
-> +# - we keep documentation for it here, already saying it is obsolete
-> +VAR_EXCEPTIONS = (
-> +    "CONFLICT_IMAGE_FEATURES",
-> +    "CONFLICT_TUNE_FEATURES",
-> +    "FEATURE_PACKAGES",
-> +    "LAYERRECOMMENDS",
-> +    "REQUIRED_IMAGE_FEATURES",
-> +    "VIRTUAL-RUNTIME",
-> +    "module_autoload",
-> +    "module_conf",
-> +)
-> +ERR_MSG = "Variable %s not found in OE-Core, meta-yocto, or BitBake"
-> +
-> +
-> +def parse_arguments() -> argparse.Namespace:
-> +    parser = argparse.ArgumentParser(description="Use the Sphinx's inventory to "
-> +                                     "check for variables not present in "
-> +                                     "OE-Core/meta-yocto/BitBake")
-> +
-> +    parser.add_argument("--debug",
-> +                        action="store_true",
-> +                        help="Print debug messages")
-> +
-> +    parser.add_argument("--yocto-docs-inv",
-> +                        type=Path,
-> +                        default=DOCS_DIR / "_build/html/objects.inv",
-> +                        help="Input yocto-docs inventory file")
-> +
-> +    parser.add_argument("--bitbake-inv",
-> +                        type=Path,
-> +                        default=DOCS_DIR / "_build/doctrees/__intersphinx_cache__/bitbake_objects.inv",
-> +                        help="Input bitbake inventory file")
-
-Consider printing the default values with %(default)s, c.f. 
-https://docs.python.org/3/library/argparse.html#help.
-
-> +
-> +    parser.add_argument("oecore_dir",
-> +                        type=Path,
-> +                        help="Path to openembedded-core")
-> +
-> +    parser.add_argument("meta_yocto_dir",
-> +                        type=Path,
-> +                        help="Path to meta-yocto")
-> +
-> +    parser.add_argument("bitbake_dir",
-> +                        type=Path,
-> +                        help="Path to bitbake")
-> +
-
-Please specify those need to be *git* repositories (otherwise you cannot 
-run git-grep on them).
-
-> +    return parser.parse_args()
-> +
-> +
-> +def var_exists_in(var: str, gitdir: Path) -> bool:
-> +    """
-> +    In gitdir, check if a grepping for "<var>" return something (then return
-> +    True, False otherwise).
-> +
-> +    Special case where in OE-Core we can have:
-> +        BB_RENAMED_VARIABLES[<var>] = "..."
-> +    Then exclude that.
-> +    """
-> +    cmd = [
-> +        "git", "-C", gitdir, "grep", "--extended-regexp", fr"\<{var}\>",
-> +    ]
-> +    _out = ""
-> +    try:
-> +        _out = subprocess.check_output(cmd, encoding="utf-8")
-> +    except subprocess.CalledProcessError:
-> +        pass
-> +
-> +    out = ""
-> +    for line in _out.splitlines():
-> +        if not line.startswith(f"BB_RENAMED_VARIABLES[{var}]"):
-> +            out += f"{line}\n"
-> +
-> +    if out:
-> +        logging.debug(f"{var} found in {gitdir.name}:\n{out}")
-> +        return True
-> +
-
-Can't you simplify this to
-
-git grep --extended-regexp -e '\<{var}\>' --and --not -e 
-'BB_RENAMED_VARIABLES\[{var}\]'
-
-?
-
-If this works for you, please consider adding --max-count=1 so that it 
-exits as soon as possible if there's at least one match. You probably 
-also want to pass --quiet as we won't care about the output anymore.
-
-> +    return False
-> +
-> +
-> +def var_exists(var: str, repos: List[Path]):
-> +    return any(var_exists_in(var, d) for d in repos)
-> +
-> +
-> +def check_inventory(inv_p: Path, uri: str, repos: List[Path]) -> int:
-> +    exit_code = 0
-> +    inv = InventoryFile.loads(inv_p.read_bytes(), uri="")
-> +    for entry, inv_item in sorted(inv.data["std:term"].items()):
-> +        if inv_item.uri.startswith(uri) \
-> +                and entry not in VAR_EXCEPTIONS \
-> +                and not var_exists(entry, repos):
-
-Typo here, it should be var_exists_in().
-
-> +            exit_code = 1
-> +            logging.error(ERR_MSG % entry)
-
-Does it make sense to have a variable (far from where it's used) for 
-something that's used only once?
-
-> +    return exit_code
-> +
-> +
-> +def main():
-> +    exit_code = 0
-> +    args = parse_arguments()
-> +
-> +    if args.debug:
-> +        logging.basicConfig(format="%(levelname)s: %(message)s", level=logging.DEBUG)
-> +    else:
-> +        logging.basicConfig(format="%(levelname)s: %(message)s")
-> +
-> +    if not (args.yocto_docs_inv.exists() and args.bitbake_inv.exists()):
-> +        logging.error(f"yocto-docs and bitbake inventories not found at {args.yocto_docs_inv}/"
-> +                      f"{args.bitbake_inv}. Build the documentation or use the "
-> +                      "--yocto-docs-inv/--bitbake-inv options")
-> +        sys.exit(1)
-> +
-> +    exit_code = check_inventory(args.yocto_docs_inv, "ref-manual/variables.html#term-",
-> +                                (args.oecore_dir, args.meta_yocto_dir, args.bitbake_dir))
-> +
-
-This exit_code is never tested. I'm assuming you may want to do += for 
-the next one (or store the result in another variable).
-
-> +    exit_code = check_inventory(args.bitbake_inv, "bitbake-user-manual/bitbake-user-manual-ref-variables.html#term-",
-> +                                (args.oecore_dir, args.meta_yocto_dir, args.bitbake_dir))
-> +
-> +    sys.exit(exit_code)
-> +
-> +
-> +if __name__ == "__main__":
-> +    main()
-> 
 Cheers,
 Quentin
 
