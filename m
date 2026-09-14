@@ -1,197 +1,174 @@
-Return-Path: <JPEWhacker@gmail.com>
+Return-Path: <quentin.schulz@cherry.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 315A1C88E72
-	for <webhook@archiver.kernel.org>; Mon, 14 Sep 2026 16:08:48 +0000 (UTC)
-Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.1383.1789402122419446184
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2F659C88E6F
+	for <webhook@archiver.kernel.org>; Mon, 14 Sep 2026 16:40:08 +0000 (UTC)
+Received: from PA4PR04CU001.outbound.protection.outlook.com (PA4PR04CU001.outbound.protection.outlook.com [40.107.162.26])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.2179.1789404005931273944
  for <docs@lists.yoctoproject.org>;
- Mon, 14 Sep 2026 09:08:42 -0700
+ Mon, 14 Sep 2026 09:40:06 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20251104 header.b=Qio2ospp;
- spf=pass (domain: gmail.com, ip: 209.85.210.42, mailfrom: jpewhacker@gmail.com)
-Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-805453b1c0cso2533268a34.1
-        for <docs@lists.yoctoproject.org>; Mon, 14 Sep 2026 09:08:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789402121; x=1790006921; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=zEDrRYTmQqo5wdWqm6gdLLM4eMFHZENFRr7j+KFawt8=;
-        b=Qio2osppZU75W1bq8Ip5qjMlJAWUXLWyG1Dfwr2b/D0TpC52cVYaZWfJfglnL2ofYp
-         axAWVM2X6dkrdtKQEQly+X4xDqoIXmdAsJTw27Ki1CEDgaU/eyFRRe2HSYpnoavV0U/f
-         Nsd6xuV5wrQ8qp2PIUkLE/PSCB3yve/iA2CufLzOrRIf8XjK5UNfeJAzHvcUfuOF5TKe
-         ION/bjYrBWfz8NlAQr9By3bv7oXMzNf8K0bljaLMGy302Uxcn1bIIjuyVa5ujOPC1uWr
-         PJPKJdHXXcoQz+eFwC5O5JRMeGD/jKKb7nCbvQ85BuLKof0i7xJvwPwc93xQmBRZPcto
-         jnnw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789402121; x=1790006921;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=zEDrRYTmQqo5wdWqm6gdLLM4eMFHZENFRr7j+KFawt8=;
-        b=SnLKsLhXLicI9o2MZhtU9OhfzopU24wmtFeRvKtlgn6PcCBLrgVU0saZVR/fmeoZoN
-         Tn99QJLuGMp1i8u0nzNDVaL6fBY0gKw3YJ5aPNiUPQ8igH0vHOPymhYQemjlJq1UrLVy
-         k+DG8xRmuNr0GuFApGMZ4g6AhJCeqwLcfVnLvxUbloaFO6l6Tah1YHWJ+2QhmBlLq0Nl
-         wsTwYFpUkCp/CTsKrUbzDLQ/aS22DwVclxV/0NkevME8lt5rLjJRyJTRIBqZX4HutdfU
-         8w4uohdmZn30tAQIUvnwrVAnUnlWOoa17g9iv2PxYMUFYFWHGBf3XPz+/XtTk0Dw+zJ3
-         kCxg==
-X-Gm-Message-State: AFuF++mJx4DXUhyP4tipGBW6h0j0b1VahHEmfDEXgNvNY9FODm/UWUu1
-	07pPH3sQE313FvHETS36YH+YHO0wUZLNFbLfpDzI0TcgXQBoJ6BqZHaiRDP8ZA==
-X-Gm-Gg: AYBFou1nD3Dyy5MfaTcqrP11XVGbyT26WgbQqOSoATlElQPZDm1UfFzV70Kx8L8h/vp
-	mDQfJm1qXYnxj8hWglw0IETAcWqhOFISPQRWrKSTOvRq5scZw6SnJ5NCdf9YuPbuf+ThrVl15z1
-	1TpajmggXUaGxFb+T60MEwT03NM+tcaE/vUnDQEnbMSgW0Ze7kamx9DttNOmEc9WLUAeZjTkYIw
-	0yANmEv1ivY5CmqqmliugCLuhsSMRrs5uC3oMtWowSDIv2/7SwCdsyYwfClo7qyPTwFL+wmmbe6
-	KmtZNmthgnirXhMgsNE9YRvVfjeQ/CJETNbWf0GtMd7gUCXK1i4Y+XU47NFTM/ru2ACydcN4UG5
-	6JRBoLKclG3DXXV8SdGmV6sCSfUDFVCPjJOJ4HLO2eALo3pHfshXeGT/GcNirCqP7PaByhGT/FO
-	VOoMDwi0oaRI00fYrTK5etc1rGXfF5Z+0DRGezaKIUgN2z4qcFTzKvPxKVfP7Zehqs/Iad
-X-Received: by 2002:a05:6820:4cca:b0:6a1:47c8:c86 with SMTP id 006d021491bc7-6c5400887f9mr1892453eaf.10.1789402121141;
-        Mon, 14 Sep 2026 09:08:41 -0700 (PDT)
-Received: from localhost.localdomain ([2601:283:4b01:ba50::9413])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6c0990cc05fsm11012356eaf.3.2026.09.14.09.08.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Sep 2026 09:08:40 -0700 (PDT)
-From: Joshua Watt <jpewhacker@gmail.com>
-X-Google-Original-From: Joshua Watt <JPEWhacker@gmail.com>
-To: docs@lists.yoctoproject.org
-Cc: Joshua Watt <JPEWhacker@gmail.com>
-Subject: [docs][PATCH 1/2] ref-manual/variables.rst: Fix the documentation for the SPDX agent variables
-Date: Mon, 14 Sep 2026 10:08:35 -0600
-Message-ID: <20260914160836.1673868-1-JPEWhacker@gmail.com>
-X-Mailer: git-send-email 2.55.0
+ dkim=pass header.i=@cherry.de header.s=selector1 header.b=UWTCH+fk;
+ spf=pass (domain: cherry.de, ip: 40.107.162.26, mailfrom: quentin.schulz@cherry.de)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Z42e7V60zHkiII6CSdE+AFt/lL7iMzsSmshV0xx561QB+tpi13OkkRPk/mdBcKjjHXQImsZjmJP9wmDWOCZBEVFaULYJgVRmUIFBXWXwbIAYZBDJ2vw4LsNDh3VkjYq1scJrUqGBjBivlq9iwH1GfkMASWD+PaTZpPmSIyDnQCE+v04uKPAZi5uQTqn0Yy0D/JmyoMGl4EIXxHgHmPh8Ul7ujKiLCVGC6cYpnRlh1HZ16fE3WtNK0VMh/SbSJGv9mVBE+jQQhQSSmcKjTa1EC66ItEd5Dqj5ZEdkjgSYjoTX+EQwYaMqtW1PJIBgru6L9t1IJovTcLViyMMIvvBZPw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ueOF6okVOGCnGXqWhgVfDqvu+3QF9xqbAN2ft6T0CZY=;
+ b=np8HhbebidtRNe1UyNQfVcezAxiQy+X69yaiAWRvr/AvZDEm5vcLNXMdMcRymXRn1zVoxkgYCoacjLOMTj9Eqfgz+QXRCcHWLJyp6nML8fTYf7uv6IhplCA9UE798Q9BeN1/BjAC1cs8HGvzJwzvaeUp51oA2+lvO4S8MyN0UEGMIxDQoLpFw8npNjpiOL8xScTk6SxyY8OFjJlM5ihwutjSP0zAkK9CJPl9QgCDrf+4bdoCxHD1ydHZY1R0Ya22JIg6Y7rl2oUfBuEuV6/NuiVyKlT9o78HAGJ/XRtgn7r1i4ks2wPy3Nh8+GGSoJ/PJmxyeXFc71LGJ6St24v34Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
+ dkim=pass header.d=cherry.de; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ueOF6okVOGCnGXqWhgVfDqvu+3QF9xqbAN2ft6T0CZY=;
+ b=UWTCH+fkheQBpWyk2BxEUWYV+b1uhGYDnL6S96jhpae/uVzd1HuQ5GYy2oxvJHQgOI0rVr2X7PNIRPOkJ2mNUqOYTJ+J2vXVRvAY+BTMB0yygo0gZsexwXlG1obLWHfkgLxRZluMman6iQ8ji3BOU0wEAaGBsQWZvx1XvWIYlqg=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=cherry.de;
+Received: from PA3PR04MB11153.eurprd04.prod.outlook.com (2603:10a6:102:4ab::7)
+ by AS8PR04MB8562.eurprd04.prod.outlook.com (2603:10a6:20b:421::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.12; Mon, 14 Sep
+ 2026 16:40:00 +0000
+Received: from PA3PR04MB11153.eurprd04.prod.outlook.com
+ ([fe80::6b02:c0eb:95a4:3c3d]) by PA3PR04MB11153.eurprd04.prod.outlook.com
+ ([fe80::6b02:c0eb:95a4:3c3d%4]) with mapi id 15.21.0406.007; Mon, 14 Sep 2026
+ 16:40:00 +0000
+Message-ID: <92a2c1b9-16bf-475f-aec4-4fffbce0012a@cherry.de>
+Date: Mon, 14 Sep 2026 18:39:59 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [docs] [PATCH] docs: document the conventions used in the manuals
+To: twoerner@gmail.com, Antonin Godard <antonin.godard@bootlin.com>
+Cc: docs@lists.yoctoproject.org
+References: <20260831031458.4070250-1-twoerner@gmail.com>
+ <DL2ZCLBWUBX3.5ITP3G3AJ0SV@bootlin.com>
+ <apWCaeB2azEgKMlK@localhost.localdomain>
+Content-Language: en-US
+From: Quentin Schulz <quentin.schulz@cherry.de>
+In-Reply-To: <apWCaeB2azEgKMlK@localhost.localdomain>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: AS4P192CA0017.EURP192.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5e1::12) To PA3PR04MB11153.eurprd04.prod.outlook.com
+ (2603:10a6:102:4ab::7)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PA3PR04MB11153:EE_|AS8PR04MB8562:EE_
+X-MS-Office365-Filtering-Correlation-Id: 093184bc-87c2-4e20-c100-08df127ed186
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: 
+	BCL:0;ARA:13230040|23010399003|1800799024|366016|376014|22082099003|18002099003|3023799007|4143699003|10067099003|56012099006|11063799006;
+X-Microsoft-Antispam-Message-Info: 
+	3tRYKKLRBAjDD4WDNEqNGJQI/dI8YHfRT5PC65sxGOFjwcT/vMnuaXkXeaXSvAmF6i/NF6bcth99V9rxC9ZRXA1e1eOjIL+2A5T0cxkXm83v7l3LpAtNd6jp9lxApTVIXZLIl/KH2iJbbqGSvqyV8TA5YAj6rwYhGTLcNvieZPv2Q5MbVGU31ty3wFlFH98gfGEFoEvOg7hAMYg2ZoGoeaAlhgzB9XjlkpZcG/66yxzh6vD3kUdB/lWOscKnbz2jIBXBDsdtMZlWED21kunjbZ3tBP+p4vRP4ade8fmO2JxfipO962IK4JsAztXx/x9mEzXLrnP8tQ0OVQwLxbC+fpz7mr4EO4z/JswLUrQamupXmpoFJCp48BTiD/3kWXjiAe7JMcyAmZNKq+dgP6w40U3ET5let3GaKi5PVV4kPEt/qeeTftbT6BCOjQNOSzb2Sp5FFisj+hC0oxWum99fi41xCVNMTh9jUigUKZnyBuIKBA2tbOMbbpP0nq+Fd983TEYhS8fyvrIsgiVgbKywwSm0obj2Uja7Pka5Y7Q0Ee7KS7m7H6l/v0stqQIozxa8iCqSVIhGfbxHzwlDIdBwHWq7321lTRNlKEcVv1MumShFVeOb2q/N1lx/Qnb2r5R5UZvg5wpYn1XemTnksj3Q5UHbjlLiJRjo3K/bOfgPwB0=
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA3PR04MB11153.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(366016)(376014)(22082099003)(18002099003)(3023799007)(4143699003)(10067099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?utf-8?B?VDFRTDQ1V2FwYWRHTkFoWFJGRmNlMzZleDgxQlQ2N3AxLzRTOXZmTWJ0Q05Y?=
+ =?utf-8?B?K1l0TDhqbVk5RGlFTnB3UHF1OUZCVmVhN0J5US84T2NzZzB6T3JvYUM3bFBU?=
+ =?utf-8?B?TnBGMEh1R0gvbXdCWTM1WU11UGlGYUxJbWlScFhWVTI2MDUwcEl2RS9qYjAx?=
+ =?utf-8?B?eVByMGJvMHoySUdWTlJ2MTJSMCt4d0RwRnFpSnlDSmNicmx0T09aZ0FxdWFH?=
+ =?utf-8?B?Y3ZJSTVtempyc21pLzBPRk9NWXJGODBCK2U5dHd2NDhZWldLTXhJZnlFRGF1?=
+ =?utf-8?B?QTF0bUs1ZWlNYks2RDBTdy9SU2dFNExrQzcvcEJZRzdvMFRmSWtKbEZ5aHpK?=
+ =?utf-8?B?L2dpcXhaZFdvczRYVEZNY2dCSm01NnhMS3BoeTRkY3p0NjBLUVBwSzBLUHlJ?=
+ =?utf-8?B?MklTNENrUDg2V1dIektzcnR5MkFnREVxY1B3V2lDVk1WRlQwN0JsMkRwTlk3?=
+ =?utf-8?B?aGEza283VGd3L0NGUFpkNHJ2cmdZUHByaDI1M1JuR1grcEpYUGorUnZ2K0Mx?=
+ =?utf-8?B?RGIvc25JZStUdVh0THdzK0Faek9neHVFaVo4K2ZmcXFScVZ0bjRFNWtjTVRY?=
+ =?utf-8?B?bjNManlIZUhNVTBQR05uTU0zRDJ1SUtUM0N1bVlhby83MTBZZC9PdnlOK1pH?=
+ =?utf-8?B?djJZREZoZ21CZnVKYUxiUWtFK0szbjU1UWFrMGpKNmprZllWTG5HTkt0LzNN?=
+ =?utf-8?B?S1cvVW4xZklmZkdMTnNnZVdhR2o2ckZOWGhIT1hLMzhFb2hvaVlseEFaZWN5?=
+ =?utf-8?B?OWRYUlhKY0JqWWdQMXczb0tBejJCdW1KRTVLUHNsTEVJZGZwWnZtdXNXSXpF?=
+ =?utf-8?B?UjdCekpHQUZTZHRodEwwRXNoK0V6MjJ2MFBqUGM4V1RQa2V4cEE0dEc1RlNM?=
+ =?utf-8?B?Zkdtb3RidDBKRHlQaXR6b29NUVJwMjV2SEEzS3YyTTNPaEJ3UXZVVE1Ecy9i?=
+ =?utf-8?B?MVdta0JFMFlwVENtenBJUjZrclFaMFF2cnBsWWRsU2F4azJUOXlDd2JteEFn?=
+ =?utf-8?B?YWlTM2xWV292NW5LODB3bndvUGhrSmtXcGw2eHpDMlE3eTNIT2ZEK01SODYy?=
+ =?utf-8?B?eDNoa3JIS1hiamwzYkYrQkFjWFpZdWRxbDl3WkpOM0xvTmVrUE9Mb0ZjSDBr?=
+ =?utf-8?B?NHVveksvQXlQang2NDZnN1FNdzZrYjZ3VXlLSVJIZVNONE9rMFF4UUJicjY5?=
+ =?utf-8?B?NDE1aTU2Z2ZKZk5lM1FWYnJzZG0xZTIyV3FXWldMN3RUTy84RlpTSGJLTEVt?=
+ =?utf-8?B?V1E1VVpBZXVXTnNadm53bW5KbzI5QWNXTlEwc1B3emFmWmFsMjA4aTRCaHh0?=
+ =?utf-8?B?aDdLdkFadUIweXdYMzRPakNjV2pXTXBVbXNWWno5Qmg2bGhCZ1JCYW41d3Ay?=
+ =?utf-8?B?c2owVjJ6R3B0TW9wWnNsUWJnaXVET1hja3RYdzloN1VDK0VwbTB2ZUdzLy8z?=
+ =?utf-8?B?S3ltSnNockZUczJWUzFoZlpmWmY2VDVDeEorRTNqZysrVy9YaElJcE1oUmxk?=
+ =?utf-8?B?dkRoZkxPTCtWZGVRNFl3NU1STm1MRHNwM0tJNnl5K285bzBwdGp4M2FKNmpF?=
+ =?utf-8?B?QStQd1liaC9CbHpzWExuQjQ0dTRjTndGVFdNWUNTY3BhMUY3eVhYRW9FWTcy?=
+ =?utf-8?B?SHB5V0E4S2pKZjdUOG9Xb0ZrRE9jMk9wMFRFTGJ4TjZJZXhQbGZCcU02ZCtt?=
+ =?utf-8?B?NktDby9xcUVHUG1EUk5lVm1iMjVmaVgrbHZxbjcwYXBTY1hEU3l3ZUZsWkpL?=
+ =?utf-8?B?cTUxc21aSkl4cFhnM1I4VkJBb0xDQ1dVQnlpTmdtQXRUL2ppS1RPMFF0RFBO?=
+ =?utf-8?B?aVgzaFdyV3k1ZjdQTG9LT0N0bTNHTlNOei9LbDNiU25yMlVFeVd4YW5rTXVE?=
+ =?utf-8?B?UTVpbmNVb2loRVFEdXpET2xZdmhoYkRaZEhjWGdZYzhaai9veTBEQXB1YXQ4?=
+ =?utf-8?B?aWpWQVgvWmNtWXVmU3ZpSVh4SGV0eHo0UTN1Nkdsb1UxcHNxUXorazNRUm5O?=
+ =?utf-8?B?anlGTzA0MDQ2Q1dyczU2YU5yMGE0bWJ5QkNqTDdsUWViYUFPOTJIN21mbG9j?=
+ =?utf-8?B?UVN1aGxoakJYblF3R0JLUlZLRS9SRnhmR2NrUHNEdm9sbmM0MStJdzBCYUxH?=
+ =?utf-8?B?N0lNYkcvOTdPM2lxbUVydlRnWmowUFZLMnhwTU5hVnpjNUtiOHdNNzR0VW9s?=
+ =?utf-8?B?S1VZRHh5eXowWEw3Y2dOdWNDOS84dWpOSVFRVlA4UlphWnJoZTlTcGFMTG1s?=
+ =?utf-8?B?bWpaTFBUcUlCdDBROVF0bFVPSE93VGdMWFVyWkM5TGZObmlkQThlQi83UmNH?=
+ =?utf-8?B?UXB2SGVFMTc4elloRTZHQTJENS9OWGNIMmcwdzhVSUJYZStNSjhhUT09?=
+X-OriginatorOrg: cherry.de
+X-MS-Exchange-CrossTenant-Network-Message-Id: 093184bc-87c2-4e20-c100-08df127ed186
+X-MS-Exchange-CrossTenant-AuthSource: PA3PR04MB11153.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Sep 2026 16:40:00.2637
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: LCKGmWlYNFlQ7SfejmIHU2leUgH9yqaLyOZkx79MqD6M6QB7bsudkP0RABJOtV5jeB1jXshQo2XV5TgSZhL3RkOmO6p8zdmM60aA805OupU=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8562
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 14 Sep 2026 16:08:48 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10497
+ <docs@lists.yoctoproject.org>; Mon, 14 Sep 2026 16:40:08 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10499
 
-The documentation for the SPDX variables related to agents was incorrect
-and misdirected users about how these variables are intended to be used.
+Hi Trevor,
 
-Signed-off-by: Joshua Watt <JPEWhacker@gmail.com>
----
- documentation/ref-manual/variables.rst | 42 +++++++++-----------------
- 1 file changed, 14 insertions(+), 28 deletions(-)
+On 8/31/26 3:32 PM, Trevor Woerner via lists.yoctoproject.org wrote:
+> On Mon 2026-08-31 @ 10:18:42 AM, Antonin Godard wrote:
+>> Hi,
+>>
+>> On Mon Aug 31, 2026 at 5:14 AM CEST, Trevor Woerner via lists.yoctoproject.org wrote:
+>>> The manuals use angle brackets for placeholders and a prompt to mark a
+>>> command, and say so nowhere. A reader can only infer both, and one
+>>> example reads as advice to paste a line that will not parse.
+>>>
+>>> Include the new section from every manual, the way the boilerplate is
+>>> included, so each is self-contained.
+>>
+>> We already have a standard.md document that explains these kind of things. I
+>> think it would be more appropriate to add these conventions there.
+> 
+> Oh, that's interesting, and I hadn't thought of that.
+> 
+> You know how, whenever you pick up any programming book, there's a
+> section (usually in the Preface) that shows you what typeface is used
+> for code (versus prose), how a "Warning" admonition is drawn? That's
+> what I'm trying to recreate here. A "conventions used in this document"
+> section that is *reader* facing.
+> 
 
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index 83bc59efe..e1d3cd70f 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -9567,38 +9567,28 @@ system and gives an overview of their function and contents.
-       PURLs.
- 
-    :term:`SPDX_IMAGE_SUPPLIER`
--      The name of an agent variable prefix describing the organization or
--      person who supplies the image SBOM. When set, the supplier is attached
--      to all root elements of the image SBOM using the ``suppliedBy`` property.
-+      The variable prefix for describing the organization or person who
-+      supplies the image SBOM. When set, the supplier is attached to all root
-+      elements of the image SBOM using the ``suppliedBy`` property.
- 
-       The value of this variable is the base prefix used to look up the
-       agent's details. The following sub-variables are read using that prefix:
- 
--      -  ``<PREFIX>_name``: display name of the supplier (required)
--      -  ``<PREFIX>_type``: agent type: ``organization``, ``person``,
-+      -  ``SPDX_IMAGE_SUPPLIER_name``: display name of the supplier (required)
-+      -  ``SPDX_IMAGE_SUPPLIER_type``: agent type: ``organization``, ``person``,
-          ``software``, or ``agent`` (optional, defaults to ``agent``)
--      -  ``<PREFIX>_comment``: free-text comment (optional)
--      -  ``<PREFIX>_id_email``: contact e-mail address (optional)
--
--      The simplest approach is to use the variable itself as its own prefix,
--      so the sub-variable names follow directly from
--      ``SPDX_IMAGE_SUPPLIER``.
-+      -  ``SPDX_IMAGE_SUPPLIER_comment``: free-text comment (optional)
-+      -  ``SPDX_IMAGE_SUPPLIER_id_email``: contact e-mail address (optional)
- 
-       Example (set in the image recipe or in a :term:`configuration file`)::
- 
--         SPDX_IMAGE_SUPPLIER = "SPDX_IMAGE_SUPPLIER"
-          SPDX_IMAGE_SUPPLIER_name = "Acme Corp"
-          SPDX_IMAGE_SUPPLIER_type = "organization"
- 
--      Alternatively, you can use any other prefix name, which is useful for
--      sharing an agent definition across multiple supplier variables::
--
--         MY_COMPANY_name = "Acme Corp"
--         MY_COMPANY_type = "organization"
--         SPDX_IMAGE_SUPPLIER = "MY_COMPANY"
--         SPDX_SDK_SUPPLIER = "MY_COMPANY"
-+      Alternatively, it is also possible to reference an agent created by
-+      another variable prefix, using ``SPDX_IMAGE_SUPPLIER_ref``. For example::
- 
--      If not set, no supplier information is added to the image SBOM.
-+        SPDX_IMAGE_SUPPLIER_ref = "SPDX_PACKAGE_SUPPLIER"
- 
-       See also :term:`SPDX_PACKAGE_SUPPLIER` and :term:`SPDX_SDK_SUPPLIER`.
- 
-@@ -9737,7 +9727,7 @@ system and gives an overview of their function and contents.
-          already fixed upstream (warning: this can be large and slow).
- 
-    :term:`SPDX_INVOKED_BY`
--      The base variable name describing the agent that invoked the build.
-+      The variable prefix describing the agent that invoked the build.
-       Each ``Build`` object in the SPDX output is linked to this agent with an
-       ``invokedBy`` relationship. Requires
-       :term:`SPDX_INCLUDE_BITBAKE_PARENT_BUILD` to be set to ``"1"``.
-@@ -9751,7 +9741,6 @@ system and gives an overview of their function and contents.
-       Example (CI pipeline invoking the build)::
- 
-          SPDX_INCLUDE_BITBAKE_PARENT_BUILD = "1"
--         SPDX_INVOKED_BY = "SPDX_INVOKED_BY"
-          SPDX_INVOKED_BY_name = "GitLab CI"
-          SPDX_INVOKED_BY_type = "software"
- 
-@@ -9792,7 +9781,7 @@ system and gives an overview of their function and contents.
-       ``http://spdx.org/spdxdoc``.
- 
-    :term:`SPDX_ON_BEHALF_OF`
--      The base variable name describing the agent on whose behalf the invoking
-+      The variable prefix describing the agent on whose behalf the invoking
-       agent (:term:`SPDX_INVOKED_BY`) is running the build. Requires
-       :term:`SPDX_INCLUDE_BITBAKE_PARENT_BUILD` to be set to ``"1"``.
-       Has no effect if :term:`SPDX_INVOKED_BY` is not also set.
-@@ -9806,10 +9795,8 @@ system and gives an overview of their function and contents.
-       Example (CI system building on behalf of a customer organization)::
- 
-          SPDX_INCLUDE_BITBAKE_PARENT_BUILD = "1"
--         SPDX_INVOKED_BY = "SPDX_INVOKED_BY"
-          SPDX_INVOKED_BY_name = "GitLab CI"
-          SPDX_INVOKED_BY_type = "software"
--         SPDX_ON_BEHALF_OF = "SPDX_ON_BEHALF_OF"
-          SPDX_ON_BEHALF_OF_name = "Acme Corp"
-          SPDX_ON_BEHALF_OF_type = "organization"
- 
-@@ -9822,7 +9809,7 @@ system and gives an overview of their function and contents.
-       :term:`SPDX_INVOKED_BY`, and :term:`SPDX_BUILD_HOST`.
- 
-    :term:`SPDX_PACKAGE_SUPPLIER`
--      The base variable name describing the agent who supplies the artifacts
-+      The variable prefix describing the agent who supplies the artifacts
-       produced by the build. Works identically to :term:`SPDX_IMAGE_SUPPLIER`
-       but applies to individual packages rather than the image SBOM.
- 
-@@ -9831,7 +9818,6 @@ system and gives an overview of their function and contents.
-       to apply only to packages of that recipe. Recipe-level overrides
-       (``SPDX_PACKAGE_SUPPLIER:pn-<recipe>``) are also supported::
- 
--         SPDX_PACKAGE_SUPPLIER = "SPDX_PACKAGE_SUPPLIER"
-          SPDX_PACKAGE_SUPPLIER_name = "Acme Corp"
-          SPDX_PACKAGE_SUPPLIER_type = "organization"
- 
-@@ -11480,7 +11466,7 @@ system and gives an overview of their function and contents.
-       configuration must define the :term:`UBOOT_MACHINE` variable.
-       Additional control variables are: :term:`UBOOT_CONFIG_BINARY`,
-       :term:`UBOOT_CONFIG_FRAGMENTS`, :term:`UBOOT_CONFIG_IMAGE_FSTYPES`, and
--      :term:`UBOOT_CONFIG_MAKE_OPTS`. 
-+      :term:`UBOOT_CONFIG_MAKE_OPTS`.
- 
-       Here is an updated example from the ``meta-freescale`` layer. ::
- 
--- 
-2.55.0
+Fair enough.
 
+> What you're pointing at is a *contributor* facing document. And it's a
+> good point, something should probably be mentioned there so that
+> contributors follow the same conventions throughout; it helps make the
+> document look like it was written by one person.
+> 
+> But I feel that a reader-facing conventions section is still warranted.
+> 
+
+I really think we should aim at removing the prompt for all instructions 
+that do not actually require one, that is (in my opinion) anything that 
+doesn't include the output of the command. Then there should be less 
+confusion around what needs to be pasted or not.
+
+I'm also not entirely sure we follow those conventions currently across 
+the docs, so maybe there's some additional work to be done to ensure the 
+conventions are actually followed.
+
+Cheers,
+Quentin
 
