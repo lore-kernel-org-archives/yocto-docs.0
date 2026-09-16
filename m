@@ -2,14 +2,14 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7B553C88E5C
-	for <webhook@archiver.kernel.org>; Wed, 16 Sep 2026 09:13:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AE260C88E77
+	for <webhook@archiver.kernel.org>; Wed, 16 Sep 2026 09:18:25 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.10789.1789550019012975368
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.10837.1789550304830329732
  for <docs@lists.yoctoproject.org>;
- Wed, 16 Sep 2026 02:13:39 -0700
+ Wed, 16 Sep 2026 02:18:24 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=Y80V+RTd;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=d7Zylhvd;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
@@ -17,25 +17,25 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
 	List-Unsubscribe-Post:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=hru107ntnnRnj8tkTtC8z6rZprahHebuGXI3wHefpL4=; b=Y80V+RTdNcSfW8BzP7RXKSUJJ9
-	7ddMNCD0uUBUc132hMeTycw4qGpnV8XF1uPwlpcQOWd6hbsiemsXXaVkkp5GmtrUv6HXD5bI8TFDP
-	KjIofeN4flFkD3W+hk15ad8uhqbvdtPBncU7+1/D9IOJu6s7UFTDQyM4DYJKIeEioykRLIpjj+A2U
-	v1Mfstkx/iDakzOj9aQZjuyM7VxXKrATnXgPXpzAHcxKRGKbvFZ0bzjSqCVwfDAA9GySAjS7jQAMx
-	gn7MA3n6x2SqtciIreawq4lzcZokQ+VgrUZe5sdM5rXjLf2vfzmuTEaDpNBQeZByw7QbN4mb4ohAF
-	s5O/dNzQ==;
-Received: from pool-174-114-114-5.cpe.net.cable.rogers.com ([174.114.114.5]:51130 helo=sheena)
+	bh=Yv1V7rJ5RpHsOVxhiS+YDJsumKfHrp3FYv6wys8GrDM=; b=d7ZylhvdyYWcuGoqy39R8AHKsM
+	2QtMkeQgiV1kteJCmCoM/fuDyz6U75JEUKy168YJ1X6ohDulegDtIzYeui1SN0uJkbgxfIc9S2C6J
+	eDbzwE8vKENWv1ptoSEHUZKvbKh93I77eUQUQQV4NKlSZY3yv43MEZgm4qteh9Tvy2UFn8FtO7TBB
+	spIxN/LB4/31D+qV8HDTtuuNCoIJXgw4exC/27Ca2J0XbEtYX7DbGS/iRa7+zbYaSTcYpR/8edwIi
+	bFmTYWmkZBet3oqLJLu/LWUVPUNRsJZ879Z5rzHtOMsSRT5a4R+ZqwMdhwO7TUHcvnwdqolBztpFR
+	HBQRXbIA==;
+Received: from pool-174-114-114-5.cpe.net.cable.rogers.com ([174.114.114.5]:33244 helo=sheena)
 	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.100)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1x6lhv-0000000FpGx-2LIR
+	id 1x6lmY-0000000FptS-1712
 	for docs@lists.yoctoproject.org;
-	Wed, 16 Sep 2026 05:13:37 -0400
-Date: Wed, 16 Sep 2026 05:11:20 -0400 (EDT)
+	Wed, 16 Sep 2026 05:18:23 -0400
+Date: Wed, 16 Sep 2026 05:16:13 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: [PATCH] dev-manual: update pre-release recipes section, drop ref to
- "irssi"
-Message-ID: <1eaede83-5957-d74e-be76-b2f13fc40e73@crashcourse.ca>
+Subject: [PATCH v2] dev-manual: update pre-release recipes section, drop ref
+ to "irssi"
+Message-ID: <b4056a62-2cc6-036d-f17b-e023d68c2ecd@crashcourse.ca>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -51,8 +51,8 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 16 Sep 2026 09:13:40 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10522
+ <docs@lists.yoctoproject.org>; Wed, 16 Sep 2026 09:18:25 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10523
 
 
 The section "Properly Versioning Pre-Release Recipes" contains a
@@ -64,8 +64,10 @@ Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
 
 ---
 
+  oops, accidentally used hyphen in one place instead of tilde. fixed.
+
 diff --git a/documentation/dev-manual/new-recipe.rst b/documentation/dev-manual/new-recipe.rst
-index 3f360597f..e8ad38b15 100644
+index 3f360597f..4d68da339 100644
 --- a/documentation/dev-manual/new-recipe.rst
 +++ b/documentation/dev-manual/new-recipe.rst
 @@ -1042,25 +1042,33 @@ The following lists specific examples of virtual providers:
@@ -106,7 +108,7 @@ index 3f360597f..e8ad38b15 100644
 +
 +   PV = "2.0~rc1"
 +
-+ensuring that ``2.0-rc1`` sorts before ``2.0``.
++ensuring that ``2.0~rc1`` sorts before ``2.0``.
 +
 +This is exactly the approach taken with OpenEmbedded's ``avahi`` recipe,
 +whose current ``avahi_0.9.bb`` recipe file identifies that it is now on
