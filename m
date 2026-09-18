@@ -2,61 +2,61 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CC1F3C982E3
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EE263C982E2
 	for <webhook@archiver.kernel.org>; Fri, 18 Sep 2026 13:54:17 +0000 (UTC)
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.11766.1789739655744020918
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.11768.1789739656949182185
  for <docs@lists.yoctoproject.org>;
- Fri, 18 Sep 2026 06:54:16 -0700
+ Fri, 18 Sep 2026 06:54:17 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=HBeONeFx;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=rAJpE1PH;
  spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 148F01A091E
-	for <docs@lists.yoctoproject.org>; Fri, 18 Sep 2026 13:54:14 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 3D9561A0969
+	for <docs@lists.yoctoproject.org>; Fri, 18 Sep 2026 13:54:15 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id DE14060649
-	for <docs@lists.yoctoproject.org>; Fri, 18 Sep 2026 13:54:13 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0FD0110328D58;
-	Fri, 18 Sep 2026 15:54:12 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 0C0DB60649
+	for <docs@lists.yoctoproject.org>; Fri, 18 Sep 2026 13:54:15 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5641B10329026;
+	Fri, 18 Sep 2026 15:54:14 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1789739653; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1789739654; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=EipsNILjqCdX9/QOcapKHsUx92cXyrQt8agkI/Mzcho=;
-	b=HBeONeFxBQzDsZ6KEz8q8tCPwG2/gZP1VBHboVnkTpxdKTeoPHU6ewC2MowrcJEmbTavbl
-	8SQNUJgPzsFmKbHJrHFW+bcDFl+onDVenO1hKmxctc/Vk1ezHfIteMTPEU8fAZYtQzhzCB
-	1p5kbnB+dfAlP4o4DofV9QkQdrMH3NcbTqtFRoUf9Fpf7PshmQ/mZQccVNXjYACmPsIxLp
-	0sF3DIKjPTf6nDzNDOOsogzCOj10+Iu9MzBIWXbjxSjo3ISo9RJI0ZvS5kzS9gUfS+aDFQ
-	XQTBjuUWeMY0LWihdVwak0TNXhzs3gqNhx1Xkk5NFr96/Vej8Hao6wPIDYYqRg==
+	bh=Q6b0atxYQA7UXB6xBFhYyNu+uw2x6QB1u4WG0bZel+c=;
+	b=rAJpE1PHxfDmooa6fNgTwax+cO8G7Xks2Jars7eJ7jCc9lvcj98ubYoujWmclMsOJPMyYJ
+	1i2W7gcNCCGEg5Yitwuomlt89NJlJB9vynhp+dL/CbyEJcGuZPUzl2erEOI1nfOWJTip4n
+	PWmJ0ZWEsYZ3AKOX+P151L2j5b9aHpdq+HPTvxnMa+aGTAUhqqJlL4UtIjP1PNAJNg6t/b
+	dtsqLEiq6SnTtaeHQf4o6m1yhyb7hbIXw6mqO0rNsfnTwD+7QkaLbHVM2uddTSe1/vVzLk
+	lmgrQdEnnkaIZu1V0TTlWixFEf2YfQlYHZ5YzvuTYOkrNjmFS4CjuiT7dqF9yA==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Fri, 18 Sep 2026 15:53:38 +0200
-Subject: [PATCH 08/20] ref-manual/variables.rst: document the FIT_OS
- variable
+Date: Fri, 18 Sep 2026 15:53:40 +0200
+Subject: [PATCH 10/20] ref-manual/features.rst: add section for SDK
+ features
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260918-releases-notes-6-1-v1-8-2d0fceffa242@bootlin.com>
+Message-Id: <20260918-releases-notes-6-1-v1-10-2d0fceffa242@bootlin.com>
 References: <20260918-releases-notes-6-1-v1-0-2d0fceffa242@bootlin.com>
 In-Reply-To: <20260918-releases-notes-6-1-v1-0-2d0fceffa242@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1050;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2702;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=VnO7VgrQ8O+hTIK0HR20z5LfBAEUCrPsZOkCBKGoJcE=;
- b=kA0DAAoB0YBBQCmjqDYByyZiAGqtQmSgv0N9XH5EL5vQXVFKY8Nw/pb8/MVVEjmSfEg9a2Wb1
- okCMwQAAQoAHRYhBIZIclGI3UAbuaDT/9GAQUApo6g2BQJqrUJkAAoJENGAQUApo6g27T4P/R5v
- GggwLkL6SG0Cd5bICTgJYD9uQ0wPFgf+FHpFxiM7INBzBT2ME2qcReBvD2NH1l27e4fvsus+8yZ
- jiQ/pGXpYM3U3l6LSxYaWF2RlCT7jeET0j/VMPeelTjgWHP6X7+GgVE8rXa64qPYVsGaDktN3zG
- bfRnA+x8WJOsezMr2Csu3oU6dKFN6ykwGDeD0XDsBtIP1QknyO7T8wgUXBLxRmLeXIyoan3k2Sk
- XIypTbjs3RoIeexpGX//wEhlXBg3vdjbGvGkd/87ZhjIx33J6SJ7dSlToG+eJLbkxbyXoKPsC8C
- ehY2AtfjUx+1LJnxoQI5Rq7PJKtgO7ww3iJHOrjVr9M6Tg9pA0cyVZ5q+A2zePDxSXVw93Xzn0/
- Z/HUpBDTPUX7/6lJ9j2gUUBXG15H2LOqZ40Z8nT4Pr9p2yqA+A4uLZJscE69yx3afwgEq04exE5
- bETXCIvo2wzosdWBtpGzqnte+BbmB2ah26WJfpWqIhfUMFCUsCJsnr6P3eh2LSvwCE96v73sNns
- YJqUj/A/MLr1sVgwKGEFYhYKc5G0Df31QLL19IiACrGvNouGjBqjxT3E8QJieealfw1RneID/lX
- oz2iTdmx/3Lj+s3X8QTD21f3wLhNFqyGxm5uJoDYvRzwnLMm6SkP+vrCwRvReJxEm7Iu8GbmWhM
- p57nh
+ bh=Vjcdm7r5JN9VnNA7B/gQK3Mnbxscy5RiZyUTwQd/dW4=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBqrUJkBHMqivolBl3de5qjl50sejZ/UL1lDdFwK
+ pnYv13dmAyJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaq1CZAAKCRDRgEFAKaOo
+ NuAyD/9SxS3qcWs/a68M1z095sISDzi133OSZYe9/9fy2ScoamPOsPHmwxOGXK7OHbZ4Gm6sknV
+ Oy5Q4Yt0PoVFFt4myHHufdX0MI6vfcybXURUjE5VwOiHa9/1TVIOXgo+DpqiaT0FXCB0tanS8bL
+ 9SmlPCNBPsrIq7mWb2QX5VYXSEa+Cn8dXKh52NGjaFEYy5lyoRYlCFZbMZ5WDS0BKLnD8J9AKPK
+ fLb4Yd6gqZv2T5zidNXihgRSTn5MgHBGKqjM9JuEWjDvL6FVg5FI8d0iBjQJa61K/WDOCKtpXCW
+ mXPzxbSMtqt3XvxTCGfqj63UWVAixAgLuvbd9N1FpOoyUt5X4WeJKewU3Hf2Fj8Z+gwmv1z1JDl
+ 0gtKqhJiN6keFsV5wGr77XkE50NEh/MN0YjMFT2sQ7dzcNwkfqUc7McW6+whka3y+6h/87nU33l
+ M6V0l99KpcHBLM7om123DWF7xbUN/ELjaM63f35oRX9U/ePjSz7lGiQT+STCfjfRrOf5Sptl+tb
+ z7MRkxfZXEfRB3aKmDQMunpICr4/y2P85EAV7lnSRTb8k/iV8tPzCG8VzRscXAXpLyPYM2uzSUu
+ nUbzh6o9qfRegaIKBuysoHEOAIPEGRx1ybA3779NzmeJHLf72ZfjDaHGkJprYdtVKy/379eBopz
+ btV9i9J4R710arQ==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
@@ -64,32 +64,71 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Fri, 18 Sep 2026 13:54:17 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10540
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10542
 
-Added by commit dc00e830c3f8 ("kernel-fit-image: introduce FIT_OS
-variable to override 'os' field") in OE-Core.
+The SDK_FEATURES variable can contain features to enable for the
+generated standard/extensible SDK. Document them and document the
+SDK_FEATURES variable.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/ref-manual/variables.rst | 5 +++++
- 1 file changed, 5 insertions(+)
+ documentation/ref-manual/features.rst  | 21 +++++++++++++++++++++
+ documentation/ref-manual/variables.rst | 10 ++++++++++
+ 2 files changed, 31 insertions(+)
 
+diff --git a/documentation/ref-manual/features.rst b/documentation/ref-manual/features.rst
+index 879d98ca1..89143344a 100644
+--- a/documentation/ref-manual/features.rst
++++ b/documentation/ref-manual/features.rst
+@@ -423,6 +423,27 @@ these valid features is as follows:
+ 
+ -  *x11-sato:* Installs the OpenedHand Sato environment.
+ 
++
++.. _ref-features-sdk:
++
++SDK Features
++============
++
++The contents of a :ref:`standard <sdk-manual/using:Using the Standard SDK>` or
++:ref:`extensible <sdk-manual/extensible:Using the extensible SDK>` SDK generated by
++the :term:`OpenEmbedded Build System` can be controlled by the
++:term:`SDK_FEATURES` variable that you typically configure in the image recipe
++for which the :ref:`ref-tasks-populate_sdk` or :ref:`ref-tasks-populate_sdk_ext`
++task is run.
++
++The SDK features available are:
++
++-  ``go``: add `Go` utilities for building `Go`-based applications.
++
++-  ``kernel-src``: adds the Linux kernel source tree to the SDK.
++
++-  ``rust``: add `Rust` utilities for building `Rust`-based applications.
++
+ Default Features
+ ================
+ 
 diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index 8ec5cd955..5f94a0505 100644
+index 2b2aa4df8..880bf9069 100644
 --- a/documentation/ref-manual/variables.rst
 +++ b/documentation/ref-manual/variables.rst
-@@ -3721,6 +3721,11 @@ system and gives an overview of their function and contents.
+@@ -8992,6 +8992,16 @@ system and gives an overview of their function and contents.
+          :term:`SSTATE_MIRRORS` is set in the SDK's configuration to enable the
+          artifacts to be fetched as needed.
  
-          mkimage *-B 8 -E* -f fit-image.its fitImage
- 
-+   :term:`FIT_OS`
-+      The :term:`FIT_OS` variable controls the ``os`` field of the kernel and
-+      various other images in the FIT image. Set to "efi" to load a kernel with
-+      EFI stub as an EFI application. The default is "linux".
++   :term:`SDK_FEATURES`
++      The :term:`SDK_FEATURES` variable defines the list of features to include
++      in a :ref:`standard SDK <sdk-manual/using:Using the Standard SDK>` or
++      :ref:`extensible SDK <sdk-manual/extensible:Using the extensible SDK>`,
++      resolved when running the :ref:`ref-tasks-populate_sdk` or
++      :ref:`ref-tasks-populate_sdk_ext` task. This variable is analogous to
++      :term:`IMAGE_FEATURES`, but for the SDK instead of the image.
 +
-    :term:`FIT_PAD_ALG`
-       Specifies the padding algorithm used in creating the FIT Image.
-       The default value is set to "pkcs-1.5" by the
++      For a full list of features, see the :ref:`ref-features-sdk` section.
++
+    :term:`SDK_HOST_MANIFEST`
+       The manifest file for the host part of the SDK. This file lists all
+       the installed packages that make up the host part of the SDK. The
 
 -- 
 2.55.0
