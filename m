@@ -2,61 +2,61 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 08D66C982D8
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 19480C982DF
 	for <webhook@archiver.kernel.org>; Fri, 18 Sep 2026 13:54:16 +0000 (UTC)
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.11765.1789739654962734142
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.11763.1789739653310458004
  for <docs@lists.yoctoproject.org>;
- Fri, 18 Sep 2026 06:54:15 -0700
+ Fri, 18 Sep 2026 06:54:13 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=0YHc55vr;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=L/Htm7FG;
  spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 4F8F21A098F
-	for <docs@lists.yoctoproject.org>; Fri, 18 Sep 2026 13:54:13 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id A7F2E1A091E
+	for <docs@lists.yoctoproject.org>; Fri, 18 Sep 2026 13:54:11 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 2477060649
-	for <docs@lists.yoctoproject.org>; Fri, 18 Sep 2026 13:54:13 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 77FDE1032900F;
-	Fri, 18 Sep 2026 15:54:12 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 7C80960649
+	for <docs@lists.yoctoproject.org>; Fri, 18 Sep 2026 13:54:11 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A491E1032901E;
+	Fri, 18 Sep 2026 15:54:06 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1789739652; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1789739647; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=JwH63xINPG+HMjMU3/Is5tfm1OdDx0I8OkNLEwiqIs0=;
-	b=0YHc55vr/43kL9kMlDlVCKUlXhtWIZI2rb4O3Ciam4UPmGF6JlYgkplp5nqZ/CXoQk03ES
-	ltepmsg9xPu6gg+93TGBJE4A4EdOn9SDSPUxwMf2laLiV3cMDPTsmZtWMkIhzUz7p6wlBl
-	NYpOT0ODiPpsv8sTgQfohMLVK/cB0IOdbf1SQPBeL2W2XG0rD/XP7uAvoYNpZjykfT8sBS
-	U7f+QyF+lCG7CGhAQbuZyDz+YvzWHQ0RcgXD+4ur9jVmHv6rOopnnyG6wptqIUsGLv1/Yj
-	HQ2GkUgM8LRE7hPqUb0FswLG+KBsasV6gpzmSbogA1f3iY/xjSf79JE/aex0eQ==
+	bh=NA/F5FjHXbuLPDiIhw8YKlovWIvFD8lsG2wJAhTMTks=;
+	b=L/Htm7FG4E+/rxGYnslPttXbXOGjSXU4vTnG8Fe5m9w8Emwkx1DXbYuDISv8m7GVsog8Le
+	mZmPhvYKqYL33MGgxXWzLSW9msI7NNPI04CJDKuj53L0ByY7gDwWM1E9siy5L2TQ1QYK9Y
+	gmvTUhGUbDhR7WSOegdvLgQepu1QHXShJYrwLA1Y0TULBrAm6HW7uNDcKr7U2EWDjfWVgh
+	1HMjH3s3nHIKtPeJB0xoA8YamhTpnZ6c2G9ugwSGHrXZBRZ5t1J1JARF2qeXcKnraI57L0
+	PlcpV31+jLJD9rBk2RJB/a5LLf7Ha52vaEauYDLaPKxRgHfixqfCWK3ukYQ3lA==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Fri, 18 Sep 2026 15:53:37 +0200
-Subject: [PATCH 07/20] ref-manual/variables.rst: document the
- KERNEL_TOOLCHAIN variable
+Date: Fri, 18 Sep 2026 15:53:35 +0200
+Subject: [PATCH 05/20] ref-manual,dev-manual: remove srpm mode archiver
+ class mentions
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260918-releases-notes-6-1-v1-7-2d0fceffa242@bootlin.com>
+Message-Id: <20260918-releases-notes-6-1-v1-5-2d0fceffa242@bootlin.com>
 References: <20260918-releases-notes-6-1-v1-0-2d0fceffa242@bootlin.com>
 In-Reply-To: <20260918-releases-notes-6-1-v1-0-2d0fceffa242@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1185;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2004;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=qlsN+WmWdm0XqeOwY59jUcW73AGVHvkj3w65PZHOVcw=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBqrUJkv7tFgyoCdF5NNfm1HgGzM9ykORDX705ZC
- +XUbUSB8mSJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaq1CZAAKCRDRgEFAKaOo
- NkCQD/9oSayD0qtMaMRDxixfGf4QTgg0SJRK+Kn2P8JTUaqH5I4oKY/v1weslTRNNzkPHlXzED3
- Gu6XznwPUErem6xvGqAT+NBFo3coj8PBe4o1qleu84fGtjpfAl8+PWdYTXCr9oAgJTjmsvsMJS4
- rwPPJY5NgrzCMzf0pw4u7y1vq9Kg8Bt6FTbUyr7qlJ2KFKYgqM1oPZWNBhwjAuJcqXKBGBSWBuq
- LyoYYKAmNwwFN/4FmSBseQmNNlfGpONn1xPxElcKZgdwXvsWs0OYjRV7s0v9FJwi+bhzwlTt67c
- tTBjDGC9bw+p/7CNF6Nw+Xz1l6eEmsuRl2Nu2ic+N9nl55ib9mYb55fx3hcPx+VQGnJkQONHOEW
- 6Nky7nz17NnI7wVcg7MljA8T+MmKLHfE3Xee4/NvwlM3CvwjZyIjzsPAWpCjauPWpSzLL5S1don
- JlgXWJfGX6KL5pmL6ODOLDjgDwWd2UpnMXIp+HqXF0V82p/f+V5FSwBnfrG7IX4fS1dnRUrIYTK
- EpwCeg4k39R2bWOyVm9PhMptqnqJuZB3akM555X2H/jtsuvuNdLiz07WjOVb8u6UKxRFE4vXZ1J
- Uk+r5mcCTroU5MhzFjEhiDSHoVTBQZJy3mZ8SKWvmCR/FXwF7tqWTWd+tXPte8D91G3CQtPMEJL
- i4O6JxEqN7dni0g==
+ bh=3EhYB6XhqPnxpAib0nRzEVULMpXoAO59pMe8mnZTy6w=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBqrUJjXbPuHEvE5zvt0BDdGk5zeItE6BaVI0rqj
+ HcpCaL1ELKJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaq1CYwAKCRDRgEFAKaOo
+ Ntv5EACIDJypsKQ5BvbKhlDu5/nVcccgm3OZIjGI8X29MtELsp07QB3urjIwlIMXSS/c7VMrP0D
+ u/miDEe8hxCXAWBkyyVVnMjrAbhg2ZJDvjMwFSJnwPOYuorohygPjWDHJ6rwWEhwi6o7iR9xDsf
+ xOWHz3n/XETdxxp648X6TU8yEUnolKXydE30HGPtV554MXTQLtb6ENenBy1ppotpfi2viW7NbnP
+ V2Ggpctjhu9PiNnBbDJ/rf2diwrxuuFaA/ZskfE6fIDKBG8qOJ6W80NmJ26qYN2NYq8OZTbvtqi
+ UoX8xkNTBq8J0xVwfdelFrfrHxd2SYAlPt5NjpTlAy/DntcQLb34Z5iNcEQWAiGw3c0ERQ1pNSF
+ OfZX95WSwqK7srdeio58g4ZAEtxM84jOjR/xPOrfgfUiymrJ2htKYetTGIexSPzJHodtknsuxHI
+ MgxJM1/k+QLbN8ffzJBfuZiWQgRpID+k9FQ2RjNR4X32tZaxi2z6+1GA//NDlBv9nLnqyblG6H2
+ IQbTemSPnD9MOcgVlBxpyDrhk4xcMi6wLaz7uXNM+MW36FNdTygX5dYwLAMpFVaoilVft7o3D7o
+ GLPUQxZ1d2gcF4Uhz6VBaoG0s4ExEQbzfijP5V+Hr1tJVoKZUxhcvhMQpJbFdi78RxKB/nkT3Ma
+ uAQ5hTwbx0VS2hw==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
@@ -64,32 +64,44 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Fri, 18 Sep 2026 13:54:16 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10539
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10537
 
-Added by commit 0e3756efe092 ("kernel-arch: add KERNEL_TOOLCHAIN to
-switch the whole kernel toolchain") in OE-Core.
+This was removed with 69ce7593e8ed ("classes/archiver: remove SRPM
+mode") in OE-Core.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/ref-manual/variables.rst | 5 +++++
- 1 file changed, 5 insertions(+)
+ documentation/dev-manual/licenses.rst  | 4 +---
+ documentation/ref-manual/variables.rst | 1 -
+ 2 files changed, 1 insertion(+), 4 deletions(-)
 
+diff --git a/documentation/dev-manual/licenses.rst b/documentation/dev-manual/licenses.rst
+index fc23871c8..46a5a69dd 100644
+--- a/documentation/dev-manual/licenses.rst
++++ b/documentation/dev-manual/licenses.rst
+@@ -355,9 +355,7 @@ accidental release of proprietary software. The Yocto Project provides
+ an :ref:`ref-classes-archiver` class to help avoid some of these concerns.
+ 
+ Before you employ :term:`DL_DIR` or the :ref:`ref-classes-archiver` class, you
+-need to decide how you choose to provide source. The source
+-:ref:`ref-classes-archiver` class can generate tarballs and SRPMs and can
+-create them with various levels of compliance in mind.
++need to decide how you choose to provide source.
+ 
+ One way of doing this (but certainly not the only way) is to release
+ just the source as a tarball. You can do this by adding the following to
 diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index 780bde3f1..8ec5cd955 100644
+index 5a7ab5396..780bde3f1 100644
 --- a/documentation/ref-manual/variables.rst
 +++ b/documentation/ref-manual/variables.rst
-@@ -5758,6 +5758,11 @@ system and gives an overview of their function and contents.
-       Allows to specific which ``strip`` command to use to strip the kernel
-       binary, typically either GNU binutils ``strip`` or ``llvm-strip``.
+@@ -165,7 +165,6 @@ system and gives an overview of their function and contents.
+          ARCHIVER_MODE[diff-exclude] ?= "file file ..."    # Lists files and directories to exclude from diff.
+          ARCHIVER_MODE[dumpdata] = "1"                     # Uses environment data.
+          ARCHIVER_MODE[recipe] = "1"                       # Uses recipe and include files.
+-         ARCHIVER_MODE[srpm] = "1"                         # Uses RPM package files.
  
-+   :term:`KERNEL_TOOLCHAIN`
-+      The :term:`KERNEL_TOOLCHAIN` variable allows specifying the toolchain to
-+      use to build the Linux kernel. Its value can be one of the values
-+      supported by the :term:`PREFERRED_TOOLCHAIN_TARGET` variable.
-+
-    :term:`KERNEL_VERSION`
-       Specifies the version of the kernel as extracted from ``version.h``
-       or ``utsrelease.h`` within the kernel sources. Effects of setting
+       For information on how the variable works, see the
+       ``meta/classes/archiver.bbclass`` file in :term:`OpenEmbedded-Core
 
 -- 
 2.55.0
