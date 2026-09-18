@@ -2,133 +2,101 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EE263C982E2
-	for <webhook@archiver.kernel.org>; Fri, 18 Sep 2026 13:54:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EAB50C982DF
+	for <webhook@archiver.kernel.org>; Fri, 18 Sep 2026 13:54:27 +0000 (UTC)
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.11768.1789739656949182185
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.11653.1789739658458167995
  for <docs@lists.yoctoproject.org>;
- Fri, 18 Sep 2026 06:54:17 -0700
+ Fri, 18 Sep 2026 06:54:18 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=rAJpE1PH;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=2ntcL+Ul;
  spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 3D9561A0969
-	for <docs@lists.yoctoproject.org>; Fri, 18 Sep 2026 13:54:15 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id C64701A091E
+	for <docs@lists.yoctoproject.org>; Fri, 18 Sep 2026 13:54:16 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 0C0DB60649
-	for <docs@lists.yoctoproject.org>; Fri, 18 Sep 2026 13:54:15 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5641B10329026;
-	Fri, 18 Sep 2026 15:54:14 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 93CEF60649
+	for <docs@lists.yoctoproject.org>; Fri, 18 Sep 2026 13:54:16 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8D87810328FE3;
+	Fri, 18 Sep 2026 15:54:15 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1789739654; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1789739656; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=Q6b0atxYQA7UXB6xBFhYyNu+uw2x6QB1u4WG0bZel+c=;
-	b=rAJpE1PHxfDmooa6fNgTwax+cO8G7Xks2Jars7eJ7jCc9lvcj98ubYoujWmclMsOJPMyYJ
-	1i2W7gcNCCGEg5Yitwuomlt89NJlJB9vynhp+dL/CbyEJcGuZPUzl2erEOI1nfOWJTip4n
-	PWmJ0ZWEsYZ3AKOX+P151L2j5b9aHpdq+HPTvxnMa+aGTAUhqqJlL4UtIjP1PNAJNg6t/b
-	dtsqLEiq6SnTtaeHQf4o6m1yhyb7hbIXw6mqO0rNsfnTwD+7QkaLbHVM2uddTSe1/vVzLk
-	lmgrQdEnnkaIZu1V0TTlWixFEf2YfQlYHZ5YzvuTYOkrNjmFS4CjuiT7dqF9yA==
+	bh=BBK8GTFZVQODIPnQ1I2+T6wnIVQxEewzAGU52yo58bA=;
+	b=2ntcL+UlQU2EskMVUIb7/YmgXJVtJrlmG6C2+6Yal65CvtecWRuVahq/CrIieXJDP3bwwj
+	fX5vuLllimDFiDaWBaqus4PkLlHNNTvCvNaL9IAopM+0qS0GudhDhjOOHNV0UWuLvHKTg9
+	tiiMsenGTEqdUOfEtBneGU61L53HzPnP9RWmwTfI03kUx2j3LPgvQzL+wc1QVzPIu1KZlQ
+	ZkWO2S4js5I4Rjscozo6mx1e0F3nljB1E9LXFv3dAU6z6s2lMg1eCPgo3QnXoyyQVV+Oj2
+	+OY78iumyd5nevsIno83214At2Cyt6d9DxgCddkJDOMljpcR280ae2lUQHBwNw==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Fri, 18 Sep 2026 15:53:40 +0200
-Subject: [PATCH 10/20] ref-manual/features.rst: add section for SDK
- features
+Date: Fri, 18 Sep 2026 15:53:42 +0200
+Subject: [PATCH 12/20] ref-manual/classes.rst: document the python_pbr
+ class
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260918-releases-notes-6-1-v1-10-2d0fceffa242@bootlin.com>
+Message-Id: <20260918-releases-notes-6-1-v1-12-2d0fceffa242@bootlin.com>
 References: <20260918-releases-notes-6-1-v1-0-2d0fceffa242@bootlin.com>
 In-Reply-To: <20260918-releases-notes-6-1-v1-0-2d0fceffa242@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2702;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1072;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=Vjcdm7r5JN9VnNA7B/gQK3Mnbxscy5RiZyUTwQd/dW4=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBqrUJkBHMqivolBl3de5qjl50sejZ/UL1lDdFwK
- pnYv13dmAyJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaq1CZAAKCRDRgEFAKaOo
- NuAyD/9SxS3qcWs/a68M1z095sISDzi133OSZYe9/9fy2ScoamPOsPHmwxOGXK7OHbZ4Gm6sknV
- Oy5Q4Yt0PoVFFt4myHHufdX0MI6vfcybXURUjE5VwOiHa9/1TVIOXgo+DpqiaT0FXCB0tanS8bL
- 9SmlPCNBPsrIq7mWb2QX5VYXSEa+Cn8dXKh52NGjaFEYy5lyoRYlCFZbMZ5WDS0BKLnD8J9AKPK
- fLb4Yd6gqZv2T5zidNXihgRSTn5MgHBGKqjM9JuEWjDvL6FVg5FI8d0iBjQJa61K/WDOCKtpXCW
- mXPzxbSMtqt3XvxTCGfqj63UWVAixAgLuvbd9N1FpOoyUt5X4WeJKewU3Hf2Fj8Z+gwmv1z1JDl
- 0gtKqhJiN6keFsV5wGr77XkE50NEh/MN0YjMFT2sQ7dzcNwkfqUc7McW6+whka3y+6h/87nU33l
- M6V0l99KpcHBLM7om123DWF7xbUN/ELjaM63f35oRX9U/ePjSz7lGiQT+STCfjfRrOf5Sptl+tb
- z7MRkxfZXEfRB3aKmDQMunpICr4/y2P85EAV7lnSRTb8k/iV8tPzCG8VzRscXAXpLyPYM2uzSUu
- nUbzh6o9qfRegaIKBuysoHEOAIPEGRx1ybA3779NzmeJHLf72ZfjDaHGkJprYdtVKy/379eBopz
- btV9i9J4R710arQ==
+ bh=fDos2nhF8mWhvCg/m6eJ3C0A/1Rd7NixTrNaXkrLct8=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBqrUJl3qr50EUY+6jLvTuJJtwAK0MhcKWH9IsVZ
+ Gz8dknWUwuJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaq1CZQAKCRDRgEFAKaOo
+ NqcKD/9F8OArZI/En5eofQ9J/RnoXDLzPwZXWG/kPSBQNTs0GleaxYLgJbxC0auDtuWufkkIm6v
+ +E2E0jOA226fROBw1u9eLYJnnnFwn4z5KWMchFLnrmR+sCouPUWhflufhfJuE7Ox7tBmyC7nW7S
+ mKe5P7upLqXzJCJUcFNLUtPdG/kUbFAJXmqtTebOO6GdWxsgRYipKMFqTAEJuXoUzVujkft+AuO
+ KOU/tYrAUpATVu3lL4FoXLLspCVKT2WfQVUNGsWUfE1DV4bjdeLVadk+73gltuo3ujeIuU6IZDM
+ hE/eaXBQhIXno6XyU1CmKsSPKw7VGZeMAiJ+KHEXQvN7c5nejVOK94290yQ6pynqUyOu6sa3nIs
+ EeTrjjc8Edo5L2VJxB6pK9wXhrh47zTwAOf+FeGUlG3b5/uTYxjtzBe+qyzrk1G3j4eoVL7g2sO
+ afPxtAv1TWoeopPx9Kpu/cE9W0/XsFFt2uz+P1wmHvk0lvccngO9OYj+tiU1JVL6hUnJ7ISdaLI
+ kSj01Vl8ROC2QyTdSInjFzGEGSZBkMbDSXJT8j+6NXv5nL1u4tqEPHi070xmvGpk09ayQvR3wNW
+ PmhgK8Vy7RfIcPaJZJRXKBbEPGbQmjbg59Xii5JJRGPBTQVm6kUhWzA4Jxu/0otV+ZSzu7UdwrE
+ HGLNkJuGma2v8mg==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 18 Sep 2026 13:54:17 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10542
+ <docs@lists.yoctoproject.org>; Fri, 18 Sep 2026 13:54:27 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10544
 
-The SDK_FEATURES variable can contain features to enable for the
-generated standard/extensible SDK. Document them and document the
-SDK_FEATURES variable.
+Added by commit b9f3b369b853 ("classes/python_pbr: add class for
+Python Build Reasonableness backend") in OE-Core.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/ref-manual/features.rst  | 21 +++++++++++++++++++++
- documentation/ref-manual/variables.rst | 10 ++++++++++
- 2 files changed, 31 insertions(+)
+ documentation/ref-manual/classes.rst | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/documentation/ref-manual/features.rst b/documentation/ref-manual/features.rst
-index 879d98ca1..89143344a 100644
---- a/documentation/ref-manual/features.rst
-+++ b/documentation/ref-manual/features.rst
-@@ -423,6 +423,27 @@ these valid features is as follows:
+diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
+index c88180835..cbad93e8a 100644
+--- a/documentation/ref-manual/classes.rst
++++ b/documentation/ref-manual/classes.rst
+@@ -2194,6 +2194,18 @@ meson-python build system.
  
- -  *x11-sato:* Installs the OpenedHand Sato environment.
+ Internally this uses the :ref:`ref-classes-python_pep517` class.
  
++.. _ref-classes-python_pbr:
 +
-+.. _ref-features-sdk:
++``python_pbr``
++==============
 +
-+SDK Features
-+============
++The :ref:`ref-classes-python_pbr` class enables building Python projects which
++use the `Python Build Reasonableness <https://pypi.org/project/pbr/>`__ backend.
 +
-+The contents of a :ref:`standard <sdk-manual/using:Using the Standard SDK>` or
-+:ref:`extensible <sdk-manual/extensible:Using the extensible SDK>` SDK generated by
-+the :term:`OpenEmbedded Build System` can be controlled by the
-+:term:`SDK_FEATURES` variable that you typically configure in the image recipe
-+for which the :ref:`ref-tasks-populate_sdk` or :ref:`ref-tasks-populate_sdk_ext`
-+task is run.
++This class adds ``python3-pbr-native`` to the recipe's build-time dependencies.
 +
-+The SDK features available are:
++Internally this uses the :ref:`ref-classes-python_pep517` class.
 +
-+-  ``go``: add `Go` utilities for building `Go`-based applications.
-+
-+-  ``kernel-src``: adds the Linux kernel source tree to the SDK.
-+
-+-  ``rust``: add `Rust` utilities for building `Rust`-based applications.
-+
- Default Features
- ================
+ .. _ref-classes-python_pdm:
  
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index 2b2aa4df8..880bf9069 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -8992,6 +8992,16 @@ system and gives an overview of their function and contents.
-          :term:`SSTATE_MIRRORS` is set in the SDK's configuration to enable the
-          artifacts to be fetched as needed.
- 
-+   :term:`SDK_FEATURES`
-+      The :term:`SDK_FEATURES` variable defines the list of features to include
-+      in a :ref:`standard SDK <sdk-manual/using:Using the Standard SDK>` or
-+      :ref:`extensible SDK <sdk-manual/extensible:Using the extensible SDK>`,
-+      resolved when running the :ref:`ref-tasks-populate_sdk` or
-+      :ref:`ref-tasks-populate_sdk_ext` task. This variable is analogous to
-+      :term:`IMAGE_FEATURES`, but for the SDK instead of the image.
-+
-+      For a full list of features, see the :ref:`ref-features-sdk` section.
-+
-    :term:`SDK_HOST_MANIFEST`
-       The manifest file for the host part of the SDK. This file lists all
-       the installed packages that make up the host part of the SDK. The
+ ``python_pdm``
 
 -- 
 2.55.0
