@@ -2,1174 +2,259 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 186BFC982DA
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E1EC2C982E1
 	for <webhook@archiver.kernel.org>; Fri, 18 Sep 2026 13:54:28 +0000 (UTC)
 Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.11778.1789739663777069166
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.11776.1789739663057932325
  for <docs@lists.yoctoproject.org>;
- Fri, 18 Sep 2026 06:54:24 -0700
+ Fri, 18 Sep 2026 06:54:23 -0700
 Authentication-Results: mx.groups.io;
- dkim=fail reason="dkim: body hash did not verify" header.i=@bootlin.com header.s=dkim header.b=Bd60aU/1;
+ dkim=fail reason="dkim: body hash did not verify" header.i=@bootlin.com header.s=dkim header.b=rdwQmw6g;
  spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 01B91C58477
-	for <docs@lists.yoctoproject.org>; Fri, 18 Sep 2026 13:55:07 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 3C916C58476
+	for <docs@lists.yoctoproject.org>; Fri, 18 Sep 2026 13:55:06 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 25A4B60649
-	for <docs@lists.yoctoproject.org>; Fri, 18 Sep 2026 13:54:22 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2875410329019;
-	Fri, 18 Sep 2026 15:54:21 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 63D6760649
+	for <docs@lists.yoctoproject.org>; Fri, 18 Sep 2026 13:54:21 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1752310328E53;
+	Fri, 18 Sep 2026 15:54:19 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1789739661; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1789739660; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=0WQUFzRaF1qODTwZTB4gk4CuiJlNfbu36z9N4GK5jMo=;
-	b=Bd60aU/1WsOCWhKo8vdUG65b2wWf2blOvIH01BpscHmWYLbC2DmbW940q6ftcnbpnJBlj+
-	kHTwVMZipjcc6IdRwdDGTulMhPYI5VukQHKEls+r1igST8yj59Wf8BiyOlEJNjZI6h14WG
-	hWiULyY6zTuRXJU7QgYhTVGLrVwyN44IA3xlXZE3P/8TJXKW6Y07SWOriwU42FPPkfjUKp
-	kthejn+oMqXF9DPuRuNXnq4PXIGuGLqbF9LC1wllu2WFmVw66ISinrZmdtDxprQJY5RrK4
-	3OyXYrfiGkMqUNDzRLTQVdUCCN1YQexquu69zAvJEggUWkj8hZc6lwvpQaFuYQ==
+	bh=V3hZIa7fOo3A70J1l1/cL5tgdc6I6LmELNcaioJSsA0=;
+	b=rdwQmw6g4uX/pj7AQSScwySVn/PQViYJrggpI4pUJecl9ka6Ju0avBKIx9StVyEVJnm8OL
+	579qMPLc0Qie/jC8OiZTE/0CmkBuybDV21/cG2hUBa9ZDvft5lbJ1szSeUdL8CNcC1ASXi
+	ldDh0xrFFHlgYUPC6JefwrIMFdbSCJrmNyHSYUww28N0zoLFtQ0LAkGagMZmKdaODd31v1
+	NF4zVkBWdhZ9UqM3/f4xir7nzMRd9ATydYbB77fG7pPvgIfMI69egTUDCcZAl3d9o+ksTW
+	k8FFqe3Z8BNp3nT/J9kOqWUUrIsgepvbIULKe/P8a9CUya6l9fG5oVnGfIj7PA==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Fri, 18 Sep 2026 15:53:49 +0200
-Subject: [PATCH 19/20] migration-guides/release-notes-6.1.rst: add recipe
- upgrades
+Date: Fri, 18 Sep 2026 15:53:48 +0200
+Subject: [PATCH 18/20] migration-guides/release-notes-6.1.rst: add CVE
+ fixes
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20260918-releases-notes-6-1-v1-19-2d0fceffa242@bootlin.com>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260918-releases-notes-6-1-v1-18-2d0fceffa242@bootlin.com>
 References: <20260918-releases-notes-6-1-v1-0-2d0fceffa242@bootlin.com>
 In-Reply-To: <20260918-releases-notes-6-1-v1-0-2d0fceffa242@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=21322;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=44196;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=QB+KHke1h/i7fUwIPtLMOLUSeBBHL8zlbAdLNIwf0zE=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBqrUJmsiwWt4TBtJHXj5OowsZMnjjmISS5Evufv
- cXgbvDoCXWJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaq1CZgAKCRDRgEFAKaOo
- Ni61D/40WMM3cED3dP2C2jWmPl94+cpZzmyrtpsbq1IaGD1QVE7Yfl8+XgXtjSq/7zOvfX6l1Os
- ULdIgLkHOVv+QQtATsGsrg3d6Ell8+HCwdGAlQ3M/ET0RXMjZ3fgs+lEKkWYnXwE09bVHtmrEuc
- hbfx5cetumK10s+fVUZZrMqT3ckU7+WSGL21al2YkEt5Oc0lV2PCZg5jKofPDl+gQ9N2JjQo7n4
- y9EzdWRmdgGJOwuRsFyjDhtQPmr7QX/EVlgrjYZNrNatfHNDKgvQthctchyueBNb6LsLym8p6Gd
- gX5vNBxBP/0SjPKgUlDQ2zIt55S8sMnnoPZWynt0yK5YO3trEGWjU4rAWIEM4zZVLriKuMhOetW
- hg3EuJrIfCGXrzRM1DjDTpaFWqKXOovu23w+KpRZHe7TlHfLrWF+2N4/sQ6KZv9dYJ/ChPy9do7
- dtdRc0EUI+K3PmV7i3plYheSsBvJuQemSe+A6bb1eNYI0fnOgJ49OvvRgYPM7240rOuzQcHLem0
- UudiPNGS8ZqiSIzQXjiWa5cMJ0Mh0RgOf6Osf5mxpXX3NyKH2nvtBh81VOYNAJQlNdsh/2jkX4S
- KM80PFWTPzGuGsTKh0lGKpOxtEl5ZAysXfBB7yNzyBuTwuxfmWxRekpBRWguX5DbZRCjMaDX5Dg
- 5uWQS7eQU8p2ELQ==
+ bh=vLrZdtj8jBkdgliPfvjL4u1KjtiyVPhocNy+aOUvnY0=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBqrUJmLPf7JamGkTEwwTk70ga7EsvW2deIuTHGK
+ j2TWEdhzzeJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaq1CZgAKCRDRgEFAKaOo
+ NrozD/4+Tc9sgDv0RG0cmcdlLhOPd8EPgAc/sVRI8we8ZiP2skAlsJTnX2fOFiwfpq23YlpZMEH
+ xeyukAMicXoL3utHoxSvh6GokGqjQLaLKHk5Zozp8SHTEKwAvWPqWcL8jPdq1zyDm1wbiPLM4Dd
+ HGE/yzwvN1kbop/sxmrfpqJ0B1j+hNf3aOaRc1wZ8U9QF7Xzv3+lGGpy2xu0K16ZqYY8c9b+oux
+ g31xPccCS2z3w7V5gHl5oT2l1hoJv8f4uTxhtQLNSjiWs6sU1Xrr5IFeWigf6WyXcjUI2lF/BWu
+ qGiPg5xqldfHohEV1Zwgsv7INWate3X6zjavk4I7O37zQzsZe6UlKliODg9qZ4Lj8lN4iGoW+41
+ CS5h6gCK+kPmJTmSaQxxwMudTe4jrHfkxwZlqSWJD2W0P26hJmjXNuXeweCRMiVMzddXX1FJcaq
+ wTgLztjFSIsZkbHLj7e1gbn4d1CbxsnoGeZ/4SCZKAzOMWM/acg+BUhZPvvMDzpOaWDWpYJdeOq
+ X75bzEU/IrAcfzZaobWLU6qhrCiinScee7GY/V0T3Pk3NyccmpDAGurmTCEoOCgETal7YfVshs4
+ Xi7KmwZB8yRx0P0/SXFMJffit4zAAD3suItwb5XjKaeGgWjq3De/HQFPnTErsl7eCIB2f6qQgk+
+ 0RqVReNn7ac6gXA==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
-Content-Transfer-Encoding: quoted-printable
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Fri, 18 Sep 2026 13:54:28 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10551
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10550
 
-Using https://layers.openembedded.org/layerindex/branch_comparison.
+Using gen-cve-release-notes, with following data as input:
+
+- wrynose: https://git.yoctoproject.org/yocto-metrics/tree/cve-check/wrynose/1789714987.json?id=a7a2ecc1c68beac74c08925b09c6bee85c8b2f43
+- master: https://git.yoctoproject.org/yocto-metrics/tree/cve-check/master/1789716009.json?id=a7a2ecc1c68beac74c08925b09c6bee85c8b2f43
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- .../migration-guides/release-notes-6.1.rst         | 1081 ++++++++++++++=
-++++++
- 1 file changed, 1081 insertions(+)
+ .../migration-guides/release-notes-6.1.rst         | 132 +++++++++++++++++++++
+ 1 file changed, 132 insertions(+)
 
-diff --git a/documentation/migration-guides/release-notes-6.1.rst b/docum=
-entation/migration-guides/release-notes-6.1.rst
-index 16b5c34d1..6fac0513f 100644
+diff --git a/documentation/migration-guides/release-notes-6.1.rst b/documentation/migration-guides/release-notes-6.1.rst
+index 9b8f68f06..16b5c34d1 100644
 --- a/documentation/migration-guides/release-notes-6.1.rst
 +++ b/documentation/migration-guides/release-notes-6.1.rst
-@@ -915,6 +915,1087 @@ Recipe Upgrades in |yocto-ver|
-    Generated with https://layers.openembedded.org/layerindex/branch_comp=
-arison
-    With "rST" output selected
-=20
-+The following recipes have been upgraded:
+@@ -775,6 +775,138 @@ Security Fixes in |yocto-ver|
+ 
+ ..
+    Generated with documentation/tools/gen-cve-release-notes
++   With data from https://git.yoctoproject.org/yocto-metrics/plain/cve-check
++
++The following CVEs have been fixed:
 +
 +.. list-table::
-+   :widths: 20 40 40
++   :widths: 30 70
 +   :header-rows: 1
 +
 +   * - Recipe
-+     - Previous version(s)
-+     - New version(s)
++     - CVE IDs
 +   * - ``acl``
-+     - 2.3.2
-+     - 2.4.0
-+   * - ``acpica``
-+     - 20251212
-+     - 20260408
-+   * - ``adwaita-icon-theme``
-+     - 49.0
-+     - 50.0
++     - :cve_nist:`2026-54369`, :cve_nist:`2026-54370`
 +   * - ``alsa-lib``
-+     - 1.2.15.3
-+     - 1.2.16.1
-+   * - ``alsa-ucm-conf``
-+     - 1.2.15.3
-+     - 1.2.16.1
-+   * - ``alsa-utils``
-+     - 1.2.15.2
-+     - 1.2.16
-+   * - ``appstream``
-+     - 1.1.2
-+     - 1.2.0
-+   * - ``apr-util``
-+     - 1.6.3
-+     - 1.6.5
-+   * - ``at-spi2-core``
-+     - 2.60.0
-+     - 2.60.6
++     - :cve_nist:`2026-90781`
 +   * - ``attr``
-+     - 2.5.2
-+     - 2.6.0
++     - :cve_nist:`2026-54371`
 +   * - ``avahi``
-+     - 0.8
-+     - 0.9~rc5
-+   * - ``barebox``
-+     - 2026.04.0
-+     - 2026.08.0
-+   * - ``barebox-tools``
-+     - 2026.04.0
-+     - 2026.08.0
-+   * - ``bash-completion``
-+     - 2.17.0
-+     - 2.18.0
++     - :cve_nist:`2025-59529`
 +   * - ``bind``
-+     - 9.20.26
-+     - 9.20.27
++     - :cve_nist:`2026-19033`, :cve_nist:`2026-19662`, :cve_nist:`2026-19666`, :cve_nist:`2026-19667`, :cve_nist:`2026-19668`, :cve_nist:`2026-19941`, :cve_nist:`2026-75029`, :cve_nist:`2026-76163`, :cve_nist:`2026-77119`, :cve_nist:`2026-77692`, :cve_nist:`2026-78301`, :cve_nist:`2026-80274`, :cve_nist:`2026-81563`, :cve_nist:`2026-81736`
 +   * - ``binutils``
-+     - 2.46.1
-+     - 2.47
-+   * - ``binutils-cross``
-+     - 2.46.1
-+     - 2.47
-+   * - ``binutils-cross-canadian``
-+     - 2.46.1
-+     - 2.47
-+   * - ``binutils-crosssdk``
-+     - 2.46.1
-+     - 2.47
++     - :cve_nist:`2026-6844`, :cve_nist:`2026-6845`
++   * - ``binutils-cross-x86_64``
++     - :cve_nist:`2026-6844`, :cve_nist:`2026-6845`
 +   * - ``binutils-testsuite``
-+     - 2.46.1
-+     - 2.47
++     - :cve_nist:`2026-6844`, :cve_nist:`2026-6845`
++   * - ``bison``
++     - :cve_nist:`2026-56390`
 +   * - ``bluez5``
-+     - 5.86
-+     - 5.87
-+   * - ``boost``
-+     - 1.90.0
-+     - 1.92.0
-+   * - ``boost-build-native``
-+     - 1.90.0
-+     - 1.92.0
-+   * - ``btrfs-tools``
-+     - 6.19.1
-+     - 7.1
++     - :cve_nist:`2026-19774`
 +   * - ``busybox``
-+     - 1.37.0
-+     - 1.38.0
-+   * - ``busybox-inittab``
-+     - 1.37.0
-+     - 1.38.0
-+   * - ``ca-certificates``
-+     - 20260601
-+     - 20260816
-+   * - ``cargo``
-+     - 1.94.1
-+     - 1.98.1
-+   * - ``cargo-c``
-+     - 0.10.21+cargo-0.95.0
-+     - 0.10.25+cargo-0.99.0
-+   * - ``ccache``
-+     - 4.13.3
-+     - 4.14
-+   * - ``clang``
-+     - 22.1.8
-+     - 23.1.0
-+   * - ``cmake``
-+     - 4.3.1
-+     - 4.4.3
-+   * - ``cmake-native``
-+     - 4.3.1
-+     - 4.4.3
-+   * - ``compiler-rt``
-+     - 22.1.8
-+     - 23.1.0
-+   * - ``compiler-rt-sanitizers``
-+     - 22.1.8
-+     - 23.1.0
++     - :cve_nist:`2026-38752`, :cve_nist:`2026-38753`, :cve_nist:`2026-38755`
++   * - ``cairo``
++     - :cve_nist:`2025-50422`
 +   * - ``coreutils``
-+     - 9.10
-+     - 9.11
-+   * - ``createrepo-c``
-+     - 1.2.3
-+     - 1.2.4
-+   * - ``cross-localedef-native``
-+     - 2.43+git
-+     - 2.44+git
++     - :cve_nist:`2026-56392`
 +   * - ``cryptodev-linux``
-+     - 1.14
-+     - 1.14+git
-+   * - ``cryptodev-module``
-+     - 1.14
-+     - 1.14+git
-+   * - ``cryptodev-tests``
-+     - 1.14
-+     - 1.14+git
++     - :cve_nist:`2026-28529`
 +   * - ``cups``
-+     - 2.4.16
-+     - 2.4.19
++     - :cve_nist:`2024-47850`
 +   * - ``curl``
-+     - 8.19.0
-+     - 8.22.0
-+   * - ``debianutils``
-+     - 5.23.2
-+     - 5.24
-+   * - ``debugedit``
-+     - 5.2
-+     - 5.3
-+   * - ``dhcpcd``
-+     - 10.3.1
-+     - 10.5.2
-+   * - ``diffoscope``
-+     - 314
-+     - 329
-+   * - ``diffstat``
-+     - 1.68
-+     - 1.69
-+   * - ``dos2unix``
-+     - 7.5.4
-+     - 7.5.7
-+   * - ``dropbear``
-+     - 2025.89
-+     - 2026.94
-+   * - ``dtc``
-+     - 1.7.2
-+     - 1.8.1
-+   * - ``ed``
-+     - 1.22.5
-+     - 1.22.6
-+   * - ``elfutils``
-+     - 0.194
-+     - 0.196
-+   * - ``enchant2``
-+     - 2.8.15
-+     - 2.8.21
++     - :cve_nist:`2026-7009`, :cve_nist:`2026-8458`, :cve_nist:`2026-8925`, :cve_nist:`2026-8926`, :cve_nist:`2026-9079`, :cve_nist:`2026-9080`, :cve_nist:`2026-9545`, :cve_nist:`2026-9546`, :cve_nist:`2026-11564`, :cve_nist:`2026-11856`, :cve_nist:`2026-13608`, :cve_nist:`2026-18924`, :cve_nist:`2026-19931`, :cve_nist:`2026-80229`, :cve_nist:`2026-80230`, :cve_nist:`2026-80231`, :cve_nist:`2026-80255`, :cve_nist:`2026-82208`, :cve_nist:`2026-82209`
 +   * - ``epiphany``
-+     - 49.7
-+     - 50.6
-+   * - ``erofs-utils``
-+     - 1.9.1
-+     - 1.9.4
-+   * - ``ethtool``
-+     - 6.19
-+     - 7.1
++     - :cve_nist:`2026-18487`
 +   * - ``expat``
-+     - 2.7.5
-+     - 2.8.4
-+   * - ``fastfloat``
-+     - 8.2.4
-+     - 8.2.10
++     - :cve_nist:`2025-66382`, :cve_nist:`2026-50219`, :cve_nist:`2026-56131`, :cve_nist:`2026-56412`, :cve_nist:`2026-66046`, :cve_nist:`2026-76641`, :cve_nist:`2026-76957`
 +   * - ``ffmpeg``
-+     - 8.0.3
-+     - 8.1.2
-+   * - ``file``
-+     - 5.47
-+     - 5.48
-+   * - ``findutils``
-+     - 4.10.0
-+     - 4.11.0
-+   * - ``fmt``
-+     - 12.1.0
-+     - 12.2.0
-+   * - ``font-util``
-+     - 1.4.1
-+     - 1.4.2
-+   * - ``fontconfig``
-+     - 2.17.1
-+     - 2.18.3
-+   * - ``gawk``
-+     - 5.4.0
-+     - 5.4.1
-+   * - ``gcc``
-+     - 15.3.0
-+     - 16.2.0
-+   * - ``gcc-cross``
-+     - 15.3.0
-+     - 16.2.0
-+   * - ``gcc-cross-canadian``
-+     - 15.3.0
-+     - 16.2.0
-+   * - ``gcc-crosssdk``
-+     - 15.3.0
-+     - 16.2.0
-+   * - ``gcc-runtime``
-+     - 15.3.0
-+     - 16.2.0
-+   * - ``gcc-sanitizers``
-+     - 15.3.0
-+     - 16.2.0
-+   * - ``gcc-source``
-+     - 15.3.0
-+     - 16.2.0
++     - :cve_nist:`2026-52295`, :cve_nist:`2026-52296`, :cve_nist:`2026-52297`, :cve_nist:`2026-64830`, :cve_nist:`2026-64831`, :cve_nist:`2026-64832`, :cve_nist:`2026-64833`, :cve_nist:`2026-64834`, :cve_nist:`2026-64835`, :cve_nist:`2026-65703`, :cve_nist:`2026-65704`, :cve_nist:`2026-65705`, :cve_nist:`2026-65706`, :cve_nist:`2026-66036`, :cve_nist:`2026-66037`, :cve_nist:`2026-66038`, :cve_nist:`2026-66039`, :cve_nist:`2026-66040`, :cve_nist:`2026-66041`, :cve_nist:`2026-70628`, :cve_nist:`2026-70629`, :cve_nist:`2026-70630`, :cve_nist:`2026-70631`, :cve_nist:`2026-70632`, :cve_nist:`2026-75141`, :cve_nist:`2026-75142`, :cve_nist:`2026-75143`, :cve_nist:`2026-75144`, :cve_nist:`2026-75145`, :cve_nist:`2026-75146`, :cve_nist:`2026-75147`
 +   * - ``gdk-pixbuf``
-+     - 2.44.5
-+     - 2.44.8
++     - :cve_nist:`2026-5201`
 +   * - ``ghostscript``
-+     - 10.06.0
-+     - 10.07.1
++     - :cve_nist:`2026-39919`
 +   * - ``git``
-+     - 2.53.0
-+     - 2.55.0
-+   * - ``glib-2.0``
-+     - 2.88.2
-+     - 2.88.3
-+   * - ``glib-2.0-initial``
-+     - 2.88.2
-+     - 2.88.3
++     - :cve_nist:`2024-52005`
 +   * - ``glibc``
-+     - 2.43+git
-+     - 2.44+git
-+   * - ``glibc-locale``
-+     - 2.43+git
-+     - 2.44+git
-+   * - ``glibc-mtrace``
-+     - 2.43+git
-+     - 2.44+git
-+   * - ``glibc-scripts``
-+     - 2.43+git
-+     - 2.44+git
-+   * - ``glibc-testsuite``
-+     - 2.43+git
-+     - 2.44+git
-+   * - ``glslang``
-+     - 1.4.341.0
-+     - 1.4.357.0
-+   * - ``gn``
-+     - 0+git (9d19a7870add=E2=80=A6)
-+     - 0+git (17b0057970fa=E2=80=A6)
-+   * - ``gnu-config``
-+     - 20250709+git
-+     - 20260629+git
-+   * - ``gnupg``
-+     - 2.5.17
-+     - 2.5.22
-+   * - ``gnutls``
-+     - 3.8.12
-+     - 3.8.13
-+   * - ``go``
-+     - 1.26.5
-+     - 1.27.1
-+   * - ``go-binary-native``
-+     - 1.26.5
-+     - 1.27.1
-+   * - ``go-cross-canadian``
-+     - 1.26.5
-+     - 1.27.1
-+   * - ``go-cross-core2-32``
-+     - 1.26.5
-+     - 1.27.1
-+   * - ``go-crosssdk``
-+     - 1.26.5
-+     - 1.27.1
-+   * - ``go-runtime``
-+     - 1.26.5
-+     - 1.27.1
-+   * - ``gpgme``
-+     - 2.0.1
-+     - 2.1.2
-+   * - ``gst-devtools``
-+     - 1.28.5
-+     - 1.28.6
-+   * - ``gst-examples``
-+     - 1.28.5
-+     - 1.28.6
++     - :cve_nist:`2026-8674`, :cve_nist:`2026-18374`, :cve_nist:`2026-19499`, :cve_nist:`2026-19542`, :cve_nist:`2026-77117`, :cve_nist:`2026-80489`, :cve_nist:`2026-89092`
++   * - ``graphene``
++     - :cve_nist:`2026-81281`
 +   * - ``gstreamer1.0``
-+     - 1.28.5
-+     - 1.28.6
-+   * - ``gstreamer1.0-libav``
-+     - 1.28.5
-+     - 1.28.6
-+   * - ``gstreamer1.0-plugins-bad``
-+     - 1.28.5
-+     - 1.28.6
-+   * - ``gstreamer1.0-plugins-base``
-+     - 1.28.5
-+     - 1.28.6
-+   * - ``gstreamer1.0-plugins-good``
-+     - 1.28.5
-+     - 1.28.6
-+   * - ``gstreamer1.0-plugins-ugly``
-+     - 1.28.5
-+     - 1.28.6
-+   * - ``gstreamer1.0-python``
-+     - 1.28.5
-+     - 1.28.6
-+   * - ``gstreamer1.0-rtsp-server``
-+     - 1.28.5
-+     - 1.28.6
-+   * - ``gtk-doc``
-+     - 1.35.1
-+     - 1.36.1
-+   * - ``gtk4``
-+     - 4.22.2
-+     - 4.22.4
-+   * - ``harfbuzz``
-+     - 12.3.2
-+     - 14.4.0
-+   * - ``hwdata``
-+     - 0.406
-+     - 0.410
-+   * - ``igt-gpu-tools``
-+     - 2.3
-+     - 2.5
-+   * - ``inetutils``
-+     - 2.7
-+     - 2.8
-+   * - ``iproute2``
-+     - 6.19.0
-+     - 7.2.0
-+   * - ``json-c``
-+     - 0.18
-+     - 0.19
-+   * - ``kbd``
-+     - 2.9.0
-+     - 2.10.0
-+   * - ``kea``
-+     - 3.0.3
-+     - 3.2.0
-+   * - ``less``
-+     - 692
-+     - 704
-+   * - ``libadwaita``
-+     - 1.8.4
-+     - 1.9.3
-+   * - ``libarchive``
-+     - 3.8.7
-+     - 3.8.9
-+   * - ``libcap``
-+     - 2.77
-+     - 2.78
-+   * - ``libcap-ng``
-+     - 0.9.1
-+     - 0.9.5
-+   * - ``libcap-ng-python``
-+     - 0.9.1
-+     - 0.9.5
-+   * - ``libcxx``
-+     - 22.1.8
-+     - 23.1.0
-+   * - ``libdisplay-info``
-+     - 0.3.0
-+     - 0.4.0
-+   * - ``libdrm``
-+     - 2.4.131
-+     - 2.4.134
-+   * - ``libedit``
-+     - 20251016-3.1
-+     - 20260512-3.1
-+   * - ``libevdev``
-+     - 1.13.6
-+     - 1.13.7
++     - :cve_nist:`2026-73433`, :cve_nist:`2026-73434`
 +   * - ``libevent``
-+     - 2.1.12
-+     - 2.1.13
-+   * - ``libffi``
-+     - 3.5.2
-+     - 3.8.0
-+   * - ``libfyaml``
-+     - 0.9.4
-+     - 0.9.6
-+   * - ``libgcc``
-+     - 15.3.0
-+     - 16.2.0
-+   * - ``libgcc-initial``
-+     - 15.3.0
-+     - 16.2.0
++     - :cve_nist:`2026-63379`, :cve_nist:`2026-63381`, :cve_nist:`2026-63382`, :cve_nist:`2026-63383`, :cve_nist:`2026-63384`, :cve_nist:`2026-63385`, :cve_nist:`2026-63387`, :cve_nist:`2026-63388`, :cve_nist:`2026-63495`
 +   * - ``libgcrypt``
-+     - 1.12.1
-+     - 1.12.3
-+   * - ``libgfortran``
-+     - 15.3.0
-+     - 16.2.0
++     - :cve_nist:`2024-2236`
 +   * - ``libgit2``
-+     - 1.9.2
-+     - 1.9.7
-+   * - ``libgpg-error``
-+     - 1.59
-+     - 1.61
-+   * - ``libical``
-+     - 3.0.20
-+     - 4.0.5
-+   * - ``libinput``
-+     - 1.30.2
-+     - 1.31.3
-+   * - ``libjpeg-turbo``
-+     - 3.1.3
-+     - 3.2.0
-+   * - ``libksba``
-+     - 1.6.8
-+     - 1.8.1
-+   * - ``libmd``
-+     - 1.1.0
-+     - 1.2.0
-+   * - ``libmicrohttpd``
-+     - 1.0.2
-+     - 1.0.10
-+   * - ``libmodulemd``
-+     - 2.15.2
-+     - 2.15.3
-+   * - ``libmpc``
-+     - 1.3.1
-+     - 1.4.1
++     - :cve_nist:`2026-5917`, :cve_nist:`2026-53583`, :cve_nist:`2026-53584`, :cve_nist:`2026-53585`, :cve_nist:`2026-53586`, :cve_nist:`2026-53587`
++   * - ``libpcap``
++     - :cve_nist:`2026-0799`, :cve_nist:`2026-6244`, :cve_nist:`2026-6554`, :cve_nist:`2026-18238`, :cve_nist:`2026-18313`, :cve_nist:`2026-31911`, :cve_nist:`2026-31912`
 +   * - ``libpcre2``
-+     - 10.47
-+     - 10.48
-+   * - ``libpng``
-+     - 1.6.56
-+     - 1.6.58
-+   * - ``libportal``
-+     - 0.9.1
-+     - 0.10.0
-+   * - ``libpsl``
-+     - 0.21.5
-+     - 0.23.3
-+   * - ``librepo``
-+     - 1.20.0
-+     - 1.21.0
-+   * - ``librsvg``
-+     - 2.61.3
-+     - 2.62.3
-+   * - ``libseccomp``
-+     - 2.6.0
-+     - 2.6.1
++     - :cve_nist:`2026-86145`, :cve_nist:`2026-89156`, :cve_nist:`2026-89157`, :cve_nist:`2026-89158`, :cve_nist:`2026-89160`, :cve_nist:`2026-89161`, :cve_nist:`2026-89162`
 +   * - ``libslirp``
-+     - 4.9.1
-+     - 4.9.4
++     - :cve_nist:`2026-9539`
++   * - ``libsndfile1``
++     - :cve_nist:`2024-50613`, :cve_nist:`2025-52194`
 +   * - ``libsolv``
-+     - 0.7.36
-+     - 0.7.39
-+   * - ``libstd-rs``
-+     - 1.94.1
-+     - 1.98.1
-+   * - ``libtool``
-+     - 2.5.4
-+     - 2.6.2
-+   * - ``libtool-cross``
-+     - 2.5.4
-+     - 2.6.2
-+   * - ``libtool-native``
-+     - 2.5.4
-+     - 2.6.2
-+   * - ``libusb1``
-+     - 1.0.29
-+     - 1.0.30
-+   * - ``libva``
-+     - 2.23.0
-+     - 2.24.1
-+   * - ``libva-initial``
-+     - 2.23.0
-+     - 2.24.1
-+   * - ``libva-utils``
-+     - 2.23.0
-+     - 2.24.0
++     - :cve_nist:`2026-48863`
++   * - ``libsoup``
++     - :cve_nist:`2026-3099`, :cve_nist:`2026-3632`, :cve_nist:`2026-3633`, :cve_nist:`2026-3634`, :cve_nist:`2026-12548`, :cve_nist:`2026-12549`, :cve_nist:`2026-66337`, :cve_nist:`2026-66338`, :cve_nist:`2026-66339`
++   * - ``libtheora``
++     - :cve_nist:`2026-5673`
++   * - ``libxfont``
++     - :cve_nist:`2026-44950`
 +   * - ``libxfont2``
-+     - 2.0.7
-+     - 2.0.9
-+   * - ``libxi``
-+     - 1.8.2
-+     - 1.8.3
-+   * - ``libxkbcommon``
-+     - 1.13.1
-+     - 1.13.2
-+   * - ``libxmlb``
-+     - 0.3.25
-+     - 0.3.29
-+   * - ``lighttpd``
-+     - 1.4.82
-+     - 1.4.85
-+   * - ``linux-firmware``
-+     - 20260410
-+     - 20260810
-+   * - ``linux-libc-headers``
-+     - 6.18
-+     - 7.2
++     - :cve_nist:`2026-44950`, :cve_nist:`2026-59679`
++   * - ``libxml2``
++     - :cve_nist:`2026-86137`, :cve_nist:`2026-86138`, :cve_nist:`2026-86139`, :cve_nist:`2026-86140`, :cve_nist:`2026-86141`, :cve_nist:`2026-86142`, :cve_nist:`2026-86143`, :cve_nist:`2026-86144`
 +   * - ``linux-yocto``
-+     - 6.18.39+git
-+     - 6.18.48+git, 7.2.2+git
-+   * - ``linux-yocto-dev``
-+     - 7.0+git
-+     - 7.2+git
-+   * - ``linux-yocto-rt``
-+     - 6.18.39+git
-+     - 6.18.48+git, 7.2.2+git
-+   * - ``linux-yocto-tiny``
-+     - 6.18.39+git
-+     - 6.18.48+git, 7.2.2+git
-+   * - ``lld``
-+     - 22.1.8
-+     - 23.1.0
-+   * - ``lldb``
-+     - 22.1.8
-+     - 23.1.0
-+   * - ``llvm``
-+     - 22.1.8
-+     - 23.1.0
-+   * - ``llvm-tblgen-native``
-+     - 22.1.8
-+     - 23.1.0
-+   * - ``log4cplus``
-+     - 2.1.2
-+     - 2.2.0.1
-+   * - ``lsof``
-+     - 4.99.6
-+     - 4.99.7
-+   * - ``ltp``
-+     - 20260130
-+     - 20260529
-+   * - ``lttng-modules``
-+     - 2.14.4
-+     - 2.16.0
-+   * - ``lttng-tools``
-+     - 2.14.1
-+     - 2.16.0
-+   * - ``lttng-ust``
-+     - 2.14.0
-+     - 2.16.0
-+   * - ``lua``
-+     - 5.5.0
-+     - 5.5.1
-+   * - ``lzip``
-+     - 1.25
-+     - 1.26
-+   * - ``makedumpfile``
-+     - 1.7.8
-+     - 1.7.9
-+   * - ``man-pages``
-+     - 6.17
-+     - 6.19
-+   * - ``mesa``
-+     - 26.0.5
-+     - 26.2.2
-+   * - ``mesa-demos``
-+     - 9.0.0
-+     - 9.0.0+git
-+   * - ``mesa-gl``
-+     - 26.0.5
-+     - 26.2.2
-+   * - ``mesa-tools-native``
-+     - 26.0.5
-+     - 26.2.2
-+   * - ``meson``
-+     - 1.10.2
-+     - 1.12.0
-+   * - ``minicom``
-+     - 2.10
-+     - 2.11.1
-+   * - ``mkfontscale``
-+     - 1.2.3
-+     - 1.2.4
-+   * - ``mpg123``
-+     - 1.33.4
-+     - 1.33.7
-+   * - ``msmtp``
-+     - 1.8.32
-+     - 1.8.34
-+   * - ``nasm``
-+     - 3.01
-+     - 3.02
-+   * - ``nativesdk-libtool``
-+     - 2.5.4
-+     - 2.6.2
-+   * - ``neard``
-+     - 0.19
-+     - 0.20
-+   * - ``netbase``
-+     - 6.5
-+     - 6.6
-+   * - ``nettle``
-+     - 3.10.2
-+     - 4.0
-+   * - ``nfs-utils``
-+     - 2.8.7
-+     - 2.9.2
-+   * - ``nghttp2``
-+     - 1.68.1
-+     - 1.70.0
-+   * - ``openmp``
-+     - 22.1.8
-+     - 23.1.0
-+   * - ``opensbi``
-+     - 1.8.1
-+     - 1.9
++     - :cve_nist:`2019-14899`, :cve_nist:`2021-3714`, :cve_nist:`2021-3864`, :cve_nist:`2022-0400`, :cve_nist:`2022-1247`, :cve_nist:`2022-4543`, :cve_nist:`2023-3397`, :cve_nist:`2023-3640`, :cve_nist:`2023-6238`, :cve_nist:`2023-6240`, :cve_nist:`2025-71074`, :cve_nist:`2025-71306`, :cve_nist:`2025-71308`, :cve_nist:`2025-71313`, :cve_nist:`2026-23328`, :cve_nist:`2026-23374`, :cve_nist:`2026-23377`, :cve_nist:`2026-23459`, :cve_nist:`2026-31501`, :cve_nist:`2026-31771`, :cve_nist:`2026-31777`, :cve_nist:`2026-43009`, :cve_nist:`2026-43022`, :cve_nist:`2026-43042`, :cve_nist:`2026-43045`, :cve_nist:`2026-43053`, :cve_nist:`2026-43095`, :cve_nist:`2026-43115`, :cve_nist:`2026-43131`, :cve_nist:`2026-43174`, :cve_nist:`2026-43191`, :cve_nist:`2026-43204`, :cve_nist:`2026-43228`, :cve_nist:`2026-43299`, :cve_nist:`2026-43308`, :cve_nist:`2026-43310`, :cve_nist:`2026-43311`, :cve_nist:`2026-43326`, :cve_nist:`2026-43344`, :cve_nist:`2026-43391`, :cve_nist:`2026-43414`, :cve_nist:`2026
+ -43443`, :cve_nist:`2026-45961`, :cve_nist:`2026-45963`, :cve_nist:`2026-45991`, :cve_nist:`2026-46008`, :cve_nist:`2026-46017`, :cve_nist:`2026-46032`, :cve_nist:`2026-46153`, :cve_nist:`2026-46210`, :cve_nist:`2026-46245`, :cve_nist:`2026-46298`, :cve_nist:`2026-46302`, :cve_nist:`2026-46311`, :cve_nist:`2026-46330`, :cve_nist:`2026-52949`, :cve_nist:`2026-52956`, :cve_nist:`2026-52960`, :cve_nist:`2026-52965`, :cve_nist:`2026-52988`, :cve_nist:`2026-53007`, :cve_nist:`2026-53008`, :cve_nist:`2026-53009`, :cve_nist:`2026-53017`, :cve_nist:`2026-53024`, :cve_nist:`2026-53025`, :cve_nist:`2026-53089`, :cve_nist:`2026-53091`, :cve_nist:`2026-53102`, :cve_nist:`2026-53106`, :cve_nist:`2026-53108`, :cve_nist:`2026-53113`, :cve_nist:`2026-53124`, :cve_nist:`2026-53178`, :cve_nist:`2026-53222`, :cve_nist:`2026-53257`, :cve_nist:`2026-53285`, :cve_nist:`2026-53292`, :cve_nist:`2026-53308`, :cve_nist:`2026-53313`, :cve_nist:`2026-53401`, :cve_nist:`2026-63811`, :cve_nist:`2026-63839`, :cve
+ _nist:`2026-63879`, :cve_nist:`2026-63941`, :cve_nist:`2026-63977`, :cve_nist:`2026-63983`, :cve_nist:`2026-64013`, :cve_nist:`2026-64019`, :cve_nist:`2026-64020`, :cve_nist:`2026-64040`, :cve_nist:`2026-64057`, :cve_nist:`2026-64067`, :cve_nist:`2026-64068`, :cve_nist:`2026-64070`, :cve_nist:`2026-64079`, :cve_nist:`2026-64082`, :cve_nist:`2026-64117`, :cve_nist:`2026-64123`, :cve_nist:`2026-64146`, :cve_nist:`2026-64154`, :cve_nist:`2026-64159`, :cve_nist:`2026-64160`, :cve_nist:`2026-64210`, :cve_nist:`2026-64283`, :cve_nist:`2026-64325`, :cve_nist:`2026-64341`, :cve_nist:`2026-64388`, :cve_nist:`2026-64400`, :cve_nist:`2026-68086`, :cve_nist:`2026-68103`, :cve_nist:`2026-68105`, :cve_nist:`2026-68242`, :cve_nist:`2026-68286`, :cve_nist:`2026-68287`, :cve_nist:`2026-68288`, :cve_nist:`2026-68289`, :cve_nist:`2026-68291`, :cve_nist:`2026-68295`, :cve_nist:`2026-68303`, :cve_nist:`2026-68305`, :cve_nist:`2026-68312`, :cve_nist:`2026-68323`, :cve_nist:`2026-68337`, :cve_nist:`2026-6
+ 8375`, :cve_nist:`2026-68399`, :cve_nist:`2026-68404`, :cve_nist:`2026-68436`, :cve_nist:`2026-68441`, :cve_nist:`2026-68447`, :cve_nist:`2026-68470`, :cve_nist:`2026-72031`, :cve_nist:`2026-72064`, :cve_nist:`2026-72091`, :cve_nist:`2026-72315`, :cve_nist:`2026-72329`, :cve_nist:`2026-72331`, :cve_nist:`2026-72334`, :cve_nist:`2026-72337`, :cve_nist:`2026-72345`, :cve_nist:`2026-72355`, :cve_nist:`2026-72370`, :cve_nist:`2026-72377`, :cve_nist:`2026-72380`, :cve_nist:`2026-72388`, :cve_nist:`2026-72397`, :cve_nist:`2026-72402`, :cve_nist:`2026-72404`, :cve_nist:`2026-72413`, :cve_nist:`2026-72423`, :cve_nist:`2026-72440`, :cve_nist:`2026-72454`, :cve_nist:`2026-72463`, :cve_nist:`2026-72477`, :cve_nist:`2026-72485`, :cve_nist:`2026-72494`, :cve_nist:`2026-72496`, :cve_nist:`2026-72497`, :cve_nist:`2026-72499`, :cve_nist:`2026-74258`, :cve_nist:`2026-74260`, :cve_nist:`2026-74272`, :cve_nist:`2026-74273`, :cve_nist:`2026-74277`, :cve_nist:`2026-74289`, :cve_nist:`2026-74291`, :cve_n
+ ist:`2026-74294`, :cve_nist:`2026-74307`, :cve_nist:`2026-74317`, :cve_nist:`2026-74334`, :cve_nist:`2026-74336`, :cve_nist:`2026-74338`, :cve_nist:`2026-74342`, :cve_nist:`2026-74347`, :cve_nist:`2026-74350`, :cve_nist:`2026-74354`, :cve_nist:`2026-74367`, :cve_nist:`2026-74373`, :cve_nist:`2026-74374`, :cve_nist:`2026-74375`, :cve_nist:`2026-74407`, :cve_nist:`2026-74419`, :cve_nist:`2026-74449`, :cve_nist:`2026-74466`, :cve_nist:`2026-74496`, :cve_nist:`2026-74521`, :cve_nist:`2026-74527`, :cve_nist:`2026-74542`, :cve_nist:`2026-74544`, :cve_nist:`2026-74558`, :cve_nist:`2026-74561`, :cve_nist:`2026-74562`, :cve_nist:`2026-74568`, :cve_nist:`2026-74713`, :cve_nist:`2026-74715`, :cve_nist:`2026-74716`, :cve_nist:`2026-74721`, :cve_nist:`2026-74723`, :cve_nist:`2026-74729`, :cve_nist:`2026-74745`, :cve_nist:`2026-74747`, :cve_nist:`2026-74750`, :cve_nist:`2026-74752`, :cve_nist:`2026-74754`, :cve_nist:`2026-80524`, :cve_nist:`2026-80579`, :cve_nist:`2026-80580`, :cve_nist:`2026-806
+ 31`, :cve_nist:`2026-80634`, :cve_nist:`2026-80655`, :cve_nist:`2026-80657`, :cve_nist:`2026-80668`, :cve_nist:`2026-80693`, :cve_nist:`2026-80705`, :cve_nist:`2026-80729`, :cve_nist:`2026-80738`, :cve_nist:`2026-80747`, :cve_nist:`2026-80753`, :cve_nist:`2026-80755`, :cve_nist:`2026-80768`, :cve_nist:`2026-80774`, :cve_nist:`2026-80783`, :cve_nist:`2026-80785`, :cve_nist:`2026-80786`, :cve_nist:`2026-80824`, :cve_nist:`2026-80825`, :cve_nist:`2026-80826`, :cve_nist:`2026-80827`, :cve_nist:`2026-80828`, :cve_nist:`2026-80829`, :cve_nist:`2026-80830`, :cve_nist:`2026-80831`, :cve_nist:`2026-80832`, :cve_nist:`2026-80833`, :cve_nist:`2026-80834`, :cve_nist:`2026-80835`, :cve_nist:`2026-80836`, :cve_nist:`2026-80837`, :cve_nist:`2026-80838`, :cve_nist:`2026-80839`, :cve_nist:`2026-80840`, :cve_nist:`2026-80841`, :cve_nist:`2026-80842`, :cve_nist:`2026-80843`, :cve_nist:`2026-80844`, :cve_nist:`2026-80845`, :cve_nist:`2026-80846`, :cve_nist:`2026-80847`, :cve_nist:`2026-80848`, :cve_nis
+ t:`2026-80849`, :cve_nist:`2026-80850`, :cve_nist:`2026-80851`, :cve_nist:`2026-80852`, :cve_nist:`2026-80854`, :cve_nist:`2026-80855`, :cve_nist:`2026-80856`, :cve_nist:`2026-80857`, :cve_nist:`2026-80858`, :cve_nist:`2026-80859`, :cve_nist:`2026-80860`, :cve_nist:`2026-80861`, :cve_nist:`2026-80862`, :cve_nist:`2026-80863`, :cve_nist:`2026-80864`, :cve_nist:`2026-80878`, :cve_nist:`2026-80884`, :cve_nist:`2026-80899`, :cve_nist:`2026-80914`, :cve_nist:`2026-80920`, :cve_nist:`2026-80921`, :cve_nist:`2026-80922`, :cve_nist:`2026-80923`, :cve_nist:`2026-80924`, :cve_nist:`2026-80925`, :cve_nist:`2026-80926`, :cve_nist:`2026-80927`, :cve_nist:`2026-80928`, :cve_nist:`2026-80929`, :cve_nist:`2026-80930`, :cve_nist:`2026-80931`, :cve_nist:`2026-80932`, :cve_nist:`2026-80933`, :cve_nist:`2026-80934`, :cve_nist:`2026-80935`, :cve_nist:`2026-80936`, :cve_nist:`2026-80937`, :cve_nist:`2026-80938`, :cve_nist:`2026-80939`, :cve_nist:`2026-80940`, :cve_nist:`2026-80941`, :cve_nist:`2026-80942
+ `, :cve_nist:`2026-80943`, :cve_nist:`2026-80944`, :cve_nist:`2026-80945`, :cve_nist:`2026-80946`, :cve_nist:`2026-80947`, :cve_nist:`2026-80948`, :cve_nist:`2026-80949`, :cve_nist:`2026-80950`, :cve_nist:`2026-80951`, :cve_nist:`2026-80952`, :cve_nist:`2026-80953`, :cve_nist:`2026-80955`, :cve_nist:`2026-80956`, :cve_nist:`2026-80957`, :cve_nist:`2026-80958`, :cve_nist:`2026-80959`, :cve_nist:`2026-80960`, :cve_nist:`2026-80961`, :cve_nist:`2026-80962`, :cve_nist:`2026-80963`, :cve_nist:`2026-80964`, :cve_nist:`2026-80965`, :cve_nist:`2026-80966`, :cve_nist:`2026-80967`, :cve_nist:`2026-80968`, :cve_nist:`2026-80969`, :cve_nist:`2026-80970`, :cve_nist:`2026-80971`, :cve_nist:`2026-80972`, :cve_nist:`2026-80973`, :cve_nist:`2026-80974`, :cve_nist:`2026-80975`, :cve_nist:`2026-80976`, :cve_nist:`2026-80977`, :cve_nist:`2026-80978`, :cve_nist:`2026-80979`, :cve_nist:`2026-80980`, :cve_nist:`2026-80981`, :cve_nist:`2026-80982`, :cve_nist:`2026-80983`, :cve_nist:`2026-80984`, :cve_nist:
+ `2026-80985`, :cve_nist:`2026-80986`, :cve_nist:`2026-80987`, :cve_nist:`2026-80988`, :cve_nist:`2026-80989`, :cve_nist:`2026-80990`, :cve_nist:`2026-80991`, :cve_nist:`2026-80992`, :cve_nist:`2026-80993`, :cve_nist:`2026-80994`, :cve_nist:`2026-80996`, :cve_nist:`2026-80997`, :cve_nist:`2026-80999`, :cve_nist:`2026-81000`, :cve_nist:`2026-81001`, :cve_nist:`2026-81002`, :cve_nist:`2026-81003`, :cve_nist:`2026-81004`, :cve_nist:`2026-81005`, :cve_nist:`2026-81006`, :cve_nist:`2026-81007`, :cve_nist:`2026-81008`, :cve_nist:`2026-81009`, :cve_nist:`2026-81010`, :cve_nist:`2026-81011`, :cve_nist:`2026-81012`, :cve_nist:`2026-81013`, :cve_nist:`2026-81014`, :cve_nist:`2026-81015`, :cve_nist:`2026-81016`, :cve_nist:`2026-81017`, :cve_nist:`2026-81018`, :cve_nist:`2026-89437`, :cve_nist:`2026-89438`, :cve_nist:`2026-89439`, :cve_nist:`2026-89440`, :cve_nist:`2026-89441`, :cve_nist:`2026-89442`, :cve_nist:`2026-89443`, :cve_nist:`2026-89444`, :cve_nist:`2026-89445`, :cve_nist:`2026-89446`,
+  :cve_nist:`2026-89447`, :cve_nist:`2026-89448`, :cve_nist:`2026-89449`, :cve_nist:`2026-89450`, :cve_nist:`2026-89451`, :cve_nist:`2026-89452`, :cve_nist:`2026-89453`, :cve_nist:`2026-89454`, :cve_nist:`2026-89455`, :cve_nist:`2026-89456`, :cve_nist:`2026-89457`, :cve_nist:`2026-89458`, :cve_nist:`2026-89460`, :cve_nist:`2026-89461`, :cve_nist:`2026-89462`, :cve_nist:`2026-89463`, :cve_nist:`2026-89464`, :cve_nist:`2026-89465`, :cve_nist:`2026-89466`, :cve_nist:`2026-89467`, :cve_nist:`2026-89468`, :cve_nist:`2026-89469`, :cve_nist:`2026-89470`, :cve_nist:`2026-89471`, :cve_nist:`2026-89472`, :cve_nist:`2026-89473`, :cve_nist:`2026-89474`, :cve_nist:`2026-89475`, :cve_nist:`2026-89476`, :cve_nist:`2026-89477`, :cve_nist:`2026-89478`, :cve_nist:`2026-89479`, :cve_nist:`2026-89480`, :cve_nist:`2026-89481`, :cve_nist:`2026-89482`, :cve_nist:`2026-89483`, :cve_nist:`2026-89484`, :cve_nist:`2026-89485`, :cve_nist:`2026-89486`, :cve_nist:`2026-89487`, :cve_nist:`2026-89488`, :cve_nist:`2
+ 026-89489`, :cve_nist:`2026-89490`, :cve_nist:`2026-89491`, :cve_nist:`2026-89492`, :cve_nist:`2026-89493`, :cve_nist:`2026-89494`, :cve_nist:`2026-89495`, :cve_nist:`2026-89496`, :cve_nist:`2026-89497`, :cve_nist:`2026-89498`, :cve_nist:`2026-89500`, :cve_nist:`2026-89501`, :cve_nist:`2026-89502`, :cve_nist:`2026-89503`, :cve_nist:`2026-89504`, :cve_nist:`2026-89506`, :cve_nist:`2026-89507`, :cve_nist:`2026-89508`, :cve_nist:`2026-89509`, :cve_nist:`2026-89510`, :cve_nist:`2026-89511`, :cve_nist:`2026-89512`, :cve_nist:`2026-89513`, :cve_nist:`2026-89514`, :cve_nist:`2026-89515`, :cve_nist:`2026-89520`, :cve_nist:`2026-89522`, :cve_nist:`2026-89523`, :cve_nist:`2026-89524`, :cve_nist:`2026-89525`, :cve_nist:`2026-89526`, :cve_nist:`2026-89527`, :cve_nist:`2026-89528`, :cve_nist:`2026-89530`, :cve_nist:`2026-89531`, :cve_nist:`2026-89532`, :cve_nist:`2026-89533`, :cve_nist:`2026-89534`, :cve_nist:`2026-89535`, :cve_nist:`2026-89536`, :cve_nist:`2026-89537`, :cve_nist:`2026-89538`, :
+ cve_nist:`2026-89539`, :cve_nist:`2026-89540`, :cve_nist:`2026-89541`, :cve_nist:`2026-89542`, :cve_nist:`2026-89543`, :cve_nist:`2026-89544`, :cve_nist:`2026-89545`, :cve_nist:`2026-89547`, :cve_nist:`2026-89548`, :cve_nist:`2026-89549`, :cve_nist:`2026-89550`, :cve_nist:`2026-89551`, :cve_nist:`2026-89552`, :cve_nist:`2026-89553`, :cve_nist:`2026-89554`, :cve_nist:`2026-89555`, :cve_nist:`2026-89556`, :cve_nist:`2026-89557`, :cve_nist:`2026-89558`, :cve_nist:`2026-89559`, :cve_nist:`2026-89560`, :cve_nist:`2026-89561`, :cve_nist:`2026-89562`, :cve_nist:`2026-89563`, :cve_nist:`2026-89564`, :cve_nist:`2026-89565`, :cve_nist:`2026-89566`, :cve_nist:`2026-89567`, :cve_nist:`2026-89568`, :cve_nist:`2026-89569`, :cve_nist:`2026-89570`, :cve_nist:`2026-89571`, :cve_nist:`2026-89572`, :cve_nist:`2026-89573`, :cve_nist:`2026-89574`, :cve_nist:`2026-89575`, :cve_nist:`2026-89576`, :cve_nist:`2026-89577`, :cve_nist:`2026-89578`, :cve_nist:`2026-89579`, :cve_nist:`2026-89580`, :cve_nist:`202
+ 6-89581`, :cve_nist:`2026-89582`, :cve_nist:`2026-89583`, :cve_nist:`2026-89584`, :cve_nist:`2026-89585`, :cve_nist:`2026-89586`, :cve_nist:`2026-89587`, :cve_nist:`2026-89588`, :cve_nist:`2026-89589`, :cve_nist:`2026-89590`, :cve_nist:`2026-89591`, :cve_nist:`2026-89592`, :cve_nist:`2026-89593`, :cve_nist:`2026-89594`, :cve_nist:`2026-89595`, :cve_nist:`2026-89596`, :cve_nist:`2026-89597`, :cve_nist:`2026-89598`, :cve_nist:`2026-89599`, :cve_nist:`2026-89600`, :cve_nist:`2026-89601`, :cve_nist:`2026-89602`, :cve_nist:`2026-89603`, :cve_nist:`2026-89604`, :cve_nist:`2026-89605`, :cve_nist:`2026-89606`, :cve_nist:`2026-89607`, :cve_nist:`2026-89608`, :cve_nist:`2026-89609`, :cve_nist:`2026-89610`, :cve_nist:`2026-89611`, :cve_nist:`2026-89615`, :cve_nist:`2026-89616`, :cve_nist:`2026-89617`, :cve_nist:`2026-89618`, :cve_nist:`2026-89619`, :cve_nist:`2026-89620`, :cve_nist:`2026-89621`, :cve_nist:`2026-89622`, :cve_nist:`2026-89623`, :cve_nist:`2026-89624`, :cve_nist:`2026-89625`, :cv
+ e_nist:`2026-89626`, :cve_nist:`2026-89627`, :cve_nist:`2026-89628`, :cve_nist:`2026-89629`, :cve_nist:`2026-89631`, :cve_nist:`2026-89633`, :cve_nist:`2026-89634`, :cve_nist:`2026-89636`, :cve_nist:`2026-89637`, :cve_nist:`2026-89638`, :cve_nist:`2026-89639`, :cve_nist:`2026-89640`, :cve_nist:`2026-89641`, :cve_nist:`2026-89642`, :cve_nist:`2026-89643`, :cve_nist:`2026-89644`, :cve_nist:`2026-89645`, :cve_nist:`2026-89646`, :cve_nist:`2026-89647`, :cve_nist:`2026-89648`, :cve_nist:`2026-89649`, :cve_nist:`2026-89650`, :cve_nist:`2026-89651`, :cve_nist:`2026-89652`, :cve_nist:`2026-89653`, :cve_nist:`2026-89654`, :cve_nist:`2026-89655`, :cve_nist:`2026-89656`, :cve_nist:`2026-89657`, :cve_nist:`2026-89658`, :cve_nist:`2026-89659`, :cve_nist:`2026-89660`, :cve_nist:`2026-89662`, :cve_nist:`2026-89663`, :cve_nist:`2026-89665`, :cve_nist:`2026-89666`, :cve_nist:`2026-89667`, :cve_nist:`2026-89668`, :cve_nist:`2026-89669`, :cve_nist:`2026-89670`, :cve_nist:`2026-89671`, :cve_nist:`2026-
+ 89672`, :cve_nist:`2026-89673`, :cve_nist:`2026-89674`, :cve_nist:`2026-89675`, :cve_nist:`2026-89676`, :cve_nist:`2026-89679`, :cve_nist:`2026-89680`, :cve_nist:`2026-89682`, :cve_nist:`2026-89683`, :cve_nist:`2026-89684`, :cve_nist:`2026-89685`, :cve_nist:`2026-89686`, :cve_nist:`2026-89688`, :cve_nist:`2026-89689`, :cve_nist:`2026-89690`, :cve_nist:`2026-89691`, :cve_nist:`2026-89692`, :cve_nist:`2026-89693`, :cve_nist:`2026-89694`, :cve_nist:`2026-89696`, :cve_nist:`2026-89697`, :cve_nist:`2026-89698`, :cve_nist:`2026-89699`, :cve_nist:`2026-89700`, :cve_nist:`2026-89701`, :cve_nist:`2026-89702`, :cve_nist:`2026-89703`, :cve_nist:`2026-89704`, :cve_nist:`2026-89705`, :cve_nist:`2026-89706`, :cve_nist:`2026-89707`, :cve_nist:`2026-89708`, :cve_nist:`2026-89709`, :cve_nist:`2026-89710`, :cve_nist:`2026-89711`, :cve_nist:`2026-89712`, :cve_nist:`2026-89713`, :cve_nist:`2026-89714`, :cve_nist:`2026-89715`, :cve_nist:`2026-89716`, :cve_nist:`2026-89717`, :cve_nist:`2026-89718`, :cve_
+ nist:`2026-89719`, :cve_nist:`2026-89720`, :cve_nist:`2026-89721`, :cve_nist:`2026-89722`, :cve_nist:`2026-89723`, :cve_nist:`2026-89724`, :cve_nist:`2026-89725`, :cve_nist:`2026-89726`, :cve_nist:`2026-89729`, :cve_nist:`2026-89730`, :cve_nist:`2026-89731`, :cve_nist:`2026-89732`, :cve_nist:`2026-89733`, :cve_nist:`2026-89734`, :cve_nist:`2026-89735`, :cve_nist:`2026-89736`, :cve_nist:`2026-89737`, :cve_nist:`2026-89738`, :cve_nist:`2026-89739`, :cve_nist:`2026-89740`, :cve_nist:`2026-89741`, :cve_nist:`2026-89742`, :cve_nist:`2026-89743`, :cve_nist:`2026-89744`, :cve_nist:`2026-89746`, :cve_nist:`2026-89747`, :cve_nist:`2026-89749`, :cve_nist:`2026-89750`, :cve_nist:`2026-89751`, :cve_nist:`2026-89752`, :cve_nist:`2026-89753`, :cve_nist:`2026-89754`, :cve_nist:`2026-89755`, :cve_nist:`2026-89756`, :cve_nist:`2026-89757`, :cve_nist:`2026-89759`, :cve_nist:`2026-89761`, :cve_nist:`2026-89762`, :cve_nist:`2026-89763`, :cve_nist:`2026-89764`, :cve_nist:`2026-89765`, :cve_nist:`2026-89
+ 766`, :cve_nist:`2026-89767`, :cve_nist:`2026-89768`, :cve_nist:`2026-89769`, :cve_nist:`2026-89771`, :cve_nist:`2026-89772`, :cve_nist:`2026-89775`, :cve_nist:`2026-89776`, :cve_nist:`2026-89777`, :cve_nist:`2026-89778`, :cve_nist:`2026-89779`, :cve_nist:`2026-89780`, :cve_nist:`2026-89781`, :cve_nist:`2026-89782`, :cve_nist:`2026-89783`, :cve_nist:`2026-89784`, :cve_nist:`2026-89785`, :cve_nist:`2026-89786`, :cve_nist:`2026-89787`, :cve_nist:`2026-89789`, :cve_nist:`2026-89790`, :cve_nist:`2026-89791`, :cve_nist:`2026-89793`, :cve_nist:`2026-89794`, :cve_nist:`2026-89795`, :cve_nist:`2026-89797`, :cve_nist:`2026-89798`, :cve_nist:`2026-89799`, :cve_nist:`2026-89800`, :cve_nist:`2026-89801`, :cve_nist:`2026-89802`, :cve_nist:`2026-89803`, :cve_nist:`2026-89805`, :cve_nist:`2026-89806`, :cve_nist:`2026-89807`, :cve_nist:`2026-89808`, :cve_nist:`2026-89810`, :cve_nist:`2026-89811`, :cve_nist:`2026-89812`, :cve_nist:`2026-89813`, :cve_nist:`2026-89814`, :cve_nist:`2026-89815`, :cve_ni
+ st:`2026-89816`, :cve_nist:`2026-89817`, :cve_nist:`2026-89818`, :cve_nist:`2026-89819`, :cve_nist:`2026-89820`, :cve_nist:`2026-89821`, :cve_nist:`2026-89822`, :cve_nist:`2026-89823`, :cve_nist:`2026-89824`, :cve_nist:`2026-89825`, :cve_nist:`2026-89826`, :cve_nist:`2026-89827`, :cve_nist:`2026-89828`, :cve_nist:`2026-89829`, :cve_nist:`2026-89830`, :cve_nist:`2026-89832`, :cve_nist:`2026-89833`, :cve_nist:`2026-89834`, :cve_nist:`2026-89835`, :cve_nist:`2026-89837`, :cve_nist:`2026-89838`, :cve_nist:`2026-89839`, :cve_nist:`2026-89840`, :cve_nist:`2026-89841`, :cve_nist:`2026-89842`, :cve_nist:`2026-89843`, :cve_nist:`2026-89844`, :cve_nist:`2026-89845`, :cve_nist:`2026-89846`, :cve_nist:`2026-89847`, :cve_nist:`2026-89848`, :cve_nist:`2026-89849`, :cve_nist:`2026-89850`, :cve_nist:`2026-89851`, :cve_nist:`2026-89852`, :cve_nist:`2026-89853`, :cve_nist:`2026-89854`, :cve_nist:`2026-89855`, :cve_nist:`2026-89856`, :cve_nist:`2026-89857`, :cve_nist:`2026-89858`, :cve_nist:`2026-8985
+ 9`, :cve_nist:`2026-89860`, :cve_nist:`2026-89861`, :cve_nist:`2026-89862`, :cve_nist:`2026-89863`, :cve_nist:`2026-89864`, :cve_nist:`2026-89865`, :cve_nist:`2026-89866`, :cve_nist:`2026-89868`, :cve_nist:`2026-89869`, :cve_nist:`2026-89870`, :cve_nist:`2026-89871`, :cve_nist:`2026-89872`, :cve_nist:`2026-89874`, :cve_nist:`2026-89876`, :cve_nist:`2026-89877`, :cve_nist:`2026-89878`, :cve_nist:`2026-89879`, :cve_nist:`2026-89880`, :cve_nist:`2026-89881`, :cve_nist:`2026-89883`, :cve_nist:`2026-89884`, :cve_nist:`2026-89885`, :cve_nist:`2026-89886`, :cve_nist:`2026-89887`, :cve_nist:`2026-89888`, :cve_nist:`2026-89889`, :cve_nist:`2026-89890`, :cve_nist:`2026-89891`, :cve_nist:`2026-89892`, :cve_nist:`2026-89893`, :cve_nist:`2026-89894`, :cve_nist:`2026-89895`, :cve_nist:`2026-89896`, :cve_nist:`2026-89897`, :cve_nist:`2026-89898`, :cve_nist:`2026-89899`, :cve_nist:`2026-89900`, :cve_nist:`2026-89901`, :cve_nist:`2026-89902`, :cve_nist:`2026-89903`, :cve_nist:`2026-89904`, :cve_nist
+ :`2026-89906`, :cve_nist:`2026-89907`, :cve_nist:`2026-89908`, :cve_nist:`2026-89909`, :cve_nist:`2026-89911`, :cve_nist:`2026-89912`, :cve_nist:`2026-89913`, :cve_nist:`2026-89914`, :cve_nist:`2026-89915`, :cve_nist:`2026-89916`, :cve_nist:`2026-89917`, :cve_nist:`2026-89918`, :cve_nist:`2026-89920`, :cve_nist:`2026-89921`, :cve_nist:`2026-89922`, :cve_nist:`2026-89923`, :cve_nist:`2026-89924`, :cve_nist:`2026-89925`, :cve_nist:`2026-89926`, :cve_nist:`2026-89927`, :cve_nist:`2026-89928`, :cve_nist:`2026-89929`, :cve_nist:`2026-89930`, :cve_nist:`2026-89931`, :cve_nist:`2026-89932`, :cve_nist:`2026-89933`, :cve_nist:`2026-89934`, :cve_nist:`2026-89935`, :cve_nist:`2026-89936`, :cve_nist:`2026-89937`, :cve_nist:`2026-89938`, :cve_nist:`2026-89939`, :cve_nist:`2026-89940`, :cve_nist:`2026-89941`, :cve_nist:`2026-89942`, :cve_nist:`2026-89943`, :cve_nist:`2026-89944`, :cve_nist:`2026-89945`, :cve_nist:`2026-89946`, :cve_nist:`2026-89947`, :cve_nist:`2026-89948`, :cve_nist:`2026-89949`
+ , :cve_nist:`2026-89950`, :cve_nist:`2026-89951`, :cve_nist:`2026-89952`, :cve_nist:`2026-89953`, :cve_nist:`2026-89954`, :cve_nist:`2026-89955`, :cve_nist:`2026-89956`, :cve_nist:`2026-89957`, :cve_nist:`2026-89958`, :cve_nist:`2026-89959`, :cve_nist:`2026-89960`, :cve_nist:`2026-89961`, :cve_nist:`2026-89962`, :cve_nist:`2026-89963`, :cve_nist:`2026-89964`, :cve_nist:`2026-89965`, :cve_nist:`2026-89968`, :cve_nist:`2026-89969`, :cve_nist:`2026-89970`, :cve_nist:`2026-89971`, :cve_nist:`2026-89972`, :cve_nist:`2026-89973`, :cve_nist:`2026-89974`, :cve_nist:`2026-89975`, :cve_nist:`2026-89978`, :cve_nist:`2026-89979`, :cve_nist:`2026-89980`, :cve_nist:`2026-89982`, :cve_nist:`2026-89983`, :cve_nist:`2026-89984`, :cve_nist:`2026-89986`, :cve_nist:`2026-89987`, :cve_nist:`2026-89988`, :cve_nist:`2026-89989`, :cve_nist:`2026-89990`, :cve_nist:`2026-89991`, :cve_nist:`2026-89992`, :cve_nist:`2026-89993`, :cve_nist:`2026-89994`, :cve_nist:`2026-89995`, :cve_nist:`2026-89996`, :cve_nist:`
+ 2026-89997`, :cve_nist:`2026-89998`, :cve_nist:`2026-89999`, :cve_nist:`2026-90000`, :cve_nist:`2026-90001`, :cve_nist:`2026-90002`, :cve_nist:`2026-90003`, :cve_nist:`2026-90005`, :cve_nist:`2026-90006`, :cve_nist:`2026-90007`, :cve_nist:`2026-90008`, :cve_nist:`2026-90011`, :cve_nist:`2026-90012`, :cve_nist:`2026-90013`, :cve_nist:`2026-90015`, :cve_nist:`2026-90016`, :cve_nist:`2026-90017`, :cve_nist:`2026-90018`, :cve_nist:`2026-90019`, :cve_nist:`2026-90020`, :cve_nist:`2026-90021`, :cve_nist:`2026-90022`, :cve_nist:`2026-90023`, :cve_nist:`2026-90024`, :cve_nist:`2026-90025`, :cve_nist:`2026-90026`, :cve_nist:`2026-90027`, :cve_nist:`2026-90029`, :cve_nist:`2026-90030`, :cve_nist:`2026-90031`, :cve_nist:`2026-90032`, :cve_nist:`2026-90033`, :cve_nist:`2026-90034`, :cve_nist:`2026-90035`, :cve_nist:`2026-90036`, :cve_nist:`2026-90037`, :cve_nist:`2026-90039`, :cve_nist:`2026-90040`, :cve_nist:`2026-90041`, :cve_nist:`2026-90042`, :cve_nist:`2026-90044`, :cve_nist:`2026-90045`, 
+ :cve_nist:`2026-90046`, :cve_nist:`2026-90047`, :cve_nist:`2026-90048`, :cve_nist:`2026-90049`, :cve_nist:`2026-90051`, :cve_nist:`2026-90053`, :cve_nist:`2026-90054`, :cve_nist:`2026-90055`, :cve_nist:`2026-90056`, :cve_nist:`2026-90057`, :cve_nist:`2026-90058`, :cve_nist:`2026-90059`, :cve_nist:`2026-90060`, :cve_nist:`2026-90061`, :cve_nist:`2026-90062`, :cve_nist:`2026-90063`, :cve_nist:`2026-90065`, :cve_nist:`2026-90066`, :cve_nist:`2026-90067`, :cve_nist:`2026-90068`, :cve_nist:`2026-90069`, :cve_nist:`2026-90070`, :cve_nist:`2026-90071`, :cve_nist:`2026-90072`, :cve_nist:`2026-90073`, :cve_nist:`2026-90074`, :cve_nist:`2026-90075`, :cve_nist:`2026-90076`, :cve_nist:`2026-90077`, :cve_nist:`2026-90078`, :cve_nist:`2026-90079`, :cve_nist:`2026-90080`, :cve_nist:`2026-90081`, :cve_nist:`2026-90082`, :cve_nist:`2026-90083`, :cve_nist:`2026-90084`, :cve_nist:`2026-90085`, :cve_nist:`2026-90086`, :cve_nist:`2026-90088`, :cve_nist:`2026-90089`, :cve_nist:`2026-90090`, :cve_nist:`20
+ 26-90091`, :cve_nist:`2026-90092`, :cve_nist:`2026-90093`, :cve_nist:`2026-90094`, :cve_nist:`2026-90095`, :cve_nist:`2026-90097`, :cve_nist:`2026-90098`, :cve_nist:`2026-90099`, :cve_nist:`2026-90100`, :cve_nist:`2026-90101`, :cve_nist:`2026-90102`, :cve_nist:`2026-90103`, :cve_nist:`2026-90104`, :cve_nist:`2026-90105`, :cve_nist:`2026-90106`, :cve_nist:`2026-90107`, :cve_nist:`2026-90108`, :cve_nist:`2026-90109`, :cve_nist:`2026-90110`, :cve_nist:`2026-90111`, :cve_nist:`2026-90112`, :cve_nist:`2026-90113`, :cve_nist:`2026-90114`, :cve_nist:`2026-90115`, :cve_nist:`2026-90116`, :cve_nist:`2026-90119`, :cve_nist:`2026-90121`, :cve_nist:`2026-90122`, :cve_nist:`2026-90124`, :cve_nist:`2026-90125`, :cve_nist:`2026-90126`, :cve_nist:`2026-90127`, :cve_nist:`2026-90128`, :cve_nist:`2026-90129`, :cve_nist:`2026-90130`, :cve_nist:`2026-90135`, :cve_nist:`2026-90136`, :cve_nist:`2026-90137`, :cve_nist:`2026-90138`, :cve_nist:`2026-90139`, :cve_nist:`2026-90140`, :cve_nist:`2026-90141`, :c
+ ve_nist:`2026-90142`, :cve_nist:`2026-90143`, :cve_nist:`2026-90144`, :cve_nist:`2026-90145`, :cve_nist:`2026-90146`, :cve_nist:`2026-90147`, :cve_nist:`2026-90148`, :cve_nist:`2026-90149`, :cve_nist:`2026-90150`, :cve_nist:`2026-90151`, :cve_nist:`2026-90152`, :cve_nist:`2026-90153`, :cve_nist:`2026-90154`, :cve_nist:`2026-90155`, :cve_nist:`2026-90156`, :cve_nist:`2026-90157`, :cve_nist:`2026-90158`, :cve_nist:`2026-90159`, :cve_nist:`2026-90160`, :cve_nist:`2026-90161`, :cve_nist:`2026-90162`, :cve_nist:`2026-90165`, :cve_nist:`2026-90166`, :cve_nist:`2026-90167`, :cve_nist:`2026-90168`, :cve_nist:`2026-90169`, :cve_nist:`2026-90170`, :cve_nist:`2026-90174`, :cve_nist:`2026-90175`, :cve_nist:`2026-90176`, :cve_nist:`2026-90177`, :cve_nist:`2026-90178`, :cve_nist:`2026-90179`, :cve_nist:`2026-90180`, :cve_nist:`2026-90182`, :cve_nist:`2026-90183`, :cve_nist:`2026-90184`, :cve_nist:`2026-90185`, :cve_nist:`2026-90186`, :cve_nist:`2026-90187`, :cve_nist:`2026-90188`, :cve_nist:`2026
+ -90189`, :cve_nist:`2026-90190`, :cve_nist:`2026-90191`, :cve_nist:`2026-90192`, :cve_nist:`2026-90193`, :cve_nist:`2026-90194`, :cve_nist:`2026-90195`, :cve_nist:`2026-90196`, :cve_nist:`2026-90197`, :cve_nist:`2026-90198`, :cve_nist:`2026-90199`, :cve_nist:`2026-90200`, :cve_nist:`2026-90201`, :cve_nist:`2026-90202`, :cve_nist:`2026-90203`, :cve_nist:`2026-90204`, :cve_nist:`2026-90205`, :cve_nist:`2026-90206`, :cve_nist:`2026-90207`, :cve_nist:`2026-90208`, :cve_nist:`2026-90209`, :cve_nist:`2026-90211`, :cve_nist:`2026-90213`, :cve_nist:`2026-90214`, :cve_nist:`2026-90215`, :cve_nist:`2026-90216`, :cve_nist:`2026-90217`, :cve_nist:`2026-90218`, :cve_nist:`2026-90219`, :cve_nist:`2026-90220`, :cve_nist:`2026-90221`, :cve_nist:`2026-90222`, :cve_nist:`2026-90223`, :cve_nist:`2026-90224`, :cve_nist:`2026-90225`, :cve_nist:`2026-90226`, :cve_nist:`2026-90227`, :cve_nist:`2026-90228`, :cve_nist:`2026-90229`, :cve_nist:`2026-90230`, :cve_nist:`2026-90231`, :cve_nist:`2026-90232`, :cve
+ _nist:`2026-90233`, :cve_nist:`2026-90234`, :cve_nist:`2026-90235`, :cve_nist:`2026-90237`, :cve_nist:`2026-90240`, :cve_nist:`2026-90241`, :cve_nist:`2026-90242`, :cve_nist:`2026-90243`, :cve_nist:`2026-90244`, :cve_nist:`2026-90245`, :cve_nist:`2026-90247`, :cve_nist:`2026-90248`, :cve_nist:`2026-90249`, :cve_nist:`2026-90250`, :cve_nist:`2026-90251`, :cve_nist:`2026-90252`, :cve_nist:`2026-90253`, :cve_nist:`2026-90254`, :cve_nist:`2026-90255`, :cve_nist:`2026-90257`, :cve_nist:`2026-90258`, :cve_nist:`2026-90259`, :cve_nist:`2026-90260`, :cve_nist:`2026-90262`, :cve_nist:`2026-90263`, :cve_nist:`2026-90264`, :cve_nist:`2026-90265`, :cve_nist:`2026-90267`, :cve_nist:`2026-90269`, :cve_nist:`2026-90272`, :cve_nist:`2026-90273`, :cve_nist:`2026-90274`, :cve_nist:`2026-90275`, :cve_nist:`2026-90276`, :cve_nist:`2026-90277`, :cve_nist:`2026-90278`, :cve_nist:`2026-90279`, :cve_nist:`2026-90280`, :cve_nist:`2026-90281`, :cve_nist:`2026-90282`, :cve_nist:`2026-90283`, :cve_nist:`2026-9
+ 0284`, :cve_nist:`2026-90285`, :cve_nist:`2026-90286`, :cve_nist:`2026-90287`, :cve_nist:`2026-90290`, :cve_nist:`2026-90291`, :cve_nist:`2026-90292`, :cve_nist:`2026-90293`, :cve_nist:`2026-90294`, :cve_nist:`2026-90295`, :cve_nist:`2026-90296`, :cve_nist:`2026-90297`, :cve_nist:`2026-90298`, :cve_nist:`2026-90301`, :cve_nist:`2026-90302`, :cve_nist:`2026-90303`, :cve_nist:`2026-90306`, :cve_nist:`2026-90307`, :cve_nist:`2026-90308`, :cve_nist:`2026-90309`, :cve_nist:`2026-90311`, :cve_nist:`2026-90312`, :cve_nist:`2026-90313`, :cve_nist:`2026-90314`, :cve_nist:`2026-90315`, :cve_nist:`2026-90316`, :cve_nist:`2026-90317`, :cve_nist:`2026-90318`, :cve_nist:`2026-90319`, :cve_nist:`2026-90320`, :cve_nist:`2026-90321`, :cve_nist:`2026-90322`, :cve_nist:`2026-90323`, :cve_nist:`2026-90324`, :cve_nist:`2026-90325`, :cve_nist:`2026-90326`, :cve_nist:`2026-90327`, :cve_nist:`2026-90328`, :cve_nist:`2026-90329`, :cve_nist:`2026-90330`, :cve_nist:`2026-90333`, :cve_nist:`2026-90334`, :cve_n
+ ist:`2026-90335`, :cve_nist:`2026-90336`, :cve_nist:`2026-90337`, :cve_nist:`2026-90338`, :cve_nist:`2026-90341`, :cve_nist:`2026-90343`, :cve_nist:`2026-90344`, :cve_nist:`2026-90345`, :cve_nist:`2026-90346`, :cve_nist:`2026-90347`, :cve_nist:`2026-90348`, :cve_nist:`2026-90349`, :cve_nist:`2026-90350`, :cve_nist:`2026-90351`, :cve_nist:`2026-90352`, :cve_nist:`2026-90353`, :cve_nist:`2026-90354`, :cve_nist:`2026-90355`, :cve_nist:`2026-90356`, :cve_nist:`2026-90357`, :cve_nist:`2026-90358`, :cve_nist:`2026-90359`, :cve_nist:`2026-90360`, :cve_nist:`2026-90361`, :cve_nist:`2026-90362`, :cve_nist:`2026-90363`, :cve_nist:`2026-90364`, :cve_nist:`2026-90365`, :cve_nist:`2026-90366`, :cve_nist:`2026-90367`, :cve_nist:`2026-90368`, :cve_nist:`2026-90370`, :cve_nist:`2026-90371`, :cve_nist:`2026-90372`, :cve_nist:`2026-90373`, :cve_nist:`2026-90374`, :cve_nist:`2026-90375`, :cve_nist:`2026-90376`, :cve_nist:`2026-90377`, :cve_nist:`2026-90378`, :cve_nist:`2026-90379`, :cve_nist:`2026-903
+ 80`, :cve_nist:`2026-90381`, :cve_nist:`2026-90382`, :cve_nist:`2026-90383`, :cve_nist:`2026-90385`, :cve_nist:`2026-90386`, :cve_nist:`2026-90387`, :cve_nist:`2026-90388`, :cve_nist:`2026-90389`, :cve_nist:`2026-90390`, :cve_nist:`2026-90391`, :cve_nist:`2026-90392`, :cve_nist:`2026-90393`, :cve_nist:`2026-90394`, :cve_nist:`2026-90395`, :cve_nist:`2026-90396`, :cve_nist:`2026-90397`, :cve_nist:`2026-90398`, :cve_nist:`2026-90399`, :cve_nist:`2026-90400`, :cve_nist:`2026-90402`, :cve_nist:`2026-90403`, :cve_nist:`2026-90404`, :cve_nist:`2026-90406`, :cve_nist:`2026-90407`, :cve_nist:`2026-90408`, :cve_nist:`2026-90409`, :cve_nist:`2026-90410`, :cve_nist:`2026-90411`, :cve_nist:`2026-90412`, :cve_nist:`2026-90413`, :cve_nist:`2026-90414`, :cve_nist:`2026-90415`, :cve_nist:`2026-90416`, :cve_nist:`2026-90417`, :cve_nist:`2026-90418`, :cve_nist:`2026-90419`, :cve_nist:`2026-90420`, :cve_nist:`2026-90421`, :cve_nist:`2026-90422`, :cve_nist:`2026-90423`, :cve_nist:`2026-90424`, :cve_nis
+ t:`2026-90425`, :cve_nist:`2026-90426`, :cve_nist:`2026-90427`, :cve_nist:`2026-90428`, :cve_nist:`2026-90429`, :cve_nist:`2026-90430`, :cve_nist:`2026-90431`, :cve_nist:`2026-90433`, :cve_nist:`2026-90434`, :cve_nist:`2026-90435`, :cve_nist:`2026-92476`, :cve_nist:`2026-92477`, :cve_nist:`2026-92480`, :cve_nist:`2026-92481`, :cve_nist:`2026-92482`, :cve_nist:`2026-92484`, :cve_nist:`2026-92486`, :cve_nist:`2026-92488`, :cve_nist:`2026-92489`, :cve_nist:`2026-92490`, :cve_nist:`2026-92491`, :cve_nist:`2026-92493`, :cve_nist:`2026-92494`, :cve_nist:`2026-92495`, :cve_nist:`2026-92496`, :cve_nist:`2026-92497`, :cve_nist:`2026-92498`, :cve_nist:`2026-92499`, :cve_nist:`2026-92500`, :cve_nist:`2026-92501`, :cve_nist:`2026-92502`, :cve_nist:`2026-92504`, :cve_nist:`2026-92505`, :cve_nist:`2026-92506`, :cve_nist:`2026-92507`, :cve_nist:`2026-92508`, :cve_nist:`2026-92509`, :cve_nist:`2026-92510`, :cve_nist:`2026-92511`, :cve_nist:`2026-92512`, :cve_nist:`2026-92513`, :cve_nist:`2026-92514
+ `, :cve_nist:`2026-92515`, :cve_nist:`2026-92516`, :cve_nist:`2026-92517`, :cve_nist:`2026-92518`, :cve_nist:`2026-92519`, :cve_nist:`2026-92520`, :cve_nist:`2026-92521`, :cve_nist:`2026-92522`, :cve_nist:`2026-92523`, :cve_nist:`2026-92524`, :cve_nist:`2026-92525`, :cve_nist:`2026-93037`, :cve_nist:`2026-93039`, :cve_nist:`2026-93040`, :cve_nist:`2026-93041`, :cve_nist:`2026-93042`, :cve_nist:`2026-93044`, :cve_nist:`2026-93045`, :cve_nist:`2026-93046`, :cve_nist:`2026-93047`, :cve_nist:`2026-93048`, :cve_nist:`2026-93049`, :cve_nist:`2026-93050`, :cve_nist:`2026-93051`, :cve_nist:`2026-93052`, :cve_nist:`2026-93053`, :cve_nist:`2026-93054`, :cve_nist:`2026-93055`, :cve_nist:`2026-93056`, :cve_nist:`2026-93058`, :cve_nist:`2026-93059`, :cve_nist:`2026-93061`, :cve_nist:`2026-93062`, :cve_nist:`2026-93063`, :cve_nist:`2026-93064`, :cve_nist:`2026-93065`, :cve_nist:`2026-93066`, :cve_nist:`2026-93067`, :cve_nist:`2026-93068`, :cve_nist:`2026-93070`, :cve_nist:`2026-93071`, :cve_nist:
+ `2026-93072`, :cve_nist:`2026-93073`, :cve_nist:`2026-93077`, :cve_nist:`2026-93078`, :cve_nist:`2026-93079`, :cve_nist:`2026-93080`, :cve_nist:`2026-93082`, :cve_nist:`2026-93083`, :cve_nist:`2026-93084`, :cve_nist:`2026-93085`, :cve_nist:`2026-93086`, :cve_nist:`2026-93089`, :cve_nist:`2026-93090`, :cve_nist:`2026-93091`, :cve_nist:`2026-93092`, :cve_nist:`2026-93093`, :cve_nist:`2026-93095`, :cve_nist:`2026-93096`, :cve_nist:`2026-93097`, :cve_nist:`2026-93098`, :cve_nist:`2026-93099`, :cve_nist:`2026-93100`, :cve_nist:`2026-93101`, :cve_nist:`2026-93102`, :cve_nist:`2026-93103`, :cve_nist:`2026-93104`, :cve_nist:`2026-93105`, :cve_nist:`2026-93106`, :cve_nist:`2026-93107`, :cve_nist:`2026-93108`, :cve_nist:`2026-93109`, :cve_nist:`2026-93110`, :cve_nist:`2026-93112`, :cve_nist:`2026-93113`, :cve_nist:`2026-93114`, :cve_nist:`2026-93115`, :cve_nist:`2026-93116`, :cve_nist:`2026-93117`, :cve_nist:`2026-93118`, :cve_nist:`2026-93119`, :cve_nist:`2026-93120`, :cve_nist:`2026-93121`,
+  :cve_nist:`2026-93122`, :cve_nist:`2026-93123`, :cve_nist:`2026-93125`, :cve_nist:`2026-93126`, :cve_nist:`2026-93128`, :cve_nist:`2026-93129`, :cve_nist:`2026-93130`, :cve_nist:`2026-93131`, :cve_nist:`2026-93132`, :cve_nist:`2026-93133`, :cve_nist:`2026-93134`, :cve_nist:`2026-93135`, :cve_nist:`2026-93136`, :cve_nist:`2026-93137`, :cve_nist:`2026-93138`, :cve_nist:`2026-93140`, :cve_nist:`2026-93141`, :cve_nist:`2026-93142`, :cve_nist:`2026-93143`, :cve_nist:`2026-93144`, :cve_nist:`2026-93145`, :cve_nist:`2026-93146`, :cve_nist:`2026-93148`, :cve_nist:`2026-93149`, :cve_nist:`2026-93150`, :cve_nist:`2026-93151`, :cve_nist:`2026-93152`, :cve_nist:`2026-93154`, :cve_nist:`2026-93155`, :cve_nist:`2026-93156`, :cve_nist:`2026-93157`, :cve_nist:`2026-93158`, :cve_nist:`2026-93159`, :cve_nist:`2026-93160`, :cve_nist:`2026-93161`, :cve_nist:`2026-93162`, :cve_nist:`2026-93163`, :cve_nist:`2026-93164`, :cve_nist:`2026-93165`, :cve_nist:`2026-93167`, :cve_nist:`2026-93168`, :cve_nist:`2
+ 026-93169`, :cve_nist:`2026-93170`, :cve_nist:`2026-93172`, :cve_nist:`2026-93173`, :cve_nist:`2026-93174`, :cve_nist:`2026-93175`, :cve_nist:`2026-93176`, :cve_nist:`2026-93177`, :cve_nist:`2026-93178`, :cve_nist:`2026-93179`, :cve_nist:`2026-93181`, :cve_nist:`2026-93182`, :cve_nist:`2026-93183`, :cve_nist:`2026-93184`, :cve_nist:`2026-93185`, :cve_nist:`2026-93186`, :cve_nist:`2026-93188`, :cve_nist:`2026-93189`, :cve_nist:`2026-93190`, :cve_nist:`2026-93191`, :cve_nist:`2026-93192`, :cve_nist:`2026-93193`, :cve_nist:`2026-93194`, :cve_nist:`2026-93195`, :cve_nist:`2026-93196`, :cve_nist:`2026-93198`, :cve_nist:`2026-93199`, :cve_nist:`2026-93200`, :cve_nist:`2026-93201`, :cve_nist:`2026-93202`, :cve_nist:`2026-93203`, :cve_nist:`2026-93204`
 +   * - ``openssh``
-+     - 10.3p1
-+     - 10.5p1
-+   * - ``openssl``
-+     - 3.5.7
-+     - 4.0.2
-+   * - ``opkg``
-+     - 0.9.0
-+     - 0.10.0
-+   * - ``orc``
-+     - 0.4.42
-+     - 0.4.43
-+   * - ``ovmf``
-+     - edk2-stable202511
-+     - edk2-stable202605
-+   * - ``p11-kit``
-+     - 0.26.4
-+     - 0.26.5
-+   * - ``pango``
-+     - 1.57.0
-+     - 1.58.2
-+   * - ``parted``
-+     - 3.6
-+     - 3.7
-+   * - ``patchelf``
-+     - 0.18.0+git
-+     - 0.19.1
-+   * - ``pciutils``
-+     - 3.14.0
-+     - 3.15.0
++     - :cve_nist:`2026-73281`, :cve_nist:`2026-73282`, :cve_nist:`2026-73283`
 +   * - ``perl``
-+     - 5.42.0
-+     - 5.44.0
-+   * - ``piglit``
-+     - 1.0+gitr (a0a27e528f64=E2=80=A6)
-+     - 1.0+gitr (56f237be32ed=E2=80=A6)
-+   * - ``pinentry``
-+     - 1.3.2
-+     - 1.3.3
-+   * - ``pkgconf``
-+     - 2.5.1
-+     - 3.0.6
-+   * - ``powertop``
-+     - 2.15
-+     - 2.16
-+   * - ``ppp``
-+     - 2.5.2
-+     - 2.5.3
-+   * - ``procps``
-+     - 4.0.6
-+     - 4.0.7
-+   * - ``puzzles``
-+     - 0.0+git (ecb576fb2a0a=E2=80=A6)
-+     - 0.0+git (3c3632259d29=E2=80=A6)
++     - :cve_nist:`2026-15534`
++   * - ``popt``
++     - :cve_nist:`2026-18739`, :cve_nist:`2026-18743`, :cve_nist:`2026-18839`
 +   * - ``python3``
-+     - 3.14.6
-+     - 3.14.7
-+   * - ``python3-attrs``
-+     - 25.4.0
-+     - 26.1.0
-+   * - ``python3-build``
-+     - 1.4.0
-+     - 1.6.0
-+   * - ``python3-certifi``
-+     - 2026.2.25
-+     - 2026.7.22
-+   * - ``python3-cffi``
-+     - 2.0.0
-+     - 2.1.1
-+   * - ``python3-click``
-+     - 8.3.1
-+     - 8.5.0
++     - :cve_nist:`2025-15367`, :cve_nist:`2026-15310`, :cve_nist:`2026-15806`, :cve_nist:`2026-17084`, :cve_nist:`2026-19672`, :cve_nist:`2026-87910`
 +   * - ``python3-cryptography``
-+     - 46.0.7
-+     - 50.0.1
-+   * - ``python3-cryptography-vectors``
-+     - 46.0.7
-+     - 50.0.1
-+   * - ``python3-cython``
-+     - 3.2.4
-+     - 3.2.9
-+   * - ``python3-docutils``
-+     - 0.22.4
-+     - 0.23
-+   * - ``python3-dtc``
-+     - 1.7.2
-+     - 1.8.1
-+   * - ``python3-dtschema``
-+     - 2025.12
-+     - 2026.6
-+   * - ``python3-editables``
-+     - 0.5
-+     - 0.6
++     - :cve_nist:`2026-69247`, :cve_nist:`2026-69248`, :cve_nist:`2026-69249`
 +   * - ``python3-git``
-+     - 3.1.43
-+     - 3.1.61
-+   * - ``python3-hatchling``
-+     - 1.29.0
-+     - 1.31.0
-+   * - ``python3-hypothesis``
-+     - 6.151.9
-+     - 6.167.0
-+   * - ``python3-idna``
-+     - 3.11
-+     - 3.19
-+   * - ``python3-imagesize``
-+     - 2.0.0
-+     - 2.0.1
-+   * - ``python3-installer``
-+     - 0.7.0
-+     - 1.0.1
-+   * - ``python3-jsonpointer``
-+     - 3.0.0
-+     - 3.1.1
++     - :cve_nist:`2026-67322`, :cve_nist:`2026-67323`, :cve_nist:`2026-67324`, :cve_nist:`2026-67325`, :cve_nist:`2026-67326`, :cve_nist:`2026-69097`, :cve_nist:`2026-73619`, :cve_nist:`2026-73620`, :cve_nist:`2026-73621`, :cve_nist:`2026-73622`, :cve_nist:`2026-73623`, :cve_nist:`2026-73624`, :cve_nist:`2026-73625`, :cve_nist:`2026-76217`, :cve_nist:`2026-76218`, :cve_nist:`2026-76219`, :cve_nist:`2026-76220`, :cve_nist:`2026-76221`, :cve_nist:`2026-76222`, :cve_nist:`2026-78675`, :cve_nist:`2026-78676`, :cve_nist:`2026-78677`, :cve_nist:`2026-78678`, :cve_nist:`2026-78679`, :cve_nist:`2026-87817`, :cve_nist:`2026-87818`, :cve_nist:`2026-87819`
 +   * - ``python3-lxml``
-+     - 6.0.2
-+     - 6.1.2
-+   * - ``python3-mako``
-+     - 1.3.10
-+     - 1.4.1
-+   * - ``python3-markdown``
-+     - 3.10.2
-+     - 3.10.3
-+   * - ``python3-maturin``
-+     - 1.12.4
-+     - 1.15.0
-+   * - ``python3-meson-python``
-+     - 0.19.0
-+     - 0.20.0
-+   * - ``python3-numpy``
-+     - 2.4.3
-+     - 2.5.2
-+   * - ``python3-packaging``
-+     - 26.0
-+     - 26.3
-+   * - ``python3-pathspec``
-+     - 1.0.4
-+     - 1.1.1
-+   * - ``python3-pbr``
-+     - 7.0.3
-+     - 7.1.0
-+   * - ``python3-pdm``
-+     - 2.26.6
-+     - 2.29.0
-+   * - ``python3-pdm-backend``
-+     - 2.4.7
-+     - 2.4.9
++     - :cve_nist:`2026-49825`
 +   * - ``python3-pip``
-+     - 26.0.1
-+     - 26.2.1
-+   * - ``python3-poetry-core``
-+     - 2.3.1
-+     - 2.4.1
-+   * - ``python3-pycairo``
-+     - 1.29.0
-+     - 1.29.1
-+   * - ``python3-pyelftools``
-+     - 0.32
-+     - 0.33
-+   * - ``python3-pygments``
-+     - 2.19.2
-+     - 2.21.0
-+   * - ``python3-pygobject``
-+     - 3.56.1
-+     - 3.58.0
-+   * - ``python3-pyopenssl``
-+     - 26.0.0
-+     - 26.4.0
-+   * - ``python3-pyproject-metadata``
-+     - 0.11.0
-+     - 0.12.1
-+   * - ``python3-pytest``
-+     - 9.0.2
-+     - 9.1.1
-+   * - ``python3-pytz``
-+     - 2026.1
-+     - 2026.3
-+   * - ``python3-requests``
-+     - 2.32.5
-+     - 2.34.2
-+   * - ``python3-rpds-py``
-+     - 0.30.0
-+     - 2026.6.3
-+   * - ``python3-sbom-cve-check``
-+     - 1.3.1
-+     - 1.3.3
-+   * - ``python3-scons``
-+     - 4.10.1
-+     - 4.11.1
-+   * - ``python3-setuptools``
-+     - 82.0.1
-+     - 84.0.0
-+   * - ``python3-setuptools-rust``
-+     - 1.12.0
-+     - 1.13.0
-+   * - ``python3-setuptools-scm``
-+     - 9.2.2
-+     - 10.2.3
-+   * - ``python3-shacl2code``
-+     - 1.0.1
-+     - 1.1.0
-+   * - ``python3-snowballstemmer``
-+     - 3.0.1
-+     - 3.1.1
-+   * - ``python3-spdx-python-model``
-+     - 0.0.5
-+     - 0.0.6
-+   * - ``python3-sphinx-argparse``
-+     - 0.5.2
-+     - 0.6.1
-+   * - ``python3-testtools``
-+     - 2.8.7
-+     - 2.9.1
-+   * - ``python3-trove-classifiers``
-+     - 2026.1.14.14
-+     - 2026.6.1.19
-+   * - ``python3-typing-extensions``
-+     - 4.15.0
-+     - 4.16.0
-+   * - ``python3-uritools``
-+     - 6.0.1
-+     - 6.1.3
++     - :cve_nist:`2018-20225`
++   * - ``python3-ply``
++     - :cve_nist:`2025-56005`
 +   * - ``python3-urllib3``
-+     - 2.6.3
-+     - 2.7.0
-+   * - ``python3-uv-build``
-+     - 0.10.10
-+     - 0.12.9
-+   * - ``python3-wcwidth``
-+     - 0.6.0
-+     - 0.8.3
-+   * - ``python3-websockets``
-+     - 16.0
-+     - 17.1
-+   * - ``python3-wheel``
-+     - 0.46.3
-+     - 0.48.0
-+   * - ``python3-zipp``
-+     - 3.23.0
-+     - 4.1.0
++     - :cve_nist:`2026-44432`
 +   * - ``qemu``
-+     - 10.2.0
-+     - 11.1.1
-+   * - ``qemu-native``
-+     - 10.2.0
-+     - 11.1.1
++     - :cve_nist:`2026-3195`, :cve_nist:`2026-3196`, :cve_nist:`2026-3842`, :cve_nist:`2026-48914`
 +   * - ``qemu-system-native``
-+     - 10.2.0
-+     - 11.1.1
-+   * - ``re2c``
-+     - 4.4
-+     - 4.6
-+   * - ``repo``
-+     - 2.61.1
-+     - 2.66.1
-+   * - ``resolvconf``
-+     - 1.94
-+     - 1.95
-+   * - ``rpm``
-+     - 4.20.1
-+     - 6.0.2
++     - :cve_nist:`2026-3195`, :cve_nist:`2026-3196`, :cve_nist:`2026-3842`, :cve_nist:`2026-48914`
 +   * - ``rpm-sequoia``
-+     - 1.10.1
-+     - 1.10.2
-+   * - ``rpm-sequoia-crypto-policy``
-+     - git (f3f5fa454345=E2=80=A6)
-+     - git (359ab169da6a=E2=80=A6)
++     - :cve_nist:`2026-2625`
 +   * - ``rsync``
-+     - 3.4.1
-+     - 3.5.0
-+   * - ``ruby``
-+     - 4.0.5
-+     - 4.0.6
-+   * - ``rust``
-+     - 1.94.1
-+     - 1.98.1
-+   * - ``rust-cross-canadian``
-+     - 1.94.1
-+     - 1.98.1
-+   * - ``sbom-cve-check-update-cvelist-native``
-+     - 2026-05-07
-+     - 2026-08-25
-+   * - ``sbom-cve-check-update-nvd-native``
-+     - 2026.05.07-000006
-+     - 2026.08.25-000009
-+   * - ``scdoc``
-+     - 1.11.4
-+     - 1.11.5
-+   * - ``screen``
-+     - 5.0.1
-+     - 5.0.2
-+   * - ``shaderc``
-+     - 2026.1
-+     - 2026.3
-+   * - ``shadow``
-+     - 4.19.4
-+     - 4.20.2
-+   * - ``shared-mime-info``
-+     - 2.4
-+     - 2.5.1
-+   * - ``spirv-headers``
-+     - 1.4.341.0
-+     - 1.4.357.0
-+   * - ``spirv-llvm-translator``
-+     - 22.1.1
-+     - 23.1.1
-+   * - ``spirv-tools``
-+     - 1.4.341.0
-+     - 1.4.357.0
-+   * - ``sqlite3``
-+     - 3.51.3
-+     - 3.53.4
-+   * - ``strace``
-+     - 6.19
-+     - 7.2
-+   * - ``stress-ng``
-+     - 0.20.01
-+     - 0.22.00
-+   * - ``swig``
-+     - 4.4.1
-+     - 4.5.0
-+   * - ``sysstat``
-+     - 12.7.9
-+     - 12.8.0
-+   * - ``systemd``
-+     - 259.5
-+     - 261.2
-+   * - ``systemd-boot``
-+     - 259.5
-+     - 261.2
-+   * - ``systemd-boot-native``
-+     - 259.5
-+     - 261.2
-+   * - ``systemtap``
-+     - 5.4
-+     - 5.5
-+   * - ``systemtap-native``
-+     - 5.4
-+     - 5.5
-+   * - ``taglib``
-+     - 2.2.1
-+     - 2.3.1
-+   * - ``tcf-agent``
-+     - 1.9.0
-+     - 1.11.0
-+   * - ``tcl``
-+     - 9.0.3
-+     - 9.0.4
-+   * - ``tcl8``
-+     - 8.6.17
-+     - 8.6.18
-+   * - ``tiff``
-+     - 4.7.1
-+     - 4.7.2
-+   * - ``time``
-+     - 1.9
-+     - 1.10
-+   * - ``ttyrun``
-+     - 2.41.0
-+     - 2.44.0
-+   * - ``u-boot``
-+     - 2026.01
-+     - 2026.07
-+   * - ``u-boot-tools``
-+     - 2026.01
-+     - 2026.07
-+   * - ``utfcpp``
-+     - 4.0.9
-+     - 4.2.0
++     - :cve_nist:`2026-29518`, :cve_nist:`2026-41035`, :cve_nist:`2026-43617`, :cve_nist:`2026-43618`, :cve_nist:`2026-43619`, :cve_nist:`2026-43620`, :cve_nist:`2026-45232`, :cve_nist:`2026-53783`, :cve_nist:`2026-53784`, :cve_nist:`2026-53785`, :cve_nist:`2026-53786`, :cve_nist:`2026-53788`, :cve_nist:`2026-53789`, :cve_nist:`2026-53790`, :cve_nist:`2026-53791`, :cve_nist:`2026-53792`, :cve_nist:`2026-53793`, :cve_nist:`2026-53794`, :cve_nist:`2026-53795`, :cve_nist:`2026-53796`, :cve_nist:`2026-53797`, :cve_nist:`2026-53798`, :cve_nist:`2026-53799`, :cve_nist:`2026-53800`, :cve_nist:`2026-53801`, :cve_nist:`2026-53802`, :cve_nist:`2026-53803`, :cve_nist:`2026-70452`, :cve_nist:`2026-70453`, :cve_nist:`2026-70454`, :cve_nist:`2026-70456`, :cve_nist:`2026-70457`, :cve_nist:`2026-70458`, :cve_nist:`2026-70459`, :cve_nist:`2026-70460`, :cve_nist:`2026-70461`, :cve_nist:`2026-70462`, :cve_nist:`2026-70463`, :cve_nist:`2026-70464`
++   * - ``sudo``
++     - :cve_nist:`2026-82474`
++   * - ``tar``
++     - :cve_nist:`2026-18477`, :cve_nist:`2026-18508`
 +   * - ``util-linux``
-+     - 2.41.5
-+     - 2.42.3
++     - :cve_nist:`2026-76642`
 +   * - ``util-linux-libuuid``
-+     - 2.41.5
-+     - 2.42.3
-+   * - ``vala``
-+     - 0.56.18
-+     - 0.56.19
-+   * - ``valgrind``
-+     - 3.26.0
-+     - 3.27.1
++     - :cve_nist:`2026-76642`
 +   * - ``vim``
-+     - 9.2.0340
-+     - 9.2.0993
-+   * - ``vim-tiny``
-+     - 9.2.0340
-+     - 9.2.0993
-+   * - ``virglrenderer``
-+     - 1.2.0
-+     - 1.3.0
-+   * - ``vte``
-+     - 0.82.2
-+     - 0.84.1
-+   * - ``vulkan-headers``
-+     - 1.4.341.0
-+     - 1.4.357.0
-+   * - ``vulkan-loader``
-+     - 1.4.341.0
-+     - 1.4.357.0
-+   * - ``vulkan-samples``
-+     - git (fa2cf45adde0=E2=80=A6)
-+     - git (383471195757=E2=80=A6)
-+   * - ``vulkan-tools``
-+     - 1.4.341.0
-+     - 1.4.357.0
-+   * - ``vulkan-utility-libraries``
-+     - 1.4.341.0
-+     - 1.4.357.0
-+   * - ``vulkan-validation-layers``
-+     - 1.4.341.0
-+     - 1.4.357.0
-+   * - ``vulkan-volk``
-+     - 1.4.341.0
-+     - 1.4.357.0
-+   * - ``waffle``
-+     - 1.8.1
-+     - 1.8.3
-+   * - ``wayland``
-+     - 1.24.0
-+     - 1.26.0
-+   * - ``wayland-protocols``
-+     - 1.47
-+     - 1.49
++     - :cve_nist:`2024-43802`, :cve_nist:`2026-51400`, :cve_nist:`2026-51401`, :cve_nist:`2026-73070`, :cve_nist:`2026-73071`, :cve_nist:`2026-73075`
 +   * - ``webkitgtk``
-+     - 2.50.6
-+     - 2.52.6
-+   * - ``weston``
-+     - 15.0.0
-+     - 16.0.0
-+   * - ``which``
-+     - 2.23
-+     - 2.25
-+   * - ``wireless-regdb``
-+     - 2026.05.30
-+     - 2026.09.03
-+   * - ``wpa-supplicant``
-+     - 2.11
-+     - 2.12
-+   * - ``xev``
-+     - 1.2.6
-+     - 1.2.7
-+   * - ``xkeyboard-config``
-+     - 2.47
-+     - 2.48
-+   * - ``xmodmap``
-+     - 1.0.11
-+     - 1.0.12
-+   * - ``xrandr``
-+     - 1.5.3
-+     - 1.5.4
-+   * - ``xset``
-+     - 1.2.5
-+     - 1.2.6
-+   * - ``xvinfo``
-+     - 1.1.5
-+     - 1.1.6
-+   * - ``xwininfo``
-+     - 1.1.6
-+     - 1.1.7
-+   * - ``xz``
-+     - 5.8.2
-+     - 5.8.3
-+
- Contributors to |yocto-ver|
- ---------------------------
-=20
++     - :cve_nist:`2026-78376`, :cve_nist:`2026-83596`
++   * - ``xserver-xorg``
++     - :cve_nist:`2026-55999`, :cve_nist:`2026-56000`
++   * - ``zlib``
++     - :cve_nist:`2026-85091`
+ 
+ Recipe Upgrades in |yocto-ver|
+ ------------------------------
 
---=20
+-- 
 2.55.0
 
 
