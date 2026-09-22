@@ -2,63 +2,63 @@ Return-Path: <twoerner@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 40EA2C98307
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 40E0DC98302
 	for <webhook@archiver.kernel.org>; Tue, 22 Sep 2026 18:33:06 +0000 (UTC)
-Received: from mail-qk2-f12.google.com (mail-qk2-f12.google.com [74.125.230.204])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.2902.1790101976341957919
+Received: from mail-qk2-f42.google.com (mail-qk2-f42.google.com [74.125.230.234])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.3035.1790101984518768301
  for <docs@lists.yoctoproject.org>;
- Tue, 22 Sep 2026 11:32:56 -0700
+ Tue, 22 Sep 2026 11:33:04 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20251104 header.b=PPEUQTvB;
- spf=pass (domain: gmail.com, ip: 74.125.230.204, mailfrom: twoerner@gmail.com)
-Received: by mail-qk2-f12.google.com with SMTP id d75a77b69052e-52fb769ca17so1675091cf.2
-        for <docs@lists.yoctoproject.org>; Tue, 22 Sep 2026 11:32:56 -0700 (PDT)
+ dkim=pass header.i=@gmail.com header.s=20251104 header.b=LcX3vp7R;
+ spf=pass (domain: gmail.com, ip: 74.125.230.234, mailfrom: twoerner@gmail.com)
+Received: by mail-qk2-f42.google.com with SMTP id d75a77b69052e-5329fc7b325so1499291cf.0
+        for <docs@lists.yoctoproject.org>; Tue, 22 Sep 2026 11:33:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790101975; x=1790706775; darn=lists.yoctoproject.org;
+        d=gmail.com; s=20251104; t=1790101983; x=1790706783; darn=lists.yoctoproject.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=KSxdhDynk+zhLv5JyI5YMHRdroXBn5pLsb6Q0FLkwV4=;
-        b=PPEUQTvB1B6/y56RQdK/YcztXS8PjjZ4XpwkJ4KL1fvPTwrPHOg/N23SHFIakN4rfp
-         g8l2FCazUxhKYoVmTmuA9aonHtFX8skT5RCjpp6koK9fGWzQoJrJg9MtF5DNJsNp/1ib
-         b/DjU21UTNCmZn3zgAzKfBz6Z+dnnnYlAtMdLiQjcfGtreX+vgMP+rr/0JgoCnVSA2Xg
-         9wr2Cw7KTtRLQwIUc5xifI++EGKFAMfpOkTmli2djYWIpdS7fARInx+cxMB7EFARe0ls
-         aHW4zkK4ZRgyzB0MNDuSOyF7Ob8RsDwP2bghKbOlKNGFssBlTz16CIrsO1ul4OmexR1e
-         46Ug==
+        bh=DxNKvjqHqWMgZbjnv5D9Cs2TmUM9432PL1908eq8I9E=;
+        b=LcX3vp7RYYF196l/RpV1TkqXdVN5rAVS626vznbPby5G8/nQ4iwpfToYSAuz9ywEEt
+         TRRoB2OHDY21PRQLQwaDYcl1UxTSqC7gkXLEJK1Zw0DPUg4X99eo1j3AvDd1ZmidNmLo
+         cGsgycsS//VjhhyyZ46rfuvwN3WG10GA7rLPL9kqdQYrBNKauHu1Rw+lHPlHBiR1KohB
+         M+aMzLmy+sPvwE+pn/dXb0fIMZg4AC1Fc32QOyDCBdJ+arEGb0g0VNS1ON9bRXyF69AM
+         y+8egtmFY0ek728rzg9OTDARS5eSpQ/932xNRXdrDdwnLJ8h+prHR6FfgzU84g/7SyjR
+         PTOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790101975; x=1790706775;
+        d=1e100.net; s=20260707; t=1790101983; x=1790706783;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=KSxdhDynk+zhLv5JyI5YMHRdroXBn5pLsb6Q0FLkwV4=;
-        b=UrzrGbPZ8zB4XnpjeCDQvubeJAZz4fdqqH+xr5FCmmP+94wshqV2s5sd1IEzkNgpAX
-         /QH2bU0Uui86DbjLGl7o0952ElcvuLk/ZoF9PuIqvDlYqFomgOT7AmBidmuu+nDMz1zf
-         dnNd5cr68m5OyphRMhf/ZJmnEwANQlDyB92/+u0Ot2sBKF/lW0WsYhFdKBvoZSNbqk7/
-         Ol+ycRszo7wP1adX4yDfwGpDyw5vlCdvj6vGUe6KyzXBjsnSbR9rh+oQrNR+H0xbGowF
-         mMTrURQAxnPI/3ZR0CTkzxH+n2M8dLziKKSO3P3drBk1OANhqaCxNtkuFuXhm27auPyz
-         aUaw==
-X-Gm-Message-State: AFuF++kh1e4C9MZW20uErDgyycii5Z4CYZryAHjZHJ/bsZq+CnkjeqNC
-	kxVohL6pQlmwgU9usE+UQEer2EE+std2TKVTsbsXC33RE3k4cfkR5Cxiuwot1Q==
-X-Gm-Gg: AYBFou3c0VddK2/B5tmnNfm4VtJ5O1A1mtdNabP51thBe1mfSUYlYRjg8ehgZKDUNJ0
-	sFdG8r2EPsvNsx9uvu515RXPb+gCgEsxRd+/Z+aQmCG1RxYFuSaD6GX3TaYC+tnL6Dg6enZbYCa
-	u0z5lVCSqOeoaVgF909++52akAL5BxjuKQbSmyVpNdd4BjjJKtUQxQTawFyJbVnf/Qy/SB9JK08
-	xBc+7Hhi2PMGb7u5BraSXFllGtMsYzmqKYE2S0gB0e5eQ44vX32uKCmQ6u5XLueB9ZxD2HN8nK/
-	bVGQZsKQB/zdJSwZm20MBDOYYO4RKja2Y/+azCrUz7Uvh6ATUHI0F9V+lHAqU7Dfbl5es6FcFDr
-	F3Vw3u+zr5k9Kr5gAbpkK1glHGV2nhGKh6E6oUSdjK/M1oisHhyCm9rOWwFHiwMJkpUbvmSdvGt
-	lVAE8ue76rMh84IvU8Xxbuz4HGQa3f5QMZY5qN1gDTkjyVVQO1RiH7N47bCk+x63eLYZ4gufdgb
-	n9ji2aHM+WzipjWxz4egoxpTDs41pojt9KkU3jgt00QCh0stZjJ
-X-Received: by 2002:ac8:5cc3:0:b0:532:d191:8926 with SMTP id d75a77b69052e-532eae1bd6dmr5336731cf.53.1790101974958;
-        Tue, 22 Sep 2026 11:32:54 -0700 (PDT)
+        bh=DxNKvjqHqWMgZbjnv5D9Cs2TmUM9432PL1908eq8I9E=;
+        b=U7AqR/sSrIY3HjODf0eVIDjEQTQB/k6xzErwDcSaK0CPeRnXkuhyMF4azlZWEzyZp3
+         40HtXNaj7vObB8I0EXsu2tjYqCGyEIUadONGHnaMlmK+PCC+tPG1lRwg/o5/uD7AgdS9
+         aL2iZPpFEYq8cgEc+NYFqak3LMmBT0Jos/BqhO7fYG6VcAjYU3kovnJh8nvP7Yv6qQW3
+         5RR910dDWXQhyJYm1iHg/JruT1XNDlM+vJI053DUCfFupBKcwZSoxn4vC7bU5u+5fxXZ
+         BgZA6mMVwTpFNCgUXsgc0nkING/Pi7kVD6OTrJBYjVHkuvR6Iiq/ms3Y2x6hCKYkIZ0n
+         4yOA==
+X-Gm-Message-State: AFuF++kc+aCvsfe35YL+Pw5TFwblKwPiph15Ap0nemriy2spLuNnvehr
+	Mc0dkGjjMJyjA4BNRa+trj2h7DN2Ahyee67s67Pq/QwUrDZWETM6/pLeGazEug==
+X-Gm-Gg: AYBFou0/rhf4S/HVMchpPzzKuPgIK5cs1L3Vsbow0vNnN9t2G4QgHi7rIwpiENgphWK
+	eJOQTp54r7aNF+WVd/U8gPeW1kj64ETHfI1Jbb/T9IVXFufLMLqTDQqKigs6RVRlojkyBpxo+th
+	/HZ2/p55P/HVQtJgl+QH8pmPSRYXH59VtFRADxp3m1cWeHeD3ytkBW/jtxclIvkYSVMRTu+NG9J
+	x1Q+D0ZK0JA7N+gjQj+ZM0D4E+0rmmTS2m2ZRQel3NdPcI4xJCsSMXw/C1pkh9bNcwWDOpDguNd
+	BKW9VBs8YSM1KFbCVEAEBLCIwwAf4FwWNMYYE+Scq3YLK0g+1JDpM63kyCqkyxz2a9IGiJ99+Oe
+	9KyCMAAKqe31cSTIHJp9bncfRTRlWH/pvoOV9nyRxiVdATEVHoEfRw/4irLfBUZvgZD4NvKvhDi
+	Z1qLoUZZ8139o+ZzqvZwjJLcZcn2zE2htHfVv/frA6XBl+Aqm32kOrP7niqJmnGXQ+d30A/RN8d
+	qPwmRbyCk0D8enz32IxkI4r1m5lsiOHmvZNRwNBrsnYWKm11a4=
+X-Received: by 2002:a05:622a:1789:b0:531:475:4cf0 with SMTP id d75a77b69052e-532eac63387mr7533151cf.29.1790101983098;
+        Tue, 22 Sep 2026 11:33:03 -0700 (PDT)
 Received: from localhost.localdomain (pppoe-209-91-167-254.vianet.ca. [209.91.167.254])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-532eb3396f6sm3112821cf.19.2026.09.22.11.32.53
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-532eb3396f6sm3112821cf.19.2026.09.22.11.32.59
         for <docs@lists.yoctoproject.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 11:32:54 -0700 (PDT)
+        Tue, 22 Sep 2026 11:32:59 -0700 (PDT)
 From: Trevor Woerner <twoerner@gmail.com>
 To: docs@lists.yoctoproject.org
-Subject: [PATCH v2 1/8] docs: give the root prompts a preamble
-Date: Tue, 22 Sep 2026 14:32:42 -0400
-Message-ID: <20260922183249.2433345-2-twoerner@gmail.com>
+Subject: [PATCH v2 5/8] docs: mark the placeholders in examples
+Date: Tue, 22 Sep 2026 14:32:46 -0400
+Message-ID: <20260922183249.2433345-6-twoerner@gmail.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260922183249.2433345-1-twoerner@gmail.com>
 References: <20260922183249.2433345-1-twoerner@gmail.com>
@@ -68,63 +68,173 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Tue, 22 Sep 2026 18:33:06 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10590
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10594
 
-A bare "#" starting a line is a root prompt, a comment and a line of
-program output all at once, and nothing can tell them apart. Most root
-prompts in the manuals already carry a preamble naming the machine, and
-the stragglers are what make the distinction unreliable.
+Values the reader is expected to replace are written as though they were
+literal. "arch-gdb" reads like a command that exists, a Git SRC_URI
+example reads like a URL and a pair of revisions worth copying, and the
+git-config examples give an account name and address that are somebody
+else's. Put them in the angle brackets the manuals already use for the
+purpose.
 
-Add the preamble the others already use: the machine the surrounding
-steps name, or a generic "machine" where they name none.
+Two corrections go with them: the directory placeholder in the GDB
+example described itself at length rather than naming the thing, and the
+smtppass example carried a stray "=". Since git config takes a name and
+then a value, that "=" was the value, and the password behind it an
+argument git config reads as a pattern.
 
 AI-Generated: codex/claude-opus 5 (xhigh)
 Signed-off-by: Trevor Woerner <twoerner@gmail.com>
 ---
 changes in v2:
-- rebased on master-next
-- the SystemTap example uses a generic root@machine prompt; the two
-  kernel-dev ones keep qemux86, which the surrounding steps name
+- rebased on master-next; no other change
 ---
- documentation/kernel-dev/common.rst    | 4 ++--
- documentation/profile-manual/usage.rst | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ .../contributor-guide/submit-changes.rst         | 12 ++++++------
+ documentation/dev-manual/debugging.rst           |  8 ++++----
+ documentation/migration-guides/migration-5.2.rst | 16 ++++++++--------
+ documentation/ref-manual/devtool-reference.rst   |  2 +-
+ documentation/ref-manual/variables.rst           |  2 +-
+ 5 files changed, 20 insertions(+), 20 deletions(-)
 
-diff --git a/documentation/kernel-dev/common.rst b/documentation/kernel-dev/common.rst
-index 2a65055e2a44..fe2e42265f9f 100644
---- a/documentation/kernel-dev/common.rst
-+++ b/documentation/kernel-dev/common.rst
-@@ -722,7 +722,7 @@ the ":ref:`kernel-dev/common:getting ready to develop using ``devtool```" Sectio
+diff --git a/documentation/contributor-guide/submit-changes.rst b/documentation/contributor-guide/submit-changes.rst
+index e60f8ca7ace3..a283eb734768 100644
+--- a/documentation/contributor-guide/submit-changes.rst
++++ b/documentation/contributor-guide/submit-changes.rst
+@@ -62,8 +62,8 @@ on Debian and Ubuntu::
+ Then, you need to set a name and e-mail address that Git will
+ use to identify your commits::
  
-       .. code-block:: none
+-   $ git config --global user.name "Ada Lovelace"
+-   $ git config --global user.email "ada.lovelace@gmail.com"
++   $ git config --global user.name "<name>"
++   $ git config --global user.email "<email>"
  
--         # dmesg | less
-+         root@qemux86:~# dmesg | less
+ By default, Git adds a signature line at the end of patches containing the Git
+ version. We suggest to remove it as it doesn't add useful information.
+@@ -399,8 +399,8 @@ regular STMP server, using a Google Mail account as an example::
+    $ git config --global sendemail.smtpserver smtp.gmail.com
+    $ git config --global sendemail.smtpserverport 587
+    $ git config --global sendemail.smtpencryption tls
+-   $ git config --global sendemail.smtpuser ada.lovelace@gmail.com
+-   $ git config --global sendemail.smtppass = XXXXXXXX
++   $ git config --global sendemail.smtpuser <email>
++   $ git config --global sendemail.smtppass <password>
  
-       You should see
-       the results of your ``printk`` statements as part of the output
-@@ -878,7 +878,7 @@ Section.
+ These settings will appear in the ``.gitconfig`` file in your home directory.
  
-    .. code-block:: none
+@@ -509,7 +509,7 @@ We have a frequent issue with contributors whose patches are received through
+ a ``From`` field which doesn't match the ``Signed-off-by`` information. Here is
+ a typical example for people sending from a domain name with :wikipedia:`DMARC`::
  
--      # dmesg | less
-+      root@qemux86:~# dmesg | less
+-   From: "Linus Torvalds via lists.openembedded.org <linus.torvalds=kernel.org@lists.openembedded.org>"
++   From: "xxx via lists.openembedded.org <xxx@lists.openembedded.org>"
  
-    You should see the results of your
-    ``printk`` statements as part of the output when you scroll down the
-diff --git a/documentation/profile-manual/usage.rst b/documentation/profile-manual/usage.rst
-index dc34fa36c487..4efaa6d10fce 100644
---- a/documentation/profile-manual/usage.rst
-+++ b/documentation/profile-manual/usage.rst
-@@ -1801,7 +1801,7 @@ probe, you'd just install SystemTap on the system you want to probe,
- and directly run the probe on that system e.g. assuming the name of the
- file containing the above text is ``trace_open.stp``::
+ This ``From`` field is used by ``git am`` to recreate commits with the right
+ author name. The following will ensure that your e-mails have an additional
+@@ -517,7 +517,7 @@ author name. The following will ensure that your e-mails have an additional
+ maintainers accepting your patches don't have to fix commit author information
+ manually::
  
--   # stap trace_open.stp
-+   root@machine:~# stap trace_open.stp
+-   $ git config --global sendemail.from "linus.torvalds@kernel.org"
++   $ git config --global sendemail.from "<email>"
  
- What SystemTap does under the covers to run this probe is 1) parse and
- convert the probe to an equivalent "C" form, 2) compile the "C" form
+ The ``sendemail.from`` should match your ``user.email`` setting,
+ which appears in the ``Signed-off-by`` line of your commits.
+diff --git a/documentation/dev-manual/debugging.rst b/documentation/dev-manual/debugging.rst
+index 0f6e9d1d7e85..8412c997a51e 100644
+--- a/documentation/dev-manual/debugging.rst
++++ b/documentation/dev-manual/debugging.rst
+@@ -810,7 +810,7 @@ be visible. In this case, there is a missing dependency for the ``neard``
+ Makefile target. Here is some abbreviated, sample output with the
+ missing dependency clearly visible at the end::
+ 
+-   i586-poky-linux-gcc  -m32 -march=i586 --sysroot=/home/scott-lenovo/......
++   i586-poky-linux-gcc  -m32 -march=i586 --sysroot=<path/to/sysroot>
+       .
+       .
+       .
+@@ -1114,11 +1114,11 @@ debugger.
+    After running gdbserver on the target, you need to run Gdb on the
+    host and configure it and connect to the target. Use these commands::
+ 
+-      $ cd directory-holding-the-debugfs-directory
+-      $ arch-gdb
++      $ cd <debugfs-directory>
++      $ <arch>-gdb
+       (gdb) set sysroot debugfs
+       (gdb) set substitute-path /usr/src/debug debugfs/usr/src/debug
+-      (gdb) target remote IP-of-target:1234
++      (gdb) target remote <IP-of-target>:1234
+ 
+    At this
+    point, everything should automatically load (i.e. matching binaries,
+diff --git a/documentation/migration-guides/migration-5.2.rst b/documentation/migration-guides/migration-5.2.rst
+index 77a11fe27047..48f9e7485d93 100644
+--- a/documentation/migration-guides/migration-5.2.rst
++++ b/documentation/migration-guides/migration-5.2.rst
+@@ -193,9 +193,9 @@ The support for having multiple Git revisions per URL in :term:`SRC_URI` was
+ removed from BitBake, which means the following syntax is not supported
+ anymore::
+ 
+-   SRC_URI = "git://some.host/somepath;bareclone=1;branch=branchX,branchY;name=nameX,nameY"
+-   SRCREV_nameX = "xxxxxxxxxxxxxxxxxxxx"
+-   SRCREV_nameY = "yyyyyyyyyyyyyyyyyyyy"
++   SRC_URI = "git://<some.host>/<somepath>;bareclone=1;branch=<branchX>,<branchY>;name=<nameX>,<nameY>"
++   SRCREV_<nameX> = "<revisionX>"
++   SRCREV_<nameY> = "<revisionY>"
+ 
+ This was rarely used in the core repositories because it would only ever make
+ sense for bare clones (the ``bareclone=1`` :term:`SRC_URI` option) where recipes
+@@ -205,10 +205,10 @@ places.
+ If one of your recipes is using this mechanism, you can split the code source
+ fetching into two separate entries::
+ 
+-   SRC_URI = "git://some.host/somepath;bareclone=1;branch=branchX;name=nameX \
+-              git://some.host/somepath;bareclone=1;branch=branchY;name=nameY"
+-   SRCREV_nameX = "xxxxxxxxxxxxxxxxxxxx"
+-   SRCREV_nameY = "yyyyyyyyyyyyyyyyyyyy"
++   SRC_URI = "git://<some.host>/<somepath>;bareclone=1;branch=<branchX>;name=<nameX> \
++              git://<some.host>/<somepath>;bareclone=1;branch=<branchY>;name=<nameY>"
++   SRCREV_<nameX> = "<revisionX>"
++   SRCREV_<nameY> = "<revisionY>"
+ 
+ Git fetcher: Branch parameter now required in :term:`SRC_URI`
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+@@ -216,7 +216,7 @@ Git fetcher: Branch parameter now required in :term:`SRC_URI`
+ The ``branch`` parameter is now required when specifying a Git repository in
+ :term:`SRC_URI`, for example::
+ 
+-   SRC_URI = "git://some.host/somepath;branch=branchX"
++   SRC_URI = "git://<some.host>/<somepath>;branch=<branchX>"
+ 
+ A missing ``branch`` parameter used to produce a warning, and will now produce
+ an error.
+diff --git a/documentation/ref-manual/devtool-reference.rst b/documentation/ref-manual/devtool-reference.rst
+index 4aa95d8e0499..62c3b707b9ff 100644
+--- a/documentation/ref-manual/devtool-reference.rst
++++ b/documentation/ref-manual/devtool-reference.rst
+@@ -474,7 +474,7 @@ This is roughly equivalent to the ``devtool update-recipe`` command followed by
+ the ``devtool reset`` command. The changes must have been committed to the git
+ repository created by ``devtool``. Here is an example::
+ 
+-  $ devtool finish recipe /path/to/custom/layer
++  $ devtool finish <recipe> <path/to/custom/layer>
+ 
+ .. _devtool-building-your-recipe:
+ 
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index 3c921c3f8087..0072992b8597 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -162,7 +162,7 @@ system and gives an overview of their function and contents.
+          ARCHIVER_MODE[src] = "patched"                    # Uses patched source files. This is the default.
+          ARCHIVER_MODE[src] = "configured"                 # Uses configured source files.
+          ARCHIVER_MODE[diff] = "1"                         # Uses patches between do_unpack and do_patch.
+-         ARCHIVER_MODE[diff-exclude] ?= "file file ..."    # Lists files and directories to exclude from diff.
++         ARCHIVER_MODE[diff-exclude] ?= "<file> <file> ..."    # Lists files and directories to exclude from diff.
+          ARCHIVER_MODE[dumpdata] = "1"                     # Uses environment data.
+          ARCHIVER_MODE[recipe] = "1"                       # Uses recipe and include files.
+ 
 -- 
 2.50.0.173.g8b6f19ccfc3a
 
