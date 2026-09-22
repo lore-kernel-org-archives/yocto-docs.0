@@ -2,63 +2,63 @@ Return-Path: <twoerner@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8462FC982FE
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 726BCC982FD
 	for <webhook@archiver.kernel.org>; Tue, 22 Sep 2026 02:04:04 +0000 (UTC)
-Received: from mail-qk2-f17.google.com (mail-qk2-f17.google.com [74.125.230.209])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.1335.1790042637827733087
+Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.1397.1790042636770365494
  for <docs@lists.yoctoproject.org>;
  Mon, 21 Sep 2026 19:03:57 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20251104 header.b=reDKZEYX;
- spf=pass (domain: gmail.com, ip: 74.125.230.209, mailfrom: twoerner@gmail.com)
-Received: by mail-qk2-f17.google.com with SMTP id af79cd13be357-93910ca5aa7so328272185a.1
-        for <docs@lists.yoctoproject.org>; Mon, 21 Sep 2026 19:03:57 -0700 (PDT)
+ dkim=pass header.i=@gmail.com header.s=20251104 header.b=lIXeJq57;
+ spf=pass (domain: gmail.com, ip: 74.125.230.205, mailfrom: twoerner@gmail.com)
+Received: by mail-qk2-f13.google.com with SMTP id af79cd13be357-93910cadeafso229238185a.3
+        for <docs@lists.yoctoproject.org>; Mon, 21 Sep 2026 19:03:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790042637; x=1790647437; darn=lists.yoctoproject.org;
+        d=gmail.com; s=20251104; t=1790042636; x=1790647436; darn=lists.yoctoproject.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=V8HVBf7975paMoycrMD9huVQAUxPnIp1hMLaOh5gavQ=;
-        b=reDKZEYXCwWFBxeaU8dIEGGIcluCxBwubmWFWT/xkIYyFudgFIWnomaUC1PfA2Gy+o
-         bX95zPaDY+hugcuVzzERob24neU7RJpVA1bTwVaP1F+jEy0wbvWSS7jIAZAQkAxKb4YO
-         c0246KVUagPFQzo0YpUqlzZnuIs6OJddnkDQUd06xM3ntFb/Lsn6ogLjdSINzSTSg7tp
-         ZROqpVBdCeRxIEs4AsZgEdNBkteL4ZHRHJ77jYd2y9RLaxaUcc5izl7OBWEcoap5nPyn
-         omhaatTSC5r47T5aex9MCnrvNS4VL+aYqsJz9wdrHuLEJdL4kP2gO+YIxPscg3vGwQqf
-         A2mg==
+        bh=4ZAL7HgohxFNBHws1UYY0K2FimpfO2x1SZoSUQoG6Jg=;
+        b=lIXeJq57Cli8DqlEnCBt1/wxu+zrVIM2FkIgVEvIbhu8nk7xkDr3f4AR2e99r/Wlow
+         C1L2wW5ybgJRq6dFVNUSVXh3iR2SBWB0dL/b+DxPjlkCbm01qmAgnWvKzoxHMcHm2E5R
+         1qZL+xHDvo06Xp9KHvMowlIdHTuY/cQY0MLRIx7rDoPBlurKDCQ+O4LL4I+BgG2mZE/D
+         08lxxHymtrNg2tJmJBB5tI/8a1UK+NFrKplzQiXG+jSZtborKyvhENIt/x9F22wCB6A/
+         PXESOtEBCmZtioYbW/DBJrwK3E0JcFokuEuM23ztOIYE2Z9xz+MPzN5ggTalelpsPo+x
+         ymjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790042637; x=1790647437;
+        d=1e100.net; s=20260707; t=1790042636; x=1790647436;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=V8HVBf7975paMoycrMD9huVQAUxPnIp1hMLaOh5gavQ=;
-        b=cec/2kZhywmOvXyOZ5Qz/ZDAgXgiQGvVepPF02n0bewcaUAbdiuw4pBsU6YQxUZw3B
-         f4okF/1Y1yPUZl0mjjdWM/tSVShHlyilmqPmR2NlZ2+H9kTw+a/m2kgriTtw5sjm2EWi
-         zVRaMgEPOEARRBZPkf0U/oUJI/wJHV02PXwIcSIkT6n0usnQfCMoShEH8ZL4/jnvfIeH
-         kCVBmxSx4hJckNptavVRDxY55+zU7FJu2Rx3N5rMN7UoQBMxHic9VSxx/Ce+dV6Snzrc
-         qzxCl1jaOxz+6MdEf51xCuWKDFjcycHA8ylv2ce47ByBUuy4nx3E0bu39muHQPefGPK1
-         twQw==
-X-Gm-Message-State: AFuF++muiO9FYVDB86b6LCsK1jbHOynAK6uEmbDdzeLbR9A2OB0g/1c0
-	ksywfGsMm4gxFpa5YocblQuZiQj7yjZ+z6EBCxLxFY2ULteMAgH+jhmX8priAw==
-X-Gm-Gg: AYBFou3FyNbuzgncI1+60DuIiNLyGpn+HNHZPnNzzk5K5Vdrd7+UHX7qULNHxqYeyGD
-	gZzaghwBIUuNt06e9Kw9t+UoRdIL2JNl+X4gjJQcLCXiet0mNIWMBQvzUPmuIiPV2xa7bKvz4N1
-	af0RCBfLin8PH7KPayJ8CLA8vdBQuuxlfy0vUSz3Uk5fuPDgbZCwqGAb1Ka7pTmD03Za9Q9KaoJ
-	PsCK9WQZ2/MZMjBzjt7BGUtPeE+scBwYM9Uj8EPNZ/T+ZAroX0LdGPsJ8RZARPHCXrUxbMyEVBR
-	nJGRiLbmyxVmcM+e/kojYUzyQONNDlldc3XC0mHXcb4Ijs9CL5Yj4DtwY4E1i9neFwNnKLcVW9v
-	48pDqIt09YPrCUgKrb4CNw6LWXvUXwLAcesDUo0qAAs7vQt8QItmf0TSGPU4PF4cDr6nObicAVV
-	E1siUuBMP+qvVAEfJM3KaPzaQBfKOP37PxyoZ9QhziLKNqrmeI+Q/6jW1qNL9zdNKLlDJtOqrfU
-	wPIl8gDjdQU0YmZvZErS6AdbgOH9MPUB99MGtsb0r37AwFKoLM=
-X-Received: by 2002:a05:620a:6501:b0:939:c3e6:86d6 with SMTP id af79cd13be357-93c15ef2ac6mr317916785a.48.1790042636675;
-        Mon, 21 Sep 2026 19:03:56 -0700 (PDT)
+        bh=4ZAL7HgohxFNBHws1UYY0K2FimpfO2x1SZoSUQoG6Jg=;
+        b=DenMpMsJjT5yvrN/tKlKq/8FtKN+vIwxerQIWckY8JL490djs2e18I0Mzgvx0rM+YZ
+         KF+bCM2u9bBoyVjFzSGl7cdDGPnuONaXrm/819H4O6Zn7J+6oKoi6o+CRA2ibpe8pyB9
+         zWnS+VrdCsKKPGgNlCOCJiqCZghA5EI3UxUYqu3DDhM3276bSPfveo56iIM4rXUHQyUQ
+         4Y0Mb8Be3Q1a3SrsKZaEHFwK3rI6UzgzlSEjsm1HuP4NmtvPBuDB3za4/+I94Z0tZ0F4
+         s+audjL6RwGp2yKBnyLslccYURCDOx70lAXTMCVF02E0Q6VcC/xKjZd+yG6Lqj9v7lRX
+         fVyw==
+X-Gm-Message-State: AFuF++kmyvrBoZJaaZhVGf1x7F3uycEk/0z3Xye+CL0rdZxHpb0aJgWA
+	d087hY8WK/fIVf1Jg4T1YIRpr+bTMSpdniSKaxOgQbgUL5XhivxV5noBiAMX4w==
+X-Gm-Gg: AYBFou1kArCQWV5OOqL9o3x/gnATPtXjyPD09idl5l48QFZegxs1oNRjRmv0geePzer
+	9MezuJLiolg6KhPfG5tWZXhpf8iRQcgYHnAu0eRVKeSVGVTnR3lFFVt2zVw6MOv5n4q6o36Nhqk
+	MfrnoheZ+QE46YmxjPjBqAcz1ZB5JsAIlNbCOKjMzVfnCvk1UB2wqVxIt2qA8mTRh3AyrZv+Pwz
+	qOw9LCmV26ogGZ6w61uEQmtcHLQRdfYpdapnlcIvzQ3hRmjBY/aQB8/j7OixB5AK3gZ/rrRyqCc
+	vRoObYQrKUimZvLBA84ynfVJfexOm6Fr9tf1mL7zLOUbTuucsR51CckpoTen4O3VAM/0qXEd5+q
+	f4+p7OFxN6tHYfTzXS2rFnl/NCWt3hFrzpvd1HR9DYWr0CtI9vLk0BEE7N1xi8nncwb+gV15EVq
+	yIh3IG4zN7GsD/SMqy9AS/jlZzAEBBlZDGrGMNrw4/IFc3zFV9HESxlQoGzJKyNlrjJWdANubeH
+	EPaW6AhvEQLpN48OpEkcoueWKBCgTkbdaK3vtRA
+X-Received: by 2002:a05:620a:1987:b0:93a:1fa7:1afb with SMTP id af79cd13be357-93c15e58327mr384244085a.42.1790042635290;
+        Mon, 21 Sep 2026 19:03:55 -0700 (PDT)
 Received: from localhost.localdomain (pppoe-209-91-167-254.vianet.ca. [209.91.167.254])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93c1d253165sm16817185a.46.2026.09.21.19.03.55
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-93c1d253165sm16817185a.46.2026.09.21.19.03.52
         for <docs@lists.yoctoproject.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Sep 2026 19:03:55 -0700 (PDT)
+        Mon, 21 Sep 2026 19:03:53 -0700 (PDT)
 From: Trevor Woerner <twoerner@gmail.com>
 To: docs@lists.yoctoproject.org
-Subject: [PATCH 07/10] kernel-dev: give each example block one thing to hold
-Date: Mon, 21 Sep 2026 22:03:36 -0400
-Message-ID: <20260922020339.481929-8-twoerner@gmail.com>
+Subject: [PATCH 06/10] docs: remove real accounts from the examples
+Date: Mon, 21 Sep 2026 22:03:35 -0400
+Message-ID: <20260922020339.481929-7-twoerner@gmail.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260922020339.481929-1-twoerner@gmail.com>
 References: <20260922020339.481929-1-twoerner@gmail.com>
@@ -68,260 +68,402 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Tue, 22 Sep 2026 02:04:04 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10566
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10565
 
-Several kernel metadata examples put a filename label inside the block,
-and some go on to hold more than one file, in more than one language,
-under a single "::". A block shaped that way is not any one language, so
-it can only ever be shown unhighlighted.
+Examples across the manuals carry the account names of the people who
+wrote them, in home directory paths and in shell prompts that also
+name a machine. Use "/home/user" and a bare "$", which is what the rest
+of the manuals already do.
 
-Split them into a block each, dedent what is left, and move the
-filename to the code-block caption, which keeps it attached to the block
-it names and renders it inside the block's frame. The theme centres a
-caption in italics, which reads as prose, so it is restyled to look like
-the filename it is.
+The autobuilder's own service account is left alone: the paths containing
+it are about autobuilder output rather than about somebody's machine.
 
 AI-Generated: codex/claude-opus 5 (xhigh)
 Signed-off-by: Trevor Woerner <twoerner@gmail.com>
 ---
- documentation/kernel-dev/advanced.rst         | 139 ++++++++++--------
- .../sphinx-static/theme_overrides.css         |  27 ++++
- 2 files changed, 103 insertions(+), 63 deletions(-)
+ documentation/dev-manual/debugging.rst        |  4 +-
+ documentation/dev-manual/layers.rst           | 12 ++---
+ documentation/dev-manual/qemu.rst             |  2 +-
+ .../dev-manual/upgrading-recipes.rst          | 18 ++++----
+ documentation/dev-manual/wic.rst              | 44 +++++++++----------
+ documentation/kernel-dev/common.rst           | 16 +++----
+ documentation/profile-manual/usage.rst        |  2 +-
+ .../ref-manual/devtool-reference.rst          |  6 +--
+ documentation/ref-manual/faq.rst              |  6 +--
+ documentation/ref-manual/variables.rst        |  8 ++--
+ documentation/sdk-manual/extensible.rst       |  6 +--
+ 11 files changed, 62 insertions(+), 62 deletions(-)
 
-diff --git a/documentation/kernel-dev/advanced.rst b/documentation/kernel-dev/advanced.rst
-index 321033b7bd49..ecd0137fa5fd 100644
---- a/documentation/kernel-dev/advanced.rst
-+++ b/documentation/kernel-dev/advanced.rst
-@@ -216,24 +216,28 @@ used with the ``linux-yocto-4.12`` kernel as defined outside of the
- recipe space (i.e. ``yocto-kernel-cache``). This Metadata consists of
- two files: ``smp.scc`` and ``smp.cfg``. You can find these files in the
- ``cfg`` directory of the ``yocto-4.12`` branch in the
--``yocto-kernel-cache`` Git repository::
-+``yocto-kernel-cache`` Git repository.
-+
-+.. code-block::
-+   :caption: cfg/smp.scc
-+
-+   define KFEATURE_DESCRIPTION "Enable SMP for 32 bit builds"
-+   define KFEATURE_COMPATIBILITY all
+diff --git a/documentation/dev-manual/debugging.rst b/documentation/dev-manual/debugging.rst
+index 8412c997a51e..62e19a6c8a28 100644
+--- a/documentation/dev-manual/debugging.rst
++++ b/documentation/dev-manual/debugging.rst
+@@ -144,7 +144,7 @@ helpful during debugging.
+ Variables that are exported to the environment are preceded by
+ ``export`` in the output of ``bitbake-getvar``. See the following example::
  
--   cfg/smp.scc:
--      define KFEATURE_DESCRIPTION "Enable SMP for 32 bit builds"
--      define KFEATURE_COMPATIBILITY all
-+   kconf hardware smp.cfg
+-   export CC="i586-poky-linux-gcc -m32 -march=i586 --sysroot=/home/ulf/poky/build/tmp/sysroots/qemux86"
++   export CC="i586-poky-linux-gcc -m32 -march=i586 --sysroot=/home/user/poky/build/tmp/sysroots/qemux86"
  
--      kconf hardware smp.cfg
-+.. code-block::
-+   :caption: cfg/smp.cfg
+ Shell functions and tasks can also be inspected with the same mechanism::
  
--   cfg/smp.cfg:
--      CONFIG_SMP=y
--      CONFIG_SCHED_SMT=y
--      # Increase default NR_CPUS from 8 to 64 so that platform with
--      # more than 8 processors can be all activated at boot time
--      CONFIG_NR_CPUS=64
--      # The following is needed when setting NR_CPUS to something
--      # greater than 8 on x86 architectures, it should be automatically
--      # disregarded by Kconfig when using a different arch
--      CONFIG_X86_BIGSMP=y
-+   CONFIG_SMP=y
-+   CONFIG_SCHED_SMT=y
-+   # Increase default NR_CPUS from 8 to 64 so that platform with
-+   # more than 8 processors can be all activated at boot time
-+   CONFIG_NR_CPUS=64
-+   # The following is needed when setting NR_CPUS to something
-+   # greater than 8 on x86 architectures, it should be automatically
-+   # disregarded by Kconfig when using a different arch
-+   CONFIG_X86_BIGSMP=y
+@@ -522,7 +522,7 @@ task dependency mechanisms.
  
- You can find general information on configuration
- fragment files in the ":ref:`kernel-dev/common:creating configuration fragments`" section.
-@@ -278,36 +282,39 @@ kernel as defined outside of the recipe space (i.e.
- in the ``patches/build`` directory of the ``yocto-4.12`` branch in the
- ``yocto-kernel-cache`` Git repository.
+    .. code-block:: none
  
--The following listings show the ``build.scc`` file and part of the
--``modpost-mask-trivial-warnings.patch`` file::
-+.. code-block::
-+   :caption: patches/build/build.scc
+-      WARNING: /home/ulf/openembedded-core/meta/recipes-sato/matchbox-desktop/matchbox-desktop_2.1.bb.do_compile is tainted from a forced run
++      WARNING: /home/user/openembedded-core/meta/recipes-sato/matchbox-desktop/matchbox-desktop_2.1.bb.do_compile is tainted from a forced run
  
--   patches/build/build.scc:
--      patch arm-serialize-build-targets.patch
--      patch powerpc-serialize-image-targets.patch
--      patch kbuild-exclude-meta-directory-from-distclean-processi.patch
-+   patch arm-serialize-build-targets.patch
-+   patch powerpc-serialize-image-targets.patch
-+   patch kbuild-exclude-meta-directory-from-distclean-processi.patch
  
--      # applied by kgit
--      # patch kbuild-add-meta-files-to-the-ignore-li.patch
-+   # applied by kgit
-+   # patch kbuild-add-meta-files-to-the-ignore-li.patch
+    The purpose of the warning is to let you know that the work directory
+diff --git a/documentation/dev-manual/layers.rst b/documentation/dev-manual/layers.rst
+index 185a63feb700..a36f849a0c3f 100644
+--- a/documentation/dev-manual/layers.rst
++++ b/documentation/dev-manual/layers.rst
+@@ -916,11 +916,11 @@ shows the layers that are in your :ref:`structure-build-conf-bblayers.conf` file
+    NOTE: Starting bitbake server...
+    layer                 path                                                            priority
+    ==============================================================================================
+-   meta                  /home/scottrif/bitbake-builds/layers/openembedded-core/meta           5
+-   meta-poky             /home/scottrif/bitbake-builds/layers/meta-yocto/meta-poky             5
+-   meta-yocto-bsp        /home/scottrif/bitbake-builds/layers/meta-yocto/meta-yocto-bsp        5
+-   workspace             /home/scottrif/bitbake-builds/build/workspace                         99
+-   meta-scottrif         /home/scottrif/bitbake-builds/build/meta-scottrif                     6
++   meta                  /home/user/bitbake-builds/layers/openembedded-core/meta           5
++   meta-poky             /home/user/bitbake-builds/layers/meta-yocto/meta-poky             5
++   meta-yocto-bsp        /home/user/bitbake-builds/layers/meta-yocto/meta-yocto-bsp        5
++   workspace             /home/user/bitbake-builds/build/workspace                         99
++   meta-scottrif         /home/user/bitbake-builds/build/meta-scottrif                     6
  
--      patch modpost-mask-trivial-warnings.patch
--      patch menuconfig-check-lxdiaglog.sh-Allow-specification-of.patch
-+   patch modpost-mask-trivial-warnings.patch
-+   patch menuconfig-check-lxdiaglog.sh-Allow-specification-of.patch
+ Adding the layer to this file
+ enables the build system to locate the layer during the build.
+@@ -958,7 +958,7 @@ above:
  
--   patches/build/modpost-mask-trivial-warnings.patch:
--      From bd48931bc142bdd104668f3a062a1f22600aae61 Mon Sep 17 00:00:00 2001
--      From: Paul Gortmaker <paul.gortmaker@windriver.com>
--      Date: Sun, 25 Jan 2009 17:58:09 -0500
--      Subject: [PATCH] modpost: mask trivial warnings
-+and part of the patch it names:
+ #. Run the script directly with no options::
  
--      Newer HOSTCC will complain about various stdio fcns because
--                        .
--                        .
--                        .
--                char *dump_write = NULL, *files_source = NULL;
--                int opt;
--      --
--      2.10.1
-+.. code-block::
-+   :caption: patches/build/modpost-mask-trivial-warnings.patch
+-      alex@Zen2:/srv/work/alex/my-build$ meta-alex/setup-layers
++      $ meta-alex/setup-layers
+       Note: not checking out source meta-alex, use --force-bootstraplayer-checkout to override.
  
--      generated by cgit v0.10.2 at 2017-09-28 15:23:23 (GMT)
-+   From bd48931bc142bdd104668f3a062a1f22600aae61 Mon Sep 17 00:00:00 2001
-+   From: Paul Gortmaker <paul.gortmaker@windriver.com>
-+   Date: Sun, 25 Jan 2009 17:58:09 -0500
-+   Subject: [PATCH] modpost: mask trivial warnings
-+
-+   Newer HOSTCC will complain about various stdio fcns because
-+                     .
-+                     .
-+                     .
-+             char *dump_write = NULL, *files_source = NULL;
-+             int opt;
-+   --
-+   2.10.1
-+
-+   generated by cgit v0.10.2 at 2017-09-28 15:23:23 (GMT)
+       Setting up source meta-intel, revision 15.0-hardknott-3.3-310-g0a96edae, branch master
+diff --git a/documentation/dev-manual/qemu.rst b/documentation/dev-manual/qemu.rst
+index 6d092b2d2034..d7e0b2f2f44f 100644
+--- a/documentation/dev-manual/qemu.rst
++++ b/documentation/dev-manual/qemu.rst
+@@ -151,7 +151,7 @@ available. Follow these general steps to run QEMU:
+       determines the QEMU architecture (`MACHINE`) to be "qemux86-64" and
+       the root filesystem type to be "vmdk"::
  
- The description file can
- include multiple patch statements where each statement handles a single
-@@ -325,16 +332,18 @@ Features
+-         $ runqemu /home/scott-lenovo/vm/core-image-minimal-qemux86-64.wic.vmdk
++         $ runqemu /home/user/vm/core-image-minimal-qemux86-64.wic.vmdk
  
- Features are complex kernel Metadata types that consist of configuration
- fragments, patches, and possibly other feature description files. As an
--example, consider the following generic listing::
-+example, consider the following generic listing:
-+
-+.. code-block::
-+   :caption: features/myfeature.scc
+ Switching Between Consoles
+ ==========================
+diff --git a/documentation/dev-manual/upgrading-recipes.rst b/documentation/dev-manual/upgrading-recipes.rst
+index 0bdc1351ec7f..f4b9df241093 100644
+--- a/documentation/dev-manual/upgrading-recipes.rst
++++ b/documentation/dev-manual/upgrading-recipes.rst
+@@ -244,12 +244,12 @@ script. For example, suppose you use the ``nano.bb`` recipe from the
+ ``meta-oe`` layer in the ``meta-openembedded`` repository. For this
+ example, assume that the layer has been cloned into following area::
  
--   features/myfeature.scc
--      define KFEATURE_DESCRIPTION "Enable myfeature"
-+   define KFEATURE_DESCRIPTION "Enable myfeature"
+-   /home/scottrif/bitbake-builds/layers/meta-openembedded
++   /home/user/bitbake-builds/layers/meta-openembedded
  
--      patch 0001-myfeature-core.patch
--      patch 0002-myfeature-interface.patch
-+   patch 0001-myfeature-core.patch
-+   patch 0002-myfeature-interface.patch
+ The following command from your :term:`Build Directory` adds the layer to
+ your build configuration (i.e. ``${BUILDDIR}/conf/bblayers.conf``)::
  
--      include cfg/myfeature_dependency.scc
--      kconf non-hardware myfeature.cfg
-+   include cfg/myfeature_dependency.scc
-+   kconf non-hardware myfeature.cfg
+-   $ bitbake-layers add-layer /home/scottrif/bitbake-builds/layers/meta-openembedded/meta-oe
++   $ bitbake-layers add-layer /home/user/bitbake-builds/layers/meta-openembedded/meta-oe
+    NOTE: Starting bitbake server...
+    Parsing recipes: 100% |##########################################| Time: 0:00:55
+    Parsing of 1431 .bb files complete (0 cached, 1431 parsed). 2040 targets, 56 skipped, 0 masked, 0 errors.
+@@ -265,7 +265,7 @@ directory automatically upgrades the recipe for you::
  
- This example shows how the ``patch`` and ``kconf`` commands are used as well
- as how an additional feature description file is included with the
-@@ -873,17 +882,19 @@ new branch as the :term:`KBRANCH` to use for the board as follows::
-    KBRANCH = "mynewbranch"
+    $ devtool upgrade nano -V 2.9.3
+    NOTE: Starting bitbake server...
+-   NOTE: Creating workspace layer in /home/scottrif/bitbake-builds/build/workspace
++   NOTE: Creating workspace layer in /home/user/bitbake-builds/build/workspace
+    Parsing recipes: 100% |##########################################| Time: 0:00:46
+    Parsing of 1431 .bb files complete (0 cached, 1431 parsed). 2040 targets, 56 skipped, 0 masked, 0 errors.
+    NOTE: Extracting current version source...
+@@ -277,8 +277,8 @@ directory automatically upgrades the recipe for you::
+    NOTE: Executing RunQueue Tasks
+    NOTE: Tasks Summary: Attempted 74 tasks of which 72 didn't need to be rerun and all succeeded.
+    Adding changed files: 100% |#####################################| Time: 0:00:00
+-   NOTE: Upgraded source extracted to /home/scottrif/bitbake-builds/build/workspace/sources/nano
+-   NOTE: New recipe is /home/scottrif/bitbake-builds/build/workspace/recipes/nano/nano_2.9.3.bb
++   NOTE: Upgraded source extracted to /home/user/bitbake-builds/build/workspace/sources/nano
++   NOTE: New recipe is /home/user/bitbake-builds/build/workspace/recipes/nano/nano_2.9.3.bb
  
- Another method is to use the ``branch`` command in the BSP
--description::
-+description:
+ .. note::
  
--   mybsp.scc:
--      define KMACHINE mybsp
--      define KTYPE standard
--      define KARCH i386
--      include standard.scc
-+.. code-block::
-+   :caption: mybsp.scc
+@@ -300,7 +300,7 @@ newly upgraded recipe::
+           .
+    NOTE: Executing SetScene Tasks
+    NOTE: Executing RunQueue Tasks
+-   NOTE: nano: compiling from external source tree /home/scottrif/bitbake-builds/build/workspace/sources/nano
++   NOTE: nano: compiling from external source tree /home/user/bitbake-builds/build/workspace/sources/nano
+    NOTE: Tasks Summary: Attempted 520 tasks of which 304 didn't need to be rerun and all succeeded.
  
--      branch mynewbranch
-+   define KMACHINE mybsp
-+   define KTYPE standard
-+   define KARCH i386
-+   include standard.scc
-+
-+   branch mynewbranch
+ Within the ``devtool upgrade`` workflow, you can
+@@ -321,9 +321,9 @@ directory::
+    Parsing of 1432 .bb files complete (1431 cached, 1 parsed). 2041 targets, 56 skipped, 0 masked, 0 errors.
+    NOTE: Adding new patch 0001-nano.bb-Stuff-I-changed-when-upgrading-nano.bb.patch
+    NOTE: Updating recipe nano_2.9.3.bb
+-   NOTE: Removing file /home/scottrif/bitbake-builds/layers/meta-openembedded/meta-oe/recipes-support/nano/nano_2.7.4.bb
+-   NOTE: Moving recipe file to /home/scottrif/bitbake-builds/layers/meta-openembedded/meta-oe/recipes-support/nano
+-   NOTE: Leaving source tree /home/scottrif/bitbake-builds/build/workspace/sources/nano as-is; if you no longer need it then please delete it manually
++   NOTE: Removing file /home/user/bitbake-builds/layers/meta-openembedded/meta-oe/recipes-support/nano/nano_2.7.4.bb
++   NOTE: Moving recipe file to /home/user/bitbake-builds/layers/meta-openembedded/meta-oe/recipes-support/nano
++   NOTE: Leaving source tree /home/user/bitbake-builds/build/workspace/sources/nano as-is; if you no longer need it then please delete it manually
  
--      include mybsp-hw.scc
-+   include mybsp-hw.scc
  
- If you find yourself with numerous branches, you might consider using a
- hierarchical branching system similar to what the Yocto Linux Kernel Git
-@@ -925,18 +936,20 @@ that have to be regularly updated. The Yocto Project Linux kernel tools
- provide for this with the ``git merge`` command.
+ Using the ``devtool finish`` command cleans up the workspace and creates a patch
+diff --git a/documentation/dev-manual/wic.rst b/documentation/dev-manual/wic.rst
+index c13655f8730a..9161122d3166 100644
+--- a/documentation/dev-manual/wic.rst
++++ b/documentation/dev-manual/wic.rst
+@@ -520,13 +520,13 @@ file:
+      ./mkefidisk-201804191017-sda.direct
  
- To merge a feature branch into a BSP, insert the ``git merge`` command
--after any ``branch`` commands::
-+after any ``branch`` commands:
+    The following build artifacts were used to create the image(s):
+-     ROOTFS_DIR:                   /home/stephano/yocto/build/tmp-glibc/work/qemux86-oe-linux/core-image-minimal/1.0-r0/rootfs
+-     BOOTIMG_DIR:                  /home/stephano/yocto/build/tmp-glibc/work/qemux86-oe-linux/core-image-minimal/1.0-r0/recipe-sysroot/usr/share
+-     KERNEL_DIR:                   /home/stephano/yocto/build/tmp-glibc/deploy/images/qemux86
+-     NATIVE_SYSROOT:               /home/stephano/yocto/build/tmp-glibc/work/i586-oe-linux/wic-tools/1.0-r0/recipe-sysroot-native
++     ROOTFS_DIR:                   /home/user/yocto/build/tmp-glibc/work/qemux86-oe-linux/core-image-minimal/1.0-r0/rootfs
++     BOOTIMG_DIR:                  /home/user/yocto/build/tmp-glibc/work/qemux86-oe-linux/core-image-minimal/1.0-r0/recipe-sysroot/usr/share
++     KERNEL_DIR:                   /home/user/yocto/build/tmp-glibc/deploy/images/qemux86
++     NATIVE_SYSROOT:               /home/user/yocto/build/tmp-glibc/work/i586-oe-linux/wic-tools/1.0-r0/recipe-sysroot-native
  
--   mybsp.scc:
--      define KMACHINE mybsp
--      define KTYPE standard
--      define KARCH i386
--      include standard.scc
-+.. code-block::
-+   :caption: mybsp.scc
-+
-+   define KMACHINE mybsp
-+   define KTYPE standard
-+   define KARCH i386
-+   include standard.scc
+    INFO: The image(s) were created using OE kickstart file:
+-     /home/stephano/yocto/openembedded-core/files/wic/mkefidisk.wks
++     /home/user/yocto/openembedded-core/files/wic/mkefidisk.wks
  
--      branch mynewbranch
--      git merge myfeature
-+   branch mynewbranch
-+   git merge myfeature
+ The previous example shows the easiest way to create an image by running
+ in cooked mode and supplying a kickstart file and the "-e" option to
+@@ -590,8 +590,8 @@ the lines that specify the target disk from which to boot:
  
--      include mybsp-hw.scc
-+   include mybsp-hw.scc
+ .. code-block:: console
  
- SCC Description File Reference
- ==============================
-diff --git a/documentation/sphinx-static/theme_overrides.css b/documentation/sphinx-static/theme_overrides.css
-index 1a439e9faf69..d7d1c6da79b5 100644
---- a/documentation/sphinx-static/theme_overrides.css
-+++ b/documentation/sphinx-static/theme_overrides.css
-@@ -116,6 +116,33 @@ section#welcome-to-the-yocto-project-documentation p.caption {
-     -ms-user-select: none;
- }
+-   $ cp /home/stephano/yocto/openembedded-core/files/wic/directdisk-gpt.wks \
+-        /home/stephano/yocto/openembedded-core/files/wic/directdisksdb-gpt.wks
++   $ cp /home/user/yocto/openembedded-core/files/wic/directdisk-gpt.wks \
++        /home/user/yocto/openembedded-core/files/wic/directdisksdb-gpt.wks
  
-+/* A code-block caption names the file the block came from, so it
-+   should read as a filename rather than as prose, and sit on the block
-+   it titles rather than floating above it. */
-+.rst-content .literal-block-wrapper .code-block-caption {
-+    font-style: normal;
-+    font-family: SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-+    font-size: 80%;
-+    text-align: left;
-+    color: #e6edf3;
-+    background: #2b3137;
-+    padding: .45em .9em;
-+    margin: 0;
-+    line-height: 1.5;
-+    border-radius: 4px 4px 0 0;
-+}
-+
-+.rst-content .literal-block-wrapper .code-block-caption .headerlink {
-+    color: #93a1ad;
-+}
-+
-+/* No gap and no doubled border between a caption and its block. */
-+.rst-content .literal-block-wrapper .code-block-caption + div[class^=highlight] {
-+    margin-top: 0;
-+    border-top: none;
-+    border-radius: 0 0 4px 4px;
-+}
-+
- @media screen {
-     .wy-nav-content {
-        max-width: 1000px;
+ Next, the example modifies the ``directdisksdb-gpt.wks`` file and
+ changes all instances of "``--ondisk sda``" to "``--ondisk sdb``". The
+@@ -625,13 +625,13 @@ Computing (nuc) :term:`MACHINE`:
+      ./directdisksdb-gpt-201710090938-sdb.direct
+ 
+    The following build artifacts were used to create the image(s):
+-     ROOTFS_DIR:                   /home/stephano/yocto/build/tmp-glibc/work/qemux86-oe-linux/core-image-minimal/1.0-r0/rootfs
+-     BOOTIMG_DIR:                  /home/stephano/yocto/build/tmp-glibc/work/qemux86-oe-linux/core-image-minimal/1.0-r0/recipe-sysroot/usr/share
+-     KERNEL_DIR:                   /home/stephano/yocto/build/tmp-glibc/deploy/images/qemux86
+-     NATIVE_SYSROOT:               /home/stephano/yocto/build/tmp-glibc/work/i586-oe-linux/wic-tools/1.0-r0/recipe-sysroot-native
++     ROOTFS_DIR:                   /home/user/yocto/build/tmp-glibc/work/qemux86-oe-linux/core-image-minimal/1.0-r0/rootfs
++     BOOTIMG_DIR:                  /home/user/yocto/build/tmp-glibc/work/qemux86-oe-linux/core-image-minimal/1.0-r0/recipe-sysroot/usr/share
++     KERNEL_DIR:                   /home/user/yocto/build/tmp-glibc/deploy/images/qemux86
++     NATIVE_SYSROOT:               /home/user/yocto/build/tmp-glibc/work/i586-oe-linux/wic-tools/1.0-r0/recipe-sysroot-native
+ 
+    INFO: The image(s) were created using OE kickstart file:
+-     /home/stephano/yocto/openembedded-core/files/wic/directdisksdb-gpt.wks
++     /home/user/yocto/openembedded-core/files/wic/directdisksdb-gpt.wks
+ 
+ Continuing with the example, you can now directly ``dd`` the image to a
+ USB stick, or whatever media for which you built your image, and boot
+@@ -655,22 +655,22 @@ default output directory, which is the current directory:
+ 
+ .. code-block:: console
+ 
+-   $ wic create test.wks -o /home/stephano/testwic \
+-        --rootfs-dir /home/stephano/yocto/build/tmp/work/qemux86-poky-linux/core-image-minimal/1.0-r0/rootfs \
+-        --bootimg-dir /home/stephano/yocto/build/tmp/work/qemux86-poky-linux/core-image-minimal/1.0-r0/recipe-sysroot/usr/share \
+-        --kernel-dir /home/stephano/yocto/build/tmp/deploy/images/qemux86 \
+-        --native-sysroot /home/stephano/yocto/build/tmp/work/i586-poky-linux/wic-tools/1.0-r0/recipe-sysroot-native
++   $ wic create test.wks -o /home/user/testwic \
++        --rootfs-dir /home/user/yocto/build/tmp/work/qemux86-poky-linux/core-image-minimal/1.0-r0/rootfs \
++        --bootimg-dir /home/user/yocto/build/tmp/work/qemux86-poky-linux/core-image-minimal/1.0-r0/recipe-sysroot/usr/share \
++        --kernel-dir /home/user/yocto/build/tmp/deploy/images/qemux86 \
++        --native-sysroot /home/user/yocto/build/tmp/work/i586-poky-linux/wic-tools/1.0-r0/recipe-sysroot-native
+ 
+    INFO: Creating image(s)...
+ 
+    INFO: The new image(s) can be found here:
+-     /home/stephano/testwic/test-201710091445-sdb.direct
++     /home/user/testwic/test-201710091445-sdb.direct
+ 
+    The following build artifacts were used to create the image(s):
+-     ROOTFS_DIR:                   /home/stephano/yocto/build/tmp-glibc/work/qemux86-oe-linux/core-image-minimal/1.0-r0/rootfs
+-     BOOTIMG_DIR:                  /home/stephano/yocto/build/tmp-glibc/work/qemux86-oe-linux/core-image-minimal/1.0-r0/recipe-sysroot/usr/share
+-     KERNEL_DIR:                   /home/stephano/yocto/build/tmp-glibc/deploy/images/qemux86
+-     NATIVE_SYSROOT:               /home/stephano/yocto/build/tmp-glibc/work/i586-oe-linux/wic-tools/1.0-r0/recipe-sysroot-native
++     ROOTFS_DIR:                   /home/user/yocto/build/tmp-glibc/work/qemux86-oe-linux/core-image-minimal/1.0-r0/rootfs
++     BOOTIMG_DIR:                  /home/user/yocto/build/tmp-glibc/work/qemux86-oe-linux/core-image-minimal/1.0-r0/recipe-sysroot/usr/share
++     KERNEL_DIR:                   /home/user/yocto/build/tmp-glibc/deploy/images/qemux86
++     NATIVE_SYSROOT:               /home/user/yocto/build/tmp-glibc/work/i586-oe-linux/wic-tools/1.0-r0/recipe-sysroot-native
+ 
+    INFO: The image(s) were created using OE kickstart file:
+      test.wks
+diff --git a/documentation/kernel-dev/common.rst b/documentation/kernel-dev/common.rst
+index 555aadc76a6c..15c8429dbeb3 100644
+--- a/documentation/kernel-dev/common.rst
++++ b/documentation/kernel-dev/common.rst
+@@ -1250,32 +1250,32 @@ Here is sample output from the :ref:`ref-tasks-kernel_configcheck` task:
+ 
+    ---------- CONFIG_X86_TSC -----------------
+    Config: CONFIG_X86_TSC
+-   From: /home/scottrif/bitbake-builds/build/tmp/work-shared/qemux86/kernel-source/.kernel-meta/configs/standard/bsp/common-pc/common-pc-cpu.cfg
++   From: /home/user/bitbake-builds/build/tmp/work-shared/qemux86/kernel-source/.kernel-meta/configs/standard/bsp/common-pc/common-pc-cpu.cfg
+    Requested value:  CONFIG_X86_TSC=y
+    Actual value:
+ 
+ 
+    ---------- CONFIG_X86_BIGSMP -----------------
+    Config: CONFIG_X86_BIGSMP
+-   From: /home/scottrif/bitbake-builds/build/tmp/work-shared/qemux86/kernel-source/.kernel-meta/configs/standard/cfg/smp.cfg
+-         /home/scottrif/bitbake-builds/build/tmp/work-shared/qemux86/kernel-source/.kernel-meta/configs/standard/defconfig
++   From: /home/user/bitbake-builds/build/tmp/work-shared/qemux86/kernel-source/.kernel-meta/configs/standard/cfg/smp.cfg
++         /home/user/bitbake-builds/build/tmp/work-shared/qemux86/kernel-source/.kernel-meta/configs/standard/defconfig
+    Requested value:  # CONFIG_X86_BIGSMP is not set
+    Actual value:
+ 
+ 
+    ---------- CONFIG_NR_CPUS -----------------
+    Config: CONFIG_NR_CPUS
+-   From: /home/scottrif/bitbake-builds/build/tmp/work-shared/qemux86/kernel-source/.kernel-meta/configs/standard/cfg/smp.cfg
+-         /home/scottrif/bitbake-builds/build/tmp/work-shared/qemux86/kernel-source/.kernel-meta/configs/standard/bsp/common-pc/common-pc.cfg
+-         /home/scottrif/bitbake-builds/build/tmp/work-shared/qemux86/kernel-source/.kernel-meta/configs/standard/defconfig
++   From: /home/user/bitbake-builds/build/tmp/work-shared/qemux86/kernel-source/.kernel-meta/configs/standard/cfg/smp.cfg
++         /home/user/bitbake-builds/build/tmp/work-shared/qemux86/kernel-source/.kernel-meta/configs/standard/bsp/common-pc/common-pc.cfg
++         /home/user/bitbake-builds/build/tmp/work-shared/qemux86/kernel-source/.kernel-meta/configs/standard/defconfig
+    Requested value:  CONFIG_NR_CPUS=8
+    Actual value:     CONFIG_NR_CPUS=1
+ 
+ 
+    ---------- CONFIG_SCHED_SMT -----------------
+    Config: CONFIG_SCHED_SMT
+-   From: /home/scottrif/bitbake-builds/build/tmp/work-shared/qemux86/kernel-source/.kernel-meta/configs/standard/cfg/smp.cfg
+-         /home/scottrif/bitbake-builds/build/tmp/work-shared/qemux86/kernel-source/.kernel-meta/configs/standard/defconfig
++   From: /home/user/bitbake-builds/build/tmp/work-shared/qemux86/kernel-source/.kernel-meta/configs/standard/cfg/smp.cfg
++         /home/user/bitbake-builds/build/tmp/work-shared/qemux86/kernel-source/.kernel-meta/configs/standard/defconfig
+    Requested value:  CONFIG_SCHED_SMT=y
+    Actual value:
+ 
+diff --git a/documentation/profile-manual/usage.rst b/documentation/profile-manual/usage.rst
+index e6c82b9b3c79..10c89fb5b872 100644
+--- a/documentation/profile-manual/usage.rst
++++ b/documentation/profile-manual/usage.rst
+@@ -322,7 +322,7 @@ debug packages once built can be found in ``build/tmp/deploy/rpm/*``
+ on the host system. Find the ``busybox-dbg-...rpm`` file and copy it
+ to the target. For example::
+ 
+-   [trz@empanada core2]$ scp /home/trz/yocto/crownbay-tracing-dbg/build/tmp/deploy/rpm/core2_32/busybox-dbg-1.20.2-r2.core2_32.rpm root@192.168.1.31:
++   $ scp /home/user/yocto/crownbay-tracing-dbg/build/tmp/deploy/rpm/core2_32/busybox-dbg-1.20.2-r2.core2_32.rpm root@192.168.1.31:
+    busybox-dbg-1.20.2-r2.core2_32.rpm                     100% 1826KB   1.8MB/s   00:01
+ 
+ Now install the debug RPM on the target::
+diff --git a/documentation/ref-manual/devtool-reference.rst b/documentation/ref-manual/devtool-reference.rst
+index 62c3b707b9ff..c8ca7bad8c9c 100644
+--- a/documentation/ref-manual/devtool-reference.rst
++++ b/documentation/ref-manual/devtool-reference.rst
+@@ -460,7 +460,7 @@ Here is an example that resets the workspace directory that contains the
+ 
+    $ devtool reset mtr
+    NOTE: Cleaning sysroot for recipe mtr...
+-   NOTE: Leaving source tree /home/scottrif/bitbake-builds/build/workspace/sources/mtr as-is; if you no longer need it then please delete it manually
++   NOTE: Leaving source tree /home/user/bitbake-builds/build/workspace/sources/mtr as-is; if you no longer need it then please delete it manually
+ 
+ .. _devtool-finish-working-on-a-recipe:
+ 
+@@ -612,7 +612,7 @@ You can create a workspace layer anywhere by supplying a pathname with
+ the command. The following command creates a new workspace layer named
+ "new-workspace"::
+ 
+-   $ devtool create-workspace /home/scottrif/new-workspace
++   $ devtool create-workspace /home/user/new-workspace
+ 
+ .. _devtool-get-the-status-of-the-recipes-in-your-workspace:
+ 
+@@ -632,7 +632,7 @@ Here is sample output after using
+ to create and add the ``mtr_0.86.bb`` recipe to the ``workspace`` directory::
+ 
+    $ devtool status
+-   mtr:/home/scottrif/bitbake-builds/build/workspace/sources/mtr (/home/scottrif/bitbake-builds/build/workspace/recipes/mtr/mtr_0.86.bb)
++   mtr:/home/user/bitbake-builds/build/workspace/sources/mtr (/home/user/bitbake-builds/build/workspace/recipes/mtr/mtr_0.86.bb)
+ 
+ .. _devtool-search-for-available-target-recipes:
+ 
+diff --git a/documentation/ref-manual/faq.rst b/documentation/ref-manual/faq.rst
+index f8e047e27fed..3646286a6e0c 100644
+--- a/documentation/ref-manual/faq.rst
++++ b/documentation/ref-manual/faq.rst
+@@ -461,11 +461,11 @@ and related variables. To better understand this, consider the following
+ two paths (artificially broken across lines for readability) where the
+ first is relatively normal and the second is not::
+ 
+-   /home/maxtothemax/poky-bootchart2/build/tmp/work/i586-poky-linux/zlib/
++   /home/user/poky-bootchart2/build/tmp/work/i586-poky-linux/zlib/
+       1.2.8-r0/sysroot-destdir/usr/bin
+ 
+-   /home/maxtothemax/poky-bootchart2/build/tmp/work/x86_64-linux/
+-      zlib-native/1.2.8-r0/sysroot-destdir/home/maxtothemax/poky-bootchart2/
++   /home/user/poky-bootchart2/build/tmp/work/x86_64-linux/
++      zlib-native/1.2.8-r0/sysroot-destdir/home/user/poky-bootchart2/
+       build/tmp/sysroots/x86_64-linux/usr/bin
+ 
+ Even if the paths look unusual, they both are correct --- the first for
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index 9c18b33c035b..c3722c9e9896 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -889,10 +889,10 @@ system and gives an overview of their function and contents.
+       Here is an example::
+ 
+          BBLAYERS = " \
+-             /home/scottrif/bitbake-builds/layers/meta \
+-             /home/scottrif/bitbake-builds/layers/meta-poky \
+-             /home/scottrif/bitbake-builds/layers/meta-yocto-bsp \
+-             /home/scottrif/bitbake-builds/layers/meta-mykernel \
++             /home/user/bitbake-builds/layers/meta \
++             /home/user/bitbake-builds/layers/meta-poky \
++             /home/user/bitbake-builds/layers/meta-yocto-bsp \
++             /home/user/bitbake-builds/layers/meta-mykernel \
+              "
+ 
+       This example enables four layers, one of which is a custom,
+diff --git a/documentation/sdk-manual/extensible.rst b/documentation/sdk-manual/extensible.rst
+index 0eb9eda8d82a..8b8034707eab 100644
+--- a/documentation/sdk-manual/extensible.rst
++++ b/documentation/sdk-manual/extensible.rst
+@@ -149,7 +149,7 @@ architecture. The example assumes the SDK installer is located in
+    Poky (Yocto Project Reference Distro) Extensible SDK installer version 2.5
+    ==========================================================================
+    Enter target directory for SDK (default: poky_sdk):
+-   You are about to install the SDK to "/home/scottrif/poky_sdk". Proceed [Y/n]? Y
++   You are about to install the SDK to "/home/user/poky_sdk". Proceed [Y/n]? Y
+    Extracting SDK..............done
+    Setting it up...
+    Extracting buildtools...
+@@ -162,7 +162,7 @@ architecture. The example assumes the SDK installer is located in
+    done
+    SDK has been successfully set up and is ready to be used.
+    Each time you wish to use the SDK in a new shell session, you need to source the environment setup script e.g.
+-    $ . /home/scottrif/poky_sdk/environment-setup-core2-64-poky-linux
++    $ . /home/user/poky_sdk/environment-setup-core2-64-poky-linux
+ 
+ .. note::
+ 
+@@ -197,7 +197,7 @@ script is for an IA-based target machine using i586 tuning:
+ 
+ .. code-block:: console
+ 
+-   $ cd /home/scottrif/poky_sdk
++   $ cd /home/user/poky_sdk
+    $ source environment-setup-core2-64-poky-linux
+    SDK environment now set up; additionally you may now run devtool to perform development tasks.
+    Run devtool --help for further details.
 -- 
 2.50.0.173.g8b6f19ccfc3a
 
