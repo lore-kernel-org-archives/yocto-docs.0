@@ -2,63 +2,63 @@ Return-Path: <twoerner@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9F7C4C9830B
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 04C5EC98309
 	for <webhook@archiver.kernel.org>; Tue, 22 Sep 2026 18:33:07 +0000 (UTC)
-Received: from mail-qk2-f12.google.com (mail-qk2-f12.google.com [74.125.230.204])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.2912.1790101985854058796
+Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.2906.1790101979727943468
  for <docs@lists.yoctoproject.org>;
- Tue, 22 Sep 2026 11:33:06 -0700
+ Tue, 22 Sep 2026 11:32:59 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20251104 header.b=PxL01CUq;
- spf=pass (domain: gmail.com, ip: 74.125.230.204, mailfrom: twoerner@gmail.com)
-Received: by mail-qk2-f12.google.com with SMTP id d75a77b69052e-52fb76906adso3339621cf.0
-        for <docs@lists.yoctoproject.org>; Tue, 22 Sep 2026 11:33:05 -0700 (PDT)
+ dkim=pass header.i=@gmail.com header.s=20251104 header.b=ftfVuiWE;
+ spf=pass (domain: gmail.com, ip: 74.125.230.205, mailfrom: twoerner@gmail.com)
+Received: by mail-qk2-f13.google.com with SMTP id d75a77b69052e-52fb76ec504so1413581cf.3
+        for <docs@lists.yoctoproject.org>; Tue, 22 Sep 2026 11:32:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790101985; x=1790706785; darn=lists.yoctoproject.org;
+        d=gmail.com; s=20251104; t=1790101978; x=1790706778; darn=lists.yoctoproject.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=4ohFFDzfcp43C/zNfCcuBIBV1YJCSyHNVNZU1QDpt00=;
-        b=PxL01CUqOFiTRLoVA/JdTH0+5T3Xj4U8ARvmJMVUwhS13D1jeX7sMdF/eii+00i/0G
-         hvZexjE9DxlGWlq4xSUwRDi1vKn3fx8MW0bWGJayApRVMcUh5GLA2aVlIXsdD5yHOcwa
-         MM5/hBPwzZniaglWzQIMr0HIXf10GvyzLWtnYMJR7kEsvU5gvKAPblZgJ0sOVIa90G3E
-         Y7k7KXDt8V21NLEgtZfkY4Wyzp6HNuFEqqTtIDzKjmU6IjxPfy+TbOBJhD2jAQD3TYSu
-         6dcMzJ+/TbswuODmQC9JxgxxpVf1UCsK15orjnFFjrGjHqw0sNhGCrqn4O0BM+n7udhj
-         uOXA==
+        bh=i6Y7mc41gQds2TQtZG4z8ilO0pg6doTKgdbAmb2yo5A=;
+        b=ftfVuiWEvFadyGgqPRdQ1AzM43P3YrFuXPWzmilKmOxyYloUIS9uUI7yywhP4Pg2b9
+         MOQGDBZliB2Yes0FTy4B3xE3xURjN5BEl0CmxrP+7BV0zVhAIeGM9ZwGSeiEqlLCye9K
+         otlo84gf4fDTQVDWFxixs6ODTPAPjDvMKE+3L5JpyJN9AUayuReAiYUkAz28p81PyjHr
+         o4qVn58jwDI+0W84YOG6vnX6KIspbUAdTodIS2XxZTz3cDUX0Theuu8LiibjlcXH/lsD
+         EQJ7MvbF3PNW5PIAy14KekhBtqaI/4nKg5whQjfv/k2Hsmxuj+k0a8UAJ5gRVEB4Uvjr
+         9q1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790101985; x=1790706785;
+        d=1e100.net; s=20260707; t=1790101978; x=1790706778;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=4ohFFDzfcp43C/zNfCcuBIBV1YJCSyHNVNZU1QDpt00=;
-        b=tHnG/ljjB+uEx0qhk6H3F8kYdWUa6aLGekId2XK2s5mR5Z09VhNrfv9psIBu2DAuS4
-         zOhAGUWxCcld6PZ3Ut9ZzOosXAS0wTNfUKPBxgTw4v1qAUQrxoiMoFrBYvCx+TQhpai7
-         hN+yVH5z4rlTQcaAS/tNpuHe5uA6fs7PpQUe9M9WcDsDzWLPGyRgVP8sF5j0LuFflVo8
-         /PN18I+cTrfISvHZ7KK21Z63HWPGDx2a/q6UYmg9eWhlqlBgDoVRx7O54RPeAb7/2Qi0
-         U1rDG9zhoOEQTQLIPYH5yO5P8SfR39K0+Y9LwPIeElPm/Y4t7swLqh0O3yTCf+l4Abwl
-         n/Mg==
-X-Gm-Message-State: AFuF++nBqE1W9od4IB+ybHXMuLrQRIKLD4kiyg2g4yFGKZ97MAcSKofP
-	cHx2vGk70JErRY3N7cpUFn2DxsBXYmq13PeWM5cwlvnqYo6PJ9fIIdGoGHFUjQ==
-X-Gm-Gg: AYBFou0JOSstWEpDJZFbbt8/kIFfUUU+2EeR5QeLzlISb9RtOm8hytdyhUcbJKPc879
-	CMuUtIq27tskAgqeyGWdZ9O23w6YvbDM3bkQttQC3kzDeheYjbnhwgmtFWha4viZ3VGiGumh/+c
-	MZrklA0GGldyaagifTDfi+BS/SY7e8E2cGbXUClVKKalcLb3Gh1wGwWkfwqTi9YL87h9ZVaPW65
-	1TQZ0ouO90dkzBhF3ww0+X6OSzbD8eIRxnswInUHW23/jdbjJ2NXNOZ2JcWzx2D+GcZkOTJ6jXE
-	NXfXFz67ey9iXtwAvbZOvyqS8casdXp+PCuMgL75u4pBmMYcN3rWiNTyE7xcJWue1+lqlj5GJ+6
-	KuO+PEN9xBBD8zpI5ayq7zAMRZPQKXVbnGgOrJjIj+MKMUJXVusml6yYeBsCxS86pmyipIxdRKV
-	cQ2tGS71v3i+XmhYJffSVw9bL2j2OwgBSd5JbK2JCQVnuU+nSD7OfKvbO8sKUut8e6Vd/NggtOP
-	vqAoolG5TP5zj021WvkGnRHQgvhFbC2L72BkAmU7hS1d6d3sJY=
-X-Received: by 2002:a05:622a:138a:b0:532:a5a2:e3f4 with SMTP id d75a77b69052e-532eacf5413mr6738201cf.41.1790101984313;
-        Tue, 22 Sep 2026 11:33:04 -0700 (PDT)
+        bh=i6Y7mc41gQds2TQtZG4z8ilO0pg6doTKgdbAmb2yo5A=;
+        b=pgEfr9HVcS4NgqLDoGQiwkzL+lGzGceydUBEqe1+f1pIOat+nLIgKvam0q0l0AI6ga
+         XzVUXk8XNxR3hZjxLqCSLkAk8PpgO3KGy8PqSzcIs4Zjbopp/FaYplrNkEsLyoMouIz8
+         RrS9lNMMMHNnu9USDfhOJAOI5zst1NWuAxHJ8mPrm3xL8SRs3gmwXK076VB5rLev/hDR
+         6qaIP60aMf9J2zX+234yJ1TK+0sBJxOEsTEMcMawZjJbY4xpZBPNHbr1rxgncrAw46SB
+         8981DuaL4IuIA80Dj384lNxlic1EeOBt1O5kJp/yi9ujg7LVxWxfK/FXh9OUC7VX3yf1
+         +QJw==
+X-Gm-Message-State: AFuF++nI8TeMf32QTPH3+0VBPfh4tp9mNSqc2txpRXuBqU1f3MbTaTFP
+	cbq20XthCUAOE1epibinT2dTiPxHJp+39tYcmtXTLSOEuNfX8xytaGHjsrIqYQ==
+X-Gm-Gg: AYBFou14I6kaORP2dp8arCLzHc0AtLt+m0/diDdLxqlISPoF1iNKYwdNIBfEgQnWLD/
+	q4+PjdZu8PhcCwEnSb+VEuLVgN/za/JtO/7Qn5FPeodsU03I/Q7CWV778VLCTfjbFsDhK5+IcN8
+	UikeAKmPz2WPZ4P+iSH4WVXLOd3lrat6WhweCTu00SLIacLCL7y1pDaXnGgGu3aEDfK1u3Geath
+	ODpWe1f4KH5zZmXInXqSZSBV8QdutYAa0T8ZUXDTTJyIwvfrq73naNcyenaM9zeBljRWq6pSXxM
+	aTUWy2LTVTU7YYRdwxpoFyOUczPZfdLgGOQu6YgeWo7+fe9J5sJ2g3p5CudR8B+c1h87m4Ow5c9
+	PkRPtegunQ4x8KNcLhbBjLzgCbIEmBBHQu3dg+5byq0Q33F3Pl6MfTqj6w50cTiLC5dF7ua3XY6
+	xr4EMbY25rBZURzUlkaFHFUxwtT6p3XmY/NnPSi9HVk/K9/mmT6RymVULQHgtQgMWn1TJCZn5kc
+	mArCIetRUyaxg4hPBWJdesdsM6eAZTAGIWR+t/x
+X-Received: by 2002:a05:622a:1cce:b0:531:175b:97e6 with SMTP id d75a77b69052e-532ead6e2a6mr7447341cf.54.1790101977418;
+        Tue, 22 Sep 2026 11:32:57 -0700 (PDT)
 Received: from localhost.localdomain (pppoe-209-91-167-254.vianet.ca. [209.91.167.254])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-532eb3396f6sm3112821cf.19.2026.09.22.11.33.03
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-532eb3396f6sm3112821cf.19.2026.09.22.11.32.56
         for <docs@lists.yoctoproject.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 11:33:03 -0700 (PDT)
+        Tue, 22 Sep 2026 11:32:56 -0700 (PDT)
 From: Trevor Woerner <twoerner@gmail.com>
 To: docs@lists.yoctoproject.org
-Subject: [PATCH v2 6/8] docs: remove real accounts from the examples
-Date: Tue, 22 Sep 2026 14:32:47 -0400
-Message-ID: <20260922183249.2433345-7-twoerner@gmail.com>
+Subject: [PATCH v2 3/8] docs: show a prompt on commands the reader is meant to type
+Date: Tue, 22 Sep 2026 14:32:44 -0400
+Message-ID: <20260922183249.2433345-4-twoerner@gmail.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260922183249.2433345-1-twoerner@gmail.com>
 References: <20260922183249.2433345-1-twoerner@gmail.com>
@@ -68,15 +68,17 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Tue, 22 Sep 2026 18:33:07 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10595
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10592
 
-Examples across the manuals carry the account names of the people who
-wrote them, in home directory paths and in shell prompts that also
-name a machine. Use "/home/user" and a bare "$", which is what the rest
-of the manuals already do.
+Most command blocks in the manuals start their lines with "$", but a
+scattering of them do not, and those read as a file listing rather than
+as something to run. Give them the prompt the surrounding pages already
+use.
 
-The autobuilder's own service account is left alone: the paths containing
-it are about autobuilder output rather than about somebody's machine.
+Transcripts take a prompt on their opening line alone. Two things that
+matter only once a line is a command go with that: a bare "$" at the end,
+the prompt returning after the command finished, and a trailing "\" on a
+Windows path, which a shell reads as a continuation into the output.
 
 AI-Generated: codex/claude-opus 5 (xhigh)
 Signed-off-by: Trevor Woerner <twoerner@gmail.com>
@@ -84,389 +86,835 @@ Signed-off-by: Trevor Woerner <twoerner@gmail.com>
 changes in v2:
 - rebased on master-next; no other change
 ---
- documentation/dev-manual/debugging.rst        |  4 +-
- documentation/dev-manual/layers.rst           | 12 ++---
- documentation/dev-manual/qemu.rst             |  2 +-
- .../dev-manual/upgrading-recipes.rst          | 18 ++++----
- documentation/dev-manual/wic.rst              | 44 +++++++++----------
- documentation/kernel-dev/common.rst           | 16 +++----
- documentation/profile-manual/usage.rst        |  2 +-
- .../ref-manual/devtool-reference.rst          |  6 +--
- documentation/ref-manual/faq.rst              |  6 +--
- documentation/ref-manual/variables.rst        |  8 ++--
- documentation/sdk-manual/extensible.rst       |  6 +--
- 11 files changed, 62 insertions(+), 62 deletions(-)
+ documentation/brief-yoctoprojectqs/index.rst  |  2 +-
+ .../contributor-guide/recipe-style-guide.rst  |  2 +-
+ .../contributor-guide/submit-changes.rst      | 60 +++++++++----------
+ .../dev-manual/creating-fragments.rst         |  4 +-
+ documentation/dev-manual/debugging.rst        |  1 -
+ documentation/dev-manual/devtool.rst          |  8 +--
+ documentation/dev-manual/disk-space.rst       |  4 +-
+ documentation/dev-manual/hashequivserver.rst  |  2 +-
+ .../dev-manual/limiting-resources.rst         |  2 +-
+ documentation/dev-manual/new-recipe.rst       |  6 +-
+ documentation/dev-manual/packages.rst         |  2 +-
+ .../dev-manual/python-development-shell.rst   |  1 -
+ documentation/dev-manual/qemu.rst             |  8 +--
+ documentation/dev-manual/start.rst            |  2 +-
+ documentation/dev-manual/wayland.rst          |  6 +-
+ documentation/kernel-dev/common.rst           |  3 -
+ .../migration-guides/migration-2.1.rst        |  4 +-
+ .../migration-guides/migration-2.5.rst        |  4 +-
+ .../migration-guides/migration-4.0.rst        |  2 +-
+ .../migration-guides/migration-5.3.rst        | 10 ++--
+ .../migration-guides/release-notes-4.2.rst    |  2 +-
+ .../migration-guides/release-notes-5.3.rst    |  2 +-
+ documentation/ref-manual/classes.rst          |  8 +--
+ .../ref-manual/devtool-reference.rst          |  2 -
+ documentation/ref-manual/fragments.rst        | 16 ++---
+ documentation/ref-manual/qa-checks.rst        |  4 +-
+ documentation/ref-manual/variables.rst        |  6 +-
+ .../test-manual/reproducible-builds.rst       |  2 +-
+ documentation/test-manual/runtime-testing.rst |  4 +-
+ 29 files changed, 86 insertions(+), 93 deletions(-)
 
-diff --git a/documentation/dev-manual/debugging.rst b/documentation/dev-manual/debugging.rst
-index 8412c997a51e..62e19a6c8a28 100644
---- a/documentation/dev-manual/debugging.rst
-+++ b/documentation/dev-manual/debugging.rst
-@@ -144,7 +144,7 @@ helpful during debugging.
- Variables that are exported to the environment are preceded by
- ``export`` in the output of ``bitbake-getvar``. See the following example::
+diff --git a/documentation/brief-yoctoprojectqs/index.rst b/documentation/brief-yoctoprojectqs/index.rst
+index f7e4606f1f7b..e138df6c9351 100644
+--- a/documentation/brief-yoctoprojectqs/index.rst
++++ b/documentation/brief-yoctoprojectqs/index.rst
+@@ -373,7 +373,7 @@ layer>`:
  
--   export CC="i586-poky-linux-gcc -m32 -march=i586 --sysroot=/home/ulf/poky/build/tmp/sysroots/qemux86"
-+   export CC="i586-poky-linux-gcc -m32 -march=i586 --sysroot=/home/user/poky/build/tmp/sysroots/qemux86"
+     First, clone the layer next to the other layers::
  
- Shell functions and tasks can also be inspected with the same mechanism::
+-      git clone -b &DISTRO_NAME_NO_CAP; https://git.yoctoproject.org/meta-raspberrypi ../layers/meta-raspberrypi
++      $ git clone -b &DISTRO_NAME_NO_CAP; https://git.yoctoproject.org/meta-raspberrypi ../layers/meta-raspberrypi
  
-@@ -522,7 +522,7 @@ task dependency mechanisms.
+ #.  **Add Your Layer to the Layer Configuration File:** Before you can use
+     it, you must add the layer and its dependencies to your :ref:`structure-build-conf-bblayers.conf`
+diff --git a/documentation/contributor-guide/recipe-style-guide.rst b/documentation/contributor-guide/recipe-style-guide.rst
+index 84c6bb14e8b0..fe12a8e6d826 100644
+--- a/documentation/contributor-guide/recipe-style-guide.rst
++++ b/documentation/contributor-guide/recipe-style-guide.rst
+@@ -436,7 +436,7 @@ By default, patches created with ``git format-patch`` have a `Git` version signa
+ To avoid having a `Git` signature at the end of generated or updated patches,
+ you can use `Git` configuration settings::
  
-    .. code-block:: none
+-   git config --global format.signature ""
++   $ git config --global format.signature ""
  
--      WARNING: /home/ulf/openembedded-core/meta/recipes-sato/matchbox-desktop/matchbox-desktop_2.1.bb.do_compile is tainted from a forced run
-+      WARNING: /home/user/openembedded-core/meta/recipes-sato/matchbox-desktop/matchbox-desktop_2.1.bb.do_compile is tainted from a forced run
+ .. note::
+    Patches generated or updated by ``devtool`` are created with no signature.
+diff --git a/documentation/contributor-guide/submit-changes.rst b/documentation/contributor-guide/submit-changes.rst
+index 574a92cd3465..e60f8ca7ace3 100644
+--- a/documentation/contributor-guide/submit-changes.rst
++++ b/documentation/contributor-guide/submit-changes.rst
+@@ -57,20 +57,20 @@ Set up Git
+ The first thing to do is to install Git packages. Here is an example
+ on Debian and Ubuntu::
  
+-   sudo apt install git-core git-email
++   $ sudo apt install git-core git-email
  
-    The purpose of the warning is to let you know that the work directory
-diff --git a/documentation/dev-manual/layers.rst b/documentation/dev-manual/layers.rst
-index 185a63feb700..a36f849a0c3f 100644
---- a/documentation/dev-manual/layers.rst
-+++ b/documentation/dev-manual/layers.rst
-@@ -916,11 +916,11 @@ shows the layers that are in your :ref:`structure-build-conf-bblayers.conf` file
-    NOTE: Starting bitbake server...
-    layer                 path                                                            priority
-    ==============================================================================================
--   meta                  /home/scottrif/bitbake-builds/layers/openembedded-core/meta           5
--   meta-poky             /home/scottrif/bitbake-builds/layers/meta-yocto/meta-poky             5
--   meta-yocto-bsp        /home/scottrif/bitbake-builds/layers/meta-yocto/meta-yocto-bsp        5
--   workspace             /home/scottrif/bitbake-builds/build/workspace                         99
--   meta-scottrif         /home/scottrif/bitbake-builds/build/meta-scottrif                     6
-+   meta                  /home/user/bitbake-builds/layers/openembedded-core/meta           5
-+   meta-poky             /home/user/bitbake-builds/layers/meta-yocto/meta-poky             5
-+   meta-yocto-bsp        /home/user/bitbake-builds/layers/meta-yocto/meta-yocto-bsp        5
-+   workspace             /home/user/bitbake-builds/build/workspace                         99
-+   meta-scottrif         /home/user/bitbake-builds/build/meta-scottrif                     6
+ Then, you need to set a name and e-mail address that Git will
+ use to identify your commits::
  
- Adding the layer to this file
- enables the build system to locate the layer during the build.
-@@ -958,7 +958,7 @@ above:
+-   git config --global user.name "Ada Lovelace"
+-   git config --global user.email "ada.lovelace@gmail.com"
++   $ git config --global user.name "Ada Lovelace"
++   $ git config --global user.email "ada.lovelace@gmail.com"
  
- #. Run the script directly with no options::
+ By default, Git adds a signature line at the end of patches containing the Git
+ version. We suggest to remove it as it doesn't add useful information.
  
--      alex@Zen2:/srv/work/alex/my-build$ meta-alex/setup-layers
-+      $ meta-alex/setup-layers
-       Note: not checking out source meta-alex, use --force-bootstraplayer-checkout to override.
+ Remove it with the following command::
  
-       Setting up source meta-intel, revision 15.0-hardknott-3.3-310-g0a96edae, branch master
-diff --git a/documentation/dev-manual/qemu.rst b/documentation/dev-manual/qemu.rst
-index 6d092b2d2034..d7e0b2f2f44f 100644
---- a/documentation/dev-manual/qemu.rst
-+++ b/documentation/dev-manual/qemu.rst
-@@ -151,7 +151,7 @@ available. Follow these general steps to run QEMU:
-       determines the QEMU architecture (`MACHINE`) to be "qemux86-64" and
-       the root filesystem type to be "vmdk"::
+-   git config --global format.signature ""
++   $ git config --global format.signature ""
  
--         $ runqemu /home/scott-lenovo/vm/core-image-minimal-qemux86-64.wic.vmdk
-+         $ runqemu /home/user/vm/core-image-minimal-qemux86-64.wic.vmdk
+ Clone the Git repository for the component to modify
+ ----------------------------------------------------
+@@ -79,8 +79,8 @@ After identifying the component to modify as described in the
+ ":doc:`/contributor-guide/identify-component`" section, clone the
+ corresponding Git repository. Here is an example for OpenEmbedded-Core::
  
- Switching Between Consoles
- ==========================
-diff --git a/documentation/dev-manual/upgrading-recipes.rst b/documentation/dev-manual/upgrading-recipes.rst
-index 0bdc1351ec7f..f4b9df241093 100644
---- a/documentation/dev-manual/upgrading-recipes.rst
-+++ b/documentation/dev-manual/upgrading-recipes.rst
-@@ -244,12 +244,12 @@ script. For example, suppose you use the ``nano.bb`` recipe from the
- ``meta-oe`` layer in the ``meta-openembedded`` repository. For this
- example, assume that the layer has been cloned into following area::
+-  git clone https://git.openembedded.org/openembedded-core
+-  cd openembedded-core
++  $ git clone https://git.openembedded.org/openembedded-core
++  $ cd openembedded-core
  
--   /home/scottrif/bitbake-builds/layers/meta-openembedded
-+   /home/user/bitbake-builds/layers/meta-openembedded
+ Create a new branch
+ -------------------
+@@ -177,7 +177,7 @@ to add the upgraded version.
+           is to look for prefixes used in previous commits touching the
+           same files or directories::
  
- The following command from your :term:`Build Directory` adds the layer to
- your build configuration (i.e. ``${BUILDDIR}/conf/bblayers.conf``)::
+-             git log --oneline <paths>
++             $ git log --oneline <paths>
  
--   $ bitbake-layers add-layer /home/scottrif/bitbake-builds/layers/meta-openembedded/meta-oe
-+   $ bitbake-layers add-layer /home/user/bitbake-builds/layers/meta-openembedded/meta-oe
-    NOTE: Starting bitbake server...
-    Parsing recipes: 100% |##########################################| Time: 0:00:55
-    Parsing of 1431 .bb files complete (0 cached, 1431 parsed). 2040 targets, 56 skipped, 0 masked, 0 errors.
-@@ -265,7 +265,7 @@ directory automatically upgrades the recipe for you::
+    #.  For the commit description, provide detailed information
+        that describes what you changed, why you made the change, and the
+@@ -278,7 +278,7 @@ Here is the general procedure on how to create patches to be sent through email:
+    For this purpose, a good solution is to store the cover letter contents
+    in the branch itself::
  
-    $ devtool upgrade nano -V 2.9.3
-    NOTE: Starting bitbake server...
--   NOTE: Creating workspace layer in /home/scottrif/bitbake-builds/build/workspace
-+   NOTE: Creating workspace layer in /home/user/bitbake-builds/build/workspace
-    Parsing recipes: 100% |##########################################| Time: 0:00:46
-    Parsing of 1431 .bb files complete (0 cached, 1431 parsed). 2040 targets, 56 skipped, 0 masked, 0 errors.
-    NOTE: Extracting current version source...
-@@ -277,8 +277,8 @@ directory automatically upgrades the recipe for you::
-    NOTE: Executing RunQueue Tasks
-    NOTE: Tasks Summary: Attempted 74 tasks of which 72 didn't need to be rerun and all succeeded.
-    Adding changed files: 100% |#####################################| Time: 0:00:00
--   NOTE: Upgraded source extracted to /home/scottrif/bitbake-builds/build/workspace/sources/nano
--   NOTE: New recipe is /home/scottrif/bitbake-builds/build/workspace/recipes/nano/nano_2.9.3.bb
-+   NOTE: Upgraded source extracted to /home/user/bitbake-builds/build/workspace/sources/nano
-+   NOTE: New recipe is /home/user/bitbake-builds/build/workspace/recipes/nano/nano_2.9.3.bb
+-      git branch --edit-description
++      $ git branch --edit-description
+ 
+    This will open a text editor to fill in the description for your
+    changes. This description can be updated when necessary and will
+@@ -334,19 +334,19 @@ functional testing of the changes will be performed by ``patchtest``. Currently,
+ it only supports testing patches for ``openembedded-core`` branches. To setup,
+ perform the following::
+ 
+-    pip install -r meta/lib/patchtest/requirements.txt
+-    source oe-init-build-env
+-    bitbake-layers add-layer ../meta-selftest
++    $ pip install -r meta/lib/patchtest/requirements.txt
++    $ source oe-init-build-env
++    $ bitbake-layers add-layer ../meta-selftest
+ 
+ Once these steps are complete and you have generated your patch files,
+ you can run ``patchtest`` like so::
+ 
+-    patchtest --patch <patch_name>
++    $ patchtest --patch <patch_name>
+ 
+ Alternatively, if you want ``patchtest`` to iterate over and test
+ multiple patches stored in a directory, you can use::
+ 
+-    patchtest --directory <directory_name>
++    $ patchtest --directory <directory_name>
+ 
+ By default, ``patchtest`` uses its own modules' file paths to determine what
+ repository and test suite to check patches against. If you wish to test
+@@ -354,7 +354,7 @@ patches against a repository other than ``openembedded-core`` and/or use
+ a different set of tests, you can use the ``--repodir`` and ``--testdir``
+ flags::
+ 
+-    patchtest --patch <patch_name> --repodir <path/to/repo> --testdir <path/to/testdir>
++    $ patchtest --patch <patch_name> --repodir <path/to/repo> --testdir <path/to/testdir>
+ 
+ Finally, note that ``patchtest`` is designed to test patches in a standalone
+ way, so if your patches are meant to apply on top of changes made by
+@@ -396,11 +396,11 @@ through a direct SMTP configuration in your Git ``~/.gitconfig`` file.
+ Here are the settings for letting ``git send-email`` send e-mail through your
+ regular STMP server, using a Google Mail account as an example::
+ 
+-   git config --global sendemail.smtpserver smtp.gmail.com
+-   git config --global sendemail.smtpserverport 587
+-   git config --global sendemail.smtpencryption tls
+-   git config --global sendemail.smtpuser ada.lovelace@gmail.com
+-   git config --global sendemail.smtppass = XXXXXXXX
++   $ git config --global sendemail.smtpserver smtp.gmail.com
++   $ git config --global sendemail.smtpserverport 587
++   $ git config --global sendemail.smtpencryption tls
++   $ git config --global sendemail.smtpuser ada.lovelace@gmail.com
++   $ git config --global sendemail.smtppass = XXXXXXXX
+ 
+ These settings will appear in the ``.gitconfig`` file in your home directory.
+ 
+@@ -463,7 +463,7 @@ Sending Patches via Email
+ At this stage, you are ready to send your patches via email. Here's the
+ typical usage of ``git send-email``::
+ 
+-   git send-email --to <mailing-list-address> *.patch
++   $ git send-email --to <mailing-list-address> *.patch
+ 
+ Then, review each subject line and list of recipients carefully, and then
+ allow the command to send each message.
+@@ -476,7 +476,7 @@ or any layer other than :oe_git:`openembedded-core </openembedded-core/>`,
+ please add the appropriate prefix so that it is clear which layer the patch is intended
+ to be applied to::
+ 
+-   git format-patch --subject-prefix="meta-oe][PATCH" ...
++   $ git format-patch --subject-prefix="meta-oe][PATCH" ...
  
  .. note::
  
-@@ -300,7 +300,7 @@ newly upgraded recipe::
-           .
-    NOTE: Executing SetScene Tasks
-    NOTE: Executing RunQueue Tasks
--   NOTE: nano: compiling from external source tree /home/scottrif/bitbake-builds/build/workspace/sources/nano
-+   NOTE: nano: compiling from external source tree /home/user/bitbake-builds/build/workspace/sources/nano
-    NOTE: Tasks Summary: Attempted 520 tasks of which 304 didn't need to be rerun and all succeeded.
+@@ -488,13 +488,13 @@ to be applied to::
+    Here's a command you can use if you just have one patch in your
+    branch::
  
- Within the ``devtool upgrade`` workflow, you can
-@@ -321,9 +321,9 @@ directory::
-    Parsing of 1432 .bb files complete (1431 cached, 1 parsed). 2041 targets, 56 skipped, 0 masked, 0 errors.
-    NOTE: Adding new patch 0001-nano.bb-Stuff-I-changed-when-upgrading-nano.bb.patch
-    NOTE: Updating recipe nano_2.9.3.bb
--   NOTE: Removing file /home/scottrif/bitbake-builds/layers/meta-openembedded/meta-oe/recipes-support/nano/nano_2.7.4.bb
--   NOTE: Moving recipe file to /home/scottrif/bitbake-builds/layers/meta-openembedded/meta-oe/recipes-support/nano
--   NOTE: Leaving source tree /home/scottrif/bitbake-builds/build/workspace/sources/nano as-is; if you no longer need it then please delete it manually
-+   NOTE: Removing file /home/user/bitbake-builds/layers/meta-openembedded/meta-oe/recipes-support/nano/nano_2.7.4.bb
-+   NOTE: Moving recipe file to /home/user/bitbake-builds/layers/meta-openembedded/meta-oe/recipes-support/nano
-+   NOTE: Leaving source tree /home/user/bitbake-builds/build/workspace/sources/nano as-is; if you no longer need it then please delete it manually
+-      git send-email --to <mailing-list-address> -1
++      $ git send-email --to <mailing-list-address> -1
+ 
+    If you have multiple patches and a cover letter, you can send
+    patches for all the commits between the reference branch
+    and the tip of your branch::
+ 
+-      git send-email --cover-letter --cover-from-description=auto --to <mailing-list-address> -M <ref-branch>
++      $ git send-email --cover-letter --cover-from-description=auto --to <mailing-list-address> -M <ref-branch>
+ 
+ See the `git send-email manual page <https://git-scm.com/docs/git-send-email>`__
+ for details.
+@@ -517,7 +517,7 @@ author name. The following will ensure that your e-mails have an additional
+ maintainers accepting your patches don't have to fix commit author information
+ manually::
+ 
+-   git config --global sendemail.from "linus.torvalds@kernel.org"
++   $ git config --global sendemail.from "linus.torvalds@kernel.org"
+ 
+ The ``sendemail.from`` should match your ``user.email`` setting,
+ which appears in the ``Signed-off-by`` line of your commits.
+@@ -530,12 +530,12 @@ with ``git send-email``, you can use Git configuration settings.
+ 
+ -  To set the right mailing list address for a given repository::
+ 
+-      git config --local sendemail.to openembedded-devel@lists.openembedded.org
++      $ git config --local sendemail.to openembedded-devel@lists.openembedded.org
+ 
+ -  If the mailing list requires a subject prefix for the layer
+    (this only works when the repository only contains one layer)::
+ 
+-      git config --local format.subjectprefix "meta-something][PATCH"
++      $ git config --local format.subjectprefix "meta-something][PATCH"
+ 
+ Using Scripts to Push a Change Upstream and Request a Pull
+ ==========================================================
+@@ -597,7 +597,7 @@ have been followed:
+       enter the following command to bring up a short list of all
+       commits against a specific file::
+ 
+-         git shortlog -- filename
++         $ git shortlog -- filename
+ 
+       Just provide the name of the file for which you are interested. The
+       information returned is not ordered by history but does include a
+@@ -719,7 +719,7 @@ follows:
+       ``git format-patch``, for example to submit a patch to the
+       "&DISTRO_NAME_NO_CAP_MINUS_ONE;" branch use::
+ 
+-         git format-patch --subject-prefix='&DISTRO_NAME_NO_CAP_MINUS_ONE;][PATCH' ...
++         $ git format-patch --subject-prefix='&DISTRO_NAME_NO_CAP_MINUS_ONE;][PATCH' ...
+ 
+ Taking Patch Review into Account
+ ================================
+@@ -745,7 +745,7 @@ without the reported issues.
+ A single patch can be amended using ``git commit --amend``, and multiple
+ patches can be easily reworked and reordered through an interactive Git rebase::
+ 
+-   git rebase -i <ref-branch>
++   $ git rebase -i <ref-branch>
+ 
+ See `this tutorial <https://hackernoon.com/beginners-guide-to-interactive-rebasing-346a3f9c3a6d>`__
+ for practical guidance about using Git interactive rebasing.
+@@ -755,7 +755,7 @@ sending the revised patch to mark the new iteration as ``[PATCH v2]``,
+ ``[PATCH v3]``, etc as appropriate. This can be done by passing the ``-v``
+ argument to ``git format-patch`` with a version number::
+ 
+-   git format-patch -v2 <ref-branch>
++   $ git format-patch -v2 <ref-branch>
  
  
- Using the ``devtool finish`` command cleans up the workspace and creates a patch
-diff --git a/documentation/dev-manual/wic.rst b/documentation/dev-manual/wic.rst
-index c13655f8730a..9161122d3166 100644
---- a/documentation/dev-manual/wic.rst
-+++ b/documentation/dev-manual/wic.rst
-@@ -520,13 +520,13 @@ file:
-      ./mkefidisk-201804191017-sda.direct
+ After generating updated patches (v2, v3, and so on) via ``git
+diff --git a/documentation/dev-manual/creating-fragments.rst b/documentation/dev-manual/creating-fragments.rst
+index 8dabd599f13f..cd87341e9a51 100644
+--- a/documentation/dev-manual/creating-fragments.rst
++++ b/documentation/dev-manual/creating-fragments.rst
+@@ -86,7 +86,7 @@ For now, our fragment exists and is listed by the
+ enable this fragment, use the :ref:`ref-bitbake-config-build-enable-fragment`
+ command::
  
-    The following build artifacts were used to create the image(s):
--     ROOTFS_DIR:                   /home/stephano/yocto/build/tmp-glibc/work/qemux86-oe-linux/core-image-minimal/1.0-r0/rootfs
--     BOOTIMG_DIR:                  /home/stephano/yocto/build/tmp-glibc/work/qemux86-oe-linux/core-image-minimal/1.0-r0/recipe-sysroot/usr/share
--     KERNEL_DIR:                   /home/stephano/yocto/build/tmp-glibc/deploy/images/qemux86
--     NATIVE_SYSROOT:               /home/stephano/yocto/build/tmp-glibc/work/i586-oe-linux/wic-tools/1.0-r0/recipe-sysroot-native
-+     ROOTFS_DIR:                   /home/user/yocto/build/tmp-glibc/work/qemux86-oe-linux/core-image-minimal/1.0-r0/rootfs
-+     BOOTIMG_DIR:                  /home/user/yocto/build/tmp-glibc/work/qemux86-oe-linux/core-image-minimal/1.0-r0/recipe-sysroot/usr/share
-+     KERNEL_DIR:                   /home/user/yocto/build/tmp-glibc/deploy/images/qemux86
-+     NATIVE_SYSROOT:               /home/user/yocto/build/tmp-glibc/work/i586-oe-linux/wic-tools/1.0-r0/recipe-sysroot-native
+-   bitbake-config-build enable-fragment meta-custom/custom-fragment
++   $ bitbake-config-build enable-fragment meta-custom/custom-fragment
  
-    INFO: The image(s) were created using OE kickstart file:
--     /home/stephano/yocto/openembedded-core/files/wic/mkefidisk.wks
-+     /home/user/yocto/openembedded-core/files/wic/mkefidisk.wks
+ .. note::
  
- The previous example shows the easiest way to create an image by running
- in cooked mode and supplying a kickstart file and the "-e" option to
-@@ -590,8 +590,8 @@ the lines that specify the target disk from which to boot:
+@@ -143,4 +143,4 @@ configuration file:
+ You can then use the :ref:`ref-bitbake-config-build-enable-fragment` command to
+ set a value to the ``CUSTOM_VARIABLE`` variable::
  
- .. code-block:: console
+-   bitbake-config-build enable-fragment custom-builtin-fragment/somevalue
++   $ bitbake-config-build enable-fragment custom-builtin-fragment/somevalue
+diff --git a/documentation/dev-manual/debugging.rst b/documentation/dev-manual/debugging.rst
+index 4995ba73f06b..0f6e9d1d7e85 100644
+--- a/documentation/dev-manual/debugging.rst
++++ b/documentation/dev-manual/debugging.rst
+@@ -821,7 +821,6 @@ missing dependency clearly visible at the end::
+                      ^
+    compilation terminated.
+    make: *** [tools/snep-send.o] Error 1
+-   $
  
--   $ cp /home/stephano/yocto/openembedded-core/files/wic/directdisk-gpt.wks \
--        /home/stephano/yocto/openembedded-core/files/wic/directdisksdb-gpt.wks
-+   $ cp /home/user/yocto/openembedded-core/files/wic/directdisk-gpt.wks \
-+        /home/user/yocto/openembedded-core/files/wic/directdisksdb-gpt.wks
  
- Next, the example modifies the ``directdisksdb-gpt.wks`` file and
- changes all instances of "``--ondisk sda``" to "``--ondisk sdb``". The
-@@ -625,13 +625,13 @@ Computing (nuc) :term:`MACHINE`:
-      ./directdisksdb-gpt-201710090938-sdb.direct
+ Creating a Patch for the Fix
+diff --git a/documentation/dev-manual/devtool.rst b/documentation/dev-manual/devtool.rst
+index 242ea9dd9942..471134da8629 100644
+--- a/documentation/dev-manual/devtool.rst
++++ b/documentation/dev-manual/devtool.rst
+@@ -548,7 +548,7 @@ the two modes:
+    -  To work on the source code of a recipe another instance of VSCode is
+       started in the recipe's workspace. Example::
  
-    The following build artifacts were used to create the image(s):
--     ROOTFS_DIR:                   /home/stephano/yocto/build/tmp-glibc/work/qemux86-oe-linux/core-image-minimal/1.0-r0/rootfs
--     BOOTIMG_DIR:                  /home/stephano/yocto/build/tmp-glibc/work/qemux86-oe-linux/core-image-minimal/1.0-r0/recipe-sysroot/usr/share
--     KERNEL_DIR:                   /home/stephano/yocto/build/tmp-glibc/deploy/images/qemux86
--     NATIVE_SYSROOT:               /home/stephano/yocto/build/tmp-glibc/work/i586-oe-linux/wic-tools/1.0-r0/recipe-sysroot-native
-+     ROOTFS_DIR:                   /home/user/yocto/build/tmp-glibc/work/qemux86-oe-linux/core-image-minimal/1.0-r0/rootfs
-+     BOOTIMG_DIR:                  /home/user/yocto/build/tmp-glibc/work/qemux86-oe-linux/core-image-minimal/1.0-r0/recipe-sysroot/usr/share
-+     KERNEL_DIR:                   /home/user/yocto/build/tmp-glibc/deploy/images/qemux86
-+     NATIVE_SYSROOT:               /home/user/yocto/build/tmp-glibc/work/i586-oe-linux/wic-tools/1.0-r0/recipe-sysroot-native
+-         code build/workspace/sources/my-recipe
++         $ code build/workspace/sources/my-recipe
  
-    INFO: The image(s) were created using OE kickstart file:
--     /home/stephano/yocto/openembedded-core/files/wic/directdisksdb-gpt.wks
-+     /home/user/yocto/openembedded-core/files/wic/directdisksdb-gpt.wks
+       This instance of VSCode uses plugins that are useful for the development
+       of the application. ``devtool ide-sdk`` generates the necessary
+@@ -720,9 +720,9 @@ the two modes:
+    VSCode. First of all we need a folder containing a CMake project.
+    For this example, let's create a CMake project and start VSCode::
  
- Continuing with the example, you can now directly ``dd`` the image to a
- USB stick, or whatever media for which you built your image, and boot
-@@ -655,22 +655,22 @@ default output directory, which is the current directory:
+-      mkdir kit-test
+-      echo "project(foo VERSION 1.0)" > kit-test/CMakeLists.txt
+-      code kit-test
++      $ mkdir kit-test
++      $ echo "project(foo VERSION 1.0)" > kit-test/CMakeLists.txt
++      $ code kit-test
  
- .. code-block:: console
+    If there is a CMake project in the workspace, cross-compilation is
+    supported:
+diff --git a/documentation/dev-manual/disk-space.rst b/documentation/dev-manual/disk-space.rst
+index 5516f793e301..ee02b267081c 100644
+--- a/documentation/dev-manual/disk-space.rst
++++ b/documentation/dev-manual/disk-space.rst
+@@ -33,7 +33,7 @@ disk space. However, only the most recent ones are likely to be reused.
+ The following command is a quick way to purge all the cache files which
+ haven't been used for a least a specified number of days::
  
--   $ wic create test.wks -o /home/stephano/testwic \
--        --rootfs-dir /home/stephano/yocto/build/tmp/work/qemux86-poky-linux/core-image-minimal/1.0-r0/rootfs \
--        --bootimg-dir /home/stephano/yocto/build/tmp/work/qemux86-poky-linux/core-image-minimal/1.0-r0/recipe-sysroot/usr/share \
--        --kernel-dir /home/stephano/yocto/build/tmp/deploy/images/qemux86 \
--        --native-sysroot /home/stephano/yocto/build/tmp/work/i586-poky-linux/wic-tools/1.0-r0/recipe-sysroot-native
-+   $ wic create test.wks -o /home/user/testwic \
-+        --rootfs-dir /home/user/yocto/build/tmp/work/qemux86-poky-linux/core-image-minimal/1.0-r0/rootfs \
-+        --bootimg-dir /home/user/yocto/build/tmp/work/qemux86-poky-linux/core-image-minimal/1.0-r0/recipe-sysroot/usr/share \
-+        --kernel-dir /home/user/yocto/build/tmp/deploy/images/qemux86 \
-+        --native-sysroot /home/user/yocto/build/tmp/work/i586-poky-linux/wic-tools/1.0-r0/recipe-sysroot-native
+-   find build/sstate-cache -type f -mtime +$DAYS -delete
++   $ find build/sstate-cache -type f -mtime +$DAYS -delete
  
-    INFO: Creating image(s)...
+ The above command relies on the fact that BitBake touches the sstate cache
+ files as it accesses them, when it has write access to the cache.
+@@ -49,7 +49,7 @@ requires a full build environment to be available and doesn't work well
+ covering multiple releases. It won't work either on limited environments
+ such as BSD based NAS::
  
-    INFO: The new image(s) can be found here:
--     /home/stephano/testwic/test-201710091445-sdb.direct
-+     /home/user/testwic/test-201710091445-sdb.direct
+-   sstate-cache-management.py --remove-duplicated --cache-dir=sstate-cache
++   $ sstate-cache-management.py --remove-duplicated --cache-dir=sstate-cache
  
-    The following build artifacts were used to create the image(s):
--     ROOTFS_DIR:                   /home/stephano/yocto/build/tmp-glibc/work/qemux86-oe-linux/core-image-minimal/1.0-r0/rootfs
--     BOOTIMG_DIR:                  /home/stephano/yocto/build/tmp-glibc/work/qemux86-oe-linux/core-image-minimal/1.0-r0/recipe-sysroot/usr/share
--     KERNEL_DIR:                   /home/stephano/yocto/build/tmp-glibc/deploy/images/qemux86
--     NATIVE_SYSROOT:               /home/stephano/yocto/build/tmp-glibc/work/i586-oe-linux/wic-tools/1.0-r0/recipe-sysroot-native
-+     ROOTFS_DIR:                   /home/user/yocto/build/tmp-glibc/work/qemux86-oe-linux/core-image-minimal/1.0-r0/rootfs
-+     BOOTIMG_DIR:                  /home/user/yocto/build/tmp-glibc/work/qemux86-oe-linux/core-image-minimal/1.0-r0/recipe-sysroot/usr/share
-+     KERNEL_DIR:                   /home/user/yocto/build/tmp-glibc/deploy/images/qemux86
-+     NATIVE_SYSROOT:               /home/user/yocto/build/tmp-glibc/work/i586-oe-linux/wic-tools/1.0-r0/recipe-sysroot-native
+ This command will ask you to confirm the deletions it identifies.
+ Run ``sstate-cache-management.py`` for more details about this script.
+diff --git a/documentation/dev-manual/hashequivserver.rst b/documentation/dev-manual/hashequivserver.rst
+index 75b77c30b944..0a67e79b66bc 100644
+--- a/documentation/dev-manual/hashequivserver.rst
++++ b/documentation/dev-manual/hashequivserver.rst
+@@ -22,7 +22,7 @@ the :term:`BitBake` repository, which can be found :oe_git:`here </bitbake>`.
  
-    INFO: The image(s) were created using OE kickstart file:
-      test.wks
+ To start a basic Hash Equivalence server, one could simply run::
+ 
+-   ./bin/bitbake-hashserv
++   $ ./bin/bitbake-hashserv
+ 
+ This will take all of the default options of the script, which are already
+ sufficient to start a local server.
+diff --git a/documentation/dev-manual/limiting-resources.rst b/documentation/dev-manual/limiting-resources.rst
+index 892b0069accf..93c20c44c36e 100644
+--- a/documentation/dev-manual/limiting-resources.rst
++++ b/documentation/dev-manual/limiting-resources.rst
+@@ -104,7 +104,7 @@ details.
+ 
+    #.  Then, start a heavy-load build, for example::
+ 
+-          bitbake virtual/kernel -c compile -f
++          $ bitbake virtual/kernel -c compile -f
+ 
+        You can stop the build at anytime with Control + C.
+ 
+diff --git a/documentation/dev-manual/new-recipe.rst b/documentation/dev-manual/new-recipe.rst
+index f43fc2be3f4c..a23a796f5a40 100644
+--- a/documentation/dev-manual/new-recipe.rst
++++ b/documentation/dev-manual/new-recipe.rst
+@@ -106,19 +106,19 @@ Here are some syntax examples:
+  - Use this syntax to generate a recipe based on source. Once generated,
+    the recipe resides in the existing source code layer::
+ 
+-      recipetool create -o OUTFILE source
++      $ recipetool create -o OUTFILE source
+ 
+  - Use this syntax to generate a recipe using code that
+    you extract from source. The extracted code is placed in its own layer
+    defined by :term:`EXTERNALSRC`::
+ 
+-      recipetool create -o OUTFILE -x EXTERNALSRC source
++      $ recipetool create -o OUTFILE -x EXTERNALSRC source
+ 
+  - Use this syntax to generate a recipe based on source. The options
+    direct ``recipetool`` to generate debugging information. Once generated,
+    the recipe resides in the existing source code layer::
+ 
+-      recipetool create -d -o OUTFILE source
++      $ recipetool create -d -o OUTFILE source
+ 
+ Locating and Using a Similar Recipe
+ -----------------------------------
+diff --git a/documentation/dev-manual/packages.rst b/documentation/dev-manual/packages.rst
+index 35a9a0a30913..380d806be041 100644
+--- a/documentation/dev-manual/packages.rst
++++ b/documentation/dev-manual/packages.rst
+@@ -176,7 +176,7 @@ work against a common, shared package feed, you have a single PR Service
+ running and it is connected to each building system. For this scenario,
+ you need to start the PR Service using the ``bitbake-prserv`` command::
+ 
+-   bitbake-prserv --host ip --port port --start
++   $ bitbake-prserv --host ip --port port --start
+ 
+ In addition to
+ hand-starting the service, you need to update the
+diff --git a/documentation/dev-manual/python-development-shell.rst b/documentation/dev-manual/python-development-shell.rst
+index 07563043232c..034100ae8799 100644
+--- a/documentation/dev-manual/python-development-shell.rst
++++ b/documentation/dev-manual/python-development-shell.rst
+@@ -25,7 +25,6 @@ functions::
+    pydevshell> d.delVar("FOO")
+    pydevshell> d.getVar("FOO")
+    pydevshell> bb.build.exec_func("do_unpack", d)
+-   pydevshell>
+ 
+ See the ":ref:`bitbake-user-manual/bitbake-user-manual-metadata:functions you can call from within python`"
+ section in the BitBake User Manual for details about available functions.
+diff --git a/documentation/dev-manual/qemu.rst b/documentation/dev-manual/qemu.rst
+index 514a72fc528a..6d092b2d2034 100644
+--- a/documentation/dev-manual/qemu.rst
++++ b/documentation/dev-manual/qemu.rst
+@@ -65,7 +65,7 @@ available. Follow these general steps to run QEMU:
+       initializes the toolchain. For example, the following commands run
+       the initialization script from the default ``poky_sdk`` directory::
+ 
+-         . poky_sdk/environment-setup-core2-64-poky-linux
++         $ . poky_sdk/environment-setup-core2-64-poky-linux
+ 
+ #. *Ensure the Artifacts are in Place:* You need to be sure you have a
+    pre-built kernel that will boot in QEMU. You also need the target
+@@ -227,15 +227,15 @@ using an NFS server.
+ 
+    -  To start the NFS share::
+ 
+-         runqemu-export-rootfs start file-system-location
++         $ runqemu-export-rootfs start file-system-location
+ 
+    -  To stop the NFS share::
+ 
+-         runqemu-export-rootfs stop file-system-location
++         $ runqemu-export-rootfs stop file-system-location
+ 
+    -  To restart the NFS share::
+ 
+-         runqemu-export-rootfs restart file-system-location
++         $ runqemu-export-rootfs restart file-system-location
+ 
+ QEMU CPU Compatibility Under KVM
+ ================================
+diff --git a/documentation/dev-manual/start.rst b/documentation/dev-manual/start.rst
+index c7d0fe3dab8d..73b7d9501ae4 100644
+--- a/documentation/dev-manual/start.rst
++++ b/documentation/dev-manual/start.rst
+@@ -423,7 +423,7 @@ your Yocto Project build host:
+       replace the PackageFamilyName and your user on the following path
+       to find your VHDX file::
+ 
+-         ls C:\Users\myuser\AppData\Local\Packages\CanonicalGroupLimited.UbuntuonWindows_79abcdefgh\LocalState\
++         C:\WINDOWS\system32> ls C:\Users\myuser\AppData\Local\Packages\CanonicalGroupLimited.UbuntuonWindows_79abcdefgh\LocalState
+          Mode                 LastWriteTime         Length Name
+          -a----         3/14/2020   9:52 PM    57418973184 ext4.vhdx
+ 
+diff --git a/documentation/dev-manual/wayland.rst b/documentation/dev-manual/wayland.rst
+index 5e333b6265f4..3e1280943bf9 100644
+--- a/documentation/dev-manual/wayland.rst
++++ b/documentation/dev-manual/wayland.rst
+@@ -80,9 +80,9 @@ the CLI, you need to do the following after your image is built:
+ 
+ #. Run these commands to export ``XDG_RUNTIME_DIR``::
+ 
+-      mkdir -p /tmp/$USER-weston
+-      chmod 0700 /tmp/$USER-weston
+-      export XDG_RUNTIME_DIR=/tmp/$USER-weston
++      $ mkdir -p /tmp/$USER-weston
++      $ chmod 0700 /tmp/$USER-weston
++      $ export XDG_RUNTIME_DIR=/tmp/$USER-weston
+ 
+ #. Launch Weston in the shell::
+ 
 diff --git a/documentation/kernel-dev/common.rst b/documentation/kernel-dev/common.rst
-index 555aadc76a6c..15c8429dbeb3 100644
+index fe2e42265f9f..17b7dbac928f 100644
 --- a/documentation/kernel-dev/common.rst
 +++ b/documentation/kernel-dev/common.rst
-@@ -1250,32 +1250,32 @@ Here is sample output from the :ref:`ref-tasks-kernel_configcheck` task:
+@@ -75,7 +75,6 @@ section:
+       $ bitbake-layers create-layer ../layers/meta-mylayer
+       NOTE: Starting bitbake server...
+       Add your new layer with 'bitbake-layers add-layer ../layers/meta-mylayer'
+-      $
  
-    ---------- CONFIG_X86_TSC -----------------
-    Config: CONFIG_X86_TSC
--   From: /home/scottrif/bitbake-builds/build/tmp/work-shared/qemux86/kernel-source/.kernel-meta/configs/standard/bsp/common-pc/common-pc-cpu.cfg
-+   From: /home/user/bitbake-builds/build/tmp/work-shared/qemux86/kernel-source/.kernel-meta/configs/standard/bsp/common-pc/common-pc-cpu.cfg
-    Requested value:  CONFIG_X86_TSC=y
-    Actual value:
+    .. note::
+ 
+@@ -98,7 +97,6 @@ section:
+       $ cd bitbake-builds/build
+       $ bitbake-layers add-layer ../../meta-mylayer
+       NOTE: Starting bitbake server...
+-      $
+ 
+ #. *Build the Clean Image:* The final step in preparing to work on the
+    kernel is to build an initial image using ``bitbake``::
+@@ -194,7 +192,6 @@ section:
+       $ cd bitbake-builds/build
+       $ bitbake-layers add-layer ../../meta-mylayer
+       NOTE: Starting bitbake server ...
+-      $
+ 
+ #. *Create a Local Copy of the Kernel Git Repository:* You can find Git
+    repositories of supported Yocto Project kernels organized under
+diff --git a/documentation/migration-guides/migration-2.1.rst b/documentation/migration-guides/migration-2.1.rst
+index 473dd10ff121..987464f4d77f 100644
+--- a/documentation/migration-guides/migration-2.1.rst
++++ b/documentation/migration-guides/migration-2.1.rst
+@@ -46,8 +46,8 @@ not specify the final expand parameter to calls that do specify the
+ parameter. You can run the following ``sed`` command at the base of a
+ layer to make this change::
+ 
+-   sed -e 's:\(\.getVar([^,()]*\)):\1, False):g' -i `grep -ril getVar *`
+-   sed -e 's:\(\.getVarFlag([^,()]*,[^,()]*\)):\1, False):g' -i `grep -ril getVarFlag *`
++   $ sed -e 's:\(\.getVar([^,()]*\)):\1, False):g' -i `grep -ril getVar *`
++   $ sed -e 's:\(\.getVarFlag([^,()]*,[^,()]*\)):\1, False):g' -i `grep -ril getVarFlag *`
+ 
+ .. note::
+ 
+diff --git a/documentation/migration-guides/migration-2.5.rst b/documentation/migration-guides/migration-2.5.rst
+index 8e182cd2bc4a..70946b5e11b4 100644
+--- a/documentation/migration-guides/migration-2.5.rst
++++ b/documentation/migration-guides/migration-2.5.rst
+@@ -138,11 +138,11 @@ BitBake Changes
+    :ref:`ref-classes-archiver` classes). There is a BitBake option to complete this for
+    any arbitrary task. For example::
+ 
+-      bitbake <target> -c fetchall
++      $ bitbake <target> -c fetchall
+ 
+    should now be replaced with::
+ 
+-      bitbake <target> --runall=fetch
++      $ bitbake <target> --runall=fetch
+ 
+ .. _migration-2.5-python-and-python3-changes:
+ 
+diff --git a/documentation/migration-guides/migration-4.0.rst b/documentation/migration-guides/migration-4.0.rst
+index c8c2b856d91c..31ce15a9cafc 100644
+--- a/documentation/migration-guides/migration-4.0.rst
++++ b/documentation/migration-guides/migration-4.0.rst
+@@ -256,7 +256,7 @@ Miscellaneous changes
+ - The Python development shell (previously known as ``devpyshell``) feature has been
+   renamed to ``pydevshell``. To start it you should now run::
+ 
+-     bitbake <target> -c pydevshell
++     $ bitbake <target> -c pydevshell
+ 
+ - The ``packagegroups-core-full-cmdline-libs`` packagegroup is no longer produced, as
+   libraries should normally be brought in via dependencies. If you have any references
+diff --git a/documentation/migration-guides/migration-5.3.rst b/documentation/migration-guides/migration-5.3.rst
+index 38c7d6771667..e5521d94b59f 100644
+--- a/documentation/migration-guides/migration-5.3.rst
++++ b/documentation/migration-guides/migration-5.3.rst
+@@ -83,16 +83,16 @@ How to make those adjustments without tedious manual editing
+ The following sed command can be used to remove S = "${WORKDIR}/git
+ across a whole layer::
+ 
+-   sed -i "/^S = \"\${WORKDIR}\/git\"/d" `find . -name '*.bb' -o -name '*.inc' -o -name '*.bbclass'`
++   $ sed -i "/^S = \"\${WORKDIR}\/git\"/d" `find . -name '*.bb' -o -name '*.inc' -o -name '*.bbclass'`
+ 
+ Then, the following command can tweak the remaining :term:`S` assignments to
+ refer to :term:`UNPACKDIR` instead of :term:`WORKDIR`::
+ 
+-   sed -i "s/^S = \"\${WORKDIR}\//S = \"\${UNPACKDIR}\//g" `find . -name '*.bb' -o -name '*.inc' -o -name '*.bbclass'`
++   $ sed -i "s/^S = \"\${WORKDIR}\//S = \"\${UNPACKDIR}\//g" `find . -name '*.bb' -o -name '*.inc' -o -name '*.bbclass'`
+ 
+ The first change can introduce a lot of consecutive empty lines, so those can be removed with::
+ 
+-   sed -i -z -E 's/([ \t\f\v\r]*\n){3,}/\n\n/g' `find . -name '*.bb' -o -name '*.inc'`
++   $ sed -i -z -E 's/([ \t\f\v\r]*\n){3,}/\n\n/g' `find . -name '*.bb' -o -name '*.inc'`
  
  
-    ---------- CONFIG_X86_BIGSMP -----------------
-    Config: CONFIG_X86_BIGSMP
--   From: /home/scottrif/bitbake-builds/build/tmp/work-shared/qemux86/kernel-source/.kernel-meta/configs/standard/cfg/smp.cfg
--         /home/scottrif/bitbake-builds/build/tmp/work-shared/qemux86/kernel-source/.kernel-meta/configs/standard/defconfig
-+   From: /home/user/bitbake-builds/build/tmp/work-shared/qemux86/kernel-source/.kernel-meta/configs/standard/cfg/smp.cfg
-+         /home/user/bitbake-builds/build/tmp/work-shared/qemux86/kernel-source/.kernel-meta/configs/standard/defconfig
-    Requested value:  # CONFIG_X86_BIGSMP is not set
-    Actual value:
+ BitBake Git fetcher ``tag`` parameter
+@@ -312,11 +312,11 @@ The following classes have been removed in this release:
+    #. Use the specific FIT image recipe rather than the base kernel recipe.
+       For example, instead of::
  
+-         bitbake linux-yocto
++         $ bitbake linux-yocto
  
-    ---------- CONFIG_NR_CPUS -----------------
-    Config: CONFIG_NR_CPUS
--   From: /home/scottrif/bitbake-builds/build/tmp/work-shared/qemux86/kernel-source/.kernel-meta/configs/standard/cfg/smp.cfg
--         /home/scottrif/bitbake-builds/build/tmp/work-shared/qemux86/kernel-source/.kernel-meta/configs/standard/bsp/common-pc/common-pc.cfg
--         /home/scottrif/bitbake-builds/build/tmp/work-shared/qemux86/kernel-source/.kernel-meta/configs/standard/defconfig
-+   From: /home/user/bitbake-builds/build/tmp/work-shared/qemux86/kernel-source/.kernel-meta/configs/standard/cfg/smp.cfg
-+         /home/user/bitbake-builds/build/tmp/work-shared/qemux86/kernel-source/.kernel-meta/configs/standard/bsp/common-pc/common-pc.cfg
-+         /home/user/bitbake-builds/build/tmp/work-shared/qemux86/kernel-source/.kernel-meta/configs/standard/defconfig
-    Requested value:  CONFIG_NR_CPUS=8
-    Actual value:     CONFIG_NR_CPUS=1
+       the FIT image is now build by::
  
+-         bitbake linux-yocto-fitimage
++         $ bitbake linux-yocto-fitimage
  
-    ---------- CONFIG_SCHED_SMT -----------------
-    Config: CONFIG_SCHED_SMT
--   From: /home/scottrif/bitbake-builds/build/tmp/work-shared/qemux86/kernel-source/.kernel-meta/configs/standard/cfg/smp.cfg
--         /home/scottrif/bitbake-builds/build/tmp/work-shared/qemux86/kernel-source/.kernel-meta/configs/standard/defconfig
-+   From: /home/user/bitbake-builds/build/tmp/work-shared/qemux86/kernel-source/.kernel-meta/configs/standard/cfg/smp.cfg
-+         /home/user/bitbake-builds/build/tmp/work-shared/qemux86/kernel-source/.kernel-meta/configs/standard/defconfig
-    Requested value:  CONFIG_SCHED_SMT=y
-    Actual value:
+       For custom kernel recipes, creating a corresponding custom FIT image recipe
+       is usually a good approach.
+diff --git a/documentation/migration-guides/release-notes-4.2.rst b/documentation/migration-guides/release-notes-4.2.rst
+index f50ef180ac66..3586622edca9 100644
+--- a/documentation/migration-guides/release-notes-4.2.rst
++++ b/documentation/migration-guides/release-notes-4.2.rst
+@@ -173,7 +173,7 @@ New Features / Enhancements in 4.2
+       command, which allowed to spot and fix a regression in the
+       ``quilt`` ptest::
  
-diff --git a/documentation/profile-manual/usage.rst b/documentation/profile-manual/usage.rst
-index 4efaa6d10fce..7fdbe41da5e7 100644
---- a/documentation/profile-manual/usage.rst
-+++ b/documentation/profile-manual/usage.rst
-@@ -322,7 +322,7 @@ debug packages once built can be found in ``build/tmp/deploy/rpm/*``
- on the host system. Find the ``busybox-dbg-...rpm`` file and copy it
- to the target. For example::
+-         yocto_testresults_query.py regression-report 4.2_M1 4.2_M2
++         $ yocto_testresults_query.py regression-report 4.2_M1 4.2_M2
  
--   [trz@empanada core2]$ scp /home/trz/yocto/crownbay-tracing-dbg/build/tmp/deploy/rpm/core2_32/busybox-dbg-1.20.2-r2.core2_32.rpm root@192.168.1.31:
-+   $ scp /home/user/yocto/crownbay-tracing-dbg/build/tmp/deploy/rpm/core2_32/busybox-dbg-1.20.2-r2.core2_32.rpm root@192.168.1.31:
-    busybox-dbg-1.20.2-r2.core2_32.rpm                     100% 1826KB   1.8MB/s   00:01
+       See this `blog post about regression detection
+       <https://bootlin.com/blog/continuous-integration-in-yocto-improving-the-regressions-detection/>`__.
+diff --git a/documentation/migration-guides/release-notes-5.3.rst b/documentation/migration-guides/release-notes-5.3.rst
+index 8a564716f319..311a9a94718a 100644
+--- a/documentation/migration-guides/release-notes-5.3.rst
++++ b/documentation/migration-guides/release-notes-5.3.rst
+@@ -466,7 +466,7 @@ New Features / Enhancements in |yocto-ver|
+       -  The script can now run compressed images with snapshot mode. For
+          example, with :term:`IMAGE_FSTYPES` containing ``ext4.zst``, you can run::
  
- Now install the debug RPM on the target::
+-            runqemu snapshot ext4.zst <image-recipe>
++            $ runqemu snapshot ext4.zst <image-recipe>
+ 
+       -  Add support for the ``erofs`` filesystem.
+ 
+diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
+index cbad93e8a38d..7b67ae8cc6b3 100644
+--- a/documentation/ref-manual/classes.rst
++++ b/documentation/ref-manual/classes.rst
+@@ -366,7 +366,7 @@ To do so, create a recipe for your program, for example using
+ make it inherit the :ref:`ref-classes-cargo` and
+ :ref:`ref-classes-cargo-update-recipe-crates` and run::
+ 
+-   bitbake -c update_crates recipe
++   $ bitbake -c update_crates recipe
+ 
+ This creates a ``recipe-crates.inc`` file that you can include in your
+ recipe::
+@@ -1372,7 +1372,7 @@ The simplest example for building a FIT image is to add::
+ 
+ to the machine :term:`configuration file` and to execute::
+ 
+-   bitbake linux-yocto-fitimage
++   $ bitbake linux-yocto-fitimage
+ 
+ This results in a ``fitImage`` file deployed to the :term:`DEPLOY_DIR_IMAGE`
+ directory and a ``linux-yocto-fitimage`` package which can be installed.
+@@ -1386,7 +1386,7 @@ lines to the machine configuration file::
+ 
+ The FIT image, this time including the RT kernel, is built again by calling::
+ 
+-   bitbake linux-yocto-fitimage
++   $ bitbake linux-yocto-fitimage
+ 
+ For other kernels provided by other layers, the same approach would work.
+ However, it is usually more intuitive to add a custom FIT image recipe next to
+@@ -3864,7 +3864,7 @@ build.
+ 
+ Example usage::
+ 
+-   bitbake -c generate_vex openssl
++   $ bitbake -c generate_vex openssl
+ 
+ .. _ref-classes-waf:
+ 
 diff --git a/documentation/ref-manual/devtool-reference.rst b/documentation/ref-manual/devtool-reference.rst
-index 62c3b707b9ff..c8ca7bad8c9c 100644
+index d2e80611a994..4aa95d8e0499 100644
 --- a/documentation/ref-manual/devtool-reference.rst
 +++ b/documentation/ref-manual/devtool-reference.rst
-@@ -460,7 +460,7 @@ Here is an example that resets the workspace directory that contains the
- 
+@@ -461,7 +461,6 @@ Here is an example that resets the workspace directory that contains the
     $ devtool reset mtr
     NOTE: Cleaning sysroot for recipe mtr...
--   NOTE: Leaving source tree /home/scottrif/bitbake-builds/build/workspace/sources/mtr as-is; if you no longer need it then please delete it manually
-+   NOTE: Leaving source tree /home/user/bitbake-builds/build/workspace/sources/mtr as-is; if you no longer need it then please delete it manually
+    NOTE: Leaving source tree /home/scottrif/bitbake-builds/build/workspace/sources/mtr as-is; if you no longer need it then please delete it manually
+-   $
  
  .. _devtool-finish-working-on-a-recipe:
  
-@@ -612,7 +612,7 @@ You can create a workspace layer anywhere by supplying a pathname with
- the command. The following command creates a new workspace layer named
- "new-workspace"::
- 
--   $ devtool create-workspace /home/scottrif/new-workspace
-+   $ devtool create-workspace /home/user/new-workspace
- 
- .. _devtool-get-the-status-of-the-recipes-in-your-workspace:
- 
-@@ -632,7 +632,7 @@ Here is sample output after using
- to create and add the ``mtr_0.86.bb`` recipe to the ``workspace`` directory::
+@@ -634,7 +633,6 @@ to create and add the ``mtr_0.86.bb`` recipe to the ``workspace`` directory::
  
     $ devtool status
--   mtr:/home/scottrif/bitbake-builds/build/workspace/sources/mtr (/home/scottrif/bitbake-builds/build/workspace/recipes/mtr/mtr_0.86.bb)
-+   mtr:/home/user/bitbake-builds/build/workspace/sources/mtr (/home/user/bitbake-builds/build/workspace/recipes/mtr/mtr_0.86.bb)
+    mtr:/home/scottrif/bitbake-builds/build/workspace/sources/mtr (/home/scottrif/bitbake-builds/build/workspace/recipes/mtr/mtr_0.86.bb)
+-   $
  
  .. _devtool-search-for-available-target-recipes:
  
-diff --git a/documentation/ref-manual/faq.rst b/documentation/ref-manual/faq.rst
-index f8e047e27fed..3646286a6e0c 100644
---- a/documentation/ref-manual/faq.rst
-+++ b/documentation/ref-manual/faq.rst
-@@ -461,11 +461,11 @@ and related variables. To better understand this, consider the following
- two paths (artificially broken across lines for readability) where the
- first is relatively normal and the second is not::
+diff --git a/documentation/ref-manual/fragments.rst b/documentation/ref-manual/fragments.rst
+index e5cd9fc436c1..c5640b826eae 100644
+--- a/documentation/ref-manual/fragments.rst
++++ b/documentation/ref-manual/fragments.rst
+@@ -72,25 +72,25 @@ command, you can determine which fragments can be enabled for your build.
+ For example, the following command would enable the
+ :ref:`ref-fragments-core-yocto-sstate-mirror-cdn` fragment::
  
--   /home/maxtothemax/poky-bootchart2/build/tmp/work/i586-poky-linux/zlib/
-+   /home/user/poky-bootchart2/build/tmp/work/i586-poky-linux/zlib/
-       1.2.8-r0/sysroot-destdir/usr/bin
- 
--   /home/maxtothemax/poky-bootchart2/build/tmp/work/x86_64-linux/
--      zlib-native/1.2.8-r0/sysroot-destdir/home/maxtothemax/poky-bootchart2/
-+   /home/user/poky-bootchart2/build/tmp/work/x86_64-linux/
-+      zlib-native/1.2.8-r0/sysroot-destdir/home/user/poky-bootchart2/
-       build/tmp/sysroots/x86_64-linux/usr/bin
- 
- Even if the paths look unusual, they both are correct --- the first for
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index 0072992b8597..8a9bd9075843 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -888,10 +888,10 @@ system and gives an overview of their function and contents.
-       Here is an example::
- 
-          BBLAYERS = " \
--             /home/scottrif/bitbake-builds/layers/meta \
--             /home/scottrif/bitbake-builds/layers/meta-poky \
--             /home/scottrif/bitbake-builds/layers/meta-yocto-bsp \
--             /home/scottrif/bitbake-builds/layers/meta-mykernel \
-+             /home/user/bitbake-builds/layers/meta \
-+             /home/user/bitbake-builds/layers/meta-poky \
-+             /home/user/bitbake-builds/layers/meta-yocto-bsp \
-+             /home/user/bitbake-builds/layers/meta-mykernel \
-              "
- 
-       This example enables four layers, one of which is a custom,
-diff --git a/documentation/sdk-manual/extensible.rst b/documentation/sdk-manual/extensible.rst
-index 0eb9eda8d82a..8b8034707eab 100644
---- a/documentation/sdk-manual/extensible.rst
-+++ b/documentation/sdk-manual/extensible.rst
-@@ -149,7 +149,7 @@ architecture. The example assumes the SDK installer is located in
-    Poky (Yocto Project Reference Distro) Extensible SDK installer version 2.5
-    ==========================================================================
-    Enter target directory for SDK (default: poky_sdk):
--   You are about to install the SDK to "/home/scottrif/poky_sdk". Proceed [Y/n]? Y
-+   You are about to install the SDK to "/home/user/poky_sdk". Proceed [Y/n]? Y
-    Extracting SDK..............done
-    Setting it up...
-    Extracting buildtools...
-@@ -162,7 +162,7 @@ architecture. The example assumes the SDK installer is located in
-    done
-    SDK has been successfully set up and is ready to be used.
-    Each time you wish to use the SDK in a new shell session, you need to source the environment setup script e.g.
--    $ . /home/scottrif/poky_sdk/environment-setup-core2-64-poky-linux
-+    $ . /home/user/poky_sdk/environment-setup-core2-64-poky-linux
+-   bitbake-config-build enable-fragment core/yocto/sstate-mirror-cdn
++   $ bitbake-config-build enable-fragment core/yocto/sstate-mirror-cdn
  
  .. note::
  
-@@ -197,7 +197,7 @@ script is for an IA-based target machine using i586 tuning:
+    Multiple fragments can be enabled at once with the same command::
  
- .. code-block:: console
+-      bitbake-config-build enable-fragment <fragment1> <fragment2> ...
++      $ bitbake-config-build enable-fragment <fragment1> <fragment2> ...
  
--   $ cd /home/scottrif/poky_sdk
-+   $ cd /home/user/poky_sdk
-    $ source environment-setup-core2-64-poky-linux
-    SDK environment now set up; additionally you may now run devtool to perform development tasks.
-    Run devtool --help for further details.
+ :term:`Built-in fragments <Built-in Fragment>` are enabled the same way, and
+ their values are defined from the command-line directly. For example, the
+ following command sets the ``qemuarm64`` :term:`MACHINE` through the
+ :ref:`ref-fragments-builtin-core-machine` fragment::
+ 
+-   bitbake-config-build enable-fragment machine/qemuarm64
++   $ bitbake-config-build enable-fragment machine/qemuarm64
+ 
+ This fragment can be overridden from the command-line by setting it to another
+ value, for example::
+ 
+-   bitbake-config-build enable-fragment machine/qemux86-64
++   $ bitbake-config-build enable-fragment machine/qemux86-64
+ 
+ In the above example, the new value of :term:`MACHINE` is now equal to
+ ``qemux86-64``.
+@@ -118,18 +118,18 @@ command. The list of enabled fragments can be obtained with
+ For example, the following command disables the
+ :ref:`ref-fragments-core-yocto-sstate-mirror-cdn` fragment::
+ 
+-   bitbake-config-build disable-fragment core/yocto/sstate-mirror-cdn
++   $ bitbake-config-build disable-fragment core/yocto/sstate-mirror-cdn
+ 
+ Likewise, :term:`Built-in Fragments <Built-in Fragment>` are disabled the
+ same way. For example, this would disable the ``machine/qemuarm64`` fragment::
+ 
+-   bitbake-config-build disable-fragment machine/qemuarm64
++   $ bitbake-config-build disable-fragment machine/qemuarm64
+ 
+ .. note::
+ 
+    Multiple fragments can be disabled at once with the same command::
+ 
+-      bitbake-config-build disable-fragment <fragment1> <fragment2>
++      $ bitbake-config-build disable-fragment <fragment1> <fragment2>
+ 
+ .. _ref-bitbake-config-build-disable-all-fragments:
+ 
+@@ -142,7 +142,7 @@ currently enabled fragments.  The list of enabled fragments can be obtained with
+ 
+ This command is run without arguments::
+ 
+-   bitbake-config-build disable-all-fragments
++   $ bitbake-config-build disable-all-fragments
+ 
+ Core Fragments
+ ==============
+diff --git a/documentation/ref-manual/qa-checks.rst b/documentation/ref-manual/qa-checks.rst
+index 8e1ce4438c79..14e3632ce6b8 100644
+--- a/documentation/ref-manual/qa-checks.rst
++++ b/documentation/ref-manual/qa-checks.rst
+@@ -573,14 +573,14 @@ patched file to still compile without errors.
+ Use the ``devtool`` command as explained by the warning. First, unpack the
+ source into devtool workspace::
+ 
+-   devtool modify <recipe>
++   $ devtool modify <recipe>
+ 
+ This will apply all of the patches, and create new commits out of them in
+ the workspace --- with the patch context updated.
+ 
+ Then, replace the patches in the recipe layer::
+ 
+-   devtool finish --force-patch-refresh <recipe> <layer_path>
++   $ devtool finish --force-patch-refresh <recipe> <layer_path>
+ 
+ The patch updates then need be reviewed (preferably with a side-by-side diff
+ tool) to ensure they are indeed doing the right thing i.e.:
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index 2d0f6bd3f8cf..3c921c3f8087 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -967,7 +967,7 @@ system and gives an overview of their function and contents.
+       Use the following format to export the variable to the BitBake
+       environment::
+ 
+-         export BBSERVER=localhost:$port
++         $ export BBSERVER=localhost:$port
+ 
+       By default, :term:`BBSERVER` also appears in :term:`BB_BASEHASH_IGNORE_VARS`.
+       Consequently, :term:`BBSERVER` is excluded from checksum and dependency
+@@ -9357,7 +9357,7 @@ system and gives an overview of their function and contents.
+ 
+      You can obtain the signature of all the tasks for the recipe ``bc`` using::
+ 
+-       bitbake -S none bc
++       $ bitbake -S none bc
+ 
+      Then you can look at files in ``build/tmp/stamps/<arch>/bc`` and look for
+      files like: ``<PV>.do_compile.sigdata.09772aa4532512baf96d433484f27234d4b7c11dd9cda0d6f56fa1b7ce6f25f0``.
+@@ -9514,7 +9514,7 @@ system and gives an overview of their function and contents.
+          This file requires permissions set to ``400`` or ``600`` to prevent
+          other users from reading the file::
+ 
+-            chmod 600 "$HOME/.netrc"
++            $ chmod 600 "$HOME/.netrc"
+ 
+          Another method to configure the username and password is from the URL
+          in :term:`SOURCE_MIRROR_URL` directly, with the ``user`` and ``pswd``
+diff --git a/documentation/test-manual/reproducible-builds.rst b/documentation/test-manual/reproducible-builds.rst
+index 892f7b9c8f0d..4e39cf3f79d8 100644
+--- a/documentation/test-manual/reproducible-builds.rst
++++ b/documentation/test-manual/reproducible-builds.rst
+@@ -89,7 +89,7 @@ it always depends upon the paths it is built in.
+ To run our automated selftest, as we use in our CI on the Autobuilder, you can
+ run::
+ 
+-   oe-selftest -r reproducible.ReproducibleTests.test_reproducible_builds
++   $ oe-selftest -r reproducible.ReproducibleTests.test_reproducible_builds
+ 
+ This defaults to including a ``world`` build so, if other layers are added, it
+ would also run the tests for recipes in the additional layers. Different build
+diff --git a/documentation/test-manual/runtime-testing.rst b/documentation/test-manual/runtime-testing.rst
+index 55c19900f439..5a7193f015b4 100644
+--- a/documentation/test-manual/runtime-testing.rst
++++ b/documentation/test-manual/runtime-testing.rst
+@@ -326,7 +326,7 @@ You can start the tests automatically or manually:
+    Next, build your image. If the image successfully builds, the
+    tests run::
+ 
+-      bitbake core-image-sato
++      $ bitbake core-image-sato
+ 
+ -  *Manually running tests:* To manually run the tests, first globally
+    inherit the :ref:`ref-classes-testimage` class by editing your
+@@ -336,7 +336,7 @@ You can start the tests automatically or manually:
+ 
+    Next, use BitBake to run the tests::
+ 
+-      bitbake -c testimage image
++      $ bitbake -c testimage image
+ 
+ All test files reside in ``meta/lib/oeqa/runtime/cases`` in
+ :term:`OpenEmbedded-Core (OE-Core)`. A test name maps
 -- 
 2.50.0.173.g8b6f19ccfc3a
 
