@@ -1,186 +1,115 @@
-Return-Path: <quentin.schulz@cherry.de>
+Return-Path: <richard.purdie@linuxfoundation.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B2AE4C98307
-	for <webhook@archiver.kernel.org>; Wed, 23 Sep 2026 11:09:28 +0000 (UTC)
-Received: from OSPPR02CU001.outbound.protection.outlook.com (OSPPR02CU001.outbound.protection.outlook.com [40.107.159.32])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.4547.1790161759001418263
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 469D2C98304
+	for <webhook@archiver.kernel.org>; Wed, 23 Sep 2026 16:11:16 +0000 (UTC)
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.1561.1790179866860253955
  for <docs@lists.yoctoproject.org>;
- Wed, 23 Sep 2026 04:09:19 -0700
+ Wed, 23 Sep 2026 09:11:07 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@cherry.de header.s=selector1 header.b=BTvGYOEx;
- spf=pass (domain: cherry.de, ip: 40.107.159.32, mailfrom: quentin.schulz@cherry.de)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=sygL2FhZG56j7D0k2uGZIcQ122HVjoUTWEk5Rs0R8P97YIaB8FhKzb+XgsUJnDF+o43hpgWSgwsy39fUpFBU7xpGf6qM/omi2ZRcoWt81knJPPdWmIHgY6K/+0jaNf8+CMCRGA7DeVJBJrXBjcC+472jnfuIaJTkpLpmYYEWdtTVYrSjJMjfWF1BI8IG5D7XgabHFPpm3boEfuYZYgOwLb9Ye07wMn7tJxrP+CGsDdmbdj1W/1WoLitQgXx2hk64sT9EG8ZWF5lA4FLDzMaWtm9fnJJiElAQ5BWBH9MochwJWLqxRZ/JYOw9H9vcIRGwURz0HPqoKPc0OY6Dww+9Og==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=r1s5XZqPJiweAf7EniT8ECY08YcG4D0r75vmZBKhIgg=;
- b=jCDld40nGWt1zjDmGcZkJpj4NTc4XzsC/eeFf7zn7OHZuJlSoL4F9i4bQwOLUekKs41yFQqhAsErKKyxHsJGlys/HetmmOIZpxabupXBEq8f17gmb7UZkw8oH0rpsbnN5yZqjIVgTqJ7U2+qZG1c44cG5Hlg33T1rvHD87o8suNk5nhNPx+TX7sXYx20ILg4P842sKipg2tTtvk7FuFDJb0YyEdFM1cfkVDbsWIS7drGH5UmBK2p2ywy480yRTsjtjcaT3O+6eSCzm25Dzkteyakn+C/nQa2diUyBP12zi56TAWADFy06OYy7+3c+d7XZaWeiSnJpGbhBkd9nrxZeA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
- dkim=pass header.d=cherry.de; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=r1s5XZqPJiweAf7EniT8ECY08YcG4D0r75vmZBKhIgg=;
- b=BTvGYOExpXZ0137lm92fFRxutwoblIGq86JUItHZDUW2211dfy0xDrbt1ywqz5AjXToWPBViP6S2vAFE/y8k+1+/Yg6vzz29h42rFA4daw/PPnloT5R87CcGRlbxXgpGh8hSeIasTST9cs9jxDmlI6yNx6bf4PYdPspvMyJTrm8=
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=cherry.de;
-Received: from PA3PR04MB11153.eurprd04.prod.outlook.com (2603:10a6:102:4ab::7)
- by PAXPR04MB8989.eurprd04.prod.outlook.com (2603:10a6:102:20c::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.14; Wed, 23 Sep
- 2026 11:09:12 +0000
-Received: from PA3PR04MB11153.eurprd04.prod.outlook.com
- ([fe80::6b02:c0eb:95a4:3c3d]) by PA3PR04MB11153.eurprd04.prod.outlook.com
- ([fe80::6b02:c0eb:95a4:3c3d%5]) with mapi id 15.21.0451.014; Wed, 23 Sep 2026
- 11:09:12 +0000
-Message-ID: <81ce3fb5-55c9-4b50-abea-aa0b1306bccd@cherry.de>
-Date: Wed, 23 Sep 2026 13:09:11 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [docs] [PATCH v2 8/8] ref-manual: put the ARCHIVER_MODE comments
- on their own lines
-To: twoerner@gmail.com, docs@lists.yoctoproject.org
-References: <20260922183249.2433345-1-twoerner@gmail.com>
- <20260922183249.2433345-9-twoerner@gmail.com>
-Content-Language: en-US
-From: Quentin Schulz <quentin.schulz@cherry.de>
-In-Reply-To: <20260922183249.2433345-9-twoerner@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: CWLP123CA0026.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:401:58::14) To PA3PR04MB11153.eurprd04.prod.outlook.com
- (2603:10a6:102:4ab::7)
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=V6ouu1C5;
+ spf=pass (domain: linuxfoundation.org, ip: 74.125.225.140, mailfrom: richard.purdie@linuxfoundation.org)
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49ccff31419so9513205e9.3
+        for <docs@lists.yoctoproject.org>; Wed, 23 Sep 2026 09:11:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1790179865; x=1790784665; darn=lists.yoctoproject.org;
+        h=mime-version:user-agent:content-transfer-encoding:content-type
+         :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=WmaeTOaK+85TyCVB8527ubTpv/qUY7QOHSurAMdlfOg=;
+        b=V6ouu1C5W+j5cIPaBK6LnHmzwYbtvgllNzv0zY1yE4xrmZiV4BdRvaB4fk1/iFU4iX
+         yyR7pXV7lNIUiYBsERZrJGfpK75HU2aEcxVpkWFWTfgvozpK6TadP4nZjymlj2PH18F+
+         MIELAiaCwDQLkn7PoRRBIxWc7x/q/GO58SviI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790179865; x=1790784665;
+        h=mime-version:user-agent:content-transfer-encoding:content-type
+         :references:in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=WmaeTOaK+85TyCVB8527ubTpv/qUY7QOHSurAMdlfOg=;
+        b=hXQVx0gBzKoiOdNcftAN0BCXFc8UEaq1AShdolThGmrmwIUiBoFluvRVd4wiuF/PKS
+         nlPOv1kol/CV52IQ/N+5qW63sokurwYc0sLyNvVRgFCmy6+gG2BlcGTBfHzVlyjdpEZP
+         wY1iWu6k4c/GXW37nPOOU011ZQc494p9RXxCpfCzXN2ee43KiUsNeFYcOEs6y2QlKSyN
+         55V+gzKVNERE91jHK0kVTqYoGFOvXcGA7Mc3yg3dWLsxrcMxUFiS9M+DxTaAuVG8sMoZ
+         H/L8R4rTZVe5rBKJGtWWbXAvqt5cVun4f/+xpKI8Q5TJ1RhVbJNxAtPyCu7S2XV/ajJz
+         A8iA==
+X-Gm-Message-State: AFuF++n2GNYbVOTnlL2uLKY5QP6GAb5Iozlh2XPTxQ/YllTo5kSflpUw
+	rjYpeKHIoXcJ+u/IYaBCNxVJpfL1UnuDEmedpLboCdUaCSsLzhZhpXkUycWWpHl/xXU=
+X-Gm-Gg: AYBFou05ukov0BoHauArHRcYVDRJ3ol/6FNLPu359YiC8B0pZq31SCg5dJpM/MtEPaU
+	DkrN1BZtOw3h0R1OQ3bzBkaJJsPADpNfhgDd7q+QtvLKyOrCT9ObEvNZH/0Zz6mJpDMYcfnULo7
+	fnkjTeKeh1WYEUs/mKrL3WarZ1wNULsvaqR/qgT8LmNm0FttErx4PgfkhO2itym5okwOCqjdRUc
+	Qs8jjVT9QDPY3t5WUmSvkl86B/f4pFhZE9FPCrXIvP3iHPCfC82Jdh34paFU9QILAIAO26KdrzH
+	05jPj3q16bMJqnTjaZMpNB6Qi6rK3t3blO+RlTyso5CEq55KekEdLWuhPPdoQrpGOTnMG3A0Hpk
+	BvDuHBOdf4Z7y0v/4aXsetg6QZucgEuAiEFNSiSC+Nfj9aiKiazHdvz8IfbIBQC19kB5ugMSb/4
+	IV9lc89Q7mNTPxDY0qXbnbabByAvwFu+/3OX3ko5dxzufA0EBOiiIJiUv/8/8M3sZOVIR75pPcx
+	6YxlHHbfFSa6jUccXLOj4DYvksFxXXtR6eGNIHC8RHw9aDNgL0dsr2hhjETwUE=
+X-Received: by 2002:a05:600c:4f16:b0:496:c1f3:e8f8 with SMTP id 5b1f17b1804b1-49fe5946e2cmr2594715e9.7.1790179864828;
+        Wed, 23 Sep 2026 09:11:04 -0700 (PDT)
+Received: from ?IPv6:2001:8b0:aba:5f3c:36fd:f492:2703:247a? ([2001:8b0:aba:5f3c:36fd:f492:2703:247a])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48868889337sm8153856f8f.34.2026.09.23.09.11.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Sep 2026 09:11:04 -0700 (PDT)
+Message-ID: <a93729d70f21488844f69b17d34eb6b57faef7d6.camel@linuxfoundation.org>
+Subject: Re: [docs] [PATCH v3 0/5] bitbake: Add basic landlock support
+From: Richard Purdie <richard.purdie@linuxfoundation.org>
+To: david.nystrom@est.tech, bitbake-devel@lists.openembedded.org
+Cc: docs@lists.yoctoproject.org, bruce.ashfield@gmail.com, 
+	mattias.jernberg@axis.com, peter.kjellerstedt@axis.com
+Date: Wed, 23 Sep 2026 17:11:03 +0100
+In-Reply-To: <20260914-landlock_try2-v3-0-4ea504789675@est.tech>
+References: <20260914-landlock_try2-v3-0-4ea504789675@est.tech>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2-9 
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA3PR04MB11153:EE_|PAXPR04MB8989:EE_
-X-MS-Office365-Filtering-Correlation-Id: b6ab8107-fde7-4bd2-84bd-08df1963194c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: 
-	BCL:0;ARA:13230040|366016|376014|23010399003|1800799024|6133799003|10067099003|56012099006|11063799006|4143699003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info: 
-	CHW7WQz8SshJmgXbX2QMbU57IeK5qYfNXkwMqsSdmygcjvEzU0c6LbRwwrwCeLOFiuSqIA1ofQzxOy8hZB9NBI8K8h23bj5PPn3oxr/Tga/AnvXXH7HCzKJp2YrKmD0b4VL2yk0ZaFGQhpMuDmsjzSf+2mBwQBNsdiW6ttU1aZ/9G22r5yC+jbb7UUB8QIDfWkRl7SkxNXLnDKMlu61mXTHUWJxBeY0LvTdxJz11jxo4kMHhWnMQPafimTSuCFhV+FebS4h7pnqYC+eZQN+X3rt3docjgXYNAJLKBq0MJowHMWhfjGesGI6Nh27/51nsjTmDy4WuuCCLXy2IM+r1IHdgy7MsQ3gALCbm+4CsKWZqgpwmPxUXGyOWZ/d4gv6LzrbJTGtwDFHIZ3hjjyn/5nEcWperbgoxSc28Op3jl2Pz01MvnkwE94VAN/nhtlxn/N9JGt9Oe5z5J+oLlRAQO4sPngZiPqJtna3z6baO0VtQHcc8R6iqMduZ3ki6sYSHVQnVEj5f066dqQODFWYMQFM7X8gBfAX/fBIT532RStTfgprb05wEnK1rHR1VBlqgNkyzV1HIOYd11HCnZ+W2JgKWZ3Up4NpFYygKEi8AWCGmpQl2u4FNqS5vNwrXTrQ41VyNOnkL0gm0hbddqclvQ5kbScbg5qgpoXppnz3mu2s=
-X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA3PR04MB11153.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(23010399003)(1800799024)(6133799003)(10067099003)(56012099006)(11063799006)(4143699003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?utf-8?B?UklRdkVRM0NXU1VuV0VkTVpsckRKUzZsMm9oVG1EbER5ZktLbHY2cmhHeDVW?=
- =?utf-8?B?akZQS3FhWnVDdFdmaWl1R0trT3R4TDBkdE1SME02Vm40bDVLa2RGM01ubld4?=
- =?utf-8?B?elNkUTcyeEwxeEFJTHZYWVpNTWVDWUl3ZlVYdmdidWd6WUNYVVU4cVRNWWE3?=
- =?utf-8?B?QTRqU0RPcjRmVXhpejdFVTRCNVcyTHBubkJMZTdEVE9vR01pM09acDZNZWM1?=
- =?utf-8?B?MjBwYmFMZGFNNjdqWFJ1cWFRZE4zVjZNN3BxbDBKWmlhZGQ1TmZaZXVVeXdw?=
- =?utf-8?B?SlZpSmdmL1p2ZTRIOTRNbS9BMzFzby8rYkJ5WG96d0llWnI3NVBYYU56WTQy?=
- =?utf-8?B?UTgzTzFzM0VLVFF2MjdJdXVUNjJrSXRWS3lDU3h2ZzlBSmJnRE9TMk80QW0x?=
- =?utf-8?B?Ui9GbHdkQUFPc21hK3FLMHd6aU5BOWZSQm9LVFJrQWlURmFWeDNNVFo3QnBo?=
- =?utf-8?B?U3NUTjlWaGUxeE02TGpOc3NDZEFpNkhkdGdURGpaMkZ4MHpFdUlsbTVNL09W?=
- =?utf-8?B?N3VJQWo0R2s3NkJ1MGZQU2dYRnp6bkZBWFRNa1V3elNlUmVPMWhsRk10UjJi?=
- =?utf-8?B?c1JRWDNSOElsYXFXSE5pMUFVdFdndUxHSmJ1UXQ1RFJnV1g2Qzl0a0FIMXBO?=
- =?utf-8?B?Qk9Ya2l0MjZXSHloeTVaOGxNWUQ1MUhsWGpsSUtLMUhjSE9WQTVFNHF6UlJF?=
- =?utf-8?B?d0tBamxwNXhwc3Z4MGl0a0p2dVNLZVJUQ0FQTGFiM1ppU1FtTHlvUzdDb20v?=
- =?utf-8?B?T3Z6bm1oaWpWczNyY3BtOUFEQ2xMWnhDWEtqbnBQUjdqQlhPN0puYk1YcUt5?=
- =?utf-8?B?VWV5c3RMUGR1TVVpdFhwOUV4bm1LSjROWDIrRWRieWErQXUyOVhYTzZsMERk?=
- =?utf-8?B?YTl4WjZ3R1ltNkpJbm16eW5mZnkrOENVdFVPSGwwWHcyMlpKY21kY1UxVytj?=
- =?utf-8?B?NHJBUnJ0NmtJd051TTJKYzhrQ3pqMFRzNWZUZTZsVzdWemsyVktFQzNHbitG?=
- =?utf-8?B?WEYvRmJ5RE9MeURXT3lROHRvU2g0MWZhVEVwVGZlVk9FNWNFMGUranFiTFFK?=
- =?utf-8?B?M2plTWFnYXlSYWIwYlplUkdqOXlWdWlXT1V4VnF2NmF5YVR3M1JUT1dETCsz?=
- =?utf-8?B?OFVUVEpYVkNvM3JVcmFscFlDZlZ1cG93MTIwWllydUFTbVdNQ2Q1R3dCWXBq?=
- =?utf-8?B?VmlTbnl3TVgyb3hyN1NGTmFzbkNCSmp3VzhZdGFvNzI3Tlp2c0tRdmExTXhG?=
- =?utf-8?B?STBKUUdrVW40NDA0b29yKzMwSGxKNXlpQW45dmdKYWJxUXRTNjVuc01zUEpW?=
- =?utf-8?B?RmM2aks3NGRyL2xIM0Z1ZnNsQmlkZUx0b3c5cFd6Tkp3c2tIamJMZjdheW9u?=
- =?utf-8?B?ejVvTzA4eUM3TzFKSHA2UGdHRXh4NXM3NmhPVDVOZHJ2TFVkSVJIdGYvMHBH?=
- =?utf-8?B?eUZYQWtyZFBpMnZlaVBLQThBSi9XTFY4dThKRnljL1ZGblIvUTZ4bS9HaG8r?=
- =?utf-8?B?d2lCbHNRRUJQbTc2S0RrcUt5aUp0d2dOUmo0N3lmVU5UWDBtUG42dGIrd1Rl?=
- =?utf-8?B?NTlYUkVhcklnN2ZlYjg1b3V1NnZ4MWR2NFZ2c3JZdUI5cVNxMC92OUN6YVlk?=
- =?utf-8?B?U3ZGR3NBV3RIT251d0t2K3RYYnJOTndhQ1h2Q1hRbVQwNDl1SmhveThuRkdp?=
- =?utf-8?B?LzdPZEhJT1RjRDhQb0xWVTBRaTRwV2x5UzNOWlVMZnVUQVJUZzA2d0M0NEd0?=
- =?utf-8?B?SmkzRXFkYUFiRFFXV2NqR1JCdEcrTFFrUEc5WDlMdVNJNmx1aXA5ak9qRGUx?=
- =?utf-8?B?c2MrNEpDMXMwZjRXUGRaK29zMWUzcnpleVBJamtRVTRaLzFITTFyVktqcW1x?=
- =?utf-8?B?eXVEdFZ6TkR5NnU0bGNYZUZaT3Z1UkxQYnp5UHZyVDNxYzNzZmNsTjNFV1lB?=
- =?utf-8?B?aHBBQU05NUpZQXE1UkU5ak5wSU5XcHo2eXBhZWp6a3BidlBSSU1YVVI2cXVM?=
- =?utf-8?B?WjF1TGFueGNicXBNMHFaV3VNbjBGRkcza3F2QnA1L3htT1RoVWhOV3Nzdy84?=
- =?utf-8?B?Tk02T0l5SHJlZUF0TFQ4dThkQnQ0R1JuY2Q5YXRxR0lzSkorbDYwZnQyZDUr?=
- =?utf-8?B?U0g0dnZLUmRoWk44KytQeVhLT3djY0JOYmdwajNrQndxbXRsaXVNTElZWUFL?=
- =?utf-8?B?YTRoZEFUYlBDR1d5NHpETFNheEhJRUsyME1lSUcwbEVsMytBYUkwdU9qNWxD?=
- =?utf-8?B?amd3WUlVc2dwdFZnbTZ0bjFnV0krMmRSTVlBYlU1UkFWVTIzNG0zMVNXNzEw?=
- =?utf-8?B?N3lWM1R2NHB0Y3o1VThNQS9EZTdPSk9QbmF0a2ZnN3JUVGVJRi9Edz09?=
-X-OriginatorOrg: cherry.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: b6ab8107-fde7-4bd2-84bd-08df1963194c
-X-MS-Exchange-CrossTenant-AuthSource: PA3PR04MB11153.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Sep 2026 11:09:12.8189
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: FSplQGw1au5XDwMlL6LOvwDs7bLA6n0oMXyJYvG9CHjdUipPZiYGE2x5clYIAiygVpWLUZvXRR2cJRKwuU1HIqgNRtG3hv2/8Zvxi+QHMM4=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8989
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 23 Sep 2026 11:09:28 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10609
+ <docs@lists.yoctoproject.org>; Wed, 23 Sep 2026 16:11:16 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10610
 
-Hi Trevor,
+On Mon, 2026-09-14 at 20:42 +0200, David Nystr=C3=B6m via lists.yoctoprojec=
+t.org wrote:
+> When current implementation runs in an unprivileged docker container,
+> basic networking will be allowed by default in all steps, ignoring the
+> network varflags intention.
+> Introduce support for landlock blocking of bind and connect, providing
+> basic support for blocking TCP.
+> UDP is corrently beeing worked on upstream, but not yet supported.
+>=20
+> Landlock requires PR_SET_NO_NEW_PRIVS for unpriv usage,=20
+> which is also attempted. devshell and related are already tagged=20
+> with network varflag and can sudo at will.
+>=20
+> This changes the default task behaviour to set no_new_privs, and=20
+> the 'network' varflag to exclude no_new_privs, which is needed
+> in a few places, like do_testimage.
+>=20
+> syscall ABI is asm-generic, 6.7+ for all archs except alpha.
+> On alpha, we leak 2 fd:s in the childs context before graceful exit,
+> which is cleaned up at child termination.
+> x32, MIPS(except LoongSoon) will fail gracefully.
+> Don't have an alpha target, so this is not tested, evaluated via=20
+> static analysis only.
+>=20
+> Adding Bruce to CC, due to fusermount usage in vrunner.
+> There might be fallout in other sublayers as well,=20
+> give me a CC and I'll try to help out.
+>=20
+> Adding Peter and Mattias for awareness, since they seem to be=20
+> users of enable_loopback_networking
 
-On 9/22/26 8:32 PM, Trevor Woerner via lists.yoctoproject.org wrote:
-> BitBake has no inline comments. A "#" after a value is not stripped and
-> does not end the statement: the parser simply fails to match the line, so
-> each of these varflag examples would be rejected outright if copied into
-> a configuration file.
-> 
-> Move each explanation to the line above the setting it describes, which
-> parses and reads the same.
-> 
-> AI-Generated: codex/claude-opus 5 (xhigh)
-> Signed-off-by: Trevor Woerner <twoerner@gmail.com>
-> ---
-> changes in v2:
-> - the srpm varflag is no longer in this block, having been removed
->    upstream in d5216e3fd4be
-> ---
->   documentation/ref-manual/variables.rst | 21 ++++++++++++++-------
->   1 file changed, 14 insertions(+), 7 deletions(-)
-> 
-> diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-> index 8a9bd9075843..0d7069433bf2 100644
-> --- a/documentation/ref-manual/variables.rst
-> +++ b/documentation/ref-manual/variables.rst
-> @@ -158,13 +158,20 @@ system and gives an overview of their function and contents.
->         original source, configured source, and so forth by employing the
->         following variable flags (varflags)::
->   
-> -         ARCHIVER_MODE[src] = "original"                   # Uses original (unpacked) source files.
-> -         ARCHIVER_MODE[src] = "patched"                    # Uses patched source files. This is the default.
-> -         ARCHIVER_MODE[src] = "configured"                 # Uses configured source files.
-> -         ARCHIVER_MODE[diff] = "1"                         # Uses patches between do_unpack and do_patch.
-> -         ARCHIVER_MODE[diff-exclude] ?= "<file> <file> ..."    # Lists files and directories to exclude from diff.
-> -         ARCHIVER_MODE[dumpdata] = "1"                     # Uses environment data.
-> -         ARCHIVER_MODE[recipe] = "1"                       # Uses recipe and include files.
-> +         # Uses original (unpacked) source files.
-> +         ARCHIVER_MODE[src] = "original"
-> +         # Uses patched source files. This is the default.
-> +         ARCHIVER_MODE[src] = "patched"
-> +         # Uses configured source files.
-> +         ARCHIVER_MODE[src] = "configured"
-> +         # Uses patches between do_unpack and do_patch.
-> +         ARCHIVER_MODE[diff] = "1"
-> +         # Lists files and directories to exclude from diff.
-> +         ARCHIVER_MODE[diff-exclude] ?= "<file> <file> ..."
-> +         # Uses environment data.
-> +         ARCHIVER_MODE[dumpdata] = "1"
-> +         # Uses recipe and include files.
-> +         ARCHIVER_MODE[recipe] = "1"
->   
+We discussed this in the review call and decided to take the first
+patches but not to add in the varflag. We'll see if anyone reports
+issues with that and keep the option of the varflag in mind if anyone
+does. We suspect most can probably just use the network flag and
+keeping the code simpler is always preferred if we can.
 
-It probably is also for the best to avoid long lines wherever we can. I 
-personally would add a newline before each new comment so it is easier 
-on the eye but that's just a matter of taste.
+Thanks again for the patches.
 
-Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
+Cheers,
 
-Thanks!
-Quentin
+Richard
 
