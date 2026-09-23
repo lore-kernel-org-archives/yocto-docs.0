@@ -2,181 +2,229 @@ Return-Path: <quentin.schulz@cherry.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 726ACC982EA
-	for <webhook@archiver.kernel.org>; Wed, 23 Sep 2026 10:17:50 +0000 (UTC)
-Received: from DU2PR03CU002.outbound.protection.outlook.com (DU2PR03CU002.outbound.protection.outlook.com [52.101.65.14])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.3727.1790158663760136214
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 03EE3C982FA
+	for <webhook@archiver.kernel.org>; Wed, 23 Sep 2026 10:41:36 +0000 (UTC)
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (DB3PR0202CU003.outbound.protection.outlook.com [52.101.84.60])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.4284.1790160093768319161
  for <docs@lists.yoctoproject.org>;
- Wed, 23 Sep 2026 03:17:44 -0700
+ Wed, 23 Sep 2026 03:41:34 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@cherry.de header.s=selector1 header.b=mhshJoix;
- spf=pass (domain: cherry.de, ip: 52.101.65.14, mailfrom: quentin.schulz@cherry.de)
+ dkim=pass header.i=@cherry.de header.s=selector1 header.b=kkOome93;
+ spf=pass (domain: cherry.de, ip: 52.101.84.60, mailfrom: quentin.schulz@cherry.de)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CA2W2py69lEEx1VYnyPmyC5B5qeDPVRbahaD350Q1LDhVA/ksSzfssNXUJdowBimcPEwtNkK8+Yi7xF+5U44HfR45yLpcKKHiiLn58jNd7ccm57NCtuVSNe2HyoDw+H+k7a/n+1mkIDKxIu9Q7vHFEdOtZnJW6bn0hSIE0SMWhuOaSFlK+jZidReaqKEIS8Wje1m96f371/zSdJxEeWv/35jH/SiNiz7sTRakKe6d7BasP+lbVsVyWOAQJJLReO2L38VGWvgoAg9vZeSn3XJJL9J/DCh1oZRUM6uWU4wxhfAtfVfyHgMkuZom1I0AellWNFl9cA/+gT6475prXslyg==
+ b=ZVdZs0FjCGUaVBfIVPMbmmF0+orXhvdSeVTYOFc65c89wmAshELGI7lHVZI/rqgoh4HbojR9HCuYU+Rre5NBePTQOBhhN3K9j+31VNGROnm8pARV+BiKRaLe2mTvaiTByeqiO95ynuHSS3p/CrHZLZ3We9/2chwn8rTCq+7nwcZcNmBcKZITCY5+GXAGiIBd26usfBSyWoXhmwr0gW3UJWNWX81rFWp0EnGRR+ohua1gIJdf9M3KoJAp6m7u3TO+jEs4QwC1dNnDgfivFxzo2F7tjHULK2/6uBoeypOZgXHvanDu6XdPVUZ1xCjnEof2pkW6wexpuz58bDe+3wyvIA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cY8lxQrCMi0uQAUJIFFg8hITpjrWJydzq76roy+jugg=;
- b=HwlWpphvWNuaEc8jI/rY0VecF1f1D+ijSxfSUa1EoLSmmEdFBadW7/OPauiMWauluvScyGvVnPdYgk22SWFTwrBRO2Tzy8ySqaatyLq4n7pm/gfQFpnmCZ7IGu5zBkjy72YyiaidFfoU8y3Z5o8aiN1SmBmtwIYbP4jogo45Rbxfpz2lL6tvHIscunlr6XaAlVN2lB4f13m8omahDLxtDTYc47izVwznSNUy/lLXpBsH2W2bRocL7bOsm2360rMH8ghJV5zau+SHug5108L3yk6iMQUjIot/IsBcr8hIt8HcjjGTuzMU3EisVpNrDyqTTM25k17xLDdEnuM1U/2DDA==
+ bh=1ftFzvHQim5JOTUR9psHEtg44f9sSjQZzO3YO3/0KJw=;
+ b=wzO3txVobv1Y4RJBng5PKyAl/IYRriZfe/j7BCC2aTlIwuhlywRIIP0Q3+ht1nHVujtAyo2/6k5dq41jbEh8RaUYO3bcDsl5ag5Kfj5XsirzFANMYYhj+ksnS1llCFAhuTU68UiTTNGMKFirHRPCRcLrmf1h0U1NvPPN8ER+1LeirJVO7ewmRJ4RjhEBGqc4Ubf0AFr+J+5NCFrtd+39sinpb1uebXa11hU/8lfI4nAYQgHoqFAfohjdNEeXRXIfKkDtqwo8P2Psom/c/XCSiH1oRWicv/vD/ljZc/9ersihhLR7u7pBRQ/5a2dEh01/9qkZv7ehIsVN/XtvDB0U7A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
  dkim=pass header.d=cherry.de; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cY8lxQrCMi0uQAUJIFFg8hITpjrWJydzq76roy+jugg=;
- b=mhshJoixCchAMPOcw+A+tefDVvw3uKg+q8JjenTWNGcxvSRG1wjgUU8jqYfBKQK7KnlvEB9K2EnQZF/flKb4LYAMPaMaR6xXRMZVOfIGP1r1Z/W+iTuv3srSMzB8w6C+qk/8+12oHrlpRCUDwpvFMMGDEkNP8iTlPeKLqqNdA/s=
+ bh=1ftFzvHQim5JOTUR9psHEtg44f9sSjQZzO3YO3/0KJw=;
+ b=kkOome93CpC5F6UjiVKJZVOUql2mIUbKt+LZAIrqufzoN81hv1KEzsxQ8UUt/UslIWxwMYEiv/0g0J8x1eLKUH7qRle16k5IOED0KdiMByABcXUWdergTa3zMANfTvuy/hc25Irxf2GH6ApPsq4ZQyl6RGypTE92Ou8jwJna+MU=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=cherry.de;
 Received: from PA3PR04MB11153.eurprd04.prod.outlook.com (2603:10a6:102:4ab::7)
- by GV4PR04MB11403.eurprd04.prod.outlook.com (2603:10a6:150:29a::16) with
+ by DU2PR04MB8533.eurprd04.prod.outlook.com (2603:10a6:10:2d4::21) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.14; Wed, 23 Sep
- 2026 10:17:37 +0000
+ 2026 10:41:29 +0000
 Received: from PA3PR04MB11153.eurprd04.prod.outlook.com
  ([fe80::6b02:c0eb:95a4:3c3d]) by PA3PR04MB11153.eurprd04.prod.outlook.com
  ([fe80::6b02:c0eb:95a4:3c3d%5]) with mapi id 15.21.0451.014; Wed, 23 Sep 2026
- 10:17:37 +0000
-Message-ID: <44f4e5bc-d59b-4345-a9cb-bedac8e30274@cherry.de>
-Date: Wed, 23 Sep 2026 12:17:36 +0200
+ 10:41:29 +0000
+Message-ID: <ec0f6709-aebc-473a-aa29-121819b6f97d@cherry.de>
+Date: Wed, 23 Sep 2026 12:41:28 +0200
 User-Agent: Mozilla Thunderbird
-Subject: Re: [docs] [PATCH v2 1/8] docs: give the root prompts a preamble
+Subject: Re: [docs] [PATCH v2 2/8] docs: copy only the command from a console
+ block
 To: twoerner@gmail.com, docs@lists.yoctoproject.org
 References: <20260922183249.2433345-1-twoerner@gmail.com>
- <20260922183249.2433345-2-twoerner@gmail.com>
+ <20260922183249.2433345-3-twoerner@gmail.com>
 Content-Language: en-US
 From: Quentin Schulz <quentin.schulz@cherry.de>
-In-Reply-To: <20260922183249.2433345-2-twoerner@gmail.com>
+In-Reply-To: <20260922183249.2433345-3-twoerner@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: VIXP296CA0037.AUTP296.PROD.OUTLOOK.COM
- (2603:10a6:800:36e::16) To PA3PR04MB11153.eurprd04.prod.outlook.com
+X-ClientProxiedBy: VIUP296CA0124.AUTP296.PROD.OUTLOOK.COM
+ (2603:10a6:800:350::9) To PA3PR04MB11153.eurprd04.prod.outlook.com
  (2603:10a6:102:4ab::7)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA3PR04MB11153:EE_|GV4PR04MB11403:EE_
-X-MS-Office365-Filtering-Correlation-Id: 53971492-9e15-4f73-4b38-08df195be405
+X-MS-TrafficTypeDiagnostic: PA3PR04MB11153:EE_|DU2PR04MB8533:EE_
+X-MS-Office365-Filtering-Correlation-Id: bb83535f-aa1c-4d48-9953-08df195f39a5
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: 
-	BCL:0;ARA:13230040|366016|23010399003|376014|1800799024|3023799007|10067099003|5023799004|56012099006|11063799006|4143699003|18002099003|22082099003;
+	BCL:0;ARA:13230040|376014|23010399003|366016|1800799024|4143699003|56012099006|11063799006|5023799004|10067099003|22082099003|18002099003|6133799003|3023799007;
 X-Microsoft-Antispam-Message-Info: 
-	zIXABSHl1g3/fg4w6jSBoDpp7bsZrCNb1pcTQuWFYhs7pTYQUFyhbFj9fzgQrLKZaWMSpwkqQDOhV1ejdxU3TIRx/17Gs8Dis7d8qXzHtUAvkxn4393ihnEaSEU7vmYZnnuhoEMuv426Lu5pe5zvKMOu710ZdroPib0glb8ZfOmmulcB1TqJG1D+aCW3T+VBWeqwY0IV1d/mnhpwhlvpabWFGgJJgnQNIiXOF6gZgWRpByCr0jlZSQgcteUKZPtukGTUA9ercrbHJgEcbfVt8vAujRR5Ut4QMeIC+7HvYmhCtA7yzU5n0LVEIbX96Sw8+pCgMr8Bt5V6myA30bXUAf8xOD1UTfVJ6FLFlyZk8QvmzcMNVOStotCLwmVq142hs+gSSxZtreyWP8EVSvu6XjKdwNcXnNBwgz07vs2A5IO50sPLP7IYJglnIJoxLvOxbRRZXBFtw8U8gRJy4X7wLFuAWYKO0SxuVc4TpHKkIzMWy80vqRshWgSHA1fRIHrFRwaMDzA6oB/8WRagVehL1bVvaSQZIPiJhwrcgz4qIPCmlKQ3KkZI7JZpxM3yxthpHZjR9BK+gaMKqqMHvaZnQ8tzTxHgEJqkjAw8I7Ll8+HHHrZva6ztMQIymdx4WjgesqtWktfmiQEgytnJo/MtOhvfaqRNikqbWLLMjCYwrQE=
+	ULGXt0o/+nitb8Zr/+DbxNBnNQLCx3Xadpv8iafKffnCiYkN5gnhf8mcHsGSQ81pXaU3JupMSYeBQsVbOLhc9SwO8tTxqK4Kh7VEOtGZu7Grd/4MwxGaxuzm8PZDHxFS4Nn7aZDrJw/K+WNxb1Fmz/9jFS8OIJbqF2TyurAVJgufm0wVkMVo2OeQ3JchQOgeByhxSjvs+lnF3E04uFMFJIEBNqC/iCdCxOSGHmD4Vsdlfp1lJTt0m/Jiae22Zy/tKwcHyRTm/EJUbrmZv6+Tv02kMrsuH5xCpdyIDXC9ks5XJ2He8BY42sdJqVAO6nCJMNZGuhU5aeR9vGv9er6c2dozdlM2aQGyzRm3UYf5JfgMun7RusiO2CzjEA4nqAKeh3TAxDsNTJUj0Gjn5EHy1W8x6qxYLJtLA/iqsHwDQQRMJLGeFZcs98UYEfgCPjqCw91fqrHC5ssBNw8tHEUTFFjFv9frKAgxXzEgfxCfIptGdgaxKOoX+r5WvET06ArY/NHRufK1OtIklyGaWWSqIvGmdKQP3rddSmdCOl5XBgc1A07N/l4byDQ8vNAS8YiLA2ypmWChOf+sNq9Mn3LvPqWktKT6q52ACXScRi+vSiw=
 X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA3PR04MB11153.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(376014)(1800799024)(3023799007)(10067099003)(5023799004)(56012099006)(11063799006)(4143699003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA3PR04MB11153.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(366016)(1800799024)(4143699003)(56012099006)(11063799006)(5023799004)(10067099003)(22082099003)(18002099003)(6133799003)(3023799007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?utf-8?B?OHA2Qi9jVW1PamR3SUVwWEJQM3J1VlZPYnE5Rml2V2MyL3VHbVpJN0pJYmhF?=
- =?utf-8?B?c3Nnclh5MFhCSlFibFZjc1hIcmN1OTdXYzAra0tramo0enZTMG5zdWlTY2NN?=
- =?utf-8?B?alBmUmw3U1k4TTNvVm1mdDl1TlFRMmd3OEJ1K2xCaXRYeWZnRzVPazBWcm9m?=
- =?utf-8?B?eXZCWXdaWCt3NE1SaGZVZEZtV2VBOWdLYXhwU2NXWWIwd2tCUU5JY21qZkVL?=
- =?utf-8?B?UGxBNHd1STVUbkRIS3B2ay9uVWV4bGhmZHkvMmtHTWhVOThQd1pNMG9ocjVW?=
- =?utf-8?B?OW9nR25jNFQwcURveFVGWkd2RTY3cHViT2R2WklqUFJodURJV2hQVG1VOVdv?=
- =?utf-8?B?dDVqSmNzdFc0NTROZ1l1cGZjQzdNd3RSWTJJa21RTFE3eCs5MDBwczF0UUpa?=
- =?utf-8?B?dm5lUm1qb0wwQ2hqM0hBZnFKQ0VDMWlsOFp4MSt2VGV0cllKYVRsbDlQRkRS?=
- =?utf-8?B?T09BRkt5MUpoTFRmenlYRkZVbTZiNnczeUlMMzhpdGRiUnBOcWtmblZTMWhq?=
- =?utf-8?B?U1E2S1B1MDdQRnozREZ5SHRNelZzRHVVYUtzMXJaTENPMFBqbGI5TTcxTVJv?=
- =?utf-8?B?RTc1VmRsRDVDUG5qOCsweTV5c2R0K1A0aVFLOVlodG1Yb1RnazVKeGVNOVdo?=
- =?utf-8?B?K00zSVdPS3hhZTk1ZldYL1BjcGhsaUJUQ211a2xvR2d1NU5tTUZkNTJYZU9l?=
- =?utf-8?B?bzdvSVM1U1MwS0JNOUt6RUxUdW1nYVFaai84cUM3QmE4bGV5bUJXblhraGM4?=
- =?utf-8?B?dDcxQ1dOWmJUQ1pvQjRoK2Q5ZTdaemZkYUhvTkxBSnV0UDJhM2o4c2w1blhL?=
- =?utf-8?B?MVdROHBRcUcySnk0REZ4amhYWXp6dFN2R1VaeHBFVlkxcmdBemZtQ1NxNE0w?=
- =?utf-8?B?U3FnYVRXeTZLaTMrODR3bDJPeFAya2llSUMxYXZXb0JYNjQvUDAwK0Jjdjg4?=
- =?utf-8?B?bGFNY2tsVHRja21uVnlOZW9FMmRXY2FOcTR5NGlKV29TQ1ExMENvZ2hSdnR4?=
- =?utf-8?B?VmdBQWtadDdLVlE5S0V4ZjAyVnVOdm5CbDB6c29WcU5aTHUzS2xXVXFZQ3B0?=
- =?utf-8?B?N0ZKSWJ1eXVHN2t3NFc3ZDhvVlRwcHd4VHYyOTI1c1lzUWtmdml3UklzaFFm?=
- =?utf-8?B?ekJYa1JoVXMwYkpiL1JZV1RYRERkTXhXRmdocWlTSFFxYkh5cC9JVWY0dDBn?=
- =?utf-8?B?MCtKaW84T0szVDBNVnlTL1pwQ0xmbWhaN2pRdHI5dlI2eUVQYUFvM0JVbjk5?=
- =?utf-8?B?TWp2QlRmaVA4NW9MVFFVWXU0U2VsRXVBaWVGeWNDd0V3TDJGK2dvU3cvelZY?=
- =?utf-8?B?cEdjb0pIRDVPR1ZhNGlxdkFoSmgrYVhYUXZQVFd5eWJYOFBiOEtpSEtJcDN1?=
- =?utf-8?B?eEhZek9zcTVJNGVYV3FIUFdRNEhaT2VIVWZYQTR6MXhERjN2aGNKVnJxR0Fu?=
- =?utf-8?B?azhDZlBXT0gzYWptS2MydXVwaGdBeVdHc2JiclNWTkU4Zi9JQnJZOFZhaTJE?=
- =?utf-8?B?clczcXpEZXF6NW1tdWpiWFB5dzJ4Q3dLbmk5TUYyU2NFVGNIZDQ3MTF1T2Ir?=
- =?utf-8?B?cks3UVJza3g4cWdIUjJrenB6dzJFMEhCTTU2Z0tJQnArSXl6UGxSZDAzb3Yv?=
- =?utf-8?B?bVZ0aEtFQ2xQQlA5cCtBbDJoeHd5VHBYQUQ0NFNsYXNBdU5RclNNTHpFNjVO?=
- =?utf-8?B?R1hJbFFYSXBDemNtMTM1Uy81cWNmbXpwNmFvU2JOejlBa2VTd29md1ZqdGFZ?=
- =?utf-8?B?KzkvNHViT2FXVEF2dnlTV0ZCeUlhUEkzeEI3ai9VamZvWTE3eUh1WjYyTHFE?=
- =?utf-8?B?a2VIbFcraG1KZyt1RFdiSG1qMzlYSHpReW84S2FWTjJBQVNIU3BnSDIvNUF2?=
- =?utf-8?B?cnZTSHpxV1BYN3lKaTRjWTlCWXgvc3hzVWlBRU5NampVdTAxT3I5dlZVcDd6?=
- =?utf-8?B?cnBxakh1eTVTWFZNVFlSd0doMHlzTC9ERFQ4M2pZc1ZSTFkwOFJkR2NpdCtQ?=
- =?utf-8?B?NlFvbWpSWmQxOThzdmlyK3NIalV1aWxXTGVJL1g5ZGZpSi9ocmU2TXBTNG4y?=
- =?utf-8?B?YklZaWJObHRzaHl1dWM4YzMxa2c4WW54TUZncm5ySkFmSDZ2WXZGb0lhUnhJ?=
- =?utf-8?B?dTV0bFJBb2xLN0lSSXhIU0FaR1JTYWVlbUNnOG9XTHZGTlFWQnAvaTFQWmZ3?=
- =?utf-8?B?TjhQME5qVXhWZ0hpZnRwNUFPVTNOeElOWHNjZnVqM3JvQU84dTROVDgwMFVJ?=
- =?utf-8?B?eS9qczhoYWJsbWZuNGhIMEZGTk9qeFVFNVMrUmxmNWRtZS9rMjhMTkphVEN1?=
- =?utf-8?B?eTJlbS9qYzNudTgrNWIyaDhWVmhzVkIzU1FwNFVUcWl6eTNZTkprZz09?=
+	=?utf-8?B?aVBxeVRtQ0pVeEc4RGJDekQrWE5vUHZaR2d5SFRYRmRjUlJBRFlSTU9RSjhH?=
+ =?utf-8?B?bVMzVmhLUTJuUXR6Q1poZVFSNy9tZjN3b2dsQWdHa1JrejgwcmFjNFgzK1Ax?=
+ =?utf-8?B?TlNHU1MrM29BODEySmZVRkVnclRnYTdZbHZHS0pyelMwZXovOTdGTnZzR3BC?=
+ =?utf-8?B?d2J2MEFYOXRpSmhTSUEzcnB6TldXbzNmSEJobzloMXFTMFBnbEdHbEozUCti?=
+ =?utf-8?B?QmE4U2ZwUE1tdjhub0lCL0RnZVBDMUo4OFVjZWNSU0xhV2RLNDBzQUxzT0NU?=
+ =?utf-8?B?Si9ZS0dwcDVCMkJ1YUNMdWJnM2R4SFhwblJkK2VuUFpnUVJUUGhCWk5XTjl2?=
+ =?utf-8?B?aG94d0wyVnJnWkFheFM2OW9GVWg0MjNJT1FTdGttSkRvSUh4NldoOE81Vmhv?=
+ =?utf-8?B?TFJueFhFQzFiZkhRaGZuR3U2UXQyUmNLWUZPRW1EcWdNVEMxZEdxNG5rOHRU?=
+ =?utf-8?B?QzlrYWUvL3kxenluTWhUbllYekU0cnBRL042RnBKRGhuQk1pVUxtbDV3UTRR?=
+ =?utf-8?B?M0dLZWdpSFl6Nkp4bXJRdFVIUE9adHdTVW9uRUJHK2t2ZStkUmZrY2RzcTJo?=
+ =?utf-8?B?TWpCTGFiR0dyU2c5V0p0VjJwZ0RQZWlqQzFHL0R4NVBkQXA2bmZOdkk1WkFV?=
+ =?utf-8?B?RmlWSytwQlBmbUJnbmxKODBldmF4MjVsaGFJbDRVR2pUR0FtVE8rZGVNRGEv?=
+ =?utf-8?B?WmlDamZrSHY4aXJ3U3VpL2R4N3Z0ZUNBTmhxNDFMOFBMbUZUNWVJTWhNUFZq?=
+ =?utf-8?B?N0JPV3hTMkJKZ0VJU0loN1dVMmEvNlpRTDhwMjYzaUFFMlErNEtWdm9pYWtq?=
+ =?utf-8?B?cTUya05xdzJ3VTd5MXpjVlZya01MUVFFdytJUDhjaEptdWdWRmFXcXpYdlZ2?=
+ =?utf-8?B?SFVLZk16ZHl1QWFtVmhoRnlHRkVsaHRoWDN1am5raTFWSXRKM3RpdVN0VUZ1?=
+ =?utf-8?B?U2R6clpVNDRhY0gwRm1neCtwc0hYZDRTNHdJSXpJdlNibDBTaUV1dkxSb0da?=
+ =?utf-8?B?T1FvTDlkZHNvTUdmNWZxOEMrSWVMdVZlUnN3aEhZVU5tQlVFeEtDbEt6SHAv?=
+ =?utf-8?B?bU04V0F1SnloNFhhLzRINVU3L0hkdjZqbFZMMUl6aU5LTDBIeXJsWFdSMHNO?=
+ =?utf-8?B?VEoyUWxzSXBmVUJKaSs4b2VkU3RXd0FycHlTdXJTQ3RUcjlQUlFjV3JKSklE?=
+ =?utf-8?B?Y1NFMEszS3NZSHNvZTlYbDFwTkl1YXlOYWYyNkR1UDVRbjUwLzFZeXFCaUFu?=
+ =?utf-8?B?K3dpSDQ3NkRTUlR1dkgydEZ5L1gyWk1PYXFvaHVzZzkxcUMrelowSnhMc2pv?=
+ =?utf-8?B?R2NRUUlOMlNaZlFRNUd4SnpFUXRtOWNTU2prbEc3UzQ0cTNtN282ZjFrOEtq?=
+ =?utf-8?B?YWd3QW5JRTUyYkw5dE16YkRWd0J4YTdsWi9JTS9hakJaSFl5OUFvbE9zcm9q?=
+ =?utf-8?B?azZXY0VET1lWV1R4SW4remlqeXQ3ZXphUzd5YkdkcXhSQnNQSW9mRS9UZGlI?=
+ =?utf-8?B?NTFidXdpVzMvQXBuMVZ2QlByd3hLdzFNS1JpRURJcDdtU0l4bDJWQjQ3ajh0?=
+ =?utf-8?B?MDFiQ09PNVhMRStqTEFWRytiWXk5VFIwb1NJRlczbUovbU50WE5sWlVYY0Y2?=
+ =?utf-8?B?REl4dXBCU04vVzhCdVhiSlJmU2hSNFVFcGNiVndzSkZpQk54NU1Ja05GaFZR?=
+ =?utf-8?B?NmhNd3QxZjc1Q3BzYWJ0QlUxb3lOcEFBRWl3d0h4bmRick1iLzg0Z3diZXpR?=
+ =?utf-8?B?eXRVTERwbEtWU1czQ2Uza1hTbWU0R3BWVE84WHNjcFVZaVZGZFl5YVY4SXlX?=
+ =?utf-8?B?ZUpqWXhSTExIUEdkbFJ2Zy9PQlVnNkxPeGhPOGNwMXFGTC8rbWt6TzJGMXFE?=
+ =?utf-8?B?K0l5Y2FvYWFZanFrYjM5b2Rvd0dwcDY2bzhlWEpUT2hFTDdXSDNXdkg5bita?=
+ =?utf-8?B?M2VjaWUxSXNucUxHbnQvNkRsWVlQd1BBL1lKdEljMW5uQ1krc3A0bmo1S3hD?=
+ =?utf-8?B?R3JPSDFPZ0EzampUSHo4VVhQM0MvTjNYL244dCs0MEZYejhpSXZEU3Q4YWNS?=
+ =?utf-8?B?NEZuQTQ5azRwVjIrRHV3R1dPalBrcThnd2R6WWZjbzN2ZHlodmkrMWdKWWUx?=
+ =?utf-8?B?dG1KaVM4NklhaW9mcHdxZVVyT0p1blFRUTRWbEp6cVlNNGs5cDMzZm5iNy9G?=
+ =?utf-8?B?MUlza0E5ME8rbSttS0dybXlSbkhuRWZueXdoVjRKcnZzazIrRlZBdGI5SFRW?=
+ =?utf-8?B?WVRmeW9xQmJMS0M3K3VnVnZ3V2xMOGs0S0tTQ1RINVphbVQ0aEJQakNYc252?=
+ =?utf-8?B?dzdHeTBRTkZZTWZjcW5TcWpFMDF3cEEyWUxXTmdCTUxROUFOUVBkQT09?=
 X-OriginatorOrg: cherry.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: 53971492-9e15-4f73-4b38-08df195be405
+X-MS-Exchange-CrossTenant-Network-Message-Id: bb83535f-aa1c-4d48-9953-08df195f39a5
 X-MS-Exchange-CrossTenant-AuthSource: PA3PR04MB11153.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Sep 2026 10:17:36.9728
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Sep 2026 10:41:29.1008
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: yOofvvOB+XHAnIpiQd4cJgXoTLGB1HomrdTYmBIqZXpPKfIfI+HFE8fkSE1d0HzEHVSysaE+owNHP1PffHmdYSu9G9pvC9p3VB0qnVlmUCU=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV4PR04MB11403
+X-MS-Exchange-CrossTenant-UserPrincipalName: egt6gSXTc30SNHAbqjm6YNk1IOhckcqW/OIfHn3Oz+3lnjrtIZzuQdG+rF2lyvdY+azkVehlcFQZhV2Rep1zamCt7SqSS/hXpXnehbI+iMk=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB8533
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 23 Sep 2026 10:17:50 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10601
+ <docs@lists.yoctoproject.org>; Wed, 23 Sep 2026 10:41:36 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10602
 
 Hi Trevor,
 
 On 9/22/26 8:32 PM, Trevor Woerner via lists.yoctoproject.org wrote:
-> A bare "#" starting a line is a root prompt, a comment and a line of
-> program output all at once, and nothing can tell them apart. Most root
-> prompts in the manuals already carry a preamble naming the machine, and
-> the stragglers are what make the distinction unreliable.
-> 
-> Add the preamble the others already use: the machine the surrounding
-> steps name, or a generic "machine" where they name none.
+> The copy button matches the literal "$ " prompt, so on a block prompted
+> any other way it matches nothing and falls back to copying every line,
+> prompt and output included. Match a pattern covering each prompt shape
+> the manuals use instead, so the button gives the command alone whatever
+> the prompt looks like.
 > 
 > AI-Generated: codex/claude-opus 5 (xhigh)
 > Signed-off-by: Trevor Woerner <twoerner@gmail.com>
 > ---
 > changes in v2:
-> - rebased on master-next
-> - the SystemTap example uses a generic root@machine prompt; the two
->    kernel-dev ones keep qemux86, which the surrounding steps name
+> - dropped the stylesheet change, so a mouse selection keeps the output
+> - the comment now says this governs the copy button only, and only
+>    reaches a block the console lexer has read
 > ---
->   documentation/kernel-dev/common.rst    | 4 ++--
->   documentation/profile-manual/usage.rst | 2 +-
->   2 files changed, 3 insertions(+), 3 deletions(-)
+>   documentation/conf.py | 28 +++++++++++++++++++++++++++-
+>   1 file changed, 27 insertions(+), 1 deletion(-)
 > 
-> diff --git a/documentation/kernel-dev/common.rst b/documentation/kernel-dev/common.rst
-> index 2a65055e2a44..fe2e42265f9f 100644
-> --- a/documentation/kernel-dev/common.rst
-> +++ b/documentation/kernel-dev/common.rst
-> @@ -722,7 +722,7 @@ the ":ref:`kernel-dev/common:getting ready to develop using ``devtool```" Sectio
+> diff --git a/documentation/conf.py b/documentation/conf.py
+> index 48d28a686807..313cabec05bb 100644
+> --- a/documentation/conf.py
+> +++ b/documentation/conf.py
+> @@ -242,4 +242,30 @@ intersphinx_mapping = {
+>   # -- sphinx_copybutton configuration -----------------------------------------
 >   
->         .. code-block:: none
->   
-> -         # dmesg | less
-> +         root@qemux86:~# dmesg | less
->   
->         You should see
->         the results of your ``printk`` statements as part of the output
-> @@ -878,7 +878,7 @@ Section.
->   
->      .. code-block:: none
->   
-> -      # dmesg | less
-> +      root@qemux86:~# dmesg | less
->   
+>   # sphinx-copybutton configuration
+> -copybutton_prompt_text = "$ "
+> +# This governs the copy button only. A mouse selection is a separate
+> +# mechanism and takes whatever the theme leaves selectable, which is the
+> +# command and its output; Sphinx already excludes the prompt itself.
+> +#
+> +# It also only reaches a block the console lexer read, since that is what
+> +# marks a prompt as a prompt.
+> +#
+> +# Strip the prompt from a copied line wherever the prompt cannot be
+> +# confused with content. The pattern is not scoped to console blocks, so
 
-This file is also missing a
+You say above that it only reaches blocks the console lexer reads and 
+now you say it's not scoped to console blocks, this is confusing.
 
-root@machine:~# cd /usr/src/kernel
-root@machine:/usr/src/kernel# make scripts
+> +# every alternative has to stay safe inside a BitBake or configuration
+> +# example as well; measured over the built manuals, each one matches only
+> +# lines the lexer itself marks as a prompt.
+> +#
+> +# A bare "#" is deliberately absent. It opens a root prompt, a comment and
+> +# a line of program output alike, and nothing distinguishes them - which is
+> +# why the root prompts are given a preamble before this is switched on.
 
-I'm assuming.
+Ask your AI to be less verbose please, or edit the comments by hand.
 
-In any case,
+In 10s I could come up with:
 
-Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
+# Only applies to the copybutton. Mouse selection is not impacted.
+# <insert whatever is correct for the pattern scope>
+# No rule for # as it can denote a comment, root prompt or command output.
 
-Thanks!
+> +copybutton_prompt_text = "|".join((
+> +    r"^(?:\S+[@:]\S*)?\$\s+",   # "$ ", and "user@host:~$ "
+
+Am I right that (?:) is just to say "do not capture the content" (c.f. 
+https://docs.python.org/3/library/re.html#regular-expression-syntax). Is 
+it *really* necessary, I find that it adds unnecessary complexity for a 
+human to maintain this regexp.
+
+EDIT: sigh... copybutton is parsing with Javascript according to 
+https://sphinx-copybutton.readthedocs.io/en/latest/use.html#using-regexp-prompt-identifiers 
+but regex101.com says the same (non-capturing group).
+
+> +    r"^\S+[@:]\S*#\s+",         # "root@qemux86-64:~# ", a root prompt
+
+And then you could simply merge the two first regexp into one:
+
+r"^\S+[@:]\S*[#\$]\s+"
+
+> +    r"^[A-Za-z]:\\[^>]*>\s*",   # "C:\WINDOWS\system32>", cmd.exe
+
+Have not used Windows in 15 years so cannot say whether this is 
+appropriate. In any case, I'm not sure we'll have more examples than we 
+have today for Windows as only the WSL part would use that, so fine with me.
+
+> +    r"^DISKPART>\s*",           # diskpart prints a prompt of its own
+> +    r"^pydevshell>\s+",         # bitbake -c pydevshell
+
+question: what happens to the one and only example we have of commands 
+to run in a python interpreter? (remove the leading #, it's just so mail 
+clients don't interpret this as a quote of a quote of a quote)
+
+# >>> from gi.repository import GLib
+# >>> GLib.get_host_name()
+
+> +))
+> +copybutton_prompt_is_regexp = True
+> +copybutton_only_copy_prompt_lines = True
+
+This is the default, but I'm guessing it doesn't hurt to make it explicit.
+
+> +copybutton_remove_prompts = True
+
+This is the default, but I'm guessing it doesn't hurt to make it explicit.
+
+Cheers,
 Quentin
 
