@@ -1,106 +1,133 @@
-Return-Path: <twoerner@gmail.com>
+Return-Path: <adrian.freihofer@siemens.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9C507C98321
-	for <webhook@archiver.kernel.org>; Thu, 24 Sep 2026 17:29:29 +0000 (UTC)
-Received: from mail-ua2-f12.google.com (mail-ua2-f12.google.com [74.125.226.204])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.3772.1790270969173303134
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0A406C98321
+	for <webhook@archiver.kernel.org>; Thu, 24 Sep 2026 19:29:51 +0000 (UTC)
+Received: from mta-64-228.siemens.flowmailer.net (mta-64-228.siemens.flowmailer.net [185.136.64.228])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.6672.1790278183695162612
  for <docs@lists.yoctoproject.org>;
- Thu, 24 Sep 2026 10:29:29 -0700
+ Thu, 24 Sep 2026 12:29:45 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20251104 header.b=VFfbL4l4;
- spf=pass (domain: gmail.com, ip: 74.125.226.204, mailfrom: twoerner@gmail.com)
-Received: by mail-ua2-f12.google.com with SMTP id a1e0cc1a2514c-97ea5bd53b4so43857241.0
-        for <docs@lists.yoctoproject.org>; Thu, 24 Sep 2026 10:29:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790270968; x=1790875768; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=evrITKAmrmrAZEbz6xgdJyqZke7wj7FiYh0+udie8Uw=;
-        b=VFfbL4l4vzWmiajhQFg3ViQloayCV8A2a03NpXftTloP90rHerJED7HA3i0OXPtlap
-         rCfvnqTS1CnAUWCWa8ZkP0dTcbebOW6REMezRj23YjdgouAt02k2CnAg4QlZ96nl7euD
-         c2mgQ1j1wvPik47fzQhg1YDOyLFNWtq1qRnSP7vByC3kw6+uZt/4sJadEf8V950DAXal
-         pjq/TEbPslqhRSlOWxwgpTAv/l2GpuyvZ4xJKRXXWW8aK8BF6gfDBAt40SZnho0v20lG
-         RCp9QtgjQqhNYeXeg+48BTWZK8HMX8Bz+loR+oYI34itsXbVSsXitiorlpQbpHz7LfOW
-         MJ0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790270968; x=1790875768;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=evrITKAmrmrAZEbz6xgdJyqZke7wj7FiYh0+udie8Uw=;
-        b=mqTHuZGQd6y4FnMSs+3QbMR3RQ2uNI2vnaqoFsyBzr+d830SRKM3hCh9wlhmjEDuyR
-         dpegwUPuCD6Gn7mKYjhxtySBU2SNeG6DkQmfXwjiWKCfZCx8dJJ1LHy+FVbPYRzwl4zO
-         oFnk3DFw0glcAg0tvmmJrSHtaiza6pl2iSwnqqEmKVWT9aC5WsrD89IoIdfk76wUnaAU
-         sJxafUJKt9SWUJ1VhKDmxxN/vVRfMldDyzDWvl478jeHog6GMTaIMjqacOLIUUHYrqmG
-         p+E32LGx10cRPwqzaa87+kIAhbcJZCHsyOtJKQEUGedP9P+sQRgyZHiGi4MlTWxIbuPr
-         edMA==
-X-Gm-Message-State: AFuF++mhvM3GrGqkXDB6JyEub0mE2kT+pIAbpk3npL1LRk/09TJBz72v
-	IrsvWjglR3sxTFCLRLIj0uFEmrZ4BrbEXI/LAWRcSYdaUVZZtFvmO2WrnASTWQ==
-X-Gm-Gg: AYBFou2Esj/w9RYjnwOrDJYt3ogZwWQTzahn++WO3B+I430SqhyS8zIy3a8iooICHyz
-	xEppPHOdABHf+xh+VJnCqGj1GYuIOqNgEaQ3Kv8V80/Zbxr/w6Nd+HQGv1N862I+P0hMmvk2sLw
-	cOpteqO2Z+pBuYCSPbNaRlCIeRX97iNh2MY/LX10Y1J7u6xHXRmPU4Bhm+SQRHij1siraz5cE4k
-	9Is3/rkN7Ep9pK+NkFPCSJ41hh08mJh2Hqyv7oRdL6TDDjCInLzUY6KqdjH3aS6l0YlL+r1Hh58
-	4fBe+Uo3B5diezEMfl0+I5Fgv9tZV9QKqLQ51+Rp4rPdnF1IdZByR2FwmLHaO7nqTJqWX6kV4zJ
-	v6ui+LaQGbiCBSwuAiaQVURCeBfAptM09f9nbyncxy1mhQHwYjYuWIoETcLTeZ2/mgxvX2gtvS7
-	DTUKkfxC1yutb25AiPOiZPR+k9iP2DOtw0LXFwQCjeWeWu9fDKqueG6o11pPF7+9PW5an/shick
-	DuTliON9yF1FQQpbFS96b/CW5hnt5KvLKqnnrRw
-X-Received: by 2002:a05:6102:a47:b0:7a5:4fe2:b380 with SMTP id ada2fe7eead31-7af1eff6903mr1555033137.26.1790270967878;
-        Thu, 24 Sep 2026 10:29:27 -0700 (PDT)
-Received: from localhost.localdomain (pppoe-209-91-167-254.vianet.ca. [209.91.167.254])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-98530725838sm1797974241.0.2026.09.24.10.29.26
-        for <docs@lists.yoctoproject.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Sep 2026 10:29:27 -0700 (PDT)
-From: Trevor Woerner <twoerner@gmail.com>
+ dkim=pass header.i=adrian.freihofer@siemens.com header.s=fm1 header.b=gIznnC8I;
+ spf=pass (domain: rts-flowmailer.siemens.com, ip: 185.136.64.228, mailfrom: fm-1329275-20260924192940286903c087000207df-2xzunj@rts-flowmailer.siemens.com)
+Received: by mta-64-228.siemens.flowmailer.net with ESMTPSA id 20260924192940286903c087000207df
+        for <docs@lists.yoctoproject.org>;
+        Thu, 24 Sep 2026 21:29:40 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm1;
+ d=siemens.com; i=adrian.freihofer@siemens.com;
+ h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc:References:In-Reply-To;
+ bh=D+gFtBvzro3mpYifrYBSS5YMK6g+MRuokJQ8tkRrmrA=;
+ b=gIznnC8IxCjYdaBkkvEwkN935Rqm8Tl3dELDk4Skznv2+LNWorBBwYc3kVW+Db+TSg5UXq
+ 5N8vrN6oSqDiWDJTGNMN5u19Gtxph81ttugYNPwF9p0RHiloX6elpGEsUm3qhmk0IHcXuJe/
+ 3Giws/Pxh40IyQe3lFrh+qkrL7rSZZ+LBoab+vy/jwXNaBtJU3JELR7qUp+uYbb2ct/YLv9U
+ QPUhfqay4sbUWQt1Vkm/uq4VVnEDaK1c3PA8zpF4a0ezYwHJfrpZCAIgzRFt6z0pdSaJY7Rj
+ YrCsGo582gGKzcHBZlxtnCdPuoY8ZWZc+JyufnDtcOWwOb9K3CGeTHlw==;
+From: AdrianF <adrian.freihofer@siemens.com>
 To: docs@lists.yoctoproject.org
-Subject: [PATCH v3 10/10] dev-manual: indent a list continuation so the code block ends
-Date: Thu, 24 Sep 2026 13:28:53 -0400
-Message-ID: <20260924172853.2665062-11-twoerner@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260924172853.2665062-1-twoerner@gmail.com>
-References: <20260924172853.2665062-1-twoerner@gmail.com>
+Cc: Adrian Freihofer <adrian.freihofer@siemens.com>
+Subject: [PATCH v2 3/5] conf.py: support mermaid plugin
+Date: Thu, 24 Sep 2026 21:29:05 +0200
+Message-ID: <20260924192929.907566-4-adrian.freihofer@siemens.com>
+In-Reply-To: <20260924192929.907566-1-adrian.freihofer@siemens.com>
+References: <20260924192929.907566-1-adrian.freihofer@siemens.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Flowmailer-Platform: Siemens
+Feedback-ID: 519:519-1329275:519-21489:flowmailer
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 24 Sep 2026 17:29:29 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10633
+ <docs@lists.yoctoproject.org>; Thu, 24 Sep 2026 19:29:51 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10636
 
-The second line of the enumerated item is not indented, so the item ends
-after its first line and the "::" opens a literal block at the top level.
-Everything more indented then belongs to it: the assignment, the paragraph
-explaining what packageformat may be, and the note beneath them. They
-render as preformatted text inside the code box, and the note loses its
-admonition styling.
+From: Adrian Freihofer <adrian.freihofer@siemens.com>
 
-AI-Generated: codex/claude-opus 5 (xhigh)
-Signed-off-by: Trevor Woerner <twoerner@gmail.com>
+Add the sphinxcontrib-mermaid extension so ".mmd" Mermaid diagrams can
+be included directly via the "mermaid" directive and rendered
+client-side, without pre-rendering and committing image files.
+
+This adds sphinxcontrib-mermaid as a new Pipfile/build dependency. No
+other tooling (e.g. Node.js, mermaid-cli/mmdc) is required on the build
+server: with the default "raw" output format, diagrams are shipped as-is
+in the HTML and rendered in the reader's browser via mermaid.js, loaded
+from a CDN.
+
+Without Pipenv, a plain venv also works, e.g.:
+
+    python3 -m venv .venv
+    .venv/bin/pip install sphinx sphinx-rtd-theme sphinx-copybutton \
+        sphinxcontrib-mermaid sphinxcontrib-svg2pdfconverter pyyaml
+
+Also tweak mermaid_height and the diagram font in theme_overrides.css
+to fix distorted/clipped diagram rendering.
+
+Signed-off-by: Adrian Freihofer <adrian.freihofer@siemens.com>
 ---
-changes in v3:
-- back in the series: applied on 2026-09-22, then unapplied by the
-  master-next rewind
----
- documentation/dev-manual/packages.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ documentation/Pipfile                           |  1 +
+ documentation/conf.py                           |  6 ++++++
+ documentation/sphinx-static/theme_overrides.css | 17 +++++++++++++++++
+ 3 files changed, 24 insertions(+)
 
-diff --git a/documentation/dev-manual/packages.rst b/documentation/dev-manual/packages.rst
-index 8cd90b9f25b1..380d806be041 100644
---- a/documentation/dev-manual/packages.rst
-+++ b/documentation/dev-manual/packages.rst
-@@ -561,7 +561,7 @@ to use. In your configuration, you use the
- variable to specify the format:
+diff --git a/documentation/Pipfile b/documentation/Pipfile
+index f415cbf3f..5fcd8b9c3 100644
+--- a/documentation/Pipfile
++++ b/documentation/Pipfile
+@@ -12,6 +12,7 @@ sphinx = "*"
+ sphinx-rtd-theme = "*"
+ pyyaml = "*"
+ sphinx-copybutton = "*"
++sphinxcontrib-mermaid = "*"
+ # SVG to PNG only supported since 2.0.0
+ sphinxcontrib-svg2pdfconverter = ">=2.0.0"
  
- #. Select the desired package format as follows from your
--:ref:`structure-build-conf-local.conf` or distro :term:`configuration file`::
-+   :ref:`structure-build-conf-local.conf` or distro :term:`configuration file`::
+diff --git a/documentation/conf.py b/documentation/conf.py
+index 48d28a686..c1b418499 100644
+--- a/documentation/conf.py
++++ b/documentation/conf.py
+@@ -50,10 +50,16 @@ extensions = [
+     'sphinx.ext.extlinks',
+     'sphinx.ext.intersphinx',
+     'sphinx_copybutton',
++    'sphinxcontrib.mermaid',
+     'sphinxcontrib.rsvgconverter',
+     'yocto-vars'
+ ]
  
-       PACKAGE_CLASSES ?= "package_packageformat"
++# Let Mermaid diagrams keep their natural aspect ratio (based on each
++# diagram's own width/height) instead of being squeezed into the default
++# fixed 500px height, which visibly distorted/shrank taller flowcharts.
++mermaid_height = "auto"
++
+ # current_version = "dev"
+ # bitbake_version = "" # Leave empty for development branch
+ # Obtain versions from poky.yaml instead
+diff --git a/documentation/sphinx-static/theme_overrides.css b/documentation/sphinx-static/theme_overrides.css
+index f9e067239..0b2be9e01 100644
+--- a/documentation/sphinx-static/theme_overrides.css
++++ b/documentation/sphinx-static/theme_overrides.css
+@@ -171,3 +171,20 @@ section#welcome-to-the-yocto-project-documentation p.caption {
+     }
  
+ }
++
++/*
++ * Mermaid diagrams are rendered inside a <pre class="mermaid"> element, so
++ * they otherwise inherit this theme's monospace "pre" font, and some of
++ * Mermaid's edge labels end up keeping their default 16px font size instead
++ * of the larger size configured in the diagrams themselves. Force a
++ * consistent, larger, non-monospace font so label text isn't clipped by a
++ * too-small measured bounding box.
++ */
++.mermaid,
++.mermaid .edgeLabel,
++.mermaid .edgeLabel p,
++.mermaid .nodeLabel,
++.mermaid .nodeLabel p {
++  font-family: Helvetica, Arial, sans-serif !important;
++  font-size: 20px !important;
++}
 -- 
-2.50.0.173.g8b6f19ccfc3a
+2.55.0
 
 
