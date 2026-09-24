@@ -2,138 +2,113 @@ Return-Path: <twoerner@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2C71FC98321
-	for <webhook@archiver.kernel.org>; Thu, 24 Sep 2026 15:55:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 06397C98321
+	for <webhook@archiver.kernel.org>; Thu, 24 Sep 2026 15:55:46 +0000 (UTC)
 Received: from mail-ua2-f43.google.com (mail-ua2-f43.google.com [74.125.226.235])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.1686.1790265307000927163
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.1687.1790265344056218576
  for <docs@lists.yoctoproject.org>;
- Thu, 24 Sep 2026 08:55:07 -0700
+ Thu, 24 Sep 2026 08:55:44 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20251104 header.b=UBOLJiZN;
+ dkim=pass header.i=@gmail.com header.s=20251104 header.b=eWYhwj7p;
  spf=pass (domain: gmail.com, ip: 74.125.226.235, mailfrom: twoerner@gmail.com)
-Received: by mail-ua2-f43.google.com with SMTP id a1e0cc1a2514c-97e7c62dde3so727249241.3
-        for <docs@lists.yoctoproject.org>; Thu, 24 Sep 2026 08:55:06 -0700 (PDT)
+Received: by mail-ua2-f43.google.com with SMTP id a1e0cc1a2514c-98514b4115eso669241.1
+        for <docs@lists.yoctoproject.org>; Thu, 24 Sep 2026 08:55:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790265306; x=1790870106; darn=lists.yoctoproject.org;
+        d=gmail.com; s=20251104; t=1790265343; x=1790870143; darn=lists.yoctoproject.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=+OluqF5YLiGGtqgTD6F+/xoJjWnilE+OPROJenSTozA=;
-        b=UBOLJiZNEVZb2i+7A2aRQYVLdke4llF4M9msWAPaQP5N4bKJjhvtpJ5twRZr8yp/T6
-         voWnIoKZm1eMzTaCe3osukVoYH2IWLgRlMwgFOVDsQfUH/SIqSoY04d53vyO35Q9lgrg
-         EMSqP2YUTK6thkqbifrAXvXGd3gsAaYchgkdxU4cFFYITUyzqVL0Zi8Deq+jomQkpXrr
-         suTmvAjxJS7Cviel4GQYvk28KDmO8NqMw3A47DM4pB2MhdPSuzG3ls27OUKRkKAWUNYs
-         Z/TiPcBGf9IMTyjzEP9C/Nl5a848doSDQxVlBa5JPeDpFuONo0492M6JCm0DxK4MynOi
-         jXfA==
+        bh=E5IMQRRnjpHwdt3ha3GXI1tMB7gpYSmNnmrSSCBGmBk=;
+        b=eWYhwj7ptjjtkr+mcMakY0Q9sHTPH9SZ5//9oQVgkRrjJxy0L0pbhQvnDoQpXNR6KC
+         wNleRK66fc2SxndiSfaldYoxzl+xfRclmQ8+fGt1dFtCe0M/8Z1OfoJd+oUTUhzm01MN
+         KgcaDtXyPaPm21O9uBQ7hxn/UzJKBDrnDsgk3betpUtFvk6pTSLNc6ON+Yc3AsVE5rBv
+         y1M4kFl/CacBW0IJdH4c5ZRO3qhP8Ahp6eFUJoU5eymbdZ1obAQ5W5dpw+maiYeGiOq6
+         llluAiwloUcZhGk+l+MYZdCxP2dH+oGHi7vsicajSyNm4FajLLAzQxA0VF5cLTN2pzAp
+         MVpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790265306; x=1790870106;
+        d=1e100.net; s=20260707; t=1790265343; x=1790870143;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=+OluqF5YLiGGtqgTD6F+/xoJjWnilE+OPROJenSTozA=;
-        b=hA8yHnm9h4+HxTOaJi2tUYTgEDuyy3qBn0slE4Wg5JxQS01aU3FSLuJjvjsmVXMbZK
-         CeshjzyHYfVbfcBTSRhijzKp4fSHAeCNY8x+M+O/qNl2FWi3Ie/bZ0SC2TskAoZhFLI4
-         3lgp8VMVM2YQmxkPWuMKLZjXy1cJ11N07wbXfNiIcuVFfPeP92QwymQgTKRj6GidUFQ9
-         yTRHG9ibb5qf4l9hNoFSRIxGpXz5VX3KJmBRDbP6FtMau2HXdbY/7+NsdiiJ5YnXnMFx
-         j92iqWnSp723Lhs0ls2IMgOYWEYRxp7IXndg5/AlAq0jh9LmI22sBy5IGydZuUKmWcMi
-         HTTA==
-X-Gm-Message-State: AFuF++kzakpTNNlzCDwTg9LNgFtFA+09XoQ6mGnw8m+Zks2d099H7A2c
-	pj/q7uMSUG7ifkvg5WrtC9O08V+7ee0rOPpMS9cUfbmfWtqaa3CF8l8i
-X-Gm-Gg: AYBFou0mITAwwS6xW/VomSCYQRrPriD9eEYwKLyH9oynQcPnBC69OaBrEYaGNOniNGq
-	Vo4P1OSSpimsyMN6cGAQ4EyXisdz1JNHQd3SIf7camEWoW8CaVsbDD7i1ds7SX7CQlJfwfvAmFx
-	6oN8nUZQOq1luoO3mX/5mpjmwNPkaHTXs+sCuzmQUD4evmWMTwKAHEQdJfkSwe9x8nxlMDa8K+z
-	C6buDeMDw31OhOUXScCG8Pw0PG08TcIoAp8tA2djGF2wB9CkRHsW82C+M03f8aH08c/TTIaAtBO
-	bNsJxTqnrCNTqlxkVx5bgWQjRK14Zl4vdQR4/P8IpTLdHYqyszPYGaNnVeHGvBSDh0K8UARH6O3
-	sI9bBMm9QHhMDvUk3SlnFFEbLBpFT+Y8iZsGpoyyBJZ3qU/NmEg2Li6r/I9+5foZQBDxICBQs4j
-	1TuG4eKEwXn/AAIhKlyixULd6O251S6bj1XwbBh+z4BhUPO1R4ZGnTtEMNfkFZTJUwRCDrcKtgq
-	Kz2SiB9RQWMFhZ44SFaVMptowKG1k3asbadwzOU
-X-Received: by 2002:a05:6102:358d:b0:7a1:f7d2:e843 with SMTP id ada2fe7eead31-7af1e9f2334mr1150163137.19.1790265305877;
-        Thu, 24 Sep 2026 08:55:05 -0700 (PDT)
+        bh=E5IMQRRnjpHwdt3ha3GXI1tMB7gpYSmNnmrSSCBGmBk=;
+        b=w53DXeIxbfDVrDQybxlmUv0uF0PUDQKSo6WDeX2ou/befSBTgeTsxSUTwLblcJ63GQ
+         l6Z120d/1qIoq7KSBCwbVBu0ThOghZO4IsBIXwk2uJTXKFNxh+kou+edpqswaaQAzA/7
+         qSFmqJ583dHKuRIQloFDQfcGpxI2gr/bJrrySN19YFbDJVk5KtVfE9QkpSlxKlnTLren
+         zEX9VgH5p8VFxnavF7PXfg612G7A/3LC5V7CjlYB3JGTxRfDktIL9o4FpNz2m4BEgJwh
+         YQSn4MXUrYsmbm26VraD7BTbXTZCf/TdaEljtINTi1qOPpXx6Dv/KMlFzYvJJMl7nylu
+         wlAA==
+X-Gm-Message-State: AFuF++m6Q95EMD9OI1mlZUxrZ/JaBi4RZScCofVv6KqkP2+h3NJh0gz/
+	1Ugl56czZV72vTl9Mgpn/ysqEvDRJw1UG3oCu0IRa0k3LI3RTL461Zpg
+X-Gm-Gg: AYBFou0ClofkGVNKye5WK6IpjMjEBKi57oMF9XQJ7TE6ghYKOZYZ5MNKlGDLKlFI/BD
+	rZjUudoIzB6FVXR5k68fzF1xqFyVnnHMfwcma2l3F7thsuRC7cbuvyaKv6iaymNI6DJyeTJGS/+
+	naUFCEnsXw1sNxJqGZj6ZErQ+QdHDt+oMILINTAy9KKW4o3u+EpZs1kAPqIQ5mXSeJcEIxQo3+u
+	/9UJdWbK3RHJFMxB+jkJB7Aj7UhUhyXuAchmJkOhZZ+m1su4Qggekro54kDGL48lVEyuicx/f0Z
+	8tGPd9k0eZo9dfNNI+C+3XzN/X6KnZNEAnsC0A5y1Fan1MXXcXfqcGNnDmb+tqfHC4OAqpNwwmL
+	z18uZkJ23tY+2RFLpKyX0BLes4KiWB0TPBQ0qj/TueosMBoUQso5DQgavweVF5p1to87a8wm0dz
+	QiVgRamPtvvaK0HZswrTRdy9VwcG5B5JLGkardd9uGE3yPJDG02YyzH2FogqooJPRcVJp6Bb/Zl
+	dzo2cF7c6/+UJYC7YV4l+0Qse92a7qoyxskmJFW
+X-Received: by 2002:a05:6102:61c4:b0:7a7:b6a:b022 with SMTP id ada2fe7eead31-7af38bbded1mr753312137.22.1790265342994;
+        Thu, 24 Sep 2026 08:55:42 -0700 (PDT)
 Received: from localhost.localdomain (pppoe-209-91-167-254.vianet.ca. [209.91.167.254])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-7abf5c6d7b2sm8954667137.8.2026.09.24.08.55.04
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5c9f04c05b3sm7707418e0c.6.2026.09.24.08.55.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Sep 2026 08:55:04 -0700 (PDT)
-Date: Thu, 24 Sep 2026 11:55:02 -0400
+        Thu, 24 Sep 2026 08:55:42 -0700 (PDT)
+Date: Thu, 24 Sep 2026 11:55:40 -0400
 From: Trevor Woerner <twoerner@gmail.com>
 To: Quentin Schulz <quentin.schulz@cherry.de>
 Cc: docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH v2 8/8] ref-manual: put the ARCHIVER_MODE comments
- on their own lines
-Message-ID: <arVH1uMcpgStP9Yu@localhost.localdomain>
+Subject: Re: [docs] [PATCH v2 6/8] docs: remove real accounts from the
+ examples
+Message-ID: <arVH_CL40IlR7ZY_@localhost.localdomain>
 References: <20260922183249.2433345-1-twoerner@gmail.com>
- <20260922183249.2433345-9-twoerner@gmail.com>
- <81ce3fb5-55c9-4b50-abea-aa0b1306bccd@cherry.de>
+ <20260922183249.2433345-7-twoerner@gmail.com>
+ <8c5111cf-4018-4e01-9043-b4c567091d75@cherry.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <81ce3fb5-55c9-4b50-abea-aa0b1306bccd@cherry.de>
+In-Reply-To: <8c5111cf-4018-4e01-9043-b4c567091d75@cherry.de>
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 24 Sep 2026 15:55:16 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10618
+ <docs@lists.yoctoproject.org>; Thu, 24 Sep 2026 15:55:46 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10619
 
-On Wed 2026-09-23 @ 01:09:11 PM, Quentin Schulz wrote:
+On Wed 2026-09-23 @ 01:02:05 PM, Quentin Schulz wrote:
 > Hi Trevor,
 > 
 > On 9/22/26 8:32 PM, Trevor Woerner via lists.yoctoproject.org wrote:
-> > BitBake has no inline comments. A "#" after a value is not stripped and
-> > does not end the statement: the parser simply fails to match the line, so
-> > each of these varflag examples would be rejected outright if copied into
-> > a configuration file.
+> > Examples across the manuals carry the account names of the people who
+> > wrote them, in home directory paths and in shell prompts that also
+> > name a machine. Use "/home/user" and a bare "$", which is what the rest
+> > of the manuals already do.
 > > 
-> > Move each explanation to the line above the setting it describes, which
-> > parses and reads the same.
+> > The autobuilder's own service account is left alone: the paths containing
+> > it are about autobuilder output rather than about somebody's machine.
 > > 
 > > AI-Generated: codex/claude-opus 5 (xhigh)
 > > Signed-off-by: Trevor Woerner <twoerner@gmail.com>
 > > ---
 > > changes in v2:
-> > - the srpm varflag is no longer in this block, having been removed
-> >    upstream in d5216e3fd4be
+> > - rebased on master-next; no other change
 > > ---
-> >   documentation/ref-manual/variables.rst | 21 ++++++++++++++-------
-> >   1 file changed, 14 insertions(+), 7 deletions(-)
-> > 
-> > diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-> > index 8a9bd9075843..0d7069433bf2 100644
-> > --- a/documentation/ref-manual/variables.rst
-> > +++ b/documentation/ref-manual/variables.rst
-> > @@ -158,13 +158,20 @@ system and gives an overview of their function and contents.
-> >         original source, configured source, and so forth by employing the
-> >         following variable flags (varflags)::
-> > -         ARCHIVER_MODE[src] = "original"                   # Uses original (unpacked) source files.
-> > -         ARCHIVER_MODE[src] = "patched"                    # Uses patched source files. This is the default.
-> > -         ARCHIVER_MODE[src] = "configured"                 # Uses configured source files.
-> > -         ARCHIVER_MODE[diff] = "1"                         # Uses patches between do_unpack and do_patch.
-> > -         ARCHIVER_MODE[diff-exclude] ?= "<file> <file> ..."    # Lists files and directories to exclude from diff.
-> > -         ARCHIVER_MODE[dumpdata] = "1"                     # Uses environment data.
-> > -         ARCHIVER_MODE[recipe] = "1"                       # Uses recipe and include files.
-> > +         # Uses original (unpacked) source files.
-> > +         ARCHIVER_MODE[src] = "original"
-> > +         # Uses patched source files. This is the default.
-> > +         ARCHIVER_MODE[src] = "patched"
-> > +         # Uses configured source files.
-> > +         ARCHIVER_MODE[src] = "configured"
-> > +         # Uses patches between do_unpack and do_patch.
-> > +         ARCHIVER_MODE[diff] = "1"
-> > +         # Lists files and directories to exclude from diff.
-> > +         ARCHIVER_MODE[diff-exclude] ?= "<file> <file> ..."
-> > +         # Uses environment data.
-> > +         ARCHIVER_MODE[dumpdata] = "1"
-> > +         # Uses recipe and include files.
-> > +         ARCHIVER_MODE[recipe] = "1"
+> [...]
+> > diff --git a/documentation/dev-manual/layers.rst b/documentation/dev-manual/layers.rst
+> > index 185a63feb700..a36f849a0c3f 100644
+> > --- a/documentation/dev-manual/layers.rst
+> > +++ b/documentation/dev-manual/layers.rst
+> [...]
+> > @@ -958,7 +958,7 @@ above:
+> >   #. Run the script directly with no options::
+> > -      alex@Zen2:/srv/work/alex/my-build$ meta-alex/setup-layers
+> > +      $ meta-alex/setup-layers
 > 
-> It probably is also for the best to avoid long lines wherever we can. I
-> personally would add a newline before each new comment so it is easier on
-> the eye but that's just a matter of taste.
+> No, the path is known there and is important. If you prefer, you can modify
+> /srv/work/alex/meta-alex all over the file to something that works better
+> for you, but the path in the prompt is important.
 
-I agree too. I was on the fence about it, but since you flagged it, i'm
-happy to make the change.
+Okay.
 
-> Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
-> 
-> Thanks!
+> Cheers,
 > Quentin
 
