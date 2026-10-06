@@ -2,14 +2,14 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5E819CA5FCE
-	for <webhook@archiver.kernel.org>; Mon,  5 Oct 2026 19:56:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 40098CA6004
+	for <webhook@archiver.kernel.org>; Tue,  6 Oct 2026 11:58:56 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.29228.1791230205882029768
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.43832.1791287932943510324
  for <docs@lists.yoctoproject.org>;
- Mon, 05 Oct 2026 12:56:46 -0700
+ Tue, 06 Oct 2026 04:58:53 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=CJSyaM2r;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=iBJuD2u6;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
@@ -17,24 +17,24 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
 	List-Unsubscribe-Post:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=3IOCuVLH2u0vh847qQQn1K6UNgd6UlsuwPX9cAz5q9g=; b=CJSyaM2rCr+fMXOqWbKXIQhP5e
-	vBe1+ssmnSv5/zftUB34eIfz4ybAtgUTO6FFOdygsTieYpQpVG2RMbDrz5rNCCun+/Epy4i5psTFx
-	vo1115CVvJn96tBCUJMBIwQrHYBe9YVN1OpFy000aB3HGTRHn6AZQ7Z4q9sR8Er+X1VPvrthiXTfc
-	cBFpOp7svZGDUOEonYrrge0Z7AUANR27hUh4YxKZYGEpuT8lqPyCzO1JNrgNNLEXoEyymwJ4dfO9M
-	m5p4xRWGj8s5ddQfcXFZRt+3lIL1lEJzHqUJbhOTfKoHKHGw76lWitqx77PU2CXqqb7wcuf2F3zPu
-	IuszPwKA==;
-Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:43710 helo=sheena)
+	bh=6M9wxvM/j657LU/KjZdY0cCbfdMmtNm2Em0prtN+QAk=; b=iBJuD2u6+cErGKjHR76FupSNR1
+	LuGwTdrDpzElDJGLK902v1DQni2xni4IqaMxt2bTzxxEKPmFLMyY6LhzkzCI3HHDpWUhJgY4LyuVX
+	wfv7oIfhuN1iXeZncfaP6r2da370MAk1nw28GAogiBOAh8kOPI1lyzMRy7wq9Kl2RL8Hx66A4wfXM
+	Ao7ZyTbrcrTEiqq14sOMFoR/LbwpQVdFyxhRoCvU7WsLCmjDzur7+BJTagXoqndDoDSJApkPXcLw6
+	HQwgRq5wdVUJWJIPbkw7ez2+HdKlt8ypJ6dc41bmhhtiqBqqzOX0+wi6mXHV9kJ7GEhMkNaqMXJQ3
+	fW0kwrSw==;
+Received: from pool-174-114-114-5.cpe.net.cable.rogers.com ([174.114.114.5]:55674 helo=sheena)
 	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.100.1)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1xDonj-0000000CsfG-207a
+	id 1xE3oo-0000000EWPG-069T
 	for docs@lists.yoctoproject.org;
-	Mon, 05 Oct 2026 15:56:44 -0400
-Date: Mon, 5 Oct 2026 15:54:01 -0400 (EDT)
+	Tue, 06 Oct 2026 07:58:50 -0400
+Date: Tue, 6 Oct 2026 07:56:23 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: [PATCH] dev-manual: correct directory name for oe-core wic files
-Message-ID: <d2b5671c-6a58-530e-608d-5e2cd2d44343@crashcourse.ca>
+Subject: can a wic ".wks" file contain variables?
+Message-ID: <1de8502e-9007-9636-d0f9-ece17125b675@crashcourse.ca>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -50,27 +50,18 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 05 Oct 2026 19:56:56 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10656
+ <docs@lists.yoctoproject.org>; Tue, 06 Oct 2026 11:58:56 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10657
 
 
-Directory name for oe-core wic files is missing "meta" component.
+  working through wic manual to submit some enhancements and i thought
+that, unlike .wks.in files, .wks files count not contain variables
+that needed expansion, but in the "example-wks" directory of the wic
+repo, this .wks file contains "KERNEL_CONSOLE" in the last line:
 
-Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+https://git.yoctoproject.org/wic/tree/example-wks/mkefidisk.wks
 
----
+  is that legal?
 
-diff --git a/documentation/dev-manual/wic.rst b/documentation/dev-manual/wic.rst
-index c13655f87..bbdc60f09 100644
---- a/documentation/dev-manual/wic.rst
-+++ b/documentation/dev-manual/wic.rst
-@@ -309,7 +309,7 @@ following two locations:
- .. code-block:: text
-
-    meta-yocto/meta-yocto-bsp/files/wic
--   openembedded-core/files/wic
-+   openembedded-core/meta/files/wic
-
- Use the following command to list the available kickstart files:
-
+rday
 
