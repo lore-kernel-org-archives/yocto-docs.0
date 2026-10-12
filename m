@@ -1,166 +1,305 @@
-Return-Path: <richard.purdie@linuxfoundation.org>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 32E72CA9ED2
-	for <webhook@archiver.kernel.org>; Tue, 13 Oct 2026 13:10:23 +0000 (UTC)
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.6715.1791897019525151608
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 064C8CC6B1A
+	for <webhook@archiver.kernel.org>; Tue, 13 Oct 2026 17:54:58 +0000 (UTC)
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.3992.1791914096241048614
  for <docs@lists.yoctoproject.org>;
- Tue, 13 Oct 2026 06:10:20 -0700
+ Tue, 13 Oct 2026 10:54:56 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=EdXN4Kb/;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.218.49, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-c2a4e013a44so438418166b.2
-        for <docs@lists.yoctoproject.org>; Tue, 13 Oct 2026 06:10:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1791897017; x=1792501817; darn=lists.yoctoproject.org;
-        h=mime-version:user-agent:content-transfer-encoding:content-type
-         :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=YRqd03n3HIkrpl9u91dUCtxYLKIPFzAZrXsWRgK75mg=;
-        b=EdXN4Kb/N7isv/jtRohx3Npefncjf55P48PYgU54s68VGCEgLsIgkmqykt8IS0T3DE
-         iDTV28aKmz24Xjtli1UBRnkOyou65uDz0fobmLWApalCCdMmMOueHMyon3pTyaLW2oz2
-         bZdRxEBtfFpGoh7fx33Z5IYFJtSZWvI4fsBdc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791897018; x=1792501818;
-        h=mime-version:user-agent:content-transfer-encoding:content-type
-         :references:in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=YRqd03n3HIkrpl9u91dUCtxYLKIPFzAZrXsWRgK75mg=;
-        b=AASejDE3nqi/q7WGxGT+SruIwSMOoFpMADa9wo1CoNFtZDngRqwTJ2d4MgD2b7h2ey
-         Ua08KilVJVQB2yn/L5f2pfEiCjqXMXPHuocwnKigN2/K1oPa4F9906ofOFGdppqBTm3Z
-         eWqYKXQ97KRvbvo7etxtCOBvoCyGdXjnhIuGwgiOgSgYZlKCYIhFvrZdbgWwfStRzJTR
-         i5uyKu4ceScYO3fTmoE3uqp22SQw76svAWUGe/UlV/ZVQfexf7Wzm8KPMasZ7q4NROO7
-         eiMGath/x8CUu8KJ4OGhPSXBQvJExU9QBT1JLwtuyYPdqa1R2jDkAuWZD/yJQh1cp7UW
-         D8Bg==
-X-Gm-Message-State: AFq9FYJ/SRtJQ6OBUpkJaX/L+sWJAls7fax6plBhbi6Fyj/k042E1v/v
-	Ml5zN9NiyDcnCuTRHj3GAWDjeJ4e2url2U078rI6bsewTMaFF5tjKSuYfK7rniWzKwI=
-X-Gm-Gg: AYBFou1NL0nHpVie0JRGx7f+jl+6T/q0Ec4olMnbflTFpc+ERSP8RGHU6WXd52YW3ak
-	ime9ZwqlJjLkNEAERmju0yemd83sW/E6xqrUsCaZiWq2qiBYiqoLowx82Zivz+hLVl1dNEX78EQ
-	49qmFoVWjjtVhflCrt1EZ0cwfQlIAc8MkVFZPjjtp270YEf+ycjrViYHNfJNRvs/udmDLAJn6K3
-	yRy2khoWA4fxbIbGjgJd+3ZjbwYTCNtNqxSJVP0GykCL6fa0BSmN9ES2o7/AQSO0F+LtHn2glOV
-	9tmx2RG3Tmxk0Bv8+dUrb7v137vjJnfGxWrLbivkZoIDyT82wc01U3ramTgBCk+KWxakRzXV0iX
-	C6tL3YWxwCic9eZIfR9NJ4xBE2W1Qk7f//MOYuuElKxIcyqynrNBHaxnsHzYT10kb1nhrL6sdO1
-	stfeOjzXeQpjYZen7NhCDzUdlDis3z4T4cmTepnMkV+BGuNjrGvklbFZXhYXxm66H/LSZI4MOuC
-	Mn/eZTGDYnbMbxbsYDMHnjFIsvcDnX5eZ0uxpRMVZz0HasZ9et6N2BAEVZXWTY=
-X-Received: by 2002:a17:907:1ca0:b0:c26:22ec:db92 with SMTP id a640c23a62f3a-c31aa02c51amr1278861966b.47.1791897017452;
-        Tue, 13 Oct 2026 06:10:17 -0700 (PDT)
-Received: from ?IPv6:2001:8b0:aba:5f3c:4c74:cb0d:dec6:c05e? ([2001:8b0:aba:5f3c:4c74:cb0d:dec6:c05e])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c36fe6dbc61sm80494866b.30.2026.10.13.06.10.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Oct 2026 06:10:16 -0700 (PDT)
-Message-ID: <b709283077dfbd7b34bcca2ebb38c38edb8b94af.camel@linuxfoundation.org>
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=1xjDjO6U;
+ spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id BBABFC653F7
+	for <docs@lists.yoctoproject.org>; Tue, 13 Oct 2026 17:55:49 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 24D4760362
+	for <docs@lists.yoctoproject.org>; Tue, 13 Oct 2026 17:54:54 +0000 (UTC)
+Received: by mail.galae.net (Postcow, from userid 0)
+	id 828ED11D703F4; Tue, 13 Oct 2026 19:50:08 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1791914093; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=/GlTaVRWm/U92E36TfLnkaoMiObRx/KHm2Iv9p3boyQ=;
+	b=1xjDjO6Un3hbZQvdHPG9S4eSZCIT6VBkiruO4070Qz5EJ4t0oBlCmfWpVvY3g4R/9YxyP+
+	4pKpoOZikSfj5Xu+hXcaqfGu+0t3O938qREN5geLTrfsNVU74/BHlmnU+TayDV6s3A08yy
+	fuhmzaTMoqB0Swkc8ojxh/0V2bP7waClelZ+zDXcgvuk+MtsoBhxXoYGJWERvjavWUhYFM
+	md4k6JPcsb2Vzj6V3Z7fLoxQ9U2qZQeZGQ2Dw0Gx/yWXBq7/fENmakx0P7T4/caDwuaRAk
+	jZd86cr9rggKIDCyGRFWmCjiXq2WOUyadk8ow5Kh+rc1u1xp69oOlAYkZShiHA==
+Authentication-Results: mail.galae.net;
+	none
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 12 Oct 2026 15:08:00 +0200
+Message-Id: <DM2VSZ91PNOJ.YXQAWC84B6NR@bootlin.com>
+Cc: <docs@lists.yoctoproject.org>
+From: "Antonin Godard" <antonin.godard@bootlin.com>
+To: <yann.dirson@vates.tech>, <bitbake-devel@lists.openembedded.org>
 Subject: Re: [bitbake-devel] [PATCH] doc: document dependency tracking
  associated with addpylib
-From: Richard Purdie <richard.purdie@linuxfoundation.org>
-To: Antonin Godard <antonin.godard@bootlin.com>, yann.dirson@vates.tech, 
-	bitbake-devel@lists.openembedded.org
-Cc: docs@lists.yoctoproject.org
-Date: Tue, 13 Oct 2026 14:10:15 +0100
-In-Reply-To: <DM3P6R5ZRVPM.3PW3QYG9BZOEI@bootlin.com>
-References: 
-	<1791793541.8631fc262581453bbf619ec5b2062170.1a12f37b16e00080d7@vates.tech>
-	 <DM2VSZ91PNOJ.YXQAWC84B6NR@bootlin.com>
-	 <DM2W2QFSWNBT.2A6RT11K7VMT1@bootlin.com>
-	 <1791885365.8631fc262581453bbf619ec5b2062170.1a134b0cf0a0008425@vates.tech>
-	 <DM3P6R5ZRVPM.3PW3QYG9BZOEI@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-9 
-MIME-Version: 1.0
+References: <1791793541.8631fc262581453bbf619ec5b2062170.1a12f37b16e00080d7@vates.tech>
+In-Reply-To: <1791793541.8631fc262581453bbf619ec5b2062170.1a12f37b16e00080d7@vates.tech>
+X-TUID: iobtIYJNIygo
+X-Last-TLS-Session-Version: None
+X-Rspamd-Queue-Id: 828ED11D703F4
+X-Spamd-Result: default: False [-4.10 / 30.00];
+	BAYES_HAM(-5.50)[100.00%];
+	DATE_IN_PAST(1.00)[28];
+	MV_CASE(0.50)[];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_COUNT_ZERO(0.00)[0];
+	BCC(0.00)[];
+	MAILCOW_DOMAIN_HEADER_FROM(0.00)[bootlin.com];
+	MISSING_XM_UA(0.00)[];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	URIBL_BLOCKED(0.00)[vates.tech:email,galae.net:url,bootlin.com:email,bootlin.com:mid,bootlin.com:url,yoctoproject.org:email,openembedded.org:url,openembedded.org:email,groups.io:url,localhost:rdns,localhost:helo];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_SOME(0.00)[];
+	TO_DN_NONE(0.00)[];
+	DKIM_SIGNED(0.00)[bootlin.com:s=dkim]
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 13 Oct 2026 13:10:23 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10667
+ <docs@lists.yoctoproject.org>; Tue, 13 Oct 2026 17:54:58 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10668
 
-On Tue, 2026-10-13 at 14:09 +0200, Antonin Godard wrote:
-> On Tue Oct 13, 2026 at 11:56 AM CEST, Yann Dirson via lists.openembedded.=
-org wrote:
-> >=20
-> >=20
-> > On 10/12/26 3:20 PM, Antonin Godard wrote:
-> > > On Mon Oct 12, 2026 at 3:08 PM CEST, Antonin Godard via lists.openemb=
-edded.org wrote:
-> > > > Hi,
-> > > >=20
-> > > > On Mon Oct 12, 2026 at 10:25 AM CEST, Yann Dirson via lists.openemb=
-edded.org wrote:
-> > > > > Reported-by: Claude Opus 5.5
-> > > > > Signed-off-by: Yann Dirson <yann.dirson@vates.tech>
-> > > > > ---
-> > > > > =C2=A0 doc/bitbake-user-manual/bitbake-user-manual-metadata.rst |=
- 8 ++++++++
-> > > > > =C2=A0 1 file changed, 8 insertions(+)
-> > > > >=20
-> > > > > diff --git a/doc/bitbake-user-manual/bitbake-user-manual-metadata=
-.rst b/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
-> > > > > index 621aab253..eef1f9624 100644
-> > > > > --- a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
-> > > > > +++ b/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
-> > > > > @@ -2264,6 +2264,14 @@ The specified <namespace> is imported auto=
-matically, and if the imported
-> > > > > =C2=A0 module specifies an attribute named ``BBIMPORTS``, that li=
-st of
-> > > > > =C2=A0 sub-modules is iterated and imported too.
-> > > > > =C2=A0=20
-> > > > > +Additionally, Bitbake will detect usage of functions from such a
-> > > > > +library and include them in task hashes, so changes in those fun=
-ctions
-> > > > > +trigger task rebuilds.=C2=A0 Note that only functions inside mod=
-ules
-> > > > > +declared using ``BBIMPORTS`` benefit from this dependency tracki=
-ng,
-> > > > > +any name defined directly in the specified namespace (e.g. in
-> > > > > +`<namespace>/__init__.py`, or in a library hat would be defined =
-as
-> > > >=20
-> > > > s/hat/that/
-> > > >=20
-> > > > > +`<namespace>.py`) would *not* benefit from this tracking.
-> > > >=20
-> > > > Otherwise, this is clear to me. I did not know about this limitatio=
-n/feature,
-> > > > and this is definitely important to document, thanks!
-> > >=20
-> > > Reading the code[1], it seems that functions prefixed with _ are not =
-included
-> > > in the task checksums - if I understood correctly. I think it would b=
-e also
-> > > important to mention that. Could you add it in a v2?
-> >=20
-> > It could be asked why we would want to exclude them.=C2=A0 Usually that=
- would=20
-> > be internal functions, to be called by the exported ones, so they would=
-=20
-> > equally matter - but then they are actually not included in the task=
-=20
-> > hash, so it rather looks like a bug rather than something to document?
->=20
-> You're right, it seems strange to exclude them entirely. You may want to =
-send a
-> patch to remove this then? At least it will kick-off the discussion on th=
-is
-> list.
+Hi,
 
-I suspect there are two levels of issues here. Funcitons with a single
-"_" prefix are internal functions and those were the ones we likely
-wanted to exclude. __init__ is probably an oversight. I do think people
-are getting too focused on the detail of the taskhashes though. There
-comes a point in our code when something becomes API rather than "data"
-and the taskhashes really are meant to reflect more data than absolute
-every detail. Before function library hashing that boundary was clearer
-but it still exists (e.g. bitbake itself isn't hashed, nor should it
-be, nor the host system python version).
+On Mon Oct 12, 2026 at 10:25 AM CEST, Yann Dirson via lists.openembedded.or=
+g wrote:
+> Reported-by: Claude Opus 5.5
+> Signed-off-by: Yann Dirson <yann.dirson@vates.tech>
+> ---
+>  doc/bitbake-user-manual/bitbake-user-manual-metadata.rst | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+>
+> diff --git a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst b/d=
+oc/bitbake-user-manual/bitbake-user-manual-metadata.rst
+> index 621aab253..eef1f9624 100644
+> --- a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
+> +++ b/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
+> @@ -2264,6 +2264,14 @@ The specified <namespace> is imported automaticall=
+y, and if the imported
+>  module specifies an attribute named ``BBIMPORTS``, that list of
+>  sub-modules is iterated and imported too.
+> =20
+> +Additionally, Bitbake will detect usage of functions from such a
+> +library and include them in task hashes, so changes in those functions
+> +trigger task rebuilds.  Note that only functions inside modules
+> +declared using ``BBIMPORTS`` benefit from this dependency tracking,
+> +any name defined directly in the specified namespace (e.g. in
+> +`<namespace>/__init__.py`, or in a library hat would be defined as
 
-Cheers,
+s/hat/that/
 
-Richard
+> +`<namespace>.py`) would *not* benefit from this tracking.
+
+Otherwise, this is clear to me. I did not know about this limitation/featur=
+e,
+and this is definitely important to document, thanks!
+
+Antonin
+text:
+Return-Path: <bounce+67608+20320+8963659+13752387@lists.openembedded.org>
+Delivered-To: antonin.godard@bootlin.com
+Received: from mail.galae.net ([172.22.1.253])
+	by 9e7fea892943 with LMTP
+	id 8CW/IMPbzGq5RBAAtaWaaQ
+	(envelope-from <bounce+67608+20320+8963659+13752387@lists.openembedded.org>)
+	for <antonin.godard@bootlin.com>; Mon, 12 Oct 2026 15:08:19 +0200
+X-Original-To: antonin.godard@bootlin.com
+Received: from smtpin-01.galae.net (smtpin-01.galae.net [51.159.2.148])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.galae.net (Postcow) with ESMTPS id 0C14411D70CFA
+	for <antonin.godard@bootlin.com>; Mon, 12 Oct 2026 15:08:14 +0200 (CEST)
+Authentication-Results: mail.galae.net;
+	dkim=pass header.d=lists.openembedded.org header.s=groups1 header.b="UGeNK/3F";
+	dmarc=pass (policy=none) header.from=lists.openembedded.org;
+	spf=pass (mail.galae.net: domain of bounce+67608+20320+8963659+13752387@lists.openembedded.org designates 66.175.222.12 as permitted sender) smtp.mailfrom=bounce+67608+20320+8963659+13752387@lists.openembedded.org
+ARC-Seal: i=1; s=dkim; d=bootlin.com; t=1791810495; a=rsa-sha256; cv=none;
+	b=cNxEOJIttT5A4d73TX5EgewhO1UDsovk6JqMnVlJ/yDeswZLX3Zje5HS1C0H63666OYRQ+
+	vB4qRoYtHGa8AY8VXlIYAvCd3scSSy2+4zEwA9Aow0cDN3u2XgkLx39MixSr1SsKQDlgP6
+	jYtEN88EuCA/RIT5d22BMLn/yqm5KHEw9thz5IN9nSzr0sZ88wZ+u3xIRNPZ5NNQH6q6J/
+	1YLfurJbqZzRJi3zOk1rGPXDvNzqUjDkVeIB6nstih1OCxii707kInq7CBQzujsGgwoKmI
+	mOxVMFWe9dgnDhvhfu7Bole30vAuZhMmGqFepnogWNJg0HS1ZIoDApP0rCBaBg==
+ARC-Authentication-Results: i=1;
+	mail.galae.net;
+	dkim=pass header.d=lists.openembedded.org header.s=groups1 header.b="UGeNK/3F";
+	dmarc=pass (policy=none) header.from=lists.openembedded.org;
+	spf=pass (mail.galae.net: domain of bounce+67608+20320+8963659+13752387@lists.openembedded.org designates 66.175.222.12 as permitted sender) smtp.mailfrom=bounce+67608+20320+8963659+13752387@lists.openembedded.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com;
+	s=dkim; t=1791810495;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:resent-from:in-reply-to:in-reply-to:
+	 references:references:list-id:list-help:list-unsubscribe:
+	 list-unsubscribe-post:list-subscribe:list-post:dkim-signature;
+	bh=znVcl4BpIH0xSR9Lwdoy3cSidbN6NYCx8EemJ2QhD7k=;
+	b=KWOpEfbJDTzEccAY9Vf29WhbQ5Rcr/5nmPJ4pZ+Y5YIbRHGGU8iJgTOX5NQorIZi9o76wn
+	fHehM/XctzkBcgSvUcWU58s0ZdVZGie/1jsGK5zffO1aGy4AcgGQ3Q/nGC9pKFVVs80yp7
+	hBnQMIn6Q101NSiM0CzO/eBF7i4GCDm7CUMjKmBHmJu1MI8uyMsgkj8lGNGguhRkw7gnLs
+	wLyf1+NFZcoNUP7YL5j4/RQCG/F+RpRmRYiBeBPPcdbt9niTGk9G4FX1sZtRUxLT1Mr+T0
+	vXsb/1EK0hAFoCMXvgNSrrjIX104VeYT7u8bYJ7VNRDIFn0KrM6aKLMsGBODRg==
+Received: from web01.groups.io (web01.groups.io [66.175.222.12])
+	by smtpin-01.galae.net (Postfix) with ESMTPS id 708A7343DD1
+	for <antonin.godard@bootlin.com>; Mon, 12 Oct 2026 13:08:14 +0000 (UTC)
+DKIM-Signature: a=rsa-sha256; bh=znVcl4BpIH0xSR9Lwdoy3cSidbN6NYCx8EemJ2QhD7k=;
+ c=relaxed/relaxed; d=lists.openembedded.org;
+ h=From:Subject:Date:Message-ID:To:Cc:In-Reply-To:References:Reply-To:Sender:List-Id:List-Post:List-Subscribe:List-Unsubscribe:List-Help:MIME-Version:Content-Type:Content-Transfer-Encoding;
+ s=groups1; t=1791810493; v=1; x=1792069693;
+ b=UGeNK/3Fbs1URhjutP5dGyKw9H89d9yyEoqsLuGP1zosiO/hll0uB9DoZ1mxbKsQLfvMflcI
+ BoANhWpVMdM9MZYJAPeTh7Tvd88D12KKTwfrrZKrXDv92LBxBJXreua190vkhgTq5OUV8lgjbWi
+ j3qljUEwp6DgG3wj4kqKv1EOCz+rMfG+1Ysb0t7Vz3bEWwk0LpdaXMS0hs47mZos8tNiVo+sMZg
+ 8RJzZrpnfwelSUvETX+Ge/Lv6OZd/BIc7/qMo5GEO1d2B8vKhwrHAFCJeWwZWDizfWvzaLpSGV+
+ U50Cm4KjM5Q6bQsQiuKaxGj/9NnHtReK21+0al/P2niRA==
+X-Received: by 127.0.0.2 with SMTP id U7y0YY8964994x5XNlFmIQoq; Mon, 12 Oct 2026 06:08:13 -0700
+X-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.12864.1791810489459952278
+ for <bitbake-devel@lists.openembedded.org>;
+ Mon, 12 Oct 2026 06:08:10 -0700
+X-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 224091A1044
+	for <bitbake-devel@lists.openembedded.org>; Mon, 12 Oct 2026 13:08:07 +0000 (UTC)
+X-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id EA0EB601A6;
+	Mon, 12 Oct 2026 13:08:06 +0000 (UTC)
+X-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 77CBC11D70CE8;
+	Mon, 12 Oct 2026 15:08:01 +0200 (CEST)
+Mime-Version: 1.0
+Date: Mon, 12 Oct 2026 15:08:00 +0200
+Message-Id: <DM2VSZ91PNOJ.YXQAWC84B6NR@bootlin.com>
+Cc: <docs@lists.yoctoproject.org>
+From: "Antonin Godard via lists.openembedded.org" <antonin.godard=bootlin.com@lists.openembedded.org>
+To: <yann.dirson@vates.tech>, <bitbake-devel@lists.openembedded.org>
+Subject: Re: [bitbake-devel] [PATCH] doc: document dependency tracking associated with addpylib
+References: <1791793541.8631fc262581453bbf619ec5b2062170.1a12f37b16e00080d7@vates.tech>
+In-Reply-To: <1791793541.8631fc262581453bbf619ec5b2062170.1a12f37b16e00080d7@vates.tech>
+X-Last-TLS-Session-Version: TLSv1.3
+Precedence: Bulk
+List-Subscribe: <mailto:bitbake-devel+subscribe@lists.openembedded.org>
+List-Help: <mailto:bitbake-devel+help@lists.openembedded.org>
+Sender: bitbake-devel@lists.openembedded.org
+List-Id: <bitbake-devel.lists.openembedded.org>
+Mailing-List: list bitbake-devel@lists.openembedded.org; contact bitbake-devel+owner@lists.openembedded.org
+Delivered-To: mailing list bitbake-devel@lists.openembedded.org
+Resent-Date: Mon, 12 Oct 2026 06:08:10 -0700
+Resent-From: antonin.godard@bootlin.com
+Reply-To: antonin.godard@bootlin.com
+List-Post: <mailto:bitbake-devel@lists.openembedded.org>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+List-Unsubscribe: <https://lists.openembedded.org/g/bitbake-devel/leave/13752387/8963659/1916163865/plugh>
+X-Gm-Message-State: bb7qyzuGHZFqYnVPetBgRxu9x8963659AA=
+Content-Type: multipart/mixed; boundary="unYFBYknsXXaikQDvLIZ"
+X-Last-TLS-Session-Version: TLSv1.3
+X-Rspamd-Queue-Id: 0C14411D70CFA
+X-Spamd-Result: default: False [-7.38 / 30.00];
+	BAYES_HAM(-5.50)[99.99%];
+	IP_REPUTATION_HAM(-1.41)[asn: 63949(-0.40), country: SG(-0.01), ip: 66.175.222.12(-1.00)];
+	MV_CASE(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[lists.openembedded.org,none];
+	ONCE_RECEIVED(0.20)[];
+	R_DKIM_ALLOW(-0.20)[lists.openembedded.org:s=groups1];
+	R_SPF_ALLOW(-0.20)[+ip4:66.175.222.12:c];
+	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[multipart/mixed,text/plain];
+	HAS_LIST_UNSUB(-0.01)[];
+	MX_GOOD(-0.01)[];
+	TAGGED_FROM(0.00)[67608,20320,8963659,13752387];
+	URIBL_BLOCKED(0.00)[openembedded.org:email,openembedded.org:url,lists.openembedded.org:dkim,vates.tech:email,bootlin.com:mid,bootlin.com:email,bootlin.com:replyto,web01.groups.io:helo,web01.groups.io:rdns];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	MIME_TRACE(0.00)[0:+,1:+,2:+];
+	ARC_SIGNED(0.00)[bootlin.com:s=dkim:i=1];
+	RCPT_MAILCOW_DOMAIN(0.00)[bootlin.com];
+	ARC_NA(0.00)[];
+	BCC(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	DKIM_TRACE(0.00)[lists.openembedded.org:+];
+	TO_DN_NONE(0.00)[];
+	DNSWL_BLOCKED(0.00)[66.175.222.12:from];
+	DWL_DNSWL_BLOCKED(0.00)[openembedded.org:dkim];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[antonin.godard=bootlin.com@lists.openembedded.org,bounce@lists.openembedded.org];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:66.175.216.0/21, country:SG];
+	HAS_REPLYTO(0.00)[antonin.godard@bootlin.com];
+	EXTERNAL_RELAY_AUTHENTICATED(0.00)[];
+	CTYPE_MIXED_BOGUS(0.00)[];
+	RCVD_COUNT_ONE(0.00)[1];
+	MISSING_XM_UA(0.00)[];
+	RBL_SENDERSCORE_REPUT_BLOCKED(0.00)[66.175.222.12:from]
+
+--unYFBYknsXXaikQDvLIZ
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+
+Hi,
+
+On Mon Oct 12, 2026 at 10:25 AM CEST, Yann Dirson via lists.openembedded.or=
+g wrote:
+> Reported-by: Claude Opus 5.5
+> Signed-off-by: Yann Dirson <yann.dirson@vates.tech>
+> ---
+>  doc/bitbake-user-manual/bitbake-user-manual-metadata.rst | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+>
+> diff --git a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst b/d=
+oc/bitbake-user-manual/bitbake-user-manual-metadata.rst
+> index 621aab253..eef1f9624 100644
+> --- a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
+> +++ b/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
+> @@ -2264,6 +2264,14 @@ The specified <namespace> is imported automaticall=
+y, and if the imported
+>  module specifies an attribute named ``BBIMPORTS``, that list of
+>  sub-modules is iterated and imported too.
+> =20
+> +Additionally, Bitbake will detect usage of functions from such a
+> +library and include them in task hashes, so changes in those functions
+> +trigger task rebuilds.  Note that only functions inside modules
+> +declared using ``BBIMPORTS`` benefit from this dependency tracking,
+> +any name defined directly in the specified namespace (e.g. in
+> +`<namespace>/__init__.py`, or in a library hat would be defined as
+
+s/hat/that/
+
+> +`<namespace>.py`) would *not* benefit from this tracking.
+
+Otherwise, this is clear to me. I did not know about this limitation/featur=
+e,
+and this is definitely important to document, thanks!
+
+Antonin
+
+--unYFBYknsXXaikQDvLIZ
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
 
 
+-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
+Links: You receive all messages sent to this group.
+View/Reply Online (#20320): https://lists.openembedded.org/g/bitbake-devel/=
+message/20320
+Mute This Topic: https://lists.openembedded.org/mt/121711853/8963659
+Group Owner: bitbake-devel+owner@lists.openembedded.org
+Unsubscribe: https://lists.openembedded.org/g/bitbake-devel/unsub [antonin.=
+godard@bootlin.com]
+-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
 
 
-
+--unYFBYknsXXaikQDvLIZ--
 
