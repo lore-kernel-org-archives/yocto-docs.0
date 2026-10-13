@@ -1,95 +1,94 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <mathieu.dubois-briand@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0292BCA9ED0
-	for <webhook@archiver.kernel.org>; Mon, 12 Oct 2026 13:20:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EE8A5CC6B03
+	for <webhook@archiver.kernel.org>; Tue, 13 Oct 2026 05:17:11 +0000 (UTC)
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.13163.1791811249370348145
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.742.1791868625896515038
  for <docs@lists.yoctoproject.org>;
- Mon, 12 Oct 2026 06:20:50 -0700
+ Mon, 12 Oct 2026 22:17:07 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=rjq6XfHX;
- spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=C0xwIbpK;
+ spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: mathieu.dubois-briand@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 49B124E411F8
-	for <docs@lists.yoctoproject.org>; Mon, 12 Oct 2026 13:20:47 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id B36ED4E41208;
+	Tue, 13 Oct 2026 05:17:03 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 112BD601A6;
-	Mon, 12 Oct 2026 13:20:47 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9307711D70D17;
-	Mon, 12 Oct 2026 15:20:45 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 635CC60362;
+	Tue, 13 Oct 2026 05:17:03 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8A96111D7012D;
+	Tue, 13 Oct 2026 07:17:01 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1791811246; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1791868622; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=1qiWD6y/x7+Z92OG8wbyh3a1Z5LG7JNGdl/UUC7yXKc=;
-	b=rjq6XfHXXCIslUicm8UUzTs1c5sJ0vDhn4IK1PIlL9A0tuMHvsyWgnR/yVaM1J7U7ryx17
-	h1DKoNwqiY5j727+V43xn7zb2ZSDg3jSh/yXEKmPXhsZQcHWMnJYAq8cQuKGctdzvzyeiG
-	LK6nHkJtoXfE7KsS3L2g7gocZJkS52nU4vBHR0rRu6CuU28QSXzLDJ70XFDBZMGLop2FmL
-	uUfsLmiN03AoruN2RdVbtTa95SB36I/GmTejezr4/1vKSpE7YGOehaH5g5p/p5pnsscTaq
-	0KPLPG8uns0cDb0bOax8N0SA+fBMMXe5lKuYNaMTyCxbC3Wz1Gr1pUaJZNLkOw==
+	bh=gn1rljDeiPnFvSTgHCpBN5aKPPkgygvYantbjdO7IsM=;
+	b=C0xwIbpKKdP/U7JuRA1bcXQIRv+z7OxGiFi8mQBnm+eBgByBYi3p6JvTP5opHjquD8l7Yo
+	+Bf9o1BDK+WDiBA0iamMq2b8GYYxQ6fVNRKcW4gCl2mL7NF5mi52Z/xv0mdZPOzB/JnxI6
+	f6KqOEnnkDrJyd8uY1Ya0rOH/ouutQoNqvralqfrEa84xeqqViIdkPEoyiKj2N5Uo4vtWV
+	h28CIDmYxot0z+HQk9ifyRZOp477e3sFUTQTZ6jSDtbUDUokN7uvAcXzETIdzqPOCiorIX
+	6ukkCw4clcxzqE8ruTTjrfHee+vO3QS2B6uiOz7Yu7xM5iGz8Z5I/qfy0RCoFA==
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 12 Oct 2026 15:20:45 +0200
-Message-Id: <DM2W2QFSWNBT.2A6RT11K7VMT1@bootlin.com>
-Subject: Re: [bitbake-devel] [PATCH] doc: document dependency tracking
- associated with addpylib
-Cc: <docs@lists.yoctoproject.org>
-From: "Antonin Godard" <antonin.godard@bootlin.com>
+Date: Tue, 13 Oct 2026 07:17:00 +0200
+Message-Id: <DM3GEW286NB5.302OAXPFSNBM5@bootlin.com>
+From: "Mathieu Dubois-Briand" <mathieu.dubois-briand@bootlin.com>
 To: <yann.dirson@vates.tech>, <bitbake-devel@lists.openembedded.org>
-References: <1791793541.8631fc262581453bbf619ec5b2062170.1a12f37b16e00080d7@vates.tech> <DM2VSZ91PNOJ.YXQAWC84B6NR@bootlin.com>
-In-Reply-To: <DM2VSZ91PNOJ.YXQAWC84B6NR@bootlin.com>
+Subject: Re: [bitbake-devel] [PATCH v2 2/2] data_smart: restore the ability
+ to use capital letters
+Cc: <docs@lists.yoctoproject.org>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20261007125138.59937-1-yann.dirson@vates.tech>
+ <20261012084202.103724-1-yann.dirson@vates.tech>
+ <1791794550.8631fc262581453bbf619ec5b2062170.1a12f4716e800080d7@vates.tech>
+In-Reply-To: <1791794550.8631fc262581453bbf619ec5b2062170.1a12f4716e800080d7@vates.tech>
 X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 12 Oct 2026 13:20:57 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10659
+ <docs@lists.yoctoproject.org>; Tue, 13 Oct 2026 05:17:11 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10660
 
-On Mon Oct 12, 2026 at 3:08 PM CEST, Antonin Godard via lists.openembedded.=
-org wrote:
-> Hi,
+On Mon Oct 12, 2026 at 10:39 AM CEST, Yann Dirson via lists.openembedded.or=
+g wrote:
+> This reverts commit 6eb56624e6d8dc1944e559b4f6584bfe66f566ba.
 >
-> On Mon Oct 12, 2026 at 10:25 AM CEST, Yann Dirson via lists.openembedded.=
-org wrote:
->> Reported-by: Claude Opus 5.5
->> Signed-off-by: Yann Dirson <yann.dirson@vates.tech>
->> ---
->>  doc/bitbake-user-manual/bitbake-user-manual-metadata.rst | 8 ++++++++
->>  1 file changed, 8 insertions(+)
->>
->> diff --git a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst b/=
-doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
->> index 621aab253..eef1f9624 100644
->> --- a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
->> +++ b/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
->> @@ -2264,6 +2264,14 @@ The specified <namespace> is imported automatical=
-ly, and if the imported
->>  module specifies an attribute named ``BBIMPORTS``, that list of
->>  sub-modules is iterated and imported too.
->> =20
->> +Additionally, Bitbake will detect usage of functions from such a
->> +library and include them in task hashes, so changes in those functions
->> +trigger task rebuilds.  Note that only functions inside modules
->> +declared using ``BBIMPORTS`` benefit from this dependency tracking,
->> +any name defined directly in the specified namespace (e.g. in
->> +`<namespace>/__init__.py`, or in a library hat would be defined as
+> That commit was meant as an ad-hoc band-aid when "_" was used as
+> override prefix, and it explicitly blocked capital letters from being
+> usable in the overrides.  There is no reason to keep it now we use ":"
+> as prefix.
 >
-> s/hat/that/
->
->> +`<namespace>.py`) would *not* benefit from this tracking.
->
-> Otherwise, this is clear to me. I did not know about this limitation/feat=
-ure,
-> and this is definitely important to document, thanks!
+> Signed-off-by: Yann Dirson <yann.dirson@vates.tech>
+> ---
 
-Reading the code[1], it seems that functions prefixed with _ are not includ=
-ed
-in the task checksums - if I understood correctly. I think it would be also
-important to mention that. Could you add it in a v2?
+Hi Yann,
 
-[1]: https://git.openembedded.org/bitbake/tree/lib/bb/parse/ast.py#n319
+Thanks for the new version, but we are still seeing the same failure:
 
-Antonin
+FAIL: test_append_in_expanded_override (bb.tests.data.TestOverrides.test_ap=
+pend_in_expanded_override)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/srv/pokybuild/yocto-worker/oe-selftest-armhost/build/layers/bitbak=
+e/lib/bb/tests/data.py", line 417, in test_append_in_expanded_override
+    self.assertEqual(self.d.getVar("TEST"), "base appended")
+AssertionError: 'base' !=3D 'base appended'
+- base
++ base appended
+
+https://autobuilder.yoctoproject.org/valkyrie/#/builders/23/builds/5075
+https://autobuilder.yoctoproject.org/valkyrie/#/builders/35/builds/5043
+https://autobuilder.yoctoproject.org/valkyrie/#/builders/48/builds/4856
+
+Can you have a look at the issue?
+
+Thanks,
+Mathieu
+
+--=20
+Mathieu Dubois-Briand, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
 
