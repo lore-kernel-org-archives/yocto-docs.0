@@ -1,144 +1,94 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <richard.purdie@linuxfoundation.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B6400CC6B39
-	for <webhook@archiver.kernel.org>; Thu, 15 Oct 2026 08:01:31 +0000 (UTC)
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.34668.1792051288580843244
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7633DCC6B39
+	for <webhook@archiver.kernel.org>; Thu, 15 Oct 2026 08:58:33 +0000 (UTC)
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.35324.1792054711130268067
  for <docs@lists.yoctoproject.org>;
- Thu, 15 Oct 2026 01:01:29 -0700
+ Thu, 15 Oct 2026 01:58:31 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=D8eP9ltT;
- spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id B3CF5C62202
-	for <docs@lists.yoctoproject.org>; Thu, 15 Oct 2026 08:02:22 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 68BA560360;
-	Thu, 15 Oct 2026 08:01:26 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4EDB610328B1A;
-	Thu, 15 Oct 2026 10:01:16 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1792051280; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=6t8WFvTN2fSbrne4AXDJ53uW6A14PZqGrvIaHnMbPcc=;
-	b=D8eP9ltTPYopdIbudJbZhnpl1r+HbA9bw69XkqJvU0gkF280YdFR5fggQyJG04m+DDncgF
-	de1tR9I3tu2H8NKohFmx2TA6ndvpPcguQeQ6/pi4lk8pIJ3oq3DHnzsB8+M9gb7vmjnu8/
-	PdIoP/CjzV4BoJOvNzmkdpwtgA+xcAG/mHPgTTdpPXcx+oROrwvQEVFb2uwCcCqghYWQnw
-	c9vir2AVTAhw2K5jK9zXB2LhbOcHOMtXY5NPLwuJAdZco8IAOuOoE4F9l9K4KhR4Emn76B
-	LVkReWLjm/DxrtomozanZaT3zznibpHduhVEL2tOWH5ATiH/rtuoMUov35Iemg==
-Mime-Version: 1.0
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=FovxBNuB;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.128.52, mailfrom: richard.purdie@linuxfoundation.org)
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4a02718da81so40086585e9.1
+        for <docs@lists.yoctoproject.org>; Thu, 15 Oct 2026 01:58:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1792054709; x=1792659509; darn=lists.yoctoproject.org;
+        h=mime-version:user-agent:content-transfer-encoding:content-type
+         :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=60tDC3+nHLRJo6a9aMzE0GDdGGCgpbqW0tTFylI4gjs=;
+        b=FovxBNuBSb8RmOq7EnMWCBQygorWazoikr5w5havyLgDhHh6n5H7JhZhuOJ4/Neu/F
+         7IKq5KYw+scG4QazD2U8zgaU/uwBARToV976r4gKiL5qC/74uCzQYn3B4u7+GD9FKuKv
+         rsFMHICcEBoSHuUoD1A05Ha31NpAfwZz92x7Q=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792054709; x=1792659509;
+        h=mime-version:user-agent:content-transfer-encoding:content-type
+         :references:in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=60tDC3+nHLRJo6a9aMzE0GDdGGCgpbqW0tTFylI4gjs=;
+        b=06MSAAiKozgERaoJGlxYqAE3VPPsON+emiyU4IOTnljQ4zxwGv9xMKge5rgEdiIM1s
+         AVrx2u7JbCFAj6klQ3AOhOUisyvQIwLt6ZHrIrydGr0wwfmf324nMK2NC7OJlGhg3hL4
+         q8scBhOIkKmQQXxKRLwx3uwJjUkKKSwlLJocS/AR/EJyzOOj3oVWMqwlBQSMU5kW2dzM
+         H2xqkcVk1XXUCQLLsLVQ6FACCZGfEKwHkzyicMAa5XBzNWnW8jWj+rOOFtAA64x9slEg
+         b1Ggo7Ruiz76I0HcirHKs9QEbc/N9KwT6DDBywSZFGqvkLxqx6JzbeFDuSACwbnkLhH9
+         uwpA==
+X-Forwarded-Encrypted: i=1; AKwUvBxA+t3mmmvYkCNuk7w0nvKZIyhUHoBmOGje6S6TsE319tfnkWQldhNjC2hlD4DBMqBGvJRa@lists.yoctoproject.org
+X-Gm-Message-State: AFq9FYJvTabxDA8PqeYNwT1qslDVhT7c/u4rkgmaQG5wvreSHA2/ejQw
+	Ll50bIUHU/sfchIXZzLdSvtikKbTMq3xTPWYiAKFcjdsBbss5JS3nCZxusfOtsWx5Sk=
+X-Gm-Gg: AYBFou3CwkbOcm3EqVXXSFTs3wtD0KST7PrnUN7jc2ADZnNr3wNJuGoHE5NgFrMPr96
+	ZBO6G8nAYCYNMSCo5VXZgMs69GgRDrVV5iPnYNUuEPHWluntILnQlpwOn/i3+OETGKwebQlJXfK
+	pw1n7ZFjI7tspaQqhXY/t1H6txsW/oE8PYGu38YT3T9bOIrIMjMfgEa+J64hdJfhD6BxtOtHGn8
+	/g2MVClpMmfiL9+1//WvjFleBWIZ36OGHV/JyEUPcjJ02WOVM50zHLIT3tdp8qtRaocqq3cRKMH
+	b6EWnKcaLhf8zd7cy/REyR/p4Bx7KsPJMLsLDTNMNIdJue8/2FBr1CHPGfMRqUQjq9TP3mSAl5G
+	uXxJfQsCsuAiiD42ZGYxzSIW14ze8xMMlB6Vs4Ry7epBL0o0/NMbD9fnLEKmYPDpeP31dHsCFUM
+	8uRLMWSVqLIZhYp/UmLgKGBRM4KHsuOSrovcTcscMIWu8s5OZJGPOl7uziFIapO70WcRiNqKr+P
+	3HQOeP3s+xfNkrCelBzx6/8xPlizTAeeVQCpijh0xWgX43HHzbopB9QSIKvTkc=
+X-Received: by 2002:a05:600c:8b09:b0:49c:c0d4:53d9 with SMTP id 5b1f17b1804b1-4a18e4a95b7mr398190995e9.14.1792054709143;
+        Thu, 15 Oct 2026 01:58:29 -0700 (PDT)
+Received: from ?IPv6:2001:8b0:aba:5f3c:8627:1727:8a8a:57f5? ([2001:8b0:aba:5f3c:8627:1727:8a8a:57f5])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1bd97ef4dsm61569165e9.4.2026.10.15.01.58.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Oct 2026 01:58:28 -0700 (PDT)
+Message-ID: <5d6d74ea44bf61549823ccde83e4c4ed1e274dc4.camel@linuxfoundation.org>
+Subject: Re: [bitbake-devel] [PATCH 3/4] knotty: convert warnings to errors
+ when -W is passed
+From: Richard Purdie <richard.purdie@linuxfoundation.org>
+To: antonin.godard@bootlin.com, bitbake-devel@lists.openembedded.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+	docs@lists.yoctoproject.org
+Date: Thu, 15 Oct 2026 09:58:27 +0100
+In-Reply-To: <20261013-warn-as-errors-v1-3-ab3658758ceb@bootlin.com>
+References: <20261013-warn-as-errors-v1-0-ab3658758ceb@bootlin.com>
+	 <20261013-warn-as-errors-v1-3-ab3658758ceb@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 15 Oct 2026 10:01:15 +0200
-Message-Id: <DM595QWIXNCE.1TBUQ3D0A1HKL@bootlin.com>
-Cc: <docs@lists.yoctoproject.org>
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: "Paul Barker" <paul@pbarker.dev>
-Subject: [master] Pull request
-X-Last-TLS-Session-Version: TLSv1.3
+User-Agent: Evolution 3.56.2-9 
+MIME-Version: 1.0
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 15 Oct 2026 08:01:31 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10672
+ <docs@lists.yoctoproject.org>; Thu, 15 Oct 2026 08:58:33 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10673
 
-Hi Paul,
+On Tue, 2026-10-13 at 14:13 +0200, Antonin Godard via lists.openembedded.or=
+g wrote:
+> When -W is passed, modify the handlers to show warnings in red and set
+> the return value to 1. Add a summary line informing the user that the -W
+> option was used as it might not be obvious when looking at the bottom
+> the end of the console log.
 
-This pull request contains the latest changes needed to finalize the Blacks=
-ail
-release notes, which were covered by Jo=C3=A3o.
+The trouble is this doesn't make warnings behave exactly as errors and
+I think that is going to confuse people :/.
 
+Specifically, if an error is encountered in a task, it will error and
+fail. The warning will show an error but continue anyway. I also
+suspect the warnings will still show as warnings in the log files and
+only appear as errors on the console.
 
-The following changes since commit f26faba8568a3c8fc81d81d3650cc419847a4e17=
-:
+Cheers,
 
-  migration-guides/release-notes-6.1.rst: add contributors (2026-09-21 17:1=
-5:14 +0200)
-
-are available in the Git repository at:
-
-  git@push.yoctoproject.org:yocto-docs master-next
-
-for you to fetch changes up to 04a6651f50f4c1ca9b6c566bba6465d6617a62a9:
-
-  ref-manual: put the ARCHIVER_MODE comments on their own lines (2026-10-15=
- 09:20:21 +0200)
-
-----------------------------------------------------------------
-Adrian Freihofer (1):
-      dev-manual/devtool: fix non-patch local file handling docs
-
-Jo=C3=A3o Marcos Costa (4):
-      migration-guides/release-notes-6.1.rst: add recipe upgrades
-      migration-guides/release-notes-6.1.rst: add CVE fixes
-      migration-guides/release-notes-6.1.rst: update contributors
-      migration-guides/release-notes-6.1.rst: add latest changes
-
-Robert P. J. Day (1):
-      dev-manual: correct directory name for oe-core wic files
-
-Trevor Woerner (11):
-      ref-manual: drop "partition" as a wic kickstart command
-      dev-manual: indent a list continuation so the code block ends
-      docs: document the conventions used in the manuals
-      docs: give the root prompts a preamble
-      docs: copy only the command from a console block
-      docs: show a prompt on commands the reader is meant to type
-      docs: write an elided passage as a comment
-      docs: mark the placeholders in examples
-      docs: remove real accounts from the examples
-      kernel-dev: give each example block one thing to hold
-      ref-manual: put the ARCHIVER_MODE comments on their own lines
-
- documentation/brief-yoctoprojectqs/index.rst       |   2 +-
- documentation/bsp-manual/bsp.rst                   |   4 +-
- documentation/conf.py                              |  19 ++-
- .../contributor-guide/recipe-style-guide.rst       |   2 +-
- documentation/contributor-guide/submit-changes.rst |  63 ++++-----
- documentation/conventions.rst                      |  56 ++++++++
- documentation/dev-manual/creating-fragments.rst    |   4 +-
- documentation/dev-manual/debugging.rst             |  13 +-
- documentation/dev-manual/devtool.rst               |  99 +++++++++-----
- documentation/dev-manual/disk-space.rst            |   4 +-
- documentation/dev-manual/hashequivserver.rst       |   2 +-
- documentation/dev-manual/layers.rst                |  10 +-
- documentation/dev-manual/limiting-resources.rst    |   2 +-
- documentation/dev-manual/new-recipe.rst            |   6 +-
- documentation/dev-manual/packages.rst              |   4 +-
- .../dev-manual/python-development-shell.rst        |   1 -
- documentation/dev-manual/qemu.rst                  |  10 +-
- documentation/dev-manual/start.rst                 |   2 +-
- documentation/dev-manual/upgrading-recipes.rst     |  18 +--
- documentation/dev-manual/wayland.rst               |   8 +-
- documentation/dev-manual/wic.rst                   |  46 +++----
- documentation/index.rst                            |   7 +
- documentation/kernel-dev/advanced.rst              | 139 ++++++++++-------=
---
- documentation/kernel-dev/common.rst                |  41 +++---
- documentation/migration-guides/migration-2.1.rst   |   4 +-
- documentation/migration-guides/migration-2.5.rst   |   4 +-
- documentation/migration-guides/migration-3.2.rst   |   2 +-
- documentation/migration-guides/migration-4.0.rst   |   2 +-
- documentation/migration-guides/migration-5.2.rst   |  16 +--
- documentation/migration-guides/migration-5.3.rst   |  10 +-
- .../migration-guides/release-notes-4.2.rst         |   2 +-
- .../migration-guides/release-notes-5.3.rst         |   2 +-
- .../migration-guides/release-notes-6.1.rst         | 149 ++++++++++++++---=
-----
- documentation/overview-manual/concepts.rst         |   2 +-
- documentation/profile-manual/usage.rst             |   4 +-
- documentation/ref-manual/classes.rst               |   8 +-
- documentation/ref-manual/devtool-reference.rst     |  10 +-
- documentation/ref-manual/faq.rst                   |   6 +-
- documentation/ref-manual/fragments.rst             |  16 +--
- documentation/ref-manual/kickstart.rst             |   9 +-
- documentation/ref-manual/qa-checks.rst             |   4 +-
- documentation/ref-manual/variables.rst             |  43 +++---
- documentation/sdk-manual/extensible.rst            |   6 +-
- documentation/sphinx-static/theme_overrides.css    |  28 ++++
- documentation/test-manual/reproducible-builds.rst  |   2 +-
- documentation/test-manual/runtime-testing.rst      |   4 +-
- 46 files changed, 548 insertions(+), 347 deletions(-)
- create mode 100644 documentation/conventions.rst
+Richard
 
