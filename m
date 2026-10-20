@@ -1,82 +1,125 @@
-Return-Path: <antonin.godard@bootlin.com>
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-	aws-us-west-2-korg-lkml-1.web.codeaurora.org
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9FFF0CCA462
-	for <webhook@archiver.kernel.org>; Fri, 16 Oct 2026 12:32:51 +0000 (UTC)
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.20469.1792153962745618335
+Received: from mta-64-228.siemens.flowmailer.net (mta-64-228.siemens.flowmailer.net [185.136.64.228])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.2884.1792485848927742562
  for <docs@lists.yoctoproject.org>;
- Fri, 16 Oct 2026 05:32:43 -0700
+ Tue, 20 Oct 2026 01:44:11 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=GmTFT+gV;
- spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 1A8F14E41262
-	for <docs@lists.yoctoproject.org>; Fri, 16 Oct 2026 12:32:41 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id C29876075D;
-	Fri, 16 Oct 2026 12:32:40 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1ADA8103281F4;
-	Fri, 16 Oct 2026 14:32:40 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1792153960; h=from:subject:date:message-id:to:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=a4fc71+571Y1ZhlK6iA2xEi7/rdkhDr4GgimGT33tOA=;
-	b=GmTFT+gVR3PfCvv7COGYyTn0h2o+9mUO7cCC0+2dn0cMBRbcA0kHHxGuf+P1nJxazDmBZz
-	XQ2u9Oat+TubJReIv8rfV0XGNfLG3xfnSjRx5+uuL/Hn5XLnufTbhrj0gNKZo6sMlWQW8G
-	BwnDUxwMq9vHH6p71y0wrbNu0D6NMVlbqmlyhLiWiZ71SlCqVZMdvHOaR0CaKetqyt+nqG
-	yMdP+SFweh0VK8ksxLtbv585RS7nkStuC8eQBxSR04qJYVDLD6PcqekZbzSr7yIYCfKM3X
-	Xx3RxV0ibrUDoAWSoYcd/oTCmqRylSh/qz/NrqkpDHluYFjhXbpeBIg6DnbJww==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 16 Oct 2026 14:32:39 +0200
-Message-Id: <DM69K3AOTBE3.2F8QLMXMKK75Q@bootlin.com>
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: <adrian.freihofer@siemens.com>, <docs@lists.yoctoproject.org>
-Subject: Re: [docs] [PATCH v3 4/4] dev-manual/devtool: convert
- add/modify/upgrade flow diagrams to Mermaid
-References: <20261015200726.2391599-1-adrian.freihofer@siemens.com>
- <20261015200726.2391599-5-adrian.freihofer@siemens.com>
-In-Reply-To: <20261015200726.2391599-5-adrian.freihofer@siemens.com>
-X-Last-TLS-Session-Version: TLSv1.3
+ dkim=pass header.i=adrian.freihofer@siemens.com header.s=fm2 header.b=X5TP2z/G;
+ spf=pass (domain: rts-flowmailer.siemens.com, ip: 185.136.64.228, mailfrom: fm-1329275-20261020084403f916e077690002077f-uathl1@rts-flowmailer.siemens.com)
+Received: by mta-64-228.siemens.flowmailer.net with ESMTPSA id 20261020084403f916e077690002077f
+        for <docs@lists.yoctoproject.org>;
+        Tue, 20 Oct 2026 10:44:03 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm2;
+ d=siemens.com; i=adrian.freihofer@siemens.com;
+ h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc;
+ bh=LxAcOTvJDVnav8qgUME8Xl8rIIiCIII/lfiaihHs+fA=;
+ b=X5TP2z/G2c4V5g1x3abW2/Iy7wi4D6JN3wgO+VSA/dwIIqT+SmF+JLxqPPiu5JhVA/eXit
+ UfsLOAehcASDwCL8lDGRVMkRybIV4DoM1p+Ds9D0BKWccxrKNlIaYRncqYwALvI68i2IbQnC
+ xglWUx6WouronBgB+dChped0fX7pBZnjkWQgc6U9iClpTLpdpjdvunqzQd6VoQus20iRw9nI
+ vdTVfD7YJ8UqmonPV2gn3uEvm5vwxISxJP3U5i5tCk0uJTr8TPecfr0FKLBu2Yn7Hbjp/ZBR
+ XiqpeqcSJtjbpqTe7N3gLO6hSUW0LqueQCnVftd8rVu6UdYL2pWrZnMA==;
+From: AdrianF <adrian.freihofer@siemens.com>
+To: docs@lists.yoctoproject.org
+Cc: Adrian Freihofer <adrian.freihofer@siemens.com>
+Subject: [PATCH v4 0/4] dev-manual/devtool: ide-sdk doc rewrite and Mermaid diagrams
+Date: Tue, 20 Oct 2026 10:43:36 +0200
+Message-ID: <20261020084359.354498-1-adrian.freihofer@siemens.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Flowmailer-Platform: Siemens
+Feedback-ID: 519:519-1329275:519-21489:flowmailer
 List-Id: <docs.lists.yoctoproject.org>
-X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by
- aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 16 Oct 2026 12:32:51 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10694
+X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by lin-tor-korg-lkml-alma10-1 with HTTPS for <docs@lists.yoctoproject.org>; Tue, 20 Oct 2026 08:44:18 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10698
+Content-Type: text/plain; charset="utf-8"
 
-On Thu Oct 15, 2026 at 10:06 PM CEST, Adrian Freihofer via lists.yoctoproje=
-ct.org wrote:
-> From: Adrian Freihofer <adrian.freihofer@siemens.com>
->
-> Replace the devtool-add-flow.png, devtool-modify-flow.png and
-> devtool-upgrade-flow.png diagrams with Mermaid (.mmd) flowcharts and
-> their pre-rendered SVGs, in the same style as the ide-sdk diagrams
-> added in the previous commit. The PNGs are removed since they are no
-> longer referenced.
->
-> The add and modify diagrams also gain a "devtool ide-sdk" branch,
-> showing it as an alternative to the manual build/deploy-target loop.
->
-> Signed-off-by: Adrian Freihofer <adrian.freihofer@siemens.com>
-> ---
->  documentation/dev-manual/devtool.rst          |  12 +-
->  .../dev-manual/figures/devtool-add-flow.mmd   | 104 +++++++++++++++++
+From: Adrian Freihofer <adrian.freihofer@siemens.com>
 
-I don't think it is necessary to keep the mmd files (see why patch 3/4).
+Update the "devtool ide-sdk" section to reflect its current behavior,
+and fix outdated non-patch local file handling docs (5.1 change).
 
->  .../dev-manual/figures/devtool-add-flow.png   | Bin 181699 -> 0 bytes
->  .../dev-manual/figures/devtool-add-flow.svg   |   1 +
->  .../figures/devtool-modify-flow.mmd           | 108 ++++++++++++++++++
->  .../figures/devtool-modify-flow.png           | Bin 171676 -> 0 bytes
->  .../figures/devtool-modify-flow.svg           |   1 +
+Add workflow/architecture diagrams for "devtool ide-sdk", and convert the
+existing devtool add/modify/upgrade flow chart PNGs to Mermaid too. The
+Mermaid sources (.mmd) and the rendered SVGs are both kept in git, so the
+documentation build needs no Mermaid tooling or network access.
 
-For this one and the devtool add one, wouldn't it be more correct to have t=
-he
-"devtool ide-sdk recipe image" before "Edit source code"?
+Changes in v4:
+- Use Nimbus Sans for the diagram text. standards.md still needs to be
+  updated for this.
+- Keep the .mmd files next to the generated SVGs and don't embed them in
+  the SVGs: the SVG is a generated artifact, and the .mmd is the source to
+  edit and to regenerate it from (the command is in each .mmd header).
+  Embedding would make the workflow complicated, as the source would have
+  to be extracted from the SVG again before every edit, and the code to
+  do that would be hard to find. A reader also would not see that the
+  diagrams are generated with Mermaid. Editing the SVGs by hand, e.g.
+  with Inkscape, is cumbersome and against the concept: changes would be
+  lost on the next regeneration, so edit the .mmd and regenerate.
+- Reference the diagrams as figures/<name>.* so Sphinx picks the best
+  format per builder, and give every devtool diagram a caption.
+- Fix the "(build directory) build artifacts)" typo in the ide-sdk
+  architecture diagrams.
+- Place the ide-sdk node before "Edit source code" in the add flow.
+- Rework the add/modify flows after checking them against devtool:
+  show the workspace sources/ and the existing srctree of "devtool
+  modify -n", and route "devtool build-image" to the target (flash,
+  firmware update or runqemu) instead of "devtool deploy-target". Only
+  "Edit source code" leads to "devtool finish", and no arrows cross.
+  The "Left/Middle/Right" scenarios in the text follow the figures.
+- Use the same color scheme in the ide-sdk workflow diagram.
 
-Thanks,
-Antonin
+Changes in v3:
+- Add the rendered SVGs to git next to the .mmd sources, instead of
+  rendering the diagrams at build time (drops the sphinxcontrib-mermaid
+  extension and the CDN-hosted mermaid.js).
+- Restore PDF support, as the SVGs are converted by the existing
+  rsvgconverter (not tested yet).
+
+Adrian Freihofer (3):
+  dev-manual/devtool: update devtool ide-sdk section for recent features
+  dev-manual/devtool: add diagrams for the ide-sdk workflow and
+    architecture
+  dev-manual/devtool: convert add/modify/upgrade flow diagrams to
+    Mermaid
+
+Trevor Woerner (1):
+  ref-manual: put the ARCHIVER_MODE comments on their own lines
+
+ documentation/dev-manual/devtool.rst          | 1140 +++++++++++------
+ .../dev-manual/figures/devtool-add-flow.mmd   |  107 ++
+ .../dev-manual/figures/devtool-add-flow.png   |  Bin 181699 -> 0 bytes
+ .../dev-manual/figures/devtool-add-flow.svg   |    1 +
+ .../figures/devtool-ide-sdk-architecture.mmd  |   84 ++
+ .../figures/devtool-ide-sdk-architecture.svg  |    1 +
+ .../devtool-ide-sdk-nfs-architecture.mmd      |   89 ++
+ .../devtool-ide-sdk-nfs-architecture.svg      |    1 +
+ .../figures/devtool-ide-sdk-workflow.mmd      |   76 ++
+ .../figures/devtool-ide-sdk-workflow.svg      |    1 +
+ .../figures/devtool-modify-flow.mmd           |  110 ++
+ .../figures/devtool-modify-flow.png           |  Bin 171676 -> 0 bytes
+ .../figures/devtool-modify-flow.svg           |    1 +
+ .../figures/devtool-upgrade-flow.mmd          |   81 ++
+ .../figures/devtool-upgrade-flow.png          |  Bin 138917 -> 0 bytes
+ .../figures/devtool-upgrade-flow.svg          |    1 +
+ .../ref-manual/devtool-reference.rst          |    4 +
+ documentation/ref-manual/variables.rst        |   27 +-
+ .../sphinx-static/theme_overrides.css         |    5 +
+ 19 files changed, 1354 insertions(+), 375 deletions(-)
+ create mode 100644 documentation/dev-manual/figures/devtool-add-flow.mmd
+ delete mode 100644 documentation/dev-manual/figures/devtool-add-flow.png
+ create mode 100644 documentation/dev-manual/figures/devtool-add-flow.svg
+ create mode 100644 documentation/dev-manual/figures/devtool-ide-sdk-architecture.mmd
+ create mode 100644 documentation/dev-manual/figures/devtool-ide-sdk-architecture.svg
+ create mode 100644 documentation/dev-manual/figures/devtool-ide-sdk-nfs-architecture.mmd
+ create mode 100644 documentation/dev-manual/figures/devtool-ide-sdk-nfs-architecture.svg
+ create mode 100644 documentation/dev-manual/figures/devtool-ide-sdk-workflow.mmd
+ create mode 100644 documentation/dev-manual/figures/devtool-ide-sdk-workflow.svg
+ create mode 100644 documentation/dev-manual/figures/devtool-modify-flow.mmd
+ delete mode 100644 documentation/dev-manual/figures/devtool-modify-flow.png
+ create mode 100644 documentation/dev-manual/figures/devtool-modify-flow.svg
+ create mode 100644 documentation/dev-manual/figures/devtool-upgrade-flow.mmd
+ delete mode 100644 documentation/dev-manual/figures/devtool-upgrade-flow.png
+ create mode 100644 documentation/dev-manual/figures/devtool-upgrade-flow.svg
+
+-- 
+2.56.0
 
