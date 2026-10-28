@@ -1,125 +1,106 @@
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.37907.1793174719719483143
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.38063.1793174720372265097
  for <docs@lists.yoctoproject.org>;
- Wed, 28 Oct 2026 01:05:20 -0700
+ Wed, 28 Oct 2026 01:05:21 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=h+97m27s;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=0VVKBHVL;
  spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id E3BF01A1377
-	for <docs@lists.yoctoproject.org>; Wed, 28 Oct 2026 08:05:17 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id B19A31A1378
+	for <docs@lists.yoctoproject.org>; Wed, 28 Oct 2026 08:05:18 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id B9CFE60769
-	for <docs@lists.yoctoproject.org>; Wed, 28 Oct 2026 08:05:17 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 13F1A1032909C;
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 8722560769
+	for <docs@lists.yoctoproject.org>; Wed, 28 Oct 2026 08:05:18 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9CC7D103290C7;
 	Wed, 28 Oct 2026 09:05:17 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
 	t=1793174717; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=V1vC7rhV0DBZWnPW2po+wGsIYyCsAIwxeA5NZhM/FfQ=;
-	b=h+97m27s0o/PAMFsKcwFmAj89SLxZtUuEwEs5lZKmCdhajfjZRnnsSka4vq+IBgfIwx6zX
-	9+HXtVjmeo7Cnn3a0LWn/wZFEUt0eUWYvW845wcT972s8PQHyumkiVGmpsU43RmWhWJ0LY
-	t8hdtptMovtKw2Uw5pd/y42fLzAlBeYoWeTbVzTCnDy5L655hafT+iFVcSTNsNSnJLn+Rh
-	cyl90bpcYypLUIvBZ46GB6nTERHx5Qfc6IKMdgmzgPqgAILSb3/3YTyXGmSMOByb/0gJNR
-	RE+kNzmbqDywyK70CJI5eGSobROh8dCZdugf2XrmA5VRb2jvv5+RIGxHhG9LWw==
+	bh=PpAr4AG6U26nO2uZE0XUoLGnmN6CukxIqNF6LfzDbAA=;
+	b=0VVKBHVLjxj+fgIoWNBjvB/JcXUKAqh6uyglo4UZVXIaPqhFhZHIafpx0DHa94SZxWG3Dz
+	CF0orxRWNOsO2rR2E8CW6/3ecYecuPY5AMmLal2WBzhab18agYPcvjPYY+J/S8bAj1UdBe
+	kPe92ifF4OcLCW6PrXRFYWw/gEDEsfDnpEdBqnsD9b3CPDRHUhCJOl6Krh8rB0FH6xU2vN
+	ghOc+vgrDbEm1WVmKui8MK4yI8eW8420aw56UXaBnq5ndjNLKqPIB4eMSBdt4LNlbkAfGa
+	RnQNkFHP9pUvwZ9hGocKNvYFPgRfCFGf3IpZ1Is6ZNOfU90RM/9splphGSq+dw==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Wed, 28 Oct 2026 09:04:55 +0100
-Subject: [PATCH 3/8] conf.py: enable the sphinx-tags extension
+Date: Wed, 28 Oct 2026 09:04:56 +0100
+Subject: [PATCH 4/8] sphinx-static/theme_overrides.css: customize tags
+ appearance
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261028-tags-v1-3-d5ad01019eae@bootlin.com>
+Message-Id: <20261028-tags-v1-4-d5ad01019eae@bootlin.com>
 References: <20261028-tags-v1-0-d5ad01019eae@bootlin.com>
 In-Reply-To: <20261028-tags-v1-0-d5ad01019eae@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Antonin Godard <antonin.godard@bootlin.com>, 
  Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2257;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1391;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=vkrO+5Uh5UvmkBPuarjX2vi6Qqilg1UufDa5VajUTp4=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBq4ay3nMqT9dEo3n7tKE9VnGPNQsTvHhRSqBmdj
- Ih1ICDn4yWJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCauGstwAKCRDRgEFAKaOo
- Ng8ND/909uz8gByC3+dW0Q1DL70qn6n225KbPFIeHN4yCdU5ej7x55lObcm6GEdwKrMI1eefhg8
- Shti0EVMBJsuHdmDoAbrFw3KO6X+jQPZkAYFmfWPDaMy/mPNpY5C+BNTgi9E7J6PUhTAygERpZy
- A+yeqkpn5SCn0hFLRDp8+Ur4IUzYee5goHcuhUVl/+jvcGuAdVF0BXSnYiP6pZNBfjdBzkVBbK6
- 001TC/GxuVJZ95jG+HyZ5O+aFITCYPd25it6edCXgUex0+LOG5Y6zazZKbw6pBoEJDyHLh31hBs
- dENAWsjcKAyG2fL3dKuqvFaDbiEcFPJY91ZSw95Zf8H30MI/cKqWoeE4O1GWvZiTWbuvO5eHWLb
- +R3rIAZdNLfQCdKu+iJM+h3hNVtcdklWh6Qz18Ak2lThnJ3JEgVnwf8UJFLXoak7iwALEeFlpEu
- x3tJPhB3uh1G1I8myng1n3dzLkUR7/AuYVdmZiUh/pX8jeNDDW4erQS9DVTKlMSpbMdZzxubl9W
- liHATj4wAFaAQPUM9/8w55E8ghGpGIrmYP2Uv970OPtKUvMYgicOsI8XmoGk9g3jB+XHibMEqrb
- cHDhUsSF8s9t0FRo3fL5iNwYTCSSFQ0JSCy1GWDhIUthCV/0e7iirkx88YodFp/7vzXnWml+zhY
- Lzceh66/YX10LpA==
+ bh=8ghw6dHYeLpgEuSPNuWaPVZcJvDi8WSQy+v1QsIbZd8=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBq4ay3T4M8tU0C/W42Q6mILCEhG/kae0GMnZn0V
+ tcLkk8q7A6JAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCauGstwAKCRDRgEFAKaOo
+ No7XD/wIeyj+ZM/Mp+GCzrAz5XA6zQZ7toMGiz4OyQeLaLhGqZo1Bb562U/SAhETkDBsTJlWFEm
+ W86klEj8bPIYKOn9QDWzMP3QOUNxtZ1n/y+I18unT9JTesVpnY4PPz/Nnq7m7nvQJIvyh4QWLY+
+ jfYTzex1HrwLa31wC/W/C/aNLkfu550TofZRgGm4KD0VPofeMCuWA8N5By5g3fbBQu3dCSoRH6K
+ xtazOfTrRXmF3UmQXteyxCKZsF7BTxerwXy9Yqdczijll4ad0Jf0OqjHeRkfS/oRVbxSlMgOEPV
+ WVXK88KrveT4UgGk0985AYhkSEM0LRRj87YPL2XlGboIcpRab2dRymmwcUQ7s9KwbR9SN87fi4A
+ yJZwRWZE60x9Cg+ivznWfxS0yy6mzifb7j76FnZXrbunLsFN4DlxOLUar+/o2CS0yC3wtsmlUmp
+ uZuQld3wfC+hGZf29KPrzMhTM51s7Gryj2VEhDP27dEI9IP6SuJkMJ7wXm9D8ms42I7VtJyjjpj
+ aCirdQl5jVnBBwh0WDTLDPbHiMLcEfjNsrevw2g2vZKQCES0dPI1OxJsQaM9vF5NVEfusX+xafj
+ VhxzlukoPVO7QF8NAAPrAQm7iYFwRepmmKeFcCUNMeFLjjfc45WjRZ3ZXCju01Kdpq4v1KputYl
+ lv3oLqzT0lG/bCg==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
-X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by lin-tor-korg-lkml-alma10-1 with HTTPS for <docs@lists.yoctoproject.org>; Wed, 28 Oct 2026 08:05:23 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10731
+X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by lin-tor-korg-lkml-alma10-1 with HTTPS for <docs@lists.yoctoproject.org>; Wed, 28 Oct 2026 08:05:24 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10732
 
-The sphinx-tags extension can be used to add tags to document, which
-then creates a section of the documentation with a list of tags which
-group documents. This should help users finding the different documents
-across the Yocto Project documentation which fall under a common
-category.
-
-Update the Makefile to remove the generated _tags/ directory on a make
-clean, and the .gitignore.
+Customize the tags appearance so that they match our color theme. This
+is a customization of the sphinx-design badges CSS the sphinx-tags
+extension makes use of when badges are enabled.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/.gitignore | 1 +
- documentation/Makefile   | 2 +-
- documentation/conf.py    | 8 ++++++++
- 3 files changed, 10 insertions(+), 1 deletion(-)
+ documentation/sphinx-static/theme_overrides.css | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/documentation/.gitignore b/documentation/.gitignore
-index d6d020efb..84d82f45d 100644
---- a/documentation/.gitignore
-+++ b/documentation/.gitignore
-@@ -1,5 +1,6 @@
- sphinx/__pycache__
- _build/
-+_tags/
- Pipfile.lock
- poky.yaml
- sphinx-static/switchers.js
-diff --git a/documentation/Makefile b/documentation/Makefile
-index 2df23ebf4..f165e36c2 100644
---- a/documentation/Makefile
-+++ b/documentation/Makefile
-@@ -33,7 +33,7 @@ publish: Makefile checks epub latexpdf html singlehtml
- 	sed -i -e 's@index.html#@singleindex.html#@g' $(BUILDDIR)/$(DESTDIR)/singleindex.html
+diff --git a/documentation/sphinx-static/theme_overrides.css b/documentation/sphinx-static/theme_overrides.css
+index 3823db820..4fe701dc7 100644
+--- a/documentation/sphinx-static/theme_overrides.css
++++ b/documentation/sphinx-static/theme_overrides.css
+@@ -140,6 +140,29 @@ section#welcome-to-the-yocto-project-documentation p.caption {
+     border-radius: 0 0 4px 4px;
+ }
  
- clean:
--	@rm -rf $(BUILDDIR) poky.yaml sphinx-static/switchers.js releases.rst releases.json
-+	@rm -rf $(BUILDDIR) _tags/ poky.yaml sphinx-static/switchers.js releases.rst releases.json
- 
- checks:
- 	$(SOURCEDIR)/tools/check-glossaries --docs-dir $(SOURCEDIR)
-diff --git a/documentation/conf.py b/documentation/conf.py
-index d2252d5ab..75d062945 100644
---- a/documentation/conf.py
-+++ b/documentation/conf.py
-@@ -50,6 +50,7 @@ extensions = [
-     'sphinx.ext.extlinks',
-     'sphinx.ext.intersphinx',
-     'sphinx_copybutton',
-+    'sphinx_tags',
-     'sphinxcontrib.rsvgconverter',
-     'yocto-vars'
- ]
-@@ -260,3 +261,10 @@ copybutton_prompt_is_regexp = True
- copybutton_only_copy_prompt_lines = True
- copybutton_remove_prompts = True
- copybutton_line_continuation_character = "\\"
++/* Custom sphinx-design badge */
++.sd-badge {
++    display: inline-block;
++    padding: .35em .65em;
++    font-size: .75em;
++    font-weight: 700;
++    line-height: 1;
++    text-align: center;
++    white-space: nowrap;
++    vertical-align: baseline;
++    border-radius: .25rem;
++    color: #00557d !important;
++    background-color: #fcfcfc;
++    border-color: #00557d;
++    border-width: 1px;
++    border-style: solid;
++}
 +
-+# -- sphinx_tags configuration -----------------------------------------------
++/* Remove the underline from the link in the badge */
++a.sd-badge {
++    text-decoration: none;
++}
 +
-+tags_create_tags = True
-+tags_page_title = "Tag"
-+tags_page_header = "Document(s) with this tag"
-+tags_create_badges = True
+ @media screen {
+     .wy-nav-content {
+        max-width: 1000px;
 
 -- 
 2.55.0
