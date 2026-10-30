@@ -1,79 +1,91 @@
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.10815.1793365128226154296
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.10814.1793365128225994473
  for <docs@lists.yoctoproject.org>;
  Fri, 30 Oct 2026 05:58:49 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=LwFS9kcN;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=ymTBpySK;
  spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id EB7091A13C1
-	for <docs@lists.yoctoproject.org>; Fri, 30 Oct 2026 12:58:45 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 809E51A13C3
+	for <docs@lists.yoctoproject.org>; Fri, 30 Oct 2026 12:58:46 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id C0F23603C2
-	for <docs@lists.yoctoproject.org>; Fri, 30 Oct 2026 12:58:45 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1A7DF10329050;
-	Fri, 30 Oct 2026 13:58:44 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 506D9603C2
+	for <docs@lists.yoctoproject.org>; Fri, 30 Oct 2026 12:58:46 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8499D10328D09;
+	Fri, 30 Oct 2026 13:58:45 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
 	t=1793365125; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=AXcYXVbT1b4Ntqt8yVmC0jqFmOaB2T1TmW6HxsCC86A=;
-	b=LwFS9kcNo7UTf2Y2qeuOHk4ofu7v6DMsuX/6VLNjyeD8dtBCO7+QIhznaoYlu0U2lElfJ/
-	JAuNLzTabgkO6DTbFt0JtofEZ/GM0BxIliroXv1Hvp+3eZ92XC1wAtYEfPPLPSYiTEr2PZ
-	gRAcTQYb+e0qsDL6C7910gZOshZ6NVuZvFq3A7lNQOLDVTcvAe25E8fkSWhVmodWggbrLh
-	XQ/NyukEq+ERR6voPK4E7vj2vq6N4stOS8J7eYpHvdLKTLGsPHerzH8tYOHHFEn6roPiaE
-	i/f2j9FgJMJ3ZcSXHVLS4anbmGtLIiQ6IwYuaDBy7HTDO1OM8m9F3lphMGv3ww==
+	 content-transfer-encoding:in-reply-to:references;
+	bh=m4oq80gqr5uCpZy3rxne/7E+Bef6Ux/4QkcKWsbs8QI=;
+	b=ymTBpySKwFKgF/5jUKnAQZo+5LrZTjfCYWDYB0B+r23tZ8V0HNHEMQv72053tPzSM/tcjz
+	gj68v+XOqBxyw7rqfQD4N/MACvzuu/oTEoDZYs4gQLjBWrbB7roem7C/4k9IxfERnHc1z1
+	EGayL24xmuUkEHq9BWmZ9kp8eF3f18N3/LTg8uHNN5vLSy4gSegimH0jnDWduSx0+wAoqW
+	8l9q17v5x41lweeGOK06SRHCf+GW4lWiRv5ePeyClSyXCAhjwZWFJKuskMpYqRW3Aodjva
+	c6orAYnALwJl47A+U2B+hSmu9ii3zqDSmNiBK26M4p58t9x0gszK3HfwaFByLw==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Subject: [PATCH 0/2] Move to Nimbus Sans for diagrams
-Date: Fri, 30 Oct 2026 13:58:37 +0100
-Message-Id: <20261030-nimbus-standards-v1-0-119ec9b3c918@bootlin.com>
+Date: Fri, 30 Oct 2026 13:58:38 +0100
+Subject: [PATCH 1/2] standards.md: recommend Nimbus Sans instead of Nimbus
+ Roman
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMQQqDMBBA0avIrA1opIq9SnGRZCZ1hKZlJpGCe
- Pem7fIt/j9ASZgUrs0BQjsrP1NF3zYQVpfuZBirwXZ27DtrTeKHL2o0u4ROUM0w+ukyDwEjItT
- sJRT5/Vvelr+1+I1C/n7gPD90uJFLdAAAAA==
-X-Change-ID: 20261022-nimbus-standards-36b7593cdfdd
+Message-Id: <20261030-nimbus-standards-v1-1-119ec9b3c918@bootlin.com>
+References: <20261030-nimbus-standards-v1-0-119ec9b3c918@bootlin.com>
+In-Reply-To: <20261030-nimbus-standards-v1-0-119ec9b3c918@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=784;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=931;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=RWrF/rafVy8lkLDBaL3bFFiXaslRP5dp0///MXOQHcA=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBq5JR+e9jLdzWTpRm0s5sSGwpQJ5wP9cHiS5WpY
- YOV8EPRuz+JAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCauSUfgAKCRDRgEFAKaOo
- NraAEACJzmrQXyzPGpqk0pbYB1L3+46qZZoBoO9ZJShxc0/9zdwozmqP+le7mQpCIKrgjZ6/wSC
- dI1AZhUHJrFvOP/t61hIOzfG4zGurXAispE0CqdBU9osEsNiQP+bgAOqMBJ4vq/RfsUn+IW9lN5
- m1q2IBI8nmwvWlbV8nMYXGE1WA+GltZV7S74GNKWzh1kPeyiCi8NzxNrB5TRxyKCIFYCXj57mbo
- UEZhHf6Ot/ZSfKs00639S5MObh+/DFGIvAqtHJSAanF++tK7KJWFVka4TK8zPA+To2jE13J3Woh
- uuUJa9/HY7Z9UpHmHAL6J5Hk0VWXOq+zpC/Lw+oQRQpQNomJ/kmG7r8yGxAQxFiYxSpMfC2Ep7d
- oSMwAmmTYVuF59vA1VGnjGwKRxPF5L90+yEofcNjZvVOl6tgogqmHE8gmZEe6yXjbRr1awFxR9C
- d6I6chQTRZF0+G3AKKi5LFQoHKLDrOpo7BElIF2zjl1Eptjme/36XH5CKA7Z930HV779tSxR8GU
- W0B+p5cnsC/4z2cjx03WtF3/fYC4hTQcitYkdJc28OqkG0/cm6OrUs1RIC0IBFCtpV8n5v6P+E0
- EvNFN2YDsx20tk05d3izbVemaj2rBpv9GHGs26tCs2Yc4O5HF5ecc5ntr9EjAHkNzy4QMIDKFQ5
- SIrnX3tmZOm9Ukw==
+ bh=N8Ei5+lDWDsPdv/6rJYQEuLi9BAVqjNswXWx20Si+bk=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBq5JR/Q57PHsc+VVuis5R54z2JYL0cJwNGfI7OB
+ I7sMZDdG1+JAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCauSUfwAKCRDRgEFAKaOo
+ NgNIEACYCYsDaSCbKWLPgiFxpL4EW2idE/SsQA5f78okiCSKf6x7oQ1kAmCnajMKPN0J8SJWclT
+ 0l2UqTRKWE2INxqVW2ISf3QPvYkb+QPQszPcZ4KAfDcXxh5LYiGzHXawORKEl03yCY3A93Rynul
+ OYBFxQYmgVwR4mvV69YYa5NEsdf1InzFXlkUDGwldTaQtWs9lEJhAb4Rj2DtlzkYX7dVZDY6frN
+ POLsnYMi29SJg4zy/x48uI4NCPwYNd0fEbe7kqZg+1wWLNwI5+nyNQEexVYhhltPYNPrwvhoZbX
+ B5jLecDfZo7Xbmy5kcnu0LqGGkVMj1Hls1IK4iXRUVoLpqmM/1xGaCHchz0RQsRaj4G4QZpQWTZ
+ zagdiWUnLnK8WvxzEQEKDVBneiT3asJDVCAmT629yfWQJiXNbDWfJcbyz6R8KLX9nEIs4Iu3JPg
+ uNlfo4BAucC3gAS+itwdGERqbDr3poQDyRDgHuYHu62mA6+cyNhI2YeZDkIg3O0fIUy1S993dA/
+ C1340xODWVTQ+4Cco7zbQi1uM3eP4RjNTXwpz+BW5XxygMDBv89zcqU2+cONdsgXyNbCBZGJrnf
+ A1hAKavWVdu1euEu6yAlteUk2pitYsk2OwiYtACsOD3fX3SBOXOG+T3oo68K6G41zmoXmJ06uFT
+ ByBLS7rPvZPQvrg==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
-X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by lin-tor-korg-lkml-alma10-1 with HTTPS for <docs@lists.yoctoproject.org>; Fri, 30 Oct 2026 12:58:54 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10743
+X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by lin-tor-korg-lkml-alma10-1 with HTTPS for <docs@lists.yoctoproject.org>; Fri, 30 Oct 2026 12:58:55 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10744
 
-Change the standards to encourage using Nimbus Sans instead of Nimbus
-Roman for diagrams, as it is more readable that way.
-
-Convert the diagrams using Nimbus Roman.
+Using Nimbus Roman for diagrams is usually a bad idea: serif fonts are
+meant for paragraphs, while sans-serif fonts are better suited for
+diagrams. Change our standards recommendation.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
-Antonin Godard (2):
-      standards.md: recommend Nimbus Sans instead of Nimbus Roman
-      docs-wide: convert diagrams that use Nimbus Roman to use Nimbus Sans
+ documentation/standards.md | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
- documentation/overview-manual/svg/git-workflow.svg | 30 ++++++++--------
- documentation/standards.md                         |  5 +--
- documentation/template/template.svg                | 40 +++++++++++-----------
- 3 files changed, 38 insertions(+), 37 deletions(-)
----
-base-commit: 7b54854d12f3f2c909727702d39066a3d22a4a40
-change-id: 20261022-nimbus-standards-36b7593cdfdd
+diff --git a/documentation/standards.md b/documentation/standards.md
+index 30d48a5bb..1f2a30a22 100644
+--- a/documentation/standards.md
++++ b/documentation/standards.md
+@@ -203,10 +203,11 @@ arrows and clipart to the new SVG document.
+ 
+ ### Fonts
+ 
+-The recommended font for description text and labels is `Nimbus Roman`, size 10.
++The recommended font for description text and labels is `Nimbus Sans`.
++
+ Labels are in bold.
+ 
+-`template.svg` contains ready-to-copy labels.
++`template.svg` contains ready-to-copy text and labels.
+ 
+ ### Text boxes
+ 
+
+-- 
+2.55.0
 
