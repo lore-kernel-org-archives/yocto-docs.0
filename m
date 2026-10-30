@@ -1,396 +1,99 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.10817.1793365132746331893
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.14305.1793374393241247868
  for <docs@lists.yoctoproject.org>;
- Fri, 30 Oct 2026 05:58:53 -0700
+ Fri, 30 Oct 2026 08:33:13 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=XLfSPtac;
- spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 0F4401A13C1
-	for <docs@lists.yoctoproject.org>; Fri, 30 Oct 2026 12:58:51 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id D2341603C2
-	for <docs@lists.yoctoproject.org>; Fri, 30 Oct 2026 12:58:50 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2DA46103290F8;
-	Fri, 30 Oct 2026 13:58:46 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1793365126; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=TIGTO6jli2UTW5iG5TpSX/DGJ5UZrXhBJ44mhacZnPE=;
-	b=XLfSPtaccvIZWdqgTolFwMG0V4Z9TQIiblJmYJ1NX/REtyKfRnAEwory3BG4amyaRlpekD
-	YpLcUlPt1/+JZjMs5kn1LZRhetbEkrY+g0HgdZ6YyiTOldQ2WxRIRqzuR3DGu8egqCQBJC
-	TzDBqzyiQVNckr2SmEBqPgt1r8g4yo3YQYBwklak99IVKPGFP3Wv71lTCRXZOStUqFPqxt
-	4V4tm/ni+g40DXryYHLqyZWmPXo/bu1JOQPbrn1bjdTDzjnigN36Y1RKu5Tn37UoMaMUeI
-	cm6MN2ttGmYU0rFSjCODCd5lp6zYXJZZCAzVLbE5fldn0cBN6jTAxq/lr3HVMw==
-From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Fri, 30 Oct 2026 13:58:39 +0100
-Subject: [PATCH 2/2] docs-wide: convert diagrams that use Nimbus Roman to
- use Nimbus Sans
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261030-nimbus-standards-v1-2-119ec9b3c918@bootlin.com>
-References: <20261030-nimbus-standards-v1-0-119ec9b3c918@bootlin.com>
-In-Reply-To: <20261030-nimbus-standards-v1-0-119ec9b3c918@bootlin.com>
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=f8RfV6+A;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.128.44, mailfrom: richard.purdie@linuxfoundation.org)
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4a2d6cf958bso4192915e9.1
+        for <docs@lists.yoctoproject.org>; Fri, 30 Oct 2026 08:33:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1793374391; x=1793979191; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=p2pUtm+bqi1TfyEzfsiee+2UFJPVNt71VUgSMZCJNwQ=;
+        b=f8RfV6+AhgW1e6orGg5oxHOr4AcBpS4sRjS5Q5B38Z3y2m/75iQINQScGcWhPvgA0B
+         9FqKm6nZVLtByq357egJk9Q/I4Rejl6YYeCulrlF6t82RP2l1tkgUNe3gi3eu7hTnu6S
+         og9zKZCmw4/JX9a5b+MHnQ2W5FGxWeYdACN58=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793374391; x=1793979191;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=p2pUtm+bqi1TfyEzfsiee+2UFJPVNt71VUgSMZCJNwQ=;
+        b=L8VjfqHJDHFKzo3IEuDR/Nx/4UxZHl2Nz0gNypUSD3tcG3EtsMbktDlfWm8UPkLEPO
+         oJhbgwlvUFDZT/5/CS8RgDCBgDcS8SUOSNanyaQ6ejSmM0AclajZHtY6eNIMh+hqvrKV
+         Bq/5aNMYRUxvk2mim7oTTOeWC6rLN+XkFwKhZIrY2mNwIJZpSAV2hutyeXF+jAzowRxN
+         t3yKjkALbX25zJP05dCynBSU/cwB8lsXdJGPg+q8Xl0socrGevLzuA66/ms5G+k75244
+         F1YK8mRNVzgCeNb16jEHE9615ouwQy8JD2znDx6ZErgZwuQra3KCJ959N55RGjjrpa51
+         m5lw==
+X-Gm-Message-State: AFq9FYIyOfUKFpG++9bWwxiRQBpzyrA49n4X5PGyYKYS5e1TmEOGgzuT
+	ft+nFvbkSMBJiEqL8BfCBHzuzclfz5pdw+CojsqO6vl0z49x1r7HZvF3qdCX7KX3g64RpOPm9Oz
+	4OIVwpEE=
+X-Gm-Gg: AYBFou1dJHyYazhbZVRnkKvYrGVVzD8OkGGtVExWa+9WFDoibNwN08oqyoZzLvWTkvH
+	WUnhaqhJqdR6qihyUueIf1K8vogeNKYJ/nuNXRcRIgJCAtKfwrD/x3BsusjKjcf8/tHdSw6KHfu
+	Vg7CQpRn9laIY2+koW1hXEZxFBDUWjKPfeKemFKyXea+82Mbo7pJKMnWFmk1LlyvzZM9XSNK/HS
+	aqwaU4dt2uOQri2oqqkEhu+4KtOAWrIrHDOBfMIMq0QfcO3F+HlGo/Wqd2VFquHlFgR+X5Ogyr8
+	z5as+q5s84jtSodNWGeeywWMYBjBbFm5g/4s5SfVdpAiVttPl0+5JxBVm2Genk4eJ6pelJo0zei
+	oHV4re2xvEMDNb4OnYLud6RpEPG1Aws/JhW6S0MlfSmjU97vJgIbTl/yJU0lCd6MnL34ybfMh+j
+	Vs1rpRCDUHLu/pqxAordBBPbdMv6tvK/cbzr9CtcgcF5qzpgJ+1REc08giG7m8ZHTrRLd/BAthY
+	ahOJ4LGO0UDHKB9YnjXL95Y7tEYDPfPbrlVfiUIauGx6APqaNDby81YGwO0UUR6VnlfOjXLs1rN
+	Rm6BIRyINjwdNpIHsnFLNPIxYCZZKSU1xMFKdNpVDIo4CysTB09md3BBPg==
+X-Received: by 2002:a05:600c:3554:b0:4a1:f7f4:7cf2 with SMTP id 5b1f17b1804b1-4ac1737c474mr59311335e9.17.1793374391033;
+        Fri, 30 Oct 2026 08:33:11 -0700 (PDT)
+Return-Path: <richard.purdie@linuxfoundation.org>
+Received: from max.int.rpsys.net ([2001:8b0:aba:5f3c:50a1:2666:faf3:9570])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4abf7146621sm70020035e9.13.2026.10.30.08.33.09
+        for <docs@lists.yoctoproject.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 30 Oct 2026 08:33:09 -0700 (PDT)
+From: Richard Purdie <richard.purdie@linuxfoundation.org>
 To: docs@lists.yoctoproject.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Antonin Godard <antonin.godard@bootlin.com>
-X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=32416;
- i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=qqoxZLGl2Lng/505R/rxHnTpE2IO8ZW5uTaBujTebf4=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBq5JR/9VAS1t/hkptJ5jOD8B+DJLhO16q4YD//X
- 7iy6oI4k0OJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCauSUfwAKCRDRgEFAKaOo
- Nn5LD/46QW3Dol4SLF+ef2JLDJF7TMD5OSQUidccqa8hquTG6KIM3hddG/kQuneOE4nCx2QyBa6
- 6Sp5E8LwQdrDBpqSRxiPVs27bJNFaexGYymyALx10P+7b/vsSxSj8inybOqRFLsGbjXJAoPM5+5
- CWSUExpsWIkePX+56bRCMPDMNgfrtF90VvJaedXqrDjFbMG7XmXU5EcVgyTBVWUPukCRsWgwt6f
- Wm3whzMOEovp3F2aENqOmCbBmLy2oWsSBIQTdxrmzkW+6xVbA6APsQpcZbQN1NXAJRShzx08rXR
- ofnTQkj9MkLEIgO8x4T7OXiU9p1BStfvehxvGzYkS3ADQqyeFMHJ55FPESC1xfl0YyFbogw9tV+
- WXvVKjhf8r9fZop5ZAoRAGj2w2KKk5ATCWPql14mMIgUHcu73jpE476eOy2tx0KL1cnpVhC3D8i
- khNtl8gOGtu5glnPWZCrbeaWEZSOyEhJyOy7PHepKiyrRaXX6JaTNEiVUHPszlAMYsm7xPLJ+23
- BlxU60Q/T2so9uT7dRbJ0bxhPNvjrRjp0Nv/OmtoR+yHkLFQTviOOYogRAKE3hfXm1zrlfCSoE1
- WzNoVZkaRW+DgltMDdrEYqOh5zSe/WAx0ttC9vYt9iLlZH8x/Sm7Omp3IM4WP2FrUZtZDMnsDNk
- dyZBztoqBwfC2/w==
-X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
- fpr=8648725188DD401BB9A0D3FFD180414029A3A836
-X-Last-TLS-Session-Version: TLSv1.3
+Subject: [PATCH] ref-manual/faq: Add entry about emails on patch merging
+Date: Fri, 30 Oct 2026 15:33:08 +0000
+Message-ID: <20261030153308.3269691-1-richard.purdie@linuxfoundation.org>
+X-Mailer: git-send-email 2.55.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
-X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by lin-tor-korg-lkml-alma10-1 with HTTPS for <docs@lists.yoctoproject.org>; Fri, 30 Oct 2026 12:58:55 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10745
+X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by lin-tor-korg-lkml-alma10-1 with HTTPS for <docs@lists.yoctoproject.org>; Fri, 30 Oct 2026 15:33:16 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10746
+Content-Type: text/plain; charset="utf-8"
 
-The standards.md now recommends Nimbus Sans for diagrams, so convert
-diagrams using Nimbus Roman to use Nimbus Sans.
+Document why we don't currently send emails when patches merge in the FAQ.
 
-Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
 ---
- documentation/overview-manual/svg/git-workflow.svg | 30 ++++++++--------
- documentation/template/template.svg                | 40 +++++++++++-----------
- 2 files changed, 35 insertions(+), 35 deletions(-)
+ documentation/ref-manual/faq.rst | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/documentation/overview-manual/svg/git-workflow.svg b/documentation/overview-manual/svg/git-workflow.svg
-index 7747e35d9..8e1d9292d 100644
---- a/documentation/overview-manual/svg/git-workflow.svg
-+++ b/documentation/overview-manual/svg/git-workflow.svg
-@@ -771,7 +771,7 @@
-       </g>
-       <text
-          xml:space="preserve"
--         style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Roman';-inkscape-font-specification:'Nimbus Roman, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-+         style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Sans';-inkscape-font-specification:'Nimbus Sans, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-          x="-15.501629"
-          y="651.78131"
-          id="text1185"><tspan
-@@ -783,7 +783,7 @@
-     </g>
-     <text
-        xml:space="preserve"
--       style="font-weight:bold;font-size:42.5884px;line-height:125%;font-family:'Nimbus Roman';-inkscape-font-specification:'Nimbus Roman, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-+       style="font-weight:bold;font-size:42.5884px;line-height:125%;font-family:'Nimbus Sans';-inkscape-font-specification:'Nimbus Sans, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-        x="142.22464"
-        y="565.10297"
-        id="text907"><tspan
-@@ -793,7 +793,7 @@
-          y="565.10297" /></text>
-     <text
-        xml:space="preserve"
--       style="font-weight:bold;font-size:42.5884px;line-height:125%;font-family:'Nimbus Roman';-inkscape-font-specification:'Nimbus Roman, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-+       style="font-weight:bold;font-size:42.5884px;line-height:125%;font-family:'Nimbus Sans';-inkscape-font-specification:'Nimbus Sans, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-        x="98.363503"
-        y="637.8432"
-        id="text911"><tspan
-@@ -803,7 +803,7 @@
-          y="637.8432" /></text>
-     <text
-        xml:space="preserve"
--       style="font-weight:bold;font-size:42.5884px;line-height:125%;font-family:'Nimbus Roman';-inkscape-font-specification:'Nimbus Roman, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-+       style="font-weight:bold;font-size:42.5884px;line-height:125%;font-family:'Nimbus Sans';-inkscape-font-specification:'Nimbus Sans, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-        x="-59.575905"
-        y="580.05695"
-        id="text915"><tspan
-@@ -824,7 +824,7 @@
-          ry="3.4599047" />
-       <text
-          xml:space="preserve"
--         style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Roman';-inkscape-font-specification:'Nimbus Roman, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-+         style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Sans';-inkscape-font-specification:'Nimbus Sans, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-          x="259.14236"
-          y="523.42725"
-          id="text1185-3"><tspan
-@@ -937,7 +937,7 @@
-          ry="3.4599047" />
-       <text
-          xml:space="preserve"
--         style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Roman';-inkscape-font-specification:'Nimbus Roman, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-+         style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Sans';-inkscape-font-specification:'Nimbus Sans, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-          x="463.47824"
-          y="522.11536"
-          id="text1185-3-5"><tspan
-@@ -972,7 +972,7 @@
-          ry="3.4599047" />
-       <text
-          xml:space="preserve"
--         style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Roman';-inkscape-font-specification:'Nimbus Roman, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-+         style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Sans';-inkscape-font-specification:'Nimbus Sans, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-          x="463.47824"
-          y="522.11536"
-          id="text1185-3-5-0"><tspan
-@@ -1007,7 +1007,7 @@
-          ry="3.4599047" />
-       <text
-          xml:space="preserve"
--         style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Roman';-inkscape-font-specification:'Nimbus Roman, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-+         style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Sans';-inkscape-font-specification:'Nimbus Sans, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-          x="462.51175"
-          y="650.07056"
-          id="text1185-3-5-5"><tspan
-@@ -1042,7 +1042,7 @@
-          ry="3.4599047" />
-       <text
-          xml:space="preserve"
--         style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Roman';-inkscape-font-specification:'Nimbus Roman, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-+         style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Sans';-inkscape-font-specification:'Nimbus Sans, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-          x="462.51175"
-          y="650.07056"
-          id="text1185-3-5-5-6"><tspan
-@@ -1074,7 +1074,7 @@
-        inkscape:connection-end="#g1211-2" />
-     <text
-        xml:space="preserve"
--       style="font-weight:bold;font-size:42.5884px;line-height:125%;font-family:'Nimbus Roman';-inkscape-font-specification:'Nimbus Roman, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-+       style="font-weight:bold;font-size:42.5884px;line-height:125%;font-family:'Nimbus Sans';-inkscape-font-specification:'Nimbus Sans, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-        x="313.46567"
-        y="412.9321"
-        id="text3781"><tspan
-@@ -1084,7 +1084,7 @@
-          y="412.9321" /></text>
-     <text
-        xml:space="preserve"
--       style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Roman';-inkscape-font-specification:'Nimbus Roman, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-+       style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Sans';-inkscape-font-specification:'Nimbus Sans, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-        x="580.85419"
-        y="524.23517"
-        id="text1185-9"><tspan
-@@ -1103,7 +1103,7 @@
-        inkscape:connection-end="#g1315-2" />
-     <text
-        xml:space="preserve"
--       style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Roman';-inkscape-font-specification:'Nimbus Roman, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-+       style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Sans';-inkscape-font-specification:'Nimbus Sans, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-        x="580.85419"
-        y="647.90686"
-        id="text1185-9-4"><tspan
-@@ -1138,7 +1138,7 @@
-        inkscape:connection-end="#g1153" />
-     <text
-        xml:space="preserve"
--       style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Roman';-inkscape-font-specification:'Nimbus Roman, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-+       style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Sans';-inkscape-font-specification:'Nimbus Sans, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-        x="377.95239"
-        y="595.54547"
-        id="text1185-9-0"><tspan
-@@ -1168,7 +1168,7 @@
-        inkscape:connector-curvature="0" />
-     <text
-        xml:space="preserve"
--       style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Roman';-inkscape-font-specification:'Nimbus Roman, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-+       style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Sans';-inkscape-font-specification:'Nimbus Sans, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-        x="266.03806"
-        y="439.90387"
-        id="text1185-9-7"><tspan
-@@ -1189,7 +1189,7 @@
-        sodipodi:nodetypes="cccc" />
-     <text
-        xml:space="preserve"
--       style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Roman';-inkscape-font-specification:'Nimbus Roman, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-+       style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Sans';-inkscape-font-specification:'Nimbus Sans, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-        x="266.03806"
-        y="720.30841"
-        id="text1185-9-7-7"><tspan
-diff --git a/documentation/template/template.svg b/documentation/template/template.svg
-index 50715c08b..c83a4f32d 100644
---- a/documentation/template/template.svg
-+++ b/documentation/template/template.svg
-@@ -792,7 +792,7 @@
-     </g>
-     <text
-        xml:space="preserve"
--       style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Roman';-inkscape-font-specification:'Nimbus Roman, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-+       style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Sans';-inkscape-font-specification:'Nimbus Sans, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-        x="-40.600285"
-        y="693.29376"
-        id="text1185"><tspan
-@@ -803,7 +803,7 @@
-          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:13.3333px;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans Bold';stroke:none">Server / computer</tspan></text>
-     <text
-        xml:space="preserve"
--       style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Roman';-inkscape-font-specification:'Nimbus Roman, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-+       style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Sans';-inkscape-font-specification:'Nimbus Sans, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-        x="-43.34169"
-        y="769.37323"
-        id="text1185-2"><tspan
-@@ -814,7 +814,7 @@
-          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke:none">Note: Public domain graphics from https://openclipart.org/</tspan></text>
-     <text
-        xml:space="preserve"
--       style="font-weight:bold;font-size:42.5884px;line-height:125%;font-family:'Nimbus Roman';-inkscape-font-specification:'Nimbus Roman, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-+       style="font-weight:bold;font-size:42.5884px;line-height:125%;font-family:'Nimbus Sans';-inkscape-font-specification:'Nimbus Sans, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-        x="142.22464"
-        y="565.10297"
-        id="text907"><tspan
-@@ -824,7 +824,7 @@
-          y="565.10297" /></text>
-     <text
-        xml:space="preserve"
--       style="font-weight:bold;font-size:42.5884px;line-height:125%;font-family:'Nimbus Roman';-inkscape-font-specification:'Nimbus Roman, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-+       style="font-weight:bold;font-size:42.5884px;line-height:125%;font-family:'Nimbus Sans';-inkscape-font-specification:'Nimbus Sans, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-        x="98.363503"
-        y="637.8432"
-        id="text911"><tspan
-@@ -834,7 +834,7 @@
-          y="637.8432" /></text>
-     <text
-        xml:space="preserve"
--       style="font-weight:bold;font-size:42.5884px;line-height:125%;font-family:'Nimbus Roman';-inkscape-font-specification:'Nimbus Roman, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-+       style="font-weight:bold;font-size:42.5884px;line-height:125%;font-family:'Nimbus Sans';-inkscape-font-specification:'Nimbus Sans, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-        x="-59.575905"
-        y="580.05695"
-        id="text915"><tspan
-@@ -852,7 +852,7 @@
-        ry="3.4599047" />
-     <text
-        xml:space="preserve"
--       style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Roman';-inkscape-font-specification:'Nimbus Roman, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-+       style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Sans';-inkscape-font-specification:'Nimbus Sans, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-        x="301.85687"
-        y="147.99857"
-        id="text1185-3-55"><tspan
-@@ -958,7 +958,7 @@
-          ry="3.4599047" />
-       <text
-          xml:space="preserve"
--         style="font-weight:bold;font-size:13.5687px;line-height:125%;font-family:'Nimbus Roman';-inkscape-font-specification:'Nimbus Roman, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-+         style="font-weight:bold;font-size:13.5687px;line-height:125%;font-family:'Nimbus Sans';-inkscape-font-specification:'Nimbus Sans, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-          x="155.10774"
-          y="150.4942"
-          id="text1185-3-5-5-9"
-@@ -984,7 +984,7 @@
-        ry="3.4599047" />
-     <text
-        xml:space="preserve"
--       style="font-weight:bold;font-size:13.5687px;line-height:125%;font-family:'Nimbus Roman';-inkscape-font-specification:'Nimbus Roman, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-+       style="font-weight:bold;font-size:13.5687px;line-height:125%;font-family:'Nimbus Sans';-inkscape-font-specification:'Nimbus Sans, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-        x="20.119326"
-        y="149.15712"
-        id="text1185-3-5-5-9-4"
-@@ -1001,7 +1001,7 @@
-          id="tspan60047-2">box</tspan></text>
-     <text
-        xml:space="preserve"
--       style="font-weight:bold;font-size:42.5884px;line-height:125%;font-family:'Nimbus Roman';-inkscape-font-specification:'Nimbus Roman, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-+       style="font-weight:bold;font-size:42.5884px;line-height:125%;font-family:'Nimbus Sans';-inkscape-font-specification:'Nimbus Sans, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-        x="313.46567"
-        y="412.9321"
-        id="text3781"><tspan
-@@ -1011,7 +1011,7 @@
-          y="412.9321" /></text>
-     <text
-        xml:space="preserve"
--       style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Roman';-inkscape-font-specification:'Nimbus Roman, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-+       style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Sans';-inkscape-font-specification:'Nimbus Sans, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-        x="-52.348656"
-        y="518.42615"
-        id="text1185-9-2"><tspan
-@@ -1022,7 +1022,7 @@
-          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:37.3333px;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke:none">Objects</tspan></text>
-     <text
-        xml:space="preserve"
--       style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Roman';-inkscape-font-specification:'Nimbus Roman, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-+       style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Sans';-inkscape-font-specification:'Nimbus Sans, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-        x="-52.87841"
-        y="89.660812"
-        id="text1185-9-2-7"><tspan
-@@ -1033,7 +1033,7 @@
-          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:37.3333px;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke:none">Shapes</tspan></text>
-     <text
-        xml:space="preserve"
--       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:37.3333px;line-height:125%;font-family:'Nimbus Roman';-inkscape-font-specification:'Nimbus Roman, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:37.3333px;line-height:125%;font-family:'Nimbus Sans';-inkscape-font-specification:'Nimbus Sans, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-        x="-52.994568"
-        y="-109.65781"
-        id="text1185-9-2-7-0"><tspan
-@@ -1044,7 +1044,7 @@
-          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:37.3333px;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke:none">Logos</tspan></text>
-     <text
-        xml:space="preserve"
--       style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Roman';-inkscape-font-specification:'Nimbus Roman, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-+       style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Sans';-inkscape-font-specification:'Nimbus Sans, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-        x="-51.052338"
-        y="248.86438"
-        id="text1185-9-2-7-3"><tspan
-@@ -1055,7 +1055,7 @@
-          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:37.3333px;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke:none">Arrows</tspan></text>
-     <text
-        xml:space="preserve"
--       style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Roman';-inkscape-font-specification:'Nimbus Roman, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-+       style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Sans';-inkscape-font-specification:'Nimbus Sans, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-        x="-52.697285"
-        y="373.75641"
-        id="text1185-9-2-7-3-6"><tspan
-@@ -1084,7 +1084,7 @@
-        inkscape:connector-curvature="0" />
-     <text
-        xml:space="preserve"
--       style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Roman';-inkscape-font-specification:'Nimbus Roman, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-+       style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Sans';-inkscape-font-specification:'Nimbus Sans, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-        x="-38.034531"
-        y="429.09885"
-        id="text1185-9-7"><tspan
-@@ -1095,7 +1095,7 @@
-          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';stroke:none">Normal text</tspan></text>
-     <text
-        xml:space="preserve"
--       style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Roman';-inkscape-font-specification:'Nimbus Roman, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-+       style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Sans';-inkscape-font-specification:'Nimbus Sans, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-        x="105.28938"
-        y="324.79022"
-        id="text1185-9-7-8"><tspan
-@@ -1106,7 +1106,7 @@
-          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';stroke:none">Orange 1 arrow</tspan></text>
-     <text
-        xml:space="preserve"
--       style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Roman';-inkscape-font-specification:'Nimbus Roman, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-+       style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Sans';-inkscape-font-specification:'Nimbus Sans, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-        x="255.85823"
-        y="324.95401"
-        id="text1185-9-7-8-2"><tspan
-@@ -1123,7 +1123,7 @@
-        inkscape:connector-curvature="0" />
-     <text
-        xml:space="preserve"
--       style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Roman';-inkscape-font-specification:'Nimbus Roman, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-+       style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Sans';-inkscape-font-specification:'Nimbus Sans, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-        x="395.33353"
-        y="324.16251"
-        id="text1185-9-7-8-2-8"><tspan
-@@ -1134,7 +1134,7 @@
-          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';stroke:none">Light 3 arrow</tspan></text>
-     <text
-        xml:space="preserve"
--       style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Roman';-inkscape-font-specification:'Nimbus Roman, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-+       style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Sans';-inkscape-font-specification:'Nimbus Sans, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-        x="57.50481"
-        y="428.73474"
-        id="text1185-9-7-1"><tspan
-@@ -1145,7 +1145,7 @@
-          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:13.3333px;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke:none">Label text (bold)</tspan></text>
-     <text
-        xml:space="preserve"
--       style="font-weight:bold;font-size:42.5884px;line-height:125%;font-family:'Nimbus Roman';-inkscape-font-specification:'Nimbus Roman, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-+       style="font-weight:bold;font-size:42.5884px;line-height:125%;font-family:'Nimbus Sans';-inkscape-font-specification:'Nimbus Sans, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-        x="-16.290483"
-        y="345.7359"
-        id="text3116"><tspan
-
--- 
-2.55.0
-
+diff --git a/documentation/ref-manual/faq.rst b/documentation/ref-manual/faq.rst
+index 3646286a6..6b1707733 100644
+--- a/documentation/ref-manual/faq.rst
++++ b/documentation/ref-manual/faq.rst
+@@ -88,6 +88,25 @@ Our automated testing includes it through the ``poky-altcfg`` :term:`DISTRO` and
+ we don't really need it to be the default: it is tested, it works, and people
+ can choose to use it.
+ 
++Why don't I get an email when my patch merges?
++----------------------------------------------
++
++The project hasn't felt it necessary to reply on the mailing list for each patch
++that merges for two main reasons. Firstly, it would generate a lot of email
++traffic with content that may only be useful to a small number of people and quite
++annoying for other uninterested people to filter through. That could be avoided be
++emails direct to the submitter.
++
++Secondly, sending such emails accurately, takes time and it wasn't felt to be the
++best use of limited maintainewr time. We do track patch status to some level
++in patchwork and there is automated tooling which could extend on top of that but
++it hasn't been possible to fit that into the projects workflows with enough accuracy
++at this time.
++
++It is very easy to check whether a patch has merged by looking at the repository, or
++pulling and rebasing.
++
++
+ Building environment
+ ====================
+ 
