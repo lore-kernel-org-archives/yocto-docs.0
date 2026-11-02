@@ -1,183 +1,164 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (AM0PR02CU008.outbound.protection.outlook.com [52.101.72.66])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.10841.1793620847141902642
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.12496.1793625883112655141
  for <docs@lists.yoctoproject.org>;
- Mon, 02 Nov 2026 04:00:48 -0800
+ Mon, 02 Nov 2026 05:24:44 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@cherry.de header.s=selector1 header.b=YvhWeVeG;
- spf=pass (domain: cherry.de, ip: 52.101.72.66, mailfrom: quentin.schulz@cherry.de)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dx0kdTB9QDPwB58oUMSlxQZmnlIxIYR6WtunNN/q82/vj2fEL67JeHM7A7O/J87HmPkVpdyIjlWkPbdO58u/g96JqvXgdgvYADfQFABnKa/zc2SoYecbl00SmBo396ZQIKdIpCfWFu4ONOpiWIDdkkFIJauP2Nhsx2ER4N01SIi5ctSw7hegBGpdYwn6DdYKQaRCWTHuijqFpVexvsgGLefj0OtD6Bwx8fq+gEtRFtgj6Yi8kh2aEvvTwVLSuaqLHRPHTCvpmnssWWfTGLtJx9wtURLDpgONR183Qu4OKgqNm4XZvHOb5yFPrIxCXEPnGiHwPZ3+WuRzZ5tbB7HmEQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ohelLH+J8If1Oy89W6qWLyoe/xQCzHV9nUM0ThoTLSA=;
- b=T77zT8AiXCLXpz3bmbePlDSOLLVKXRa5J6cr39mEeIB7fnOmt2f4T6Rpynq6o4bfdkd0IgjmB2Tzt07mCXn2cKUP6kIHPSzuD2d4R59Re2KsxrRP7gw0aIxmubc9KWSpSzREF/1dmYlZXNhOGxTLqvoMbdJ9hoDD+0lkbcqXgmgDdGoE4mzaTyObRsIQw+UMlBY31rJrPP2kOgm49sJYATK6NqvKRgTn9AIK/GbzStY/T36ZV8KneCXeybH5E2aYWriVDKseJJB/6W5kjgYs9gRIgYU8a312lkIaTqsXPHAV8OXY0IGVFzSr5XIEXYbcs8zHUqNxI/llXPnbQ0FhiA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
- dkim=pass header.d=cherry.de; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ohelLH+J8If1Oy89W6qWLyoe/xQCzHV9nUM0ThoTLSA=;
- b=YvhWeVeGWOFOLYt1KfqRSd/j0/fE9Kdhq0r5A4lLZ0MLSN7v8+9cyDHYhXkH83kOGHLA0TQbbhMQDJCuGJVFssybEQjMntg49BnBOUorVlGQM39yAb8TpppYPSSl7W8q3SyPrknbNv8BYdn7+X3wQOfixKynDVQhpnYsD6uY5Ng=
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=cherry.de;
-Received: from PA3PR04MB11153.eurprd04.prod.outlook.com (2603:10a6:102:4ab::7)
- by AM9PPF839552E5C.eurprd04.prod.outlook.com (2603:10a6:20f:fff1::a13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Mon, 2 Nov
- 2026 12:00:42 +0000
-Received: from PA3PR04MB11153.eurprd04.prod.outlook.com
- ([fe80::6b02:c0eb:95a4:3c3d]) by PA3PR04MB11153.eurprd04.prod.outlook.com
- ([fe80::6b02:c0eb:95a4:3c3d%5]) with mapi id 15.21.0569.011; Mon, 2 Nov 2026
- 12:00:42 +0000
-Message-ID: <2b3bdd06-61c8-478e-9509-4b0526e064b2@cherry.de>
-Date: Mon, 2 Nov 2026 13:00:41 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [docs] [PATCH] ref-manual/faq: Add entry about github pull
- requests
-To: richard.purdie@linuxfoundation.org, docs@lists.yoctoproject.org
-References: <20261102110847.15588-1-richard.purdie@linuxfoundation.org>
-Content-Language: en-US
-From: Quentin Schulz <quentin.schulz@cherry.de>
-In-Reply-To: <20261102110847.15588-1-richard.purdie@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: VIVP296CA0067.AUTP296.PROD.OUTLOOK.COM
- (2603:10a6:800:35a::6) To PA3PR04MB11153.eurprd04.prod.outlook.com
- (2603:10a6:102:4ab::7)
-Return-Path: quentin.schulz@cherry.de
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=2bDNR9LI;
+ spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id E5F381A1410;
+	Mon,  2 Nov 2026 13:24:40 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id B43EB60750;
+	Mon,  2 Nov 2026 13:24:40 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3024F1032909D;
+	Mon,  2 Nov 2026 14:24:39 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1793625880; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=4AmrTwpfCW+IJ2r1D8GtKDbdZOa/dYIhuXt2oUX1s3w=;
+	b=2bDNR9LIRJGeWTVOgXLNqMyXiK8cTScHKFelOz0YrYNOoi9LS4y/jnlxRQpHads3XukNeK
+	8sfiFmPCI+JK5qYI/6xfzKogAlCAc4XsNe33L41RSJ4SuH4iWnNcQdwvB0tLr16UK83dUN
+	rT31RZbi8fhaZRM37JHJtYbho/aGa/4YLm+inGotxNT8iJMIiZ+6g9SbDjeQmgKMZjVBOl
+	RnbVGrmIF+6/fhkLLM5sNORU/sUpoXWS+DKzAGRaBP81v4C1oq6pzcBRQ7owyOQPejDKbs
+	MMD3PYNXjIk58yvzjzvG3t7Del1gremca4Eux60A3uacuhsLcSJzadrbgg2MWg==
+From: Antonin Godard <antonin.godard@bootlin.com>
+Date: Mon, 02 Nov 2026 14:24:35 +0100
+Subject: [PATCH] doc/bitbake-user-manual-library-functions.rst: document
+ public API bb.build functions
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA3PR04MB11153:EE_|AM9PPF839552E5C:EE_
-X-MS-Office365-Filtering-Correlation-Id: 54e038a9-7d3f-469e-26e8-08df38d8eb6c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|366016|376014|1800799024|261026140227099003|22082099003|18002099003|261028144727099003|56012099006|261009223027099003|261021121427099003|261021123027099003|11063799006|10067099003|261022075727099003|261022105027099003|261026121527099003;
-X-Microsoft-Antispam-Message-Info: GBW2jHcqdjuKK4cF9685gqcZ+3QtKarI2ueFRqaq+Zm2ykhTqPOqIGSHMtcLq5b4xKdAfbxmRpS7k6njTKiIX5ydjrUFqVeZ0NZBGY7xa4mNxi4ojHMNrLEE6mPpq5hcx+0PpOrI9FWuM69WldOduYi4d+r48tHic2XW/sjJvexZ1DsfDBpru28skK9RWm6m58X3/yT99HM2iEqwYykHn/wbHp3ZfTyVJ1isSMDJOa6Y8uX60AS9aBRWXVdpxvM4HziD4pIXdJZlmBaeO5d1N4KrLOemjoJuwvQDugSMTVxUFJYbnqvTPIiEjMeWPVIDRi9+PVW705qLFIEqKjrIJeh73ytZFrZtZ0O7JdVIODxUbITt5XRT3kalXYsBgLXhVYvbgjlV6YaE0Pnj1ik9guCqiEXnTgNcNzyUgn1M+w874Q46pADeImrZmC5oy8xWZ/3Rkf9NYPOSlBGSLqrzs8nVfFtPyeyhpfmnT36eRBWV0Ls91c7jOgnRX9de88uAcODOmrlo6gqjbrGynAT6OPdGmEY02prBYNyB8W7mxl26TXNTrsP0IVWoPntrk9fiDa/kPFG5KDuu14IW8q+ReB21anj4YGWlfnky4HsJfBXLD8Uf/PjhktsdjzfWYXnqerszK112h/v9xirP6Day8k03T80chYYecIz6XS4w+UI=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA3PR04MB11153.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(376014)(1800799024)(261026140227099003)(22082099003)(18002099003)(261028144727099003)(56012099006)(261009223027099003)(261021121427099003)(261021123027099003)(11063799006)(10067099003)(261022075727099003)(261022105027099003)(261026121527099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?V0Z0KzFwaDFSVThldXlBUWtRajRTaStaNXZrcDViK2xnSGUwKzJkSEN0OGt4?=
- =?utf-8?B?V0hUeGMzVk5vdDhiUzBCTmFXbG5SR0RSbWgwZWhhMzJyR2MzSWkwOW9hTnBL?=
- =?utf-8?B?YmZUb1ZtanRlbHV3NHgrOVI2eHppY3Q0Q0E5bjNTTk55N0ZvZTRZOVM2d29t?=
- =?utf-8?B?Rnd1bFVzR3diOGIzSndqQklzb1ZXL3RBSDcxUmFPY25jTDg3eDNvNWxlcmpp?=
- =?utf-8?B?MTFYdUQ4cVh6V1h5TW5aanpsN1BXeUUyS0lBejhqOVFVVUMvaXQrQ2lncHBr?=
- =?utf-8?B?NklkQjZnZ3ZIQ1R0V1FRbGRaQ0RlMllwZTA4Tk9oTEF1V0JZeURzOWtWbnVX?=
- =?utf-8?B?WnNSTEVUWDU4YncrY3JEbEFIVFZwZndiSWJwM3ZHbjhQbjBFOTVUYi8zM1Y1?=
- =?utf-8?B?T1k4QXNBQ1pPSmVwdTZ4S1NsOWVVS2tZMW92TmNHdXNvQ3NpTEQwbkxtejd5?=
- =?utf-8?B?bDBLMUpkQzRjbnU4azFSK0RjTm1sR3NNSlBjUWNaRmpGZll2RW5uTUJGSFVk?=
- =?utf-8?B?WHdDWTdmV0lLOG9UZ0s4T3dLMzZSVThMbXIyUTNqUWVndlZwY2N6by9wTDM5?=
- =?utf-8?B?V2NEbjErcWJOZHJQT2RJb0pFYWJ1VUdjQUhmQzVGYmMrU1BJSUJwcDd6VzZo?=
- =?utf-8?B?dXQ4d1VRQ3NKL1BOV2xaUVdwSjNOaUxVaW5xQWNFY0NzMlc4d1d5VHl2QWJ3?=
- =?utf-8?B?K3pGdUZLWmJrL0VsWXZYb2pncW8wS29EVm9ZYWc4cXdlSjZhKzlSa043akEy?=
- =?utf-8?B?QTBoaXdJeHZVN0dzZ0JVUlhNNlRsT2ZlaXFOQzg5Qmh1ZHgxNUdSeG1YcFIr?=
- =?utf-8?B?bjV2Uzl2UXlGZ3dwMFQwUEh1UDI1TEgvZ2F2MmpoL0poK043cVZmL25KeHg5?=
- =?utf-8?B?aGg2Wmg2bjFwWXp6QXd1SkRRa1l1aDgzU2JMV2NkdjFGdWVTaHNjRVkrdytj?=
- =?utf-8?B?dndpMVFnbG1sb0xXNUtpdTZoU2RMek9ZL0RPTUpoZjQybU8zb3pFZ0hNRzlO?=
- =?utf-8?B?TVlTcmhQMWFDRUNzdHFiNGNmWTR4ckk3THNncklIK2tmS25VWjlyTUxRWEo0?=
- =?utf-8?B?TUZIWXhrUDd5Rnp5OTMzQ24yQ20wUTFJYUFTcFN6R2Q0cGdvS3VlNTBCWG9F?=
- =?utf-8?B?WkNlbDJWMnN0MlpCVTBUdDlsT3IrcEpUZlphUlhQS0xjVHA2NFg0aEpETjJq?=
- =?utf-8?B?U3VSOHQwUmovdWh4OEhlYnMrRThPR0s5a2E4OFdwRFZtUy9naTExR1VXQUdh?=
- =?utf-8?B?dmtUcjQ5T2ZQa0RHZGFaUFhERnk2Q3lKeDhueVE1dDN6QVhIaGFsdkZPQWdj?=
- =?utf-8?B?d1RkYnhGZW9aQWZYb2JsWXNEckhYd2FoU04xRSszZUNoZGhGUTExL2luZ0lo?=
- =?utf-8?B?UGkvaHNWWjFibVErT0E1NnZPVE9tclBEZ3dPVmcxdldBSGptY0JjNmYvbjEz?=
- =?utf-8?B?bU5nWnIwU2xwdUJrbVE2NmM4eUtFR3RhZ0F0NVV4a0FDU3lOYnkrS1ZUblpO?=
- =?utf-8?B?bzB4ZXVxOHd1VWpzY2tjWVlFckV1ZGtQTHAvUnhJUE5oMDNrNUdmMjNjOFAv?=
- =?utf-8?B?RzF3UzNKRDVISU9WVURVT3FkZ2U3eXBFSnBWWGY4QjJGZkxJNElxSGdjSTZr?=
- =?utf-8?B?cUpvTlJ6MExBSEVvNnJ5Ty95NVd2Q1lYZG9HaDNrTXBSS0l3SEJtVVFEMm1a?=
- =?utf-8?B?cklWZURXcGZzMnYxalV2UVZxbmgvc2xwZnBmNmxjaXVlVzBBSVdWK2l3VGJY?=
- =?utf-8?B?NUdmbHo1dHhuNitIRllKdWNzWGREQ2NCNE44NDlzUEdieE9QMnYzN05EMmwz?=
- =?utf-8?B?aEx3Szd0N3FqMGw3NWpTSmZZUVBPZ0dhWVFOZ0U5U3JDeDQvNWVLOG85Wllv?=
- =?utf-8?B?elR4VVdWaWdIaVpvVG9iZGNXR0pOUW1KTFFZUHcremtaK1psckRLdU5McERU?=
- =?utf-8?B?b1p2ZGtCVE8rT3l0dGU2S1Z5OCtUclJwbjZka0RtK0x6VEtreFU5QWREeW0w?=
- =?utf-8?B?WlIwWWptSVZoVUJiRVh3MDlMUkMzaXhxbDJPZW1Rb1FYRStSUStnNEdic3dz?=
- =?utf-8?B?dDAzejdvcmxmUkNEcDdnTTlxekZiWktMSytDM3VuRE9Ybk5vMGxOcXpPUTFM?=
- =?utf-8?B?VHRZWlNlcHFzTGtNUVZmVWM1K0V0N1pqdjV2NWtJaEhWaEJnMk1JU1RPSVVB?=
- =?utf-8?B?QTk5cndvTXFjYi9iS2xkK3R0ZDRBck9CQ2h5VjdOSzlRTmMzY2hzUjhDaDVQ?=
- =?utf-8?B?ak1VL3ZlSVJXR2FhS2Jtd2k2VGQrVjM5c3JobTlISUttWC9iSHR2Z0pFN1F1?=
- =?utf-8?B?aWhILzNZcGpxSjY5VnZOTXVzSXp2TzN3WDlUV1N1SzJmMDNtMW51Zz09?=
-X-OriginatorOrg: cherry.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: 54e038a9-7d3f-469e-26e8-08df38d8eb6c
-X-MS-Exchange-CrossTenant-AuthSource: PA3PR04MB11153.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Nov 2026 12:00:42.4858
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: tAFK6Bhby2O+En6XwLtF00cwgzqPHR/wS1fFu/1divwPXxcqL87mFE2pdIz9YtyGy2XV3FZn2AxCaXYv2LmGsEh1mU7fpdVvNHNa0ubfqYw=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PPF839552E5C
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261102-doc-bb-build-funcs-v1-1-5bc87caa6505@bootlin.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMwQrCMAyA4VcZORvYquuoryIeTJptEemkWUUYe
+ 3erHr/D/29gklUMzs0GWV5quqSK7tAAz7c0CWqsBtc63wZ3wrgwEiEVfUQcS2LDrvdCgY9DDB5
+ q+Mwy6vs3vVz/tkJ34fV7gn3/AMlPI1x2AAAA
+X-Change-ID: 20260924-doc-bb-build-funcs-156eb9c37d96
+To: bitbake-devel@lists.openembedded.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ docs@lists.yoctoproject.org, Antonin Godard <antonin.godard@bootlin.com>
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3546;
+ i=antonin.godard@bootlin.com; h=from:subject:message-id;
+ bh=9Y+jn9whCzpV77bDUzNzwyPPKpIuQILeGsBqU4woQ9k=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBq6I8Tvurneu+VEEjeKlouE6WMQcl2DgvzAIdc9
+ V4fFptXRoiJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCauiPEwAKCRDRgEFAKaOo
+ NhqFD/0QvilOH1RZ5y6TNDub3MUiSG1saRlVNdy+goQCR0AScg8ZiS4BG+zlLyslrKJVP999GKJ
+ M8+LeJuNX7epB1xMLdql/Y3qca5UM62NHnKNGUdhT2G8jLuke5Rd7afGBSFLW4lbuYOtO4GX1ek
+ sZT7h6wEqBkzT7FwSXr5V5wG9mqt3rIeC5m73Y/oBAgtMTL7JCnlcdSZw2fotngTtAeJWGQGRKN
+ qppsB2InTnoE2qyTjlxtb3saKRQXoRD1ZKaoIL/QHOjj7EKCExpzdeS9TI9mzjgkDLX5tZ8Vm5F
+ loLN8/x3PfQgRcfXicK7TTP1uqIdGMOfHNZUYcAmlrDomSK4quMV4ijCAgc9FBrDZHtOOoLERj9
+ /urltD2Ba6I2NsizMRdrEqhqT1pLXA0A639l91GNPxy8/2rb5/SUnlW/wuohLiIM5ok9eBdB0Qg
+ hpgdjnxDI6S+AAdWg8s3sUhZ5BYDb3sh7JBVvVDTk4HfYwTeEiN1kj3T4jGopvRbcyWDnR5HDwd
+ lqUQ7QWQ9u5ve0z9oFX78trm6MhtaCMd7p3dHIopK90Z9Q8YfQs+/6MjXkaKta1zOcTu6YEJDnX
+ kD4Sw98atm1NIctzp6jlnhEyC/PEK7e54iCWEPA5aGs8PKRBNduJxYKcwFm7jXYLDy19WOZ8lo8
+ eQpsduMNgWG5bgg==
+X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
+ fpr=8648725188DD401BB9A0D3FFD180414029A3A836
+X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
-X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by lin-tor-korg-lkml-alma10-1 with HTTPS for <docs@lists.yoctoproject.org>; Mon, 02 Nov 2026 12:00:51 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10759
+X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by lin-tor-korg-lkml-alma10-1 with HTTPS for <docs@lists.yoctoproject.org>; Mon, 02 Nov 2026 13:24:53 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10760
 
-Hi Richard,
+Document functions in bb.build that are public API using the automodule
+Sphinx extension, which generates documentation from docstrings.
 
-On 11/2/26 12:08 PM, Richard Purdie via docs wrote:
-> This is an emotive topic but try and fairly document some of the pros and cons
-> of such a model and where they make sense along with why the project has made
-> the decisions it currently has.
-> 
-> Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
-> ---
->   documentation/ref-manual/faq.rst | 28 ++++++++++++++++++++++++++++
->   1 file changed, 28 insertions(+)
-> 
-> diff --git a/documentation/ref-manual/faq.rst b/documentation/ref-manual/faq.rst
-> index c1657d677..60e89d834 100644
-> --- a/documentation/ref-manual/faq.rst
-> +++ b/documentation/ref-manual/faq.rst
-> @@ -108,6 +108,34 @@ It is very easy to check whether a patch has merged by looking at the repository
->   pulling and rebasing.
->   
->   
-> +Why doesn't the project use github?
-> +-----------------------------------
-> +
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+---
+This is limited to those three functions, as Richard those were the only
+public ones on IRC:
+https://libera.catirclogs.org/yocto/2026-09-24#40518068;
+---
+ .../bitbake-user-manual-library-functions.rst      |  9 +++++
+ lib/bb/build.py                                    | 40 +++++++++++++++++++++-
+ 2 files changed, 48 insertions(+), 1 deletion(-)
 
-s/github/GitHub/ for the whole patch.
+diff --git a/doc/bitbake-user-manual/bitbake-user-manual-library-functions.rst b/doc/bitbake-user-manual/bitbake-user-manual-library-functions.rst
+index 09e353945bb..71fb8eb813e 100644
+--- a/doc/bitbake-user-manual/bitbake-user-manual-library-functions.rst
++++ b/doc/bitbake-user-manual/bitbake-user-manual-library-functions.rst
+@@ -46,6 +46,15 @@ Python f-strings may also be used::
+       warn,
+       warnonce,
+ 
++``bb.build``
++============
++
++.. automodule:: bb.build
++   :members:
++      addtask,
++      deltask,
++      exec_func
++
+ ``bb.utils``
+ ============
+ 
+diff --git a/lib/bb/build.py b/lib/bb/build.py
+index 8b49721d60f..b38936fc360 100644
+--- a/lib/bb/build.py
++++ b/lib/bb/build.py
+@@ -183,7 +183,19 @@ class StdoutNoopContextManager:
+ 
+ 
+ def exec_func(func, d, dirs = None):
+-    """Execute a BB 'function'"""
++    """Execute a function or a task.
++
++    Arguments:
++
++    -  ``func``: name of the function/task to execute.
++    -  ``d``: the data store.
++    -  ``dirs``: list of directories to create before executing the task.
++
++    If ``dirs`` is ``None``, this function will look at the value of the ``dirs``
++    varflag defined for ``func`` and create directories using this list instead.
++
++    No return value.
++    """
+ 
+     try:
+         oldcwd = os.getcwd()
+@@ -938,6 +950,20 @@ def ensure_task_prefix(name):
+     return name
+ 
+ def addtask(task, before, after, d):
++    """Adds a task to the task graph. If called from a recipe, the task is added
++    in the scope of the recipe. If called from an :ref:`Anonymous Python function
++    <bitbake-user-manual/bitbake-user-manual-metadata:anonymous python functions>`,
++    the task is added in the global scope, so for each recipe being built.
++
++    Arguments:
++
++    -  ``task``: name of the task to add to the graph.
++    -  ``before``: task to depend on (optional, can be ``None``).
++    -  ``after``: tasks that depend on the task being added (optional, can be ``None``).
++    -  ``d``: the data store.
++
++    No return value.
++    """
+     task = ensure_task_prefix(task)
+ 
+     d.setVarFlag(task, "task", 1)
+@@ -963,6 +989,18 @@ def addtask(task, before, after, d):
+                 d.setVarFlag(entry, "deps", [task] + existing)
+ 
+ def deltask(task, d):
++    """Deletes a task from the task graph. If called from a recipe, the task is
++    removed within the scope of the recipe. If called from an :ref:`Anonymous Python
++    function <bitbake-user-manual/bitbake-user-manual-metadata:anonymous python functions>`,
++    the task is removed globally, so for each recipe being built.
++
++    Arguments:
++
++    -  ``task``: name of the task to add.
++    -  ``d``: the data store.
++
++    No return value.
++    """
+     task = ensure_task_prefix(task)
+ 
+     bbtasks = d.getVar('__BBTASKS', False) or []
 
-> +This is not a simple question and there is no right answer to it but there is some
-> +background worth appreciating.
-> +
-> +Some components within the project do accept pull requests from github, others don't.
-> +The README in the component in question should make the process clear for that
-> +component. Github itself is a commercial operation and there are concerns about what
-> +happens if they change direction or decide to to discontinue it as there is precedent in
-> +the past for that kind of thing happening. Equally, there are open alternatives to it.
-> +
-> +The bigger issue is the model. Mailing lists allow for wide peer review. The people
-> +performing that review are extremely valuable with experience built up over decades.
-> +The github model doesn't really lend itself to them being able to easily see or be
-> +aware of changes beyond the maintainer accepting the pull request. That model also
+---
+base-commit: 74128534302fbf8164ade07b200b90b731caa0ad
+change-id: 20260924-doc-bb-build-funcs-156eb9c37d96
 
-There's a CODEOWNERS file "standard" to specify those (free tier GitHub; 
-paid tier GitLab) who should be reviewers of some files in the project. 
-However, this is akin to having a MAINTAINERS file like in U-Boot and 
-Linux kernel when using the mailing list contribution with 
-get_maintainer.pl script, which the project doesn't want to be using, so 
-this doesn't apply. Just wanted it to be mentioned at list on the 
-mailing list as part of review because I have a suspicion this might be 
-raised in the future.
-
-> +tends to focus on the single maintainer with total authority, which for components
-> +like OE-Core, simply isn't how things operate for us. Moving to much a model would
-> +alienate our existing reviewers and our community consensus approach to changes.
-> +
-
-Can I suggest adding something like:
-
-"""
-Another issue is that GitHub and similar forges use the Pull Request 
-mechanism, heavily leaning into reviewing and testing the Pull Request 
-as a whole (e.g. the CI only runs on the last commit of the Pull 
-Request, and per-commit reviews are painful to write and follow-up on). 
-Using GitHub or a similar forge would require the project to completely 
-change its reviewing process (or have two, wildly different, if we were 
-to allow both mailing list and Pull Request-like contributions).
-"""
-
-as another pain point for using common forges?
-
-Cheers,
-Quentin
