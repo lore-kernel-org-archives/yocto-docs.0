@@ -1,114 +1,75 @@
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.8434.1793608283616777074
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.9096.1793611417607598425
  for <docs@lists.yoctoproject.org>;
- Mon, 02 Nov 2026 00:31:24 -0800
+ Mon, 02 Nov 2026 01:23:39 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=0Dx08Nf3;
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=rFJni1aP;
  spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 4ED5A1A1402
-	for <docs@lists.yoctoproject.org>; Mon,  2 Nov 2026 08:31:21 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 3FDDA1A13FD
+	for <docs@lists.yoctoproject.org>; Mon,  2 Nov 2026 09:23:35 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 21E4960750;
-	Mon,  2 Nov 2026 08:31:21 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3096F103290E8;
-	Mon,  2 Nov 2026 09:31:18 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 1517460750;
+	Mon,  2 Nov 2026 09:23:35 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 91067103290E8;
+	Mon,  2 Nov 2026 10:23:33 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1793608280; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=VARN8dp6nUsyfhDBIPyNWTL+Hl9NbGXxAF80lX88LRI=;
-	b=0Dx08Nf3+yt1mOC52HgGTdhrveGArWQT+MDwkxOAAkbxUejT+96o5mVFaea9YfLSzeLPZW
-	OjbOWZTEYmVeBkgszkQ4Mde+z3BqxBx3FqvRQjzn8vRS0c63vlMlFy6JfwTvQkLg1UMYRE
-	tnYZisbjoLpxZoZPUF45IIaz3g6e9+qO7Q3tUpTEoG5u6XWjIMWbDDwlCfTpZS+R4GsB+O
-	wkFOyUrbEN+t+Tl/y/8mA7WynvbfRDsG4emGUIu/DPEyneULeI1nrmRWtgq7vrcG+9dTnM
-	YopedqpnjPJhWF6egvjF8DJpZhCzUHoJbyVU4z26l0SB1SVBQ62gKmybSYVbrw==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 02 Nov 2026 09:31:18 +0100
-Message-Id: <DMKL2K1ANGGP.29OFOOMS35HLA@bootlin.com>
-Subject: Re: [docs] [PATCH v3] ref-manual/faq: Add entry about emails on
- patch merging
-Cc: "Paul Barker" <paul@pbarker.dev>
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: <richard.purdie@linuxfoundation.org>, <docs@lists.yoctoproject.org>
-References: <20261030230207.3536573-1-richard.purdie@linuxfoundation.org>
-In-Reply-To: <20261030230207.3536573-1-richard.purdie@linuxfoundation.org>
+	t=1793611414; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=2710le0eA2G0dufyHOBE8p+HvjngvW+wX65ZXLr5sKg=;
+	b=rFJni1aPY0qTwYmKMULz7A5Se+ravihZAmcWvOCM9C8wzcv78PaWq0Jan1Ue0KsUIX/rkW
+	DUw8QZLvMzxAhqG+Z7zL78ueX8e1zU1jE49B9F4wiyNmMz4+ppvPacG25UvxHWFqvzFMDf
+	SNVAraEocvarHG9isU+2LzhwCcwicAuuUiPYbi6uNgPLqciYltUOCayup2iu5F6OgZKYrO
+	01Lzl/ciZ6mC6eTCWVAIDx7NnkHAN88SfkJ/vCaMCMkvZdD5SuXSKsOrurPGCnrepVjIcw
+	lfcMoRcQN9vmpsoWHn2PafGKAnRAxvN3wHsE+Ug1CZzzgv+OxYvG6N1/uFGpmw==
+From: Antonin Godard <antonin.godard@bootlin.com>
+Subject: [PATCH 0/3] Expand WKS (kickstart) documentation
+Date: Mon, 02 Nov 2026 10:22:57 +0100
+Message-Id: <20261102-wks-in-v1-0-fbb797a3d5cb@bootlin.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzNDA2MD3fLsYt3MPF1j4xRji8SUpCQLAxMloOKCotS0zAqwQdGxEH5xaVJ
+ WanIJSLdSbS0ArbwAJmoAAAA=
+X-Change-ID: 20261030-wks-in-33d38adbb804
+To: docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Trevor Woerner <twoerner@gmail.com>, 
+ Antonin Godard <antonin.godard@bootlin.com>
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=610;
+ i=antonin.godard@bootlin.com; h=from:subject:message-id;
+ bh=s76kJW5Z80wEvjFpyCeVsm27EAXXuL4LhCJTx0jKH5U=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBq6FZzyolhkP/I3WrVQ/am955SCAzOCKIJT0oNE
+ DmUmUFqnQ6JAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCauhWcwAKCRDRgEFAKaOo
+ NpZ1D/9eaAOaIW54Mp4bK4/OSLzFgEsyQXLME7q9332YExQz1cg9+jcx+xPhJKbljUX5j5fmazP
+ N80tt5gLC4VmCZaKRKAH6CwiRZ8K3oWzOxI4uYbMmwwR8Qe5Dliptds5uIvVKA/uNNMuqAjMif7
+ LVnYFEy9gxC0P7OjGNIx9VzPESLUU1z2o6R1IunV3dc14xdspY4ZlmIv/PqmllOcYFaU48kz5Sh
+ JYClYvuZgYLRoAzWvqgMhMmSQbDxN0s8jAl3N0iDDAAmc6QpXSxe4KK2KRgIb851Z6PVRD8B4Dv
+ bWulGjEZhPAJJ23BnLkMqU4kPIm7p5sJroA70qcc6bCGfNaBuHTwr6yCzpp0y5fZrC229AjfI0J
+ saZbdvSb0+EdiqiUI3heY1F2uKDZgXv0vn7yJYK6g0krXSLpOJxEc0UhTI/4kAEnLM4Y33ZOrTu
+ yCJ9mWSCUtCqWxrkgxiEKwtC1u+IdKWaIvXfVOsTLz9cDTUJCgda3m75z3+l2rsyz6xYsSrC1q5
+ rQjGSMETNEbWgf6aQO2AzDHJYjHos5djtU42X5cko4zqOyg/AHJICKiLIVCad5zPlaacK9W5sAn
+ W0bSw+Uub9aRFyltVLASaA2OggmukNjq+95LgRxvEzjbg/AOhfYlcVuvS5UZWpZXP1E69GAdKmI
+ bfM4ZcGBPOCjjFQ==
+X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
+ fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
-X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by lin-tor-korg-lkml-alma10-1 with HTTPS for <docs@lists.yoctoproject.org>; Mon, 02 Nov 2026 08:31:25 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10752
+X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by lin-tor-korg-lkml-alma10-1 with HTTPS for <docs@lists.yoctoproject.org>; Mon, 02 Nov 2026 09:23:45 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10753
 
-Hi,
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+---
+Antonin Godard (3):
+      ref-manual/kickstart.rst: add a section for commands and directives
+      ref-manual/kickstart.rst: warn about the include directive only working for .wks
+      ref-manual/kickstart.rst: document location and variable expansion
 
-On Sat Oct 31, 2026 at 12:02 AM CET, Richard Purdie via docs wrote:
-> Document why we don't currently send emails when patches merge in the FAQ=
-.
->
-> Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
-> ---
->  documentation/ref-manual/faq.rst | 20 ++++++++++++++++++++
->  1 file changed, 20 insertions(+)
->
-> diff --git a/documentation/ref-manual/faq.rst b/documentation/ref-manual/=
-faq.rst
-> index 3646286a6..c1657d677 100644
-> --- a/documentation/ref-manual/faq.rst
-> +++ b/documentation/ref-manual/faq.rst
-> @@ -88,6 +88,26 @@ Our automated testing includes it through the ``poky-a=
-ltcfg`` :term:`DISTRO` and
->  we don't really need it to be the default: it is tested, it works, and p=
-eople
->  can choose to use it.
-> =20
-> +Why don't I get an email when my patch merges?
-> +----------------------------------------------
-> +
-> +Where the project uses mailing lists for patch submission, many of the c=
-omponents
-> +such as bitbake and OpenEmbedded-Core haven't found it appropriate to re=
-ply on the
-> +mailing list for each patch that merges for two main reasons. Firstly, i=
-t would
-> +generate a lot of email traffic with content that may only be useful to =
-a small
-> +number of people and quite annoying for other uninterested people to fil=
-ter through.
-> +That could be avoided by only sending emails direct to the submitters.
-> +
-> +Secondly, sending such emails accurately, takes time and it wasn't felt =
-to be the
+ documentation/ref-manual/kickstart.rst | 140 ++++++++++++++++++++++++++++++++-
+ documentation/ref-manual/variables.rst |   8 ++
+ 2 files changed, 144 insertions(+), 4 deletions(-)
+---
+base-commit: 7b54854d12f3f2c909727702d39066a3d22a4a40
+change-id: 20261030-wks-in-33d38adbb804
 
-I feel like the second comma here isn't needed. I'll remove it when merging=
- to
-master-next.
-
-> +best use of limited maintainer time. We do track patch status to some le=
-vel
-> +in patchwork and there is automated tooling which could extend on top of=
- that but
-
-We can add a link to https://patchwork.yoctoproject.org/. Can do that when =
-merging.
-
-> +it hasn't been possible to fit that into the projects workflows with eno=
-ugh accuracy
-> +at this time.
-> +
-> +It is very easy to check whether a patch has merged by looking at the re=
-pository, or
-> +pulling and rebasing.
-
-Have we settled on the master-review/master-backlog process now? That is
-something we could mention here (or somewhere else and xref here), with lin=
-ks to
-branches, so at least people would know a bit more about the status of thei=
-r
-patch. But I am not sure how mature this process is as of today. Cc'ing Pau=
-l as
-I think he might have worked on docs for this.
-
-Otherwise the patch LGTM, the point above could be a follow-up.
-
-Thanks,
-Antonin
