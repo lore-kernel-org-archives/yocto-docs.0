@@ -1,117 +1,125 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.15086.1793633376246304716
+Received: from OSPPR02CU001.outbound.protection.outlook.com (OSPPR02CU001.outbound.protection.outlook.com [40.107.159.43])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.15224.1793633720294460852
  for <docs@lists.yoctoproject.org>;
- Mon, 02 Nov 2026 07:29:36 -0800
+ Mon, 02 Nov 2026 07:35:21 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=GPJeyVo1;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.128.42, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4a218c463d1so21129545e9.0
-        for <docs@lists.yoctoproject.org>; Mon, 02 Nov 2026 07:29:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1793633374; x=1794238174; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=xi+NB+h/2eHdLVlVM+MqK2y2WRd9g+awMQ1LzN/y62g=;
-        b=GPJeyVo1bNE23wkyJttXrGbRh+rWw254fbcwg8L4SN7/Urn5JXntoxCa82lFC0Dafo
-         P2JZwLU4cSIBlEFP/l36EC4dkeafob8vs8XkrQuQEm+UdUF1sdvNsGEC9luWiysNGWcO
-         0g9JCT9F1O9HJ+r6RsXLRfYWgF3MNb48x3ids=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793633374; x=1794238174;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=xi+NB+h/2eHdLVlVM+MqK2y2WRd9g+awMQ1LzN/y62g=;
-        b=tOAde2eYryqWlQH7MtH6+WttWCBxaAlQ408dOb2+rMAAjCnMUvzYf9Hw/jTY+mjg+z
-         fiI8XfrjSHPpOzXgvwbK7OM2oOv+sCHY6KrGAP1PED3BGx9NSKvzpnp6mmU9w60smvgL
-         BEdxwmdKmrisPSo1H0hvpNHPCQN8I2TmMLjFbpD1OJ+iiTsiTL2kwR5qAJhHAWjJlzun
-         xn3ggpNxUyvs/NFYMwdBtComucynCoNVHlhPHN5W/KD3B1IWLNqt2KNhN6ENJcKi/XxB
-         n2rt8/4kmYbNZy/P118/WmOmF1d6RwgBTJqbvukwLA7CnjosfIkF8W/XtZpuf+HA5FFE
-         PJww==
-X-Gm-Message-State: AFq9FYI4iHQQyPGfsqY1tKD5X+9AUpnV896/Jo2uetOg3fDiITJEO+OK
-	cz5i1hZLBy2SNGd1bTbeUk/3H94OZO0V1C8qNq3jA4R56kyx2rBODTDI/rxVgQ7SBiFHI1BLvHQ
-	40e5VcSk=
-X-Gm-Gg: AYBFou2Vsg/nGgTDmT76jS6xBaB2Hq8f7Lo4hbfsTS4I1iOGuZvwA04VmIm3ylX+cVW
-	66I6RHYshLxj1K1uxrrlpbQqaWcBrVLEKmhi+vZtas35T2dMK5YRkqoH6WiC9mafT+IZLw6hbp/
-	PtG9t43DleSz/QFzlHu/5+zYMFkfDbjPP9MruQSSb2RJnuTYeIJxidrboe8SMGKJFnPyARmsfct
-	lARth1gOT+EAX/Sm3my01LiTiQ1dZBk5W6MsJONMQV8CxW0nHlcKbC0+xuBSdQUR5ahoqV7xvaY
-	IJ8tTVOU2ud4+OzWho03Pd2ZGL/6owuFX8+C9svEFt7jhj/fpAg4ecd7nr4C1MnXrXc6uVTd6RA
-	e2VCI+yib3AOCUIwodb05c+xOW18JrymoPhxQeMiu/07AQEbZWcJrLMJk1+9flcGeWstRWN8v9F
-	Jq5ffvXsjKbSZNx1La9vYNdMtgwA9d8vyKbSC5/KTyeiCXXebBff+N5yII1fIMUmtpNZadUFiJX
-	dcRt7AmVjcx7ohJip7Q58sXA+0D97uAz07FqyVcpMyG+f/B28HzrI5evUSwAv+eb6nu4U9n0Hjc
-	IFD1CJ1/sWRePboC7ISiwXudYT5XYlxElMi7uUFZBxBoqP4qzRZ/lW0Yn7E=
-X-Received: by 2002:a05:600c:198e:b0:4a0:2488:71cc with SMTP id 5b1f17b1804b1-4ac1932a23fmr247800765e9.32.1793633374120;
-        Mon, 02 Nov 2026 07:29:34 -0800 (PST)
-Return-Path: <richard.purdie@linuxfoundation.org>
-Received: from max.int.rpsys.net ([2001:8b0:aba:5f3c:a866:4584:45b1:5742])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e71b723b4sm21187512f8f.17.2026.11.02.07.29.32
-        for <docs@lists.yoctoproject.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2026 07:29:33 -0800 (PST)
-From: Richard Purdie <richard.purdie@linuxfoundation.org>
-To: docs@lists.yoctoproject.org
-Subject: [PATCH v2] ref-manual/faq: Add entry about github pull requests
-Date: Mon,  2 Nov 2026 15:29:32 +0000
-Message-ID: <20261102152932.846754-1-richard.purdie@linuxfoundation.org>
-X-Mailer: git-send-email 2.55.0
+ dkim=pass header.i=@cherry.de header.s=selector1 header.b=khxXIuZC;
+ spf=pass (domain: cherry.de, ip: 40.107.159.43, mailfrom: quentin.schulz@cherry.de)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=lNHNON4i2XumzdIWxU9XrQXKkf4NePCOZfobjQXtdyWe/49hCPWlxDX97zQZAyZurVD11tJBATIiNaL4xKVR04v3r4tve9frfUFsAWo2F81FeT4Aq959gsONV4RJQ8fUMGm7SaFSNYcMmwa9FrTAx1EonXl4CraCP4nUaqK8L0wBd5e1mz/lR7HmTXvvwQSTnWbjDvy+VUvp2dM8gkwkAm7WoBFndDpO5bjpgb6L6Bpd2xhQnI0X1ElVw2hvjWFI+6Lywf6Vk2XLcKCbQZFu2B3ZDi9vzdjvJ77ESIcHzmnZyiZu5dJb5Lg4XXBdG717y6rabjpf9+V9P4UWkoMZcw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=AbtLoEbGtLhERU9BLTHlxrkb3Mi4oouOO16p1uT7Ugc=;
+ b=SSMJ1w8Llsv9Q7IxM5U41ZJgLIbPiYDKGlYgz8RsfgiRIIdkWIkamRHixgpAq83+T2E0uZHw6kQhHmdnDnfg4ksQsiEq97UuHMaNi5odUD9lxmmhyPeXQoepTH2UGjxcKlEVaIqybla7VoDro8e8EpLiis/NMGwAL5qsYd7X41EAjlYOpvS7LiBFGGCSf0QQbrvibedQjVi8+AO81AmEKR9Ou16wDqC3TbGe3fhSjsUcZRzGm6IBRzAttpbKKQscbMdnwuMmBkNEHnSw15i7JZvBjsMjFsxQPhzqYB/YFk38I3Bm4VbyPHaKNeUlTr4iFMfxA6aZzpvRHPmr6pPMkQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
+ dkim=pass header.d=cherry.de; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=AbtLoEbGtLhERU9BLTHlxrkb3Mi4oouOO16p1uT7Ugc=;
+ b=khxXIuZC9pmgWRLBDhIWfgRZgAdRbmiqSKVOZpzh92cwhnQY9/ueK0bBqgfgVXWc1vb55ZoKXsHo8cjtLgoVpr5fKmmBIhYP6/dv5R9Qq83vaqwK3RN1nBUq6qc8HJhmAF0Z6KfMwcyDkooeW+fev+0vNVTfByyMtVSGuW4/ofQ=
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=cherry.de;
+Received: from PA3PR04MB11153.eurprd04.prod.outlook.com (2603:10a6:102:4ab::7)
+ by DU2PR04MB9194.eurprd04.prod.outlook.com (2603:10a6:10:2f9::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.12; Mon, 2 Nov
+ 2026 15:35:15 +0000
+Received: from PA3PR04MB11153.eurprd04.prod.outlook.com
+ ([fe80::6b02:c0eb:95a4:3c3d]) by PA3PR04MB11153.eurprd04.prod.outlook.com
+ ([fe80::6b02:c0eb:95a4:3c3d%5]) with mapi id 15.21.0569.011; Mon, 2 Nov 2026
+ 15:35:15 +0000
+Message-ID: <13b86d7c-6efb-4871-bbb6-620699622a55@cherry.de>
+Date: Mon, 2 Nov 2026 16:35:13 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [docs] [PATCH v2] ref-manual/faq: Add entry about github pull
+ requests
+To: richard.purdie@linuxfoundation.org, docs@lists.yoctoproject.org
+References: <20261102152932.846754-1-richard.purdie@linuxfoundation.org>
+Content-Language: en-US
+From: Quentin Schulz <quentin.schulz@cherry.de>
+In-Reply-To: <20261102152932.846754-1-richard.purdie@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: VI5PEPF00000932.AUTP296.PROD.OUTLOOK.COM
+ (2603:10a6:808:1::82c) To PA3PR04MB11153.eurprd04.prod.outlook.com
+ (2603:10a6:102:4ab::7)
+Return-Path: quentin.schulz@cherry.de
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PA3PR04MB11153:EE_|DU2PR04MB9194:EE_
+X-MS-Office365-Filtering-Correlation-Id: 97da9043-b394-439b-0851-08df38f6e408
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|23010399003|366016|10067099003|18002099003|22082099003|56012099006|11063799006|261026121527099003|261022105027099003|261026140227099003|261028144727099003|261021123027099003;
+X-Microsoft-Antispam-Message-Info: DuRuQM7Pq21hrlA9r5WW1uobXxl5vTTl2Z99xS61WHBGIF6GlzycUEXvRJ9KAn2CqPXFRTHp5yvtnNUt+pT4533S+6C8Vv4WoLAoGSK8+DsI0TaFX9vW4d71DKiAc4OzF7SV6JvshCfvBceg1PYQ2MVfEGnMpklW34QCh+skrLSMPpUukIworwTzlKlGrkJjJzy86Xo9PIt9eLi5jyHIdwYLjRExNh5UXZaNUu+5dkLpxRWQ20jBUlnMwGJTWWXVPDdKv0FGVS9YcDImJTOe4v40ZxSgHeT1QsLBueyLbdFxS0nn+C4QtKxFb9LPwjFFcqihp2hbksWiUmBSXcSyY21mUS6mNmxwSo+4IzaSO6J83GkUwiiRZP2kmEIIIidWMRIEVqIH0BmisMHeEE7hpd11pRJYiuXLbi6yAeSldBxS1GxNzNRjJ/1qaScrhmDLWfqz/R8S1M25qaas+Me3dAN61mhhGcVp/0bxpwKt4CLfzhhlP8rKHTTsLrKOF11u1ocnZ8g9tp8wkbhJirE32FSLm/WvId/ZzfTJjztzpKKGO9ktebuZPYEQ5gatCF/oc90xvZg+U8Okh2mg53gzSRCwlUlWLcPPKuLwpxSLbJUYWOTvqzWHvdyLQya1J/EVbgLCXfdD32C7/OQ0BOE5N4WkeCMGYiDqimgo+9Ou9z4=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA3PR04MB11153.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(23010399003)(366016)(10067099003)(18002099003)(22082099003)(56012099006)(11063799006)(261026121527099003)(261022105027099003)(261026140227099003)(261028144727099003)(261021123027099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?dFZuQVVZZnR6c0x2ZDNaWkxVMkpLQXZNdXRpRS9vM2ZuanZiZmxaaWt3b2p2?=
+ =?utf-8?B?RFpBRk5SS1M1bHNIdWZYb1VjaVF3eU9QUFZmUE81N3UrS3FJbm9ncTBzdEJq?=
+ =?utf-8?B?ZXZXODREV2NqT05SOW1oYjNjUFFBZERzcTJESXc3Y2d3UGx6YmxBVGw2NHZN?=
+ =?utf-8?B?S1J6bUpIZVF0d2pDQVhjTlpIVjZCaTBlSGlSVjVNcFlZenZFNXY2ajc3c1ZG?=
+ =?utf-8?B?YzltVFNIQXZRcXF0UnNJKzM4UlFaK0VGbytuWDEyNHVlYjk3N0pCR29xOVE0?=
+ =?utf-8?B?NzF4R0VFR0RlVlVHdUNIMDFqT3VUcHMyay9PMGZiUURUanpzTngrcEc3NkJy?=
+ =?utf-8?B?amkzeG1kL3E4YUJlQldUYncxWEl2SXJ4dVZMWUc1YThVZWVLZzBLdDFEZU8v?=
+ =?utf-8?B?dnhTT3A4Z3FzS3pKQW5RYzUwK3I5Z2J5bmVRWXNIK2g4eWoxaTBidFBWRUZ3?=
+ =?utf-8?B?VHpneDBLSWFBdjJZNmZiQVdjdGF2ajJjd25rVytXbk8wNitsQnVtSHI5QXpi?=
+ =?utf-8?B?RDBRSkFSV3JoTWgzMUlCYUNnQ21pcDlVUWpoOHhacXZLMFUxN0Z6Z0tNb3Uv?=
+ =?utf-8?B?MHE5QWJHejJFNlAxb3RvT2t2dlRoSVZQRk53RDlmTXlNbDFIdU50anMwZEFI?=
+ =?utf-8?B?UUQ0ZS9FWTBZaVNpanVMTmlEa1V4RTZnNUhjd2doL0tKMmxxV3prbWduUDBQ?=
+ =?utf-8?B?dUswWWtPbVRmRnd0WXRwMkpaZlgra3h3L0xnUjR2MTl2aGIvdk02NUpmTmRr?=
+ =?utf-8?B?aGVhUjVYZ05zaVVVSEhVTkhlS3FzVnNoVlB6ejJlYUZzMkxYbHhTVjVhcStV?=
+ =?utf-8?B?N3NGTXdtVWVoek91TXJuT2V5eC9ScUxsU1gwSTNEdU5pTVVwemUxZVdhbCtC?=
+ =?utf-8?B?ZEh4QVVjblhZZWliQzlIVGNicGI3a0hocCtoMjRRRHk4WEh0WGVXcHpyMlB6?=
+ =?utf-8?B?elhyUUxFTERJZHdNS3ZXNStZK0k5ZTh4ZHNmNk5LMXo3aWZncGRhWFVqcjJo?=
+ =?utf-8?B?MVZtZ0ZKSEJMaW4vb3Y1MXNKbi82YldkajM2ODlKNUxNeTF5Q1lSUGRXWEN6?=
+ =?utf-8?B?d0s4S1luaFJsNEQwVDJxTW1rYjBvVnBROS9pSUVrS0tXNUcwVzRrVmdKVUlD?=
+ =?utf-8?B?andGa3hNbVVRWUd1cmhNbGdieWlFbFVVN0lPaCthQy9DSHpLaGR0VXFXQTVt?=
+ =?utf-8?B?cXd3MFVXY3VhUEM3ajNqOVhZZTBVWTFnL1M5RmVJMDg4eGZ5K2lIQ1BxTnkv?=
+ =?utf-8?B?eUVMTjVaUFQwZ3J4YW95RG5lTXR3d2JxOWtjeDFaZVhLOTFLUFJOVHBXUEx3?=
+ =?utf-8?B?SXNVYVFHaExlckREQUhTVFlpeG1zZE5URXNXSDhtWkFBVmRkb1dqcGZ2dU1t?=
+ =?utf-8?B?RmpLT2l0bDlFWW9kVUJyWVJWazRjNmRlYWtHSkIzSHpCTFY5Zm54dkhZN1Rt?=
+ =?utf-8?B?b3VBQVAwTUs2cTY3Vi9FcitaM2VndlkzQ3JheGtsOGJ3WmJPbTVrWnEraFN3?=
+ =?utf-8?B?cldOWGk4a3pMTnROcmtSWTh6d0FRcVZ1N1Y5RHFOYXdMcW83SzZjS2FQTmg3?=
+ =?utf-8?B?YzcrMWY2aGxqVzFMbjJUV053V09vZ1ZzK2FzcTF1V2JhanRCODVSaTlYSDU4?=
+ =?utf-8?B?aW5GNWR3UTlJY3lSdUlXcTdrM0xKcnhwb2pOUUFFaVFFZlNxQmlSd0NtWjJW?=
+ =?utf-8?B?cXBBQjB5bFl1RmJua1IwWHZvM1JPbFZXWDYrNjRJT3FPUGUwUm9DMWthQW5l?=
+ =?utf-8?B?REcwUTEyc1lMcmFhaEU5alJlUEtQUDdmUFRmeURyRDdXblliOFppWTdwS1Rz?=
+ =?utf-8?B?NTJLS25ld0FQd0p5ZVc5aVQrQmhpZENDMkQ4YUkyanlRckp1M3JYOGNzVGNP?=
+ =?utf-8?B?ZkdOQmdWblBJaW0yS0FZOUhvRnhUWFcveDM4dDNRVEFUTERXSXVwbS9Tak9y?=
+ =?utf-8?B?cnY2S1pOa0FBZ01qTUswUVdVaWNncHBnUEJIUTgwNUhicmN1WjRvYVhDTExL?=
+ =?utf-8?B?cmNaYkRZMmpROHZTVGZ0OUk2K1VGZlRQRlp0VS9uYjFINjQ3Z2xJR3FlMW5a?=
+ =?utf-8?B?b0w2b2xkMUZLN1Y0V290eDhwRkZYUUplaHZ1cHJzUkVZUmlzMVJYUEpuMlBG?=
+ =?utf-8?B?S1Z3aUI2elJNTXVTcVJnMlgyQUYvZ0c3UUM4QTY0MVpPa0dTd3Z4VDhuUW5h?=
+ =?utf-8?B?T3FZdm5zdm9hV1FtN1E3cENHRnVrS0ZaL1ZSTTkyNmZneGp3NUhjUlRpaEJP?=
+ =?utf-8?B?ZjdBOHJXL1Y3WWdxVjZxSHVOOUNGYU1Xam9pOW1LUXRpVEtZWGFtWHZ3RFRy?=
+ =?utf-8?B?b1FlRDBIaXl2UUFubDJKWnQyRFpweUc0RzVDMk1jRThsdHJ1NnNYZz09?=
+X-OriginatorOrg: cherry.de
+X-MS-Exchange-CrossTenant-Network-Message-Id: 97da9043-b394-439b-0851-08df38f6e408
+X-MS-Exchange-CrossTenant-AuthSource: PA3PR04MB11153.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Nov 2026 15:35:15.0505
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ERDJ90eYX2LxXQ7/C+iRuC3dSprO6qSUs00TUMMdv4ntaHgvcUMBh91sa+63VUIwsmy9oAtLnberaRwyn2MKbNka5VSvD4IzN9LrC5o6Aqs=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB9194
 List-Id: <docs.lists.yoctoproject.org>
-X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by lin-tor-korg-lkml-alma10-1 with HTTPS for <docs@lists.yoctoproject.org>; Mon, 02 Nov 2026 15:29:42 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10764
-Content-Type: text/plain; charset="utf-8"
+X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by lin-tor-korg-lkml-alma10-1 with HTTPS for <docs@lists.yoctoproject.org>; Mon, 02 Nov 2026 15:35:22 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10765
 
-This is an emotive topic but try and fairly document some of the pros and cons
-of such a model and where they make sense along with why the project has made
-the decisions it currently has.
+Hi Richard,
 
-Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
----
- documentation/ref-manual/faq.rst | 35 ++++++++++++++++++++++++++++++++
- 1 file changed, 35 insertions(+)
+On 11/2/26 4:29 PM, Richard Purdie via docs wrote:
+> This is an emotive topic but try and fairly document some of the pros and cons
+> of such a model and where they make sense along with why the project has made
+> the decisions it currently has.
+> 
 
-diff --git a/documentation/ref-manual/faq.rst b/documentation/ref-manual/faq.rst
-index c1657d677..27733a5d1 100644
---- a/documentation/ref-manual/faq.rst
-+++ b/documentation/ref-manual/faq.rst
-@@ -108,6 +108,41 @@ It is very easy to check whether a patch has merged by looking at the repository
- pulling and rebasing.
- 
- 
-+Why doesn't the project use GitHub?
-+-----------------------------------
-+
-+This is not a simple question and there is no right answer to it but there is some
-+background worth appreciating.
-+
-+Some components within the project do accept pull requests from GitHub, others don't.
-+The README in the component in question should make the process clear for that
-+component. GitHub itself is a commercial operation and there are concerns about what
-+happens if they change direction or decide to discontinue it as there is precedent in
-+the past for that kind of thing happening. Equally, there are open alternatives to it.
-+
-+The bigger issue is the model. Mailing lists allow for wide peer review. The people
-+performing that review are extremely valuable with experience built up over decades.
-+The GitHub model doesn't really lend itself to them being able to easily see or be
-+aware of changes beyond the maintainer accepting the pull request. That model also
-+tends to focus on the single maintainer with total authority, which for components
-+like OE-Core, simply isn't how things operate for us. Moving to such a model would
-+alienate our existing reviewers and our community consensus approach to changes.
-+
-+Another issue is that GitHub and similar forges use the Pull Request mechanism,
-+heavily leaning into reviewing and testing the Pull Request as a whole (e.g. the
-+automated testing (CI) only runs on the last commit of the Pull Request, and
-+per-commit reviews are painful to write and follow-up on). Using GitHub or a
-+similar forge would require the project to completely change its reviewing process
-+(or have two wildly different processes which would be inconsistent and confusing).
-+
-+So yes, for a contributor wanting to make a quick submission, GitHub and similar models
-+are attractive, but they would likely come at a cost to the project's long term health.
-+They can work well for the single or limited number of maintainer model, and for components
-+with the setup, but not for other areas which benefit from wide peer review. We live
-+in hope that tools can catch up with that, we'd even love to develop them ourselves if
-+we had time but sadly, we don't at this point.
-+
-+
- Building environment
- ====================
- 
+Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
+
+Thanks!
+Quentin
