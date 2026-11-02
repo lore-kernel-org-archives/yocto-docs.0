@@ -1,114 +1,168 @@
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.13432.1793629417829165053
+Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.14800.1793631749909872880
  for <docs@lists.yoctoproject.org>;
- Mon, 02 Nov 2026 06:23:38 -0800
+ Mon, 02 Nov 2026 07:02:30 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=L/RGolPN;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.128.50, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4a4d7ae1ae9so29380695e9.1
-        for <docs@lists.yoctoproject.org>; Mon, 02 Nov 2026 06:23:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1793629416; x=1794234216; darn=lists.yoctoproject.org;
-        h=mime-version:user-agent:content-transfer-encoding:content-type
-         :references:in-reply-to:date:to:from:subject:message-id:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=tbWXdm4avIg4AHKxBTT/H0q2WV9g06utZdKHaP7bEyM=;
-        b=L/RGolPNPUlVez306SYJt8CSkgDHv40BlZzIju/z0FszWy7Mb71OEj1H7cjHQKrGXK
-         k8Dr4hBUIeoAKGZxJG2PqxYkXGch1qVovp9exwIrmC9WriQhMraawJfAOb7hecRPx3Wp
-         s+JJe0pT1br5KSfXbu8OifnxHJZLf/+NXgGWo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793629416; x=1794234216;
-        h=mime-version:user-agent:content-transfer-encoding:content-type
-         :references:in-reply-to:date:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=tbWXdm4avIg4AHKxBTT/H0q2WV9g06utZdKHaP7bEyM=;
-        b=Kb0DAtOfnME4IvpxGcp0KD+eXiU7ULykt4JIvfYNJapiW7XqjhwebNDwQJo8lxrWzG
-         QtLRYhxH6lumz5w8g+Xfh+fqTMt2X+uZQ/JDSvDOiz5qq1Dc5qmiwl0nKOzFCRVlqbA5
-         4fsuN0yQY6A/N2mauEMyZ2C/H5XSNVXIea2E0Revhq4SQOWHAstrl86EHrgaZInUISXt
-         ZEdsSNMFL7fkF4P+JdkJhb+okgtmbAWLXlLukCRgkw5DSaZWsl0fQqMXZzGMXJ89FLBb
-         tlv7/zzJXA2DkfsiGBy9QjOJbDFRDM+iwKUHUu6qSMDzHJtS8IivZEbF+Peq2Z+2rohn
-         x3oQ==
-X-Forwarded-Encrypted: i=1; AKwUvByneDjd/YL1BVlTtNo204UfSGo4Cb9e+zqQbwlYOCa5GLmv8mZgO5W/rwP5XK7GAXoWsY0L@lists.yoctoproject.org
-X-Gm-Message-State: AFq9FYI1X0c8d+a3AlJLXHA/R/zDGcemQN25vtD6Zy2+pg9uR+lkGB17
-	jpMg7opSz0OrnUBMS46K00X9RAWpBaQQyjs/aLONsA90xbu9d+W9yRRnW7X0D7D4cLE=
-X-Gm-Gg: AYBFou3NQoLvClwLmPhTNCTTPYNSssEmB7lnC5uh7EyQ2Cm8CNawMyG5hvE/NJfr+6t
-	QY8yUxoEteu69W5GQIYIJSsnJijTlEhV/d9HFOCZ1u5zpqlqZFaBYDhUQQG8eo0/mcGL2KwsOMc
-	HlzNPgO7TmRwmxvvX0D8eiq8+SqeLf0qjJ8FlZYa2lDvWfupLx2RzNFEdHKwZZqqwaniLufKPQC
-	MNb/vbxdW/tvgr1CehmSmjlJxp7XrFMiczjJlZ2ttH6q/Ps+ZIe9afZIhQtdGsNXkamlIcU1X/t
-	55EFa+wXiU8la0L54A6uvv0ALzrsr5Putwon/UxZMG0zhk858RyqGOkRjuQq/gmyrcNTq4Gknlg
-	reR9cS2m579dKsKpm4KbIVreDtZqeN08odw5vN5LSxqBOvIezkk82c8J/qKbjv7U5f1rexm3bXC
-	DhL/6wBe0noDfGaG3lBwqTe8hmvH4Svx2AgpWf2AIJVobGeQeYEcBydhaAYC9ZDRyQpbOXz3S79
-	IKvwAUA1G5yCf+bIINYUSZoRtkT06b0Zve7gpZ5dpAJ8CA4bW2bdb6ckELD5u+NWx4PstkJw0nk
-	voJuu9B2myimFE0dKMkSvyjf/Un8O7rjteyJpWqf7mV4eiK0ltxjCtgUfHJ3NRH+zhSnhsQLU6/
-	QGdXqhHEemmqqjEjuUNg=
-X-Received: by 2002:a05:600c:34cf:b0:4a1:dbdf:17a8 with SMTP id 5b1f17b1804b1-4ac150b3d01mr244878075e9.2.1793629415782;
-        Mon, 02 Nov 2026 06:23:35 -0800 (PST)
-Return-Path: <richard.purdie@linuxfoundation.org>
-Received: from ?IPv6:2001:8b0:aba:5f3c:a866:4584:45b1:5742? ([2001:8b0:aba:5f3c:a866:4584:45b1:5742])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4ab61d8b9f4sm321186695e9.12.2026.11.02.06.23.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2026 06:23:35 -0800 (PST)
-Message-ID: <f0a7b4c1fb39d620962daca358c9fdcefc35cff9.camel@linuxfoundation.org>
-Subject: Re: [docs] [PATCH] governance: Add start of project history and
- leadership sections
-From: Richard Purdie <richard.purdie@linuxfoundation.org>
-To: Antonin Godard <antonin.godard@bootlin.com>, docs@lists.yoctoproject.org
-Date: Mon, 02 Nov 2026 14:23:34 +0000
-In-Reply-To: <DK6U5WRXC6D8.1K2H139ELD32@bootlin.com>
-References: <20260715144404.753400-1-richard.purdie@linuxfoundation.org>
-	 <DK6U5WRXC6D8.1K2H139ELD32@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-10build1 
+ dkim=pass header.i=@pengutronix.de header.s=20260414 header.b=Jok6QQGh;
+ spf=pass (domain: pengutronix.de, ip: 185.203.200.13, mailfrom: u.oelmann@pengutronix.de)
+Received: from ptx.office.stw.pengutronix.de (ptx.office.stw.pengutronix.de [IPv6:2a0a:edc0:0:900:1d::109])
+	(Authenticated sender: relay-from-ptx.office.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id F1DED201DFC;
+	Mon, 02 Nov 2026 16:02:22 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1793631742;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=G/PAYO/9f20ro/LP44jfNr/5Wjn5c/yLpLQHyZ+rvIU=;
+	b=Jok6QQGhYGX1zHou/FJAeG0WJSCRX/d9HauXnpUriLVBAlydVs9hGPXotavZqg0B+BoNN2
+	doHMJipKOnm1sm0TZdtgY74myaytyA9NrBGIDC+lEWJDvqn8WhUglVSTIMR2uHbeJcxJVw
+	cS3/jxeNp7HRXmUSEkqgxXcewkddzmBd49VBiw9aOF7ke1DxynyxE6ZQXbfYTtvqt+6Ba2
+	ZWKQcIVrE64dxeBiFU/ILJZllVi/iuXrIP844dGCV9UVXSfFQtPYkehVF0VWCZug3Tpc01
+	HAzviQ2libv6Ka1t+1yCe6RcPXuSqtSxLd6jx0hAJhMpR+D82Qr0gekdkEtOVw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1793631742;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=G/PAYO/9f20ro/LP44jfNr/5Wjn5c/yLpLQHyZ+rvIU=;
+	b=VjxL7CBSX4kvmQFzXAnrw86UR6znr505GXbGyqrk0qUtXqdOSS702Es7+xCui3wejjqbUC
+	K3zPrU7G2hZzvbRm2cCkHLvL6bLxuvhTqMQ7dQ69TBrMqqsdtbjFi+cp7exln6z1vi1X8V
+	AzLx/YoC+QOBoR9pbJo9ylgbzYn+6TcF2qpThAv+bvU+jv/qSQYME1obDf1H1gx3yfA1Em
+	MxR74Cn4b2rOPBGToahButjj3PUlps0yLnyCxOhrFrucTBezYpeajn7NpewPY4oPscuumx
+	q/wef1D+D0P6W95Bd7lE99lNwOWlDGzPr34sVsBrodNuuxw3B7FnWarQCXnHiQ==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=relay-from-ptx.office.stw.pengutronix.de smtp.mailfrom=u.oelmann@pengutronix.de
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1793631742; a=rsa-sha256;
+	cv=none;
+	b=O1kEjsxp6yIx4DsPeOIRibZDKuva6Rb2oD4qPfZuDmMZ1LRe+2Yal6qVgHsnTM+xJbNhD7
+	JBP0rlIq2ycqDRlkPeW/kIj10C8SWoQ0a4Da2PTzXZwWzkSPQdOrEmo3izRy9w4nAPhyJq
+	E5zt80LsEHdZH5oKHBhl+C7cR3Q8rOjMU0BL7zhvXdEIta2ByckhF+gyrM3XPdCHbLWeDn
+	Sabz6V8gfWCFNOLxAY4WLtUBOKCiR3D0qQVN+3Fl1gsPyuqKGh5QOyBfz7o5jmnT7kYhLE
+	WsGFGeNcPbv+w8PEGwf8I1GcQb9EH/ZnAOoXdOgtvT2w5nTDvNMB0bPUTUwIzQ==
+Received: by ptx.office.stw.pengutronix.de (Postfix, from userid 1052)
+	id D741E1BFA72; Mon, 02 Nov 2026 16:02:22 +0100 (CET)
+From: =?utf-8?Q?Ulrich_=C3=96lmann?= <u.oelmann@pengutronix.de>
+To: richard.purdie@linuxfoundation.org
+Cc: docs@lists.yoctoproject.org
+Subject: Re: [docs] [PATCH] ref-manual/faq: Add entry about github pull
+ requests
+In-Reply-To: <20261102110847.15588-1-richard.purdie@linuxfoundation.org>
+References: <20261102110847.15588-1-richard.purdie@linuxfoundation.org>
+User-Agent: mu4e 1.14.4-pre6; emacs 31.1
+Date: Mon, 02 Nov 2026 16:02:22 +0100
+Message-ID: <6rse1jwa2p.fsf@pengutronix.de>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 List-Id: <docs.lists.yoctoproject.org>
-X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by lin-tor-korg-lkml-alma10-1 with HTTPS for <docs@lists.yoctoproject.org>; Mon, 02 Nov 2026 14:23:43 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10762
+X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by lin-tor-korg-lkml-alma10-1 with HTTPS for <docs@lists.yoctoproject.org>; Mon, 02 Nov 2026 15:02:33 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10763
 
-Hi Antonin,
+Hi Richard,
 
-On Fri, 2026-07-24 at 15:29 +0200, Antonin Godard wrote:
-> Thanks for contributing this, there's valuable information in there. Here=
- are my
-> general remarks:
->=20
-> - I don't think this should be part of the "Manuals" section of the
-> =C2=A0 documentation. I propose that we make it a separate section instea=
-d, as I
-> =C2=A0 don't see where it could fit anywhere in the sections we have.
->=20
-> =C2=A0 On that topic, I've just sent a series that re-organizes the secti=
-on a bit
-> =C2=A0 [1]. But I think the "Governance and History" should be on the sam=
-e level as
-> =C2=A0 the "Security Reference" one (i.e. separate from the rest).
->=20
-> - Adding more dates (at least years) throughout the document might help r=
-eaders
-> =C2=A0 understand better the temporality of the project.
->=20
-> Otherwise the rest of my suggestions are link additions, Sphinx syntax fi=
-xes and
-> formatting. Below is the pasted diff. Feel free to apply these suggestion=
-s or
-> comment on them!
+I don=E2=80=99t have any content-related feedback and only noticed a few ty=
+pos.
 
-Looping back to try and get this sorted, sorry about the delay.
+On Mon, Nov 02 2026 at 11:08 +0000, "Richard Purdie via docs" <richard.purd=
+ie=3Dlinuxfoundation.org@lists.yoctoproject.org> wrote:
+> This is an emotive topic but try and fairly document some of the pros and=
+ cons
+> of such a model and where they make sense along with why the project has =
+made
+> the decisions it currently has.
+>
+> Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
+> ---
+>  documentation/ref-manual/faq.rst | 28 ++++++++++++++++++++++++++++
+>  1 file changed, 28 insertions(+)
+>
+> diff --git a/documentation/ref-manual/faq.rst b/documentation/ref-manual/=
+faq.rst
+> index c1657d677..60e89d834 100644
+> --- a/documentation/ref-manual/faq.rst
+> +++ b/documentation/ref-manual/faq.rst
+> @@ -108,6 +108,34 @@ It is very easy to check whether a patch has merged =
+by looking at the repository
+>  pulling and rebasing.
+>=20=20
+>=20=20
+> +Why doesn't the project use github?
+> +-----------------------------------
+> +
+> +This is not a simple question and there is no right answer to it but the=
+re is some
+> +background worth appreciating.
+> +
+> +Some components within the project do accept pull requests from github, =
+others don't.
+> +The README in the component in question should make the process clear fo=
+r that
+> +component. Github itself is a commercial operation and there are concern=
+s about what
+> +happens if they change direction or decide to to discontinue it as there=
+ is precedent in
 
-I've made most of the changes. I put the section on its own at the end
-of the sidebar after a lot of debate, I wasn't sure it quite belonged
-at the top next to the "newcomer" pieces and concepts.
+s/to to/to/
 
-With dates, it is hard. For example rpm support drip fed in over 2008-
-2010. sstate was a long evolution. I've added a few more dates, if you
-think there are specific pieces where we should add more, let me know.
-I'm having to search the repo for commit dates to pin things down.
+> +the past for that kind of thing happening. Equally, there are open alter=
+natives to it.
+> +
+> +The bigger issue is the model. Mailing lists allow for wide peer review.=
+ The people
+> +performing that review are extremely valuable with experience built up o=
+ver decades.
+> +The github model doesn't really lend itself to them being able to easily=
+ see or be
+> +aware of changes beyond the maintainer accepting the pull request. That =
+model also
+> +tends to focus on the single maintainer with total authority, which for =
+components
+> +like OE-Core, simply isn't how things operate for us. Moving to much a m=
+odel would
 
-See what you think of v2...
+s/Moving to much a model/Moving to such a model/
 
-Cheers,
+Best regards,
+Ulrich
 
-Richard
 
-
+> +alienate our existing reviewers and our community consensus approach to =
+changes.
+> +
+> +So yes, for a contributor wanting to make a quick submission, github and=
+ similar models
+> +are attractive, but they would likely come at a cost to the project's lo=
+ng term health.
+> +They can work well for the single or limited number of maintainer model,=
+ and for components
+> +with the setup, but not for other areas which benefit from wide peer rev=
+iew. We live
+> +in hope that tools can catch up with that, we'd even love to develop the=
+m ourselves if
+> +we had time but sadly, we don't at this point.
+> +
+> +
+>  Building environment
+>  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>=20=20
+>
+>
+> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
+> Links: You receive all messages sent to this group.
+> View/Reply Online (#10758): https://lists.yoctoproject.org/g/docs/message=
+/10758
+> Mute This Topic: https://lists.yoctoproject.org/mt/122055611/3618626
+> Group Owner: docs+owner@lists.yoctoproject.org
+> Unsubscribe: https://lists.yoctoproject.org/g/docs/unsub [u.oelmann@pengu=
+tronix.de]
+> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
+--=20
+Pengutronix e.K.                           | Ulrich =C3=96lmann            =
+   |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
