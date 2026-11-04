@@ -1,122 +1,144 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.9073.1793799008274049849
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.9965.1793801840115112300
  for <docs@lists.yoctoproject.org>;
- Wed, 04 Nov 2026 05:30:09 -0800
+ Wed, 04 Nov 2026 06:17:21 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=ZFX/Afhp;
- spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=D3l2UQjS;
+ spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 155874E413FD
-	for <docs@lists.yoctoproject.org>; Wed,  4 Nov 2026 13:30:06 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id DF0F9C8F475;
+	Wed,  4 Nov 2026 14:18:22 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id DE55360770;
-	Wed,  4 Nov 2026 13:30:05 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5C5A0103291AD;
-	Wed,  4 Nov 2026 14:30:04 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id DF45E60770;
+	Wed,  4 Nov 2026 14:17:17 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 656ED103291F6;
+	Wed,  4 Nov 2026 15:17:10 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1793799005; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1793801833; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=HkhGY3bjOWK0V9N1BZZPcXsa1aanPvmOxlar7Iq+bXk=;
-	b=ZFX/Afhprja27QCsfM/q6HK+9TcR59fWsXltmCI43exnEzlA6Q63Z8wL9pZoKIZk26Jko9
-	+Aec35N3Tf4ThX8JFh+I2iQ8soTXkctLBCX2Jq5V6CtIcW4SMoZQogm6uM7KBBu5zhcHKe
-	a25GthQ3KGuXMxggHi0Ulqw6bO+leHQ46Mi2AHJWvyYD3E+j3q/SZJlvUV1A9rpOp1w/46
-	1ytbHLUcHzSSCkDJDy75xEZr7Pd4X+pVENevGs3CTel8bD/4VO5/LwRYZ8tpB5lxJs9rpV
-	JaqnFE1YrAC5jmblXdtqNrh87JzbCpjOdLuClplqsoeIKMi7GhKHNUSbGYyxrg==
+	bh=CA5IpCi5xxUfaIoyA5p5zsXpclIBGxcPNa23uG/Hd+M=;
+	b=D3l2UQjS542/dV6r+9tX9fMLgSz7lyI0IpUyAMLKW27dSLBFTDmz0O0HDkulL7GQkfZZqf
+	37mfAdFmbl0bh7tfC+vdadQqsON8By7Btj5A5nVs7bj8bEqQ1zhFQ1Iwb+ml287/lIERZa
+	mxSg1lH+PbH2tms8BydpZIDwhW/fF76mwQBYbA8BbcbpnOcQTTnMCg1UHRRYfgk0RAX8pi
+	LSvHoFkOnXMTiBLvPzl+tXj5C3R7nxhsLaLYwl+WdqO+GLNQf+ytmBGZRx88uZFCL5tQAf
+	acg9nCgeRITl7vi2hvKNnjVwhoeF/nLB5tZC/7n0i5cKFku9G5S9MkSl/Qxw0A==
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 04 Nov 2026 14:30:03 +0100
-Message-Id: <DMMGODYYKIMC.3BQCIELWD0FVP@bootlin.com>
-Subject: Re: [docs] [PATCH v2] governance: Add start of project history and
- leadership sections
-Cc: "Richard Purdie via lists.yoctoproject.org"
- <richard.purdie=linuxfoundation.org@lists.yoctoproject.org>
+Date: Wed, 04 Nov 2026 15:17:10 +0100
+Message-Id: <DMMHOGIG8FZ2.3EGLH78Y5XISP@bootlin.com>
+To: "Paul Barker" <paul@pbarker.dev>, <docs@lists.yoctoproject.org>
+Subject: Re: [docs] [PATCH] contributor-guide: Adopt new AI-Assisted
+ Contribution Policy
+Cc: <yocto@lists.yoctoproject.org>,
+ <openembedded-architecture@lists.openembedded.org>
 From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: <richard.purdie@linuxfoundation.org>, <docs@lists.yoctoproject.org>
-References: <20261102141947.594561-1-richard.purdie@linuxfoundation.org>
-In-Reply-To: <20261102141947.594561-1-richard.purdie@linuxfoundation.org>
+References: <20261102-ai-policy-v1-1-db2e89267a1e@pbarker.dev>
+In-Reply-To: <20261102-ai-policy-v1-1-db2e89267a1e@pbarker.dev>
 X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
-X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by lin-tor-korg-lkml-alma10-1 with HTTPS for <docs@lists.yoctoproject.org>; Wed, 04 Nov 2026 13:30:13 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10769
+X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by lin-tor-korg-lkml-alma10-1 with HTTPS for <docs@lists.yoctoproject.org>; Wed, 04 Nov 2026 14:17:23 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10770
 
 Hi,
 
-Thanks, the added dates do help realizing when things happen. I'll merge it=
- to
-master-next with the following formatting changes:
+Thanks, will merge to master-next with the following formatting fixes:
 
-diff --git a/documentation/governance/history.rst b/documentation/governanc=
-e/history.rst
-index fa26b9f8c..6c6096c1f 100644
---- a/documentation/governance/history.rst
-+++ b/documentation/governance/history.rst
-@@ -168,20 +168,20 @@ OpenEmbedded. There were often changes talked about a=
-t many of the OE
- developer meetings (OEDEMs) but where the developers had not been able to
- find time/resources to make them happen.
+diff --git a/documentation/contributor-guide/ai-assisted-contribution-polic=
+y.rst b/documentation/contributor-guide/ai-assisted-contribution-policy.rst
+index 7b8ee8284..f35b58fdf 100644
+--- a/documentation/contributor-guide/ai-assisted-contribution-policy.rst
++++ b/documentation/contributor-guide/ai-assisted-contribution-policy.rst
+@@ -11,15 +11,15 @@ include non-trivial AI-generated content.
 =20
--- ``fakeroot`` was swapped for ``pseudo``, donated from Wind River
-+-  ``fakeroot`` was swapped for ``pseudo``, donated from Wind River
+ A *contribution* is anything you send to the project, including:
 =20
--- The concept of `sstate` was developed (August 2010) meaning incremental
--  builds became possible and output could be removed from the build direct=
-ory
--  structures.Initial versions of this were known as "packaged staging" as
--  initially package manager involvement was assumed but this was eventuall=
-y
--  discounted.
-+-  The concept of `sstate` was developed (August 2010) meaning incremental
-+   builds became possible and output could be removed from the build direc=
-tory
-+   structures. Initial versions of this were known as "packaged staging" a=
-s
-+   initially package manager involvement was assumed but this was eventual=
-ly
-+   discounted.
+-- Patches, commit messages and cover letters
++-  Patches, commit messages and cover letters
 =20
--- The separate staging and target installs were combined.
-+-  The separate staging and target installs were combined.
+-- Review comments, discussions and other mailing list submissions
++-  Review comments, discussions and other mailing list submissions
 =20
--- Automated testing was developed based on buildbot (python based to match
--  the core developers skillset) creating the "Autobuilder" project.
-+-  Automated testing was developed based on Buildbot (python based to matc=
-h
-+   the core developers skillset) creating the "Autobuilder" project.
+-- Bug reports and comments in Bugzilla
++-  Bug reports and comments in Bugzilla
 =20
--- Support for RPM packages were added (2008-2010) with a switch to RPM v5.
-+-  Support for RPM packages were added (2008-2010) with a switch to RPM v5=
-.
+-- Security reports sent to the Security Team
++-  Security reports sent to the Security Team
 =20
- Most of the project's budget focused either around Autobuilder /
- infrastructure costs (including a full time sysadmin) or on advocacy and
-@@ -279,16 +279,16 @@ to focus on this was formed with the aim of writing a=
- new participation
- agreement for members. There were multiple things people wanted to achieve
- including:
+-- Wiki content
++-  Wiki content
 =20
--- Officially recognise the special relationship with OpenEmbedded.
-+-  Officially recognise the special relationship with OpenEmbedded.
+ *AI-generated content* is anything produced by a Large Language Model
+ (LLM) or other generative AI technology, including output from AI
+@@ -49,17 +49,17 @@ General conditions
 =20
--- Have oversight of Richard Purdie's decision making.
-+-  Have oversight of Richard Purdie's decision making.
+     1. Contributors should ensure that the terms and conditions of the
+        generative AI tool do not place any contractual restrictions on how
+-       the tool=E2=80=99s output can be used that are inconsistent with th=
+e
+-       project=E2=80=99s open source software license, the project=E2=80=
+=99s intellectual
++       the tool's output can be used that are inconsistent with the
++       project's open source software license, the project's intellectual
+        property policies, or the Open Source Definition.
 =20
--- Creation of a Yocto Project TSC to make technical Yocto Project decision=
-s.
-+-  Creation of a Yocto Project TSC to make technical Yocto Project decisio=
-ns.
+     2. If any pre-existing copyrighted materials (including pre-existing
+        open source code) authored or owned by third parties are included i=
+n
+-       the AI tool=E2=80=99s output, prior to contributing such output to =
+the
++       the AI tool's output, prior to contributing such output to the
+        project, the Contributor should confirm that they have have
+-       permission from the third party owners=E2=80=93such as the form of =
+an open
++       permission from the third party owners-such as the form of an open
+        source license or public domain declaration that complies with the
+-       project=E2=80=99s licensing policies=E2=80=93to use and modify such=
+ pre-existing
++       project's licensing policies-to use and modify such pre-existing
+        materials and contribute them to the project. Additionally, the
+        contributor should provide notice and attribution of such third par=
+ty
+        rights, along with information about the applicable license terms,
+@@ -77,7 +77,7 @@ The Yocto Project is a collaborative endeavour and our co=
+mmunity is as
+ valuable as our code base for the long-term health of the project. At a
+ fundamental level, we each need to take responsibility for what we
+ contribute to the project. For example, this includes ensuring that our
+-contributions follow the project=E2=80=99s Code of Conduct. It also includ=
+es
++contributions follow the project's Code of Conduct. It also includes
+ being respectful of the finite bandwidth that we all have for reading,
+ reviewing and responding to contributions.
 =20
--- Formalise the project member benefits.
-+-  Formalise the project member benefits.
+@@ -122,7 +122,7 @@ Transparency
+ **Contributors need to disclose where they have used AI-generated output
+ in their submissions to the project**. As stated above, incidental or
+ trivial use of AI-generated output within an otherwise human authored
+-submission doesn=E2=80=99t require disclosure - but if in doubt, err on th=
+e side
++submission doesn't require disclosure - but if in doubt, err on the side
+ of disclosing the use of AI tools.
 =20
--- Align the project with known Linux Foundation best practise governance a=
-nd
--  charter documents.
-+-  Align the project with known Linux Foundation best practise governance =
-and
-+   charter documents.
+ The use of generative AI and LLMs in software development is a rapidly
+@@ -139,7 +139,7 @@ In patches and commits
+ ----------------------
 =20
- These changes included the formation of the Yocto Project TSC which first
- met in June 2019. The TSC became necessary since the project was now
+ **Where AI-generated code is contributed to the project, commit messages
+-must include the ``AI-Generated`` tag identifying the AI tool or
++must include the** ``AI-Generated`` **tag identifying the AI tool or
+ framework and the specific AI model used**. We encourage contributors to
+ be as specific as they can be. For example::
+=20
+@@ -193,7 +193,7 @@ Enforcement
+=20
+ Violations of this policy may result in contributions being rejected or
+ deleted as appropriate. Repeated violations will be dealt with through
+-the project=E2=80=99s `Code of Conduct`_ policy.
++the project's `Code of Conduct`_ policy.
+=20
+ .. _Linux Foundation Generative AI Policy: https://www.linuxfoundation.org=
+/legal/generative-ai
+ .. _Code of Conduct: https://www.yoctoproject.org/code-of-conduct
 
 Antonin
