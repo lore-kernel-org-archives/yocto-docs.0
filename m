@@ -1,125 +1,311 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (OSPPR02CU001.outbound.protection.outlook.com [40.107.159.43])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.15224.1793633720294460852
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.6702.1793789813546527244
  for <docs@lists.yoctoproject.org>;
- Mon, 02 Nov 2026 07:35:21 -0800
+ Wed, 04 Nov 2026 02:56:54 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@cherry.de header.s=selector1 header.b=khxXIuZC;
- spf=pass (domain: cherry.de, ip: 40.107.159.43, mailfrom: quentin.schulz@cherry.de)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=lNHNON4i2XumzdIWxU9XrQXKkf4NePCOZfobjQXtdyWe/49hCPWlxDX97zQZAyZurVD11tJBATIiNaL4xKVR04v3r4tve9frfUFsAWo2F81FeT4Aq959gsONV4RJQ8fUMGm7SaFSNYcMmwa9FrTAx1EonXl4CraCP4nUaqK8L0wBd5e1mz/lR7HmTXvvwQSTnWbjDvy+VUvp2dM8gkwkAm7WoBFndDpO5bjpgb6L6Bpd2xhQnI0X1ElVw2hvjWFI+6Lywf6Vk2XLcKCbQZFu2B3ZDi9vzdjvJ77ESIcHzmnZyiZu5dJb5Lg4XXBdG717y6rabjpf9+V9P4UWkoMZcw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AbtLoEbGtLhERU9BLTHlxrkb3Mi4oouOO16p1uT7Ugc=;
- b=SSMJ1w8Llsv9Q7IxM5U41ZJgLIbPiYDKGlYgz8RsfgiRIIdkWIkamRHixgpAq83+T2E0uZHw6kQhHmdnDnfg4ksQsiEq97UuHMaNi5odUD9lxmmhyPeXQoepTH2UGjxcKlEVaIqybla7VoDro8e8EpLiis/NMGwAL5qsYd7X41EAjlYOpvS7LiBFGGCSf0QQbrvibedQjVi8+AO81AmEKR9Ou16wDqC3TbGe3fhSjsUcZRzGm6IBRzAttpbKKQscbMdnwuMmBkNEHnSw15i7JZvBjsMjFsxQPhzqYB/YFk38I3Bm4VbyPHaKNeUlTr4iFMfxA6aZzpvRHPmr6pPMkQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
- dkim=pass header.d=cherry.de; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AbtLoEbGtLhERU9BLTHlxrkb3Mi4oouOO16p1uT7Ugc=;
- b=khxXIuZC9pmgWRLBDhIWfgRZgAdRbmiqSKVOZpzh92cwhnQY9/ueK0bBqgfgVXWc1vb55ZoKXsHo8cjtLgoVpr5fKmmBIhYP6/dv5R9Qq83vaqwK3RN1nBUq6qc8HJhmAF0Z6KfMwcyDkooeW+fev+0vNVTfByyMtVSGuW4/ofQ=
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=cherry.de;
-Received: from PA3PR04MB11153.eurprd04.prod.outlook.com (2603:10a6:102:4ab::7)
- by DU2PR04MB9194.eurprd04.prod.outlook.com (2603:10a6:10:2f9::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.12; Mon, 2 Nov
- 2026 15:35:15 +0000
-Received: from PA3PR04MB11153.eurprd04.prod.outlook.com
- ([fe80::6b02:c0eb:95a4:3c3d]) by PA3PR04MB11153.eurprd04.prod.outlook.com
- ([fe80::6b02:c0eb:95a4:3c3d%5]) with mapi id 15.21.0569.011; Mon, 2 Nov 2026
- 15:35:15 +0000
-Message-ID: <13b86d7c-6efb-4871-bbb6-620699622a55@cherry.de>
-Date: Mon, 2 Nov 2026 16:35:13 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [docs] [PATCH v2] ref-manual/faq: Add entry about github pull
- requests
-To: richard.purdie@linuxfoundation.org, docs@lists.yoctoproject.org
-References: <20261102152932.846754-1-richard.purdie@linuxfoundation.org>
-Content-Language: en-US
-From: Quentin Schulz <quentin.schulz@cherry.de>
-In-Reply-To: <20261102152932.846754-1-richard.purdie@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: VI5PEPF00000932.AUTP296.PROD.OUTLOOK.COM
- (2603:10a6:808:1::82c) To PA3PR04MB11153.eurprd04.prod.outlook.com
- (2603:10a6:102:4ab::7)
-Return-Path: quentin.schulz@cherry.de
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=1p/AcweW;
+ spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 75B5FC8F46F;
+	Wed,  4 Nov 2026 10:57:56 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 812E160770;
+	Wed,  4 Nov 2026 10:56:51 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8C518103291FC;
+	Wed,  4 Nov 2026 11:56:50 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1793789810; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=g3xNLidjnblnJYyQQHA3rg26g4CcFhSrCT9Kx91iUcE=;
+	b=1p/AcweW5rkaxDYj8of+w7W3lErFBj4UzEkF5Y5/zaMVG4cVn7IXwlnXpvXSUb6mQ8g4sD
+	Uc5SHRtAxCp1B211dGmiFNHu/3UEnpfrNWwZAm9LrCrstchy2JZQyi5ebGdcbobXfkzwEi
+	sNXkcsX3hG1ZlgqdcpvHhr/TyPbGkQsQmJqmfqWIHi5whfjFVP5xXJdkfBXf5XGYf7L/nE
+	yf3QXXlV3fsR+Btn3/dMURWGpju343m0A8qxxImoYch+J9UgEYWfCxoh1/Faj6qUKMISmg
+	TY6HMPigrxINLDtEeLvdTZm5nJgtyIyZQOwfOXmcYq0dRS/tgdgZvsguGB2GmA==
+From: Antonin Godard <antonin.godard@bootlin.com>
+Date: Wed, 04 Nov 2026 11:56:39 +0100
+Subject: [PATCH 2/2] doc: xref occurrences of datastore to the new term
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA3PR04MB11153:EE_|DU2PR04MB9194:EE_
-X-MS-Office365-Filtering-Correlation-Id: 97da9043-b394-439b-0851-08df38f6e408
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|23010399003|366016|10067099003|18002099003|22082099003|56012099006|11063799006|261026121527099003|261022105027099003|261026140227099003|261028144727099003|261021123027099003;
-X-Microsoft-Antispam-Message-Info: DuRuQM7Pq21hrlA9r5WW1uobXxl5vTTl2Z99xS61WHBGIF6GlzycUEXvRJ9KAn2CqPXFRTHp5yvtnNUt+pT4533S+6C8Vv4WoLAoGSK8+DsI0TaFX9vW4d71DKiAc4OzF7SV6JvshCfvBceg1PYQ2MVfEGnMpklW34QCh+skrLSMPpUukIworwTzlKlGrkJjJzy86Xo9PIt9eLi5jyHIdwYLjRExNh5UXZaNUu+5dkLpxRWQ20jBUlnMwGJTWWXVPDdKv0FGVS9YcDImJTOe4v40ZxSgHeT1QsLBueyLbdFxS0nn+C4QtKxFb9LPwjFFcqihp2hbksWiUmBSXcSyY21mUS6mNmxwSo+4IzaSO6J83GkUwiiRZP2kmEIIIidWMRIEVqIH0BmisMHeEE7hpd11pRJYiuXLbi6yAeSldBxS1GxNzNRjJ/1qaScrhmDLWfqz/R8S1M25qaas+Me3dAN61mhhGcVp/0bxpwKt4CLfzhhlP8rKHTTsLrKOF11u1ocnZ8g9tp8wkbhJirE32FSLm/WvId/ZzfTJjztzpKKGO9ktebuZPYEQ5gatCF/oc90xvZg+U8Okh2mg53gzSRCwlUlWLcPPKuLwpxSLbJUYWOTvqzWHvdyLQya1J/EVbgLCXfdD32C7/OQ0BOE5N4WkeCMGYiDqimgo+9Ou9z4=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA3PR04MB11153.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(23010399003)(366016)(10067099003)(18002099003)(22082099003)(56012099006)(11063799006)(261026121527099003)(261022105027099003)(261026140227099003)(261028144727099003)(261021123027099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?dFZuQVVZZnR6c0x2ZDNaWkxVMkpLQXZNdXRpRS9vM2ZuanZiZmxaaWt3b2p2?=
- =?utf-8?B?RFpBRk5SS1M1bHNIdWZYb1VjaVF3eU9QUFZmUE81N3UrS3FJbm9ncTBzdEJq?=
- =?utf-8?B?ZXZXODREV2NqT05SOW1oYjNjUFFBZERzcTJESXc3Y2d3UGx6YmxBVGw2NHZN?=
- =?utf-8?B?S1J6bUpIZVF0d2pDQVhjTlpIVjZCaTBlSGlSVjVNcFlZenZFNXY2ajc3c1ZG?=
- =?utf-8?B?YzltVFNIQXZRcXF0UnNJKzM4UlFaK0VGbytuWDEyNHVlYjk3N0pCR29xOVE0?=
- =?utf-8?B?NzF4R0VFR0RlVlVHdUNIMDFqT3VUcHMyay9PMGZiUURUanpzTngrcEc3NkJy?=
- =?utf-8?B?amkzeG1kL3E4YUJlQldUYncxWEl2SXJ4dVZMWUc1YThVZWVLZzBLdDFEZU8v?=
- =?utf-8?B?dnhTT3A4Z3FzS3pKQW5RYzUwK3I5Z2J5bmVRWXNIK2g4eWoxaTBidFBWRUZ3?=
- =?utf-8?B?VHpneDBLSWFBdjJZNmZiQVdjdGF2ajJjd25rVytXbk8wNitsQnVtSHI5QXpi?=
- =?utf-8?B?RDBRSkFSV3JoTWgzMUlCYUNnQ21pcDlVUWpoOHhacXZLMFUxN0Z6Z0tNb3Uv?=
- =?utf-8?B?MHE5QWJHejJFNlAxb3RvT2t2dlRoSVZQRk53RDlmTXlNbDFIdU50anMwZEFI?=
- =?utf-8?B?UUQ0ZS9FWTBZaVNpanVMTmlEa1V4RTZnNUhjd2doL0tKMmxxV3prbWduUDBQ?=
- =?utf-8?B?dUswWWtPbVRmRnd0WXRwMkpaZlgra3h3L0xnUjR2MTl2aGIvdk02NUpmTmRr?=
- =?utf-8?B?aGVhUjVYZ05zaVVVSEhVTkhlS3FzVnNoVlB6ejJlYUZzMkxYbHhTVjVhcStV?=
- =?utf-8?B?N3NGTXdtVWVoek91TXJuT2V5eC9ScUxsU1gwSTNEdU5pTVVwemUxZVdhbCtC?=
- =?utf-8?B?ZEh4QVVjblhZZWliQzlIVGNicGI3a0hocCtoMjRRRHk4WEh0WGVXcHpyMlB6?=
- =?utf-8?B?elhyUUxFTERJZHdNS3ZXNStZK0k5ZTh4ZHNmNk5LMXo3aWZncGRhWFVqcjJo?=
- =?utf-8?B?MVZtZ0ZKSEJMaW4vb3Y1MXNKbi82YldkajM2ODlKNUxNeTF5Q1lSUGRXWEN6?=
- =?utf-8?B?d0s4S1luaFJsNEQwVDJxTW1rYjBvVnBROS9pSUVrS0tXNUcwVzRrVmdKVUlD?=
- =?utf-8?B?andGa3hNbVVRWUd1cmhNbGdieWlFbFVVN0lPaCthQy9DSHpLaGR0VXFXQTVt?=
- =?utf-8?B?cXd3MFVXY3VhUEM3ajNqOVhZZTBVWTFnL1M5RmVJMDg4eGZ5K2lIQ1BxTnkv?=
- =?utf-8?B?eUVMTjVaUFQwZ3J4YW95RG5lTXR3d2JxOWtjeDFaZVhLOTFLUFJOVHBXUEx3?=
- =?utf-8?B?SXNVYVFHaExlckREQUhTVFlpeG1zZE5URXNXSDhtWkFBVmRkb1dqcGZ2dU1t?=
- =?utf-8?B?RmpLT2l0bDlFWW9kVUJyWVJWazRjNmRlYWtHSkIzSHpCTFY5Zm54dkhZN1Rt?=
- =?utf-8?B?b3VBQVAwTUs2cTY3Vi9FcitaM2VndlkzQ3JheGtsOGJ3WmJPbTVrWnEraFN3?=
- =?utf-8?B?cldOWGk4a3pMTnROcmtSWTh6d0FRcVZ1N1Y5RHFOYXdMcW83SzZjS2FQTmg3?=
- =?utf-8?B?YzcrMWY2aGxqVzFMbjJUV053V09vZ1ZzK2FzcTF1V2JhanRCODVSaTlYSDU4?=
- =?utf-8?B?aW5GNWR3UTlJY3lSdUlXcTdrM0xKcnhwb2pOUUFFaVFFZlNxQmlSd0NtWjJW?=
- =?utf-8?B?cXBBQjB5bFl1RmJua1IwWHZvM1JPbFZXWDYrNjRJT3FPUGUwUm9DMWthQW5l?=
- =?utf-8?B?REcwUTEyc1lMcmFhaEU5alJlUEtQUDdmUFRmeURyRDdXblliOFppWTdwS1Rz?=
- =?utf-8?B?NTJLS25ld0FQd0p5ZVc5aVQrQmhpZENDMkQ4YUkyanlRckp1M3JYOGNzVGNP?=
- =?utf-8?B?ZkdOQmdWblBJaW0yS0FZOUhvRnhUWFcveDM4dDNRVEFUTERXSXVwbS9Tak9y?=
- =?utf-8?B?cnY2S1pOa0FBZ01qTUswUVdVaWNncHBnUEJIUTgwNUhicmN1WjRvYVhDTExL?=
- =?utf-8?B?cmNaYkRZMmpROHZTVGZ0OUk2K1VGZlRQRlp0VS9uYjFINjQ3Z2xJR3FlMW5a?=
- =?utf-8?B?b0w2b2xkMUZLN1Y0V290eDhwRkZYUUplaHZ1cHJzUkVZUmlzMVJYUEpuMlBG?=
- =?utf-8?B?S1Z3aUI2elJNTXVTcVJnMlgyQUYvZ0c3UUM4QTY0MVpPa0dTd3Z4VDhuUW5h?=
- =?utf-8?B?T3FZdm5zdm9hV1FtN1E3cENHRnVrS0ZaL1ZSTTkyNmZneGp3NUhjUlRpaEJP?=
- =?utf-8?B?ZjdBOHJXL1Y3WWdxVjZxSHVOOUNGYU1Xam9pOW1LUXRpVEtZWGFtWHZ3RFRy?=
- =?utf-8?B?b1FlRDBIaXl2UUFubDJKWnQyRFpweUc0RzVDMk1jRThsdHJ1NnNYZz09?=
-X-OriginatorOrg: cherry.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: 97da9043-b394-439b-0851-08df38f6e408
-X-MS-Exchange-CrossTenant-AuthSource: PA3PR04MB11153.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Nov 2026 15:35:15.0505
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ERDJ90eYX2LxXQ7/C+iRuC3dSprO6qSUs00TUMMdv4ntaHgvcUMBh91sa+63VUIwsmy9oAtLnberaRwyn2MKbNka5VSvD4IzN9LrC5o6Aqs=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB9194
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261104-terms-doc-v1-2-0ded0b9e1623@bootlin.com>
+References: <20261104-terms-doc-v1-0-0ded0b9e1623@bootlin.com>
+In-Reply-To: <20261104-terms-doc-v1-0-0ded0b9e1623@bootlin.com>
+To: bitbake-devel@lists.openembedded.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ docs@lists.yoctoproject.org, Antonin Godard <antonin.godard@bootlin.com>
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=13425;
+ i=antonin.godard@bootlin.com; h=from:subject:message-id;
+ bh=GLQ8LJtTQYqjah4W1lIZMgvgP8nD+u9xkItY1FGxxkU=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBq6w9nvmuJkNr32VyElQ9Ppv7oxC16C2ILrAEkH
+ f3OnRRQiNuJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCausPZwAKCRDRgEFAKaOo
+ NhqmD/9JrYE9FiaNxIn0CFV3NrTMXU2ciNXNhjNNzLXunsWqSH2mEJQ8WQyt+U+AfO6gxl5kdv8
+ UUHyZT/ogkUJUy8vi5Yqc4/g5Bs7YmJ/dY6zvYuFck8KOHsSHxomDWbtyYpsHIXGsrLbl+z8b8R
+ LpwWdSSHQWEnB0rvBnOFsjcllWhQenS8seDsuweAnPB7M9uObQEFHP4po1hCTe+rcgMvTKFUrXo
+ y/V2+O0cDcXxWpGO6+x6o+J4xz4zpMHZKNw3lXCEzEKcJPvX2fsQUa1nnISwaYAGHjqfVFHkkWo
+ kpw4uAqd/Bwvk79lZfRMw9Ug9kwpyDLNFz9X+cppkdELUtTnDcaoJ0LfFibjnNheJMN8SUvgtei
+ aUcTLMY90XsNv5xZBNMctXhUk/DmHADsDz7wDpVA/wVZr36YoHZUlNu6e+FJ4+fi7h+82OmU1ia
+ 4Ur2etNI0/gPEjVP/rg7CSh4MFsoj0RyBpVqQtqiaNOhtlLaSolG3aX13RGHSdiCz0UQMuvDJzR
+ ueF0VKhuFYJu0aO4h+bZ7Jmo1f+xSZ2FXQg9mqJIi/la/AMKEiSGDaI4l3iIixN8R4pPAU06wpX
+ iEqn6kTkA/7J+ug8Zc2HT9gP3ezLBcXRUu38xYtQf9Cx1qcIm6JeOEBrCIhkfWuFZDqLTasTeBL
+ +tq0QsGBWq7F9lg==
+X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
+ fpr=8648725188DD401BB9A0D3FFD180414029A3A836
+X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
-X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by lin-tor-korg-lkml-alma10-1 with HTTPS for <docs@lists.yoctoproject.org>; Mon, 02 Nov 2026 15:35:22 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10765
+X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by lin-tor-korg-lkml-alma10-1 with HTTPS for <docs@lists.yoctoproject.org>; Wed, 04 Nov 2026 10:56:57 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10768
 
-Hi Richard,
+The previous commit added a term to define the datastore, which is
+used in many places of the documentation. Cross-reference to this new
+term in the documentation.
 
-On 11/2/26 4:29 PM, Richard Purdie via docs wrote:
-> This is an emotive topic but try and fairly document some of the pros and cons
-> of such a model and where they make sense along with why the project has made
-> the decisions it currently has.
-> 
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+---
+ .../bitbake-user-manual-execution.rst              |  2 +-
+ .../bitbake-user-manual-metadata.rst               | 50 +++++++++++-----------
+ .../bitbake-user-manual-ref-variables.rst          | 18 ++++----
+ 3 files changed, 35 insertions(+), 35 deletions(-)
 
-Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
+diff --git a/doc/bitbake-user-manual/bitbake-user-manual-execution.rst b/doc/bitbake-user-manual/bitbake-user-manual-execution.rst
+index 1638a8f5cc0..95f040e446c 100644
+--- a/doc/bitbake-user-manual/bitbake-user-manual-execution.rst
++++ b/doc/bitbake-user-manual/bitbake-user-manual-execution.rst
+@@ -191,7 +191,7 @@ supports wildcards. An example would be::
+ 
+ BitBake parses each
+ recipe and append file located with :term:`BBFILES` and stores the values of
+-various variables into the datastore.
++various variables into the :term:`datastore`.
+ 
+ .. note::
+ 
+diff --git a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst b/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
+index 621aab2535a..27711b2c849 100644
+--- a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
++++ b/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
+@@ -633,7 +633,7 @@ variable.
+ 
+    Internally, this is implemented by prepending the task (e.g.
+    "task-compile:") to the value of
+-   :term:`OVERRIDES` for the local datastore of the
++   :term:`OVERRIDES` for the local :term:`datastore` of the
+    ``do_compile`` task.
+ 
+    You can also use this syntax with other combinations (e.g.
+@@ -654,7 +654,7 @@ variable.
+ Key Expansion
+ -------------
+ 
+-Key expansion happens when the BitBake datastore is finalized. To better
++Key expansion happens when the BitBake :term:`datastore` is finalized. To better
+ understand this, consider the following example::
+ 
+    A${B} = "X"
+@@ -1295,7 +1295,7 @@ An example BitBake function is::
+ 
+ Because the
+ Python "bb" and "os" modules are already imported, you do not need to
+-import these modules. Also in these types of functions, the datastore
++import these modules. Also in these types of functions, the :term:`datastore`
+ ("d") is a global variable and is always automatically available.
+ 
+ .. note::
+@@ -1355,7 +1355,7 @@ Here are some things to know about Python functions:
+ 
+ -  Python functions can take parameters.
+ 
+--  The BitBake datastore is not automatically available. Consequently,
++-  The BitBake :term:`datastore` is not automatically available. Consequently,
+    you must pass it in as a parameter to the function.
+ 
+ -  The "bb" and "os" Python modules are automatically available. You do
+@@ -1684,20 +1684,20 @@ Consequently, if you do want something to get passed into the build task
+ environment, you must take these two steps:
+ 
+ #. Tell BitBake to load what you want from the environment into the
+-   datastore. You can do so through the
++   :term:`datastore`. You can do so through the
+    :term:`BB_ENV_PASSTHROUGH` and
+    :term:`BB_ENV_PASSTHROUGH_ADDITIONS` variables. For
+    example, assume you want to prevent the build system from accessing
+    your ``$HOME/.ccache`` directory. The following command adds the
+    the environment variable ``CCACHE_DIR`` to BitBake's passthrough
+-   list to allow that variable into the datastore::
++   list to allow that variable into the :term:`datastore`::
+ 
+       export BB_ENV_PASSTHROUGH_ADDITIONS="$BB_ENV_PASSTHROUGH_ADDITIONS CCACHE_DIR"
+ 
+-#. Tell BitBake to export what you have loaded into the datastore to the
++#. Tell BitBake to export what you have loaded into the :term:`datastore` to the
+    task environment of every running task. Loading something from the
+-   environment into the datastore (previous step) only makes it
+-   available in the datastore. To export it to the task environment of
++   environment into the :term:`datastore` (previous step) only makes it
++   available in the :term:`datastore`. To export it to the task environment of
+    every running task, use a command similar to the following in your
+    local configuration file ``local.conf`` or your distribution
+    configuration file::
+@@ -1716,9 +1716,9 @@ Sometimes, it is useful to be able to obtain information from the
+ original execution environment. BitBake saves a copy of the original
+ environment into a special variable named :term:`BB_ORIGENV`.
+ 
+-The :term:`BB_ORIGENV` variable returns a datastore object that can be
+-queried using the standard datastore operators such as
+-``getVar(, False)``. The datastore object is useful, for example, to
++The :term:`BB_ORIGENV` variable returns a :term:`datastore` object that can be
++queried using the standard :term:`datastore` operators such as
++``getVar(, False)``. The :term:`datastore` object is useful, for example, to
+ find the original ``DISPLAY`` variable. Here is an example::
+ 
+    origenv = d.getVar("BB_ORIGENV", False)
+@@ -1731,7 +1731,7 @@ Variable Flags
+ ==============
+ 
+ Variable flags (varflags) help control a task's functionality and
+-dependencies. BitBake reads and writes varflags to the datastore using
++dependencies. BitBake reads and writes varflags to the :term:`datastore` using
+ the following command forms::
+ 
+    variable = d.getVarFlags("variable")
+@@ -1915,17 +1915,17 @@ set so that the handler only sees the "BuildStarted" and
+ event matching the eventmask is triggered. A global variable "e" is
+ defined, which represents the current event. With the ``getName(e)``
+ method, you can get the name of the triggered event. The global
+-datastore is available as "d". In legacy code, you might see "e.data"
+-used to get the datastore. However, realize that "e.data" is deprecated
++:term:`datastore` is available as "d". In legacy code, you might see "e.data"
++used to get the :term:`datastore`. However, realize that "e.data" is deprecated
+ and you should use "d" going forward.
+ 
+-The context of the datastore is appropriate to the event in question.
++The context of the :term:`datastore` is appropriate to the event in question.
+ For example, "BuildStarted" and "BuildCompleted" events run before any
+-tasks are executed so would be in the global configuration datastore
++tasks are executed so would be in the global configuration :term:`datastore`
+ namespace. No recipe-specific metadata exists in that namespace. The
+ "BuildStarted" and "BuildCompleted" events also run in the main
+ cooker/server process rather than any worker context. Thus, any changes
+-made to the datastore would be seen by other cooker/server events within
++made to the :term:`datastore` would be seen by other cooker/server events within
+ the current build but not seen outside of that build or in any worker
+ context. Task events run in the actual tasks in question consequently
+ have recipe-specific and task-specific contents. These events run in the
+@@ -1939,9 +1939,9 @@ might have an interest in viewing:
+    consists of ``bitbake.conf``, ``base.bbclass`` and any global
+    :term:`INHERIT` statements; has been parsed. You can see multiple such
+    events when each of the workers parse the base configuration or if
+-   the server changes configuration and reparses. Any given datastore
++   the server changes configuration and reparses. Any given :term:`datastore`
+    only has one such event executed against it, however. If
+-   :term:`BB_INVALIDCONF` is set in the datastore by the event
++   :term:`BB_INVALIDCONF` is set in the :term:`datastore` by the event
+    handler, the configuration is reparsed and a new event triggered,
+    allowing the metadata to update configuration.
+ 
+@@ -2183,8 +2183,8 @@ mentions where to find others.
+ Functions for Accessing Datastore Variables
+ -------------------------------------------
+ 
+-It is often necessary to access variables in the BitBake datastore using
+-Python functions. The BitBake datastore has an API that allows you this
++It is often necessary to access variables in the BitBake :term:`datastore` using
++Python functions. The BitBake :term:`datastore` has an API that allows you this
+ access. Here is a list of available operations:
+ 
+ .. list-table::
+@@ -2205,7 +2205,7 @@ access. Here is a list of available operations:
+      - Adds "value" to the start of the variable "X". Acts like
+        ``d.setVar("X","value")`` if the variable "X" does not exist.
+    * - ``d.delVar("X")``
+-     - Deletes the variable "X" from the datastore. Does nothing if the variable
++     - Deletes the variable "X" from the :term:`datastore`. Does nothing if the variable
+        "X" does not exist.
+    * - ``d.renameVar("X", "Y")``
+      - Renames the variable "X" to "Y". Does nothing if the variable "X" does
+@@ -2223,7 +2223,7 @@ access. Here is a list of available operations:
+      - Prepends "value" to the named flag on the variable "X". Acts like
+        ``d.setVarFlag("X", flag, "value")`` if the named flag does not exist.
+    * - ``d.delVarFlag("X", flag)``
+-     - Deletes the named flag on the variable "X" from the datastore.
++     - Deletes the named flag on the variable "X" from the :term:`datastore`.
+    * - ``d.setVarFlags("X", flagsdict)``
+      - Sets the flags specified in the ``flagsdict()``
+        parameter. ``setVarFlags`` does not clear previous flags. Think of this
+@@ -2268,7 +2268,7 @@ Testing and Debugging BitBake Python code
+ -----------------------------------------
+ 
+ The OpenEmbedded build system implements a convenient ``pydevshell`` target which
+-you can use to access the BitBake datastore and experiment with your own Python
++you can use to access the BitBake :term:`datastore` and experiment with your own Python
+ code. See :yocto_docs:`Using a Python Development Shell
+ </dev-manual/python-development-shell.html#using-a-python-development-shell>` in the Yocto
+ Project manual for details.
+diff --git a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
+index fd75275bb41..0e889ea330e 100644
+--- a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
++++ b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
+@@ -294,7 +294,7 @@ overview of their function and contents.
+ 
+    :term:`BB_ENV_PASSTHROUGH`
+       Specifies the internal list of variables to allow through from
+-      the external environment into BitBake's datastore. If the value of
++      the external environment into BitBake's :term:`datastore`. If the value of
+       this variable is not specified (which is the default), the following
+       list is used: :term:`BBPATH`, :term:`BB_PRESERVE_ENV`, and
+       :term:`BB_ENV_PASSTHROUGH_ADDITIONS`.
+@@ -306,7 +306,7 @@ overview of their function and contents.
+ 
+    :term:`BB_ENV_PASSTHROUGH_ADDITIONS`
+       Specifies an additional set of variables to allow through from the
+-      external environment into BitBake's datastore. This list of variables
++      external environment into BitBake's :term:`datastore`. This list of variables
+       are on top of the internal list set in
+       :term:`BB_ENV_PASSTHROUGH`.
+ 
+@@ -458,7 +458,7 @@ overview of their function and contents.
+       which is used to determine if the cache can be reused.
+ 
+       One of the ways BitBake determines whether to re-parse the main
+-      metadata is through checksums of the variables in the datastore of
++      metadata is through checksums of the variables in the :term:`datastore` of
+       the base configuration data. There are variables that you typically
+       want to exclude when checking whether or not to re-parse and thus
+       rebuild the cache. As an example, you would usually exclude ``TIME``
+@@ -594,16 +594,16 @@ overview of their function and contents.
+       Contains a copy of the original external environment in which BitBake
+       was run. The copy is taken before any variable values configured to
+       pass through from the external environment are filtered into BitBake's
+-      datastore.
++      :term:`datastore`.
+ 
+       .. note::
+ 
+-         The contents of this variable is a datastore object that can be
+-         queried using the normal datastore operations.
++         The contents of this variable is a :term:`datastore` object that can be
++         queried using the normal :term:`datastore` operations.
+ 
+    :term:`BB_PRESERVE_ENV`
+       Disables environment filtering and instead allows all variables through
+-      from the external environment into BitBake's datastore.
++      from the external environment into BitBake's :term:`datastore`.
+ 
+       .. note::
+ 
+@@ -780,8 +780,8 @@ overview of their function and contents.
+ 
+    :term:`BB_SIGNATURE_EXCLUDE_FLAGS`
+       Lists variable flags (varflags) that can be safely excluded from
+-      checksum and dependency data for keys in the datastore. When
+-      generating checksum or dependency data for keys in the datastore, the
++      checksum and dependency data for keys in the :term:`datastore`. When
++      generating checksum or dependency data for keys in the :term:`datastore`, the
+       flags set against that key are normally included in the checksum.
+ 
+       For more information on varflags, see the
 
-Thanks!
-Quentin
+-- 
+2.55.0
+
