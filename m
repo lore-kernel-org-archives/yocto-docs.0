@@ -1,104 +1,97 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.5155.1794036884477825417
+Received: from mo4-p00-ob.smtp.rzone.de (mo4-p00-ob.smtp.rzone.de [81.169.146.217])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.12169.1794070907045017176
  for <docs@lists.yoctoproject.org>;
- Fri, 06 Nov 2026 23:34:44 -0800
+ Sat, 07 Nov 2026 09:01:47 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20260707 header.b=ypDsmgGX;
- spf=pass (domain: gmail.com, ip: 209.85.128.48, mailfrom: saeednourian82@gmail.com)
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4a549cd7fd2so2460935e9.0
-        for <docs@lists.yoctoproject.org>; Fri, 06 Nov 2026 23:34:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794036883; x=1794641683; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Rl/NILLfH6Flc7QJPsmShcvdGrmhGcZKpeBKB4uuF5w=;
-        b=ypDsmgGXBcoF61pv36EEIwYLUxUvI6DDtcWJh9L0l2XVcCOw8YgHdI98+DkkEjlhGN
-         gvT5s/EiRm8THYlxTuXiPUcpUVX2piAJI1RPTUI3ZvTcCiZEyDZH+IUUAs4PUdVNhufi
-         RSuz7Uir9XMw3e3OFSxBboTvYo0Ftto0NLyKoH9kaViz3jxtXyP7cQxZHN5bf1aBqJll
-         BxJW/567BL5EXAUytRZeViYseScPnS7KorBXNn3jGT7lTdFSndioGve3iE+VK8m6ipRQ
-         xxTSAkc7OxCPBxRKaqIDIvZ1/8KfmDixidaG63a61tBG0bxsIhwTjU2rGiKzvfMzbY9d
-         z2Ag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794036883; x=1794641683;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Rl/NILLfH6Flc7QJPsmShcvdGrmhGcZKpeBKB4uuF5w=;
-        b=mHU7ymuqat96ahFem2ZYxSF8lrFU+T6NblWrlQCIYAjnEA9WRMdXWfWHEZa0TH8UDN
-         0G5P7vm2JHjMGwQkUChU4U5uRvNBsPqpr1p5la93BYu00DIKtjGhEJwPVDSeV7FJSgmo
-         QeoUaHvP5WQ3Nf2NRt7FnXolr3D7aS2j24Kd30IdefxNprdU1D3WvP2MiDAMIS+Qu2t/
-         ZTRd3BLMJDzgj/v8y1x+UC4H0sZFSqMR314vGCqKBtW3ZX758VlxH4wuVc13VOOm1ZR7
-         Dxt1cb6q9j4dbX0GvVAXqsTZg6jMEfYHuCd8Xfnxy3ge1vHBZe53MVJLsp3EIOS9DeP/
-         sM1g==
-X-Gm-Message-State: APuU4Z/5SI879Oi+yy1Vq/t7Ydj0juHeLYwiSaxiXwLqIDNit0/uAIeg
-	kXSiLHRTTgxJHRFL/2qx2yxq/sQwCGK8E16x11lhl9baYT6uHqZrXBuBOhaBUBgYcBf9Qz0bhW0
-	=
-X-Gm-Gg: AYBFou3LknrVmbdLweWezyAgB8dHVdcD3FuZ1krlW/YwHOiAbFnyNyNK3t2fjX/vken
-	Kqv6ZVAh1Ln94XOXjjS9HspD+Z9SzVHfLlnWm4CgqdYmdjiLhHfPjt+a+KHjclMnYdYagat5e7/
-	EO08a0flFJ0TS7/scFraanxqp4zJOGF/UVusIClWCo2ydyemo3mocMzF43e+K/6R7mzayDFXFrZ
-	HrpJ9bNmBuKfwrNX4rsR7wcVaF9N9HL4+ZMwQ1Ttblw5hX7a5hIc+piJQKRjXOFa88CLdniphSS
-	UdEyl1RY9icBR+iBk4FrGjGxPWwt4ZzEW3GphpdIRrq1vCtDP5W7MHU5U5nSzCPQIN/2LCDEsjd
-	p6Zz+1Mv/0qMKl3pimymvHMKKwoKsDt1fdgairo5RiycouYL68YI4Y0y2zd51U5U/kTBmxCAGz9
-	uifrC/PteOFVNUnmU5kJGcxRugRSecW+xuFROpsOCUIvHovzW/7f1votJKcjn0Zjq7r9/KLbdGg
-	NqTaQi9weJ3/ztuNAzAa0PI1CF2RpFHVQ1uk8QDR7Fy2LhoEzkZ5SXJinafnxK5rtde1+wGUDfi
-	feyeLqg1F793CNpi88jCBaKSSiK+hSLY41jvXhuvjIEG/9v/8TNzfjMVkxSSpivApkOnioDTmA=
-	=
-X-Received: by 2002:a05:600c:8b08:b0:4a1:c6f5:2450 with SMTP id 5b1f17b1804b1-4b82056738emr20823615e9.17.1794036882610;
-        Fri, 06 Nov 2026 23:34:42 -0800 (PST)
-Return-Path: <saeednourian82@gmail.com>
-Received: from saeedvft-ubuntu.. ([46.100.16.26])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b7da62edb4sm56975595e9.1.2026.11.06.23.34.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Nov 2026 23:34:42 -0800 (PST)
-From: Saeed Nourian <saeednourian82@gmail.com>
+ dkim=pass header.i=@awto.se header.s=strato-dkim-0002 header.b=YZsVsSXp;
+ dkim=pass header.i=@awto.se header.s=strato-dkim-0003 header.b=K1znwbU0;
+ spf=pass (domain: awto.se, ip: 81.169.146.217, mailfrom: erik@awto.se)
+ARC-Seal: i=1; a=rsa-sha256; t=1794070904; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=qszx8jCE54KCqVp9MQHYiDAO+ksrf1H+wKHuyJFZGxX4i5d3+eFm0g5BkCujwHqa0f
+    adQ/Y3S8IX8+8BrfXq0ZSxELKb7vwY1/8+m0qdchBi69FkbRAEY4JSmaM9VEUUzO+s8X
+    QALaY6eymZEv72++uB3jXEaYiWDpq2MOx/U5+2j47m0J2Rlx8/KlCjbdlC1lpGqH/bkj
+    v+TFxiiDbzM7PdFpupKjoVlLggSzfm5Y9slw3b23YVhokAC/dLJDJVJ21K3qSDU6nuz7
+    yVpAptBv76aes01ekhN2jBkQedd+hHBT4hmX6qgW2CpW9NsFG4EgXu1iQlKjbi/mnA3I
+    /ZeA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1794070904;
+    s=strato-dkim-0002; d=strato.com;
+    h=Message-ID:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=qODVaqNnLN6F7DkodJYzwSf2jaW2fCz8HQzPFK1a0+M=;
+    b=divokAsi4GvrWGK86VnkrVgmnsQvhhwwabndE32u9gfik1wQXVfiC+tUURb9BTYwjx
+    phQ2mS11JTpYDFisg+LNIOxqiIwIN/Z6QIcRYKoF5pNj6FHlOyvNOQS6YzBy+nr52u6X
+    qCnZLZ3dMhyyCHSZff119rEYoTMzuhVimY+CXpQFt/0oQ46al2ZuzssR5fc5dvKa4C8E
+    ev6ZEgCrNGaA8zlV8XACpKWIhdvWi51QUoWUVPaNd+9kTc3kw1BLOjx2DjrgXG/n1XqL
+    ed9E0W1Fh+0rBE7h+2vATFGqRKL8W+2meKhYxbuCBjBJJyNoxZXpXTO605oZLFvZOCCL
+    ZeyQ==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo00
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1794070904;
+    s=strato-dkim-0002; d=awto.se;
+    h=Message-ID:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=qODVaqNnLN6F7DkodJYzwSf2jaW2fCz8HQzPFK1a0+M=;
+    b=YZsVsSXpigSvd8cYoRtZXmbxLvHiTPSTHZuAFvnkJMdOtcaJUZReZt8FMRsj7kXXLL
+    4YvzVEiLNerdz+eqqOPL2RPSmfBp02dQ1x5eLFesuXnVvQ6qN+LDo1uTJ82eYNMSPPv6
+    JYgVKyMWCwRIlMR3VKevUHjyeMaUpyK1jS5y4pkxMCvRcbaBYtnSc4YDKj+t6j0sEVrL
+    JvE0xzINjvIKbKpjJuTMZFKlbTSDthipn7IgLAPg6cI2XP6kjoMzSgsHs4iE2EAYOHLM
+    niRzHze4R5dnbnpFVKrCxDrJ3/zusHIb3yfr5UQeCWdruH3nzZXMXtQ2UssEvahkqijg
+    1oDg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1794070904;
+    s=strato-dkim-0003; d=awto.se;
+    h=Message-ID:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=qODVaqNnLN6F7DkodJYzwSf2jaW2fCz8HQzPFK1a0+M=;
+    b=K1znwbU0hGAsU/0nIEEnHSg1Sa2rxxB8NU6LrKey50q2YKEkW+nuLYdTCqHBD54XB7
+    QrBVmldfhJR3cB4o/dCg==
+X-RZG-AUTH: ":KX4NfmCpbOtr2h56gDJdGbPh106htHVWsoECWG/Ym0sGLwlH95NuGYZh"
+Received: from erik-desktop.tailfdfae0.ts.net
+    by smtp.strato.de (RZmta 55.6.3 AUTH)
+    with ESMTPSA id Qa186c2A7H1iIVh
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Sat, 7 Nov 2026 18:01:44 +0100 (CET)
+From: Erik Lindsten <erik@awto.se>
 To: docs@lists.yoctoproject.org
-Cc: Saeed Nourian <saeednourian82@gmail.com>
-Subject: [PATCH] docs-wide: remove trailing whitespace
-Date: Sat,  7 Nov 2026 11:04:37 +0330
-Message-ID: <20261107073437.1570845-1-saeednourian82@gmail.com>
-X-Mailer: git-send-email 2.43.0
+Cc: Erik Lindsten <erik@awto.se>
+Subject: [PATCH 1/2] kernel-dev/maint-appx.rst: fix the kernel cache repository name
+Date: Sat,  7 Nov 2026 18:01:34 +0100
+Message-ID: <20261107170135.84816-1-erik@awto.se>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
 List-Id: <docs.lists.yoctoproject.org>
-X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by lin-tor-korg-lkml-alma10-1 with HTTPS for <docs@lists.yoctoproject.org>; Sat, 07 Nov 2026 07:34:52 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10776
-Content-Type: text/plain; charset="utf-8"
+X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by lin-tor-korg-lkml-alma10-1 with HTTPS for <docs@lists.yoctoproject.org>; Sat, 07 Nov 2026 17:01:50 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10777
 
-Remove the trailing whitespace reported by "make sphinx-lint" in
-bsp-manual/bsp.rst and dev-manual/layers.rst.
-
-Signed-off-by: Saeed Nourian <saeednourian82@gmail.com>
+Signed-off-by: Erik Lindsten <erik@awto.se>
 ---
- documentation/bsp-manual/bsp.rst    | 2 +-
- documentation/dev-manual/layers.rst | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ documentation/kernel-dev/maint-appx.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/documentation/bsp-manual/bsp.rst b/documentation/bsp-manual/bsp.rst
-index 93af13f78..9d9e19f3d 100644
---- a/documentation/bsp-manual/bsp.rst
-+++ b/documentation/bsp-manual/bsp.rst
-@@ -233,7 +233,7 @@ section.
-    .. note::
+diff --git a/documentation/kernel-dev/maint-appx.rst b/documentation/kernel-dev/maint-appx.rst
+index 48deec4..36ce77e 100644
+--- a/documentation/kernel-dev/maint-appx.rst
++++ b/documentation/kernel-dev/maint-appx.rst
+@@ -31,7 +31,7 @@ kernel that branches off ``linux.org`` version 4.12 and the
+ ``yocto-kernel-cache``, which contains stores of kernel Metadata::
  
-       Alternatively, you can source the ``init-build-env`` file provided by
--      :doc:`bitbake-setup <bitbake:bitbake-user-manual/bitbake-user-manual-environment-setup>` 
-+      :doc:`bitbake-setup <bitbake:bitbake-user-manual/bitbake-user-manual-environment-setup>`
+    $ git clone https://git.yoctoproject.org/linux-yocto-4.12
+-   $ git clone https://git.yoctoproject.org/linux-kernel-cache
++   $ git clone https://git.yoctoproject.org/yocto-kernel-cache
  
- Example Filesystem Layout
- =========================
-diff --git a/documentation/dev-manual/layers.rst b/documentation/dev-manual/layers.rst
-index 5c8bf32b4..5da222693 100644
---- a/documentation/dev-manual/layers.rst
-+++ b/documentation/dev-manual/layers.rst
-@@ -131,7 +131,7 @@ Follow these general steps to create your layer without using tools:
-          compatible with. For example: "&DISTRO_NAME_NO_CAP;".
+ For more information on
+ how to set up a local Git repository of the Yocto Project Linux kernel
+@@ -52,7 +52,7 @@ the "yocto-4.12" branch of the ``yocto-kernel-cache`` repository::
  
-          This variable is a good way to indicate if a particular layer is
--         current. 
-+         current.
+    $ cd ~/linux-yocto-4.12
+    $ git checkout -b my-kernel-4.12 remotes/origin/standard/beagleboard
+-   $ cd ~/linux-kernel-cache
++   $ cd ~/yocto-kernel-cache
+    $ git checkout -b my-4.12-metadata remotes/origin/yocto-4.12
  
-    -  A ``recipes-example`` subdirectory that itself contains a
-       subdirectory named ``example``, which contains an ``example.bb``
+ .. note::
 -- 
-2.43.0
+2.53.0
 
