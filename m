@@ -1,35 +1,35 @@
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.10230.1795074980146463890
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.10022.1795074980604966395
  for <docs@lists.yoctoproject.org>;
- Wed, 18 Nov 2026 23:56:20 -0800
+ Wed, 18 Nov 2026 23:56:21 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=Zc7/+SV9;
+ dkim=fail reason="dkim: body hash did not verify" header.i=@bootlin.com header.s=dkim header.b=Tj2RLSxJ;
  spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 505E41A1700
-	for <docs@lists.yoctoproject.org>; Thu, 19 Nov 2026 07:56:18 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 037FF1A1701
+	for <docs@lists.yoctoproject.org>; Thu, 19 Nov 2026 07:56:19 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 2773C60237;
+	by smtpout-01.galae.net (Postfix) with ESMTPS id C587160237;
 	Thu, 19 Nov 2026 07:56:18 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5D9BA11BC0F83;
-	Thu, 19 Nov 2026 08:56:13 +0100 (CET)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E205F11BC0F93;
+	Thu, 19 Nov 2026 08:56:17 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1795074973; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1795074978; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=qRTkDshlKkxUehvQkISZwLRYovQYX984jQgsJUMfW1E=;
-	b=Zc7/+SV9eETfH32pdJifm0Q+OBcBCCoZj5Y22IzqIvxF3y/HwBd35DtoNxY83yFRqGQqTh
-	rC1brTPbVDtjnpkXDUsKqgRx8dEyZp+Q3PDFJgySEwiQkraSX1iOeTcqXG1dM3Oy9zXnYv
-	8Su4MRoU7Aq0Toaka2poD4vJwEK5FOeRV2dnisfsutHhsdXRQsYxnVuluIauxQL9qC2yFN
-	RWhK8bJpj4g6dTLtg3fJWe6oj3XlkipuJMnTzeNVYuxIErqv8+wJLDdTLwiyNgxciWiAq1
-	RV5ZMu4ZwEM8w+F6wjKFy4ff4iEaB5efkZfQ23pROts5z9oKFyUmAkbSZFdlqw==
+	bh=4cLNhF1g7IeIte9q6p1+bGV7AoTD04r2c/UIGs0mbJU=;
+	b=Tj2RLSxJQSu++tKdkxGblexmVa0rvIb1bbnad2zMo7jfGxiq8Hpa0br9Gjw8kzaBMpNdnn
+	54+g8WWsOfUDyl9aEK9eDsaOytfybA7gn0sQjSeKRboHssFiJt9wzmuY3TDDmOIYTA2QJS
+	l5lmzBFRbK+EsqfI1lpR+zHaSPq23FC24J9l7+BtFW1fZDLpYvZ5lYBJax+Z1OiDVwsFPN
+	ptg+Cu+Jvwg2LmGFEgRlH1ulDFwxxBO+HZXyYYr2IaNCFweSzWs/346/sD4vJzH+vD4AJD
+	A6CO107L+b9wv9w/sCByiNS3xGPclU7pRQyB/TA+sL43UNdJj5s3WWIOlbMrng==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Thu, 19 Nov 2026 08:55:53 +0100
-Subject: [PATCH 1/4] tools/gen-releases-svg: use subprocess check_call
- instead of run
+Date: Thu, 19 Nov 2026 08:55:54 +0100
+Subject: [PATCH 2/4] tools/gen-releases-svg: start showing releases from
+ oldest active one
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261119-gen-releases-svg-fixes-v1-1-b6245fbf8294@bootlin.com>
+Message-Id: <20261119-gen-releases-svg-fixes-v1-2-b6245fbf8294@bootlin.com>
 References: <20261119-gen-releases-svg-fixes-v1-0-b6245fbf8294@bootlin.com>
 In-Reply-To: <20261119-gen-releases-svg-fixes-v1-0-b6245fbf8294@bootlin.com>
 To: docs@lists.yoctoproject.org
@@ -37,49 +37,101 @@ Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
  Antonin Godard <antonin.godard@bootlin.com>, 
  Quentin Schulz <quentin.schulz@cherry.de>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=959;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=27372;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=IESlDn89ySEdXW9701njtXwthuLOX6jv0KzeB4GF2X4=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBq/quMiksOhmav3b8N9bY9rETa9eCQ8boQ4Mj+Y
- WEtF3kW2daJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCav6rjAAKCRDRgEFAKaOo
- NrQLEADDk/sHtVvqLdXqQvdfMvMoK6uZbgkVR/nZ7AW2j4KB4T6TinXansbwe7ec5N63GtkOhj7
- CKVWYwNLIh+jTzqBtIYGd4qqlOHdtpZduHC+xw8Rhh2ZyIUnA60DKwP3rt38mNqsdb5x1X9JkZR
- J0wJVIdmANKwOuvRfodcaQXaNjLdD/GIt69td4j5rjGC4y4vR9vMEQJvDqaGoUpQ9se0exOoWdL
- Hzn5I4ql0O8N4CpfAzc8x4ne+1nzYpRnHDaVbwdF7w6peUs6ZWsGDmhhymzaA9SxWvrtuYBRsuw
- hQJYIFxyC0J9AZGSjInqF539OOXRhORPe9xw7TrQrytdfht1RrHQ50W9w2OVJKmqRFctq7wdVbu
- 6/kvse0Mk+gkisI+UCqhl9TGOCWHk0jQFtll9PlUrJoMuB8wbzfzPWYcnR/DFoUnoxFUG5Y2QiO
- dmF8tOWBwwiITF8m4FFwAhnq6M5AGZzly5hHBSaTAH9TnN+4upyh/83UGUnd0q8OoVrmfB53cSn
- e6r9LxAmuaGiHWgxGcI/Tvj4iaQJDOiQySzLU9Ttl8/Wo0XpwIJyhbSURb1IWbq1zUfSgV02bRi
- Iz1R0HIjC6x5ULyJ2THg2yD3e6a+fd5gBjd3T3BecDZeIaGSTZ9Le1H6/wu1a7heWh6aJJwRKoN
- fDTVhdk6n1QMF9Q==
+ bh=a2Y9JHmtxPoAs+n3jC4PX6nh7wn5CambZCGcilvL130=;
+ b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBq/quNw8ELWY2TqBXpkx4vnJP6hzI7BBaaVXHRJ
+ EFavd40c4aJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCav6rjQAKCRDRgEFAKaOo
+ NrmtEAC7VVV7LxGVn5THQ9IYz+SdbKDn11kZdctpSHsJFMClQnwU7wuORPu0fCHIOwimlGaQcb1
+ CaTz8qt/M/jJWAUR4whoRD93wQeydr+zSSMXOLPlt68H8Mm8FsHPRNIRYQuAhJjVOfYHRFJ4hRC
+ WDuNg3KuGiN1MAsyPCq0KBSVHLLnUVG4wBfCVCTPiFJO1pgU7cP2mN4yDDkiV4DQRuM/9kF9+0o
+ bg6jSBYOZLg6sD0vVcUwRGGeEQiQrsiR154dsq5o35Yu6MNUvwpBVdAcXU/uII2P18sZ8uDQSRG
+ IcDPJGSND9Wq7ARyXyvL5r881KTULRp30i3AFmmkNtG+7DHjd9RqE9ryIfvzQpEZjj5wgzmzyMU
+ vb0/druNjTjCvPB69LVEWmZq2beJSdc84nqIk2nmYpFpLk6YIvvN5mbTrlsKsnOCe3Zjff7d4KF
+ qt7RNG9K2bsdimrWrGli8NrsMFkKPR1HevAMJj190FFIbWk6vtNz4bvp+XalraNPZxZOXLAEPa/
+ WqBA29Jh/y6Je0dmbp+Yp7rHBFWU5KOwv6LOW8zeFNajRafqoPVAXlJLxWVp6gqoUM7YavvjmQL
+ D1Q65jqFsieuwdFjDhQx2+azOrIpSrP87b1Wi8heZjIWEXq5W0pJJKeYO1VABpdCiYmBl0XJcX9
+ W0x+sUqueAthmMQ==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by lin-tor-korg-lkml-alma10-1 with HTTPS for <docs@lists.yoctoproject.org>; Thu, 19 Nov 2026 07:56:29 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10795
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10796
 
-We don't use the result of the command, so use check_call instead.
+Instead of a fixed date (2022-04-01, which represented the Kirkstone
+release date), show the releases from the oldest active one.
 
 Suggested-by: Quentin Schulz <quentin.schulz@cherry.de>
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/tools/gen-releases-svg | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ documentation/ref-manual/svg/releases.svg |  2 +-
+ documentation/tools/gen-releases-svg      | 12 +++++++++++-
+ 2 files changed, 12 insertions(+), 2 deletions(-)
 
+diff --git a/documentation/ref-manual/svg/releases.svg b/documentation/ref-manual/svg/releases.svg
+index 386491997..c4a7b611f 100644
+--- a/documentation/ref-manual/svg/releases.svg
++++ b/documentation/ref-manual/svg/releases.svg
+@@ -1 +1 @@
+-<svg id="my-svg" width="1600" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1600 364" height="364" role="graphics-document document" aria-roledescription="gantt" style="background-color: white;"><style>#my-svg{font-family:"Nimbus Sans",Helvetica,Arial,sans-serif;font-size:16px;fill:#333;}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#my-svg .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#my-svg .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#my-svg .error-icon{fill:#552222;}#my-svg .error-text{fill:#552222;stroke:#552222;}#my-svg .edge-thickness-normal{stroke-width:1px;}#my-svg .edge-thickness-thick{stroke-width:3.5px;}#my-svg .edge-pattern-solid{stroke-dasharray:0;}#my-svg .edge-thickness-invisible{stroke-width:0;fill:n
+ one;}#my-svg .edge-pattern-dashed{stroke-dasharray:3;}#my-svg .edge-pattern-dotted{stroke-dasharray:2;}#my-svg .marker{fill:#333333;stroke:#333333;}#my-svg .marker.cross{stroke:#333333;}#my-svg svg{font-family:"Nimbus Sans",Helvetica,Arial,sans-serif;font-size:16px;}#my-svg p{margin:0;}#my-svg .mermaid-main-font{font-family:"Nimbus Sans",Helvetica,Arial,sans-serif;}#my-svg .exclude-range{fill:#eeeeee;}#my-svg .section{stroke:none;opacity:0.2;}#my-svg .section0{fill:#eff6f9;}#my-svg .section2{fill:#eff6f9;}#my-svg .section1,#my-svg .section3{fill:white;opacity:0.2;}#my-svg .sectionTitle0{fill:#333;}#my-svg .sectionTitle1{fill:#333;}#my-svg .sectionTitle2{fill:#333;}#my-svg .sectionTitle3{fill:#333;}#my-svg .sectionTitle{text-anchor:start;font-family:"Nimbus Sans",Helvetica,Arial,sans-serif;}#my-svg .grid .tick{stroke:lightgrey;opacity:0.8;shape-rendering:crispEdges;}#my-svg .grid .tick text{font-family:"Nimbus Sans",Helvetica,Arial,sans-serif;fill:#333;}#my-svg .grid path{stroke-widt
+ h:0;}#my-svg .today{fill:none;stroke:red;stroke-width:2px;}#my-svg .task{stroke-width:2;}#my-svg .taskText{text-anchor:middle;font-family:"Nimbus Sans",Helvetica,Arial,sans-serif;}#my-svg .taskTextOutsideRight{fill:black;text-anchor:start;font-family:"Nimbus Sans",Helvetica,Arial,sans-serif;}#my-svg .taskTextOutsideLeft{fill:black;text-anchor:end;}#my-svg .task.clickable{cursor:pointer;}#my-svg .taskText.clickable{cursor:pointer;fill:#003163!important;font-weight:bold;}#my-svg .taskTextOutsideLeft.clickable{cursor:pointer;fill:#003163!important;font-weight:bold;}#my-svg .taskTextOutsideRight.clickable{cursor:pointer;fill:#003163!important;font-weight:bold;}#my-svg .taskText0,#my-svg .taskText1,#my-svg .taskText2,#my-svg .taskText3{fill:white;}#my-svg .task0,#my-svg .task1,#my-svg .task2,#my-svg .task3{fill:#8a90dd;stroke:#534fbc;}#my-svg .taskTextOutside0,#my-svg .taskTextOutside2{fill:black;}#my-svg .taskTextOutside1,#my-svg .taskTextOutside3{fill:black;}#my-svg .active0,#my-svg .a
+ ctive1,#my-svg .active2,#my-svg .active3{fill:#edf5f9;stroke:#00557d;}#my-svg .activeText0,#my-svg .activeText1,#my-svg .activeText2,#my-svg .activeText3{fill:black!important;}#my-svg .done0,#my-svg .done1,#my-svg .done2,#my-svg .done3{stroke:grey;fill:lightgrey;stroke-width:2;}#my-svg .doneText0,#my-svg .doneText1,#my-svg .doneText2,#my-svg .doneText3{fill:black!important;}#my-svg .doneText0.taskTextOutsideLeft,#my-svg .doneText0.taskTextOutsideRight,#my-svg .doneText1.taskTextOutsideLeft,#my-svg .doneText1.taskTextOutsideRight,#my-svg .doneText2.taskTextOutsideLeft,#my-svg .doneText2.taskTextOutsideRight,#my-svg .doneText3.taskTextOutsideLeft,#my-svg .doneText3.taskTextOutsideRight{fill:black!important;}#my-svg .crit0,#my-svg .crit1,#my-svg .crit2,#my-svg .crit3{stroke:#ff8888;fill:red;stroke-width:2;}#my-svg .activeCrit0,#my-svg .activeCrit1,#my-svg .activeCrit2,#my-svg .activeCrit3{stroke:#ff8888;fill:#edf5f9;stroke-width:2;}#my-svg .doneCrit0,#my-svg .doneCrit1,#my-svg .doneCri
+ t2,#my-svg .doneCrit3{stroke:#ff8888;fill:lightgrey;stroke-width:2;cursor:pointer;shape-rendering:crispEdges;}#my-svg .milestone{transform:rotate(45deg) scale(0.8,0.8);}#my-svg .milestoneText{font-style:italic;}#my-svg .doneCritText0,#my-svg .doneCritText1,#my-svg .doneCritText2,#my-svg .doneCritText3{fill:black!important;}#my-svg .doneCritText0.taskTextOutsideLeft,#my-svg .doneCritText0.taskTextOutsideRight,#my-svg .doneCritText1.taskTextOutsideLeft,#my-svg .doneCritText1.taskTextOutsideRight,#my-svg .doneCritText2.taskTextOutsideLeft,#my-svg .doneCritText2.taskTextOutsideRight,#my-svg .doneCritText3.taskTextOutsideLeft,#my-svg .doneCritText3.taskTextOutsideRight{fill:black!important;}#my-svg .vert{stroke:navy;}#my-svg .vertText{font-size:15px;text-anchor:middle;fill:navy!important;}#my-svg .activeCritText0,#my-svg .activeCritText1,#my-svg .activeCritText2,#my-svg .activeCritText3{fill:black!important;}#my-svg .titleText{text-anchor:middle;font-size:18px;fill:#333;font-family:"Nimb
+ us Sans",Helvetica,Arial,sans-serif;}#my-svg .node .neo-node{stroke:#9370DB;}#my-svg [data-look="neo"].node rect,#my-svg [data-look="neo"].cluster rect,#my-svg [data-look="neo"].node polygon{stroke:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#my-svg [data-look="neo"].swimlane.cluster rect{filter:none;}#my-svg [data-look="neo"].node path{stroke:#9370DB;stroke-width:1px;}#my-svg [data-look="neo"].node .outer-path{filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#my-svg [data-look="neo"].node .neo-line path{stroke:#9370DB;filter:none;}#my-svg [data-look="neo"].node circle{stroke:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#my-svg [data-look="neo"].node circle .state-start{fill:#000000;}#my-svg [data-look="neo"].icon-shape .icon{fill:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#my-svg [data-look="neo"].icon-shape .icon-neo path{stroke:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#my-svg :root{--mermaid
+ -font-family:"Nimbus Sans",Helvetica,Arial,sans-serif;}</style><g/><g class="grid" transform="translate(5, 314)" fill="none" font-size="10" font-family="sans-serif" text-anchor="middle"><path class="domain" stroke="currentColor" d="M0.5,-279V0.5H1520.5V-279"/><g class="tick" opacity="1" transform="translate(41.5,0)"><line stroke="currentColor" y2="-279"/><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">Jul 2022</text></g><g class="tick" opacity="1" transform="translate(136.5,0)"><line stroke="currentColor" y2="-279"/><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">Jan 2023</text></g><g class="tick" opacity="1" transform="translate(230.5,0)"><line stroke="currentColor" y2="-279"/><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">Jul 2023</text></g><g class="tick" opacity="1" transform="translate(326.5,0)"><line stroke="currentColor" y2="-279"/><text fill="#000
+ " y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">Jan 2024</text></g><g class="tick" opacity="1" transform="translate(420.5,0)"><line stroke="currentColor" y2="-279"/><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">Jul 2024</text></g><g class="tick" opacity="1" transform="translate(516.5,0)"><line stroke="currentColor" y2="-279"/><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">Jan 2025</text></g><g class="tick" opacity="1" transform="translate(610.5,0)"><line stroke="currentColor" y2="-279"/><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">Jul 2025</text></g><g class="tick" opacity="1" transform="translate(705.5,0)"><line stroke="currentColor" y2="-279"/><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">Jan 2026</text></g><g class="tick" opacity="1" transform="translate(799.5,0)"><line stroke
+ ="currentColor" y2="-279"/><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">Jul 2026</text></g><g class="tick" opacity="1" transform="translate(894.5,0)"><line stroke="currentColor" y2="-279"/><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">Jan 2027</text></g><g class="tick" opacity="1" transform="translate(988.5,0)"><line stroke="currentColor" y2="-279"/><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">Jul 2027</text></g><g class="tick" opacity="1" transform="translate(1084.5,0)"><line stroke="currentColor" y2="-279"/><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">Jan 2028</text></g><g class="tick" opacity="1" transform="translate(1178.5,0)"><line stroke="currentColor" y2="-279"/><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">Jul 2028</text></g><g class="tick" opacity="1
+ " transform="translate(1274.5,0)"><line stroke="currentColor" y2="-279"/><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">Jan 2029</text></g><g class="tick" opacity="1" transform="translate(1367.5,0)"><line stroke="currentColor" y2="-279"/><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">Jul 2029</text></g><g class="tick" opacity="1" transform="translate(1463.5,0)"><line stroke="currentColor" y2="-279"/><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">Jan 2030</text></g></g><g><rect x="0" y="288" width="1562.5" height="24" class="section section0"/><rect x="0" y="264" width="1562.5" height="24" class="section section0"/><rect x="0" y="240" width="1562.5" height="24" class="section section0"/><rect x="0" y="216" width="1562.5" height="24" class="section section0"/><rect x="0" y="192" width="1562.5" height="24" class="section section0"/><rect x="0" y="168" widt
+ h="1562.5" height="24" class="section section0"/><rect x="0" y="144" width="1562.5" height="24" class="section section0"/><rect x="0" y="120" width="1562.5" height="24" class="section section0"/><rect x="0" y="96" width="1562.5" height="24" class="section section0"/><rect x="0" y="72" width="1562.5" height="24" class="section section0"/><rect x="0" y="48" width="1562.5" height="24" class="section section0"/></g><g><rect id="my-svg-task10" rx="3" ry="3" x="5" y="290" width="752" height="20" transform-origin="381px 300px" class="task done0"/><rect id="my-svg-task9" rx="3" ry="3" x="96" y="266" width="83" height="20" transform-origin="137.5px 276px" class="task done0"/><rect id="my-svg-task8" rx="3" ry="3" x="199" y="242" width="100" height="20" transform-origin="249px 252px" class="task done0"/><rect id="my-svg-task7" rx="3" ry="3" x="286" y="218" width="88" height="20" transform-origin="330px 228px" class="task done0"/><rect id="my-svg-task6" rx="3" ry="3" x="385" y="194" width="758"
+  height="20" transform-origin="764px 204px" class="task active0"/><rect id="my-svg-task5" rx="3" ry="3" x="458" y="170" width="96" height="20" transform-origin="506px 180px" class="task done0"/><rect id="my-svg-task4" rx="3" ry="3" x="579" y="146" width="73" height="20" transform-origin="615.5px 156px" class="task done0"/><rect id="my-svg-task3" rx="3" ry="3" x="691" y="122" width="76" height="20" transform-origin="729px 132px" class="task done0"/><rect id="my-svg-task2" rx="3" ry="3" x="767" y="98" width="758" height="20" transform-origin="1146px 108px" class="task active0"/><rect id="my-svg-current_rel" rx="3" ry="3" x="846" y="74" width="94" height="20" transform-origin="893px 84px" class="task active0"/><rect id="my-svg-task1" rx="3" ry="3" x="940" y="50" width="96" height="20" transform-origin="988px 60px" class="task done0"/><text id="my-svg-task10-text" font-size="11" x="381" y="303.5" class="taskText taskText0  doneText0 width-63.90835952758789">Kirkstone 4.0 </text><text id
+ ="my-svg-task9-text" font-size="11" x="137.5" y="279.5" class="taskText taskText0  doneText0 width-63.424964904785156">Langdale 4.1 </text><text id="my-svg-task8-text" font-size="11" x="249" y="255.5" class="taskText taskText0  doneText0 width-71.3675537109375">Mickledore 4.2 </text><text id="my-svg-task7-text" font-size="11" x="330" y="231.5" class="taskText taskText0  doneText0 width-61.49518966674805">Nanbield 4.3 </text><text id="my-svg-task6-text" font-size="11" x="764" y="207.5" class="taskText taskText0 activeText0 width-97.95535278320312">Scarthgap 5.0 (LTS) </text><text id="my-svg-task5-text" font-size="11" x="506" y="183.5" class="taskText taskText0  doneText0 width-58.609928131103516">Styhead 5.1 </text><text id="my-svg-task4-text" font-size="11" x="615.5" y="159.5" class="taskText taskText0  doneText0 width-69.80254364013672">Walnascar 5.2 </text><text id="my-svg-task3-text" font-size="11" x="729" y="135.5" class="taskText taskText0  doneText0 width-67.6050796508789">Whi
+ nlatter 5.3 </text><text id="my-svg-task2-text" font-size="11" x="1146" y="111.5" class="taskText taskText0 activeText0 width-90.92364501953125">Wrynose 6.0 (LTS) </text><text id="my-svg-current_rel-text" font-size="11" x="893" y="87.5" class="taskText taskText0 activeText0 width-61.607357025146484">Blacksail 6.1 </text><text id="my-svg-task1-text" font-size="11" x="988" y="63.5" class="taskText taskText0  doneText0 width-58.566490173339844">Garburn 6.2 </text></g><g><text dy="0em" x="10" y="182" font-size="11" class="sectionTitle sectionTitle0"><tspan alignment-baseline="central" x="10"/></text></g><text x="800" y="25" class="titleText"/></svg>
+\ No newline at end of file
++<svg id="my-svg" width="1600" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1600 268" height="268" role="graphics-document document" aria-roledescription="gantt" style="background-color: white;"><style>#my-svg{font-family:"Nimbus Sans",Helvetica,Arial,sans-serif;font-size:16px;fill:#333;}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#my-svg .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#my-svg .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#my-svg .error-icon{fill:#552222;}#my-svg .error-text{fill:#552222;stroke:#552222;}#my-svg .edge-thickness-normal{stroke-width:1px;}#my-svg .edge-thickness-thick{stroke-width:3.5px;}#my-svg .edge-pattern-solid{stroke-dasharray:0;}#my-svg .edge-thickness-invisible{stroke-width:0;fill:n
+ one;}#my-svg .edge-pattern-dashed{stroke-dasharray:3;}#my-svg .edge-pattern-dotted{stroke-dasharray:2;}#my-svg .marker{fill:#333333;stroke:#333333;}#my-svg .marker.cross{stroke:#333333;}#my-svg svg{font-family:"Nimbus Sans",Helvetica,Arial,sans-serif;font-size:16px;}#my-svg p{margin:0;}#my-svg .mermaid-main-font{font-family:"Nimbus Sans",Helvetica,Arial,sans-serif;}#my-svg .exclude-range{fill:#eeeeee;}#my-svg .section{stroke:none;opacity:0.2;}#my-svg .section0{fill:#eff6f9;}#my-svg .section2{fill:#eff6f9;}#my-svg .section1,#my-svg .section3{fill:white;opacity:0.2;}#my-svg .sectionTitle0{fill:#333;}#my-svg .sectionTitle1{fill:#333;}#my-svg .sectionTitle2{fill:#333;}#my-svg .sectionTitle3{fill:#333;}#my-svg .sectionTitle{text-anchor:start;font-family:"Nimbus Sans",Helvetica,Arial,sans-serif;}#my-svg .grid .tick{stroke:lightgrey;opacity:0.8;shape-rendering:crispEdges;}#my-svg .grid .tick text{font-family:"Nimbus Sans",Helvetica,Arial,sans-serif;fill:#333;}#my-svg .grid path{stroke-widt
+ h:0;}#my-svg .today{fill:none;stroke:red;stroke-width:2px;}#my-svg .task{stroke-width:2;}#my-svg .taskText{text-anchor:middle;font-family:"Nimbus Sans",Helvetica,Arial,sans-serif;}#my-svg .taskTextOutsideRight{fill:black;text-anchor:start;font-family:"Nimbus Sans",Helvetica,Arial,sans-serif;}#my-svg .taskTextOutsideLeft{fill:black;text-anchor:end;}#my-svg .task.clickable{cursor:pointer;}#my-svg .taskText.clickable{cursor:pointer;fill:#003163!important;font-weight:bold;}#my-svg .taskTextOutsideLeft.clickable{cursor:pointer;fill:#003163!important;font-weight:bold;}#my-svg .taskTextOutsideRight.clickable{cursor:pointer;fill:#003163!important;font-weight:bold;}#my-svg .taskText0,#my-svg .taskText1,#my-svg .taskText2,#my-svg .taskText3{fill:white;}#my-svg .task0,#my-svg .task1,#my-svg .task2,#my-svg .task3{fill:#8a90dd;stroke:#534fbc;}#my-svg .taskTextOutside0,#my-svg .taskTextOutside2{fill:black;}#my-svg .taskTextOutside1,#my-svg .taskTextOutside3{fill:black;}#my-svg .active0,#my-svg .a
+ ctive1,#my-svg .active2,#my-svg .active3{fill:#edf5f9;stroke:#00557d;}#my-svg .activeText0,#my-svg .activeText1,#my-svg .activeText2,#my-svg .activeText3{fill:black!important;}#my-svg .done0,#my-svg .done1,#my-svg .done2,#my-svg .done3{stroke:grey;fill:lightgrey;stroke-width:2;}#my-svg .doneText0,#my-svg .doneText1,#my-svg .doneText2,#my-svg .doneText3{fill:black!important;}#my-svg .doneText0.taskTextOutsideLeft,#my-svg .doneText0.taskTextOutsideRight,#my-svg .doneText1.taskTextOutsideLeft,#my-svg .doneText1.taskTextOutsideRight,#my-svg .doneText2.taskTextOutsideLeft,#my-svg .doneText2.taskTextOutsideRight,#my-svg .doneText3.taskTextOutsideLeft,#my-svg .doneText3.taskTextOutsideRight{fill:black!important;}#my-svg .crit0,#my-svg .crit1,#my-svg .crit2,#my-svg .crit3{stroke:#ff8888;fill:red;stroke-width:2;}#my-svg .activeCrit0,#my-svg .activeCrit1,#my-svg .activeCrit2,#my-svg .activeCrit3{stroke:#ff8888;fill:#edf5f9;stroke-width:2;}#my-svg .doneCrit0,#my-svg .doneCrit1,#my-svg .doneCri
+ t2,#my-svg .doneCrit3{stroke:#ff8888;fill:lightgrey;stroke-width:2;cursor:pointer;shape-rendering:crispEdges;}#my-svg .milestone{transform:rotate(45deg) scale(0.8,0.8);}#my-svg .milestoneText{font-style:italic;}#my-svg .doneCritText0,#my-svg .doneCritText1,#my-svg .doneCritText2,#my-svg .doneCritText3{fill:black!important;}#my-svg .doneCritText0.taskTextOutsideLeft,#my-svg .doneCritText0.taskTextOutsideRight,#my-svg .doneCritText1.taskTextOutsideLeft,#my-svg .doneCritText1.taskTextOutsideRight,#my-svg .doneCritText2.taskTextOutsideLeft,#my-svg .doneCritText2.taskTextOutsideRight,#my-svg .doneCritText3.taskTextOutsideLeft,#my-svg .doneCritText3.taskTextOutsideRight{fill:black!important;}#my-svg .vert{stroke:navy;}#my-svg .vertText{font-size:15px;text-anchor:middle;fill:navy!important;}#my-svg .activeCritText0,#my-svg .activeCritText1,#my-svg .activeCritText2,#my-svg .activeCritText3{fill:black!important;}#my-svg .titleText{text-anchor:middle;font-size:18px;fill:#333;font-family:"Nimb
+ us Sans",Helvetica,Arial,sans-serif;}#my-svg .node .neo-node{stroke:#9370DB;}#my-svg [data-look="neo"].node rect,#my-svg [data-look="neo"].cluster rect,#my-svg [data-look="neo"].node polygon{stroke:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#my-svg [data-look="neo"].swimlane.cluster rect{filter:none;}#my-svg [data-look="neo"].node path{stroke:#9370DB;stroke-width:1px;}#my-svg [data-look="neo"].node .outer-path{filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#my-svg [data-look="neo"].node .neo-line path{stroke:#9370DB;filter:none;}#my-svg [data-look="neo"].node circle{stroke:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#my-svg [data-look="neo"].node circle .state-start{fill:#000000;}#my-svg [data-look="neo"].icon-shape .icon{fill:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#my-svg [data-look="neo"].icon-shape .icon-neo path{stroke:#9370DB;filter:drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));}#my-svg :root{--mermaid
+ -font-family:"Nimbus Sans",Helvetica,Arial,sans-serif;}</style><g/><g class="grid" transform="translate(5, 218)" fill="none" font-size="10" font-family="sans-serif" text-anchor="middle"><path class="domain" stroke="currentColor" d="M0.5,-183V0.5H1520.5V-183"/><g class="tick" opacity="1" transform="translate(53.5,0)"><line stroke="currentColor" y2="-183"/><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">Jul 2024</text></g><g class="tick" opacity="1" transform="translate(181.5,0)"><line stroke="currentColor" y2="-183"/><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">Jan 2025</text></g><g class="tick" opacity="1" transform="translate(306.5,0)"><line stroke="currentColor" y2="-183"/><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">Jul 2025</text></g><g class="tick" opacity="1" transform="translate(433.5,0)"><line stroke="currentColor" y2="-183"/><text fill="#000
+ " y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">Jan 2026</text></g><g class="tick" opacity="1" transform="translate(558.5,0)"><line stroke="currentColor" y2="-183"/><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">Jul 2026</text></g><g class="tick" opacity="1" transform="translate(686.5,0)"><line stroke="currentColor" y2="-183"/><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">Jan 2027</text></g><g class="tick" opacity="1" transform="translate(811.5,0)"><line stroke="currentColor" y2="-183"/><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">Jul 2027</text></g><g class="tick" opacity="1" transform="translate(938.5,0)"><line stroke="currentColor" y2="-183"/><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">Jan 2028</text></g><g class="tick" opacity="1" transform="translate(1064.5,0)"><line strok
+ e="currentColor" y2="-183"/><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">Jul 2028</text></g><g class="tick" opacity="1" transform="translate(1191.5,0)"><line stroke="currentColor" y2="-183"/><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">Jan 2029</text></g><g class="tick" opacity="1" transform="translate(1317.5,0)"><line stroke="currentColor" y2="-183"/><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">Jul 2029</text></g><g class="tick" opacity="1" transform="translate(1444.5,0)"><line stroke="currentColor" y2="-183"/><text fill="#000" y="3" dy="1em" stroke="none" font-size="10" style="text-anchor: middle;">Jan 2030</text></g></g><g><rect x="0" y="192" width="1562.5" height="24" class="section section0"/><rect x="0" y="168" width="1562.5" height="24" class="section section0"/><rect x="0" y="144" width="1562.5" height="24" class="section section0"/><rect 
+ x="0" y="120" width="1562.5" height="24" class="section section0"/><rect x="0" y="96" width="1562.5" height="24" class="section section0"/><rect x="0" y="72" width="1562.5" height="24" class="section section0"/><rect x="0" y="48" width="1562.5" height="24" class="section section0"/></g><g><rect id="my-svg-task6" rx="3" ry="3" x="5" y="194" width="1011" height="20" transform-origin="510.5px 204px" class="task active0"/><rect id="my-svg-task5" rx="3" ry="3" x="103" y="170" width="128" height="20" transform-origin="167px 180px" class="task done0"/><rect id="my-svg-task4" rx="3" ry="3" x="263" y="146" width="98" height="20" transform-origin="312px 156px" class="task done0"/><rect id="my-svg-task3" rx="3" ry="3" x="413" y="122" width="101" height="20" transform-origin="463.5px 132px" class="task done0"/><rect id="my-svg-task2" rx="3" ry="3" x="514" y="98" width="1011" height="20" transform-origin="1019.5px 108px" class="task active0"/><rect id="my-svg-current_rel" rx="3" ry="3" x="620" y
+ ="74" width="125" height="20" transform-origin="682.5px 84px" class="task active0"/><rect id="my-svg-task1" rx="3" ry="3" x="745" y="50" width="128" height="20" transform-origin="809px 60px" class="task done0"/><text id="my-svg-task6-text" font-size="11" x="510.5" y="207.5" class="taskText taskText0 activeText0 width-97.9605712890625">Scarthgap 5.0 (LTS) </text><text id="my-svg-task5-text" font-size="11" x="167" y="183.5" class="taskText taskText0  doneText0 width-58.613040924072266">Styhead 5.1 </text><text id="my-svg-task4-text" font-size="11" x="312" y="159.5" class="taskText taskText0  doneText0 width-69.80628204345703">Walnascar 5.2 </text><text id="my-svg-task3-text" font-size="11" x="463.5" y="135.5" class="taskText taskText0  doneText0 width-67.60867309570312">Whinlatter 5.3 </text><text id="my-svg-task2-text" font-size="11" x="1019.5" y="111.5" class="taskText taskText0 activeText0 width-90.92852020263672">Wrynose 6.0 (LTS) </text><text id="my-svg-current_rel-text" font-siz
+ e="11" x="682.5" y="87.5" class="taskText taskText0 activeText0 width-61.610660552978516">Blacksail 6.1 </text><text id="my-svg-task1-text" font-size="11" x="809" y="63.5" class="taskText taskText0  doneText0 width-58.56962966918945">Garburn 6.2 </text></g><g><text dy="0em" x="10" y="134" font-size="11" class="sectionTitle sectionTitle0"><tspan alignment-baseline="central" x="10"/></text></g><text x="800" y="25" class="titleText"/></svg>
+\ No newline at end of file
 diff --git a/documentation/tools/gen-releases-svg b/documentation/tools/gen-releases-svg
-index e091c02de..6a601b010 100755
+index 6a601b010..77281f37d 100755
 --- a/documentation/tools/gen-releases-svg
 +++ b/documentation/tools/gen-releases-svg
-@@ -89,7 +89,4 @@ with tempfile.TemporaryDirectory() as tmpdir:
-             mmd.write(f"    {codename} {series_version}{" (LTS)" if lts else ""}"
-                       f" :{status}, {original_release_date}, {end_date}\n")
+@@ -54,6 +54,16 @@ gantt
+ with open(args.releases_json_path, "r") as f:
+     releases_from_json = json.load(f)
  
--    result = subprocess.run(
--        ["mmdc", "--input", mmdpath, "--output", args.output],
--        check=True,
--    )
-+    subprocess.check_call(["mmdc", "--input", mmdpath, "--output", args.output])
++# Find the oldest active release release date to make it the start of our timeline.
++active_release_dates = []
++for release in releases_from_json:
++    if release["series"] == "previous":
++        continue
++    if not release["original_release_date"]:
++        continue
++    active_release_dates.append(datetime.datetime.strptime(release["original_release_date"], "%Y-%m-%dT%H:%M:%S%z"))
++oldest_supported_release_date = sorted(active_release_dates)[0]
++
+ with tempfile.TemporaryDirectory() as tmpdir:
+     mmdpath = Path(tmpdir) / "diagram.mmd"
+     with open(mmdpath, "w", encoding="utf-8") as mmd:
+@@ -69,7 +79,7 @@ with tempfile.TemporaryDirectory() as tmpdir:
+             if not release["original_release_date"]:
+                 continue
+             original_release_date = datetime.datetime.strptime(release["original_release_date"], "%Y-%m-%dT%H:%M:%S%z")
+-            if original_release_date < datetime.datetime(2022, 4, 1, tzinfo=datetime.timezone.utc):
++            if original_release_date < oldest_supported_release_date:
+                 continue
+             original_release_date = original_release_date.date().isoformat()
+             end_date = datetime.datetime.strptime(release["latest_release_date"], "%Y-%m-%dT%H:%M:%S%z")
 
 -- 
 2.56.0
