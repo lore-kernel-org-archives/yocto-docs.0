@@ -1,74 +1,61 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.8596.1795189320405326266
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.8594.1795189320284429719
  for <docs@lists.yoctoproject.org>;
  Fri, 20 Nov 2026 07:42:01 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=jvT0rBJX;
- spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=HfGLw8yd;
+ spf=pass (domain: bootlin.com, ip: 185.171.202.116, mailfrom: antonin.godard@bootlin.com)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 98D384E41687;
-	Fri, 20 Nov 2026 15:41:58 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id A06BDC6221F
+	for <docs@lists.yoctoproject.org>; Fri, 20 Nov 2026 15:42:03 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 69B3E603CF;
-	Fri, 20 Nov 2026 15:41:58 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 87F2511BC0404;
-	Fri, 20 Nov 2026 16:41:52 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id E031D601B9;
+	Fri, 20 Nov 2026 15:41:57 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1C22511BC03CD;
+	Fri, 20 Nov 2026 16:41:51 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
 	t=1795189313; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=+YXWYg8y1QKaNFrUmEiacF8NHgQf5JlbA9/C6QfmRJI=;
-	b=jvT0rBJXS3cAmc+iU51fPoSLQnrXFrQlPteFhMCiwQIxH2JAzvdPd8WCImhrP6rKZr1UuH
-	TNUrecjbO5DMlm664vUrRZ2ww74hgvbuk10Irn40MCUv6jGGHo0VMWCcABAGrRidukqCr7
-	FMe/oMb8YyHcR50lqu5xHPMB0o23cFqjJAU/45odD5GBmJffI+zl6zXsNLgDOE42juNc7t
-	yZ4QdR0+A8pmKychBGTILgfZ1iEg3uC8KkyDgfUEGFHCv5/nCZgbNPMat/75DSus6kbJfG
-	cb1H0fNcEQfUDbQMgkHCvwLFhk09p8BucnotFHw6vAobMwd+V+Koi0Z47OrO7A==
+	 content-transfer-encoding; bh=LjWxr6toXKSYKJ7h9FrN3980Xbf0kEl7ApplP3EZxC8=;
+	b=HfGLw8yd/gDVjzSLnKGiNYAx2s1Xm2lOXlmbjFEDv28YMxq7vSxI7r9Osl7OMYoqfHg7JW
+	mEW1B+8cDUnRL7EbLkZXmIlQJvpKqBOJw/mIxfKl1e2KSWXOrW4sAIVRraZ9RPzppV8a31
+	RlB+pmgPwPbmWwIxF1t3ZxgElDve/97aY3HSOdbSSxGWLmjZqt9ydIBz7XYZAH93QP1T/V
+	3AjMJVPzVgZCpfxV1adM6IPb5Vv8OhH88SlAP+pY3AtMVtjgkHN7z1E5Md4HmtuAR7bPk6
+	3U9gioFfk/gkOsFJ1O/MY8dTIoljjS4DWh1Fd9FbAnbiosATpyg2uQILX/pF+g==
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 20 Nov 2026 16:41:52 +0100
-Message-Id: <DN05I0X15ICV.18A9APWAILIGZ@bootlin.com>
-Subject: [blacksail] Pull request
+Date: Fri, 20 Nov 2026 16:41:50 +0100
+Message-Id: <DN05I0BWATZU.2G4GZ36391DDI@bootlin.com>
 Cc: <docs@lists.yoctoproject.org>, "Yoann Congal" <yoann.congal@smile.fr>
 From: "Antonin Godard" <antonin.godard@bootlin.com>
 To: "Paul Barker" <paul@pbarker.dev>
+Subject: [scarthgap] Pull request
 X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by lin-tor-korg-lkml-alma10-1 with HTTPS for <docs@lists.yoctoproject.org>; Fri, 20 Nov 2026 15:42:03 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10815
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10816
 
-The following changes since commit 28a708ecb3c2ce1669094f9f4c1bdcbc28438bcc=
+The following changes since commit 7a4ccf27524f102f0ba64f1bb1c39c73997b1548=
 :
 
-  governance: Add start of project history and leadership sections (2026-11=
--06 10:10:29 +0100)
+  contributor-guide: Adopt new AI-Assisted Contribution Policy (2026-11-06 =
+09:50:52 +0100)
 
 are available in the Git repository at:
 
-  git@push.yoctoproject.org:yocto-docs blacksail-next
+  git@push.yoctoproject.org:yocto-docs scarthgap-next
 
-for you to fetch changes up to 47e90081e183a871a94a048193eded1452001c58:
+for you to fetch changes up to fbefb1b1018cec911ebd026c5e3c16134e4e5335:
 
   migration-guides/release-notes-5.0.17.rst: fix the oecore download URL (2=
-026-11-20 13:21:58 +0100)
+026-11-20 13:19:07 +0100)
 
 ----------------------------------------------------------------
-Antonin Godard (3):
-      ref-manual/kickstart.rst: add a section for commands and directives
-      ref-manual/kickstart.rst: warn about the include directive only worki=
-ng for .wks
-      ref-manual/kickstart.rst: document location and variable expansion
-
 Erik Lindsten (2):
       kernel-dev/maint-appx.rst: fix the kernel cache repository name
       migration-guides/release-notes-5.0.17.rst: fix the oecore download UR=
 L
 
-Robert P. J. Day (1):
-      ref-manual: add a terms entry for Wic
-
- documentation/kernel-dev/maint-appx.rst            |   4 +-
- .../migration-guides/release-notes-5.0.17.rst      |   2 +-
- documentation/ref-manual/kickstart.rst             | 140 +++++++++++++++++=
-+++-
- documentation/ref-manual/terms.rst                 |   6 +
- documentation/ref-manual/variables.rst             |   8 ++
- 5 files changed, 153 insertions(+), 7 deletions(-)
+ documentation/kernel-dev/maint-appx.rst                 | 4 ++--
+ documentation/migration-guides/release-notes-5.0.17.rst | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
