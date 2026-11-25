@@ -1,61 +1,61 @@
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.44548.1795621545011636236
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.44549.1795621546520173603
  for <docs@lists.yoctoproject.org>;
- Wed, 25 Nov 2026 07:45:45 -0800
+ Wed, 25 Nov 2026 07:45:46 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20260707 header.b=TzK+g2qL;
- spf=pass (domain: gmail.com, ip: 209.85.218.46, mailfrom: twoerner@gmail.com)
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-c51bf011392so16211066b.3
-        for <docs@lists.yoctoproject.org>; Wed, 25 Nov 2026 07:45:44 -0800 (PST)
+ dkim=pass header.i=@gmail.com header.s=20260707 header.b=CjtGUANX;
+ spf=pass (domain: gmail.com, ip: 209.85.218.50, mailfrom: twoerner@gmail.com)
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c4cac7a7d3cso880443766b.3
+        for <docs@lists.yoctoproject.org>; Wed, 25 Nov 2026 07:45:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795621543; x=1796226343; darn=lists.yoctoproject.org;
+        d=gmail.com; s=20260707; t=1795621545; x=1796226345; darn=lists.yoctoproject.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=FEkC46lIva13+mFq2ZY5tdb5p6nmHdqLZVtuP1HBXnI=;
-        b=TzK+g2qL5/OuXPsikjN1FC3RkhY70A93N11KgLiaitG+1YU3wxtUzAHLrN3OC52Gys
-         tVgvCxAJPpkSYh687g++gCWxvYe6ebwW14wPw3+OivjbvNpNk2TGrC7nra3PJQkG+P+e
-         4cwBJdTFBoLd0NfgPkdXA7pu00WO48mkQKaMLgIT08FVxY8oU1B8+6MY1dAKLcoB/Rju
-         rbOCSFuclYR7N5k+3hEYsMwQps/9qT2ci9j+r1kIApCOcJRC4hD4QDSzSjr2e5as7+VJ
-         VNFtWCzgESzLQad4v5wD0IVnijOAEv0hwdjka743+FsLqkF0jWdMiT1azlIkMxrtr8N3
-         X9sw==
+        bh=B7gTNQxPBgSRwbFsFtNL/fYO33GHbuwt40VqaM1Layk=;
+        b=CjtGUANXMu+Nm6z1tewt7QdDPvjO4cvojYgN+x96kNwf9jcmu5z0OPp1xRq9WqjysA
+         y2V3d3ljVilZTWh3JFQrjEakKtd6fnYBVfaSp32Uph+OBbzo/XcSxhVCMs7LtDbVKZRl
+         PZPbT4mHhdlgn5DlK5pPNp4WYsvxXrd/A/p6xbJCGlbzSO5V9jgvv2L3Ph5ifQBnAiC4
+         dFTOMfjxL4X0SwIO67VgN760OLarUxUnAU4refPHHMkmPeQ/nX2GhjbDKtMl3vX6Zpvr
+         NAq/xye7Mt3yTCG65FM6cQ+MnFgBnlUb3+OiQjMWbkuwQza7whf6ctpmaRGkQg+ekN9x
+         JqKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795621543; x=1796226343;
+        d=1e100.net; s=20260707; t=1795621545; x=1796226345;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=FEkC46lIva13+mFq2ZY5tdb5p6nmHdqLZVtuP1HBXnI=;
-        b=xxBhKkCwoqwSTdHTxONkH8NUrDIkHoh6g2WVQ2EtNXbtjmEFMvCWwpQ8GaOy5TwWX1
-         jpYtmEWd/1jxN1HLI45O9tWyIkPuKbfGZfUYGnVY/xfNznbYY5tqlLv2qSFwpPhLye/l
-         NROsu1Ho7oWIHozClSMdzuDWf5Rn6ghu9aihdQmIV6BrNG89wdKMfiBQ+bevXVCYm+cX
-         BZNgeCgX5XEeaqGsOPyIEZcmf6SIHoQqT0vGbL/GHlZNCIxcIbhTlwsJXw29XaJ0OSQ/
-         tozG+46PNYCt3BEN9tbQWyrSvG08o4/qO0i4Al9+pSoD7dljEyNc9Q6qPTjavQGNXHnM
-         5Gig==
-X-Gm-Message-State: APuU4Z9mQNA/WOGcqsRdBdFnuqktscYpAPy1PSOgfuVom8i6If5WtM+d
-	wNFle13dtqMyIRP4MNjcAf8fUEhdjxrazHYP1vTvpzS7ge2XANdl9VBRv3tEdw==
-X-Gm-Gg: AZFdTZeEz2gaj09j/uc/h5W0U6pc2saIc9zt/Huwg78aRrOIAuIdXXAd8Sx/29IrJNI
-	uZO6GZgNLfI/+VMhJRB/xLYC+y12TV0kH4+3X3Pgc5R8a9kxkeddOntxbn3VYndNEgyDrl7KWw5
-	CtoB4Rm798RuwdDdU+aocP+p+rP4gj4bvWBwDrOU1Dq2q+u7Dw+eoNzqEpLrnEjEuCNLoztyFeY
-	v2w/BAvzAI0ZhTc8Fj0Ity7Zl4ZiHD1fCaPGIEduMZHkFBuFNYRrgx/yQYScc4LdhIY6jDf62QD
-	zj0M86lAxS5JB3CpFRA7TzRMl+v8+RtxDkuEgjdfjalxITn9xSJNJZvH5gIUkVMhoc8937BsqFT
-	L12ooYJBGmNXR/V4gLvB2fhGZXcu0IAzgdju6L7oY33XYGjjxtSzJ5+8elvAnvjrTJCMEeaOLk6
-	hB53Xf9odi5uUiZAyKIQEQiSXogbaX8N8SyEGDIOKV3tfFT1xilnpwwjPgFkRMOXPAQatk51NPo
-	P9ahdlil5Qhng7BY2Mt8mMrwXfsbS1I0ZG1wfxx4VdGuryJQY3PFlbNqT7auz1DcJDdZU4FKRkk
-	mZLvbhVWtS3gGtuqR6WZPT1h7vg7tchJKe9aYhsRP9WxLrDSe2nvIQ6r4U1NCuJuV6d7ncdkqUP
-	yLUc45RmJuEP+k2cmWeAQV57AZqPsLKc=
-X-Received: by 2002:a17:907:934c:b0:c51:282b:5489 with SMTP id a640c23a62f3a-c513a4aea3bmr1465627866b.3.1795621542989;
-        Wed, 25 Nov 2026 07:45:42 -0800 (PST)
+        bh=B7gTNQxPBgSRwbFsFtNL/fYO33GHbuwt40VqaM1Layk=;
+        b=NmmIL9at5BY8+blzKSucNtq40YQisdxbox8YH9hyK0wucF2/gDm4M4es+sdMUR73Jp
+         1waejm8li8XDEjwUWP+JuFxGnv3T9l4KwrSPT0maczL2gxdyjisSzZH767oZxrZIszJD
+         MR2GBffNHVHzqAmZq2Pz6TRcB5Xna/k8UnvmWBsH/hmxLF6yQTybeEZd6YmIulQd9elt
+         9QNd4ILTwEW9/MGO59kZX0OfCjJ9dzK+pKf/NCnBmwM/ffOOqyEgrcPCkvv9zwJJeniz
+         WSgeviyVDtZe9hDAhJ9Z5K/oRIzAhGzRm/E00y/nhISthmYzdE2FvLOXaCDdQHsmlNd1
+         34mg==
+X-Gm-Message-State: APuU4Z82NGLocyKIW4N8/DMpvH4UlVJu9fDraJjn60gPyelIZKCRWNi1
+	I10LzszQAq/sxMCGdm4uMaBDE6oJ/U5/GJpYVLQyY/cPb8m6E7v+3V7rz4JEkA==
+X-Gm-Gg: AZFdTZdIhj7mJI/tTXA44R0fwnoj0uWI3ZXtDQx59KRYTR7dDVNSdz0aLhT2ADjTDx9
+	L/gHDS+j2AeudSNm7FGK0nHkzTRSOrUB19VvC3jeP9BJRjU/YgSdtJQtxm2QEnWOE5j9PQdQoVl
+	qWeM5ahN+lLq9QRBYIMIp4lvRRC3ULx67VAbQ9G9bPRD7QvFlz0BNiP7jkSLza8bWypKJBDrbva
+	baNufZWzAbwFPiG5PtIZcwqfOfJerQHDpSkpzVf/zn/ZIzJyV/HdqnwZNtAIo+Nc4IBH8A7Nat3
+	0WWJnFkbPcKFta9jq1Y/750GaB4QJ9OS9L8j1XmrRx1UnFvPRiaHJ8FVC+HkeYydA2VjGk8JQkZ
+	vldjP02l4Ieoo5qvi7509V/RLGLsvJ19Dp6PgPRKw2LAgyodFSIlcarEJxsoIUwu1FKTCBu9WrX
+	z2uGEICz3AQWgu5gJ2Q5nrku9H6F/v/4ajuKfiG50pJv3D0hi2skuEOTPKs+tqUuJOSDPhw1h3/
+	NjeguWyWrCnqc76r1VzmWXF2gvUlfCb5vHNbQTPmp/SjtMWYskILSAlgeSePzEw6WOdAqHlIhO3
+	2HzKfbd78dKsCZqEui75QwHdU5e3f67zYxh9PsZmmx6Ne4B5WtetzWRs0G/Npn4mD8mck3Jd5eJ
+	NgQLl1fZfdiEezC+8pXJb60dM29pKqEo=
+X-Received: by 2002:a17:906:b854:b0:c49:cf3a:a324 with SMTP id a640c23a62f3a-c513a9b1c52mr1069649466b.22.1795621544424;
+        Wed, 25 Nov 2026 07:45:44 -0800 (PST)
 Return-Path: <twoerner@gmail.com>
 Received: from localhost.localdomain (pppoe-209-91-167-254.vianet.ca. [209.91.167.254])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c513aec5115sm651892066b.51.2026.11.25.07.45.41
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c513aec5115sm651892066b.51.2026.11.25.07.45.43
         for <docs@lists.yoctoproject.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Nov 2026 07:45:42 -0800 (PST)
+        Wed, 25 Nov 2026 07:45:43 -0800 (PST)
 From: Trevor Woerner <twoerner@gmail.com>
 To: docs@lists.yoctoproject.org
-Subject: [PATCH 2/7] sphinx: add a lexer for BitBake with placeholders
-Date: Wed, 25 Nov 2026 10:45:30 -0500
-Message-ID: <20261125154535.3486104-3-twoerner@gmail.com>
+Subject: [PATCH 3/7] sphinx: add a lexer for kernel metadata SCC files
+Date: Wed, 25 Nov 2026 10:45:31 -0500
+Message-ID: <20261125154535.3486104-4-twoerner@gmail.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20261125154535.3486104-1-twoerner@gmail.com>
 References: <20261125154535.3486104-1-twoerner@gmail.com>
@@ -63,216 +63,159 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by lin-tor-korg-lkml-alma10-1 with HTTPS for <docs@lists.yoctoproject.org>; Wed, 25 Nov 2026 15:45:54 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10837
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10838
 Content-Type: text/plain; charset="utf-8"
 
-The manuals write <like this> for a value the reader has to replace, and
-BitBake cannot express that. Inside a quoted value it renders as ordinary
-string content, indistinguishable from text to type verbatim; in a
-variable name it is not valid BitBake at all.
+The kernel manual quotes SCC description files throughout, and none of them
+can say what they are: Pygments has no lexer for the language and is
+unlikely to want one, so they render as plain text.
 
-This adds a bitbake-placeholder lexer that accepts a placeholder where
-BitBake's charsets do not and marks it wherever it appears. Everything
-else is inherited from the BitBake lexer, so a block using it still
-reports a genuine mistake.
+SCC is bash. spp rewrites a few line-oriented directives, then scc
+sources the result with one shell function declared per statement and
+PATH unset. Description files use that freedom - conditionals on KARCH
+are common in real metadata - so extend the bash lexer and mark the
+vocabulary, read from the functions the tooling declares rather than
+from the manual's reference section, which omits several.
 
 AI-Generated: codex/claude-opus 5.5 (xhigh)
 Signed-off-by: Trevor Woerner <twoerner@gmail.com>
 ---
- documentation/conf.py                         |   3 +-
- .../sphinx-static/theme_overrides.css         |  20 +++
- documentation/sphinx/bitbake-placeholder.py   | 145 ++++++++++++++++++
- 3 files changed, 167 insertions(+), 1 deletion(-)
- create mode 100644 documentation/sphinx/bitbake-placeholder.py
+ documentation/conf.py             |   3 +-
+ documentation/sphinx/scc-lexer.py | 116 ++++++++++++++++++++++++++++++
+ 2 files changed, 118 insertions(+), 1 deletion(-)
+ create mode 100644 documentation/sphinx/scc-lexer.py
 
 diff --git a/documentation/conf.py b/documentation/conf.py
-index cdd554e30c0a..95bb24002544 100644
+index 95bb24002544..210b4ab60595 100644
 --- a/documentation/conf.py
 +++ b/documentation/conf.py
-@@ -80,7 +80,8 @@ extensions = [
-     'sphinx_tags',
+@@ -81,7 +81,8 @@ extensions = [
      'sphinxcontrib.rsvgconverter',
      'yocto-vars',
--    'bitbake-lexer'
-+    'bitbake-lexer',
-+    'bitbake-placeholder'
+     'bitbake-lexer',
+-    'bitbake-placeholder'
++    'bitbake-placeholder',
++    'scc-lexer'
  ]
  
  # current_version = "dev"
-diff --git a/documentation/sphinx-static/theme_overrides.css b/documentation/sphinx-static/theme_overrides.css
-index 85f01eafbb94..2083ebb5baf4 100644
---- a/documentation/sphinx-static/theme_overrides.css
-+++ b/documentation/sphinx-static/theme_overrides.css
-@@ -252,3 +252,23 @@ a.sd-badge {
-     }
- 
- }
-+
-+/* A placeholder in a bitbake-placeholder block: something the reader is
-+   meant to replace, such as <recipe> in SRCREV:pn-<recipe>.
-+
-+   The box is the point. A placeholder usually abuts real text it is not
-+   part of - pn-<recipe>, <some.host>/<somepath> - and an outline is what
-+   shows where one ends and the other begins. Colour alone does not.
-+
-+   Italic carries the same meaning without any colour at all, so the mark
-+   survives a monochrome printout. The border is #5b8db9 rather than
-+   something paler because it has to clear 3:1 against the code block to
-+   count as a boundary: a lighter blue measured 2:1 and disappeared. */
-+.rst-content .highlight-bitbake-placeholder .ge {
-+    color: #144e8c;
-+    font-style: italic;
-+    font-weight: 600;
-+    border: 1px solid #5b8db9;
-+    border-radius: 3px;
-+    padding: 0 2px;
-+}
-diff --git a/documentation/sphinx/bitbake-placeholder.py b/documentation/sphinx/bitbake-placeholder.py
+diff --git a/documentation/sphinx/scc-lexer.py b/documentation/sphinx/scc-lexer.py
 new file mode 100644
-index 000000000000..8141ac7b5687
+index 000000000000..dd1166ca7014
 --- /dev/null
-+++ b/documentation/sphinx/bitbake-placeholder.py
-@@ -0,0 +1,145 @@
-+"""BitBake with documentation placeholders: the ``bitbake-placeholder`` dialect.
++++ b/documentation/sphinx/scc-lexer.py
+@@ -0,0 +1,116 @@
++"""Lexer for kernel metadata SCC description files.
 +
-+The manuals write ``<like this>`` for "replace this with your own value".
-+BitBake has no way to express that, so the convention behaves differently
-+depending on where it lands: inside a quoted value it is legal BitBake and
-+takes ordinary string colour, indistinguishable from a literal; in a
-+variable name it is not BitBake at all, because ``<`` is not in BitBake's
-+name charset.
++SCC describes a BSP or a kernel feature: which branch to build on, which
++patches to apply and which configuration fragments to queue. The tooling
++that reads it is ``yocto-kernel-tools``, and the shape of the language
++follows from how that tooling works rather than from how it looks. ``spp``
++rewrites a few line-oriented directives, and then ``scc`` *sources the
++result as a bash script*, having first defined one shell function per
++statement and unset ``PATH`` so nothing else can run.
 +
-+This lexer differs from plain BitBake in exactly two ways, and in no
-+others:
++So an SCC file is not a dialect of bash but bash itself, under a
++preprocessor: the ``spp`` directives have their own, non-shell semantics -
++``#define`` is a comment as far as bash is concerned - while everything
++surviving that pass is ordinary shell with a fixed vocabulary of commands.
++Real metadata relies on it, with conditionals on ``KARCH`` in particular,
++and a lexer built from the manual's statement list rejects them. This one
++extends the bash lexer and marks the vocabulary, so the shell half is
++right by construction and only the command list has to be got right.
 +
-+- it **accepts** a placeholder where BitBake's charsets do not, so
-+  ``SRCREV:pn-<recipe> = "${AUTOREV}"`` lexes as the assignment it is
-+  plainly meant to be
-+- it **marks** a placeholder wherever it appears, so a reader can tell it
-+  apart from text to be typed verbatim
-+
-+Everything else is inherited, so a block tagged ``bitbake-placeholder``
-+still fails on a genuine mistake. That is the point of a dialect rather
-+than a permissive lexer: it admits one convention, not all errors.
-+
-+``Generic.Emph`` carries the placeholder. ``Name.Placeholder`` would be
-+the obvious choice and is a trap: it has no entry in Pygments'
-+``STANDARD_TYPES``, so the HTML formatter walks up to ``Name`` and emits
-+``class="n"``, which is indistinguishable from every other name.
++That list comes from the implementation: the functions ``scc`` defines
++itself, the functions it sources from ``scc-cmds/*.cmd``, and the
++directives ``spp`` matches before any of that runs. It is wider than the
++"SCC Description File Reference" section of ``kernel-dev/advanced.rst``,
++which omits ``mark``, ``merge``, ``tag``, ``prefix``, and the flags.
 +"""
-+import importlib
++from pygments.lexer import bygroups, inherit, words
++from pygments.lexers.shell import BashLexer
++from pygments.token import Comment, Keyword, Name, Text, Whitespace
 +
-+from pygments.lexer import bygroups, inherit, this, using
-+from pygments.token import Generic, Keyword, Name, Operator, String, \
-+    Whitespace
++__version__ = '2.0'
 +
-+__version__ = '1.0'
++# Statements, as the tooling defines them. ``spp`` handles include, patch
++# and kconf itself; the rest are shell functions declared by scc and by
++# scc-cmds/*.cmd before the file is sourced.
++_COMMANDS = (
++    'branch', 'define', 'git', 'include', 'kconf', 'mark', 'merge',
++    'patch', 'prefix', 'reloc_dir', 'set_kernel_version', 'tag',
++)
 +
++# spp matches this before bash ever sees the file, so it is a directive
++# wearing a comment's clothes and needs its own rule.
++_DIRECTIVES = ('#define',)
 +
-+def _base_lexer():
-+    """The BitBake lexer this dialect extends.
++# Words that qualify a statement rather than starting one: the kconf
++# fragment classes kconf.cmd tests for, and the flags spp looks for on an
++# include line.
++_FLAGS = (
++    'as_module', 'hardware', 'non-hardware', 'nocfg', 'nopatch',
++    'optional', 'required',
++)
 +
-+    Prefer the carried one, since it is the lexer the manuals are written
-+    against, and fall back to the stock lexer if ``bitbake-lexer.py`` is
-+    absent, so this file does not depend on it.
++# spp recognises these only immediately ahead of kconf, at the margin.
++_LEADERS = ('as_module', 'force')
 +
-+    Resolving through ``get_lexer_by_name('bitbake')`` does not work here:
-+    ``app.add_lexer`` registers with Sphinx rather than with Pygments, so
-+    the lookup returns the stock lexer even when the carried one is
-+    registered.
-+    """
-+    try:
-+        return importlib.import_module('bitbake-lexer').BitBakeLexer
-+    except Exception:
-+        from pygments.lexers.bitbake import BitBakeLexer
-+        return BitBakeLexer
-+
-+
-+_PH = r'<[^<>\n]+>'
-+
-+# A variable name that may carry placeholders. Deliberately not derived
-+# from the base lexer's own pattern: this file has to work against either
-+# base, and a name is the one thing the two agree on.
-+_NCHAR = r'(?:\$\{[^{}\s]+\}|[A-Za-z0-9_\-.+/~${}])'
-+_PNAME = r':?(?:' + _NCHAR + r'|' + _PH + r')+'
-+_POVERRIDE = r'(?::(?:' + _NCHAR + r'|' + _PH + r')+)*'
-+_ASSIGN = r'(?:\?\?=|\?=|:=|\+=|=\+|\.=|=\.|=)'
-+
-+# Fire only where a placeholder is actually present in the name. Without
-+# this the dialect would accept ``PV = 1.2.3``, which no BitBake accepts:
-+# the rules below are unguarded, so anything they match bypasses the
-+# inherited rules and their checks. A dialect has to admit one convention,
-+# not all errors, and this is what holds it to that.
-+_HAS_PH = (r'(?=(?:export[ \t]+)?(?:' + _NCHAR + r'|:)*' + _PH + r')')
++# A statement sits at the margin. Reaching it reliably needs the rule
++# below that stops a run of whitespace at the end of a line.
++_MARGIN = r'^[ \t]*'
 +
 +
-+class BitBakePlaceholderLexer(_base_lexer()):
-+    """BitBake, plus the manuals' ``<replace this>`` convention."""
++class SccLexer(BashLexer):
++    """Kernel metadata SCC description files."""
 +
-+    name = 'BitBake with placeholders'
-+    aliases = ['bitbake-placeholder']
-+    filenames = []
++    name = 'SCC'
++    aliases = ['scc']
++    filenames = ['*.scc']
 +    mimetypes = []
-+    url = 'https://docs.yoctoproject.org'
++    url = 'https://docs.yoctoproject.org/kernel-dev/advanced.html'
 +
 +    tokens = {
 +        'root': [
-+            # An assignment whose name or override chain carries a
-+            # placeholder. This comes first because the inherited rules are
-+            # guarded by BitBake's own regexes, which reject such a name
-+            # outright, so the line would never reach them.
-+            #
-+            # A placeholder inside a varflag, ``FOO[<flag>] = "1"``, is not
-+            # handled: the manuals contain none, and supporting a form
-+            # nobody writes is a rule nobody can check.
-+            (r'^' + _HAS_PH
-+             + r'(export[ \t]+)?(' + _PNAME + r')(' + _POVERRIDE + r')'
-+             r'([ \t]*)(' + _ASSIGN + r')',
-+             bygroups(Keyword.Type, using(this, state='placeholder-name'),
-+                      using(this, state='placeholder-name'), Whitespace,
-+                      Operator),
-+             'value'),
-+            inherit,
-+        ],
++            # Both spellings of define name a variable, so mark it.
++            (r'(' + _MARGIN + r')(' + '|'.join(_DIRECTIVES) +
++             r')([ \t]+)([A-Za-z_]\w*)',
++             bygroups(Whitespace, Comment.Preproc, Whitespace,
++                      Name.Variable)),
++            (r'(' + _MARGIN + r')(define)([ \t]+)([A-Za-z_]\w*)',
++             bygroups(Whitespace, Keyword, Whitespace, Name.Variable)),
 +
-+        # Split a name into its placeholder and non-placeholder parts, so
-+        # ``pn-<recipe>`` shows which half the reader has to replace.
-+        'placeholder-name': [
-+            (_PH, Generic.Emph),
-+            (r':', Name.Decorator),
-+            (r'[^<:\n]+', Name.Variable),
-+            (r'[^\n]', Name.Variable),
-+        ],
++            # A statement only starts a line. Elsewhere the same word is
++            # an argument: "branch" is a command at the margin and a
++            # subcommand in "git branch pvr master".
++            (r'(' + _MARGIN + r')((?:' + '|'.join(_LEADERS) +
++             r')(?=[ \t]))?([ \t]*)('
++             + '|'.join(_COMMANDS) + r')(?=[ \t]|$)',
++             bygroups(Whitespace, Name.Builtin, Whitespace, Keyword)),
 +
-+        # Marking, as opposed to accepting. A placeholder inside a value is
-+        # already valid BitBake; it just looks like a literal.
-+        #
-+        # The second rule in each state is what makes the first one work.
-+        # The inherited states end in a greedy run of "anything that is not
-+        # a quote, dollar or backslash", which swallows a whole value
-+        # including its placeholders as one token, so the rule above never
-+        # gets a position to match at. Stopping at the next "<" hands each
-+        # placeholder back to it.
-+        'value': [
-+            (_PH, Generic.Emph),
-+            (r'[^<\s"\'$\\]+', String),
-+            inherit,
-+        ],
-+        'string-double': [
-+            (_PH, Generic.Emph),
-+            (r'[^<"\\$\n]+', String.Double),
-+            inherit,
-+        ],
-+        'string-single': [
-+            (_PH, Generic.Emph),
-+            (r"[^<'\\$\n]+", String.Single),
++            (words(_FLAGS, prefix=r'(?<=[ \t])', suffix=r'(?=[ \t]|$)'),
++             Name.Builtin),
++
++            # Keep whitespace runs from crossing a line ending, so the
++            # next statement is still at the margin when it is reached.
++            (r'[ \t]*\n', Whitespace),
++
++            # The bash lexer's own copy of this rule swallows the newline
++            # and the indent behind it, which would leave a statement
++            # inside a conditional no longer at the margin and so
++            # unmarked. Match the words alone and leave the rest.
++            (r'\b(if|fi|else|while|in|do|done|for|then|return|function|'
++             r'case|select|break|continue|until|esac|elif)\b', Keyword),
++
++            # Cosmetic: patch filenames conventionally lead with a
++            # sequence number, and bash would colour that as a number.
++            (r'\d+(?=[\w./+-])', Text),
++
 +            inherit,
 +        ],
 +    }
 +
 +
 +def setup(app):
-+    app.add_lexer('bitbake-placeholder', BitBakePlaceholderLexer)
++    app.add_lexer('scc', SccLexer)
 +    return {
 +        'version': __version__,
 +        'parallel_read_safe': True,
