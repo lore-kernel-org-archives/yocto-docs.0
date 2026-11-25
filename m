@@ -1,165 +1,123 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.17491.1795526299977994360
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.44583.1795621542486082832
  for <docs@lists.yoctoproject.org>;
- Tue, 24 Nov 2026 05:18:20 -0800
+ Wed, 25 Nov 2026 07:45:42 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=dkim header.b=rGyr5kX+;
- spf=pass (domain: bootlin.com, ip: 185.246.85.4, mailfrom: antonin.godard@bootlin.com)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 483D94E4175D
-	for <docs@lists.yoctoproject.org>; Tue, 24 Nov 2026 13:18:18 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 18CCC601E1
-	for <docs@lists.yoctoproject.org>; Tue, 24 Nov 2026 13:18:18 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 53D0411E69945;
-	Tue, 24 Nov 2026 14:18:13 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1795526293; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=X0ZytRwdfuBjhXsjqGGOIjhCfzb6vK9XDLhxfo97cYI=;
-	b=rGyr5kX+bRV9VCU/Bud2kPhLou7lwIf6N+10c1PZNxE2OsRO39msqQ1UKnNKbX9ZxJMRm3
-	OrNNayxw+sxr4ltqhEEY59ZshhzaYEnjM9wLKf18RlSJ6kC3H+40X2PRNVcmL7y3IKGi9B
-	0y5AwQMGpxjRUN6t59wMWJ/h9Y6rvFGnPZsKgaRmnNm+M+UN3Zf9Axxx+ByQuUlCdd/uIX
-	UTb13xRsXOoPQwGkzomj3FUcJJpgmSVd9qRBwS9+lrfryzWA/YB34Qmb5CoJpwgOqPVZZF
-	f2QNR7W8QNSESZr5pzy7K/+n/FXk+PJ1Y7gZoO5KLTt4PUd8mMPKaoWeV/L7Ew==
-From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Tue, 24 Nov 2026 14:17:56 +0100
-Subject: [PATCH 3/3] ref-manual: add a Library Functions section
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261124-oe-utils-docs-v1-3-5fafbf6cb01c@bootlin.com>
-References: <20261124-oe-utils-docs-v1-0-5fafbf6cb01c@bootlin.com>
-In-Reply-To: <20261124-oe-utils-docs-v1-0-5fafbf6cb01c@bootlin.com>
+ dkim=pass header.i=@gmail.com header.s=20260707 header.b=TBLDtzZz;
+ spf=pass (domain: gmail.com, ip: 209.85.218.44, mailfrom: twoerner@gmail.com)
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-c516a1623d0so602812366b.2
+        for <docs@lists.yoctoproject.org>; Wed, 25 Nov 2026 07:45:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1795621541; x=1796226341; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=FH3tmwwbbIbWaBnJMKg9GHOYV3EBGfieKPrIWCVy8vA=;
+        b=TBLDtzZzagij6/DS2piRVEePP6H/B+C6oKPnowDkSby6HxrD/VkxFN2fd8cwZmVcFn
+         M+/tejRi+jSF3esanWvj8rUwHaM7xfnncmJ3dj+bupTZ6THM7h7rhUrGHhO8BiQX0v/9
+         S4celJ7hOzYxT69oE5dziSt8NcgplfakknWGb/HroEi6gZOYvHHjbx+SoCH1i5dTfNrD
+         zhEEqNwyP3m2E7qAR9JPLb+eEn1NwfeuTkcEOsF4h2Di/X07xXdVG3PA77eBhUY4FTwk
+         sXsJAm+iwXBgpT59QRsU4AN9OyBgC6ZRL2TFR2FJqoStLQFCqB089fLT1+QgIMv1fjnP
+         NnAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1795621541; x=1796226341;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=FH3tmwwbbIbWaBnJMKg9GHOYV3EBGfieKPrIWCVy8vA=;
+        b=xOkBEgrDasihKjRF3reL/MRX695xBi9gT0AkiP1XrKcukARael6sSTuu8+pRT6luQt
+         XyqT4rpF8NC17YeBTCytVcu7+m6mCjHrnCMEi4hPoQiUuGH4QAxD5n1gO77G7KUEY5DN
+         d+sddtBj+D2Zy8RX93/MLc3yvo34w7XKMDrv3+FrqAhLnIBDq42CJUc1U+rNL3w0TJkk
+         M7eDlXkv9FIfqDRPR56d8Ow8vP8cHSh/LTUAp1sH0JHgUo1zMFs0951oFP/lVK01pzjc
+         8bYHEOmVINDwNRHSQNe/Wj+We1PpjRjY3QwTDbozuO9mRRuwRBQj2ySl/xwCOoQlDzEw
+         nEKA==
+X-Gm-Message-State: APuU4Z9uaEeyzJKy4/7EKlUrtZppi7x6Pu6znaIrvOI3wdFIW1XukvFL
+	Tk6VYiPfpGP8mQCmBPdkisZbhaQPhefVQ7FW4T2Pyn5xLZZl0DrPIX1SspEC1g==
+X-Gm-Gg: AZFdTZctJH8rTyyYZj3YXnPO5VzFOR2RLi699B0+sIRqtmS1jf7OFrUBUAp2gqwALaO
+	L9lWuqBayv/cjcZrrmTtZigNqo/WJpLZ59NMNOkf0OKPg8lJyQ3lme9NjXW1LRfgl7Aus0jp2Ho
+	LEQAIku9nWf2IV5OyFaUVJX+MiPbAquDr8saQvIcP84luWR1Mt7ud+ZB2hP+uA+t66TqrMPDKds
+	1siARqvQ+04S6ikUjR/oE1RZnr/3ZZQtF+lRRNVy+bCGEUOSZ2+KnPqDFJO/WjznM4WH71wOHg7
+	LzAIVy1bDOT3mSmE+CGn99XfmjcB4RbQNSmfn6XSuD16TxQfPFlVAahRYff1RWbulWLzdp40Hkp
+	T+ykRMIv1M0hAp/vfSo8uR8XcDYNAbpGSrGAF6a6ZFbEAgx6TE1v2DxTAsAlXQSG6oUAyA/7d0v
+	gOm4SSwo6+EtYQhFUg5979o2jG0+498OD4fAXm8TwySK4m40TxAkyRlyKkQBZbCqdXnrqFRkNiO
+	CPCFTJF70O00M3Sb9wVjhmPRXzxKDGLp4N3B2b3amcUHweYBB9YToY/P/SJ06NztMaS5cy5ri1V
+	LOKNmFpzkqycgD4f5X3HgX/P7ctkj+pXnLX1nDjGp51lqLQrwN1532B6G6j12+YHsmM6elErfPc
+	EvujaLtdWtcMVTS3JAMOKkfpvIgqg9xiA
+X-Received: by 2002:a17:906:b091:b0:c51:24a7:deb7 with SMTP id a640c23a62f3a-c513a39f14bmr1100917666b.3.1795621540219;
+        Wed, 25 Nov 2026 07:45:40 -0800 (PST)
+Return-Path: <twoerner@gmail.com>
+Received: from localhost.localdomain (pppoe-209-91-167-254.vianet.ca. [209.91.167.254])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c513aec5115sm651892066b.51.2026.11.25.07.45.37
+        for <docs@lists.yoctoproject.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Nov 2026 07:45:38 -0800 (PST)
+From: Trevor Woerner <twoerner@gmail.com>
 To: docs@lists.yoctoproject.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Antonin Godard <antonin.godard@bootlin.com>
-X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2511;
- i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=CG+rJ5o8ogfInOhzbkZ6bnxJOzbvGSo9ncQhcfw3058=;
- b=owEBbQKS/ZANAwAKAdGAQUApo6g2AcsmYgBrBY6ETmvvHqnif3Lms/c/UBFcoqYtiMyC74QZN
- qnCE82pOHWJAjMEAAEKAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCawWOhAAKCRDRgEFAKaOo
- Nm4CD/4lWD5WmQluMKS4l2U/Xx6lyb5j/YwuurCIl+N76V8xarIQCHC236CYPQ6RZUJIv2VC9Oy
- gIC6lq5Hi+AEmSCcZP6Mf1IbAt5KMYPAn4BIW+UGgf4TvDZvG0fjq1NFhMVpqa9Dx/rpTTCVikD
- EgeH107gXUP+/qL1ai+oHWI+pwgZfBteYxqyCpFAy/4jtgDVdwm5L5POND/ZSkPcerlE9k3Qxez
- fzcFbWtWFs+ajndhXwGQlsRZ24DN3wOGSJ0llKooivpAuXVPlxuupXz5dVwCCxmx2+SPUZrvioA
- /eDX5HdhI86ISrwb8TEJFOmUcLU3rpcloz6bJXJtaN1dnPamRlAxId18XxaXY/GaSRDyNrVoX4N
- fAhhmSmr9mzYMJInUaSkw648hXeJChLrX92rpSQgiwg1t2/EfnLRGrX2gFkIub2WXwrSrQ5rSij
- h/dc4eQb+uVUsrcF6ukgqcVOkEVPZwOv5OiF2ULikmBy3kkGttodzAfbAqrFFql2yUZXS1qVVrh
- fq6HUPWBdh9Tv5WgaA/y9p+MTKl9/YJ4zWb5juyBQPn+7OAJK3uz9aGIgDktI0pBeH073ie74AC
- tbL58wqds9npjzuA5RRSZSls+Hqw/iGqnG9LvKecG2UtVWWA9n1ujcgHdwYyLP+4d1/1S/Zif7F
- JwklzPZ0UAQV/Lw==
-X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
- fpr=8648725188DD401BB9A0D3FFD180414029A3A836
-X-Last-TLS-Session-Version: TLSv1.3
+Subject: [PATCH 0/7] sphinx: carry lexers for the languages the manuals show
+Date: Wed, 25 Nov 2026 10:45:28 -0500
+Message-ID: <20261125154535.3486104-1-twoerner@gmail.com>
+X-Mailer: git-send-email 2.51.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
-X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by lin-tor-korg-lkml-alma10-1 with HTTPS for <docs@lists.yoctoproject.org>; Tue, 24 Nov 2026 13:18:26 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10834
+X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by lin-tor-korg-lkml-alma10-1 with HTTPS for <docs@lists.yoctoproject.org>; Wed, 25 Nov 2026 15:45:44 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10835
+Content-Type: text/plain; charset="utf-8"
 
-Like the BitBake User Manual[1], add a "Library Functions" section in
-the documentation which uses the autodoc Sphinx extention to
-auto-document useful modules of the oe library.
+This is the series proposed in [1]: the BitBake lexer first, then the
+other lexers, one patch each. The BitBake lexer is patch 1 and can be
+applied on its own.
 
-[1]: https://git.openembedded.org/bitbake/tree/doc/bitbake-user-manual/bitbake-user-manual-library-functions.rst
+No block uses any of these lexers yet, so the rendered manuals do not
+change, with one exception: the console fix in patch 6 changes how
+existing console blocks read a line opening with a bare "#", from a root
+prompt to program output. Every commit builds clean under -W on its own.
 
-Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
----
- documentation/ref-manual/index.rst             |  1 +
- documentation/ref-manual/library-functions.rst | 72 ++++++++++++++++++++++++++
- 2 files changed, 73 insertions(+)
+The BitBake lexer takes its patterns from BitBake's own parser, and is
+the same lexer proposed to Pygments in [2]. The SCC and wks lexers are
+derived the same way, from yocto-kernel-tools and from wic's parser.
 
-diff --git a/documentation/ref-manual/index.rst b/documentation/ref-manual/index.rst
-index aa1a63e05..6f02b0fc9 100644
---- a/documentation/ref-manual/index.rst
-+++ b/documentation/ref-manual/index.rst
-@@ -17,6 +17,7 @@ Yocto Project Reference Manual
-    structure
-    classes
-    tasks
-+   library-functions
-    fragments
-    devtool-reference
-    kickstart
-diff --git a/documentation/ref-manual/library-functions.rst b/documentation/ref-manual/library-functions.rst
-new file mode 100644
-index 000000000..6b075c55d
---- /dev/null
-+++ b/documentation/ref-manual/library-functions.rst
-@@ -0,0 +1,72 @@
-+.. SPDX-License-Identifier: CC-BY-SA-2.0-UK
-+
-+=================
-+Library Functions
-+=================
-+
-+This chapter lists common library functions available under the
-+:oecore_path:`meta/lib` directory in :term:`OpenEmbedded-Core (OE-Core)`.
-+
-+These functions can be used in recipes or configuration files with
-+:ref:`inline-Python <bitbake:bitbake-user-manual/bitbake-user-manual-metadata:Inline
-+Python Variable Expansion>` or :ref:`Python
-+<bitbake:bitbake-user-manual/bitbake-user-manual-metadata:BitBake-Style Python
-+Functions>` functions.
-+
-+``oe``
-+======
-+
-+Reference documentation for modules in :oecore_path:`meta/lib/oe`.
-+
-+``oe.data``
-+-----------
-+
-+.. automodule:: oe.data
-+   :members:
-+
-+``oe.go``
-+---------
-+
-+.. automodule:: oe.go
-+   :members:
-+
-+``oe.kernel``
-+-------------
-+
-+.. automodule:: oe.kernel
-+   :members:
-+
-+``oe.lsb``
-+----------
-+
-+.. automodule:: oe.lsb
-+   :members:
-+
-+``oe.path``
-+-----------
-+
-+.. automodule:: oe.path
-+   :members:
-+
-+``oe.purl``
-+-----------
-+
-+.. automodule:: oe.purl
-+   :members:
-+
-+``oe.utils``
-+------------
-+
-+.. automodule:: oe.utils
-+   :members:
-+
-+``oe.types``
-+------------
-+
-+.. automodule:: oe.types
-+   :members:
-+      boolean,
-+      float,
-+      integer,
-+      path,
-+      regex,
+The series is based on master-next with two of your pending series
+applied, since both also edit the extension list in conf.py:
+
+  - Add support for documentation tags [3]
+  - Add a "Library Functions" section to the ref-manual [4]
+
+The tags series needed two trivial conflict resolutions to apply on
+master-next, both in the tags it appends to the end of
+contributor-guide/submit-changes.rst and ref-manual/kickstart.rst.
+
+[1] https://lore.kernel.org/r/atjXdzebFGmKVjj8@localhost.localdomain
+[2] https://github.com/pygments/pygments/pull/3284
+[3] https://lore.kernel.org/r/20261028-tags-v1-0-d5ad01019eae@bootlin.com
+[4] https://lore.kernel.org/r/20261124-oe-utils-docs-v1-0-5fafbf6cb01c@bootlin.com
+
+Trevor Woerner (7):
+  sphinx: carry a BitBake lexer as a local extension
+  sphinx: add a lexer for BitBake with placeholders
+  sphinx: add a lexer for kernel metadata SCC files
+  sphinx: add a lexer for wic kickstart files
+  sphinx: add a lexer for pydevshell sessions
+  sphinx: read a bare "#" in a console block as output
+  sphinx: mark placeholders in console and plain-text examples
+
+ documentation/conf.py                         |   9 +-
+ .../sphinx-static/theme_overrides.css         |  20 +
+ documentation/sphinx/bitbake-lexer.py         | 432 ++++++++++++++++++
+ documentation/sphinx/bitbake-placeholder.py   | 145 ++++++
+ documentation/sphinx/console-lexer.py         |  53 +++
+ documentation/sphinx/placeholder-lexers.py    | 134 ++++++
+ documentation/sphinx/pydevshell-lexer.py      |  48 ++
+ documentation/sphinx/scc-lexer.py             | 116 +++++
+ documentation/sphinx/wks-lexer.py             |  60 +++
+ 9 files changed, 1016 insertions(+), 1 deletion(-)
+ create mode 100644 documentation/sphinx/bitbake-lexer.py
+ create mode 100644 documentation/sphinx/bitbake-placeholder.py
+ create mode 100644 documentation/sphinx/console-lexer.py
+ create mode 100644 documentation/sphinx/placeholder-lexers.py
+ create mode 100644 documentation/sphinx/pydevshell-lexer.py
+ create mode 100644 documentation/sphinx/scc-lexer.py
+ create mode 100644 documentation/sphinx/wks-lexer.py
 
 -- 
-2.56.0
+2.50.0.173.g8b6f19ccfc3a
 
