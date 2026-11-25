@@ -1,61 +1,61 @@
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.44549.1795621546520173603
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.44550.1795621547890201652
  for <docs@lists.yoctoproject.org>;
- Wed, 25 Nov 2026 07:45:46 -0800
+ Wed, 25 Nov 2026 07:45:48 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20260707 header.b=CjtGUANX;
- spf=pass (domain: gmail.com, ip: 209.85.218.50, mailfrom: twoerner@gmail.com)
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c4cac7a7d3cso880443766b.3
-        for <docs@lists.yoctoproject.org>; Wed, 25 Nov 2026 07:45:46 -0800 (PST)
+ dkim=pass header.i=@gmail.com header.s=20260707 header.b=rh34aoaT;
+ spf=pass (domain: gmail.com, ip: 209.85.218.45, mailfrom: twoerner@gmail.com)
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-c40e30c26a4so1308072766b.0
+        for <docs@lists.yoctoproject.org>; Wed, 25 Nov 2026 07:45:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795621545; x=1796226345; darn=lists.yoctoproject.org;
+        d=gmail.com; s=20260707; t=1795621546; x=1796226346; darn=lists.yoctoproject.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=B7gTNQxPBgSRwbFsFtNL/fYO33GHbuwt40VqaM1Layk=;
-        b=CjtGUANXMu+Nm6z1tewt7QdDPvjO4cvojYgN+x96kNwf9jcmu5z0OPp1xRq9WqjysA
-         y2V3d3ljVilZTWh3JFQrjEakKtd6fnYBVfaSp32Uph+OBbzo/XcSxhVCMs7LtDbVKZRl
-         PZPbT4mHhdlgn5DlK5pPNp4WYsvxXrd/A/p6xbJCGlbzSO5V9jgvv2L3Ph5ifQBnAiC4
-         dFTOMfjxL4X0SwIO67VgN760OLarUxUnAU4refPHHMkmPeQ/nX2GhjbDKtMl3vX6Zpvr
-         NAq/xye7Mt3yTCG65FM6cQ+MnFgBnlUb3+OiQjMWbkuwQza7whf6ctpmaRGkQg+ekN9x
-         JqKg==
+        bh=3i6iSUgd2MzLFqmIEN9G9gxArQmrtP67tGo6d3Tq/6A=;
+        b=rh34aoaTOfigNLWjs9qIbRO4yyI/ExLCKpz00jZgk4X/AOsTFntiUBd37JdH6W51VA
+         AgJ/hP/Tuq710aHP2AlYaW0jn3pZOwDjxaaBKpFsx8kBpwejkCCPCixmGnCoD+InZOyt
+         gEbiPDg5rZCboHqv1LLXIifjFWNnoMFf4LFdpim9h05+PG5hCQipxymJpK4v53v7BBGi
+         jIqeuPZCMzBt6FW01eK8MEevXRXrO+1wGOLVm0Wi7q5k7OG3JfT9o01frP1bXF3V9OLp
+         HNAz+5BQz3OUv6Gn6ALFpU1P/qzBaBRP8+KpLidiY/x6bUEXYys2IP3CF0bKCVW1cGn6
+         C3Rw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795621545; x=1796226345;
+        d=1e100.net; s=20260707; t=1795621546; x=1796226346;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=B7gTNQxPBgSRwbFsFtNL/fYO33GHbuwt40VqaM1Layk=;
-        b=NmmIL9at5BY8+blzKSucNtq40YQisdxbox8YH9hyK0wucF2/gDm4M4es+sdMUR73Jp
-         1waejm8li8XDEjwUWP+JuFxGnv3T9l4KwrSPT0maczL2gxdyjisSzZH767oZxrZIszJD
-         MR2GBffNHVHzqAmZq2Pz6TRcB5Xna/k8UnvmWBsH/hmxLF6yQTybeEZd6YmIulQd9elt
-         9QNd4ILTwEW9/MGO59kZX0OfCjJ9dzK+pKf/NCnBmwM/ffOOqyEgrcPCkvv9zwJJeniz
-         WSgeviyVDtZe9hDAhJ9Z5K/oRIzAhGzRm/E00y/nhISthmYzdE2FvLOXaCDdQHsmlNd1
-         34mg==
-X-Gm-Message-State: APuU4Z82NGLocyKIW4N8/DMpvH4UlVJu9fDraJjn60gPyelIZKCRWNi1
-	I10LzszQAq/sxMCGdm4uMaBDE6oJ/U5/GJpYVLQyY/cPb8m6E7v+3V7rz4JEkA==
-X-Gm-Gg: AZFdTZdIhj7mJI/tTXA44R0fwnoj0uWI3ZXtDQx59KRYTR7dDVNSdz0aLhT2ADjTDx9
-	L/gHDS+j2AeudSNm7FGK0nHkzTRSOrUB19VvC3jeP9BJRjU/YgSdtJQtxm2QEnWOE5j9PQdQoVl
-	qWeM5ahN+lLq9QRBYIMIp4lvRRC3ULx67VAbQ9G9bPRD7QvFlz0BNiP7jkSLza8bWypKJBDrbva
-	baNufZWzAbwFPiG5PtIZcwqfOfJerQHDpSkpzVf/zn/ZIzJyV/HdqnwZNtAIo+Nc4IBH8A7Nat3
-	0WWJnFkbPcKFta9jq1Y/750GaB4QJ9OS9L8j1XmrRx1UnFvPRiaHJ8FVC+HkeYydA2VjGk8JQkZ
-	vldjP02l4Ieoo5qvi7509V/RLGLsvJ19Dp6PgPRKw2LAgyodFSIlcarEJxsoIUwu1FKTCBu9WrX
-	z2uGEICz3AQWgu5gJ2Q5nrku9H6F/v/4ajuKfiG50pJv3D0hi2skuEOTPKs+tqUuJOSDPhw1h3/
-	NjeguWyWrCnqc76r1VzmWXF2gvUlfCb5vHNbQTPmp/SjtMWYskILSAlgeSePzEw6WOdAqHlIhO3
-	2HzKfbd78dKsCZqEui75QwHdU5e3f67zYxh9PsZmmx6Ne4B5WtetzWRs0G/Npn4mD8mck3Jd5eJ
-	NgQLl1fZfdiEezC+8pXJb60dM29pKqEo=
-X-Received: by 2002:a17:906:b854:b0:c49:cf3a:a324 with SMTP id a640c23a62f3a-c513a9b1c52mr1069649466b.22.1795621544424;
-        Wed, 25 Nov 2026 07:45:44 -0800 (PST)
+        bh=3i6iSUgd2MzLFqmIEN9G9gxArQmrtP67tGo6d3Tq/6A=;
+        b=Og5LolShlVjZWIM4hWtBa9+RrkrbswFqhHRzQRCZug/bREeFx9lFTn+bPQZD5JEEyP
+         IX0bQuQRxBxeX6RasQnkAdTXxfE+PdAUMmzbZnZ5G3wasIgdNnOpXPvtLmH+QJLDzY8a
+         fEMb5vOL9WgWjEnKCMEj8ABAV3VUIFuWERYWHjt9x+Ne3XHytsV2fxNYQHJMeU/QqFUj
+         ggv3CsmwX4k+j1Y0gh/YIaoai6RSFHOoJMuUNLndckMgEiKCyAe1j0sIPLAwYLUjJtP+
+         RTJ9GHydCJITr/tfdU6FB2RtB7QDrg1I8f0gFRk5Ui9XFU03aygJIZ17QITUpK2I4BNm
+         ShHA==
+X-Gm-Message-State: APuU4Z/wvxCSzQmpOaHQgev6l74INNJ6LOF/7/wBKSLxmViwePv+tPYk
+	tejXMX/HNA0O8av+kFxRVpVkH8fbZZGQZ8OB9ElPgELPcY78K+MxTYm99D104Q==
+X-Gm-Gg: AZFdTZeMtjEVgOBHRJDQVW8LHjZUeeX56xt0ruf5LicHs5iN+weNAXXbLtfpclRgA+W
+	iFAKYmANA1g+FYfFdn/ZdpmOt9E6QK0VKolZZNp+HBK5VdsUOGzfVZtnmfriCLxQJAjL6Fo7oRH
+	aXe62vPcNPdTtO4Bh8vZolbROBPLuYD9XE59rucv9kf4r/HJTAdq8hta3yRJcI7UkLC7vlYImDT
+	Ja3i+h0Wt87Z5s/eKqvzuUPF5Lvp8ZbJ/u3JYUr5lHClngwft1u0Mkr8OouE9TLfvmTM42Y4MkC
+	L6wRN+fX6o82bgT/L+bkvKgAE5W4/gxhfFRp0EVxjxDHdYTznx5eSjR+h1Mtd1wMxM110jt6Afw
+	DJF1PziCxZcGheAf3lmqptdt2qgvlYpJibim5F/yszRgDpiSPAHOBHLZR70h3Sj1ed+yqNifzD5
+	xVuMBrGQw6cRllcxvbcDyGSn6OP4f5kwqMfqzzQw3k1I11tYMrL6rAzWGHblaiyW/VWWvvnCNcZ
+	TryrtG2T8VCaPVTFrzZ0uwFbvrjmlaeVqE+4618GWsd1fRrCfj2VGyUQ9BuJnT7abSF4Fy6AROH
+	6TrfZfHfgF9hpNqn1m2mtr3aUIOaUMVIEuUyvttp9OKlCkMF7NfNy3d7y6y+8jER9tKalqFcj6M
+	wItbVa5fOyajf4JQy2Gb3pvzQlA22zuc=
+X-Received: by 2002:a17:906:4fd1:b0:c46:7de7:e41d with SMTP id a640c23a62f3a-c51318a03d9mr1655566966b.18.1795621545976;
+        Wed, 25 Nov 2026 07:45:45 -0800 (PST)
 Return-Path: <twoerner@gmail.com>
 Received: from localhost.localdomain (pppoe-209-91-167-254.vianet.ca. [209.91.167.254])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c513aec5115sm651892066b.51.2026.11.25.07.45.43
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c513aec5115sm651892066b.51.2026.11.25.07.45.44
         for <docs@lists.yoctoproject.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Nov 2026 07:45:43 -0800 (PST)
+        Wed, 25 Nov 2026 07:45:44 -0800 (PST)
 From: Trevor Woerner <twoerner@gmail.com>
 To: docs@lists.yoctoproject.org
-Subject: [PATCH 3/7] sphinx: add a lexer for kernel metadata SCC files
-Date: Wed, 25 Nov 2026 10:45:31 -0500
-Message-ID: <20261125154535.3486104-4-twoerner@gmail.com>
+Subject: [PATCH 4/7] sphinx: add a lexer for wic kickstart files
+Date: Wed, 25 Nov 2026 10:45:32 -0500
+Message-ID: <20261125154535.3486104-5-twoerner@gmail.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20261125154535.3486104-1-twoerner@gmail.com>
 References: <20261125154535.3486104-1-twoerner@gmail.com>
@@ -63,159 +63,101 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by lin-tor-korg-lkml-alma10-1 with HTTPS for <docs@lists.yoctoproject.org>; Wed, 25 Nov 2026 15:45:54 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10838
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10839
 Content-Type: text/plain; charset="utf-8"
 
-The kernel manual quotes SCC description files throughout, and none of them
-can say what they are: Pygments has no lexer for the language and is
-unlikely to want one, so they render as plain text.
+The manuals show .wks files in several places and have no language for
+them, so they are tagged text, tagged shell, or left to the default.
+Shell comes closest, because wic splits each line with shlex and expands
+${VAR} before parsing, but it does not know the vocabulary: the "part"
+opening a line and every option come out as ordinary text.
 
-SCC is bash. spp rewrites a few line-oriented directives, then scc
-sources the result with one shell function declared per statement and
-PATH unset. Description files use that freedom - conditionals on KARCH
-are common in real metadata - so extend the bash lexer and mark the
-vocabulary, read from the functions the tooling declares rather than
-from the manual's reference section, which omits several.
+This extends the bash lexer to mark the statements and long options that
+wic's own parser registers.
 
 AI-Generated: codex/claude-opus 5.5 (xhigh)
 Signed-off-by: Trevor Woerner <twoerner@gmail.com>
 ---
- documentation/conf.py             |   3 +-
- documentation/sphinx/scc-lexer.py | 116 ++++++++++++++++++++++++++++++
- 2 files changed, 118 insertions(+), 1 deletion(-)
- create mode 100644 documentation/sphinx/scc-lexer.py
+ documentation/conf.py             |  3 +-
+ documentation/sphinx/wks-lexer.py | 60 +++++++++++++++++++++++++++++++
+ 2 files changed, 62 insertions(+), 1 deletion(-)
+ create mode 100644 documentation/sphinx/wks-lexer.py
 
 diff --git a/documentation/conf.py b/documentation/conf.py
-index 95bb24002544..210b4ab60595 100644
+index 210b4ab60595..f89926549d20 100644
 --- a/documentation/conf.py
 +++ b/documentation/conf.py
-@@ -81,7 +81,8 @@ extensions = [
-     'sphinxcontrib.rsvgconverter',
+@@ -82,7 +82,8 @@ extensions = [
      'yocto-vars',
      'bitbake-lexer',
--    'bitbake-placeholder'
-+    'bitbake-placeholder',
-+    'scc-lexer'
+     'bitbake-placeholder',
+-    'scc-lexer'
++    'scc-lexer',
++    'wks-lexer'
  ]
  
  # current_version = "dev"
-diff --git a/documentation/sphinx/scc-lexer.py b/documentation/sphinx/scc-lexer.py
+diff --git a/documentation/sphinx/wks-lexer.py b/documentation/sphinx/wks-lexer.py
 new file mode 100644
-index 000000000000..dd1166ca7014
+index 000000000000..1e5e5ec1e5b9
 --- /dev/null
-+++ b/documentation/sphinx/scc-lexer.py
-@@ -0,0 +1,116 @@
-+"""Lexer for kernel metadata SCC description files.
++++ b/documentation/sphinx/wks-lexer.py
+@@ -0,0 +1,60 @@
++"""A lexer for wic kickstart (.wks) files.
 +
-+SCC describes a BSP or a kernel feature: which branch to build on, which
-+patches to apply and which configuration fragments to queue. The tooling
-+that reads it is ``yocto-kernel-tools``, and the shape of the language
-+follows from how that tooling works rather than from how it looks. ``spp``
-+rewrites a few line-oriented directives, and then ``scc`` *sources the
-+result as a bash script*, having first defined one shell function per
-+statement and unset ``PATH`` so nothing else can run.
++wic reads a .wks file line by line: a line whose first non-blank
++character is ``#`` is a comment, and every other line is split with
++``shlex.split`` and handed to ``argparse``, after ``${VAR}`` has been
++expanded. The quoting is therefore shell quoting, which is why this
++extends the bash lexer. What the bash lexer cannot do is mark the
++vocabulary: ``part`` is not a shell builtin, so the statement opening
++each line comes out as ordinary text, and so does every ``--option``.
 +
-+So an SCC file is not a dialect of bash but bash itself, under a
-+preprocessor: the ``spp`` directives have their own, non-shell semantics -
-+``#define`` is a comment as far as bash is concerned - while everything
-+surviving that pass is ordinary shell with a fixed vocabulary of commands.
-+Real metadata relies on it, with conditionals on ``KARCH`` in particular,
-+and a lexer built from the manual's statement list rejects them. This one
-+extends the bash lexer and marks the vocabulary, so the shell half is
-+right by construction and only the command list has to be got right.
-+
-+That list comes from the implementation: the functions ``scc`` defines
-+itself, the functions it sources from ``scc-cmds/*.cmd``, and the
-+directives ``spp`` matches before any of that runs. It is wider than the
-+"SCC Description File Reference" section of ``kernel-dev/advanced.rst``,
-+which omits ``mark``, ``merge``, ``tag``, ``prefix``, and the flags.
++The statements and options below are taken from wic's parser,
++``ksparser.py``, rather than from the manual, so update them from there
++when wic gains one. ``partition`` is not a statement: it was an alias
++while wic bundled pykickstart, and the parser that replaced it in 2016
++kept only ``part``.
 +"""
-+from pygments.lexer import bygroups, inherit, words
++from pygments.lexer import bygroups, inherit
 +from pygments.lexers.shell import BashLexer
 +from pygments.token import Comment, Keyword, Name, Text, Whitespace
 +
-+__version__ = '2.0'
++__version__ = '1.0'
 +
-+# Statements, as the tooling defines them. ``spp`` handles include, patch
-+# and kconf itself; the rest are shell functions declared by scc and by
-+# scc-cmds/*.cmd before the file is sourced.
-+_COMMANDS = (
-+    'branch', 'define', 'git', 'include', 'kconf', 'mark', 'merge',
-+    'patch', 'prefix', 'reloc_dir', 'set_kernel_version', 'tag',
-+)
-+
-+# spp matches this before bash ever sees the file, so it is a directive
-+# wearing a comment's clothes and needs its own rule.
-+_DIRECTIVES = ('#define',)
-+
-+# Words that qualify a statement rather than starting one: the kconf
-+# fragment classes kconf.cmd tests for, and the flags spp looks for on an
-+# include line.
-+_FLAGS = (
-+    'as_module', 'hardware', 'non-hardware', 'nocfg', 'nopatch',
-+    'optional', 'required',
-+)
-+
-+# spp recognises these only immediately ahead of kconf, at the margin.
-+_LEADERS = ('as_module', 'force')
-+
-+# A statement sits at the margin. Reaching it reliably needs the rule
-+# below that stops a run of whitespace at the end of a line.
-+_MARGIN = r'^[ \t]*'
++# The subparsers wic registers.
++STATEMENTS = ('part', 'bootloader', 'include')
 +
 +
-+class SccLexer(BashLexer):
-+    """Kernel metadata SCC description files."""
++class WksLexer(BashLexer):
++    """wic kickstart."""
 +
-+    name = 'SCC'
-+    aliases = ['scc']
-+    filenames = ['*.scc']
++    name = 'wic kickstart'
++    aliases = ['wks']
++    filenames = ['*.wks', '*.wks.in']
 +    mimetypes = []
-+    url = 'https://docs.yoctoproject.org/kernel-dev/advanced.html'
 +
 +    tokens = {
 +        'root': [
-+            # Both spellings of define name a variable, so mark it.
-+            (r'(' + _MARGIN + r')(' + '|'.join(_DIRECTIVES) +
-+             r')([ \t]+)([A-Za-z_]\w*)',
-+             bygroups(Whitespace, Comment.Preproc, Whitespace,
-+                      Name.Variable)),
-+            (r'(' + _MARGIN + r')(define)([ \t]+)([A-Za-z_]\w*)',
-+             bygroups(Whitespace, Keyword, Whitespace, Name.Variable)),
-+
-+            # A statement only starts a line. Elsewhere the same word is
-+            # an argument: "branch" is a command at the margin and a
-+            # subcommand in "git branch pvr master".
-+            (r'(' + _MARGIN + r')((?:' + '|'.join(_LEADERS) +
-+             r')(?=[ \t]))?([ \t]*)('
-+             + '|'.join(_COMMANDS) + r')(?=[ \t]|$)',
-+             bygroups(Whitespace, Name.Builtin, Whitespace, Keyword)),
-+
-+            (words(_FLAGS, prefix=r'(?<=[ \t])', suffix=r'(?=[ \t]|$)'),
-+             Name.Builtin),
-+
-+            # Keep whitespace runs from crossing a line ending, so the
-+            # next statement is still at the margin when it is reached.
-+            (r'[ \t]*\n', Whitespace),
-+
-+            # The bash lexer's own copy of this rule swallows the newline
-+            # and the indent behind it, which would leave a statement
-+            # inside a conditional no longer at the margin and so
-+            # unmarked. Match the words alone and leave the rest.
-+            (r'\b(if|fi|else|while|in|do|done|for|then|return|function|'
-+             r'case|select|break|continue|until|esac|elif)\b', Keyword),
-+
-+            # Cosmetic: patch filenames conventionally lead with a
-+            # sequence number, and bash would colour that as a number.
-+            (r'\d+(?=[\w./+-])', Text),
-+
++            # A statement is only a statement at the start of a line.
++            # Anchoring matters: "include" is also an ordinary word in
++            # "--include-path", and "part" appears inside several option
++            # names, so an unanchored keyword would mark both.
++            (r'^(\s*)(%s)(\b)' % '|'.join(STATEMENTS),
++             bygroups(Whitespace, Keyword, Text)),
++            # Long options carry the meaning on a wic line; bash leaves
++            # them as plain text because it has no notion of them.
++            (r'--[\w-]+', Name.Attribute),
++            # wic tests the first character of the stripped line, so a
++            # comment may be indented and is never trailing.
++            (r'^\s*#.*$', Comment.Single),
 +            inherit,
 +        ],
 +    }
 +
 +
 +def setup(app):
-+    app.add_lexer('scc', SccLexer)
++    app.add_lexer('wks', WksLexer)
 +    return {
 +        'version': __version__,
 +        'parallel_read_safe': True,
