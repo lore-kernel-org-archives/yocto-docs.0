@@ -1,77 +1,81 @@
-Received: from mail-106113.protonmail.ch (mail-106113.protonmail.ch [79.135.106.113])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.13500.1795698806014533413
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.1318.1795710830037213445
  for <docs@lists.yoctoproject.org>;
- Thu, 26 Nov 2026 05:13:26 -0800
+ Thu, 26 Nov 2026 08:33:51 -0800
 Authentication-Results: mx.groups.io;
- dkim=fail reason="dkim: body hash did not verify" header.i=@geanix.com header.s=protonmail header.b=LQmAzGTT;
- spf=pass (domain: geanix.com, ip: 79.135.106.113, mailfrom: sean@geanix.com)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=geanix.com;
-	s=protonmail; t=1795698803; x=1795958003;
-	bh=SZ52dF0mJfAZTY7kfsoSuTfh78ohYkVG//r8v3HROBM=;
-	h=From:To:Cc:Subject:Date:Message-ID:From:To:Cc:Date:Subject:
-	 Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=LQmAzGTTvGg8Y5UB/asjx/QJM/izfH5d6Dfu7+VU0T1QmslJTYxZY0Bd2446ZjEnX
-	 48U2QTiVFUQ4BOeQRSfNyeWmydXMs2RGp2uRrS0yZnGsW83drBgMPaqUb67qdRnyVa
-	 DGsjP+EA84nMpodktHbRyM+h3qnCwVjKjT+ydJknId8USxN7qASCstaByHmDxzcsLx
-	 RMNN37qP5Ix7tP8XumdaSFCcUhrH0pfDL983IShrlyre3oMJQgdCJN1ZMI5ydrEBiH
-	 pMr91WMki+hiPDCOlOuBeXU6Subg1Z9IiYUMrLh9MJtZ5FQGwdHQSvb4DBKS5IRu3+
-	 7UT6VlWYFzNAw==
-X-Pm-Submission-Id: 4jZxnF41Pqz1DF5G
-From: Sean Nyekjaer <sean@geanix.com>
-To: docs@lists.yoctoproject.org
-Cc: alex.kanavin@gmail.com,
-	joerg.vehlow@emlix.com,
-	peter.kjellerstedt@axis.com,
-	Sean Nyekjaer <sean@geanix.com>
-Subject: [PATCH] ref-manual/variables.rst: INCOMPATIBLE_LICENSE: document SDK check opt-out
-Date: Thu, 26 Nov 2026 14:13:09 +0100
-Message-ID: <20261126131309.2581142-1-sean@geanix.com>
-X-Mailer: git-send-email 2.56.0
-MIME-Version: 1.0
+ dkim=pass header.i=@bootlin.com header.s=dkim header.b=Vn/Y44vf;
+ spf=pass (domain: bootlin.com, ip: 185.246.84.56, mailfrom: antonin.godard@bootlin.com)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 8BCA21A180E;
+	Thu, 26 Nov 2026 16:33:47 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 605E160558;
+	Thu, 26 Nov 2026 16:33:47 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9A36511E69153;
+	Thu, 26 Nov 2026 17:33:45 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1795710827; h=from:subject:date:message-id:to:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=zBGQuFJxe18kdVlOV9YSRGcaVRkGKWPeudloXjd0fZw=;
+	b=Vn/Y44vfgS+KSGP31KiA4H00pZSfEo9a5GklRnjg7FST77dFe8YlF4hfHY3pB/Ephxen4u
+	rvCKp/Wdoo9gYCJCe4fKm6AEzi3AyUNy+zUwOj9NuUxA68We3HNrDZo7w2Yv+pQXw+auk3
+	dpi1R6aKC2z4384DX76CxvwsYiOtXU7Hk+JLG5tj/NBuCnD2mGSkKXxUMExK260EheRVce
+	GnSMFINMfNRWOvzU7LMcw4rMqfECj0nuAcp1U0jqSAGk0Pxn6egxJ7UKjnk7kwPWUMHEQv
+	LN8P+dGMT0BDJHipbc9J0I+LuO/wFel/uDzaOGnK2ol5vkj73JSdGxc/PDjJZw==
 Content-Type: text/plain; charset=UTF-8
+Date: Thu, 26 Nov 2026 17:33:44 +0100
+Message-Id: <DN5AD0E8NBFJ.2E0I9RWKIMG2J@bootlin.com>
+From: "Antonin Godard" <antonin.godard@bootlin.com>
+To: <twoerner@gmail.com>, <docs@lists.yoctoproject.org>
+Subject: Re: [docs] [PATCH 0/7] sphinx: carry lexers for the languages the
+ manuals show
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+References: <20261125154535.3486104-1-twoerner@gmail.com>
+In-Reply-To: <20261125154535.3486104-1-twoerner@gmail.com>
+X-Last-TLS-Session-Version: TLSv1.3
 List-Id: <docs.lists.yoctoproject.org>
-X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by lin-tor-korg-lkml-alma10-1 with HTTPS for <docs@lists.yoctoproject.org>; Thu, 26 Nov 2026 13:13:29 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10843
+X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by lin-tor-korg-lkml-alma10-1 with HTTPS for <docs@lists.yoctoproject.org>; Thu, 26 Nov 2026 16:33:55 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10844
 
-Since f757ae4dadab ("license_image: extend to SDK coverage"),
-do_populate_sdk checks the SDK host and target sysroots against
-INCOMPATIBLE_LICENSE. Document how to disable this when the restrictions
-only apply to the image, as suggested on the list.
+Hi Trevor,
 
-Suggested-by: J=C3=B6rg Vehlow <joerg.vehlow@emlix.com>
-AI-Generated: Uses Claude Code (Claude Opus 5.5)
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
----
- documentation/ref-manual/variables.rst | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+On Wed Nov 25, 2026 at 4:45 PM CET, Trevor Woerner via docs wrote:
+> This is the series proposed in [1]: the BitBake lexer first, then the
+> other lexers, one patch each. The BitBake lexer is patch 1 and can be
+> applied on its own.
 
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-m=
-anual/variables.rst
-index 2e01d0422..72ac158a6 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -4825,6 +4825,18 @@ system and gives an overview of their function and=
- contents.
-       are no build time restrictions, but the license check is still
-       performed when the image's filesystem is assembled from packages.
-=20
-+      The license check is also performed by the
-+      :ref:`ref-tasks-populate_sdk` task, for both the host (e.g.
-+      ``nativesdk-*`` and ``*-cross-canadian-*`` packages) and target
-+      sysroots of the SDK. If the restrictions are only meant to apply t=
-o the
-+      image and not to its SDK, the check can be disabled for the
-+      :ref:`ref-tasks-populate_sdk` task with::
-+
-+         INCOMPATIBLE_LICENSE:task-populate-sdk =3D ""
-+
-+      Alternatively, individual packages can be allowed in the SDK with
-+      :term:`INCOMPATIBLE_LICENSE_EXCEPTIONS`.
-+
-       There is some support for wildcards in this variable's value,
-       however it is restricted to specific licenses. Currently only
-       these wildcards are allowed and expand as follows:
---=20
-2.56.0
+For most of the series, the code is unfortunately unreviewable and I don't
+think we want to maintain that in the future. While I think there is some
+justification in adding lexers (better readability), I also think we could =
+aim
+for an in-between:
 
+Pygments already has an upstream BitBake lexer (thanks to you). It can cove=
+r
+most of our existing snippets. For the ones that are failing, we can skip t=
+hem
+(with a 'text' code-block) until the upstream lexer is fixed. Having our ow=
+n
+BitBake lexer will not encourage upstream fixes - it will hide those upstre=
+am
+errors and will rarely lead to an upstream fix.
+
+Patch 4 and 5, however, look like simple lexers, I am fine with keeping the=
+m.
+For the remaining lexers, I think we can accept that they won't be highligh=
+ted
+(or highlight them with a similar lexer, if that is possible).
+
+> The series is based on master-next with two of your pending series
+> applied, since both also edit the extension list in conf.py:
+>
+>   - Add support for documentation tags [3]
+>   - Add a "Library Functions" section to the ref-manual [4]
+
+Can you rebase on master? These two series won't be merged before M1 anyway=
+ as
+they require some updates on the Autobuilder.
+
+Thanks,
+Antonin
