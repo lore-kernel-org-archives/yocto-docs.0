@@ -1,134 +1,87 @@
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.6813.1795731994285870733
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.6920.1795732614463842581
  for <docs@lists.yoctoproject.org>;
- Thu, 26 Nov 2026 14:26:34 -0800
+ Thu, 26 Nov 2026 14:36:54 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20260707 header.b=Dpeo0iU2;
- spf=pass (domain: gmail.com, ip: 209.85.167.49, mailfrom: twoerner@gmail.com)
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5c14f3dab09so3757747e87.0
-        for <docs@lists.yoctoproject.org>; Thu, 26 Nov 2026 14:26:34 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1795731992; cv=none;
-        d=google.com; s=arc-20260327;
-        b=l0M5phHBjuM2Rf+EOgrAB26Q25IXYGoCqHvO5j1BHpt6r6GZL/9u19S+k5vPKia8fb
-         5108Bi7zUNSUWQIJ/hDN1N1kS80eENI4jGCKpthM80hQjGhiQ7KJUEH9+5aCbkq6P+v5
-         Vm7kqpWpZa8Kqoc8T+3c7sW8jt/GEv7nDmtSn9O5kW+g61vdjEAPU1EjZszlZxOrjIMi
-         b9rrZzL1fO1IowV4giFECd2m6QDnkvxbri6uqDmotRLrQMVSiLhTixPkujEZPTNxu8vs
-         NMkYgIZLIgLdYh70OhJbfFB01AE1Y7KDk1APpcQfUmPPQwOQzFJZF8SIcic4gJbc2ZUP
-         CMXw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=9ogS7z4HU1OHxi+C/8JkdIG5e1y3ky/c7uSWV9Uzhgo=;
-        fh=4hS1yeconpIjCT2RpsjSCX8nsHAojH08ouzykNU7bCU=;
-        b=WyN5X6tjcVQKfFlHNFodpeTW0oyyF7J0heMuVChNzWNEwTxaYTwWxN01yjUhgL3XN8
-         c01M7nPGAjjm67kezF5MNnJLbxGfYyHuirmw9e9ABCIxgNdrou1EzSIOOz/PMlSKjL+9
-         pUuBRHYPzX6mjayGqf6J3hkcR1MdFHt8sUDAbzFbkzs5zQYjmgaU797OrXasVqXG3y2d
-         AyMV8FHjEU9UpBuciZJnXzNaRvh1kj3ArK/tC4vdhIipe1bA8z4sP7oVlZfEQ+PfffDL
-         SogkjlRRXZHeool5+9RX/c0Kb3QuegscK8wZaCnyDWeCrW1cXbGhgDKevzCgB9fAyYEH
-         /WiA==;
-        darn=lists.yoctoproject.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+ dkim=pass header.i=@gmail.com header.s=20260707 header.b=LscHBlFp;
+ spf=pass (domain: gmail.com, ip: 209.85.160.173, mailfrom: twoerner@gmail.com)
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-5365d26ccbdso81338691cf.0
+        for <docs@lists.yoctoproject.org>; Thu, 26 Nov 2026 14:36:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795731992; x=1796336792; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=9ogS7z4HU1OHxi+C/8JkdIG5e1y3ky/c7uSWV9Uzhgo=;
-        b=Dpeo0iU2eMB48/cv4q0mE/PSL18hoK2Eb0wVZT49kVrnJ0RZOhfOybfgge+USPQfdb
-         tghOmMY2HaqHACEqFKdJdcUq2RvfUyxK+suZowMtt+QwI/ytwV1LD51akFZyenE8FCKo
-         PAn9usOhrcQgap0v3+g2+0sstAXFdff+HmLgWcuk8Ox9RGRNoaj/5ps2cujCyst9pA8G
-         GzdLYIeOgUuShO+cBXOL7m4WdUEN4f/fV5mYdiS6RP5dSxljWwgZnzDYVeJaB7RzRwqE
-         4d818eDZGC99gTyt89QBBJ6atMCr1uyjKRHJZX0XWGKoCbA/kYCfhNcKCXJyYH/rcDKV
-         3M1w==
+        d=gmail.com; s=20260707; t=1795732613; x=1796337413; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=HkM2EQEzvjNoG6pAwPWdZludkX/JMg2ikfFDsmcQChk=;
+        b=LscHBlFpCpqO2j72g22ep4YMtBvazCNjLIxtw9D37MZHe1QQqrbKpsHY5+xbb+x83p
+         w5hXvHHUeV8j/FFGM3ynI5jWYrDlQpMpYdfDuqWsi//yDASmBFp3dhxuntztAE7GrIKa
+         Jvx1z8rJ4lbOTG8GI7W/iDVpppW84lCcBvJothFK4/TmwR+NOr792NE5IlcGeuJcfYK6
+         Ds4WfDzo0eB2wePDU8U4Xb44KnkjS7wHcI0MN1OVL0KmLv0jUsqCYYQG3ndM2ulKT/Pr
+         RSK/ykuojdAnYiq0iwArive5+0L0oJaERBy1PTKP7NG8Z7LKxbX758rGJr4CxaQHoWe+
+         a4Pw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795731992; x=1796336792;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=9ogS7z4HU1OHxi+C/8JkdIG5e1y3ky/c7uSWV9Uzhgo=;
-        b=s4tNvPql5LGNY1koidPn7X3NvGYohEmmDhW+sdRsF+VwRRo96q4ceZ1t7QAiRj5NQc
-         kudkiOpRnN85mQESmUXUdCLRwaNfOcr6PosRUZDH4j5K/TekOLeaRuiuwq/o74jikN4I
-         8D1YM+LD6dObYcihrgt6FHCHRbwAPaQsh/BXly5WURI9EIghTz1GODmsWRjgyFhXUjl0
-         rukhfnEIy9qzgTmHow98A1CWxmCnrMyUSgR46A12DniwhFv9R1kOVLmKS9vcV3f5N7Tt
-         Ez9wH1VTJQOWo2W24WBMeWZWbOVVTNOavLBgwuU9dS4FKnqNIZoHugIS10XCHSgC1I7U
-         afrg==
-X-Gm-Message-State: APuU4Z8NlwaoG9kmd/eRw6TPwR1ueM9WWc4nFjeKE3K3rm0m+Mqq7vzu
-	+jLM1Rdq0XYWAMc0TPNPK0WdpDkqqMtdGuirxoNYWwCSlL8FSypqBRBi2RQH+fsPO8mWkz3NL3I
-	oKcsaRYh7fvpsWuwXGVnS5RnpjafiS6U=
-X-Gm-Gg: AZFdTZcmmMc19XHqN4CpACkRdsaHgXbn1ZikMAEdPEhfhU1RNmfC2uf6ktdYbTa1RaI
-	WEdE0y3EPvlvbxu9AnwsVao5DbRPj4gKvSAnBNy8/rfJmFFV2iJGu1v4g6l5rpOBAi9UZel1ZPL
-	4gF7AYwm7ROhMDqBL5gJ8TpBIurFnAWc+kqAl5g3u8srKGv4OnhWC0JY+8b+hIDCTLOhXlhrU2/
-	UochMJ+vjzWQRhV9U5l2OHEciNA7Qx3Z8VadhPrE0AqIe1p5viS9xjVT808Es5aElHx99ICJ0A2
-	NwZURmbHGjkGvip+yX4apALpNpwDr8nnxCCnazJDhiY+THEa94eCuabxsNDaPKai946vrYkqbqY
-	0Jw5nRw+SwaB3xlJVYKbzd/G/VYPevlZ2YBqQtw325fe8etVKf/WdNodP1PSPIQo0IMhwCyQjPl
-	rfKdjTTTqt/BYydyw/4sI=
-X-Received: by 2002:a05:6512:124a:b0:5bf:b603:365d with SMTP id
- 2adb3069b0e04-5c1bc7ad56amr7098632e87.10.1795731991744; Thu, 26 Nov 2026
- 14:26:31 -0800 (PST)
-MIME-Version: 1.0
-References: <20261125154535.3486104-1-twoerner@gmail.com> <DN5AD0E8NBFJ.2E0I9RWKIMG2J@bootlin.com>
-In-Reply-To: <DN5AD0E8NBFJ.2E0I9RWKIMG2J@bootlin.com>
+        d=1e100.net; s=20260707; t=1795732613; x=1796337413;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=HkM2EQEzvjNoG6pAwPWdZludkX/JMg2ikfFDsmcQChk=;
+        b=oyB/Bek7KOMb7cZRwe7VOM0AebNXgzAZNOoHZR7IBgqtnNvBkURW8lZFwfwF4bpRTR
+         zpGx6JesyZqAgW4S8xwMpA4g2NUv2WZ1BgyLnbO/5nduJOr9h4iXJ68vdBsSWk7BovZv
+         Z8+9dYF3o4F+cWdUJ2JLjAX11sJr8cOOCxYkknPlfEbWJlUzw+vgrDqHWGN7lQ1IBPWQ
+         HCgftGJ9ms9vMpiTU5TJrtSK5OhYTBAvLfZsfcyOLdoHyS0MtMSdkVTChqVqw0zMjdGa
+         Ze/UGdR4pyFfQEvLqHFMbXjHKVWOoMEwMzU5potGALDeXg81JOzKci63SrTFK/7XHJZe
+         B5BA==
+X-Gm-Message-State: APuU4Z/hQRirKAraG5s4nct6sJX7xtsGWPILA28BytfQalCRDQVtt+dd
+	bCh4x//Fpeq5uw+1tq8FoB+W9jznIrKPMys8Rj8JaNz8oL/ASHTyRwHS+TSZqw==
+X-Gm-Gg: AZFdTZdJrkY9sBxaCB3T+ployDu4spvtYAcplYXw1CKyRliHPh/OGxMt9sRq7KwNwIe
+	kZ4wBoYtaQNI7aHhRfMvvub2fpsjweU9JqNJ28WjSRuStuc3VOGLMoiC4us3O4XN9YeuUOJBDJT
+	cBmvPlZfhL9HvMsvNm6iCLkxoFuzjrUS4TFK3GImB1xNbPgoJzHC14BuEg1LsKjpCB4wDGIlJcX
+	92Fr6qHwi7Kft07v02ghWA1sQVcrkc42x/bV0QSjMBXTzO5JqzeOJ+X1bjkf5+CL/EAnBp3tc7L
+	4aSfQHoMQqw6I6CgfyM5v80rx/GNS4wJuszUZVcXNVkV4vzYBojB5HNeMhLKDN26b5W/BrxMDv3
+	fEOf5p55pOOZD7CFWULDYyr/0V0/e4lUfpheIdg11xcuiI8dcLucDwNSlwST9XyufW6brX86bS0
+	fIIXK20HyAxlUwwg4O5m9geHxqFQIj9scCNkspBlrRR6T2op/47T4yRnWKKohyXEHxPfPdX43Rq
+	XJV4gv6JPrfPhuBTsA0cqdiuo/DJlBx/7H4jRH2HnKmhkN0jxiJJTDm5Pvsk7B2gBW4OstpL1Mx
+	/YIlnDdbdhsO4jVmCEYIW8SNNGeSqSFgqaZK1D2cJSSGdjjHHYRk3s0YlpsY6v0HiWTCmZGoDZs
+	IlFrTHFuJpmVKxvOGTMOHMqkZyFFSck8=
+X-Received: by 2002:ac8:5707:0:b0:535:52c:a2e7 with SMTP id d75a77b69052e-55d76a305bbmr446981421cf.44.1795732613390;
+        Thu, 26 Nov 2026 14:36:53 -0800 (PST)
+Return-Path: <twoerner@gmail.com>
+Received: from localhost.localdomain (pppoe-209-91-167-254.vianet.ca. [209.91.167.254])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-921349ec64csm201742136d6.28.2026.11.26.14.36.52
+        for <docs@lists.yoctoproject.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Nov 2026 14:36:52 -0800 (PST)
 From: Trevor Woerner <twoerner@gmail.com>
-Date: Thu, 26 Nov 2026 17:26:18 -0500
-X-Gm-Features: Aa3M54oipWTAoSTgz4tjndkWD-HrGH45b9dM1QcXgXVIuRmfhP7jQEEjqmfqy8I
-Message-ID: <CAHUNapTSQtdi4Dt58BpX5a2joaq6anrqHnwihkFgzWW7tWk5Ag@mail.gmail.com>
-Subject: Re: [docs] [PATCH 0/7] sphinx: carry lexers for the languages the
- manuals show
-To: Antonin Godard <antonin.godard@bootlin.com>
-Cc: docs@lists.yoctoproject.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+To: docs@lists.yoctoproject.org
+Subject: [PATCH v2 0/2] sphinx: add lexers for wic kickstart files and pydevshell sessions
+Date: Thu, 26 Nov 2026 17:36:48 -0500
+Message-ID: <20261126223650.3701672-1-twoerner@gmail.com>
+X-Mailer: git-send-email 2.51.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
-X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by lin-tor-korg-lkml-alma10-1 with HTTPS for <docs@lists.yoctoproject.org>; Thu, 26 Nov 2026 22:26:39 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10845
+X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by lin-tor-korg-lkml-alma10-1 with HTTPS for <docs@lists.yoctoproject.org>; Thu, 26 Nov 2026 22:36:59 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10846
+Content-Type: text/plain; charset="utf-8"
 
-On Thu, Nov 26, 2026 at 11:33=E2=80=AFAM Antonin Godard
-<antonin.godard@bootlin.com> wrote:
->
-> Hi Trevor,
->
-> On Wed Nov 25, 2026 at 4:45 PM CET, Trevor Woerner via docs wrote:
-> > This is the series proposed in [1]: the BitBake lexer first, then the
-> > other lexers, one patch each. The BitBake lexer is patch 1 and can be
-> > applied on its own.
->
-> For most of the series, the code is unfortunately unreviewable and I don'=
-t
-> think we want to maintain that in the future. While I think there is some
-> justification in adding lexers (better readability), I also think we coul=
-d aim
-> for an in-between:
->
-> Pygments already has an upstream BitBake lexer (thanks to you). It can co=
-ver
-> most of our existing snippets. For the ones that are failing, we can skip=
- them
-> (with a 'text' code-block) until the upstream lexer is fixed. Having our =
-own
-> BitBake lexer will not encourage upstream fixes - it will hide those upst=
-ream
-> errors and will rarely lead to an upstream fix.
->
-> Patch 4 and 5, however, look like simple lexers, I am fine with keeping t=
-hem.
-> For the remaining lexers, I think we can accept that they won't be highli=
-ghted
-> (or highlight them with a similar lexer, if that is possible).
->
-> > The series is based on master-next with two of your pending series
-> > applied, since both also edit the extension list in conf.py:
-> >
-> >   - Add support for documentation tags [3]
-> >   - Add a "Library Functions" section to the ref-manual [4]
->
-> Can you rebase on master? These two series won't be merged before M1 anyw=
-ay as
-> they require some updates on the Autobuilder.
+Lexers for wic kickstart (.wks) files and for sessions in BitBake's
+Python development shell, which the manuals show and Pygments does not
+cover. No block names either yet, so the rendered manuals do not change.
 
-Absolutely! v2 coming up :-)
-Thanks
+changes in v2:
+- keep only these two lexers
+- rebase on master
 
->
-> Thanks,
-> Antonin
+Trevor Woerner (2):
+  sphinx: add a lexer for wic kickstart files
+  sphinx: add a lexer for pydevshell sessions
+
+ documentation/conf.py                    |  4 +-
+ documentation/sphinx/pydevshell-lexer.py | 48 +++++++++++++++++++
+ documentation/sphinx/wks-lexer.py        | 60 ++++++++++++++++++++++++
+ 3 files changed, 111 insertions(+), 1 deletion(-)
+ create mode 100644 documentation/sphinx/pydevshell-lexer.py
+ create mode 100644 documentation/sphinx/wks-lexer.py
+
+-- 
+2.50.0.173.g8b6f19ccfc3a
+
