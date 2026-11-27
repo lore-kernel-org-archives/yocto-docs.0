@@ -1,61 +1,61 @@
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.14810.1795781138948629989
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.14804.1795781133696280244
  for <docs@lists.yoctoproject.org>;
- Fri, 27 Nov 2026 04:05:39 -0800
+ Fri, 27 Nov 2026 04:05:33 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20260707 header.b=cB04P2Qr;
- spf=pass (domain: gmail.com, ip: 209.85.160.175, mailfrom: twoerner@gmail.com)
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-55bd96affd2so108709261cf.1
-        for <docs@lists.yoctoproject.org>; Fri, 27 Nov 2026 04:05:38 -0800 (PST)
+ dkim=pass header.i=@gmail.com header.s=20260707 header.b=x69j69wD;
+ spf=pass (domain: gmail.com, ip: 209.85.160.179, mailfrom: twoerner@gmail.com)
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-5430f70c827so94288411cf.2
+        for <docs@lists.yoctoproject.org>; Fri, 27 Nov 2026 04:05:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795781138; x=1796385938; darn=lists.yoctoproject.org;
+        d=gmail.com; s=20260707; t=1795781132; x=1796385932; darn=lists.yoctoproject.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=3+RFSY8MvadtQcMdF+J6zcTtMU8DyFjjJGMmMGW+qpA=;
-        b=cB04P2QrIvgff42Dw+tBSOl2RL2B2kabCvLR47ben0rQslFd9QGEENmK69LjD6Ov6+
-         bm9IrcnYQIrFQTzcDNh/YNeY1O31q6uHwn6o0d8gatbbqLHnmNHEOiFizaL4Rnq39PIQ
-         8+BnyMScfzmuEewYE3FnzmTMJeOU1dftFfvtZuNA3Btfm3is5zU8payLcM1pRikwsb9z
-         clVENOaGUu6h83WrXIveXs3xwptMIiJpu9KCUQh7UJazIO2jvzseeXOD6qZWfXfeRjv0
-         FSJYXgkxkFHbFt2Ko3EPeamIdboLq6EVz7SmTsum4x8Jww1E7pRioU9lcJNzIitPHwK0
-         LdlA==
+        bh=rOpBvgYt8hxrfkSF2eW5AX4lA5m/1wxfj/E9wNrUc1E=;
+        b=x69j69wDtOj3potOesLbJpNuzBFKYi2P4qM7bUFCS4Umc2z31pZGDQieW2Kx+wAFQw
+         jIsLxCewjJyBQi6qigzz6Jdhb0qEMA2RYNSvSTymtsJJZWNynQ/zkEGT43tHd4WvUKMv
+         VYoMYX7d8n/+lOP0issVDAF1ZJie/ZnywpM/HxwJj+A8VyygUu/YKiSHUe+hBjVW3y6C
+         u3Ovk6wm/6440ZQvWTxVUKfcCIGFpitKJauS9hvzE0KCCvzjWBrxiGTMwHOj5SU1yUED
+         uFG7rnYwFembelGz4eu0G46MAocDqnPeG5T7bi0cD4vmMaXUPJklhmbo9SYjKFxUe9UT
+         QvvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795781138; x=1796385938;
+        d=1e100.net; s=20260707; t=1795781133; x=1796385933;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=3+RFSY8MvadtQcMdF+J6zcTtMU8DyFjjJGMmMGW+qpA=;
-        b=ntCodomm6mkm5SGsM+/9dP7F82vyFFBHMSrojPnmnx0EFQAg/dlepmbXBR20/Apm0J
-         +0jVGBto2ocbB/9eOPUj0tAPVcnbK0gdHHRCPz9niRkl8F+XYywSvRU0qT33MItzTtOX
-         +vdHWrtASULScV3itLXQL9v5vzGe3rg/gS7YijYIm+KhMCWj0QsBqBwFgyBPG7sNRYzu
-         RppZG4VCfVJy/Ehn6WOWRO1kVH3+p/mfIpYn/aT+4lXqan1mbbtWiNZsV/acGr9/6J7N
-         D3umGnuCKI5tpUEpZFcwn7E6+hoB+YrD10pz1UPCxcVUo3lK3vN0aw2YMdCADJ3qnBb1
-         416A==
-X-Gm-Message-State: APuU4Z/FDw6StowSJbBdxH5Ynv7lt5onr4Q3sRB3QynJ4ueI8ZVS7f9A
-	0hTrwsbkDNfjM/W1SylT+tFTMGYdlnFb19qaCrU24xSUFIvvWoOvkSV2GmdJqw==
-X-Gm-Gg: AZFdTZc2DfDgsoaE6dI1trtNCr7FFu3mcZqDQFcgU2cbTGwx9E28AVt37a/w/OTk/ms
-	rinjenD27ozJqEDzFpVbTrnuisQd0vR4DKq+BgI+0R5ajNXVdU74AWMSUfzH1B9QHQClfznic51
-	KLdE/Q/9Fz9sHyr+gKDghjHuE1XkF78cKHvhkg/25UkQgse55baIXVK4VO9H+pTSRjmU2lh0ep3
-	g2fv5uIKr8BrvlHjNLoWPQlfDSWCaOMsC7G2cbRW8o4waOjuQt2LnOV+Wsffqu7hXSqFfMPddml
-	C0IqMbKlxonUgOeLDX3SfPFpMLip3IjqvQ+nNXDUn470y7FPCrJeiLnktIueDM11IP2n2QLC6eZ
-	KsXFMJkXhu7lIgPz6iW/jnUFxFnoXqx/L9FuksOsEDEe7uHD4TwGGN/JUcTeuFgovI9v3lMFYT4
-	JM0iKZq1ioZ4f4IT70CQsbm9Z/TBilmAZABg8Qge3HXtOHhvYfEziLA3reQ5fyykmOfgHnN6X4h
-	5WmEp8raBb/A7Z3C4Y9rAlJUQSR18nNiV0sIDGrUTS9QfG+HbC/HgYkB965xgwilTV6skEUt2YN
-	aJPUXDodfo8KhRx4wD3uDNqMW/fOMOy4OKFIR8cNOlqFb2yHZJ+HNsWZQA9vZ94AcKzLh4JH2ft
-	hmq7BZH5VjF+O75BR
-X-Received: by 2002:a05:622a:1aaa:b0:55c:307e:c961 with SMTP id d75a77b69052e-55d768a0566mr421340651cf.3.1795781137869;
-        Fri, 27 Nov 2026 04:05:37 -0800 (PST)
+        bh=rOpBvgYt8hxrfkSF2eW5AX4lA5m/1wxfj/E9wNrUc1E=;
+        b=hgEm/6KZ5nKrDTSc55J8KFOIBoXlkWL/L8ZBCYcBoU8hiwOZCoxFjH1X/IdT11UB2N
+         RC5rFrilyYW8mYB5B0K5UtiuTo+5G6gJLFYgV+ro0ajHNFotHCIcpY2jdnBuXDBWcqTG
+         esfpaJOSrVeQiDa2Tg7prAOE8vu2+RVBWuFa0+hwfPsXSWWWIcuCmE5AGz5cazlwpiah
+         iXFZhmhCut5mRfvBzOXsuQWSOnTsiADiEVW3Wj1p9D1GJWIIVQHjsSpLNdXYuAhECJhL
+         iMg8ZgmcZWToeSJFf1Iyxnyv1JgdEf5itMX+ow9pA09YmxGw01BR/stM6yYi7ZtEXgCs
+         nGqg==
+X-Gm-Message-State: APuU4Z/bLcW0oahE54FLHZhb5+zej/ChURS2cm7x6ETUncdOiU66ttDP
+	PoED/bTsGyec7oGa26fEMJGeRVRosv4o1w7HSB4mnqx4jBpLoyoBP3pJuEO3HQ==
+X-Gm-Gg: AZFdTZdXKnkjjKz3gUPFFVC/fglwOu4dC5aetkLxukSEkFFuydERzzD2JQPKU67pJtJ
+	FS7XPjqM9SRRWDD3aqlK/MjhCR2zcXodO94ZBTvnnys+4qW0LaTLmi2UTa3OCfAkbjwCyd98Hdg
+	pAxGtjdP7ilRXgmRkczpXEPY6gJf70dDdG/4ybpCexlS6QYmOrBzly4b2xAEqVDA+j+uyGCjrUD
+	WbvAKESpADGZYwavbZZfCWyJVhnpWooIIG5cljB4lrnr1xT5SpEh3fl3MUL64yIJ6Z6iL8ForRA
+	3pZKYXjCUCTvk2yCLnDuqOUddOdSy+k7pPqs3ouVwubbLeKMaomjFXz2RPe/5SK3qDflwN/OQDm
+	3YWYKvTFDJSeU71JMLSL6EJIwga13hqBUAJRAoE/ZYQK892BwBBDWqB4xEe4jisMABu6akhX6ed
+	ndW5QwAS2rbvAhtI9dv8iO9/SUdLyH0d6YLR37/pPiolt+2WJHsiUPvnh43nYNC5WNk+u2ZWAe+
+	/yQ94dmssVjxc5rfmustNnroxSxPm18a6EeU0fJip2Mr3DAVHc7KLVYxoGqbD7Oke/As7YsZLe3
+	x1lvPqsZsFId/O451SPB/IoRSALYCNG1pz0+C93FIRL+07qEf61jmv747gE3MbmoXEtkwvu5Jqp
+	79Mbgpg0oACLpDHwcn4pmSYU3Ydk1Q8I=
+X-Received: by 2002:ac8:5a46:0:b0:55d:3764:8793 with SMTP id d75a77b69052e-55d76a4c2b7mr461399101cf.47.1795781132311;
+        Fri, 27 Nov 2026 04:05:32 -0800 (PST)
 Return-Path: <twoerner@gmail.com>
 Received: from localhost.localdomain (pppoe-209-91-167-254.vianet.ca. [209.91.167.254])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-55d7884b5e9sm208106041cf.18.2026.11.27.04.05.35
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-55d7884b5e9sm208106041cf.18.2026.11.27.04.05.30
         for <docs@lists.yoctoproject.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Nov 2026 04:05:35 -0800 (PST)
+        Fri, 27 Nov 2026 04:05:31 -0800 (PST)
 From: Trevor Woerner <twoerner@gmail.com>
 To: docs@lists.yoctoproject.org
-Subject: [PATCH v3 4/4] dev-manual: use the pydevshell lexer for the session example
-Date: Fri, 27 Nov 2026 07:05:28 -0500
-Message-ID: <20261127120528.837051-5-twoerner@gmail.com>
+Subject: [PATCH v3 1/4] sphinx: add a lexer for wic kickstart files
+Date: Fri, 27 Nov 2026 07:05:25 -0500
+Message-ID: <20261127120528.837051-2-twoerner@gmail.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20261127120528.837051-1-twoerner@gmail.com>
 References: <20261127120528.837051-1-twoerner@gmail.com>
@@ -63,37 +63,112 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by lin-tor-korg-lkml-alma10-1 with HTTPS for <docs@lists.yoctoproject.org>; Fri, 27 Nov 2026 12:05:40 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10857
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10854
 Content-Type: text/plain; charset="utf-8"
 
-The pydevshell session example is left to the default language. Tag it
-pydevshell so the prompt and the Python typed at it are highlighted, and
-the results are not.
+The manuals show .wks files in several places and have no language for
+them, so they are tagged text, tagged shell, or left to the default.
+Shell comes closest, because wic splits each line with shlex and expands
+${VAR} before parsing, but it does not know the vocabulary: the "part"
+opening a line and every option come out as ordinary text.
+
+This extends the bash lexer to mark the statements and long options that
+wic's own parser registers.
 
 AI-Generated: codex/claude-opus 5.5 (xhigh)
 Signed-off-by: Trevor Woerner <twoerner@gmail.com>
 ---
 changes in v3:
-- new: tag the session example pydevshell, as asked in review
----
- documentation/dev-manual/python-development-shell.rst | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+- no change
 
-diff --git a/documentation/dev-manual/python-development-shell.rst b/documentation/dev-manual/python-development-shell.rst
-index 034100ae8799..76167f5bacf4 100644
---- a/documentation/dev-manual/python-development-shell.rst
-+++ b/documentation/dev-manual/python-development-shell.rst
-@@ -13,7 +13,9 @@ specified target. Then a new terminal is opened. Additionally, key
- Python objects and code are available in the same way they are to
- BitBake tasks, in particular, the data store 'd'. So, commands such as
- the following are useful when exploring the data store and running
--functions::
-+functions:
-+
-+.. code-block:: pydevshell
+changes in v2:
+- rebase on master, where conf.py no longer lists the dropped lexers
+---
+ documentation/conf.py             |  3 +-
+ documentation/sphinx/wks-lexer.py | 60 +++++++++++++++++++++++++++++++
+ 2 files changed, 62 insertions(+), 1 deletion(-)
+ create mode 100644 documentation/sphinx/wks-lexer.py
+
+diff --git a/documentation/conf.py b/documentation/conf.py
+index d2252d5ab966..8992496f7569 100644
+--- a/documentation/conf.py
++++ b/documentation/conf.py
+@@ -51,7 +51,8 @@ extensions = [
+     'sphinx.ext.intersphinx',
+     'sphinx_copybutton',
+     'sphinxcontrib.rsvgconverter',
+-    'yocto-vars'
++    'yocto-vars',
++    'wks-lexer'
+ ]
  
-    pydevshell> d.getVar("STAGING_DIR")
-    '/media/build1/bitbake-builds/build/tmp/sysroots'
+ # current_version = "dev"
+diff --git a/documentation/sphinx/wks-lexer.py b/documentation/sphinx/wks-lexer.py
+new file mode 100644
+index 000000000000..1e5e5ec1e5b9
+--- /dev/null
++++ b/documentation/sphinx/wks-lexer.py
+@@ -0,0 +1,60 @@
++"""A lexer for wic kickstart (.wks) files.
++
++wic reads a .wks file line by line: a line whose first non-blank
++character is ``#`` is a comment, and every other line is split with
++``shlex.split`` and handed to ``argparse``, after ``${VAR}`` has been
++expanded. The quoting is therefore shell quoting, which is why this
++extends the bash lexer. What the bash lexer cannot do is mark the
++vocabulary: ``part`` is not a shell builtin, so the statement opening
++each line comes out as ordinary text, and so does every ``--option``.
++
++The statements and options below are taken from wic's parser,
++``ksparser.py``, rather than from the manual, so update them from there
++when wic gains one. ``partition`` is not a statement: it was an alias
++while wic bundled pykickstart, and the parser that replaced it in 2016
++kept only ``part``.
++"""
++from pygments.lexer import bygroups, inherit
++from pygments.lexers.shell import BashLexer
++from pygments.token import Comment, Keyword, Name, Text, Whitespace
++
++__version__ = '1.0'
++
++# The subparsers wic registers.
++STATEMENTS = ('part', 'bootloader', 'include')
++
++
++class WksLexer(BashLexer):
++    """wic kickstart."""
++
++    name = 'wic kickstart'
++    aliases = ['wks']
++    filenames = ['*.wks', '*.wks.in']
++    mimetypes = []
++
++    tokens = {
++        'root': [
++            # A statement is only a statement at the start of a line.
++            # Anchoring matters: "include" is also an ordinary word in
++            # "--include-path", and "part" appears inside several option
++            # names, so an unanchored keyword would mark both.
++            (r'^(\s*)(%s)(\b)' % '|'.join(STATEMENTS),
++             bygroups(Whitespace, Keyword, Text)),
++            # Long options carry the meaning on a wic line; bash leaves
++            # them as plain text because it has no notion of them.
++            (r'--[\w-]+', Name.Attribute),
++            # wic tests the first character of the stripped line, so a
++            # comment may be indented and is never trailing.
++            (r'^\s*#.*$', Comment.Single),
++            inherit,
++        ],
++    }
++
++
++def setup(app):
++    app.add_lexer('wks', WksLexer)
++    return {
++        'version': __version__,
++        'parallel_read_safe': True,
++        'parallel_write_safe': True,
++    }
 -- 
 2.50.0.173.g8b6f19ccfc3a
 
