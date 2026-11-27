@@ -1,94 +1,97 @@
-Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com [209.85.160.52])
- by mx.groups.io with SMTP id smtpd.msgproc01-g2.14735.1795781016186108671
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+ by mx.groups.io with SMTP id smtpd.msgproc01-g2.14756.1795781133599960127
  for <docs@lists.yoctoproject.org>;
- Fri, 27 Nov 2026 04:03:36 -0800
+ Fri, 27 Nov 2026 04:05:33 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20260707 header.b=w8tkXbcF;
- spf=pass (domain: gmail.com, ip: 209.85.160.52, mailfrom: twoerner@gmail.com)
-Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-4877837890fso4274368fac.2
-        for <docs@lists.yoctoproject.org>; Fri, 27 Nov 2026 04:03:36 -0800 (PST)
+ dkim=pass header.i=@gmail.com header.s=20260707 header.b=wbJPnaDz;
+ spf=pass (domain: gmail.com, ip: 209.85.160.169, mailfrom: twoerner@gmail.com)
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-536c8f958d7so60878781cf.1
+        for <docs@lists.yoctoproject.org>; Fri, 27 Nov 2026 04:05:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795781015; x=1796385815; darn=lists.yoctoproject.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=OSAY5i+TywGovALB2VAY+K/xcTYtFlgQee/D1xxjA08=;
-        b=w8tkXbcF4h1mQuyYVsBa6LOxiyP2R3Z9KbUJy5an1Cj0L4EiVa1I+Kay80CmryPtVI
-         ROhKNN6n0Ms73mEqMFShZC3hddEs7PQkSIUEgCb5uXTUohdh0xsRlNdB+yMe9N5VCXBn
-         rN08pQUhU0MNEz/OkCGOLam060i56xpUQoWBsMJozseR/syxLrSea43JWCXwUg668tEz
-         uvSmKZBR0QnAPCrNEvGhegmfRwcCIregkmxMt97amlfpVVLrGIdAKoeY1TqD5n8+6h6p
-         QgIUd/m+N7iK76c6nFo9/D6qT7A4JKI6p//p3+diNAtpeXR9LnLQloV0ltYmzFRVgVgp
-         6bqQ==
+        d=gmail.com; s=20260707; t=1795781132; x=1796385932; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=7SxhF78C9Di3ld32zKkyGZ0+CJPA+TuOCKfejRpK6Vc=;
+        b=wbJPnaDzq7+DpyfK7SoAaw2+BYAUumIjfbXG1ILaV7HhIOIspQYivDZC2NI4znmJTk
+         3CseEaSTjVCdIPN9pAZI+INvaIR9NVPGOnXEmmANwUlj1QAPNCEqxa/xY5oylfHKx9CB
+         FqlpLEDigKiwmO8SU7xu9S/sopbyQFybfrbTAJ8dZ8ypyL0W85ApA9jgqf4gtjNvz8oa
+         7uK0RFPpAuCemnJMZMahH5VCavgSgCuwzyQTBuYV4dJKY778ys7O4g8K0j68p1tBfi+b
+         1CurSDRQkybW55jMejkg4A7MPRNMko/degI78kEcH7UtdXBfN+iR2MQ9vlLCrDT2Wbx0
+         wncQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795781015; x=1796385815;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=OSAY5i+TywGovALB2VAY+K/xcTYtFlgQee/D1xxjA08=;
-        b=EJOhuFX1IoJS6x1pW0OI1szvGtx1LiUszyDXbWAouPgF4bRsMDm4aGujydxPALrknx
-         eLXXJspHiHutZHS/ysMaxatiXeBiAWG8mEBeP+vmLJXuMCCqhQoQGdw844PdfD9EQAKr
-         DzsQhLYlb7j1anh0ohK4lQkhy6SCVRgETaSi/fIpMn5hJt4Mep9hl4j6SbBn9gpgt76A
-         1gKclJrvWsBXZUiIjny2GHeKApNm0d+WCTlkVdtkSTmVOqtYLU7i1ShW0sxYhfeONDyO
-         lMzQmRHQOXJffPEoD8Wdfrz6P1lXbmFBM2MZj8nU2DTPTux56DurELM/Au+rS65IOmQo
-         8Psw==
-X-Gm-Message-State: APuU4Z8Z8mPJ+wY5yXbRVMTCu4TbQFxqa7UQz41u+Jj4yQwOjIyR8nxR
-	82rbXENwRbPnnqKDzYlWj29szR3HdJpAhLhOpV6CzdyxYEyQNLDOPEl8
-X-Gm-Gg: AZFdTZdGaN9rCqRcSgzzHP9X7PRz2sg0cMcNUGGzOYqfG3jGfcSJEimFR/cNKYfs1F3
-	rkSA8O9izjwzonwoVoWJYVL+1iwLx+DxEPLQ/sz+d9H2Lz/Qrf5kbnMcaRUsqcRxeL5OlfpHbaV
-	2XeMxlBq35VIyhCVeAng+qfSabZC33G6NFSGLQaj8FxMEKbqHXzOqCS/2XzEN0/IuBTbBGqmYDz
-	GYYyBi246lCgEMsoSBD5Q2S4JbR+whGFHxn3cJ8AY3Nq6AO/c8pVCurANRJXGENC8HoORtijXuB
-	wVW+6Xm2ws2W7+KpWppI+fsHwUhiBpI9WIo+QXeW8ynlWgsvWGz0A1SvoBdrbEjO/mItZXx4Ub3
-	vUfyW+6nX2iYq+vf+hrwYbMljEWnQapay3d3aykq8PlhENI6VEYKF006ZyxhHZpn9Mq273zvziC
-	jO8uUp5ePyhtr65cvCb+jndXBWZiJ7gu8cKq6roziQ0Wvb18HRCvpmb1CMw5m6Ak66iSeU88MD2
-	tNvQ7/gbpnOF6prmsCFwAm85l4DRMeA2bgZBcejFdDzLPmGjPtoKARhImQqOgyiejWeSk08Y+OB
-	N1aq0aRePSLx+RS2qLm94x83YV0WFrZwGeyDgAorWYjnKfjTKZbiLACQPWMFz+Ft1Uo2cu42R01
-	Cavy7DceV2MZ7cWoo
-X-Received: by 2002:a05:6820:3398:20b0:71a:de26:e969 with SMTP id 006d021491bc7-71b394ca078mr13902833eaf.48.1795781015030;
-        Fri, 27 Nov 2026 04:03:35 -0800 (PST)
+        d=1e100.net; s=20260707; t=1795781132; x=1796385932;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=7SxhF78C9Di3ld32zKkyGZ0+CJPA+TuOCKfejRpK6Vc=;
+        b=B7tX14OfAUcEMhqNpMU9d7BUOzpIw1SbcK+3+TbD72o8fLNaqBJt9LckJmioOxUs4D
+         9PvVLHbM7UBHQ4j9u7eNX4OnXY4ZXyoqlI4JGhxuM00hZrfVn8lI4/v2fp8v38+s1CvM
+         gQ112w1uy5e8LoI6KhJN4ZqJudmBloPHK2wchezkeRQkt4HnQXFGj+h/7r+4NLrHL3a6
+         0y4Atu0R2zrcDhtE6997QSj8vtthMrj2YFhlL2ikDHSs4QUG2zGKmLG5iYwQCBXESG3I
+         8IthWzJjd9z0DXvc6MYYeRzpVwv1LzI5ZygXJEWfkmZRuKAtbibJNzhFivLoYiHatEXx
+         bGqQ==
+X-Gm-Message-State: APuU4Z+KfAQF0AYRBbQPlwWi/PSTsh1GSZGgb9Q65U2PCFIs/c8O9l5M
+	17PdWQfhdsDe2RFD5FZcvW5HkAeusEZLawBIlJwhB1gedDrGCXSXywcZnhLnsA==
+X-Gm-Gg: AZFdTZfL4afgttfqr7GvH7rOFUCrPXyWYH7or7Ljm+C/5D0798oJhWTTz1sj7jJFeX2
+	yfBpotki+eumuYCrKihA0f54vSvUZA1zUIZGZgY3si8i9rEp0XdsosxmRUVqKJ5QmwZZuSzEM0Q
+	7EWLsMeu3MG4i10ZZIv21EDzIJf+ae0eT8nSuOssytngGdmll9iDAGKrRlLmfkBUNLp6YZRINXh
+	X65bvwnRYMJQ18tAt1uOLQPJU3PToS1HQim7okPvq8PiVXwFeMgBUphFVoIW5V6PW9qzJx6RTn6
+	SUV39gDGk1cdMC6EwCJzgoZqy4QyNy46rZX/amQvUC7G2tZAiJUcdKXIGxArZBY7AVbHBmXe0/n
+	iOWSJEL7puyp6O7BrdKidUNF3stI0hhMDdgJP3DciFWShhkY7eEcb6rR+mlpNB2e7EkrV3NN7hr
+	JZ/wFqMLKJYjQUoziOWnugJShtudXoxgLoljaxR6qdPAvGswFu81o3LhudksNrnIKcuCAn5MN2G
+	wUWvVPmvtpu92dWT1QlXiEuraw6IwlL60QIKIKH67Yu/aF3Ha9VsTj9JkogheOeP96Se7Q0eUzU
+	IoP/JOfD8ozSmYL6V4tcWKsVIaAQPYWm8IfreGm3cmNTUfHxdNfSlaId6eVrkwXPXpbY6SbKsMO
+	TD7bK4VJFRoqk8NChD9XNgF91d+43Jtsb
+X-Received: by 2002:a05:622a:2609:b0:55b:d65c:665e with SMTP id d75a77b69052e-55d7688cd55mr463348581cf.5.1795781130767;
+        Fri, 27 Nov 2026 04:05:30 -0800 (PST)
 Return-Path: <twoerner@gmail.com>
 Received: from localhost.localdomain (pppoe-209-91-167-254.vianet.ca. [209.91.167.254])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-94a0189dbcesm763838585a.13.2026.11.27.04.03.33
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-55d7884b5e9sm208106041cf.18.2026.11.27.04.05.29
+        for <docs@lists.yoctoproject.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Nov 2026 04:03:34 -0800 (PST)
-Date: Fri, 27 Nov 2026 07:03:32 -0500
+        Fri, 27 Nov 2026 04:05:29 -0800 (PST)
 From: Trevor Woerner <twoerner@gmail.com>
-To: Antonin Godard <antonin.godard@bootlin.com>
-Cc: docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH v2 0/2] sphinx: add lexers for wic kickstart files
- and pydevshell sessions
-Message-ID: <awlxlB-C-BQsvq9H@localhost.localdomain>
-References: <20261126223650.3701672-1-twoerner@gmail.com>
- <DN5UA9PRFTFL.D3Y0NKYY84H8@bootlin.com>
+To: docs@lists.yoctoproject.org
+Subject: [PATCH v3 0/4] sphinx: add lexers for wic kickstart files and pydevshell sessions
+Date: Fri, 27 Nov 2026 07:05:24 -0500
+Message-ID: <20261127120528.837051-1-twoerner@gmail.com>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <DN5UA9PRFTFL.D3Y0NKYY84H8@bootlin.com>
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
-X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by lin-tor-korg-lkml-alma10-1 with HTTPS for <docs@lists.yoctoproject.org>; Fri, 27 Nov 2026 12:03:40 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10852
+X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by lin-tor-korg-lkml-alma10-1 with HTTPS for <docs@lists.yoctoproject.org>; Fri, 27 Nov 2026 12:05:40 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10853
+Content-Type: text/plain; charset="utf-8"
 
-On Fri 2026-11-27 @ 09:10:31 AM, Antonin Godard wrote:
-> Hi,
-> 
-> On Thu Nov 26, 2026 at 11:36 PM CET, Trevor Woerner via docs wrote:
-> > Lexers for wic kickstart (.wks) files and for sessions in BitBake's
-> > Python development shell, which the manuals show and Pygments does not
-> > cover. No block names either yet, so the rendered manuals do not change.
-> 
-> Thanks! These look good and I've tested them, just one minor comment on patch 2.
-> 
-> In a v3, would you be able to replace the occurrences of wks and pydevshell code
-> blocks to use your lexers?
+Lexers for wic kickstart (.wks) files and for sessions in BitBake's
+Python development shell, which the manuals show and Pygments does not
+cover, and the changes that tag the manuals' examples to use them.
 
-Yes, v3 coming up.
+changes in v3:
+- tag the existing kickstart and pydevshell examples with the new lexers
+- make the pydevshell lexer recognise the "... " continuation prompt
 
-In my original plan the "flip" series was rather large and was going to
-be sent as one patchset that would flip all of the code-block blocks at
-once. I'll add the wks and pydevshell parts now as part of the lexers.
+changes in v2:
+- keep only these two lexers
+- rebase on master
 
-I still need to send a flip patchset as part of the "make bitbake the
-default highlight" decision.
+Trevor Woerner (4):
+  sphinx: add a lexer for wic kickstart files
+  docs: use the wks lexer for the kickstart examples
+  sphinx: add a lexer for pydevshell sessions
+  dev-manual: use the pydevshell lexer for the session example
 
-> Thanks,
-> Antonin
+ documentation/conf.py                         |  4 +-
+ .../dev-manual/python-development-shell.rst   |  4 +-
+ documentation/dev-manual/wic.rst              |  6 +-
+ documentation/ref-manual/kickstart.rst        | 16 +++--
+ documentation/ref-manual/variables.rst        |  8 ++-
+ documentation/sphinx/pydevshell-lexer.py      | 51 ++++++++++++++++
+ documentation/sphinx/wks-lexer.py             | 60 +++++++++++++++++++
+ 7 files changed, 136 insertions(+), 13 deletions(-)
+ create mode 100644 documentation/sphinx/pydevshell-lexer.py
+ create mode 100644 documentation/sphinx/wks-lexer.py
+
+-- 
+2.50.0.173.g8b6f19ccfc3a
+
