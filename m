@@ -1,61 +1,61 @@
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
- by mx.groups.io with SMTP id smtpd.msgproc02-g2.14804.1795781133696280244
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+ by mx.groups.io with SMTP id smtpd.msgproc02-g2.14806.1795781134821156398
  for <docs@lists.yoctoproject.org>;
- Fri, 27 Nov 2026 04:05:33 -0800
+ Fri, 27 Nov 2026 04:05:34 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20260707 header.b=x69j69wD;
- spf=pass (domain: gmail.com, ip: 209.85.160.179, mailfrom: twoerner@gmail.com)
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-5430f70c827so94288411cf.2
-        for <docs@lists.yoctoproject.org>; Fri, 27 Nov 2026 04:05:33 -0800 (PST)
+ dkim=pass header.i=@gmail.com header.s=20260707 header.b=eJpCBp9D;
+ spf=pass (domain: gmail.com, ip: 209.85.160.175, mailfrom: twoerner@gmail.com)
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-55d6deecef6so80073521cf.2
+        for <docs@lists.yoctoproject.org>; Fri, 27 Nov 2026 04:05:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1795781132; x=1796385932; darn=lists.yoctoproject.org;
+        d=gmail.com; s=20260707; t=1795781134; x=1796385934; darn=lists.yoctoproject.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=rOpBvgYt8hxrfkSF2eW5AX4lA5m/1wxfj/E9wNrUc1E=;
-        b=x69j69wDtOj3potOesLbJpNuzBFKYi2P4qM7bUFCS4Umc2z31pZGDQieW2Kx+wAFQw
-         jIsLxCewjJyBQi6qigzz6Jdhb0qEMA2RYNSvSTymtsJJZWNynQ/zkEGT43tHd4WvUKMv
-         VYoMYX7d8n/+lOP0issVDAF1ZJie/ZnywpM/HxwJj+A8VyygUu/YKiSHUe+hBjVW3y6C
-         u3Ovk6wm/6440ZQvWTxVUKfcCIGFpitKJauS9hvzE0KCCvzjWBrxiGTMwHOj5SU1yUED
-         uFG7rnYwFembelGz4eu0G46MAocDqnPeG5T7bi0cD4vmMaXUPJklhmbo9SYjKFxUe9UT
-         QvvA==
+        bh=Is5BKYCB7a7tM7TvZhFZxP9+kLbIbBHe7Iiq8SD81I8=;
+        b=eJpCBp9DC2N+y9eIP74I2G3bVXzilOBfXhkeUbjotV+OC8j7Q1wmvuWcOVrirwo9WI
+         IAdfDQLw1Xv+ixN6OGSSjTUHkyec7VJw0jwTBTYm6vMO7A0t43Wk0OEu54P16MbPsPCh
+         36api4LINP2x4AnTIPwLqL4gMvyYEiPPWWJ+9nCbApzchmleMgAdu4yNI9fJ8w3JD9d8
+         dPJ7WOtsEAKwglSP9DdwmlpFKZIV4TcGm/F20IZqpRBLpxtEjqTb337xzq4q1fxApHuv
+         kJLLr6bDoXLnNf6lUSpN6H5yqYtjgn1lDakxcyAkRv1VKg9ceGg6YVDTqUgizRpllKGR
+         UfVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1795781133; x=1796385933;
+        d=1e100.net; s=20260707; t=1795781134; x=1796385934;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=rOpBvgYt8hxrfkSF2eW5AX4lA5m/1wxfj/E9wNrUc1E=;
-        b=hgEm/6KZ5nKrDTSc55J8KFOIBoXlkWL/L8ZBCYcBoU8hiwOZCoxFjH1X/IdT11UB2N
-         RC5rFrilyYW8mYB5B0K5UtiuTo+5G6gJLFYgV+ro0ajHNFotHCIcpY2jdnBuXDBWcqTG
-         esfpaJOSrVeQiDa2Tg7prAOE8vu2+RVBWuFa0+hwfPsXSWWWIcuCmE5AGz5cazlwpiah
-         iXFZhmhCut5mRfvBzOXsuQWSOnTsiADiEVW3Wj1p9D1GJWIIVQHjsSpLNdXYuAhECJhL
-         iMg8ZgmcZWToeSJFf1Iyxnyv1JgdEf5itMX+ow9pA09YmxGw01BR/stM6yYi7ZtEXgCs
-         nGqg==
-X-Gm-Message-State: APuU4Z/bLcW0oahE54FLHZhb5+zej/ChURS2cm7x6ETUncdOiU66ttDP
-	PoED/bTsGyec7oGa26fEMJGeRVRosv4o1w7HSB4mnqx4jBpLoyoBP3pJuEO3HQ==
-X-Gm-Gg: AZFdTZdXKnkjjKz3gUPFFVC/fglwOu4dC5aetkLxukSEkFFuydERzzD2JQPKU67pJtJ
-	FS7XPjqM9SRRWDD3aqlK/MjhCR2zcXodO94ZBTvnnys+4qW0LaTLmi2UTa3OCfAkbjwCyd98Hdg
-	pAxGtjdP7ilRXgmRkczpXEPY6gJf70dDdG/4ybpCexlS6QYmOrBzly4b2xAEqVDA+j+uyGCjrUD
-	WbvAKESpADGZYwavbZZfCWyJVhnpWooIIG5cljB4lrnr1xT5SpEh3fl3MUL64yIJ6Z6iL8ForRA
-	3pZKYXjCUCTvk2yCLnDuqOUddOdSy+k7pPqs3ouVwubbLeKMaomjFXz2RPe/5SK3qDflwN/OQDm
-	3YWYKvTFDJSeU71JMLSL6EJIwga13hqBUAJRAoE/ZYQK892BwBBDWqB4xEe4jisMABu6akhX6ed
-	ndW5QwAS2rbvAhtI9dv8iO9/SUdLyH0d6YLR37/pPiolt+2WJHsiUPvnh43nYNC5WNk+u2ZWAe+
-	/yQ94dmssVjxc5rfmustNnroxSxPm18a6EeU0fJip2Mr3DAVHc7KLVYxoGqbD7Oke/As7YsZLe3
-	x1lvPqsZsFId/O451SPB/IoRSALYCNG1pz0+C93FIRL+07qEf61jmv747gE3MbmoXEtkwvu5Jqp
-	79Mbgpg0oACLpDHwcn4pmSYU3Ydk1Q8I=
-X-Received: by 2002:ac8:5a46:0:b0:55d:3764:8793 with SMTP id d75a77b69052e-55d76a4c2b7mr461399101cf.47.1795781132311;
-        Fri, 27 Nov 2026 04:05:32 -0800 (PST)
+        bh=Is5BKYCB7a7tM7TvZhFZxP9+kLbIbBHe7Iiq8SD81I8=;
+        b=ab/iUsE+yJmZ+66PSrrPVem+dGHSLLHa8SZw8LY5+5v2P+9nsInL4ZWMVBJy1MJV/6
+         X+5w4yDez1ZRBuRHJunDFJqzHWkl5sYS7wPaK1G527qN8aQ102QRxLmCYGHVvBW0ArCz
+         dVb3QLW7g5PhomGkgM3fEk0ZhJyy+JuRVwKlmKuNWus0Inqk21xvnJW+mMaqUYUhAkqM
+         Sd+WSVcJzcLQ8Gg+UEiy0L+i1lxtd1LTJi7v8lwCZ4eqJ9ySfGSUTSbo69fWkxw09wm0
+         m8qbrXKV5KNFKIq9hhQhSn+0XeX9UJFRyfYpI2csBDJzec2VsS0kI3uhjENKpOyLNf3D
+         xkaQ==
+X-Gm-Message-State: APuU4Z9IP0aiMkuz8zvmvUpOxSbrTUKBLF7s/pbkc6y4W2PqWD8oQ0bE
+	IG13cIGXOiKq9Ms66a4X3NkN8REVRt+ldgjZCChxL/T/627IKmzHJ/6NOLv49w==
+X-Gm-Gg: AZFdTZcOLtNGBlPCcdUxJbFfQeaqnTbaAwaLrQGGxrxKICZXa6q/f5sOvyn3m+AVNpR
+	3SXSkNJ4KoLzpNuwgpA9ZuBd33bABgHWKWe61bM+t4uLDkQd09NXVEPzVyq/U0jsEZSNDvcZ8T2
+	cBXVPFODnyhh4wu1bBU0Ped3vrXvOByxE3Zex8VB+Uj4LHEvA5t1xj0BFc+aaZBtUUr5gJ8rWa+
+	OU3fytdIdoPhmnfhtj3dgEkbt17x2jELjkSLxf2o2jQjX+kQjLYTSt5HlUGN2ivV8tm6SlobHZQ
+	N3VF5LV2JAquhNhpTF0GI9eBm9PA5QZb/S9Y6ciDsxJEb53wYflYDfapMBghmHJ/MpISQtDKKMr
+	8rRfFfxGONj1YsM/asMa8PhQjnStNblyzXF/9fWompZUfT6eez/N8KPC4ceilQ7mp86n6cGuqJA
+	dC2GSTJxVgF1WigRzh2vHvWbWtn1AVBH8wt2umsflK9eHOb4UqxJbGUBfnUgEvdmEphffuYFFjq
+	vXe27bbqqE2iXWZrhh8mAtt0szXUjNGzDQKb95ZKrnfCjZpfDe2Pqj+XYXzqk1sqqSyFm6xTnSY
+	J8gf1E0Dcn3huC/AJ0co7cwYb/afRJgy465+A5ZtaXzkx25fLcdYLetr2UqCLslnVFLe2d4wznf
+	yDKmkcKrG9R7nkWcED+552hJLNOSF7jM=
+X-Received: by 2002:a05:622a:5c0f:b0:537:5488:dee4 with SMTP id d75a77b69052e-55d76a168dbmr477121461cf.25.1795781133414;
+        Fri, 27 Nov 2026 04:05:33 -0800 (PST)
 Return-Path: <twoerner@gmail.com>
 Received: from localhost.localdomain (pppoe-209-91-167-254.vianet.ca. [209.91.167.254])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-55d7884b5e9sm208106041cf.18.2026.11.27.04.05.30
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-55d7884b5e9sm208106041cf.18.2026.11.27.04.05.32
         for <docs@lists.yoctoproject.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Nov 2026 04:05:31 -0800 (PST)
+        Fri, 27 Nov 2026 04:05:32 -0800 (PST)
 From: Trevor Woerner <twoerner@gmail.com>
 To: docs@lists.yoctoproject.org
-Subject: [PATCH v3 1/4] sphinx: add a lexer for wic kickstart files
-Date: Fri, 27 Nov 2026 07:05:25 -0500
-Message-ID: <20261127120528.837051-2-twoerner@gmail.com>
+Subject: [PATCH v3 2/4] docs: use the wks lexer for the kickstart examples
+Date: Fri, 27 Nov 2026 07:05:26 -0500
+Message-ID: <20261127120528.837051-3-twoerner@gmail.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20261127120528.837051-1-twoerner@gmail.com>
 References: <20261127120528.837051-1-twoerner@gmail.com>
@@ -63,112 +63,143 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from 45-33-107-173.ip.linodeusercontent.com [45.33.107.173] by lin-tor-korg-lkml-alma10-1 with HTTPS for <docs@lists.yoctoproject.org>; Fri, 27 Nov 2026 12:05:40 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10854
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/10855
 Content-Type: text/plain; charset="utf-8"
 
-The manuals show .wks files in several places and have no language for
-them, so they are tagged text, tagged shell, or left to the default.
-Shell comes closest, because wic splits each line with shlex and expands
-${VAR} before parsing, but it does not know the vocabulary: the "part"
-opening a line and every option come out as ordinary text.
-
-This extends the bash lexer to mark the statements and long options that
-wic's own parser registers.
+The wic kickstart examples in the manuals are tagged shell or text, or
+left to the default language. Tag them wks so their statements and
+options are highlighted as kickstart.
 
 AI-Generated: codex/claude-opus 5.5 (xhigh)
 Signed-off-by: Trevor Woerner <twoerner@gmail.com>
 ---
 changes in v3:
-- no change
-
-changes in v2:
-- rebase on master, where conf.py no longer lists the dropped lexers
+- new: tag the kickstart examples wks, as asked in review
 ---
- documentation/conf.py             |  3 +-
- documentation/sphinx/wks-lexer.py | 60 +++++++++++++++++++++++++++++++
- 2 files changed, 62 insertions(+), 1 deletion(-)
- create mode 100644 documentation/sphinx/wks-lexer.py
+ documentation/dev-manual/wic.rst       |  6 +++---
+ documentation/ref-manual/kickstart.rst | 16 ++++++++++------
+ documentation/ref-manual/variables.rst |  8 ++++++--
+ 3 files changed, 19 insertions(+), 11 deletions(-)
 
-diff --git a/documentation/conf.py b/documentation/conf.py
-index d2252d5ab966..8992496f7569 100644
---- a/documentation/conf.py
-+++ b/documentation/conf.py
-@@ -51,7 +51,8 @@ extensions = [
-     'sphinx.ext.intersphinx',
-     'sphinx_copybutton',
-     'sphinxcontrib.rsvgconverter',
--    'yocto-vars'
-+    'yocto-vars',
-+    'wks-lexer'
- ]
+diff --git a/documentation/dev-manual/wic.rst b/documentation/dev-manual/wic.rst
+index 85160bbdf1a0..07e165abeb11 100644
+--- a/documentation/dev-manual/wic.rst
++++ b/documentation/dev-manual/wic.rst
+@@ -343,7 +343,7 @@ Mode that uses the ``directdisk`` file:
+ Here are the actual partition language commands used in the
+ ``genericx86.wks`` file to generate an image:
  
- # current_version = "dev"
-diff --git a/documentation/sphinx/wks-lexer.py b/documentation/sphinx/wks-lexer.py
-new file mode 100644
-index 000000000000..1e5e5ec1e5b9
---- /dev/null
-+++ b/documentation/sphinx/wks-lexer.py
-@@ -0,0 +1,60 @@
-+"""A lexer for wic kickstart (.wks) files.
+-.. code-block:: shell
++.. code-block:: wks
+ 
+    # short-description: Create an EFI disk image for genericx86*
+    # long-description: Creates a partitioned EFI disk image for genericx86* machines
+@@ -403,7 +403,7 @@ implementation, it looks for the plugin with the same name as the
+ partition. For example, if the partition is set up using the following
+ command in a kickstart file:
+ 
+-.. code-block:: shell
++.. code-block:: wks
+ 
+    part /boot --source bootimg_pcbios --ondisk sda --label boot --active --align 1024
+ 
+@@ -598,7 +598,7 @@ changes all instances of "``--ondisk sda``" to "``--ondisk sdb``". The
+ example changes the following two lines and leaves the remaining lines
+ untouched:
+ 
+-.. code-block:: shell
++.. code-block:: wks
+ 
+    part /boot --source bootimg_pcbios --ondisk sdb --label boot --active --align 1024
+    part / --source rootfs --ondisk sdb --fstype=ext4 --label platform --align 1024 --use-uuid
+diff --git a/documentation/ref-manual/kickstart.rst b/documentation/ref-manual/kickstart.rst
+index 8d5e9f317b06..c2b7d6aa1102 100644
+--- a/documentation/ref-manual/kickstart.rst
++++ b/documentation/ref-manual/kickstart.rst
+@@ -57,7 +57,9 @@ Command: part
+ -------------
+ 
+ This command creates a partition on the system and uses the
+-following syntax::
++following syntax:
 +
-+wic reads a .wks file line by line: a line whose first non-blank
-+character is ``#`` is a comment, and every other line is split with
-+``shlex.split`` and handed to ``argparse``, after ``${VAR}`` has been
-+expanded. The quoting is therefore shell quoting, which is why this
-+extends the bash lexer. What the bash lexer cannot do is mark the
-+vocabulary: ``part`` is not a shell builtin, so the statement opening
-+each line comes out as ordinary text, and so does every ``--option``.
++.. code-block:: wks
+ 
+    part [mntpoint]
+ 
+@@ -85,7 +87,9 @@ must also provide one of the ``--ondrive``, ``--ondisk``, or
+    be disabled in custom configurations.
+ 
+ Here is an example that uses "/" as the mountpoint. The command uses
+-``--ondisk`` to force the partition onto the ``sdb`` disk::
++``--ondisk`` to force the partition onto the ``sdb`` disk:
 +
-+The statements and options below are taken from wic's parser,
-+``ksparser.py``, rather than from the manual, so update them from there
-+when wic gains one. ``partition`` is not a statement: it was an alias
-+while wic bundled pykickstart, and the parser that replaced it in 2016
-+kept only ``part``.
-+"""
-+from pygments.lexer import bygroups, inherit
-+from pygments.lexers.shell import BashLexer
-+from pygments.token import Comment, Keyword, Name, Text, Whitespace
++.. code-block:: wks
+ 
+       part / --source rootfs --ondisk sdb --fstype=ext3 --label platform --align 1024
+ 
+@@ -275,7 +279,7 @@ The ``include`` directive can be used to include a WKS file into another. The
+ only argument to this command is the path to the file to include, relative to
+ the current file. For example:
+ 
+-.. code-block:: shell
++.. code-block:: wks
+ 
+    include common.wks.inc
+ 
+@@ -298,7 +302,7 @@ variable expansion mechanism:
+    :term:`wic` command-line utility, not :term:`BitBake`. However, the syntax to
+    reference these variables is the same. For example:
+ 
+-   .. code-block:: text
++   .. code-block:: wks
+       :caption: Snippet from ``mkefidisk.wks``
+ 
+       bootloader --ptable gpt --timeout=5 --append="rootfstype=ext4 console=${KERNEL_CONSOLE} console=tty0"
+@@ -321,7 +325,7 @@ variable expansion mechanism:
+    This means that the :term:`WICVARS` list has no effect anymore: those
+    variables are expanded by :term:`BitBake` directly. For example:
+ 
+-   .. code-block:: text
++   .. code-block:: wks
+       :caption: Snippet from ``efi-uki-bootdisk.wks.in``
+ 
+       part /boot --source bootimg_efi --sourceparams="loader=${EFI_PROVIDER}" --label boot --active ...
+@@ -331,7 +335,7 @@ variable expansion mechanism:
+    This also means that ``.wks.in`` files can contain inline Python expressions.
+    Here is a made up example:
+ 
+-   .. code-block:: text
++   .. code-block:: wks
+ 
+       part / --source rootfs --fstype=ext4 --label root --align ${@4 * 1024} --size 5G
+ 
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index 2e01d04228ce..15ff5be2380a 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -4318,7 +4318,9 @@ system and gives an overview of their function and contents.
+ 
+       You can also specify the target by label, UUID or partition name if multiple
+       extra partitions coexist. Let's take the following example. This would be
+-      the WKS file for the image currently being built::
++      the WKS file for the image currently being built:
 +
-+__version__ = '1.0'
++      .. code-block:: wks
+ 
+          part --source extra_partition --fstype=ext4 --label foo
+          part --source extra_partition --fstype=ext4 --uuid e7d0824e-cda3-4bed-9f54-9ef5312d105d
+@@ -12173,7 +12175,9 @@ system and gives an overview of their function and contents.
+       The resulting binary can be flashed using :doc:`WIC </dev-manual/wic>` or
+       any other flashing method at the environment offset, overriding any
+       existing environment if one is present. Below is an example of a WKS file
+-      to flash the binary::
++      to flash the binary:
 +
-+# The subparsers wic registers.
-+STATEMENTS = ('part', 'bootloader', 'include')
-+
-+
-+class WksLexer(BashLexer):
-+    """wic kickstart."""
-+
-+    name = 'wic kickstart'
-+    aliases = ['wks']
-+    filenames = ['*.wks', '*.wks.in']
-+    mimetypes = []
-+
-+    tokens = {
-+        'root': [
-+            # A statement is only a statement at the start of a line.
-+            # Anchoring matters: "include" is also an ordinary word in
-+            # "--include-path", and "part" appears inside several option
-+            # names, so an unanchored keyword would mark both.
-+            (r'^(\s*)(%s)(\b)' % '|'.join(STATEMENTS),
-+             bygroups(Whitespace, Keyword, Text)),
-+            # Long options carry the meaning on a wic line; bash leaves
-+            # them as plain text because it has no notion of them.
-+            (r'--[\w-]+', Name.Attribute),
-+            # wic tests the first character of the stripped line, so a
-+            # comment may be indented and is never trailing.
-+            (r'^\s*#.*$', Comment.Single),
-+            inherit,
-+        ],
-+    }
-+
-+
-+def setup(app):
-+    app.add_lexer('wks', WksLexer)
-+    return {
-+        'version': __version__,
-+        'parallel_read_safe': True,
-+        'parallel_write_safe': True,
-+    }
++      .. code-block:: wks
+ 
+          part --source rawcopy --sourceparams="file=u-boot-initial-env-sd.bin" --ondisk sda --no-table --offset 4096k
+ 
 -- 
 2.50.0.173.g8b6f19ccfc3a
 
